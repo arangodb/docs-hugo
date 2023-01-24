@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 if [ ! -f /home/arangodb3.10/bin/arangosh ]; then
     wget https://download.arangodb.com/nightly/3.10/Linux/aarch64/arangodb3-client-linux-3.10.3-nightly_arm64.tar.gz
     tar -xf arangodb3-client-linux-3.10.3-nightly_arm64.tar.gz
