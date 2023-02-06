@@ -46,8 +46,9 @@ The encryption feature of ArangoDB requires a single 32-byte key per server.
 It is recommended to use a different key for each server (when operating in a
 cluster configuration).
 
+
 {{% hints/security %}}
-Make sure to protect the encryption keys! That means:
+  Make sure to protect the encryption keys! That means:
 
 - Do not write them to persistent disks or your server(s), always store them on
   an in-memory (`tmpfs`) filesystem.

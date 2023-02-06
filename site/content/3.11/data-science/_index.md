@@ -121,8 +121,9 @@ The full ArangoFlix demo website is accessible from the ArangoGraph Insights Pla
 the managed cloud for ArangoDB. You can open the demo website that connects to
 your running database from the **Examples** tab of your deployment.
 
+
 {{% hints/tip %}}
-You can try out the ArangoGraph Insights Platform free of charge for 14 days.
+  You can try out the ArangoGraph Insights Platform free of charge for 14 days.
 Sign up at [cloud.arangodb.com](https://cloud.arangodb.com/). 
 {{% /hints/tip %}}
 

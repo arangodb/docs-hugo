@@ -96,8 +96,9 @@ To use _Datacenter-to-Datacenter Replication_ you need the following:
 - At least 2 instances of the _ArangoSync master_ in each datacenter.
 - One instances of the _ArangoSync worker_ on every machine in each datacenter.
 
+
 {{% hints/info %}}
-In several places you will need a (x509) certificate.
+  In several places you will need a (x509) certificate.
 <br/>The [Certificates](security-dc2dc#certificates) section provides more guidance for creating
 and renewing these certificates.
 {{% /hints/info %}}

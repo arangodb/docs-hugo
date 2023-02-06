@@ -25,8 +25,9 @@ collections used for write accesses upfront. You need to make sure that the
 transaction is committed or aborted when it is no longer needed.
 This avoids taking up resources on the ArangoDB server.
 
+
 {{% hints/warning %}}
-Transactions acquire collection locks for write operations in RocksDB.
+  Transactions acquire collection locks for write operations in RocksDB.
 It is therefore advisable to keep the transactions as short as possible.
 {{% /hints/warning %}}
 

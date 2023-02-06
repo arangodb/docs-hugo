@@ -25,8 +25,9 @@ _collection_, you may specify the number of _replicas_ using the
 is set to `1`, which effectively *disables* synchronous replication among
 _DB-Servers_.
 
+
 {{% hints/tip %}}
-The number of replicas includes the leader (the master copy) as well as all the
+  The number of replicas includes the leader (the master copy) as well as all the
 followers (redundancy copies). For example, a replication factor of `3` means
 that there is one leader replica and two follower replicas, and that the data
 exists three times in total.
@@ -82,8 +83,9 @@ db._create("test", { replicationFactor: 4 }, { enforceReplicationFactor: false }
 
 This option is not available in the web interface.
 
+
 {{% hints/info %}}
-Multiple _replicas_ of the same _shard_ can never coexist on the same
+  Multiple _replicas_ of the same _shard_ can never coexist on the same
 _DB-Server_ instance.
 {{% /hints/info %}}
 

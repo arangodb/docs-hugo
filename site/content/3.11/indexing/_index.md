@@ -1,6 +1,6 @@
 ---
 fileID: indexing
-title: Indexing and Searching Data
+title: Handling Indexes
 weight: 7000
 description: 
 layout: default

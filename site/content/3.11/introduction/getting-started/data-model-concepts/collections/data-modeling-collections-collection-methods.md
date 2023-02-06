@@ -38,8 +38,9 @@ one or more of the following attribute(s):
   fetched often or are modified frequently, then you may disable the cache to
   avoid the maintenance costs.
 
+
 {{% hints/info %}}
-Some other collection properties, such as `type`,
+  Some other collection properties, such as `type`,
 `keyOptions`, `numberOfShards` or `shardingStrategy` cannot be changed once
 the collection is created.
 {{% /hints/info %}}
@@ -171,8 +172,9 @@ Returns a string with the responsible shard's ID. Note that the
 returned shard ID is the ID of responsible shard for the document's
 shard key values, and it returns even if no such document exists.
 
+
 {{% hints/info %}}
-The `getResponsibleShard()` method can only be used on Coordinators
+  The `getResponsibleShard()` method can only be used on Coordinators
 in clusters.
 {{% /hints/info %}}
 
@@ -191,8 +193,9 @@ shard attribute key.
 
 The leader shards are always first in the arrays of responsible servers.
 
+
 {{% hints/info %}}
-The `shards()` method can only be used on Coordinators in clusters.
+  The `shards()` method can only be used on Coordinators in clusters.
 {{% /hints/info %}}
 
 ## Load
@@ -203,12 +206,14 @@ Load a collection:
 
 Loads a collection into memory.
 
+
 {{% hints/info %}}
-Cluster collections are loaded at all times.
+  Cluster collections are loaded at all times.
 {{% /hints/info %}}
 
+
 {{% hints/warning %}}
-The `load()` function is **deprecated** as of ArangoDB 3.8.0.
+  The `load()` function is **deprecated** as of ArangoDB 3.8.0.
 The function may be removed in future versions of ArangoDB. There should not be
 any need to load a collection with the RocksDB storage engine.
 {{% /hints/warning %}}
@@ -281,12 +286,14 @@ Unload a collection:
 Starts unloading a collection from memory. Note that unloading is deferred
 until all queries have finished.
 
+
 {{% hints/info %}}
-Cluster collections cannot be unloaded.
+  Cluster collections cannot be unloaded.
 {{% /hints/info %}}
 
+
 {{% hints/warning %}}
-The `unload()` function is **deprecated** as of ArangoDB 3.8.0.
+  The `unload()` function is **deprecated** as of ArangoDB 3.8.0.
 The function may be removed in future versions of ArangoDB. There should not be
 any need to unload a collection with the RocksDB storage engine.
 {{% /hints/warning %}}
@@ -332,8 +339,9 @@ If renaming the collection succeeds, then the collection is also renamed in
 all graph definitions inside the `_graphs` collection in the current
 database.
 
+
 {{% hints/info %}}
-The `rename()` method can not be used in clusters.
+  The `rename()` method can not be used in clusters.
 {{% /hints/info %}}
 
 **Examples**

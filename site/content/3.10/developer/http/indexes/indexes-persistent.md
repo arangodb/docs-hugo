@@ -6,7 +6,7 @@ description:
 layout: default
 ---
 {{% hints/info %}}
-The index types `hash` and `skiplist` are aliases for the `persistent` index
+  The index types `hash` and `skiplist` are aliases for the `persistent` index
 type and should no longer be used to create new indexes. The aliases will be
 removed in a future version.
 {{% /hints/info %}}

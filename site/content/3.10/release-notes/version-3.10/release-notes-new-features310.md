@@ -662,8 +662,9 @@ Queries can be executed with storing intermediate and final results temporarily
 on disk to decrease memory usage when a specified threshold is reached, either
 based on the memory usage (in bytes) or the number of result rows.
 
+
 {{% hints/info %}}
-This feature is experimental and is turned off by default. It is currently
+  This feature is experimental and is turned off by default. It is currently
 limited to AQL queries that use `SORT` operations but without a `LIMIT`.
 The query results are still built up entirely in memory on Coordinators
 and single servers unless you use streaming queries.

@@ -10,8 +10,9 @@ service. Note that many third-party libraries written for Node.js or the
 browser rely on async or filesystem logic
 [which may not be compatible with Foxx](../#compatibility-caveats).
 
+
 {{% hints/info %}}
-Bundled node modules are often referred to as _dependencies_. In ArangoDB this
+  Bundled node modules are often referred to as _dependencies_. In ArangoDB this
 term can often be ambiguous because Foxx also provides a
 [dependency mechanism](foxx-guides-dependencies) for linking services together.
 {{% /hints/info %}}

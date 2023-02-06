@@ -21,8 +21,9 @@ ACID guarantees on shard leaders.
 A OneShard setup is highly recommended for most graph use cases and join-heavy
 queries.
 
+
 {{% hints/info %}}
-For graphs larger than what fits on a single DB-Server node, you can use the
+  For graphs larger than what fits on a single DB-Server node, you can use the
 [**SmartGraphs**](../graphs/smartgraphs/) feature to efficiently limit the
 network hops between Coordinator and DB-Servers.
 {{% /hints/info %}}
@@ -73,8 +74,9 @@ There are two ways to achieve this:
   For non-OneShard databases the value of the `sharding` database property is
   either `""` or `"flexible"`.
 
+
 {{% hints/info %}}
-The prototype collection does not only control the sharding, but also the
+  The prototype collection does not only control the sharding, but also the
 replication factor for all collections which follow its example. If the
 `_graphs` system collection is used for `distributeShardsLike`, then the
 replication factor can be adjusted by changing the `replicationFactor`
@@ -269,8 +271,9 @@ Optimization rules applied:
 {{% /tab %}}
 {{< /tabs >}}
 
+
 {{% hints/tip %}}
-It can be checked whether the OneShard feature is active or not by
+  It can be checked whether the OneShard feature is active or not by
 inspecting the explain output. If the list of rules contains
 `cluster-one-shard`, then the feature is active for the given query.
 {{% /hints/tip %}}

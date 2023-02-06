@@ -12,8 +12,9 @@ in a Cluster environment.
 It is assumed that a Cluster environment is running and a _logical_ backup
 with [_arangodump_](../arangodump/) has already been taken.
 
+
 {{% hints/info %}}
-The procedure described in this page is particularly useful for ArangoDB
+  The procedure described in this page is particularly useful for ArangoDB
 version 3.3, but can be used in 3.4 and later versions as well. Note that
 from v3.4, _arangorestore_ includes the option `--threads` which can be a first
 good step already in achieving restore parallelization and its speed benefit.
@@ -34,8 +35,9 @@ The speed improvement obtained by the procedure below is achieved by:
 2. Restoring in parallel multiple collections on different _Coordinators_
    (steps #4 and #5).
 
+
 {{% hints/info %}}
-Please refer to the
+  Please refer to the
 [arangorestore examples](programs-arangorestore-examples#factors-affecting-speed-of-arangorestore-in-a-cluster)
 for further context on the factors affecting restore speed when restoring
 using _arangorestore_ in a Cluster.
@@ -46,8 +48,9 @@ using _arangorestore_ in a Cluster.
 The first step is to copy the directory that contains the _dump_ to all machines
 where _Coordinators_ are running.
 
+
 {{% hints/tip %}}
-This step is not strictly required as the backup can be restored over the
+  This step is not strictly required as the backup can be restored over the
 network. However, if the restore is executed locally the restore speed is
 significantly improved.
 {{% /hints/tip %}}

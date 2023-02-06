@@ -24,8 +24,9 @@ operating system in use, and typically consists of the following high-level step
 - Optional removal of the leftover files (database directory and/or
   configuration files) stored in a different place
 
+
 {{% hints/info %}}
-If the ArangoDB _Starter_ was used to deploy ArangoDB, there will be an
+  If the ArangoDB _Starter_ was used to deploy ArangoDB, there will be an
 additional manual step:
 
 - Removal of the data directory created by the _Starter_

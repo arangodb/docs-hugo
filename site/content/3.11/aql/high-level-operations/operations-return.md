@@ -195,8 +195,9 @@ FOR value IN ["foo", "bar", "bar", "baz", "foo"]
 {{% /tab %}}
 {{< /tabs >}}
 
+
 {{% hints/tip %}}
-`RETURN DISTINCT` will not change the order of the results it is applied on,
+  `RETURN DISTINCT` will not change the order of the results it is applied on,
 unlike [`COLLECT`](operations-collect#collect-vs-return-distinct).
 {{% /hints/tip %}}
 

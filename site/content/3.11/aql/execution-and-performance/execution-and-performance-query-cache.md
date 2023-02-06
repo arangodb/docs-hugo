@@ -14,8 +14,9 @@ not many write queries.
 The query results cache is transparent so users do not need to manually invalidate 
 results in it if underlying collection data are modified. 
 
+
 {{% hints/info %}}
-The AQL query results cache is only available for single servers, i.e. servers that
+  The AQL query results cache is only available for single servers, i.e. servers that
 are not part of a cluster setup.
 {{% /hints/info %}}
 

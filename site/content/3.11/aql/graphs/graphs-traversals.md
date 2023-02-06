@@ -150,8 +150,9 @@ FOR vertex[, edge[, path]]
   - **defaultWeight** (number, *optional*): Specifies the default weight of an edge.
     The value must not be negative. The default value is `1`.
 
+
 {{% hints/info %}}
-Weighted traversals do not support negative weights. If a document
+  Weighted traversals do not support negative weights. If a document
 attribute (as specified by `weightAttribute`) with a negative value is
 encountered during traversal, or if `defaultWeight` is set to a negative
 number, then the query is aborted with an error.
@@ -442,8 +443,9 @@ RETURN CONCAT_SEPARATOR(" -- ", INTERLEAVE(p.vertices[*].label, p.edges[*].trave
     
     
 
+
 {{% hints/info %}}
-The prune expression is **evaluated at every step of the traversal**. This
+  The prune expression is **evaluated at every step of the traversal**. This
 includes any traversal depths below the specified minimum depth, despite not
 becoming part of the result. It also includes depth 0, which is the start vertex
 and a `null` edge.
@@ -546,8 +548,9 @@ RETURN CONCAT_SEPARATOR(" -- ", INTERLEAVE(p.vertices[*].label, p.edges[*].trave
     
     
 
+
 {{% hints/warning %}}
-You can use AQL functions in prune expressions but only those that can be
+  You can use AQL functions in prune expressions but only those that can be
 executed on DB-Servers, regardless of your deployment type. The following
 functions cannot be used in the expression:
 - `CALL()`

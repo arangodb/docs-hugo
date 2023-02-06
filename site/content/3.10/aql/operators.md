@@ -358,8 +358,9 @@ The condition (here just `u.value`) is only evaluated once if the second
 operand between `?` and `:` is omitted, whereas it would be evaluated twice
 in case of `u.value ? u.value : 'value is null'`.
 
+
 {{% hints/info %}}
-Subqueries that are used inside expressions are pulled out of these
+  Subqueries that are used inside expressions are pulled out of these
 expressions and executed beforehand. That means that subqueries do not
 participate in lazy evaluation of operands, for example, in the
 ternary operator. Also see

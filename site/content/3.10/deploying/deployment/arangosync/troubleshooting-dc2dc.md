@@ -145,8 +145,9 @@ default of `1h`.
 
 ## What to do in case of a document that exceeds the message queue limits
 
+
 {{% hints/info %}}
-Starting with ArangoSync version 2.0.0, there is no limitation in terms of
+  Starting with ArangoSync version 2.0.0, there is no limitation in terms of
 document size anymore.
 {{% /hints/info %}}
 

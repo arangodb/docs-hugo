@@ -273,8 +273,9 @@ strings. Beware that the results can be unexpected in some cases, because the
 internal sort order of ArangoSearch is different to how `FILTER`, `SORT` and
 other operations work.
 
+
 {{% hints/warning %}}
-The alphabetical order of characters is not taken into account by ArangoSearch,
+  The alphabetical order of characters is not taken into account by ArangoSearch,
 i.e. range queries in SEARCH operations against Views will not follow the
 language rules as per the defined Analyzer locale (except for the
 [`collation` Analyzer](../../analyzers/#collation)) nor the server language

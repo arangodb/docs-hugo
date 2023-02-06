@@ -220,11 +220,12 @@ and even for non-unique shard key values, e.g.:
      11   GatherNode                COOR  2000         - GATHER 
       6   ReturnNode                COOR  2000         - RETURN doc1
 
+
 {{% hints/tip %}}
+  All above examples used two collections only. SmartJoins will also work when joining
 
 {{% /tab %}}
 {{< /tabs >}}
-All above examples used two collections only. SmartJoins will also work when joining
 more than two collections/Views which have the same data distribution enforced via their
 `distributeShardsLike` attribute and using the shard keys as the join criteria as shown above.
 {{% /hints/tip %}}

@@ -22,8 +22,9 @@ hot backup. Subsequently, all other APIs operate on these identifiers.
 
 The below APIs exclusively handle POST actions.
 
+
 {{% hints/warning %}}
-Make sure to understand all aspects of [hot backups](../backup-restore/#hot-backups),
+  Make sure to understand all aspects of [hot backups](../backup-restore/#hot-backups),
 most of all the [requirements and limitations](../backup-restore/#hot-backup-limitations),
 before using the API.
 {{% /hints/warning %}}

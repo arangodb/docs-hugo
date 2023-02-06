@@ -34,8 +34,9 @@ its projects and deployments.
 
 ![ArangoGraph Project Summary](/images/arangograph-project.png)
 
+
 {{% hints/info %}}
-Projects contain exactly **one policy**. Within that policy, you can define
+  Projects contain exactly **one policy**. Within that policy, you can define
 role bindings to regulate access control on a project level.
 {{% /hints/info %}}
 
@@ -45,8 +46,9 @@ See [Deployments: How to create a new deployment](deployments#how-to-create-a-ne
 
 ## How to delete a project
 
+
 {{% hints/danger %}}
-Deleting a project will delete contained deployments, certificates & IP allowlists.
+  Deleting a project will delete contained deployments, certificates & IP allowlists.
 This operation is **irreversible**.
 {{% /hints/danger %}}
 
@@ -61,8 +63,9 @@ Alternatively, you can also delete a project via the project page:
 3. Click the __Delete project...__ button.
 4. Enter `Delete!` to confirm and click __Yes__.
 
+
 {{% hints/tip %}}
-If the project has a locked deployment, you need to [unlock](security-and-access-control/#locked-resources)
+  If the project has a locked deployment, you need to [unlock](security-and-access-control/#locked-resources)
 it first to be able to delete the project.
 {{% /hints/tip %}}
 
@@ -109,8 +112,9 @@ certificate has a lifetime of one year and it is automatically created by the
 ArangoGraph platform. It is also rotated automatically before the expiration
 date.
 
+
 {{% hints/info %}}
-Unless you switch off the **Use well known certificate** option in the
+  Unless you switch off the **Use well known certificate** option in the
 certificate generation, both the default and high port serve the same
 self-signed certificate.
 {{% /hints/info %}}

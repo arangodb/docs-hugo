@@ -73,8 +73,9 @@ shell> arango-secure-installation
 
 This commands asks for a root password and sets it.
 
+
 {{% hints/warning %}}
-The password that is set for the root user during the installation of the ArangoDB
+  The password that is set for the root user during the installation of the ArangoDB
 package has **no effect** in case of deployments done with the _ArangoDB Starter_.
 See [Securing Starter Deployments](../security/security-starter) instead.
 {{% /hints/warning %}}

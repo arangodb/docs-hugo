@@ -29,8 +29,9 @@ If you have installed via the _Installer_, to upgrade:
 
 ![Update Option](/images/installer_upgrade.png)
 
+
 {{% hints/info %}}
-Upgrading via the Installer, when the old data is kept, will keep your 
+  Upgrading via the Installer, when the old data is kept, will keep your 
 password and choice of storage engine as it is.
 {{% /hints/info %}}
 
@@ -40,15 +41,17 @@ file first).
 
 ![Uninstall old version](/images/both_installations.png)
 
+
 {{% hints/danger %}}
-When uninstalling the old package, please make sure the option
+  When uninstalling the old package, please make sure the option
 "_Delete databases with unistallation_" is **not** checked.
 {{% /hints/danger %}}
 
 ![Delete Option](/images/installer_delete.png)
 
+
 {{% hints/danger %}}
-When upgrading, the Windows Installer does not use the old configuration file
+  When upgrading, the Windows Installer does not use the old configuration file
 for the installed _Single Instance_ but a new (default) one ([Issue #3773](https://github.com/arangodb/arangodb/issues/3773)).
 To use the old configuration, it is currently needed to:
 - Stop the server
@@ -66,8 +69,9 @@ from a _ZIP_ package:
 
 ### In-Place upgrade
 
+
 {{% hints/info %}}
-- You are using a data directory which is located outside of the directory 
+  - You are using a data directory which is located outside of the directory 
   created when extracting the _ZIP_  archive (data directory can be set via
   the server option *--database.directory*)
 - You are using a configuration file which is located outside of the directory 

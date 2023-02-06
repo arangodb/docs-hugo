@@ -22,8 +22,9 @@ For Views, there is a special (optional) [`SEARCH` keyword](operations-search):
 
 <pre><code>FOR <em>variableName</em> IN <em>viewName</em> SEARCH <em>searchExpression</em></code></pre>
 
+
 {{% hints/info %}}
-Views cannot be used as edge collections in traversals:
+  Views cannot be used as edge collections in traversals:
 
 {{< tabs >}}
 {{% tab name="aql" %}}
@@ -250,8 +251,9 @@ there are a few corner cases where it can make sense:
   projections, if the cost of projections is higher than doing copies of the
   full documents. This can be the case for very small documents.
 
+
 {{% hints/info %}}
-Starting with version 3.10, `maxProjections` can be used in 
+  Starting with version 3.10, `maxProjections` can be used in 
 [Graph Traversals](../../graphs/traversals/#working-with-named-graphs) (Enterprise Edition only).
 {{% /hints/info %}}
 

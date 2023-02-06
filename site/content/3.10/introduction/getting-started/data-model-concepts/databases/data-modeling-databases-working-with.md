@@ -286,8 +286,9 @@ compaction. The following attributes can be used in it:
 - `compactBottomMostLevel`: whether or not to compact the bottommost level of
   data. The default value is `false`.
 
+
 {{% hints/warning %}}
-This command can cause a full rewrite of all data in all databases, which may
+  This command can cause a full rewrite of all data in all databases, which may
 take very long for large databases. It should thus only be used with care
 and only when additional I/O load can be tolerated for a prolonged time.
 {{% /hints/warning %}}

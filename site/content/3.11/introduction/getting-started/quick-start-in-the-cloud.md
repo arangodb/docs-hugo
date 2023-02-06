@@ -23,8 +23,9 @@ the following information at hand as well:
 
 - A **mobile phone number**, required for SMS verification
 
+
 {{% hints/info %}}
-One mobile phone number will be associated with one account and cannot be
+  One mobile phone number will be associated with one account and cannot be
 used for multiple accounts.
 {{% /hints/info %}}
 

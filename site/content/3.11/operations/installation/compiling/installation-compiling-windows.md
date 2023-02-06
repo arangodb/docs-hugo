@@ -32,8 +32,9 @@ we suggest to download and install Visual Studio by hand.
 
 ArangoDB v3.7 requires Visual Studio 2019 v16.5.0 or later.
 
+
 {{% hints/warning %}}
-You need to make sure that it installs the **Desktop development with C++** preset,
+  You need to make sure that it installs the **Desktop development with C++** preset,
 else cmake will fail to detect it later on. Furthermore, the **Windows 8.1 SDK and UCRT SDK**
 optional component is required to be selected during Visual Studio installation, else V8
 will fail to compile later on.

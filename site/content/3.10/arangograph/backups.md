@@ -1,6 +1,6 @@
 ---
 fileID: backups
-title: 'Backups in the ArangoGraph Insights Platform'
+title: Backups in the ArangoGraph Insights Platform
 weight: 2350
 description: 
 layout: default
@@ -77,8 +77,9 @@ required for [cloning](#how-to-clone-deployments-using-backups).
 
 ## Multi-region backups
 
+
 {{% hints/info %}}
-The multi-region backup feature is only available for the ArangoGraph
+  The multi-region backup feature is only available for the ArangoGraph
 Enterprise tier. To upgrade to the Enterprise tier,
 [get in touch](https://www.arangodb.com/contact/)
 with the ArangoDB team.
@@ -98,8 +99,9 @@ Multiple region backup is only available when the
 
 To restore a database from a backup, highlight the desired backup and click the restore icon.
 
+
 {{% hints/warning %}}
-All current data will be lost when restoring. To make sure that new data that
+  All current data will be lost when restoring. To make sure that new data that
 has been inserted after the backup creation is also restored, create a new 
 backup before using the **Restore Backup** feature. 
 
@@ -116,8 +118,9 @@ During restore, the deployment is temporarily not available.
 
 ## How to clone deployments using backups
 
+
 {{% hints/info %}}
-The cloned deployment will have the exact same features as the previous
+  The cloned deployment will have the exact same features as the previous
 deployment including node size, model, and cloud provider. The region
 can stay the same or you can select a different one if your organization belongs
 to the Enterprise tier.

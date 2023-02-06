@@ -36,8 +36,9 @@ bin/arangod \
 
 This part shows how to run your custom build with the config and data from a pre-existing stable installation.
 
+
 {{% hints/danger %}}
-ArangoDB's developers may change the db file format and after running with a
+  ArangoDB's developers may change the db file format and after running with a
 changed file format, there may be no way back. Alternatively you can run your
 build in isolation and [dump](../../programs-tools/arangodump/) and
 [restore](../../programs-tools/arangorestore/) the data from the

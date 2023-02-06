@@ -11,13 +11,15 @@ You can use ArangoDB on macOS in different ways:
 - [_DMG_ Package](#package-installation)
 - [_tar.gz_ Archive](#installing-using-the-archive)
 
+
 {{% hints/tip %}}
-Starting from version 3.10.0, ArangoDB has native support for the ARM
+  Starting from version 3.10.0, ArangoDB has native support for the ARM
 architecture and can run on Apple silicon (e.g. M1 chips).
 {{% /hints/tip %}}
 
+
 {{% hints/info %}}
-Running production environments on macOS is not supported.
+  Running production environments on macOS is not supported.
 {{% /hints/info %}}
 
 ## Docker

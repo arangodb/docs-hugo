@@ -14,8 +14,9 @@ upgrade to a new hotfix, or to perform an upgrade to a new minor version of Aran
 Please refer to the [Upgrade Paths](#upgrade-paths) section
 for detailed information.
 
+
 {{% hints/warning %}}
-It is highly recommended to upgrade 3.6.x and 3.7.x deployments using at least
+  It is highly recommended to upgrade 3.6.x and 3.7.x deployments using at least
 the starter version 0.15.0-1 because of a technical problem, see
 [Technical Alert #6](https://www.arangodb.com/alerts/tech06/).
 {{% /hints/warning %}}
@@ -119,8 +120,9 @@ In order to stop the _arangodb_ processes, leaving the _arangod_ processes they
 have started up and running (as we want for a rolling upgrade), we will need to
 use a command like `kill -9`.
 
+
 {{% hints/tip %}}
-When using _SystemD_ as supervisor, make sure that the
+  When using _SystemD_ as supervisor, make sure that the
 [unit file](https://www.freedesktop.org/software/systemd/man/systemd.unit.html)
 contains `KillMode=process` (see
 [systemd.kill documentation](https://www.freedesktop.org/software/systemd/man/systemd.kill.html#KillMode=)).
@@ -269,8 +271,9 @@ with an error.
 
 ### Uninstall old package
 
+
 {{% hints/info %}}
-This step is required in the cases 2., 3. and 4. only. It is not required
+  This step is required in the cases 2., 3. and 4. only. It is not required
 in case 1., see [Upgrade Scenarios](#upgrade-scenarios) above.
 {{% /hints/info %}}
 

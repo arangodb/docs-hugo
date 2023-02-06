@@ -32,9 +32,10 @@ layout: default
     to the specified limits. Each inner array has two elements with the start
     offset and the length of a match.
 
-    {{% hints/warning %}}
-    The start offsets and lengths describe the positions in bytes, not characters.
-    You may need to account for characters encoded using multiple bytes.
+    
+{{% hints/warning %}}
+  The start offsets and lengths describe the positions in bytes, not characters.
+You may need to account for characters encoded using multiple bytes.
 {{% /hints/warning %}}
 
 **Examples**

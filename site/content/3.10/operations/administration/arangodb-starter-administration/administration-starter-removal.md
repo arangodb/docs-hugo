@@ -6,7 +6,7 @@ description:
 layout: default
 ---
 {{% hints/danger %}}
-**Do not** apply this procedure to machines that have an **Agent** on it.
+  **Do not** apply this procedure to machines that have an **Agent** on it.
 {{% /hints/danger %}}
 
 This procedure is intended to remove a machine from a cluster

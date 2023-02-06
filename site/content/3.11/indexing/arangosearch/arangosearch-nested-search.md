@@ -208,8 +208,9 @@ Similarly, ranges require an exact match between the minimum and maximum number,
 including the specified boundaries. To require two or more sub-objects to
 fulfill the conditions, you can use `AT LEAST (2)`, and so on.
 
+
 {{% hints/info %}}
-- To use the question mark operator with the `ALL` quantifier in `SEARCH`
+  - To use the question mark operator with the `ALL` quantifier in `SEARCH`
   queries against `arangosearch` Views, you need at least ArangoDB v3.10.1 and
   set the `storeValues` property of the View to `"id"`.
 - The expression of the `AT LEAST` quantifier needs to evaluate to a number

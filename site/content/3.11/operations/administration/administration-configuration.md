@@ -154,8 +154,9 @@ param = value
 {{% /tab %}}
 {{< /tabs >}}
 
+
 {{% hints/tip %}}
-Whitespace around `=` is ignored in configuration files.
+  Whitespace around `=` is ignored in configuration files.
 This includes whitespace around equality signs in the parameter value:
 
 {{< tabs >}}

@@ -48,8 +48,9 @@ arangodb --starter.local --starter.data-dir=./localdata --auth.jwt-secret=/etc/a
 
 Please adapt the path to your _secret_ file accordingly.
 
+
 {{% hints/warning %}}
-A local cluster is intended for test purposes only. It does not provide
+  A local cluster is intended for test purposes only. It does not provide
 resilience and high availability!
 {{% /hints/warning %}}
 

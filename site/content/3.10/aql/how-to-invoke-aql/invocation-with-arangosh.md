@@ -442,8 +442,9 @@ Options related to the query optimizer.
 Set `stream` to `true` to execute the query in a **streaming** fashion. The query result is
 not stored on the server, but calculated on the fly.
 
+
 {{% hints/warning %}}
-Long-running queries need to hold the collection locks for as long as the query
+  Long-running queries need to hold the collection locks for as long as the query
 cursor exists. It is advisable to **only** use this option on short-running
 queries **or** without exclusive locks.
 {{% /hints/warning %}}
@@ -453,8 +454,9 @@ In that case, the query results are either returned right away (if the result
 set is small enough), or stored on the arangod instance and can be accessed
 via the cursor API. 
 
+
 {{% hints/info %}}
-The query options `cache`, `count` and `fullCount` don't work on streaming
+  The query options `cache`, `count` and `fullCount` don't work on streaming
 queries. Additionally, query statistics, warnings, and profiling data is only
 available after the query has finished. The default value is `false`.
 {{% /hints/info %}}
@@ -503,8 +505,9 @@ for the directory to store the temporary data in with the
 
 Default value: 128MB.
 
+
 {{% hints/info %}}
-Spilling data from RAM onto disk is an experimental feature and is turned off 
+  Spilling data from RAM onto disk is an experimental feature and is turned off 
 by default. The query results are still built up entirely in RAM on Coordinators
 and single servers for non-streaming queries. To avoid the buildup of
 the entire query result in RAM, use a streaming query (see the
@@ -529,8 +532,9 @@ for the directory to store the temporary data in with the
 
 Default value: `5000000` rows.
 
+
 {{% hints/info %}}
-Spilling data from RAM onto disk is an experimental feature and is turned off 
+  Spilling data from RAM onto disk is an experimental feature and is turned off 
 by default. The query results are still built up entirely in RAM on Coordinators
 and single servers for non-streaming queries. To avoid the buildup of
 the entire query result in RAM, use a streaming query (see the

@@ -27,8 +27,9 @@ and get up and running again in case of serious problems.
 
 Creating backups of your data before an ArangoDB upgrade is also a best practice.
 
+
 {{% hints/warning %}}
-Making use of a high availability deployment mode of ArangoDB, like Active Failover,
+  Making use of a high availability deployment mode of ArangoDB, like Active Failover,
 Cluster or Datacenter-to-Datacenter Replication, does not remove the need of
 taking frequent backups, which are recommended also when using such deployment modes.
 {{% /hints/warning %}}
@@ -44,8 +45,9 @@ If ArangoDB is running in Active Failover or Cluster mode, it will be necessary
 to copy the data directories of all the involved processes (_Agents_, _Coordinators_ and
 _DB-Servers_).
 
+
 {{% hints/warning %}}
-It is extremely important that physical backups are taken only after all the ArangoDB
+  It is extremely important that physical backups are taken only after all the ArangoDB
 processes have been shut down and the processes are not running anymore.
 Otherwise files might still be written to, likely resulting in a corrupt and incomplete backup.
 {{% /hints/warning %}}
@@ -60,8 +62,9 @@ Logical backups can be created and restored with the tools
 [_arangodump_](../programs-tools/arangodump/) and
 [_arangorestore_](../programs-tools/arangorestore/).
 
+
 {{% hints/tip %}}
-In order to speed up the _arangorestore_ performance in a Cluster environment,
+  In order to speed up the _arangorestore_ performance in a Cluster environment,
 the [Fast Cluster Restore](../programs-tools/arangorestore/programs-arangorestore-fast-cluster-restore)
 procedure is recommended.
 {{% /hints/tip %}}
@@ -291,8 +294,9 @@ not be suited for.
   that the process has to be retried over and over. Every unsuccessful try would
   then lead to the release of all partial locks.
 
-  {{% hints/info %}}
-  The _arangobackup_ tool provides a `--force` option
+  
+{{% hints/info %}}
+    The _arangobackup_ tool provides a `--force` option
   that can be used to abort ongoing write transactions and thus to more quickly
   obtain the global transaction lock.
 {{% /hints/info %}}
@@ -329,8 +333,9 @@ not be suited for.
   and for the Datacenter-to-Datacenter Replication between clusters.
   Simply take hot backups on all instances.
 
-  {{% hints/info %}}
-  The DC2DC replication needs to be stopped before restoring a Hot Backup.
+  
+{{% hints/info %}}
+    The DC2DC replication needs to be stopped before restoring a Hot Backup.
 {{% /hints/info %}}
 
 - **Known Issues**

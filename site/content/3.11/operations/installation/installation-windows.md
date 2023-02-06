@@ -19,8 +19,9 @@ You may verify the download by comparing the SHA256 hash listed on the website
 to the hash of the file. For example, you can you run `openssl sha256 <filename>`
 or `certutil -hashfile <filename> sha256` in a terminal.
 
+
 {{% hints/info %}}
-Running production environments on Windows is not supported.
+  Running production environments on Windows is not supported.
 {{% /hints/info %}}
 
 ## Installing using the Installer

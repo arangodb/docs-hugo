@@ -81,8 +81,9 @@ FOR vertex[, edge]
   no *weightAttribute* in the edge document, or if it is not a number.
   The value must not be negative. The default is `1`.
 
+
 {{% hints/info %}}
-Shortest Path traversals do not support negative weights. If a document
+  Shortest Path traversals do not support negative weights. If a document
 attribute (as specified by `weightAttribute`) with a negative value is
 encountered during traversal, or if `defaultWeight` is set to a negative
 number, then the query is aborted with an error.

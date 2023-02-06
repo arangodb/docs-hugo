@@ -79,8 +79,9 @@ All numeric values are treated as 64-bit signed integer or 64-bit
 double-precision floating point values internally. The internal floating-point
 format used is IEEE 754.
 
+
 {{% hints/warning %}}
-When exposing any numeric integer values to JavaScript via
+  When exposing any numeric integer values to JavaScript via
 [user-defined AQL functions](../user-functions/), numbers that exceed 32 bit
 precision are converted to floating-point values, so large integers can lose
 some bits of precision. The same is true when converting AQL numeric results to
@@ -371,7 +372,8 @@ u[attr1][0][attr2][ CONCAT("fir", "st") ]
 {{% /tab %}}
 {{< /tabs >}}
 
+
 {{% hints/info %}}
-If a non-existing attribute is accessed in one or the other way,
+  If a non-existing attribute is accessed in one or the other way,
 the result will be `null`, without error or warning.
 {{% /hints/info %}}
