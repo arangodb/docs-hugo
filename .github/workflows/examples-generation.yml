@@ -1,0 +1,42 @@
+
+name: 'examples-generation-test'
+
+on:
+  workflow_dispatch:
+  pull_request:
+    types: [ labeled, opened, synchronize, reopened ]
+
+jobs:
+  build:
+    if: ${{ github.event.label.name == 'examples-generation' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: build docker with examples test
+        run: docker compose --env-file docker-env/examples.env up --exit-code-from site
+        env: 
+          HUGO_URL: https://deploy-preview-${{ github.event.number }}--startling-truffle-6032f2.netlify.app
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Automatic commit of examples cache
+          file_pattern: 'site/data/cache.json'
+          commit_user_name: My GitHub Actions Bot # defaults to "github-actions[bot]"
+          commit_user_email: my-github-actions-bot@example.org # defaults to "41898282+github-actions[bot]@users.noreply.github.com"
+          commit_author: Author <actions@github.com> # defaults to author of the commit that triggered the run
+          add_options: '-u'
+
+      - name: Deploy to netlify
+        uses: netlify/actions/cli@master
+        with:
+          args: deploy --dir=site/public --alias deploy-preview-${{ github.event.number }}--
+        env:
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+
+        
+
+      

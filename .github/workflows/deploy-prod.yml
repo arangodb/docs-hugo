@@ -1,0 +1,69 @@
+
+name: 'deploy-prod'
+
+on:
+  workflow_dispatch:
+    inputs:
+        examples:
+          type: boolean
+          description: Choose if generate examples
+          required: true
+          default: false
+
+jobs:
+  build-no-examples:
+    if: "${{ fromJSON(github.event.inputs.examples) == false }}"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Step 2 - Sets up the latest version of Hugo
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+            hugo-version: 'latest'
+
+      # Step 4 - Builds the site using the latest version of Hugo
+      # Also specifies the theme we want to use
+      - name: Build
+        run: cd site && hugo -e prod --templateMetrics
+
+      - name: Deploy to Netlify
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm install netlify-cli --save-dev
+      - run: netlify deploy --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --site ${{ secrets.NETLIFY_SITE_ID }} --dir site/public --prod
+
+  build-with-examples:
+    if: "${{ fromJSON(github.event.inputs.examples) == true }}"
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: build docker with examples test
+        run: docker compose --env-file docker-env/release.env up --exit-code-from site
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Automatic commit of examples cache
+          file_pattern: 'site/data/cache.json'
+          commit_user_name: My GitHub Actions Bot # defaults to "github-actions[bot]"
+          commit_user_email: my-github-actions-bot@example.org # defaults to "41898282+github-actions[bot]@users.noreply.github.com"
+          commit_author: Author <actions@github.com> # defaults to author of the commit that triggered the run
+          add_options: '-u'
+
+      - name: Deploy to Netlify
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm install netlify-cli --save-dev
+      - run: netlify deploy --auth ${{ secrets.NETLIFY_AUTH_TOKEN }} --site ${{ secrets.NETLIFY_SITE_ID }} --dir site/public --prod
+
+        
+
+      

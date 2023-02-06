@@ -1,0 +1,87 @@
+version: "3.5"
+services:
+  arango_single_3_10:
+    container_name: arango_single_3_10
+    image: arangodb/enterprise:latest
+    networks:
+      docs_net:
+        ipv4_address: 192.168.129.5
+    environment:
+      - ARANGO_NO_AUTH=1
+
+  arango_cluster:
+    container_name: arango_cluster
+    image: arangodb/arangodb-starter:latest
+    ports:
+      - 8530:8530
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      docs_net:
+        ipv4_address: 192.168.129.30
+    command: --starter.port=8530 --starter.address=192.168.129.30 --starter.local --docker.image=arangodb/enterprise:latest --docker.container=arango_cluster --docker.net-mode=docs_net
+    environment:
+      - ARANGO_NO_AUTH=1
+
+
+  arango_single_3_11:
+    container_name: arango_single_3_11
+    image: arangodb/enterprise:latest
+    networks:
+      docs_net:
+        ipv4_address: 192.168.129.6
+    environment:
+      - ARANGO_NO_AUTH=1
+      
+  arangoproxy:
+    container_name: arangoproxy
+    image: arangoproxy
+    build:
+      context: .
+      target: arangoproxy
+    networks:
+      docs_net:
+        ipv4_address: 192.168.129.4
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./migration-tools:/home
+      - ./site/data:/etc/arangoproxy
+    environment:
+      - ARANGOPROXY_ARGS
+
+  site:
+    container_name: site
+    image: site
+    depends_on:
+      - "arangoproxy"
+    build:
+      context: .
+      target: hugo
+    ports:
+      - "1313:1313"
+    networks:
+      docs_net:
+        ipv4_address: 192.168.129.2
+    volumes:
+      - ./site:/site
+      - ./migration-tools/scripts/common:/home
+    environment:
+      - HUGO_ENV
+      - HUGO_URL
+
+    
+  
+
+networks:
+  docs_net:
+    name: docs_net
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: 192.168.129.0/24
+          gateway: 192.168.129.1
+
+          
+

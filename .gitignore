@@ -1,0 +1,19 @@
+.DS_Store
+.vscode/
+/tmp/
+node_modules/
+*.pyc
+/.vs
+public/
+migration-tools/arangoproxy/cmd/cache/*
+migration-tools/arangoproxy/cmd/openapi/*
+migration-tools/arangoproxy/cmd/log.txt
+migration-tools/scripts/*/*.tar.gz
+migration-tools/arangodb*/
+migration-tools/migration/structure.py
+migration-tools/migration/*.txt
+site/resources
+.vagrant/
+
+# Local Netlify folder
+.netlify
