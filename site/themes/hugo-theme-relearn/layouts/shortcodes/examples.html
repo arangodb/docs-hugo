@@ -1,0 +1,38 @@
+{{ $seed := "foo" }}
+{{ $random := delimit (shuffle (split (md5 $seed) "" )) "" }}
+
+<div class="examples" id="{{ $random }}">
+    <ul class="examples-list">
+        {{ .Inner | markdownify }}
+    </ul>
+</div>
+<script>
+    const examples = document.getElementById("{{ $random }}").childNodes[1].querySelectorAll('pre');
+    console.log(examples);
+    var titles = [];
+    var items = []
+    for (var i = 0; i < examples.length; i++) {
+        var example = examples[i];
+        var test = "{{ .Get 0 }}";
+        console.log(example);
+
+        var header = document.createElement("div");
+        header.innerText = test;
+        header.classList.add("example-header");
+        item = document.createElement('li');
+        item.classList.add("example-item");
+        item.classList.add("collapsed");
+        item.appendChild(header);
+        item.appendChild(example);
+        items.push(item);
+    }
+
+    var expands = document.getElementById("{{ $random }}").childNodes[1].querySelectorAll('.expand');
+    for (let expand of expands) {
+        console.log("expand " + expand);
+    }
+
+    for (let item of items) {
+        document.getElementById("{{ $random }}").childNodes[1].appendChild(item);
+    }
+</script>

@@ -1,0 +1,54 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,300i,400,400i,500,700');
+
+.flex-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-content: space-between;
+    flex-wrap: wrap;
+    padding: 0 5% 5% 5%;
+}
+		
+figure {
+    margin-bottom: 1rem;
+    position: relative;
+}
+
+img {
+    opacity: 1;
+    -webkit-transition: opacity 0.5s; /* For Safari 3.1 to 6.0 */
+    transition: opacity 0.5s;
+    height: auto !important;
+    width: auto !important;
+    max-width: 100%;
+    max-height: 100%;
+    margin-bottom: 1rem;
+}
+
+.inline-img {
+    float: right;
+    padding: 0 20px;
+    margin-bottom: 20px;
+}
+
+img:hover {
+    opacity: 0.9;
+}
+			
+figcaption {
+    padding: 1px;
+    line-height: 0.5;
+    position: relative;
+    bottom: 0;
+    right: 0;
+    text-align: center;
+    color: rgb(65, 68, 238);
+    opacity: 0.7;
+}
+
+.caption {
+    font-weight: 300;
+    font-size: 0.8rem;
+}
+
+

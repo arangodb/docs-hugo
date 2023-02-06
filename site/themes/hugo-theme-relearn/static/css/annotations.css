@@ -1,0 +1,59 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,500,600,700&display=swap');
+.annotation-wrapper{
+  display: inline-block;
+  padding: 0px 0px;
+  margin: -20px 0px;
+}
+.annotation-wrapper .annotation-icon{
+  cursor: pointer;
+  position: relative;
+  z-index: 2;
+  transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.annotation-wrapper .annotation-icon span{
+  display: block;
+  border-radius: 50%;
+  position: relative;
+  z-index: 2;
+  transition: 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+.annotation-wrapper .annotation-icon span i{
+  color: rgb(3, 117, 79);
+  font-size: 15px;
+}
+.annotation-wrapper .annotation-icon .annotation-tooltip{
+  position: absolute;
+  top: 0;
+  z-index: 2;
+  background: #fff;
+  color: rgb(2, 0, 0);
+  padding: 5px 5px;
+  font-size: 15px;
+  font-weight: 500;
+  opacity: 0;
+  pointer-events: none;
+  width: 300px;
+  margin: 18px 15px;
+}
+.annotation-wrapper .annotation-icon:hover .annotation-tooltip{
+  top: -10px;
+  opacity: 1;
+  pointer-events: auto;
+}
+.annotation-icon .annotation-tooltip:before{
+  position: absolute;
+  content: "";
+  height: 15px;
+  width: 15px;
+  background: #fff;
+  left: 50%;
+  bottom: -6px;
+}
+.annotation-wrapper .annotation-icon:hover span{
+  color: rgb(5, 1, 1);
+}
+.annotation-wrapper .annotation-icon:hover span,
+.annotation-wrapper .annotation-icon:hover .annotation-tooltip{
+  text-shadow: 0px -1px 0px rgba(0,0,0,0.4);
+  word-wrap: break-word;
+}

@@ -1,0 +1,103 @@
+{{ if in .Inner "---" }}
+  {{ $metadata := findRE `(?ms)---.*---` .Inner }}
+  {{ $test := index $metadata 0 | transform.Unmarshal }}
+  {{ $name := $test.name }}
+  {{ $version := $test.version }}
+  {{ $release := $test.release }}
+  {{ $cacheEntry := printf "%s_%s_%s" $name $release $version }}
+  {{ $cache := index site.Data "cache" }}
+  {{ $cacheFound :=  index $cache $cacheEntry }}
+
+  {{ if not $cacheFound }}
+    {{ warnf "CACHE NOT FOUND '%v'" $cacheEntry }}
+    {{ if site.Params.useArangoproxy }}
+      {{ $endpoint := printf "%s/js" site.Params.arangoproxyUrl }}
+      {{ $body := .Inner | base64Encode}}
+      {{ $remote := resources.GetRemote $endpoint (dict
+          "method" "post"
+          "body" $body
+        )
+      }}
+      {{ if $remote }}
+        {{ if $remote.Err }}
+          {{ warnf "[JS] ERROR CALLING ENDPOINT %#v" .Position }}
+        {{ else }}
+          {{ $response := unmarshal $remote.Content }}
+          {{ if $response.error }}
+            Error found in the example: {{ $response.error }}
+          {{ end }}
+          {{ if in $response.options.render "input" }}
+            {{ transform.Highlight $response.input "js" }}
+          {{ end }}
+          {{ if in $response.options.render "output" }}
+
+            {{ $x := transform.Highlight $response.output "" }}
+            {{- partial "shortcodes/expand.html" (dict
+              "context" .
+              "content" $x
+              "open"    "open"
+              "title"   "show output"
+            ) }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ else }}
+    {{ $oldRequest := $cacheFound.request }}
+    {{ $newRequest :=  printf "%s" .Inner | base64Encode  }}
+    {{ if ne $oldRequest $newRequest }}
+      {{ warnf "CACHE CHANGED '%v' '%v'" $oldRequest $newRequest }}
+      {{ if site.Params.useArangoproxy }}
+        {{ $endpoint := printf "%s/js" site.Params.arangoproxyUrl }}
+        {{ $body := .Inner | base64Encode}}
+        {{ $remote := resources.GetRemote $endpoint (dict
+            "method" "post"
+            "body" $body
+          )
+        }}
+        {{ if $remote }}
+          {{ if $remote.Err }}
+            {{ warnf "[JS] ERROR CALLING ENDPOINT %#v" .Position }}
+          {{ else }}
+            {{ $response := unmarshal $remote.Content }}
+            {{ if $response.error }}
+              Error found in the example: {{ $response.error }}
+            {{ end }}
+            {{ if in $response.options.render "input" }}
+              {{ transform.Highlight $response.input "js" }}
+            {{ end }}
+            {{ if in $response.options.render "output" }}
+
+              {{ $x := transform.Highlight $response.output "" }}
+              {{- partial "shortcodes/expand.html" (dict
+                "context" .
+                "content" $x
+                "open"    "open"
+                "title"   "show output"
+              ) }}
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ else }}
+      {{ with $cacheFound }}
+        {{ $request := .request | base64Decode | transform.Unmarshal  }}
+        {{ $response := .response | base64Decode | transform.Unmarshal }}
+        {{ if in $response.options.render "input" }}
+          {{ transform.Highlight $response.input "js" }}
+        {{ end }}
+        {{ if in $response.options.render "output" }}
+          {{ $x := transform.Highlight $response.output "" }}
+          {{- partial "shortcodes/expand.html" (dict
+            "context" .
+            "content" $x
+            "open"    "open"
+            "title"   "show output"
+          ) }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ else }}
+  {{ transform.Highlight .Inner "js" }} 
+{{ end }}

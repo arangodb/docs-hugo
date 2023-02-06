@@ -1,0 +1,143 @@
+.copy-to-clipboard-button {
+    float: right;
+    background: none;
+    left: 2.2em;
+    transition: 0.4s;
+    opacity: 0;
+    margin-top: 10px;
+}
+
+.copy-to-clipboard > .copy-to-clipboard-code {
+    margin: 0;
+    padding: 0;
+    word-break: break-word;
+    white-space: break-spaces;
+    color: var(--CODEBLOCK-TEXT-COLOR);
+}
+
+pre {
+    margin-bottom: 0;
+    margin-top: 0;
+    background-color: var(--CODEBLOCK-BACKGROUND-COLOR);
+    line-height: 1.8rem;
+}
+
+.tab-nav {
+    float: right;
+    right: 1em;
+    position: relative;
+    transition: 0.4s;
+    display: flex;
+    top: 3.3em;
+    /* z-index: 9999999; */
+    background: var(--CODEBLOCK-BACKGROUND-COLOR);
+}
+
+.tab-panel:hover .copy-to-clipboard-button {
+    opacity: 1;
+}
+
+.tab-nav-button {
+    border-color: #849193;
+    color: #d2e6e9;
+	-webkit-print-color-adjust: exact;
+	color-adjust: exact;
+    display: block;
+    float: left;
+    font-size: .9rem;
+    font-weight: 500;
+    line-height: 1.42857143;
+    padding: 6px 12px;
+    position: relative;
+    margin: 0;
+    transition: 0.4s;
+      /* for Firefox */
+  -moz-appearance: none;
+  /* for Chrome */
+  -webkit-appearance: none;
+  background: none;
+  left: 1em;
+}
+
+.tab-nav-button:not(.active) {
+    margin-top: 6px;
+    padding-bottom: 2px !important;
+    padding-top: 2px !important;
+}
+.tab-nav-button:not(.active) span {
+    opacity: .8;
+}
+.tab-panel {
+    margin-bottom: 1.5rem;
+    margin-top: 1.5rem;
+}
+.tab-content {
+    clear: both;
+}
+.tab-content .tab-item{
+    display: none;
+}
+
+.tab-content .tab-item.active{
+    display: block;
+}
+.tab-nav-button.active {
+    border-bottom: 0;
+}
+.tab-item pre{
+    margin-bottom: 0;
+    margin-top: 0;
+    background-color: var(--CODEBLOCK-BACKGROUND-COLOR);
+}
+.tab-item > .expand {
+    margin-top: 1.2rem;
+}
+
+pre > .copy-to-clipboard-button {
+    display: none;
+}
+
+.tab-nav > .copy-to-clipboard-button {
+    border-color: rgba( 134, 134, 134, .333 );
+    -webkit-print-color-adjust: exact;
+    color-adjust: exact;
+    display: block;
+    float: left;
+    font-size: .9rem;
+    font-weight: 500;
+    line-height: 1.42857143;
+    margin-left: 4px;
+    position: relative;
+    margin-top: 10px;
+    left: 1em;
+}
+
+.tab-panel.closed > .tab-header {
+    display: block;
+}
+
+.tab-panel.closed > .tab-nav {
+    display: none;
+}
+
+.tab-panel.closed >  .tab-item {
+    display: none;
+}
+
+.tab-panel.open > .tab-header {
+    display: none;
+}
+
+.tab-panel.open > .tab-nav .tab-item {
+    display: block;
+}
+
+.example-item {
+    list-style: none;
+    margin: 0;
+    color: var(--CODEBLOCK-TEXT-COLOR);
+    border: 1px solid;
+}
+.example-item > .tab-panel {
+    margin: 0;
+}

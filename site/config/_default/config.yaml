@@ -1,0 +1,77 @@
+baseURL: "https://startling-truffle-6032f2.netlify.app"
+languageCode: "en-us"
+title: "ArangoDB Documentation"
+theme: "hugo-theme-relearn"
+timeout: "200000000"
+UglifyURLs: true
+CanonifyURLs: true
+
+module:
+  mounts:
+    source: "static/images"
+    target: "assets/images"
+
+menu:
+  shortcuts:
+    - name: "<i class='fab fa-fw fa-github'></i> GitHub repo"
+      identifier: "ds"
+      url: "https://github.com/ArangoDB/ArangoDB/issues"
+      weight: 10
+    
+markup:
+
+  highlight:
+    style: "nord"
+
+  goldmark:
+    renderer:
+      unsafe: true
+      
+    parser:
+      attribute:
+        block: true
+        title: true
+
+
+outputs:
+  home: ["HTML", "RSS", "JSON"]
+
+caches:
+  assets:
+    dir: :resourceDir/_gen
+    maxAge: -1
+  getcsv:
+    dir: :cacheDir/:project
+    maxAge: 0
+  getjson:
+    dir: :cacheDir/:project
+    maxAge: -1
+  getresource:
+    dir: :cacheDir/:project
+    maxAge: 0
+  images:
+    dir: :resourceDir/_gen
+    maxAge: -1
+  modules:
+    dir: :cacheDir/modules
+    maxAge: -1
+
+params:
+  arangoproxyUrl: "http://192.168.129.4:8080"
+  pygmentsUseClassic: false
+  description: "Documentation for ArangoDB"
+  showVisitedLinks: true
+  alwaysopen: false
+  collapsibleMenu: true
+  disableBreadcrumb: false
+  disableNextPrev: false
+  disableLandingPageButton: true
+  titleSeparator: "::"
+  themeVariant: [ "relearn-light", "relearn-dark", "learn", "neon", "blue", "green", "red" ]
+  disableSeoHiddenPages: true
+  additionalContentLanguage: [ "en" ]
+  custom_css: ["css/*"]
+  swaggerInitialize: "{ \"theme\": \"light\" }"
+  hidden: false
+
+

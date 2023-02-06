@@ -1,0 +1,108 @@
+        {{ $yamlBlock := .Inner | transform.Unmarshal }}
+        {{ $spec := $yamlBlock | jsonify }}
+        {{ $seed := "foo" }}
+        {{ $random := delimit (shuffle (split (md5 $seed) "" )) "" }}
+        <rapi-doc
+          id="{{ $random }}"
+          render-style="read" show-header="false" allow-try="false" regular-font="Open Sans"
+        >
+        <style>  
+          rapi-doc::part(section-endpoint-head-method) {
+            font-size: 14px;
+            border: none;
+            margin-right: 15px;
+            margin-left: -20px;
+            padding-top: 4px;
+
+          }
+          rapi-doc::part(section-operation-webhook-method) {
+            font-size: 1rem;
+          }
+          rapi-doc::part(section-endpoint-head-method):hover {
+            color: none;
+          }
+          rapi-doc::part(section-endpoint-head-path) {
+            white-space: nowrap;
+          text-overflow: ellipsis;
+          }
+          rapi-doc::part(section-operations-in-tag),
+          rapi-doc::part(section-overview) {
+            padding-top: 0;
+            position: relative;
+            bottom: 1rem;
+          }
+          rapi-doc::part(section-endpoint-head-description) {
+            display:none;
+          }
+          rapi-doc::part(section-operation-summary) {
+            display:none;
+          }
+          rapi-doc::part(operation-divider) {
+            display:none;
+          }
+          rapi-doc::part(section-navbar) {
+            display:none;
+          }
+          rapi-doc::part(section-tag) {
+            display:none;
+          }
+          rapi-doc::part(section-endpoint) {
+            font-size: 11px;
+            border: 1px solid !important;
+            border-radius: 6px !important;
+            background: var(--SIDEBAR-BACKGROUND-COLOR) !important;
+          }
+          rapi-doc::part(btn-response-status):hover {
+            background-color: var(--CODEBLOCK-BACKGROUND-COLOR);
+            color: var(--CODEBLOCK-TEXT-COLOR);
+          }
+          rapi-doc::part(btn-selected-response-status) {
+            background-color: var(--CODEBLOCK-BACKGROUND-COLOR);
+            color: var(--CODEBLOCK-TEXT-COLOR);
+          }
+          rapi-doc::part(textarea) {
+            border: 1px solid !important;
+            border-radius: 6px !important;
+            background: var(--CODEBLOCK-BACKGROUND-COLOR) !important;
+            color: var(--CODEBLOCK-TEXT-COLOR);
+          }
+          .operations-root > .section-gap.section-tag {
+            border: none !important;
+            padding: 0 !important;
+          }
+          @media only screen and (min-width: 1024px) {
+            rapi-doc::part(section-operations-in-tag) {
+                padding: 0;
+            }
+          }
+          .section-tag-header{
+            display: none;
+          }
+          
+          rapi-doc::part(section-header) {
+            display: none;
+          }
+          rapi-doc::part(section-auth) {
+            display: none;
+          }
+          rapi-doc::part(section-servers) {
+            display: none;
+          }
+          
+        </style>
+        </rapi-doc>   
+        <script>
+        window.addEventListener('popstate', (event) => {
+            var docEl = document.getElementById("{{ $random }}");
+            var strSpec = "{{ $spec }}";
+            var objSpec = JSON.parse(strSpec);
+            docEl.loadSpec(objSpec);
+        });
+
+        window.addEventListener('DOMContentLoaded', (event) => {
+            var docEl = document.getElementById("{{ $random }}");
+            var strSpec = "{{ $spec }}";
+            var objSpec = JSON.parse(strSpec);
+            docEl.loadSpec(objSpec);
+        });
+        </script>

@@ -1,0 +1,16 @@
+{{- $page := .page }}
+{{- $content := .content }}
+{{- with $page }}
+    <article class="default">
+      <h1 class="page-title">{{ .Title | markdownify }}</h1>
+      <p class="lead">
+        {{ .Description }}
+      </p>
+      {{ $content | safeHTML }}
+      <nav class="pagination">
+        {{- partial "content-footer.html" . }}
+      </nav>
+    </article>
+    
+
+{{- end }}

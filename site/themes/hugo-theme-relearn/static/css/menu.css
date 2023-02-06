@@ -1,0 +1,353 @@
+#sidebar {
+    grid-area: sidenav;
+    display: flex;
+    align-items: stretch;
+    /*position: -webkit-sticky;*/
+    position: sticky;
+    z-index: 2;
+    top: 4rem;
+    height: 101vh;
+    background-color: var(--SIDEBAR-BACKGROUND-COLOR);
+   /* background-color: rgb(64, 69, 69) !important;*/
+    /*
+    background-image: url("/images/menu-bg.jpg");
+background-position: center center;
+background-size:cover;
+*/
+    left: 0;
+    width: 0;
+    transition:  width 0.3s ease-in-out;
+
+}
+
+#sidebar.active {
+    width: 17rem;
+}
+
+.sidenav-container {
+    position: relative;
+    -webkit-transition: width 200ms ease-in-out;
+    transition: width 200ms ease-in-out;
+    height: 100%;
+    overflow: hidden!important;
+    overflow-anchor: none;
+    -ms-overflow-style: none;
+    touch-action: auto;
+    padding: 1rem 0 1rem;
+    position: relative;
+}
+
+
+.sidenav-container-flex {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    overflow: hidden;
+    position: relative;
+    z-index: 100;
+    overflow-y: scroll;
+    -ms-overflow-style: none;  /* IE and Edge */
+    scrollbar-width: none;  /* Firefox */
+}
+
+.sidebar-toggle-navigation {
+    width: 22px;
+    z-index: 9999;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    color: rgb(0, 104, 74);
+    cursor: pointer;
+    padding: 0px 0px 0px 0px;
+}
+
+.sidebar-toggle-navigation > span {
+    display: block;
+    background-color: #bfb5b5;
+    height: 2px;
+}
+
+.sidebar-toggle-navigation > span:nth-child(2) {
+    margin: 4px 0 4px auto;
+    width: 75%;
+    transition: 0.3s all;
+}
+
+.sidebar-toggle-navigation > span:nth-child(3) {
+    margin-left: auto;
+    width: 50%;
+    transition: 0.6s all;
+}
+
+.sidebar-toggle-navigation:hover > span:nth-child(2),
+.sidebar-toggle-navigation:hover > span:nth-child(3) {
+    width: 100%;
+}
+
+
+#sidebar a.padding {
+    padding: 0 1rem;
+}
+
+#sidebar ul li {
+    padding: 0;
+}
+
+#sidebar ul.topics {
+    margin: 0 1rem;
+    margin-top: 3rem;
+}
+
+#sidebar ul.topics > ul {
+    display: block;
+}
+
+#sidebar ul.topics > ul > ul {
+    display: none;
+
+}
+
+#sidebar ul.topics li {
+    position: relative;
+    margin-bottom: 0;
+}
+
+
+#sidebar ul.topics ul ul {
+    padding-bottom: 0;
+    border-left: 1px solid var(--SIDEBAR-SUBMENU-BORDER-COLOR);
+
+}
+
+#sidebar ul.topics li.parent > ul,
+#sidebar ul.topics li.active > ul,
+#sidebar ul.topics li.alwaysopen > ul {
+    display: block;
+    font-size: 13px;
+}
+
+
+#sidenav ul.topics input.toggle,
+#sidenav ul.topics label {
+    display: none;
+}
+
+#sidebar ul.topics > li > label,
+#sidebar ul.topics > li a {
+    font-size: 13px;
+    line-height: 1.3rem;
+}
+
+#sidebar ul.topics > li a::first-line {
+    line-height: 1rem;
+}
+
+
+#sidebar ul.topics > li > a b {
+    font-weight: 400;
+    opacity: 0.5;
+}
+
+#sidenav ul.topics > li > a .fa {
+    margin-top: 9px;
+}
+
+#sidebar ul.topics > li {
+    margin-left: 0rem;
+    margin-right: -1rem;
+}
+
+
+#sidebar ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+#sidebar ul li.visited + span {
+    margin-right: 16px;
+}
+
+#sidebar ul li a span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+
+
+#sidebar ul.topics > li > a .read-icon {
+    margin-top: 9px;
+}
+
+#sidebar #shortcuts li {
+    list-style: none;
+    padding: 2px 0;
+}
+
+#sidebar ul li .read-icon {
+    display: none;
+    float: right;
+    font-size: 13px;
+    margin: 4px 0 0 0;
+    min-width: 16px;
+    text-align: right;
+}
+
+#sidebar ul li.visited > a .read-icon {
+    display: inline;
+}
+
+#sidebar ul li a {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    display: flex;
+    color: var(--SIDEBAR-ENTRY-COLOR);
+    transition: 0.5s;
+}
+
+#sidenav li.dd-item.active > a {
+    color: #577138;
+    font-weight: bold;
+    background-color: rgb(215 245 239);
+}
+
+
+#sidenav li.dd-item.active > a::before {
+    content: "";
+    position: absolute;
+    background-color: transparent;
+    left: 0px;
+    top: 6px;
+    bottom: 6px;
+    width: 4px;
+    border-radius: 0px 6px 6px 0px;
+    transition: transform 150ms ease-in-out 0s;
+    transform: scaleY(0.3);
+}
+
+#sidenav li.dd-item.active > a::after {
+    content: '';
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    bottom: -4px;
+    left: 0;
+    border-radius: 2px;
+}
+
+#sidebar .collapsible-menu input.toggle + label:after {
+    font-size: .8rem;
+    font-weight: 900;
+}
+
+#sidebar .collapsible-menu input.toggle:checked + label:after {
+    font-size: .8rem;
+    font-weight: 900;
+}
+
+.submenu {
+    display: none;
+}
+
+
+#sidebar ul li li {
+    padding-left: 1rem;
+}
+
+li.parent > a {
+    font-weight: bold;
+}
+
+li.active > a {
+    font-weight: bold;
+}
+
+.toggle.menu-section-entry {
+    width: 100%;
+}
+
+
+.leafygreen-ui-a4wnk0.open {
+    transform: rotate(90deg);
+}
+
+
+
+.menu-section-entry > label.open::before,
+.menu-section-entry.parent > label::before,
+.menu-section-entryactive > label::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f078";
+    display: inline-block;
+    /* padding-right: 3px; */
+    vertical-align: middle;
+    font-weight: 900;
+    font-size: 10px;
+    padding-top: 8px;
+    color: grey;
+}
+
+.menu-section-entry > label.closed::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f054";
+    display: inline-block;
+    /* padding-right: 3px; */
+    vertical-align: middle;
+    font-weight: 900;
+    font-size: 10px;
+    color: grey;
+}
+
+.menu-section-entry > label.open::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f078";
+    display: inline-block;
+    /* padding-right: 3px; */
+    vertical-align: middle;
+    font-weight: 900;
+    font-size: 10px;
+    padding-top: 0px;
+    color: grey;
+}
+
+.menu-leaf-entry > a {
+    align-items: center;
+    padding-left: 7px !important;
+}
+.menu-leaf-entry > a::before {
+    content: "";
+    -webkit-flex-basis: 4px;
+    -ms-flex-preferred-size: 4px;
+    flex-basis: 4px;
+    -webkit-flex-shrink: 0;
+    -ms-flex-negative: 0;
+    flex-shrink: 0;
+    display: block;
+    width: 4px;
+    height: 4px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    background: #666;
+    margin-right: 5px;
+    position: relative;
+    right: 7px;
+}
+
+dd-item.menu-section-entry > .submenu {
+    display: none;
+}
+
+dd-item.menu-section-entry.active > .submenu {
+    display: block;
+}
+dd-item.menu-section-entry.parent > .submenu {
+    display: block;
+}
+
+.sidenav-container-flex::-webkit-scrollbar {
+    display: none;
+  }
