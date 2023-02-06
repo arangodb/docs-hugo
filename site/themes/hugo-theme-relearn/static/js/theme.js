@@ -753,7 +753,7 @@ function goToHomepage(event){
     event.preventDefault();
     var origin = window.location.origin;
     var version = localStorage.getItem('docs-version');
-    var newUrl = origin + "/" + version + "/introduction/about-arangodb";
+    var newUrl = origin + "/" + version + "/";
     loadPage(newUrl);
 }
 
