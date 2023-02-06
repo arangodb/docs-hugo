@@ -33,11 +33,14 @@ def migrate_hints(paragraph):
     for hint in hintRegex:
         hintSplit = hint.split("\n")
         hintType = re.search(r"'.*[']* %}", hintSplit[0]).group(0).replace("'", '').strip(" %}")
-        hintText = "\n".join(hintSplit[1:len(hintSplit)-1])
+        hintText = "\n".join(hintSplit[1:len(hintSplit)-1]).replace("    ", "")
         if hintType == 'note':
             hintType = 'tip'
 
-        newHint = f"{{{{% hints/{hintType} %}}}}\n{hintText}\n{{{{% /hints/{hintType} %}}}}"
+        newHint = f'\n\
+{{{{% hints/{hintType} %}}}}\n\
+  {hintText}\n\
+{{{{% /hints/{hintType} %}}}}'
         paragraph = paragraph.replace(hint, newHint)
 
     return paragraph
@@ -45,7 +48,10 @@ def migrate_hints(paragraph):
 def migrate_capture_alternative(paragraph):
     captureRE = re.findall(r"(?<={% capture alternative %})(.*?)(?= {% endcapture %})", paragraph, re.MULTILINE | re.DOTALL)
     for capture in captureRE:
-        info = f"{{{{% hints/info %}}}}\n{capture}\n{{{{% /hints/info %}}}}"
+        info = f'\n\
+{{{{% hints/info %}}}}\n\
+  {capture}\n\
+{{{{% /hints/info %}}}}'
         paragraph = paragraph.replace(capture, info)
 
     paragraph = paragraph.replace("{% capture alternative %}", "").replace("{% endcapture %}", "")
