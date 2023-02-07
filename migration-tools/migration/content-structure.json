@@ -18,7 +18,7 @@
             "indexing": ["analyzers"],
             "deploying": ["architecture", "deployment"],
             "operations": ["installation", "uninstallation", "backup-restore", "downgrading", "administration", "security" , "monitoring", "troubleshooting"],
-            "developer": ["http", "drivers", "foxx-microservices"] 
+            "developer": ["http", "drivers", "foxx-microservice"] 
         },
         "3.11": {
             "introduction": ["about-arangodb", "getting-started", "modeling-data", "programs-tools"],
