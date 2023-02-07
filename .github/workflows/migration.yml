@@ -1,9 +1,12 @@
 name: 'migration'
 on:
   workflow_dispatch: {}
+  pull_request:
+    types: [ labeled, opened, synchronize, reopened ]
 
 jobs:
   build:
+    if: ${{ github.event.label.name == 'migration' }}
     runs-on: ubuntu-latest
 
     steps:
