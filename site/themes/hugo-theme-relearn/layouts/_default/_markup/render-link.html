@@ -12,11 +12,6 @@
     {{ if $page }}
       {{ $permalink = printf "%s%s" $page.RelPermalink $fragment}}
     {{ else }}
-      {{ if site.Params.failOnBrokenLinks }}
-        {{ warnf "[ERROR] Broken link '%v'" .Destination}}
-      {{ else }}
-        {{ warnf "[ERROR] Broken link '%v'" .Destination}}
-      {{ end }}
   {{end}}
 {{ end }}
 <a {{ if $isRemote }} href="{{ .Destination }}" {{ else }} href="{{ $permalink }}" {{ end }} {{ with .Title }} title="{{ . }}"{{ end }}{{ if $isRemote }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .Text | safeHTML }}</a>
