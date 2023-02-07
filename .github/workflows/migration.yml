@@ -28,7 +28,7 @@ jobs:
       - uses: actions/setup-python@v4
         with:
           python-version: '3.10' 
-      - run: pip install pyyaml && python /home/runner/work/docs-hugo/docs-hugo/docs-hugo/migration-tools/migration/migration.py --src /home/runner/work/docs-hugo/docs-hugo/docs-old/docs --dst /home/runner/work/docs-hugo/docs-hugo/docs-hugo --arango-main /home/runner/work/docs-hugo/docs-hugo/arangodb-main --version 3.10
+      - run: pip install pyyaml && python /home/runner/work/docs-hugo/docs-hugo/docs-hugo/migration-tools/migration/migration.py --src /home/runner/work/docs-hugo/docs-hugo/docs-old --dst /home/runner/work/docs-hugo/docs-hugo/docs-hugo --arango-main /home/runner/work/docs-hugo/docs-hugo/arangodb-main --version 3.10
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
