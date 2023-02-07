@@ -151,7 +151,7 @@ def processFile(filepath):
 			page.frontMatter.weight = page.frontMatter.weight + 10000
 
 	_processFrontMatter(page, buffer)
-	buffer = re.sub(r"^---\n.*\n---\n", '', buffer, 0, re.MULTILINE | re.DOTALL)
+	buffer = re.sub(r"^---\n(.*?)\n---\n", '', buffer, 0, re.MULTILINE | re.DOTALL)
 
 	#Internal content
 	_processChapters(page, buffer, filepath)
