@@ -4,7 +4,7 @@ import yaml
 import utils
 
 def migrateInlineDocuBlocks(paragraph):
-    paragraph = re.sub(r"{%.*arangoshexample.* %}", '', paragraph, 0)
+    paragraph = re.sub(r"{%.*arangoshexample.* %}.*\n?", '', paragraph, 0)
     paragraph = re.sub(r"{%.*aqlexample.* %}", '', paragraph, 0)
     paragraph = re.sub(r"@END_EXAMPLE_.*", '', paragraph, 0)
     processed = []
@@ -68,7 +68,7 @@ def migrateInlineDocuBlocks(paragraph):
             codeblock = codeblock.replace("bindVars:  -", "bindVars: ")
             processed.append(block)
             paragraph = paragraph.replace(originalBlock, codeblock)
-    paragraph = re.sub(r"@endDocuBlock.*", '', paragraph, 0)
+    paragraph = re.sub(r"@endDocuBlock.*\n", '', paragraph, 0)
     paragraph = re.sub(r".*@startDocuBlockInline", '', paragraph, 0)
 
     return paragraph
