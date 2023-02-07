@@ -4,19 +4,20 @@
 {{ $fragment := "" -}}
 {{ with $url.Fragment }}{{ $fragment = printf "#%s" . }}{{ end -}}
 {{ $permalink := "" }}
-
-{{ $isRemote := ne $url.Scheme "" -}}
-{{ if not $isRemote -}}
-  {{ $page := .Page.GetPage $path }}
-  {{ if $page }}
-    {{ $permalink = printf "%s%s" $page.RelPermalink $fragment}}
+{{ $isRemote := eq $url.Scheme "https" -}}
+  {{ if $isRemote -}}
+    {{ $permalink := .Destination }}
   {{ else }}
+    {{ $page := .Page.GetPage $path }}
+    {{ if $page }}
+      {{ $permalink = printf "%s%s" $page.RelPermalink $fragment}}
+    {{ else }}
       {{ if site.Params.failOnBrokenLinks }}
         {{ errorf "[ERROR] Broken link '%v'" .Destination}}
       {{ else }}
-        {{ warnf "Broken link '%v' found in '%v'" .Destination .Page.File }}
+        {{ warnf "[ERROR] Broken link '%v'" .Destination}}
       {{ end }}
   {{end}}
 {{ end }}
-<a href="{{ $permalink | safeURL }}"{{ with .Title }} title="{{ . }}"{{ end }}{{ if $isRemote }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .Text | safeHTML }}</a>
+<a {{ if $isRemote }} href="{{ .Destination }}" {{ else }} href="{{ $permalink }}" {{ end }} {{ with .Title }} title="{{ . }}"{{ end }}{{ if $isRemote }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .Text | safeHTML }}</a>
 {{- /* whitespace control */ -}}
