@@ -707,10 +707,6 @@ const goToTop = () => {
 
 var showSidenav = true;
 
-
-
-
-
 $('#search-by').keypress(
     function(event){
       if (event.which == '13') {
@@ -914,7 +910,6 @@ $(window).scroll(function(){
         if (matches = href.match(/.*?(#.*)$/)) {
           location.hash = matches[1];
         }
-
           
         $(".dd-item.active").removeClass("active");
         $(".dd-item.parent").removeClass("parent");
@@ -932,9 +927,6 @@ $(window).scroll(function(){
 
         window.history.pushState("navchange", title, url);
 
-        
-        
-
         var _hsq = window._hsq = window._hsq || [];
         _hsq.push(['setPath', url]);
         _hsq.push(['trackPageView']);
@@ -945,45 +937,31 @@ $(window).scroll(function(){
   }
 
 
-
-  $(".copy-to-clipboard-button").click(function(event) {
-    var parent = $(event.target).closest('.tab-nav').next().find('code')[0].childNodes;
-    var text = ""
-    for (let child of parent) {
-        text = text + $(child).text();
-    }
-    navigator.clipboard.writeText(text).then(() => {
-    }, () => {
-      console.log("clipboard copy failed")
-    });
-});
-
   function initNewPage() {
     //getCurrentVersion();
     renderVersion();
-
     loadMenu();
+    initCopyToClipboard();
 
     images = document.querySelectorAll("[x-style]");
-
     for (let image of images) {
         styles = image.getAttribute("x-style");
         image.setAttribute("style", styles)
         image.removeAttribute("x-style")
     }
 
-    
     document.querySelector(".sidebar-toggle-navigation").addEventListener("click", e => {
-    if (showSidenav) {
-        $("#sidebar").removeClass("active");
-        showSidenav = false;
-        return
-    }
+        if (showSidenav) {
+            $("#sidebar").removeClass("active");
+            showSidenav = false;
+            return
+        }
 
-    $("#sidebar").addClass("active");
-    showSidenav = true;
-    e.preventDefault();
+        $("#sidebar").addClass("active");
+        showSidenav = true;
+        e.preventDefault();
     });
+
     anchors = getHeadlines();
     generateToc();
     goToTop();
@@ -1003,6 +981,7 @@ function loadMenu() {
         if (entry.classList.contains("parent") || entry.classList.contains("active")) {
             entry.childNodes[1].classList.add("open");
             entry.childNodes[1].classList.remove("closed");
+
             var submenu = entry.querySelector('.submenu');
             submenu.style.display = 'block';
         } else {
@@ -1019,17 +998,46 @@ function changeVersion() {
     var oldVersion = localStorage.getItem('docs-version');
     var versionSelector = document.getElementById("arangodb-version");
     var newVersion  = versionSelector.options[versionSelector.selectedIndex].value;
+
     try {
         localStorage.setItem('docs-version', newVersion);
     } catch(exception) {
         changeVersion();
     }
-    console.log(oldVersion + "    " + newVersion);
-    var newUrl = window.location.href.replace(oldVersion, newVersion)
-    console.log(newUrl);
-    loadPage(newUrl);
-    
-  }
 
-  
-  
+    var newUrl = window.location.href.replace(oldVersion, newVersion)
+    loadPage(newUrl);
+}
+
+function initCopyToClipboard() {
+    $('code').each(function() {
+        var code = $(this);
+        var parent = code.parent();
+        var inPre = parent.prop('tagName') == 'PRE';
+
+        if (inPre) {
+            code.addClass('copy-to-clipboard-code');
+            if( inPre ){
+                parent.addClass( 'copy-to-clipboard' );
+            }
+            else{
+                code.replaceWith($('<span/>', {'class': 'copy-to-clipboard'}).append(code.clone() ));
+                code = parent.children('.copy-to-clipboard').last().children('.copy-to-clipboard-code');
+            }
+            code.before( $('<span>').addClass("copy-to-clipboard-button").attr("title", window.T_Copy_to_clipboard).attr("onclick", "copyCode(event);").append("<i class='fas fa-copy'></i>") );
+        }
+    });
+}
+
+function copyCode(event) {
+    var parent = $(event.target).parent().parent().find('code')[0].childNodes;
+    var text = ""
+    for (let child of parent) {
+        text = text + $(child).text();
+    }
+    navigator.clipboard.writeText(text).then(() => {
+    }, () => {
+      console.log("clipboard copy failed")
+    });
+ }
+

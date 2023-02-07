@@ -1,10 +1,10 @@
 .copy-to-clipboard-button {
     float: right;
     background: none;
-    left: 2.2em;
     transition: 0.4s;
-    opacity: 0;
-    margin-top: 10px;
+    position: relative;
+    left: 2.5em;
+    bottom: 4px;
 }
 
 .copy-to-clipboard > .copy-to-clipboard-code {
@@ -24,12 +24,10 @@ pre {
 
 .tab-nav {
     float: right;
-    right: 1em;
+    right: 4em;
     position: relative;
     transition: 0.4s;
     display: flex;
-    top: 3.3em;
-    /* z-index: 9999999; */
     background: var(--CODEBLOCK-BACKGROUND-COLOR);
 }
 
@@ -93,9 +91,6 @@ pre {
     margin-top: 1.2rem;
 }
 
-pre > .copy-to-clipboard-button {
-    display: none;
-}
 
 .tab-nav > .copy-to-clipboard-button {
     border-color: rgba( 134, 134, 134, .333 );
