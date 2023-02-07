@@ -14,19 +14,16 @@ jobs:
         with:
           repository: arangodb/docs
           path: ./docs-old
-          submodules: recursive
 
       - uses: actions/checkout@master
         with:
           repository: arangodb/arangodb
           path: ./arangodb-main
-          submodules: recursive
 
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v3
         with:
           repository: arangodb/docs-hugo
           path: ./docs-hugo
-          submodules: recursive
 
       - uses: actions/setup-python@v4
         with:
@@ -35,7 +32,7 @@ jobs:
       - run: pip install pyyaml
       - run: python /home/runner/work/docs-hugo/docs-hugo/docs-hugo/migration-tools/migration/migration.py --src /home/runner/work/docs-hugo/docs-hugo/docs-old --dst /home/runner/work/docs-hugo/docs-hugo/docs-hugo --arango-main /home/runner/work/docs-hugo/docs-hugo/arangodb-main --version 3.10
       - run: python /home/runner/work/docs-hugo/docs-hugo/docs-hugo/migration-tools/migration/migration.py --src /home/runner/work/docs-hugo/docs-hugo/docs-old --dst /home/runner/work/docs-hugo/docs-hugo/docs-hugo --arango-main /home/runner/work/docs-hugo/docs-hugo/arangodb-main --version 3.11
-      - run: bash /home/runner/work/docs-hugo/docs-hugo/docs-hugo/migration-tools/migration/restructure.sh
+      - run: cd /home/runner/work/docs-hugo/docs-hugo/docs-hugo/migration-tools/migration && bash restructure.sh
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
