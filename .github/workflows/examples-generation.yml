@@ -15,6 +15,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: install arango from circle ci artifact
+        .....
+
       - name: build docker with examples test
         run: docker compose --env-file docker-env/examples.env up --exit-code-from site
         env: 
