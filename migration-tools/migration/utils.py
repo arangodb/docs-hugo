@@ -127,21 +127,6 @@ def migrate_link(paragraph, href, filepath):
     filename = filename.group(0).replace(".html", "").replace("/", "")
     fragment = re.search(r"#+.*", linkContent)
 
-    for k in globals.infos.keys():
-        if not "fileID" in globals.infos[k]:
-            continue
-
-        if globals.infos[k]["fileID"] == filename:
-            referencingPath = re.search(r"(?<=site\/content\/).*", filepath).group(0)
-            referencedPath = re.search(r"(?<=site\/content\/).*", k).group(0)  #Adjust link according to new directory-structure
-
-            newAnchor = relpath(referencedPath, referencingPath).replace("../", "", 1)
-            if fragment:
-                newAnchor = f"{newAnchor}{fragment.group(0)}"
-                
-            newHref = href.replace(linkContent, newAnchor).replace(".html", "").replace(".md", "").replace("_index", "")
-            paragraph = paragraph.replace(href, newHref)
-
     return paragraph
 
 
@@ -170,41 +155,6 @@ def migrate_headers(paragraph):
         paragraph = paragraph.replace(header, headerText)
 
     return paragraph
-
-def migrate_codeblocks(paragraph):
-    tabsShortcodeStart = "{{< tabs >}}"
-    tabsSortcodeEnd = "{{< /tabs >}}"
-    alreadyProcessed = []
-    codeblocks = re.findall(r"\`{3}(?:.*?)\`{3}", paragraph, re.MULTILINE | re.DOTALL)
-    for codeblock in codeblocks:
-        if codeblock in alreadyProcessed:
-            continue
-
-        lang = codeblock.split("\n")[0].replace("`", "")
-        tabStart = f'{{{{% tab name="{lang}" %}}}}'
-        tabEnd = '{{% /tab %}}'
-
-        newCodeblock = f"{tabsShortcodeStart}\n{tabStart}\n{codeblock}\n{tabEnd}\n{tabsSortcodeEnd}"
-        alreadyProcessed.append(codeblock)
-        paragraph = paragraph.replace(codeblock, newCodeblock)
-
-    
-    # Codeblock as spaces not backticks
-    alreadyProcessed = []
-    codeblocks =  re.findall(r"^\s{4,}arangosh(?:.*?)(?=^\w)", paragraph, re.MULTILINE | re.DOTALL)
-    for codeblock in codeblocks:
-        if codeblock in alreadyProcessed:
-            continue
-
-        tabStart = f'{{{{% tab name="bash" %}}}}'
-        tabEnd = '{{% /tab %}}'
-
-        newCodeblock = f"{tabsShortcodeStart}\n{tabStart}\n{codeblock}\n{tabEnd}\n{tabsSortcodeEnd}\n"
-        alreadyProcessed.append(codeblock)
-        paragraph = paragraph.replace(codeblock, newCodeblock)
-
-    return paragraph
-
 
 def migrate_docublock_output(exampleName):
     generatedFile = open(f"{globals.OLD_GENERATED_FOLDER}/{exampleName}.generated", 'r', encoding="utf-8")

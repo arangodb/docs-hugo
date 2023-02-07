@@ -8,7 +8,7 @@ def migrateInlineDocuBlocks(paragraph):
     paragraph = re.sub(r"{%.*aqlexample.* %}", '', paragraph, 0)
     paragraph = re.sub(r"@END_EXAMPLE_.*", '', paragraph, 0)
     processed = []
-    docublocks = re.findall(r"(?<=@startDocuBlockInline )(.*?)[\s](?=@endDocuBlock)", paragraph, re.MULTILINE | re.DOTALL)
+    docublocks = re.findall(r"(?<=@startDocuBlockInline)(.*?)[\s](?=@endDocuBlock)", paragraph, re.MULTILINE | re.DOTALL)
     if docublocks:
         globals.inlineDocuBlocksCount += len(docublocks)
         for block in docublocks:
@@ -75,16 +75,12 @@ def migrateInlineDocuBlocks(paragraph):
 
 def render_codeblock(block):
     exampleOptions = yaml.dump(block["options"], sort_keys=False, default_flow_style=False)
-    res = f'\n\
-{{{{< tabs >}}}}\n\
-{{{{% tab name="{block["language"]}" %}}}}\n\
+    res = f'\
 ```{block["language"]}\n\
 ---\n\
 {exampleOptions}\n\
 ---\n\
 {block["code"]}\n\
 ```\n\
-{{{{% /tab %}}}}\n\
-{{{{< /tabs >}}}}\n\
 '
     return re.sub(r"^\s*$\n", '', res, 0, re.MULTILINE | re.DOTALL)

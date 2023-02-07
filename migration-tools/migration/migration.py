@@ -57,7 +57,6 @@ def create_chapter(item, manual):
 	labelPage.frontMatter.title = item["subtitle"]
 	labelPage.frontMatter.menuTitle = item["subtitle"]
 	labelPage.frontMatter.weight = get_weight(currentWeight)
-	labelPage.frontMatter.fileID = "fileID"
 	infos[filepath] = {"title": item["subtitle"], "weight": get_weight(currentWeight)}
 	
 	file = open(filepath, "w", encoding="utf-8")
@@ -79,7 +78,6 @@ def create_index(label, item, extendedSection):
 	infos[indexPath] = {
 		"title": f'\'{item["text"]}\'' if '@' in item["text"] else item["text"],
 		"weight": get_weight(currentWeight),
-		"fileID": oldFileName.replace(".md", "")
 		}
 	return label
 
@@ -99,7 +97,6 @@ def create_files_new(label, item, extendedSection):
 	infos[filePath]  = {
 		"title": f'\'{item["text"]}\'' if '@' in item["text"] else item["text"],
 		"weight": get_weight(currentWeight),
-		"fileID": oldFileName.replace(".md", "")
 		}
 	return label
 
@@ -121,7 +118,6 @@ def create_file_no_label(item, extendedSection):
 	infos[filePath]  = {
 		"title": f'\'{item["text"]}\'' if '@' in item["text"] else item["text"],
 		"weight": get_weight(currentWeight),
-		"fileID": oldFileName.replace(".md", "")
 		}
 	return ''
 
@@ -155,13 +151,6 @@ def processFile(filepath):
 			page.frontMatter.weight = page.frontMatter.weight + 10000
 
 	_processFrontMatter(page, buffer)
-	fileID = filepath.split("/")
-	page.frontMatter.fileID = fileID[len(fileID)-1].replace(".md", "")
-	if page.frontMatter.fileID == "_index":
-		page.frontMatter.fileID = fileID[len(fileID)-2]
-	if "fileID" in infos[filepath]:
-		page.frontMatter.fileID = infos[filepath]["fileID"]
-
 	buffer = re.sub(r"^---\n.*\n---\n", '', buffer, 0, re.MULTILINE | re.DOTALL)
 
 	#Internal content
@@ -203,7 +192,6 @@ def _processChapters(page, paragraph, filepath):
 	paragraph = migrate_enterprise_tag(paragraph)
 	paragraph = migrate_details(paragraph)
 	paragraph = migrate_comments(paragraph)
-	paragraph = migrate_codeblocks(paragraph)
 
 	paragraph = migrateHTTPDocuBlocks(paragraph)
 	paragraph = migrateInlineDocuBlocks(paragraph)
@@ -257,7 +245,6 @@ class FrontMatter():
 	def __init__(self):
 		self.title = ""
 		self.layout = "default"
-		self.fileID = ""
 		self.description = ""
 		self.menuTitle = ""
 		self.weight = 0
@@ -267,7 +254,7 @@ class FrontMatter():
 		return str.replace("`", "").lstrip(" ")
 
 	def toString(self):
-		return f"---\nfileID: {self.fileID}\ntitle: {self.clean(self.title)}\nweight: {self.weight}\ndescription: {self.description}\nlayout: default\n---\n"
+		return f"---\ntitle: {self.clean(self.title)}\nweight: {self.weight}\ndescription: {self.description}\nlayout: default\n---\n"
 
 def get_weight(weight):
 	global currentWeight
