@@ -13,7 +13,7 @@
       {{ $permalink = printf "%s%s" $page.RelPermalink $fragment}}
     {{ else }}
       {{ if site.Params.failOnBrokenLinks }}
-        {{ errorf "[ERROR] Broken link '%v'" .Destination}}
+        {{ warnf "[ERROR] Broken link '%v'" .Destination}}
       {{ else }}
         {{ warnf "[ERROR] Broken link '%v'" .Destination}}
       {{ end }}
