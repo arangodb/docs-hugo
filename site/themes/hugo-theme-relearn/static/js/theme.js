@@ -1024,8 +1024,14 @@ function initCopyToClipboard() {
                 code.replaceWith($('<span/>', {'class': 'copy-to-clipboard'}).append(code.clone() ));
                 code = parent.children('.copy-to-clipboard').last().children('.copy-to-clipboard-code');
             }
-            code.before( $('<span>').addClass("copy-to-clipboard-button").attr("title", window.T_Copy_to_clipboard).attr("onclick", "copyCode(event);").append("<i class='fas fa-copy'></i>") );
-        }
+            var span = $('<span>').addClass("copy-to-clipboard-button").attr("title", window.T_Copy_to_clipboard).attr("onclick", "copyCode(event);")
+            code.before(span);
+            span.mouseleave( function() {
+                setTimeout(function(){
+                    span.removeClass("tooltipped");
+                },1000);
+        });
+    }
     });
 }
 
@@ -1036,6 +1042,8 @@ function copyCode(event) {
         text = text + $(child).text();
     }
     navigator.clipboard.writeText(text).then(() => {
+        console.log("Copied")
+        $(event.target).attr('aria-label', window.T_Copied_to_clipboard).addClass('tooltipped');
     }, () => {
       console.log("clipboard copy failed")
     });

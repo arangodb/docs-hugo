@@ -3,8 +3,22 @@
     background: none;
     transition: 0.4s;
     position: relative;
-    left: 2.5em;
+    left: 3.5em;
     bottom: 4px;
+}
+
+.copy-to-clipboard-button::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f0c5";
+    font-weight: 900;
+    color: #e8dcdc;
+}
+
+.copy-to-clipboard-button.tooltipped::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f00c";
+    font-weight: 900;
+    color: #e8dcdc;
 }
 
 .copy-to-clipboard > .copy-to-clipboard-code {
