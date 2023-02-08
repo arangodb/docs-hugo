@@ -8,6 +8,8 @@ jobs:
   build:
     if: ${{ (github.event.label.name != 'examples-generation') && (github.event.label.name != 'migration') }}
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
 
     steps:
       - name: Checkout
@@ -34,8 +36,12 @@ jobs:
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           GITHUB_OUTPUT: ${{ steps.deploy.NETLIFY_URL }}
 
-      - name: Adding markdown
-        run: echo '## Deploy preview URL:\n\nhttps://deploy-preview-${{ github.event.number }}--startling-truffle-6032f2.netlify.app' >> $GITHUB_STEP_SUMMARY
+      - name: Comment PR
+        uses: mshick/add-pr-comment@v2
+        with:
+          message: |
+            ### Deploy Preview URL:
+            https://deploy-preview-${{ github.event.number }}--startling-truffle-6032f2.netlify.app
 
 
 
