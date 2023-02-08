@@ -194,7 +194,7 @@ def processHeader(docuBlock, newBlock):
     try:
         url, verb, desc = headerSplit[0].split(" ")[1], headerSplit[0].split(" ")[0].strip("{").lower(), headerSplit[1].replace("}", "")
         newBlock["paths"][url] = {verb: {"description": desc}}
-        newBlock["paths"][url][verb]["operationId"] = headerSplit[2].replace("}", "")
+        newBlock["paths"][url][verb]["operationId"] = headerSplit[2].replace("}", "").replace(" ", "")
     except IndexError:
         pass 
 
