@@ -39,7 +39,7 @@ widgetRegex = r"{% .* %}[\n]+.*[\n]+{% .* %}"
 
 ## DocuBlocks
 ALL_COMMENTS_FILE = f"{OLD_TOOLCHAIN}/{version}/generated/allComments.txt"
-OAPI_COMPONENTS_FILE = f"{args.dst}/openapi/components.yaml"
+OAPI_COMPONENTS_FILE = f"{args.dst}/toolchain/openapi/components.yaml"
 OLD_GENERATED_FOLDER = f"{OLD_TOOLCHAIN}/{version}/generated/Examples"
 
 
