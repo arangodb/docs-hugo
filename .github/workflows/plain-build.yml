@@ -6,7 +6,7 @@ on:
 
 jobs:
   build:
-    if: ${{ github.event.label.name != 'examples-generation' }}
+    if: ${{ (github.event.label.name != 'examples-generation') && (github.event.label.name != 'migration') }}
     runs-on: ubuntu-latest
 
     steps:

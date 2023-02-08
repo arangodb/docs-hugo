@@ -40,14 +40,14 @@
 
 @font-face {
     font-family: "objektiv-mk1";
-    src:  url("../fonts/ObjektivMk1-Light.ttf") format("ttf");
+    src:  url(../fonts/ObjektivMk1_W_Rg.eaab6bbf.woff2) format("woff2");
     font-style: normal;
     font-weight: normal;
   }
   
   @font-face {
     font-family: "objektiv-mk1";
-    src:  url("../fonts/ObjektivMk1-Bold.ttf") format("ttf");
+    src:  url(../fonts/ObjektivMk1_W_Bd.182e75b2.woff2) format("woff2");
     font-style: normal;
-    font-weight: bold;
+    font-weight: 700;
   }
