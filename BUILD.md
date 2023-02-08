@@ -23,12 +23,21 @@ docs-hugo/migration-tools> pip3 install pyyaml
 
 ```shell
 # Execute the migration
-docs-hugo/migration-tools> python3 migration.py --src <docsOld> --dst <docsNew> --arango-main <docublocks>
+docs-hugo/migration-tools> python3 migration.py --src <docsOld> --dst <docsNew> --arango-main <docublocks> --version <version>
 ```
 
-- `docsOld`: input path to the old toolchain and content in Jekyll's format, with `/docs` included
-- `docsNew`: output path for the new toolchain and content in Hugo's format, with `/docs` included
-- `docublocks`: input path to a working copy of the `arangodb/arangodb` repository, needed to read the old DocuBlocks
+- `docsOld`: input path to the old toolchain and content in Jekyll's format,
+  pointing to the root of the `arangodb/docs` working copy
+
+- `docsNew`: output path for the new toolchain and content in Hugo's format,
+  pointing to the root of the `arangodb/docs-hugo` working copy
+  (not including `/site/content`)
+
+- `docublocks`: input path to a working copy of the `arangodb/arangodb`
+  repository, needed to read the old DocuBlocks
+
+- `version`: the version of the old content to migrate to the new toolchain,
+  indicating a version folder like `3.11`
 
 ## Build
 

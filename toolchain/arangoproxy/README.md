@@ -7,7 +7,7 @@ Compile the _arangoproxy_ web server (only when new code is available).
 **Go needs to be installed to perform the go build command**
 
 ```
-arangoproxy/cmd> go build -o arangoproxy
+toolchain/arangoproxy/cmd> go build -o arangoproxy
 ```
 
 Go automatically detects the hardware and produces the right executable inside
@@ -16,7 +16,7 @@ the `cmd` folder.
 ## Run
 
 ```
-arangoproxy/cmd> ./arangoproxy [flags]
+toolchain/arangoproxy/cmd> ./arangoproxy [flags]
 ```
 
 ### Flags
