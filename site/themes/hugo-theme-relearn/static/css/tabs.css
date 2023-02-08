@@ -1,10 +1,8 @@
 .copy-to-clipboard-button {
-    float: right;
     background: none;
     transition: 0.4s;
-    position: relative;
-    left: 3.5em;
-    bottom: 4px;
+    position: absolute;
+    left: 44em;
 }
 
 .copy-to-clipboard-button::before {
@@ -34,6 +32,7 @@ pre {
     margin-top: 0;
     background-color: var(--CODEBLOCK-BACKGROUND-COLOR);
     line-height: 1.8rem;
+    position: relative;
 }
 
 .tab-nav {
@@ -43,6 +42,7 @@ pre {
     transition: 0.4s;
     display: flex;
     background: var(--CODEBLOCK-BACKGROUND-COLOR);
+    z-index: 9;
 }
 
 .tab-panel:hover .copy-to-clipboard-button {
