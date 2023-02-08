@@ -44,6 +44,12 @@ description:
 layout: default
 ---" >> introduction/_index.md
 echo "---
+title: Deploying to ArangoDB
+weight: 8000
+description: 
+layout: default
+---" >> deploying/_index.md
+echo "---
 title: Operations
 weight: 9000
 description: 
@@ -109,6 +115,12 @@ weight: 1000
 description: 
 layout: default
 ---" >> introduction/_index.md
+echo "---
+title: Deploying to ArangoDB
+weight: 8000
+description: 
+layout: default
+---" >> deploying/_index.md
 echo "---
 title: Operations
 weight: 9000
