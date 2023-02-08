@@ -1,6 +1,6 @@
 #!/bin/bash
 
-cd ../../site/content/3.10
+cd ../site/content/3.10
 mkdir -p introduction deploying operations developer
 mv about-arangodb introduction
 mv getting-started introduction
