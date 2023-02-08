@@ -33,9 +33,10 @@ jobs:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
           GITHUB_OUTPUT: ${{ steps.deploy.NETLIFY_URL }}
-          
+
       - name: Adding markdown
-        run: echo ‘### Hello world! :rocket:’ >> $GITHUB_STEP_SUMMARY
+        run: echo '## Deploy preview URL:\n\nhttps://deploy-preview-${{ github.event.number }}--startling-truffle-6032f2.netlify.app' >> $GITHUB_STEP_SUMMARY
+
 
 
         
