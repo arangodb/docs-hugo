@@ -46,7 +46,7 @@ jobs:
         uses: actions/checkout@v3
 
       - name: build docker with examples test
-        run: docker compose --env-file docker-env/release.env up --exit-code-from site
+        run: docker compose --env-file toolchain/docker-env/release.env up --exit-code-from site
 
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:

@@ -17,8 +17,6 @@ services:
         ipv4_address: 192.168.129.5
     environment:
       - ARANGO_NO_AUTH=1
-    
-  
 
 networks:
   docs_net:
@@ -29,6 +27,3 @@ networks:
       config:
         - subnet: 192.168.129.0/24
           gateway: 192.168.129.1
-
-          
-

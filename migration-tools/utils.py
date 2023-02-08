@@ -17,7 +17,6 @@ def migrate_title(page, frontMatter, content):
     page.frontMatter.title = page.frontMatter.title.replace("`", "")
     return
 
-
 def set_page_description(page, buffer, frontMatter):
     paragraphDescRegex = re.search(r"(?<=\n\n)[\w\s\W]+(?={:class=\"lead\"})", buffer)
     if paragraphDescRegex:
@@ -128,7 +127,6 @@ def migrate_link(paragraph, href, filepath):
     fragment = re.search(r"#+.*", linkContent)
 
     return paragraph
-
 
 def migrate_youtube_links(paragraph):
     youtubeRegex = re.search(r"{% include youtube\.html .* %}", paragraph)

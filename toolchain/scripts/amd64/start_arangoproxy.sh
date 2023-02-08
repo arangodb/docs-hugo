@@ -12,7 +12,6 @@ if [ ! -f /home/arangodb3.11/bin/arangosh ]; then
     mv arangodb3-client-linux-3.11.0-nightly_x86_64 /home/arangodb3.11
 fi
 
-
 function check() {
    res=$(curl -s -I $val | grep HTTP/ | awk {'print $2'})
    if [ "$res" = "200" ]; then
