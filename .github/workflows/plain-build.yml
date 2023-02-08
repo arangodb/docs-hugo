@@ -8,6 +8,8 @@ jobs:
   build:
     if: ${{ (github.event.label.name != 'examples-generation') && (github.event.label.name != 'migration') }}
     runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
 
     steps:
       - name: Checkout
@@ -26,11 +28,22 @@ jobs:
 
       - name: Deploy to netlify
         uses: netlify/actions/cli@master
+        id: deploy
         with:
           args: deploy --dir=site/public --alias deploy-preview-${{ github.event.number }}--
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          GITHUB_OUTPUT: ${{ steps.deploy.NETLIFY_URL }}
+
+      - name: Comment PR
+        uses: mshick/add-pr-comment@v2
+        with:
+          message: |
+            ### Deploy Preview URL:
+            https://deploy-preview-${{ github.event.number }}--startling-truffle-6032f2.netlify.app
+
+
 
         
 
