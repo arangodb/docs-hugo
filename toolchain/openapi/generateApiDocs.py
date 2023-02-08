@@ -55,7 +55,6 @@ def loadSchemas():
     print(components)
     apiDocsRes["components"]["schemas"] = components["schemas"]
     
-
 def processFile(filepath):
     try:
         file = open(filepath, "r", encoding="utf-8")
@@ -82,5 +81,3 @@ def processFile(filepath):
 if __name__ == "__main__":
     loadSchemas()
     generateAPIDocs()
-
-

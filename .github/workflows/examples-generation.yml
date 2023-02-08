@@ -19,7 +19,7 @@ jobs:
         .....
 
       - name: build docker with examples test
-        run: docker compose --env-file docker-env/examples.env up --exit-code-from site
+        run: docker compose --env-file toolchain/docker-env/examples.env up --exit-code-from site
         env: 
           HUGO_URL: https://deploy-preview-${{ github.event.number }}--startling-truffle-6032f2.netlify.app
 
