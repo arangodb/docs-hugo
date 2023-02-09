@@ -11,7 +11,6 @@ from inline_docublocks import *
 import argparse
 from globals import *
 
-
 def structure_migration_new(label, document, manual):
 	if document is None:
 		directoryTree = open(f"{OLD_TOOLCHAIN}/_data/{version}-{manual}.yml", encoding="utf-8")
@@ -43,7 +42,6 @@ def structure_migration_new(label, document, manual):
 		else:
 			label = create_files_new(label, item, extendedSection)
 
-
 def create_chapter(item, manual):
 	label = item["subtitle"].lower().replace(" ", "-").replace("&","").replace("--","-")
 
@@ -64,7 +62,6 @@ def create_chapter(item, manual):
 	file.write(labelPage.toString())
 	file.close()
 	return label
-
 
 def create_index(label, item, extendedSection):
 	oldFileName = item["href"].replace(".html", ".md")
@@ -124,8 +121,6 @@ def create_file_no_label(item, extendedSection):
 		"fileID": oldFileName.replace(".md", "")
 		}
 	return ''
-
-
 
 # File processing jekyll-hugo migration phase
 def processFiles():
@@ -214,7 +209,6 @@ def _processChapters(page, paragraph, filepath):
 
 	page.content = paragraph
 	return
-
 
 def migrate_media():
 	print("----- MIGRATING MEDIA")

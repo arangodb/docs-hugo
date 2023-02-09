@@ -11,7 +11,6 @@ function start() {
     docker compose up
 }
 
-
 function clean() {
     docker container stop $(docker ps -aq)
     docker container rm $(docker ps -aq)
@@ -44,4 +43,3 @@ case $1 in
     help()
 ;;
 esac
-

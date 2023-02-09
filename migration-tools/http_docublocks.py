@@ -24,7 +24,6 @@ swaggerBaseTypes = [
     'int64'
 ]
 
-
 def str_presenter(dumper, data):
     """configures yaml for dumping multiline strings
     Ref: https://stackoverflow.com/questions/8640959/how-can-i-control-what-scalar-form-pyyaml-uses-for-my-data"""
@@ -34,7 +33,6 @@ def str_presenter(dumper, data):
 
 yaml.add_representer(str, str_presenter)
 yaml.representer.SafeRepresenter.add_representer(str, str_presenter) # to use with safe_dum
-
 
 def initBlocksFileLocations():
     with open(globals.ALL_COMMENTS_FILE, 'r', encoding="utf-8") as apiDocs:
@@ -83,7 +81,6 @@ def migrateHTTPDocuBlocks(paragraph):
                 #print(paragraph)
 
     return paragraph
-
 
 def processHTTPDocuBlock(docuBlock, tag):
     blockExamples = processExamples(docuBlock)
@@ -157,7 +154,6 @@ def processHTTPDocuBlock(docuBlock, tag):
 
     return yml + "\n" + exampleCodeBlocks
 
-
 ### BLOCK PROCESSING    
 
 def processExamples(docuBlock):
@@ -182,7 +178,6 @@ def processExamples(docuBlock):
 
         if "logJsonResponse" in code:
             exampleBlock["options"]["render"] = "input/output"
-
 
         blockExamples.append(exampleBlock)
 
@@ -328,7 +323,6 @@ def processResponseBody(docuBlock, newBlock, statusCode):
             newBlock[statusCode]["content"]["application/json"]["schema"]["required"].append(name)
     return
 
-
 def processComponents(block):
     args = block.split("\n")[0].strip("}").split(",") 
     
@@ -361,8 +355,6 @@ def processComponents(block):
             }
     return
 
-
-
 ####    YAML WRITERS
 
 def render_yaml(block, title):
@@ -389,7 +381,6 @@ def parse_examples(blockExamples):
 '
         res = res + "\n" + codeBlock
     return re.sub(r"^\s*$\n", '', res, 0, re.MULTILINE | re.DOTALL)
-
 
 def write_components_to_file():
     with open(globals.OAPI_COMPONENTS_FILE, 'w', encoding="utf-8") as outfile:
