@@ -183,6 +183,8 @@ def _processChapters(page, paragraph, filepath):
 	paragraph = migrate_youtube_links(paragraph)
 
 	paragraph = migrate_hints(paragraph)
+	paragraph = migrateIndentedCodeblocks(paragraph)
+
 	paragraph = migrate_capture_alternative(paragraph)
 	paragraph = migrate_enterprise_tag(paragraph)
 	paragraph = migrate_details(paragraph)
@@ -210,18 +212,6 @@ def migrate_media():
 			shutil.copyfile(f"{root}/{file}", f"{NEW_TOOLCHAIN}/assets/images/{file}")
 	print("----- END MEDIA MIGRATION")
 
-def post_migration():
-	ppFile = open("content-structure.json")
-	postProcess = json.load(ppFile)
-
-	moveFolders = postProcess["move"][version]
-	for move in moveFolders:
-		print(move)
-		for root, dirs, files in os.walk(f"{NEW_TOOLCHAIN}/content/{version}/{move}", topdown=True):
-			for file in files:
-				print(root + file)
-				Path(clean_line(f"{NEW_TOOLCHAIN}/content/{version}/{moveFolders[move]}/{move}")).mkdir(parents=True, exist_ok=True)
-				shutil.move(f"{root}/{file}".replace("\\", "/"), f"{root}/{moveFolders[move]}/{move}/{file}")
 
 class Page():
 	def __init__(self):
@@ -267,6 +257,5 @@ if __name__ == "__main__":
 		processFiles()
 		write_components_to_file()
 		migrate_media()
-		#post_migration()
 	except Exception as ex:
 		print(traceback.format_exc())
