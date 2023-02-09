@@ -12,7 +12,7 @@ parser.add_argument('--version', type=str,
                     help='Version to migrate')
 args = parser.parse_args()
 
-if args.src is None or args.dst is None:
+if args.src is None or args.dst is None or args.version is None or args.arango_main is None:
 	print("Args are required")
 	exit(1)
 
@@ -29,8 +29,10 @@ ARANGO_MAIN = main
 infos = {"": {}}
 currentWeight = 0
 
-httpDocuBlocksCount = 0
-inlineDocuBlocksCount = 0
+def get_weight(weight):
+	global currentWeight
+	currentWeight += 5
+	return currentWeight
 
 ## Regexes
 frontMatterCapture = r"(?<=---\n)(.*?)(?=---)"

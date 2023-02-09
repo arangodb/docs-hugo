@@ -3,8 +3,7 @@ import json
 import yaml
 import traceback
 from definitions import *
-import utils
-import globals
+from globals import *
 
 swaggerBaseTypes = [
     'object',
@@ -34,32 +33,13 @@ def str_presenter(dumper, data):
 yaml.add_representer(str, str_presenter)
 yaml.representer.SafeRepresenter.add_representer(str, str_presenter) # to use with safe_dum
 
-def initBlocksFileLocations():
-    with open(globals.ALL_COMMENTS_FILE, 'r', encoding="utf-8") as apiDocs:
-        data = apiDocs.read()
-
-        docuBlocks = re.findall(r"<!-- filename: .* -->\n@startDocuBlock .*", data)
-        for docuBlock in docuBlocks:
-            fileLocation = re.findall(r"(?<=<!-- filename: ).*(?= -->)", docuBlock)[0]
-            fileLocation = re.sub(r".*(?=\/Documentation)", globals.ARANGO_MAIN, fileLocation, 1, re.MULTILINE)
-
-            blockName = re.findall(r"(?<=@startDocuBlock ).*", docuBlock)[0]
-
-            globals.blocksFileLocations[blockName] = fileLocation
-    globals.components["schemas"] = definitions
-
-    
-    return
-
 def migrateHTTPDocuBlocks(paragraph):
     docuBlockNameRe = re.findall(r"(?<={% docublock ).*(?= %})", paragraph)
-    globals.httpDocuBlocksCount = globals.httpDocuBlocksCount + len(docuBlockNameRe)
     for docuBlock in docuBlockNameRe:
         if 'errorCodes' in docuBlock: ## TODO: Implement
             continue
 
-        docuBlockFile =globals.blocksFileLocations[docuBlock]
-        print(docuBlockFile)
+        docuBlockFile =blocksFileLocations[docuBlock]
         tag = docuBlockFile.split("/")[len(docuBlockFile.split("/"))-2]
         try:
             docuBlockFile = open(docuBlockFile, "r", encoding="utf-8").read()
@@ -171,7 +151,7 @@ def processExamples(docuBlock):
         exampleName = re.search(r"(?<={).*(?=})", block).group(0)
         exampleBlock["options"]["name"] = exampleName
         exampleBlock["options"]["release"] = "stable"
-        exampleBlock["options"]["version"] = globals.version
+        exampleBlock["options"]["version"] = version
         code = re.search(r"(?<="+exampleType+"{"+exampleName+"}\n).*", block, re.MULTILINE | re.DOTALL).group(0)
         code = code.replace("|", " ")
         exampleBlock["code"] = code
@@ -345,11 +325,11 @@ def processComponents(block):
 
         structProperty["items"] = {key: paramSubtype if paramSubtype != "" else "string"}
 
-    if structName in globals.components["schemas"]:
-        globals.components["schemas"][structName]["properties"][paramName] = structProperty
+    if structName in components["schemas"]:
+        components["schemas"][structName]["properties"][paramName] = structProperty
         return
 
-    globals.components["schemas"][structName] = {
+    components["schemas"][structName] = {
         "type": "object",
         "properties": {paramName: structProperty}
             }
@@ -382,9 +362,6 @@ def parse_examples(blockExamples):
         res = res + "\n" + codeBlock
     return re.sub(r"^\s*$\n", '', res, 0, re.MULTILINE | re.DOTALL)
 
-def write_components_to_file():
-    with open(globals.OAPI_COMPONENTS_FILE, 'w', encoding="utf-8") as outfile:
-        yaml.dump(globals.components, outfile, sort_keys=False, default_flow_style=False)
 
 if __name__ == "__main__":
     initBlocksFileLocations()

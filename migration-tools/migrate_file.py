@@ -1,8 +1,79 @@
 import re
-from os.path import relpath
-import globals
+from globals import *
+import http_docublocks
+import inline_docublocks
 
-## TODO: These functions are horrible, refactor with cleaner code
+def migrate(filepath):
+	try:
+		file = open(filepath, "r", encoding="utf-8")
+		content = file.read()
+		file.close()
+	except Exception as ex:
+		print(traceback.format_exc())
+		raise ex
+
+	page = Page()
+
+	_processFrontMatter(page, content, filepath)
+	content = re.sub(r"^---\n(.*?)\n---\n", '', content, 0, re.MULTILINE | re.DOTALL)  ## Cut front matter from content processing
+	_processContent(page, content, filepath)
+
+	file = open(filepath, "w", encoding="utf-8")
+	file.write(page.toString())
+	file.close()
+
+	return
+
+def _processFrontMatter(page, buffer, filepath):
+    if filepath in infos:
+        page.frontMatter.weight = infos[filepath]["weight"] if "weight" in infos[filepath] else 0
+        if "appendix" in filepath or "release-notes" in filepath:
+            page.frontMatter.weight = page.frontMatter.weight + 10000
+    
+    frontMatterRegex = re.search(r"---(.*?)---", buffer, re.MULTILINE | re.DOTALL)
+    if not frontMatterRegex:
+        return		# TODO
+    
+    frontMatter = frontMatterRegex.group(0)
+
+    migrate_title(page, frontMatter, buffer)
+    set_page_description(page, buffer, frontMatter)
+
+    return page
+
+def _processContent(page, paragraph, filepath):
+	if paragraph is None or paragraph == '':
+		return
+        
+	paragraph = re.sub("{+\s?page.description\s?}+", '', paragraph)
+	paragraph = paragraph.replace("{:target=\"_blank\"}", "")
+	paragraph = paragraph.replace("{:style=\"clear: left;\"}", "")
+
+	paragraph = re.sub(r"^# .*|(.*\n={4,})", "", paragraph, 0, re.MULTILINE)
+	paragraph = re.sub(r"(?<=\n\n)[\w\s\W]+{:class=\"lead\"}", '', paragraph)
+
+	paragraph = migrate_headers(paragraph)
+	paragraph = migrate_hrefs(paragraph, infos, filepath)
+	paragraph = migrate_youtube_links(paragraph)
+
+	paragraph = migrate_hints(paragraph)
+	paragraph = migrate_capture_alternative(paragraph)
+	paragraph = migrate_enterprise_tag(paragraph)
+	paragraph = migrate_details(paragraph)
+	paragraph = migrate_comments(paragraph)
+
+	paragraph = migrateIndentedCodeblocks(paragraph)
+	paragraph = http_docublocks.migrateHTTPDocuBlocks(paragraph)
+	paragraph = inline_docublocks.migrateInlineDocuBlocks(paragraph)
+	paragraph = paragraph.lstrip("\n")
+
+	paragraph = re.sub(r"{% assign ver = \"3\.10\" \| version: \">=\" %}{% if ver %}", "", paragraph, 0)
+	paragraph = re.sub(r"{% endif -%}", "", paragraph, 0)
+
+	page.content = paragraph
+	return
+
+## Migration units
 
 def migrate_title(page, frontMatter, content):
     fmTitleRegex = re.search(r"(?<=title: ).*", frontMatter)
@@ -22,6 +93,9 @@ def set_page_description(page, buffer, frontMatter):
     if paragraphDescRegex:
         description = paragraphDescRegex.group(0)
         if not "page.description" in description:
+            if "#" in description:
+                return
+                
             description = description.replace("\n", "\n  ")
             page.frontMatter.description = f">-\n  {description}"
         else:
@@ -61,15 +135,16 @@ def migrate_enterprise_tag(paragraph):
         tagShortcode = '{{< tag '
         for t in tags:
             tagShortcode = tagShortcode + f'"{t}"'
-        tagShortcode = tagShortcode + ' >}}'
 
+        tagShortcode = tagShortcode + ' >}}'
         paragraph = paragraph.replace(tag, tagShortcode)
     
     return paragraph
 
 def migrate_comments(paragraph):
-    for key in globals.static_replacements["comments"]:
-        paragraph = paragraph.replace(key, globals.static_replacements["comments"][key])
+    for key in static_replacements["comments"]:
+        paragraph = paragraph.replace(key, static_replacements["comments"][key])
+
     return paragraph
 
 def migrate_details(paragraph):
@@ -92,7 +167,6 @@ def migrate_hrefs(paragraph, infos, filepath):
             continue
 
     linksRegex = re.findall(r"(?<=\]\()(.*?)\)", paragraph)
-
     for link in linksRegex:
         if ".html" in link:
             paragraph = migrate_link(paragraph, link, filepath)
@@ -155,7 +229,7 @@ def migrate_headers(paragraph):
     return paragraph
 
 def migrate_docublock_output(exampleName):
-    generatedFile = open(f"{globals.OLD_GENERATED_FOLDER}/{exampleName}.generated", 'r', encoding="utf-8")
+    generatedFile = open(f"{OLD_GENERATED_FOLDER}/{exampleName}.generated", 'r', encoding="utf-8")
     output = generatedFile.read()
     output = output.replace("arangosh&gt;", "").replace("shell&gt;", "")
     output = re.sub(r"<(.*?)>", "", output, 0, re.MULTILINE)
@@ -173,10 +247,38 @@ def migrateIndentedCodeblocks(paragraph):
 
     return paragraph
 
-def clean_line(line):
+def cleanLine(line):
     line = line.replace("//", "/").replace("&","").replace(" ", "-")
     line = re.sub(r"-{2,}", "-", line)
     return line.replace("#", "sharp").replace(".net", "dotnet")
 
 def is_index(filename):
     return filename.endswith("_index.md")
+
+
+class Page():
+	def __init__(self):
+		self.frontMatter = FrontMatter()
+		self.content = ""
+
+	def toString(self):
+		res = self.frontMatter.toString()
+		cleanedFrontMatter = re.sub(r"^\s*$\n", '', res, 0, re.MULTILINE | re.DOTALL)
+		res =  f"{cleanedFrontMatter}{self.content}"
+		#res = re.sub(r"(?<=---)\n*", '\n', f"{cleanedFrontMatter}{self.content}", 0, re.MULTILINE | re.DOTALL)
+		return res
+
+class FrontMatter():
+	def __init__(self):
+		self.title = ""
+		self.layout = "default"
+		self.description = ""
+		self.menuTitle = ""
+		self.weight = 0
+
+	@staticmethod
+	def clean(str):
+		return str.replace("`", "").lstrip(" ")
+
+	def toString(self):
+		return f"---\ntitle: {self.clean(self.title)}\nweight: {self.weight}\ndescription: {self.description}\nlayout: default\n---\n"

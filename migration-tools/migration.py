@@ -5,200 +5,52 @@ from pathlib import Path
 import shutil
 import time
 import traceback
-from utils import *
-from http_docublocks import *
-from inline_docublocks import *
 import argparse
+
+# migration modules
 from globals import *
+import migrate_file
+import structure
+from definitions import *
 
-def structure_migration_new(label, document, manual):
-	if document is None:
-		directoryTree = open(f"{OLD_TOOLCHAIN}/_data/{version}-{manual}.yml", encoding="utf-8")
-		document = yaml.full_load(directoryTree)
 
-		if manual != "manual":
-			create_index("", {"text": manual.upper(), "href": "index.html"}, manual+"/")
-			document = document[1:]
+def createStructure():
+	print("----- CREATING FOLDERS STRUCTURE")
+	structure.migrateStructure('', None, "manual")
+	structure.migrateStructure('http', None, "http")
+	structure.migrateStructure('arangograph', None, "arangograph")
+	structure.migrateStructure('aql', None, "aql")
+	structure.migrateStructure('drivers', None, "drivers")
+	print("----- DONE\n")
 
-	extendedSection = ''
-	if manual != "manual":
-		extendedSection = manual +"/"
+def initBlocksFileLocations():
+	print("----- LOADING DOCUBLOCKS DEFINITIONS")
+	with open(ALL_COMMENTS_FILE, 'r', encoding="utf-8") as apiDocs:
+		data = apiDocs.read()
 
-	for item in document:
-		# Ignore external links
-		if "href" in item and (item["href"].startswith("http://") or item["href"].startswith("https://")):
-			continue
+		docuBlocks = re.findall(r"<!-- filename: .* -->\n@startDocuBlock .*", data)
+		for docuBlock in docuBlocks:
+			fileLocation = re.findall(r"(?<=<!-- filename: ).*(?= -->)", docuBlock)[0]
+			fileLocation = re.sub(r".*(?=\/Documentation)", ARANGO_MAIN, fileLocation, 1, re.MULTILINE)
 
-		if "subtitle" in item or "divider" in item:
-			continue
+			blockName = re.findall(r"(?<=@startDocuBlock ).*", docuBlock)[0]
 
-		if "children" in item:
-			label = create_index(label, item, extendedSection)
-			
-			structure_migration_new(label, item["children"], extendedSection)
-			labelSplit = label.split("/")
-			label = "/".join(labelSplit[0:len(labelSplit)-1])
-			continue
-		else:
-			label = create_files_new(label, item, extendedSection)
-
-def create_chapter(item, manual):
-	label = item["subtitle"].lower().replace(" ", "-").replace("&","").replace("--","-")
-
-	if manual != "manual":
-		label = f"{manual}/{label}"
-
-	filepath = f'{NEW_TOOLCHAIN}/content/{version}/{label}/_index.md'
-	Path(f'{NEW_TOOLCHAIN}/content/{version}/{label}').mkdir(parents=True, exist_ok=True)
-
-	labelPage = Page()
-	labelPage.frontMatter.title = item["subtitle"]
-	labelPage.frontMatter.menuTitle = item["subtitle"]
-	labelPage.frontMatter.weight = get_weight(currentWeight)
-	infos[filepath] = {"title": item["subtitle"], "weight": get_weight(currentWeight)}
-	
-	file = open(filepath, "w", encoding="utf-8")
-	file.write(labelPage.toString())
-	file.close()
-	return label
-
-def create_index(label, item, extendedSection):
-	oldFileName = item["href"].replace(".html", ".md")
-	folderName = item["text"].lower().replace(" ", "-").replace("/", "")
-	label = label + "/" + folderName
-
-	Path(clean_line(f'{NEW_TOOLCHAIN}/content/{version}/{label}')).mkdir(parents=True, exist_ok=True)
-
-	indexPath = clean_line(f'{NEW_TOOLCHAIN}/content/{version}/{label}/_index.md')
-	oldFilePath = f'{OLD_TOOLCHAIN}/{version}/{extendedSection}{oldFileName}'
-	shutil.copyfile(oldFilePath, indexPath)
-	infos[indexPath] = {
-		"title": f'\'{item["text"]}\'' if '@' in item["text"] else item["text"],
-		"weight": get_weight(currentWeight),
-		}
-	return label
-
-def create_files_new(label, item, extendedSection):
-	oldFileName = item["href"].replace(".html", ".md")
-	oldFilePath = f'{OLD_TOOLCHAIN}/{version}/{extendedSection}{oldFileName}'.replace("//", "/")
-	if label == '':
-		return create_file_no_label(item, extendedSection)
-
-	filePath = clean_line(f'{NEW_TOOLCHAIN}/content/{version}/{label}/{oldFileName}')
-
-	try:
-		shutil.copyfile(oldFilePath, filePath)
-	except FileNotFoundError:
-		print(f"WARNING! FILE NOT FOUND IN OLD TOOLCHAIN {oldFilePath}")
-		
-	infos[filePath]  = {
-		"title": f'\'{item["text"]}\'' if '@' in item["text"] else item["text"],
-		"weight": get_weight(currentWeight),
-		}
-	return label
-
-# To handle analyzers.md etc. case that are root-level pages
-def create_file_no_label(item, extendedSection):
-	oldFileName = item["href"].replace(".html", ".md")
-	oldFilePath = f'{OLD_TOOLCHAIN}/{version}/{extendedSection}{oldFileName}'.replace("//", "/")
-
-	label = oldFileName.replace(".md", "")
-	Path(clean_line(f'{NEW_TOOLCHAIN}/content/{version}/{label}')).mkdir(parents=True, exist_ok=True)
-
-	filePath = clean_line(f'{NEW_TOOLCHAIN}/content/{version}/{label}/_index.md')
-
-	try:
-		shutil.copyfile(oldFilePath, filePath)
-	except FileNotFoundError:
-		print(f"WARNING! FILE NOT FOUND IN OLD TOOLCHAIN {oldFilePath}")
-		
-	infos[filePath]  = {
-		"title": f'\'{item["text"]}\'' if '@' in item["text"] else item["text"],
-		"weight": get_weight(currentWeight),
-		}
-	return ''
-
-# File processing jekyll-hugo migration phase
+			blocksFileLocations[blockName] = fileLocation
+	components["schemas"] = definitions
+	print("----- DONE\n")
+    
 def processFiles():
 	print(f"----- STARTING CONTENT MIGRATION")
-	#print(menu)
 	for root, dirs, files in os.walk(f"{NEW_TOOLCHAIN}/content/{version}", topdown=True):
 		for file in files:
-			processFile(f"{root}/{file}".replace("\\", "/"))
-	print("------ CONTENT MIGRATION END")
+			migrate_file.migrate(f"{root}/{file}".replace("\\", "/"))
+	print("------ DONE\n")
 
-def processFile(filepath):
-	#print(f"Migrating {filepath} content")
-	try:
-		file = open(filepath, "r", encoding="utf-8")
-		buffer = file.read()
-		file.close()
-	except Exception as ex:
-		print(traceback.format_exc())
-		raise ex
-
-	page = Page()
-
-	#Front Matter
-	if filepath in infos:
-		page.frontMatter.weight = infos[filepath]["weight"] if "weight" in infos[filepath] else 0
-		if "appendix" in filepath or "release-notes" in filepath:
-			page.frontMatter.weight = page.frontMatter.weight + 10000
-
-	_processFrontMatter(page, buffer)
-	buffer = re.sub(r"^---\n(.*?)\n---\n", '', buffer, 0, re.MULTILINE | re.DOTALL)
-
-	#Internal content
-	_processChapters(page, buffer, filepath)
-
-	file = open(filepath, "w", encoding="utf-8")
-	file.write(page.toString())
-	file.close()
-
-	return
-
-def _processFrontMatter(page, buffer):
-	frontMatterRegex = re.search(r"---(.*?)---", buffer, re.MULTILINE | re.DOTALL)
-	if not frontMatterRegex:
-		return		# TODO
-
-	frontMatter = frontMatterRegex.group(0)
-
-	migrate_title(page, frontMatter, buffer)
-	set_page_description(page, buffer, frontMatter)
-	return page
-
-def _processChapters(page, paragraph, filepath):
-	if paragraph is None or paragraph == '':
-		return
-	paragraph = re.sub("{+\s?page.description\s?}+", '', paragraph)
-	paragraph = paragraph.replace("{:target=\"_blank\"}", "")
-	paragraph = paragraph.replace("{:style=\"clear: left;\"}", "")
-
-	paragraph = re.sub(r"^# .*|(.*\n={4,})", "", paragraph, 0, re.MULTILINE)
-	paragraph = re.sub(r"(?<=\n\n)[\w\s\W]+{:class=\"lead\"}", '', paragraph)
-
-	paragraph = migrate_headers(paragraph)
-	paragraph = migrate_hrefs(paragraph, infos, filepath)
-	paragraph = migrate_youtube_links(paragraph)
-
-	paragraph = migrate_hints(paragraph)
-	paragraph = migrateIndentedCodeblocks(paragraph)
-
-	paragraph = migrate_capture_alternative(paragraph)
-	paragraph = migrate_enterprise_tag(paragraph)
-	paragraph = migrate_details(paragraph)
-	paragraph = migrate_comments(paragraph)
-
-	paragraph = migrateHTTPDocuBlocks(paragraph)
-	paragraph = migrateInlineDocuBlocks(paragraph)
-	paragraph = paragraph.lstrip("\n")
-
-	paragraph = re.sub(r"{% assign ver = \"3\.10\" \| version: \">=\" %}{% if ver %}", "", paragraph, 0)
-	paragraph = re.sub(r"{% endif -%}", "", paragraph, 0)
-
-	page.content = paragraph
-	return
+def writeOpenapiComponents():
+	print(f"----- SAVING OPENAPI DEFINITIONS ON FILE")
+	with open(OAPI_COMPONENTS_FILE, 'w', encoding="utf-8") as outfile:
+		yaml.dump(components, outfile, sort_keys=False, default_flow_style=False)
+	print("----- DONE\n")
 
 def migrate_media():
 	print("----- MIGRATING MEDIA")
@@ -210,52 +62,16 @@ def migrate_media():
 	for root, dirs, files in os.walk(f"{OLD_TOOLCHAIN}/{version}/arangograph/images", topdown=True):
 		for file in files:
 			shutil.copyfile(f"{root}/{file}", f"{NEW_TOOLCHAIN}/assets/images/{file}")
-	print("----- END MEDIA MIGRATION")
+	print("----- DONE\n")
 
-
-class Page():
-	def __init__(self):
-		self.frontMatter = FrontMatter()
-		self.content = ""
-
-	def toString(self):
-		res = self.frontMatter.toString()
-		cleanedFrontMatter = re.sub(r"^\s*$\n", '', res, 0, re.MULTILINE | re.DOTALL)
-		res =  f"{cleanedFrontMatter}{self.content}"
-		#res = re.sub(r"(?<=---)\n*", '\n', f"{cleanedFrontMatter}{self.content}", 0, re.MULTILINE | re.DOTALL)
-		return res
-
-class FrontMatter():
-	def __init__(self):
-		self.title = ""
-		self.layout = "default"
-		self.description = ""
-		self.menuTitle = ""
-		self.weight = 0
-
-	@staticmethod
-	def clean(str):
-		return str.replace("`", "").lstrip(" ")
-
-	def toString(self):
-		return f"---\ntitle: {self.clean(self.title)}\nweight: {self.weight}\ndescription: {self.description}\nlayout: default\n---\n"
-
-def get_weight(weight):
-	global currentWeight
-	currentWeight += 5
-	return currentWeight
 
 if __name__ == "__main__":
-	print("Starting migration")
+	print("----- STARTING MIGRATION FOR VERSION " + version)
 	try:
-		structure_migration_new('', None, "manual")
-		structure_migration_new('http', None, "http")
-		structure_migration_new('arangograph', None, "arangograph")
-		structure_migration_new('aql', None, "aql")
-		structure_migration_new('drivers', None, "drivers")
+		createStructure()
 		initBlocksFileLocations()
 		processFiles()
-		write_components_to_file()
+		writeOpenapiComponents()
 		migrate_media()
 	except Exception as ex:
 		print(traceback.format_exc())

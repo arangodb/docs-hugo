@@ -1,7 +1,6 @@
 import re
-import globals
+from globals import *
 import yaml
-import utils
 
 def migrateInlineDocuBlocks(paragraph):
     paragraph = re.sub(r"{%.*arangoshexample.* %}.*\n?", '', paragraph, 0)
@@ -10,7 +9,6 @@ def migrateInlineDocuBlocks(paragraph):
     processed = []
     docublocks = re.findall(r"(?<=@startDocuBlockInline)(.*?)[\s](?=@endDocuBlock)", paragraph, re.MULTILINE | re.DOTALL)
     if docublocks:
-        globals.inlineDocuBlocksCount += len(docublocks)
         for block in docublocks:
             if block in processed:
                 continue 
@@ -21,7 +19,7 @@ def migrateInlineDocuBlocks(paragraph):
                             "name": "",
                             "description": "",
                             "render": "input",
-                            "version": globals.version,
+                            "version": version,
                             },
                         "code": "",
                         }
@@ -68,6 +66,7 @@ def migrateInlineDocuBlocks(paragraph):
             codeblock = codeblock.replace("bindVars:  -", "bindVars: ")
             processed.append(block)
             paragraph = paragraph.replace(originalBlock, codeblock)
+
     paragraph = re.sub(r"@endDocuBlock.*\n", '', paragraph, 0)
     paragraph = re.sub(r".*@startDocuBlockInline", '', paragraph, 0)
 

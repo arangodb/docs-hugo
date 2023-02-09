@@ -1,5 +1,9 @@
 #!/bin/bash
 
+echo "----- RESTRUCTURING SECTIONS"
+
+echo "----- VERSION 3.10"
+echo "----- MOVING FOLDERS"
 cd ../site/content/3.10
 mkdir -p introduction deploying operations developer
 mv about-arangodb introduction
@@ -28,7 +32,9 @@ mv troubleshooting operations
 mv http developer
 mv drivers developer
 mv foxx-microservices developer
+echo "----- DONE"
 
+echo "----- UPDATING SECTIONS NAVIGATION"
 touch introduction/_index.md deploying/_index.md operations/_index.md developer/_index.md _index.md
 
 echo "---
@@ -70,8 +76,10 @@ sed -i "s/weight: .*/weight: 5000/" data-science/_index.md
 sed -i "s/weight: .*/weight: 6000/" transactions/_index.md
 sed -i "s/weight: .*/weight: 7000/" indexing/_index.md
 sed -i "s/title: .*/title: Indexing and Searching Data/" indexing/_index.md
+echo "---- DONE"
 
-
+echo "----- VERSION 3.11"
+echo "----- MOVING FOLDERS"
 cd ../3.11
 mkdir -p introduction deploying operations developer
 mv about-arangodb introduction
@@ -100,7 +108,9 @@ mv troubleshooting operations
 mv http developer
 mv drivers developer
 mv foxx-microservices developer
+echo "----- DONE"
 
+echo "----- UPDATING SECTIONS NAVIGATION"
 touch introduction/_index.md deploying/_index.md operations/_index.md developer/_index.md _index.md
 
 echo "---
@@ -142,4 +152,4 @@ sed -i "s/weight: .*/weight: 5000/" data-science/_index.md
 sed -i "s/weight: .*/weight: 6000/" transactions/_index.md
 sed -i "s/weight: .*/weight: 7000/" indexing/_index.md
 sed -i "s/title: .*/title: Indexing and Searching Data/" indexing/_index.md
-
+echo "---- DONE"
