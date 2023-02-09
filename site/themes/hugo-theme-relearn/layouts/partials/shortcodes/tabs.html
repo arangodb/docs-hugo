@@ -3,33 +3,26 @@
 {{- $groupid := .groupid | default "default" }}
 {{- with $context }}
 <div class="tab-panel">
-  <div class="tab-header">
-  </div>
-  <div class="tab-nav">
-    <select
-      data-tab-group="{{ $groupid }}"
-      class="tab-nav-button"
-      onclick="switchTab('{{ $groupid }}',event)"
-      >
-  {{- range $idx, $tab := $tabs }}
-    {{ if ne .name "" }}
-    <option value="{{.name}}" >
-      <span >{{ .name }}</span>
-    </option>
-    {{ end }}
-  {{- end }}
-    </select>
-    <button class="copy-to-clipboard-button"><i class="fas fa-copy"></i></button>
-
-  </div>
+  
   <div class="tab-content">
+    <div class="tab-nav">
+      <select
+        data-tab-group="{{ $groupid }}"
+        class="tab-nav-button"
+        onclick="switchTab('{{ $groupid }}',event)"
+        >
     {{- range $idx, $tab := $tabs }}
-    
-
+      {{ if ne .name "" }}
+      <option value="{{.name}}" >
+        <span >{{ .name }}</span>
+      </option>
+      {{ end }}
+    {{- end }}
+      </select>
+    </div>
+    {{- range $idx, $tab := $tabs }}
     <div data-tab-item="{{ .name }}" data-tab-group="{{ $groupid }}" class="tab-item {{ cond (eq $idx 0) "active" ""}}">
-      <div class="highlight">
-{{ .content | safeHTML }}
-      </div>
+{{ .content }}
     </div>
     {{- end }}
   </div>
