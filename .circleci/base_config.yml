@@ -1,0 +1,28 @@
+
+version: 2.1
+
+jobs:
+  checkout: #Checkout a desired repository
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    environment:
+      GIT_SSH_COMMAND: ssh -v
+    steps:
+      - run:
+          name: Checkout
+          command: |
+            git clone "$GIT_REPO"
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+  
+  migration: #Job to execute docs migration
+  ###
+
+  plain-build: #Job to execute plain hugo-build with no examples generation
+  ###
+
+  complete-build: #Job to execute examples generation + hugo site build
+  ###
