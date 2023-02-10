@@ -4,25 +4,26 @@ import http_docublocks
 import inline_docublocks
 
 def migrate(filepath):
-	try:
-		file = open(filepath, "r", encoding="utf-8")
-		content = file.read()
-		file.close()
-	except Exception as ex:
-		print(traceback.format_exc())
-		raise ex
+    print("Processing " + filepath)
+    try:
+        file = open(filepath, "r", encoding="utf-8")
+        content = file.read()
+        file.close()
+    except Exception as ex:
+        print(traceback.format_exc())
+        raise ex
 
-	page = Page()
+    page = Page()
 
-	_processFrontMatter(page, content, filepath)
-	content = re.sub(r"^---\n(.*?)\n---\n", '', content, 0, re.MULTILINE | re.DOTALL)  ## Cut front matter from content processing
-	_processContent(page, content, filepath)
+    _processFrontMatter(page, content, filepath)
+    content = re.sub(r"^---\n(.*?)\n---\n", '', content, 0, re.MULTILINE | re.DOTALL)  ## Cut front matter from content processing
+    _processContent(page, content, filepath)
 
-	file = open(filepath, "w", encoding="utf-8")
-	file.write(page.toString())
-	file.close()
+    file = open(filepath, "w", encoding="utf-8")
+    file.write(page.toString())
+    file.close()
 
-	return
+    return
 
 def _processFrontMatter(page, buffer, filepath):
     if filepath in infos:
@@ -42,36 +43,36 @@ def _processFrontMatter(page, buffer, filepath):
     return page
 
 def _processContent(page, paragraph, filepath):
-	if paragraph is None or paragraph == '':
-		return
+    if paragraph is None or paragraph == '':
+        return
         
-	paragraph = re.sub("{+\s?page.description\s?}+", '', paragraph)
-	paragraph = paragraph.replace("{:target=\"_blank\"}", "")
-	paragraph = paragraph.replace("{:style=\"clear: left;\"}", "")
+    paragraph = re.sub("{+\s?page.description\s?}+", '', paragraph)
+    paragraph = paragraph.replace("{:target=\"_blank\"}", "")
+    paragraph = paragraph.replace("{:style=\"clear: left;\"}", "")
 
-	paragraph = re.sub(r"^# .*|(.*\n={4,})", "", paragraph, 0, re.MULTILINE)
-	paragraph = re.sub(r"(?<=\n\n)[\w\s\W]+{:class=\"lead\"}", '', paragraph)
+    paragraph = re.sub(r"^# .*|(.*\n={4,})", "", paragraph, 0, re.MULTILINE)
+    paragraph = re.sub(r"(?<=\n\n)[\w\s{.}]+{:class=\"lead\"}\n\n", '', paragraph, 0, re.MULTILINE)
 
-	paragraph = migrate_headers(paragraph)
-	paragraph = migrate_hrefs(paragraph, infos, filepath)
-	paragraph = migrate_youtube_links(paragraph)
+    paragraph = migrate_headers(paragraph)
+    paragraph = migrate_hrefs(paragraph, infos, filepath)
+    paragraph = migrate_youtube_links(paragraph)
 
-	paragraph = migrate_hints(paragraph)
-	paragraph = migrate_capture_alternative(paragraph)
-	paragraph = migrate_enterprise_tag(paragraph)
-	paragraph = migrate_details(paragraph)
-	paragraph = migrate_comments(paragraph)
+    paragraph = migrate_hints(paragraph)
+    paragraph = migrate_capture_alternative(paragraph)
+    paragraph = migrate_enterprise_tag(paragraph)
+    paragraph = migrate_details(paragraph)
+    paragraph = migrate_comments(paragraph)
 
-	paragraph = migrateIndentedCodeblocks(paragraph)
-	paragraph = http_docublocks.migrateHTTPDocuBlocks(paragraph)
-	paragraph = inline_docublocks.migrateInlineDocuBlocks(paragraph)
-	paragraph = paragraph.lstrip("\n")
+    paragraph = migrateIndentedCodeblocks(paragraph)
+    paragraph = http_docublocks.migrateHTTPDocuBlocks(paragraph)
+    paragraph = inline_docublocks.migrateInlineDocuBlocks(paragraph)
+    paragraph = paragraph.lstrip("\n")
 
-	paragraph = re.sub(r"{% assign ver = \"3\.10\" \| version: \">=\" %}{% if ver %}", "", paragraph, 0)
-	paragraph = re.sub(r"{% endif -%}", "", paragraph, 0)
+    paragraph = re.sub(r"{% assign ver = \"3\.10\" \| version: \">=\" %}{% if ver %}", "", paragraph, 0)
+    paragraph = re.sub(r"{% endif -%}", "", paragraph, 0)
 
-	page.content = paragraph
-	return
+    page.content = paragraph
+    return
 
 ## Migration units
 
@@ -89,14 +90,12 @@ def migrate_title(page, frontMatter, content):
     return
 
 def set_page_description(page, buffer, frontMatter):
-    paragraphDescRegex = re.search(r"(?<=\n\n)[\w\s\W]+(?={:class=\"lead\"})", buffer)
+    paragraphDescRegex = re.search(r"(?<=\n\n)[\w\s{.}]+{:class=\"lead\"}", buffer, re.MULTILINE)
     if paragraphDescRegex:
         description = paragraphDescRegex.group(0)
         if not "page.description" in description:
-            if "#" in description:
-                return
-                
-            description = description.replace("\n", "\n  ")
+            print(description)
+            description = description.replace("\n", "\n  ").replace("{:class=\"lead\"}", "")
             page.frontMatter.description = f">-\n  {description}"
         else:
             page.frontMatter.description = re.search(r"(?<=description: )(.*?)((?=\n\w)|(?=---))", buffer, re.MULTILINE | re.DOTALL).group(0)
