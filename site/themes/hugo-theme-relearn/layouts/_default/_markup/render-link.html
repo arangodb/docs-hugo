@@ -4,9 +4,10 @@
 {{ $fragment := "" -}}
 {{ with $url.Fragment }}{{ $fragment = printf "#%s" . }}{{ end -}}
 {{ $permalink := "" }}
-{{ $isRemote := eq $url.Scheme "https" -}}
+
+{{ $isRemote := ne $url.Scheme "" -}}
   {{ if $isRemote -}}
-    {{ $permalink := .Destination }}
+    {{ $permalink = .Destination }}
   {{ else }}
     {{ $page := .Page.GetPage $path }}
     {{ if $page }}
@@ -15,9 +16,9 @@
       {{ if site.Params.failOnBrokenLinks }}
         {{ errorf "[ERROR] Broken link '%v'" .Destination}}
       {{ else }}
-        {{ warnf "[ERROR] Broken link '%v'" .Destination}}
+        {{ warnf "[WARN] Broken link '%v'" .Destination}}
       {{ end }}
   {{end}}
 {{ end }}
-<a {{ if $isRemote }} href="{{ .Destination }}" {{ else }} href="{{ $permalink }}" {{ end }} {{ with .Title }} title="{{ . }}"{{ end }}{{ if $isRemote }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .Text | safeHTML }}</a>
+<a  href="{{ $permalink | safeURL }}" {{ with .Title }} title="{{ . }}"{{ end }} {{ if $isRemote }} target="_blank" rel="noopener noreferrer" {{ end }}>{{ .Text | safeHTML }}</a>
 {{- /* whitespace control */ -}}
