@@ -1201,6 +1201,414 @@ schemas:
           used later for optimizations.
 
         format: ''
+  system_statistics_struct:
+    type: object
+    properties:
+      minorPageFaults:
+        type: integer
+        description: |+
+          pagefaults
+
+        format: ''
+      majorPageFaults:
+        type: integer
+        description: |+
+          pagefaults
+
+        format: ''
+      userTime:
+        type: number
+        description: |+
+          the user CPU time used by the server process
+
+        format: float
+      systemTime:
+        type: number
+        description: |+
+          the system CPU time used by the server process
+
+        format: float
+      numberOfThreads:
+        type: integer
+        description: |+
+          the number of threads in the server
+
+        format: ''
+      residentSize:
+        type: integer
+        description: |+
+          RSS of process
+
+        format: ''
+      residentSizePercent:
+        type: number
+        description: |+
+          RSS of process in %
+
+        format: float
+      virtualSize:
+        type: integer
+        description: |+
+          VSS of the process
+
+        format: ''
+  setof_statistics_struct:
+    type: object
+    properties:
+      sum:
+        type: number
+        description: |+
+          summarized value of all counts
+
+        format: ''
+      count:
+        type: integer
+        description: |+
+          number of values summarized
+
+        format: ''
+      counts:
+        type: array
+        description: |+
+          array containing the values
+
+        items:
+          type: integer
+  client_statistics_struct:
+    type: object
+    properties:
+      connectionTime:
+        type: object
+        description: |+
+          total connection times
+
+        format: setof_statistics_struct
+      totalTime:
+        type: object
+        description: |+
+          the system time
+
+        format: setof_statistics_struct
+      requestTime:
+        type: object
+        description: |+
+          the request times
+
+        format: setof_statistics_struct
+      queueTime:
+        type: object
+        description: |+
+          the time requests were queued waiting for processing
+
+        format: setof_statistics_struct
+      ioTime:
+        type: object
+        description: |+
+          IO Time
+
+        format: setof_statistics_struct
+      bytesSent:
+        type: object
+        description: |+
+          number of bytes sent to the clients
+
+        format: setof_statistics_struct
+      bytesReceived:
+        type: object
+        description: |+
+          number of bytes received from the clients
+
+        format: setof_statistics_struct
+      httpConnections:
+        type: integer
+        description: |+
+          the number of open http connections
+
+        format: ''
+  http_statistics_struct:
+    type: object
+    properties:
+      requestsTotal:
+        type: integer
+        description: |+
+          total number of http requests
+
+        format: ''
+      requestsAsync:
+        type: integer
+        description: |+
+          total number of asynchronous http requests
+
+        format: ''
+      requestsGet:
+        type: integer
+        description: |+
+          No of requests using the GET-verb
+
+        format: ''
+      requestsHead:
+        type: integer
+        description: |+
+          No of requests using the HEAD-verb
+
+        format: ''
+      requestsPost:
+        type: integer
+        description: |+
+          No of requests using the POST-verb
+
+        format: ''
+      requestsPut:
+        type: integer
+        description: |+
+          No of requests using the PUT-verb
+
+        format: ''
+      requestsPatch:
+        type: integer
+        description: |+
+          No of requests using the PATCH-verb
+
+        format: ''
+      requestsDelete:
+        type: integer
+        description: |+
+          No of requests using the DELETE-verb
+
+        format: ''
+      requestsOptions:
+        type: integer
+        description: |+
+          No of requests using the OPTIONS-verb
+
+        format: ''
+      requestsOther:
+        type: integer
+        description: |+
+          No of requests using the none of the above identified verbs
+
+        format: ''
+  server_statistics_struct:
+    type: object
+    properties:
+      uptime:
+        type: integer
+        description: |+
+          time the server is up and running
+
+        format: ''
+      physicalMemory:
+        type: integer
+        description: |+
+          available physical memory on the server
+
+        format: ''
+      transactions:
+        type: object
+        description: |+
+          Statistics about transactions
+
+        format: transactions_struct
+      v8Context:
+        type: object
+        description: |+
+          Statistics about the V8 javascript contexts
+
+        format: v8_context_struct
+      threads:
+        type: object
+        description: |+
+          Statistics about the server worker threads (excluding V8 specific or jemalloc specific threads and system threads)
+
+        format: server_threads_struct
+  transactions_struct:
+    type: object
+    properties:
+      started:
+        type: integer
+        description: |+
+          the number of started transactions
+
+        format: ''
+      committed:
+        type: integer
+        description: |+
+          the number of committed transactions
+
+        format: ''
+      aborted:
+        type: integer
+        description: |+
+          the number of aborted transactions
+
+        format: ''
+      intermediateCommits:
+        type: integer
+        description: |+
+          the number of intermediate commits done
+
+        format: ''
+  v8_context_struct:
+    type: object
+    properties:
+      available:
+        type: integer
+        description: |+
+          the number of currently spawnen V8 contexts
+
+        format: ''
+      busy:
+        type: integer
+        description: |+
+          the number of currently active V8 contexts
+
+        format: ''
+      dirty:
+        type: integer
+        description: |+
+          the number of contexts that were previously used, and should now be garbage collected before being re-used
+
+        format: ''
+      free:
+        type: integer
+        description: |+
+          the number of V8 contexts that are free to use
+
+        format: ''
+      max:
+        type: integer
+        description: |+
+          the maximum number of V8 concurrent contexts we may spawn as configured by --javascript.v8-contexts
+
+        format: ''
+      min:
+        type: integer
+        description: |+
+          the minimum number of V8 contexts that are spawned as configured by --javascript.v8-contexts-minimum
+
+        format: ''
+      memory:
+        type: array
+        description: |+
+          a list of V8 memory / garbage collection watermarks; Refreshed on every garbage collection run;
+          Preserves min/max memory used at that time for 10 seconds
+
+        items:
+          $ref: '#/components/schemas/v8_isolate_memory'
+  v8_isolate_memory:
+    type: object
+    properties:
+      contextId:
+        type: integer
+        description: |+
+          ID of the context this set of memory statistics is from
+
+        format: ''
+      tMax:
+        type: number
+        description: |+
+          the timestamp where the 10 seconds interval started
+
+        format: ''
+      countOfTimes:
+        type: integer
+        description: |+
+          how many times was the garbage collection run in these 10 seconds
+
+        format: ''
+      heapMax:
+        type: integer
+        description: |+
+          High watermark of all garbage collection runs in 10 seconds
+
+        format: ''
+      heapMin:
+        type: integer
+        description: |+
+          Low watermark of all garbage collection runs in these 10 seconds
+
+        format: ''
+  server_threads_struct:
+    type: object
+    properties:
+      scheduler-threads:
+        type: integer
+        description: |+
+          The number of spawned worker threads
+
+        format: ''
+      in-progress:
+        type: integer
+        description: |+
+          The number of currently busy worker threads
+
+        format: ''
+  admin_statistics_group_struct:
+    type: object
+    properties:
+      group:
+        type: string
+        description: |+
+          The identifier of the group.
+
+        format: ''
+      name:
+        type: string
+        description: |+
+          The name of the group.
+
+        format: ''
+      description:
+        type: string
+        description: |+
+          A description of the group.
+
+        format: ''
+  admin_statistics_figures_struct:
+    type: object
+    properties:
+      group:
+        type: string
+        description: |+
+          The identifier of the group to which this figure belongs.
+
+        format: ''
+      identifier:
+        type: string
+        description: |+
+          The identifier of the figure. It is unique within the group.
+
+        format: ''
+      name:
+        type: string
+        description: |+
+          The name of the figure.
+
+        format: ''
+      description:
+        type: string
+        description: |+
+          A description of the figure.
+
+        format: ''
+      type:
+        type: string
+        description: |+
+          Either *current*, *accumulated*, or *distribution*.
+
+        format: ''
+      cuts:
+        type: string
+        description: |+
+          The distribution vector.
+
+        format: ''
+      units:
+        type: string
+        description: |+
+          Units in which the figure is measured.
+
+        format: ''
   jwt_keys_struct:
     type: object
     properties:
@@ -1310,6 +1718,20 @@ schemas:
           Default: the value defined by the top-level `trackListPositions` option.
 
         format: ''
+      cache:
+        type: boolean
+        description: |+
+          Enable this option to always cache the field normalization values in memory
+          for this specific field. This can improve the performance of scoring and
+          ranking queries.
+
+          Normalization values are computed for fields which are processed with Analyzers
+          that have the `"norm"` feature enabled. These values are used to score fairer if
+          the same tokens occur repeatedly, to emphasize these documents less.
+
+          Default: the value defined by the top-level `cache` option.
+
+        format: ''
       nested:
         type: array
         description: |+
@@ -1372,6 +1794,16 @@ schemas:
           Default: the value defined by the top-level `searchField` option.
 
         format: ''
+      cache:
+        type: boolean
+        description: |+
+          Enable this option to always cache the field normalization values in memory
+          for this specific nested field. This can improve the performance of scoring and
+          ranking queries.
+
+          Default: the value defined by the top-level `cache` option.
+
+        format: ''
       nested:
         type: array
         description: |+
@@ -1398,6 +1830,15 @@ schemas:
           - `"none"`: disable compression to trade space for speed.
 
         format: ''
+      cache:
+        type: boolean
+        description: |+
+          Enable this option to always cache stored values in memory. This can improve the
+          query performance if stored values are involved.
+
+          Default: `false`
+
+        format: ''
   post_api_index_inverted_primarysort:
     type: object
     properties:
@@ -1414,6 +1855,15 @@ schemas:
           Defines how to compress the primary sort data. Possible values:
           - `"lz4"` (default): use LZ4 fast compression.
           - `"none"`: disable compression to trade space for speed.
+
+        format: ''
+      cache:
+        type: boolean
+        description: |+
+          Enable this option to always cache the primary sort columns in memory. This can
+          improve the performance of queries that utilize the primary sort order.
+
+          Default: `false`
 
         format: ''
   post_api_index_inverted_primarysort_fields:
