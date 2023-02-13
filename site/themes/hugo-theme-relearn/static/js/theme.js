@@ -707,32 +707,43 @@ const goToTop = () => {
 
 var showSidenav = true;
 
-$('#search-by').keypress(
-    function(event){
-      if (event.which == '13') {
-        event.preventDefault();
-      }
-  });
 
-$("input.toggle").click(function(event) {
-    var arrow = $(event.target).next()[0];
-    if(arrow.classList.contains("open")) {
-        arrow.classList.remove("open");
-        arrow.classList.add("closed");
-    } else {
-        arrow.classList.remove("closed");
-        arrow.classList.add("open");
-    }
-    var submenu = $(event.target).next().next().next();
-    submenu.slideToggle();
+function initClickHandlers() {
+    $(".openapi-table-row").click(function(event) {
+        var arrow = $(event.target);
+        console.log(arrow)
+        arrow.toggleClass("collapsed");
+    });
     
-});
+    $(".show-children").click(function(event) {
+        var arrow = $(event.target).next();
+        console.log(arrow)
+        arrow.slideToggle();
+    });
 
-$(".openapi-table-row").click(function(event) {
-    var arrow = $(event.target);
-    console.log(arrow)
-    arrow.toggleClass("collapsed");
-});
+    $('#search-by').keypress(
+        function(event){
+          if (event.which == '13') {
+            event.preventDefault();
+          }
+      });
+    
+    $("input.toggle").click(function(event) {
+        var arrow = $(event.target).next()[0];
+        if(arrow.classList.contains("open")) {
+            arrow.classList.remove("open");
+            arrow.classList.add("closed");
+        } else {
+            arrow.classList.remove("closed");
+            arrow.classList.add("open");
+        }
+        var submenu = $(event.target).next().next().next();
+        submenu.slideToggle();
+        
+    });
+}
+
+
 
 function menuEntryClick(event) {
     loadPage(event.target.getAttribute('href'));
@@ -948,6 +959,7 @@ $(window).scroll(function(){
     renderVersion();
     loadMenu();
     initCopyToClipboard();
+    initClickHandlers();
 
     images = document.querySelectorAll("[x-style]");
     for (let image of images) {

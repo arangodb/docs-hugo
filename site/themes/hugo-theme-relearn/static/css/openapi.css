@@ -68,9 +68,36 @@
 
 .openapi-table > li {
     list-style: none;
-    border-bottom: 1px solid #edf2f7;;
     margin-top: 1rem;
     margin-bottom: 1rem;
+}
+
+.show-children {
+    border: 2px solid #e9ebee;
+    padding: 5px;
+    border-radius: 6px;
+    font-size: 13px;
+}
+
+.show-children.collapsed::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f054";
+    display: inline-block;
+    padding-right: 3px;
+    vertical-align: middle;
+    font-weight: 900;
+    font-size: 10px;
+    color: grey;
+}
+
+.show-children::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f078";
+    display: inline-block;
+    padding-right: 3px;
+    vertical-align: middle;
+    font-weight: 900;
+    font-size: 10px;
 }
 
 .openapi-table-title {

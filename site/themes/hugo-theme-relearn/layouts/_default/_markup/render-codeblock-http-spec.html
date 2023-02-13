@@ -76,16 +76,20 @@
 {{- define "renderProperty" }}
   {{ $prop := .prop }}
   {{ $value := .value }}
+  {{ $structName := "" }}
     <li class="openapi-table-row regular-font collapsed">
-        <code class="bold-text">{{ $prop }}</code>  <span style="font-weight: bold;">{{ $value.type }}</span>
+      {{ $ref := index $value "$ref" }}
+      {{ if $ref }}
+        {{$structName = split $ref "/" | last 1 }}
+      {{ end }}
+        <code class="bold-text">{{ $prop }}</code>  <span style="font-weight: bold;">{{ if $ref }} {{ $structName}} {{ else }} {{ $value.type }} {{ end }}</span>
         {{ $description := $value.description | markdownify }}
           <p class="regular-font">{{ $description }}</p>
-        {{ $ref := index $value "$ref" }}
         
         {{ with $ref }}
-          {{$structName := split . "/" | last 1 }}
           {{ $componentsFile := index site.Data "components" }}
           {{ $struct := index $componentsFile.schemas $structName }}
+          <span class="openapi-table show-children bold-text"> Show Children</span>
           <ul class="openapi-table children">
             {{ range $k, $v := $struct.properties }}
               {{- template "renderProperty" dict "prop" $k "value" $v }}
