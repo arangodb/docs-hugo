@@ -1,108 +1,104 @@
-        {{ $yamlBlock := .Inner | transform.Unmarshal }}
-        {{ $spec := $yamlBlock | jsonify }}
-        {{ $seed := "foo" }}
-        {{ $random := delimit (shuffle (split (md5 $seed) "" )) "" }}
-        <rapi-doc
-          id="{{ $random }}"
-          render-style="read" show-header="false" allow-try="false" regular-font="Open Sans"
-        >
-        <style>  
-          rapi-doc::part(section-endpoint-head-method) {
-            font-size: 14px;
-            border: none;
-            margin-right: 15px;
-            margin-left: -20px;
-            padding-top: 4px;
-
-          }
-          rapi-doc::part(section-operation-webhook-method) {
-            font-size: 1rem;
-          }
-          rapi-doc::part(section-endpoint-head-method):hover {
-            color: none;
-          }
-          rapi-doc::part(section-endpoint-head-path) {
-            white-space: nowrap;
-          text-overflow: ellipsis;
-          }
-          rapi-doc::part(section-operations-in-tag),
-          rapi-doc::part(section-overview) {
-            padding-top: 0;
-            position: relative;
-            bottom: 1rem;
-          }
-          rapi-doc::part(section-endpoint-head-description) {
-            display:none;
-          }
-          rapi-doc::part(section-operation-summary) {
-            display:none;
-          }
-          rapi-doc::part(operation-divider) {
-            display:none;
-          }
-          rapi-doc::part(section-navbar) {
-            display:none;
-          }
-          rapi-doc::part(section-tag) {
-            display:none;
-          }
-          rapi-doc::part(section-endpoint) {
-            font-size: 11px;
-            border: 1px solid !important;
-            border-radius: 6px !important;
-            background: var(--SIDEBAR-BACKGROUND-COLOR) !important;
-          }
-          rapi-doc::part(btn-response-status):hover {
-            background-color: var(--CODEBLOCK-BACKGROUND-COLOR);
-            color: var(--CODEBLOCK-TEXT-COLOR);
-          }
-          rapi-doc::part(btn-selected-response-status) {
-            background-color: var(--CODEBLOCK-BACKGROUND-COLOR);
-            color: var(--CODEBLOCK-TEXT-COLOR);
-          }
-          rapi-doc::part(textarea) {
-            border: 1px solid !important;
-            border-radius: 6px !important;
-            background: var(--CODEBLOCK-BACKGROUND-COLOR) !important;
-            color: var(--CODEBLOCK-TEXT-COLOR);
-          }
-          .operations-root > .section-gap.section-tag {
-            border: none !important;
-            padding: 0 !important;
-          }
-          @media only screen and (min-width: 1024px) {
-            rapi-doc::part(section-operations-in-tag) {
-                padding: 0;
-            }
-          }
-          .section-tag-header{
-            display: none;
-          }
-          
-          rapi-doc::part(section-header) {
-            display: none;
-          }
-          rapi-doc::part(section-auth) {
-            display: none;
-          }
-          rapi-doc::part(section-servers) {
-            display: none;
-          }
-          
-        </style>
-        </rapi-doc>   
-        <script>
-        window.addEventListener('popstate', (event) => {
-            var docEl = document.getElementById("{{ $random }}");
-            var strSpec = "{{ $spec }}";
-            var objSpec = JSON.parse(strSpec);
-            docEl.loadSpec(objSpec);
-        });
-
-        window.addEventListener('DOMContentLoaded', (event) => {
-            var docEl = document.getElementById("{{ $random }}");
-            var strSpec = "{{ $spec }}";
-            var objSpec = JSON.parse(strSpec);
-            docEl.loadSpec(objSpec);
-        });
-        </script>
+{{ $yamlBlock := .Inner | transform.Unmarshal }}
+{{ with $yamlBlock }}
+<div class="openapi">
+{{ range $path, $methods := .paths }}
+  {{ range $method, $items := $methods }}
+    <div class="endpoint">
+      <span class="endpoint-method regular-font upper bold-text method-{{ $method }}">{{ $method }}</span>
+      <span class="endpoint-path">{{ $path }}</span>
+    </div>
+    <div class="description regular-font">
+      {{ $items.description | markdownify }}
+    </div>
+    <!-- Path Params-->
+    {{ with .parameters }}
+    <div class="openapi-parameters regular-font">
+      <div class="openapi-table-title">
+        Path Parameters
+      </div>
+      <div>
+        <table class="openapi-table">
+          <tbody>
+            {{ range $k, $v := .}}
+            <tr class="openapi-table-row regular-font">
+              <td  class="regular-font"><code class="bold-text">{{ $v.name }}</code><br/>{{ $v.schema.type }}</td>
+              <td class="regular-font openapi-table-description">
+                {{ $descProvv := $v.description | truncate 70 }}
+                {{if gt (len $v.description) 70}}
+                    {{- partial "shortcodes/expand.html" (dict
+                      "context" .
+                      "content" $v.description
+                      "open"    "open"
+                      "title"   $descProvv
+                    ) }}
+                  {{ else }}
+                    {{ $v.description }}
+                  {{ end }}
+                </td>
+            </tr>
+            {{ end }}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {{ end }}
+    <!-- Request Body -->
+    {{ with .requestBody }}
+    <div class="openapi-parameters regular-font">
+      <div class="openapi-table-title">
+        Request Body
+      </div>
+      <div>
+        <table class="openapi-table">
+          <tbody>
+            {{ range $k, $v := .content }}
+              {{ range $prop, $value := $v.schema.properties}}
+              <tr class="openapi-table-row regular-font">
+                <td  class="regular-font"><code class="bold-text">{{ $prop }}</code><br/>{{ $value.type }}</td>
+                <td class="regular-font openapi-table-description">
+                  {{ $descProvv := $value.description | truncate 70 }}
+                  {{if gt (len $value.description) 70}}
+                    {{- partial "shortcodes/expand.html" (dict
+                      "context" .
+                      "content" $value.description
+                      "open"    "open"
+                      "title"   $descProvv
+                    ) }}
+                  {{ else }}
+                    {{ $value.description }}
+                  {{ end }}
+                </td>
+              </tr>
+              {{ end }}
+            {{ end }}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    {{ end }}
+    <!--- Responses -->
+    <div class="responses regular-font">
+      <div class="openapi-table-title">Responses</div>
+      <div>
+        <div class="response-codes">
+        {{ range $status, $info := .responses }}
+            <button class="response-code">
+              {{ $status }}
+            </button>
+        {{ end }}
+        </div>
+        {{ range $status, $info := .responses }}
+            <div style="display: none;">
+             <div>
+               <span>
+                <p> {{ $info }}</p>
+               </span>
+             </div>
+            </div>
+        {{ end }}
+      </div>
+    </div>
+  {{end}}
+{{end}}
+</div>
+{{ end }}

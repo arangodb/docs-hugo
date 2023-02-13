@@ -1,0 +1,111 @@
+.openapi {
+    --border-radius: 2px;
+    --layout: row;
+    --font-mono: "Consolas", menlo, monospace;
+    --font-regular: "Inter", Helvetica, Arial, sans-serif;
+    --scroll-bar-width: 8px;
+    --nav-item-padding: 7px 16px 7px 10px;
+    --resp-area-height: 400px;
+    --font-size-mono: 13px;
+    --font-size-regular: 14px;
+    --dialog-z-index: 1000;
+    --focus-shadow: 0 0 0 1px transparent, 0 0 0 3px rgba(125, 201, 3, 0.4);
+
+    display: flex;
+    flex-direction: column;
+    margin: 0px;
+    padding: 0px;
+    overflow: hidden;
+    letter-spacing: normal;
+    color: var(--fg);
+    background-color: var(--bg);
+    font-family: var(--font-regular);
+}
+
+.endpoint {
+    text-align: left;
+    direction: ltr;
+    padding: 8px 0;
+    color: var(--fg3);
+    font-size: 1rem;
+}
+
+.regular-font {
+    font-family: var(--font-regular);
+}
+
+.upper {
+    text-transform: uppercase;
+}
+
+.bold-text {
+    font-weight: bold;
+}
+
+.method-get {
+    color: #47afe8
+}
+
+.method-post {
+    color: #690;
+}
+
+.method-delete {
+    color: #f06560;
+}
+
+.openapi > .description {
+    margin-top: 1em;
+    margin-bottom: 2em;
+}
+
+.openapi-table {
+    border: 1 solid #edf2f7;
+    border-width: 3px;
+    margin-top: 1rem;
+}
+
+.openapi-table-title {
+    font-family: var(--font-regular);
+    font-size: calc(var(--font-size-small) + 4px);
+    font-weight: bold;
+    margin-bottom: 8px;
+    text-align: left;
+    color: var(--H2-COLOR);
+}
+
+.openapi-table-row > td > code {
+    font-size: 13px;
+}
+
+.openapi-table-description > .expand {
+    margin:0;
+}
+
+.openapi-table-description > .expand > .expand-label {
+    font-size: 1em;
+}
+
+.response-codes {
+    align-items: center;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin: 0;
+}
+
+.response-code {
+    border-radius: var(--border-radius);
+    font-weight: 600;
+    display: inline-block;
+    padding: 6px 16px;
+    font-size: var(--font-size-small);
+    outline: 0px;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    background-color: transparent;
+    transition: background-color 0.2s ease 0s;
+    user-select: none;
+    cursor: pointer;
+    box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
+}
