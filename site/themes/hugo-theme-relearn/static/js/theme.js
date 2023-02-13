@@ -728,6 +728,12 @@ $("input.toggle").click(function(event) {
     
 });
 
+$(".openapi-table-row").click(function(event) {
+    var arrow = $(event.target);
+    console.log(arrow)
+    arrow.toggleClass("collapsed");
+});
+
 function menuEntryClick(event) {
     loadPage(event.target.getAttribute('href'));
     var arrow = $(event.target).prev()[0];

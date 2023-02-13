@@ -17,31 +17,15 @@
         Path Parameters
       </div>
       <div>
-        <table class="openapi-table">
-          <tbody>
+        <ul class="openapi-table">
             {{ range $k, $v := .}}
-            <tr class="openapi-table-row regular-font">
-              <td  class="regular-font"><code class="bold-text">{{ $v.name }}</code><br/>{{ $v.schema.type }}</td>
-              <td class="regular-font openapi-table-description">
-                {{ $descProvv := $v.description | truncate 70 }}
-                {{if gt (len $v.description) 70}}
-                    {{- partial "shortcodes/expand.html" (dict
-                      "context" .
-                      "content" $v.description
-                      "open"    "open"
-                      "title"   $descProvv
-                    ) }}
-                  {{ else }}
-                    {{ $v.description }}
-                  {{ end }}
-                </td>
-            </tr>
+              {{- template "renderProperty" dict "prop" $v.name "value" $v }}
             {{ end }}
-          </tbody>
-        </table>
+        </ul>
       </div>
     </div>
     {{ end }}
+    <!-- End Path Params -->
     <!-- Request Body -->
     {{ with .requestBody }}
     <div class="openapi-parameters regular-font">
@@ -49,33 +33,18 @@
         Request Body
       </div>
       <div>
-        <table class="openapi-table">
-          <tbody>
-            {{ range $k, $v := .content }}
-              {{ range $prop, $value := $v.schema.properties}}
-              <tr class="openapi-table-row regular-font">
-                <td  class="regular-font"><code class="bold-text">{{ $prop }}</code><br/>{{ $value.type }}</td>
-                <td class="regular-font openapi-table-description">
-                  {{ $descProvv := $value.description | truncate 70 }}
-                  {{if gt (len $value.description) 70}}
-                    {{- partial "shortcodes/expand.html" (dict
-                      "context" .
-                      "content" $value.description
-                      "open"    "open"
-                      "title"   $descProvv
-                    ) }}
-                  {{ else }}
-                    {{ $value.description }}
-                  {{ end }}
-                </td>
-              </tr>
-              {{ end }}
+        <ul class="openapi-table">
+          {{ range $k, $v := .content }}
+            {{ range $prop, $value := $v.schema.properties}}
+              {{- template "renderProperty" dict "prop" $prop "value" $value }}
             {{ end }}
-          </tbody>
-        </table>
+          {{ end }}
+        </ul>
       </div>
     </div>
     {{ end }}
+    <!-- End Request Body -->
+
     <!--- Responses -->
     <div class="responses regular-font">
       <div class="openapi-table-title">Responses</div>
@@ -101,4 +70,27 @@
   {{end}}
 {{end}}
 </div>
+{{ end }}
+
+
+{{- define "renderProperty" }}
+  {{ $prop := .prop }}
+  {{ $value := .value }}
+    <li class="openapi-table-row regular-font collapsed">
+        <code class="bold-text">{{ $prop }}</code>  <span style="font-weight: bold;">{{ $value.type }}</span>
+        {{ $description := $value.description | markdownify }}
+          <p class="regular-font">{{ $description }}</p>
+        {{ $ref := index $value "$ref" }}
+        
+        {{ with $ref }}
+          {{$structName := split . "/" | last 1 }}
+          {{ $componentsFile := index site.Data "components" }}
+          {{ $struct := index $componentsFile.schemas $structName }}
+          <ul class="openapi-table children">
+            {{ range $k, $v := $struct.properties }}
+              {{- template "renderProperty" dict "prop" $k "value" $v }}
+            {{ end }}
+          </ul>
+        {{ end }}
+    </li>
 {{ end }}

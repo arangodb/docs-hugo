@@ -63,6 +63,14 @@
     border: 1 solid #edf2f7;
     border-width: 3px;
     margin-top: 1rem;
+    margin-left: 0;
+}
+
+.openapi-table > li {
+    list-style: none;
+    border-bottom: 1px solid #edf2f7;;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
 }
 
 .openapi-table-title {
@@ -74,16 +82,46 @@
     color: var(--H2-COLOR);
 }
 
-.openapi-table-row > td > code {
+.openapi-table-row.collapsed::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f054";
+    display: inline-block;
+    padding-right: 3px;
+    vertical-align: middle;
+    font-weight: 900;
+    font-size: 10px;
+    color: grey;
+}
+
+.openapi-table-row::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f078";
+    display: inline-block;
+    padding-right: 3px;
+    vertical-align: middle;
+    font-weight: 900;
+    font-size: 10px;
+}
+
+.openapi-table-row.collapsed > *:nth-child(n+3){
+    display: none;
+}
+
+.openapi-table-row > code {
     font-size: 13px;
 }
 
-.openapi-table-description > .expand {
-    margin:0;
+.openapi-table-row > .expand {
+    margin-bottom: 1rem;
 }
 
-.openapi-table-description > .expand > .expand-label {
+.openapi-table-row > .expand > .expand-label {
     font-size: 1em;
+    margin-bottom: 1em;
+}
+
+.openapi-table.children {
+    display: none;
 }
 
 .response-codes {
