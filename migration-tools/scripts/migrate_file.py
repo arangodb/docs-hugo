@@ -2,6 +2,7 @@ import re
 from globals import *
 import http_docublocks
 import inline_docublocks
+import os
 
 def migrate(filepath):
     print("Processing " + filepath)
@@ -192,13 +193,19 @@ def migrate_image(paragraph, href):
 
 def migrate_link(paragraph, href, filepath):
     linkContent = href.replace(")", "")
-    filename = re.search("([^\/]+)\.html", linkContent)
+    filename = re.search(".*\.html", linkContent, re.MULTILINE)
     if not filename:
         return paragraph
 
-    filename = filename.group(0).replace(".html", "").replace("/", "")
+    filename = filename.group(0).replace(".html", ".md").replace("..", "")
     fragment = re.search(r"#+.*", linkContent)
+    newLink = ""
+    for k in infos.keys():
+        match = re.search(filename + "$", k, re.MULTILINE)
+        if match:
+            newLink = os.path.relpath(k, filepath).replace("../", "", 1)
 
+    paragraph = paragraph.replace(linkContent, newLink)
     return paragraph
 
 def migrate_youtube_links(paragraph):
