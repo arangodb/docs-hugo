@@ -237,10 +237,10 @@ def migrate_docublock_output(exampleName):
     return output
 
 def migrateIndentedCodeblocks(paragraph):
-    indentedCodeblocks = re.findall(r"^\n(?:\s{4}[a-zA-Z].*\n)+^\n", paragraph, re.MULTILINE)
+    indentedCodeblocks = re.findall(r"(?:\n+ {4,}[^-].*)+", paragraph, re.MULTILINE)
     for codeblock in indentedCodeblocks:
-        newCodeblock = f"```\n{codeblock}```\n"
-        newCodeblock = re.sub(r"^\s*$\n|^\s*", "", newCodeblock, 0, re.MULTILINE)
+        newCodeblock = f"```\n{codeblock}\n```\n"
+        newCodeblock = re.sub(r"(?<=\`{3}\n)(^\n)+|^ {4}", "", newCodeblock, 0, re.MULTILINE)
 
         paragraph = paragraph.replace(codeblock, "\n" + newCodeblock + "\n")
 
