@@ -17,21 +17,17 @@ menu:
       identifier: "ds"
       url: "https://github.com/ArangoDB/ArangoDB/issues"
       weight: 10
-    
-markup:
 
+markup:
   highlight:
     style: "nord"
-
   goldmark:
     renderer:
       unsafe: true
-      
     parser:
       attribute:
         block: true
         title: true
-
 
 outputs:
   home: ["HTML", "RSS", "JSON"]
@@ -73,5 +69,3 @@ params:
   custom_css: ["css/*"]
   swaggerInitialize: "{ \"theme\": \"light\" }"
   hidden: false
-
-
