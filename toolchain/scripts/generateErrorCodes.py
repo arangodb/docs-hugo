@@ -19,28 +19,32 @@ src = args.src.replace("\\", "/").rstrip("/")
 dst = args.dst.replace("\\", "/").rstrip("/")
 
 def generateFile():
-    res = {}
+    res = []
 
     f = open(src).read()
-    labels = re.findall(r"#{2} .*", f, re.MULTILINE)
+    labels = re.findall(r"#{3,}\n#{2} .*", f, re.MULTILINE)
+    i = 0
 
     for label in labels:
-        res[label] = {}
+        label = label.replace("#", "").replace("\n", "").lstrip(" ")
+        res.append({"label": label})
+        i+=1
 
     with open(src) as f:
-        currentLabel = ""
+        i = -1
 
         for line in f:
             try:
                 if line.startswith("###"):
                     continue
 
-                if line.strip("\n") in res:
-                    currentLabel = line.strip("\n")
+                if line.startswith("## "):
+                    i+=1
                     continue
 
                 if line == "\n":
                     continue
+
 
                 parts = line.split(",")
                 errorName = parts[0]
@@ -48,15 +52,16 @@ def generateFile():
                 errorMsg = parts[2]
                 errorDesc = ",".join(parts[3:])
 
-                res[currentLabel][errorName] = {
-                    "errorCode": errorCode,
+                res[i][errorCode] = {
+                    "errorName": errorName,
                     "errorMsg": errorMsg,
                     "errorDesc": errorDesc
                     }
 
             except Exception as ex:
                 print(f"Exception in line {line}")
-                print(traceback.print_exc())
+
+    print(res)
 
     
      

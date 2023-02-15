@@ -5,4 +5,4 @@ weight: 11920
 description: 
 layout: default
 ---
-{% docublock errorCodes %}
+{{< error-codes >}}
