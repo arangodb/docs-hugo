@@ -82,9 +82,9 @@ def migrate_title(page, frontMatter, content):
     if fmTitleRegex:
         page.frontMatter.title = fmTitleRegex.group(0)
 
-    paragraphTitleRegex = re.search(r"(?<=---\n)(# .*)|(.*\n(?=={4,}))", content)
+    paragraphTitleRegex = re.search(r"(?<=---\n)\n*(# .*)|(.*\n(?=={4,}))", content)
     if paragraphTitleRegex:
-        page.frontMatter.title = paragraphTitleRegex.group(0).replace('#', '').replace(':', '')
+        page.frontMatter.title = paragraphTitleRegex.group(0).replace('#', '').replace(':', '').replace("\n", "")
         page.frontMatter.title = re.sub(r"{{ .* }}", '', page.frontMatter.title)
 
     page.frontMatter.title = page.frontMatter.title.replace("`", "")
@@ -166,11 +166,6 @@ def migrate_hrefs(paragraph, infos, filepath):
             paragraph = migrate_image(paragraph, href)
             continue
 
-    linksRegex = re.findall(r"(?<=\]\()(.*?)\)", paragraph)
-    for link in linksRegex:
-        if ".html" in link:
-            paragraph = migrate_link(paragraph, link, filepath)
-
     return paragraph
 
 def migrate_image(paragraph, href):
@@ -190,23 +185,6 @@ def migrate_image(paragraph, href):
     else:
         newImg = href.replace(linkContent, newImgName)
         return paragraph.replace(href, newImg)
-
-def migrate_link(paragraph, href, filepath):
-    linkContent = href.replace(")", "")
-    filename = re.search(".*\.html", linkContent, re.MULTILINE)
-    if not filename:
-        return paragraph
-
-    filename = filename.group(0).replace(".html", ".md").replace("..", "")
-    fragment = re.search(r"#+.*", linkContent)
-    newLink = ""
-    for k in infos.keys():
-        match = re.search(filename + "$", k, re.MULTILINE)
-        if match:
-            newLink = os.path.relpath(k, filepath).replace("../", "", 1)
-
-    paragraph = paragraph.replace(linkContent, newLink)
-    return paragraph
 
 def migrate_youtube_links(paragraph):
     youtubeRegex = re.search(r"{% include youtube\.html .* %}", paragraph)
