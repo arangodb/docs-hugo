@@ -57,11 +57,11 @@ def migrate_media():
 	Path(f"{NEW_TOOLCHAIN}/assets/images/").mkdir(parents=True, exist_ok=True)
 	for root, dirs, files in os.walk(f"{OLD_TOOLCHAIN}/{version}/images", topdown=True):
 		for file in files:
-			shutil.copyfile(f"{root}/{file}", f"{NEW_TOOLCHAIN}/assets/images/{file}")
+			shutil.copyfile(f"{root}/{file}", f"{NEW_TOOLCHAIN}/content/images/{file}")
 
 	for root, dirs, files in os.walk(f"{OLD_TOOLCHAIN}/{version}/arangograph/images", topdown=True):
 		for file in files:
-			shutil.copyfile(f"{root}/{file}", f"{NEW_TOOLCHAIN}/assets/images/{file}")
+			shutil.copyfile(f"{root}/{file}", f"{NEW_TOOLCHAIN}/content/images/{file}")
 	print("----- DONE\n")
 
 

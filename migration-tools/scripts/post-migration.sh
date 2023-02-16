@@ -38,7 +38,7 @@ echo "----- UPDATING SECTIONS NAVIGATION"
 touch introduction/_index.md deploying/_index.md operations/_index.md developer/_index.md _index.md
 
 echo "---
-title: '"$1"'
+title: '"$2"'
 weight: 0
 description: 
 layout: default
