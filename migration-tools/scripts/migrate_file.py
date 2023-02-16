@@ -45,7 +45,9 @@ def _processFrontMatter(page, buffer, filepath):
 
 def _processContent(page, paragraph, filepath):
     if paragraph is None or paragraph == '':
-        return
+        return 
+        
+    paragraph = re.sub(r"^ +(?=\n)", "", paragraph, 0, re.MULTILINE)
 
     paragraph = re.sub("{+\s?page.description\s?}+", '', paragraph)
     paragraph = paragraph.replace("{:target=\"_blank\"}", "")
@@ -226,14 +228,13 @@ def migrateIndentedCodeblocks(filepath, content):
         if node[0].t == "code_block" and node[0].is_fenced == False:
             s = node[0].sourcepos[0][1] - 1
             toReplace = ""
-
             for line in node[0].literal.split("\n"):
                 if line == "":
                     toReplace = toReplace + "\n"
                     continue
 
                 toReplace = toReplace + " " * s + line + "\n"
-
+                
             fencedCodeblock = f"```\n{node[0].literal}\n```\n"
             content = content.replace(toReplace, fencedCodeblock)
 
