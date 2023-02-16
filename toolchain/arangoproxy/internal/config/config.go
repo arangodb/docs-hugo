@@ -6,6 +6,7 @@ import (
 )
 
 type Config struct {
+	BuildDir     string       `json:"contentDir"`   // Arangoproxy url+port
 	WebServer    string       `json:"webserver"`    // Arangoproxy url+port
 	Repositories []Repository `json:"repositories"` // ArangoDB instances
 	Cache        string       `json:"cache"`        // Cache configuration

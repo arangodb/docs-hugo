@@ -12,14 +12,14 @@ import (
 )
 
 var configFile string
-var env string
-var help, cleanCache bool
+var serve, help, cleanCache bool
 
 // Pre-Run Setup
 func init() {
 	flag.StringVar(&configFile, "config", "./configs/local.json", "path of config file")
 	flag.BoolVar(&help, "help", false, "Display help usage")
 	flag.BoolVar(&cleanCache, "no-cache", false, "Reset cache")
+	flag.BoolVar(&cleanCache, "serve", false, "Start webserver mode")
 	flag.Parse()
 
 	err := config.LoadConfig(configFile)
@@ -55,7 +55,11 @@ func main() {
 	common.Logger.Print("Available endpoints:\n - /js\n - /aql\n - /http-spec\n - /curl\n")
 	common.Logger.Printf("Starting Server at %s\n", config.Conf.WebServer)
 
-	internal.StartController(config.Conf.WebServer)
+	if serve {
+		internal.StartController(config.Conf.WebServer)
+	} else {
+		internal.Build()
+	}
 }
 
 var startupBanner = `
