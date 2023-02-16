@@ -868,7 +868,11 @@ $(window).scroll(function(){
   
   function getCurrentVersion() {
     var url = window.location.href;
-    var urlVersion = url.match("\/[0-9.]+\/")[0].replaceAll("\/", "");
+    var urlRe = url.match("\/[0-9.]+\/")
+    var urlVersion = "3.10"
+    if (urlRe) {
+        urlVersion = urlRe[0].replaceAll("\/", "");
+    }
     localStorage.setItem('docs-version', urlVersion);
     var versionSelector = document.getElementById("arangodb-version");
     for(let option of versionSelector.options) {
