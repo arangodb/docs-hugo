@@ -30,7 +30,7 @@ jobs:
       - run: rm -r /home/runner/work/docs-hugo/docs-hugo/docs-hugo/site/content/*
       - run: pip install pyyaml python-frontmatter commonmark
       - run: cd /home/runner/work/docs-hugo/docs-hugo/docs-hugo/migration-tools/ && ./migration.sh migrate /home/runner/work/docs-hugo/docs-hugo/docs-old /home/runner/work/docs-hugo/docs-hugo/docs-hugo /home/runner/work/docs-hugo/docs-hugo/arangodb-main 3.10
-      - run: cd bash /home/runner/work/docs-hugo/docs-hugo/docs-hugo/migration-tools/ && ./migration.sh migrate /home/runner/work/docs-hugo/docs-hugo/docs-old /home/runner/work/docs-hugo/docs-hugo/docs-hugo /home/runner/work/docs-hugo/docs-hugo/arangodb-main 3.11
+      - run: cd /home/runner/work/docs-hugo/docs-hugo/docs-hugo/migration-tools/ && ./migration.sh migrate /home/runner/work/docs-hugo/docs-hugo/docs-old /home/runner/work/docs-hugo/docs-hugo/docs-hugo /home/runner/work/docs-hugo/docs-hugo/arangodb-main 3.11
 
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
