@@ -1,5 +1,6 @@
 import argparse
 import os
+import re
 
 parser = argparse.ArgumentParser(description='Optional app description')
 parser.add_argument('--dst', type=str,
@@ -34,7 +35,7 @@ def postMigration():
                 print(traceback.format_exc())
                 raise ex
 
-            content = restructureLinks(content, filepath)
+            content = migrate_hrefs(content, filepath)
 
             file = open(filepath, "w", encoding="utf-8")
             file.write(content)
@@ -46,6 +47,39 @@ def loadFilepaths():
             filepath = f"{root}/{file}".replace("\\", "/")
             filepaths.append(filepath)
     return
+
+def migrate_hrefs(paragraph, filepath):
+    hrefRegex = re.findall(r"[^\s]*\[.*\]\(.*\).*", paragraph)
+    for href in hrefRegex:
+        if 'https://' in href or 'http://' in href:
+            continue
+
+        if href.startswith("!"):
+            paragraph = migrate_image(filepath, paragraph, href)
+            continue
+
+    return paragraph
+
+def migrate_image(currentFile, paragraph, href):
+    linkContent = re.search(r"(?<=\]\()(.*?)\)", href).group(0).replace(")", "")
+    imgName = linkContent.split("/")[len(linkContent.split("/"))-1]
+    imagesFolder = f"{NEW_TOOLCHAIN}/content/images/"
+    relPathToImgsFolder = os.path.relpath(imagesFolder, currentFile)
+    newImgName = f"{relPathToImgsFolder}/{imgName}".replace("../", "", 1)
+
+    if ':style' in href:
+        styleRegex = re.search(r"(?<={:style=).*(?=})", href)
+        if styleRegex:
+            label = re.search(r"(?<=\[).*(?=\])", href).group(0)	# Bug with new style regex, to fix
+            if "\"" in label:
+                label = label.replace('"', '')
+
+            imgWidget = '{{{{< icon src="{}" alt="{}" style={}>}}}}'.format(newImgName, label, styleRegex.group(0))
+
+            return paragraph.replace(href, imgWidget)
+    else:
+        newImg = href.replace(linkContent, newImgName)
+        return paragraph.replace(href, newImg)
 
 def restructureLinks(content, filepath):
     linkContent = href.replace(")", "")

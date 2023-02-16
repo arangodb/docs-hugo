@@ -57,7 +57,6 @@ def _processContent(page, paragraph, filepath):
     paragraph = re.sub(r"(?<=\n\n)[\w\s{.}]+{:class=\"lead\"}\n\n", '', paragraph, 0, re.MULTILINE)
 
     paragraph = migrate_headers(paragraph)
-    paragraph = migrate_hrefs(paragraph, infos, filepath)
     paragraph = migrate_youtube_links(paragraph)
 
     paragraph = migrate_hints(paragraph)
@@ -159,36 +158,6 @@ def migrate_details(paragraph):
         paragraph = paragraph.replace(f"{{% enddetails %}}", "{{{{% /expand %}}}}")
     
     return paragraph
-
-def migrate_hrefs(paragraph, infos, filepath):
-    hrefRegex = re.findall(r"[^\s]*\[.*\]\(.*\).*", paragraph)
-    for href in hrefRegex:
-        if 'https://' in href or 'http://' in href:
-            continue
-
-        if href.startswith("!"):
-            paragraph = migrate_image(paragraph, href)
-            continue
-
-    return paragraph
-
-def migrate_image(paragraph, href):
-    linkContent = re.search(r"(?<=\]\()(.*?)\)", href).group(0).replace(")", "")
-    newImgName = "/images/"+ linkContent.split("/")[len(linkContent.split("/"))-1]
-
-    if ':style' in href:
-        styleRegex = re.search(r"(?<={:style=).*(?=})", href)
-        if styleRegex:
-            label = re.search(r"(?<=\[).*(?=\])", href).group(0)	# Bug with new style regex, to fix
-            if "\"" in label:
-                label = label.replace('"', '')
-
-            imgWidget = '{{{{< icon src="{}" alt="{}" style={}>}}}}'.format(newImgName, label, styleRegex.group(0))
-
-            return paragraph.replace(href, imgWidget)
-    else:
-        newImg = href.replace(linkContent, newImgName)
-        return paragraph.replace(href, newImg)
 
 def migrate_youtube_links(paragraph):
     youtubeRegex = re.search(r"{% include youtube\.html .* %}", paragraph)
