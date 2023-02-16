@@ -46,12 +46,12 @@ def _processFrontMatter(page, buffer, filepath):
 def _processContent(page, paragraph, filepath):
     if paragraph is None or paragraph == '':
         return
-        
+
     paragraph = re.sub("{+\s?page.description\s?}+", '', paragraph)
     paragraph = paragraph.replace("{:target=\"_blank\"}", "")
     paragraph = paragraph.replace("{:style=\"clear: left;\"}", "")
 
-    paragraph = re.sub(r"^# .*|(.*\n={4,})", "", paragraph, 0, re.MULTILINE)
+    paragraph = re.sub(r"^# .*|(.*\n={4,})", "", paragraph, 1, re.MULTILINE)
     paragraph = re.sub(r"(?<=\n\n)[\w\s{.}]+{:class=\"lead\"}\n\n", '', paragraph, 0, re.MULTILINE)
 
     paragraph = migrate_headers(paragraph)
@@ -64,9 +64,10 @@ def _processContent(page, paragraph, filepath):
     paragraph = migrate_details(paragraph)
     paragraph = migrate_comments(paragraph)
 
-    paragraph = migrateIndentedCodeblocks(paragraph)
     paragraph = http_docublocks.migrateHTTPDocuBlocks(paragraph)
     paragraph = inline_docublocks.migrateInlineDocuBlocks(paragraph)
+    paragraph = migrateIndentedCodeblocks(filepath, paragraph)
+
     paragraph = paragraph.lstrip("\n")
 
     paragraph = re.sub(r"{% assign ver = \"3\.10\" \| version: \">=\" %}{% if ver %}", "", paragraph, 0)
@@ -75,7 +76,8 @@ def _processContent(page, paragraph, filepath):
     page.content = paragraph
     return
 
-## Migration units
+
+## migration modules 
 
 def migrate_title(page, frontMatter, content):
     fmTitleRegex = re.search(r"(?<=title: ).*", frontMatter)
@@ -212,6 +214,31 @@ def migrate_headers(paragraph):
 
     return paragraph
 
+def migrateIndentedCodeblocks(filepath, content):
+    import commonmark
+    import frontmatter
+
+    post = frontmatter.load(filepath)
+    parser = commonmark.Parser()
+    ast = parser.parse(post.content)
+
+    for node in ast.walker():
+        if node[0].t == "code_block" and node[0].is_fenced == False:
+            s = node[0].sourcepos[0][1] - 1
+            toReplace = ""
+
+            for line in node[0].literal.split("\n"):
+                if line == "":
+                    toReplace = toReplace + "\n"
+                    continue
+
+                toReplace = toReplace + " " * s + line + "\n"
+
+            fencedCodeblock = f"```\n{node[0].literal}\n```\n"
+            content = content.replace(toReplace, fencedCodeblock)
+
+    return content
+
 def migrate_docublock_output(exampleName):
     generatedFile = open(f"{OLD_GENERATED_FOLDER}/{exampleName}.generated", 'r', encoding="utf-8")
     output = generatedFile.read()
@@ -220,16 +247,6 @@ def migrate_docublock_output(exampleName):
     output = output.replace("&#x27;", "\"").replace("&quot;", "\"")
 
     return output
-
-def migrateIndentedCodeblocks(paragraph):
-    indentedCodeblocks = re.findall(r"(?:\n+ {4,}[^-].*)+", paragraph, re.MULTILINE)
-    for codeblock in indentedCodeblocks:
-        newCodeblock = f"```\n{codeblock}\n```\n"
-        newCodeblock = re.sub(r"(?<=\`{3}\n)(^\n)+|^ {4}", "", newCodeblock, 0, re.MULTILINE)
-
-        paragraph = paragraph.replace(codeblock, "\n" + newCodeblock + "\n")
-
-    return paragraph
 
 def cleanLine(line):
     line = line.replace("//", "/").replace("&","").replace(" ", "-")
