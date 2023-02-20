@@ -55,6 +55,7 @@ def writeOpenapiComponents():
 def migrate_media():
 	print("----- MIGRATING MEDIA")
 	Path(f"{NEW_TOOLCHAIN}/assets/images/").mkdir(parents=True, exist_ok=True)
+	Path(f"{NEW_TOOLCHAIN}/content/images/").mkdir(parents=True, exist_ok=True)
 	for root, dirs, files in os.walk(f"{OLD_TOOLCHAIN}/{version}/images", topdown=True):
 		for file in files:
 			shutil.copyfile(f"{root}/{file}", f"{NEW_TOOLCHAIN}/content/images/{file}")
