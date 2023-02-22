@@ -43,8 +43,7 @@ function arangoshDownload() {
 #$1=version,$2=arch,$3=filename
 function arangoshExtract() {
     wget -q https://download.arangodb.com/nightly/"$1"/Linux/"$2"/"$3".tar.gz
-    tar -xf "$3".tar.gz
-    mv "$3" /home/arangosh/"$1"/
+    tar -xf "$3".tar.gz -C /home/arangosh/"$1"/ --strip-components=1
 }
 
 #$1=arch
