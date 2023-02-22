@@ -1,8 +1,12 @@
 #!/bin/bash
 
-. functions.sh
+. /home/scripts/functions.sh
 
-## Install hugo with arch dependent link
+if ! command -v hugo &> /dev/null
+then
+    installHugo "$ARCH"
+fi
+
 
 echo "Waiting for arangoproxy to be ready"
 checkIPIsReachable "http://arangoproxy:8080/health"

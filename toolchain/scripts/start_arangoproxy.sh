@@ -2,14 +2,11 @@
 
 ## Args: $1=architecture
 
-. functions.sh
+. /home/scripts/functions.sh
 
-installArangosh "$1" "3.10"
-installArangosh "$1" "3.11"
-
+arangoshDownload "$ARCH"
 
 declare -a arangoUrls=("arango_single_3_10:8529" "arango_single_3_11:8529")
-
 
 echo "Waiting for all arango instances to be ready"
 for val in ${arangoUrls[@]}; do
