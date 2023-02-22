@@ -28,32 +28,21 @@ def set_page_description(page, buffer, frontMatter):
             page.frontMatter.description = re.search(r"(?<=description: )(.*?)((?=\n\w)|(?=---))", buffer, re.MULTILINE | re.DOTALL).group(0)
 
 def migrate_hints(paragraph):
-    hintRegex = re.findall(r"{% hint .*? %}.*?{% endhint %}", paragraph, re.MULTILINE | re.DOTALL)
+    hintRegex = re.findall(r" *{% hint .*? %}.*?{% endhint %}", paragraph, re.MULTILINE | re.DOTALL)
     for hint in hintRegex:
         hintSplit = hint.split("\n")
         hintType = re.search(r"'.*[']* %}", hintSplit[0]).group(0).replace("'", '').strip(" %}")
-        hintText = "\n".join(hintSplit[1:len(hintSplit)-1]).replace("    ", "")
         if hintType == 'note':
             hintType = 'tip'
 
-        newHint = f'\n\
-{{{{% hints/{hintType} %}}}}\n\
-  {hintText}\n\
-{{{{% /hints/{hintType} %}}}}'
+        newHint = hint.replace(f"{{% hint '{hintType}' %}}", f"{{{{% hints/{hintType} %}}}}")
+        newHint = newHint.replace("{% endhint %}", f"{{{{% /hints/{hintType} %}}}}")
         paragraph = paragraph.replace(hint, newHint)
 
     return paragraph
 
 def migrate_capture_alternative(paragraph):
-    captureRE = re.findall(r"(?<={% capture alternative %})(.*?)(?= {% endcapture %})", paragraph, re.MULTILINE | re.DOTALL)
-    for capture in captureRE:
-        info = f'\n\
-{{{{% hints/info %}}}}\n\
-  {capture}\n\
-{{{{% /hints/info %}}}}'
-        paragraph = paragraph.replace(capture, info)
-
-    paragraph = paragraph.replace("{% capture alternative %}", "").replace("{% endcapture %}", "")
+    paragraph = paragraph.replace("{% capture alternative %}", "{{% hints/info %}}").replace("{% endcapture %}", "{{% /hints/info %}}")
     return paragraph
 
 def migrate_enterprise_tag(paragraph):
