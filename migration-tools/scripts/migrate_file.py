@@ -113,7 +113,8 @@ def migrate_hints(paragraph):
         if hintType == 'note':
             hintType = 'tip'
 
-        newHint = f"{{{{% {hintType} %}}}}\n{hintText}\n{{{{% /{hintType} %}}}}"
+        newHint = hint.replace(f"{{% hint '{hintType}' %}}", f"{{{{% {hintType} %}}}}")
+        newHint = newHint.replace("{% endhint %}", f"{{{{% /{hintType} %}}}}")
         paragraph = paragraph.replace(hint, newHint)
 
     return paragraph
