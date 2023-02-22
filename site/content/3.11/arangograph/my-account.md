@@ -50,14 +50,16 @@ accessible from every view. There are two elements:
 4. Enter a name and and a description for the new organization and click the
    __Create__ button.
 
+
 {{% hints/info %}}
-The free to try tier is limited to a single organization.
+  The free to try tier is limited to a single organization.
 {{% /hints/info %}}
 
 ### How to delete an organization
 
+
 {{% hints/danger %}}
-Removing an organization implies the deletion of projects and deployments.
+  Removing an organization implies the deletion of projects and deployments.
 This operation cannot be undone and **all deployment data will be lost**.
 Please proceed with caution.
 {{% /hints/danger %}}
@@ -67,8 +69,9 @@ Please proceed with caution.
 3. Click the __recycle bin__ icon in the __Actions__ column.
 4. Enter `Delete!` to confirm and click __Yes__.
 
+
 {{% hints/info %}}
-If you are no longer a member of any organization, then a new organization is
+  If you are no longer a member of any organization, then a new organization is
 created for you when you log in again.
 {{% /hints/info %}}
 
@@ -147,8 +150,9 @@ authentication.
 7. Click the __Create__ button.
 8. Copy the API key ID and Secret, then click the __Close__ button.
 
+
 {{% hints/security %}}
-The secret is only shown once at creation time.
+  The secret is only shown once at creation time.
 You have to store it in a safe place.
 {{% /hints/security %}}
 

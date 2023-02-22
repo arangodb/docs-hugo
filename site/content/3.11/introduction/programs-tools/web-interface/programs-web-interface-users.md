@@ -36,6 +36,7 @@ database (which can be all unselected which means that nothing is
 explicitly set). The default access levels for this user and database
 appear in the artificial row with the collection name `*`.
 
+
 {{% hints/info %}}
-Also see [**Managing Users**](../../administration/user-management/) about access levels.
+  Also see [**Managing Users**](../../administration/user-management/) about access levels.
 {{% /hints/info %}}

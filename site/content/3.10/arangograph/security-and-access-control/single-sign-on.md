@@ -6,7 +6,7 @@ description:
 layout: default
 ---
 {{% hints/info %}}
-This feature is only available in ArangoGraph Enterprise.
+  This feature is only available in ArangoGraph Enterprise.
 {{% /hints/info %}}
 
 ArangoGraph provides support to enable Single Sign-On (SSO) authentication using
@@ -35,7 +35,8 @@ manage the user resources.
 
 To learn how to generate a new API key, see the [API Keys](../my-account#api-keys) section.
 
+
 {{% hints/info %}}
-When creating an API key, it is required to select an organization from the
+  When creating an API key, it is required to select an organization from the
 list.
 {{% /hints/info %}}

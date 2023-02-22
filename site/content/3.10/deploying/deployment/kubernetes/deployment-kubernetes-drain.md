@@ -6,7 +6,7 @@ description:
 layout: default
 ---
 {{% hints/danger %}}
-If Kubernetes nodes with ArangoDB pods on them are drained without care
+  If Kubernetes nodes with ArangoDB pods on them are drained without care
 data loss can occur! The recommended procedure is described below.
 {{% /hints/danger %}}
 
@@ -76,8 +76,9 @@ before a node drain operation can be started:
  1. All cluster nodes are up and running and healthy.
  2. For all collections and shards all configured replicas are in sync.
 
+
 {{% hints/warning %}}
-If any cluster node is unhealthy, there is an increased risk that the
+  If any cluster node is unhealthy, there is an increased risk that the
 system does not have enough resources to cope with a failure situation.
 
 If any shard replicas are not currently in sync, then there is a serious
@@ -280,8 +281,9 @@ curl -k https://arangodb.9hoeffer.de:8529/_db/_system/_api/replication/clusterIn
 If all these checks are performed and are okay, then it is safe to
 continue with the clean out and drain procedure as described below.
 
+
 {{% hints/danger %}}
-If there are some collections with `replicationFactor` set to
+  If there are some collections with `replicationFactor` set to
 1, the system is not resilient and cannot tolerate the failure of even a
 single server! One can still perform a drain operation in this case, but
 if anything goes wrong, in particular if the grace period is chosen too

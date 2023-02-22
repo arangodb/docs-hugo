@@ -80,8 +80,9 @@ The option `mergeObjects` controls whether object contents will be
 merged if an object attribute is present in both the `UPDATE` query and in the 
 to-be-updated document.
 
+
 {{% hints/tip %}}
-The default value for `mergeObjects` is `true`, so there is no need to specify it
+  The default value for `mergeObjects` is `true`, so there is no need to specify it
 explicitly.
 {{% /hints/tip %}}
 
@@ -108,8 +109,9 @@ FOR i IN 1..1000
 {{% /tab %}}
 {{< /tabs >}}
 
+
 {{% hints/info %}}
-You need to add the `_rev` value in the *updateExpression*. It will not be used
+  You need to add the `_rev` value in the *updateExpression*. It will not be used
 within the *searchExpression*. Even worse, if you use an outdated `_rev` in the
 *searchExpression*, `UPSERT` will trigger the `INSERT` path instead of the
 `UPDATE` path, because it has not found a document exactly matching the

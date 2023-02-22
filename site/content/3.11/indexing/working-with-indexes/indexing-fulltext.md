@@ -6,7 +6,7 @@ description:
 layout: default
 ---
 {{% hints/warning %}}
-The fulltext index type is deprecated from version 3.10 onwards.
+  The fulltext index type is deprecated from version 3.10 onwards.
 It is recommended to use [Inverted indexes](indexing-inverted) or
 [ArangoSearch](../arangosearch/) for advanced full-text search capabilities.
 {{% /hints/warning %}}

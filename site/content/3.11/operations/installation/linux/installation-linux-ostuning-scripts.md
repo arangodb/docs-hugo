@@ -13,8 +13,9 @@ This page includes script examples that can be used to tune the
 operating system (OS) in case you are using _Debian_ or _CentOS_,
 along with instructions on how to install the scripts.
 
+
 {{% hints/warning %}}
-It is important that the script is set up in a way that it gets
+  It is important that the script is set up in a way that it gets
 executed even after the machine reboots. Instructions on how to
 configure your system so that the script executes during the
 boot process can be found below.

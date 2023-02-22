@@ -216,8 +216,9 @@ and `\b` counts as literal backslash. The backslash of JSON escape sequences
 like `\t` (tabulation), `\r` (carriage return), and `\n` (line feed) does not,
 however.
 
+
 {{% hints/info %}}
-Literal backlashes require different amounts of escaping depending on the
+  Literal backlashes require different amounts of escaping depending on the
 context:
 - `\` in bind variables (_Table_ view mode) in the web interface (automatically
   escaped to `\\` unless the value is wrapped in double quotes and already

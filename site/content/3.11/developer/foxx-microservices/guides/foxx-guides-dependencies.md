@@ -23,8 +23,9 @@ In Foxx these JS APIs are called _dependencies_,
 the services implementing them are called _providers_,
 the services using them are called _consumers_.
 
+
 {{% hints/info %}}
-This chapter is about Foxx dependencies as described above. In JavaScript the
+  This chapter is about Foxx dependencies as described above. In JavaScript the
 term _dependencies_ can also refer to
 [bundled node modules](foxx-guides-bundled-node-modules), which are an unrelated concept.
 {{% /hints/info %}}

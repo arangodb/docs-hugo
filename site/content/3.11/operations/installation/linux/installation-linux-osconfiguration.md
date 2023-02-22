@@ -6,7 +6,7 @@ description:
 layout: default
 ---
 {{% hints/tip %}}
-The most important suggestions listed in this section can be
+  The most important suggestions listed in this section can be
 easily applied by making use of a script. Please refer to the page
 [Linux OS Tuning Script Examples](installation-linux-ostuning-scripts) for
 ready-to-use examples.
@@ -41,8 +41,9 @@ Your distribution may also provide a frontend for doing so, for instance
 If you don't set a [default language](../../programs-tools/arangodb-server/programs-arangod-options#--default-language)
 for the server explicitly, ArangoDB will use the default locale of your system.
 
+
 {{% hints/warning %}}
-The server language is stored in the `LANGUAGE` file in the database directory.
+  The server language is stored in the `LANGUAGE` file in the database directory.
 This file should not be modified manually to bypass issues with the locale,
 because it may render indexes invalid without raising a warning or error.
 Dumping the data and restoring it into an instance that has the correct

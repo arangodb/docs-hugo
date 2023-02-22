@@ -169,8 +169,9 @@ The `use` method lets you mount a child router or middleware at a given path.
 
 Returns an [Endpoint](foxx-reference-routers-endpoints) for the middleware or child router.
 
+
 {{% hints/warning %}}
-When mounting child routers at multiple paths, effects of methods
+  When mounting child routers at multiple paths, effects of methods
 invoked on each endpoint will only affect routes of that endpoint.
 {{% /hints/warning %}}
 

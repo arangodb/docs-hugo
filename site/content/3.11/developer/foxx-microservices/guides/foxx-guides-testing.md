@@ -40,8 +40,9 @@ the [Foxx HTTP API](../../http/foxx-services/foxx-miscellaneous).
 Foxx will execute all test cases in the matching files and
 generate a report in the desired format.
 
+
 {{% hints/danger %}}
-Running tests in a production environment is not recommended and
+  Running tests in a production environment is not recommended and
 may result in data loss if the tests involve database access.
 {{% /hints/danger %}}
 
@@ -235,8 +236,9 @@ describe("verifyCredentials", () => {
 
 ## Integration testing
 
+
 {{% hints/warning %}}
-You should avoid running integration tests while a service
+  You should avoid running integration tests while a service
 is mounted in [development mode](foxx-guides-development-mode) as each request
 will cause the service to be reloaded.
 {{% /hints/warning %}}

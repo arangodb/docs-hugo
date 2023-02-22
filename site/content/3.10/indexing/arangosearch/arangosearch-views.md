@@ -77,8 +77,9 @@ During view modification the following directives apply:
   specified in `fields` will be processed with default link properties, i.e.
   `{}`.
 
-  {{% hints/warning %}}
-  Using `includeAllFields` for a lot of attributes in combination with complex
+  
+{{% hints/warning %}}
+    Using `includeAllFields` for a lot of attributes in combination with complex
   Analyzers may significantly slow down the indexing process.
 {{% /hints/warning %}}
 
@@ -92,8 +93,9 @@ During view modification the following directives apply:
 
   This property is available in the Enterprise Edition only.
 
-  {{% hints/info %}}
-  You cannot use the `nested` property at the top-level of the link properties.
+  
+{{% hints/info %}}
+    You cannot use the `nested` property at the top-level of the link properties.
   It needs to have a parent field, e.g.
   `"fields": { "<fieldName>": { "nested": { ... } } }`.
   However, You can nest `nested` properties to index objects in arrays in
@@ -357,10 +359,11 @@ is used by these writers (in terms of "writers pool") one can use
     - `"tier"`: Consolidate based on segment byte size and live document count
       as dictated by the customization attributes.
 
-    {{% hints/warning %}}
-    The "bytes_accum" policy type is deprecated and remains in ArangoSearch for backwards
-    compatibility with the older versions. Please make sure to always use the `tier` policy
-    instead.
+    
+{{% hints/warning %}}
+  The "bytes_accum" policy type is deprecated and remains in ArangoSearch for backwards
+compatibility with the older versions. Please make sure to always use the `tier` policy
+instead.
 {{% /hints/warning %}}
 
   `consolidationPolicy` properties for `"bytes_accum"` type:

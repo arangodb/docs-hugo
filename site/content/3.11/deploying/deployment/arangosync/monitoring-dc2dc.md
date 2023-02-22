@@ -21,8 +21,9 @@ using the following HTTPS endpoints:
 
 Both endpoints include help information per metrics.
 
+
 {{% hints/info %}}
-Both endpoints require authentication. Besides the usual authentication methods
+  Both endpoints require authentication. Besides the usual authentication methods
 these endpoints are also accessible using a special bearer token specified using the `--monitoring.token`
 command line option.
 {{% /hints/info %}}

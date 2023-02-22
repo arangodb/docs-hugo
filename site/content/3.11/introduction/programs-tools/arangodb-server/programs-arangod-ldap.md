@@ -151,8 +151,9 @@ as described in the next section.
 
 ### TLS options
 
+
 {{% hints/warning %}}
-TLS is not supported in the Windows version of ArangoDB!
+  TLS is not supported in the Windows version of ArangoDB!
 {{% /hints/warning %}}
 
 To configure the usage of encrypted TLS to communicate with the LDAP server

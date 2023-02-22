@@ -7,8 +7,9 @@ layout: default
 ---
 `const arangodb = require('@arangodb')`
 
+
 {{% hints/warning %}}
-This module should not be confused with the
+  This module should not be confused with the
 [`arangojs` JavaScript driver](https://github.com/arangodb/arangojs)
 which can be used to access ArangoDB from outside the database. Although the
 APIs share similarities and the functionality overlaps, the two are not
@@ -92,8 +93,9 @@ The `aql.literal` helper can be used to mark strings to be inlined into an AQL
 query when using the `aql` template tag, rather than being treated as a bind
 parameter.
 
+
 {{% hints/danger %}}
-Any value passed to `aql.literal` will be treated as part of the AQL query.
+  Any value passed to `aql.literal` will be treated as part of the AQL query.
 To avoid becoming vulnerable to AQL injection attacks you should always prefer
 nested `aql` queries if possible.
 {{% /hints/danger %}}

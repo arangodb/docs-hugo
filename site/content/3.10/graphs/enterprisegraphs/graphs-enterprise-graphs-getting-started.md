@@ -82,8 +82,9 @@ should look like this:
 The next step is to set up an empty EnterpriseGraph and configure it 
 according to your preferences.
 
+
 {{% hints/info %}}
-You are free to change `numberOfShards`, `replicationFactor`, or even collection names
+  You are free to change `numberOfShards`, `replicationFactor`, or even collection names
 at this point.
 {{% /hints/info %}}
 
@@ -174,16 +175,18 @@ EnterpriseGraphs. To get started, follow the steps outlined below.
      the relation of the graph. This automatically creates a new edge
      collection, which is displayed in the **Collections** tab of the
      left sidebar menu.
-     {{% hints/tip %}}
-     To define multiple relations, press the **Add relation** button.
-     To remove a relation, press the **Remove relation** button.
+     
+{{% hints/tip %}}
+   To define multiple relations, press the **Add relation** button.
+ To remove a relation, press the **Remove relation** button.
 {{% /hints/tip %}}
    - For **fromCollections**, insert a list of vertex collections
      that contain the start vertices of the relation.
    - For **toCollections**, insert a list of vertex collections that
      contain the end vertices of the relation.
-   {{% hints/tip %}}
-   Insert only non-existent collection names. Collections are automatically
+   
+{{% hints/tip %}}
+     Insert only non-existent collection names. Collections are automatically
    created during the graph setup and are displayed in the
    **Collections** tab of the left sidebar menu.
 {{% /hints/tip %}}
@@ -306,8 +309,9 @@ and `_to` can have different types based on the sharding pattern.
 
 In this example, both vertex collections are created as SatelliteCollections.
 
+
 {{% hints/info %}}
-When providing a satellite collection that is not used in a relation,
+  When providing a satellite collection that is not used in a relation,
 it is not created. If you create the collection in a following
 request, only then the option counts.
 {{% /hints/info %}}

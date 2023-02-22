@@ -10,8 +10,9 @@ The most convenient method to import a lot of data into ArangoDB is to use the
 from a file into a database collection. Multiple files can be imported into
 the same or different collections by invoking it multiple times.
 
+
 {{% hints/tip %}}
-Import files are expected to be UTF-8 encoded **without**
+  Import files are expected to be UTF-8 encoded **without**
 [byte order mark (BOM)](https://en.wikipedia.org/wiki/Byte_order_mark).
 Other encodings are not supported, but may not raise warnings or errors.
 
@@ -185,8 +186,9 @@ pacing. Raising the number of threads via the `--threads X` command
 line to any value of `X` greater than 2 will increase the total
 throughput used. 
 
+
 {{% hints/warning %}}
-Using parallelism with the `--threads X` parameter
+  Using parallelism with the `--threads X` parameter
 together with the `--on-duplicate` parameter set to `ignore`, `update` or `replace` can 
 lead to a race condition, when there are duplicates e.g. multiple identical `_key`
 values. Even ignoring the duplicates will make the result unpredictable, meaning 
@@ -202,7 +204,8 @@ may be too high or too low, depending on the available disk throughput of
 the target system. To start off with a different chunk size, one can
 adjust the value of the `--batch-size` parameter.
 
+
 {{% hints/tip %}}
-The pacing algorithm is turned on by default up to version 3.7.10
+  The pacing algorithm is turned on by default up to version 3.7.10
 and turned off by default in version 3.7.11 and higher.
 {{% /hints/tip %}}

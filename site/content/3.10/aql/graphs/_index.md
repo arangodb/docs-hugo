@@ -40,7 +40,8 @@ make full use of optimizations and therefore best performance is to be expected:
 These types of queries are only useful if you use edge collections and/or graphs in
 your data model.
 
+
 {{% hints/info %}}
-New to graphs? [**Take our free graph course for freshers**](https://www.arangodb.com/arangodb-graph-course/)
+  New to graphs? [**Take our free graph course for freshers**](https://www.arangodb.com/arangodb-graph-course/)
 and get from zero knowledge to advanced query techniques.
 {{% /hints/info %}}

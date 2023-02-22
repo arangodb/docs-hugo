@@ -131,8 +131,9 @@ attribute value type, and a `value` attribute containing the attribute's value.
 based on [GML](https://en.wikipedia.org/wiki/Graph_Modelling_Language).
 To view the XGMML file you can use for example [Cytoscape](http://cytoscape.org).
 
+
 {{% hints/warning %}}
-If you export all attributes (`--xgmml-label-only false`), attribute
+  If you export all attributes (`--xgmml-label-only false`), attribute
 types have to be the same for all documents. For example, if you have an
 attribute named `rank`, which is a string in one document and an integer in another,
 it does not work.

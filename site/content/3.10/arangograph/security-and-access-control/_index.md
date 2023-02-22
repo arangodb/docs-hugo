@@ -23,8 +23,9 @@ it cannot be deleted and must be unlocked first.
 The hierarchial structure of the resources (organization-project-deployment) is used in the locking functionality: if a child resource is locked
 (for example, a deployment), you cannot delete the parent project without unlocking that deployment first.
 
+
 {{% hints/info %}}
-If you lock a backup policy of a deployment or an IP allowlist, CA certificate, and IAM provider of a project, it is still possible to delete
+  If you lock a backup policy of a deployment or an IP allowlist, CA certificate, and IAM provider of a project, it is still possible to delete
 the corresponding parent resource without unlocking those properties first.
 {{% /hints/info %}}
 
@@ -57,8 +58,9 @@ Decide whether you want to edit the policy for an organization, a project or a d
 
 To delete a role binding, click the **Recycle Bin** icon in the **Actions** column.
 
+
 {{% hints/info %}}
-Currently, you cannot edit a role binding, you can only delete it.
+  Currently, you cannot edit a role binding, you can only delete it.
 {{% /hints/info %}}
 
 ![ArangoGraph Project Policy](/images/arangograph-policy-page.png)
@@ -102,8 +104,9 @@ oasisctl list roles --organization-id <id> --format json | jq -r ".[] | select(.
 
 {{% expand title="'List of predefined roles and their permissions'" %}}
 
+
 {{% hints/tip %}}
-The roles below are described following this pattern:
+  The roles below are described following this pattern:
 
 **Role description** (`role ID`):
 - `Permission`
@@ -549,8 +552,9 @@ To enhance security, you can implement the following restrictions via [Oasisctl]
 1. Limit allowed authentication providers.
 2. Specify an allowed domain list.
 
+
 {{% hints/info %}}
-Note that users who do not meet the restrictions will not be granted permissions for any resource in
+  Note that users who do not meet the restrictions will not be granted permissions for any resource in
 the organization. These users can still be members of the organization.
 {{% /hints/info %}}
 
@@ -585,14 +589,16 @@ projects belonging to that organization.
    - **Description** - enter an optional description for your audit log.
    - **Destinations** - specify one or several destinations to which you want to upload the audit log. If you choose **Upload to cloud**, the log will be available on the **Audit logs** tab of your organization. To send the log entries to your custom destination, specify a destination URL with authentication parameters (the **HTTP destination** option).
 
-    {{% hints/info %}}
-    The **Upload to cloud** option is not available for the free-to-try tier.
+    
+{{% hints/info %}}
+  The **Upload to cloud** option is not available for the free-to-try tier.
 {{% /hints/info %}}
 
    - **Excluded topics** - select topics that will not be included in the log. Please note, that some are excluded by default (for example, `audit-document`).
 
-    {{% hints/warning %}}
-    Enabling the audit log for all events will have a negative impact on performance.
+    
+{{% hints/warning %}}
+  Enabling the audit log for all events will have a negative impact on performance.
 {{% /hints/warning %}}
 
    - **Confirmation** - confirm that logging auditing events increases the price of your deployments.

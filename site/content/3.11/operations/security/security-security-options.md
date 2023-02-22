@@ -244,8 +244,9 @@ The endpoint allow-/denylisting limits access to external HTTP resources:
 Filtering is done against the full request URL, including protocol, hostname /
 IP address, port, and path.
 
+
 {{% hints/security %}}
-Keep in mind that these startup options are treated as regular expressions.
+  Keep in mind that these startup options are treated as regular expressions.
 Certain characters have special meaning that may require escaping and the
 expression only needs to match a substring by default. It is recommended to
 fully specify URLs and to use a leading `^` and potentially a trailing `$` to
@@ -320,8 +321,9 @@ JavaScript exception: ArangoError 11: not allowed to connect to this URL: http:/
 {{% /tab %}}
 {{< /tabs >}}
 
+
 {{% hints/warning %}}
-Startup options may require additional escaping in your command line.
+  Startup options may require additional escaping in your command line.
 Examples are:
 - Dollar symbols and backslashes in most Linux and macOS shells (`\$`, `\\`),
   unless the entire string is wrapped in single quotes (`'tcp://arangodb\.org$'`

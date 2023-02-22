@@ -69,8 +69,9 @@ FOR path
 - `GRAPH` **graphName** (string): the name identifying the named graph. Its vertex and
   edge collections will be looked up.
 
+
 {{% hints/info %}}
-All Shortest Paths traversals do not support edge weights.
+  All Shortest Paths traversals do not support edge weights.
 {{% /hints/info %}}
 
 ### Working with collection sets

@@ -108,8 +108,9 @@ which are suitable for different usage scenarios:
 As you can see, the _Coordinator_ layer can be scaled and deployed independently
 from the _DB-Server_ layer.
 
+
 {{% hints/warning %}}
-It is a best practice and a recommended approach to run _Agent_ instances
+  It is a best practice and a recommended approach to run _Agent_ instances
 on different machines than _DB-Server_ instances.
 
 When deploying using the tool [_Starter_](../../programs-tools/arangodb-starter/)
@@ -119,8 +120,9 @@ is started, if the desired _Agency_ _size_ is 3, or on the first 5 machines
 if the desired _Agency_ _size_ is 5.
 {{% /hints/warning %}}
 
+
 {{% hints/info %}}
-The different instances that form a Cluster are supposed to be run in the same
+  The different instances that form a Cluster are supposed to be run in the same
 _Data Center_ (DC), with reliable and high-speed network connection between
 all the machines participating to the Cluster.
 
@@ -176,8 +178,9 @@ Synchronous replication works on a per-shard basis. Using the `replicationFactor
 option, you can configure for each _collection_ how many copies of each _shard_
 are kept in the Cluster.
 
+
 {{% hints/danger %}}
-If a collection has a _replication factor_ of `1`, its data is **not**
+  If a collection has a _replication factor_ of `1`, its data is **not**
 replicated to other _DB-Servers_. This exposes you to a risk of data loss, if
 the machine running the _DB-Server_ with the only copy of the data fails permanently.
 

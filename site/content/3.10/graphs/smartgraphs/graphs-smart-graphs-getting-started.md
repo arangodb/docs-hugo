@@ -160,8 +160,9 @@ and `_to` can have different types based on the sharding pattern.
 
 In this example, both vertex collections are created as SatelliteCollections.
 
+
 {{% hints/info %}}
-When providing a satellite collection that is not used in a relation,
+  When providing a satellite collection that is not used in a relation,
 it will not be created. If you create the collection in a following
 request, only then the option will count.
 {{% /hints/info %}}

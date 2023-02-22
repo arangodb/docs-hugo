@@ -6,13 +6,14 @@ description:
 layout: default
 ---
 {{% hints/warning %}}
-While migrating from the Community to the Enterprise Edition is supported, 
+  While migrating from the Community to the Enterprise Edition is supported, 
 installing directly the Enterprise package over the Community package is **not**
 supported. Please see below for the correct migration procedure.
 {{% /hints/warning %}}
 
+
 {{% hints/danger %}}
-Migrating from Enterprise to Community Edition is, in general, **not** supported. This
+  Migrating from Enterprise to Community Edition is, in general, **not** supported. This
 is because the Community Edition does not include some features, such as 
 [SmartGraphs](../graphs/smartgraphs/) that, if used while the database
 was running under the Enterprise Edition, do not make easily possible the

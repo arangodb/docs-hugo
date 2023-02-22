@@ -7,7 +7,7 @@ description: >-
 layout: default
 ---
 {{% hints/info %}}
-This documentation describes the beta version of the Notebooks feature and is
+  This documentation describes the beta version of the Notebooks feature and is
 subject to change. The beta version is free for all.
 {{% /hints/info %}}
 
@@ -48,16 +48,18 @@ favorite GraphML libraries with GPUs.
 6. Click the **Open notebook** button to access your notebook. 
 7. To log in into your notebook, use the `root` password from your deployment.
 
+
 {{% hints/info %}}
-Depending on the tier your organization belongs to, different limitations apply:
+  Depending on the tier your organization belongs to, different limitations apply:
 - Professional and Enterprise tiers: you can create up to three notebooks per deployment.
 - Free-to-try tier: you can only create one notebook per deployment.  
 {{% /hints/info %}}
 
 ![Notebooks](/images/arangograph-notebooks.png)
 
+
 {{% hints/info %}}
-Notebooks in beta version have a fixed configuration of 10&nbsp;GB of disk size.
+  Notebooks in beta version have a fixed configuration of 10&nbsp;GB of disk size.
 {{% /hints/info %}}
 
 ## How to edit a notebook

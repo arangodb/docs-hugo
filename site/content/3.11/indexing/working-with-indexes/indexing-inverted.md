@@ -466,8 +466,9 @@ db._query(`FOR doc IN imdb_vertices OPTIONS { indexHint: "inv-exact-name", force
 {{% /tab %}}
 {{< /tabs >}}
 
+
 {{% hints/warning %}}
-The alphabetical order of characters is not taken into account,
+  The alphabetical order of characters is not taken into account,
 i.e. range queries backed by inverted indexes do not follow the
 language rules as per the defined Analyzer locale (except for the
 [`collation` Analyzer](../../analyzers/#collation)) nor the server language

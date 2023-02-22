@@ -46,8 +46,9 @@ release: stable
 
 `collection.iterate(iterator, options)`
 
+
 {{% hints/warning %}}
-The `iterate()` method is deprecated from version 3.11.0 onwards and will be
+  The `iterate()` method is deprecated from version 3.11.0 onwards and will be
 removed in a future version.
 {{% /hints/warning %}}
 

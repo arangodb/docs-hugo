@@ -41,8 +41,9 @@ Foxx also bundles version 0.6 of the
 which is a synchronous wrapper for the official JavaScript GraphQL reference
 implementation.
 
+
 {{% hints/warning %}}
-`graphql-sync` is a thin wrapper for old versions of `graphql`, allowing it
+  `graphql-sync` is a thin wrapper for old versions of `graphql`, allowing it
 to run in ArangoDB. This GraphQL server/schema implementation is deprecated
 and only shipped for backward compatibility. Version 0.12 and newer of the
 official `graphql` package can be used directly. New projects should bundle

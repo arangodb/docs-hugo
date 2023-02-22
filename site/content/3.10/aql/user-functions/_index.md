@@ -21,8 +21,9 @@ which includes the namespace, too; see [Conventions](extending-conventions).
 
 ### Known Limitations
 
+
 {{% hints/warning %}}
-UDFs can have serious effects on the performance of your queries and the resource
+  UDFs can have serious effects on the performance of your queries and the resource
 usage in ArangoDB. Especially in cluster setups they should not be used against
 much data, because this data will need to be sent over the network back and forth
 between _DB-Servers_ and _Coordinators_, potentially adding a lot of latency.

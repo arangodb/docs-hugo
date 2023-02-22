@@ -70,8 +70,9 @@ will first sort documents by lastName in ascending order and then by
 firstName in descending order.
 
 
+
 {{% hints/warning %}}
-When iterating over collection-based arrays, the order of documents is
+  When iterating over collection-based arrays, the order of documents is
 always **undefined unless an explicit sort order is defined** using `SORT`.
 {{% /hints/warning %}}
 

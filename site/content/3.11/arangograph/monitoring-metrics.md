@@ -66,9 +66,10 @@ which is required for connecting to Prometheus.
     ```
 {{% /tab %}}
 {{< /tabs >}}
-    {{% hints/info %}}
-    This command also opens a port 3000 for Grafana. In a production environment,
-    this is not needed and not recommended to have it open.
+    
+{{% hints/info %}}
+  This command also opens a port 3000 for Grafana. In a production environment,
+this is not needed and not recommended to have it open.
 {{% /hints/info %}}
 
 ## How to connect Grafana
@@ -88,8 +89,9 @@ which is required for connecting to Prometheus.
    - For username, enter *admin*.
    - For password, enter *admin*. 
    
-    {{% hints/tip %}}
-    After the initial login, make sure to change your password.
+    
+{{% hints/tip %}}
+  After the initial login, make sure to change your password.
 {{% /hints/tip %}}
 
 3. To add a data source, click **Add your first data source** and then do the following:

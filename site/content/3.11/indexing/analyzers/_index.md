@@ -816,8 +816,9 @@ The output can be one or multiple tokens (top-level result elements). They get
 converted to the configured `returnType`, either booleans, numbers or strings
 (default).
 
+
 {{% hints/tip %}}
-If `returnType` is `"number"` or `"bool"` then it is unnecessary to set this
+  If `returnType` is `"number"` or `"bool"` then it is unnecessary to set this
 AQL Analyzer as context Analyzer with `ANALYZER()` in View queries. You can
 compare indexed fields to numeric values, `true` or `false` directly, because
 they bypass Analyzer processing.
@@ -1045,8 +1046,9 @@ attributes:
 - `pipeline` (array): an array of Analyzer definition-like objects with
   `type` and `properties` attributes
   
+
 {{% hints/info %}}
-- You cannot use Analyzers of the types `geopoint` and `geojson` in pipelines.
+  - You cannot use Analyzers of the types `geopoint` and `geojson` in pipelines.
   These Analyzers require additional postprocessing and can only be applied to
   document fields directly.
 - The output data type of an Analyzer needs to be compatible with the input
@@ -1351,8 +1353,9 @@ release: stable
 
 {{< tag "ArangoDB Enterprise""ArangoGraph" >}}
 
+
 {{% hints/warning %}}
-This feature is experimental and under active development.
+  This feature is experimental and under active development.
 The naming and interfaces may change at any time.
 Execution times are not representative of the final product.
 {{% /hints/warning %}}
@@ -1419,8 +1422,9 @@ db._query(`LET str = "Which baking dish is best to bake a banana bread ?"
 
 {{< tag "ArangoDB Enterprise""ArangoGraph" >}}
 
+
 {{% hints/warning %}}
-This feature is experimental and under active development.
+  This feature is experimental and under active development.
 The naming and interfaces may change at any time.
 Execution times are not representative of the final product.
 {{% /hints/warning %}}
@@ -1756,8 +1760,9 @@ Setting an unsupported or invalid locale does not raise a warning or error.
 ICU will fall back to a locale without the requested variant, country, or
 script, or use its default locale if neither of the former is valid.
 
+
 {{% hints/warning %}}
-The alphabetical order of characters is not taken into account by ArangoSearch,
+  The alphabetical order of characters is not taken into account by ArangoSearch,
 i.e. range queries in SEARCH operations against Views will not follow the
 language rules as per the defined Analyzer locale (except for the
 [`collation` Analyzer](#collation)) nor the server language

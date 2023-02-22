@@ -92,7 +92,8 @@ The command should be executed after the installation.
 For other distributions run `arango-secure-installation` to set the password
 for the `root` user.
 
+
 {{% hints/danger %}}
-Please be aware that running `arango-secure-installation` on your ArangoDB
+  Please be aware that running `arango-secure-installation` on your ArangoDB
 server will remove all current database users but root.
 {{% /hints/danger %}}

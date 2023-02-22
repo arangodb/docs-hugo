@@ -127,8 +127,9 @@ replication and / or *waitForSync* increases the durability (Just as with the si
 
 ## RocksDB storage engine
 
+
 {{% hints/info %}}
-The following restrictions and limitations do not apply to JavaScript
+  The following restrictions and limitations do not apply to JavaScript
 transactions, since their intended use case is for smaller transactions
 with full transactional guarantees. So the following only applies
 to AQL queries and transactions created through the document API (i.e. batch operations).

@@ -67,8 +67,9 @@ FOR x, v, p IN 0..10 OUTBOUND "places/York" GRAPH "kShortestPathsGraph"
 `["York","London"]`                         | `1.8` | `[1.8]`
 `["York"]`                                  |   `0` | `[]`
 
+
 {{% hints/info %}}
-Weighted traversals do not support negative weights. If a document
+  Weighted traversals do not support negative weights. If a document
 attribute (as specified by `weightAttribute`) with a negative value is
 encountered during traversal, or if `defaultWeight` is set to a negative
 number, then the query is aborted with an error.
