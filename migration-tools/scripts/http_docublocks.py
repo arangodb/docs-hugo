@@ -59,6 +59,7 @@ def migrateHTTPDocuBlocks(paragraph):
 
                 paragraph = paragraph.replace("{% docublock "+ docuBlock + " %}", newBlock)
                 #print(paragraph)
+    paragraph = re.sub(r"```\n{3,}", "```\n\n", paragraph, 0, re.MULTILINE)
 
     return paragraph
 
@@ -339,13 +340,13 @@ def processComponents(block):
 
 def render_yaml(block, title):
     blockYaml = yaml.dump(block, sort_keys=False, default_flow_style=False)
-    res = f'## {title}\n\
+    res = f'\
 ```http-spec\n\
 {blockYaml}\
-```\n'
+```'
     res = res.replace("@endDocuBlock", "")   
-    #res = res.replace("\n\n", "")  
-    return re.sub(r"^\s*$\n", '', res, 0, re.MULTILINE | re.DOTALL)
+    res = re.sub(r"^ *$\n", '', res, 0, re.MULTILINE | re.DOTALL)
+    return f"\n## {title}\n\n" + res
 
 def parse_examples(blockExamples):
     res = ''
@@ -359,8 +360,9 @@ def parse_examples(blockExamples):
 {example["code"]}\n\
 ```\n\
 '
+        codeBlock = re.sub(r"^\s*$\n", '', codeBlock, 0, re.MULTILINE | re.DOTALL)
         res = res + "\n" + codeBlock
-    return re.sub(r"^\s*$\n", '', res, 0, re.MULTILINE | re.DOTALL)
+    return res
 
 
 if __name__ == "__main__":

@@ -69,6 +69,7 @@ def migrateInlineDocuBlocks(paragraph):
 
     paragraph = re.sub(r"@endDocuBlock.*\n", '', paragraph, 0)
     paragraph = re.sub(r".*@startDocuBlockInline", '', paragraph, 0)
+    paragraph = re.sub(r"```\n{3,}", "```\n\n", paragraph, 0, re.MULTILINE)
 
     return paragraph
 
