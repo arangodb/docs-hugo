@@ -8,8 +8,12 @@ CanonifyURLs: true
 
 module:
   mounts:
-    source: "static/images"
-    target: "assets/images"
+    - source: "themes/hugo-theme-relearn/images"
+      target: "static/images"
+    
+    - source: "content/images"
+      target: "assets/images"
+
 
 menu:
   shortcuts:

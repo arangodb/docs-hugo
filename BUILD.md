@@ -16,7 +16,7 @@ Create a dedicated folder for testing the wizard process.
 .> cd docs-hugo
 docs-hugo> cd migration-tools
 docs-hugo/migration-tools> ./clean.sh   # This removes all media and content from a previous migration
-docs-hugo/migration-tools> pip3 install pyyaml
+docs-hugo/migration-tools> pip3 install pyyaml commonmark python-frontmatter
 ```
 
 **Execute migration**
