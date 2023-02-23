@@ -1,17 +1,12 @@
 {{ $data := index site.Data "errors" }}
 
-{{ range $label, $errors := $data }}
-    <h2>{{ $errors.label }}</h2>
-    {{ range $errorName, $error := $errors }}
-        {{ with $error }}
-            {{ if ne $errorName "label" }}
-            <div class="errorcode">
-                <p class="errorcode-name bold-text regular-font"> {{ .errorName }}</p>
-                <span class="errorcode-code bold-text regular-font">{{ $errorName  }}</span>
-                <span class="errorcode-message bold-text regular-font">{{ .errorMsg  }}</span>
-                <span class="errorcode-description bold-text regular-font">{{ .errorDesc  }}</span>
-            </div>
-            {{ end }}
-        {{ end }}
+{{ range $data }}
+    {{ if index . "group" }}
+        <h2 id="{{ .group }}">{{ .group }}</h2>
+    {{ else }}
+    <h4 id="{{ .code }}">
+        {{ .code }} - {{ .name }}
+    </h4>
+    <p>{{ .desc }}</p>
     {{ end }}
 {{ end }}
