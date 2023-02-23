@@ -39,6 +39,7 @@ touch introduction/_index.md deploying/_index.md operations/_index.md developer/
 
 echo "---
 title: '"$2"'
+menuTitle: '"$2"'
 weight: 0
 description: 
 layout: default

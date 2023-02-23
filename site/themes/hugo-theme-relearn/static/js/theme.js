@@ -865,10 +865,16 @@ $(window).scroll(function(){
   function getCurrentVersion() {
     var url = window.location.href;
     var urlRe = url.match("\/[0-9.]+\/")
-    var urlVersion = "3.10"
+    var urlVersion = localStorage.getItem('docs-version');
+
+    if (urlVersion == undefined) {
+        urlVersion = "3.10"
+    }
+
     if (urlRe) {
         urlVersion = urlRe[0].replaceAll("\/", "");
     }
+
     localStorage.setItem('docs-version', urlVersion);
     var versionSelector = document.getElementById("arangodb-version");
     for(let option of versionSelector.options) {
@@ -895,6 +901,7 @@ $(window).scroll(function(){
     var href = target;
     if (href == window.location.href) {
         console.log("same page");
+        renderVersion();
         return;
     }
     var url = href.replace(/#.*$/, "");
