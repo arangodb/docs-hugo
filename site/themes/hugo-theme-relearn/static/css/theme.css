@@ -474,6 +474,21 @@ article.default {
     }
 }
 
+article.home {
+    margin-left: 10em;
+    min-height: 600px;
+    grid-area: article;
+    max-width: calc(100wh - 50px);
+    overflow-x: auto;
+    width: 55vw;
+}
+
+@media screen and (max-width: 1200px) {
+    article.home {
+        margin: 0 0 0 1em;
+    }
+}
+
 article ul li {
     list-style: disc;
     margin-left: 20px;
@@ -506,20 +521,23 @@ body h1, body h2, body h3, body h4, body h5, body h6 {
     text-align: left;
 }
 
-article > .page-title {
+hgroup > h1 {
     margin-top: 2.5rem;
-}
-
-.default > h1 {
     color: var(--H1-COLOR);
     font-size: 2rem;
+}
+
+hgroup > p {
+    margin-bottom: 20px;
+    font-weight: 200;
+    font-size: 1.4em;
 }
 
 p {
     margin-bottom: 20px;
 }
 
-.default > p {
+article > p {
     font-size: 0.9rem important;
     line-height: 1.5rem;
 }
@@ -588,25 +606,25 @@ body h2, body h3 {
     font-weight: bold;
 }
 
-.default > h3 {
+article > h3 {
     color: var(--H2-COLOR);
     font-size: 1.2rem;
     margin-top: 2rem;
 }
 
-.default > h4 {
+article > h4 {
     color: var(--H2-COLOR);
     font-size: 1rem;
     margin-top: 2rem;
 }
 
-.default > h5 {
+article > h5 {
     color: var(--H2-COLOR);
     font-size: 0.8rem;
     margin-top: 2rem;
 }
 
-.default > h8 {
+article > h8 {
     color: var(--H2-COLOR);
     font-size: 0.6rem;
     margin-top: 2rem;
@@ -616,7 +634,7 @@ body h2 {
     text-align: left;
 }
 
-.default > h2 {
+article > h2 {
     color: var(--H2-COLOR);
     font-size: 1.5rem;
     border-bottom: 1px solid #e2e8f0;

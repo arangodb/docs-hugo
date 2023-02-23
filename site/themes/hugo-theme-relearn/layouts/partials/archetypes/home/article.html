@@ -1,12 +1,16 @@
 {{- $page := .page }}
 {{- $content := .content }}
 {{- with $page }}
-          <article class="home">
-{{ partial "heading-pre.html" . }}<h1>{{ .Title }}</h1>{{ partial "heading-post.html" . }}
+    <article class="home">
+      <h1 class="page-title">{{ .Title | markdownify }}</h1>
+      <p class="lead">
+        {{ .Description }}
+      </p>
+      {{ $content | safeHTML }}
+      <nav class="pagination">
+        {{- partial "content-footer.html" . }}
+      </nav>
+    </article>
+    
 
-{{ $content | safeHTML }}
-            <footer class="footline">
-              {{- partial "content-footer.html" . }}
-            </footer>
-          </article>
 {{- end }}

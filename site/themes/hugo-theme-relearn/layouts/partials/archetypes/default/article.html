@@ -2,10 +2,12 @@
 {{- $content := .content }}
 {{- with $page }}
     <article class="default">
-      <h1 class="page-title">{{ .Title | markdownify }}</h1>
-      <p class="lead">
+      <hgroup>
+      <h1>{{ .Title | markdownify }}</h1>
+      <p>
         {{ .Description }}
       </p>
+      </hgroup>
       {{ $content | safeHTML }}
       <nav class="pagination">
         {{- partial "content-footer.html" . }}

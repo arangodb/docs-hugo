@@ -766,7 +766,7 @@ function goToHomepage(event){
     event.preventDefault();
     var origin = window.location.origin;
     var version = localStorage.getItem('docs-version');
-    var newUrl = origin + "/" + version + "/introduction/about-arangodb";
+    var newUrl = origin + "/" + version + "/";
     loadPage(newUrl);
 }
 
@@ -881,7 +881,17 @@ $(window).scroll(function(){
   
   function getCurrentVersion() {
     var url = window.location.href;
-    var urlVersion = url.match("\/[0-9.]+\/")[0].replaceAll("\/", "");
+    var urlRe = url.match("\/[0-9.]+\/")
+    var urlVersion = localStorage.getItem('docs-version');
+
+    if (urlVersion == undefined) {
+        urlVersion = "3.10"
+    }
+
+    if (urlRe) {
+        urlVersion = urlRe[0].replaceAll("\/", "");
+    }
+
     localStorage.setItem('docs-version', urlVersion);
     var versionSelector = document.getElementById("arangodb-version");
     for(let option of versionSelector.options) {
@@ -908,6 +918,7 @@ $(window).scroll(function(){
     var href = target;
     if (href == window.location.href) {
         console.log("same page");
+        renderVersion();
         return;
     }
     var url = href.replace(/#.*$/, "");
