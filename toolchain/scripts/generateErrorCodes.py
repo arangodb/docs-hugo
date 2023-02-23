@@ -19,16 +19,26 @@ src = args.src.replace("\\", "/").rstrip("/")
 dst = args.dst.replace("\\", "/").rstrip("/")
 
 def generateFile():
-    res = []
+    groups = []
+    content = ""
 
-    f = open(src).read()
-    labels = re.findall(r"#{3,}\n#{2} .*", f, re.MULTILINE)
-    i = 0
+    try:
+        f = open(src)
+        content = f.read()
+    except Exception as ex:
+        print(f"Exception opening file {src}")
+        print(traceback.print_exc())
+        raise ex
+
+    labels = re.findall(r"#{3,}\n#{2} .*", content, re.MULTILINE)
 
     for label in labels:
         label = label.replace("#", "").replace("\n", "").lstrip(" ")
-        res.append({"label": label})
-        i+=1
+        groups.append(label)
+
+    print(groups)
+
+    dstFile = open(dst, 'w')
 
     with open(src) as f:
         i = -1
@@ -39,34 +49,25 @@ def generateFile():
                     continue
 
                 if line.startswith("## "):
-                    i+=1
+                    group = line.replace("#", "").replace("\n", "").lstrip(" ")
+                    if group in groups:
+                        print(group)
+                        dstFile.write(f"- group: {group}\n")
+
                     continue
 
                 if line == "\n":
                     continue
 
-
                 parts = line.split(",")
-                errorName = parts[0]
-                errorCode = parts[1]
-                errorMsg = parts[2]
                 errorDesc = ",".join(parts[3:])
 
-                res[i][errorCode] = {
-                    "errorName": errorName,
-                    "errorMsg": errorMsg,
-                    "errorDesc": errorDesc
-                    }
+                dstFile.write(f"- name: {parts[0]}\n  text: {parts[2]}\n  desc: {errorDesc}  code: {parts[1]}\n")
 
             except Exception as ex:
                 print(f"Exception in line {line}")
 
-    print(res)
-
-    
-     
-    with open(dst, 'w') as convert_file:
-        convert_file.write(json.dumps(res, indent=4))
+    dstFile.close()
 
 if __name__ == "__main__":
     generateFile()
