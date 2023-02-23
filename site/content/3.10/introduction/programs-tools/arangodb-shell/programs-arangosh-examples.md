@@ -32,8 +32,9 @@ For example, to connect to an ArangoDB server on IP *192.168.173.13* on port
 _arangosh_ will then display a password prompt and try to connect to the 
 server after the password was entered.
 
+
 {{% hints/warning %}}
-At signs `@` in startup option arguments need to be escaped as `@@`.
+  At signs `@` in startup option arguments need to be escaped as `@@`.
 ArangoDB programs and tools support a
 [special syntax `@envvar@`](../../administration/administration-configuration#environment-variables-as-parameters)
 that substitutes text wrapped in at signs with the value of an equally called
@@ -48,8 +49,9 @@ For example, `password@test@123` needs to be passed as
 The shell will print its own version number and if successfully connected
 to a server the version number of the ArangoDB server.
 
+
 {{% hints/tip %}}
-If the server endpoint is configured for SSL then clients such as _arangosh_
+  If the server endpoint is configured for SSL then clients such as _arangosh_
 need to connect to it using an SSL socket as well. For example, use `http+ssl://`
 as schema in `--server.endpoint` for an SSL-secured HTTP connection.
 {{% /hints/tip %}}

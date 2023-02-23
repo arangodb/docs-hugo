@@ -76,8 +76,9 @@ specified in the schema. You may set `additionalProperties: false` to only
 allow attributes described by the schema. System attributes will not fall under
 this restriction.
 
+
 {{% hints/security %}}
-Remote schemas are not supported for security reasons.
+  Remote schemas are not supported for security reasons.
 {{% /hints/security %}}
 
 ## Levels

@@ -46,8 +46,9 @@ virtual collections. There are two types of Views:
   `arangosearch` Views. Each inverted index can index multiple or even all
   attribute of the documents of the collection it is defined for.
 
+
 {{% hints/info %}}
-Views are not updated synchronously as the source collections
+  Views are not updated synchronously as the source collections
 change in order to minimize the performance impact. They are
 **eventually consistent**, with a configurable consolidation policy.
 {{% /hints/info %}}
@@ -151,8 +152,9 @@ logical and comparison operators, as well as
 This makes it necessary to select the right one in your query by setting the
 Analyzer context with the `ANALYZER()` function.
 
+
 {{% hints/tip %}}
-If you use `search-alias` Views, the Analyzers are inferred from the definitions
+  If you use `search-alias` Views, the Analyzers are inferred from the definitions
 of the inverted indexes. This is possible because every field can only be
 indexed with a single Analyzer. Don't specify the Analyzer context with the
 `ANALYZER()` function in `search-alias` queries to avoid errors.
@@ -384,8 +386,9 @@ ANALYZER(PHRASE(doc.name, "chili pepper") OR PHRASE(doc.name, "tomato"), "text_e
 {{% /tab %}}
 {{< /tabs >}}
 
+
 {{% hints/tip %}}
-The [`PHRASE()` function](../../aql/functions/functions-arangosearch#phrase) applies the
+  The [`PHRASE()` function](../../aql/functions/functions-arangosearch#phrase) applies the
 `text_en` Analyzer to the search terms in both cases. `chili pepper` gets
 tokenized into `chili` and `pepper` and these tokens are then searched in this
 order. Searching for `pepper chili` would not match.
@@ -584,8 +587,9 @@ FOR doc IN food_view
 {{% /tab %}}
 {{< /tabs >}}
 
+
 {{% hints/warning %}}
-Using `includeAllFields` for a lot of attributes in combination with complex
+  Using `includeAllFields` for a lot of attributes in combination with complex
 Analyzers may significantly slow down the indexing process.
 {{% /hints/warning %}}
 
@@ -767,15 +771,17 @@ db._query(`FOR doc IN viewName SEARCH doc.text == "pop tart" OPTIONS { waitForSy
 This is not necessary if you use a single server deployment and populate a
 collection with documents before creating a View.
 
+
 {{% hints/warning %}}
-`SEARCH … OPTIONS { waitForSync: true }` is intended to be used in unit tests
+  `SEARCH … OPTIONS { waitForSync: true }` is intended to be used in unit tests
 to block search queries until the View caught up with the underlying
 collections. It is designed to make this use case easier. It should not be used
 for other purposes and especially not in production, as it can stall queries.
 {{% /hints/warning %}}
 
+
 {{% hints/danger %}}
-Do not use`SEARCH … OPTIONS { waitForSync: true }` in transactions. View index
+  Do not use`SEARCH … OPTIONS { waitForSync: true }` in transactions. View index
 changes cannot be rolled back if transactions get aborted. It will lead to
 permanent inconsistencies between the linked collections and the View.
 {{% /hints/danger %}}

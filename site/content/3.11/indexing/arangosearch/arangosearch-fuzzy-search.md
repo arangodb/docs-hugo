@@ -11,8 +11,9 @@ spelled exactly like the words in the stored text. This will include terms that
 are similar, alternatively spelled, or mistyped but potentially relevant for
 the search request as well.
 
+
 {{% hints/info %}}
-If you want to try out fuzzy search with ArangoDB for yourself, then check out
+  If you want to try out fuzzy search with ArangoDB for yourself, then check out
 our interactive
 [**Fuzzy Search tutorial**](https://colab.research.google.com/github/arangodb/interactive_tutorials/blob/master/notebooks/FuzzySearch.ipynb).
 {{% /hints/info %}}

@@ -1,5 +1,5 @@
 ---
-fileID: transactions
+fileID: indexing
 title: Deploying ArangoDB
 weight: 8000
 description: 

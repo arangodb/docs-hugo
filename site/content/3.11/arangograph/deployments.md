@@ -30,16 +30,18 @@ its projects and deployments.
 4. Click the __New deployment__ button.
 5. Set up your deployment. The configuration options are described below.
 
-   {{% hints/info %}}
-   The configuration options depend on the tier your organization belongs to.
+   
+{{% hints/info %}}
+     The configuration options depend on the tier your organization belongs to.
    For more details about available resources and usage limits, refer to the 
    [ArangoGraph tiers](organizations/#arangograph-tiers) section.
 {{% /hints/info %}}
 
 ![ArangoGraph New Deployment](/images/arangograph-new-deployment1.png)
 
+
 {{% hints/info %}}
-Deployments contain exactly **one policy**. Within that policy, you can define
+  Deployments contain exactly **one policy**. Within that policy, you can define
 role bindings to regulate access control on a deployment level.
 {{% /hints/info %}}
 
@@ -50,8 +52,9 @@ role bindings to regulate access control on a deployment level.
 ### In the __Location__ section
 
 1. Select the __Provider__ and __Region__ of the provider.
-   {{% hints/warning %}}
-   Once a deployment has been created, it is not possible to change the
+   
+{{% hints/warning %}}
+     Once a deployment has been created, it is not possible to change the
    provider and region anymore.
 {{% /hints/warning %}}
 2. Select the __DB Version__.
@@ -68,8 +71,9 @@ role bindings to regulate access control on a deployment level.
    IP ranges. To create a allowlist, navigate to your project and select the
    __IP allowlists__ tab.
 
+
 {{% hints/security %}}
-For any kind of production deployment we strongly advise to use an IP allowlist.
+  For any kind of production deployment we strongly advise to use an IP allowlist.
 {{% /hints/security %}}
 
 ![ArangoGraph New Deployment](/images/arangograph-new-deployment1.png)
@@ -99,8 +103,9 @@ Choose between a **OneShard**, **Sharded** or **Developer** deployment.
    disk size. You can set it to the same value as the initial disk size to
    disable automatic disk sizing.
 
+
 {{% hints/info %}}
-A deployment's node disk size is automatically increased by 25% when the maximal
+  A deployment's node disk size is automatically increased by 25% when the maximal
 disk usage of a node exceeds 75% of its capacity, up to the configured limit.
 You will be notified via email when the disk size is increased, as well as when
 your deployment runs out of disk space but cannot be resized because it reached
@@ -146,8 +151,9 @@ the upper disk size limit already.
    root password to your clipboard. You can also click the view icon to unmask
    the root password to see it.
 
-   {{% hints/security %}}
-   Do not use the root username/password for everyday operations. It is recommended
+   
+{{% hints/security %}}
+     Do not use the root username/password for everyday operations. It is recommended
    to use them only to create other user accounts with appropriate permissions.
 {{% /hints/security %}}
 
@@ -162,8 +168,9 @@ the upper disk size limit already.
 
 At this point your ArangoDB deployment is available for you to use — **Have fun!**
 
+
 {{% hints/info %}}
-Each deployment is accessible on two ports:
+  Each deployment is accessible on two ports:
 
 - Port 8529 is the standard port recommended for use by web-browsers.
 - Port 18529 is the alternate port that is recommended for use by automated services.
@@ -200,13 +207,15 @@ that is being used, change the memory, CPU, and disk size, or even switch from
 a OneShard deployment to a Sharded one if your data set no longer fits in a
 single node. 
 
+
 {{% hints/tip %}}
-To edit an existing deployment, you must have the necessary set of permissions
+  To edit an existing deployment, you must have the necessary set of permissions
 attached to your role. Read more about [roles and permissions](security-and-access-control/#roles).
 {{% /hints/tip %}}
 
+
 {{% hints/info %}}
-The configuration options depend on the tier your organization belongs to.
+  The configuration options depend on the tier your organization belongs to.
 For more details about available resources and usage limits, refer to the 
 [ArangoGraph tiers](organizations/#arangograph-tiers) section.
 {{% /hints/info %}}
@@ -229,8 +238,9 @@ For more details about available resources and usage limits, refer to the
      click **Sharded**. In addition to the other configuration options, you can
      select the number of nodes for your deployment. This can also be modified later on.
 
-   {{% hints/warning %}}
-   Notice that you cannot switch from **Sharded** back to **OneShard**.
+   
+{{% hints/warning %}}
+     Notice that you cannot switch from **Sharded** back to **OneShard**.
 {{% /hints/warning %}}
    
 	- AWS deployments have an additional option that allows you to select the
@@ -238,8 +248,9 @@ For more details about available resources and usage limits, refer to the
      and very large data sets. This option is dependent on the selected memory
      size. For example, larger deployments have optimised settings by default.
 
-   {{% hints/warning %}}
-   When upgrading the memory size, disk size, and/or disk performance in AWS deployments,
+   
+{{% hints/warning %}}
+     When upgrading the memory size, disk size, and/or disk performance in AWS deployments,
    the value gets locked and cannot be changed until the cloud provider rate limit is reset.  
 {{% /hints/warning %}}
 	
@@ -251,13 +262,15 @@ For more details about available resources and usage limits, refer to the
 To isolate your deployments and increase security, you can use the private endpoint feature.
 Follow the steps outlined below to get started.
 
+
 {{% hints/info %}}
-The private endpoint feature is only available on the
+  The private endpoint feature is only available on the
 [Enterprise tier](organizations/#arangograph-tiers) of ArangoGraph.
 {{% /hints/info %}}
 
+
 {{% hints/tip %}}
-Private endpoints on Microsoft Azure can be cross region; in AWS they should be located in the same region.
+  Private endpoints on Microsoft Azure can be cross region; in AWS they should be located in the same region.
 {{% /hints/tip %}}
 
 ### Google Cloud Platform
@@ -301,8 +314,9 @@ that you need during the creation of your Private Endpoint(s).
 9. ArangoGraph will configure a Private Endpoint Service. As soon as as the **Service Attachment** is ready,
    you can use it to configure the Private Service Connect in your VPC.
 
+
 {{% hints/tip %}}
-When you create a private endpoint on ArangoGraph, both endpoints (the regular one and the new private one) are available
+  When you create a private endpoint on ArangoGraph, both endpoints (the regular one and the new private one) are available
 for two hours. During this time period, you can switch your application to the new private endpoint. After this period, the old
 endpoint will not be available anymore.
 {{% /hints/tip %}}
@@ -348,8 +362,9 @@ contact support via **Request help** in the help menu.
    **Connections** will increase and you can view the connection details by
    clicking it.
 
+
 {{% hints/tip %}}
-When you create a private endpoint on ArangoGraph, both endpoints (the old one and the new private one) are available
+  When you create a private endpoint on ArangoGraph, both endpoints (the old one and the new private one) are available
 for two hours. During this time period, you can switch your application to the new private endpoint. After this period, the old
 endpoint will not be available anymore.
 {{% /hints/tip %}}
@@ -389,8 +404,9 @@ that automatically connects to private endpoints that are created in those princ
    You need to enter a valid account, which is your 12 digit AWS account ID.
    Adding usernames or role names is optional. You can also
    skip this step and add them later from the summary view.
-   {{% hints/info %}}
-   Principals cannot be changed anymore once a connection has been established.
+   
+{{% hints/info %}}
+     Principals cannot be changed anymore once a connection has been established.
 {{% /hints/info %}}
    ![ArangoGraph AWS Private Endpoint Configure Principals](/images/arangograph-aws-endpoint-configure-principals.png)
 6. Enter one or more Alternate DNS names. This step is optional, you can 
@@ -402,8 +418,9 @@ that automatically connects to private endpoints that are created in those princ
    that is now displayed to see the connection status and change the
    configuration, if needed.
    ![ArangoGraph AWS Private Endpoint Overview](/images/arangograph-aws-private-endpoint-overview.png)
-   {{% hints/tip %}}
-   To learn more or request help from the ArangoGraph support team, click **Help**
+   
+{{% hints/tip %}}
+     To learn more or request help from the ArangoGraph support team, click **Help**
    in the top right corner of the **Private Endpoint** section.
 {{% /hints/tip %}}
 9. ArangoGraph will configure a private endpoint service. As soon as this is available,
@@ -411,16 +428,18 @@ that automatically connects to private endpoints that are created in those princ
    to your endpoint service. For more details, see
    [How to connect to an endpoint](https://docs.aws.amazon.com/vpc/latest/privatelink/create-endpoint-service.html#share-endpoint-service).
 
+
 {{% hints/tip %}}
-When you create a private endpoint on ArangoGraph, both endpoints (the old one and the new private one) are available
+  When you create a private endpoint on ArangoGraph, both endpoints (the old one and the new private one) are available
 for two hours. During this time period, you can switch your application to the new private endpoint. After this period, the old
 endpoint will not be available anymore.
 {{% /hints/tip %}}
 
 ## How to delete a deployment
 
+
 {{% hints/danger %}}
-Deleting a deployment will delete all its data and backups.
+  Deleting a deployment will delete all its data and backups.
 This operation is **irreversible**. Please proceed with caution.
 {{% /hints/danger %}}
 

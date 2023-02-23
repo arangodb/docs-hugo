@@ -125,8 +125,9 @@ FOR doc IN viewName
 {{% /tab %}}
 {{< /tabs >}}
 
+
 {{% hints/warning %}}
-The alphabetical order of characters is not taken into account by ArangoSearch,
+  The alphabetical order of characters is not taken into account by ArangoSearch,
 i.e. range queries in SEARCH operations against Views will not follow the
 language rules as per the defined Analyzer locale (except for the
 [`collation` Analyzer](../../analyzers/#collation)) nor the server language

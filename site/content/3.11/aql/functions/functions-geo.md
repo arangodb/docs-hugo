@@ -282,8 +282,9 @@ RETURN GEO_MULTIPOLYGON([
 
 ## Geo Index Functions
 
+
 {{% hints/warning %}}
-The AQL functions `NEAR()`, `WITHIN()` and `WITHIN_RECTANGLE()` are
+  The AQL functions `NEAR()`, `WITHIN()` and `WITHIN_RECTANGLE()` are
 deprecated starting from version 3.4.0.
 Please use the [Geo utility functions](#geo-utility-functions) instead.
 {{% /hints/warning %}}
@@ -296,8 +297,9 @@ the query however.
 
 ### NEAR()
 
+
 {{% hints/warning %}}
-`NEAR` is a deprecated AQL function from version 3.4.0 on.
+  `NEAR` is a deprecated AQL function from version 3.4.0 on.
 Use [DISTANCE()](#distance) in a query like this instead:
 
 {{< tabs >}}
@@ -338,8 +340,9 @@ contain the distance value in an attribute of that name.
 
 ### WITHIN()
 
+
 {{% hints/warning %}}
-`WITHIN` is a deprecated AQL function from version 3.4.0 on.
+  `WITHIN` is a deprecated AQL function from version 3.4.0 on.
 Use [DISTANCE()](#distance) in a query like this instead:
 
 {{< tabs >}}
@@ -381,8 +384,9 @@ value in an attribute of that name.
 
 ### WITHIN_RECTANGLE()
 
+
 {{% hints/warning %}}
-`WITHIN_RECTANGLE` is a deprecated AQL function from version 3.4.0 on. Use
+  `WITHIN_RECTANGLE` is a deprecated AQL function from version 3.4.0 on. Use
 [GEO_CONTAINS](#geo_contains) and a GeoJSON polygon instead:
 
 {{< tabs >}}

@@ -386,8 +386,9 @@ or conditions.
 
 ## Fulltext Index
 
+
 {{% hints/warning %}}
-The fulltext index type is deprecated from version 3.10 onwards.
+  The fulltext index type is deprecated from version 3.10 onwards.
 It is recommended to use [ArangoSearch](arangosearch/) for advanced full-text search capabilities.
 {{% /hints/warning %}}
 
@@ -721,8 +722,9 @@ request will still block until the index is completely ready. Existing single-th
 client programs can thus safely set the `inBackground` option to `true` and continue to 
 work as before.
 
+
 {{% hints/info %}}
-Should you be building an index in the background you cannot rename or drop the collection.
+  Should you be building an index in the background you cannot rename or drop the collection.
 These operations will block until the index creation is finished. This is equally the case
 with foreground indexing.
 {{% /hints/info %}}

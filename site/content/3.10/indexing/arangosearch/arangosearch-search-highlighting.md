@@ -40,8 +40,9 @@ array with two numbers, with the start offset and length of the match. There can
 multiple matches per path. You can optionally cap how many matches are collected
 per path by setting limits when calling the `OFFSET_INFO()` function.
 
+
 {{% hints/warning %}}
-The start offsets and lengths describe the positions in bytes, not characters.
+  The start offsets and lengths describe the positions in bytes, not characters.
 You may need to account for characters encoded using multiple bytes.
 {{% /hints/warning %}}
 

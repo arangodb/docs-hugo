@@ -30,8 +30,9 @@ _DB-Server_ instance.
 
 Snapshots can be uploaded to or downloaded from remote repositories.
 
+
 {{% hints/info %}}
-Please review the
+  Please review the
 [**requirements and limitations**](../../backup-restore/#hot-backup-limitations)
 of hot backups, specifically regarding storage engine, deployment, scope
 and storage space.

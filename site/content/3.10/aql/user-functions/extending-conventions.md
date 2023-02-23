@@ -40,8 +40,9 @@ User functions can take any number of input arguments and should
 provide one result via a `return` statement. User functions should be kept 
 purely functional and thus free of side effects and state, and state modification.
 
+
 {{% hints/warning %}}
-Modification of global variables is unsupported, as is reading or changing
+  Modification of global variables is unsupported, as is reading or changing
 the data of any collection or running queries from inside an AQL user function.
 {{% /hints/warning %}}
 

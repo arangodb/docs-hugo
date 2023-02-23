@@ -109,8 +109,9 @@ It can be changed using the `--configuration` option.
 For more information about other
 configuration options, see [ArangoDB Starter options](programs-starter-options). 
 
+
 {{% hints/info %}}
-The Starter has a different set of supported command line options than `arangod` binary.
+  The Starter has a different set of supported command line options than `arangod` binary.
 Using the `arangod` configuration file as input for `arangodb` binary is not supported.
 {{% /hints/info %}}
 

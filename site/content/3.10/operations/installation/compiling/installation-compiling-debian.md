@@ -9,8 +9,9 @@ This guide describes how to compile and run the devel branch under a Debian
 based system. It was tested using a fresh Debian Testing machine on Amazon EC2.
 For completeness, the steps pertaining to AWS are also included here.
 
+
 {{% hints/info %}}
-ArangoDB v3.7 requires at least g++ 9.2 as compiler. Older versions, especially
+  ArangoDB v3.7 requires at least g++ 9.2 as compiler. Older versions, especially
 g++ 7, do not work anymore.
 {{% /hints/info %}}
 

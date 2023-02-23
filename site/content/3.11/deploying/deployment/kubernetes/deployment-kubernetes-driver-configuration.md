@@ -128,8 +128,9 @@ For most client requests made by a driver, it does not matter if there is any
 kind of load-balancer between your client application and the ArangoDB
 deployment.
 
+
 {{% hints/info %}}
-Note that even a simple `Service` of type `ClusterIP` already behaves as a
+  Note that even a simple `Service` of type `ClusterIP` already behaves as a
 load-balancer.
 {{% /hints/info %}}
 

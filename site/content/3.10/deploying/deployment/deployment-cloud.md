@@ -19,8 +19,9 @@ After having initialized your preferred AWS instance with one of the ArangoDB su
 operating systems, using the ArangoDB Starter, performing a Manual Deployment, or using
 Kubernetes are all valid options to deploy on AWS.
 
+
 {{% hints/info %}}
-In order to deploy on AWS, general guidelines like using a fast, **direct-attached**
+  In order to deploy on AWS, general guidelines like using a fast, **direct-attached**
 SSD disk for the data directory of the ArangoDB processes apply.
 
 We recommend [**EC2 I3 instances**](https://aws.amazon.com/ec2/instance-types/i3/)

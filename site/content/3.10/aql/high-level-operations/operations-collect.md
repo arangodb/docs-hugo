@@ -220,8 +220,9 @@ FOR u IN users
 {{% /tab %}}
 {{< /tabs >}}
 
+
 {{% hints/info %}}
-The `WITH COUNT` clause can only be used together with an `INTO` clause.
+  The `WITH COUNT` clause can only be used together with an `INTO` clause.
 {{% /hints/info %}}
 
 ## Aggregation

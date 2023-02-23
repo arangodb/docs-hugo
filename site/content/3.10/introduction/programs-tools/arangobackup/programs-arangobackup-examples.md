@@ -39,8 +39,9 @@ specified label and report the success like below.
 {{% /tab %}}
 {{< /tabs >}}
 
+
 {{% hints/tip %}}
-If the `label` marker is omitted then a unique identifier string is
+  If the `label` marker is omitted then a unique identifier string is
 generated instead.
 {{% /hints/tip %}}
 
@@ -67,8 +68,9 @@ Once a hot backup is created, one can use the generated backup id,
 for example `2019-05-15T14.36.38Z_my-label` to restore the **entire**
 instance to that "snapshot". 
 
+
 {{% hints/warning %}}
-Keep in mind that such a restore is a global operation and affects
+  Keep in mind that such a restore is a global operation and affects
 **all databases** in an installation. The restore will roll back all data
 including in the meantime databases, collections, indexes etc.
 The DB-Server of a single server instance and all DB-Servers
@@ -304,8 +306,9 @@ of rclone, which is distributed under the MIT license. It is used to
 both download and upload hot backup sets to and from local and cloud
 operated storage resources.
 
+
 {{% hints/info %}}
-Hot backup directories, which are subject to an ongoing download cannot
+  Hot backup directories, which are subject to an ongoing download cannot
 be used for restores until the download has finished.
 {{% /hints/info %}}
 
@@ -335,8 +338,9 @@ The syntax for remote paths is `remote:path`, where `remote` is the
 name of a top-level attribute in the configuration file, `path` is a
 remote path, and both are separated by a colon (e.g. `my-remote:/a/b/c`).
 
+
 {{% hints/info %}}
-Some cloud vendors require rclone configuration parameters, which are very
+  Some cloud vendors require rclone configuration parameters, which are very
 specific. It is helpful to download a standalone version of rclone and try to
 upload and download files to verify that one has a working configuration for
 the cloud storage in question. The exhaustive documentation parameters of `S3`

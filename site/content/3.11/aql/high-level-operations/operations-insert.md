@@ -21,8 +21,9 @@ The syntax for an insert operation is:
 
 It can optionally end with an `OPTIONS { … }` clause.
 
+
 {{% hints/tip %}}
-The `IN` keyword is allowed in place of `INTO` and has the same meaning.
+  The `IN` keyword is allowed in place of `INTO` and has the same meaning.
 {{% /hints/tip %}}
 
 `collection` must contain the name of the collection into which the documents should
@@ -108,8 +109,9 @@ FOR i IN 1..1000
 
 ### `overwrite`
 
+
 {{% hints/info %}}
-The `overwrite` option is deprecated and superseded by
+  The `overwrite` option is deprecated and superseded by
 [overwriteMode](#overwritemode).
 {{% /hints/info %}}
 

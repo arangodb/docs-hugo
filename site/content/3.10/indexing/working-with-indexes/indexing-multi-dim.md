@@ -12,8 +12,9 @@ A multi-dimensional index is setup by setting the index type to `"zkd"`.
 The `fields` attribute describes which fields are used as dimensions.
 The value of each dimension has to be a numeric (double) value.
 
+
 {{% hints/warning %}}
-`zkd` indexes are an **experimental** feature in ArangoDB 3.9.
+  `zkd` indexes are an **experimental** feature in ArangoDB 3.9.
 {{% /hints/warning %}}
 
 ## Querying documents within a 3D box

@@ -134,8 +134,9 @@ Unless your service is explicitly intended to be used by people who already
 have access to the ArangoDB web interface, you should go with one of the other
 approaches instead.
 
+
 {{% hints/danger %}}
-Only use this for internal services intended to help
+  Only use this for internal services intended to help
 users who already have full access to the database.
 **Don't ever expose your database to the public Internet.**
 {{% /hints/danger %}}

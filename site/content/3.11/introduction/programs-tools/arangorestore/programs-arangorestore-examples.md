@@ -162,8 +162,9 @@ Note however that when restoring an edge collection no internal checks are made 
 the documents that the edges connect exist. As a consequence, when restoring individual collections
 which are part of a graph you are not required to restore in a specific order. 
 
+
 {{% hints/warning %}}
-When restoring only a subset of collections of your database, and graphs are in use, you will need
+  When restoring only a subset of collections of your database, and graphs are in use, you will need
 to make sure you are restoring all the needed collections (the ones that are part of the graph) as 
 otherwise you might have edges pointing to non existing documents.
 {{% /hints/warning %}}
@@ -264,8 +265,9 @@ The `--replication-factor` options works in the same way, e.g.
 will set the replication factor to 2 for all collections but "mycollection", which will get a
 replication factor of just 1.
 
+
 {{% hints/info %}}
-The options `--number-of-shards` and `replication-factor`, as well as the deprecated
+  The options `--number-of-shards` and `replication-factor`, as well as the deprecated
 options `--default-number-of-shards` and `--default-replication-factor`, are
 **not applicable to system collections**. They are managed by the server.
 {{% /hints/info %}}
@@ -309,8 +311,9 @@ The following factors affect speed of _arangorestore_ in a Cluster:
   option `--envelope false`. arangorestore can automatically parallelize
   the restore of such dumps even for individual collections.
 
+
 {{% hints/tip %}}
-See [Fast Cluster Restore](programs-arangorestore-fast-cluster-restore)
+  See [Fast Cluster Restore](programs-arangorestore-fast-cluster-restore)
 for further operative details on how to take the three factors described above
 into account when restoring with _arangorestore_.
 {{% /hints/tip %}}

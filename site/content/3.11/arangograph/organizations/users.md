@@ -61,8 +61,9 @@ See [My Account: How to respond to my invites](../my-account#how-to-respond-to-m
 2. Delete a member by pressing the __recycle bin__ icon in the __Actions__ column.
 3. Confirm the deletion in the dialog that pops up
 
+
 {{% hints/info %}}
-You cannot delete members who are organization owners.
+  You cannot delete members who are organization owners.
 {{% /hints/info %}}
 
 ### How to make a member an organization owner
@@ -103,8 +104,9 @@ __Delete__ the currently viewed group.
 
 ![ArangoGraph Group](/images/arangograph-group.png)
 
+
 {{% hints/info %}}
-The groups __Organization members__ and __Organization owners__ are virtual groups
+  The groups __Organization members__ and __Organization owners__ are virtual groups
 and cannot be changed. They always reflect the current set of organization
 members and owners.
 {{% /hints/info %}}

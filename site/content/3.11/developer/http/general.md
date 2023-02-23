@@ -287,8 +287,9 @@ APIs you will need to generate a special JWT token which grants superuser
 access. Note that using superuser access for normal database operations is
 **NOT advised**.
 
+
 {{% hints/security %}}
-It is only possible to generate this JWT token with the knowledge of the
+  It is only possible to generate this JWT token with the knowledge of the
 JWT secret.
 {{% /hints/security %}}
 
@@ -635,8 +636,9 @@ requests unless explicitly told to do so:
 
 ## HTTP method overriding
 
+
 {{% hints/warning %}}
-HTTP method overriding is deprecated from version 3.9.0 on and should no longer
+  HTTP method overriding is deprecated from version 3.9.0 on and should no longer
 be used.
 {{% /hints/warning %}}
 

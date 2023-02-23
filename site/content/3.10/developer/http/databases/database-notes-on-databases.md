@@ -51,8 +51,9 @@ The extended naming convention is used if enabled, allowing many special and
 UTF-8 characters in database names. If set to `false` (default), the traditional
 naming convention will be enforced.
 
+
 {{% hints/warning %}}
-While it is possible to change the value of the
+  While it is possible to change the value of the
 `--database.extended-names-databases` option from `false` to `true` to enable
 extended names, the reverse is not true. Once the extended names have been
 enabled they will remain permanently enabled so that existing databases with

@@ -80,8 +80,9 @@ The syntax for k Shortest Paths queries is similar to the one for
 either use a named graph or a set of edge collections. It only emits a path
 variable however, whereas `SHORTEST_PATH` emits a vertex and an edge variable.
 
+
 {{% hints/warning %}}
-It is highly recommended that you use a **LIMIT** statement, as
+  It is highly recommended that you use a **LIMIT** statement, as
 k Shortest Paths is a potentially expensive operation. On large connected
 graphs it can return a large number of paths, or perform an expensive
 (but unsuccessful) search for more short paths.
@@ -126,8 +127,9 @@ FOR path
   the maximal number of paths to return. It is highly recommended to use
   a `LIMIT` for `K_SHORTEST_PATHS`.
 
+
 {{% hints/info %}}
-k Shortest Paths traversals do not support negative weights. If a document
+  k Shortest Paths traversals do not support negative weights. If a document
 attribute (as specified by `weightAttribute`) with a negative value is
 encountered during traversal, or if `defaultWeight` is set to a negative
 number, then the query is aborted with an error.

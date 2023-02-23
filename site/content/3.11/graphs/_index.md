@@ -1,6 +1,6 @@
 ---
 fileID: graphs
-title: ArangoDB Graphs
+title: Graphs
 weight: 4000
 description: 
 layout: default
@@ -17,8 +17,9 @@ Graphs allow you to structure your models in line with your domain and group
 them logically in collections and giving you the power to query them in the same
 graph queries.
 
+
 {{% hints/info %}}
-New to graphs? [**Take our free graph course for freshers**](https://www.arangodb.com/arangodb-graph-course/)
+  New to graphs? [**Take our free graph course for freshers**](https://www.arangodb.com/arangodb-graph-course/)
 and get from zero knowledge to advanced query techniques.
 {{% /hints/info %}}
 

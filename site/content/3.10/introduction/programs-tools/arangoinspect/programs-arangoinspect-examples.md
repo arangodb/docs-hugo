@@ -12,8 +12,9 @@ The resulting JSON file is a collection of meta data acquired from all
 involved instances. The data includes relevant operating system parameters,
 ArangoDB process parameters, local database information etc.
 
+
 {{% hints/warning %}}
-Please open the file locally and check if it contains anything that you are
+  Please open the file locally and check if it contains anything that you are
 not allowed/willing to share and obfuscate it before sharing (user names,
 files paths etc.).
 {{% /hints/warning %}}

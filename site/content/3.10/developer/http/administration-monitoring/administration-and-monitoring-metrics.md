@@ -9,8 +9,9 @@ _arangod_ exports metrics in Prometheus format which can be used to monitor
 the healthiness and performance of the system. The thresholds for alerts are
 also described for relevant metrics.
 
+
 {{% hints/warning %}}
-The list of exposed metrics is subject to change in every minor version.
+  The list of exposed metrics is subject to change in every minor version.
 While they should stay backwards compatible for the most part, some metrics are
 coupled to specific internals that may be replaced by other mechanisms in the
 future.

@@ -27,8 +27,9 @@ if (response.status < 400) {
 {{% /tab %}}
 {{< /tabs >}}
 
+
 {{% hints/warning %}}
-Because
+  Because
 [Foxx services are always synchronous](../#compatibility-caveats)
 and network requests can be considerably slower than any other
 database operation, you should avoid making requests in your service

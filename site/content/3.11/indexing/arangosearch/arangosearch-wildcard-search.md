@@ -29,8 +29,9 @@ everywhere else.
 - `\\_`: A literal underscore
 - `\\%`: A literal percent sign
 
+
 {{% hints/info %}}
-Literal backlashes require different amounts of escaping depending on the
+  Literal backlashes require different amounts of escaping depending on the
 context:
 - `\` in bind variables (_Table_ view mode) in the web interface (automatically
   escaped to `\\` unless the value is wrapped in double quotes and already

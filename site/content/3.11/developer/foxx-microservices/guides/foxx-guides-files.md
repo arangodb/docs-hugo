@@ -82,15 +82,17 @@ and handle file uploads outside Foxx itself.
 However in some cases it may be feasible to store smaller files directly in
 ArangoDB documents by using a separate collection.
 
+
 {{% hints/danger %}}
-Due to the way ArangoDB stores documents internally, you should not store
+  Due to the way ArangoDB stores documents internally, you should not store
 file contents alongside other attributes that might be updated independently.
 Additionally, large file sizes will impact performance for operations
 involving the document and may affect overall database performance.
 {{% /hints/danger %}}
 
+
 {{% hints/warning %}}
-In production, you should avoid storing any files in ArangoDB or handling file
+  In production, you should avoid storing any files in ArangoDB or handling file
 uploads in Foxx. The following example will work for moderate amounts of small
 files but is not recommended for large files or frequent uploads or
 modifications.

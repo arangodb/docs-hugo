@@ -79,8 +79,9 @@ valid view name. For more information on valid view names please refer to the
 
 If renaming fails for any reason, an error is thrown.
 
+
 {{% hints/info %}}
-The rename method is not available in clusters.
+  The rename method is not available in clusters.
 {{% /hints/info %}}
 
 **Examples**

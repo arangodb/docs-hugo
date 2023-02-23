@@ -331,8 +331,9 @@ arangodump --collection "collection" --threads 8 --envelope false --compress-out
 
 The JSONL format is also supported by _arangoimport_ natively.
 
+
 {{% hints/warning %}}
-Dumps created with the `--envelope false` setting cannot be restored into any
+  Dumps created with the `--envelope false` setting cannot be restored into any
 ArangoDB versions older than v3.8.0!
 {{% /hints/warning %}}
 

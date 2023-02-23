@@ -54,8 +54,9 @@ support plan.
 | **Private endpoint deployment** | Not included | Not included | Included |
 | **Support plan** | Basic | Standard | Premium Standard |
 
+
 {{% hints/info %}}
-Based on the type of tier your organization belongs to, different usage
+  Based on the type of tier your organization belongs to, different usage
 limits apply for memory and storage.
 {{% /hints/info %}}
 
@@ -84,8 +85,9 @@ If you want to restrict access to an organization, you can do it by specifying w
 
 ## How to delete the current organization
 
+
 {{% hints/danger %}}
-Removing an organization implies the deletion of projects and deployments.
+  Removing an organization implies the deletion of projects and deployments.
 This operation cannot be undone and **all deployment data will be lost**.
 Please proceed with caution.
 {{% /hints/danger %}}
@@ -95,12 +97,14 @@ Please proceed with caution.
 3. Click the **Delete organization** button.
 4. Enter `Delete!` to confirm and click **Yes**.
 
+
 {{% hints/info %}}
-If you are no longer a member of any organization, then a new organization is
+  If you are no longer a member of any organization, then a new organization is
 created for you when you log in again.
 {{% /hints/info %}}
 
+
 {{% hints/tip %}}
-If the organization has a locked resource (a project or a deployment), you need to [unlock](../security-and-access-control/#locked-resources)
+  If the organization has a locked resource (a project or a deployment), you need to [unlock](../security-and-access-control/#locked-resources)
 that resource first to be able to delete the organization.
 {{% /hints/tip %}}

@@ -408,8 +408,9 @@ If *low* and *high* are the same, but *includeLow* and/or *includeHigh* is set
 to `false`, then nothing will match. If *low* is greater than *high* nothing will
 match either.
 
+
 {{% hints/info %}}
-The regular `IN_RANGE()` function can not utilize indexes, unlike its
+  The regular `IN_RANGE()` function can not utilize indexes, unlike its
 ArangoSearch counterpart which can use the View index.
 {{% /hints/info %}}
 

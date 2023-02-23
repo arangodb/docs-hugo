@@ -6,7 +6,7 @@ description:
 layout: default
 ---
 {{% hints/warning %}}
-The batch request API is deprecated from version 3.8.0 on.
+  The batch request API is deprecated from version 3.8.0 on.
 This endpoint should no longer be used.
 To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP Interface for Documents](../documents/document-working-with-documents#bulk-document-operations)

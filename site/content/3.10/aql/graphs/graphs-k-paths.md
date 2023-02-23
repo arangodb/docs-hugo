@@ -102,8 +102,9 @@ The syntax for k Paths queries is similar to the one for
 [K Shortest Path](graphs-kshortest-paths) with the addition to define the
 minimum and maximum length of the path.
 
+
 {{% hints/warning %}}
-It is highly recommended that you use a reasonable maximum path length or a
+  It is highly recommended that you use a reasonable maximum path length or a
 **LIMIT** statement, as k Paths is a potentially expensive operation. On large
 connected graphs it can return a large number of paths.
 {{% /hints/warning %}}

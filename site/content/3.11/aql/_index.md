@@ -1,6 +1,6 @@
 ---
 fileID: index
-title: AQL  Documentation
+title: ArangoDB Query Language (AQL)
 weight: 3000
 description: 
 layout: default

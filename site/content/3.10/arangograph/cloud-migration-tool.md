@@ -7,7 +7,7 @@ description: >-
 layout: default
 ---
 {{% hints/info %}}
-This documentation describes the preview version of the Cloud Migration tool
+  This documentation describes the preview version of the Cloud Migration tool
 and is subject to change.
 {{% /hints/info %}}
 
@@ -65,8 +65,9 @@ Before getting started, make sure the following prerequisites are in place:
   platform. Check if the host is available and your firewall is not blocking
   port `8629`.  
 
+
 {{% hints/info %}}
-The cloud migration tool is only available for clusters.
+  The cloud migration tool is only available for clusters.
 {{% /hints/info %}}
 
 ### Setting up the target deployment in ArangoGraph
@@ -86,8 +87,9 @@ set up before the migration can start:
 After setting up your ArangoGraph deployment, wait for a few minutes for it to become
 fully operational.
 
+
 {{% hints/info %}}
-Note that Developer mode deployments are not supported.
+  Note that Developer mode deployments are not supported.
 {{% /hints/info %}}
 
 ## Running the migration tool
@@ -130,8 +132,9 @@ start it again using the `start` command.
 Note that restarting works only if you are not using
 auto-generated certificates.
 
+
 {{% hints/warning %}}
-Starting the migration creates a full copy of all data from the source cluster
+  Starting the migration creates a full copy of all data from the source cluster
 to the target deployment in ArangoGraph. All data that has previously existed in the
 target deployment will be lost.
 {{% /hints/warning %}}
@@ -145,8 +148,9 @@ The following takes place during an active migration:
   To get your root password, select the target deployment from the ArangoGraph
   Dashboard and go to the **Overview** tab. All other users are fully synchronized.
 
+
 {{% hints/warning %}}
-The migration tool increases the CPU and memory usage of the server you are
+  The migration tool increases the CPU and memory usage of the server you are
 running it on. Depending on your ArangoDB usage pattern, it may take a lot of CPU
 to handle the replication. You can stop the migration process anytime
 if you see any problems.
@@ -316,8 +320,9 @@ In case you have any questions, please
    - It waits until all shards are synchronized.
    - The target deployment is switched into default read/write mode.
 
-   {{% hints/info %}}
-   If you switched the source data cluster into read-only mode,
+   
+{{% hints/info %}}
+     If you switched the source data cluster into read-only mode,
    you can switch it back to default (read/write) mode using the
    `set-server-mode` subcommand.
 {{% /hints/info %}}

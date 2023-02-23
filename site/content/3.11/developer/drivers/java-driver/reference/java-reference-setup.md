@@ -152,8 +152,9 @@ arangoDB.shutdown();
 {{% /tab %}}
 {{< /tabs >}}
 
+
 {{% hints/info %}}
-Opening and closing connections very frequently can exhaust the amount of
+  Opening and closing connections very frequently can exhaust the amount of
 connections allowed by the operating system. TCP connections enter a special
 state `WAIT_TIME` after close, and typically remain in this state for two
 minutes (maximum segment life * 2). These connections count towards the global

@@ -76,8 +76,9 @@ kubectl logs <pod-name> -n <namespace> -f
 To inspect the logs of a specific container in `Pod`, add `-c <container-name>`.
 You can find the names of the containers in the `Pod`, using `kubectl describe pod ...`.
 
+
 {{% hints/info %}}
-Note that the ArangoDB operators are being deployed themselves as a Kubernetes `Deployment`
+  Note that the ArangoDB operators are being deployed themselves as a Kubernetes `Deployment`
 with 2 replicas. This means that you will have to fetch the logs of 2 `Pods` running
 those replicas.
 {{% /hints/info %}}

@@ -6,7 +6,7 @@ description:
 layout: default
 ---
 {{% hints/info %}}
-This article is only relevant if you intend to compile ArangoDB on Ubuntu 16.10
+  This article is only relevant if you intend to compile ArangoDB on Ubuntu 16.10
 or Debian testing
 {{% /hints/info %}}
 

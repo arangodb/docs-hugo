@@ -15,8 +15,9 @@ naming convention, that is disabled by default. It can be enabled on an
 installation by setting the startup option `--database.extended-names-databases`
 to `true`.
 
+
 {{% hints/info %}}
-The extended naming convention is an **experimental** feature in ArangoDB 3.9,
+  The extended naming convention is an **experimental** feature in ArangoDB 3.9,
 but will become the norm in a future version. Drivers and client applications
 should be prepared for this feature.
 {{% /hints/info %}}
@@ -55,8 +56,9 @@ The restrictions of the two naming conventions are:
   Example database names that can be used with the _extended_ naming convention:
   `"España", "😀", "犬", "كلب", "@abc123", "København", "München", "Россия", "abc? <> 123!"` 
 
+
 {{% hints/warning %}}
-While it is possible to change the value of the
+  While it is possible to change the value of the
 `--database.extended-names-databases` option from `false` to `true` to enable
 extended names, the reverse is not true. Once the extended names have been
 enabled they will remain permanently enabled so that existing databases with

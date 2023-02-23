@@ -11,8 +11,9 @@ For an introduction to this transaction type, see
 To use a Stream Transaction, a client first sends the [configuration](#begin-a-transaction)
 of the transaction to the ArangoDB server.
 
+
 {{% hints/info %}}
-Contrary to [**JavaScript Transactions**](transaction-js-transaction),
+  Contrary to [**JavaScript Transactions**](transaction-js-transaction),
 the definition of Stream Transaction must only contain the collections that are
 going to be used and (optionally) the various transaction options supported by
 ArangoDB. No `action` attribute is supported.
