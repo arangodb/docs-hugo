@@ -1,7 +1,8 @@
 ---
 fileID: transactions
-title: '3.10'
+title: ArangoDB Documentation
+menuTitle: '3.10'
 weight: 0
 description: 
-layout: default
+archetype: home
 ---
