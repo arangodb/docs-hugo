@@ -36,36 +36,30 @@ def generateFile():
         label = label.replace("#", "").replace("\n", "").lstrip(" ")
         groups.append(label)
 
-    print(groups)
-
     dstFile = open(dst, 'w')
 
     with open(src) as f:
-        i = -1
-
         for line in f:
             try:
-                if line.startswith("###"):
+                if line.startswith("###") or line == "\n":
                     continue
 
                 if line.startswith("## "):
                     group = line.replace("#", "").replace("\n", "").lstrip(" ")
                     if group in groups:
-                        print(group)
                         dstFile.write(f"- group: {group}\n")
 
                     continue
 
-                if line == "\n":
-                    continue
-
                 parts = line.split(",")
-                errorDesc = ",".join(parts[3:])
 
-                dstFile.write(f"- name: {parts[0]}\n  text: {parts[2]}\n  desc: {errorDesc}  code: {parts[1]}\n")
+                regex = re.search(r"(\".*\"),(.+)$", line, re.MULTILINE)
+                errorDesc = regex.group(2).replace("\",", "\"")
+                dstFile.write(f"- name: {parts[0]}\n  text: {regex.group(1)}\n  desc: {errorDesc}\n  code: {parts[1]}\n")
 
             except Exception as ex:
-                print(f"Exception in line {line}")
+                #print(f"Exception in line {line}")
+                raise ex
 
     dstFile.close()
 
