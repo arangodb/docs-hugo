@@ -1078,3 +1078,12 @@ function copyCode(event) {
     });
  }
 
+function openapiExpandResponse(event) {
+    event.preventDefault();
+    event.target.classList.toggle("clicked");
+    var block = document.querySelector("div#"+event.target.id);
+    block.classList.toggle("hidden");
+ }
+
+ document.querySelectorAll( '.response-code' ).forEach( function(e){ e.addEventListener("click", openapiExpandResponse); }, false);
+

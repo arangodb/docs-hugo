@@ -54,7 +54,7 @@
     color: #f06560;
 }
 
-.openapi > .description {
+.openapi-description {
     margin-top: 1em;
     margin-bottom: 2em;
 }
@@ -173,4 +173,8 @@
     user-select: none;
     cursor: pointer;
     box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
+}
+
+.response-code.clicked {
+    background-color: #690;
 }
