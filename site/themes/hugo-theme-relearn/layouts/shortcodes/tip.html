@@ -1,6 +1,5 @@
-{{ $_hugo_config := `{ "version": 1 }` }}
 <div class="box notices cstyle success">
     <div class="box-content">
-        <div class="box-text">{{ .Inner }}</div>
+        <div class="box-text">{{ .InnerDeindent | markdownify  }}</div>
     </div>
 </div>

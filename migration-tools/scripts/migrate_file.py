@@ -113,7 +113,12 @@ def migrate_hints(paragraph):
         if hintType == 'note':
             hintType = 'tip'
 
+<<<<<<< HEAD
         newHint = f"{{{{% {hintType} %}}}}\n{hintText}\n{{{{% /{hintType} %}}}}"
+=======
+        newHint = hint.replace(f"{{% hint '{hintType}' %}}", f"{{{{< {hintType} >}}}}")
+        newHint = newHint.replace("{% endhint %}", f"{{{{< /{hintType} >}}}}")
+>>>>>>> main
         paragraph = paragraph.replace(hint, newHint)
 
     return paragraph
@@ -121,7 +126,11 @@ def migrate_hints(paragraph):
 def migrate_capture_alternative(paragraph):
     captureRE = re.findall(r"(?<={% capture alternative %})(.*?)(?= {% endcapture %})", paragraph, re.MULTILINE | re.DOTALL)
     for capture in captureRE:
+<<<<<<< HEAD
         info = f"{{{{% info %}}}}\n{capture}\n{{{{% /info %}}}}"
+=======
+        info = f"{{{{< info >}}}}\n{capture}\n{{{{< /info >}}}}"
+>>>>>>> main
         paragraph = paragraph.replace(capture, info)
 
     paragraph = paragraph.replace("{% capture alternative %}", "").replace("{% endcapture %}", "")
