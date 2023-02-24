@@ -24,10 +24,11 @@ swaggerBaseTypes = [
 ]
 
 def str_presenter(dumper, data):
-    """configures yaml for dumping multiline strings
-    Ref: https://stackoverflow.com/questions/8640959/how-can-i-control-what-scalar-form-pyyaml-uses-for-my-data"""
-    if data.count('\n') > 0:  # check for multiline string
+    multilineRegex = re.sub(r"^\n", '', data, 0, re.MULTILINE)
+    if len(multilineRegex.split('\n')) > 2:  # check for multiline string
         return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
+
+    data = data.strip("\n")
     return dumper.represent_scalar('tag:yaml.org,2002:str', data)
 
 yaml.add_representer(str, str_presenter)
@@ -58,7 +59,7 @@ def migrateHTTPDocuBlocks(paragraph):
                 newBlock = processHTTPDocuBlock(block, tag)
 
                 paragraph = paragraph.replace("{% docublock "+ docuBlock + " %}", newBlock)
-                #print(paragraph)
+
     paragraph = re.sub(r"```\n{3,}", "```\n\n", paragraph, 0, re.MULTILINE)
 
     return paragraph
@@ -81,7 +82,7 @@ def processHTTPDocuBlock(docuBlock, tag):
             traceback.print_exc()
             exit(1)
 
-    blocks = re.findall(r"@RESTDESCRIPTION(.*?)^(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
+    blocks = re.findall(r"(?<=@RESTDESCRIPTION\n)(.*?)(?=\n@)", docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
         try:
             newBlock["paths"][url][verb]["description"] = block
@@ -346,21 +347,25 @@ def render_yaml(block, title):
 ```'
     res = res.replace("@endDocuBlock", "")   
     res = re.sub(r"^ *$\n", '', res, 0, re.MULTILINE | re.DOTALL)
+    res = re.sub(r"\|.*", '|', res, 0, re.MULTILINE)
     return f"\n## {title}\n\n" + res
 
 def parse_examples(blockExamples):
     res = ''
     for example in blockExamples:
         exampleOptions = yaml.dump(example["options"], sort_keys=False, default_flow_style=False)
+        code = example["code"]
+        indentationToRemove = len(code.split("\n")[0]) - len(code.split("\n")[0].lstrip(' '))
+        code = re.sub("^ {"+str(indentationToRemove)+"}", '', code, 0, re.MULTILINE)
+        
         codeBlock = f'\n\
 ```curl\n\
 ---\n\
-{exampleOptions}\n\
+{exampleOptions}\
 ---\n\
-{example["code"]}\n\
+{code}\
 ```\n\
 '
-        codeBlock = re.sub(r"^\s*$\n", '', codeBlock, 0, re.MULTILINE | re.DOTALL)
         res = res + "\n" + codeBlock
     return res
 
