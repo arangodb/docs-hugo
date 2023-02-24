@@ -1087,3 +1087,15 @@ function openapiExpandResponse(event) {
 
  document.querySelectorAll( '.response-code' ).forEach( function(e){ e.addEventListener("click", openapiExpandResponse); }, false);
 
+ function hideEmptyOpenapiDiv() {
+    var lists = document.getElementsByClassName("openapi-table")
+    for (let list of lists) {
+        if (list.innerHTML.trim() == "") {
+            console.log($(list).parent().prev())
+            $(list).parent().prev().addClass("hidden");
+        }
+    }
+ }
+
+ window.addEventListener("load",hideEmptyOpenapiDiv);
+
