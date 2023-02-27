@@ -26,9 +26,6 @@ mv upgrading operations
 mv downgrading/_index.md operations/downgrading.md
 mv administration operations
 mv security operations
-if [ -d "monitoring" ]; then
-  mv monitoring operations
-fi
 mv troubleshooting operations
 
 mv http developer
