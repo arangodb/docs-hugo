@@ -36,7 +36,8 @@ yaml.representer.SafeRepresenter.add_representer(str, str_presenter) # to use wi
 def migrateHTTPDocuBlocks(paragraph):
     docuBlockNameRe = re.findall(r"(?<={% docublock ).*(?= %})", paragraph)
     for docuBlock in docuBlockNameRe:
-        if 'errorCodes' in docuBlock: ## TODO: Implement
+        if 'errorCodes' in docuBlock:
+            paragraph = paragraph.replace("{% docublock errorCodes %}", "{{< error-codes >}}")
             continue
 
         docuBlockFile =blocksFileLocations[docuBlock]
