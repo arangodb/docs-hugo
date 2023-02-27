@@ -1,11 +1,14 @@
 {{ $data := index site.Data "errors" }}
-
+{{ $basePage := .Page.RelPermalink }}
 {{ range $data }}
     {{ if index . "group" }}
-        <h2 id="{{ .group }}">{{ .group }}</h2>
+        {{ $ref := printf "%s#%s" $basePage .group}}
+        <h2 id="{{ .group }}">{{ .group }} <a href="{{ $ref | safeURL }}" class="header-link" onclick="copyURI(event)"><span></span><i class="fa fa-link"></i></a></h2>
     {{ else }}
+        {{ $ref := printf "%s#%d" $basePage .code}}
     <h4 id="{{ .code }}">
-        {{ .code }} - {{ .name }}
+        {{ .code }} - {{ .name }} 
+        <a href="{{ $ref | safeURL }}" class="header-link" onclick="copyURI(event)"><span></span><i class="fa fa-link"></i></a>
     </h4>
     <p>{{ .desc }}</p>
     {{ end }}
