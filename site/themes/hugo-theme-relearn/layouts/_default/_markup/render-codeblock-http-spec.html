@@ -65,7 +65,11 @@
   {{ $content := .content }}
   <div class="openapi-parameters regular-font">
     <div class="openapi-table-title">
-      Request Body
+      {{ $contentType := ""}}
+      {{ range $k, $v := $content.content }}
+        {{ $contentType = $k }}
+      {{ end }}
+      Request Body <span class="openapi-content-type"> {{ $contentType }} </span>
     </div>
     <div>
       <ul class="openapi-table">
@@ -84,35 +88,14 @@
   {{ $content := .content }}
   <div class="responses regular-font">
     <div class="openapi-table-title">Responses</div>
-    <div>
-      <div class="response-codes">
-      {{ range $status, $info := $content }}
-          <button class="response-code" id="response-{{ $id }}-{{ $status }}">
-            {{ $status }}
-          </button>
-      {{ end }}
-      </div>
-      {{ range $status, $info := $content }}
-          <div class="openapi-response-body hidden" id="response-{{ $id }}-{{ $status }}">
-          {{ if $info.content }}
-          <div class="openapi-description regular-font">
-            {{ $info.description | markdownify }}
-          </div>
-            <div class="openapi-table-title">Response Body</div>
-            <ul class="openapi-table">
-              {{ range $k, $v := $info.content }}
-                {{ range $prop, $value := $v.schema.properties}}
-                  {{- template "renderProperty" dict "prop" $prop "value" $value }}
-                {{ end }}
-              {{ end }}
-            </ul>
-          {{ else }}
-          <div class="openapi-description regular-font">
-            {{ $info.description | markdownify }}
-          </div>
-          {{ end }}
-          </div>
-      {{ end }}
+    <div class="openapi-responses">
+      <ul class="openapi-table">
+        {{ range $status, $content := $content }}
+          {{- template "renderProperty" dict "prop" $status "value" $content }}
+          
+        {{ end }}
+
+      </ul>
     </div>
   </div>
 {{ end }}
@@ -129,7 +112,7 @@
           {{$structName = split $ref "/" | last 1 }}
         {{ end }}
           <div class="openapi-prop collapsed">
-            <code class="bold-text">{{ $prop }}{{ if $value.required }}*{{ end }}</code>  <span style="font-weight: bold;">{{ if $ref }} object {{ else }} {{ $value.schema.type }} {{ end }}</span>
+            <span class="openapi-property-name bold-text">{{ $prop }}{{ if $value.required }}*{{ end }}</span>  <span class="openapi-property-type" style="font-weight: bold;">{{ if $ref }} object {{ else }} {{ $value.schema.type }} {{ end }}</span>
             {{ $description := $value.description | markdownify }}
             <div class="openapi-prop-content hidden">
               <p class="regular-font">{{ $description }}</p>
@@ -160,7 +143,7 @@
         {{$structName = split $ref "/" | last 1 }}
       {{ end }}
       <div class="openapi-prop collapsed">
-        <code class="bold-text">{{ $prop }}</code>  <span style="font-weight: bold;">{{ if $ref }} object {{ else }} {{ $value.type }} {{ end }} </span>
+        <span class="openapi-property-name bold-text">{{ $prop }}</span>  <span class="openapi-property-type" style="font-weight: bold;">{{ if $ref }} object {{ else }} {{ $value.type }} {{ end }} </span>
         {{ $description := $value.description | markdownify }}
         <div class="openapi-prop-content hidden">
           <p class="regular-font">{{ $description }}</p>

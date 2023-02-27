@@ -91,6 +91,33 @@
     color: grey;
 }
 
+.openapi-property-name {
+    color: #3c4257;
+    font-size: 14px;
+    margin-right: 4px;
+    border: 1px solid #c6c6c6;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+.openapi-property-type {
+    font-weight: bold;
+    color: #8792a2;
+    color: #8792a2;
+    font-size: 13px;
+    /* font-size: var(--font12); */
+    /* margin: 0; */
+    margin-right: 4px;
+}
+
+.openapi-content-type {
+    border: 1px solid #d0dadc;
+    padding: 3px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 100;
+}
+
 .show-children::before {
     font-family: "Font Awesome 5 Free";
     content: "\f054";

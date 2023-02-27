@@ -90,26 +90,6 @@ function restoreTabSelections() {
 }
 
 
-
-function initSwagger( update ){
-    if( typeof variants == 'undefined' ){
-        return;
-    }
-    var attrs = [
-        [ 'bg-color', variants.getColorValue( 'MAIN-BG-color' ) ],
-        [ 'mono-font', variants.getColorValue( 'CODE-font' ) ],
-        [ 'primary-color', variants.getColorValue( 'TAG-BG-color' ) ],
-        [ 'regular-font', variants.getColorValue( 'MAIN-font' ) ],
-        [ 'text-color', variants.getColorValue( 'MAIN-TEXT-color' ) ],
-        [ 'theme', variants.getColorValue( 'SWAGGER-theme' ) ],
-    ];
-    document.querySelectorAll( 'rapi-doc' ).forEach( function( e ){
-        attrs.forEach( function( attr ){
-            e.setAttribute( attr[0], attr[1] );
-        });
-    });
-}
-
 function initAnchorClipboard(){
 
     $(".anchor").on('mouseleave', function(e) {
@@ -546,7 +526,6 @@ function getUrlParameter(sPageURL) {
 
 jQuery(function() {
     initArrowNav();
-    initSwagger();
     initMenuScrollbar();
     scrollToActiveMenu();
     scrollToFragment();
@@ -635,16 +614,6 @@ jQuery.fn.highlight = function(words, options) {
     });
 };
 
-
-function useSwagger( config ){
-    if( config.theme && variants ){
-        var write_style = variants.findLoadedStylesheet( 'variant-style' );
-        write_style.setProperty( '--CONFIG-SWAGGER-theme', config.theme );
-    }
-}
-if( window.themeUseSwagger ){
-    useSwagger( window.themeUseSwagger );
-}
 
 // Common custom functions
 
@@ -951,7 +920,6 @@ $(window).scroll(function(){
             }
             current = current.parent();
         }
-        initSwagger();
         initNewPage();
 
         window.history.pushState("navchange", title, url);
