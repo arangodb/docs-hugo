@@ -70,10 +70,11 @@
     list-style: none;
     margin-top: 1rem;
     margin-bottom: 1rem;
+    margin-left: 0;
 }
 
 .show-children {
-    border: 2px solid #e9ebee;
+    border: 1px solid #d0dadc;
     padding: 5px;
     border-radius: 6px;
     font-size: 13px;
@@ -81,7 +82,7 @@
 
 .show-children.collapsed::before {
     font-family: "Font Awesome 5 Free";
-    content: "\f054";
+    content: "\f078";
     display: inline-block;
     padding-right: 3px;
     vertical-align: middle;
@@ -92,7 +93,7 @@
 
 .show-children::before {
     font-family: "Font Awesome 5 Free";
-    content: "\f078";
+    content: "\f054";
     display: inline-block;
     padding-right: 3px;
     vertical-align: middle;
@@ -109,7 +110,7 @@
     color: var(--H2-COLOR);
 }
 
-.openapi-table-row.collapsed::before {
+.openapi-prop.collapsed::before {
     font-family: "Font Awesome 5 Free";
     content: "\f054";
     display: inline-block;
@@ -120,7 +121,7 @@
     color: grey;
 }
 
-.openapi-table-row::before {
+.openapi-prop::before {
     font-family: "Font Awesome 5 Free";
     content: "\f078";
     display: inline-block;
@@ -128,6 +129,18 @@
     vertical-align: middle;
     font-weight: 900;
     font-size: 10px;
+}
+
+.openapi-prop > code,
+.openapi-prop > span {
+    pointer-events: none;
+}
+
+.openapi-prop-content {
+    border: 1px solid #f5ecec;
+    border-radius: 9px;
+    margin: 10px 0 10px 0;
+    padding: 0 10px 0 10px;
 }
 
 .openapi-table-row.collapsed > *:nth-child(n+3){
@@ -145,10 +158,6 @@
 .openapi-table-row > .expand > .expand-label {
     font-size: 1em;
     margin-bottom: 1em;
-}
-
-.openapi-table.children {
-    display: none;
 }
 
 .response-codes {
@@ -176,5 +185,5 @@
 }
 
 .response-code.clicked {
-    background-color: #690;
+    background-color: #dddfd9;
 }

@@ -709,16 +709,17 @@ var showSidenav = true;
 
 
 function initClickHandlers() {
-    $(".openapi-table-row").click(function(event) {
-        var arrow = $(event.target);
-        console.log(arrow)
-        arrow.toggleClass("collapsed");
+    $(".openapi-prop").click(function(event) {
+        if (this === event.target) {
+            $(event.target).toggleClass("collapsed");
+            console.log($(event.target).find('.openapi-prop-content').first())
+            $(event.target).find('.openapi-prop-content').first().toggleClass("hidden");
+        }
     });
     
-    $(".show-children").click(function(event) {
-        var arrow = $(event.target).next();
-        console.log(arrow)
-        arrow.slideToggle();
+    $(".openapi-table.show-children").click(function(event) {
+        $(event.target).toggleClass("collapsed");
+        $(event.target).next(".openapi-table").toggleClass("hidden");
     });
 
     $('#search-by').keypress(
@@ -1088,11 +1089,10 @@ function openapiExpandResponse(event) {
  document.querySelectorAll( '.response-code' ).forEach( function(e){ e.addEventListener("click", openapiExpandResponse); }, false);
 
  function hideEmptyOpenapiDiv() {
-    var lists = document.getElementsByClassName("openapi-table")
+    var lists = document.getElementsByClassName("openapi-parameters")
     for (let list of lists) {
-        if (list.innerHTML.trim() == "") {
-            console.log($(list).parent().prev())
-            $(list).parent().prev().addClass("hidden");
+        if ($(list).find(".openapi-table").text().trim() == "") {
+            $(list).addClass("hidden");
         }
     }
  }

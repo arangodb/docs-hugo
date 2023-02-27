@@ -29,6 +29,9 @@
 </div>
 {{ end }}
 
+
+
+
 {{- define "renderParameters" }}
   {{ $content := .content }}
   <div class="openapi-parameters regular-font">
@@ -120,24 +123,28 @@
   {{ $value := .value }}
   {{ if eq $category $value.in }}
     {{ $structName := "" }}
-      <li class="openapi-table-row regular-font collapsed">
+      <li class="openapi-table-row regular-font">
         {{ $ref := index $value "$ref" }}
         {{ if $ref }}
           {{$structName = split $ref "/" | last 1 }}
         {{ end }}
-          <code class="bold-text">{{ $prop }}</code>  <span style="font-weight: bold;">{{ if $ref }} object {{ else }} {{ $value.type }} {{ end }} {{ if $value.required }} * {{ end }}</span>
-          {{ $description := $value.description | markdownify }}
-            <p class="regular-font">{{ $description }}</p>
-          {{ with $ref }}
-            {{ $componentsFile := index site.Data "components" }}
-            {{ $struct := index $componentsFile.schemas $structName }}
-            <span class="openapi-table show-children bold-text"> Show Children</span>
-            <ul class="openapi-table children">
-              {{ range $k, $v := $struct.properties }}
-                {{- template "renderProperty" dict "prop" $k "value" $v }}
+          <div class="openapi-prop collapsed">
+            <code class="bold-text">{{ $prop }}{{ if $value.required }}*{{ end }}</code>  <span style="font-weight: bold;">{{ if $ref }} object {{ else }} {{ $value.schema.type }} {{ end }}</span>
+            {{ $description := $value.description | markdownify }}
+            <div class="openapi-prop-content hidden">
+              <p class="regular-font">{{ $description }}</p>
+              {{ with $ref }}
+                {{ $componentsFile := index site.Data "components" }}
+                {{ $struct := index $componentsFile.schemas $structName }}
+                <span class="openapi-table show-children bold-text"> Show Children</span>
+                <ul class="openapi-table children">
+                  {{ range $k, $v := $struct.properties }}
+                    {{- template "renderProperty" dict "prop" $k "value" $v }}
+                  {{ end }}
+                </ul>
               {{ end }}
-            </ul>
-          {{ end }}
+            </div>
+          </div>
       </li>
   {{ end }}
 {{ end }}
@@ -147,23 +154,27 @@
   {{ $prop := .prop }}
   {{ $value := .value }}
   {{ $structName := "" }}
-    <li class="openapi-table-row regular-font collapsed">
+    <li class="openapi-table-row regular-font">
       {{ $ref := index $value "$ref" }}
       {{ if $ref }}
         {{$structName = split $ref "/" | last 1 }}
       {{ end }}
+      <div class="openapi-prop collapsed">
         <code class="bold-text">{{ $prop }}</code>  <span style="font-weight: bold;">{{ if $ref }} object {{ else }} {{ $value.type }} {{ end }} </span>
         {{ $description := $value.description | markdownify }}
+        <div class="openapi-prop-content hidden">
           <p class="regular-font">{{ $description }}</p>
         {{ with $ref }}
           {{ $componentsFile := index site.Data "components" }}
           {{ $struct := index $componentsFile.schemas $structName }}
           <span class="openapi-table show-children bold-text"> Show Children</span>
-          <ul class="openapi-table children">
+          <ul class="openapi-table hidden">
             {{ range $k, $v := $struct.properties }}
               {{- template "renderProperty" dict "prop" $k "value" $v }}
             {{ end }}
           </ul>
         {{ end }}
+        </div>
+      </div>
     </li>
 {{ end }}
