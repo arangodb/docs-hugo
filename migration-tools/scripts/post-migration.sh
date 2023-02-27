@@ -26,7 +26,6 @@ mv upgrading operations
 mv downgrading/_index.md operations/downgrading.md
 mv administration operations
 mv security operations
-mv monitoring operations
 mv troubleshooting operations
 
 mv http developer
