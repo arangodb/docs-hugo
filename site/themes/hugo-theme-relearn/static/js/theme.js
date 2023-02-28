@@ -676,8 +676,19 @@ const goToTop = () => {
 
 var showSidenav = true;
 
+function hideEmptyOpenapiDiv() {
+    var lists = document.getElementsByClassName("openapi-parameters")
+    for (let list of lists) {
+        if ($(list).find(".openapi-table").text().trim() == "") {
+            $(list).addClass("hidden");
+        }
+    }
+ }
+
 
 function initClickHandlers() {
+    hideEmptyOpenapiDiv();
+
     $(".openapi-prop").click(function(event) {
         if (this === event.target) {
             $(event.target).toggleClass("collapsed");
@@ -1047,23 +1058,5 @@ function copyCode(event) {
     });
  }
 
-function openapiExpandResponse(event) {
-    event.preventDefault();
-    event.target.classList.toggle("clicked");
-    var block = document.querySelector("div#"+event.target.id);
-    block.classList.toggle("hidden");
- }
 
- document.querySelectorAll( '.response-code' ).forEach( function(e){ e.addEventListener("click", openapiExpandResponse); }, false);
-
- function hideEmptyOpenapiDiv() {
-    var lists = document.getElementsByClassName("openapi-parameters")
-    for (let list of lists) {
-        if ($(list).find(".openapi-table").text().trim() == "") {
-            $(list).addClass("hidden");
-        }
-    }
- }
-
- window.addEventListener("load",hideEmptyOpenapiDiv);
 
