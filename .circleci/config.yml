@@ -10,9 +10,17 @@ jobs:
       GIT_SSH_COMMAND: ssh -v
     steps:
       - run:
-          name: Checkout
+          name: Clone arangodb main repo
           command: |
-            git clone "$GIT_REPO"
+            git clone "$ARANGODB_MAIN_REPO"
+      - run:
+          name: Clone arangodb old docs repo
+          command: |
+            git clone "$ARANGODB_OLD_DOCS_REPO"
+      - run:
+          name: Clone arangodb new docs repo
+          command: |
+            git clone "$ARANGODB_MAIN_REPO"
       - persist_to_workspace:
           root: .
           paths:
@@ -26,3 +34,8 @@ jobs:
 
   complete-build: #Job to execute examples generation + hugo site build
   ###
+
+workflows:
+  test:
+    jobs:
+      - checkout
