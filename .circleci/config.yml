@@ -33,8 +33,19 @@ jobs:
           paths:
             - .
   
-  migration: #Job to execute docs migration
-  ###
+  migration: 
+    steps:
+      - run:
+          name: Download migration dependencies
+          command: |
+            pip install pyyaml python-frontmatter commonmark
+
+      - run:
+          name: 
+          command: |
+            cd docs-hugo/migration-tools/ && ./migration.sh migrate docs docs-hugo arangodb 3.10
+
+
 
   plain-build: #Job to execute plain hugo-build with no examples generation
   ###
