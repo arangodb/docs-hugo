@@ -35,7 +35,7 @@ jobs:
   
   migration: 
     docker:
-      - image: cimg/base:current
+      - image: cimg/python:3.11.2
     resource_class: small
     steps:
       - run:
@@ -60,3 +60,5 @@ workflows:
     jobs:
       - checkout
       - migration
+          requires:
+            - checkout
