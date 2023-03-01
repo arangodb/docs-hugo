@@ -1,6 +1,5 @@
 {{ $yamlBlock := .Inner | transform.Unmarshal }}
 {{ with $yamlBlock }}
-{{ $id := delimit (shuffle (split (md5 "foo") "" )) "" }}
 <div class="openapi">
 {{ range $path, $methods := .paths }}
   {{ range $method, $items := $methods }}
@@ -21,7 +20,7 @@
     {{ end }}
 
     {{ with .responses }}
-      {{- template "renderResponses" dict "content" . "id" $id }}
+      {{- template "renderResponses" dict "content" . }}
     {{ end }}
     
   {{end}}
@@ -75,7 +74,13 @@
       <ul class="openapi-table">
         {{ range $k, $v := $content.content }}
           {{ range $prop, $value := $v.schema.properties}}
-            {{- template "renderProperty" dict "prop" $prop "value" $value }}
+            {{ $required := false }}
+            {{ range $req := $v.schema.required }}
+              {{ if eq $req $prop}}
+                {{ $required = true }}
+              {{ end }}
+            {{ end }}
+            {{- template "renderProperty" dict "prop" $prop "value" $value "required" $required }}
           {{ end }}
         {{ end }}
       </ul>
@@ -84,7 +89,6 @@
 {{ end }}
 
 {{- define "renderResponses" }}
-  {{ $id := .id }}
   {{ $content := .content }}
   <div class="responses regular-font">
     <div class="openapi-table-title">Responses</div>
@@ -136,14 +140,19 @@
 {{- define "renderProperty" }}
   {{ $prop := .prop }}
   {{ $value := .value }}
+  {{ $required := .required }}
   {{ $structName := "" }}
+  {{ $type := $value.type }}
     <li class="openapi-table-row regular-font">
       {{ $ref := index $value "$ref" }}
       {{ if $ref }}
         {{$structName = split $ref "/" | last 1 }}
       {{ end }}
+      {{ if eq $value.type "array" }}
+        {{ $type = printf "[%s]" $value.items.type }}
+      {{ end }}
       <div class="openapi-prop collapsed">
-        <span class="openapi-property-name bold-text">{{ $prop }}</span>  <span class="openapi-property-type" style="font-weight: bold;">{{ if $ref }} object {{ else }} {{ $value.type }} {{ end }} </span>
+        <span class="openapi-property-name bold-text">{{ $prop }}{{ if $required }}*{{ end }}</span>  <span class="openapi-property-type" style="font-weight: bold;">{{ if $ref }} object {{ else }} {{ $type }} {{ end }} </span>
         {{ $description := $value.description | markdownify }}
         <div class="openapi-prop-content hidden">
           <p class="regular-font">{{ $description }}</p>
@@ -153,7 +162,7 @@
           <span class="openapi-table show-children bold-text"> Show Children</span>
           <ul class="openapi-table hidden">
             {{ range $k, $v := $struct.properties }}
-              {{- template "renderProperty" dict "prop" $k "value" $v }}
+              {{- template "renderProperty" dict "prop" $k "value" $v "required" $required }}
             {{ end }}
           </ul>
         {{ end }}

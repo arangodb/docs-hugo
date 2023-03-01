@@ -26,8 +26,9 @@ swaggerBaseTypes = [
 def str_presenter(dumper, data):
     multilineRegex = re.sub(r"^\n", '', data, 0, re.MULTILINE)
     if len(multilineRegex.split('\n')) > 2:  # check for multiline string
-        return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
-
+        text_list = [line.rstrip() for line in data.splitlines()]
+        fixed_data = "\n".join(text_list).lstrip("\n")
+        return dumper.represent_scalar('tag:yaml.org,2002:str', fixed_data, style='|')
     data = data.strip("\n")
     return dumper.represent_scalar('tag:yaml.org,2002:str', data)
 
@@ -69,7 +70,7 @@ def processHTTPDocuBlock(docuBlock, tag):
     blockExamples = processExamples(docuBlock)
 
     docuBlock = re.sub(r"@EXAMPLES.*", "", docuBlock, 0, re.MULTILINE | re.DOTALL)
-    newBlock = {"openapi": "3.0.2", "paths": {}}
+    newBlock = {"openapi": "3.1.0", "paths": {}}
     url, verb, currentRetStatus = "", "", 0
 
     docuBlock = docuBlock + "\n"
@@ -130,7 +131,7 @@ def processHTTPDocuBlock(docuBlock, tag):
 
     newBlock["paths"][url][verb]["tags"] = [tag]
     yml = render_yaml(newBlock, title)
-
+    
     exampleCodeBlocks = ""
     if len(blockExamples) > 0:
         exampleCodeBlocks = parse_examples(blockExamples)
@@ -347,7 +348,7 @@ def render_yaml(block, title):
 {blockYaml}\
 ```'
     res = res.replace("@endDocuBlock", "")   
-    res = re.sub(r"^ *$\n", '', res, 0, re.MULTILINE | re.DOTALL)
+    #res = re.sub(r"^ *$\n", '', res, 0, re.MULTILINE | re.DOTALL)
     res = re.sub(r"\|.*", '|', res, 0, re.MULTILINE)
     return f"\n## {title}\n\n" + res
 
