@@ -8,6 +8,9 @@ jobs:
     resource_class: small
     environment:
       GIT_SSH_COMMAND: ssh -v
+      ARANGODB_MAIN_REPO: https://github.com/arangodb/arangodb
+      ARANGODB_OLD_DOCS_REPO: https://github.com/arangodb/docs
+      ARANGODB_NEW_DOCS_REPO: https://github.com/arangodb/docs-hugo
     steps:
       - run:
           name: Clone arangodb main repo
@@ -20,7 +23,11 @@ jobs:
       - run:
           name: Clone arangodb new docs repo
           command: |
-            git clone "$ARANGODB_MAIN_REPO"
+            git clone "$ARANGODB_NEW_DOCS_REPO"
+      - run:
+          name: check cloned folders
+          command: |
+            pwd && ls
       - persist_to_workspace:
           root: .
           paths:
