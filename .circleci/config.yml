@@ -59,6 +59,6 @@ workflows:
   test:
     jobs:
       - checkout
-      - migration
-        requires:
-          - checkout
+      - migration:
+          requires:
+            - build
