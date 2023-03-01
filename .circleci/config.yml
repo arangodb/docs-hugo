@@ -34,12 +34,14 @@ jobs:
             - .
   
   migration: 
+    docker:
+      - image: cimg/base:current
+    resource_class: small
     steps:
       - run:
           name: Download migration dependencies
           command: |
             pip install pyyaml python-frontmatter commonmark
-
       - run:
           name: 
           command: |
@@ -57,3 +59,4 @@ workflows:
   test:
     jobs:
       - checkout
+      - migration
