@@ -61,4 +61,4 @@ workflows:
       - checkout
       - migration:
           requires:
-            - build
+            - checkout
