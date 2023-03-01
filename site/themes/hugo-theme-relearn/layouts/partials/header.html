@@ -5,33 +5,17 @@
     {{- $link := "<link href=\"%s\" rel=\"%s\" type=\"%s\" title=\"%s\">" }}
     <title>{{ if and .Title (not (eq .Title .Site.Title)) }}{{ .Title }} {{ default "::" .Site.Params.titleSeparator }} {{ end}}{{ .Site.Title }}</title>
 
-    {{- if not (and .Title (or (ne (.Scratch.Get "relearnIsHiddenStem") true) (ne .Site.Params.disableSeoHiddenPages true) ) ) }}
-    {{- else }}
-        {{- range .AlternativeOutputFormats }}
-            {{- if ne .Name "JSON" }}
-    {{ (printf $link (.Permalink | relURL) .Rel .MediaType.Type ($.Site.Title | htmlEscape)) | safeHTML }}
-            {{- end }}
-        {{- end }}
-    {{- end }}
-    {{- if and (ne .Site.Params.disableSeoHiddenPages true) (ne .Site.Params.disableSearchHiddenPages true) }}
-        {{- range .AlternativeOutputFormats }}
-            {{- if eq .Name "JSON" }}
-    {{ (printf $link (.Permalink | relURL) .Rel .MediaType.Type ($.Site.Title | htmlEscape)) | safeHTML }}
-            {{- end }}
-        {{- end }}
-    {{- end }}
-
     <link rel="shortcut icon" href="https://www.arangodb.com/wp-content/uploads/2018/07/www.arangodb.com-favicon.png">
 
     {{- partial "favicon.html" . }}
     {{- partial "stylesheet.html" . }}
   </head>
-<body class="page-template page-template-splashpage page-template-splashpage-php page page-id-21510 page-parent splash-theme page-learn  wpb-js-composer js-comp-ver-6.8.0 vc_responsive">
+<body>
     <div id="page-wrapper" class="page_content_splash" style="height: auto;">
       <section id="page-main">
         <section class="page-container">
           <!-- HEADER -->
-            <header id="header" style="transition: 0.5s padding ease-out, 0.15s" class="zn_header_white header-splash-new nav-down header-splash-wrap zn_do_not_hide_small header1">
+            <header id="header" style="transition: 0.5s padding ease-out, 0.15s" class="zn_header_white header-splash-new nav-down header-splash-wrap header1">
               <!--LOGO-->
               <div class="version-logo-container">
                 <div class="logo-container hasinfocard_img">

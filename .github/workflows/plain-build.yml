@@ -1,4 +1,4 @@
-name: 'plain-build-deploy'
+name: 'migrate-and-plain-build'
 on:
   workflow_dispatch: {}
   pull_request:
@@ -6,44 +6,53 @@ on:
 
 jobs:
   build:
-    if: ${{ (github.event.label.name != 'examples-generation') && (github.event.label.name != 'migration') }}
     runs-on: ubuntu-latest
-    permissions:
-      pull-requests: write
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@master
+        with:
+          repository: arangodb/docs
+          path: ./docs-old
 
-      # Step 2 - Sets up the latest version of Hugo
+      - uses: actions/checkout@master
+        with:
+          repository: arangodb/arangodb
+          path: ./arangodb-main
+
+      - uses: actions/checkout@v3
+        with:
+          repository: arangodb/docs-hugo
+          path: ./docs-hugo
+
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.10' 
+      - run: pip install pyyaml python-frontmatter commonmark
+      - run: cd /home/runner/work/docs-hugo/docs-hugo/docs-hugo/migration-tools/ && ./migration.sh migrate /home/runner/work/docs-hugo/docs-hugo/docs-old /home/runner/work/docs-hugo/docs-hugo/docs-hugo /home/runner/work/docs-hugo/docs-hugo/arangodb-main 3.10
+      - run: cd /home/runner/work/docs-hugo/docs-hugo/docs-hugo/migration-tools/ && ./migration.sh migrate /home/runner/work/docs-hugo/docs-hugo/docs-old /home/runner/work/docs-hugo/docs-hugo/docs-hugo /home/runner/work/docs-hugo/docs-hugo/arangodb-main 3.11
+
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
             hugo-version: 'latest'
 
-      # Step 4 - Builds the site using the latest version of Hugo
-      # Also specifies the theme we want to use
       - name: Build
-        run: cd site && hugo -b https://deploy-preview-${{ github.event.number }}--startling-truffle-6032f2.netlify.app --minify -e prod
+        run: cd /home/runner/work/docs-hugo/docs-hugo/docs-hugo/site && hugo -b https://deploy-preview-${{ github.event.number }}--startling-truffle-6032f2.netlify.app --minify -e prod
 
       - name: Deploy to netlify
         uses: netlify/actions/cli@master
-        id: deploy
         with:
-          args: deploy --dir=site/public --alias deploy-preview-${{ github.event.number }}--
+          args: deploy --dir=docs-hugo/site/public --alias deploy-preview-${{ github.event.number }}--
         env:
           NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
           NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
-          GITHUB_OUTPUT: ${{ steps.deploy.NETLIFY_URL }}
-
+      
       - name: Comment PR
         uses: mshick/add-pr-comment@v2
         with:
           message: |
             ### Deploy Preview URL:
             https://deploy-preview-${{ github.event.number }}--startling-truffle-6032f2.netlify.app
-
-
 
         
 
