@@ -92,7 +92,7 @@ jobs:
   plain-build: 
     docker:
       - image: cimg/base:current
-    resource_class: small
+    resource_class: large
     steps:
       - attach_workspace:
           at: .
