@@ -105,9 +105,6 @@ jobs:
             pwd && ls && cd workspace && ls
       - hugo/install:
           version: "0.9"
-      - hugo/build:
-          source: workspace/docs-hugo/site
-          
 
   complete-build: #Job to execute examples generation + hugo site build
   ###
