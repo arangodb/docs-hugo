@@ -4,15 +4,12 @@ orbs:
   hugo: circleci/hugo@1.3.0
 
 jobs:
-  checkout: #Checkout a desired repository
+  checkout_main: #Checkout a desired repository
     docker:
       - image: cimg/base:current
     resource_class: small
     environment:
-      GIT_SSH_COMMAND: ssh -v
       ARANGODB_MAIN_REPO: https://github.com/arangodb/arangodb
-      ARANGODB_OLD_DOCS_REPO: https://github.com/arangodb/docs
-      ARANGODB_NEW_DOCS_REPO: https://github.com/arangodb/docs-hugo
     steps:
       - run: mkdir -p workspace
       - run:
@@ -20,9 +17,43 @@ jobs:
           command: |
             cd workspace && git clone --depth 1 "$ARANGODB_MAIN_REPO" --branch main
       - run:
+          name: check cloned folders
+          command: |
+            pwd && ls && cd workspace && ls
+      - persist_to_workspace:
+          root: .
+          paths:
+            - workspace
+
+  checkout_docs_old: #Checkout a desired repository
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    environment:
+      ARANGODB_OLD_DOCS_REPO: https://github.com/arangodb/docs
+    steps:
+      - run: mkdir -p workspace
+      - run:
           name: Clone arangodb old docs repo
           command: |
             cd workspace && git clone "$ARANGODB_OLD_DOCS_REPO"
+      - run:
+          name: check cloned folders
+          command: |
+            pwd && ls && cd workspace && ls
+      - persist_to_workspace:
+          root: .
+          paths:
+            - workspace
+
+  checkout_docs_new: #Checkout a desired repository
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    environment:
+      ARANGODB_NEW_DOCS_REPO: https://github.com/arangodb/docs-hugo
+    steps:
+      - run: mkdir -p workspace
       - run:
           name: Clone arangodb new docs repo
           command: |
@@ -58,7 +89,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - workspace
+            - workspace/docs-hugo
 
 
   plain-build: 
@@ -72,6 +103,8 @@ jobs:
           name: Check folders
           command: |
             pwd && ls && cd workspace && ls
+      - hugo/install:
+          version: "0.9"
       - hugo/build:
           source: workspace/docs-hugo/site
           
@@ -82,10 +115,14 @@ jobs:
 workflows:
   test:
     jobs:
-      - checkout
+      - checkout_main
+      - checkout_docs_old
+      - checkout_docs_new
       - migration:
           requires:
-            - checkout
+            - checkout_main
+            - checkout_docs_old
+            - checkout_docs_new
       - plain-build:
           requires:
             - migration
