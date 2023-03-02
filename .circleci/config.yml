@@ -45,8 +45,8 @@ jobs:
           name: Download migration dependencies
           command: |
             pip install pyyaml python-frontmatter commonmark
-      - run: Check attach workspace
-          name: 
+      - run: 
+          name: heck attach workspace
           command: |
             pwd && ls && cd workspace && ls
 
