@@ -46,9 +46,9 @@ jobs:
           command: |
             pip install pyyaml python-frontmatter commonmark
       - run: 
-          name: heck attach workspace
+          name: Check attach workspace
           command: |
-            pwd && ls && cd workspace && ls
+            pwd && ls && cd workspace/workspace && ls
 
 
 
