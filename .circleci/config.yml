@@ -50,11 +50,11 @@ jobs:
       - run: 
           name: Migrate 3.10
           command: |
-            cd workspace/workspace/docs-hugo/migration-tools/ && ./migration.sh migrate /home/circleci/project/workspace/workspace/docs /home/circleci/project/workspace/workspace/docs-hugo /home/circleci/project/workspace/workspace/arangodb 3.10
+            cd workspace/docs-hugo/migration-tools/ && ./migration.sh migrate /home/circleci/project/workspace/docs /home/circleci/project/workspace/docs-hugo /home/circleci/project/workspace/arangodb 3.10
       - run: 
           name: Migrate 3.11
           command: |
-            cd workspace/workspace/docs-hugo/migration-tools/ && ./migration.sh migrate /home/circleci/project/workspace/workspace/docs /home/circleci/project/workspace/workspace/docs-hugo /home/circleci/project/workspace/workspace/arangodb 3.11
+            cd workspace/docs-hugo/migration-tools/ && ./migration.sh migrate /home/circleci/project/workspace/docs /home/circleci/project/workspace/docs-hugo /home/circleci/project/workspace/arangodb 3.11
       - persist_to_workspace:
           root: .
           paths:
