@@ -1,5 +1,7 @@
-
 version: 2.1
+
+orbs:
+  hugo: circleci/hugo@0.2
 
 jobs:
   checkout: #Checkout a desired repository
@@ -16,7 +18,7 @@ jobs:
       - run:
           name: Clone arangodb main repo
           command: |
-            cd workspace && git clone "$ARANGODB_MAIN_REPO"
+            cd workspace && git clone --depth 1 "$ARANGODB_MAIN_REPO" --branch main
       - run:
           name: Clone arangodb old docs repo
           command: |
@@ -46,14 +48,31 @@ jobs:
           command: |
             pip install pyyaml python-frontmatter commonmark
       - run: 
-          name: Migrate
+          name: Migrate 3.10
           command: |
             cd workspace/workspace/docs-hugo/migration-tools/ && ./migration.sh migrate /home/circleci/project/workspace/workspace/docs /home/circleci/project/workspace/workspace/docs-hugo /home/circleci/project/workspace/workspace/arangodb 3.10
+      - run: 
+          name: Migrate 3.11
+          command: |
+            cd workspace/workspace/docs-hugo/migration-tools/ && ./migration.sh migrate /home/circleci/project/workspace/workspace/docs /home/circleci/project/workspace/workspace/docs-hugo /home/circleci/project/workspace/workspace/arangodb 3.11
+      - persist_to_workspace:
+          root: .
+          paths:
+            - workspace
 
 
-
-  plain-build: #Job to execute plain hugo-build with no examples generation
-  ###
+  plain-build:
+    docker:
+      - image: cimg/python:3.11.2
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: workspace
+      - run:
+          name: Check folders
+          command: |
+            pwd && ls && cd workspace && ls
+          
 
   complete-build: #Job to execute examples generation + hugo site build
   ###
@@ -65,3 +84,6 @@ workflows:
       - migration:
           requires:
             - checkout
+      -plain-build:
+          required:
+            - migration
