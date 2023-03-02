@@ -61,9 +61,9 @@ jobs:
             - workspace
 
 
-  plain-build:
+  plain-build: 
     docker:
-      - image: cimg/python:3.11.2
+      - image: cimg/base:current
     resource_class: small
     steps:
       - attach_workspace:
@@ -84,6 +84,6 @@ workflows:
       - migration:
           requires:
             - checkout
-      -plain-build:
+      - plain-build:
           required:
             - migration
