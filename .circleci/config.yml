@@ -28,7 +28,7 @@ jobs:
       - run:
           name: check cloned folders
           command: |
-            pwd && ls
+            pwd && ls && cd workspace && ls
       - persist_to_workspace:
           root: .
           paths:
@@ -45,10 +45,10 @@ jobs:
           name: Download migration dependencies
           command: |
             pip install pyyaml python-frontmatter commonmark
-      - run:
+      - run: Check attach workspace
           name: 
           command: |
-            pwd && ls && cd workspace/docs-hugo/migration-tools/ && ./migration.sh migrate docs docs-hugo arangodb 3.10
+            pwd && ls && cd workspace && ls
 
 
 
