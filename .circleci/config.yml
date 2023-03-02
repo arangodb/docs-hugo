@@ -104,7 +104,7 @@ jobs:
           command: |
             pwd && ls && cd workspace && ls
       - hugo/install:
-          version: "0.9"
+          version: "0.111.0"
 
   complete-build: #Job to execute examples generation + hugo site build
   ###
