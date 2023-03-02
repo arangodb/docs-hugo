@@ -85,5 +85,5 @@ workflows:
           requires:
             - checkout
       - plain-build:
-          required:
+          requires:
             - migration
