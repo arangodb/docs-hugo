@@ -1,7 +1,7 @@
 version: 2.1
 
 orbs:
-  hugo: circleci/hugo@0.2
+  hugo: circleci/hugo@1.3.0
 
 jobs:
   checkout: #Checkout a desired repository
@@ -72,6 +72,8 @@ jobs:
           name: Check folders
           command: |
             pwd && ls && cd workspace && ls
+      - hugo/build:
+          source: workspace/docs-hugo/site
           
 
   complete-build: #Job to execute examples generation + hugo site build
