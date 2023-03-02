@@ -42,7 +42,7 @@ jobs:
     resource_class: small
     steps:
       - attach_workspace:
-          at: workspace
+          at: .
       - run:
           name: Download migration dependencies
           command: |
@@ -67,7 +67,7 @@ jobs:
     resource_class: small
     steps:
       - attach_workspace:
-          at: workspace
+          at: .
       - run:
           name: Check folders
           command: |
