@@ -46,9 +46,9 @@ jobs:
           command: |
             pip install pyyaml python-frontmatter commonmark
       - run: 
-          name: Check attach workspace
+          name: Migrate
           command: |
-            pwd && ls && cd workspace/workspace && ls
+            cd workspace/workspace/docs-hugo/migration-tools/ && ./migration.sh migrate /home/circleci/project/workspace/workspace/docs /home/circleci/project/workspace/workspace/docs-hugo /home/circleci/project/workspace/workspace/arangodb 3.10
 
 
 
