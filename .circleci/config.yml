@@ -59,6 +59,11 @@ jobs:
           name: check cloned folders
           command: |
             pwd && ls && cd workspace && ls
+
+      - run:
+          name: Check partials are cached
+          command: |
+            cd workspace/docs-hugo/site/themes/hugo-theme-relearn/layouts/_default/ && ls
       - persist_to_workspace:
           root: .
           paths:
@@ -104,10 +109,6 @@ jobs:
           name: Install Hugo
           command: |
             curl -sSL  https://github.com/gohugoio/hugo/releases/download/v0.111.0/hugo_0.111.0_linux-amd64.tar.gz -o hugo-archive.tar.gz && ls -la && sudo tar -xzf hugo-archive.tar.gz -C /usr/local/bin
-      - run:
-          name: Check partials are cached
-          command: |
-            cd workspace/docs-hugo/site/themes/hugo-theme-relearn/layouts/_default/ && ls
 
       - run:
           name: Build site
