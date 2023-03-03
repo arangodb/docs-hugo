@@ -119,6 +119,7 @@ jobs:
     docker:
       - image: circleci/node:8
     resource_class: small
+    steps:
       - attach_workspace:
           at: .
       - run:
