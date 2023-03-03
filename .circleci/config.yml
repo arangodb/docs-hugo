@@ -108,7 +108,7 @@ jobs:
       - run:
           name: Build site
           command: |
-            pwd && cd workspace/docs-hugo/site && hugo && ls
+            pwd && cd workspace/docs-hugo/site && hugo -e prod --templateMetrics --templateMetricsHints && ls
 
   complete-build: #Job to execute examples generation + hugo site build
   ###
