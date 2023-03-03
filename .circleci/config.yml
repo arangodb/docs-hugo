@@ -114,6 +114,11 @@ jobs:
           name: Build site
           command: |
             pwd && cd workspace/docs-hugo/site && hugo -b https://deploy-preview--startling-truffle-6032f2.netlify.app --minify -e prod --templateMetrics --templateMetricsHints && ls
+            
+      - persist_to_workspace:
+          root: .
+          paths:
+            - workspace/docs-hugo
 
   deploy:
     docker:
