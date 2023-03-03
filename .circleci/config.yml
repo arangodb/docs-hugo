@@ -113,7 +113,7 @@ jobs:
       - run:
           name: Build site
           command: |
-            pwd && cd workspace/docs-hugo/site && hugo -e prod --templateMetrics --templateMetricsHints && ls
+            pwd && cd workspace/docs-hugo/site && hugo -b https://deploy-preview--startling-truffle-6032f2.netlify.app --minify -e prod --templateMetrics --templateMetricsHints && ls
 
   deploy:
     docker:
@@ -128,7 +128,7 @@ jobs:
 
       - run:
           name: Deploy to netlify
-          command: deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias deploy-preview--
+          command: netlify-cli deploy --dir=workspace/docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias deploy-preview--
 
 
 
