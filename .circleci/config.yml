@@ -107,7 +107,7 @@ jobs:
       - run:
           name: Check partials are cached
           command: |
-            cd workspace/docs-hugo/site/themes/hugo-theme-relearn/layouts/_default/ && cat baseof.html
+            cd workspace/docs-hugo/site/themes/hugo-theme-relearn/layouts/_default/ && ls
 
       - run:
           name: Build site
