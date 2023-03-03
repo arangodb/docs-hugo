@@ -1,13 +1,22 @@
-var theme = true;
-var isIE = /*@cc_on!@*/false || !!document.documentMode;
-if( isIE ){
-    // we don't support sidebar flyout in IE
-    document.querySelector( 'body' ).classList.remove( 'mobile-support' );
-}
-else{
-    document.querySelector( 'body' ).classList.add( 'mobile-support' );
-}
-var isPrint = document.querySelector( 'body' ).classList.contains( 'print' );
+function loadIndex(destination) {
+    console.log("loadIndex " + destination)
+    var getUrl = window.location;
+    var baseUrl = getUrl.protocol + "//" + getUrl.host + "/" + getUrl.pathname.split('/')[0];
+    console.log(baseUrl);
+    $.get({
+        async: false,
+        url: baseUrl,
+        success: function(root) {
+            console.log("success " + destination)
+            document.getElementsByTagName("html")[0].innerHTML = root;
+          loadPage(destination, true);
+        }
+    });
+  }
+// window.addEventListener("load", () => {
+//     loadIndex(window.location.href);
+// });
+
 
 var touchsupport = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0) || (navigator.msMaxTouchPoints > 0)
 
@@ -125,9 +134,6 @@ function initAnchorClipboard(){
 
 
 function initArrowNav(){
-    if( isPrint ){
-        return;
-    }
 
     // button navigation
     jQuery(function() {
@@ -158,9 +164,6 @@ function initArrowNav(){
 }
 
 function initMenuScrollbar(){
-    if( isPrint ){
-        return;
-    }
 
     var elc = document.querySelector('#page-main');
     var elm = document.querySelector('#sidebar');
@@ -675,12 +678,13 @@ function observeVideo(video) {
 
 // Back To Top Button
 
-const showOnPx = 100;
 
 window.addEventListener("load", () => {
     getCurrentVersion();
     initNewPage();
     document.addEventListener("scroll", e => {
+    var showOnPx = 100;
+
     if (window.pageYOffset > showOnPx) {
         document.querySelector(".back-to-top").classList.remove("hidden");
       } else {
@@ -700,7 +704,7 @@ $(window).scroll(function(){
 
   });
 
-const goToTop = () => {
+function goToTop() {
     window.scrollTo({top: 0, behavior: 'smooth'});
   };
 
@@ -729,7 +733,7 @@ $("input.toggle").click(function(event) {
 });
 
 function menuEntryClick(event) {
-    loadPage(event.target.getAttribute('href'));
+    loadPage(event.target.getAttribute('href'), false);
     var arrow = $(event.target).prev()[0];
     if(arrow.classList.contains("open")) {
         arrow.classList.remove("open");
@@ -750,7 +754,7 @@ function goToHomepage(event){
     var origin = window.location.origin;
     var version = localStorage.getItem('docs-version');
     var newUrl = origin + "/" + version + "/";
-    loadPage(newUrl);
+    loadPage(newUrl, false);
 }
 
 
@@ -897,15 +901,17 @@ $(window).scroll(function(){
     }
   };
 
-  function loadPage(target) {
+  function loadPage(target, isFromLoadIndex) {
     var href = target;
-    if (href == window.location.href) {
+    if (href == window.location.href && !isFromLoadIndex) {
         console.log("same page");
         renderVersion();
         return;
     }
     var url = href.replace(/#.*$/, "");
     $.get({
+        async: false,
+
       url: url,
       success: function(newDoc) {
         var re = new RegExp(/<title>(.*)<\/title>/, 'mg');
@@ -914,8 +920,14 @@ $(window).scroll(function(){
         if (match) {
           title = match[1];
         }
-  
-        $(".container-main").replaceWith($(".container-main", newDoc));
+
+        
+        console.log($(".row-main"))
+        console.log("NEW DOC")
+        console.log(newDoc)
+        var article = $(newDoc).find('.container-main');
+        console.log(article);
+        $(".container-main").replaceWith($(article));
   
         currentPage = url;
         if (matches = href.match(/.*?(#.*)$/)) {
@@ -946,6 +958,8 @@ $(window).scroll(function(){
       }
     });
   }
+
+
 
 
   function initNewPage() {
@@ -1017,7 +1031,7 @@ function changeVersion() {
     }
 
     var newUrl = window.location.href.replace(oldVersion, newVersion)
-    loadPage(newUrl);
+    loadPage(newUrl, false);
 }
 
 function initCopyToClipboard() {

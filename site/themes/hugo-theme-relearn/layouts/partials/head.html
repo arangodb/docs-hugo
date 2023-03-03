@@ -1,0 +1,6 @@
+<head>
+    {{- partial "meta.html" . }}
+    <title>{{ if and .Title (not (eq .Title .Site.Title)) }}{{ .Title }} {{ else }} {{ .Site.Title }} {{ end }}</title>
+    <link rel="shortcut icon" href="https://www.arangodb.com/wp-content/uploads/2018/07/www.arangodb.com-favicon.png">
+    {{- partial "stylesheet.html" . }}
+  </head>
