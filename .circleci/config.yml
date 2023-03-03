@@ -126,7 +126,7 @@ jobs:
           name: Install netlify-cli
           command: sudo npm install -g --silent netlify-cli
 
-      - run: Deploy to netlify
+      - run:
           name: Deploy to netlify
           command: deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias deploy-preview--
 
