@@ -54,7 +54,7 @@ jobs:
       - run:
           name: Clone arangodb new docs repo
           command: |
-            cd workspace && git clone "$ARANGODB_NEW_DOCS_REPO"
+            cd workspace && git clone "$ARANGODB_NEW_DOCS_REPO" --branch circle-ci
       - run:
           name: check cloned folders
           command: |
