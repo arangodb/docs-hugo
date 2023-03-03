@@ -117,7 +117,7 @@ jobs:
 
   deploy:
     docker:
-      - image: circleci/node:8
+      - image: cimg/node:19.7.0
     resource_class: small
     steps:
       - attach_workspace:
