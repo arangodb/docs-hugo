@@ -149,3 +149,6 @@ workflows:
       - plain-build:
           requires:
             - migration
+      - deploy:
+          requires:
+            - plain-build
