@@ -115,6 +115,22 @@ jobs:
           command: |
             pwd && cd workspace/docs-hugo/site && hugo -e prod --templateMetrics --templateMetricsHints && ls
 
+  deploy:
+    docker:
+      - image: circleci/node:8
+    resource_class: small
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install netlify-cli
+          command: sudo npm install -g --silent netlify-cli
+
+      - run: Deploy to netlify
+          name: Deploy to netlify
+          command: deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias deploy-preview--
+
+
+
   complete-build: #Job to execute examples generation + hugo site build
   ###
 
