@@ -25,9 +25,9 @@ swaggerBaseTypes = [
 
 def str_presenter(dumper, data):
     multilineRegex = re.sub(r"^\n", '', data, 0, re.MULTILINE)
-    if len(multilineRegex.split('\n')) > 2:  # check for multiline string
+    if len(multilineRegex.split('\n')) > 1:  # check for multiline string
         text_list = [line.rstrip() for line in data.splitlines()]
-        fixed_data = "\n".join(text_list).lstrip("\n")
+        fixed_data = "\n".join(text_list).strip("\n")
         return dumper.represent_scalar('tag:yaml.org,2002:str', fixed_data, style='|')
     data = data.strip("\n")
     return dumper.represent_scalar('tag:yaml.org,2002:str', data)
@@ -87,7 +87,7 @@ def processHTTPDocuBlock(docuBlock, tag):
     blocks = re.findall(r"(?<=@RESTDESCRIPTION\n)(.*?)(?=\n@)", docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
         try:
-            newBlock["paths"][url][verb]["description"] = block
+            newBlock["paths"][url][verb]["description"] = block + "\n"
         except Exception as ex:
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
@@ -172,8 +172,9 @@ def processHeader(docuBlock, newBlock):
     headerSplit = headerRe.split(",")
     try:
         url, verb, desc = headerSplit[0].split(" ")[1], headerSplit[0].split(" ")[0].strip("{").lower(), headerSplit[1].replace("}", "")
-        newBlock["paths"][url] = {verb: {"description": desc}}
+        newBlock["paths"][url] = {verb: {}}
         newBlock["paths"][url][verb]["operationId"] = headerSplit[2].replace("}", "").replace(" ", "")
+        newBlock["paths"][url][verb]["description"] = desc + "\n"
     except IndexError:
         pass 
 
@@ -190,16 +191,8 @@ def processParameters(docuBlock, newBlock):
     
     params = docuBlock[1].split("\n")[0].strip("}")
     paramSplit = params.split(",")
-    try:
-        paramBlock["name"] = paramSplit[0]
-        paramBlock["schema"] = {"type": paramSplit[1]}
-        paramBlock["required"] = True if paramSplit[2] == "required" else False
-        if paramSplit[3] != "" and not paramSplit[3] in swaggerBaseTypes:
-            paramBlock["schema"] = {"$ref": f"#/components/schemas/{paramSplit[3]}" }
-    except IndexError:
-        pass
     
-    paramBlock["description"] = "\n".join(docuBlock[1].split("\n")[1:]).replace(":", "")
+    paramBlock["name"] = paramSplit[0]
 
     if "URLPARAM" in paramType:
         paramBlock["in"] = "path"
@@ -207,6 +200,16 @@ def processParameters(docuBlock, newBlock):
         paramBlock["in"] = "query"
     elif "HEADERPARAM" in paramType:
         paramBlock["in"] = "header"
+
+    paramBlock["required"] = True if paramSplit[2] == "required" else False
+
+    paramBlock["description"] = "\n".join(docuBlock[1].split("\n")[1:]).replace(":", "") + "\n"
+    paramBlock["schema"] = {"type": paramSplit[1]}
+    try:
+        if paramSplit[3] != "" and not paramSplit[3] in swaggerBaseTypes:
+            paramBlock["schema"] = {"$ref": f"#/components/schemas/{paramSplit[3]}" }
+    except IndexError:
+        pass
 
     if "parameters" not in newBlock:
         newBlock["parameters"] = []
@@ -239,7 +242,7 @@ def processRequestBody(docuBlock, newBlock):
         traceback.print_exc()
     pass
     
-    paramBlock["description"] = "\n".join(docuBlock[1].split("\n")[1:])
+    paramBlock["description"] = "\n".join(docuBlock[1].split("\n")[1:]) + "\n"
 
     if name == "" and "schema" in paramBlock:
         newBlock["requestBody"]["content"] = {"application/json": {"schema": paramBlock["schema"]}}
@@ -259,7 +262,7 @@ def processRequestBody(docuBlock, newBlock):
 def processResponse(docuBlock, newBlock):
     blockSplit = docuBlock.split("\n")
     statusRE = re.search(r"\d+}", docuBlock).group(0)
-    description = docuBlock.replace(statusRE, "").replace(":", "")
+    description = docuBlock.replace(statusRE, "").replace(":", "") + "\n"
     status = statusRE.replace("}", "")
 
     retBlock = {"description": description}
@@ -310,7 +313,7 @@ def processResponseBody(docuBlock, newBlock, statusCode):
 def processComponents(block):
     args = block.split("\n")[0].strip("}").split(",") 
     
-    description = "\n".join(block.split("\n")[1:])
+    description = "\n".join(block.split("\n")[1:]) + "\n"
     structName, paramName, paramType, paramRequired, paramSubtype = args[1], args[0], args[2], args[3], args[4]
     structProperty = {
         "type": paramType,
