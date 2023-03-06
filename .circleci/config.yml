@@ -61,10 +61,12 @@ jobs:
     steps:
       - attach_workspace:
           at: .
+
       - run:
           name: Check folders
           command: |
             pwd && ls && cd workspace && ls
+
       - run:
           name: Install Hugo
           command: |
@@ -74,6 +76,29 @@ jobs:
           name: Build site
           command: |
             pwd && cd workspace/docs-hugo/site && hugo -b https://deploy-preview--startling-truffle-6032f2.netlify.app --minify -e prod --templateMetrics --templateMetricsHints && ls
+            
+      - persist_to_workspace:
+          root: .
+          paths:
+            - workspace/docs-hugo
+
+  build-with-generated:
+    docker:
+      - image: cimg/base:current
+    resource_class: medium
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Check folders
+          command: |
+            pwd && ls && cd workspace && ls
+
+      - run:
+          name: Generate examples and build
+          command: |
+            docker compose --env-file toolchain/docker-env/examples.env up --exit-code-from site
             
       - persist_to_workspace:
           root: .
@@ -96,28 +121,55 @@ jobs:
           command: netlify deploy --dir=workspace/docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias deploy-preview--
 
 
-
-  complete-build: #Job to execute examples generation + hugo site build
-  ###
-
 workflows:
-  test:
+  plain:
     jobs:
       - checkout:
+          name: cloneMainRepo
           repository: https://github.com/arangodb/arangodb
           branch: main
       - checkout:
+          name: cloneOldDocs
           repository: https://github.com/arangodb/docs
           branch: main  
       - checkout:
+          name: cloneNewRepo
           repository: https://github.com/arangodb/docs-hugo
           branch: circle-ci  
       - migration:
           requires:
-            - checkout
+            - cloneMainRepo
+            - cloneOldDocs
+            - cloneNewRepo
       - plain-build:
           requires:
             - migration
       - deploy:
           requires:
             - plain-build
+    
+  generate:
+    jobs:
+      - checkout:
+          name: cloneMainRepo
+          repository: https://github.com/arangodb/arangodb
+          branch: main
+      - checkout:
+          name: cloneOldDocs
+          repository: https://github.com/arangodb/docs
+          branch: main  
+      - checkout:
+          name: cloneNewRepo
+          repository: https://github.com/arangodb/docs-hugo
+          branch: circle-ci   
+      - migration:
+          requires:
+            - cloneMainRepo
+            - cloneOldDocs
+            - cloneNewRepo
+      - build-with-generated:
+          requires:
+            - migration
+      - deploy:
+          requires:
+            - build-with-generated
