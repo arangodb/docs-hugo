@@ -98,23 +98,23 @@ Example:
 paths:
   /_api/foxx/readme:
     get:
-      description: |+
+      description: |
         Fetches the service's README or README.md file's contents if any.
       parameters:
-      - name: mount
-        schema:
-          type: string
-        required: true
-        description: |2+
-          Mount path of the installed service.
-        in: query
+        - name: mount
+          schema:
+            type: string
+          required: true
+          description: |
+            Mount path of the installed service.
+          in: query
       responses:
         '200':
           description: Returned if the request was successful.
         '204':
           description: Returned if no README file was found.
       tags:
-      - Foxx
+        - Foxx
 ```
 ````
 

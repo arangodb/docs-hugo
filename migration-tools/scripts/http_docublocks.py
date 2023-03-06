@@ -341,8 +341,13 @@ def processComponents(block):
 
 ####    YAML WRITERS
 
+# Make pyyaml indent lists properly (two spaces, then the hyphen)
+class CustomizedDumper(yaml.Dumper):
+    def increase_indent(self, flow=False, indentless=False):
+        return super(CustomizedDumper, self).increase_indent(flow, False)
+
 def render_yaml(block, title):
-    blockYaml = yaml.dump(block, sort_keys=False, default_flow_style=False)
+    blockYaml = yaml.dump(block, sort_keys=False, default_flow_style=False, Dumper=CustomizedDumper)
     res = f'\
 ```openapi\n\
 {blockYaml}\
