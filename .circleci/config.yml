@@ -83,8 +83,9 @@ jobs:
             - workspace/docs-hugo
 
   build-with-generated:
-    docker:
-      - image: cimg/base:current
+    machine:
+      image: ubuntu-2004:current
+      docker_layer_caching: true 
     resource_class: medium
     steps:
       - attach_workspace:
