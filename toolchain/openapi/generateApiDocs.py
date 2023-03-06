@@ -64,7 +64,7 @@ def processFile(filepath):
         print(traceback.format_exc())
         raise ex
 
-    endpoints = re.findall(r"\`{3}http-spec(.*?)\`{3}", data, re.MULTILINE | re.DOTALL)
+    endpoints = re.findall(r"\`{3}openapi(.*?)\`{3}", data, re.MULTILINE | re.DOTALL)
     for endpoint in endpoints:
         endpointDict = yaml.safe_load(endpoint)
         path = next(iter(endpointDict["paths"]))

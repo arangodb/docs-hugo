@@ -70,7 +70,7 @@ def processHTTPDocuBlock(docuBlock, tag):
     blockExamples = processExamples(docuBlock)
 
     docuBlock = re.sub(r"@EXAMPLES.*", "", docuBlock, 0, re.MULTILINE | re.DOTALL)
-    newBlock = {"openapi": "3.1.0", "paths": {}}
+    newBlock = {"paths": {}}
     url, verb, currentRetStatus = "", "", 0
 
     docuBlock = docuBlock + "\n"
@@ -344,7 +344,7 @@ def processComponents(block):
 def render_yaml(block, title):
     blockYaml = yaml.dump(block, sort_keys=False, default_flow_style=False)
     res = f'\
-```http-spec\n\
+```openapi\n\
 {blockYaml}\
 ```'
     res = res.replace("@endDocuBlock", "")   

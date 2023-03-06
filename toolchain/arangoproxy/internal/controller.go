@@ -26,7 +26,7 @@ func StartController(url string) {
 	// Create routes
 	http.HandleFunc("/health", HealthHandler)
 	http.HandleFunc("/js", JSHandler)
-	http.HandleFunc("/http-spec", HTTPSpecHandler)
+	http.HandleFunc("/openapi", HTTPSpecHandler)
 	http.HandleFunc("/curl", HTTPExampleHandler)
 	http.HandleFunc("/aql", AQLHandler)
 	http.HandleFunc("/go", TODOHandler)
@@ -81,11 +81,11 @@ func HTTPExampleHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(response)
 }
 
-// Handler for http-spec codeblocks
+// Handler for openapi codeblocks
 func HTTPSpecHandler(w http.ResponseWriter, r *http.Request) {
 	request, err := httpapi.ParseRequest(r.Body)
 	if err != nil {
-		common.Logger.Printf("[http-spec/CONTROLLER] Error Parsing Request: %s\n", err.Error())
+		common.Logger.Printf("[openapi/CONTROLLER] Error Parsing Request: %s\n", err.Error())
 		x, _ := json.Marshal(httpapi.HTTPResponse{})
 		w.Write(x)
 		return
@@ -93,7 +93,7 @@ func HTTPSpecHandler(w http.ResponseWriter, r *http.Request) {
 	response := httpapi.HTTPResponse{ApiSpec: request.ApiSpec}
 	jsonResponse, err := json.Marshal(response)
 	if err != nil {
-		common.Logger.Printf("[http-spec/CONTROLLER] Error Marshalling Response: %s\n", err.Error())
+		common.Logger.Printf("[openapi/CONTROLLER] Error Marshalling Response: %s\n", err.Error())
 		x, _ := json.Marshal(httpapi.HTTPResponse{})
 		w.Write(x)
 		return

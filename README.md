@@ -35,7 +35,7 @@ The following codeblocks are supported:
 
 - `` ```js ``
 - `` ```aql ``
-- `` ```http-spec ``
+- `` ```openapi ``
 - `` ```http-example ``
 
 ## Examples generation
@@ -86,7 +86,7 @@ Used to describe an HTTP REST API endpoint using the
 [OpenAPI Specification](https://spec.openapis.org/oas/latest.html) standard in
 version 3.x.
 
-Triggered by the `render-codeblock-http-spec.html` hook.
+Triggered by the `render-codeblock-openapi.html` hook.
 
 The content inside the codeblock is a standard OpenAPI endpoint description in
 YAML format.
@@ -94,8 +94,7 @@ YAML format.
 Example:
 
 ````yaml
-```http-spec
-openapi: 3.0.2
+```openapi
 paths:
   /_api/foxx/readme:
     get:
@@ -121,7 +120,7 @@ paths:
 
 #### Flow
 
-The hook triggers a `POST` call to the `/http-spec` _arangoproxy_ endpoint with
+The hook triggers a `POST` call to the `/openapi` _arangoproxy_ endpoint with
 the entire codeblock as request body.
 
 The _arangoproxy_ endpoint parses the request and converts the YAML text to JSON.
