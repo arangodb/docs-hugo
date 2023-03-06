@@ -36,14 +36,14 @@ The following codeblocks are supported:
 - `` ```js ``
 - `` ```aql ``
 - `` ```openapi ``
-- `` ```http-example ``
+- `` ```curl ``
 
 ## Examples generation
 
 ### JS/AQL/HTTP Examples
 
 Triggered by the `render-codeblock-js.html`, `render-codeblock-aql.html` and
-`render-codeblock-http-example.html` hooks.
+`render-codeblock-curl.html` hooks.
 
 The content inside the codeblock is comprised of two parts:
 
@@ -70,7 +70,7 @@ analyzers.analyzer("text_en");
 #### Flow
 
 The hook triggers a `POST` call to the dedicated _arangoproxy_ endpoint
-(`/js`, `/aql`, `/http-example`) with the entire codeblock as request body.
+(`/js`, `/aql`, `/curl`) with the entire codeblock as request body.
 
 The _arangoproxy_ endpoint parses the request, checks if the examples is cached,
 otherwise executes the code against the ArangoDB instance with the version

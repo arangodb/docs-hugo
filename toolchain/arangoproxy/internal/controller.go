@@ -56,15 +56,15 @@ func JSHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(response)
 }
 
-// Handler for http-example codeblocks
+// Handler for curl codeblocks
 func HTTPExampleHandler(w http.ResponseWriter, r *http.Request) {
 	request, err := common.ParseExample(r.Body, common.HTTP)
 	if err != nil {
-		common.Logger.Printf("[http-example/CONTROLLER] Error parsing request %s\n", err.Error())
+		common.Logger.Printf("[curl/CONTROLLER] Error parsing request %s\n", err.Error())
 		return
 	}
 
-	common.Logger.Printf("[http-example/CONTROLLER] Processing Example %s\n", request.Options.Name)
+	common.Logger.Printf("[curl/CONTROLLER] Processing Example %s\n", request.Options.Name)
 
 	resp, err := HTTPService.ExecuteHTTPExample(request)
 	if err != nil {
@@ -72,11 +72,11 @@ func HTTPExampleHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	response, err := json.Marshal(resp)
 	if err != nil {
-		common.Logger.Printf("[http-example/CONTROLLER] Error marshalling response: %s\n", err.Error())
+		common.Logger.Printf("[curl/CONTROLLER] Error marshalling response: %s\n", err.Error())
 		return
 	}
 
-	common.Logger.Printf("[http-example/CONTROLLER] END Example %s\n", request.Options.Name)
+	common.Logger.Printf("[curl/CONTROLLER] END Example %s\n", request.Options.Name)
 
 	w.Write(response)
 }
