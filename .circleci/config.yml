@@ -92,16 +92,16 @@ jobs:
           at: .
 
       - run:
-          name: Check folders
+          name: Check env var
           command: |
-            pwd && ls && cd workspace && ls
+            echo "$CIRCLE_PULL_REQUEST"
 
       - run:
           name: Generate examples and build
           command: |
             cd workspace/docs-hugo && docker compose --env-file toolchain/docker-env/examples.env up --exit-code-from site
           environment:
-            HUGO_URL: https://deploy-preview-$CIRCLE_PULL_REQUEST--startling-truffle-6032f2.netlify.app
+            HUGO_URL: https://deploy-preview-"$CIRCLE_PULL_REQUEST"--startling-truffle-6032f2.netlify.app
             
       - persist_to_workspace:
           root: .
@@ -121,7 +121,7 @@ jobs:
 
       - run:
           name: Deploy to netlify
-          command: netlify deploy --dir=workspace/docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias deploy-preview--
+          command: netlify deploy --dir=workspace/docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias https://deploy-preview-"$CIRCLE_PULL_REQUEST"--startling-truffle-6032f2.netlify.app
 
 
 workflows:
