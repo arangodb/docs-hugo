@@ -75,7 +75,7 @@ jobs:
       - run:
           name: Build site
           command: |
-            pwd && cd workspace/docs-hugo/site && hugo -b https://deploy-preview-${CIRCLE_PULL_REQUEST}--startling-truffle-6032f2.netlify.app --minify -e prod --templateMetrics --templateMetricsHints && ls
+            pwd && cd workspace/docs-hugo/site && hugo -b https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app --minify -e prod --templateMetrics --templateMetricsHints && ls
             
       - persist_to_workspace:
           root: .
@@ -100,7 +100,15 @@ jobs:
           name: Generate examples and build
           command: |
             export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app && cd workspace/docs-hugo && docker compose --env-file toolchain/docker-env/examples.env up --exit-code-from site
-            
+      - run:
+          name: Commit cache file to github
+          command: |
+            cd workspace/docs-hugo
+            git config user.email "daniele@arangodb.com"
+            git config user.name "CircleCI Job"
+            git add site/data
+            git commit --allow-empty -am "Automatic commit of generated files from CircleCI [skip ci]"
+            git push    
       - persist_to_workspace:
           root: .
           paths:
@@ -119,7 +127,7 @@ jobs:
 
       - run:
           name: Deploy to netlify
-          command: netlify deploy --dir=workspace/docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias https://deploy-preview-"$CIRCLE_PULL_REQUEST"--startling-truffle-6032f2.netlify.app
+          command: netlify deploy --dir=workspace/docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app
 
 
 workflows:
