@@ -1,18 +1,25 @@
 version: 2.1
 
+
 jobs:
-  checkout_main: #Checkout a desired repository
+  checkout: #Checkout a desired repository
     docker:
       - image: cimg/base:current
     resource_class: small
-    environment:
-      ARANGODB_MAIN_REPO: https://github.com/arangodb/arangodb
+    parameters:
+      repository:
+        type: string
+        default: docs-hugo
+      branch:
+        type: string
+        default: main
+
     steps:
       - run: mkdir -p workspace
       - run:
           name: Clone arangodb main repo
           command: |
-            cd workspace && git clone --depth 1 "$ARANGODB_MAIN_REPO" --branch main
+            cd workspace && git clone --depth 1 << parameters.repository >> --branch << parameters.branch >>
       - run:
           name: check cloned folders
           command: |
@@ -22,53 +29,6 @@ jobs:
           paths:
             - workspace
 
-  checkout_docs_old: #Checkout a desired repository
-    docker:
-      - image: cimg/base:current
-    resource_class: small
-    environment:
-      ARANGODB_OLD_DOCS_REPO: https://github.com/arangodb/docs
-    steps:
-      - run: mkdir -p workspace
-      - run:
-          name: Clone arangodb old docs repo
-          command: |
-            cd workspace && git clone "$ARANGODB_OLD_DOCS_REPO"
-      - run:
-          name: check cloned folders
-          command: |
-            pwd && ls && cd workspace && ls
-      - persist_to_workspace:
-          root: .
-          paths:
-            - workspace
-
-  checkout_docs_new: #Checkout a desired repository
-    docker:
-      - image: cimg/base:current
-    resource_class: small
-    environment:
-      ARANGODB_NEW_DOCS_REPO: https://github.com/arangodb/docs-hugo
-    steps:
-      - run: mkdir -p workspace
-      - run:
-          name: Clone arangodb new docs repo
-          command: |
-            cd workspace && git clone "$ARANGODB_NEW_DOCS_REPO" --branch circle-ci
-      - run:
-          name: check cloned folders
-          command: |
-            pwd && ls && cd workspace && ls
-
-      - run:
-          name: Check partials are cached
-          command: |
-            cd workspace/docs-hugo/site/themes/hugo-theme-relearn/layouts/_default/ && ls
-      - persist_to_workspace:
-          root: .
-          paths:
-            - workspace
-  
   migration: 
     docker:
       - image: cimg/python:3.11.2
@@ -143,14 +103,18 @@ jobs:
 workflows:
   test:
     jobs:
-      - checkout_main
-      - checkout_docs_old
-      - checkout_docs_new
+      - checkout:
+          repository: https://github.com/arangodb/arangodb
+          branch: main
+      - checkout:
+          repository: https://github.com/arangodb/docs
+          branch: main  
+      - checkout:
+          repository: https://github.com/arangodb/docs-hugo
+          branch: circle-ci  
       - migration:
           requires:
-            - checkout_main
-            - checkout_docs_old
-            - checkout_docs_new
+            - checkout
       - plain-build:
           requires:
             - migration
