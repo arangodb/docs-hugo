@@ -685,6 +685,20 @@ function hideEmptyOpenapiDiv() {
     }
  }
 
+ $("input.toggle").click(function(event) {
+    var arrow = $(event.target).next()[0];
+    if(arrow.classList.contains("open")) {
+        arrow.classList.remove("open");
+        arrow.classList.add("closed");
+    } else {
+        arrow.classList.remove("closed");
+        arrow.classList.add("open");
+    }
+    var submenu = $(event.target).next().next().next();
+    submenu.slideToggle();
+    
+});
+
 
 function initClickHandlers() {
     hideEmptyOpenapiDiv();
@@ -709,19 +723,6 @@ function initClickHandlers() {
           }
       });
     
-    $("input.toggle").click(function(event) {
-        var arrow = $(event.target).next()[0];
-        if(arrow.classList.contains("open")) {
-            arrow.classList.remove("open");
-            arrow.classList.add("closed");
-        } else {
-            arrow.classList.remove("closed");
-            arrow.classList.add("open");
-        }
-        var submenu = $(event.target).next().next().next();
-        submenu.slideToggle();
-        
-    });
 }
 
 
