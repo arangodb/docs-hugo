@@ -6,6 +6,7 @@ from definitions import *
 from globals import *
 
 swaggerBaseTypes = [
+    '',
     'object',
     'array',
     'number',
@@ -218,45 +219,44 @@ def processParameters(docuBlock, newBlock):
         newBlock["parameters"].append(paramBlock)
 
 def processRequestBody(docuBlock, newBlock):
-    params = docuBlock[1].split("\n")[0].strip("}")
-    paramSplit = params.split(",")
-    name = paramSplit[0]
+    params = docuBlock[1].split("\n")[0].strip("}").split(",")
+    name, typ, required, subtype, description = '', '', '', '', "\n".join(docuBlock[1].split("\n")[1:]) + "\n"
     paramBlock = {}
-    try:
-        paramBlock["type"] = "object" if paramSplit[1] == "json" else paramSplit[1]
-        if len(paramSplit) >= 4 and paramSplit[3] != "":
-            if paramSplit[3] in swaggerBaseTypes:
-                if paramSplit[3] != "string":
-                    paramBlock["format"] = paramSplit[3]
-            else:
-                paramBlock["$ref"] = f"#/components/schemas/{paramSplit[3]}"
-
-        if paramBlock["type"] == "array":
-            paramBlock["items"] = {"type": paramSplit[3] if paramSplit[3] != "" else "string"}
-
-        if "$ref" in paramBlock:
-            del paramBlock["type"]
-
-    except IndexError:
-        print(f"Exception on block {block}\n")
-        traceback.print_exc()
-    pass
-    
-    paramBlock["description"] = "\n".join(docuBlock[1].split("\n")[1:]) + "\n"
-
-    if name == "" and "schema" in paramBlock:
-        newBlock["requestBody"]["content"] = {"application/json": {"schema": paramBlock["schema"]}}
-        return
 
     if not "requestBody" in newBlock:
-        newBlock["requestBody"] = {}
+        newBlock["requestBody"] = {"content": {"application/json": {"schema": {}}}}
 
-    if not "content" in newBlock["requestBody"]:
-        newBlock["requestBody"]["content"] = {"application/json": {"schema": {"type": "object", "properties": {}, "required": []}}}
+    try:
+        name = params[0]
+        typ = params[1]
+        required = params[2]
+        subtype = params[3]
+    except Exception:
+        pass
 
-    newBlock["requestBody"]["content"]["application/json"]["schema"]["properties"][name] = paramBlock
-    if paramSplit[2] == "required":
+    if typ == "array":
+        if not subtype in swaggerBaseTypes:
+            paramBlock = {"type": "array", "items": {"$ref": subtype}}
+        else:
+            paramBlock = {"type": "array", "items": {"type": subtype}}
+    else:
+        if not subtype in swaggerBaseTypes:
+            paramBlock = {"$ref": subtype}
+        else:
+            paramBlock = {"type": typ}
+
+    paramBlock["description"] = description
+
+    if name == '':
+        newBlock["requestBody"]["content"]["application/json"]["schema"] = paramBlock
+        return
+    else:
+        if not "properties" in newBlock:
+            newBlock["requestBody"]["content"]["application/json"]["schema"] = {"type": "object", "properties": {}, "required": []}
+        newBlock["requestBody"]["content"]["application/json"]["schema"]["properties"][name] = paramBlock
+        if required == "required":
             newBlock["requestBody"]["content"]["application/json"]["schema"]["required"].append(name)
+            
     return
 
 def processResponse(docuBlock, newBlock):
@@ -274,39 +274,42 @@ def processResponse(docuBlock, newBlock):
     return status
 
 def processResponseBody(docuBlock, newBlock, statusCode):
-    replyBlock = {}
-    blocks = docuBlock.split("\n")
-    paramSplit = blocks[0].strip("}").split(",")
-    name = paramSplit[0].strip("{")
+    params = docuBlock[1].split("\n")[0].strip("}").split(",")
+    name, typ, required, subtype, description = '', '', '', '', "\n".join(docuBlock[1].split("\n")[1:]) + "\n"
+    paramBlock = {}
+
+    if not "content" in newBlock:
+        newBlock[statusCode] = {"content": {"application/json": {"schema": {}}}}
+
     try:
-        replyBlock["type"] = "object" if paramSplit[1] == "json" else paramSplit[1]
-        if paramSplit[3] != "":
-            if paramSplit[3] in swaggerBaseTypes:
-                if not paramSplit[3] == "string":
-                    replyBlock["format"] = paramSplit[3]
-            else:
-                replyBlock["$ref"] = f"#/components/schemas/{paramSplit[3]}"
+        name = params[0]
+        typ = params[1]
+        required = params[2]
+        subtype = params[3]
+    except Exception:
+        pass
 
-        if replyBlock["type"] == "array":
-            replyBlock["items"] = {"type": paramSplit[3] if paramSplit[3] != "" else "string"}
+    if typ == "array":
+        if not subtype in swaggerBaseTypes:
+            paramBlock = {"type": "array", "items": {"$ref": subtype}}
+        else:
+            paramBlock = {"type": "array", "items": {"type": subtype}}
+    else:
+        if not subtype in swaggerBaseTypes:
+            paramBlock = {"$ref": subtype}
+        else:
+            paramBlock = {"type": typ}
 
-        if "$ref" in replyBlock:
-            del replyBlock["type"]
-    except IndexError:
-        print(f"Exception on block {block}\n")
-        traceback.print_exc()
-    
-    replyBlock["description"] = "\n".join(blocks[1:])
+    paramBlock["description"] = description
 
-    if name == "" and "schema" in replyBlock:
-        newBlock[statusCode]["content"] = {"application/json": {"schema": replyBlock["schema"]}}
+    if name == '':
+        newBlock[statusCode]["content"]["application/json"]["schema"] = paramBlock
         return
-
-    if not "content" in newBlock[statusCode]:
-        newBlock[statusCode]["content"] = {"application/json": {"schema": {"type": "object", "properties": {}, "required": []}}}
-
-    newBlock[statusCode]["content"]["application/json"]["schema"]["properties"][name] = replyBlock
-    if paramSplit[2] == "required" and not name in newBlock[statusCode]["content"]["application/json"]["schema"]["required"]:
+    else:
+        if not "properties" in newBlock:
+            newBlock[statusCode]["content"]["application/json"]["schema"] = {"type": "object", "properties": {}, "required": []}
+        newBlock[statusCode]["content"]["application/json"]["schema"]["properties"][name] = paramBlock
+        if required == "required":
             newBlock[statusCode]["content"]["application/json"]["schema"]["required"].append(name)
     return
 
