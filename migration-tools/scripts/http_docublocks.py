@@ -281,10 +281,7 @@ def processResponse(docuBlock, newBlock):
     return status
 
 def processResponseBody(docuBlock, newBlock, statusCode):
-    print(statusCode)
-    print(docuBlock)
     params = docuBlock.split("\n")[0].strip("}").split(",")
-    print(params)
     name, typ, required, subtype, description = '', '', '', '', "\n".join(docuBlock.split("\n")[1:]) + "\n"
     paramBlock = {}
 
@@ -324,7 +321,6 @@ def processResponseBody(docuBlock, newBlock, statusCode):
                 newBlock[statusCode]["content"]["application/json"]["schema"]["required"] = []
             newBlock[statusCode]["content"]["application/json"]["schema"]["required"].append(name)
 
-    print(newBlock)
     return
 
 def processComponents(block):
@@ -370,12 +366,14 @@ def render_yaml(block, title):
     blockYaml = yaml.dump(block, sort_keys=False, default_flow_style=False, Dumper=CustomizedDumper)
     res = f'\
 ```openapi\n\
+## {title}\n\
+\n\
 {blockYaml}\
 ```'
     res = res.replace("@endDocuBlock", "")   
     #res = re.sub(r"^ *$\n", '', res, 0, re.MULTILINE | re.DOTALL)
     res = re.sub(r"\|.*", '|', res, 0, re.MULTILINE)
-    return f"\n## {title}\n\n" + res
+    return res
 
 def parse_examples(blockExamples):
     res = ''
