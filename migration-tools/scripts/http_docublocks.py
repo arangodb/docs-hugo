@@ -73,9 +73,10 @@ def processHTTPDocuBlock(docuBlock, tag):
     docuBlock = re.sub(r"@EXAMPLES.*", "", docuBlock, 0, re.MULTILINE | re.DOTALL)
     newBlock = {"paths": {}}
     url, verb, currentRetStatus = "", "", 0
-
-    docuBlock = docuBlock + "\n"
+    print(docuBlock)
+    docuBlock = docuBlock + "\n" + "@ENDRESPONSES"
     title = ""
+
     blocks = re.findall(r"@RESTHEADER{(.*?)^(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
         try:
@@ -102,24 +103,29 @@ def processHTTPDocuBlock(docuBlock, tag):
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
             exit(1)
+            
 
-    blocks = re.findall(r"@RESTRETURNCODE{(.*?)^(?=@|\n)",  docuBlock, re.MULTILINE | re.DOTALL)
+    blocks = re.findall(r"(@RESTRETURNCODE\W.*?)(?=@RESTRETURNCODE|@ENDRESPONSES)",  docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
+        restReturnCode = re.search(r"@RESTRETURNCODE\W(.*?)(?=@|\n\n)", block, re.MULTILINE | re.DOTALL).group(0)
+        print(restReturnCode)
         try:
-            currentRetStatus = processResponse(block, newBlock["paths"][url][verb])
+            currentRetStatus = processResponse(restReturnCode, newBlock["paths"][url][verb])
         except Exception as ex:
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
             exit(1)
-
-    blocks = re.findall(r"@RESTREPLYBODY{(.*?)^(?=@)",  docuBlock,  re.MULTILINE | re.DOTALL)
-    for block in blocks:
-        try:
-            processResponseBody(block, newBlock["paths"][url][verb]["responses"], currentRetStatus)
-        except Exception as ex:
-            print(f"Exception occurred for block {block}\n{ex}")
-            traceback.print_exc()
-            exit(1)
+        x = newBlock["paths"][url][verb]["responses"]
+        print(f"responses {x}")
+        block = block + "\n" + "@ENDREPLYBODY"
+        responseBodies = re.findall(r"@RESTREPLYBODY{(.*?)^(?=@)",  block,  re.MULTILINE | re.DOTALL)
+        for responseBody in responseBodies:
+            try:
+                processResponseBody(responseBody, newBlock["paths"][url][verb]["responses"], currentRetStatus)
+            except Exception as ex:
+                print(f"Exception occurred for block {block}\n{ex}")
+                traceback.print_exc()
+                exit(1)
 
     blocks = re.findall(r"@RESTSTRUCT{(.*?)^(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
@@ -218,7 +224,7 @@ def processParameters(docuBlock, newBlock):
     if not paramBlock in newBlock["parameters"]:
         newBlock["parameters"].append(paramBlock)
 
-def processRequestBody(docuBlock, newBlock):
+def processRequestBody(docuBlock, newBlock): 
     params = docuBlock[1].split("\n")[0].strip("}").split(",")
     name, typ, required, subtype, description = '', '', '', '', "\n".join(docuBlock[1].split("\n")[1:]) + "\n"
     paramBlock = {}
@@ -236,12 +242,12 @@ def processRequestBody(docuBlock, newBlock):
 
     if typ == "array":
         if not subtype in swaggerBaseTypes:
-            paramBlock = {"type": "array", "items": {"$ref": subtype}}
+            paramBlock = {"type": "array", "items": {"$ref": f"#/components/schemas/{subtype}"}}
         else:
             paramBlock = {"type": "array", "items": {"type": subtype}}
     else:
         if not subtype in swaggerBaseTypes:
-            paramBlock = {"$ref": subtype}
+            paramBlock = {"$ref": f"#/components/schemas/{subtype}"}
         else:
             paramBlock = {"type": typ}
 
@@ -251,18 +257,19 @@ def processRequestBody(docuBlock, newBlock):
         newBlock["requestBody"]["content"]["application/json"]["schema"] = paramBlock
         return
     else:
-        if not "properties" in newBlock:
-            newBlock["requestBody"]["content"]["application/json"]["schema"] = {"type": "object", "properties": {}, "required": []}
+        if not "properties" in newBlock["requestBody"]["content"]["application/json"]["schema"]:
+            newBlock["requestBody"]["content"]["application/json"]["schema"] = {"type": "object", "properties": {}}
         newBlock["requestBody"]["content"]["application/json"]["schema"]["properties"][name] = paramBlock
         if required == "required":
+            if not "required" in newBlock["requestBody"]["content"]["application/json"]["schema"]:
+                newBlock["requestBody"]["content"]["application/json"]["schema"]["required"] = []
             newBlock["requestBody"]["content"]["application/json"]["schema"]["required"].append(name)
-            
     return
 
 def processResponse(docuBlock, newBlock):
     blockSplit = docuBlock.split("\n")
     statusRE = re.search(r"\d+}", docuBlock).group(0)
-    description = docuBlock.replace(statusRE, "").replace(":", "") + "\n"
+    description = docuBlock.replace(statusRE, "").replace(":", "").replace("@RESTRETURNCODE{", "") + "\n"
     status = statusRE.replace("}", "")
 
     retBlock = {"description": description}
@@ -274,12 +281,15 @@ def processResponse(docuBlock, newBlock):
     return status
 
 def processResponseBody(docuBlock, newBlock, statusCode):
-    params = docuBlock[1].split("\n")[0].strip("}").split(",")
-    name, typ, required, subtype, description = '', '', '', '', "\n".join(docuBlock[1].split("\n")[1:]) + "\n"
+    print(statusCode)
+    print(docuBlock)
+    params = docuBlock.split("\n")[0].strip("}").split(",")
+    print(params)
+    name, typ, required, subtype, description = '', '', '', '', "\n".join(docuBlock.split("\n")[1:]) + "\n"
     paramBlock = {}
 
-    if not "content" in newBlock:
-        newBlock[statusCode] = {"content": {"application/json": {"schema": {}}}}
+    if not "content" in newBlock[statusCode]:
+        newBlock[statusCode]["content"] = {"application/json": {"schema": {}}}
 
     try:
         name = params[0]
@@ -291,12 +301,12 @@ def processResponseBody(docuBlock, newBlock, statusCode):
 
     if typ == "array":
         if not subtype in swaggerBaseTypes:
-            paramBlock = {"type": "array", "items": {"$ref": subtype}}
+            paramBlock = {"type": "array", "items": {"$ref": f"#/components/schemas/{subtype}"}}
         else:
             paramBlock = {"type": "array", "items": {"type": subtype}}
     else:
         if not subtype in swaggerBaseTypes:
-            paramBlock = {"$ref": subtype}
+            paramBlock = {"$ref": f"#/components/schemas/{subtype}"}
         else:
             paramBlock = {"type": typ}
 
@@ -306,11 +316,15 @@ def processResponseBody(docuBlock, newBlock, statusCode):
         newBlock[statusCode]["content"]["application/json"]["schema"] = paramBlock
         return
     else:
-        if not "properties" in newBlock:
-            newBlock[statusCode]["content"]["application/json"]["schema"] = {"type": "object", "properties": {}, "required": []}
+        if not "properties" in newBlock[statusCode]["content"]["application/json"]["schema"]:
+            newBlock[statusCode]["content"]["application/json"]["schema"] = {"type": "object", "properties": {}}
         newBlock[statusCode]["content"]["application/json"]["schema"]["properties"][name] = paramBlock
         if required == "required":
+            if not "required" in newBlock[statusCode]["content"]["application/json"]["schema"]:
+                newBlock[statusCode]["content"]["application/json"]["schema"]["required"] = []
             newBlock[statusCode]["content"]["application/json"]["schema"]["required"].append(name)
+
+    print(newBlock)
     return
 
 def processComponents(block):
