@@ -35,7 +35,7 @@ def initBlocksFileLocations():
 
 			blockName = re.findall(r"(?<=@startDocuBlock ).*", docuBlock)[0]
 
-			blocksFileLocations[blockName] = fileLocation
+			blocksFileLocations[blockName] = {"path": fileLocation, "processed": False}
 	components["schemas"] = definitions
 	print("----- DONE\n")
     
@@ -45,6 +45,14 @@ def processFiles():
 		for file in files:
 			migrate_file.migrate(f"{root}/{file}".replace("\\", "/"))
 	print("------ DONE\n")
+
+def checkUnusedDocublocks():
+	print(f"----- CHECK FOR UNUSED DOCUBLOCKS")
+	for docuBlock in blocksFileLocations.keys():
+		if blocksFileLocations[docuBlock]["processed"] == False:
+			print(f"WARNING: Unused Docublock Found - {docuBlock}")
+	print("----- DONE\n")
+
 
 def writeOpenapiComponents():
 	print(f"----- SAVING OPENAPI DEFINITIONS ON FILE")
@@ -72,6 +80,7 @@ if __name__ == "__main__":
 		createStructure()
 		initBlocksFileLocations()
 		processFiles()
+		checkUnusedDocublocks()
 		writeOpenapiComponents()
 		migrate_media()
 	except Exception as ex:

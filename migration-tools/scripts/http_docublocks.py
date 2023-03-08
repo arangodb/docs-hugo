@@ -43,13 +43,13 @@ def migrateHTTPDocuBlocks(paragraph):
             paragraph = paragraph.replace("{% docublock errorCodes %}", "{{< error-codes >}}")
             continue
 
-        docuBlockFile =blocksFileLocations[docuBlock]
+        docuBlockFile =blocksFileLocations[docuBlock]["path"]
         tag = docuBlockFile.split("/")[len(docuBlockFile.split("/"))-2]
         try:
             docuBlockFile = open(docuBlockFile, "r", encoding="utf-8").read()
         except FileNotFoundError:
             continue
-        
+        blocksFileLocations[docuBlock]["processed"] = True
         declaredDocuBlocks = re.findall(r"(?<=@startDocuBlock )(.*?)@endDocuBlock", docuBlockFile, re.MULTILINE | re.DOTALL)
 
         for block in declaredDocuBlocks:
@@ -73,7 +73,6 @@ def processHTTPDocuBlock(docuBlock, tag):
     docuBlock = re.sub(r"@EXAMPLES.*", "", docuBlock, 0, re.MULTILINE | re.DOTALL)
     newBlock = {"paths": {}}
     url, verb, currentRetStatus = "", "", 0
-    print(docuBlock)
     docuBlock = docuBlock + "\n" + "@ENDRESPONSES"
     title = ""
 
@@ -108,7 +107,6 @@ def processHTTPDocuBlock(docuBlock, tag):
     blocks = re.findall(r"(@RESTRETURNCODE\W.*?)(?=@RESTRETURNCODE|@ENDRESPONSES)",  docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
         restReturnCode = re.search(r"@RESTRETURNCODE\W(.*?)(?=@|\n\n)", block, re.MULTILINE | re.DOTALL).group(0)
-        print(restReturnCode)
         try:
             currentRetStatus = processResponse(restReturnCode, newBlock["paths"][url][verb])
         except Exception as ex:
@@ -116,7 +114,6 @@ def processHTTPDocuBlock(docuBlock, tag):
             traceback.print_exc()
             exit(1)
         x = newBlock["paths"][url][verb]["responses"]
-        print(f"responses {x}")
         block = block + "\n" + "@ENDREPLYBODY"
         responseBodies = re.findall(r"@RESTREPLYBODY{(.*?)^(?=@)",  block,  re.MULTILINE | re.DOTALL)
         for responseBody in responseBodies:
