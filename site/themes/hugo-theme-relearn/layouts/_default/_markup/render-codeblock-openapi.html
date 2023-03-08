@@ -1,31 +1,39 @@
-{{ $yamlBlock := .Inner | transform.Unmarshal }}
+{{ $titleRE :=  findRE `(?m)## .*` .Inner }}
+{{ $yaml := findRE `(?ms)paths:.*` .Inner }}
+
+{{ $title := index $titleRE 0 }}
+{{ $yamlBlock := index $yaml 0 | transform.Unmarshal }}
+
 {{ with $yamlBlock }}
-<div class="openapi">
-{{ range $path, $methods := .paths }}
-  {{ range $method, $items := $methods }}
-    <div class="endpoint">
-      <span class="endpoint-method regular-font upper bold-text method-{{ $method }}">{{ $method }}</span>
-      <span class="endpoint-path">{{ $path }}</span>
-    </div>
-    <div class="openapi-description regular-font">
-      {{ $items.description | markdownify }}
-    </div>
 
-    {{ with .parameters }}
-      {{- template "renderParameters" dict "content" .}}
-    {{ end }}
+  {{ $title | markdownify }}
+  
+  <div class="openapi">
+  {{ range $path, $methods := .paths }}
+    {{ range $method, $items := $methods }}
+      <div class="endpoint">
+        <span class="endpoint-method regular-font upper bold-text method-{{ $method }}">{{ $method }}</span>
+        <span class="endpoint-path">{{ $path }}</span>
+      </div>
+      <div class="openapi-description regular-font">
+        {{ $items.description | markdownify }}
+      </div>
 
-    {{ with .requestBody }}
-      {{- template "renderRequestBody" dict "content" .}}
-    {{ end }}
+      {{ with .parameters }}
+        {{- template "renderParameters" dict "content" .}}
+      {{ end }}
 
-    {{ with .responses }}
-      {{- template "renderResponses" dict "content" . }}
-    {{ end }}
-    
+      {{ with .requestBody }}
+        {{- template "renderRequestBody" dict "content" .}}
+      {{ end }}
+
+      {{ with .responses }}
+        {{- template "renderResponses" dict "content" . }}
+      {{ end }}
+      
+    {{end}}
   {{end}}
-{{end}}
-</div>
+  </div>
 {{ end }}
 
 
