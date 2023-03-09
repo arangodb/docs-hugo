@@ -12,6 +12,7 @@ from globals import *
 import migrate_file
 import structure
 from definitions import *
+from http_docublocks import createComponentsIn1StructsFile
 
 
 def createStructure():
@@ -37,6 +38,12 @@ def initBlocksFileLocations():
 
 			blocksFileLocations[blockName] = {"path": fileLocation, "processed": False}
 	components["schemas"] = definitions
+	createComponentsIn1StructsFile("Administration/1_structs.md")
+	createComponentsIn1StructsFile("Collections/1_structs.md")
+	createComponentsIn1StructsFile("Pregel/1_struct.md")
+	createComponentsIn1StructsFile("Graph/1_structs.md")
+
+
 	print("----- DONE\n")
     
 def processFiles():
@@ -51,13 +58,6 @@ def checkUnusedDocublocks():
 	for docuBlock in blocksFileLocations.keys():
 		if blocksFileLocations[docuBlock]["processed"] == False:
 			print(f"WARNING: Unused Docublock Found - {docuBlock}")
-	print("----- DONE\n")
-
-
-def writeOpenapiComponents():
-	print(f"----- SAVING OPENAPI DEFINITIONS ON FILE")
-	with open(OAPI_COMPONENTS_FILE, 'w', encoding="utf-8") as outfile:
-		yaml.dump(components, outfile, sort_keys=False, default_flow_style=False)
 	print("----- DONE\n")
 
 def migrate_media():
@@ -81,7 +81,6 @@ if __name__ == "__main__":
 		initBlocksFileLocations()
 		processFiles()
 		checkUnusedDocublocks()
-		writeOpenapiComponents()
 		migrate_media()
 	except Exception as ex:
 		print(traceback.format_exc())

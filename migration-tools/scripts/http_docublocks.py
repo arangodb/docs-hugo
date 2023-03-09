@@ -36,6 +36,22 @@ def str_presenter(dumper, data):
 yaml.add_representer(str, str_presenter)
 yaml.representer.SafeRepresenter.add_representer(str, str_presenter) # to use with safe_dum
 
+def createComponentsIn1StructsFile(path):
+    try:
+        f = open(f"{ARANGO_MAIN}/Documentation/DocuBlocks/Rest/{path}", "r", encoding="utf-8").read()
+    except FileNotFoundError as ex:
+        raise ex
+
+    blocks = re.findall(r"@RESTSTRUCT{(.*?)^(?=@)", f, re.MULTILINE | re.DOTALL)
+    for block in blocks:
+        try:
+            processComponents(block)
+        except Exception as ex:
+            print(f"Exception occurred for block {block}\n{ex}")
+            traceback.print_exc()
+            exit(1)
+    
+
 def migrateHTTPDocuBlocks(paragraph):
     docuBlockNameRe = re.findall(r"(?<={% docublock ).*(?= %})", paragraph)
     for docuBlock in docuBlockNameRe:
@@ -75,6 +91,15 @@ def processHTTPDocuBlock(docuBlock, tag):
     url, verb, currentRetStatus = "", "", 0
     docuBlock = docuBlock + "\n" + "@ENDRESPONSES"
     title = ""
+
+    blocks = re.findall(r"@RESTSTRUCT{(.*?)^(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
+    for block in blocks:
+        try:
+            processComponents(block)
+        except Exception as ex:
+            print(f"Exception occurred for block {block}\n{ex}")
+            traceback.print_exc()
+            exit(1)
 
     blocks = re.findall(r"@RESTHEADER{(.*?)^(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
@@ -124,14 +149,7 @@ def processHTTPDocuBlock(docuBlock, tag):
                 traceback.print_exc()
                 exit(1)
 
-    blocks = re.findall(r"@RESTSTRUCT{(.*?)^(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
-    for block in blocks:
-        try:
-            processComponents(block)
-        except Exception as ex:
-            print(f"Exception occurred for block {block}\n{ex}")
-            traceback.print_exc()
-            exit(1)
+    
 
     newBlock["paths"][url][verb]["tags"] = [tag]
     yml = render_yaml(newBlock, title)
@@ -239,12 +257,12 @@ def processRequestBody(docuBlock, newBlock):
 
     if typ == "array":
         if not subtype in swaggerBaseTypes:
-            paramBlock = {"type": "array", "items": {"$ref": f"#/components/schemas/{subtype}"}}
+            paramBlock = {"type": "array", "items": components["schemas"][subtype]}
         else:
             paramBlock = {"type": "array", "items": {"type": subtype}}
     else:
         if not subtype in swaggerBaseTypes:
-            paramBlock = {"$ref": f"#/components/schemas/{subtype}"}
+            paramBlock = components["schemas"][subtype]
         else:
             paramBlock = {"type": typ}
 
@@ -295,12 +313,12 @@ def processResponseBody(docuBlock, newBlock, statusCode):
 
     if typ == "array":
         if not subtype in swaggerBaseTypes:
-            paramBlock = {"type": "array", "items": {"$ref": f"#/components/schemas/{subtype}"}}
+            paramBlock = {"type": "array", "items":components["schemas"][subtype]}
         else:
             paramBlock = {"type": "array", "items": {"type": subtype}}
     else:
         if not subtype in swaggerBaseTypes:
-            paramBlock = {"$ref": f"#/components/schemas/{subtype}"}
+            paramBlock = components["schemas"][subtype]
         else:
             paramBlock = {"type": typ}
 
