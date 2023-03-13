@@ -39,6 +39,7 @@ def str_presenter(dumper, data):
 
 yaml.add_representer(str, str_presenter)
 yaml.representer.SafeRepresenter.add_representer(str, str_presenter) # to use with safe_dum
+yaml.Dumper.ignore_aliases = lambda *args : True
 
 def createComponentsIn1StructsFile(path):
     try:
@@ -61,6 +62,8 @@ def getFromDict(dataDict, mapList):
 
 def setInDict(dataDict, mapList, value):
     mapList = mapList.split("/")[1:]
+    print(mapList)
+    print(value)
     getFromDict(dataDict, mapList[:-1])[mapList[-1]] = value
 
 def find_by_key(data, target, k):
@@ -69,6 +72,8 @@ def find_by_key(data, target, k):
             if isinstance(value, dict):
                 find_by_key(value, target, k + "/" + key)
         else:
+            print("trovato")
+            print(value)
             setInDict(components, k, components["schemas"][value[target]])
     
 
@@ -160,7 +165,7 @@ def processHTTPDocuBlock(docuBlock, tag):
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
             exit(1)
-        x = newBlock["paths"][url][verb]["responses"]
+
         block = block + "\n" + "@ENDREPLYBODY"
         responseBodies = re.findall(r"@RESTREPLYBODY{(.*?)^(?=@)",  block,  re.MULTILINE | re.DOTALL)
         for responseBody in responseBodies:
@@ -402,7 +407,7 @@ def render_yaml(block, title):
 \n\
 {blockYaml}\
 ```'
-    res = res.replace("@endDocuBlock", "").replace("&id001", "").replace("&id002", "")
+    res = res.replace("@endDocuBlock", "")
     #res = re.sub(r"^ *$\n", '', res, 0, re.MULTILINE | re.DOTALL)
     res = re.sub(r"\|.*", '|', res, 0, re.MULTILINE)
     return res
