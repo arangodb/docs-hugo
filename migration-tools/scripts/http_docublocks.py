@@ -5,6 +5,10 @@ import traceback
 from definitions import *
 from globals import *
 
+from functools import reduce  # forward compatibility for Python 3
+import operator
+
+
 swaggerBaseTypes = [
     '',
     'object',
@@ -50,6 +54,29 @@ def createComponentsIn1StructsFile(path):
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
             exit(1)
+
+
+def getFromDict(dataDict, mapList):
+    return reduce(operator.getitem, mapList, dataDict)
+
+def setInDict(dataDict, mapList, value):
+    mapList = mapList.split("/")[1:]
+    print(mapList)
+    print(value)
+    print(getFromDict(dataDict, mapList[:-1])[mapList[-1]])
+
+    getFromDict(dataDict, mapList[:-1])[mapList[-1]] = value
+    print(getFromDict(dataDict, mapList[:-1])[mapList[-1]])
+
+def find_by_key(data, target, k):
+    for key, value in data.items():
+        if not target in value:
+            if isinstance(value, dict):
+                find_by_key(value, target, k + "/" + key)
+        else:
+            print("trovato")
+            print(value)
+            setInDict(components, k, components["schemas"][value[target]])
     
 
 def migrateHTTPDocuBlocks(paragraph):
@@ -100,6 +127,8 @@ def processHTTPDocuBlock(docuBlock, tag):
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
             exit(1)
+
+    find_by_key(components, "$ref", "")
 
     blocks = re.findall(r"@RESTHEADER{(.*?)^(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
@@ -348,15 +377,10 @@ def processComponents(block):
         "description": description,
     }    
 
-    if paramSubtype != "string":
-        structProperty["format"] = paramSubtype
-
     if paramType == "array":
-        structProperty.pop("format", None)
         key = "type"
         if not paramSubtype in swaggerBaseTypes:
             key = "$ref"
-            paramSubtype = "#/components/schemas/" + paramSubtype
 
         structProperty["items"] = {key: paramSubtype if paramSubtype != "" else "string"}
 
@@ -385,7 +409,7 @@ def render_yaml(block, title):
 \n\
 {blockYaml}\
 ```'
-    res = res.replace("@endDocuBlock", "")   
+    res = res.replace("@endDocuBlock", "").replace("&id001", "").replace("&id002", "")
     #res = re.sub(r"^ *$\n", '', res, 0, re.MULTILINE | re.DOTALL)
     res = re.sub(r"\|.*", '|', res, 0, re.MULTILINE)
     return res
