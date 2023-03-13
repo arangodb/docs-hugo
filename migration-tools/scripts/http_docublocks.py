@@ -61,12 +61,7 @@ def getFromDict(dataDict, mapList):
 
 def setInDict(dataDict, mapList, value):
     mapList = mapList.split("/")[1:]
-    print(mapList)
-    print(value)
-    print(getFromDict(dataDict, mapList[:-1])[mapList[-1]])
-
     getFromDict(dataDict, mapList[:-1])[mapList[-1]] = value
-    print(getFromDict(dataDict, mapList[:-1])[mapList[-1]])
 
 def find_by_key(data, target, k):
     for key, value in data.items():
@@ -74,8 +69,6 @@ def find_by_key(data, target, k):
             if isinstance(value, dict):
                 find_by_key(value, target, k + "/" + key)
         else:
-            print("trovato")
-            print(value)
             setInDict(components, k, components["schemas"][value[target]])
     
 
