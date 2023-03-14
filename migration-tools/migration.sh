@@ -15,7 +15,7 @@ function migrate() {
     print "Migrating" "$5"
     cd scripts/
     python3 migration.py --src "$2" --dst "$3" --arango-main "$4" --version "$5"
-    bash post-migration.sh "$3" "$5"
+    python3 post_migration.py --dst "$3" --version "$5"
     print "Migration End"
 }
 

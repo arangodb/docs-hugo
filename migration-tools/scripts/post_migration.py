@@ -70,7 +70,7 @@ def migrate_image(currentFile, paragraph, href):
     if ':style' in href:
         styleRegex = re.search(r"(?<={:style=).*(?=})", href)
         if styleRegex:
-            label = re.search(r"(?<=\[).*(?=\])", href).group(0)	# Bug with new style regex, to fix
+            label = re.search(r"(?<=\[).*(?=\])", href).group(0)
             if "\"" in label:
                 label = label.replace('"', '')
 

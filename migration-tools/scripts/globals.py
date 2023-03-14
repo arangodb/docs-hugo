@@ -27,12 +27,6 @@ NEW_TOOLCHAIN = f"{dst}/site"
 ARANGO_MAIN = main
 
 infos = {"": {}}
-currentWeight = 0
-
-def get_weight(weight):
-	global currentWeight
-	currentWeight += 5
-	return currentWeight
 
 ## Regexes
 frontMatterCapture = r"(?<=---\n)(.*?)(?=---)"
