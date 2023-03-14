@@ -26,7 +26,7 @@ apiDocsRes = {
 	"openapi": "3.1.0",
 	"info": {
 		"description": "ArangoDB REST API Interface",
-		"version": "1.0",
+		"version": "3.10.5",
 		"title": "ArangoDB",
 		"license": {
 			"name": "Apache License, Version 2.0"
@@ -42,7 +42,7 @@ def generateAPIDocs():
     for root, dirs, files in os.walk(f"{docs}/site/content", topdown=True):
         if root.endswith("images"):
             continue
-        
+
         for file in files:
             processFile(f"{root}/{file}".replace("\\", "/"))
 
@@ -79,7 +79,7 @@ def processFile(filepath):
         apiDocsRes["paths"][path][method] = endpointDict["paths"][path][method]
 
     dstFile = open(dst, "w")
-    json.dump(apiDocsRes, dstFile)
+    json.dump(apiDocsRes, dstFile, indent=4)
     dstFile.close()
 
 if __name__ == "__main__":
