@@ -1,0 +1,184 @@
+version: 2.1
+
+
+jobs:
+  checkout: #Checkout a desired repository
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    parameters:
+      repository:
+        type: string
+        default: docs-hugo
+      branch:
+        type: string
+        default: main
+
+    steps:
+      - run: mkdir -p workspace
+      - run:
+          name: Clone arangodb main repo
+          command: |
+            cd workspace && git clone --depth 1 << parameters.repository >> --branch << parameters.branch >>
+      - run:
+          name: check cloned folders
+          command: |
+            pwd && ls && cd workspace && ls
+      - persist_to_workspace:
+          root: .
+          paths:
+            - workspace
+
+  migration: 
+    docker:
+      - image: cimg/python:3.11.2
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Download migration dependencies
+          command: |
+            pip install pyyaml python-frontmatter commonmark
+      - run: 
+          name: Migrate 3.10
+          command: |
+            cd workspace/docs-hugo/migration-tools/ && ./migration.sh migrate /home/circleci/project/workspace/docs /home/circleci/project/workspace/docs-hugo /home/circleci/project/workspace/arangodb 3.10
+      - run: 
+          name: Migrate 3.11
+          command: |
+            cd workspace/docs-hugo/migration-tools/ && ./migration.sh migrate /home/circleci/project/workspace/docs /home/circleci/project/workspace/docs-hugo /home/circleci/project/workspace/arangodb 3.11
+      - persist_to_workspace:
+          root: .
+          paths:
+            - workspace/docs-hugo
+
+
+  plain-build: 
+    docker:
+      - image: cimg/base:current
+    resource_class: large
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Check folders
+          command: |
+            pwd && ls && cd workspace && ls
+
+      - run:
+          name: Install Hugo
+          command: |
+            curl -sSL  https://github.com/gohugoio/hugo/releases/download/v0.111.0/hugo_0.111.0_linux-amd64.tar.gz -o hugo-archive.tar.gz && ls -la && sudo tar -xzf hugo-archive.tar.gz -C /usr/local/bin
+
+      - run:
+          name: Build site
+          command: |
+            pwd && cd workspace/docs-hugo/site && hugo -b https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app --minify -e prod --templateMetrics --templateMetricsHints && ls
+            
+      - persist_to_workspace:
+          root: .
+          paths:
+            - workspace/docs-hugo
+
+  build-with-generated:
+    machine:
+      image: ubuntu-2004:current
+      docker_layer_caching: true 
+    resource_class: medium
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Check env var
+          command: |
+            echo "$CIRCLE_PULL_REQUEST"
+
+      - run:
+          name: Generate examples and build
+          command: |
+            export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app && cd workspace/docs-hugo && docker compose --env-file toolchain/docker-env/examples.env up --exit-code-from site
+      - run:
+          name: Commit cache file to github
+          command: |
+            cd workspace/docs-hugo
+            git config user.email "daniele@arangodb.com"
+            git config user.name "CircleCI Job"
+            git add site/data
+            git commit --allow-empty -am "Automatic commit of generated files from CircleCI [skip ci]"
+            git push    
+      - persist_to_workspace:
+          root: .
+          paths:
+            - workspace/docs-hugo
+
+  deploy:
+    docker:
+      - image: cimg/node:19.7.0
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install netlify-cli
+          command: sudo npm install -g --silent netlify-cli
+
+      - run:
+          name: Deploy to netlify
+          command: netlify deploy --dir=workspace/docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app
+
+
+workflows:
+  plain:
+    jobs:
+      - checkout:
+          name: cloneMainRepo
+          repository: https://github.com/arangodb/arangodb
+          branch: main
+      - checkout:
+          name: cloneOldDocs
+          repository: https://github.com/arangodb/docs
+          branch: main  
+      - checkout:
+          name: cloneNewRepo
+          repository: https://github.com/arangodb/docs-hugo
+          branch: circle-ci  
+      - migration:
+          requires:
+            - cloneMainRepo
+            - cloneOldDocs
+            - cloneNewRepo
+      - plain-build:
+          requires:
+            - migration
+      - deploy:
+          requires:
+            - plain-build
+    
+  generate:
+    jobs:
+      - checkout:
+          name: cloneMainRepo
+          repository: https://github.com/arangodb/arangodb
+          branch: main
+      - checkout:
+          name: cloneOldDocs
+          repository: https://github.com/arangodb/docs
+          branch: main  
+      - checkout:
+          name: cloneNewRepo
+          repository: https://github.com/arangodb/docs-hugo
+          branch: circle-ci   
+      - migration:
+          requires:
+            - cloneMainRepo
+            - cloneOldDocs
+            - cloneNewRepo
+      - build-with-generated:
+          requires:
+            - migration
+      - deploy:
+          requires:
+            - build-with-generated
