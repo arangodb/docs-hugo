@@ -3,6 +3,7 @@ import yaml
 import os
 import json
 import re
+import traceback
 
 
 ##CMDLINE ARGS
@@ -22,38 +23,40 @@ docs = args.src
 dst = args.dst
 
 apiDocsRes = {
-	"openapi": "3.0.2",
+	"openapi": "3.1.0",
 	"info": {
 		"description": "ArangoDB REST API Interface",
-		"version": "1.0",
+		"version": "3.10.5",
 		"title": "ArangoDB",
 		"license": {
 			"name": "Apache License, Version 2.0"
 		}
 	},
-	"components": {
-		"schemas": {}
-	},
+	"tags": {
+
+    },
 	"paths" : {}
 }
 
 def generateAPIDocs():
-	for root, dirs, files in os.walk(f"{docs}/site/content", topdown=True):
-		for file in files:
-			processFile(f"{root}/{file}".replace("\\", "/"))
+    for root, dirs, files in os.walk(f"{docs}/site/content", topdown=True):
+        if root.endswith("images"):
+            continue
 
-def loadSchemas():
+        for file in files:
+            processFile(f"{root}/{file}".replace("\\", "/"))
+
+def loadTags():
     try:
-        file = open("./components.yaml", "r", encoding="utf-8")
+        file = open(f"{docs}/site/data/openapi_tags.yaml", "r", encoding="utf-8")
         data = file.read()
         file.close()
     except Exception as ex:
         print(traceback.format_exc())
         raise ex
 
-    components = yaml.safe_load(data)
-    print(components)
-    apiDocsRes["components"]["schemas"] = components["schemas"]
+    tags = yaml.safe_load(data)
+    apiDocsRes["tags"] = tags
     
 def processFile(filepath):
     try:
@@ -61,10 +64,11 @@ def processFile(filepath):
         data = file.read()
         file.close()
     except Exception as ex:
+        print(f"Error reading file {filepath}")
         print(traceback.format_exc())
         raise ex
 
-    endpoints = re.findall(r"\`{3}http-spec(.*?)\`{3}", data, re.MULTILINE | re.DOTALL)
+    endpoints = re.findall(r"\`{3}openapi(.*?)\`{3}", data, re.MULTILINE | re.DOTALL)
     for endpoint in endpoints:
         endpointDict = yaml.safe_load(endpoint)
         path = next(iter(endpointDict["paths"]))
@@ -75,9 +79,9 @@ def processFile(filepath):
         apiDocsRes["paths"][path][method] = endpointDict["paths"][path][method]
 
     dstFile = open(dst, "w")
-    json.dump(apiDocsRes, dstFile)
+    json.dump(apiDocsRes, dstFile, indent=4)
     dstFile.close()
 
 if __name__ == "__main__":
-    loadSchemas()
+    loadTags()
     generateAPIDocs()

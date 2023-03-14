@@ -1,0 +1,48 @@
+- name: Authentication
+  description: Manage users and access tokens
+- name: Databases
+  description: Manage databases for organizing collections
+- name: Collections
+  description: Manage collections for organizing documents
+- name: Documents
+  description: Perform CRUD operations on JSON-based records
+- name: Graphs
+  description: Manage named graphs and query edges
+- name: Queries
+  description: Run and process AQL queries
+- name: Pregel
+  description: Run distributed graph algorithms
+- name: Transactions
+  description: Execute JavaScript and Stream Transactions
+- name: Indexes
+  description: Improve the performance of queries
+- name: Views
+  description: Manage Views to use ArangoSearch for information retrieval
+- name: Analyzers
+  description: Manage Analyzers for transforming data
+- name: Import
+  description: Load JSON data in bulk
+- name: Foxx
+  description: Write microservices in JavaScript
+- name: Jobs
+  description: Execute requests asynchronously
+- name: Tasks
+  description: Set up JavaScript code to run periodically or timed
+- name: Batch Requests
+  description: Run multiple operations using a single request
+- name: Replication
+  description: Control data replication for deployments
+- name: Monitoring
+  description: Access logs, statistics, and metrics
+- name: Security
+  description: Configure audit logging and encryption at rest and in transit
+- name: Administration
+  description: Get server information, shut down nodes, and start compaction
+- name: Cluster
+  description: Administrate cluster deployments
+- name: Hot Backups
+  description: Manage incremental data backups
+- name: License Management
+  description: Activate Enterprise Edition deployments
+- name: Miscellaneous
+  description: Execute JavaScript code # Update when endpoints are re-grouped

@@ -13,7 +13,7 @@ import (
 var collectionsToIgnore = new(common.IgnoreCollections)
 
 type HTTPSpecRequest struct {
-	Filename string                 // The markdown file that triggered the http-spec call
+	Filename string                 // The markdown file that triggered the openapi call
 	ApiSpec  map[string]interface{} `json:"spec"` // The swagger specification
 }
 
@@ -25,7 +25,7 @@ func init() {
 	collectionsToIgnore.ToIgnore = make(map[string]bool)
 }
 
-// Reads the Hugo http-spec request, get the calling file and unmarshal the yaml spec
+// Reads the Hugo openapi request, get the calling file and unmarshal the yaml spec
 func ParseRequest(request io.Reader) (res HTTPSpecRequest, err error) {
 	req, err := ioutil.ReadAll(request)
 	if err != nil {
