@@ -110,10 +110,13 @@ def migrate_hints(paragraph):
         hintSplit = hint.split("\n")
         hintType = re.search(r"'.*[']* %}", hintSplit[0]).group(0).replace("'", '').strip(" %}")
         hintText = "\n".join(hintSplit[1:len(hintSplit)-1])
+
+        toReplace = f"{{% hint '{hintType}' %}}"
+
         if hintType == 'note':
             hintType = 'tip'
 
-        newHint = hint.replace(f"{{% hint '{hintType}' %}}", f"{{{{< {hintType} >}}}}")
+        newHint = hint.replace(toReplace, f"{{{{< {hintType} >}}}}")
         newHint = newHint.replace("{% endhint %}", f"{{{{< /{hintType} >}}}}")
         paragraph = paragraph.replace(hint, newHint)
 

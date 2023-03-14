@@ -65,7 +65,7 @@ def migrate_image(currentFile, paragraph, href):
     imgName = linkContent.split("/")[len(linkContent.split("/"))-1]
     imagesFolder = f"{NEW_TOOLCHAIN}/content/images/"
     relPathToImgsFolder = os.path.relpath(imagesFolder, currentFile)
-    newImgName = f"{relPathToImgsFolder}/{imgName}".replace("../", "", 1)
+    newImgName = f"{relPathToImgsFolder}/{imgName}"
 
     if ':style' in href:
         styleRegex = re.search(r"(?<={:style=).*(?=})", href)
