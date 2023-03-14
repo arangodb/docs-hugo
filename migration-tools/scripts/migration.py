@@ -12,7 +12,7 @@ from globals import *
 import migrate_file
 import structure
 from definitions import *
-from http_docublocks import createComponentsIn1StructsFile, find_by_key
+from http_docublocks import createComponentsIn1StructsFile, explodeNestedStructs
 
 
 def createStructure():
@@ -42,7 +42,7 @@ def initBlocksFileLocations():
 	createComponentsIn1StructsFile("Collections/1_structs.md")
 	createComponentsIn1StructsFile("Pregel/1_struct.md")
 	createComponentsIn1StructsFile("Graph/1_structs.md")
-	find_by_key(components, "$ref", "")
+	explodeNestedStructs(components, "$ref", "")
 
 
 	print("----- DONE\n")

@@ -62,18 +62,14 @@ def getFromDict(dataDict, mapList):
 
 def setInDict(dataDict, mapList, value):
     mapList = mapList.split("/")[1:]
-    print(mapList)
-    print(value)
     getFromDict(dataDict, mapList[:-1])[mapList[-1]] = value
 
-def find_by_key(data, target, k):
+def explodeNestedStructs(data, target, k):
     for key, value in data.items():
         if not target in value:
             if isinstance(value, dict):
-                find_by_key(value, target, k + "/" + key)
+                explodeNestedStructs(value, target, k + "/" + key)
         else:
-            print("trovato")
-            print(value)
             setInDict(components, k, components["schemas"][value[target]])
     
 
@@ -126,7 +122,7 @@ def processHTTPDocuBlock(docuBlock, tag):
             traceback.print_exc()
             exit(1)
 
-    find_by_key(components, "$ref", "")
+    explodeNestedStructs(components, "$ref", "")
 
     blocks = re.findall(r"@RESTHEADER{(.*?)^(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
