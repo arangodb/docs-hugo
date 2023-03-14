@@ -12,6 +12,7 @@ from globals import *
 import migrate_file
 import structure
 from definitions import *
+from http_docublocks import createComponentsIn1StructsFile, explodeNestedStructs
 
 
 def createStructure():
@@ -35,8 +36,15 @@ def initBlocksFileLocations():
 
 			blockName = re.findall(r"(?<=@startDocuBlock ).*", docuBlock)[0]
 
-			blocksFileLocations[blockName] = fileLocation
+			blocksFileLocations[blockName] = {"path": fileLocation, "processed": False}
 	components["schemas"] = definitions
+	createComponentsIn1StructsFile("Administration/1_structs.md")
+	createComponentsIn1StructsFile("Collections/1_structs.md")
+	createComponentsIn1StructsFile("Pregel/1_struct.md")
+	createComponentsIn1StructsFile("Graph/1_structs.md")
+	explodeNestedStructs(components, "$ref", "")
+
+
 	print("----- DONE\n")
     
 def processFiles():
@@ -46,10 +54,11 @@ def processFiles():
 			migrate_file.migrate(f"{root}/{file}".replace("\\", "/"))
 	print("------ DONE\n")
 
-def writeOpenapiComponents():
-	print(f"----- SAVING OPENAPI DEFINITIONS ON FILE")
-	with open(OAPI_COMPONENTS_FILE, 'w', encoding="utf-8") as outfile:
-		yaml.dump(components, outfile, sort_keys=False, default_flow_style=False)
+def checkUnusedDocublocks():
+	print(f"----- CHECK FOR UNUSED DOCUBLOCKS")
+	for docuBlock in blocksFileLocations.keys():
+		if blocksFileLocations[docuBlock]["processed"] == False:
+			print(f"WARNING: Unused Docublock Found - {docuBlock}")
 	print("----- DONE\n")
 
 def migrate_media():
@@ -72,7 +81,7 @@ if __name__ == "__main__":
 		createStructure()
 		initBlocksFileLocations()
 		processFiles()
-		writeOpenapiComponents()
+		checkUnusedDocublocks()
 		migrate_media()
 	except Exception as ex:
 		print(traceback.format_exc())

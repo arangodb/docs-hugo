@@ -5,7 +5,12 @@ import traceback
 from definitions import *
 from globals import *
 
+from functools import reduce  # forward compatibility for Python 3
+import operator
+
+
 swaggerBaseTypes = [
+    '',
     'object',
     'array',
     'number',
@@ -24,14 +29,49 @@ swaggerBaseTypes = [
 ]
 
 def str_presenter(dumper, data):
-    """configures yaml for dumping multiline strings
-    Ref: https://stackoverflow.com/questions/8640959/how-can-i-control-what-scalar-form-pyyaml-uses-for-my-data"""
-    if data.count('\n') > 0:  # check for multiline string
-        return dumper.represent_scalar('tag:yaml.org,2002:str', data, style='|')
+    multilineRegex = re.sub(r"^\n", '', data, 0, re.MULTILINE)
+    if len(multilineRegex.split('\n')) > 1:  # check for multiline string
+        text_list = [line.rstrip() for line in data.splitlines()]
+        fixed_data = "\n".join(text_list).strip("\n")
+        return dumper.represent_scalar('tag:yaml.org,2002:str', fixed_data, style='|')
+    data = data.strip("\n")
     return dumper.represent_scalar('tag:yaml.org,2002:str', data)
 
 yaml.add_representer(str, str_presenter)
 yaml.representer.SafeRepresenter.add_representer(str, str_presenter) # to use with safe_dum
+yaml.Dumper.ignore_aliases = lambda *args : True
+
+def createComponentsIn1StructsFile(path):
+    try:
+        f = open(f"{ARANGO_MAIN}/Documentation/DocuBlocks/Rest/{path}", "r", encoding="utf-8").read()
+    except FileNotFoundError as ex:
+        raise ex
+
+    blocks = re.findall(r"@RESTSTRUCT{(.*?)^(?=@)", f, re.MULTILINE | re.DOTALL)
+    for block in blocks:
+        try:
+            processComponents(block)
+        except Exception as ex:
+            print(f"Exception occurred for block {block}\n{ex}")
+            traceback.print_exc()
+            exit(1)
+
+
+def getFromDict(dataDict, mapList):
+    return reduce(operator.getitem, mapList, dataDict)
+
+def setInDict(dataDict, mapList, value):
+    mapList = mapList.split("/")[1:]
+    getFromDict(dataDict, mapList[:-1])[mapList[-1]] = value
+
+def explodeNestedStructs(data, target, k):
+    for key, value in data.items():
+        if not target in value:
+            if isinstance(value, dict):
+                explodeNestedStructs(value, target, k + "/" + key)
+        else:
+            setInDict(components, k, components["schemas"][value[target]])
+    
 
 def migrateHTTPDocuBlocks(paragraph):
     docuBlockNameRe = re.findall(r"(?<={% docublock ).*(?= %})", paragraph)
@@ -40,13 +80,13 @@ def migrateHTTPDocuBlocks(paragraph):
             paragraph = paragraph.replace("{% docublock errorCodes %}", "{{< error-codes >}}")
             continue
 
-        docuBlockFile =blocksFileLocations[docuBlock]
+        docuBlockFile =blocksFileLocations[docuBlock]["path"]
         tag = docuBlockFile.split("/")[len(docuBlockFile.split("/"))-2]
         try:
             docuBlockFile = open(docuBlockFile, "r", encoding="utf-8").read()
         except FileNotFoundError:
             continue
-        
+        blocksFileLocations[docuBlock]["processed"] = True
         declaredDocuBlocks = re.findall(r"(?<=@startDocuBlock )(.*?)@endDocuBlock", docuBlockFile, re.MULTILINE | re.DOTALL)
 
         for block in declaredDocuBlocks:
@@ -59,7 +99,8 @@ def migrateHTTPDocuBlocks(paragraph):
                 newBlock = processHTTPDocuBlock(block, tag)
 
                 paragraph = paragraph.replace("{% docublock "+ docuBlock + " %}", newBlock)
-                #print(paragraph)
+
+    paragraph = re.sub(r"```\n{3,}", "```\n\n", paragraph, 0, re.MULTILINE)
 
     return paragraph
 
@@ -67,11 +108,22 @@ def processHTTPDocuBlock(docuBlock, tag):
     blockExamples = processExamples(docuBlock)
 
     docuBlock = re.sub(r"@EXAMPLES.*", "", docuBlock, 0, re.MULTILINE | re.DOTALL)
-    newBlock = {"openapi": "3.0.2", "paths": {}}
+    newBlock = {"paths": {}}
     url, verb, currentRetStatus = "", "", 0
-
-    docuBlock = docuBlock + "\n"
+    docuBlock = docuBlock + "\n" + "@ENDRESPONSES"
     title = ""
+
+    blocks = re.findall(r"@RESTSTRUCT{(.*?)^(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
+    for block in blocks:
+        try:
+            processComponents(block)
+        except Exception as ex:
+            print(f"Exception occurred for block {block}\n{ex}")
+            traceback.print_exc()
+            exit(1)
+
+    explodeNestedStructs(components, "$ref", "")
+
     blocks = re.findall(r"@RESTHEADER{(.*?)^(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
         try:
@@ -81,10 +133,10 @@ def processHTTPDocuBlock(docuBlock, tag):
             traceback.print_exc()
             exit(1)
 
-    blocks = re.findall(r"@RESTDESCRIPTION(.*?)^(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
+    blocks = re.findall(r"(?<=@RESTDESCRIPTION\n)(.*?)(?=\n@)", docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
         try:
-            newBlock["paths"][url][verb]["description"] = block
+            newBlock["paths"][url][verb]["description"] = block + "\n"
         except Exception as ex:
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
@@ -98,37 +150,33 @@ def processHTTPDocuBlock(docuBlock, tag):
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
             exit(1)
+            
 
-    blocks = re.findall(r"@RESTRETURNCODE{(.*?)^(?=@|\n)",  docuBlock, re.MULTILINE | re.DOTALL)
+    blocks = re.findall(r"(@RESTRETURNCODE\W.*?)(?=@RESTRETURNCODE|@ENDRESPONSES)",  docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
+        restReturnCode = re.search(r"@RESTRETURNCODE\W(.*?)(?=@|\n\n)", block, re.MULTILINE | re.DOTALL).group(0)
         try:
-            currentRetStatus = processResponse(block, newBlock["paths"][url][verb])
+            currentRetStatus = processResponse(restReturnCode, newBlock["paths"][url][verb])
         except Exception as ex:
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
             exit(1)
 
-    blocks = re.findall(r"@RESTREPLYBODY{(.*?)^(?=@)",  docuBlock,  re.MULTILINE | re.DOTALL)
-    for block in blocks:
-        try:
-            processResponseBody(block, newBlock["paths"][url][verb]["responses"], currentRetStatus)
-        except Exception as ex:
-            print(f"Exception occurred for block {block}\n{ex}")
-            traceback.print_exc()
-            exit(1)
+        block = block + "\n" + "@ENDREPLYBODY"
+        responseBodies = re.findall(r"@RESTREPLYBODY{(.*?)^(?=@)",  block,  re.MULTILINE | re.DOTALL)
+        for responseBody in responseBodies:
+            try:
+                processResponseBody(responseBody, newBlock["paths"][url][verb]["responses"], currentRetStatus)
+            except Exception as ex:
+                print(f"Exception occurred for block {block}\n{ex}")
+                traceback.print_exc()
+                exit(1)
 
-    blocks = re.findall(r"@RESTSTRUCT{(.*?)^(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
-    for block in blocks:
-        try:
-            processComponents(block)
-        except Exception as ex:
-            print(f"Exception occurred for block {block}\n{ex}")
-            traceback.print_exc()
-            exit(1)
+    
 
     newBlock["paths"][url][verb]["tags"] = [tag]
     yml = render_yaml(newBlock, title)
-
+    
     exampleCodeBlocks = ""
     if len(blockExamples) > 0:
         exampleCodeBlocks = parse_examples(blockExamples)
@@ -169,8 +217,9 @@ def processHeader(docuBlock, newBlock):
     headerSplit = headerRe.split(",")
     try:
         url, verb, desc = headerSplit[0].split(" ")[1], headerSplit[0].split(" ")[0].strip("{").lower(), headerSplit[1].replace("}", "")
-        newBlock["paths"][url] = {verb: {"description": desc}}
+        newBlock["paths"][url] = {verb: {}}
         newBlock["paths"][url][verb]["operationId"] = headerSplit[2].replace("}", "").replace(" ", "")
+        newBlock["paths"][url][verb]["description"] = desc + "\n"
     except IndexError:
         pass 
 
@@ -187,16 +236,8 @@ def processParameters(docuBlock, newBlock):
     
     params = docuBlock[1].split("\n")[0].strip("}")
     paramSplit = params.split(",")
-    try:
-        paramBlock["name"] = paramSplit[0]
-        paramBlock["schema"] = {"type": paramSplit[1]}
-        paramBlock["required"] = True if paramSplit[2] == "required" else False
-        if paramSplit[3] != "" and not paramSplit[3] in swaggerBaseTypes:
-            paramBlock["schema"] = {"$ref": f"#/components/schemas/{paramSplit[3]}" }
-    except IndexError:
-        pass
     
-    paramBlock["description"] = "\n".join(docuBlock[1].split("\n")[1:]).replace(":", "")
+    paramBlock["name"] = paramSplit[0]
 
     if "URLPARAM" in paramType:
         paramBlock["in"] = "path"
@@ -205,58 +246,68 @@ def processParameters(docuBlock, newBlock):
     elif "HEADERPARAM" in paramType:
         paramBlock["in"] = "header"
 
+    paramBlock["required"] = True if paramSplit[2] == "required" else False
+
+    paramBlock["description"] = "\n".join(docuBlock[1].split("\n")[1:]).replace(":", "") + "\n"
+    paramBlock["schema"] = {"type": paramSplit[1]}
+    try:
+        if paramSplit[3] != "" and not paramSplit[3] in swaggerBaseTypes:
+            paramBlock["schema"] = {"$ref": f"#/components/schemas/{paramSplit[3]}" }
+    except IndexError:
+        pass
+
     if "parameters" not in newBlock:
         newBlock["parameters"] = []
 
     if not paramBlock in newBlock["parameters"]:
         newBlock["parameters"].append(paramBlock)
 
-def processRequestBody(docuBlock, newBlock):
-    params = docuBlock[1].split("\n")[0].strip("}")
-    paramSplit = params.split(",")
-    name = paramSplit[0]
+def processRequestBody(docuBlock, newBlock): 
+    params = docuBlock[1].split("\n")[0].strip("}").split(",")
+    name, typ, required, subtype, description = '', '', '', '', "\n".join(docuBlock[1].split("\n")[1:]) + "\n"
     paramBlock = {}
-    try:
-        paramBlock["type"] = "object" if paramSplit[1] == "json" else paramSplit[1]
-        if len(paramSplit) >= 4 and paramSplit[3] != "":
-            if paramSplit[3] in swaggerBaseTypes:
-                if paramSplit[3] != "string":
-                    paramBlock["format"] = paramSplit[3]
-            else:
-                paramBlock["$ref"] = f"#/components/schemas/{paramSplit[3]}"
-
-        if paramBlock["type"] == "array":
-            paramBlock["items"] = {"type": paramSplit[3] if paramSplit[3] != "" else "string"}
-
-        if "$ref" in paramBlock:
-            del paramBlock["type"]
-
-    except IndexError:
-        print(f"Exception on block {block}\n")
-        traceback.print_exc()
-    pass
-    
-    paramBlock["description"] = "\n".join(docuBlock[1].split("\n")[1:])
-
-    if name == "" and "schema" in paramBlock:
-        newBlock["requestBody"]["content"] = {"application/json": {"schema": paramBlock["schema"]}}
-        return
 
     if not "requestBody" in newBlock:
-        newBlock["requestBody"] = {}
+        newBlock["requestBody"] = {"content": {"application/json": {"schema": {}}}}
 
-    if not "content" in newBlock["requestBody"]:
-        newBlock["requestBody"]["content"] = {"application/json": {"schema": {"type": "object", "properties": {}, "required": []}}}
+    try:
+        name = params[0]
+        typ = params[1]
+        required = params[2]
+        subtype = params[3]
+    except Exception:
+        pass
 
-    newBlock["requestBody"]["content"]["application/json"]["schema"]["properties"][name] = paramBlock
-    if paramSplit[2] == "required":
+    if typ == "array":
+        if not subtype in swaggerBaseTypes:
+            paramBlock = {"type": "array", "items": components["schemas"][subtype]}
+        else:
+            paramBlock = {"type": "array", "items": {"type": subtype}}
+    else:
+        if not subtype in swaggerBaseTypes:
+            paramBlock = components["schemas"][subtype]
+        else:
+            paramBlock = {"type": typ}
+
+    paramBlock["description"] = description
+
+    if name == '':
+        newBlock["requestBody"]["content"]["application/json"]["schema"] = paramBlock
+        return
+    else:
+        if not "properties" in newBlock["requestBody"]["content"]["application/json"]["schema"]:
+            newBlock["requestBody"]["content"]["application/json"]["schema"] = {"type": "object", "properties": {}}
+        newBlock["requestBody"]["content"]["application/json"]["schema"]["properties"][name] = paramBlock
+        if required == "required":
+            if not "required" in newBlock["requestBody"]["content"]["application/json"]["schema"]:
+                newBlock["requestBody"]["content"]["application/json"]["schema"]["required"] = []
             newBlock["requestBody"]["content"]["application/json"]["schema"]["required"].append(name)
     return
 
 def processResponse(docuBlock, newBlock):
     blockSplit = docuBlock.split("\n")
     statusRE = re.search(r"\d+}", docuBlock).group(0)
-    description = docuBlock.replace(statusRE, "").replace(":", "")
+    description = docuBlock.replace(statusRE, "").replace(":", "").replace("@RESTRETURNCODE{", "") + "\n"
     status = statusRE.replace("}", "")
 
     retBlock = {"description": description}
@@ -268,61 +319,62 @@ def processResponse(docuBlock, newBlock):
     return status
 
 def processResponseBody(docuBlock, newBlock, statusCode):
-    replyBlock = {}
-    blocks = docuBlock.split("\n")
-    paramSplit = blocks[0].strip("}").split(",")
-    name = paramSplit[0].strip("{")
-    try:
-        replyBlock["type"] = "object" if paramSplit[1] == "json" else paramSplit[1]
-        if paramSplit[3] != "":
-            if paramSplit[3] in swaggerBaseTypes:
-                if not paramSplit[3] == "string":
-                    replyBlock["format"] = paramSplit[3]
-            else:
-                replyBlock["$ref"] = f"#/components/schemas/{paramSplit[3]}"
-
-        if replyBlock["type"] == "array":
-            replyBlock["items"] = {"type": paramSplit[3] if paramSplit[3] != "" else "string"}
-
-        if "$ref" in replyBlock:
-            del replyBlock["type"]
-    except IndexError:
-        print(f"Exception on block {block}\n")
-        traceback.print_exc()
-    
-    replyBlock["description"] = "\n".join(blocks[1:])
-
-    if name == "" and "schema" in replyBlock:
-        newBlock[statusCode]["content"] = {"application/json": {"schema": replyBlock["schema"]}}
-        return
+    params = docuBlock.split("\n")[0].strip("}").split(",")
+    name, typ, required, subtype, description = '', '', '', '', "\n".join(docuBlock.split("\n")[1:]) + "\n"
+    paramBlock = {}
 
     if not "content" in newBlock[statusCode]:
-        newBlock[statusCode]["content"] = {"application/json": {"schema": {"type": "object", "properties": {}, "required": []}}}
+        newBlock[statusCode]["content"] = {"application/json": {"schema": {}}}
 
-    newBlock[statusCode]["content"]["application/json"]["schema"]["properties"][name] = replyBlock
-    if paramSplit[2] == "required" and not name in newBlock[statusCode]["content"]["application/json"]["schema"]["required"]:
+    try:
+        name = params[0]
+        typ = params[1]
+        required = params[2]
+        subtype = params[3]
+    except Exception:
+        pass
+
+    if typ == "array":
+        if not subtype in swaggerBaseTypes:
+            paramBlock = {"type": "array", "items":components["schemas"][subtype]}
+        else:
+            paramBlock = {"type": "array", "items": {"type": subtype}}
+    else:
+        if not subtype in swaggerBaseTypes:
+            paramBlock = components["schemas"][subtype]
+        else:
+            paramBlock = {"type": typ}
+
+    paramBlock["description"] = description
+
+    if name == '':
+        newBlock[statusCode]["content"]["application/json"]["schema"] = paramBlock
+        return
+    else:
+        if not "properties" in newBlock[statusCode]["content"]["application/json"]["schema"]:
+            newBlock[statusCode]["content"]["application/json"]["schema"] = {"type": "object", "properties": {}}
+        newBlock[statusCode]["content"]["application/json"]["schema"]["properties"][name] = paramBlock
+        if required == "required":
+            if not "required" in newBlock[statusCode]["content"]["application/json"]["schema"]:
+                newBlock[statusCode]["content"]["application/json"]["schema"]["required"] = []
             newBlock[statusCode]["content"]["application/json"]["schema"]["required"].append(name)
+
     return
 
 def processComponents(block):
     args = block.split("\n")[0].strip("}").split(",") 
     
-    description = "\n".join(block.split("\n")[1:])
+    description = "\n".join(block.split("\n")[1:]) + "\n"
     structName, paramName, paramType, paramRequired, paramSubtype = args[1], args[0], args[2], args[3], args[4]
     structProperty = {
         "type": paramType,
         "description": description,
     }    
 
-    if paramSubtype != "string":
-        structProperty["format"] = paramSubtype
-
     if paramType == "array":
-        structProperty.pop("format", None)
         key = "type"
         if not paramSubtype in swaggerBaseTypes:
             key = "$ref"
-            paramSubtype = "#/components/schemas/" + paramSubtype
 
         structProperty["items"] = {key: paramSubtype if paramSubtype != "" else "string"}
 
@@ -338,30 +390,42 @@ def processComponents(block):
 
 ####    YAML WRITERS
 
+# Make pyyaml indent lists properly (two spaces, then the hyphen)
+class CustomizedDumper(yaml.Dumper):
+    def increase_indent(self, flow=False, indentless=False):
+        return super(CustomizedDumper, self).increase_indent(flow, False)
+
 def render_yaml(block, title):
-    blockYaml = yaml.dump(block, sort_keys=False, default_flow_style=False)
-    res = f'## {title}\n\
-```http-spec\n\
+    blockYaml = yaml.dump(block, sort_keys=False, default_flow_style=False, Dumper=CustomizedDumper)
+    res = f'\
+```openapi\n\
+## {title}\n\
+\n\
 {blockYaml}\
-```\n'
-    res = res.replace("@endDocuBlock", "")   
-    #res = res.replace("\n\n", "")  
-    return re.sub(r"^\s*$\n", '', res, 0, re.MULTILINE | re.DOTALL)
+```'
+    res = res.replace("@endDocuBlock", "")
+    #res = re.sub(r"^ *$\n", '', res, 0, re.MULTILINE | re.DOTALL)
+    res = re.sub(r"\|.*", '|', res, 0, re.MULTILINE)
+    return res
 
 def parse_examples(blockExamples):
     res = ''
     for example in blockExamples:
         exampleOptions = yaml.dump(example["options"], sort_keys=False, default_flow_style=False)
+        code = example["code"]
+        indentationToRemove = len(code.split("\n")[0]) - len(code.split("\n")[0].lstrip(' '))
+        code = re.sub("^ {"+str(indentationToRemove)+"}", '', code, 0, re.MULTILINE)
+        
         codeBlock = f'\n\
 ```curl\n\
 ---\n\
-{exampleOptions}\n\
+{exampleOptions}\
 ---\n\
-{example["code"]}\n\
+{code}\
 ```\n\
 '
         res = res + "\n" + codeBlock
-    return re.sub(r"^\s*$\n", '', res, 0, re.MULTILINE | re.DOTALL)
+    return res
 
 
 if __name__ == "__main__":

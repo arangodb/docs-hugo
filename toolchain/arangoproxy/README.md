@@ -41,7 +41,7 @@ A configuration file is made of (taken from `local.json`):
     "openapi": {            
         // Filepath to write the Swagger/OpenAPI spec for the web interface team
         "apiDocsFile": "./openapi/api-docs.json", 
-        // Filepath where the http-spec endpoint loads common OpenAPI schemas
+        // Filepath where the openapi endpoint loads common OpenAPI schemas
         "componentsFile": "./openapi/components.yaml" 
     },
     // Cache module configuration
