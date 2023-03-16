@@ -27,6 +27,7 @@ NEW_TOOLCHAIN = f"{dst}/site"
 ARANGO_MAIN = main
 
 infos = {"": {}}
+urlMap = {version: {}}
 
 ## Regexes
 frontMatterCapture = r"(?<=---\n)(.*?)(?=---)"

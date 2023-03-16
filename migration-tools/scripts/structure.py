@@ -21,8 +21,6 @@ def migrateStructure(label, document, manual):
 		extendedSection = manual +"/"
 
 	for i, item in enumerate(document):
-		print(i)
-		print(item)
 		# Ignore external links
 		if "href" in item and (item["href"].startswith("http://") or item["href"].startswith("https://")):
 			continue
@@ -55,6 +53,8 @@ def create_index(label, item, extendedSection, i):
 		"title": f'\'{item["text"]}\'' if '@' in item["text"] else item["text"],
 		"weight": 5 * i,
 		}
+
+	mapFiles(oldFilePath, indexPath)
 	return label
 
 def create_files_new(label, item, extendedSection, i):
@@ -74,6 +74,9 @@ def create_files_new(label, item, extendedSection, i):
 		"title": f'\'{item["text"]}\'' if '@' in item["text"] else item["text"],
 		"weight": 5 * i,
 		}
+
+	mapFiles(oldFilePath, filePath)
+
 	return label
 
 # To handle analyzers.md etc. case that are root-level pages
@@ -95,4 +98,13 @@ def create_file_no_label(item, extendedSection, i):
 		"title": f'\'{item["text"]}\'' if '@' in item["text"] else item["text"],
 		"weight": 5*i,
 		}
+
+	mapFiles(oldFilePath, filePath)
+
 	return ''
+
+def mapFiles(old, new):
+	oldFileRE = f"(?<={version}).*"
+	oldFilePath = re.search(oldFileRE, old, re.MULTILINE).group(0)
+	oldFilePath = re.sub("\/{2,}", "/", oldFilePath, 0, re.MULTILINE)
+	urlMap[version][oldFilePath] = new

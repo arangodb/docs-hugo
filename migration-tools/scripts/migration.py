@@ -6,6 +6,7 @@ import shutil
 import time
 import traceback
 import argparse
+import json
 
 # migration modules
 from globals import *
@@ -21,6 +22,11 @@ def createStructure():
 	structure.migrateStructure('arangograph', None, "arangograph")
 	structure.migrateStructure('aql', None, "aql")
 	structure.migrateStructure('drivers', None, "drivers")
+
+	urlMapFile = open("urls.json", "w")
+	json.dump(urlMap, urlMapFile, indent=4)
+	urlMapFile.close()
+
 	print("----- DONE\n")
 
 def initBlocksFileLocations():

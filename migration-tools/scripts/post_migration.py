@@ -1,6 +1,8 @@
 import argparse
 import os
 import re
+import traceback
+import json
 
 parser = argparse.ArgumentParser(description='Optional app description')
 parser.add_argument('--dst', type=str,
@@ -18,12 +20,7 @@ dst = args.dst.replace("\\", "/").rstrip("/")
 version = args.version.replace("\\", "/").rstrip("/")
 NEW_TOOLCHAIN = f"{dst}/site"
 
-
-
-filepaths = []
-
 def postMigration():
-    loadFilepaths()
     for root, dirs, files in os.walk(f"{NEW_TOOLCHAIN}/content/{version}", topdown=True):
         for file in files:
             filepath = f"{root}/{file}".replace("\\", "/")
@@ -41,27 +38,29 @@ def postMigration():
             file.write(content)
             file.close()
 
-def loadFilepaths():
-    for root, dirs, files in os.walk(f"{NEW_TOOLCHAIN}/content/{version}", topdown=True):
-        for file in files:
-            filepath = f"{root}/{file}".replace("\\", "/")
-            filepaths.append(filepath)
-    return
+def loadUrlsMap():
+    with open('urls.json') as json_file:
+        urls = json.load(json_file)
+    return urls[version]
+
+urlMap = loadUrlsMap()
 
 def migrate_hrefs(paragraph, filepath):
-    hrefRegex = re.findall(r"[^\s]*\[.*\]\(.*\).*", paragraph)
+    hrefRegex = re.findall(r"\[([^\]]+)\]\(([^)]+)\)", paragraph)
     for href in hrefRegex:
-        if 'https://' in href or 'http://' in href:
+        title = href[0]
+        content = href[1]
+        if re.search(r"http[s]*://|,", content):
             continue
 
-        if href.startswith("!"):
-            paragraph = migrate_image(filepath, paragraph, href)
+        if re.search(r".png|.jpg|.jpeg", content):
+            #paragraph = migrate_image(filepath, paragraph, title, content)
             continue
+        paragraph = restructureLinks(paragraph, filepath, title, content)
 
     return paragraph
 
-def migrate_image(currentFile, paragraph, href):
-    linkContent = re.search(r"(?<=\]\()(.*?)\)", href).group(0).replace(")", "")
+def migrate_image(currentFile, paragraph, label, linkContent):
     imgName = linkContent.split("/")[len(linkContent.split("/"))-1]
     imagesFolder = f"{NEW_TOOLCHAIN}/content/images/"
     relPathToImgsFolder = os.path.relpath(imagesFolder, currentFile)
@@ -70,10 +69,6 @@ def migrate_image(currentFile, paragraph, href):
     if ':style' in href:
         styleRegex = re.search(r"(?<={:style=).*(?=})", href)
         if styleRegex:
-            label = re.search(r"(?<=\[).*(?=\])", href).group(0)
-            if "\"" in label:
-                label = label.replace('"', '')
-
             imgWidget = '{{{{< icon src="{}" alt="{}" style={}>}}}}'.format(newImgName, label, styleRegex.group(0))
 
             return paragraph.replace(href, imgWidget)
@@ -81,22 +76,46 @@ def migrate_image(currentFile, paragraph, href):
         newImg = href.replace(linkContent, newImgName)
         return paragraph.replace(href, newImg)
 
-def restructureLinks(content, filepath):
-    linkContent = href.replace(")", "")
-    filename = re.search(".*\.html", linkContent, re.MULTILINE)
-    if not filename:
-        return paragraph
+def restructureLinks(content, filepath, title, linkContent):
+    filename = "/" + linkContent.replace(".html", ".md").replace("..", "")
+    filename = re.sub("\/{2,}", "/", filename, 0, re.MULTILINE)
+    fragment = re.search(r"#+.*", filename)
+    if fragment:
+        filename = filename.replace(fragment.group(0), "")
 
-    filename = filename.group(0).replace(".html", ".md").replace("..", "")
-    fragment = re.search(r"#+.*", linkContent)
-    newLink = ""
-    for k in filepaths:
-        match = re.search(filename + "$", k, re.MULTILINE)
-        if match:
-            newLink = os.path.relpath(k, filepath).replace("../", "", 1)
+    if filename == "/": ## Link contains only fragment in same page
+        return content
 
+    if filename.endswith("/"):
+        filename = filename + "index.md"
+
+    linkPath = findFileFromLink(filename)
+    if linkPath == "":
+        print(f"non trovato {filename} in {filepath}")
+        return content
+
+    newLink = os.path.relpath(linkPath, filepath)
+    if fragment:
+        newLink = newLink + fragment.group(0)
+    newLink = newLink.replace("../", "", 1).replace(".md", "")
     content = content.replace(linkContent, newLink)
     return content
+
+def findFileFromLink(link):
+    try:
+        f = urlMap[link]
+        return f
+    except KeyError as ex:
+        pass
+
+    ## necessary step if the link just refers to a page locally, but the urlMap is made of relPath links from site/version/
+    steps = len(link.split("/"))
+    for k in urlMap.keys():
+        steppedK = "/" + "/".join(k.split("/")[steps:])
+        if steppedK == link:
+            return urlMap[k]
+
+    return ""
 
     
 
@@ -104,4 +123,4 @@ if __name__ == "__main__":
     try:
         postMigration()
     except Exception as ex:
-        print(ex)
+        traceback.print_exc()
