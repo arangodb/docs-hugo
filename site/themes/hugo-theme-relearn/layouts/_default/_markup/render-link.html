@@ -1,24 +1,27 @@
 {{ $link := .Destination -}}
 {{ $url := urls.Parse $link -}}
 {{ $path := $url.Path }}
+{{ $currentPage := .Page.RelPermalink }}
 {{ $fragment := "" -}}
 {{ with $url.Fragment }}{{ $fragment = printf "#%s" . }}{{ end -}}
 {{ $permalink := "" }}
 
-{{ $isRemote := ne $url.Scheme "" -}}
-  {{ if $isRemote -}}
-    {{ $permalink = .Destination }}
-  {{ else }}
-    {{ $page := .Page.GetPage $path }}
-    {{ if $page }}
-      {{ $permalink = printf "%s%s" $page.RelPermalink $fragment}}
+  {{ $isRemote := ne $url.Scheme "" -}}
+    {{ if $isRemote -}}
+      {{ $permalink = .Destination }}
     {{ else }}
-      {{ if site.Params.failOnBrokenLinks }}
-        {{ errorf "[ERROR] Broken link '%v'" .Destination}}
+      {{ $page := .Page.GetPage $path }}
+      {{ with $page }}
+        {{ $permalink = printf "%s%s" $page.RelPermalink $fragment}}
       {{ else }}
-        {{ warnf "[WARN] Broken link '%v'" .Destination}}
-      {{ end }}
-  {{end}}
-{{ end }}
+        {{ if ne $currentPage "/"}}
+        {{ if site.Params.failOnBrokenLinks }}
+          {{ errorf "[ERROR] Broken link '%v' found in %s" $link $currentPage }}
+        {{ else }}
+          {{ warnf "[WARN] Broken link '%v' found in %s" $link $currentPage }}
+        {{ end }}
+        {{ end }}
+    {{end}}
+  {{ end }}
 <a  href="{{ $permalink | safeURL }}" {{ with .Title }} title="{{ . }}"{{ end }} {{ if $isRemote }} target="_blank" rel="noopener noreferrer" {{ end }}>{{ .Text | safeHTML }}</a>
 {{- /* whitespace control */ -}}

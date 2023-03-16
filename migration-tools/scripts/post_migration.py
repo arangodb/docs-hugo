@@ -46,35 +46,43 @@ def loadUrlsMap():
 urlMap = loadUrlsMap()
 
 def migrate_hrefs(paragraph, filepath):
-    hrefRegex = re.findall(r"\[([^\]]+)\]\(([^)]+)\)", paragraph)
+    hrefRegex = re.findall(r"\[([^\]]+)\]\(([^)]+)\)({.*})*", paragraph)
     for href in hrefRegex:
         title = href[0]
         content = href[1]
+
+        if len(href) == 3:
+            style = href[2]
+
         if re.search(r"http[s]*://|,", content):
             continue
 
         if re.search(r".png|.jpg|.jpeg", content):
-            #paragraph = migrate_image(filepath, paragraph, title, content)
+            paragraph = migrate_image(filepath, paragraph, href)
             continue
+        
         paragraph = restructureLinks(paragraph, filepath, title, content)
 
     return paragraph
 
-def migrate_image(currentFile, paragraph, label, linkContent):
+def migrate_image(currentFile, paragraph, href):
+    label = href[0]
+    linkContent = href[1]
     imgName = linkContent.split("/")[len(linkContent.split("/"))-1]
     imagesFolder = f"{NEW_TOOLCHAIN}/content/images/"
-    relPathToImgsFolder = os.path.relpath(imagesFolder, currentFile)
+    relPathToImgsFolder = os.path.relpath(imagesFolder, currentFile).replace("../", "", 1)
     newImgName = f"{relPathToImgsFolder}/{imgName}"
 
-    if ':style' in href:
-        styleRegex = re.search(r"(?<={:style=).*(?=})", href)
-        if styleRegex:
-            imgWidget = '{{{{< icon src="{}" alt="{}" style={}>}}}}'.format(newImgName, label, styleRegex.group(0))
-
-            return paragraph.replace(href, imgWidget)
+    if href[2] != "":
+        style = href[2]
+        paragraph = paragraph.replace(style, "")
+        style = style.replace("{:style=", "").replace("}", "")
+        imgWidget = '{{{{< icon src="{}" alt="{}" style={}>}}}}'.format(newImgName, label, style)
+        paragraph = paragraph.replace(f"![{label}]", "").replace(f"({linkContent})", imgWidget)
+        
+        return paragraph
     else:
-        newImg = href.replace(linkContent, newImgName)
-        return paragraph.replace(href, newImg)
+        return paragraph.replace(linkContent, newImgName)
 
 def restructureLinks(content, filepath, title, linkContent):
     filename = "/" + linkContent.replace(".html", ".md").replace("..", "")
@@ -91,13 +99,13 @@ def restructureLinks(content, filepath, title, linkContent):
 
     linkPath = findFileFromLink(filename)
     if linkPath == "":
-        print(f"non trovato {filename} in {filepath}")
+        print(f"link {filename} not found in {filepath}")
         return content
 
     newLink = os.path.relpath(linkPath, filepath)
     if fragment:
         newLink = newLink + fragment.group(0)
-    newLink = newLink.replace("../", "", 1).replace(".md", "")
+    newLink = newLink.replace("../", "", 1)
     content = content.replace(linkContent, newLink)
     return content
 
