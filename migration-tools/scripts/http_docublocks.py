@@ -80,25 +80,26 @@ def migrateHTTPDocuBlocks(paragraph):
             paragraph = paragraph.replace("{% docublock errorCodes %}", "{{< error-codes >}}")
             continue
 
-        docuBlockFile =blocksFileLocations[docuBlock]["path"]
+        docuBlockFile = blocksFileLocations[docuBlock]["path"]
         tag = docuBlockFile.split("/")[len(docuBlockFile.split("/"))-2]
         try:
             docuBlockFile = open(docuBlockFile, "r", encoding="utf-8").read()
-        except FileNotFoundError:
+        except FileNotFoundError as ex: 
+            print(f"[ERROR] Cannot open docublock file {docuBlockFile} - {ex}")
+            #traceback.print_exc()
             continue
         blocksFileLocations[docuBlock]["processed"] = True
         declaredDocuBlocks = re.findall(r"(?<=@startDocuBlock )(.*?)@endDocuBlock", docuBlockFile, re.MULTILINE | re.DOTALL)
 
         for block in declaredDocuBlocks:
-            if block.startswith(docuBlock):
+            if block.split("\n")[0] == docuBlock:
                 if docuBlock == "documentRevision":
                     revisionContent = re.search(r"(?<=documentRevision\n\n)(.*?)", block, re.MULTILINE | re.DOTALL).group(0)
                     paragraph = paragraph.replace("{% docublock "+ docuBlock + " %}", revisionContent)
                     continue
 
                 newBlock = processHTTPDocuBlock(block, tag)
-
-                paragraph = paragraph.replace("{% docublock "+ docuBlock + " %}", newBlock)
+                paragraph = paragraph.replace("{% docublock "+ docuBlock + " %}", newBlock, 1)
 
     paragraph = re.sub(r"```\n{3,}", "```\n\n", paragraph, 0, re.MULTILINE)
 
