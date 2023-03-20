@@ -85,19 +85,23 @@ def migrate_image(currentFile, paragraph, href):
         return paragraph.replace(linkContent, newImgName)
 
 def restructureLinks(content, filepath, title, linkContent):
+    print("")
+    print(f"file {filepath}")
+    print(f"linkContent {linkContent}")
     filename = "/" + linkContent.replace(".html", ".md").replace("..", "")
     filename = re.sub("\/{2,}", "/", filename, 0, re.MULTILINE)
     fragment = re.search(r"#+.*", filename)
     if fragment:
         filename = filename.replace(fragment.group(0), "")
-
+    print(f"filename {filename}")
     if filename == "/": ## Link contains only fragment in same page
         return content
 
     if filename.endswith("/"):
         filename = filename + "index.md"
-
+    print(f"filename 2 {filename}")
     linkPath = findFileFromLink(filename)
+    print(f"linkPath {linkPath}")
     if linkPath == "":
         print(f"link {filename} not found in {filepath}")
         return content
@@ -105,13 +109,18 @@ def restructureLinks(content, filepath, title, linkContent):
     newLink = os.path.relpath(linkPath, filepath)
     if fragment:
         newLink = newLink + fragment.group(0)
+
+    print(f"newLink {newLink}")
     newLink = newLink.replace("../", "", 1)
-    content = content.replace(linkContent, newLink)
+    oldLink = f"[{title}]({linkContent})"
+    newLink = f"[{title}]({newLink})"
+    content = content.replace(oldLink, newLink)
     return content
 
 def findFileFromLink(link):
     try:
         f = urlMap[link]
+        print(f"find f {f}")
         return f
     except KeyError as ex:
         pass
@@ -121,7 +130,10 @@ def findFileFromLink(link):
     for k in urlMap.keys():
         steppedK = "/" + "/".join(k.split("/")[steps:])
         if steppedK == link:
-            return urlMap[k]
+            print(f"found steppedK {steppedK}")
+            x = urlMap[k]
+            print(f"from steppedK {x}")
+            return x
 
     return ""
 
