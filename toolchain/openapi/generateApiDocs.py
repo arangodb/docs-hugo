@@ -12,15 +12,18 @@ parser.add_argument('--src', type=str,
                     help='docs/ folder')
 parser.add_argument('--dst', type=str,
                     help='api-docs.json file destination')
+parser.add_argument('--version', type=str,
+                    help='documentation version folder')
 args = parser.parse_args()
 
-if args.src is None or args.dst is None:
+if args.src is None or args.dst is None or args.version is None:
 	print("Args are required")
 	exit(1)
 
 # Handle Windows and trailing path separators
 docs = args.src
 dst = args.dst
+version = args.version
 
 apiDocsRes = {
 	"openapi": "3.1.0",
@@ -39,14 +42,19 @@ apiDocsRes = {
 }
 
 def generateAPIDocs():
-    for root, dirs, files in os.walk(f"{docs}/site/content", topdown=True):
+    print("PARSING DOCUMENTATION FILES")
+    for root, dirs, files in os.walk(f"{docs}/site/content/{version}", topdown=True):
         if root.endswith("images"):
             continue
 
         for file in files:
+            print(file)
             processFile(f"{root}/{file}".replace("\\", "/"))
 
+    print("END")
+
 def loadTags():
+    print("GENERATING TAGS")
     try:
         file = open(f"{docs}/site/data/openapi_tags.yaml", "r", encoding="utf-8")
         data = file.read()
@@ -57,6 +65,7 @@ def loadTags():
 
     tags = yaml.safe_load(data)
     apiDocsRes["tags"] = tags
+    print(f"TAGS GENERATED")
     
 def processFile(filepath):
     try:
@@ -83,5 +92,7 @@ def processFile(filepath):
     dstFile.close()
 
 if __name__ == "__main__":
+    print("--- GENERATE API DOCS")
     loadTags()
     generateAPIDocs()
+    print("--- END")
