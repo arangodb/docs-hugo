@@ -5,7 +5,6 @@ import json
 import re
 import traceback
 
-
 ##CMDLINE ARGS
 parser = argparse.ArgumentParser(description='Optional app description')
 parser.add_argument('--src', type=str,
@@ -17,8 +16,8 @@ parser.add_argument('--version', type=str,
 args = parser.parse_args()
 
 if args.src is None or args.dst is None or args.version is None:
-	print("Args are required")
-	exit(1)
+    print("Args are required")
+    exit(1)
 
 # Handle Windows and trailing path separators
 docs = args.src
@@ -26,19 +25,19 @@ dst = args.dst
 version = args.version
 
 apiDocsRes = {
-	"openapi": "3.1.0",
-	"info": {
-		"description": "ArangoDB REST API Interface",
-		"version": "3.10.5",
-		"title": "ArangoDB",
-		"license": {
-			"name": "Apache License, Version 2.0"
-		}
-	},
-	"tags": {
+    "openapi": "3.1.0",
+    "info": {
+        "description": "ArangoDB REST API Interface",
+        "version": "3.10.5", # TODO: Don't hardcode the ArangoDB version
+        "title": "ArangoDB",
+        "license": {
+            "name": "Apache License, Version 2.0"
+        }
+    },
+    "tags": {
 
     },
-	"paths" : {}
+    "paths" : {}
 }
 
 def generateAPIDocs():
