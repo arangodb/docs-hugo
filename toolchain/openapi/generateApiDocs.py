@@ -88,7 +88,7 @@ def processFile(filepath):
         apiDocsRes["paths"][path][method] = endpointDict["paths"][path][method]
 
     dstFile = open(dst, "w")
-    json.dump(apiDocsRes, dstFile, indent=4)
+    json.dump(apiDocsRes, dstFile, indent=2)
     dstFile.close()
 
 if __name__ == "__main__":
