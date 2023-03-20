@@ -46,3 +46,6 @@
   description: Activate Enterprise Edition deployments
 - name: Miscellaneous
   description: Execute JavaScript code # Update when endpoints are re-grouped
+# TODO: Ignore deprecated /_api/traversal ?
+# TODO: Add /_api/simple/* as Simple Queries ?
+# TODO: Move all deprecated endpoints into one group?
