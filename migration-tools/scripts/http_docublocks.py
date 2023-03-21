@@ -299,18 +299,18 @@ def processRequestBody(docuBlock, newBlock):
     except Exception:
         pass
 
+    paramBlock["description"] = description
+
     if typ == "array":
         if not subtype in swaggerBaseTypes:
-            paramBlock = {"type": "array", "items": components["schemas"][subtype]}
+            paramBlock.update({"type": "array", "items": components["schemas"][subtype]})
         else:
-            paramBlock = {"type": "array", "items": {"type": subtype}}
+            paramBlock.update({"type": "array", "items": {"type": subtype}})
     else:
         if not subtype in swaggerBaseTypes:
-            paramBlock = components["schemas"][subtype]
+            paramBlock.update(components["schemas"][subtype])
         else:
-            paramBlock = {"type": typ}
-
-    paramBlock["description"] = description
+            paramBlock.update({"type": typ})
 
     if name == '':
         newBlock["requestBody"]["content"]["application/json"]["schema"] = paramBlock
@@ -355,18 +355,18 @@ def processResponseBody(docuBlock, newBlock, statusCode):
     except Exception:
         pass
 
+    paramBlock["description"] = description
+
     if typ == "array":
         if not subtype in swaggerBaseTypes:
-            paramBlock = {"type": "array", "items":components["schemas"][subtype]}
+            paramBlock.update({"type": "array", "items":components["schemas"][subtype]})
         else:
-            paramBlock = {"type": "array", "items": {"type": subtype}}
+            paramBlock.update({"type": "array", "items": {"type": subtype}})
     else:
         if not subtype in swaggerBaseTypes:
-            paramBlock = components["schemas"][subtype]
+            paramBlock.update(components["schemas"][subtype])
         else:
-            paramBlock = {"type": typ}
-
-    paramBlock["description"] = description
+            paramBlock.update({"type": typ})
 
     if name == '':
         newBlock[statusCode]["content"]["application/json"]["schema"] = paramBlock
@@ -388,8 +388,8 @@ def processComponents(block):
     description = "\n".join(block.split("\n")[1:]) + "\n"
     structName, paramName, paramType, paramRequired, paramSubtype = args[1], args[0], args[2], args[3], args[4]
     structProperty = {
-        "type": paramType,
         "description": description,
+        "type": paramType,
     }    
 
     if not paramSubtype in swaggerBaseTypes:
@@ -414,7 +414,7 @@ def processComponents(block):
     components["schemas"][structName] = {
         "type": "object",
         "properties": {paramName: structProperty},
-        }
+    }
     return
 
 ####    YAML WRITERS
