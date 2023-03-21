@@ -15,6 +15,10 @@ def migrate(filepath):
         raise ex
 
     page = Page()
+    if filepath.endswith("_index.md"):
+        page.frontMatter.layout = "chapter"
+    else:
+        page.frontMatter.layout = "default"
 
     if content == "": ## for pages derived from subtitles
         page.frontMatter.title = infos[filepath]["title"]
@@ -248,7 +252,7 @@ class Page():
 class FrontMatter():
 	def __init__(self):
 		self.title = ""
-		self.layout = "default"
+		self.layout = ""
 		self.description = ""
 		self.menuTitle = ""
 		self.weight = 0
@@ -258,4 +262,4 @@ class FrontMatter():
 		return str.replace("`", "").lstrip(" ")
 
 	def toString(self):
-		return f"---\ntitle: {self.clean(self.title)}\nweight: {self.weight}\ndescription: {self.description}\nlayout: default\n---\n"
+		return f"---\ntitle: {self.clean(self.title)}\nweight: {self.weight}\ndescription: {self.description}\narchetype: {self.layout}\n---\n"

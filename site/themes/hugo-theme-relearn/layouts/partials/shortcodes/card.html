@@ -1,0 +1,16 @@
+{{- $title := .title }}
+{{- $link := .link }}
+{{ $image := .icon }}
+<div class="card">
+    <a class="section-link icon-offset" href="{{ $link }}">
+      <div class="card-head">
+        {{ with $image }}<img class="card-icon" src="/images/section_icons/secure/checklist.png" aria-hidden="true">{{ end }}
+        <div class="card-title">{{ $title }}</div>
+      </div>
+      <div class="card-body">
+        <p>{{ .Inner }}</p>
+      </div>
+    </a>
+</div>
+
+
