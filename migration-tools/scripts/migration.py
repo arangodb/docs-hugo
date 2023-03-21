@@ -17,11 +17,11 @@ from definitions import *
 
 def createStructure():
 	print("----- CREATING FOLDERS STRUCTURE")
-	structure.migrateStructure('', None, "manual")
-	structure.migrateStructure('http', None, "http")
-	structure.migrateStructure('arangograph', None, "arangograph")
-	structure.migrateStructure('aql', None, "aql")
-	structure.migrateStructure('drivers', None, "drivers")
+	structure.migrateStructure('', None, "manual", 0)
+	structure.migrateStructure('http', None, "http", 3)
+	structure.migrateStructure('arangograph', None, "arangograph", 2)
+	structure.migrateStructure('aql', None, "aql", 1)
+	structure.migrateStructure('drivers', None, "drivers", 4)
 
 	urlMapFile = open("urls.json", "w")
 	json.dump(urlMap, urlMapFile, indent=4)

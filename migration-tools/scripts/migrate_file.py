@@ -16,9 +16,13 @@ def migrate(filepath):
 
     page = Page()
 
-    _processFrontMatter(page, content, filepath)
-    content = re.sub(r"^---\n(.*?)\n---\n", '', content, 0, re.MULTILINE | re.DOTALL)  ## Cut front matter from content processing
-    _processContent(page, content, filepath)
+    if content == "": ## for pages derived from subtitles
+        page.frontMatter.title = infos[filepath]["title"]
+        page.frontMatter.weight = infos[filepath]["weight"]
+    else:
+        _processFrontMatter(page, content, filepath)
+        content = re.sub(r"^---\n(.*?)\n---\n", '', content, 0, re.MULTILINE | re.DOTALL)  ## Cut front matter from content processing
+        _processContent(page, content, filepath)
 
     file = open(filepath, "w", encoding="utf-8")
     file.write(page.toString())
@@ -29,8 +33,6 @@ def migrate(filepath):
 def _processFrontMatter(page, buffer, filepath):
     if filepath in infos:
         page.frontMatter.weight = infos[filepath]["weight"] if "weight" in infos[filepath] else 0
-        if "appendix" in filepath or "release-notes" in filepath:
-            page.frontMatter.weight = page.frontMatter.weight + 10000
     
     frontMatterRegex = re.search(r"---(.*?)---", buffer, re.MULTILINE | re.DOTALL)
     if not frontMatterRegex:
