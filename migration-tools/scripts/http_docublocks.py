@@ -89,6 +89,8 @@ def explodeNestedStructs(data, target, k):
                 structName = value["$ref"]
                 delFromDict(components, f"{k}/{key}/$ref")
                 setInDict(components, f"{k}/{key}/properties", components["schemas"][structName]["properties"])
+                if "required" in components["schemas"][structName]:
+                    setInDict(components, f"{k}/{key}/required", components["schemas"][structName]["required"])
             else:
                 setInDict(components, k + "/" + key, components["schemas"][value[target]])
     
