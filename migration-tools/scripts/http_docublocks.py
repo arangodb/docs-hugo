@@ -25,7 +25,8 @@ swaggerBaseTypes = [
     'date',
     'dateTime',
     'password',
-    'int64'
+    'int64',
+    'date-time'
 ]
 
 def str_presenter(dumper, data):
@@ -57,7 +58,7 @@ def createComponentsIn1StructsFile(path):
                 buffer = [line]
                 continue
 
-            processComponents("\n".join(buffer))
+            processComponents("".join(buffer))
             buffer = [line]
             continue
 
@@ -74,13 +75,22 @@ def setInDict(dataDict, mapList, value):
     mapList = mapList.split("/")[1:]
     getFromDict(dataDict, mapList[:-1])[mapList[-1]] = value
 
+def delFromDict(dataDict, mapList):
+    mapList = mapList.split("/")[1:]
+    del getFromDict(dataDict, mapList[:-1])[mapList[-1]]
+
 def explodeNestedStructs(data, target, k):
     for key, value in data.items():
         if not target in value:
             if isinstance(value, dict):
                 explodeNestedStructs(value, target, k + "/" + key)
         else:
-            setInDict(components, k + "/" + key, components["schemas"][value[target]])
+            if "type" in value:
+                structName = value["$ref"]
+                delFromDict(components, f"{k}/{key}/$ref")
+                setInDict(components, f"{k}/{key}/properties", components["schemas"][structName]["properties"])
+            else:
+                setInDict(components, k + "/" + key, components["schemas"][value[target]])
     
 
 def migrateHTTPDocuBlocks(paragraph):
@@ -382,12 +392,14 @@ def processComponents(block):
         "description": description,
     }    
 
-    if paramType == "array":
-        key = "type"
-        if not paramSubtype in swaggerBaseTypes:
-            key = "$ref"
-
-        structProperty["items"] = {key: paramSubtype if paramSubtype != "" else "string"}
+    if not paramSubtype in swaggerBaseTypes:
+        if paramType == "array":
+            structProperty["items"] = {"$ref": paramSubtype}
+        else:
+            structProperty["$ref"] = paramSubtype
+    else:
+        if paramType == "array":
+            structProperty["items"] = {"type": paramSubtype}
 
     if structName in components["schemas"]:
         if paramRequired == "required":
@@ -402,7 +414,6 @@ def processComponents(block):
     components["schemas"][structName] = {
         "type": "object",
         "properties": {paramName: structProperty},
-        "required": []
         }
     return
 
