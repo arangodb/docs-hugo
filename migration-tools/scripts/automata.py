@@ -67,7 +67,7 @@ def processFile(page, content):
 
             continue
 
-        if flags["frontMatter"]:
+        if flags["frontMatter"] and not flags["endFrontMatter"]:
             processFrontMatterLine(page, line, flags)
             continue
 
