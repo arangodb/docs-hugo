@@ -1,9 +1,3 @@
-{{ $cardsPerRow := .Get "cardsPerRow" | default "3"}}
-{{ $gap := "0rem" }}
-
-{{ if eq $cardsPerRow "2" }}
-   {{ $gap = "3rem"}}
-{{ end }}
-<div class="cards" style="column-gap: {{ $gap }}">
+<div class="cards">
     {{ .Inner }}
-</div>
+  </div>
