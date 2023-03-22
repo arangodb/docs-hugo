@@ -415,6 +415,8 @@ def processComponents(block):
         "type": "object",
         "properties": {paramName: structProperty},
     }
+    if paramRequired == "required":
+        components["schemas"][structName]["required"] = [paramName]
     return
 
 ####    YAML WRITERS
