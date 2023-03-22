@@ -390,12 +390,19 @@ def processComponents(block):
         structProperty["items"] = {key: paramSubtype if paramSubtype != "" else "string"}
 
     if structName in components["schemas"]:
+        if paramRequired == "required":
+            if not "required" in components["schemas"][structName]:
+                components["schemas"][structName]["required"] = []
+
+            components["schemas"][structName]["required"].append(paramName)
+
         components["schemas"][structName]["properties"][paramName] = structProperty
         return
 
     components["schemas"][structName] = {
         "type": "object",
-        "properties": {paramName: structProperty}
+        "properties": {paramName: structProperty},
+        "required": []
         }
     return
 
