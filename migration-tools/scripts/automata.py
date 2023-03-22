@@ -42,6 +42,10 @@ def processFile(page, content):
             page.content = page.content + "\n"
             continue
 
+        ## Trap and skip inline docublocks extra line
+        if re.search(r"{%.*arangoshexample|{%.*aqlexample|@END_EXAMPLE_", line, re.MULTILINE):
+            continue
+
         ## Convert ---- header to ## header and === header to frontmatter title
         if i < len(content)-1:
             if content[i+1].startswith("===") and not flags["title"]:
@@ -144,9 +148,6 @@ def processFile(page, content):
             processDocublockLine(page, line, flags)
             continue
 
-        if re.search(r"{%.*arangoshexample|{%.*aqlexample|@END_EXAMPLE_", line, re.MULTILINE):
-            continue
-
         ## Comments
         if re.search(r"{%.*comment", line, re.MULTILINE):
             page.content = page.content + "{{% comment %}}"
@@ -183,12 +184,13 @@ def processFile(page, content):
             if flags["assign-ver"]["active"]:
                 flags["assign-ver"]["active"] = False
                 flags["assign-ver"]["isValid"] = not flags["assign-ver"]["isValid"]
+            continue
 
         if "{% endif" in line:
             if flags["assign-ver"]["active"]:
                 flags["assign-ver"]["active"] = False
                 flags["assign-ver"]["isValid"] = False
-                continue
+            continue
 
         if flags["assign-ver"]["active"] and not flags["assign-ver"]["isValid"]:
             continue
