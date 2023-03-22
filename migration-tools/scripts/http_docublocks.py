@@ -49,12 +49,9 @@ def createComponentsIn1StructsFile(path):
 
     buffer = []
     for line in f:
-        print(f"line {line}")
-        print(len(buffer))
-        print(buffer)
         if line == "\n" and len(buffer) == 0:
             continue
-        
+
         if line.startswith("@RESTSTRUCT"):       ## a new struct is beginning, process the buffer of the previous struct and start a new buffer
             if len(buffer) == 0:                 ## case i=0 starting the file, the buffer is empty so we fill it with the new struct incoming
                 buffer = [line]
@@ -83,7 +80,7 @@ def explodeNestedStructs(data, target, k):
             if isinstance(value, dict):
                 explodeNestedStructs(value, target, k + "/" + key)
         else:
-            setInDict(components, k, components["schemas"][value[target]])
+            setInDict(components, k + "/" + key, components["schemas"][value[target]])
     
 
 def migrateHTTPDocuBlocks(paragraph):
@@ -135,7 +132,7 @@ def processHTTPDocuBlock(docuBlock, tag):
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
             exit(1)
-
+    
     explodeNestedStructs(components, "$ref", "")
 
     blocks = re.findall(r"@RESTHEADER{(.*?)^(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
@@ -376,7 +373,6 @@ def processResponseBody(docuBlock, newBlock, statusCode):
     return
 
 def processComponents(block):
-    print(block)
     args = block.split("\n")[0].strip("}").replace("@RESTSTRUCT{", "").split(",")
     
     description = "\n".join(block.split("\n")[1:]) + "\n"
@@ -400,7 +396,7 @@ def processComponents(block):
     components["schemas"][structName] = {
         "type": "object",
         "properties": {paramName: structProperty}
-            }
+        }
     return
 
 ####    YAML WRITERS

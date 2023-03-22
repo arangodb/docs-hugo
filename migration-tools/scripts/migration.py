@@ -42,6 +42,7 @@ def initBlocksFileLocations():
 	createComponentsIn1StructsFile("Collections/1_structs.md")
 	createComponentsIn1StructsFile("Pregel/1_struct.md")
 	createComponentsIn1StructsFile("Graph/1_structs.md")
+
 	explodeNestedStructs(components, "$ref", "")
 
 	print("----- DONE\n")
