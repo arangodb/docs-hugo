@@ -12,6 +12,7 @@ from globals import *
 import migrate_file
 import structure
 from definitions import *
+import automata
 
 
 def createStructure():
@@ -43,7 +44,7 @@ def processFiles():
 	print(f"----- STARTING CONTENT MIGRATION")
 	for root, dirs, files in os.walk(f"{NEW_TOOLCHAIN}/content/{version}", topdown=True):
 		for file in files:
-			migrate_file.migrate(f"{root}/{file}".replace("\\", "/"))
+			automata.migrate(f"{root}/{file}".replace("\\", "/"))
 	print("------ DONE\n")
 
 def writeOpenapiComponents():

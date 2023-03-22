@@ -33,35 +33,29 @@ def str_presenter(dumper, data):
 yaml.add_representer(str, str_presenter)
 yaml.representer.SafeRepresenter.add_representer(str, str_presenter) # to use with safe_dum
 
-def migrateHTTPDocuBlocks(paragraph):
-    docuBlockNameRe = re.findall(r"(?<={% docublock ).*(?= %})", paragraph)
-    for docuBlock in docuBlockNameRe:
-        if 'errorCodes' in docuBlock:
-            paragraph = paragraph.replace("{% docublock errorCodes %}", "{{< error-codes >}}")
-            continue
+def migrateHTTPDocuBlocks(docublockName):
+    if 'errorCodes' in docublockName:
+        return "{{< error-codes >}}"
+    if 'documentRevision' in docublockName:
+        return ""
 
-        docuBlockFile =blocksFileLocations[docuBlock]
-        tag = docuBlockFile.split("/")[len(docuBlockFile.split("/"))-2]
-        try:
-            docuBlockFile = open(docuBlockFile, "r", encoding="utf-8").read()
-        except FileNotFoundError:
-            continue
-        
-        declaredDocuBlocks = re.findall(r"(?<=@startDocuBlock )(.*?)@endDocuBlock", docuBlockFile, re.MULTILINE | re.DOTALL)
+    print(docublockName)
+    docuBlockFile =blocksFileLocations[docublockName]
+    tag = docuBlockFile.split("/")[len(docuBlockFile.split("/"))-2]
+    try:
+        docuBlockFile = open(docuBlockFile, "r", encoding="utf-8").read()
+    except FileNotFoundError as ex:
+        raise ex
+    
+    declaredDocuBlocks = re.findall(r"(?<=@startDocuBlock )(.*?)@endDocuBlock", docuBlockFile, re.MULTILINE | re.DOTALL)
 
-        for block in declaredDocuBlocks:
-            if block.startswith(docuBlock):
-                if docuBlock == "documentRevision":
-                    revisionContent = re.search(r"(?<=documentRevision\n\n)(.*?)", block, re.MULTILINE | re.DOTALL).group(0)
-                    paragraph = paragraph.replace("{% docublock "+ docuBlock + " %}", revisionContent)
-                    continue
+    for block in declaredDocuBlocks:
+        if block.startswith(docublockName):
+            newBlock = processHTTPDocuBlock(block, tag)
 
-                newBlock = processHTTPDocuBlock(block, tag)
+            return newBlock
+            #print(paragraph)
 
-                paragraph = paragraph.replace("{% docublock "+ docuBlock + " %}", newBlock)
-                #print(paragraph)
-
-    return paragraph
 
 def processHTTPDocuBlock(docuBlock, tag):
     blockExamples = processExamples(docuBlock)
