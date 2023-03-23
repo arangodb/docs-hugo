@@ -3,7 +3,7 @@ import yaml
 import os
 import json
 import re
-
+import traceback
 
 ##CMDLINE ARGS
 parser = argparse.ArgumentParser(description='Optional app description')
@@ -11,49 +11,60 @@ parser.add_argument('--src', type=str,
                     help='docs/ folder')
 parser.add_argument('--dst', type=str,
                     help='api-docs.json file destination')
+parser.add_argument('--version', type=str,
+                    help='documentation version folder')
 args = parser.parse_args()
 
-if args.src is None or args.dst is None:
-	print("Args are required")
-	exit(1)
+if args.src is None or args.dst is None or args.version is None:
+    print("Args are required")
+    exit(1)
 
 # Handle Windows and trailing path separators
 docs = args.src
 dst = args.dst
+version = args.version
 
 apiDocsRes = {
-	"openapi": "3.0.2",
-	"info": {
-		"description": "ArangoDB REST API Interface",
-		"version": "1.0",
-		"title": "ArangoDB",
-		"license": {
-			"name": "Apache License, Version 2.0"
-		}
-	},
-	"components": {
-		"schemas": {}
-	},
-	"paths" : {}
+    "openapi": "3.1.0",
+    "info": {
+        "description": "ArangoDB REST API Interface",
+        "version": "3.10.5", # TODO: Don't hardcode the ArangoDB version
+        "title": "ArangoDB",
+        "license": {
+            "name": "Apache License, Version 2.0"
+        }
+    },
+    "tags": {
+
+    },
+    "paths" : {}
 }
 
 def generateAPIDocs():
-	for root, dirs, files in os.walk(f"{docs}/site/content", topdown=True):
-		for file in files:
-			processFile(f"{root}/{file}".replace("\\", "/"))
+    print("PARSING DOCUMENTATION FILES")
+    for root, dirs, files in os.walk(f"{docs}/site/content/{version}", topdown=True):
+        if root.endswith("images"):
+            continue
 
-def loadSchemas():
+        for file in files:
+            print(file)
+            processFile(f"{root}/{file}".replace("\\", "/"))
+
+    print("END")
+
+def loadTags():
+    print("GENERATING TAGS")
     try:
-        file = open("./components.yaml", "r", encoding="utf-8")
+        file = open(f"{docs}/site/data/openapi_tags.yaml", "r", encoding="utf-8")
         data = file.read()
         file.close()
     except Exception as ex:
         print(traceback.format_exc())
         raise ex
 
-    components = yaml.safe_load(data)
-    print(components)
-    apiDocsRes["components"]["schemas"] = components["schemas"]
+    tags = yaml.safe_load(data)
+    apiDocsRes["tags"] = tags
+    print(f"TAGS GENERATED")
     
 def processFile(filepath):
     try:
@@ -61,6 +72,7 @@ def processFile(filepath):
         data = file.read()
         file.close()
     except Exception as ex:
+        print(f"Error reading file {filepath}")
         print(traceback.format_exc())
         raise ex
 
@@ -75,9 +87,11 @@ def processFile(filepath):
         apiDocsRes["paths"][path][method] = endpointDict["paths"][path][method]
 
     dstFile = open(dst, "w")
-    json.dump(apiDocsRes, dstFile)
+    json.dump(apiDocsRes, dstFile, indent=2)
     dstFile.close()
 
 if __name__ == "__main__":
-    loadSchemas()
+    print("--- GENERATE API DOCS")
+    loadTags()
     generateAPIDocs()
+    print("--- END")

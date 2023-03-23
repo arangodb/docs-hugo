@@ -239,7 +239,7 @@ def processHeader(docuBlock, newBlock):
     headerRe = re.search(r".*}", docuBlock).group(0)
     headerSplit = headerRe.split(",")
     try:
-        url, verb, desc = headerSplit[0].split(" ")[1], headerSplit[0].split(" ")[0].strip("{").lower(), headerSplit[1].replace("}", "")
+        url, verb, desc = headerSplit[0].split(" ")[1], headerSplit[0].split(" ")[0].strip("{").lower(), headerSplit[1].replace("}", "").strip()
         newBlock["paths"][url] = {verb: {}}
         newBlock["paths"][url][verb]["operationId"] = headerSplit[2].replace("}", "").replace(" ", "")
         newBlock["paths"][url][verb]["description"] = desc + "\n"
@@ -432,7 +432,7 @@ def render_yaml(block, title):
     blockYaml = yaml.dump(block, sort_keys=False, default_flow_style=False, Dumper=CustomizedDumper)
     res = f'\
 ```openapi\n\
-## {title}\n\
+### {title}\n\
 \n\
 {blockYaml}\
 ```'
