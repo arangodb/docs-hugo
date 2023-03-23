@@ -26,8 +26,8 @@ def migrate(filepath):
     oldMetrics = getJekyllMetrics(content)
     processFile(page, content)
 
-    #newMetrics = getHugoMetrics(content)
-    metrics[filepath] = {"old": oldMetrics}
+    newMetrics = getHugoMetrics(content)
+    metrics[filepath] = {"old": oldMetrics, "new": newMetrics}
 
     file = open(filepath, "w", encoding="utf-8")
     file.truncate()
@@ -38,13 +38,11 @@ def migrate(filepath):
 
 def getJekyllMetrics(content):
     flags = {"frontMatter": False, "endFrontMatter": False, "description": False, "title": False, "inCodeblock": False, "hint": {"active": False, "type": ""}, "capture": False, "inDocublock": False, "assign-ver": {"active": False, "isValid": False}}
-
-    metrics = {"arangoshexamples": 0, "aqlexamples": 0, "inlineDocublocks": 0, "httpDocublocks":0, "headers": 0, "hints": 0, "capture": 0, "details": 0, "plainCodeblocks": 0, "hint-ee": 0, "comments": 0}
+    metrics = {"text": 0, "arangoshexamples": 0, "aqlexamples": 0, "inlineDocublocks": 0, "httpDocublocks":0, "headers": 0, "hints": 0, "details": 0, "plainCodeblocks": 0, "hint-ee": 0, "comments": 0}
+    
     for i, line in enumerate(content):
         if line == "\n":
             continue
-
-        
 
         ## Trap and skip inline docublocks extra line
         if re.search(r"{%.*arangoshexample", line, re.MULTILINE) and not re.search(r"{%.*endarangoshexample", line, re.MULTILINE) and not re.search(r"{%.*include.*arangoshexample", line, re.MULTILINE):
@@ -83,7 +81,7 @@ def getJekyllMetrics(content):
 
         ##Capture alternative
         if "{% capture alternative %}" in line:
-            metrics["capture"] += 1
+            metrics["hints"] += 1
             continue
 
         if "{% endcapture %}" in line:
@@ -141,6 +139,79 @@ def getJekyllMetrics(content):
         if "{% endif" in line:
             continue
 
+        metrics["text"] += 1
+    return metrics
+
+def getHugoMetrics(content):
+    flags = {"frontMatter": False, "endFrontMatter": False, "description": False, "title": False, "inCodeblock": False, "hint": {"active": False, "type": ""}, "capture": False, "inDocublock": False, "assign-ver": {"active": False, "isValid": False}}
+    metrics = {"text": 0, "arangoshexamples": 0, "aqlexamples": 0, "inlineDocublocks": 0, "httpDocublocks":0, "headers": 0, "hints": 0, "details": 0, "plainCodeblocks": 0, "hint-ee": 0, "comments": 0}
+    
+    for i, line in enumerate(content):
+        if line == "\n":
+            continue
+
+
+        ## Find headers
+        if re.search(r"^#{1,}", line, re.MULTILINE):
+            if not flags["endFrontMatter"]:
+                flags["frontMatter"] = not flags["frontMatter"]
+                if not flags["frontMatter"]:
+                    flags["endFrontMatter"] = True
+                continue
+
+            metrics["headers"] += 1
+
+        ##Hints
+        if re.search(r"{{< warning|{{< info|{{< danger|{{< success|{{< tip", line, re.MULTILINE):
+            metrics["hints"] += 1
+            continue
+
+        if re.search(r"{{< /warning|{{< /info|{{< /danger|{{< /success|{{< /tip", line, re.MULTILINE):
+            continue
+
+        ## Details
+        if "{{% expand" in line:
+            metrics["details"] += 1
+            continue
+
+        if "{{% /expand" in line:
+            continue
+        
+        ## Codeblocks
+        if line.startswith("```"):
+            flags["inCodeblock"] = not flags["inCodeblock"]
+            if flags["inCodeblock"]:
+                metrics["plainCodeblocks"] += 1
+            continue
+
+        ## HTTP Docublocks
+        if "{% docublock" in line:
+            metrics["httpDocublocks"] += 1
+            continue
+
+        ## Inline Docublocks
+        if "@startDocuBlockInline" in line:
+            metrics["inlineDocublocks"] += 1
+            continue
+
+        if "@endDocuBlock" in line:
+            flags["inDocublock"] = False
+            continue
+
+        ## Comments
+        if "{{% comment %}}" in line:
+            metrics["comments"] += 1
+            continue
+
+        if "{{% /comment %}}" in line:
+            continue  
+
+        ## Hint-ee
+        if "{{< tag" in line:
+            metrics["hint-ee"] += 1
+            continue
+
+        metrics["text"] += 1
     return metrics
 
 
@@ -154,7 +225,6 @@ def processFile(page, content):
                 page.content = page.content + "\n"
                 continue
 
-            
 
             ## Trap and skip inline docublocks extra line
             if re.search(r"{%.*arangoshexample|{%.*aqlexample|@END_EXAMPLE_", line, re.MULTILINE):
