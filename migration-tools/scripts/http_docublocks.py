@@ -134,7 +134,7 @@ def processHTTPDocuBlock(docuBlock, tag):
     newBlock = {"paths": {}}
     url, verb, currentRetStatus = "", "", 0
     docuBlock = docuBlock + "\n" + "@ENDRESPONSES"
-    title = ""
+    title, description = "", ""
 
     blocks = re.findall(r"@RESTSTRUCT{(.*?)^(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
@@ -156,10 +156,21 @@ def processHTTPDocuBlock(docuBlock, tag):
             traceback.print_exc()
             exit(1)
 
+    blocks = re.findall(r"(?<=@HINTS\n)(.*?)(?=\n@)", docuBlock, re.MULTILINE | re.DOTALL)
+    for block in blocks:
+        try:
+            hintType = block.split('\n')[0].replace("{% hint '", "").replace("' %}", "")
+            hintContent = "\n".join(block.split("\n")[1:-2])
+            description = description + f"{{{{ {hintType} }}}}\n{hintContent}\n{{{{ /{hintType} }}}}\n\n"
+        except Exception as ex:
+            print(f"Exception occurred for block {block}\n{ex}")
+            traceback.print_exc()
+            exit(1)
+
     blocks = re.findall(r"(?<=@RESTDESCRIPTION\n)(.*?)(?=\n@)", docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
         try:
-            newBlock["paths"][url][verb]["description"] = block + "\n"
+            description = description + block + "\n"
         except Exception as ex:
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
@@ -196,7 +207,7 @@ def processHTTPDocuBlock(docuBlock, tag):
                 exit(1)
 
     
-
+    newBlock["paths"][url][verb]["description"] = description
     newBlock["paths"][url][verb]["tags"] = [tag]
     yml = render_yaml(newBlock, title)
     
