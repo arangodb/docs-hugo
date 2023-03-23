@@ -28,7 +28,7 @@ ARANGO_MAIN = main
 
 infos = {"": {}}
 currentWeight = 0
-metrics = {"old": {"total": {}}, "new": {"total": {}}}
+metrics = {"total": {}}
 
 def get_weight(weight):
 	global currentWeight

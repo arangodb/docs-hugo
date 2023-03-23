@@ -23,7 +23,11 @@ def migrate(filepath):
         page.frontMatter.title = infos[filepath]["title"]
         page.frontMatter.weight = infos[filepath]["weight"]
     
+    oldMetrics = getJekyllMetrics(content)
     processFile(page, content)
+
+    #newMetrics = getHugoMetrics(content)
+    metrics[filepath] = {"old": oldMetrics}
 
     file = open(filepath, "w", encoding="utf-8")
     file.truncate()
@@ -31,6 +35,114 @@ def migrate(filepath):
     file.close()
 
     return
+
+def getJekyllMetrics(content):
+    flags = {"frontMatter": False, "endFrontMatter": False, "description": False, "title": False, "inCodeblock": False, "hint": {"active": False, "type": ""}, "capture": False, "inDocublock": False, "assign-ver": {"active": False, "isValid": False}}
+
+    metrics = {"arangoshexamples": 0, "aqlexamples": 0, "inlineDocublocks": 0, "httpDocublocks":0, "headers": 0, "hints": 0, "capture": 0, "details": 0, "plainCodeblocks": 0, "hint-ee": 0, "comments": 0}
+    for i, line in enumerate(content):
+        if line == "\n":
+            continue
+
+        
+
+        ## Trap and skip inline docublocks extra line
+        if re.search(r"{%.*arangoshexample", line, re.MULTILINE) and not re.search(r"{%.*endarangoshexample", line, re.MULTILINE) and not re.search(r"{%.*include.*arangoshexample", line, re.MULTILINE):
+            metrics["arangoshexamples"] += 1
+            continue
+
+        if re.search(r"{%.*aqlexample", line, re.MULTILINE) and not re.search(r"{%.*endaqlexample", line, re.MULTILINE) and not re.search(r"{%.*include.*aqlexample", line, re.MULTILINE):
+            metrics["aqlexamples"] += 1
+            continue
+
+
+        if "{:style=\"clear: left;\"}" in line or "{:class=\"lead\"}" in line:
+            continue
+
+
+        ## Find headers
+        if re.search(r"^={3,}|^-{3,}|^#{1,}", line, re.MULTILINE):
+            if not flags["endFrontMatter"]:
+                flags["frontMatter"] = not flags["frontMatter"]
+                if not flags["frontMatter"]:
+                    flags["endFrontMatter"] = True
+                continue
+
+            metrics["headers"] += 1
+
+        if "{{ page.description }}" in line:
+            continue
+
+        ##Hints
+        if "{% hint " in line:
+            metrics["hints"] += 1
+            continue
+
+        if "{% endhint %}" in line:
+            continue
+
+        ##Capture alternative
+        if "{% capture alternative %}" in line:
+            metrics["capture"] += 1
+            continue
+
+        if "{% endcapture %}" in line:
+            continue
+
+        ## Details
+        if "{% details" in line:
+            metrics["details"] += 1
+            continue
+
+        if "{% enddetail" in line:
+            continue
+        
+        ## Codeblocks
+        if line.startswith("```"):
+            flags["inCodeblock"] = not flags["inCodeblock"]
+            if flags["inCodeblock"]:
+                metrics["plainCodeblocks"] += 1
+            continue
+
+        ## HTTP Docublocks
+        if "{% docublock" in line:
+            metrics["httpDocublocks"] += 1
+            continue
+
+        ## Inline Docublocks
+        if "@startDocuBlockInline" in line:
+            metrics["inlineDocublocks"] += 1
+            continue
+
+        if "@endDocuBlock" in line:
+            flags["inDocublock"] = False
+            continue
+
+        ## Comments
+        if "{% comment %}" in line or "{%- comment %}" in line:
+            metrics["comments"] += 1
+            continue
+
+        if "{% endcomment %}" in line or "{%- endcomment %}" in line:
+            continue  
+
+        ## Hint-ee
+        if "{% include hint-ee" in line:
+            metrics["hint-ee"] += 1
+            continue
+
+        ## Assign ver
+        if "{% assign ver" in line:
+            continue
+
+        if re.search("{%.*else", line, re.MULTILINE):
+            continue
+
+        if "{% endif" in line:
+            continue
+
+    return metrics
+
 
 def processFile(page, content):
     flags = {"frontMatter": False, "endFrontMatter": False, "description": False, "title": False, "inCodeblock": False, "hint": {"active": False, "type": ""}, "capture": False, "inDocublock": False, "assign-ver": {"active": False, "isValid": False}}
