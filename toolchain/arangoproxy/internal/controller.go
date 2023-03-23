@@ -26,7 +26,7 @@ func StartController(url string) {
 	// Create routes
 	http.HandleFunc("/health", HealthHandler)
 	http.HandleFunc("/js", JSHandler)
-	http.HandleFunc("/http-spec", HTTPSpecHandler)
+	http.HandleFunc("/openapi", HTTPSpecHandler)
 	http.HandleFunc("/curl", HTTPExampleHandler)
 	http.HandleFunc("/aql", AQLHandler)
 	http.HandleFunc("/go", TODOHandler)
@@ -56,15 +56,15 @@ func JSHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(response)
 }
 
-// Handler for http-example codeblocks
+// Handler for curl codeblocks
 func HTTPExampleHandler(w http.ResponseWriter, r *http.Request) {
 	request, err := common.ParseExample(r.Body, common.HTTP)
 	if err != nil {
-		common.Logger.Printf("[http-example/CONTROLLER] Error parsing request %s\n", err.Error())
+		common.Logger.Printf("[curl/CONTROLLER] Error parsing request %s\n", err.Error())
 		return
 	}
 
-	common.Logger.Printf("[http-example/CONTROLLER] Processing Example %s\n", request.Options.Name)
+	common.Logger.Printf("[curl/CONTROLLER] Processing Example %s\n", request.Options.Name)
 
 	resp, err := HTTPService.ExecuteHTTPExample(request)
 	if err != nil {
@@ -72,20 +72,20 @@ func HTTPExampleHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	response, err := json.Marshal(resp)
 	if err != nil {
-		common.Logger.Printf("[http-example/CONTROLLER] Error marshalling response: %s\n", err.Error())
+		common.Logger.Printf("[curl/CONTROLLER] Error marshalling response: %s\n", err.Error())
 		return
 	}
 
-	common.Logger.Printf("[http-example/CONTROLLER] END Example %s\n", request.Options.Name)
+	common.Logger.Printf("[curl/CONTROLLER] END Example %s\n", request.Options.Name)
 
 	w.Write(response)
 }
 
-// Handler for http-spec codeblocks
+// Handler for openapi codeblocks
 func HTTPSpecHandler(w http.ResponseWriter, r *http.Request) {
 	request, err := httpapi.ParseRequest(r.Body)
 	if err != nil {
-		common.Logger.Printf("[http-spec/CONTROLLER] Error Parsing Request: %s\n", err.Error())
+		common.Logger.Printf("[openapi/CONTROLLER] Error Parsing Request: %s\n", err.Error())
 		x, _ := json.Marshal(httpapi.HTTPResponse{})
 		w.Write(x)
 		return
@@ -93,7 +93,7 @@ func HTTPSpecHandler(w http.ResponseWriter, r *http.Request) {
 	response := httpapi.HTTPResponse{ApiSpec: request.ApiSpec}
 	jsonResponse, err := json.Marshal(response)
 	if err != nil {
-		common.Logger.Printf("[http-spec/CONTROLLER] Error Marshalling Response: %s\n", err.Error())
+		common.Logger.Printf("[openapi/CONTROLLER] Error Marshalling Response: %s\n", err.Error())
 		x, _ := json.Marshal(httpapi.HTTPResponse{})
 		w.Write(x)
 		return
