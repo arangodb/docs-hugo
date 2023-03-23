@@ -19,34 +19,31 @@ def migrateStructure(label, document, manual, i):
 	extendedSection = ''
 	if manual != "manual":
 		extendedSection = manual +"/"
-	print(f"extended sec {extendedSection}")
+
 	for i, item in enumerate(document):
-		print(f"item {item}")
+
 		# Ignore external links
 		if "href" in item and (item["href"].startswith("http://") or item["href"].startswith("https://")):
 			continue
+
 		if "divider" in item:
+			label = ""
 			continue
 
 		if "subtitle" in item:
-			print(f"label {label}")
 			label = create_index_empty(extendedSection, {"text": item["subtitle"].lower(), "href": ""}, extendedSection, i)
 			continue
 
 
 		if "children" in item:
-			print(f"children 1 {label}")
 			label = create_index(label, item, extendedSection, i)
-			print(f"children 2 {label}")
+
 			migrateStructure(label, item["children"], extendedSection, i)
 			labelSplit = label.split("/")
 			label = "/".join(labelSplit[0:len(labelSplit)-1])
-			print(f"children 3 {label}")
 			continue
 		else:
-			print(f"no children 1 {label}")
 			label = create_files_new(label, item, extendedSection, i)
-			print(f"no children 2 {label}")
 
 def create_index(label, item, extendedSection, i):
 	oldFileName = item["href"].replace(".html", ".md")
