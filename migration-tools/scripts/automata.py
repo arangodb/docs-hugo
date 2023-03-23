@@ -225,7 +225,9 @@ def processFile(page, content):
                 page.content = page.content + "\n"
                 continue
 
-
+            if flags["inDocublock"]:
+                buffer.append(line)
+                
             ## Trap and skip inline docublocks extra line
             if re.search(r"{%.*arangoshexample|{%.*aqlexample|@END_EXAMPLE_", line, re.MULTILINE):
                 continue
@@ -346,10 +348,14 @@ def processFile(page, content):
             ## Inline Docublocks
             if "@startDocuBlockInline" in line:
                 flags["inDocublock"] = True
+                line = line.replace("@startDocuBlockInline ", "")
+                buffer.append(line)
                 continue
 
             if "@endDocuBlock" in line:
                 flags["inDocublock"] = False
+                page.content = page.content + "".join(buffer)
+                buffer = []
                 continue
 
             if flags["inDocublock"]:
