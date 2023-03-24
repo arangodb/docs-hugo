@@ -90,6 +90,7 @@ def processFile(filepath):
         apiDocsRes["paths"][path][method] = endpointDict["paths"][path][method]
 
     processDescriptions(apiDocsRes, "")
+    
     dstFile = open(dst, "w")
     json.dump(apiDocsRes, dstFile, indent=2)
     dstFile.close()
@@ -115,17 +116,21 @@ def processDescriptions(data, k):
         else:
             desc = value["description"]
             if re.search(r"{{< warning|{{< info|{{< danger|{{< success|{{< tip", desc, re.MULTILINE):
-                newDesc = ""
-                for line in desc.split("\n"):
-                    if re.search(r"{{< warning|{{< info|{{< danger|{{< success|{{< tip", line, re.MULTILINE):
-                        hintType = line.replace("{{< ", "").replace(" >}}", "")
-                        newDesc = f"```\n{newDesc}**{hintType.upper()}**:"
-                    elif re.search(r"{{< /warning|{{< /info|{{< /danger|{{< /success|{{< /tip", line, re.MULTILINE):
-                        newDesc = newDesc + f"```\n"
-                    else:
-                        newDesc = newDesc + line
-
+                newDesc = generateNewDesc(desc)
                 setInDict(apiDocsRes, f"{k},{key},description", newDesc)
+
+def generateNewDesc(oldDesc):
+    newDesc = ""
+    for line in desc.split("\n"):
+        if re.search(r"{{< warning|{{< info|{{< danger|{{< success|{{< tip", line, re.MULTILINE):
+            hintType = line.replace("{{< ", "").replace(" >}}", "")
+            newDesc = f"```\n{newDesc}**{hintType.upper()}**:"
+        elif re.search(r"{{< /warning|{{< /info|{{< /danger|{{< /success|{{< /tip", line, re.MULTILINE):
+            newDesc = newDesc + f"```\n"
+        else:
+            newDesc = newDesc + line
+
+    return newDesc
 
 if __name__ == "__main__":
     print("--- GENERATE API DOCS")
