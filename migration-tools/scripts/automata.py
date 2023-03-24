@@ -163,6 +163,9 @@ def getHugoMetrics(content):
 
         ##Hints
         if re.search(r"{{< warning|{{< info|{{< danger|{{< success|{{< tip", line, re.MULTILINE):
+            if flags["inDocublock"]:
+                continue
+
             metrics["hints"] += 1
             continue
 
@@ -176,6 +179,11 @@ def getHugoMetrics(content):
 
         if "{{% /expand" in line:
             continue
+
+        if line.startswith("```openapi"):
+            flags["inDocublock"] = True
+            metrics["httpDocublocks"] += 1
+            continue
         
         ## Codeblocks
         if line.startswith("```"):
@@ -184,10 +192,6 @@ def getHugoMetrics(content):
                 metrics["plainCodeblocks"] += 1
             continue
 
-        ## HTTP Docublocks
-        if "{% docublock" in line:
-            metrics["httpDocublocks"] += 1
-            continue
 
         ## Inline Docublocks
         if "@startDocuBlockInline" in line:
@@ -302,8 +306,8 @@ def processFile(page, content):
                 buffer = []
                 continue
 
-            ##Capture alternative
-            if "{% capture alternative %}" in line:
+            ##Capture 
+            if "{% capture " in line:
                 flags["capture"] = True
                 page.content = page.content + f"{{{{< info >}}}}\n"
                 continue
@@ -364,7 +368,12 @@ def processFile(page, content):
 
             ## Comments
             if "{% comment %}" in line or "{%- comment %}" in line:
-                page.content = page.content + "{{% comment %}}"
+                line = line.replace("{%- comment %}", "{{% comment %}}").replace("{% comment %}", "{{% comment %}}")
+
+                if "endcomment" in line:                            ## The comment is entirely in a single line
+                    line = line.replace("{% endcomment %}", "{{% /comment %}}").replace("{%- endcomment %}", "{{% /comment %}}")
+                
+                page.content = page.content + line
                 continue
 
             if "{% endcomment %}" in line or "{%- endcomment %}" in line:
