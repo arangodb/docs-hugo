@@ -4,6 +4,10 @@ import os
 import json
 import re
 import traceback
+from functools import reduce  # forward compatibility for Python 3
+import operator
+
+
 
 ##CMDLINE ARGS
 parser = argparse.ArgumentParser(description='Optional app description')
@@ -83,12 +87,45 @@ def processFile(filepath):
         method = next(iter(endpointDict["paths"][path]))
         if not path in apiDocsRes["paths"]:
             apiDocsRes["paths"][path] = {}
-
         apiDocsRes["paths"][path][method] = endpointDict["paths"][path][method]
 
+    processDescriptions(apiDocsRes, "")
     dstFile = open(dst, "w")
     json.dump(apiDocsRes, dstFile, indent=2)
     dstFile.close()
+
+
+
+def getFromDict(dataDict, mapList):
+    return reduce(operator.getitem, mapList, dataDict)
+
+def setInDict(dataDict, mapList, value):
+    mapList = mapList.split(",")[1:]
+    getFromDict(dataDict, mapList[:-1])[mapList[-1]] = value
+
+def delFromDict(dataDict, mapList):
+    mapList = mapList.split(",")[1:]
+    del getFromDict(dataDict, mapList[:-1])[mapList[-1]]
+
+def processDescriptions(data, k):
+    for key, value in data.items():
+        if not "description" in value:
+            if isinstance(value, dict):
+                processDescriptions(value, k + "," + key)
+        else:
+            desc = value["description"]
+            if re.search(r"{{< warning|{{< info|{{< danger|{{< success|{{< tip", desc, re.MULTILINE):
+                newDesc = ""
+                for line in desc.split("\n"):
+                    if re.search(r"{{< warning|{{< info|{{< danger|{{< success|{{< tip", line, re.MULTILINE):
+                        hintType = line.replace("{{< ", "").replace(" >}}", "")
+                        newDesc = f"```\n{newDesc}**{hintType.upper()}**:"
+                    elif re.search(r"{{< /warning|{{< /info|{{< /danger|{{< /success|{{< /tip", line, re.MULTILINE):
+                        newDesc = newDesc + f"```\n"
+                    else:
+                        newDesc = newDesc + line
+
+                setInDict(apiDocsRes, f"{k},{key},description", newDesc)
 
 if __name__ == "__main__":
     print("--- GENERATE API DOCS")

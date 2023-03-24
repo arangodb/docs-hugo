@@ -38,11 +38,7 @@ def initBlocksFileLocations():
 
 			blocksFileLocations[blockName] = {"path": fileLocation, "processed": False}
 	components["schemas"] = definitions
-	createComponentsIn1StructsFile("Administration/1_structs.md")
-	createComponentsIn1StructsFile("Collections/1_structs.md")
-	createComponentsIn1StructsFile("Pregel/1_struct.md")
-	createComponentsIn1StructsFile("Graph/1_structs.md")
-	explodeNestedStructs(components, "$ref", "")
+	createComponentsIn1StructsFile()
 
 	print("----- DONE\n")
     

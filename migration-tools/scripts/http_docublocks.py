@@ -4,6 +4,7 @@ import yaml
 import traceback
 from definitions import *
 from globals import *
+from pathlib import Path
 
 from functools import reduce  # forward compatibility for Python 3
 import operator
@@ -42,29 +43,33 @@ yaml.add_representer(str, str_presenter)
 yaml.representer.SafeRepresenter.add_representer(str, str_presenter) # to use with safe_dum
 yaml.Dumper.ignore_aliases = lambda *args : True
 
-def createComponentsIn1StructsFile(path):
-    try:
-        f = open(f"{ARANGO_MAIN}/Documentation/DocuBlocks/Rest/{path}", "r", encoding="utf-8").readlines()
-    except FileNotFoundError as ex:
-        raise ex
+def createComponentsIn1StructsFile():
+    for p in Path(f"{ARANGO_MAIN}/Documentation/DocuBlocks/Rest").rglob("1_struct*.md"):
+        print(f"1 struct {p}")
+        try:
+            f = open(str(p), "r", encoding="utf-8").readlines()
+        except FileNotFoundError as ex:
+            raise ex
 
-    buffer = []
-    for line in f:
-        if line == "\n" and len(buffer) == 0:
-            continue
+        buffer = []
+        for line in f:
+            if line == "\n" and len(buffer) == 0:
+                continue
 
-        if line.startswith("@RESTSTRUCT"):       ## a new struct is beginning, process the buffer of the previous struct and start a new buffer
-            if len(buffer) == 0:                 ## case i=0 starting the file, the buffer is empty so we fill it with the new struct incoming
+            if line.startswith("@RESTSTRUCT"):       ## a new struct is beginning, process the buffer of the previous struct and start a new buffer
+                if len(buffer) == 0:                 ## case i=0 starting the file, the buffer is empty so we fill it with the new struct incoming
+                    buffer = [line]
+                    continue
+
+                processComponents("".join(buffer))
                 buffer = [line]
                 continue
 
-            processComponents("".join(buffer))
-            buffer = [line]
-            continue
+            buffer.append(line)                     ## append the description line to the current struct buffer
 
-        buffer.append(line)                     ## append the description line to the current struct buffer
+        processComponents("\n".join(buffer))        ## this will process the last struct in the file with remaining strings in the buffer
 
-    processComponents("\n".join(buffer))        ## this will process the last struct in the file with remaining strings in the buffer
+    explodeNestedStructs(components, "$ref", "")
 
 
 
@@ -161,7 +166,7 @@ def processHTTPDocuBlock(docuBlock, tag):
         try:
             hintType = block.split('\n')[0].replace("{% hint '", "").replace("' %}", "")
             hintContent = "\n".join(block.split("\n")[1:-2])
-            description = description + f"{{{{ {hintType} }}}}\n{hintContent}\n{{{{ /{hintType} }}}}\n\n"
+            description = description + f"{{{{< {hintType} >}}}}\n{hintContent}\n{{{{< /{hintType} >}}}}\n\n"
         except Exception as ex:
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
