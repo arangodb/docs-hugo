@@ -54,6 +54,11 @@ def migrate_hrefs(paragraph, filepath):
         if len(href) == 3:
             style = href[2]
 
+        if "arangodb.com/docs" in content:
+            absURL = content
+            content = "/".join(content.split("/")[5:])  ## Cut http:/ / arangodb.com/ docs/ version/ 
+            paragraph = paragraph.replace(absURL, content)
+
         if re.search(r"http[s]*://|,", content):
             continue
 
