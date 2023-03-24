@@ -161,12 +161,23 @@ def processHTTPDocuBlock(docuBlock, tag):
             traceback.print_exc()
             exit(1)
 
-    blocks = re.findall(r"(?<=@HINTS\n)(.*?)(?=\n@)", docuBlock, re.MULTILINE | re.DOTALL)
+    blocks = re.findall(r"(?<=@HINTS\n)(.*?)(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
+        currentHint = ""
+
         try:
-            hintType = block.split('\n')[0].replace("{% hint '", "").replace("' %}", "")
-            hintContent = "\n".join(block.split("\n")[1:-2])
-            description = description + f"{{{{< {hintType} >}}}}\n{hintContent}\n{{{{< /{hintType} >}}}}\n\n"
+            for line in block.split("\n"):
+                print(line)
+                if "{% hint " in line:
+                    currentHint = line.replace("{% hint '", "").replace("' %}", "")
+                    line = f"{{{{< {currentHint} >}}}}\n"
+                    description = description + line
+                elif "{% endhint " in line:
+                    line = f"\n{{{{< /{currentHint} >}}}}\n\n"
+                    description = description + line
+                else:
+                    description = description + line
+
         except Exception as ex:
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
