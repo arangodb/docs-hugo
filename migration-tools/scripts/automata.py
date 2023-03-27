@@ -292,16 +292,22 @@ def processFile(page, content):
 
             ##Hints
             if "{% hint " in line:
-                hintType = line.replace("{% hint '", "").replace("' %}", "").replace("\n", "")
+                hintPart = line.split("%}")
+                hintType = hintPart[0].replace("{% hint '", "").replace("' ", "").replace("\n", "")
                 if hintType == 'note':
                     hintType = 'tip'
 
                 flags["hint"] = {"active": True, "type": hintType}
-                page.content = page.content + f"{{{{< {hintType} >}}}}\n"
+
+                page.content = page.content + f"{{{{< {hintType} >}}}}"
+                
+                if hintPart[1]:
+                    page.content = page.content + hintPart[1]
                 continue
 
-            if "{% endhint %}" in line:
+            if "{% endhint " in line:
                 flags["hint"]["active"] = False
+                hintType = flags["hint"]["type"]
                 page.content = page.content + f"{{{{< /{hintType} >}}}}\n"
                 continue
 
@@ -328,7 +334,7 @@ def processFile(page, content):
 
             ## Details
             if "{% details" in line:
-                title = line.replace("{% details '", "").replace("' %}", "")
+                title = line.replace("{% details '", "").replace("' %}\n", "")
                 page.content = page.content + '{{{{% expand title="{}" %}}}}'.format(title)
                 continue
 

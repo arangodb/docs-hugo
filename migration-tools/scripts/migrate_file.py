@@ -3,6 +3,7 @@ from globals import *
 import http_docublocks
 import inline_docublocks
 import os
+import yaml
 
 def migrate(filepath):
     print("Processing " + filepath)
@@ -244,16 +245,18 @@ class Page():
 		return res
 
 class FrontMatter():
-	def __init__(self):
-		self.title = ""
-		self.layout = "default"
-		self.description = ""
-		self.menuTitle = ""
-		self.weight = 0
+    def __init__(self):
+        self.title = ""
+        self.layout = "default"
+        self.description = ""
+        self.menuTitle = ""
+        self.weight = 0
 
-	@staticmethod
-	def clean(str):
-		return str.replace("`", "").lstrip(" ")
+    @staticmethod
+    def clean(str):
+        return str.replace("`", "").lstrip(" ")
 
-	def toString(self):
-		return f"---\ntitle: {self.clean(self.title)}\nweight: {self.weight}\ndescription: {self.description}\nlayout: default\n---\n"
+    def toString(self):
+        description = yaml.dump(self.description, sort_keys=False, default_flow_style=False)
+
+        return f"---\ntitle: {self.clean(self.title)}\nweight: {self.weight}\ndescription: {description}\nlayout: default\n---\n"
