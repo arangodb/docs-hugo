@@ -226,6 +226,9 @@ def processFile(page, content):
     try:
         for i, line in enumerate(content):
             if line == "\n":
+                if page.content == "":
+                    continue
+                
                 page.content = page.content + "\n"
                 continue
 
