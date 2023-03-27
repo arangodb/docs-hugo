@@ -274,6 +274,7 @@ def processFile(page, content):
                     continue
 
                 page.frontMatter.description = "".join(buffer)
+                page.content = page.content.replace("".join(buffer), "")
                 buffer = []
                 continue
             
@@ -288,7 +289,7 @@ def processFile(page, content):
 
             ##Hints
             if "{% hint " in line:
-                hintType = line.replace("{% hint ", "").replace(" %}", "").replace("\n", "")
+                hintType = line.replace("{% hint '", "").replace("' %}", "").replace("\n", "")
                 if hintType == 'note':
                     hintType = 'tip'
 
