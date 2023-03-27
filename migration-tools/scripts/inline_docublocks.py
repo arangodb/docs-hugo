@@ -63,12 +63,16 @@ def migrateInlineDocuBlocks(block):
 
 def render_codeblock(block):
     exampleOptions = yaml.dump(block["options"], sort_keys=False, default_flow_style=False)
+    code = block["code"]
+    indentationToRemove = len(code.split("\n")[0]) - len(code.split("\n")[0].lstrip(' '))
+    code = re.sub("^ {"+str(indentationToRemove)+"}", '', code, 0, re.MULTILINE)
+
     res = f'\
 ```{block["language"]}\n\
 ---\n\
-{exampleOptions}\n\
----\n\
-{block["code"]}\n\
+{exampleOptions}\
+---\
+{code}\n\
 ```\n\
 '
-    return re.sub(r"^\s*$\n", '', res, 0, re.MULTILINE | re.DOTALL)
+    return res

@@ -1310,20 +1310,6 @@ schemas:
           Default: the value defined by the top-level `trackListPositions` option.
 
         format: ''
-      cache:
-        type: boolean
-        description: |+
-          Enable this option to always cache the field normalization values in memory
-          for this specific field. This can improve the performance of scoring and
-          ranking queries.
-
-          Normalization values are computed for fields which are processed with Analyzers
-          that have the `"norm"` feature enabled. These values are used to score fairer if
-          the same tokens occur repeatedly, to emphasize these documents less.
-
-          Default: the value defined by the top-level `cache` option.
-
-        format: ''
       nested:
         type: array
         description: |+
@@ -1386,16 +1372,6 @@ schemas:
           Default: the value defined by the top-level `searchField` option.
 
         format: ''
-      cache:
-        type: boolean
-        description: |+
-          Enable this option to always cache the field normalization values in memory
-          for this specific nested field. This can improve the performance of scoring and
-          ranking queries.
-
-          Default: the value defined by the top-level `cache` option.
-
-        format: ''
       nested:
         type: array
         description: |+
@@ -1422,15 +1398,6 @@ schemas:
           - `"none"`: disable compression to trade space for speed.
 
         format: ''
-      cache:
-        type: boolean
-        description: |+
-          Enable this option to always cache stored values in memory. This can improve the
-          query performance if stored values are involved.
-
-          Default: `false`
-
-        format: ''
   post_api_index_inverted_primarysort:
     type: object
     properties:
@@ -1447,15 +1414,6 @@ schemas:
           Defines how to compress the primary sort data. Possible values:
           - `"lz4"` (default): use LZ4 fast compression.
           - `"none"`: disable compression to trade space for speed.
-
-        format: ''
-      cache:
-        type: boolean
-        description: |+
-          Enable this option to always cache the primary sort columns in memory. This can
-          improve the performance of queries that utilize the primary sort order.
-
-          Default: `false`
 
         format: ''
   post_api_index_inverted_primarysort_fields:
