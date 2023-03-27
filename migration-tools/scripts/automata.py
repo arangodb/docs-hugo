@@ -351,6 +351,7 @@ def processFile(page, content):
 
             ## Inline Docublocks
             if "@startDocuBlockInline" in line:
+                buffer = []
                 flags["inDocublock"] = True
                 line = line.replace("@startDocuBlockInline ", "")
                 buffer.append(line)
@@ -358,7 +359,9 @@ def processFile(page, content):
 
             if "@endDocuBlock" in line:
                 flags["inDocublock"] = False
-                page.content = page.content + "".join(buffer)
+                newCodeblock = inline_docublocks.migrateInlineDocuBlocks("".join(buffer))
+                newCodeblock = re.sub(r"@END_EXAMPLE.*\n|@endDocuBlock.*\n", "", newCodeblock, 0, re.MULTILINE)
+                page.content = page.content + newCodeblock
                 buffer = []
                 continue
 
