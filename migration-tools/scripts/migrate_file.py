@@ -258,5 +258,5 @@ class FrontMatter():
 
     def toString(self):
         description = yaml.dump(self.description, sort_keys=False, default_flow_style=False)
-
+        description = description.replace(">-", "").replace("|2-", ">-")
         return f"---\ntitle: {self.clean(self.title)}\nweight: {self.weight}\ndescription: {description}\nlayout: default\n---\n"
