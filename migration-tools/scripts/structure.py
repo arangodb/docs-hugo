@@ -31,7 +31,8 @@ def migrateStructure(label, document, manual, i):
 			continue
 
 		if "subtitle" in item:
-			label = create_index_empty(extendedSection, {"text": item["subtitle"].lower(), "href": ""}, extendedSection, i)
+			subtitle = item["subtitle"].title()
+			label = create_index_empty(extendedSection, {"text": subtitle, "href": ""}, extendedSection, i)
 			continue
 
 
