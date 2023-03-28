@@ -172,22 +172,23 @@ def processHTTPDocuBlock(docuBlock, tag, headerLevel):
         currentHint = ""
 
         try:
-            for line in block.split("\n"):
+            for line in block.rstrip().split("\n"):
                 print(line)
                 if "{% hint " in line:
                     currentHint = line.replace("{% hint '", "").replace("' %}", "")
                     line = f"{{{{< {currentHint} >}}}}\n"
                     description = description + line
                 elif "{% endhint " in line:
-                    line = f"\n{{{{< /{currentHint} >}}}}\n\n"
+                    line = f"{{{{< /{currentHint} >}}}}\n"
                     description = description + line
                 else:
-                    description = description + line
-
+                    description = description + line + "\n"
         except Exception as ex:
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
             exit(1)
+    if len(blocks) > 0:
+        description = description + "\n"
 
     blocks = re.findall(r"(?<=@RESTDESCRIPTION\n)(.*?)(?=\n@)", docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
