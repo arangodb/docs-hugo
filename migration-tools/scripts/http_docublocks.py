@@ -106,8 +106,8 @@ def migrateHTTPDocuBlocks(paragraph):
         if 'errorCodes' in docuBlock:
             paragraph = paragraph.replace("{% docublock errorCodes %}", "{{< error-codes >}}")
             continue
-
-        docuBlockFile = blocksFileLocations[docuBlock]["path"]
+        docuBlockName = docuBlock.split(",")[0] 
+        docuBlockFile = blocksFileLocations[docuBlockName]["path"]
         tag = docuBlockFile.split("/")[len(docuBlockFile.split("/"))-2]
         try:
             docuBlockFile = open(docuBlockFile, "r", encoding="utf-8").read()
@@ -115,24 +115,29 @@ def migrateHTTPDocuBlocks(paragraph):
             print(f"[ERROR] Cannot open docublock file {docuBlockFile} - {ex}")
             #traceback.print_exc()
             continue
-        blocksFileLocations[docuBlock]["processed"] = True
+        blocksFileLocations[docuBlockName]["processed"] = True
+
         declaredDocuBlocks = re.findall(r"(?<=@startDocuBlock )(.*?)@endDocuBlock", docuBlockFile, re.MULTILINE | re.DOTALL)
 
         for block in declaredDocuBlocks:
-            if block.split("\n")[0] == docuBlock:
-                if docuBlock == "documentRevision":
+            if block.split("\n")[0] == docuBlockName:
+                if docuBlockName == "documentRevision":
                     revisionContent = re.search(r"(?<=documentRevision\n\n)(.*?)", block, re.MULTILINE | re.DOTALL).group(0)
                     paragraph = paragraph.replace("{% docublock "+ docuBlock + " %}", revisionContent)
                     continue
-
-                newBlock = processHTTPDocuBlock(block, tag)
+                
+                headerLevel = 3
+                if re.search(r"h\d", docuBlock):
+                    headerLevel = int(re.search(r"h\d", docuBlock).group(0).replace("h", ""))
+                
+                newBlock = processHTTPDocuBlock(block, tag, headerLevel)
                 paragraph = paragraph.replace("{% docublock "+ docuBlock + " %}", newBlock, 1)
 
     paragraph = re.sub(r"```\n{3,}", "```\n\n", paragraph, 0, re.MULTILINE)
 
     return paragraph
 
-def processHTTPDocuBlock(docuBlock, tag):
+def processHTTPDocuBlock(docuBlock, tag, headerLevel):
     blockExamples = processExamples(docuBlock)
 
     docuBlock = re.sub(r"@EXAMPLES.*", "", docuBlock, 0, re.MULTILINE | re.DOTALL)
@@ -156,6 +161,7 @@ def processHTTPDocuBlock(docuBlock, tag):
     for block in blocks:
         try:
             url, verb, title = processHeader(block, newBlock)
+            title = "#" * headerLevel + " " + title
         except Exception as ex:
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
@@ -459,7 +465,7 @@ def render_yaml(block, title):
     blockYaml = yaml.dump(block, sort_keys=False, default_flow_style=False, Dumper=CustomizedDumper)
     res = f'\
 ```openapi\n\
-### {title}\n\
+{title}\n\
 \n\
 {blockYaml}\
 ```'
