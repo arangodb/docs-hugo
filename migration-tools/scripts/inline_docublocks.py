@@ -15,8 +15,8 @@ def migrateInlineDocuBlocks(block):
                     },
                 "code": "",
                 }
-    
-    newBlock["options"]["name"] = block.split("\n")[0]
+
+    newBlock["options"]["name"] =  block.split("\n")[0].replace(" ", "")
     exampleType = re.search(r"@EXAMPLE_.*",  block).group(0)
 
     if "@EXAMPLE_ARANGOSH_OUTPUT" in exampleType:
@@ -37,17 +37,17 @@ def migrateInlineDocuBlocks(block):
     datasetRe = re.search(r"@DATASET.*", block)
     if datasetRe:
         newBlock["options"]["dataset"] = datasetRe.group(0).replace("@DATASET{", "").replace("}", "")
-        block = re.sub(r"@DATASET.*", '', block, 0)
+        block = re.sub(r"@DATASET.*\n", '', block, 0)
 
     explainRe = re.search(r"@EXPLAIN{TRUE}.*", block)
     if explainRe:
         newBlock["options"]["explain"] = "true"
-        block = block.replace("@EXPLAIN{TRUE}", "")
+        block = block.replace("@EXPLAIN{TRUE}\n", "")
 
     bindVarsRe = re.search(r"@BV {.*}", block, re.MULTILINE | re.DOTALL)
     if bindVarsRe:
         newBlock["options"]["bindVars"] = bindVarsRe.group(0).replace("@BV ", "")
-        block = re.sub(r"@BV {.*}", "", block, 0, re.MULTILINE | re.DOTALL)
+        block = re.sub(r"@BV {.*}\n", "", block, 0, re.MULTILINE | re.DOTALL)
 
     
     newBlock["code"] = "\n".join(block.split("\n")[1:]).lstrip(" ").replace("    ", "")
