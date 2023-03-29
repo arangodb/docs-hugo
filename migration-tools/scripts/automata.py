@@ -385,16 +385,16 @@ def processFile(page, content):
 
             ## Comments
             if "{% comment %}" in line or "{%- comment %}" in line:
-                line = line.replace("{%- comment %}", "{{%- comment %}}").replace("{% comment %}", "{{% comment %}}")
+                line = line.replace("{%- comment %}", "{{% comment %}}").replace("{% comment %}", "{{% comment %}}")
 
                 if "endcomment" in line:                            ## The comment is entirely in a single line
-                    line = line.replace("{% endcomment %}", "{{% /comment %}}").replace("{%- endcomment %}", "{{%- /comment %}}")
+                    line = line.replace("{% endcomment %}", "{{% /comment %}}").replace("{%- endcomment %}", "{{% /comment %}}")
                 
                 page.content = page.content + line
                 continue
 
             if "endcomment" in line:
-                line = line.replace("{% endcomment %}", "{{% /comment %}}").replace("{%- endcomment %}", "{{%- /comment %}}")
+                line = line.replace("{% endcomment %}", "{{% /comment %}}").replace("{%- endcomment %}", "{{% /comment %}}")
                 page.content = page.content + line
                 continue  
 
