@@ -115,28 +115,25 @@ def processDescriptions(data, k):
                 processDescriptions(value, k + "," + key)
         else:
             desc = value["description"]
-            if re.search(r"{{< warning|{{< info|{{< danger|{{< success|{{< tip", desc, re.MULTILINE):
+            if re.search(r"{{< (?:warning|info|danger|success|tip) >}}", desc, re.MULTILINE):
                 newDesc = generateNewDesc(desc)
                 setInDict(apiDocsRes, f"{k},{key},description", newDesc)
 
 def generateNewDesc(oldDesc):
     newDesc = ""
-    firstCodeblock = True
+    insideHint = False
     for line in oldDesc.split("\n"):
-        if re.search(r"{{< warning|{{< info|{{< danger|{{< success|{{< tip", line, re.MULTILINE):
-            hintType = line.replace("{{< ", "").replace(" >}}", "")
-            if firstCodeblock:
-                newDesc = f"```\n{newDesc}"
-            else:
-                newDesc = f"{newDesc}```\n"
-
-            newDesc = f"{newDesc}**{hintType.upper()}**:\n"
-        elif re.search(r"{{< /warning|{{< /info|{{< /danger|{{< /success|{{< /tip", line, re.MULTILINE):
-            newDesc = newDesc + f"```\n"
-            firstCodeblock = False
+        hint = re.search(r"{{< (warning|info|danger|success|tip) >}}", line)
+        if hint:
+            insideHint = True
+            newDesc += f"> **{hint[1].upper()}**:\n"
+        elif re.search(r"{{< /(?:warning|info|danger|success|tip) >}}", line):
+            insideHint = False
         else:
-            newDesc = newDesc + line + "\n"
-
+            if insideHint:
+                newDesc += f"> {line}\n"
+            else:
+                newDesc += f"{line}\n"
     return newDesc
 
 if __name__ == "__main__":
