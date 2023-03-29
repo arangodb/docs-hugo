@@ -26,7 +26,7 @@ def migrate(filepath):
     oldMetrics = getJekyllMetrics(content)
     processFile(page, content)
 
-    newMetrics = getHugoMetrics(content)
+    newMetrics = getHugoMetrics(page.toString().split("\n"))
     metrics[filepath] = {"old": oldMetrics, "new": newMetrics}
 
     file = open(filepath, "w", encoding="utf-8")
@@ -38,7 +38,7 @@ def migrate(filepath):
 
 def getJekyllMetrics(content):
     flags = {"frontMatter": False, "endFrontMatter": False, "description": False, "title": False, "inCodeblock": False, "hint": {"active": False, "type": ""}, "capture": False, "inDocublock": False, "assign-ver": {"active": False, "isValid": False}}
-    metrics = {"text": 0, "arangoshexamples": 0, "aqlexamples": 0, "inlineDocublocks": 0, "httpDocublocks":0, "headers": 0, "hints": 0, "details": 0, "plainCodeblocks": 0, "hint-ee": 0, "comments": 0}
+    metrics = {"text": 0, "inlineDocublocks": 0, "httpDocublocks":0, "headers": 0, "hints": 0, "details": 0, "plainCodeblocks": 0, "hint-ee": 0, "comments": 0}
     
     for i, line in enumerate(content):
         if line == "\n":
@@ -46,17 +46,19 @@ def getJekyllMetrics(content):
 
         ## Trap and skip inline docublocks extra line
         if re.search(r"{%.*arangoshexample", line, re.MULTILINE) and not re.search(r"{%.*endarangoshexample", line, re.MULTILINE) and not re.search(r"{%.*include.*arangoshexample", line, re.MULTILINE):
-            metrics["arangoshexamples"] += 1
             continue
 
         if re.search(r"{%.*aqlexample", line, re.MULTILINE) and not re.search(r"{%.*endaqlexample", line, re.MULTILINE) and not re.search(r"{%.*include.*aqlexample", line, re.MULTILINE):
-            metrics["aqlexamples"] += 1
             continue
 
 
         if "{:style=\"clear: left;\"}" in line or "{:class=\"lead\"}" in line:
             continue
 
+        if re.search(r"title: .+", line):
+            metrics["headers"] += 1
+            metrics["text"] += 1
+            continue
 
         ## Find headers
         if re.search(r"^={3,}|^-{3,}|^#{1,}", line, re.MULTILINE):
@@ -80,7 +82,7 @@ def getJekyllMetrics(content):
             continue
 
         ##Capture alternative
-        if "{% capture alternative %}" in line:
+        if "{% capture " in line:
             metrics["hints"] += 1
             continue
 
@@ -144,32 +146,35 @@ def getJekyllMetrics(content):
 
 def getHugoMetrics(content):
     flags = {"frontMatter": False, "endFrontMatter": False, "description": False, "title": False, "inCodeblock": False, "hint": {"active": False, "type": ""}, "capture": False, "inDocublock": False, "assign-ver": {"active": False, "isValid": False}}
-    metrics = {"text": 0, "arangoshexamples": 0, "aqlexamples": 0, "inlineDocublocks": 0, "httpDocublocks":0, "headers": 0, "hints": 0, "details": 0, "plainCodeblocks": 0, "hint-ee": 0, "comments": 0}
+    metrics = {"text": 0, "inlineDocublocks": 0, "httpDocublocks":0, "headers": 0, "hints": 0, "details": 0, "plainCodeblocks": 0, "hint-ee": 0, "comments": 0}
     
     for i, line in enumerate(content):
         if line == "\n":
             continue
 
+        if "{{< error-codes >}}" in line:
+            metrics["httpDocublocks"] += 1
+            continue
+
+        if re.search(r"title: .+", line):
+            metrics["headers"] += 1
+            metrics["text"] += 1
+            continue
 
         ## Find headers
-        if re.search(r"^#{1,}", line, re.MULTILINE):
-            if not flags["endFrontMatter"]:
-                flags["frontMatter"] = not flags["frontMatter"]
-                if not flags["frontMatter"]:
-                    flags["endFrontMatter"] = True
-                continue
-
+        if re.search(r"^#", line, re.MULTILINE):
             metrics["headers"] += 1
+            continue
 
         ##Hints
-        if re.search(r"{{< warning|{{< info|{{< danger|{{< success|{{< tip", line, re.MULTILINE):
+        if re.search(r"{{< warning|{{< info|{{< danger|{{< success|{{< tip|{{< security", line, re.MULTILINE):
             if flags["inDocublock"]:
                 continue
 
             metrics["hints"] += 1
             continue
 
-        if re.search(r"{{< /warning|{{< /info|{{< /danger|{{< /success|{{< /tip", line, re.MULTILINE):
+        if re.search(r"{{< /warning|{{< /info|{{< /danger|{{< /success|{{< /tip|{{< /security", line, re.MULTILINE):
             continue
 
         ## Details
@@ -187,23 +192,23 @@ def getHugoMetrics(content):
         
         ## Codeblocks
         if line.startswith("```"):
-            flags["inCodeblock"] = not flags["inCodeblock"]
-            if flags["inCodeblock"]:
-                metrics["plainCodeblocks"] += 1
+            if flags["inDocublock"]:
+                flags["inDocublock"] = False
+                continue
+            if i < len(content) - 1:
+                if content[i+1].startswith("---"):
+                    flags["inDocublock"] = True
+                    if not line.startswith("```curl"):
+                        metrics["inlineDocublocks"] += 1
+                else:
+                    flags["inCodeblock"] = not flags["inCodeblock"]
+                    if flags["inCodeblock"]:
+                        metrics["plainCodeblocks"] += 1
             continue
 
-
-        ## Inline Docublocks
-        if "@startDocuBlockInline" in line:
-            metrics["inlineDocublocks"] += 1
-            continue
-
-        if "@endDocuBlock" in line:
-            flags["inDocublock"] = False
-            continue
 
         ## Comments
-        if "{{% comment %}}" in line:
+        if "{{% comment %}}" in line or "{{%- comment %}}" in line:
             metrics["comments"] += 1
             continue
 
