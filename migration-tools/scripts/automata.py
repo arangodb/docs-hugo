@@ -293,7 +293,7 @@ def processFile(page, content):
             ##Hints
             if "{% hint " in line:
                 hintPart = line.split("%}")
-                hintType = hintPart[0].replace("{% hint '", "").replace("' ", "").replace("\n", "")
+                hintType = hintPart[0].replace("{% hint '", "").replace("' ", "").replace("\n", "").replace(" ", "")
                 if hintType == 'note':
                     hintType = 'tip'
 
@@ -335,11 +335,11 @@ def processFile(page, content):
             ## Details
             if "{% details" in line:
                 title = line.replace("{% details '", "").replace("' %}\n", "")
-                page.content = page.content + '{{{{% expand title="{}" %}}}}'.format(title)
+                page.content = page.content + '{{{{% expand title="{}" %}}}}\n'.format(title)
                 continue
 
             if "{% enddetail" in line:
-                page.content = page.content + "{{% /expand %}}"
+                page.content = page.content + "{{% /expand %}}\n"
                 continue
             
             ## Codeblocks
@@ -380,16 +380,17 @@ def processFile(page, content):
 
             ## Comments
             if "{% comment %}" in line or "{%- comment %}" in line:
-                line = line.replace("{%- comment %}", "{{% comment %}}").replace("{% comment %}", "{{% comment %}}")
+                line = line.replace("{%- comment %}", "{{%- comment %}}").replace("{% comment %}", "{{% comment %}}")
 
                 if "endcomment" in line:                            ## The comment is entirely in a single line
-                    line = line.replace("{% endcomment %}", "{{% /comment %}}").replace("{%- endcomment %}", "{{% /comment %}}")
+                    line = line.replace("{% endcomment %}", "{{% /comment %}}").replace("{%- endcomment %}", "{{%- /comment %}}")
                 
                 page.content = page.content + line
                 continue
 
-            if "{% endcomment %}" in line or "{%- endcomment %}" in line:
-                page.content = page.content + "{{% /comment %}}"
+            if "endcomment" in line:
+                line = line.replace("{% endcomment %}", "{{% /comment %}}").replace("{%- endcomment %}", "{{%- /comment %}}")
+                page.content = page.content + line
                 continue  
 
             ## Hint-ee
