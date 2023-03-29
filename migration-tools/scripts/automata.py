@@ -452,7 +452,7 @@ def processFrontMatterLine(page, line, flags):
 
     if line.startswith("description:"):
         flags["description"] = True
-        page.frontMatter.description = line.replace("description:", "")
+        page.frontMatter.description = line.replace("description: ", "")
         return
 
     if re.search(r"^[a-zA-Z]", line, re.MULTILINE):
@@ -462,6 +462,7 @@ def processFrontMatterLine(page, line, flags):
 
     if line.startswith(" "):
         if flags["description"]:
-            page.frontMatter.description = page.frontMatter.description + line
+            line = line.replace("  ", "")
+            page.frontMatter.description = page.frontMatter.description +  line
 
 
