@@ -121,14 +121,14 @@ def processDescriptions(data, k):
 
 def generateNewDesc(oldDesc):
     newDesc = ""
-    for line in desc.split("\n"):
+    for line in oldDesc.split("\n"):
         if re.search(r"{{< warning|{{< info|{{< danger|{{< success|{{< tip", line, re.MULTILINE):
             hintType = line.replace("{{< ", "").replace(" >}}", "")
             newDesc = f"```\n{newDesc}**{hintType.upper()}**:"
         elif re.search(r"{{< /warning|{{< /info|{{< /danger|{{< /success|{{< /tip", line, re.MULTILINE):
             newDesc = newDesc + f"```\n"
         else:
-            newDesc = newDesc + line
+            newDesc = newDesc + line + "\n"
 
     return newDesc
 
