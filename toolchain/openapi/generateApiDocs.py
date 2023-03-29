@@ -121,12 +121,19 @@ def processDescriptions(data, k):
 
 def generateNewDesc(oldDesc):
     newDesc = ""
+    firstCodeblock = True
     for line in oldDesc.split("\n"):
         if re.search(r"{{< warning|{{< info|{{< danger|{{< success|{{< tip", line, re.MULTILINE):
             hintType = line.replace("{{< ", "").replace(" >}}", "")
-            newDesc = f"```\n{newDesc}**{hintType.upper()}**:"
+            if firstCodeblock:
+                newDesc = f"```\n{newDesc}"
+            else:
+                newDesc = f"{newDesc}```\n"
+
+            newDesc = f"{newDesc}**{hintType.upper()}**:\n"
         elif re.search(r"{{< /warning|{{< /info|{{< /danger|{{< /success|{{< /tip", line, re.MULTILINE):
             newDesc = newDesc + f"```\n"
+            firstCodeblock = False
         else:
             newDesc = newDesc + line + "\n"
 
