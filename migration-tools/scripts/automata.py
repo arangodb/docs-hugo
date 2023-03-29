@@ -376,7 +376,6 @@ def processFile(page, content):
                 continue
 
             if flags["inDocublock"]:
-                processDocublockLine(page, line, flags)
                 continue
 
             ## Comments
@@ -464,6 +463,4 @@ def processFrontMatterLine(page, line, flags):
         if flags["description"]:
             page.frontMatter.description = page.frontMatter.description + line
 
-def processDocublockLine(page, line, flags):
-    return
 

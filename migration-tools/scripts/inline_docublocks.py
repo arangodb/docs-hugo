@@ -72,7 +72,7 @@ def render_codeblock(block):
 ---\n\
 {exampleOptions}\
 ---\
-{code}\n\
+{code}\
 ```\n\
 '
     return res
