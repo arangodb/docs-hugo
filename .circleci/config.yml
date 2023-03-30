@@ -150,15 +150,15 @@ workflows:
     jobs:
       - checkout:
           name: cloneMainRepo
-          repository: https://github.com/arangodb/arangodb
+          repository: git@github.com:arangodb/arangodb.git
           branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
       - checkout:
           name: cloneOldDocs
-          repository: https://github.com/arangodb/docs
+          repository: git@github.com:arangodb/docs.git
           branch: << pipeline.parameters.ARANGODB_DOCS_OLD_BRANCH >>  
       - checkout:
           name: cloneNewRepo
-          repository: https://github.com/arangodb/docs-hugo
+          repository: git@github.com:arangodb/docs-hugo.git
           branch: circle-ci  
       - migration:
           requires:
@@ -177,15 +177,15 @@ workflows:
     jobs:
       - checkout:
           name: cloneMainRepo
-          repository: https://github.com/arangodb/arangodb
+          repository: git@github.com:arangodb/arangodb.git
           branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
       - checkout:
           name: cloneOldDocs
-          repository: https://github.com/arangodb/docs
+          repository: git@github.com:arangodb/docs.git
           branch: << pipeline.parameters.ARANGODB_DOCS_OLD_BRANCH >>  
       - checkout:
           name: cloneNewRepo
-          repository: https://github.com/arangodb/docs-hugo
+          repository: git@github.com:arangodb/docs-hugo.git
           branch: circle-ci   
       - migration:
           requires:
