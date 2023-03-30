@@ -12,6 +12,7 @@ from globals import *
 import migrate_file
 import structure
 from definitions import *
+import automata
 
 
 def createStructure():
@@ -43,7 +44,7 @@ def processFiles():
 	print(f"----- STARTING CONTENT MIGRATION")
 	for root, dirs, files in os.walk(f"{NEW_TOOLCHAIN}/content/{version}", topdown=True):
 		for file in files:
-			migrate_file.migrate(f"{root}/{file}".replace("\\", "/"))
+			automata.migrate(f"{root}/{file}".replace("\\", "/"))
 	print("------ DONE\n")
 
 def checkUnusedDocublocks():
@@ -53,6 +54,26 @@ def checkUnusedDocublocks():
 			print(f"WARNING: Unused Docublock Found - {docuBlock}")
 	print("----- DONE\n")
 
+def checkMetrics():
+	for filename, metric in metrics.items():
+		if filename == "total":
+			continue
+
+		jekyll = metric["old"]
+		hugo = metric["new"]
+
+		#print(jekyll)
+		#print(hugo)
+
+		for element, value in jekyll.items():
+			if element == "text" or element == "headers":
+				continue
+
+			if hugo[element] != value:
+				print(f"[METRICS] Inconsistency in {filename}\n{element}")
+				print(f"jekyll {value}")
+				print(f"Hugo {hugo[element]}")
+		
 
 def writeOpenapiComponents():
 	print(f"----- SAVING OPENAPI DEFINITIONS ON FILE")
@@ -81,6 +102,8 @@ if __name__ == "__main__":
 		initBlocksFileLocations()
 		processFiles()
 		checkUnusedDocublocks()
+		checkMetrics()
+
 		writeOpenapiComponents()
 		migrate_media()
 	except Exception as ex:
