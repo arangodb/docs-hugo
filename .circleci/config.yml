@@ -155,7 +155,7 @@ workflows:
       - checkout:
           name: cloneOldDocs
           repository: https://github.com/arangodb/docs
-          branch: << pipeline.parameters.ARANOGODB_DOCS_OLD_BRANCH >>  
+          branch: << pipeline.parameters.ARANGODB_DOCS_OLD_BRANCH >>  
       - checkout:
           name: cloneNewRepo
           repository: https://github.com/arangodb/docs-hugo
@@ -182,7 +182,7 @@ workflows:
       - checkout:
           name: cloneOldDocs
           repository: https://github.com/arangodb/docs
-          branch: << pipeline.parameters.ARANOGODB_DOCS_OLD_BRANCH >>  
+          branch: << pipeline.parameters.ARANGODB_DOCS_OLD_BRANCH >>  
       - checkout:
           name: cloneNewRepo
           repository: https://github.com/arangodb/docs-hugo
