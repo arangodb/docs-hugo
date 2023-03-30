@@ -214,3 +214,10 @@
 .response-code.clicked {
     background-color: #dddfd9;
 }
+
+.no-border {
+    margin-right: 0;
+    border: 0;
+    border-radius: 0;
+    padding: 0;
+}

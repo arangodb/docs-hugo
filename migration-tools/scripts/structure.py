@@ -2,9 +2,9 @@ import yaml
 from pathlib import Path
 import re
 import shutil
+from automata import cleanLine
 
 from globals import *
-import migrate_file
 
 
 def migrateStructure(label, document, manual, i):
@@ -51,9 +51,9 @@ def create_index(label, item, extendedSection, i):
 	folderName = item["text"].lower().replace(" ", "-").replace("/", "")
 	label = label + "/" + folderName
 
-	Path(migrate_file.cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}')).mkdir(parents=True, exist_ok=True)
+	Path(cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}')).mkdir(parents=True, exist_ok=True)
 
-	indexPath = migrate_file.cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}/_index.md')
+	indexPath = cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}/_index.md')
 	oldFilePath = f'{OLD_TOOLCHAIN}/{version}/{extendedSection}{oldFileName}'
 	shutil.copyfile(oldFilePath, indexPath)
 
@@ -69,9 +69,9 @@ def create_index_empty(label, item, extendedSection, i):
 	folderName = item["text"].lower().replace(" ", "-").replace("/", "")
 	label = label + "/" + folderName
 
-	Path(migrate_file.cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}')).mkdir(parents=True, exist_ok=True)
+	Path(cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}')).mkdir(parents=True, exist_ok=True)
 
-	indexPath = migrate_file.cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}/_index.md')
+	indexPath = cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}/_index.md')
 
 	infos[indexPath] = {
 		"title": f'\'{item["text"]}\'' if '@' in item["text"] else item["text"],
@@ -90,7 +90,7 @@ def create_files_new(label, item, extendedSection, i):
 	if label == '':
 		return create_file_no_label(item, extendedSection, i)
 
-	filePath = migrate_file.cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}/{oldFileName}')
+	filePath = cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}/{oldFileName}')
 
 	try:
 		shutil.copyfile(oldFilePath, filePath)
@@ -112,9 +112,9 @@ def create_file_no_label(item, extendedSection, i):
 	oldFilePath = f'{OLD_TOOLCHAIN}/{version}/{extendedSection}{oldFileName}'.replace("//", "/")
 
 	label = oldFileName.replace(".md", "")
-	Path(migrate_file.cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}')).mkdir(parents=True, exist_ok=True)
+	Path(cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}')).mkdir(parents=True, exist_ok=True)
 
-	filePath = migrate_file.cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}/_index.md')
+	filePath = cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}/_index.md')
 
 	try:
 		shutil.copyfile(oldFilePath, filePath)

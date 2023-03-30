@@ -28,26 +28,12 @@ ARANGO_MAIN = main
 
 infos = {"": {}}
 urlMap = {version: {}}
-
-## Regexes
-frontMatterCapture = r"(?<=---\n)(.*?)(?=---)"
-widgetRegex = r"{% .* %}[\n]+.*[\n]+{% .* %}"
+metrics = {"total": {}}
 
 ## DocuBlocks
 ALL_COMMENTS_FILE = f"{OLD_TOOLCHAIN}/{version}/generated/allComments.txt"
-OAPI_COMPONENTS_FILE = f"{NEW_TOOLCHAIN}/data/components.yaml"
 OLD_GENERATED_FOLDER = f"{OLD_TOOLCHAIN}/{version}/generated/Examples"
 
 blocksFileLocations = {}
 components = {"schemas": {}, "parameters": [], "securitySchemes": [], "requestBodies": [], "responses": [], "headers": [], "links": [], "callbacks": []}
 
-static_replacements = {
-    "comments": {
-        "{% comment %}": "{{% comment %}}",
-        "{% endcomment %}": "{{% /comment %}}",
-        "{%- comment %}": "{{% comment %}}",
-        "{%- endcomment %}": "{{% /comment %}}",
-        #"<!--": "{{% comment %}}\n",
-        #"-->": "\n{{% /comment %}}"
-    }
-}
