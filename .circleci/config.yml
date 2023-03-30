@@ -1,5 +1,19 @@
 version: 2.1
 
+parameters:
+  WORKFLOW:
+    type: enum
+    enum: [plain-build, generate]
+    default: plain-build
+    
+  ARANGODB_MAIN_BRANCH:
+    type: string
+    default: "devel"
+
+  ARANGODB_DOCS_OLD_BRANCH:
+    type: string
+    default: "main"
+  
 
 jobs:
   checkout: #Checkout a desired repository
