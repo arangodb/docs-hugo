@@ -5,7 +5,7 @@ parameters:
     type: enum
     enum: [plain-build, generate]
     default: plain-build
-    
+
   ARANGODB_MAIN_BRANCH:
     type: string
     default: "devel"
@@ -146,15 +146,16 @@ jobs:
 
 workflows:
   plain:
+    when: { equal: [ plain-build, << pipeline.parameters.WORKFLOW >> ] }
     jobs:
       - checkout:
           name: cloneMainRepo
           repository: https://github.com/arangodb/arangodb
-          branch: main
+          branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
       - checkout:
           name: cloneOldDocs
           repository: https://github.com/arangodb/docs
-          branch: main  
+          branch: << pipeline.parameters.ARANOGODB_DOCS_OLD_BRANCH >>  
       - checkout:
           name: cloneNewRepo
           repository: https://github.com/arangodb/docs-hugo
@@ -172,15 +173,16 @@ workflows:
             - plain-build
     
   generate:
+    when: { equal: [ generate, << pipeline.parameters.WORKFLOW >> ] }
     jobs:
       - checkout:
           name: cloneMainRepo
           repository: https://github.com/arangodb/arangodb
-          branch: main
+          branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
       - checkout:
           name: cloneOldDocs
           repository: https://github.com/arangodb/docs
-          branch: main  
+          branch: << pipeline.parameters.ARANOGODB_DOCS_OLD_BRANCH >>  
       - checkout:
           name: cloneNewRepo
           repository: https://github.com/arangodb/docs-hugo
