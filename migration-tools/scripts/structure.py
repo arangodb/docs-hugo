@@ -27,7 +27,7 @@ def migrateStructure(label, document, manual, i):
 			continue
 
 		if "divider" in item:
-			label = ""
+			label = extendedSection
 			continue
 
 		if "subtitle" in item:
