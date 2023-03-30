@@ -12,6 +12,7 @@ migration-tools/scripts/*/*.tar.gz
 migration-tools/arangodb*/
 migration-tools/migration/structure.py
 migration-tools/migration/*.txt
+migration-tools/scripts/urls.json
 site/resources
 .vagrant/
 
