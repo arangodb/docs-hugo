@@ -100,42 +100,36 @@ def explodeNestedStructs(data, target, k):
                 setInDict(components, k + "/" + key, components["schemas"][value[target]])
     
 
-def migrateHTTPDocuBlocks(paragraph):
-    docuBlockNameRe = re.findall(r"(?<={% docublock ).*(?= %})", paragraph)
-    for docuBlock in docuBlockNameRe:
-        if 'errorCodes' in docuBlock:
-            paragraph = paragraph.replace("{% docublock errorCodes %}", "{{< error-codes >}}")
-            continue
-        docuBlockName = docuBlock.split(",")[0] 
-        docuBlockFile = blocksFileLocations[docuBlockName]["path"]
-        tag = docuBlockFile.split("/")[len(docuBlockFile.split("/"))-2]
-        try:
-            docuBlockFile = open(docuBlockFile, "r", encoding="utf-8").read()
-        except FileNotFoundError as ex: 
-            print(f"[ERROR] Cannot open docublock file {docuBlockFile} - {ex}")
-            #traceback.print_exc()
-            continue
-        blocksFileLocations[docuBlockName]["processed"] = True
+def migrateHTTPDocuBlocks(docublock):
+    if 'errorCodes' in docublock:
+        return "{{< error-codes >}}"
+    if 'documentRevision' in docublock:
+        return ""
 
-        declaredDocuBlocks = re.findall(r"(?<=@startDocuBlock )(.*?)@endDocuBlock", docuBlockFile, re.MULTILINE | re.DOTALL)
+    docuBlockName = docublock.split(",")[0] 
+    docuBlockFile = blocksFileLocations[docuBlockName]["path"]
+    tag = docuBlockFile.split("/")[len(docuBlockFile.split("/"))-2]
+    try:
+        docuBlockFile = open(docuBlockFile, "r", encoding="utf-8").read()
+    except FileNotFoundError as ex: 
+        print(f"[ERROR] Cannot open docublock file {docuBlockFile} - {ex}")
+        traceback.print_exc()
+        raise ex
+        
+    blocksFileLocations[docuBlockName]["processed"] = True
 
-        for block in declaredDocuBlocks:
-            if block.split("\n")[0] == docuBlockName:
-                if docuBlockName == "documentRevision":
-                    revisionContent = re.search(r"(?<=documentRevision\n\n)(.*?)", block, re.MULTILINE | re.DOTALL).group(0)
-                    paragraph = paragraph.replace("{% docublock "+ docuBlock + " %}", revisionContent)
-                    continue
-                
-                headerLevel = 3
-                if re.search(r"h\d", docuBlock):
-                    headerLevel = int(re.search(r"h\d", docuBlock).group(0).replace("h", ""))
-                
-                newBlock = processHTTPDocuBlock(block, tag, headerLevel)
-                paragraph = paragraph.replace("{% docublock "+ docuBlock + " %}", newBlock, 1)
+    declaredDocuBlocks = re.findall(r"(?<=@startDocuBlock )(.*?)@endDocuBlock", docuBlockFile, re.MULTILINE | re.DOTALL)
 
-    paragraph = re.sub(r"```\n{3,}", "```\n\n", paragraph, 0, re.MULTILINE)
+    for block in declaredDocuBlocks:
+        if block.split("\n")[0] == docuBlockName:
+            
+            headerLevel = 3
+            if re.search(r"h\d", docublock):
+                headerLevel = int(re.search(r"h\d", docublock).group(0).replace("h", ""))
+            
+            newBlock = processHTTPDocuBlock(block, tag, headerLevel)
+            return newBlock
 
-    return paragraph
 
 def processHTTPDocuBlock(docuBlock, tag, headerLevel):
     blockExamples = processExamples(docuBlock)
@@ -173,7 +167,6 @@ def processHTTPDocuBlock(docuBlock, tag, headerLevel):
 
         try:
             for line in block.rstrip().split("\n"):
-                print(line)
                 if "{% hint " in line:
                     currentHint = line.replace("{% hint '", "").replace("' %}", "")
                     line = f"{{{{< {currentHint} >}}}}\n"
