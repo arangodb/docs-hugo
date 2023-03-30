@@ -12,6 +12,7 @@ from globals import *
 import migrate_file
 import structure
 from definitions import *
+from http_docublocks import createComponentsIn1StructsFile, explodeNestedStructs
 import automata
 
 
@@ -38,6 +39,8 @@ def initBlocksFileLocations():
 
 			blocksFileLocations[blockName] = {"path": fileLocation, "processed": False}
 	components["schemas"] = definitions
+	createComponentsIn1StructsFile()
+
 	print("----- DONE\n")
     
 def processFiles():
@@ -74,13 +77,6 @@ def checkMetrics():
 				print(f"jekyll {value}")
 				print(f"Hugo {hugo[element]}")
 		
-
-def writeOpenapiComponents():
-	print(f"----- SAVING OPENAPI DEFINITIONS ON FILE")
-	with open(OAPI_COMPONENTS_FILE, 'w', encoding="utf-8") as outfile:
-		yaml.dump(components, outfile, sort_keys=False, default_flow_style=False)
-	print("----- DONE\n")
-
 def migrate_media():
 	print("----- MIGRATING MEDIA")
 	Path(f"{NEW_TOOLCHAIN}/assets/images/").mkdir(parents=True, exist_ok=True)
@@ -103,8 +99,6 @@ if __name__ == "__main__":
 		processFiles()
 		checkUnusedDocublocks()
 		checkMetrics()
-
-		writeOpenapiComponents()
 		migrate_media()
 	except Exception as ex:
 		print(traceback.format_exc())

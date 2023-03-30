@@ -4,6 +4,11 @@ import yaml
 import traceback
 from definitions import *
 from globals import *
+from pathlib import Path
+
+from functools import reduce  # forward compatibility for Python 3
+import operator
+
 
 swaggerBaseTypes = [
     '',
@@ -21,7 +26,8 @@ swaggerBaseTypes = [
     'date',
     'dateTime',
     'password',
-    'int64'
+    'int64',
+    'date-time'
 ]
 
 def str_presenter(dumper, data):
@@ -35,53 +41,152 @@ def str_presenter(dumper, data):
 
 yaml.add_representer(str, str_presenter)
 yaml.representer.SafeRepresenter.add_representer(str, str_presenter) # to use with safe_dum
+yaml.Dumper.ignore_aliases = lambda *args : True
 
-def migrateHTTPDocuBlocks(docublockName):
-    if 'errorCodes' in docublockName:
+def createComponentsIn1StructsFile():
+    for p in Path(f"{ARANGO_MAIN}/Documentation/DocuBlocks/Rest").rglob("1_struct*.md"):
+        print(f"1 struct {p}")
+        try:
+            f = open(str(p), "r", encoding="utf-8").readlines()
+        except FileNotFoundError as ex:
+            raise ex
+
+        buffer = []
+        for line in f:
+            if line == "\n" and len(buffer) == 0:
+                continue
+
+            if line.startswith("@RESTSTRUCT"):       ## a new struct is beginning, process the buffer of the previous struct and start a new buffer
+                if len(buffer) == 0:                 ## case i=0 starting the file, the buffer is empty so we fill it with the new struct incoming
+                    buffer = [line]
+                    continue
+
+                processComponents("".join(buffer))
+                buffer = [line]
+                continue
+
+            buffer.append(line)                     ## append the description line to the current struct buffer
+
+        processComponents("\n".join(buffer))        ## this will process the last struct in the file with remaining strings in the buffer
+
+    explodeNestedStructs(components, "$ref", "")
+
+
+
+def getFromDict(dataDict, mapList):
+    return reduce(operator.getitem, mapList, dataDict)
+
+def setInDict(dataDict, mapList, value):
+    mapList = mapList.split("/")[1:]
+    getFromDict(dataDict, mapList[:-1])[mapList[-1]] = value
+
+def delFromDict(dataDict, mapList):
+    mapList = mapList.split("/")[1:]
+    del getFromDict(dataDict, mapList[:-1])[mapList[-1]]
+
+def explodeNestedStructs(data, target, k):
+    for key, value in data.items():
+        if not target in value:
+            if isinstance(value, dict):
+                explodeNestedStructs(value, target, k + "/" + key)
+        else:
+            if "type" in value:
+                structName = value["$ref"]
+                delFromDict(components, f"{k}/{key}/$ref")
+                setInDict(components, f"{k}/{key}/properties", components["schemas"][structName]["properties"])
+                if "required" in components["schemas"][structName]:
+                    setInDict(components, f"{k}/{key}/required", components["schemas"][structName]["required"])
+            else:
+                setInDict(components, k + "/" + key, components["schemas"][value[target]])
+    
+
+def migrateHTTPDocuBlocks(docublock):
+    if 'errorCodes' in docublock:
         return "{{< error-codes >}}"
-    if 'documentRevision' in docublockName:
+    if 'documentRevision' in docublock:
         return ""
 
-    docuBlockFile =blocksFileLocations[docublockName]["path"]
+    docuBlockName = docublock.split(",")[0] 
+    docuBlockFile = blocksFileLocations[docuBlockName]["path"]
     tag = docuBlockFile.split("/")[len(docuBlockFile.split("/"))-2]
     try:
         docuBlockFile = open(docuBlockFile, "r", encoding="utf-8").read()
-    except FileNotFoundError as ex:
+    except FileNotFoundError as ex: 
+        print(f"[ERROR] Cannot open docublock file {docuBlockFile} - {ex}")
+        traceback.print_exc()
         raise ex
+        
+    blocksFileLocations[docuBlockName]["processed"] = True
 
-    blocksFileLocations[docublockName]["processed"] = True
     declaredDocuBlocks = re.findall(r"(?<=@startDocuBlock )(.*?)@endDocuBlock", docuBlockFile, re.MULTILINE | re.DOTALL)
 
     for block in declaredDocuBlocks:
-        if block.startswith(docublockName):
-            newBlock = processHTTPDocuBlock(block, tag)
-
+        if block.split("\n")[0] == docuBlockName:
+            
+            headerLevel = 3
+            if re.search(r"h\d", docublock):
+                headerLevel = int(re.search(r"h\d", docublock).group(0).replace("h", ""))
+            
+            newBlock = processHTTPDocuBlock(block, tag, headerLevel)
             return newBlock
-            #print(paragraph)
 
 
-def processHTTPDocuBlock(docuBlock, tag):
+def processHTTPDocuBlock(docuBlock, tag, headerLevel):
     blockExamples = processExamples(docuBlock)
 
     docuBlock = re.sub(r"@EXAMPLES.*", "", docuBlock, 0, re.MULTILINE | re.DOTALL)
     newBlock = {"paths": {}}
     url, verb, currentRetStatus = "", "", 0
     docuBlock = docuBlock + "\n" + "@ENDRESPONSES"
-    title = ""
+    title, description = "", ""
+
+    blocks = re.findall(r"@RESTSTRUCT{(.*?)^(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
+    for block in blocks:
+        try:
+            processComponents(block)
+        except Exception as ex:
+            print(f"Exception occurred for block {block}\n{ex}")
+            traceback.print_exc()
+            exit(1)
+    
+    explodeNestedStructs(components, "$ref", "")
 
     blocks = re.findall(r"@RESTHEADER{(.*?)^(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
         try:
             url, verb, title = processHeader(block, newBlock)
+            title = "#" * headerLevel + " " + title
         except Exception as ex:
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
             exit(1)
 
+    blocks = re.findall(r"(?<=@HINTS\n)(.*?)(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
+    for block in blocks:
+        currentHint = ""
+
+        try:
+            for line in block.rstrip().split("\n"):
+                if "{% hint " in line:
+                    currentHint = line.replace("{% hint '", "").replace("' %}", "")
+                    line = f"{{{{< {currentHint} >}}}}\n"
+                    description = description + line
+                elif "{% endhint " in line:
+                    line = f"{{{{< /{currentHint} >}}}}\n"
+                    description = description + line
+                else:
+                    description = description + line + "\n"
+        except Exception as ex:
+            print(f"Exception occurred for block {block}\n{ex}")
+            traceback.print_exc()
+            exit(1)
+    if len(blocks) > 0:
+        description = description + "\n"
+
     blocks = re.findall(r"(?<=@RESTDESCRIPTION\n)(.*?)(?=\n@)", docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
         try:
-            newBlock["paths"][url][verb]["description"] = block + "\n"
+            description = description + block + "\n"
         except Exception as ex:
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
@@ -106,7 +211,7 @@ def processHTTPDocuBlock(docuBlock, tag):
             print(f"Exception occurred for block {block}\n{ex}")
             traceback.print_exc()
             exit(1)
-        x = newBlock["paths"][url][verb]["responses"]
+
         block = block + "\n" + "@ENDREPLYBODY"
         responseBodies = re.findall(r"@RESTREPLYBODY{(.*?)^(?=@)",  block,  re.MULTILINE | re.DOTALL)
         for responseBody in responseBodies:
@@ -117,15 +222,8 @@ def processHTTPDocuBlock(docuBlock, tag):
                 traceback.print_exc()
                 exit(1)
 
-    blocks = re.findall(r"@RESTSTRUCT{(.*?)^(?=@)", docuBlock, re.MULTILINE | re.DOTALL)
-    for block in blocks:
-        try:
-            processComponents(block)
-        except Exception as ex:
-            print(f"Exception occurred for block {block}\n{ex}")
-            traceback.print_exc()
-            exit(1)
-
+    
+    newBlock["paths"][url][verb]["description"] = description
     newBlock["paths"][url][verb]["tags"] = [tag]
     yml = render_yaml(newBlock, title)
     
@@ -230,18 +328,18 @@ def processRequestBody(docuBlock, newBlock):
     except Exception:
         pass
 
+    paramBlock["description"] = description
+
     if typ == "array":
         if not subtype in swaggerBaseTypes:
-            paramBlock = {"type": "array", "items": {"$ref": f"#/components/schemas/{subtype}"}}
+            paramBlock.update({"type": "array", "items": components["schemas"][subtype]})
         else:
-            paramBlock = {"type": "array", "items": {"type": subtype}}
+            paramBlock.update({"type": "array", "items": {"type": subtype}})
     else:
         if not subtype in swaggerBaseTypes:
-            paramBlock = {"$ref": f"#/components/schemas/{subtype}"}
+            paramBlock.update(components["schemas"][subtype])
         else:
-            paramBlock = {"type": typ}
-
-    paramBlock["description"] = description
+            paramBlock.update({"type": typ})
 
     if name == '':
         newBlock["requestBody"]["content"]["application/json"]["schema"] = paramBlock
@@ -286,18 +384,18 @@ def processResponseBody(docuBlock, newBlock, statusCode):
     except Exception:
         pass
 
+    paramBlock["description"] = description
+
     if typ == "array":
         if not subtype in swaggerBaseTypes:
-            paramBlock = {"type": "array", "items": {"$ref": f"#/components/schemas/{subtype}"}}
+            paramBlock.update({"type": "array", "items":components["schemas"][subtype]})
         else:
-            paramBlock = {"type": "array", "items": {"type": subtype}}
+            paramBlock.update({"type": "array", "items": {"type": subtype}})
     else:
         if not subtype in swaggerBaseTypes:
-            paramBlock = {"$ref": f"#/components/schemas/{subtype}"}
+            paramBlock.update(components["schemas"][subtype])
         else:
-            paramBlock = {"type": typ}
-
-    paramBlock["description"] = description
+            paramBlock.update({"type": typ})
 
     if name == '':
         newBlock[statusCode]["content"]["application/json"]["schema"] = paramBlock
@@ -314,35 +412,40 @@ def processResponseBody(docuBlock, newBlock, statusCode):
     return
 
 def processComponents(block):
-    args = block.split("\n")[0].strip("}").split(",") 
+    args = block.split("\n")[0].strip("}").replace("@RESTSTRUCT{", "").split(",")
     
     description = "\n".join(block.split("\n")[1:]) + "\n"
     structName, paramName, paramType, paramRequired, paramSubtype = args[1], args[0], args[2], args[3], args[4]
     structProperty = {
-        "type": paramType,
         "description": description,
+        "type": paramType,
     }    
 
-    if paramSubtype != "string":
-        structProperty["format"] = paramSubtype
-
-    if paramType == "array":
-        structProperty.pop("format", None)
-        key = "type"
-        if not paramSubtype in swaggerBaseTypes:
-            key = "$ref"
-            paramSubtype = "#/components/schemas/" + paramSubtype
-
-        structProperty["items"] = {key: paramSubtype if paramSubtype != "" else "string"}
+    if not paramSubtype in swaggerBaseTypes:
+        if paramType == "array":
+            structProperty["items"] = {"$ref": paramSubtype}
+        else:
+            structProperty["$ref"] = paramSubtype
+    else:
+        if paramType == "array":
+            structProperty["items"] = {"type": paramSubtype}
 
     if structName in components["schemas"]:
+        if paramRequired == "required":
+            if not "required" in components["schemas"][structName]:
+                components["schemas"][structName]["required"] = []
+
+            components["schemas"][structName]["required"].append(paramName)
+
         components["schemas"][structName]["properties"][paramName] = structProperty
         return
 
     components["schemas"][structName] = {
         "type": "object",
-        "properties": {paramName: structProperty}
-            }
+        "properties": {paramName: structProperty},
+    }
+    if paramRequired == "required":
+        components["schemas"][structName]["required"] = [paramName]
     return
 
 ####    YAML WRITERS
@@ -356,11 +459,11 @@ def render_yaml(block, title):
     blockYaml = yaml.dump(block, sort_keys=False, default_flow_style=False, Dumper=CustomizedDumper)
     res = f'\
 ```openapi\n\
-### {title}\n\
+{title}\n\
 \n\
 {blockYaml}\
 ```'
-    res = res.replace("@endDocuBlock", "")   
+    res = res.replace("@endDocuBlock", "")
     #res = re.sub(r"^ *$\n", '', res, 0, re.MULTILINE | re.DOTALL)
     res = re.sub(r"\|.*", '|', res, 0, re.MULTILINE)
     return res

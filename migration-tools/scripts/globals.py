@@ -41,7 +41,6 @@ widgetRegex = r"{% .* %}[\n]+.*[\n]+{% .* %}"
 
 ## DocuBlocks
 ALL_COMMENTS_FILE = f"{OLD_TOOLCHAIN}/{version}/generated/allComments.txt"
-OAPI_COMPONENTS_FILE = f"{NEW_TOOLCHAIN}/data/components.yaml"
 OLD_GENERATED_FOLDER = f"{OLD_TOOLCHAIN}/{version}/generated/Examples"
 
 blocksFileLocations = {}
