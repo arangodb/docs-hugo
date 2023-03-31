@@ -17,7 +17,7 @@ var help, cleanCache bool
 
 // Pre-Run Setup
 func init() {
-	flag.StringVar(&configFile, "config", "./configs/local.json", "path of config file")
+	flag.StringVar(&configFile, "config", "./configs/local.yaml", "path of config file")
 	flag.BoolVar(&help, "help", false, "Display help usage")
 	flag.BoolVar(&cleanCache, "no-cache", false, "Reset cache")
 	flag.Parse()
@@ -30,7 +30,6 @@ func init() {
 
 	internal.InitLog(config.Conf.Log)
 	internal.InitRepositories()
-	//internal.RepositoriesHealthCheck()
 	utils.LoadDatasets(config.Conf.Datasets)
 
 	common.Logger.Println(startupBanner)

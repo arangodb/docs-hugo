@@ -16,7 +16,7 @@ func Exec(command string, repository config.Repository) (output string) {
 	commonFunctions, _ := utils.GetCommonFunctions()
 	command = fmt.Sprintf("%s\n%s", commonFunctions, command)
 
-	arangoSHBin := fmt.Sprintf("/home/arangosh/%s/bin/arangosh", repository.Version)
+	arangoSHBin := fmt.Sprintf("/home/arangosh/%s/bin/arangosh", repository.Name)
 
 	cmd := exec.Command("bash", "-c", arangoSHBin+" --server.endpoint "+repository.Url)
 

@@ -1,24 +1,5 @@
 #!/bin/bash
 
-# docker network inspect docs_net >/dev/null 2>&1 || docker network create --driver=bridge --subnet=192.168.129.0/24 docs_net
-
-
-# docker container stop test_docker >/dev/null 2>&1
-
-# mkdir -p ../.arangosh/test/bin arangosh/test/usr arangosh/test/etc/relative
-
-# docker run -e ARANGO_NO_AUTH=1 --net docs_net --ip 192.168.129.10 --name test_docker -d arangodb/arangodb arangod \
-#   --server.endpoint tcp://0.0.0.0:8529\
-
-# docker cp test_docker:/usr/bin arangosh/test/usr
-# docker cp test_docker:/usr/share/arangodb3 arangosh/test/share
-# docker cp test_docker:/usr/share/doc arangosh/test/share
-# docker cp test_docker:/usr/share/man arangosh/test/share
-# docker cp test_docker:/etc/arangodb3/arangosh.conf arangosh/test/etc/relative/arangosh.conf
-
-function download_server_image() {
-
-}
 
 function start_server() {
   name=$1
@@ -31,8 +12,10 @@ function start_server() {
   docker network inspect docs_net >/dev/null 2>&1 || docker network create --driver=bridge --subnet=192.168.129.0/24 docs_net
 
   docker container stop "$name" >/dev/null 2>&1
+  docker container rm "$name" >/dev/null 2>&1
 
-  mkdir -p ../.arangosh/"$name"/bin arangosh/test/usr arangosh/"$name"/etc/relative
+
+  mkdir -p ../.arangosh/"$name"/bin arangosh/"$name"/usr arangosh/"$name"/etc/relative
 
   echo "[START_SERVER] Run server"
   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name" -d "$image" arangod \
@@ -49,16 +32,35 @@ function start_server() {
   ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$name")
   echo "IP: "$ip""
 
+  printf -v url "http://%s:8529" $ip
+
   echo "[START_SERVER] Copy server configuration in arangoproxy repositories"
-  cd ../arangoproxy/cmd/configs
+  yq e '.repositories += [{"name": "'"$name"'", "image": "'"$image"'", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
 }
 
+
+
+
+
+## MAIN
+
+if ! command -v yq &> /dev/null
+then
+    wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_"$ARCH" -O /usr/bin/yq &&\
+    chmod +x /usr/bin/yq
+fi
+
+# Start arangodb servers defined in servers.yaml
 mapfile servers < <(yq e -o=j -I=0 '.[]' servers.yaml )
 
+yq '.repositories = []' -i ../arangoproxy/cmd/configs/local.yaml 
+
 for server in "${servers[@]}"; do
-    # identity mapping is a yaml snippet representing a single entry
     name=$(echo "$server" | yq e '.name' -)
     image=$(echo "$server" | yq e '.image' -)
     version=$(echo "$server" | yq e '.version' -)
     start_server "$name" "$image" "$version"
 done
+
+docker compose --env-file ../docker-env/dev.env up --build
+

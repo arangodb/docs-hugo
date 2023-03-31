@@ -1,17 +1,17 @@
 package config
 
 import (
-	"encoding/json"
 	"os"
+
+	"gopkg.in/yaml.v3"
 )
 
 type Config struct {
-	WebServer    string       `json:"webserver"`    // Arangoproxy url+port
-	Repositories []Repository `json:"repositories"` // ArangoDB instances
-	Cache        string       `json:"cache"`        // Cache configuration
-	Log          string       `json:"logFile"`      // Logfile
-	Datasets     string       `json:"datasetsFile"` // Logfile
-	OpenApi      OpenApi      `json:"openapi"`      // OpenApi files configuration
+	WebServer    string       `yaml:"webserver"`    // Arangoproxy url+port
+	Repositories []Repository `yaml:"repositories"` // ArangoDB instances
+	Cache        string       `yaml:"cache"`        // Cache configuration
+	Log          string       `yaml:"logFile"`      // Logfile
+	Datasets     string       `yaml:"datasetsFile"` // Logfile
 }
 
 var Conf Config
@@ -22,37 +22,13 @@ func LoadConfig(file string) error {
 		return err
 	}
 
-	err = json.Unmarshal(fileStream, &Conf)
+	err = yaml.Unmarshal(fileStream, &Conf)
 	return err
 }
 
 type Repository struct {
-	Type           string           `json:"type"` // ArangoDB instance type: nightly, release, stable ....
-	Version        string           `json:"version"`
-	Url            string           `json:"url"`                       // Instance URL+Port to connect to
-	Authentication []Authentication `json:"authentications,omitempty"` // Instance authentication
-	Password       string           `json:"password"`                  // Temporary workaround for authentication to be implemented
-}
-
-type OpenApi struct {
-	ApiDocsFile    string `json:"apiDocsFile"`    // Filepath of the api-docs.json
-	ComponentsFile string `json:"componentsFile"` // Filepath of the components.yaml file where common schemas are stored
-}
-
-type CacheConfig struct {
-	RequestsFile  string `json:"requestsFile"`  // Fileapth of requests cache
-	ResponsesFile string `json:"responsesFile"` // Filepath of responses cache
-}
-
-type Authentication interface {
-	Authenticate()
-}
-
-type UserPassAuthentication struct {
-	User string
-	Pass string
-}
-
-func (auth UserPassAuthentication) Authenticate() {
-
+	Name    string `yaml:"name"` // ArangoDB instance name
+	Image   string `yaml:"image"`
+	Version string `yaml:"version"`
+	Url     string `yaml:"url"` // Instance URL+Port to connect to
 }

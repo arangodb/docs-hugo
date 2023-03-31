@@ -2,4 +2,4 @@ webserver: ':8080'
 logFile: log.txt
 datasetsFile: '../internal/aql/datasets.json'
 cache: 'etc/arangoproxy/cache.json'
-servers:
+
