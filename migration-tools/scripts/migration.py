@@ -24,10 +24,6 @@ def createStructure():
 	structure.migrateStructure('aql', None, "aql", 2)
 	structure.migrateStructure('drivers', None, "drivers", 4)
 
-	urlMapFile = open("urls.json", "w")
-	json.dump(urlMap, urlMapFile, indent=4)
-	urlMapFile.close()
-
 	print("----- DONE\n")
 
 def initBlocksFileLocations():
@@ -53,7 +49,12 @@ def processFiles():
 	for root, dirs, files in os.walk(f"{NEW_TOOLCHAIN}/content/{version}", topdown=True):
 		for file in files:
 			automata.migrate(f"{root}/{file}".replace("\\", "/"))
+
+	urlMapFile = open("urls.json", "w")
+	json.dump(urlMap, urlMapFile, indent=4)
+	urlMapFile.close()
 	print("------ DONE\n")
+
 
 def checkUnusedDocublocks():
 	print(f"----- CHECK FOR UNUSED DOCUBLOCKS")
