@@ -1050,3 +1050,7 @@ blockquote p {
     font-weight: 700;
     color: var(--SIDEBAR-ENTRY-COLOR);
 }
+
+.hidden {
+    display: none;
+}

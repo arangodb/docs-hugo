@@ -12,6 +12,8 @@ from globals import *
 import migrate_file
 import structure
 from definitions import *
+from http_docublocks import createComponentsIn1StructsFile, explodeNestedStructs
+import automata
 
 
 def createStructure():
@@ -35,23 +37,46 @@ def initBlocksFileLocations():
 
 			blockName = re.findall(r"(?<=@startDocuBlock ).*", docuBlock)[0]
 
-			blocksFileLocations[blockName] = fileLocation
+			blocksFileLocations[blockName] = {"path": fileLocation, "processed": False}
 	components["schemas"] = definitions
+	createComponentsIn1StructsFile()
+
 	print("----- DONE\n")
     
 def processFiles():
 	print(f"----- STARTING CONTENT MIGRATION")
 	for root, dirs, files in os.walk(f"{NEW_TOOLCHAIN}/content/{version}", topdown=True):
 		for file in files:
-			migrate_file.migrate(f"{root}/{file}".replace("\\", "/"))
+			automata.migrate(f"{root}/{file}".replace("\\", "/"))
 	print("------ DONE\n")
 
-def writeOpenapiComponents():
-	print(f"----- SAVING OPENAPI DEFINITIONS ON FILE")
-	with open(OAPI_COMPONENTS_FILE, 'w', encoding="utf-8") as outfile:
-		yaml.dump(components, outfile, sort_keys=False, default_flow_style=False)
+def checkUnusedDocublocks():
+	print(f"----- CHECK FOR UNUSED DOCUBLOCKS")
+	for docuBlock in blocksFileLocations.keys():
+		if blocksFileLocations[docuBlock]["processed"] == False:
+			print(f"WARNING: Unused Docublock Found - {docuBlock}")
 	print("----- DONE\n")
 
+def checkMetrics():
+	for filename, metric in metrics.items():
+		if filename == "total":
+			continue
+
+		jekyll = metric["old"]
+		hugo = metric["new"]
+
+		#print(jekyll)
+		#print(hugo)
+
+		for element, value in jekyll.items():
+			if element == "text" or element == "headers":
+				continue
+
+			if hugo[element] != value:
+				print(f"[METRICS] Inconsistency in {filename}\n{element}")
+				print(f"jekyll {value}")
+				print(f"Hugo {hugo[element]}")
+		
 def migrate_media():
 	print("----- MIGRATING MEDIA")
 	Path(f"{NEW_TOOLCHAIN}/assets/images/").mkdir(parents=True, exist_ok=True)
@@ -72,7 +97,8 @@ if __name__ == "__main__":
 		createStructure()
 		initBlocksFileLocations()
 		processFiles()
-		writeOpenapiComponents()
+		checkUnusedDocublocks()
+		checkMetrics()
 		migrate_media()
 	except Exception as ex:
 		print(traceback.format_exc())
