@@ -407,7 +407,7 @@ def processFile(page, content, filepath):
             if "{% include hint-ee" in line:
                 feature = re.search(r"(?<=feature=).*\"", line).group(0)
                 tags = ["ArangoDB Enterprise"]
-                if 'arangograph' in line:
+                if '-arangograph.md' in line:
                     tags.append("ArangoGraph")
 
                 tagShortcode = '{{< tag '
