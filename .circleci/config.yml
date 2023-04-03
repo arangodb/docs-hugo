@@ -125,8 +125,7 @@ jobs:
             cd workspace/docs-hugo
             git config user.email "daniele@arangodb.com"
             git config user.name "CircleCI Job"
-            git add site/data
-            git commit --allow-empty -am "Automatic commit of generated files from CircleCI [skip ci]"
+            git commit --allow-empty -am "Automatic commit of generated files from CircleCI [skip ci]" site/data/cache.json
             git push    
       - persist_to_workspace:
           root: .
