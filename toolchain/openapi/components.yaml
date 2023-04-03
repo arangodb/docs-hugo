@@ -698,6 +698,23 @@ schemas:
     required:
     - ''
     type: object
+  jwt_secret_struct:
+    type: object
+    properties:
+      active:
+        type: object
+        description: |+
+          An object with the SHA-256 hash of the active secret.
+
+        format: ''
+      passive:
+        type: array
+        description: |+
+          An array of objects with the SHA-256 hashes of the passive secrets.
+          Can be empty.
+
+        items:
+          type: object
   explain_options:
     type: object
     properties:
@@ -735,23 +752,31 @@ schemas:
 
         items:
           type: string
-  jwt_secret_struct:
+  aql_userfunction_struct:
     type: object
     properties:
-      active:
-        type: object
+      name:
+        type: string
         description: |+
-          An object with the SHA-256 hash of the active secret.
+          The fully qualified name of the user function
 
         format: ''
-      passive:
-        type: array
+      code:
+        type: string
         description: |+
-          An array of objects with the SHA-256 hashes of the passive secrets.
-          Can be empty.
+          A string representation of the function body
 
-        items:
-          type: object
+        format: ''
+      isDeterministic:
+        type: boolean
+        description: |+
+          an optional boolean value to indicate whether the function
+          results are fully deterministic (function return value solely depends on
+          the input value and return value is the same for repeated calls with same
+          input). The *isDeterministic* attribute is currently not used but may be
+          used later for optimizations.
+
+        format: ''
   cluster_endpoints_struct:
     type: object
     properties:
@@ -759,6 +784,16 @@ schemas:
         type: string
         description: |+
           The bind of the Coordinator, like `tcp://[::1]:8530`
+
+        format: ''
+  license_features:
+    type: object
+    properties:
+      expires:
+        type: number
+        description: |+
+          The `expires` key lists the expiry date as Unix timestamp (seconds since
+          January 1st, 1970 UTC).
 
         format: ''
   version_details_struct:
@@ -780,12 +815,6 @@ schemas:
         type: string
         description: |+
           has this been compiled with the asan address sanitizer turned on? (should be false)
-
-        format: ''
-      asm-crc32:
-        type: string
-        description: |+
-          do we have assembler implemented CRC functions?
 
         format: ''
       assertions:
@@ -851,7 +880,7 @@ schemas:
       fd-setsize:
         type: string
         description: |+
-          if not *poll* the fd setsize is valid for the maximum number of filedescriptors
+          if not *poll* the fd setsize is valid for the maximum number of file descriptors
 
         format: ''
       full-version-string:
@@ -953,7 +982,7 @@ schemas:
       mode:
         type: string
         description: |+
-          the mode we're runnig as - one of [*server*, *console*, *script*]
+          the mode we're running as - one of [*server*, *console*, *script*]
 
         format: ''
   admin_echo_server_struct:
@@ -1166,67 +1195,961 @@ schemas:
           The endpoint of the queried Agent.
 
         format: ''
-  license_features:
+  get_api_database_new_OPTIONS:
     type: object
     properties:
-      expires:
-        type: number
+      sharding:
+        type: string
         description: |+
-          The `expires` key lists the expiry date as Unix timestamp (seconds since
-          January 1st, 1970 UTC).
+          The sharding method to use for new collections in this database. Valid values
+          are: "", "flexible", or "single". The first two are equivalent. _(cluster only)_
 
         format: ''
-  aql_userfunction_struct:
+      replicationFactor:
+        type: integer
+        description: |+
+          Default replication factor for new collections created in this database.
+          Special values include "satellite", which will replicate the collection to
+          every DB-Server (Enterprise Edition only), and 1, which disables replication.
+          _(cluster only)_
+
+        format: ''
+      writeConcern:
+        type: number
+        description: |+
+          Default write concern for new collections created in this database.
+          It determines how many copies of each shard are required to be
+          in sync on the different DB-Servers. If there are less than these many copies
+          in the cluster a shard will refuse to write. Writes to shards with enough
+          up-to-date copies will succeed at the same time however. The value of
+          *writeConcern* can not be larger than *replicationFactor*. _(cluster only)_
+
+        format: ''
+  get_api_database_new_USERS:
+    type: object
+    properties:
+      username:
+        type: string
+        description: |+
+          Login name of an existing user or one to be created.
+
+        format: ''
+      passwd:
+        type: string
+        description: |+
+          The user password as a string. If not specified, it will default to an empty
+          string. The attribute is ignored for users that already exist.
+
+        format: password
+      active:
+        type: boolean
+        description: |+
+          A flag indicating whether the user account should be activated or not.
+          The default value is *true*. If set to *false*, then the user won't be able to
+          log into the database. The default is *true*. The attribute is ignored for users
+          that already exist.
+
+        format: ''
+      extra:
+        type: object
+        description: |+
+          A JSON object with extra user information. It is used by the web interface
+          to store graph viewer settings and saved queries. Should not be set or
+          modified by end users, as custom attributes will not be preserved.
+
+        format: ''
+  post_api_collection_computed_field:
     type: object
     properties:
       name:
         type: string
         description: |+
-          The fully qualified name of the user function
+          The name of the target attribute. Can only be a top-level attribute, but you
+          may return a nested object. Cannot be `_key`, `_id`, `_rev`, `_from`, `_to`,
+          or a shard key attribute.
 
         format: ''
-      code:
+      expression:
         type: string
         description: |+
-          A string representation of the function body
+          An AQL `RETURN` operation with an expression that computes the desired value.
+          See [Computed Value Expressions](https://www.arangodb.com/docs/devel/data-modeling-documents-computed-values.html#computed-value-expressions) for details.
 
         format: ''
-      isDeterministic:
+      overwrite:
         type: boolean
         description: |+
-          an optional boolean value to indicate whether the function
-          results are fully deterministic (function return value solely depends on
-          the input value and return value is the same for repeated calls with same
-          input). The *isDeterministic* attribute is currently not used but may be
-          used later for optimizations.
+          Whether the computed value shall take precedence over a user-provided or
+          existing attribute.
 
         format: ''
-  jwt_keys_struct:
-    type: object
-    properties:
-      encryption-keys:
+      computeOn:
         type: array
         description: |+
-          An array of objects with the SHA-256 hashes of the key secrets.
-          Can be empty.
+          An array of strings to define on which write operations the value shall be
+          computed. The possible values are `"insert"`, `"update"`, and `"replace"`.
+          The default is `["insert", "update", "replace"]`.
+
+        items:
+          type: string
+      keepNull:
+        type: boolean
+        description: |+
+          Whether the target attribute shall be set if the expression evaluates to `null`.
+          You can set the option to `false` to not set (or unset) the target attribute if
+          the expression returns `null`. The default is `true`.
+
+        format: ''
+      failOnWarning:
+        type: boolean
+        description: |+
+          Whether to let the write operation fail if the expression produces a warning.
+          The default is `false`.
+
+        format: ''
+  post_api_collection_opts:
+    type: object
+    properties:
+      type:
+        type: string
+        description: |+
+          specifies the type of the key generator. The currently available generators are
+          `traditional`, `autoincrement`, `uuid` and `padded`.
+
+          - The `traditional` key generator generates numerical keys in ascending order.
+            The sequence of keys is not guaranteed to be gap-free.
+
+          - The `autoincrement` key generator generates numerical keys in ascending order,
+            the initial offset and the spacing can be configured (**note**: `autoincrement`
+            is currently only supported for non-sharded collections).
+            The sequence of generated keys is not guaranteed to be gap-free, because a new key
+            will be generated on every document insert attempt, not just for successful
+            inserts.
+
+          - The `padded` key generator generates keys of a fixed length (16 bytes) in
+            ascending lexicographical sort order. This is ideal for usage with the _RocksDB_
+            engine, which will slightly benefit keys that are inserted in lexicographically
+            ascending order. The key generator can be used in a single-server or cluster.
+            The sequence of generated keys is not guaranteed to be gap-free.
+
+          - The `uuid` key generator generates universally unique 128 bit keys, which
+            are stored in hexadecimal human-readable format. This key generator can be used
+            in a single-server or cluster to generate "seemingly random" keys. The keys
+            produced by this key generator are not lexicographically sorted.
+
+          Please note that keys are only guaranteed to be truly ascending in single
+          server deployments and for collections that only have a single shard (that includes
+          collections in a OneShard database).
+          The reason is that for collections with more than a single shard, document keys
+          are generated on Coordinator(s). For collections with a single shard, the document
+          keys are generated on the leader DB-Server, which has full control over the key
+          sequence.
+
+      allowUserKeys:
+        type: boolean
+        description: |+
+          If set to `true`, then you are allowed to supply own key values in the
+          `_key` attribute of documents. If set to `false`, then the key generator
+          is solely be responsible for generating keys and an error is raised if you
+          supply own key values in the `_key` attribute of documents.
+
+        format: ''
+      increment:
+        type: integer
+        description: |+
+          increment value for `autoincrement` key generator. Not used for other key
+          generator types.
+
+        format: int64
+      offset:
+        type: integer
+        description: |+
+          Initial offset value for `autoincrement` key generator.
+          Not used for other key generator types.
+
+        format: int64
+  collection_figures:
+    type: object
+    properties:
+      indexes:
+        type: object
+        description: |2+
+
+        format: collection_figures_indexes
+  collection_figures_indexes:
+    type: object
+    properties:
+      count:
+        type: integer
+        description: |+
+          The total number of indexes defined for the collection, including the pre-defined
+          indexes (e.g. primary index).
+
+        format: int64
+      size:
+        type: integer
+        description: |+
+          The total memory allocated for indexes in bytes.
+
+        format: int64
+  put_api_collection_properties_computed_field:
+    type: object
+    properties:
+      name:
+        type: string
+        description: |+
+          The name of the target attribute. Can only be a top-level attribute, but you
+          may return a nested object. Cannot be `_key`, `_id`, `_rev`, `_from`, `_to`,
+          or a shard key attribute.
+
+        format: ''
+      expression:
+        type: string
+        description: |+
+          An AQL `RETURN` operation with an expression that computes the desired value.
+          See [Computed Value Expressions](https://www.arangodb.com/docs/devel/data-modeling-documents-computed-values.html#computed-value-expressions) for details.
+
+        format: ''
+      overwrite:
+        type: boolean
+        description: |+
+          Whether the computed value shall take precedence over a user-provided or
+          existing attribute.
+
+        format: ''
+      computeOn:
+        type: array
+        description: |+
+          An array of strings to define on which write operations the value shall be
+          computed. The possible values are `"insert"`, `"update"`, and `"replace"`.
+          The default is `["insert", "update", "replace"]`.
+
+        items:
+          type: string
+      keepNull:
+        type: boolean
+        description: |+
+          Whether the target attribute shall be set if the expression evaluates to `null`.
+          You can set the option to `false` to not set (or unset) the target attribute if
+          the expression returns `null`. The default is `true`.
+
+        format: ''
+      failOnWarning:
+        type: boolean
+        description: |+
+          Whether to let the write operation fail if the expression produces a warning.
+          The default is `false`.
+
+        format: ''
+  graph_list:
+    type: object
+    properties:
+      graph:
+        type: object
+        description: |+
+          The information about the newly created graph
+
+        format: graph_representation
+  graph_representation:
+    type: object
+    properties:
+      name:
+        type: string
+        description: |+
+          The name of the graph
+
+        format: ''
+      edgeDefinitions:
+        type: array
+        description: |+
+          An array of definitions for the relations of the graph.
+          Each has the following type:
+
+        items:
+          $ref: '#/components/schemas/graph_edge_definition'
+      orphanCollections:
+        type: array
+        description: |+
+          An array of additional vertex collections.
+          Documents within these collections do not have edges within this graph.
+
+        items:
+          type: string
+      numberOfShards:
+        type: integer
+        description: |+
+          Number of shards created for every new collection in the graph.
+
+        format: ''
+      _id:
+        type: string
+        description: |+
+          The internal id value of this graph.
+
+        format: ''
+      _rev:
+        type: string
+        description: |+
+          The revision of this graph. Can be used to make sure to not override
+          concurrent modifications to this graph.
+
+        format: ''
+      replicationFactor:
+        type: integer
+        description: |+
+          The replication factor used for every new collection in the graph.
+          Can also be the string `"satellite"` for a SmartGraph (Enterprise Edition only).
+
+        format: ''
+      isSmart:
+        type: boolean
+        description: |+
+          Whether the graph is a SmartGraph (Enterprise Edition only).
+
+        format: ''
+      isDisjoint:
+        type: boolean
+        description: |+
+          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+
+        format: ''
+      smartGraphAttribute:
+        type: string
+        description: |+
+          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+
+        format: ''
+  post_api_gharial_create_opts:
+    type: object
+    properties:
+      smartGraphAttribute:
+        type: string
+        description: |+
+          Only has effect in Enterprise Edition and it is required if isSmart is true.
+          The attribute name that is used to smartly shard the vertices of a graph.
+          Every vertex in this SmartGraph has to have this attribute.
+          Cannot be modified later.
+
+        format: ''
+      satellites:
+        type: array
+        description: |+
+          An array of collection names that is used to create SatelliteCollections
+          for a (Disjoint) SmartGraph using SatelliteCollections (Enterprise Edition only).
+          Each array element must be a string and a valid collection name.
+          The collection type cannot be modified later.
+
+        items:
+          type: string
+      numberOfShards:
+        type: integer
+        description: |+
+          The number of shards that is used for every collection within this graph.
+          Cannot be modified later.
+
+        format: ''
+      replicationFactor:
+        type: integer
+        description: |+
+          The replication factor used when initially creating collections for this graph.
+          Can be set to `"satellite"` to create a SatelliteGraph, which will ignore
+          *numberOfShards*, *minReplicationFactor* and *writeConcern*
+          (Enterprise Edition only).
+
+        format: ''
+      writeConcern:
+        type: integer
+        description: |+
+          Write concern for new collections in the graph.
+          It determines how many copies of each shard are required to be
+          in sync on the different DB-Servers. If there are less than these many copies
+          in the cluster a shard will refuse to write. Writes to shards with enough
+          up-to-date copies will succeed at the same time however. The value of
+          *writeConcern* can not be larger than *replicationFactor*. _(cluster only)_
+
+        format: ''
+  post_api_vertex_create_opts:
+    type: object
+    properties:
+      satellites:
+        type: array
+        description: |+
+          An array of collection names that is used to create SatelliteCollections
+          for a (Disjoint) SmartGraph using SatelliteCollections (Enterprise Edition only).
+          Each array element must be a string and a valid collection name.
+          The collection type cannot be modified later.
+
+        items:
+          type: string
+  post_api_edgedef_create_opts:
+    type: object
+    properties:
+      satellites:
+        type: array
+        description: |+
+          An array of collection names that is used to create SatelliteCollections
+          for a (Disjoint) SmartGraph using SatelliteCollections (Enterprise Edition only).
+          Each array element must be a string and a valid collection name.
+          The collection type cannot be modified later.
+
+        items:
+          type: string
+  post_api_edgedef_modify_opts:
+    type: object
+    properties:
+      satellites:
+        type: array
+        description: |+
+          An array of collection names that is used to create SatelliteCollections
+          for a (Disjoint) SmartGraph using SatelliteCollections (Enterprise Edition only).
+          Each array element must be a string and a valid collection name.
+          The collection type cannot be modified later.
+
+        items:
+          type: string
+  post_api_cursor_opts:
+    type: object
+    properties:
+      fullCount:
+        type: boolean
+        description: |+
+          if set to *true* and the query contains a *LIMIT* clause, then the
+          result will have an *extra* attribute with the sub-attributes *stats*
+          and *fullCount*, `{ ... , "extra": { "stats": { "fullCount": 123 } } }`.
+          The *fullCount* attribute will contain the number of documents in the result before the
+          last top-level LIMIT in the query was applied. It can be used to count the number of
+          documents that match certain filter criteria, but only return a subset of them, in one go.
+          It is thus similar to MySQL's *SQL_CALC_FOUND_ROWS* hint. Note that setting the option
+          will disable a few LIMIT optimizations and may lead to more documents being processed,
+          and thus make queries run longer. Note that the *fullCount* attribute may only
+          be present in the result if the query has a top-level LIMIT clause and the LIMIT
+          clause is actually used in the query.
+
+        format: ''
+      fillBlockCache:
+        type: boolean
+        description: "if set to *true* or not specified, this will make the query\
+          \ store the data it \nreads via the RocksDB storage engine in the RocksDB\
+          \ block cache. This is usually \nthe desired behavior. The option can be\
+          \ set to *false* for queries that are\nknown to either read a lot of data\
+          \ which would thrash the block cache, or for queries\nthat read data which\
+          \ are known to be outside of the hot set. By setting the option\nto *false*,\
+          \ data read by the query will not make it into the RocksDB block cache if\n\
+          not already in there, thus leaving more room for the actual hot set.\n\n"
+        format: ''
+      maxNumberOfPlans:
+        type: integer
+        description: |+
+          Limits the maximum number of plans that are created by the AQL query optimizer.
+
+        format: int64
+      maxNodesPerCallstack:
+        type: integer
+        description: |+
+          The number of execution nodes in the query plan after that stack splitting is
+          performed to avoid a potential stack overflow. Defaults to the configured value
+          of the startup option `--query.max-nodes-per-callstack`.
+
+          This option is only useful for testing and debugging and normally does not need
+          any adjustment.
+
+        format: int64
+      maxWarningCount:
+        type: integer
+        description: |+
+          Limits the maximum number of warnings a query will return. The number of warnings
+          a query will return is limited to 10 by default, but that number can be increased
+          or decreased by setting this attribute.
+
+        format: int64
+      failOnWarning:
+        type: boolean
+        description: |+
+          When set to *true*, the query will throw an exception and abort instead of producing
+          a warning. This option should be used during development to catch potential issues
+          early. When the attribute is set to *false*, warnings will not be propagated to
+          exceptions and will be returned with the query result.
+          There is also a server configuration option `--query.fail-on-warning` for setting the
+          default value for *failOnWarning* so it does not need to be set on a per-query level.
+
+        format: ''
+      allowRetry:
+        type: boolean
+        description: |+
+          Set this option to `true` to make it possible to retry fetching the latest batch
+          from a cursor.
+
+          If retrieving a result batch fails because of a connection issue, you can ask
+          for that batch again using the `POST /_api/cursor/<cursor-id>/<batch-id>`
+          endpoint. The first batch has an ID of `1` and the value is incremented by 1
+          with every batch. Every result response except the last one also includes a
+          `nextBatchId` attribute, indicating the ID of the batch after the current.
+          You can remember and use this batch ID should retrieving the next batch fail.
+
+          You can only request the latest batch again. Earlier batches are not kept on the
+          server-side.
+
+        format: ''
+      stream:
+        type: boolean
+        description: |+
+          Can be enabled to execute the query lazily. If set to *true*, then the query is
+          executed as long as necessary to produce up to `batchSize` results. These
+          results are returned immediately and the query is suspended until the client
+          asks for the next batch (if there are more results). Depending on the query
+          this can mean that the first results will be available much faster and that
+          less memory is needed because the server only needs to store a subset of
+          results at a time. Read-only queries can benefit the most, unless `SORT`
+          without index or `COLLECT` are involved that make it necessary to process all
+          documents before a partial result can be returned. It is advisable to only use
+          this option for queries without exclusive locks.
+
+          Remarks:
+          - The query will hold resources until it ends (such as RocksDB snapshots, which
+            prevents compaction to some degree). Writes will be in memory until the query
+            is committed.
+          - If existing documents are modified, then write locks are held on these
+            documents and other queries trying to modify the same documents will fail
+            because of this conflict.
+          - A streaming query may fail late because of a conflict or for other reasons
+            after some batches were already returned successfully, possibly rendering the
+            results up to that point meaningless.
+          - The query options `cache`, `count` and `fullCount` are not supported for
+            streaming queries.
+          - Query statistics, profiling data and warnings are delivered as part of the
+            last batch.
+
+          If the `stream` option is *false* (default), then the complete result of the
+          query is calculated before any of it is returned to the client. The server
+          stores the full result in memory (on the contacted Coordinator if in a cluster).
+          All other resources are freed immediately (locks, RocksDB snapshots). The query
+          will fail before it returns results in case of a conflict.
+
+        format: ''
+      spillOverThresholdMemoryUsage:
+        type: integer
+        description: "This option allows queries to store intermediate and final results\
+          \ temporarily\non disk if the amount of memory used (in bytes) exceeds the\
+          \ specified value.\nThis is used for decreasing the memory usage during\
+          \ the query execution.\n\nThis option only has an effect on queries that\
+          \ use the `SORT` operation but\nwithout a `LIMIT`, and if you enable the\
+          \ spillover feature by setting a path\nfor the directory to store the temporary\
+          \ data in with the\n`--temp.intermediate-results-path` startup option.\n\
+          \nDefault value: 128MB.\n\n**Note**:\nSpilling data from RAM onto disk is\
+          \ an experimental feature and is turned off \nby default. The query results\
+          \ are still built up entirely in RAM on Coordinators\nand single servers\
+          \ for non-streaming queries. To avoid the buildup of\nthe entire query result\
+          \ in RAM, use a streaming query (see the `stream` option).\n\n"
+        format: ''
+      spillOverThresholdNumRows:
+        type: integer
+        description: "This option allows queries to store intermediate and final results\
+          \ temporarily\non disk if the number of rows produced by the query exceeds\
+          \ the specified value.\nThis is used for decreasing the memory usage during\
+          \ the query execution. In a\nquery that iterates over a collection that\
+          \ contains documents, each row is a\ndocument, and in a query that iterates\
+          \ over temporary values \n(i.e. `FOR i IN 1..100`), each row is one of such\
+          \ temporary values.\n\nThis option only has an effect on queries that use\
+          \ the `SORT` operation but\nwithout a `LIMIT`, and if you enable the spillover\
+          \ feature by setting a path\nfor the directory to store the temporary data\
+          \ in with the\n`--temp.intermediate-results-path` startup option.\n\nDefault\
+          \ value: `5000000` rows.\n\n**Note**:\nSpilling data from RAM onto disk\
+          \ is an experimental feature and is turned off \nby default. The query results\
+          \ are still built up entirely in RAM on Coordinators\nand single servers\
+          \ for non-streaming queries. To avoid the buildup of\nthe entire query result\
+          \ in RAM, use a streaming query (see the `stream` option).\n\n"
+        format: ''
+      optimizer:
+        type: object
+        description: |+
+          Options related to the query optimizer.
+
+        format: post_api_cursor_opts_optimizer
+      profile:
+        type: integer
+        description: |+
+          If set to `true` or `1`, then the additional query profiling information is returned
+          in the `profile` sub-attribute of the `extra` return attribute, unless the query result
+          is served from the query cache. If set to `2`, the query includes execution stats
+          per query plan node in `stats.nodes` sub-attribute of the `extra` return attribute.
+          Additionally, the query plan is returned in the `extra.plan` sub-attribute.
+
+        format: ''
+      satelliteSyncWait:
+        type: number
+        description: |+
+          This *Enterprise Edition* parameter allows to configure how long a DB-Server has time
+          to bring the SatelliteCollections involved in the query into sync.
+          The default value is `60.0` seconds. When the maximal time is reached, the query
+          is stopped.
+
+        format: double
+      maxRuntime:
+        type: number
+        description: |+
+          The query has to be executed within the given runtime or it is killed.
+          The value is specified in seconds. The default value is `0.0` (no timeout).
+
+        format: double
+      maxTransactionSize:
+        type: integer
+        description: |+
+          The transaction size limit in bytes.
+
+        format: int64
+      intermediateCommitSize:
+        type: integer
+        description: |+
+          The maximum total size of operations after which an intermediate commit is performed
+          automatically.
+
+        format: int64
+      intermediateCommitCount:
+        type: integer
+        description: |+
+          The maximum number of operations after which an intermediate commit is performed
+          automatically.
+
+        format: int64
+      skipInaccessibleCollections:
+        type: boolean
+        description: |+
+          Let AQL queries (especially graph traversals) treat collection to which a user
+          has no access rights for as if these collections are empty. Instead of returning a
+          forbidden access error, your queries execute normally. This is intended to help
+          with certain use-cases: A graph contains several collections and different users
+          execute AQL queries on that graph. You can naturally limit the accessible
+          results by changing the access rights of users on collections.
+
+          This feature is only available in the Enterprise Edition.
+
+        format: ''
+      allowDirtyReads:
+        type: boolean
+        description: |+
+          If you set this option to `true` and execute the query against a cluster
+          deployment, then the Coordinator is allowed to read from any shard replica and
+          not only from the leader.
+
+          You may observe data inconsistencies (dirty reads) when reading from followers,
+          namely obsolete revisions of documents because changes have not yet been
+          replicated to the follower, as well as changes to documents before they are
+          officially committed on the leader.
+
+          This feature is only available in the Enterprise Edition.
+
+        format: ''
+  post_api_cursor_opts_optimizer:
+    type: object
+    properties:
+      rules:
+        type: array
+        description: |+
+          A list of to-be-included or to-be-excluded optimizer rules can be put into this
+          attribute, telling the optimizer to include or exclude specific rules. To disable
+          a rule, prefix its name with a `-`, to enable a rule, prefix it with a `+`. There is
+          also a pseudo-rule `all`, which matches all optimizer rules. `-all` disables all rules.
+
+        items:
+          type: string
+  post_api_cursor_extra:
+    type: object
+    properties:
+      warnings:
+        type: array
+        description: |+
+          A list of query warnings.
+
+        items:
+          $ref: '#/components/schemas/post_api_cursor_extra_warnings'
+      stats:
+        type: object
+        description: |+
+          An object with query statistics.
+
+        format: post_api_cursor_extra_stats
+      profile:
+        type: object
+        description: |+
+          The duration of the different query execution phases in seconds.
+
+        format: post_api_cursor_extra_profile
+      plan:
+        type: object
+        description: |+
+          The execution plan.
+
+        format: post_api_cursor_extra_plan
+  post_api_cursor_extra_warnings:
+    type: object
+    properties:
+      code:
+        type: integer
+        description: |+
+          An error code.
+
+        format: ''
+      message:
+        type: string
+        description: |+
+          A description of the problem.
+
+        format: ''
+  post_api_cursor_extra_stats:
+    type: object
+    properties:
+      writesExecuted:
+        type: integer
+        description: |+
+          The total number of data-modification operations successfully executed.
+
+        format: ''
+      writesIgnored:
+        type: integer
+        description: |+
+          The total number of data-modification operations that were unsuccessful,
+          but have been ignored because of the `ignoreErrors` query option.
+
+        format: ''
+      scannedFull:
+        type: integer
+        description: "The total number of documents iterated over when scanning a\
+          \ collection \nwithout an index. Documents scanned by subqueries are included\
+          \ in the result, but\noperations triggered by built-in or user-defined AQL\
+          \ functions are not.\n\n"
+        format: ''
+      scannedIndex:
+        type: integer
+        description: |+
+          The total number of documents iterated over when scanning a collection using
+          an index. Documents scanned by subqueries are included in the result, but operations
+          triggered by built-in or user-defined AQL functions are not.
+
+        format: ''
+      cursorsCreated:
+        type: integer
+        description: |+
+          The total number of cursor objects created during query execution. Cursor
+          objects are created for index lookups.
+
+        format: ''
+      cursorsRearmed:
+        type: integer
+        description: |+
+          The total number of times an existing cursor object was repurposed.
+          Repurposing an existing cursor object is normally more efficient compared to destroying an
+          existing cursor object and creating a new one from scratch.
+
+        format: ''
+      cacheHits:
+        type: integer
+        description: |+
+          The total number of index entries read from in-memory caches for indexes
+          of type edge or persistent. This value is only non-zero when reading from indexes
+          that have an in-memory cache enabled, and when the query allows using the in-memory
+          cache (i.e. using equality lookups on all index attributes).
+
+        format: ''
+      cacheMisses:
+        type: integer
+        description: |+
+          The total number of cache read attempts for index entries that could not
+          be served from in-memory caches for indexes of type edge or persistent. This value
+          is only non-zero when reading from indexes that have an in-memory cache enabled, the
+          query allows using the in-memory cache (i.e. using equality lookups on all index attributes)
+          and the looked up values are not present in the cache.
+
+        format: ''
+      filtered:
+        type: integer
+        description: "The total number of documents removed after executing a filter\
+          \ condition\nin a `FilterNode` or another node that post-filters data. Note\
+          \ that nodes of the\n`IndexNode` type can also filter documents by selecting\
+          \ only the required index range \nfrom a collection, and the `filtered`\
+          \ value only indicates how much filtering was done by a\npost filter in\
+          \ the `IndexNode` itself or following `FilterNode` nodes.\nNodes of the\
+          \ `EnumerateCollectionNode` and `TraversalNode` types can also apply\nfilter\
+          \ conditions and can report the number of filtered documents.\n\n"
+        format: ''
+      httpRequests:
+        type: integer
+        description: |+
+          The total number of cluster-internal HTTP requests performed.
+
+        format: ''
+      fullCount:
+        type: integer
+        description: "The total number of documents that matched the search condition\
+          \ if the query's\nfinal top-level `LIMIT` operation were not present.\n\
+          This attribute may only be returned if the `fullCount` option was set when\
+          \ starting the \nquery and only contains a sensible value if the query contains\
+          \ a `LIMIT` operation on\nthe top level.\n\n"
+        format: ''
+      executionTime:
+        type: number
+        description: |+
+          The query execution time (wall-clock time) in seconds.
+
+        format: ''
+      peakMemoryUsage:
+        type: integer
+        description: "The maximum memory usage of the query while it was running.\
+          \ In a cluster,\nthe memory accounting is done per shard, and the memory\
+          \ usage reported is the peak\nmemory usage value from the individual shards.\n\
+          Note that to keep things lightweight, the per-query memory usage is tracked\
+          \ on a relatively \nhigh level, not including any memory allocator overhead\
+          \ nor any memory used for temporary\nresults calculations (e.g. memory allocated/deallocated\
+          \ inside AQL expressions and function \ncalls).\n\n"
+        format: ''
+      intermediateCommits:
+        type: integer
+        description: |+
+          The number of intermediate commits performed by the query. This is only non-zero
+          for write queries, and only for queries that reached either the `intermediateCommitSize`
+          or `intermediateCommitCount` thresholds. Note: in a cluster, intermediate commits can happen
+          on each participating DB-Server.
+
+        format: ''
+      nodes:
+        type: array
+        description: |+
+          When the query is executed with the `profile` option set to at least `2`,
+          then this attribute contains runtime statistics per query execution node.
+          For a human readable output, you can execute
+          `db._profileQuery(<query>, <bind-vars>)` in arangosh.
+
+        items:
+          $ref: '#/components/schemas/post_api_cursor_extra_stats_nodes'
+  post_api_cursor_extra_stats_nodes:
+    type: object
+    properties:
+      id:
+        type: integer
+        description: |+
+          The execution node ID to correlate the statistics with the `plan` returned in
+          the `extra` attribute.
+
+        format: ''
+      calls:
+        type: integer
+        description: |+
+          The number of calls to this node.
+
+        format: ''
+      items:
+        type: integer
+        description: |+
+          The number of items returned by this node. Items are the temporary results
+          returned at this stage.
+
+        format: ''
+      runtime:
+        type: number
+        description: |+
+          The execution time of this node in seconds.
+
+        format: ''
+  post_api_cursor_extra_profile:
+    type: object
+    properties:
+      initializing:
+        type: number
+        description: ''
+        format: ''
+      parsing:
+        type: number
+        description: ''
+        format: ''
+      optimizing ast:
+        type: number
+        description: ''
+        format: ''
+      loading collections:
+        type: number
+        description: ''
+        format: ''
+      instantiating plan:
+        type: number
+        description: ''
+        format: ''
+      optimizing plan:
+        type: number
+        description: ''
+        format: ''
+      executing:
+        type: number
+        description: ''
+        format: ''
+      finalizing:
+        type: number
+        description: |2+
+
+        format: ''
+  post_api_cursor_extra_plan:
+    type: object
+    properties:
+      nodes:
+        type: array
+        description: |+
+          A nested list of the execution plan nodes.
 
         items:
           type: object
-  get_admin_cluster_rebalance_result:
+      rules:
+        type: array
+        description: |+
+          A list with the names of the applied optimizer rules.
+
+        items:
+          type: string
+      collections:
+        type: array
+        description: |+
+          A list of the collections involved in the query. The list only includes the
+          collections that can statically be determined at query compile time.
+
+        items:
+          $ref: '#/components/schemas/post_api_cursor_extra_plan_collections'
+      variables:
+        type: array
+        description: |+
+          All of the query variables, including user-created and internal ones.
+
+        items:
+          type: object
+      estimatedCost:
+        type: integer
+        description: |+
+          The estimated cost of the query.
+
+        format: ''
+      estimatedNrItems:
+        type: integer
+        description: |+
+          The estimated number of results.
+
+        format: ''
+      isModificationQuery:
+        type: boolean
+        description: |+
+          Whether the query contains write operations.
+
+        format: ''
+  post_api_cursor_extra_plan_collections:
     type: object
     properties:
-      leader:
-        type: object
+      name:
+        type: string
         description: |+
-          Information about the leader imbalance.
+          The collection name.
 
-        format: leader_imbalance_struct
-      shards:
-        type: object
+        format: ''
+      type:
+        type: string
         description: |+
-          Information about the shard imbalance.
+          How the collection is used. Can be `"read"`, `"write"`, or `"exclusive"`.
 
-        format: shard_imbalance_struct
+        format: ''
   post_api_index_inverted_fields:
     type: object
     properties:
@@ -1523,252 +2446,6 @@ schemas:
           Filter out consolidation candidates with a score less than this. Default: `0`
 
         format: ''
-  put_api_collection_properties_computed_field:
-    type: object
-    properties:
-      name:
-        type: string
-        description: |+
-          The name of the target attribute. Can only be a top-level attribute, but you
-          may return a nested object. Cannot be `_key`, `_id`, `_rev`, `_from`, `_to`,
-          or a shard key attribute.
-
-        format: ''
-      expression:
-        type: string
-        description: |+
-          An AQL `RETURN` operation with an expression that computes the desired value.
-          See [Computed Value Expressions](https://www.arangodb.com/docs/devel/data-modeling-documents-computed-values.html#computed-value-expressions) for details.
-
-        format: ''
-      overwrite:
-        type: boolean
-        description: |+
-          Whether the computed value shall take precedence over a user-provided or
-          existing attribute.
-
-        format: ''
-      computeOn:
-        type: array
-        description: |+
-          An array of strings to define on which write operations the value shall be
-          computed. The possible values are `"insert"`, `"update"`, and `"replace"`.
-          The default is `["insert", "update", "replace"]`.
-
-        items:
-          type: string
-      keepNull:
-        type: boolean
-        description: |+
-          Whether the target attribute shall be set if the expression evaluates to `null`.
-          You can set the option to `false` to not set (or unset) the target attribute if
-          the expression returns `null`. The default is `true`.
-
-        format: ''
-      failOnWarning:
-        type: boolean
-        description: |+
-          Whether to let the write operation fail if the expression produces a warning.
-          The default is `false`.
-
-        format: ''
-  post_api_collection_computed_field:
-    type: object
-    properties:
-      name:
-        type: string
-        description: |+
-          The name of the target attribute. Can only be a top-level attribute, but you
-          may return a nested object. Cannot be `_key`, `_id`, `_rev`, `_from`, `_to`,
-          or a shard key attribute.
-
-        format: ''
-      expression:
-        type: string
-        description: |+
-          An AQL `RETURN` operation with an expression that computes the desired value.
-          See [Computed Value Expressions](https://www.arangodb.com/docs/devel/data-modeling-documents-computed-values.html#computed-value-expressions) for details.
-
-        format: ''
-      overwrite:
-        type: boolean
-        description: |+
-          Whether the computed value shall take precedence over a user-provided or
-          existing attribute.
-
-        format: ''
-      computeOn:
-        type: array
-        description: |+
-          An array of strings to define on which write operations the value shall be
-          computed. The possible values are `"insert"`, `"update"`, and `"replace"`.
-          The default is `["insert", "update", "replace"]`.
-
-        items:
-          type: string
-      keepNull:
-        type: boolean
-        description: |+
-          Whether the target attribute shall be set if the expression evaluates to `null`.
-          You can set the option to `false` to not set (or unset) the target attribute if
-          the expression returns `null`. The default is `true`.
-
-        format: ''
-      failOnWarning:
-        type: boolean
-        description: |+
-          Whether to let the write operation fail if the expression produces a warning.
-          The default is `false`.
-
-        format: ''
-  post_api_collection_opts:
-    type: object
-    properties:
-      type:
-        type: string
-        description: |+
-          specifies the type of the key generator. The currently available generators are
-          `traditional`, `autoincrement`, `uuid` and `padded`.
-
-          - The `traditional` key generator generates numerical keys in ascending order.
-            The sequence of keys is not guaranteed to be gap-free.
-
-          - The `autoincrement` key generator generates numerical keys in ascending order,
-            the initial offset and the spacing can be configured (**note**: `autoincrement`
-            is currently only supported for non-sharded collections).
-            The sequence of generated keys is not guaranteed to be gap-free, because a new key
-            will be generated on every document insert attempt, not just for successful
-            inserts.
-
-          - The `padded` key generator generates keys of a fixed length (16 bytes) in
-            ascending lexicographical sort order. This is ideal for usage with the _RocksDB_
-            engine, which will slightly benefit keys that are inserted in lexicographically
-            ascending order. The key generator can be used in a single-server or cluster.
-            The sequence of generated keys is not guaranteed to be gap-free.
-
-          - The `uuid` key generator generates universally unique 128 bit keys, which
-            are stored in hexadecimal human-readable format. This key generator can be used
-            in a single-server or cluster to generate "seemingly random" keys. The keys
-            produced by this key generator are not lexicographically sorted.
-
-          Please note that keys are only guaranteed to be truly ascending in single
-          server deployments and for collections that only have a single shard (that includes
-          collections in a OneShard database).
-          The reason is that for collections with more than a single shard, document keys
-          are generated on coordinator(s). For collections with a single shard, the document
-          keys are generated on the leader DB server, which has full control over the key
-          sequence.
-
-      allowUserKeys:
-        type: boolean
-        description: |+
-          If set to `true`, then you are allowed to supply own key values in the
-          `_key` attribute of documents. If set to `false`, then the key generator
-          is solely be responsible for generating keys and an error is raised if you
-          supply own key values in the `_key` attribute of documents.
-
-        format: ''
-      increment:
-        type: integer
-        description: |+
-          increment value for `autoincrement` key generator. Not used for other key
-          generator types.
-
-        format: int64
-      offset:
-        type: integer
-        description: |+
-          Initial offset value for `autoincrement` key generator.
-          Not used for other key generator types.
-
-        format: int64
-  collection_figures:
-    type: object
-    properties:
-      indexes:
-        type: object
-        description: |2+
-
-        format: collection_figures_indexes
-  collection_figures_indexes:
-    type: object
-    properties:
-      count:
-        type: integer
-        description: |+
-          The total number of indexes defined for the collection, including the pre-defined
-          indexes (e.g. primary index).
-
-        format: int64
-      size:
-        type: integer
-        description: |+
-          The total memory allocated for indexes in bytes.
-
-        format: int64
-  get_api_database_new_OPTIONS:
-    type: object
-    properties:
-      sharding:
-        type: string
-        description: |+
-          The sharding method to use for new collections in this database. Valid values
-          are: "", "flexible", or "single". The first two are equivalent. _(cluster only)_
-
-        format: ''
-      replicationFactor:
-        type: integer
-        description: |+
-          Default replication factor for new collections created in this database.
-          Special values include "satellite", which will replicate the collection to
-          every DB-Server (Enterprise Edition only), and 1, which disables replication.
-          _(cluster only)_
-
-        format: ''
-      writeConcern:
-        type: number
-        description: |+
-          Default write concern for new collections created in this database.
-          It determines how many copies of each shard are required to be
-          in sync on the different DB-Servers. If there are less then these many copies
-          in the cluster a shard will refuse to write. Writes to shards with enough
-          up-to-date copies will succeed at the same time however. The value of
-          *writeConcern* can not be larger than *replicationFactor*. _(cluster only)_
-
-        format: ''
-  get_api_database_new_USERS:
-    type: object
-    properties:
-      username:
-        type: string
-        description: |+
-          Login name of an existing user or one to be created.
-
-        format: ''
-      passwd:
-        type: string
-        description: |+
-          The user password as a string. If not specified, it will default to an empty
-          string. The attribute is ignored for users that already exist.
-
-        format: password
-      active:
-        type: boolean
-        description: |+
-          A flag indicating whether the user account should be activated or not.
-          The default value is *true*. If set to *false*, then the user won't be able to
-          log into the database. The default is *true*. The attribute is ignored for users
-          that already exist.
-
-        format: ''
-      extra:
-        type: object
-        description: |+
-          A JSON object with extra user information. It is used by the web interface
-          to store graph viewer settings and saved queries. Should not be set or
-          modified by end users, as custom attributes will not be preserved.
-
-        format: ''
   post_api_view_searchalias_indexes:
     type: object
     properties:
@@ -1854,641 +2531,440 @@ schemas:
           The name of an inverted index of the `collection`.
 
         format: ''
-  graph_list:
+  system_statistics_struct:
     type: object
     properties:
-      graph:
+      minorPageFaults:
+        type: integer
+        description: |+
+          pagefaults
+
+        format: ''
+      majorPageFaults:
+        type: integer
+        description: |+
+          pagefaults
+
+        format: ''
+      userTime:
+        type: number
+        description: |+
+          the user CPU time used by the server process
+
+        format: float
+      systemTime:
+        type: number
+        description: |+
+          the system CPU time used by the server process
+
+        format: float
+      numberOfThreads:
+        type: integer
+        description: |+
+          the number of threads in the server
+
+        format: ''
+      residentSize:
+        type: integer
+        description: |+
+          RSS of process
+
+        format: ''
+      residentSizePercent:
+        type: number
+        description: |+
+          RSS of process in %
+
+        format: float
+      virtualSize:
+        type: integer
+        description: |+
+          VSS of the process
+
+        format: ''
+  setof_statistics_struct:
+    type: object
+    properties:
+      sum:
+        type: number
+        description: |+
+          summarized value of all counts
+
+        format: ''
+      count:
+        type: integer
+        description: |+
+          number of values summarized
+
+        format: ''
+      counts:
+        type: array
+        description: |+
+          array containing the values
+
+        items:
+          type: integer
+  client_statistics_struct:
+    type: object
+    properties:
+      connectionTime:
         type: object
         description: |+
-          The information about the newly created graph
+          total connection times
 
-        format: graph_representation
-  graph_representation:
+        format: setof_statistics_struct
+      totalTime:
+        type: object
+        description: |+
+          the system time
+
+        format: setof_statistics_struct
+      requestTime:
+        type: object
+        description: |+
+          the request times
+
+        format: setof_statistics_struct
+      queueTime:
+        type: object
+        description: |+
+          the time requests were queued waiting for processing
+
+        format: setof_statistics_struct
+      ioTime:
+        type: object
+        description: |+
+          IO Time
+
+        format: setof_statistics_struct
+      bytesSent:
+        type: object
+        description: |+
+          number of bytes sent to the clients
+
+        format: setof_statistics_struct
+      bytesReceived:
+        type: object
+        description: |+
+          number of bytes received from the clients
+
+        format: setof_statistics_struct
+      httpConnections:
+        type: integer
+        description: |+
+          the number of open http connections
+
+        format: ''
+  http_statistics_struct:
     type: object
     properties:
+      requestsTotal:
+        type: integer
+        description: |+
+          total number of http requests
+
+        format: ''
+      requestsAsync:
+        type: integer
+        description: |+
+          total number of asynchronous http requests
+
+        format: ''
+      requestsGet:
+        type: integer
+        description: |+
+          No of requests using the GET-verb
+
+        format: ''
+      requestsHead:
+        type: integer
+        description: |+
+          No of requests using the HEAD-verb
+
+        format: ''
+      requestsPost:
+        type: integer
+        description: |+
+          No of requests using the POST-verb
+
+        format: ''
+      requestsPut:
+        type: integer
+        description: |+
+          No of requests using the PUT-verb
+
+        format: ''
+      requestsPatch:
+        type: integer
+        description: |+
+          No of requests using the PATCH-verb
+
+        format: ''
+      requestsDelete:
+        type: integer
+        description: |+
+          No of requests using the DELETE-verb
+
+        format: ''
+      requestsOptions:
+        type: integer
+        description: |+
+          No of requests using the OPTIONS-verb
+
+        format: ''
+      requestsOther:
+        type: integer
+        description: |+
+          No of requests using the none of the above identified verbs
+
+        format: ''
+  server_statistics_struct:
+    type: object
+    properties:
+      uptime:
+        type: integer
+        description: |+
+          time the server is up and running
+
+        format: ''
+      physicalMemory:
+        type: integer
+        description: |+
+          available physical memory on the server
+
+        format: ''
+      transactions:
+        type: object
+        description: |+
+          Statistics about transactions
+
+        format: transactions_struct
+      v8Context:
+        type: object
+        description: |+
+          Statistics about the V8 javascript contexts
+
+        format: v8_context_struct
+      threads:
+        type: object
+        description: |+
+          Statistics about the server worker threads (excluding V8 specific or jemalloc specific threads and system threads)
+
+        format: server_threads_struct
+  transactions_struct:
+    type: object
+    properties:
+      started:
+        type: integer
+        description: |+
+          the number of started transactions
+
+        format: ''
+      committed:
+        type: integer
+        description: |+
+          the number of committed transactions
+
+        format: ''
+      aborted:
+        type: integer
+        description: |+
+          the number of aborted transactions
+
+        format: ''
+      intermediateCommits:
+        type: integer
+        description: |+
+          the number of intermediate commits done
+
+        format: ''
+  v8_context_struct:
+    type: object
+    properties:
+      available:
+        type: integer
+        description: |+
+          the number of currently spawned V8 contexts
+
+        format: ''
+      busy:
+        type: integer
+        description: |+
+          the number of currently active V8 contexts
+
+        format: ''
+      dirty:
+        type: integer
+        description: |+
+          the number of contexts that were previously used, and should now be garbage collected before being re-used
+
+        format: ''
+      free:
+        type: integer
+        description: |+
+          the number of V8 contexts that are free to use
+
+        format: ''
+      max:
+        type: integer
+        description: |+
+          the maximum number of V8 concurrent contexts we may spawn as configured by --javascript.v8-contexts
+
+        format: ''
+      min:
+        type: integer
+        description: |+
+          the minimum number of V8 contexts that are spawned as configured by --javascript.v8-contexts-minimum
+
+        format: ''
+      memory:
+        type: array
+        description: |+
+          a list of V8 memory / garbage collection watermarks; Refreshed on every garbage collection run;
+          Preserves min/max memory used at that time for 10 seconds
+
+        items:
+          $ref: '#/components/schemas/v8_isolate_memory'
+  v8_isolate_memory:
+    type: object
+    properties:
+      contextId:
+        type: integer
+        description: |+
+          ID of the context this set of memory statistics is from
+
+        format: ''
+      tMax:
+        type: number
+        description: |+
+          the timestamp where the 10 seconds interval started
+
+        format: ''
+      countOfTimes:
+        type: integer
+        description: |+
+          how many times was the garbage collection run in these 10 seconds
+
+        format: ''
+      heapMax:
+        type: integer
+        description: |+
+          High watermark of all garbage collection runs in 10 seconds
+
+        format: ''
+      heapMin:
+        type: integer
+        description: |+
+          Low watermark of all garbage collection runs in these 10 seconds
+
+        format: ''
+  server_threads_struct:
+    type: object
+    properties:
+      scheduler-threads:
+        type: integer
+        description: |+
+          The number of spawned worker threads
+
+        format: ''
+      in-progress:
+        type: integer
+        description: |+
+          The number of currently busy worker threads
+
+        format: ''
+  admin_statistics_group_struct:
+    type: object
+    properties:
+      group:
+        type: string
+        description: |+
+          The identifier of the group.
+
+        format: ''
       name:
         type: string
         description: |+
-          The name of the graph
+          The name of the group.
 
         format: ''
-      edgeDefinitions:
-        type: array
-        description: |+
-          An array of definitions for the relations of the graph.
-          Each has the following type:
-
-        items:
-          $ref: '#/components/schemas/graph_edge_definition'
-      orphanCollections:
-        type: array
-        description: |+
-          An array of additional vertex collections.
-          Documents within these collections do not have edges within this graph.
-
-        items:
-          type: string
-      numberOfShards:
-        type: integer
-        description: |+
-          Number of shards created for every new collection in the graph.
-
-        format: ''
-      _id:
+      description:
         type: string
         description: |+
-          The internal id value of this graph.
+          A description of the group.
 
         format: ''
-      _rev:
+  admin_statistics_figures_struct:
+    type: object
+    properties:
+      group:
         type: string
         description: |+
-          The revision of this graph. Can be used to make sure to not override
-          concurrent modifications to this graph.
+          The identifier of the group to which this figure belongs.
 
         format: ''
-      replicationFactor:
-        type: integer
-        description: |+
-          The replication factor used for every new collection in the graph.
-          Can also be the string `"satellite"` for a SmartGraph (Enterprise Edition only).
-
-        format: ''
-      isSmart:
-        type: boolean
-        description: |+
-          Whether the graph is a SmartGraph (Enterprise Edition only).
-
-        format: ''
-      isDisjoint:
-        type: boolean
-        description: |+
-          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
-
-        format: ''
-      smartGraphAttribute:
+      identifier:
         type: string
         description: |+
-          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+          The identifier of the figure. It is unique within the group.
 
         format: ''
-  post_api_gharial_create_opts:
-    type: object
-    properties:
-      smartGraphAttribute:
-        type: string
-        description: |+
-          Only has effect in Enterprise Edition and it is required if isSmart is true.
-          The attribute name that is used to smartly shard the vertices of a graph.
-          Every vertex in this SmartGraph has to have this attribute.
-          Cannot be modified later.
-
-        format: ''
-      satellites:
-        type: array
-        description: |+
-          An array of collection names that is used to create SatelliteCollections
-          for a (Disjoint) SmartGraph using SatelliteCollections (Enterprise Edition only).
-          Each array element must be a string and a valid collection name.
-          The collection type cannot be modified later.
-
-        items:
-          type: string
-      numberOfShards:
-        type: integer
-        description: |+
-          The number of shards that is used for every collection within this graph.
-          Cannot be modified later.
-
-        format: ''
-      replicationFactor:
-        type: integer
-        description: |+
-          The replication factor used when initially creating collections for this graph.
-          Can be set to `"satellite"` to create a SatelliteGraph, which will ignore
-          *numberOfShards*, *minReplicationFactor* and *writeConcern*
-          (Enterprise Edition only).
-
-        format: ''
-      writeConcern:
-        type: integer
-        description: |+
-          Write concern for new collections in the graph.
-          It determines how many copies of each shard are required to be
-          in sync on the different DB-Servers. If there are less then these many copies
-          in the cluster a shard will refuse to write. Writes to shards with enough
-          up-to-date copies will succeed at the same time however. The value of
-          *writeConcern* can not be larger than *replicationFactor*. _(cluster only)_
-
-        format: ''
-  post_api_vertex_create_opts:
-    type: object
-    properties:
-      satellites:
-        type: array
-        description: |+
-          An array of collection names that is used to create SatelliteCollections
-          for a (Disjoint) SmartGraph using SatelliteCollections (Enterprise Edition only).
-          Each array element must be a string and a valid collection name.
-          The collection type cannot be modified later.
-
-        items:
-          type: string
-  post_api_edgedef_create_opts:
-    type: object
-    properties:
-      satellites:
-        type: array
-        description: |+
-          An array of collection names that is used to create SatelliteCollections
-          for a (Disjoint) SmartGraph using SatelliteCollections (Enterprise Edition only).
-          Each array element must be a string and a valid collection name.
-          The collection type cannot be modified later.
-
-        items:
-          type: string
-  post_api_edgedef_modify_opts:
-    type: object
-    properties:
-      satellites:
-        type: array
-        description: |+
-          An array of collection names that is used to create SatelliteCollections
-          for a (Disjoint) SmartGraph using SatelliteCollections (Enterprise Edition only).
-          Each array element must be a string and a valid collection name.
-          The collection type cannot be modified later.
-
-        items:
-          type: string
-  post_api_cursor_opts:
-    type: object
-    properties:
-      fullCount:
-        type: boolean
-        description: |+
-          if set to *true* and the query contains a *LIMIT* clause, then the
-          result will have an *extra* attribute with the sub-attributes *stats*
-          and *fullCount*, `{ ... , "extra": { "stats": { "fullCount": 123 } } }`.
-          The *fullCount* attribute will contain the number of documents in the result before the
-          last top-level LIMIT in the query was applied. It can be used to count the number of
-          documents that match certain filter criteria, but only return a subset of them, in one go.
-          It is thus similar to MySQL's *SQL_CALC_FOUND_ROWS* hint. Note that setting the option
-          will disable a few LIMIT optimizations and may lead to more documents being processed,
-          and thus make queries run longer. Note that the *fullCount* attribute may only
-          be present in the result if the query has a top-level LIMIT clause and the LIMIT
-          clause is actually used in the query.
-
-        format: ''
-      fillBlockCache:
-        type: boolean
-        description: "if set to *true* or not specified, this will make the query\
-          \ store the data it \nreads via the RocksDB storage engine in the RocksDB\
-          \ block cache. This is usually \nthe desired behavior. The option can be\
-          \ set to *false* for queries that are\nknown to either read a lot of data\
-          \ which would thrash the block cache, or for queries\nthat read data which\
-          \ are known to be outside of the hot set. By setting the option\nto *false*,\
-          \ data read by the query will not make it into the RocksDB block cache if\n\
-          not already in there, thus leaving more room for the actual hot set.\n\n"
-        format: ''
-      maxPlans:
-        type: integer
-        description: |+
-          Limits the maximum number of plans that are created by the AQL query optimizer.
-
-        format: int64
-      maxNodesPerCallstack:
-        type: integer
-        description: |+
-          The number of execution nodes in the query plan after that stack splitting is
-          performed to avoid a potential stack overflow. Defaults to the configured value
-          of the startup option `--query.max-nodes-per-callstack`.
-
-          This option is only useful for testing and debugging and normally does not need
-          any adjustment.
-
-        format: int64
-      maxWarningCount:
-        type: integer
-        description: |+
-          Limits the maximum number of warnings a query will return. The number of warnings
-          a query will return is limited to 10 by default, but that number can be increased
-          or decreased by setting this attribute.
-
-        format: int64
-      failOnWarning:
-        type: boolean
-        description: |+
-          When set to *true*, the query will throw an exception and abort instead of producing
-          a warning. This option should be used during development to catch potential issues
-          early. When the attribute is set to *false*, warnings will not be propagated to
-          exceptions and will be returned with the query result.
-          There is also a server configuration option `--query.fail-on-warning` for setting the
-          default value for *failOnWarning* so it does not need to be set on a per-query level.
-
-        format: ''
-      stream:
-        type: boolean
-        description: |+
-          Can be enabled to execute the query lazily. If set to *true*, then the query is
-          executed as long as necessary to produce up to `batchSize` results. These
-          results are returned immediately and the query is suspended until the client
-          asks for the next batch (if there are more results). Depending on the query
-          this can mean that the first results will be available much faster and that
-          less memory is needed because the server only needs to store a subset of
-          results at a time. Read-only queries can benefit the most, unless `SORT`
-          without index or `COLLECT` are involved that make it necessary to process all
-          documents before a partial result can be returned. It is advisable to only use
-          this option for queries without exclusive locks.
-
-          Remarks:
-          - The query will hold resources until it ends (such as RocksDB snapshots, which
-            prevents compaction to some degree). Writes will be in memory until the query
-            is committed.
-          - If existing documents are modified, then write locks are held on these
-            documents and other queries trying to modify the same documents will fail
-            because of this conflict.
-          - A streaming query may fail late because of a conflict or for other reasons
-            after some batches were already returned successfully, possibly rendering the
-            results up to that point meaningless.
-          - The query options `cache`, `count` and `fullCount` are not supported for
-            streaming queries.
-          - Query statistics, profiling data and warnings are delivered as part of the
-            last batch.
-
-          If the `stream` option is *false* (default), then the complete result of the
-          query is calculated before any of it is returned to the client. The server
-          stores the full result in memory (on the contacted Coordinator if in a cluster).
-          All other resources are freed immediately (locks, RocksDB snapshots). The query
-          will fail before it returns results in case of a conflict.
-
-        format: ''
-      optimizer:
-        type: object
-        description: |+
-          Options related to the query optimizer.
-
-        format: post_api_cursor_opts_optimizer
-      profile:
-        type: integer
-        description: |+
-          If set to `true` or `1`, then the additional query profiling information is returned
-          in the `profile` sub-attribute of the `extra` return attribute, unless the query result
-          is served from the query cache. If set to `2`, the query includes execution stats
-          per query plan node in `stats.nodes` sub-attribute of the `extra` return attribute.
-          Additionally, the query plan is returned in the `extra.plan` sub-attribute.
-
-        format: ''
-      satelliteSyncWait:
-        type: number
-        description: |+
-          This *Enterprise Edition* parameter allows to configure how long a DB-Server has time
-          to bring the SatelliteCollections involved in the query into sync.
-          The default value is `60.0` seconds. When the maximal time is reached, the query
-          is stopped.
-
-        format: double
-      maxRuntime:
-        type: number
-        description: |+
-          The query has to be executed within the given runtime or it is killed.
-          The value is specified in seconds. The default value is `0.0` (no timeout).
-
-        format: double
-      maxTransactionSize:
-        type: integer
-        description: |+
-          The transaction size limit in bytes.
-
-        format: int64
-      intermediateCommitSize:
-        type: integer
-        description: |+
-          The maximum total size of operations after which an intermediate commit is performed
-          automatically.
-
-        format: int64
-      intermediateCommitCount:
-        type: integer
-        description: |+
-          The maximum number of operations after which an intermediate commit is performed
-          automatically.
-
-        format: int64
-      skipInaccessibleCollections:
-        type: boolean
-        description: |+
-          Let AQL queries (especially graph traversals) treat collection to which a user
-          has no access rights for as if these collections are empty. Instead of returning a
-          forbidden access error, your queries execute normally. This is intended to help
-          with certain use-cases: A graph contains several collections and different users
-          execute AQL queries on that graph. You can naturally limit the accessible
-          results by changing the access rights of users on collections.
-
-          This feature is only available in the Enterprise Edition.
-
-        format: ''
-  post_api_cursor_opts_optimizer:
-    type: object
-    properties:
-      rules:
-        type: array
-        description: |+
-          A list of to-be-included or to-be-excluded optimizer rules can be put into this
-          attribute, telling the optimizer to include or exclude specific rules. To disable
-          a rule, prefix its name with a `-`, to enable a rule, prefix it with a `+`. There is
-          also a pseudo-rule `all`, which matches all optimizer rules. `-all` disables all rules.
-
-        items:
-          type: string
-  post_api_cursor_extra:
-    type: object
-    properties:
-      warnings:
-        type: array
-        description: |+
-          A list of query warnings.
-
-        items:
-          $ref: '#/components/schemas/post_api_cursor_extra_warnings'
-      stats:
-        type: object
-        description: |+
-          An object with query statistics.
-
-        format: post_api_cursor_extra_stats
-      profile:
-        type: object
-        description: |+
-          The duration of the different query execution phases in seconds.
-
-        format: post_api_cursor_extra_profile
-      plan:
-        type: object
-        description: |+
-          The execution plan.
-
-        format: post_api_cursor_extra_plan
-  post_api_cursor_extra_warnings:
-    type: object
-    properties:
-      code:
-        type: integer
-        description: |+
-          An error code.
-
-        format: ''
-      message:
-        type: string
-        description: |+
-          A description of the problem.
-
-        format: ''
-  post_api_cursor_extra_stats:
-    type: object
-    properties:
-      writesExecuted:
-        type: integer
-        description: |+
-          The total number of data-modification operations successfully executed.
-
-        format: ''
-      writesIgnored:
-        type: integer
-        description: |+
-          The total number of data-modification operations that were unsuccessful,
-          but have been ignored because of the `ignoreErrors` query option.
-
-        format: ''
-      scannedFull:
-        type: integer
-        description: "The total number of documents iterated over when scanning a\
-          \ collection \nwithout an index. Documents scanned by subqueries are included\
-          \ in the result, but\noperations triggered by built-in or user-defined AQL\
-          \ functions are not.\n\n"
-        format: ''
-      scannedIndex:
-        type: integer
-        description: |+
-          The total number of documents iterated over when scanning a collection using
-          an index. Documents scanned by subqueries are included in the result, but operations
-          triggered by built-in or user-defined AQL functions are not.
-
-        format: ''
-      cursorsCreated:
-        type: integer
-        description: |+
-          The total number of cursor objects created during query execution. Cursor
-          objects are created for index lookups.
-
-        format: ''
-      cursorsRearmed:
-        type: integer
-        description: |+
-          The total number of times an existing cursor object was repurposed.
-          Repurposing an existing cursor object is normally more efficient compared to destroying an
-          existing cursor object and creating a new one from scratch.
-
-        format: ''
-      cacheHits:
-        type: integer
-        description: |+
-          The total number of index entries read from in-memory caches for indexes
-          of type edge or persistent. This value is only non-zero when reading from indexes
-          that have an in-memory cache enabled, and when the query allows using the in-memory
-          cache (i.e. using equality lookups on all index attributes).
-
-        format: ''
-      cacheMisses:
-        type: integer
-        description: |+
-          The total number of cache read attempts for index entries that could not
-          be served from in-memory caches for indexes of type edge or persistent. This value
-          is only non-zero when reading from indexes that have an in-memory cache enabled, the
-          query allows using the in-memory cache (i.e. using equality lookups on all index attributes)
-          and the looked up values are not present in the cache.
-
-        format: ''
-      filtered:
-        type: integer
-        description: "The total number of documents removed after executing a filter\
-          \ condition\nin a `FilterNode` or another node that post-filters data. Note\
-          \ that nodes of the\n`IndexNode` type can also filter documents by selecting\
-          \ only the required index range \nfrom a collection, and the `filtered`\
-          \ value only indicates how much filtering was done by a\npost filter in\
-          \ the `IndexNode` itself or following `FilterNode` nodes.\nNodes of the\
-          \ `EnumerateCollectionNode` and `TraversalNode` types can also apply\nfilter\
-          \ conditions and can report the number of filtered documents.\n\n"
-        format: ''
-      httpRequests:
-        type: integer
-        description: |+
-          The total number of cluster-internal HTTP requests performed.
-
-        format: ''
-      fullCount:
-        type: integer
-        description: "The total number of documents that matched the search condition\
-          \ if the query's\nfinal top-level `LIMIT` operation were not present.\n\
-          This attribute may only be returned if the `fullCount` option was set when\
-          \ starting the \nquery and only contains a sensible value if the query contains\
-          \ a `LIMIT` operation on\nthe top level.\n\n"
-        format: ''
-      executionTime:
-        type: number
-        description: |+
-          The query execution time (wall-clock time) in seconds.
-
-        format: ''
-      peakMemoryUsage:
-        type: integer
-        description: "The maximum memory usage of the query while it was running.\
-          \ In a cluster,\nthe memory accounting is done per shard, and the memory\
-          \ usage reported is the peak\nmemory usage value from the individual shards.\n\
-          Note that to keep things lightweight, the per-query memory usage is tracked\
-          \ on a relatively \nhigh level, not including any memory allocator overhead\
-          \ nor any memory used for temporary\nresults calculations (e.g. memory allocated/deallocated\
-          \ inside AQL expressions and function \ncalls).\n\n"
-        format: ''
-      nodes:
-        type: array
-        description: |+
-          When the query is executed with the `profile` option set to at least `2`,
-          then this attribute contains runtime statistics per query execution node.
-          For a human readable output, you can execute
-          `db._profileQuery(<query>, <bind-vars>)` in arangosh.
-
-        items:
-          $ref: '#/components/schemas/post_api_cursor_extra_stats_nodes'
-  post_api_cursor_extra_stats_nodes:
-    type: object
-    properties:
-      id:
-        type: integer
-        description: |+
-          The execution node ID to correlate the statistics with the `plan` returned in
-          the `extra` attribute.
-
-        format: ''
-      calls:
-        type: integer
-        description: |+
-          The number of calls to this node.
-
-        format: ''
-      items:
-        type: integer
-        description: |+
-          The number of items returned by this node. Items are the temporary results
-          returned at this stage.
-
-        format: ''
-      runtime:
-        type: number
-        description: |+
-          The execution time of this node in seconds.
-
-        format: ''
-  post_api_cursor_extra_profile:
-    type: object
-    properties:
-      initializing:
-        type: number
-        description: ''
-        format: ''
-      parsing:
-        type: number
-        description: ''
-        format: ''
-      optimizing ast:
-        type: number
-        description: ''
-        format: ''
-      loading collections:
-        type: number
-        description: ''
-        format: ''
-      instantiating plan:
-        type: number
-        description: ''
-        format: ''
-      optimizing plan:
-        type: number
-        description: ''
-        format: ''
-      executing:
-        type: number
-        description: ''
-        format: ''
-      finalizing:
-        type: number
-        description: |2+
-
-        format: ''
-  post_api_cursor_extra_plan:
-    type: object
-    properties:
-      nodes:
-        type: array
-        description: |+
-          A nested list of the execution plan nodes.
-
-        items:
-          type: object
-      rules:
-        type: array
-        description: |+
-          A list with the names of the applied optimizer rules.
-
-        items:
-          type: string
-      collections:
-        type: array
-        description: |+
-          A list of the collections involved in the query. The list only includes the
-          collections that can statically be determined at query compile time.
-
-        items:
-          $ref: '#/components/schemas/post_api_cursor_extra_plan_collections'
-      variables:
-        type: array
-        description: |+
-          All of the query variables, including user-created and internal ones.
-
-        items:
-          type: object
-      estimatedCost:
-        type: integer
-        description: |+
-          The estimated cost of the query.
-
-        format: ''
-      estimatedNrItems:
-        type: integer
-        description: |+
-          The estimated number of results.
-
-        format: ''
-      isModificationQuery:
-        type: boolean
-        description: |+
-          Whether the query contains write operations.
-
-        format: ''
-  post_api_cursor_extra_plan_collections:
-    type: object
-    properties:
       name:
         type: string
         description: |+
-          The collection name.
+          The name of the figure.
+
+        format: ''
+      description:
+        type: string
+        description: |+
+          A description of the figure.
 
         format: ''
       type:
         type: string
         description: |+
-          How the collection is used. Can be `"read"`, `"write"`, or `"exclusive"`.
+          Either *current*, *accumulated*, or *distribution*.
 
         format: ''
+      cuts:
+        type: string
+        description: |+
+          The distribution vector.
+
+        format: ''
+      units:
+        type: string
+        description: |+
+          Units in which the figure is measured.
+
+        format: ''
+  jwt_keys_struct:
+    type: object
+    properties:
+      encryption-keys:
+        type: array
+        description: |+
+          An array of objects with the SHA-256 hashes of the key secrets.
+          Can be empty.
+
+        items:
+          type: object
+  get_admin_cluster_rebalance_result:
+    type: object
+    properties:
+      leader:
+        type: object
+        description: |+
+          Information about the leader imbalance.
+
+        format: leader_imbalance_struct
+      shards:
+        type: object
+        description: |+
+          Information about the shard imbalance.
+
+        format: shard_imbalance_struct
   get_cluster_maintenance_dbserver_result:
     type: object
     properties:
