@@ -29,6 +29,9 @@ jobs:
         default: main
 
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
       - run: mkdir -p workspace
       - run:
           name: Clone arangodb main repo
