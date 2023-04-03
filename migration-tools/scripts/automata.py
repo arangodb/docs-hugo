@@ -269,12 +269,17 @@ def processFile(page, content, filepath):
             
 
             ## Front Matter
-            if re.search(r"^={3,}|^-{3,}", line, re.MULTILINE):
+            if re.search(r"={3,}|-{3,}", line):
+                if flags["endFrontMatter"]:
+                    page.content = page.content + line
+                    continue
+
                 flags["frontMatter"] = not flags["frontMatter"]
                 if not flags["frontMatter"]:
                     flags["endFrontMatter"] = True
                     flags["description"] = False
                     flags["title"] = False
+                    continue
 
                 continue
 
