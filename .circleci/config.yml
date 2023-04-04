@@ -171,22 +171,18 @@ jobs:
       - run:
           name: Checkout ArangoDB
           command: |
-            git clone --depth 1 https://github.com/arangodb/arangodb.git --branch "$CIRCLE_BRANCH" --recurse-submodules --shallow-submodules -j 8 /root/project
-            git reset --hard "$CIRCLE_SHA1"
+            git clone --depth 1 https://github.com/arangodb/arangodb.git --branch devel --recurse-submodules --shallow-submodules -j 8 /root/project
       - run:
           name: Print SCCache Settings
           command: sccache -s
       - run:
           name: Configure
           command: |
-            cmake --preset << parameters.preset >> -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
+            cmake --preset community-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
       - run:
           name: Build
           command: |
-            cmake --build --preset << parameters.preset >> --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest
-            if [ << parameters.enterprise >> = true ]; then
-              cmake --build --preset << parameters.preset >> --parallel 8 --target arangobackup
-            fi
+            cmake --build --preset community-pr --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest
       - run:
           name: Size leaderboard
           command: |
@@ -199,24 +195,12 @@ jobs:
       - run:
           name: SCCache Statistics
           command: sccache -s
+      - run:
+          name: Create archive of compiled instance
+          command: tar -cvzf arangodb.tar.gz build/
       - store_artifacts:
-          path: build/bin/arango*
-      - store_artifacts:
-          path: /tmp/sccache.log
-      - persist_to_workspace:
-          root: .
-          paths:
-            - CMakePresets.json
-            - build/
-            - scripts/
-            - js/
-            - enterprise/js
-            - etc/
-            - tests/js
-            - enterprise/tests/js
-            - utils
-            - UnitTests
-            - 3rdParty/iresearch/tests/resources
+          path: arangodb.tar.gz
+          destination: artifact-file
 
 
 
