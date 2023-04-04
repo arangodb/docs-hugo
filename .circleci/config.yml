@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   WORKFLOW:
     type: enum
-    enum: [plain-build, generate]
+    enum: [plain-build, generate, compile]
     default: plain-build
 
   ARANGODB_MAIN_BRANCH:
