@@ -182,7 +182,7 @@ jobs:
       - run:
           name: Build
           command: |
-            cmake --build --preset community-pr --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest
+            cmake --build --preset community-pr --parallel 8 --target arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench
       - run:
           name: Size leaderboard
           command: |
@@ -197,11 +197,38 @@ jobs:
           command: sccache -s
       - run:
           name: Create archive of compiled instance
-          command: tar -cvzf arangodb.tar.gz build/
-      - store_artifacts:
-          path: arangodb.tar.gz
-          destination: artifact-file
+          command: tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
 
+  create-image:
+    machine:
+      image: ubuntu-2004:current
+      docker_layer_caching: true 
+    resource_class: small
+    environment:
+      GIT_SSH_COMMAND: ssh
+      SCCACHE_ERROR_LOG: /tmp/sccache.log
+      SCCACHE_LOG: info,sccache::cache=debug,sccache::compiler::compiler=debug
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Create docker image from install.tar.gz
+          command: |
+            cd workspace/docs-hugo/toolchain/scripts
+            docker build -t testimage --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
+
+      - run:
+          name: Save docker image
+          command: |
+            mkdir /tmp/artifacts
+            docker save testimage > /tmp/artifacts/testimage.tar.gz
+      - store_artifacts:
+          path: /tmp/artifacts
 
 
 
@@ -268,3 +295,6 @@ workflows:
           preset: community-pr
           edition: x64-community
           enterprise: false
+      - create-image:
+          requires:
+            - compile-linux
