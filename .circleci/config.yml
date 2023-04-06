@@ -207,7 +207,7 @@ jobs:
     machine:
       image: ubuntu-2004:current
       docker_layer_caching: true 
-    resource_class: small
+    resource_class: medium
     environment:
       GIT_SSH_COMMAND: ssh
       SCCACHE_ERROR_LOG: /tmp/sccache.log
