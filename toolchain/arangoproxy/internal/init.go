@@ -5,9 +5,7 @@ import (
 	"fmt"
 	"io"
 	"log"
-	"net"
 	"os"
-	"time"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/arangosh"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/common"
@@ -37,20 +35,8 @@ func InitRepositories() {
 	common.Repositories = make(map[string]config.Repository)
 	fmt.Printf("INIT REPOSITORIES CONF %s\n", config.Conf.Repositories)
 	for _, repo := range config.Conf.Repositories {
-		common.Repositories[fmt.Sprintf("%s_%s", repo.Type, repo.Version)] = repo
+		common.Repositories[fmt.Sprintf("%s_%s", repo.Name, repo.Version)] = repo
 		cmd, _ := utils.GetSetupFunctions()
 		arangosh.Exec(cmd, repo)
-	}
-}
-
-func RepositoriesHealthCheck() {
-	for _, repository := range config.Conf.Repositories {
-		common.Logger.Printf("HEALTH CHECK %s\n", repository.Type)
-		_, err := net.Dial("tcp", repository.Url)
-		for err != nil {
-			common.Logger.Printf("ERROR HEALTH CHECK ARANGO INTSANCE %s\n", repository.Type)
-			time.Sleep(time.Second * 3)
-			_, err = net.Dial("tcp", repository.Url)
-		}
 	}
 }

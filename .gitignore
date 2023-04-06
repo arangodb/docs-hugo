@@ -13,6 +13,8 @@ migration-tools/arangodb*/
 migration-tools/migration/structure.py
 migration-tools/migration/*.txt
 migration-tools/scripts/urls.json
+toolchain/scripts/arangoproxy/arangosh
+
 site/resources
 .vagrant/
 
