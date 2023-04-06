@@ -219,6 +219,8 @@ jobs:
       - run:
           name: Create docker image from install.tar.gz
           command: |
+            find | grep install.tar.gz
+            cp install.tar.gz workspace/docs-hugo/toolchain/scripts
             cd workspace/docs-hugo/toolchain/scripts
             docker build -t testimage --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
 
