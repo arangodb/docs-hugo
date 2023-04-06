@@ -2,14 +2,14 @@
 
 
 function generate_startup_options {
-  container_name = "$1"
+  container_name="$1"
   echo "[GENERATE OPTIONS] Starting options dump for container " "$container_name"
   echo ""
   ALLPROGRAMS="arangobackup arangobench arangod arangodump arangoexport arangoimport arangoinspect arangorestore arangosh arangovpack"
 
   for HELPPROGRAM in ${ALLPROGRAMS}; do
       echo "[GENERATE OPTIONS] Dumping program options of ${HELPPROGRAM}"
-      docker exec -it "$container_name" "${HELPPROGRAM}" --dump-options > ../site/data/"${HELPPROGRAM}".json
+      docker exec -it "$container_name" "${HELPPROGRAM}" --dump-options >> ../../site/data/"$HELPPROGRAM".json
       echo "Done"
   done
 }
@@ -74,6 +74,7 @@ function start_server() {
   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name" -d "$image"
 
   if [ "$options" = true ] ; then
+    echo "$name"
     generate_startup_options "$name"
   fi
 
@@ -84,11 +85,14 @@ function start_server() {
 
 
 
+### Generator flags
+generate_examples=false
+generate_startup=false
+generate_metrics=false
+generate_error_codes=false
+generate_apidocs=false
 
-
-generate_examples = false
-generate_startup = false
-generate_metrics = false
+start_servers=false
 
 ## MAIN
 
@@ -97,39 +101,62 @@ for var in "$@"
 do
     case $var in
     "generate-examples")
-      generate_examples = true
+      generate_examples=true
+      start_servers=true
     ;;
     "program-options")
-      generate_startup = true
+      generate_startup=true
+      start_servers=true
     ;;
     "generate-metrics")
-      generate_metrics = true
+      generate_metrics=true
+    ;;
+    "generate-errorcodes")
+      generate_error_codes=true
+    ;;
+    "generate-apidocs")
+      generate_apidocs=true
     ;;
     *)
     ;;
     esac
 done
 
-if ! command -v yq &> /dev/null
-then
-    wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_"$ARCH" -O /usr/bin/yq &&\
-    chmod +x /usr/bin/yq
+## Generators that do not need arangodb instances at all
+if [ "$generate_apidocs" = true ] ; then
+  ## launch generateApiDocs.py
 fi
 
-# Start arangodb servers defined in servers.yaml
-mapfile servers < <(yq e -o=j -I=0 '.[]' servers.yaml )
-
-yq '.repositories = []' -i ../arangoproxy/cmd/configs/local.yaml 
-
-for server in "${servers[@]}"; do
-    name=$(echo "$server" | yq e '.name' -)
-    image=$(echo "$server" | yq e '.image' -)
-    version=$(echo "$server" | yq e '.version' -)
-    start_server "$name" "$image" "$version"
-done
-
-
-if [ "$examples" = true ] ; then
-  docker compose --env-file ../docker-env/dev.env up --build
+if [ "$generate_error_codes" = true ] ; then
+  ## launch generateErrorCodes.py
 fi
+
+
+
+## Generators stat do need arangodb instances running
+if [ "$start_servers" = true ] ; then
+  if ! command -v yq &> /dev/null
+  then
+      wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_"$ARCH" -O /usr/bin/yq &&\
+      chmod +x /usr/bin/yq
+  fi
+
+  # Start arangodb servers defined in servers.yaml
+  mapfile servers < <(yq e -o=j -I=0 '.[]' servers.yaml )
+
+  yq '.repositories = []' -i ../arangoproxy/cmd/configs/local.yaml 
+
+  for server in "${servers[@]}"; do
+      name=$(echo "$server" | yq e '.name' -)
+      image=$(echo "$server" | yq e '.image' -)
+      version=$(echo "$server" | yq e '.version' -)
+      echo "$generate_startup"
+      start_server "$name" "$image" "$version" "$generate_examples" "$generate_startup"
+  done
+
+  if [ "$examples" = true ] ; then
+    docker compose --env-file ../docker-env/dev.env up --build
+  fi
+fi
+
 
