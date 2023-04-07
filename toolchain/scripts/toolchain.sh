@@ -1,5 +1,61 @@
 #!/bin/bash
 
+function pull_image() {
+  image_name="$1"
+
+  echo "[PULL IMAGE] Start pull of image " "$image_name"
+  echo ""
+
+  # Check the image is an official dockerhub image
+  echo "[PULL IMAGE] Try from Dockerhub"
+  docker pull "$image_name"
+
+  if [ $? -eq 0 ]; then
+    echo "[PULL IMAGE] Image downloaded from Dockerhub"
+    return
+  fi
+
+  echo "[PULL IMAGE] Cannot find image on Dockerhub, try on CircleCI"
+
+  ## Get latest pipeline of the feature-pr branch
+  circle_ci_pipeline=$(curl --request GET   --url 'https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/pipeline?branch=circle-ci'   --header 'authorization: Basic REPLACE_BASIC_AUTH')
+  pipeline_id=$(echo "$circle_ci_pipeline" | jq '.items[0].id' | tr -d '"')
+  echo "$pipeline_id"
+
+  ## Get the workflows of the pipeline
+  workflow_id=$(curl -s https://circleci.com/api/v2/pipeline/"$pipeline_id"/workflow | jq -r '.items[] | "\(.id)"')
+  echo "$workflow_id"
+  ## Get jobs of the workflow
+  jobs_numbers=$(curl -s https://circleci.com/api/v2/workflow/$workflow_id/job\? | jq -r '.items[] | select (.type? == "build") | .job_number')
+
+  ## jobs_numbers is a string, not an array, that's why is not working
+  # for job_number in "$jobs_numbers"
+  # do
+  #   echo "in for"
+  #   echo "$job_number"
+  #   job_artifacts=$(curl --request GET --url https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/$job_number/artifacts --header 'authorization: Basic REPLACE_BASIC_AUTH')
+  #   artifact_urls=$(echo "$job_artifacts" | jq -r '.items[]' | .url)
+  #   echo "urlsss"
+  #   echo "$artifact_urls"
+  #   for artifact_url in "$artifact_urls"
+  #   do
+  #     echo "in artifact url for"
+  #     echo "$artifact_url"
+  #     wget "$artifact_url"
+  #   done
+  # done
+
+
+  # Fallback, the image is from a feature pr, download it from the circleci main repository build
+
+  ## Circle API: Get all pipelines for branch
+  ## Get latest artifact of step
+
+  # Load image from tar
+  docker load < "$image_name".tar.gz
+  echo "[PULL IMAGE] Image loaded from CircleCI Artifact"
+}
+
 
 function generate_startup_options {
   container_name="$1"
@@ -69,6 +125,7 @@ function start_server() {
   docker container rm "$name" >/dev/null 2>&1
   echo ""
 
+  pull_image "$2"
 
   echo "[START_SERVER] Run server"
   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name" -d "$image"
@@ -122,13 +179,13 @@ do
 done
 
 ## Generators that do not need arangodb instances at all
-if [ "$generate_apidocs" = true ] ; then
-  ## launch generateApiDocs.py
-fi
+# if [ "$generate_apidocs" = true ] ; then
+#   ## launch generateApiDocs.py
+# fi
 
-if [ "$generate_error_codes" = true ] ; then
-  ## launch generateErrorCodes.py
-fi
+# if [ "$generate_error_codes" = true ] ; then
+#   ## launch generateErrorCodes.py
+# fi
 
 
 
