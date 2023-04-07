@@ -297,6 +297,12 @@ workflows:
           preset: community-pr
           edition: x64-community
           enterprise: false
+      - checkout:
+          name: cloneNewRepo
+          repository: git@github.com:arangodb/docs-hugo.git
+          branch: circle-ci
+          requires:
+            - build-ce   
       - create-image:
           requires:
-            - build-ce
+            - cloneNewRepo

@@ -74,7 +74,6 @@ function start_server() {
   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name" -d "$image"
 
   if [ "$options" = true ] ; then
-    echo "$name"
     generate_startup_options "$name"
   fi
 
@@ -150,11 +149,10 @@ if [ "$start_servers" = true ] ; then
       name=$(echo "$server" | yq e '.name' -)
       image=$(echo "$server" | yq e '.image' -)
       version=$(echo "$server" | yq e '.version' -)
-      echo "$generate_startup"
       start_server "$name" "$image" "$version" "$generate_examples" "$generate_startup"
   done
 
-  if [ "$examples" = true ] ; then
+  if [ "$generate_examples" = true ] ; then
     docker compose --env-file ../docker-env/dev.env up --build
   fi
 fi
