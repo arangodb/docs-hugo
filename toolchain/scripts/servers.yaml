@@ -1,7 +1,0 @@
-# - name: stable
-#   image: 'arangodb/arangodb:latest'
-#   version: '3.11'
-
-# - name: test
-#   image: 'arangodb/arangodb:latest'
-#   version: '3.11'

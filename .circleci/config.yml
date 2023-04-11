@@ -222,13 +222,13 @@ jobs:
             find | grep install.tar.gz
             cp install.tar.gz workspace/docs-hugo/toolchain/scripts
             cd workspace/docs-hugo/toolchain/scripts
-            docker build -t testimage --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
+            docker build -t $CIRCLE_BRANCH --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
 
       - run:
           name: Save docker image
           command: |
             mkdir /tmp/artifacts
-            docker save testimage > /tmp/artifacts/testimage.tar.gz
+            docker save $CIRCLE_BRANCH > /tmp/artifacts/$CIRCLE_BRANCH.tar.gz
       - store_artifacts:
           path: /tmp/artifacts
 

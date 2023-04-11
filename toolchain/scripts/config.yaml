@@ -1,0 +1,14 @@
+program-options: ../../site/data
+error-codes: 
+  src: ./errors.dat
+  dst: ../../site/data
+metrics: ../../site/data
+apidocs: ./api-docs.json
+servers:
+  - name: stable
+    image: 'circle-ci'
+    version: '3.11'
+
+  # - name: test
+  #   image: 'arangodb/arangodb:latest'
+  #   version: '3.11'

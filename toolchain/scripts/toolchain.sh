@@ -1,5 +1,16 @@
 #!/bin/bash
 
+  
+
+PYTHON_EXECUTABLE="python"
+
+if ! command -v "$PYTHON_EXECUTABLE" &> /dev/null
+  then
+  PYTHON_EXECUTABLE="python3"
+fi
+
+
+
 function pull_image() {
   image_name="$1"
 
@@ -16,56 +27,52 @@ function pull_image() {
   fi
 
   echo "[PULL IMAGE] Cannot find image on Dockerhub, try on CircleCI"
-
-  ## Get latest pipeline of the feature-pr branch
-  circle_ci_pipeline=$(curl --request GET   --url 'https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/pipeline?branch=circle-ci'   --header 'authorization: Basic REPLACE_BASIC_AUTH')
-  pipeline_id=$(echo "$circle_ci_pipeline" | jq '.items[0].id' | tr -d '"')
-  echo "$pipeline_id"
-
-  ## Get the workflows of the pipeline
-  workflow_id=$(curl -s https://circleci.com/api/v2/pipeline/"$pipeline_id"/workflow | jq -r '.items[] | "\(.id)"')
-  echo "$workflow_id"
-  ## Get jobs of the workflow
-  jobs_numbers=$(curl -s https://circleci.com/api/v2/workflow/$workflow_id/job\? | jq -r '.items[] | select (.type? == "build") | .job_number')
-
-  ## jobs_numbers is a string, not an array, that's why is not working
-  # for job_number in "$jobs_numbers"
-  # do
-  #   echo "in for"
-  #   echo "$job_number"
-  #   job_artifacts=$(curl --request GET --url https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/$job_number/artifacts --header 'authorization: Basic REPLACE_BASIC_AUTH')
-  #   artifact_urls=$(echo "$job_artifacts" | jq -r '.items[]' | .url)
-  #   echo "urlsss"
-  #   echo "$artifact_urls"
-  #   for artifact_url in "$artifact_urls"
-  #   do
-  #     echo "in artifact url for"
-  #     echo "$artifact_url"
-  #     wget "$artifact_url"
-  #   done
-  # done
-
-
-  # Fallback, the image is from a feature pr, download it from the circleci main repository build
-
-  ## Circle API: Get all pipelines for branch
-  ## Get latest artifact of step
+  pull_image_from_circleci "$image_name"
 
   # Load image from tar
   docker load < "$image_name".tar.gz
   echo "[PULL IMAGE] Image loaded from CircleCI Artifact"
 }
 
+function pull_image_from_circleci() {
+  image_name="$1"
+  ## Get latest pipeline of the feature-pr branch
+  circle_ci_pipeline=$(curl --request GET   '--url https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/pipeline?branch='"$image_name"   --header 'authorization: Basic REPLACE_BASIC_AUTH')
+  pipeline_id=$(echo "$circle_ci_pipeline" | jq '.items[0].id' | tr -d '"')
+  echo "$pipeline_id"
 
+  ## Get the workflows of the pipeline
+  workflow_id=$(curl -s https://circleci.com/api/v2/pipeline/51d52540-b71c-4dd6-b0e6-d0e06273ed0a/workflow | jq -r '.items[] | "\(.id)"')
+  echo "$workflow_id"
+  ## Get jobs of the workflow
+  jobs_numbers_string=$(curl -s https://circleci.com/api/v2/workflow/$workflow_id/job\? | jq -r '.items[] | select (.type? == "build") | .job_number')
+
+  unset IFS
+  read -ra jobs_numbers -d '' <<<"$jobs_numbers_string"
+
+  for job_number in "${jobs_numbers[@]}"
+  do
+    job_artifacts=$(curl --request GET --url https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/$job_number/artifacts --header 'authorization: Basic REPLACE_BASIC_AUTH')
+    artifact_urls=$(echo "$job_artifacts" | jq -r '.items[] | .url')
+    for artifact_url in "$artifact_urls"
+    do
+      wget "$artifact_url"
+    done
+  done
+}
+
+
+## Generators
 function generate_startup_options {
   container_name="$1"
+  dst_folder=$(yq -r '.program-options' config.yaml)
   echo "[GENERATE OPTIONS] Starting options dump for container " "$container_name"
   echo ""
   ALLPROGRAMS="arangobackup arangobench arangod arangodump arangoexport arangoimport arangoinspect arangorestore arangosh arangovpack"
 
   for HELPPROGRAM in ${ALLPROGRAMS}; do
       echo "[GENERATE OPTIONS] Dumping program options of ${HELPPROGRAM}"
-      docker exec -it "$container_name" "${HELPPROGRAM}" --dump-options >> ../../site/data/"$HELPPROGRAM".json
+      docker exec -it "$container_name" "${HELPPROGRAM}" --dump-options >> "$dst_folder"/"$HELPPROGRAM".json
       echo "Done"
   done
 }
@@ -179,13 +186,18 @@ do
 done
 
 ## Generators that do not need arangodb instances at all
-# if [ "$generate_apidocs" = true ] ; then
-#   ## launch generateApiDocs.py
-# fi
+if [ "$generate_apidocs" = true ] ; then
+  dst=$(yq -r '.apidocs' config.yaml)
+  ##TODO: get version
+  "$PYTHON_EXECUTABLE" generators/generateApiDocs.py --src ../../ --dst "$dst" --version 3.10
+fi
 
-# if [ "$generate_error_codes" = true ] ; then
-#   ## launch generateErrorCodes.py
-# fi
+if [ "$generate_error_codes" = true ] ; then
+  errors_dat_file=$(yq -r '.error-codes.src' config.yaml)
+  dst=$(yq -r '.error-codes.dst' config.yaml)
+  ##TODO: get version
+  "$PYTHON_EXECUTABLE" generators/generateApiDocs.py --src "$errors_dat_file" --dst "$dst"
+fi
 
 
 
@@ -198,7 +210,7 @@ if [ "$start_servers" = true ] ; then
   fi
 
   # Start arangodb servers defined in servers.yaml
-  mapfile servers < <(yq e -o=j -I=0 '.[]' servers.yaml )
+  mapfile servers < <(yq e -o=j -I=0 '.servers[]' config.yaml )
 
   yq '.repositories = []' -i ../arangoproxy/cmd/configs/local.yaml 
 
