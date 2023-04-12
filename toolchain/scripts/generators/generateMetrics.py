@@ -5,6 +5,7 @@
 import os
 import re
 import sys
+import argparse
 from pathlib import Path
 from itertools import chain
 
@@ -18,15 +19,8 @@ except ImportError:
 
 def print_usage():
     """Print usage."""
-    print("""Usage: utils/generateAllMetricsDocumentation.py [-h] [--help] [-d]
+    print("""Usage: utils/generateAllMetricsDocumentation.py [--dst] [--main]
 
-    -d:    if this option is given, a combined file with all metrics
-           documentation snippets is written to 
-              Documentation/Metrics/allMetrics.yaml
-           otherwise, this script only checks the format of all snippets and
-           that there is one exactly one metrics declarations for each snippet.
-
-    use -h or --help for this help.
 """)
 
 parser = argparse.ArgumentParser(description='ArangoDB Generate Metrics Documentation')
@@ -36,13 +30,19 @@ parser.add_argument('--main', type=str,
                     help='path to the arangodb source code')
 args = parser.parse_args()
 
-if args.main is None or args.dst is None:
+if args.main is None:
 	print("Args are required")
 	exit(1)
+
+DUMPMETRICS = False
+if args.dst is not None:
+    DUMPMETRICS = True
 
 # Handle Windows and trailing path separators
 ARANGODB_SOURCE = args.main.replace("\\", "/").rstrip("/")
 DST = args.dst.replace("\\", "/").rstrip("/")
+
+
 
 if len(sys.argv) > 1 and (sys.argv[1] == "-h" or sys.argv[1] == "--help"):
     print_usage()
@@ -64,7 +64,7 @@ if not("arangod" in LS_HERE and "client-tools" in LS_HERE and "CMakeLists.txt" i
     sys.exit(1)
 
 # List files in Documentation/Metrics:
-YAMLFILES = os.listdir(DST)
+YAMLFILES = os.listdir(f"{ARANGODB_SOURCE}/Documentation/Metrics")
 YAMLFILES.sort()
 if "allMetrics.yaml" in YAMLFILES:
     YAMLFILES.remove("allMetrics.yaml")
@@ -82,7 +82,7 @@ HEADERHISTOGRAM = re.compile(r"^\s*DECLARE_HISTOGRAM\s*\(")
 NAMEMATCH = re.compile(r"^\s*([a-z_A-Z0-9]+)\s*,")
 
 files = chain(*[ Path(rootdir).glob(pattern)
-            for rootdir in ["arangod", "lib", "enterprise"]
+            for rootdir in [f"{ARANGODB_SOURCE}/arangod", f"{ARANGODB_SOURCE}/lib", f"{ARANGODB_SOURCE}/enterprise"]
             for pattern in ["**/*.cpp", "**/*.h"] ])
 
 for f in files:
@@ -135,7 +135,7 @@ for i, metric in enumerate(METRICSLIST):
         bad = True
     else:
         # Check yaml:
-        filename = os.path.join(DST, metric) + ".yaml"
+        filename = os.path.join(f"{ARANGODB_SOURCE}/Documentation/Metrics", metric) + ".yaml"
         try:
             s = open(filename, encoding="utf-8")
         except FileNotFoundError:
@@ -201,16 +201,13 @@ for i, yamlfile in enumerate(YAMLFILES):
         print(f"YAML file '{name}.yaml'\n"
               f"does not have a corresponding metric declared in the source code!")
 
-DUMPMETRICS = False
-if len(sys.argv) > 1 and sys.argv[1] == "-d":
-    DUMPMETRICS = True
 
 OUTFILE = f"{DST}/allMetrics.yaml"
 if DUMPMETRICS:
     # Dump what we have:
     with open(OUTFILE, "w", encoding="utf-8") as S:
         for i, yamlfile in enumerate(YAMLFILES):
-            with open(os.path.join(DST, yamlfile), encoding="utf-8") as I:
+            with open(os.path.join(f"{ARANGODB_SOURCE}/Documentation/Metrics", yamlfile), encoding="utf-8") as I:
                 prefix = "- "
                 while True:
                     l = I.readline()

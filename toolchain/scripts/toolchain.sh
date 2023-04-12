@@ -9,6 +9,10 @@ if ! command -v "$PYTHON_EXECUTABLE" &> /dev/null
   PYTHON_EXECUTABLE="python3"
 fi
 
+if [[ -z "${DOCKER_ENV}" ]]; then
+  DOCKER_ENV="dev"
+fi
+
 
 
 function pull_image() {
@@ -37,12 +41,12 @@ function pull_image() {
 function pull_image_from_circleci() {
   image_name="$1"
   ## Get latest pipeline of the feature-pr branch
-  circle_ci_pipeline=$(curl --request GET   '--url https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/pipeline?branch='"$image_name"   --header 'authorization: Basic REPLACE_BASIC_AUTH')
+  circle_ci_pipeline=$(curl --request GET   --url https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/pipeline?branch=$image_name   --header 'authorization: Basic REPLACE_BASIC_AUTH')
   pipeline_id=$(echo "$circle_ci_pipeline" | jq '.items[0].id' | tr -d '"')
   echo "$pipeline_id"
 
   ## Get the workflows of the pipeline
-  workflow_id=$(curl -s https://circleci.com/api/v2/pipeline/51d52540-b71c-4dd6-b0e6-d0e06273ed0a/workflow | jq -r '.items[] | "\(.id)"')
+  workflow_id=$(curl -s https://circleci.com/api/v2/pipeline/$pipeline_id/workflow | jq -r '.items[] | "\(.id)"')
   echo "$workflow_id"
   ## Get jobs of the workflow
   jobs_numbers_string=$(curl -s https://circleci.com/api/v2/workflow/$workflow_id/job\? | jq -r '.items[] | select (.type? == "build") | .job_number')
@@ -68,7 +72,7 @@ function generate_startup_options {
   dst_folder=$(yq -r '.program-options' config.yaml)
   echo "[GENERATE OPTIONS] Starting options dump for container " "$container_name"
   echo ""
-  ALLPROGRAMS="arangobackup arangobench arangod arangodump arangoexport arangoimport arangoinspect arangorestore arangosh arangovpack"
+  ALLPROGRAMS="arangobench arangod arangodump arangoexport arangoimport arangoinspect arangorestore arangosh"
 
   for HELPPROGRAM in ${ALLPROGRAMS}; do
       echo "[GENERATE OPTIONS] Dumping program options of ${HELPPROGRAM}"
@@ -185,6 +189,9 @@ do
     esac
 done
 
+## Expand environment variables in config.yaml, if present
+yq  '(.. | select(tag == "!!str")) |= envsubst(nu)' -i config.yaml
+
 ## Generators that do not need arangodb instances at all
 if [ "$generate_apidocs" = true ] ; then
   dst=$(yq -r '.apidocs' config.yaml)
@@ -196,7 +203,14 @@ if [ "$generate_error_codes" = true ] ; then
   errors_dat_file=$(yq -r '.error-codes.src' config.yaml)
   dst=$(yq -r '.error-codes.dst' config.yaml)
   ##TODO: get version
-  "$PYTHON_EXECUTABLE" generators/generateApiDocs.py --src "$errors_dat_file" --dst "$dst"
+  "$PYTHON_EXECUTABLE" generators/generateErrorCodes.py --src "$errors_dat_file" --dst "$dst"/errors.yaml
+fi
+
+if [ "$generate_metrics" = true ] ; then
+  src=$(yq -r '.metrics.src' config.yaml)
+  dst=$(yq -r '.metrics.dst' config.yaml)
+  ##TODO: get version
+  "$PYTHON_EXECUTABLE" generators/generateMetrics.py --main "$src" --dst "$dst"
 fi
 
 
@@ -222,7 +236,7 @@ if [ "$start_servers" = true ] ; then
   done
 
   if [ "$generate_examples" = true ] ; then
-    docker compose --env-file ../docker-env/dev.env up --build
+    docker compose --env-file ../docker-env/"$DOCKER_ENV" up --build
   fi
 fi
 
