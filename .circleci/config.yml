@@ -130,7 +130,6 @@ jobs:
           name: Create config file for toolchain
           command: |
           cd workspace/docs-hugo/toolchain/scripts
-          yq -i '.metrics.src = "no"' config.yaml 
       
       - run:
           name: Launch toolchain
