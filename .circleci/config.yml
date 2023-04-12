@@ -129,7 +129,7 @@ jobs:
       - run:
           name: Create config file for toolchain
           command: |
-          cd workspace/docs-hugo/toolchain/scripts
+            cd workspace/docs-hugo/toolchain/scripts
       
       - run:
           name: Launch toolchain
