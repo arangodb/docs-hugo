@@ -107,6 +107,10 @@ jobs:
             - workspace/docs-hugo
 
   build-with-generated:
+    parameters:
+      generators:
+        type: string
+        default: generate-examples
     machine:
       image: ubuntu-2004:current
       docker_layer_caching: true 
@@ -116,14 +120,26 @@ jobs:
           at: .
 
       - run:
-          name: Check env var
+          name: Set environment variables
           command: |
-            echo "$CIRCLE_PULL_REQUEST"
-
+            export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app
+            export DOCKER_ENV=examples
+            #&& cd workspace/docs-hugo && docker compose --env-file toolchain/docker-env/examples.env up --exit-code-from site
+        
       - run:
-          name: Generate examples and build
+          name: Create config file for toolchain
           command: |
-            export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app && cd workspace/docs-hugo && docker compose --env-file toolchain/docker-env/examples.env up --exit-code-from site
+          cd workspace/docs-hugo/toolchain/scripts
+          yq -i '.metrics.src = "no"' config.yaml 
+      
+      - run:
+          name: Launch toolchain
+          command: |
+            # CircleCI doesn't allow array parameter type, so we have to workaround using a string with , as delimiter
+            #generators=<< parameters.generators >>
+            #toolchain_args=($(echo "$generators" | tr ',' '\n'))
+            cd workspace/docs-hugo/toolchain/scripts && ./toolchain.sh << parameters.generators >>
+      
       - run:
           name: Commit cache file to github
           command: |
@@ -227,7 +243,7 @@ jobs:
       - run:
           name: Create docker image from install.tar.gz
           command: |
-            cp install.tar.gz scripts/build
+            cp install.tar.gz workspace/docs-hugo/toolchain/scripts
             cd workspace/docs-hugo/toolchain/scripts
             docker build -t $CIRCLE_BRANCH --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
 
