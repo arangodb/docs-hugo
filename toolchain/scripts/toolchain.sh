@@ -3,6 +3,7 @@
   
 
 PYTHON_EXECUTABLE="python"
+DOCKER_COMPOSE_ARGS=""
 
 if ! command -v "$PYTHON_EXECUTABLE" &> /dev/null
   then
@@ -11,6 +12,10 @@ fi
 
 if [[ -z "${DOCKER_ENV}" ]]; then
   DOCKER_ENV="dev"
+fi
+
+if [ "$DOCKER_ENV" = "examples" ] ; then
+  DOCKER_COMPOSE_ARGS="--exit-code-from site"
 fi
 
 
@@ -236,7 +241,7 @@ if [ "$start_servers" = true ] ; then
   done
 
   if [ "$generate_examples" = true ] ; then
-    docker compose --env-file ../docker-env/"$DOCKER_ENV" up --build
+    docker compose --env-file ../docker-env/"$DOCKER_ENV" up --build "$DOCKER_COMPOSE_ARGS"
   fi
 fi
 
