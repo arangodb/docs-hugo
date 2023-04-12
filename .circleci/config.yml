@@ -6,13 +6,17 @@ parameters:
     enum: [plain-build, generate, compile]
     default: plain-build
 
+  GENERATE:
+    type: array
+    
+
   ARANGODB_MAIN_BRANCH:
     type: string
     default: "devel"
 
   ARANGODB_DOCS_OLD_BRANCH:
     type: string
-    default: "main"
+    default: "test-pr"
   
 
 jobs:
@@ -157,6 +161,9 @@ jobs:
         type: string
       enterprise:
         type: boolean
+      branch:
+        type: string
+        default: devel
     docker:
       - image: arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.8
     resource_class: xlarge
@@ -171,7 +178,7 @@ jobs:
       - run:
           name: Checkout ArangoDB
           command: |
-            git clone --depth 1 https://github.com/arangodb/arangodb.git --branch devel --recurse-submodules --shallow-submodules -j 8 /root/project
+            git clone --depth 1 https://github.com/arangodb/arangodb.git --branch << parameters.branch >> --recurse-submodules --shallow-submodules -j 8 /root/project
       - run:
           name: Print SCCache Settings
           command: sccache -s
@@ -219,8 +226,7 @@ jobs:
       - run:
           name: Create docker image from install.tar.gz
           command: |
-            find | grep install.tar.gz
-            cp install.tar.gz workspace/docs-hugo/toolchain/scripts
+            cp install.tar.gz scripts/build
             cd workspace/docs-hugo/toolchain/scripts
             docker build -t $CIRCLE_BRANCH --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
 
@@ -297,6 +303,7 @@ workflows:
           preset: community-pr
           edition: x64-community
           enterprise: false
+          branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
       - checkout:
           name: cloneNewRepo
           repository: git@github.com:arangodb/docs-hugo.git
