@@ -18,6 +18,8 @@ if [ "$DOCKER_ENV" = "examples" ] ; then
   DOCKER_COMPOSE_ARGS="--exit-code-from site"
 fi
 
+GENERATOR_VERSION="$1"
+
 
 
 function pull_image() {
@@ -51,7 +53,7 @@ function pull_image_from_circleci() {
   echo "$pipeline_id"
 
   ## Get the workflows of the pipeline
-  workflow_id=$(curl -s https://circleci.com/api/v2/pipeline/$pipeline_id/workflow | jq -r '.items[] | "\(.id)"')
+  workflow_id=$(curl -s https://circleci.com/api/v2/pipeline/472dce27-73e6-4cc7-8d9b-72dc380f11b6/workflow | jq -r '.items[] | "\(.id)"')
   echo "$workflow_id"
   ## Get jobs of the workflow
   jobs_numbers_string=$(curl -s https://circleci.com/api/v2/workflow/$workflow_id/job\? | jq -r '.items[] | select (.type? == "build") | .job_number')
@@ -81,7 +83,7 @@ function generate_startup_options {
 
   for HELPPROGRAM in ${ALLPROGRAMS}; do
       echo "[GENERATE OPTIONS] Dumping program options of ${HELPPROGRAM}"
-      docker exec -it "$container_name" "${HELPPROGRAM}" --dump-options >> "$dst_folder"/"$HELPPROGRAM".json
+      docker exec -it "$container_name" "${HELPPROGRAM}" --dump-options >> "$dst_folder"/"$GENERATOR_VERSION"/"$HELPPROGRAM".json
       echo "Done"
   done
 }
@@ -201,21 +203,21 @@ yq  '(.. | select(tag == "!!str")) |= envsubst(nu)' -i config.yaml
 if [ "$generate_apidocs" = true ] ; then
   dst=$(yq -r '.apidocs' config.yaml)
   ##TODO: get version
-  "$PYTHON_EXECUTABLE" generators/generateApiDocs.py --src ../../ --dst "$dst" --version 3.10
+  "$PYTHON_EXECUTABLE" generators/generateApiDocs.py --src ../../ --dst "$dst" --version "$GENERATOR_VERSION"
 fi
 
 if [ "$generate_error_codes" = true ] ; then
   errors_dat_file=$(yq -r '.error-codes.src' config.yaml)
   dst=$(yq -r '.error-codes.dst' config.yaml)
   ##TODO: get version
-  "$PYTHON_EXECUTABLE" generators/generateErrorCodes.py --src "$errors_dat_file" --dst "$dst"/errors.yaml
+  "$PYTHON_EXECUTABLE" generators/generateErrorCodes.py --src "$errors_dat_file" --dst "$dst"/"$GENERATOR_VERSION"/errors.yaml
 fi
 
 if [ "$generate_metrics" = true ] ; then
   src=$(yq -r '.metrics.src' config.yaml)
   dst=$(yq -r '.metrics.dst' config.yaml)
   ##TODO: get version
-  "$PYTHON_EXECUTABLE" generators/generateMetrics.py --main "$src" --dst "$dst"
+  "$PYTHON_EXECUTABLE" generators/generateMetrics.py --main "$src" --dst "$dst"/"$GENERATOR_VERSION"
 fi
 
 
