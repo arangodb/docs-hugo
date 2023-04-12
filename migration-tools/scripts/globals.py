@@ -37,15 +37,3 @@ OLD_GENERATED_FOLDER = f"{OLD_TOOLCHAIN}/{version}/generated/Examples"
 blocksFileLocations = {}
 components = {"schemas": {}, "parameters": [], "securitySchemes": [], "requestBodies": [], "responses": [], "headers": [], "links": [], "callbacks": []}
 
-topSectionsWeights = {
-    "getting-started": 5,
-    "arangograph": 10,
-    "aql": 15,
-    "core-topics": 20,
-    "advanced-topics": 25,
-    "operations": 30,
-    "http": 35,
-    "drivers": 40,
-    "appendix": 45,
-    "release-notes": 50
-}

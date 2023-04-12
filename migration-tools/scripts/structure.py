@@ -62,9 +62,6 @@ def create_index(label, item, extendedSection, i):
 		"weight": 5 * i+1,
 		}
 
-	for section in topSectionsWeights.keys():
-		if section == label.replace("/", ""):
-			infos[indexPath]["weight"] = topSectionsWeights[section]
 
 	mapFiles(oldFilePath, indexPath)
 	return label
@@ -81,10 +78,6 @@ def create_index_empty(label, item, extendedSection, i):
 		"title": f'\'{item["text"]}\'' if '@' in item["text"] else item["text"],
 		"weight": 5 * i+1,
 		}
-
-	for section in topSectionsWeights.keys():
-		if section == label.replace("/", ""):
-			infos[indexPath]["weight"] = topSectionsWeights[section]
 
 	dstFile = open(indexPath, "w")
 	dstFile.write("")
