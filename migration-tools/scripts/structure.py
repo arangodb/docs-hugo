@@ -51,6 +51,10 @@ def create_index(label, item, extendedSection, i):
 	folderName = item["text"].lower().replace(" ", "-").replace("/", "")
 	label = label + "/" + folderName
 
+	# if label in hardcodedActions:
+	# 	if hardcodedActions[label]["action"] == "move-inside":
+	# 		label = hardcodedActions[label]["target"] + "/" + label
+
 	Path(cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}')).mkdir(parents=True, exist_ok=True)
 
 	indexPath = cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}/_index.md')
@@ -59,8 +63,12 @@ def create_index(label, item, extendedSection, i):
 
 	infos[indexPath] = {
 		"title": f'\'{item["text"]}\'' if '@' in item["text"] else item["text"],
-		"weight": 5 * i+1,
+		"weight": 5 * i+1
 		}
+
+	# if label in hardcodedActions:
+	# 	if hardcodedActions[label]["action"] == "move-after":
+	# 		infos[indexPath]["weight"] = infos[hardcodedActions[label]["target"]] + 5
 
 
 	mapFiles(oldFilePath, indexPath)
@@ -70,6 +78,10 @@ def create_index_empty(label, item, extendedSection, i):
 	folderName = item["text"].lower().replace(" ", "-").replace("/", "")
 	label = label + "/" + folderName
 
+	# if label in hardcodedActions:
+	# 	if hardcodedActions[label]["action"] == "move-inside":
+	# 		label = hardcodedActions[label]["target"] + "/" + label
+
 	Path(cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}')).mkdir(parents=True, exist_ok=True)
 
 	indexPath = cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}/_index.md')
@@ -78,6 +90,10 @@ def create_index_empty(label, item, extendedSection, i):
 		"title": f'\'{item["text"]}\'' if '@' in item["text"] else item["text"],
 		"weight": 5 * i+1,
 		}
+
+	# if label in hardcodedActions:
+	# 	if hardcodedActions[label]["action"] == "move-after":
+	# 		infos[indexPath]["weight"] = infos[hardcodedActions[label]["target"]] + 5
 
 	dstFile = open(indexPath, "w")
 	dstFile.write("")

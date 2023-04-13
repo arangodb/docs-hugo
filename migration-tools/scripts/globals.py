@@ -37,3 +37,21 @@ OLD_GENERATED_FOLDER = f"{OLD_TOOLCHAIN}/{version}/generated/Examples"
 blocksFileLocations = {}
 components = {"schemas": {}, "parameters": [], "securitySchemes": [], "requestBodies": [], "responses": [], "headers": [], "links": [], "callbacks": []}
 
+# hardcodedActions = {
+#     "/arangograph": {
+#         "action": "move-after",
+#         "target": "/data-model",
+#     },
+#     "/aql": {
+#         "action": "move-after",
+#         "target": "arangograph"
+#     },
+#     "/http": {
+#         "action": "move-inside",
+#         "target": "develop"
+#     },
+#     "/drivers": {
+#         "action": "move-inside",
+#         "target": "develop"
+#     }
+# }
