@@ -2,6 +2,6 @@
 {{ $versions := index site.Data "versions" }}
 {{ range $i, $version := $versions }}
     {{ if strings.Contains $pagePath $version.name }}
-        {{ $pagePath.Page.Scratch.Add "pageVersion" $version.name }}
+        {{ $pagePath.Page.Scratch.Add "pageVersion" $version.version }}
     {{ end }}
 {{ end }}
