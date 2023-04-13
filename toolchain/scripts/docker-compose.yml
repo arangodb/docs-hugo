@@ -1,0 +1,11 @@
+version: "3.5"
+services:
+  arangoproxy:
+    container_name: toolchain
+    image: toolchain
+    build:
+      context: .
+      target: toolchain
+    volumes:
+      - ../../:/home
+      - /var/run/docker.sock:/var/run/docker.sock

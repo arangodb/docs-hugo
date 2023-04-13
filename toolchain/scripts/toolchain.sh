@@ -10,6 +10,12 @@ if ! command -v "$PYTHON_EXECUTABLE" &> /dev/null
   PYTHON_EXECUTABLE="python3"
 fi
 
+if ! command -v yq &> /dev/null
+  then
+      wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_"$ARCH" -O /usr/bin/yq &&\
+      chmod +x /usr/bin/yq
+  fi
+
 if [[ -z "${DOCKER_ENV}" ]]; then
   DOCKER_ENV="dev"
 fi
@@ -224,11 +230,7 @@ fi
 
 ## Generators stat do need arangodb instances running
 if [ "$start_servers" = true ] ; then
-  if ! command -v yq &> /dev/null
-  then
-      wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_"$ARCH" -O /usr/bin/yq &&\
-      chmod +x /usr/bin/yq
-  fi
+  
 
   # Start arangodb servers defined in servers.yaml
   mapfile servers < <(yq e -o=j -I=0 '.servers[]' config.yaml )
@@ -243,7 +245,10 @@ if [ "$start_servers" = true ] ; then
   done
 
   if [ "$generate_examples" = true ] ; then
-    docker compose --env-file ../docker-env/"$DOCKER_ENV" up --build "$DOCKER_COMPOSE_ARGS"
+    cd ../../
+    docker compose --env-file toolchain/docker-env/"$DOCKER_ENV".env build
+    ls
+    docker run -v ./toolchain:/home arangoproxy
   fi
 fi
 
