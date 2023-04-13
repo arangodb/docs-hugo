@@ -3,7 +3,8 @@
 {{- with $page }}
     <article class="default">
       <hgroup>
-      <h1>{{ .Title | markdownify }}</h1>
+        {{ $pageVersion := $page.Page.Scratch.Get "pageVersion"  }}
+      <h1>{{ replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}</h1>
       <p>
         {{ .Description }}
       </p>
