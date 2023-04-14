@@ -332,7 +332,7 @@ workflows:
             - cloneMainRepo
       - create-image:
           requires:
-            - compile-linux
+            - build-ce
       - build-with-generated:
           requires:
             - create-image
