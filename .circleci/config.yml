@@ -329,13 +329,10 @@ workflows:
           enterprise: false
           branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
           requires:
-            - cloneMainRepo
-      - create-image:
-          requires:
-            - build-ce
+            - migration
       - build-with-generated:
           requires:
-            - create-image
+            - build-ce
       - deploy:
           requires:
             - build-with-generated
