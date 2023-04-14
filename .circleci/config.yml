@@ -8,7 +8,7 @@ parameters:
 
   GENERATE:
     type: string
-    default: ""
+    default: "generate-examples"
 
   VERSION:
     type: string
@@ -20,7 +20,7 @@ parameters:
 
   ARANGODB_DOCS_OLD_BRANCH:
     type: string
-    default: "test-pr"
+    default: "main"
   
 
 jobs:
@@ -228,6 +228,17 @@ jobs:
       - run:
           name: Create archive of compiled instance
           command: tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/
+      - run:
+          name: Create docker image from install.tar.gz
+          command: |
+            cp install.tar.gz workspace/docs-hugo/toolchain/scripts
+            cd workspace/docs-hugo/toolchain/scripts
+            docker build -t << pipeline.parameters.ARANGODB_MAIN_BRANCH >> --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
+      - run:
+          name: Save docker image
+          command: |
+            docker save << pipeline.parameters.ARANGODB_MAIN_BRANCH >> > << pipeline.parameters.ARANGODB_MAIN_BRANCH >>.tar.gz
+            docker image ls
       - persist_to_workspace:
           root: .
           paths:
@@ -311,28 +322,20 @@ workflows:
             - cloneMainRepo
             - cloneOldDocs
             - cloneNewRepo
-      - build-with-generated:
-          requires:
-            - migration
-      - deploy:
-          requires:
-            - build-with-generated
-
-  community-pr:
-    when: { equal: [ compile, << pipeline.parameters.WORKFLOW >> ] }
-    jobs:
       - compile-linux:
           name: build-ce
           preset: community-pr
           edition: x64-community
           enterprise: false
           branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
-      - checkout:
-          name: cloneNewRepo
-          repository: git@github.com:arangodb/docs-hugo.git
-          branch: circle-ci
           requires:
-            - build-ce   
+            - cloneMainRepo
       - create-image:
           requires:
-            - cloneNewRepo
+            - compile-linux
+      - build-with-generated:
+          requires:
+            - create-image
+      - deploy:
+          requires:
+            - build-with-generated
