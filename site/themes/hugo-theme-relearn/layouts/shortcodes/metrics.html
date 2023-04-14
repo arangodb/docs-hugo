@@ -5,7 +5,18 @@
 {{ range $metric := $allMetricsFile }}
 #### {{ $metric.help }}
 
+{{ if eq $metric.type "histogram" -}}
+`{{ $metric.name }}` (basename)<br>
+`{{ $metric.name }}_bucket`<br>
+`{{ $metric.name }}_sum`<br>
+`{{ $metric.name }}_count`
+{{ else if eq $metric.type "summary" -}}
+`{{ $metric.name }}` (basename)<br>
+`{{ $metric.name }}_sum`<br>
+`{{ $metric.name }}_count`
+{{ else -}}
 `{{ $metric.name }}`
+{{ end }}
 
 {{ $metric.description }}
 
