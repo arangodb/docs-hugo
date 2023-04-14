@@ -198,6 +198,8 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "f9:49:75:1a:ad:44:89:10:4b:3c:70:70:ba:d3:c3:ce"
+      - attach_workspace:
+          at: .
       - run:
           name: Checkout ArangoDB
           command: |
@@ -228,6 +230,9 @@ jobs:
       - run:
           name: Create archive of compiled instance
           command: tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/
+      - run:
+          name: Check folders
+          command: pwd && ls
       - run:
           name: Create docker image from install.tar.gz
           command: |
