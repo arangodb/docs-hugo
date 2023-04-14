@@ -2,8 +2,9 @@
 {{- $content := .content }}
 {{- with $page }}
           <article class="chapter">
+            {{- partial "deprecated.html" . }}
+            {{- partial "in-development.html" . }}
           {{ partial "heading-post.html" . }}
-ASFASFASFSF
 {{ $content | safeHTML }}
             <footer class="footline">
               {{- partial "content-footer.html" . }}

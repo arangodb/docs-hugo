@@ -1,4 +1,4 @@
-{{ $pageVersion := .Page.Scratch.Get "pageVersionShort" }}
+{{ $pageVersion := .Page.Scratch.Get "versionShort" }}
 
 {{ $dataFolderByVersion := index site.Data $pageVersion }}
 {{ $allMetricsFile := index $dataFolderByVersion "allMetrics"}}

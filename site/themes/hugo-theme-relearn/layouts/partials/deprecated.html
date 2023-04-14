@@ -1,0 +1,17 @@
+{{- $deprecated := $.Page.Scratch.Get "deprecated" }}
+{{ $shortVersion := $.Page.Scratch.Get "versionShort" }}
+
+{{ if $deprecated }}
+    <div class="box notices cstyle warning">
+        <div class="box-content-container">
+            <div class="box-content">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div class="box-text">
+                    <p>ArangoDB v{{ $shortVersion }} reached End of Life (EOL) and is no longer supported.
+
+                    This documentation is outdated. Please see the most recent version here: <a href="/">Latest Docs</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+{{ end }}
