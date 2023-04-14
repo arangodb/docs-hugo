@@ -3,5 +3,6 @@
 {{ range $i, $version := $versions }}
     {{ if strings.Contains $pagePath $version.name }}
         {{ $pagePath.Page.Scratch.Add "pageVersion" $version.version }}
+        {{ $pagePath.Page.Scratch.Add "pageVersionShort" $version.name }}
     {{ end }}
 {{ end }}
