@@ -249,16 +249,16 @@ jobs:
       - run:
           name: Create docker image from install.tar.gz
           command: |
-            find | grep install.tar.gz
             cp install.tar.gz workspace/docs-hugo/toolchain/scripts
             cd workspace/docs-hugo/toolchain/scripts
-            docker build -t $CIRCLE_BRANCH --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
+            image_name=$(echo ${CIRCLE_BRANCH##*/})
+            docker build -t $image_name --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
 
       - run:
           name: Save docker image
           command: |
             mkdir /tmp/artifacts
-            docker save $CIRCLE_BRANCH > /tmp/artifacts/$CIRCLE_BRANCH.tar.gz
+            docker save $image_name > /tmp/artifacts/$image_name.tar.gz
       - store_artifacts:
           path: /tmp/artifacts
 
@@ -312,20 +312,9 @@ workflows:
             - cloneMainRepo
             - cloneOldDocs
             - cloneNewRepo
-      - compile-linux:
-          name: build-ce
-          preset: community-pr
-          edition: x64-community
-          enterprise: false
-          branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
-          requires:
-            - cloneMainRepo
-      - create-image:
-          requires:
-            - compile-linux
       - build-with-generated:
           requires:
-            - create-image
+            - migration
       - deploy:
           requires:
             - build-with-generated
