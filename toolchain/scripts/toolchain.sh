@@ -73,7 +73,8 @@ function pull_image_from_circleci() {
     artifact_urls=$(echo "$job_artifacts" | jq -r '.items[] | .url')
     for artifact_url in "$artifact_urls"
     do
-      wget "$artifact_url"
+      #wget --no-verbose "$artifact_url"
+      echo "ok"
     done
   done
 }
@@ -247,8 +248,8 @@ if [ "$start_servers" = true ] ; then
   if [ "$generate_examples" = true ] ; then
     cd ../../
     docker compose --env-file toolchain/docker-env/"$DOCKER_ENV".env build
-    ls
-    docker run -v ./toolchain:/home arangoproxy
+    docker run --volumes-from toolchain arangoproxy
+    docker run --volumes-from toolchain site
   fi
 fi
 
