@@ -67,18 +67,23 @@ jobs:
           name: Download migration dependencies
           command: |
             pip install pyyaml python-frontmatter commonmark
+      - run:
+          name: Move arangodb main repo
+          command: |
+            mkdir -p /root/project mv workspace/arangodb/* /root/project/
       - run: 
           name: Migrate 3.10
           command: |
-            cd workspace/docs-hugo/migration-tools/ && ./migration.sh migrate /home/circleci/project/workspace/docs /home/circleci/project/workspace/docs-hugo /home/circleci/project/workspace/arangodb 3.10
+            cd workspace/docs-hugo/migration-tools/ && ./migration.sh migrate /home/circleci/project/workspace/docs /home/circleci/project/workspace/docs-hugo /root/project 3.10
       - run: 
           name: Migrate 3.11
           command: |
-            cd workspace/docs-hugo/migration-tools/ && ./migration.sh migrate /home/circleci/project/workspace/docs /home/circleci/project/workspace/docs-hugo /home/circleci/project/workspace/arangodb 3.11
+            cd workspace/docs-hugo/migration-tools/ && ./migration.sh migrate /home/circleci/project/workspace/docs /home/circleci/project/workspace/docs-hugo /root/project 3.11
       - persist_to_workspace:
-          root: .
+          root: /
           paths:
-            - workspace/docs-hugo
+            - root/project
+            - home/circleci/project/workspace/
 
 
   plain-build: 
@@ -87,7 +92,7 @@ jobs:
     resource_class: large
     steps:
       - attach_workspace:
-          at: .
+          at: /
 
       - run:
           name: Check folders
@@ -120,7 +125,7 @@ jobs:
     resource_class: medium
     steps:
       - attach_workspace:
-          at: .
+          at: /
 
       - run:
           name: Set environment variables
@@ -199,11 +204,11 @@ jobs:
           fingerprints:
             - "f9:49:75:1a:ad:44:89:10:4b:3c:70:70:ba:d3:c3:ce"
       - attach_workspace:
-          at: .
+          at: /
       - run:
           name: Checkout ArangoDB
           command: |
-            pwd && cd workspace && ls && cd arangodb && ls
+            pwd && cd workspace && ls && cd /root/project && ls
       - run:
           name: Print SCCache Settings
           command: sccache -s
