@@ -35,6 +35,9 @@ jobs:
       branch:
         type: string
         default: main
+      destination:
+        type: string
+        default: .
 
     steps:
       - add_ssh_keys:
@@ -46,7 +49,7 @@ jobs:
       - run:
           name: Clone arangodb main repo
           command: |
-            cd workspace && git clone --depth 1 << parameters.repository >> --branch << parameters.branch >>
+            cd workspace && git clone --depth 1 << parameters.repository >> --branch << parameters.branch >> << parameters.destination >>
       - run:
           name: check cloned folders
           command: |
@@ -67,10 +70,6 @@ jobs:
           name: Download migration dependencies
           command: |
             pip install pyyaml python-frontmatter commonmark
-      - run:
-          name: Move arangodb main repo
-          command: |
-            mkdir -p /root/project mv workspace/arangodb/* /root/project/
       - run: 
           name: Migrate 3.10
           command: |
@@ -319,6 +318,7 @@ workflows:
           name: cloneMainRepo
           repository: git@github.com:arangodb/arangodb.git
           branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
+          destination: /root/project
       - checkout:
           name: cloneOldDocs
           repository: git@github.com:arangodb/docs.git
