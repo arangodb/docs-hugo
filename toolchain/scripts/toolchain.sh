@@ -152,8 +152,18 @@ function start_server() {
 
   pull_image "$2"
 
-  echo "[START_SERVER] Run server"
+  echo "[START_SERVER] Run single server"
   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name" -d "$image"
+
+  echo "[START_SERVER] Run cluster server"
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_agent1 -d "$image" --server.endpoint tcp://0.0.0.0:5001 \
+     --agency.my-address=tcp://192.168.129.10:5001   --server.authentication false   --agency.activate true  \
+    --agency.size 2   --agency.endpoint tcp://192.168.129.10:5001   --agency.supervision true   --database.directory agent1
+
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_agent2 -d "$image" --server.endpoint tcp://0.0.0.0:5002 \
+     --agency.my-address=tcp://192.168.129.10:5002   --server.authentication false   --agency.activate true  \
+    --agency.size 2   --agency.endpoint tcp://192.168.129.10:5001   --agency.supervision true   --database.directory agent2
+
 
   if [ "$options" = true ] ; then
     generate_startup_options "$name"
@@ -248,10 +258,10 @@ if [ "$start_servers" = true ] ; then
   if [ "$generate_examples" = true ] ; then
     cd ../../
     docker compose --env-file toolchain/docker-env/"$DOCKER_ENV".env build
-    docker run -d --name site --network=docs_net --ip=192.168.129.130 --env-file toolchain/docker-env/"$DOCKER_ENV".env -p 1313:1313 --volumes-from toolchain site 
-    docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 --env-file toolchain/docker-env/"$DOCKER_ENV".env --volumes-from toolchain arangoproxy
-    docker logs --follow arangoproxy > output.log &
-    docker logs --follow site > output.log &
+    docker run -d --name site --network=docs_net --ip=192.168.129.130 --env-file toolchain/docker-env/"$DOCKER_ENV".env -p 1313:1313 --volumes-from toolchain --log-opt tag="{{.Name}}" site 
+    docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 --env-file toolchain/docker-env/"$DOCKER_ENV".env --volumes-from toolchain --log-opt tag="{{.Name}}" arangoproxy
+    docker logs --details --follow arangoproxy > output.log &
+    docker logs --details --follow site > output.log &
     tail -f output.log
   fi
 fi
