@@ -45,21 +45,27 @@ function pull_image() {
 
   echo "[PULL IMAGE] Cannot find image on Dockerhub, try on CircleCI"
   pull_image_from_circleci "$image_name"
-
-  # Load image from tar
-  docker load < "$image_name".tar.gz
-  echo "[PULL IMAGE] Image loaded from CircleCI Artifact"
 }
 
 function pull_image_from_circleci() {
-  image_name="$1"
+  branch_name="$1"
+  image_name=$(echo ${branch_name##*/})
   ## Get latest pipeline of the feature-pr branch
-  circle_ci_pipeline=$(curl --request GET   --url https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/pipeline?branch=$image_name   --header 'authorization: Basic REPLACE_BASIC_AUTH')
+  circle_ci_pipeline=$(curl -s https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/pipeline?branch=$branch_name)
+  echo "$circle_ci_pipeline"
   pipeline_id=$(echo "$circle_ci_pipeline" | jq '.items[0].id' | tr -d '"')
   echo "$pipeline_id"
 
+  ## Check the pipeline is newer than the local image tag of the branch
+  isLocalImageTheLatest=$(docker images --filter=reference=$image_name:* | grep $pipeline_id)
+  if [ "$isLocalImageTheLatest" != "" ] ; then
+    return
+  fi
+
+  echo "Local image is not the latest one, donwloading latest"
+
   ## Get the workflows of the pipeline
-  workflow_id=$(curl -s https://circleci.com/api/v2/pipeline/472dce27-73e6-4cc7-8d9b-72dc380f11b6/workflow | jq -r '.items[] | "\(.id)"')
+  workflow_id=$(curl -s https://circleci.com/api/v2/pipeline/$pipeline_id/workflow | jq -r '.items[] | "\(.id)"')
   echo "$workflow_id"
   ## Get jobs of the workflow
   jobs_numbers_string=$(curl -s https://circleci.com/api/v2/workflow/$workflow_id/job\? | jq -r '.items[] | select (.type? == "build") | .job_number')
@@ -73,10 +79,13 @@ function pull_image_from_circleci() {
     artifact_urls=$(echo "$job_artifacts" | jq -r '.items[] | .url')
     for artifact_url in "$artifact_urls"
     do
-      #wget --no-verbose "$artifact_url"
-      echo "ok"
+      wget "$artifact_url"
     done
   done
+
+  # Load image from tar
+  docker load < "$image_name":"$pipeline_id".tar.gz
+  echo "[PULL IMAGE] Image loaded from CircleCI Artifact"
 }
 
 
@@ -152,17 +161,50 @@ function start_server() {
 
   pull_image "$2"
 
+  image_name=$(docker images | grep be-impatient | awk '{print $3}') ## get last created image id of the target branch
+  echo "$image_name"
   echo "[START_SERVER] Run single server"
-  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name" -d "$image"
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name" -d "$image_name"
 
   echo "[START_SERVER] Run cluster server"
-  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_agent1 -d "$image" --server.endpoint tcp://0.0.0.0:5001 \
+  ## Agencies
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --ip=192.168.129.10 --name "$name"_agent1 -d "$image_name" --server.endpoint http+tcp://192.168.129.10:5001 \
      --agency.my-address=tcp://192.168.129.10:5001   --server.authentication false   --agency.activate true  \
-    --agency.size 2   --agency.endpoint tcp://192.168.129.10:5001   --agency.supervision true   --database.directory agent1
+    --agency.size 1   --agency.endpoint tcp://192.168.129.10:5001   --agency.supervision true   --database.directory agent1
 
-  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_agent2 -d "$image" --server.endpoint tcp://0.0.0.0:5002 \
-     --agency.my-address=tcp://192.168.129.10:5002   --server.authentication false   --agency.activate true  \
-    --agency.size 2   --agency.endpoint tcp://192.168.129.10:5001   --agency.supervision true   --database.directory agent2
+  # docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_agent2 -d "$image" --server.endpoint tcp://0.0.0.0:5002 \
+  #    --agency.my-address=tcp://192.168.129.10:5002   --server.authentication false   --agency.activate true  \
+  #   --agency.size 2   --agency.endpoint tcp://192.168.129.10:5001   --agency.supervision true   --database.directory agent2
+
+  ## DB-Servers
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_dbserver1 -d "$image_name" --server.endpoint tcp://0.0.0.0:6001 \
+    --server.authentication false \
+    --cluster.my-address http+tcp://192.168.129.10:6001 \
+    --cluster.my-role DBSERVER \
+    --cluster.agency-endpoint tcp://192.168.129.10:5001 \
+    --database.directory dbserver1
+
+ docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_dbserver2 -d "$image_name" --server.endpoint tcp://0.0.0.0:6002 \
+    --server.authentication false \
+    --cluster.my-address http+tcp://192.168.129.10:6002 \
+    --cluster.my-role DBSERVER \
+    --cluster.agency-endpoint tcp://192.168.129.10:5001 \
+    --database.directory dbserver2
+
+   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_dbserver3 -d "$image_name" --server.endpoint tcp://0.0.0.0:6003 \
+    --server.authentication false \
+    --cluster.my-address http+tcp://192.168.129.10:6003 \
+    --cluster.my-role DBSERVER \
+    --cluster.agency-endpoint tcp://192.168.129.10:5001 \
+    --database.directory dbserver3
+
+  ## Coordinators
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_coordinator1 -d "$image_name" --server.endpoint tcp://0.0.0.0:7001 \
+    --server.authentication false \
+    --cluster.my-address tcp://192.168.129.10:7001 \
+    --cluster.my-role COORDINATOR \
+    --cluster.agency-endpoint tcp://192.168.129.10:5001 \
+    --database.directory coordinator1 
 
 
   if [ "$options" = true ] ; then
@@ -170,7 +212,7 @@ function start_server() {
   fi
 
    if [ "$examples" = true ] ; then
-    setup_arangoproxy "$name" "$image" "$version"
+    setup_arangoproxy "$name" "$image_name" "$version"
   fi
 }
 
