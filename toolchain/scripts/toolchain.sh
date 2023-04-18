@@ -113,7 +113,7 @@ function setup_arangoproxy() {
   docker cp "$name":/usr/share/ arangosh/"$name"/usr/
   docker cp "$name":/etc/arangodb3/arangosh.conf arangosh/"$name"/usr/bin/etc/relative/arangosh.conf
 
-  sed -i -e 's~startup-directory.*~startup-directory = /home/arangoproxy/arangosh/'"$name"'/usr/share/arangodb3/js~' arangosh/"$name"/usr/bin/etc/relative/arangosh.conf
+  sed -i -e 's~startup-directory.*~startup-directory = /home/toolchain/arangoproxy/arangosh/'"$name"'/usr/share/arangodb3/js~' arangosh/"$name"/usr/bin/etc/relative/arangosh.conf
   echo ""
 
   echo "[SETUP ARANGOPROXY] Retrieve server ip"
@@ -248,8 +248,11 @@ if [ "$start_servers" = true ] ; then
   if [ "$generate_examples" = true ] ; then
     cd ../../
     docker compose --env-file toolchain/docker-env/"$DOCKER_ENV".env build
-    docker run --volumes-from toolchain arangoproxy
-    docker run --volumes-from toolchain site
+    docker run -d --name site --network=docs_net --ip=192.168.129.130 --env-file toolchain/docker-env/"$DOCKER_ENV".env -p 1313:1313 --volumes-from toolchain site 
+    docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 --env-file toolchain/docker-env/"$DOCKER_ENV".env --volumes-from toolchain arangoproxy
+    docker logs --follow arangoproxy > output.log &
+    docker logs --follow site > output.log &
+    tail -f output.log
   fi
 fi
 

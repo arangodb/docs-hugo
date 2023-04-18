@@ -19,7 +19,7 @@ RUN echo ${BUILDARCH}
 ENV ARCH=${BUILDARCH}
 RUN apt-get update && apt-get install -y \
     python3.6
-CMD ["bash", "-c", "/home/scripts/start_arangoproxy.sh"]
+CMD cd /home/toolchain/scripts ; ./start_arangoproxy.sh
 
 
 FROM golang:1.19 AS hugo
@@ -31,4 +31,4 @@ ARG BUILDARCH
 RUN echo ${BUILDARCH}
 ENV ARCH=${BUILDARCH}
 
-CMD ["bash", "-c", "/home/scripts/start_hugo.sh"]
+CMD cd /home/toolchain/scripts; ./start_hugo.sh

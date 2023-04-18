@@ -14,9 +14,8 @@ import (
 func Exec(command string, repository config.Repository) (output string) {
 	commonFunctions, _ := utils.GetCommonFunctions()
 	command = fmt.Sprintf("%s\n%s", commonFunctions, command)
-
-	arangoSHBin := fmt.Sprintf("/home/arangoproxy/arangosh/%s/usr/bin/arangosh", repository.Name)
-	configFile := fmt.Sprintf("/home/arangoproxy/arangosh/%s/usr/bin/etc/relative/arangosh.conf", repository.Name)
+	arangoSHBin := fmt.Sprintf("/home/toolchain/arangoproxy/arangosh/%s/usr/bin/arangosh", repository.Name)
+	configFile := fmt.Sprintf("/home/toolchain/arangoproxy/arangosh/%s/usr/bin/etc/relative/arangosh.conf", repository.Name)
 
 	cmd := exec.Command(arangoSHBin, "--config", configFile, "--server.endpoint", repository.Url, "--quiet")
 
@@ -30,5 +29,5 @@ func Exec(command string, repository config.Repository) (output string) {
 	common.Logger.Printf("[InvokeArangoSH] [RESULT] %s", out.String())
 	common.Logger.Printf("[InvokeArangoSH] [RESULT 2] %s", er.String())
 
-	return ""
+	return out.String()
 }
