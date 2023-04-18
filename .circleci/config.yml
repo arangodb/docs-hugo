@@ -252,7 +252,7 @@ jobs:
             cp install.tar.gz workspace/docs-hugo/toolchain/scripts
             cd workspace/docs-hugo/toolchain/scripts
             image_name=$(echo ${CIRCLE_BRANCH##*/})
-            docker build -t $image_name --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
+            docker build -t $image_name:<< pipeline.id >> --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
             mkdir /tmp/artifacts
             docker save $image_name:<< pipeline.id >> > /tmp/artifacts/$image_name:<< pipeline.id >>.tar.gz
 
