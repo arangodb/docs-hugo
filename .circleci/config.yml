@@ -8,7 +8,7 @@ parameters:
 
   GENERATE:
     type: string
-    default: ""
+    default: "generate-examples"
 
   VERSION:
     type: string
@@ -20,7 +20,7 @@ parameters:
 
   ARANGODB_DOCS_OLD_BRANCH:
     type: string
-    default: "test-pr"
+    default: "main"
   
 
 jobs:
