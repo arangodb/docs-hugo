@@ -9,3 +9,15 @@ services:
     volumes:
       - ../../:/home
       - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      - HUGO_URL
+      - DOCKER_ENV
+      - PROGRAMOPTIONS_DST
+      - ERRORCODES_SRC
+      - ERRORCODES_DST
+      - METRICS_SRC
+      - METRICS_DST
+      - APIDOCS_DST
+      - SERVER_NAME
+      - SERVER_BRANCH
+      - SERVER_VERSION
