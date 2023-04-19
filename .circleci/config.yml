@@ -123,9 +123,8 @@ jobs:
           at: .
 
       - run:
-          name: Set environment variables
+          name: Set environment variables and launch toolchain
           command: |
-            cd workspace && ls
             export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app
             export DOCKER_ENV=examples
             export PROGRAMOPTIONS_DST=workspace/docs-hugo/site/data
@@ -137,15 +136,9 @@ jobs:
             export SERVER_NAME=stable
             export SERVER_BRANCH=<< pipeline.parameters.ARANGODB_MAIN_BRANCH >>
             export SERVER_VERSION=<< pipeline.parameters.VERSION >>
+            cd workspace/docs-hugo/toolchain/scripts && docker compose up
+
         
-      - run:
-          name: Launch toolchain
-          command: |
-            # CircleCI doesn't allow array parameter type, so we have to workaround using a string with , as delimiter
-            #generators=<< parameters.generators >>
-            #toolchain_args=($(echo "$generators" | tr ',' '\n'))
-            cd workspace/docs-hugo/toolchain/scripts && ./toolchain.sh <<pipeline.parameters.VERSION >> << parameters.generators >>
-      
       - run:
           name: Commit cache file to github
           command: |
