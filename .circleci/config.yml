@@ -21,6 +21,10 @@ parameters:
   ARANGODB_DOCS_OLD_BRANCH:
     type: string
     default: "main"
+
+  ARANGODB_DOCS_NEW_BRANCH:
+    type: string
+    default: "circle-ci"
   
 
 jobs:
@@ -271,7 +275,7 @@ workflows:
       - checkout:
           name: cloneNewRepo
           repository: git@github.com:arangodb/docs-hugo.git
-          branch: circle-ci  
+          branch: << pipeline.parameters.ARANGODB_DOCS_NEW_BRANCH >>    
       - migration:
           requires:
             - cloneMainRepo
@@ -298,7 +302,7 @@ workflows:
       - checkout:
           name: cloneNewRepo
           repository: git@github.com:arangodb/docs-hugo.git
-          branch: circle-ci   
+          branch: << pipeline.parameters.ARANGODB_DOCS_NEW_BRANCH >>  
       - migration:
           requires:
             - cloneMainRepo
