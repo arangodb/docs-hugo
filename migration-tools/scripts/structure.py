@@ -63,7 +63,7 @@ def create_index(label, item, extendedSection, i):
 
 	infos[indexPath] = {
 		"title": f'\'{item["text"]}\'' if '@' in item["text"] else item["text"],
-		"weight": 5 * i+1
+		"weight": 5 * i+5
 		}
 
 	# if label in hardcodedActions:
@@ -88,7 +88,7 @@ def create_index_empty(label, item, extendedSection, i):
 
 	infos[indexPath] = {
 		"title": f'\'{item["text"]}\'' if '@' in item["text"] else item["text"],
-		"weight": 5 * i+1,
+		"weight": 5 * i+5,
 		}
 
 	# if label in hardcodedActions:
@@ -121,7 +121,7 @@ def create_files_new(label, item, extendedSection, i):
 		
 	infos[filePath]  = {
 		"title": f'\'{item["text"]}\'' if '@' in item["text"] else item["text"],
-		"weight": 5 * i+1,
+		"weight": 5 * i+5,
 		}
 
 	mapFiles(oldFilePath, filePath)
@@ -145,7 +145,7 @@ def create_file_no_label(item, extendedSection, i):
 		
 	infos[filePath]  = {
 		"title": f'\'{item["text"]}\'' if '@' in item["text"] else item["text"],
-		"weight": 5*i+1,
+		"weight": 5*i+5,
 		}
 
 	mapFiles(oldFilePath, filePath)
