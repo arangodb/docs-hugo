@@ -107,7 +107,12 @@ def create_files_new(label, item, extendedSection, i):
 	if label == '':
 		return create_file_no_label(item, extendedSection, i)
 
-	filePath = cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}/{oldFileName}')
+	newFilename = item["text"].lower()
+	newFilename = "-".join(newFilename.split(" ")) + ".md"
+
+	newFilename = re.sub(r"<code>.*<\/code>|@\w+", "", newFilename, 0, re.MULTILINE).replace("/", "-")
+
+	filePath = cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}/{newFilename}')
 
 	try:
 		shutil.copyfile(oldFilePath, filePath)
