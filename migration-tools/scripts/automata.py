@@ -437,7 +437,7 @@ def processFile(page, content):
                 continue
 
             if "{% include metrics.md" in line:
-                line = "{{< metrics >}}\n"
+                line = "{{% metrics %}}\n"
 
             buffer.append(line)
             page.content = page.content + line

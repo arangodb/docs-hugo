@@ -39,15 +39,15 @@
 | {{ $metric.type }} | {{ $metric.unit }} | {{ $metric.complexity }} | {{ $exposedBy}} |
 
 
-{{ with $metric.threshold -}}
+{{ with $metric.threshold }}
 **Threshold:**
 {{ . }}
-{{ end -}}
+{{ end }}
 
-{{ with $metric.troubleshoot -}}
+{{ with $metric.troubleshoot }}
 **Troubleshoot:**
 {{ . }}
-{{ end -}}
+{{ end }}
 
 ---
 
