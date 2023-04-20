@@ -2,6 +2,13 @@
 {{ $shortVersion := $.Page.Scratch.Get "versionShort" }}
 
 {{ if $deprecated }}
+    {{ $href := printf "/%s" site.Params.stableVersion }}
+    {{ $nonDeprecatedPath := replace .Page.RelPermalink $shortVersion site.Params.stableVersion }}
+    {{ $nonDeprecatedPath }}
+    {{ $stablePage := .Page.GetPage $nonDeprecatedPath }}
+    {{ if $stablePage }}
+        {{ $href = $stablePage.Permalink }}
+    {{ end }}
     <div class="box notices cstyle warning">
         <div class="box-content-container">
             <div class="box-content">
@@ -9,7 +16,7 @@
                 <div class="box-text">
                     <p>ArangoDB v{{ $shortVersion }} reached End of Life (EOL) and is no longer supported.
 
-                    This documentation is outdated. Please see the most recent version here: <a href="/{{ .Site.Params.stableVersion }}">Latest Docs</a></p>
+                    This documentation is outdated. Please see the most recent version here: <a href="{{ $href }}">Latest Docs</a></p>
                 </div>
             </div>
         </div>
