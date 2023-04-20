@@ -1,10 +1,11 @@
 {{- $deprecated := $.Page.Scratch.Get "deprecated" }}
 {{ $shortVersion := $.Page.Scratch.Get "versionShort" }}
+{{ $stableVersion := $.Page.Scratch.Get "stableVersion" }}
+
 
 {{ if $deprecated }}
-    {{ $href := printf "/%s" site.Params.stableVersion }}
-    {{ $nonDeprecatedPath := replace .Page.RelPermalink $shortVersion site.Params.stableVersion }}
-    {{ $nonDeprecatedPath }}
+    {{ $href := printf "/%s" $shortVersion }}
+    {{ $nonDeprecatedPath := replace .Page.RelPermalink $shortVersion $stableVersion }}
     {{ $stablePage := .Page.GetPage $nonDeprecatedPath }}
     {{ if $stablePage }}
         {{ $href = $stablePage.Permalink }}
