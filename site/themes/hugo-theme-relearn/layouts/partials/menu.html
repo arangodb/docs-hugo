@@ -59,7 +59,7 @@
       </div>
     {{- define "section-tree-nav" }}
       {{- $currentNode := .currentnode }}
-      {{ $pageVersion := $currentNode.Page.Scratch.Get "pageVersion"  }}
+      {{ $pageVersion := $currentNode.Page.Scratch.Get "version"  }}
       {{- $showvisitedlinks := .showvisitedlinks }}
       {{- $alwaysopen := .alwaysopen }}
       {{- $currentFileRelPermalink := .currentnode.RelPermalink }}
