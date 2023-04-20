@@ -500,7 +500,7 @@ def processFrontMatterLine(page, line, flags, filepath):
 
 def cleanLine(line):
     line = line.replace("#", "sharp")
-    line = line.replace("//", "/").replace("&","and").replace(" ", "-")
+    line = line.replace("//", "/").replace("&","and").replace(" ", "-").replace("'", "")
     line = re.sub(r"-{2,}", "-", line)
     return line
 

@@ -110,7 +110,7 @@ def create_files_new(label, item, extendedSection, i):
 	newFilename = item["text"].replace(".NET", "dotnet").replace(".", "-").lower()
 	newFilename = "-".join(newFilename.split(" ")) + ".md"
 
-	newFilename = re.sub(r"<code>|<\/code>|@\w+", "", newFilename, 0, re.MULTILINE).replace("/", "-")
+	newFilename = re.sub(r"<code>|<\/code>|@\w+\/", "", newFilename, 0, re.MULTILINE).replace("/", "-").replace("@", "")
 
 	filePath = cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}/{newFilename}')
 
