@@ -499,9 +499,10 @@ def processFrontMatterLine(page, line, flags, filepath):
 
 
 def cleanLine(line):
-    line = line.replace("//", "/").replace("&","").replace(" ", "-")
+    line = line.replace("#", "sharp")
+    line = line.replace("//", "/").replace("&","and").replace(" ", "-")
     line = re.sub(r"-{2,}", "-", line)
-    return line.replace("#", "sharp").replace(".net", "dotnet")
+    return line
 
 def is_index(filename):
     return filename.endswith("_index.md")
