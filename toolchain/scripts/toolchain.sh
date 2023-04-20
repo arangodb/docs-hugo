@@ -20,10 +20,6 @@ if [[ -z "${DOCKER_ENV}" ]]; then
   DOCKER_ENV="dev"
 fi
 
-if [ "$DOCKER_ENV" = "examples" ] ; then
-  DOCKER_COMPOSE_ARGS="--exit-code-from site"
-fi
-
 GENERATOR_VERSION="$1"
 
 
@@ -216,6 +212,20 @@ function start_server() {
   fi
 }
 
+function trap_container_exit() {
+  terminate=false
+  while [ "$terminate" = false ] ;
+  do
+    siteContainerStatus=$(docker ps -a -q --filter "name=site" --filter "status=exited")
+    if [ "$siteContainerStatus" != "" ] ; then
+      terminate=true
+    fi
+  done
+
+  docker container stop $(docker ps -aq)
+  exit 1
+}
+
 
 
 ### Generator flags
@@ -304,7 +314,12 @@ if [ "$start_servers" = true ] ; then
     docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 --env-file toolchain/docker-env/"$DOCKER_ENV".env --volumes-from toolchain --log-opt tag="{{.Name}}" arangoproxy
     docker logs --details --follow arangoproxy > output.log &
     docker logs --details --follow site > output.log &
+    if [ "$DOCKER_ENV" != "dev" ] ; then
+      trap_container_exit &
+    fi
     tail -f output.log
+    echo "[TERMINATE] Site container exited"
+    echo "[TERMINATE] Terminating toolchain"
   fi
 fi
 
