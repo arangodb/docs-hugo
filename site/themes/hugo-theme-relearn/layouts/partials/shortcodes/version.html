@@ -6,7 +6,7 @@
         {{ $pagePath.Page.Scratch.Add "versionShort" $version.name }}
         {{ $pagePath.Page.Scratch.Add "alias" $version.alias }}
         {{ $pagePath.Page.Scratch.Set "deprecated" $version.deprecated }}
-        {{ template "checkVersionIsInDevelopment" dict "page" $pagePath "pageVersion" $version.name "versions" $versions }}
+        {{ template "checkVersionIsInDevelopment" dict "page" $pagePath "pageVersion" $version.name }}
     {{ end }}
 {{ end }}
 
@@ -15,20 +15,15 @@
 {{ $pageVersion := .pageVersion }}
 {{ $versions := .versions }}
 
-{{ range $i, $version := $versions }}
-    {{ if eq $version.alias "stable" }}
-        {{ $stableVersion := split $version.name "." }}
-        {{ $currentVersion := split $pageVersion "." }}
+    {{ $stableVersion := split site.Params.stableVersion "." }}
+    {{ $currentVersion := split $pageVersion "." }}
 
-        {{ range $j, $elem := $stableVersion }}
-            {{ $intStable := int $elem }}
-            {{ $currentVersionElement := index $currentVersion $j }}
-            {{ $intCurrent := int $currentVersionElement }}
-            {{ if gt $intCurrent $intStable }}
-                {{ $page.Page.Scratch.Set "underDevelopment" true }}
-            {{ end }}
+    {{ range $j, $elem := $stableVersion }}
+        {{ $intStable := int $elem }}
+        {{ $currentVersionElement := index $currentVersion $j }}
+        {{ $intCurrent := int $currentVersionElement }}
+        {{ if gt $intCurrent $intStable }}
+            {{ $page.Page.Scratch.Set "underDevelopment" true }}
         {{ end }}
     {{ end }}
 {{ end }}
-
-{{- end }}
