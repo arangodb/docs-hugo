@@ -151,8 +151,8 @@ function start_server() {
   echo ""
 
   echo "[START_SERVER] Cleanup old containers"
-  docker container stop "$name" >/dev/null 2>&1
-  docker container rm "$name" >/dev/null 2>&1
+  docker container stop "$name" "$name"_agent1 "$name"_dbserver1 "$name"_dbserver2 "$name"_dbserver3 "$name"_coordinator1 arangoproxy site  >/dev/null 2>&1
+  docker container rm "$name" "$name"_agent1 "$name"_dbserver1 "$name"_dbserver2 "$name"_dbserver3 "$name"_coordinator1 arangoproxy site  >/dev/null 2>&1
   echo ""
 
   pull_image "$2"
@@ -226,6 +226,13 @@ function trap_container_exit() {
   exit 1
 }
 
+function clean_terminate_toolchain() {
+  echo "[TOOLCHAIN] Terminate signal trapped"
+  echo "[TOOLCHAIN] Shutting down running containers"
+  trap - SIGINT SIGTERM # clear the trap
+  docker container stop $(docker ps -aq)
+}
+
 
 
 ### Generator flags
@@ -239,25 +246,28 @@ start_servers=false
 
 ## MAIN
 
+echo "[TOOLCHAIN] Starting toolchain"
+echo "[TOOLCHAIN] Args: $@"
+
 # Check for requested operations
 for var in "$@"
 do
     case $var in
-    "generate-examples")
+    "examples")
       generate_examples=true
       start_servers=true
     ;;
-    "program-options")
+    "options")
       generate_startup=true
       start_servers=true
     ;;
-    "generate-metrics")
+    "metrics")
       generate_metrics=true
     ;;
-    "generate-errorcodes")
+    "error-codes")
       generate_error_codes=true
     ;;
-    "generate-apidocs")
+    "api-docs")
       generate_apidocs=true
     ;;
     *)
@@ -271,6 +281,8 @@ yq  '(.. | select(tag == "!!str")) |= envsubst(nu)' -i config.yaml
 ## Generators that do not need arangodb instances at all
 if [ "$generate_apidocs" = true ] ; then
   dst=$(yq -r '.apidocs' config.yaml)
+  echo "[TOOLCHAIN] Generate ApiDocs requested"
+  echo "[TOOLCHAIN] $PYTHON_EXECUTABLE generators/generateApiDocs.py --src ../../ --dst $dst --version $GENERATOR_VERSION"
   ##TODO: get version
   "$PYTHON_EXECUTABLE" generators/generateApiDocs.py --src ../../ --dst "$dst" --version "$GENERATOR_VERSION"
 fi
@@ -278,6 +290,8 @@ fi
 if [ "$generate_error_codes" = true ] ; then
   errors_dat_file=$(yq -r '.error-codes.src' config.yaml)
   dst=$(yq -r '.error-codes.dst' config.yaml)
+  echo "[TOOLCHAIN] Generate ErrorCodes requested"
+  echo "[TOOLCHAIN] $PYTHON_EXECUTABLE generators/generateErrorCodes.py --src $errors_dat_file --dst $dst/$GENERATOR_VERSION/errors.yaml"
   ##TODO: get version
   "$PYTHON_EXECUTABLE" generators/generateErrorCodes.py --src "$errors_dat_file" --dst "$dst"/"$GENERATOR_VERSION"/errors.yaml
 fi
@@ -285,6 +299,8 @@ fi
 if [ "$generate_metrics" = true ] ; then
   src=$(yq -r '.metrics.src' config.yaml)
   dst=$(yq -r '.metrics.dst' config.yaml)
+  echo "[TOOLCHAIN] Generate Metrics requested"
+  echo "[TOOLCHAIN] $PYTHON_EXECUTABLE generators/generateMetrics.py --main $src --dst $dst/$GENERATOR_VERSION"
   ##TODO: get version
   "$PYTHON_EXECUTABLE" generators/generateMetrics.py --main "$src" --dst "$dst"/"$GENERATOR_VERSION"
 fi
@@ -314,9 +330,8 @@ if [ "$start_servers" = true ] ; then
     docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 --env-file toolchain/docker-env/"$DOCKER_ENV".env --volumes-from toolchain --log-opt tag="{{.Name}}" arangoproxy
     docker logs --details --follow arangoproxy > output.log &
     docker logs --details --follow site > output.log &
-    if [ "$DOCKER_ENV" != "dev" ] ; then
-      trap_container_exit &
-    fi
+    trap_container_exit &
+    #trap clean_terminate_toolchain SIGINT SIGTERM SIGKILL
     tail -f output.log
     echo "[TERMINATE] Site container exited"
     echo "[TERMINATE] Terminating toolchain"
