@@ -6,9 +6,9 @@ parameters:
     enum: [plain-build, generate, compile]
     default: plain-build
 
-  GENERATE:
+  GENERATORS:
     type: string
-    default: "generate-examples"
+    default: "examples"
 
   VERSION:
     type: string
@@ -83,6 +83,7 @@ jobs:
           root: .
           paths:
             - workspace/docs-hugo
+            - workspace/arangodb
 
 
   plain-build: 
@@ -131,10 +132,10 @@ jobs:
           command: |
             export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app
             export DOCKER_ENV=examples
+            export ARANGODB_MAIN_SRC=workspace/arangodb
+            export GENERATORS=<< pipeline.parameters.GENERATORS >>
             export PROGRAMOPTIONS_DST=workspace/docs-hugo/site/data
-            export ERRORCODES_SRC=workspace/arangodb/lib/Basics/errors.dat
             export ERRORCODES_DST=workspace/docs-hugo/site/data
-            export METRICS_SRC=workspace/arangodb
             export METRICS_DST=workspace/docs-hugo/site/data
             export APIDOCS_DST=./api-docs.json
             export SERVER_NAME=stable
