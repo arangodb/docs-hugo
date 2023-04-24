@@ -1054,3 +1054,7 @@ blockquote p {
 .hidden {
     display: none;
 }
+
+small {
+    font-size: 80%;
+}

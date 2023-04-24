@@ -1,0 +1,20 @@
+{{- $isInDevelopment := $.Page.Scratch.Get "underDevelopment" }}
+{{ $shortVersion := $.Page.Scratch.Get "versionShort" }}
+
+
+{{ if $isInDevelopment }}
+    <div class="box notices cstyle warning">
+        <div class="box-content-container">
+            <div class="box-content">
+                <i class="fas fa-exclamation-triangle"></i>
+                <div class="box-text">
+                    <p>
+                        ArangoDB v{{ $shortVersion }} is under development and not released yet.
+                        
+                        This documentation is not final and potentially incomplete.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+{{ end }}
