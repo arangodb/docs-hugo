@@ -270,6 +270,10 @@ def processFile(page, content, filepath):
 
             ## Front Matter
             if re.search(r"={3,}|-{3,}", line):
+                if flags["inDocublock"] or flags["inCodeblock"]:
+                    page.content = page.content + line
+                    continue
+                
                 if flags["endFrontMatter"] and "|" in line:
                     page.content = page.content + line
                     continue
