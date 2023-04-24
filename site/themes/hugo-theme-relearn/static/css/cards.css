@@ -26,6 +26,14 @@
     margin: 0 1rem 1rem 0;
 }
 
+.card:hover {
+    box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
+}
+
+.card > a {
+    border-bottom: 0;
+}
+
 a.section-link {
     padding: 24px;
     display: flex;
