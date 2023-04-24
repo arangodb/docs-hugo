@@ -273,7 +273,7 @@ def processFile(page, content, filepath):
                 if flags["inDocublock"] or flags["inCodeblock"]:
                     page.content = page.content + line
                     continue
-                
+
                 if flags["endFrontMatter"] and "|" in line:
                     page.content = page.content + line
                     continue
@@ -311,12 +311,16 @@ def processFile(page, content, filepath):
 
             ##Hints
             if "{% hint " in line:
+                spaces = re.search(r" {1,}(?=\{)", line)
                 hintPart = line.split("%}")
                 hintType = hintPart[0].replace("{% hint '", "").replace("' ", "").replace("\n", "").replace(" ", "")
                 if hintType == 'note':
                     hintType = 'tip'
 
                 flags["hint"] = {"active": True, "type": hintType}
+
+                if spaces:
+                    page.content = page.content + spaces.group(0)
 
                 page.content = page.content + f"{{{{< {hintType} >}}}}"
                 
@@ -327,6 +331,11 @@ def processFile(page, content, filepath):
             if "{% endhint " in line:
                 flags["hint"]["active"] = False
                 hintType = flags["hint"]["type"]
+
+                spaces = re.search(r" {1,}(?=\{)", line)
+                if spaces:
+                    page.content = page.content + spaces.group(0)
+
                 page.content = page.content + f"{{{{< /{hintType} >}}}}\n"
                 continue
 
