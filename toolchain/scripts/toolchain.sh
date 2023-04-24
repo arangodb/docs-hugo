@@ -1,6 +1,6 @@
 #!/bin/bash
 
-  
+set -e
 
 PYTHON_EXECUTABLE="python"
 DOCKER_COMPOSE_ARGS=""
@@ -55,7 +55,7 @@ function pull_image_from_circleci() {
   echo "$pipeline_id"
 
   ## Get the workflows of the pipeline
-  workflow_id=$(curl -s https://circleci.com/api/v2/pipeline/472dce27-73e6-4cc7-8d9b-72dc380f11b6/workflow | jq -r '.items[] | "\(.id)"')
+  workflow_id=$(curl -s https://circleci.com/api/v2/pipeline/$pipeline_id/workflow | jq -r '.items[] | "\(.id)"')
   echo "$workflow_id"
   ## Get jobs of the workflow
   jobs_numbers_string=$(curl -s https://circleci.com/api/v2/workflow/$workflow_id/job\? | jq -r '.items[] | select (.type? == "build") | .job_number')
@@ -203,9 +203,15 @@ yq  '(.. | select(tag == "!!str")) |= envsubst(nu)' -i config.yaml
 
 ## Generators that do not need arangodb instances at all
 if [ "$generate_apidocs" = true ] ; then
+  echo "[GENERATE-APIDOCS] Generating api-docs"
   dst=$(yq -r '.apidocs' config.yaml)
-  ##TODO: get version
+
   "$PYTHON_EXECUTABLE" generators/generateApiDocs.py --src ../../ --dst "$dst" --version "$GENERATOR_VERSION"
+  echo "[GENERATE-APIDOCS] Output file: " "$dst"
+
+  ## Validate the openapi schema
+  echo "[GENERATE-APIDOCS] Starting openapi schema validation"
+  swagger-cli validate "$dst"
 fi
 
 if [ "$generate_error_codes" = true ] ; then
