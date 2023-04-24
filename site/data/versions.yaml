@@ -1,0 +1,9 @@
+- name: '3.11'
+  version: '3.11.0'
+  alias: "devel"
+  deprecated: false
+
+- name: '3.10'
+  version: '3.10.5'
+  alias: "stable"
+  deprecated: false

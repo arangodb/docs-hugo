@@ -43,10 +43,10 @@ docs-hugo/migration-tools> python3 migration.py --src <docsOld> --dst <docsNew> 
 
 ### Docker
 
-- Run the `docker-compose` services
+- Run the `docker compose` services
 
   ```shell
-  docs/> docker-compose up --build
+  docs/> docker compose up --build
   ```
 
 This command spawns the following Docker containers:
@@ -56,6 +56,25 @@ This command spawns the following Docker containers:
 - `arango*` (e.g. `arango_single_3_11`): the ArangoDB server using a Docker image
 
 The site will be available at `http://0.0.0.0:1313`
+
+You can optionally specify an environment file using `--env-file`:
+
+```shell
+docker-compose --env-file ./toolchain/docker-env/frontend.env up --build
+```
+
+The available configurations are:
+
+- **Development** (`dev.env`):
+  for running the toolchain locally, with example generation
+- **Frontend** (`frontend.env`):
+  for running the toolchain locally, without example generation,
+  mainly for testing and working on the theme
+- **Release** (`release.env`):
+  used in CI for building and deploying the docs to production,
+  including example generation
+- **Examples** (`examples.env`):
+  used in CI for building the docs, including example generation
 
 ### No Docker
 

@@ -1,7 +1,11 @@
 {{- $page := .page }}
 {{- $content := .content }}
+
+
 {{- with $page }}
     <article class="home">
+      {{- partial "deprecated.html" . }}
+      {{- partial "in-development.html" . }}
       <h1 class="page-title">{{ .Title | markdownify }}</h1>
       <p class="lead">
         {{ .Description }}

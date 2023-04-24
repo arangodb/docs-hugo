@@ -458,6 +458,8 @@ def processFile(page, content, filepath):
             if flags["assign-ver"]["active"] and not flags["assign-ver"]["isValid"]:
                 continue
 
+            if "{% include metrics.md" in line:
+                line = "{{% metrics %}}\n"
 
             buffer.append(line)
             page.content = page.content + line

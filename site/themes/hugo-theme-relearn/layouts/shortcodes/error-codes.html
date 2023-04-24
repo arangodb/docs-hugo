@@ -1,4 +1,8 @@
-{{ $data := index site.Data "errors" }}
+{{ $pageVersion := .Page.Scratch.Get "versionShort" }}
+
+{{ $dataFolderByVersion := index site.Data $pageVersion }}
+{{ $data := index $dataFolderByVersion "errors"}}
+
 {{ $basePage := .Page.RelPermalink }}
 {{ range $data }}
     {{ if index . "group" }}
