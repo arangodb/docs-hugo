@@ -1,6 +1,6 @@
 #!/bin/bash
 
-  
+set -e
 
 PYTHON_EXECUTABLE="python"
 DOCKER_COMPOSE_ARGS=""
@@ -280,11 +280,17 @@ yq  '(.. | select(tag == "!!str")) |= envsubst(nu)' -i config.yaml
 
 ## Generators that do not need arangodb instances at all
 if [ "$generate_apidocs" = true ] ; then
+  echo "[GENERATE-APIDOCS] Generating api-docs"
   dst=$(yq -r '.apidocs' config.yaml)
   echo "[TOOLCHAIN] Generate ApiDocs requested"
   echo "[TOOLCHAIN] $PYTHON_EXECUTABLE generators/generateApiDocs.py --src ../../ --dst $dst --version $GENERATOR_VERSION"
   ##TODO: get version
   "$PYTHON_EXECUTABLE" generators/generateApiDocs.py --src ../../ --dst "$dst" --version "$GENERATOR_VERSION"
+  echo "[GENERATE-APIDOCS] Output file: " "$dst"
+
+  ## Validate the openapi schema
+  echo "[GENERATE-APIDOCS] Starting openapi schema validation"
+  swagger-cli validate "$dst"
 fi
 
 if [ "$generate_error_codes" = true ] ; then
