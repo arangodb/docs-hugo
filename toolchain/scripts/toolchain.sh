@@ -37,10 +37,12 @@ function pull_image() {
     return
   fi
 
-  echo "[PULL IMAGE] Cannot find image on Dockerhub, try on CircleCI"
-  pull_image_from_circleci "$image_name"
+  #echo "[PULL IMAGE] Cannot find image on Dockerhub, try on CircleCI"
+  #pull_image_from_circleci "$image_name"
 
   # Load image from tar
+  echo "[PULL IMAGE] Cannot find image on Dockerhub, load it locally"
+
   docker load < "$image_name".tar.gz
   echo "[PULL IMAGE] Image loaded from CircleCI Artifact"
 }

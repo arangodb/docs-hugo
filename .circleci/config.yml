@@ -247,17 +247,15 @@ jobs:
           at: .
 
       - run:
-          name: Create docker image from install.tar.gz
+          name: Create docker image from install.tar.gz and save it
           command: |
             cp install.tar.gz workspace/docs-hugo/toolchain/scripts
             cd workspace/docs-hugo/toolchain/scripts
-            docker build -t $CIRCLE_BRANCH --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
-
-      - run:
-          name: Save docker image
-          command: |
+            image_name=$(echo ${CIRCLE_BRANCH##*/})
+            docker build -t $image_name:<< pipeline.id >> --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
             mkdir /tmp/artifacts
-            docker save $CIRCLE_BRANCH > /tmp/artifacts/$CIRCLE_BRANCH.tar.gz
+            docker save $image_name:<< pipeline.id >> > /tmp/artifacts/$image_name:<< pipeline.id >>.tar.gz
+
       - store_artifacts:
           path: /tmp/artifacts
 
