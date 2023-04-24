@@ -15,7 +15,15 @@ function migrate() {
     print "Migrating" "$5"
     cd scripts/
     python3 migration.py --src "$2" --dst "$3" --arango-main "$4" --version "$5"
-    bash post-migration.sh "$3" "$5"
+    cd ../../site/content/"$5"
+    echo "---" >> _index.md
+    echo "title: '"$5"'" >> _index.md
+    echo "menuTitle: '"$5"'" >> _index.md
+    echo "weight: 0" >> _index.md
+    echo "archetype: home" >> _index.md
+    echo "---" >> _index.md
+    cd ../../../migration-tools/scripts
+    python3 post_migration.py --dst "$3" --version "$5"
     print "Migration End"
 }
 

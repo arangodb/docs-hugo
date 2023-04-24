@@ -11,44 +11,92 @@
 }
 
 .card {
-    overflow: hidden;
-    position: relative;
-    background: #fff;
-    display: -webkit-box;
-    display: -ms-flexbox;
+    flex: 1 1 25%;
+    max-width: 50%;
+    padding: 18px;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
+    min-height: 10px;
     flex-direction: column;
-    -webkit-box-align: start;
-    -ms-flex-align: start;
-    align-items: flex-start;
-    -webkit-box-flex: 1;
-    -ms-flex: 1;
-    -webkit-box-pack: justify;
-    -ms-flex-pack: justify;
-    justify-content: space-between;
-    min-width: 30%;
-    padding: 1rem;
+    position: relative;
+    color: #202951;
+    border: 1px solid #d7dee4!important;
+    border-radius: 8px;
+    /* height: 100%; */
+    transition: .125s;
     margin: 0 1rem 1rem 0;
-    border-radius: 0.5rem;
-    border: 1px solid #d5d9de;
-    box-shadow: 0 4px 10px -4px rgb(0 30 43 / 30%);
-    flex: 1 0 0em;
-
 }
 
-.card-2x-row{
-    flex: 0 0 23em;
+.card:hover {
+    box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
 }
 
-.card-3x-row{
-    flex: 0 0 17em;
+.card > a {
+    border-bottom: 0;
+}
+
+a.section-link {
+    padding: 24px;
+    display: flex;
+    margin-top: 0;
+    min-height: 10px;
+    flex-direction: column;
+    position: relative;
+    color: #202951;
+    border: 1px solid #d7dee4!important;
+    border-radius: 8px;
+    height: 100%;
+    transition: .125s;
+}
+
+.card-head {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    margin-bottom: 10px;
+    flex-flow: column;
+    min-height: 40px;
+    justify-content: center;
+    align-items: flex-start;
+    padding-left: 40px;
+}
+
+.card-icon {
+    width: 40px;
+    height: 40px;
+    -o-object-fit: contain;
+    object-fit: contain;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.card-title {
+    font-weight: 600;
+    color: #0b1117;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    font-family: 'Euclid Circular A',Akzidenz,'Helvetica Neue',Helvetica,Arial,sans-serif;
+    font-size: 16px;
+    line-height: 28px;
+}
+
+.card-body {
+    font-size: 14px;
+    line-height: 22px;
+    color: #25323d;
+    word-wrap: break-word;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+    position: relative;
+    z-index: 2;
 }
 
 
-.card > p {
+
+.card-body > p {
     margin: unset;
     font-family: 'Euclid Circular A',Akzidenz,'Helvetica Neue',Helvetica,Arial,sans-serif;
     color: #001E2B;
@@ -56,23 +104,5 @@
     line-height: 28px;
     color: #001E2B;
     font-weight: 400;
-    margin: 0rem 1em 1em 4em;
 }
 
-.card-icon {
-    width: 3.5em !important;
-    border-radius: 50%;
-    float: left;
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-}
-
-.card-title {
-    font-size: 1.1rem;
-    color: #000000;
-    -webkit-box-ordinal-group: 3;
-    -ms-flex-order: 2;
-    line-height: 1.5;
-    margin: 0.5rem 1em 1em 4em;
-}

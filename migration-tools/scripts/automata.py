@@ -3,7 +3,7 @@ from globals import *
 import http_docublocks
 import inline_docublocks
 import os
-from migrate_file import Page
+import yaml
 
 def migrate(filepath):
     print("Processing " + filepath)
@@ -14,20 +14,23 @@ def migrate(filepath):
         raise ex
 
     page = Page()
+    page.frontMatter.weight = infos[filepath]["weight"]
+
     if filepath.endswith("_index.md"):
         page.frontMatter.layout = "chapter"
     else:
         page.frontMatter.layout = "default"
 
-    if content == "": ## for pages derived from subtitles
-        page.frontMatter.title = infos[filepath]["title"]
-        page.frontMatter.weight = infos[filepath]["weight"]
-    
-    oldMetrics = getJekyllMetrics(content)
-    processFile(page, content)
+    temp = re.sub(r"---.*---", "", "\n".join(content), 0, re.MULTILINE | re.DOTALL)
 
-    newMetrics = getHugoMetrics(page.toString().split("\n"))
-    metrics[filepath] = {"old": oldMetrics, "new": newMetrics}
+    if temp == "": ## for pages derived from subtitles
+        page.frontMatter.title = infos[filepath]["title"]
+    else:
+        oldMetrics = getJekyllMetrics(content)
+        processFile(page, content, filepath)
+
+        newMetrics = getHugoMetrics(page.toString().split("\n"))
+        metrics[filepath] = {"old": oldMetrics, "new": newMetrics}
 
     file = open(filepath, "w", encoding="utf-8")
     file.truncate()
@@ -224,8 +227,8 @@ def getHugoMetrics(content):
     return metrics
 
 
-def processFile(page, content):
-    flags = {"frontMatter": False, "endFrontMatter": False, "description": False, "title": False, "inCodeblock": False, "hint": {"active": False, "type": ""}, "capture": False, "inDocublock": False, "assign-ver": {"active": False, "isValid": False}}
+def processFile(page, content, filepath):
+    flags = {"frontMatter": False, "endFrontMatter": False, "description": False, "redirect": False, "title": False, "inCodeblock": False, "hint": {"active": False, "type": ""}, "capture": False, "inDocublock": False, "assign-ver": {"active": False, "isValid": False}}
 
     buffer = []
     try:
@@ -263,18 +266,29 @@ def processFile(page, content):
                     page.content = page.content + "## " + line
                     continue
 
+            
+
             ## Front Matter
-            if re.search(r"={3,}|-{3,}", line, re.MULTILINE):
+            if re.search(r"={3,}|-{3,}", line):
+                if flags["inDocublock"] or flags["inCodeblock"]:
+                    page.content = page.content + line
+                    continue
+
+                if flags["endFrontMatter"] and "|" in line:
+                    page.content = page.content + line
+                    continue
+
                 flags["frontMatter"] = not flags["frontMatter"]
                 if not flags["frontMatter"]:
                     flags["endFrontMatter"] = True
                     flags["description"] = False
                     flags["title"] = False
+                    continue
 
                 continue
 
             if flags["frontMatter"] and not flags["endFrontMatter"]:
-                processFrontMatterLine(page, line, flags)
+                processFrontMatterLine(page, line, flags, filepath)
                 continue
 
             if "{:class=\"lead\"}" in line:
@@ -297,12 +311,16 @@ def processFile(page, content):
 
             ##Hints
             if "{% hint " in line:
+                spaces = re.search(r" {1,}(?=\{)", line)
                 hintPart = line.split("%}")
                 hintType = hintPart[0].replace("{% hint '", "").replace("' ", "").replace("\n", "").replace(" ", "")
                 if hintType == 'note':
                     hintType = 'tip'
 
                 flags["hint"] = {"active": True, "type": hintType}
+
+                if spaces:
+                    page.content = page.content + spaces.group(0)
 
                 page.content = page.content + f"{{{{< {hintType} >}}}}"
                 
@@ -313,6 +331,11 @@ def processFile(page, content):
             if "{% endhint " in line:
                 flags["hint"]["active"] = False
                 hintType = flags["hint"]["type"]
+
+                spaces = re.search(r" {1,}(?=\{)", line)
+                if spaces:
+                    page.content = page.content + spaces.group(0)
+
                 page.content = page.content + f"{{{{< /{hintType} >}}}}\n"
                 continue
 
@@ -402,7 +425,7 @@ def processFile(page, content):
             if "{% include hint-ee" in line:
                 feature = re.search(r"(?<=feature=).*\"", line).group(0)
                 tags = ["ArangoDB Enterprise"]
-                if 'arangograph' in line:
+                if '-arangograph.md' in line:
                     tags.append("ArangoGraph")
 
                 tagShortcode = '{{< tag '
@@ -423,7 +446,6 @@ def processFile(page, content):
 
             if re.search("{%.*else", line, re.MULTILINE):
                 if flags["assign-ver"]["active"]:
-                    flags["assign-ver"]["active"] = False
                     flags["assign-ver"]["isValid"] = not flags["assign-ver"]["isValid"]
                 continue
 
@@ -450,23 +472,82 @@ def processFile(page, content):
 
 
 
-def processFrontMatterLine(page, line, flags):
+def processFrontMatterLine(page, line, flags, filepath):
     if line.startswith("title:"):
         page.frontMatter.title = line.replace("title:", "")
+        return
 
     if line.startswith("description:"):
         flags["description"] = True
+        flags["redirect"] = False
         page.frontMatter.description = line.replace("description: ", "")
+        return
+
+    if line.startswith("redirect_from"):
+        flags["redirect"] = True
+        flags["description"] = False
         return
 
     if re.search(r"^[a-zA-Z]", line, re.MULTILINE):
         if flags["description"]:
             flags["description"] = False
+        
+        if flags["redirect"]:
+            flags["redirect"] = False
+
         return
+
+
 
     if line.startswith(" "):
         if flags["description"]:
             line = line.replace("  ", "")
             page.frontMatter.description = page.frontMatter.description +  line
+            return
+        
+        if flags["redirect"]:
+            line = "/" + line.replace("  - ", "").replace(".html", ".md").replace("\n", "")
+            line = re.sub(r" #.*", "", line, 0, re.MULTILINE)
+
+            urlMap[version][line] = filepath
+            return
 
 
+def cleanLine(line):
+    line = line.replace("#", "sharp")
+    line = line.replace("//", "/").replace("&","and").replace(" ", "-").replace("'", "")
+    line = re.sub(r"-{2,}", "-", line)
+    return line
+
+def is_index(filename):
+    return filename.endswith("_index.md")
+
+
+class Page():
+	def __init__(self):
+		self.frontMatter = FrontMatter()
+		self.content = ""
+
+	def toString(self):
+		res = self.frontMatter.toString()
+		cleanedFrontMatter = re.sub(r"^\s*$\n", '', res, 0, re.MULTILINE | re.DOTALL)
+		res =  f"{cleanedFrontMatter}{self.content}"
+		#res = re.sub(r"(?<=---)\n*", '\n', f"{cleanedFrontMatter}{self.content}", 0, re.MULTILINE | re.DOTALL)
+		return res
+
+class FrontMatter():
+    def __init__(self):
+        self.title = ""
+        self.layout = ""
+        self.description = ""
+        self.menuTitle = ""
+        self.weight = 0
+
+    @staticmethod
+    def clean(str):
+        return str.replace("`", "").lstrip(" ")
+
+    def toString(self):
+        description = yaml.dump(self.description, sort_keys=False, default_flow_style=False)
+        description = description.replace(">-", "").replace("|-", ">-")
+        return f"---\ntitle: {self.clean(self.title)}\nweight: {self.weight}\ndescription: {description}\narchetype: {self.layout}\n---\n"
