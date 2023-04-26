@@ -1,12 +1,41 @@
 {{- $page := .page }}
 {{- $content := .content }}
+{{ $pageVersion := $page.Page.Scratch.Get "version" }}
+
 {{- with $page }}
-          <article class="chapter">
-          {{ partial "heading-post.html" . }}
-ASFASFASFSF
-{{ $content | safeHTML }}
-            <footer class="footline">
-              {{- partial "content-footer.html" . }}
-            </footer>
-          </article>
+    <article class="chapter">
+      {{- partial "deprecated.html" . }}
+      {{- partial "in-development.html" . }}
+      <hgroup>
+      <h1>{{ replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}</h1>
+      <p>
+        {{ .Description }}
+      </p>
+      </hgroup>
+      {{ with $content }}
+         {{ . }}
+      {{ else }}
+          {{- template "generateSection" dict "section" $page }}
+      {{ end }}
+      <nav class="pagination">
+        {{- partial "content-footer.html" . }}
+      </nav>
+    </article>
 {{- end }}
+
+{{- define "generateSection" }}
+{{ $section := .section }}
+
+<div class="cards">
+  {{ range $section.Pages }}
+
+    {{- partial "shortcodes/card.html" (dict
+    "Inner" .Description
+    "title" .Title
+    "link" .RelPermalink
+      ) }}  
+  
+  {{ end }}
+</div>
+
+{{ end }}

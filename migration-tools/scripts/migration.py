@@ -6,10 +6,10 @@ import shutil
 import time
 import traceback
 import argparse
+import json
 
 # migration modules
 from globals import *
-import migrate_file
 import structure
 from definitions import *
 from http_docublocks import createComponentsIn1StructsFile, explodeNestedStructs
@@ -18,11 +18,12 @@ import automata
 
 def createStructure():
 	print("----- CREATING FOLDERS STRUCTURE")
-	structure.migrateStructure('', None, "manual")
-	structure.migrateStructure('http', None, "http")
-	structure.migrateStructure('arangograph', None, "arangograph")
-	structure.migrateStructure('aql', None, "aql")
-	structure.migrateStructure('drivers', None, "drivers")
+	structure.migrateStructure('', None, "manual", 0)
+	structure.migrateStructure('http', None, "http", 3)
+	structure.migrateStructure('arangograph', None, "arangograph", 1)
+	structure.migrateStructure('aql', None, "aql", 2)
+	structure.migrateStructure('drivers', None, "drivers", 4)
+
 	print("----- DONE\n")
 
 def initBlocksFileLocations():
@@ -48,7 +49,12 @@ def processFiles():
 	for root, dirs, files in os.walk(f"{NEW_TOOLCHAIN}/content/{version}", topdown=True):
 		for file in files:
 			automata.migrate(f"{root}/{file}".replace("\\", "/"))
+
+	urlMapFile = open("urls.json", "w")
+	json.dump(urlMap, urlMapFile, indent=4)
+	urlMapFile.close()
 	print("------ DONE\n")
+
 
 def checkUnusedDocublocks():
 	print(f"----- CHECK FOR UNUSED DOCUBLOCKS")

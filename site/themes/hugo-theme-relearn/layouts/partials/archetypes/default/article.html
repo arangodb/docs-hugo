@@ -1,9 +1,14 @@
 {{- $page := .page }}
 {{- $content := .content }}
+{{ $pageVersion := $page.Page.Scratch.Get "version" }}
+
+
 {{- with $page }}
     <article class="default">
+      {{- partial "deprecated.html" . }}
+      {{- partial "in-development.html" . }}
       <hgroup>
-      <h1>{{ .Title | markdownify }}</h1>
+      <h1>{{ replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}</h1>
       <p>
         {{ .Description }}
       </p>

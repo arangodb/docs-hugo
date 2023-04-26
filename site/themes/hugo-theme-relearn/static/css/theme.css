@@ -489,6 +489,21 @@ article.home {
     }
 }
 
+article.chapter {
+    margin-left: 10em;
+    min-height: 600px;
+    grid-area: article;
+    max-width: calc(100wh - 50px);
+    overflow-x: auto;
+    width: 55vw;
+}
+
+@media screen and (max-width: 1200px) {
+    article.chapter {
+        margin: 0 0 0 1em;
+    }
+}
+
 article ul li {
     list-style: disc;
     margin-left: 20px;
@@ -1053,4 +1068,8 @@ blockquote p {
 
 .hidden {
     display: none;
+}
+
+small {
+    font-size: 80%;
 }

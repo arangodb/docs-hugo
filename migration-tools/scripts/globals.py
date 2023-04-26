@@ -27,17 +27,8 @@ NEW_TOOLCHAIN = f"{dst}/site"
 ARANGO_MAIN = main
 
 infos = {"": {}}
-currentWeight = 0
+urlMap = {version: {}}
 metrics = {"total": {}}
-
-def get_weight(weight):
-	global currentWeight
-	currentWeight += 5
-	return currentWeight
-
-## Regexes
-frontMatterCapture = r"(?<=---\n)(.*?)(?=---)"
-widgetRegex = r"{% .* %}[\n]+.*[\n]+{% .* %}"
 
 ## DocuBlocks
 ALL_COMMENTS_FILE = f"{OLD_TOOLCHAIN}/{version}/generated/allComments.txt"
@@ -46,13 +37,21 @@ OLD_GENERATED_FOLDER = f"{OLD_TOOLCHAIN}/{version}/generated/Examples"
 blocksFileLocations = {}
 components = {"schemas": {}, "parameters": [], "securitySchemes": [], "requestBodies": [], "responses": [], "headers": [], "links": [], "callbacks": []}
 
-static_replacements = {
-    "comments": {
-        "{% comment %}": "{{% comment %}}",
-        "{% endcomment %}": "{{% /comment %}}",
-        "{%- comment %}": "{{% comment %}}",
-        "{%- endcomment %}": "{{% /comment %}}",
-        #"<!--": "{{% comment %}}\n",
-        #"-->": "\n{{% /comment %}}"
-    }
-}
+# hardcodedActions = {
+#     "/arangograph": {
+#         "action": "move-after",
+#         "target": "/data-model",
+#     },
+#     "/aql": {
+#         "action": "move-after",
+#         "target": "arangograph"
+#     },
+#     "/http": {
+#         "action": "move-inside",
+#         "target": "develop"
+#     },
+#     "/drivers": {
+#         "action": "move-inside",
+#         "target": "develop"
+#     }
+# }
