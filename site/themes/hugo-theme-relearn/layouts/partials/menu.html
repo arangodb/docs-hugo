@@ -1,7 +1,7 @@
 
     {{- $showvisitedlinks := .Site.Params.showVisitedLinks }}
     <div id="sidebar" class="default-animation{{ if $showvisitedlinks }} showVisitedLinks{{ end }} active">
-      {{- $currentNode := .Site.GetPage "/" }}
+      {{- $currentNode := . }}
       <div class="sidenav-container-flex">
         <div class="sidenav-navigation">
 
