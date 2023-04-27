@@ -1,0 +1,12 @@
+program-options: ${PROGRAMOPTIONS_DST}
+error-codes: 
+  src: ${ERRORCODES_SRC}
+  dst: ${ERRORCODES_DST}
+metrics: 
+  src: ${METRICS_SRC}
+  dst: ${METRICS_DST}
+apidocs: ${APIDOCS_DST}
+servers:
+  - name: ${SERVER_NAME}
+    image: ${SERVER_BRANCH}
+    version: ${SERVER_VERSION}

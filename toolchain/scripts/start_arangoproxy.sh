@@ -2,16 +2,18 @@
 
 ## Args: $1=architecture
 
-. /home/scripts/functions.sh
+. /home/toolchain/scripts/functions.sh
 
-arangoshDownload "$ARCH"
+wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_"$ARCH" -O /usr/bin/yq &&\
+    chmod +x /usr/bin/yq
 
-declare -a arangoUrls=("arango_single_3_10:8529" "arango_single_3_11:8529")
+# For each server in arangoproxy/cmd/configs/local.yaml filled by previous step, check the server is up and healthy
+mapfile servers < <(yq e -o=j -I=0 '.repositories.[]' /home/toolchain/arangoproxy/cmd/configs/local.yaml )
 
-echo "Waiting for all arango instances to be ready"
-for val in ${arangoUrls[@]}; do
-    printf -v val "http://%s/_api/version" $val
+for server in "${servers[@]}"; do
+    url=$(echo "$server" | yq e '.url' -)
+    printf -v val "%s/_api/version" $url
     checkIPIsReachable $val
 done
 
-cd /home/arangoproxy/cmd && go run main.go $ARANGOPROXY_ARGS
+cd /home/toolchain/arangoproxy/cmd && go run main.go $ARANGOPROXY_ARGS

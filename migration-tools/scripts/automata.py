@@ -548,6 +548,7 @@ class FrontMatter():
         return str.replace("`", "").lstrip(" ")
 
     def toString(self):
+        self.title = self.title.replace("site.data.versions[page.version.name]", "pageVersion")
         description = yaml.dump(self.description, sort_keys=False, default_flow_style=False)
         description = description.replace(">-", "").replace("|-", ">-")
         return f"---\ntitle: {self.clean(self.title)}\nweight: {self.weight}\ndescription: {description}\narchetype: {self.layout}\n---\n"

@@ -57,8 +57,7 @@ caches:
     maxAge: -1
 
 params:
-  stableVersion:  '3.10'
-  arangoproxyUrl: "http://192.168.129.4:8080"
+  arangoproxyUrl: "http://192.168.129.129:8080"
   pygmentsUseClassic: false
   description: "Documentation for ArangoDB"
   showVisitedLinks: true

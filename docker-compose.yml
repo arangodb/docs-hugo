@@ -1,38 +1,5 @@
 version: "3.5"
 services:
-  arango_single_3_10:
-    container_name: arango_single_3_10
-    image: arangodb/enterprise:latest
-    networks:
-      docs_net:
-        ipv4_address: 192.168.129.5
-    environment:
-      - ARANGO_NO_AUTH=1
-
-  # arango_cluster:
-  #   container_name: arango_cluster
-  #   image: arangodb/arangodb-starter:latest
-  #   ports:
-  #     - 8530:8530
-  #   volumes:
-  #     - /var/run/docker.sock:/var/run/docker.sock
-  #   networks:
-  #     docs_net:
-  #       ipv4_address: 192.168.129.30
-  #   command: --starter.port=8530 --starter.address=192.168.129.30 --starter.local --docker.image=arangodb/enterprise:latest --docker.container=arango_cluster --docker.net-mode=docs_net
-  #   environment:
-  #     - ARANGO_NO_AUTH=1
-
-
-  arango_single_3_11:
-    container_name: arango_single_3_11
-    image: arangodb/enterprise:latest
-    networks:
-      docs_net:
-        ipv4_address: 192.168.129.6
-    environment:
-      - ARANGO_NO_AUTH=1
-      
   arangoproxy:
     container_name: arangoproxy
     image: arangoproxy
@@ -41,7 +8,7 @@ services:
       target: arangoproxy
     networks:
       docs_net:
-        ipv4_address: 192.168.129.4
+        ipv4_address: 192.168.129.129
     extra_hosts:
       - "host.docker.internal:host-gateway"
     volumes:
@@ -62,7 +29,7 @@ services:
       - "1313:1313"
     networks:
       docs_net:
-        ipv4_address: 192.168.129.2
+        ipv4_address: 192.168.129.130
     volumes:
       - ./site:/site
       - ./toolchain:/home

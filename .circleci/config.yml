@@ -1,0 +1,338 @@
+version: 2.1
+
+parameters:
+  WORKFLOW:
+    type: enum
+    enum: [plain-build, generate, compile]
+    default: plain-build
+
+  GENERATORS:
+    type: string
+    default: "examples"
+
+  VERSION:
+    type: string
+    default: "3.10"
+
+  ARANGODB_MAIN_BRANCH:
+    type: string
+    default: "devel"
+
+  ARANGODB_DOCS_OLD_BRANCH:
+    type: string
+    default: "main"
+
+  ARANGODB_DOCS_NEW_BRANCH:
+    type: string
+    default: "circle-ci"
+  
+
+jobs:
+  checkout: #Checkout a desired repository
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    parameters:
+      repository:
+        type: string
+        default: docs-hugo
+      branch:
+        type: string
+        default: main
+
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
+
+      - run: mkdir -p workspace
+      - run:
+          name: Clone arangodb main repo
+          command: |
+            cd workspace && git clone --depth 1 << parameters.repository >> --branch << parameters.branch >>
+      - run:
+          name: check cloned folders
+          command: |
+            pwd && ls && cd workspace && ls
+      - persist_to_workspace:
+          root: .
+          paths:
+            - workspace
+
+  migration: 
+    docker:
+      - image: cimg/python:3.11.2
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Download migration dependencies
+          command: |
+            pip install pyyaml python-frontmatter commonmark
+      - run: 
+          name: Migrate 3.10
+          command: |
+            cd workspace/docs-hugo/migration-tools/ && ./migration.sh migrate /home/circleci/project/workspace/docs /home/circleci/project/workspace/docs-hugo /home/circleci/project/workspace/arangodb 3.10
+      - run: 
+          name: Migrate 3.11
+          command: |
+            cd workspace/docs-hugo/migration-tools/ && ./migration.sh migrate /home/circleci/project/workspace/docs /home/circleci/project/workspace/docs-hugo /home/circleci/project/workspace/arangodb 3.11
+      - persist_to_workspace:
+          root: .
+          paths:
+            - workspace/docs-hugo
+            - workspace/arangodb
+
+
+  plain-build: 
+    docker:
+      - image: cimg/base:current
+    resource_class: large
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Check folders
+          command: |
+            pwd && ls && cd workspace && ls
+
+      - run:
+          name: Install Hugo
+          command: |
+            curl -sSL  https://github.com/gohugoio/hugo/releases/download/v0.111.0/hugo_0.111.0_linux-amd64.tar.gz -o hugo-archive.tar.gz && ls -la && sudo tar -xzf hugo-archive.tar.gz -C /usr/local/bin
+
+      - run:
+          name: Build site
+          command: |
+            pwd && cd workspace/docs-hugo/site && hugo -b https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app --minify -e prod --templateMetrics --templateMetricsHints && ls
+            
+      - persist_to_workspace:
+          root: .
+          paths:
+            - workspace/docs-hugo
+
+  build-with-generated:
+    parameters:
+      generators:
+        type: string
+        default: generate-examples
+    machine:
+      image: ubuntu-2004:current
+      docker_layer_caching: true 
+    resource_class: medium
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Set environment variables and launch toolchain
+          command: |
+            export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app
+            export DOCKER_ENV=examples
+            export ARANGODB_MAIN_SRC=workspace/arangodb
+            export GENERATORS=<< pipeline.parameters.GENERATORS >>
+            export PROGRAMOPTIONS_DST=workspace/docs-hugo/site/data
+            export ERRORCODES_DST=workspace/docs-hugo/site/data
+            export METRICS_DST=workspace/docs-hugo/site/data
+            export APIDOCS_DST=./api-docs.json
+            export SERVER_NAME=stable
+            export SERVER_BRANCH=<< pipeline.parameters.ARANGODB_MAIN_BRANCH >>
+            export SERVER_VERSION=<< pipeline.parameters.VERSION >>
+            cd workspace/docs-hugo/toolchain/scripts && docker compose up
+
+        
+      - run:
+          name: Commit cache file to github
+          command: |
+            cd workspace/docs-hugo
+            git config user.email "daniele@arangodb.com"
+            git config user.name "CircleCI Job"
+            git commit --allow-empty -m "[ci skip] Automatic commit of generated files from CircleCI" site/data/cache.json
+            git push    
+      - persist_to_workspace:
+          root: .
+          paths:
+            - workspace/docs-hugo
+
+  deploy:
+    docker:
+      - image: cimg/node:19.7.0
+    resource_class: small
+    steps:
+      - attach_workspace:
+          at: .
+      - run:
+          name: Install netlify-cli
+          command: sudo npm install -g --silent netlify-cli
+
+      - run:
+          name: Deploy to netlify
+          command: netlify deploy --dir=workspace/docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"
+      
+      - run:
+          name: Update Github check status message
+          when: on_success
+          command: |
+            curl -L   -X POST   -H "Accept: application/vnd.github+json"   -H 'Authorization: Bearer $GITHUB_PAT'  -H "X-GitHub-Api-Version: 2022-11-28" https://api.github.com/repos/arangodb/docs-hugo/statuses/$CIRCLE_SHA1 -d'{"state": "success", "target_url": 'https://circleci.com/gh/arangodb/docs-hugo/$CIRCLE_BUILD_NUM', "description": 'https://deploy-preview-${CIRCLE_PULL_REQUEST##*/}--startling-truffle-6032f2.netlify.app', "context": "ci/circleci: deploy"}'
+
+  compile-linux:
+    parameters:
+      preset:
+        type: string
+      edition:
+        type: string
+      enterprise:
+        type: boolean
+      branch:
+        type: string
+        default: devel
+    docker:
+      - image: arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.8
+    resource_class: xlarge
+    environment:
+      GIT_SSH_COMMAND: ssh
+      SCCACHE_ERROR_LOG: /tmp/sccache.log
+      SCCACHE_LOG: info,sccache::cache=debug,sccache::compiler::compiler=debug
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "f9:49:75:1a:ad:44:89:10:4b:3c:70:70:ba:d3:c3:ce"
+      - run:
+          name: Checkout ArangoDB
+          command: |
+            git clone --depth 1 https://github.com/arangodb/arangodb.git --branch << parameters.branch >> --recurse-submodules --shallow-submodules -j 8 /root/project
+      - run:
+          name: Print SCCache Settings
+          command: sccache -s
+      - run:
+          name: Configure
+          command: |
+            cmake --preset community-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
+      - run:
+          name: Build
+          command: |
+            cmake --build --preset community-pr --parallel 8 --target arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench
+      - run:
+          name: Size leaderboard
+          command: |
+            ls -Ssha build/bin/*.a
+      - run:
+          name: Cleanup build directory
+          command: |
+            find build/ -iname *.a -delete || true
+            find build/ -iname *.o -delete || true
+      - run:
+          name: SCCache Statistics
+          command: sccache -s
+      - run:
+          name: Create archive of compiled instance
+          command: tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+  create-image:
+    machine:
+      image: ubuntu-2004:current
+      docker_layer_caching: true 
+    resource_class: medium
+    environment:
+      GIT_SSH_COMMAND: ssh
+      SCCACHE_ERROR_LOG: /tmp/sccache.log
+      SCCACHE_LOG: info,sccache::cache=debug,sccache::compiler::compiler=debug
+    steps:
+      - attach_workspace:
+          at: .
+
+      - run:
+          name: Create docker image from install.tar.gz and save it
+          command: |
+            cp install.tar.gz workspace/docs-hugo/toolchain/scripts
+            cd workspace/docs-hugo/toolchain/scripts
+            image_name=$(echo ${CIRCLE_BRANCH##*/})
+            docker build -t $image_name:<< pipeline.id >> --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
+            mkdir /tmp/artifacts
+            docker save $image_name:<< pipeline.id >> > /tmp/artifacts/$image_name:<< pipeline.id >>.tar.gz
+
+      - store_artifacts:
+          path: /tmp/artifacts
+
+
+
+workflows:
+  plain:
+    when: { equal: [ plain-build, << pipeline.parameters.WORKFLOW >> ] }
+    jobs:
+      - checkout:
+          name: cloneMainRepo
+          repository: git@github.com:arangodb/arangodb.git
+          branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
+      - checkout:
+          name: cloneOldDocs
+          repository: git@github.com:arangodb/docs.git
+          branch: << pipeline.parameters.ARANGODB_DOCS_OLD_BRANCH >>  
+      - checkout:
+          name: cloneNewRepo
+          repository: git@github.com:arangodb/docs-hugo.git
+          branch: << pipeline.parameters.ARANGODB_DOCS_NEW_BRANCH >>    
+      - migration:
+          requires:
+            - cloneMainRepo
+            - cloneOldDocs
+            - cloneNewRepo
+      - plain-build:
+          requires:
+            - migration
+      - deploy:
+          requires:
+            - plain-build
+    
+  generate:
+    when: { equal: [ generate, << pipeline.parameters.WORKFLOW >> ] }
+    jobs:
+      - checkout:
+          name: cloneMainRepo
+          repository: git@github.com:arangodb/arangodb.git
+          branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
+      - checkout:
+          name: cloneOldDocs
+          repository: git@github.com:arangodb/docs.git
+          branch: << pipeline.parameters.ARANGODB_DOCS_OLD_BRANCH >>  
+      - checkout:
+          name: cloneNewRepo
+          repository: git@github.com:arangodb/docs-hugo.git
+          branch: << pipeline.parameters.ARANGODB_DOCS_NEW_BRANCH >>  
+      - migration:
+          requires:
+            - cloneMainRepo
+            - cloneOldDocs
+            - cloneNewRepo
+      - build-with-generated:
+          requires:
+            - migration
+      - deploy:
+          requires:
+            - build-with-generated
+
+  community-pr:
+    when: { equal: [ compile, << pipeline.parameters.WORKFLOW >> ] }
+    jobs:
+      - compile-linux:
+          name: build-ce
+          preset: community-pr
+          edition: x64-community
+          enterprise: false
+          branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
+      - checkout:
+          name: cloneNewRepo
+          repository: git@github.com:arangodb/docs-hugo.git
+          branch: circle-ci
+          requires:
+            - build-ce   
+      - create-image:
+          requires:
+            - cloneNewRepo
