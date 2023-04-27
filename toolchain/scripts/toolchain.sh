@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 PYTHON_EXECUTABLE="python"
 DOCKER_COMPOSE_ARGS=""
 
@@ -25,6 +23,7 @@ GENERATOR_VERSION="$1"
 
 
 function pull_image() {
+  echo "[PULL-IMAGE] Invoke"
   image_name="$1"
 
   echo "[PULL IMAGE] Start pull of image " "$image_name"
@@ -44,6 +43,7 @@ function pull_image() {
 }
 
 function pull_image_from_circleci() {
+  echo "[CIRCLECI-PULL] Invoke"
   branch_name="$1"
   image_name=$(echo ${branch_name##*/})
   ## Get latest pipeline of the feature-pr branch
@@ -151,8 +151,8 @@ function start_server() {
   echo ""
 
   echo "[START_SERVER] Cleanup old containers"
-  docker container stop "$name" "$name"_agent1 "$name"_dbserver1 "$name"_dbserver2 "$name"_dbserver3 "$name"_coordinator1 arangoproxy site  >/dev/null 2>&1
-  docker container rm "$name" "$name"_agent1 "$name"_dbserver1 "$name"_dbserver2 "$name"_dbserver3 "$name"_coordinator1 arangoproxy site  >/dev/null 2>&1
+  docker container stop "$name" "$name"_agent1 "$name"_dbserver1 "$name"_dbserver2 "$name"_dbserver3 "$name"_coordinator1 arangoproxy site || true
+  docker container rm "$name" "$name"_agent1 "$name"_dbserver1 "$name"_dbserver2 "$name"_dbserver3 "$name"_coordinator1 arangoproxy site  || true
   echo ""
 
   pull_image "$2"
