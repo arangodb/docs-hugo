@@ -41,7 +41,7 @@ def migrateInlineDocuBlocks(block):
 
     explainRe = re.search(r"@EXPLAIN{TRUE}.*", block)
     if explainRe:
-        newBlock["options"]["explain"] = "true"
+        newBlock["options"]["explain"] = True
         block = block.replace("@EXPLAIN{TRUE}\n", "")
 
     bindVarsRe = re.search(r"@BV {.*}", block, re.MULTILINE | re.DOTALL)

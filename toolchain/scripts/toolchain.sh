@@ -1,7 +1,5 @@
 #!/bin/bash
 
-set -e
-
 PYTHON_EXECUTABLE="python"
 DOCKER_COMPOSE_ARGS=""
 
@@ -10,12 +8,14 @@ if ! command -v "$PYTHON_EXECUTABLE" &> /dev/null
   PYTHON_EXECUTABLE="python3"
 fi
 
+if ! command -v yq &> /dev/null
+  then
+      wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_"$ARCH" -O /usr/bin/yq &&\
+      chmod +x /usr/bin/yq
+  fi
+
 if [[ -z "${DOCKER_ENV}" ]]; then
   DOCKER_ENV="dev"
-fi
-
-if [ "$DOCKER_ENV" = "examples" ] ; then
-  DOCKER_COMPOSE_ARGS="--exit-code-from site"
 fi
 
 GENERATOR_VERSION="$1"
@@ -23,6 +23,7 @@ GENERATOR_VERSION="$1"
 
 
 function pull_image() {
+  echo "[PULL-IMAGE] Invoke"
   image_name="$1"
 
   echo "[PULL IMAGE] Start pull of image " "$image_name"
@@ -37,22 +38,27 @@ function pull_image() {
     return
   fi
 
-  #echo "[PULL IMAGE] Cannot find image on Dockerhub, try on CircleCI"
-  #pull_image_from_circleci "$image_name"
-
-  # Load image from tar
-  echo "[PULL IMAGE] Cannot find image on Dockerhub, load it locally"
-
-  docker load < "$image_name".tar.gz
-  echo "[PULL IMAGE] Image loaded from CircleCI Artifact"
+  echo "[PULL IMAGE] Cannot find image on Dockerhub, try on CircleCI"
+  pull_image_from_circleci "$image_name"
 }
 
 function pull_image_from_circleci() {
-  image_name="$1"
+  echo "[CIRCLECI-PULL] Invoke"
+  branch_name="$1"
+  image_name=$(echo ${branch_name##*/})
   ## Get latest pipeline of the feature-pr branch
-  circle_ci_pipeline=$(curl --request GET   --url https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/pipeline?branch=$image_name   --header 'authorization: Basic REPLACE_BASIC_AUTH')
+  circle_ci_pipeline=$(curl -s https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/pipeline?branch=$branch_name)
+  echo "$circle_ci_pipeline"
   pipeline_id=$(echo "$circle_ci_pipeline" | jq '.items[0].id' | tr -d '"')
   echo "$pipeline_id"
+
+  ## Check the pipeline is newer than the local image tag of the branch
+  isLocalImageTheLatest=$(docker images --filter=reference=$image_name:* | grep $pipeline_id)
+  if [ "$isLocalImageTheLatest" != "" ] ; then
+    return
+  fi
+
+  echo "Local image is not the latest one, donwloading latest"
 
   ## Get the workflows of the pipeline
   workflow_id=$(curl -s https://circleci.com/api/v2/pipeline/$pipeline_id/workflow | jq -r '.items[] | "\(.id)"')
@@ -72,6 +78,10 @@ function pull_image_from_circleci() {
       wget "$artifact_url"
     done
   done
+
+  # Load image from tar
+  docker load < "$image_name":"$pipeline_id".tar.gz
+  echo "[PULL IMAGE] Image loaded from CircleCI Artifact"
 }
 
 
@@ -108,7 +118,7 @@ function setup_arangoproxy() {
   docker cp "$name":/usr/share/ arangosh/"$name"/usr/
   docker cp "$name":/etc/arangodb3/arangosh.conf arangosh/"$name"/usr/bin/etc/relative/arangosh.conf
 
-  sed -i -e 's~startup-directory.*~startup-directory = /home/arangoproxy/arangosh/'"$name"'/usr/share/arangodb3/js~' arangosh/"$name"/usr/bin/etc/relative/arangosh.conf
+  sed -i -e 's~startup-directory.*~startup-directory = /home/toolchain/arangoproxy/arangosh/'"$name"'/usr/share/arangodb3/js~' arangosh/"$name"/usr/bin/etc/relative/arangosh.conf
   echo ""
 
   echo "[SETUP ARANGOPROXY] Retrieve server ip"
@@ -141,22 +151,86 @@ function start_server() {
   echo ""
 
   echo "[START_SERVER] Cleanup old containers"
-  docker container stop "$name" >/dev/null 2>&1
-  docker container rm "$name" >/dev/null 2>&1
+  docker container stop "$name" "$name"_agent1 "$name"_dbserver1 "$name"_dbserver2 "$name"_dbserver3 "$name"_coordinator1 arangoproxy site || true
+  docker container rm "$name" "$name"_agent1 "$name"_dbserver1 "$name"_dbserver2 "$name"_dbserver3 "$name"_coordinator1 arangoproxy site  || true
   echo ""
 
   pull_image "$2"
 
-  echo "[START_SERVER] Run server"
-  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name" -d "$image"
+  image_name=$(docker images | grep be-impatient | awk '{print $3}') ## get last created image id of the target branch
+  echo "$image_name"
+  echo "[START_SERVER] Run single server"
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name" -d "$image_name"
+
+  echo "[START_SERVER] Run cluster server"
+  ## Agencies
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --ip=192.168.129.10 --name "$name"_agent1 -d "$image_name" --server.endpoint http+tcp://192.168.129.10:5001 \
+     --agency.my-address=tcp://192.168.129.10:5001   --server.authentication false   --agency.activate true  \
+    --agency.size 1   --agency.endpoint tcp://192.168.129.10:5001   --agency.supervision true   --database.directory agent1
+
+  # docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_agent2 -d "$image" --server.endpoint tcp://0.0.0.0:5002 \
+  #    --agency.my-address=tcp://192.168.129.10:5002   --server.authentication false   --agency.activate true  \
+  #   --agency.size 2   --agency.endpoint tcp://192.168.129.10:5001   --agency.supervision true   --database.directory agent2
+
+  ## DB-Servers
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_dbserver1 -d "$image_name" --server.endpoint tcp://0.0.0.0:6001 \
+    --server.authentication false \
+    --cluster.my-address http+tcp://192.168.129.10:6001 \
+    --cluster.my-role DBSERVER \
+    --cluster.agency-endpoint tcp://192.168.129.10:5001 \
+    --database.directory dbserver1
+
+ docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_dbserver2 -d "$image_name" --server.endpoint tcp://0.0.0.0:6002 \
+    --server.authentication false \
+    --cluster.my-address http+tcp://192.168.129.10:6002 \
+    --cluster.my-role DBSERVER \
+    --cluster.agency-endpoint tcp://192.168.129.10:5001 \
+    --database.directory dbserver2
+
+   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_dbserver3 -d "$image_name" --server.endpoint tcp://0.0.0.0:6003 \
+    --server.authentication false \
+    --cluster.my-address http+tcp://192.168.129.10:6003 \
+    --cluster.my-role DBSERVER \
+    --cluster.agency-endpoint tcp://192.168.129.10:5001 \
+    --database.directory dbserver3
+
+  ## Coordinators
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_coordinator1 -d "$image_name" --server.endpoint tcp://0.0.0.0:7001 \
+    --server.authentication false \
+    --cluster.my-address tcp://192.168.129.10:7001 \
+    --cluster.my-role COORDINATOR \
+    --cluster.agency-endpoint tcp://192.168.129.10:5001 \
+    --database.directory coordinator1 
+
 
   if [ "$options" = true ] ; then
     generate_startup_options "$name"
   fi
 
    if [ "$examples" = true ] ; then
-    setup_arangoproxy "$name" "$image" "$version"
+    setup_arangoproxy "$name" "$image_name" "$version"
   fi
+}
+
+function trap_container_exit() {
+  terminate=false
+  while [ "$terminate" = false ] ;
+  do
+    siteContainerStatus=$(docker ps -a -q --filter "name=site" --filter "status=exited")
+    if [ "$siteContainerStatus" != "" ] ; then
+      terminate=true
+    fi
+  done
+
+  docker container stop $(docker ps -aq)
+  exit 1
+}
+
+function clean_terminate_toolchain() {
+  echo "[TOOLCHAIN] Terminate signal trapped"
+  echo "[TOOLCHAIN] Shutting down running containers"
+  trap - SIGINT SIGTERM # clear the trap
+  docker container stop $(docker ps -aq)
 }
 
 
@@ -172,25 +246,28 @@ start_servers=false
 
 ## MAIN
 
+echo "[TOOLCHAIN] Starting toolchain"
+echo "[TOOLCHAIN] Args: $@"
+
 # Check for requested operations
 for var in "$@"
 do
     case $var in
-    "generate-examples")
+    "examples")
       generate_examples=true
       start_servers=true
     ;;
-    "program-options")
+    "options")
       generate_startup=true
       start_servers=true
     ;;
-    "generate-metrics")
+    "metrics")
       generate_metrics=true
     ;;
-    "generate-errorcodes")
+    "error-codes")
       generate_error_codes=true
     ;;
-    "generate-apidocs")
+    "api-docs")
       generate_apidocs=true
     ;;
     *)
@@ -205,7 +282,9 @@ yq  '(.. | select(tag == "!!str")) |= envsubst(nu)' -i config.yaml
 if [ "$generate_apidocs" = true ] ; then
   echo "[GENERATE-APIDOCS] Generating api-docs"
   dst=$(yq -r '.apidocs' config.yaml)
-
+  echo "[TOOLCHAIN] Generate ApiDocs requested"
+  echo "[TOOLCHAIN] $PYTHON_EXECUTABLE generators/generateApiDocs.py --src ../../ --dst $dst --version $GENERATOR_VERSION"
+  ##TODO: get version
   "$PYTHON_EXECUTABLE" generators/generateApiDocs.py --src ../../ --dst "$dst" --version "$GENERATOR_VERSION"
   echo "[GENERATE-APIDOCS] Output file: " "$dst"
 
@@ -217,6 +296,8 @@ fi
 if [ "$generate_error_codes" = true ] ; then
   errors_dat_file=$(yq -r '.error-codes.src' config.yaml)
   dst=$(yq -r '.error-codes.dst' config.yaml)
+  echo "[TOOLCHAIN] Generate ErrorCodes requested"
+  echo "[TOOLCHAIN] $PYTHON_EXECUTABLE generators/generateErrorCodes.py --src $errors_dat_file --dst $dst/$GENERATOR_VERSION/errors.yaml"
   ##TODO: get version
   "$PYTHON_EXECUTABLE" generators/generateErrorCodes.py --src "$errors_dat_file" --dst "$dst"/"$GENERATOR_VERSION"/errors.yaml
 fi
@@ -224,6 +305,8 @@ fi
 if [ "$generate_metrics" = true ] ; then
   src=$(yq -r '.metrics.src' config.yaml)
   dst=$(yq -r '.metrics.dst' config.yaml)
+  echo "[TOOLCHAIN] Generate Metrics requested"
+  echo "[TOOLCHAIN] $PYTHON_EXECUTABLE generators/generateMetrics.py --main $src --dst $dst/$GENERATOR_VERSION"
   ##TODO: get version
   "$PYTHON_EXECUTABLE" generators/generateMetrics.py --main "$src" --dst "$dst"/"$GENERATOR_VERSION"
 fi
@@ -232,11 +315,7 @@ fi
 
 ## Generators stat do need arangodb instances running
 if [ "$start_servers" = true ] ; then
-  if ! command -v yq &> /dev/null
-  then
-      wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_"$ARCH" -O /usr/bin/yq &&\
-      chmod +x /usr/bin/yq
-  fi
+  
 
   # Start arangodb servers defined in servers.yaml
   mapfile servers < <(yq e -o=j -I=0 '.servers[]' config.yaml )
@@ -251,7 +330,17 @@ if [ "$start_servers" = true ] ; then
   done
 
   if [ "$generate_examples" = true ] ; then
-    docker compose --env-file ../docker-env/"$DOCKER_ENV" up --build "$DOCKER_COMPOSE_ARGS"
+    cd ../../
+    docker compose --env-file toolchain/docker-env/"$DOCKER_ENV".env build
+    docker run -d --name site --network=docs_net --ip=192.168.129.130 --env-file toolchain/docker-env/"$DOCKER_ENV".env -p 1313:1313 --volumes-from toolchain --log-opt tag="{{.Name}}" site 
+    docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 --env-file toolchain/docker-env/"$DOCKER_ENV".env --volumes-from toolchain --log-opt tag="{{.Name}}" arangoproxy
+    docker logs --details --follow arangoproxy > output.log &
+    docker logs --details --follow site > output.log &
+    trap_container_exit &
+    #trap clean_terminate_toolchain SIGINT SIGTERM SIGKILL
+    tail -f output.log
+    echo "[TERMINATE] Site container exited"
+    echo "[TERMINATE] Terminating toolchain"
   fi
 fi
 
