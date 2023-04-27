@@ -24,7 +24,7 @@ parameters:
 
   ARANGODB_DOCS_NEW_BRANCH:
     type: string
-    default: "circle-ci"
+    default: "test-main"
   
 
 jobs:
@@ -272,21 +272,13 @@ workflows:
           repository: git@github.com:arangodb/arangodb.git
           branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
       - checkout:
-          name: cloneOldDocs
-          repository: git@github.com:arangodb/docs.git
-          branch: << pipeline.parameters.ARANGODB_DOCS_OLD_BRANCH >>  
-      - checkout:
           name: cloneNewRepo
           repository: git@github.com:arangodb/docs-hugo.git
           branch: << pipeline.parameters.ARANGODB_DOCS_NEW_BRANCH >>    
-      - migration:
-          requires:
-            - cloneMainRepo
-            - cloneOldDocs
-            - cloneNewRepo
       - plain-build:
           requires:
-            - migration
+            - cloneMainRepo
+            - cloneNewRepo
       - deploy:
           requires:
             - plain-build
@@ -299,21 +291,13 @@ workflows:
           repository: git@github.com:arangodb/arangodb.git
           branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
       - checkout:
-          name: cloneOldDocs
-          repository: git@github.com:arangodb/docs.git
-          branch: << pipeline.parameters.ARANGODB_DOCS_OLD_BRANCH >>  
-      - checkout:
           name: cloneNewRepo
           repository: git@github.com:arangodb/docs-hugo.git
           branch: << pipeline.parameters.ARANGODB_DOCS_NEW_BRANCH >>  
-      - migration:
-          requires:
-            - cloneMainRepo
-            - cloneOldDocs
-            - cloneNewRepo
       - build-with-generated:
           requires:
-            - migration
+            - cloneMainRepo
+            - cloneNewRepo
       - deploy:
           requires:
             - build-with-generated
