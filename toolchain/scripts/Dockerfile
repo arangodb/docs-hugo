@@ -19,4 +19,4 @@ ARG BUILDARCH
 RUN echo ${BUILDARCH}
 ENV ARCH=${BUILDARCH}
 
-CMD cd /home/toolchain/scripts ; pwd ; ls ;  ./toolchain.sh 3.10 ${GENERATORS}
+CMD cd /home/toolchain/scripts ; pwd ; ls ;  ./toolchain.sh ${SERVER_VERSION} ${GENERATORS}
