@@ -1,6 +1,6 @@
 version: "3.5"
 services:
-  arangoproxy:
+  toolchain:
     container_name: toolchain
     image: toolchain
     build:
