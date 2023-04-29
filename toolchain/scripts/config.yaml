@@ -1,9 +1,9 @@
 program-options: ${PROGRAMOPTIONS_DST}
 error-codes: 
-  src: ${ERRORCODES_SRC}
+  src: ${ARANGODB_MAIN_SRC}/lib/Basics/errors.dat
   dst: ${ERRORCODES_DST}
 metrics: 
-  src: ${METRICS_SRC}
+  src: ${ARANGODB_MAIN_SRC}
   dst: ${METRICS_DST}
 apidocs: ${APIDOCS_DST}
 servers:
