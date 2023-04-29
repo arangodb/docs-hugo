@@ -129,7 +129,6 @@ jobs:
       - run:
           name: Set environment variables and launch toolchain
           command: |
-            docker ps -a
             export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app
             export DOCKER_ENV=examples
             export ARANGODB_MAIN_SRC=/root/project/workspace/arangodb
