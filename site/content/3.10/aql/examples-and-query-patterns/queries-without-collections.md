@@ -12,6 +12,10 @@ however. Below are a few examples of that.
 Following is a query that returns a string value. The result string is contained in an array
 because the result of every valid query is an array:
 
+{{< warning >}}
+The following example has been modified as to show the regenerate example in the CI
+{{< /warning >}}
+
 ```aql
 ---
 name: aqlWithoutCollections_1
@@ -20,7 +24,7 @@ render: input/output
 version: '3.10'
 release: stable
 ---
-RETURN "this will be returned"
+RETURN "this will be returned and has been modified in this PR feature test"
 ```
 
 You may use variables, call functions and return arbitrarily structured results:
