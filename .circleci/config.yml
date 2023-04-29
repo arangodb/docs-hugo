@@ -132,11 +132,11 @@ jobs:
             docker ps -a
             export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app
             export DOCKER_ENV=examples
-            export ARANGODB_MAIN_SRC=workspace/arangodb
+            export ARANGODB_MAIN_SRC=/root/project/workspace/arangodb
             export GENERATORS=<< pipeline.parameters.GENERATORS >>
-            export PROGRAMOPTIONS_DST=workspace/docs-hugo/site/data
-            export ERRORCODES_DST=workspace/docs-hugo/site/data
-            export METRICS_DST=workspace/docs-hugo/site/data
+            export PROGRAMOPTIONS_DST=/root/project/workspace/docs-hugo/site/data
+            export ERRORCODES_DST=/root/project/workspace/docs-hugo/site/data
+            export METRICS_DST=/root/project/workspace/docs-hugo/site/data
             export APIDOCS_DST=./api-docs.json
             export SERVER_NAME=stable
             export SERVER_BRANCH=<< pipeline.parameters.ARANGODB_MAIN_BRANCH >>
