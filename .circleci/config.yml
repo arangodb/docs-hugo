@@ -121,7 +121,6 @@ jobs:
         default: generate-examples
     machine:
       image: ubuntu-2004:current
-      docker_layer_caching: true 
     resource_class: medium
     steps:
       - attach_workspace:
@@ -130,6 +129,7 @@ jobs:
       - run:
           name: Set environment variables and launch toolchain
           command: |
+            docker ps -a
             export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app
             export DOCKER_ENV=examples
             export ARANGODB_MAIN_SRC=workspace/arangodb
