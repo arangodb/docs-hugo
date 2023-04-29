@@ -46,14 +46,17 @@ function pull_image_from_circleci() {
   echo "[CIRCLECI-PULL] Invoke"
   branch_name="$1"
   image_name=$(echo ${branch_name##*/})
+  echo "[CIRCLECI-PULL] Branch Name: " "$branch_name"
+  echo "[CIRCLECI-PULL] Image Name: " "$image_name"
+
   ## Get latest pipeline of the feature-pr branch
   circle_ci_pipeline=$(curl -s https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/pipeline?branch=$branch_name)
-  echo "$circle_ci_pipeline"
   pipeline_id=$(echo "$circle_ci_pipeline" | jq '.items[0].id' | tr -d '"')
-  echo "$pipeline_id"
+  echo "[CIRCLECI-PULL] Latest PipelineID of compiled branch: ""$pipeline_id"
 
   ## Check the pipeline is newer than the local image tag of the branch
   isLocalImageTheLatest=$(docker images --filter=reference=$image_name:* | grep $pipeline_id)
+  echo "[CIRCLECI-PULL] Check latest docker image id" "$isLocalImageTheLatest"
   if [ "$isLocalImageTheLatest" != "" ] ; then
     return
   fi
@@ -62,7 +65,8 @@ function pull_image_from_circleci() {
 
   ## Get the workflows of the pipeline
   workflow_id=$(curl -s https://circleci.com/api/v2/pipeline/$pipeline_id/workflow | jq -r '.items[] | "\(.id)"')
-  echo "$workflow_id"
+  echo "[CIRCLECI-PULL] Latest WorkflowID: ""$workflow_id"
+  
   ## Get jobs of the workflow
   jobs_numbers_string=$(curl -s https://circleci.com/api/v2/workflow/$workflow_id/job\? | jq -r '.items[] | select (.type? == "build") | .job_number')
 
@@ -75,6 +79,8 @@ function pull_image_from_circleci() {
     artifact_urls=$(echo "$job_artifacts" | jq -r '.items[] | .url')
     for artifact_url in "$artifact_urls"
     do
+      echo "[CIRCLECI-PULL] Downloading artifacts of job number: " "$job_number"
+      echo "[CIRCLECI-PULL] Link: " "$artifact_url"
       wget "$artifact_url"
     done
   done
