@@ -189,7 +189,7 @@ jobs:
               {
                 "state": "success",
                 "target_url": "'"$CIRCLE_BUILD_URL"'",
-                "description": "$DESCRIPTION",
+                "description": "'"$DESCRIPTION"'",
                 "context": "ci/circleci: deploy"
               }
             '
