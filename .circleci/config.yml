@@ -171,7 +171,12 @@ jobs:
       - run:
           name: Deploy to netlify
           command: netlify deploy --dir=workspace/docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"
-      
+
+  show-deploy-preview:
+    docker:
+      - image: cimg/node:19.7.0
+    resource_class: small
+    steps:
       - run:
           name: Update Github check status message
           when: on_success
@@ -190,11 +195,13 @@ jobs:
                 "state": "success",
                 "target_url": "'"$CIRCLE_BUILD_URL"'",
                 "description": "'"$DESCRIPTION"'",
-                "context": "ci/circleci: plain-build"
+                "context": "ci/circleci: deploy"
               }
             '
             # Post the status (use echo-pipe not \<<< for greater shell compat).
             echo $BODY | curl -u $AUTH -XPOST -d@- $URL
+      
+      
 
   compile-linux:
     parameters:
@@ -295,6 +302,9 @@ workflows:
       - deploy:
           requires:
             - plain-build
+      - show-deploy-preview:
+          requires:
+            - deploy
     
   generate:
     when: { equal: [ generate, << pipeline.parameters.WORKFLOW >> ] }
@@ -314,6 +324,9 @@ workflows:
       - deploy:
           requires:
             - build-with-generated
+      - show-deploy-preview:
+          requires:
+            - deploy
 
   community-pr:
     when: { equal: [ compile, << pipeline.parameters.WORKFLOW >> ] }
