@@ -131,15 +131,10 @@ jobs:
           name: Set environment variables and launch toolchain
           command: |
             export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app
-            echo "$HUGO_URL"
             export DOCKER_ENV=examples
-            echo "$DOCKER_ENV"
             export ARANGODB_MAIN_SRC='/root/project/workspace/arangodb'
-            echo "$ARANGODB_MAIN_SRC"
             export GENERATORS=<< pipeline.parameters.GENERATORS >>
-            echo "$GENERATORS"
             export PROGRAMOPTIONS_DST='/root/project/workspace/docs-hugo/site/data'
-            echo "$PROGRAMOPTIONS_DST"
             export ERRORCODES_DST='/root/project/workspace/docs-hugo/site/data'
             export METRICS_DST='/root/project/workspace/docs-hugo/site/data'
             export APIDOCS_DST='./api-docs.json'
@@ -345,9 +340,9 @@ workflows:
       - checkout:
           name: cloneNewRepo
           repository: git@github.com:arangodb/docs-hugo.git
-          branch: circle-ci
+          branch: main
           requires:
-            - build-ce   
+            - build-ce
       - create-image:
           requires:
             - cloneNewRepo
