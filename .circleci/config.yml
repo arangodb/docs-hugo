@@ -190,7 +190,7 @@ jobs:
                 "state": "success",
                 "target_url": "'"$CIRCLE_BUILD_URL"'",
                 "description": "'"$DESCRIPTION"'",
-                "context": "ci/circleci: deploy"
+                "context": "ci/circleci: plain-build"
               }
             '
             # Post the status (use echo-pipe not \<<< for greater shell compat).
