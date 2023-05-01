@@ -142,7 +142,7 @@ function setup_arangoproxy() {
 
 function start_server() {
   name=$1
-  image=$2
+  branch_name=$2
   version=$3
 
   examples=$4
@@ -161,16 +161,18 @@ function start_server() {
   docker container rm "$name" "$name"_agent1 "$name"_dbserver1 "$name"_dbserver2 "$name"_dbserver3 "$name"_coordinator1 arangoproxy site  || true
   echo ""
 
-  pull_image "$2"
+  pull_image "$branch_name"
 
-  image_name=$(docker images | grep be-impatient | awk '{print $3}') ## get last created image id of the target branch
-  echo "$image_name"
+  image_name=$(echo ${branch_name##*/})
+
+  image_id=$(docker images | grep $image_name | awk '{print $3}') ## get last created image id of the target branch
+  echo "$image_id"
   echo "[START_SERVER] Run single server"
-  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name" -d "$image_name"
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name" -d "$image_id"
 
   echo "[START_SERVER] Run cluster server"
   ## Agencies
-  docker run -e ARANGO_NO_AUTH=1 --net docs_net --ip=192.168.129.10 --name "$name"_agent1 -d "$image_name" --server.endpoint http+tcp://192.168.129.10:5001 \
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --ip=192.168.129.10 --name "$name"_agent1 -d "$image_id" --server.endpoint http+tcp://192.168.129.10:5001 \
      --agency.my-address=tcp://192.168.129.10:5001   --server.authentication false   --agency.activate true  \
     --agency.size 1   --agency.endpoint tcp://192.168.129.10:5001   --agency.supervision true   --database.directory agent1
 
@@ -179,21 +181,21 @@ function start_server() {
   #   --agency.size 2   --agency.endpoint tcp://192.168.129.10:5001   --agency.supervision true   --database.directory agent2
 
   ## DB-Servers
-  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_dbserver1 -d "$image_name" --server.endpoint tcp://0.0.0.0:6001 \
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_dbserver1 -d "$image_id" --server.endpoint tcp://0.0.0.0:6001 \
     --server.authentication false \
     --cluster.my-address http+tcp://192.168.129.10:6001 \
     --cluster.my-role DBSERVER \
     --cluster.agency-endpoint tcp://192.168.129.10:5001 \
     --database.directory dbserver1
 
- docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_dbserver2 -d "$image_name" --server.endpoint tcp://0.0.0.0:6002 \
+ docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_dbserver2 -d "$image_id" --server.endpoint tcp://0.0.0.0:6002 \
     --server.authentication false \
     --cluster.my-address http+tcp://192.168.129.10:6002 \
     --cluster.my-role DBSERVER \
     --cluster.agency-endpoint tcp://192.168.129.10:5001 \
     --database.directory dbserver2
 
-   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_dbserver3 -d "$image_name" --server.endpoint tcp://0.0.0.0:6003 \
+   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_dbserver3 -d "$image_id" --server.endpoint tcp://0.0.0.0:6003 \
     --server.authentication false \
     --cluster.my-address http+tcp://192.168.129.10:6003 \
     --cluster.my-role DBSERVER \
@@ -201,7 +203,7 @@ function start_server() {
     --database.directory dbserver3
 
   ## Coordinators
-  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_coordinator1 -d "$image_name" --server.endpoint tcp://0.0.0.0:7001 \
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_coordinator1 -d "$image_id" --server.endpoint tcp://0.0.0.0:7001 \
     --server.authentication false \
     --cluster.my-address tcp://192.168.129.10:7001 \
     --cluster.my-role COORDINATOR \
