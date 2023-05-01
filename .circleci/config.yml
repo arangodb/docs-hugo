@@ -124,8 +124,19 @@ jobs:
       docker_layer_caching: true 
     resource_class: medium
     steps:
+    
       - attach_workspace:
           at: .
+
+      - add_ssh_keys:
+          fingerprints:
+            - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
+
+      - run:
+          name: Clone docs-hugo repo
+          command: |
+            cd workspace && git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
 
       - run:
           name: Set environment variables and launch toolchain
@@ -313,14 +324,9 @@ workflows:
           name: cloneMainRepo
           repository: git@github.com:arangodb/arangodb.git
           branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
-      - checkout:
-          name: cloneNewRepo
-          repository: git@github.com:arangodb/docs-hugo.git
-          branch: << pipeline.parameters.ARANGODB_DOCS_NEW_BRANCH >>  
       - build-with-generated:
           requires:
             - cloneMainRepo
-            - cloneNewRepo
       - deploy:
           requires:
             - build-with-generated
