@@ -87,6 +87,14 @@ def processFile(filepath):
         method = next(iter(endpointDict["paths"][path]))
         if not path in apiDocsRes["paths"]:
             apiDocsRes["paths"][path] = {}
+
+        summary = re.search(r"^#.*", endpoint, re.MULTILINE)
+        if "summary" in endpointDict["paths"][path][method]:
+            print(f"WARNING: Summary field already in spec {path}-{method}")
+
+        if summary:
+            endpointDict["paths"][path][method]["summary"] = summary.group(0).replace("#", "").replace(" ", "", 1)
+        
         apiDocsRes["paths"][path][method] = endpointDict["paths"][path][method]
 
     processDescriptions(apiDocsRes, "")
