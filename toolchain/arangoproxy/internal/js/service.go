@@ -25,7 +25,7 @@ func (service JSService) ExecuteExample(request common.Example) (res common.Exam
 	repository, _ := common.GetRepository(request.Options.Release, request.Options.Version)
 
 	//commands = utils.TryCatchWrap(commands)
-	cmdOutput := arangosh.Exec(commands, repository)
+	cmdOutput := arangosh.Exec(request.Options.Name, commands, repository)
 
 	res = *common.NewExampleResponse(request.Code, cmdOutput, request.Options)
 	if cmdOutput != "" {

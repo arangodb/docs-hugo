@@ -32,7 +32,7 @@ func (service AQLService) Execute(request common.Example) (res AQLResponse) {
 
 	// Example is not cached, execute it against the arango instance
 	//commands = utils.TryCatchWrap(commands)
-	cmdOutput := arangosh.Exec(commands, repository)
+	cmdOutput := arangosh.Exec(request.Options.Name, commands, repository)
 
 	res.ExampleResponse.Input, res.ExampleResponse.Options = request.Code, request.Options
 

@@ -18,7 +18,7 @@ func (service HTTPService) ExecuteHTTPExample(request common.Example) (res commo
 	repository, _ := common.GetRepository(request.Options.Release, request.Options.Version)
 
 	//commands = utils.TryCatchWrap(commands)
-	cmdOutput := arangosh.Exec(commands, repository)
+	cmdOutput := arangosh.Exec(request.Options.Name, commands, repository)
 
 	curlRequest, curlOutput, err := formatArangoResponse(cmdOutput, string(request.Options.Render))
 	if err != nil {
