@@ -3,8 +3,8 @@ version: 2.1
 parameters:
   WORKFLOW:
     type: enum
-    enum: [plain-build, generate, compile]
-    default: plain-build
+    enum: [no-op, plain-build, generate, compile]
+    default: no-op
 
   GENERATORS:
     type: string
