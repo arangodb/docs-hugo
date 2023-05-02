@@ -342,11 +342,11 @@ if [ "$start_servers" = true ] ; then
     docker compose --env-file toolchain/docker-env/"$DOCKER_ENV".env build
     docker run -d --name site --network=docs_net --ip=192.168.129.130 --env-file toolchain/docker-env/"$DOCKER_ENV".env -p 1313:1313 --volumes-from toolchain --log-opt tag="{{.Name}}" site 
     docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 --env-file toolchain/docker-env/"$DOCKER_ENV".env --volumes-from toolchain --log-opt tag="{{.Name}}" arangoproxy
-    docker logs --details --follow arangoproxy > output.log &
-    docker logs --details --follow site > output.log &
+    docker logs --details --follow arangoproxy > arangoproxy-log.log &
+    docker logs --details --follow site > site-log.log &
     trap_container_exit &
     #trap clean_terminate_toolchain SIGINT SIGTERM SIGKILL
-    tail -f output.log
+    tail -f arangoproxy-log.log site-log.log
     echo "[TERMINATE] Site container exited"
     echo "[TERMINATE] Terminating toolchain"
   fi
