@@ -26,6 +26,10 @@ parameters:
     type: string
     default: $CIRCLE_BRANCH
   
+  commit-generated:
+    type: boolean
+    default: true
+  
 
 jobs:
   checkout: #Checkout a desired repository
@@ -153,20 +157,32 @@ jobs:
             export SERVER_BRANCH=<< pipeline.parameters.ARANGODB_MAIN_BRANCH >>
             export SERVER_VERSION=<< pipeline.parameters.VERSION >>
             cd workspace/docs-hugo/toolchain/scripts && docker compose up
-
-        
-      - run:
-          name: Commit cache file to github
-          command: |
-            cd workspace/docs-hugo
-            git config user.email "daniele@arangodb.com"
-            git config user.name "CircleCI Job"
-            git commit --allow-empty -m "[ci skip] Automatic commit of generated files from CircleCI" site/data/cache.json
-            git push    
+      
       - persist_to_workspace:
           root: .
           paths:
-            - workspace/docs-hugo
+            - workspace/docs-hugo/site/public
+            - workspace/docs-hugo/site/data
+
+  commit-generated: 
+    docker:
+      - image: cimg/base:current
+    resource_class: small
+    
+    steps:
+      - attach_workspace:
+          at: .
+      - when:
+          condition: << pipeline.parameters.commit-generated >>
+          steps:
+            - run:
+                name: Commit cache file to github
+                command: |
+                  cd workspace/docs-hugo
+                  git config user.email "daniele@arangodb.com"
+                  git config user.name "CircleCI Job"
+                  git commit --allow-empty -m "[ci skip] Automatic commit of generated files from CircleCI" site/data/cache.json
+                  git push 
 
   deploy:
     docker:
@@ -330,6 +346,9 @@ workflows:
       - deploy:
           requires:
             - build-with-generated
+      - commit-generated:
+          requires:
+            - deploy
       - show-deploy-preview:
           requires:
             - deploy
