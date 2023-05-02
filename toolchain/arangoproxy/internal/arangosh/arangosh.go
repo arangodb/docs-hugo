@@ -26,8 +26,21 @@ func Exec(command string, repository config.Repository) (output string) {
 
 	cmd.Run()
 
-	common.Logger.Printf("[InvokeArangoSH] [RESULT] %s", out.String())
-	common.Logger.Printf("[InvokeArangoSH] [RESULT 2] %s", er.String())
+	if er.String() != "" {
+		common.Logger.Printf("[InvokeArangoSH] [ERROR] ArangoDB Error: %s", er.String())
 
-	return out.String()
+		return er.String()
+	}
+
+	if out.String() == "" {
+		common.Logger.Printf("[InvokeArangoSH] [WARNING] Empty Output %s", out.String())
+
+		return ""
+	}
+
+	split := strings.Split(out.String(), "\n")[1:] // Cut the Please specify a password line from output
+	output = strings.Join(split, "\n")
+	common.Logger.Printf("[InvokeArangoSH] Command Output: %s", output)
+
+	return output
 }
