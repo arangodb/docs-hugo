@@ -11,7 +11,7 @@ import (
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/utils"
 )
 
-func Exec(command string, repository config.Repository) (output string) {
+func Exec(exampleName string, command string, repository config.Repository) (output string) {
 	commonFunctions, _ := utils.GetCommonFunctions()
 	command = fmt.Sprintf("%s\n%s", commonFunctions, command)
 	arangoSHBin := fmt.Sprintf("/home/toolchain/arangoproxy/arangosh/%s/usr/bin/arangosh", repository.Name)
@@ -40,7 +40,7 @@ func Exec(command string, repository config.Repository) (output string) {
 
 	split := strings.Split(out.String(), "\n")[1:] // Cut the Please specify a password line from output
 	output = strings.Join(split, "\n")
-	common.Logger.Printf("[InvokeArangoSH] Command Output: %s", output)
+	common.Logger.Printf("[%s] [InvokeArangoSH] Command Output: %s", exampleName, output)
 
 	return output
 }
