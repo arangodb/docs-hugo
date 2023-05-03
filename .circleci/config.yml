@@ -181,7 +181,7 @@ jobs:
                   cd workspace/docs-hugo
                   git config user.email "daniele@arangodb.com"
                   git config user.name "CircleCI Job"
-                  git commit --allow-empty -m "[ci skip] Automatic commit of generated files from CircleCI" site/data/cache.json
+                  git commit --allow-empty -m "[ci skip] Automatic commit of generated files from CircleCI" site/data/
                   git push 
 
   deploy:
