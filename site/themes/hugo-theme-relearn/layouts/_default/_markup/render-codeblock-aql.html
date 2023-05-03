@@ -5,7 +5,10 @@
   {{ $version := $test.version }}
   {{ $release := $test.release }}
   {{ $cacheEntry := printf "%s_%s_%s" $name $release $version }}
-  {{ $cache := index site.Data "cache" }}
+  {{ $pageVersion := .Page.Scratch.Get "versionShort" }}
+
+  {{ $dataFolderByVersion := index site.Data $pageVersion }}
+  {{ $cache := index $dataFolderByVersion "cache"}}
   {{ $cacheFound :=  index $cache $cacheEntry }}
 
   {{ if not $cacheFound }}

@@ -11,7 +11,7 @@ type HTTPService struct {
 	common.Service
 }
 
-func (service HTTPService) ExecuteHTTPExample(request common.Example) (res common.ExampleResponse, err error) {
+func (service HTTPService) ExecuteHTTPExample(request common.Example, cacheChannel chan map[string]interface{}) (res common.ExampleResponse, err error) {
 	defer common.Recover(fmt.Sprintf("HTTPService.ExecuteHTTPExample(%s)", request.Code))
 
 	commands := formatCommand(request.Code)
@@ -28,7 +28,10 @@ func (service HTTPService) ExecuteHTTPExample(request common.Example) (res commo
 	res = *common.NewExampleResponse(curlRequest, curlOutput, request.Options)
 
 	if cmdOutput != "" {
-		service.SaveCachedExampleResponse(request, res)
+		cacheRequest := make(map[string]interface{})
+		cacheRequest["request"] = request.Base64Request
+		cacheRequest["response"] = res
+		cacheChannel <- cacheRequest
 	}
 
 	return
