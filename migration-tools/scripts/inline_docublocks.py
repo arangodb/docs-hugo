@@ -27,7 +27,10 @@ def migrateInlineDocuBlocks(block):
         newBlock["language"] = "aql"
         newBlock["options"]["render"] = "input/output"
 
-    newBlock["options"]["release"] = "stable"
+    newBlock["options"]["release"] = "stable_single"
+    if "_cluster" in newBlock["options"]["name"]:
+        newBlock["options"]["release"] = "stable_cluster"
+        newBlock["options"]["name"] = newBlock["options"]["name"].replace("_cluster", "")
 
     brief = re.search(r"@brief.*", block)
     if brief:
