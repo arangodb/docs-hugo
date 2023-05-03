@@ -25,9 +25,9 @@ func CleanCache() {
 	emptyFileBrackets, _ := json.Marshal(emptyFile)
 	os.WriteFile(config.Conf.Cache, emptyFileBrackets, 0644)
 	for _, repository := range config.Conf.Repositories {
-		arangosh.Exec(utils.REMOVE_ALL_COLLECTIONS, repository) // FIXME
+		arangosh.Exec("INIT COMMAND", utils.REMOVE_ALL_COLLECTIONS, repository) // FIXME
 		cmd, _ := utils.GetSetupFunctions()
-		arangosh.Exec(cmd, repository)
+		arangosh.Exec("INIT COMMAND", cmd, repository)
 	}
 }
 
@@ -37,6 +37,6 @@ func InitRepositories() {
 	for _, repo := range config.Conf.Repositories {
 		common.Repositories[fmt.Sprintf("%s_%s", repo.Name, repo.Version)] = repo
 		cmd, _ := utils.GetSetupFunctions()
-		arangosh.Exec(cmd, repo)
+		arangosh.Exec("INIT COMMAND", cmd, repo)
 	}
 }

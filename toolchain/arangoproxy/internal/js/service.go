@@ -17,7 +17,7 @@ func init() {
 	collectionsToIgnore.ToIgnore = make(map[string]bool)
 }
 
-func (service JSService) ExecuteExample(request common.Example) (res common.ExampleResponse) {
+func (service JSService) ExecuteExample(request common.Example, cacheChannel chan map[string]interface{}) (res common.ExampleResponse) {
 	defer common.Recover(fmt.Sprintf("JSService.ExecuteExample(%s)", request.Code))
 	commands := formatRequestCode(request.Code)
 
@@ -25,11 +25,14 @@ func (service JSService) ExecuteExample(request common.Example) (res common.Exam
 	repository, _ := common.GetRepository(request.Options.Release, request.Options.Version)
 
 	//commands = utils.TryCatchWrap(commands)
-	cmdOutput := arangosh.Exec(commands, repository)
+	cmdOutput := arangosh.Exec(request.Options.Name, commands, repository)
 
 	res = *common.NewExampleResponse(request.Code, cmdOutput, request.Options)
 	if cmdOutput != "" {
-		service.SaveCachedExampleResponse(request, res)
+		cacheRequest := make(map[string]interface{})
+		cacheRequest["request"] = request.Base64Request
+		cacheRequest["response"] = res
+		cacheChannel <- cacheRequest
 	}
 
 	return
