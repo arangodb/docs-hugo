@@ -138,7 +138,7 @@ name: GRAPHSP_01_create_graph
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~addIgnoreCollection("circles");
 ~addIgnoreCollection("edges");
@@ -156,7 +156,7 @@ name: GRAPHSP_02_A_to_D
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 db._query("FOR v, e IN OUTBOUND SHORTEST_PATH 'circles/A' TO 'circles/D' GRAPH 'traversalGraph' RETURN [v._key, e._key]");
 db._query("FOR v, e IN OUTBOUND SHORTEST_PATH 'circles/A' TO 'circles/D' edges RETURN [v._key, e._key]");
@@ -173,7 +173,7 @@ name: GRAPHSP_03_A_to_D
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 db._query("FOR a IN circles FILTER a._key == 'A' FOR d IN circles FILTER d._key == 'D' FOR v, e IN OUTBOUND SHORTEST_PATH a TO d GRAPH 'traversalGraph' RETURN [v._key, e._key]");
 db._query("FOR a IN circles FILTER a._key == 'A' FOR d IN circles FILTER d._key == 'D' FOR v, e IN OUTBOUND SHORTEST_PATH a TO d edges RETURN [v._key, e._key]");
@@ -187,7 +187,7 @@ name: GRAPHSP_99_drop_graph
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 examples.dropGraph("traversalGraph");

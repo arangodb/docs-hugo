@@ -245,7 +245,7 @@ name: FUNCTION_DOCUMENT_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 dataset: knows_graph
 ---
   RETURN DOCUMENT( persons, "persons/alice" )
@@ -257,7 +257,7 @@ name: FUNCTION_DOCUMENT_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 dataset: knows_graph
 ---
   RETURN DOCUMENT( persons, "alice" )
@@ -269,7 +269,7 @@ name: FUNCTION_DOCUMENT_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 dataset: knows_graph
 ---
   RETURN DOCUMENT( persons, [ "persons/alice", "persons/bob" ] )
@@ -281,7 +281,7 @@ name: FUNCTION_DOCUMENT_4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 dataset: knows_graph
 ---
   RETURN DOCUMENT( persons, [ "alice", "bob" ] )
@@ -293,7 +293,7 @@ name: FUNCTION_DOCUMENT_5
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 dataset: knows_graph
 bindVars: 
   {
@@ -310,7 +310,7 @@ name: FUNCTION_DOCUMENT_6
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 dataset: knows_graph
 bindVars: 
   {
@@ -338,7 +338,7 @@ name: FUNCTION_DOCUMENT_7
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 dataset: knows_graph
 ---
   RETURN DOCUMENT("persons/alice")
@@ -350,7 +350,7 @@ name: FUNCTION_DOCUMENT_8
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 dataset: knows_graph
 ---
   RETURN DOCUMENT( [ "persons/alice", "persons/bob" ] )
@@ -362,7 +362,7 @@ name: FUNCTION_DOCUMENT_9
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 dataset: knows_graph
 bindVars: 
   {
@@ -378,7 +378,7 @@ name: FUNCTION_DOCUMENT_10
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 dataset: knows_graph
 bindVars: 
   {
@@ -394,7 +394,7 @@ name: FUNCTION_DOCUMENT_11
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 dataset: knows_graph
 bindVars: 
   {
@@ -434,11 +434,11 @@ Return the shard in a collection that contains the specified shard keys.
 
 ```aql
 ---
-name: shard_id1_cluster
+name: shard_id1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 dataset: observationsSampleDataset
 ---
   RETURN SHARD_ID("observations", { "time": "2021-05-25 07:15:00", "subject": "xh458", "val": 10 })
@@ -491,7 +491,7 @@ name: aqlMinHash
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN MINHASH(["foo", "bar", "baz"], 5)
 ```
@@ -515,7 +515,7 @@ name: aqlMinHashCount
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN MINHASH_COUNT(0.05)
 ```
@@ -538,7 +538,7 @@ name: aqlMinHashError
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN MINHASH_ERROR(400)
 ```
@@ -652,7 +652,7 @@ name: aqlMiscInRange_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 LET value = 4
 RETURN IN_RANGE(value, 3, 5, true, true)
@@ -669,7 +669,7 @@ name: aqlMiscInRange_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 FOR value IN 2..6
   RETURN { value, in_range: IN_RANGE(value, 3, 5, false, true) }
@@ -686,7 +686,7 @@ name: aqlMiscInRange_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 LET coll = [
   { text: "fennel" },

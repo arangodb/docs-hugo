@@ -25,7 +25,7 @@ name: 11_workWithAQL_parseQueries
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
  var stmt = db._createStatement(
   "FOR doc IN @@collection FILTER doc.foo == @bar RETURN doc");

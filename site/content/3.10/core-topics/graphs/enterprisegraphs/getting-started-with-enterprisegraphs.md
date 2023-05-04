@@ -199,11 +199,11 @@ Compared to SmartGraphs, the option `isSmart: true` is required but the
 
 ```js
 ---
-name: enterpriseGraphCreateGraphHowTo1_cluster
+name: enterpriseGraphCreateGraphHowTo1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var graph = graph_module._create("myGraph", [], [], {isSmart: true, numberOfShards: 9});
@@ -221,11 +221,11 @@ without trouble however, as they have the correct sharding.
 
 ```js
 ---
-name: enterpriseGraphCreateGraphHowTo2_cluster
+name: enterpriseGraphCreateGraphHowTo2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
  ~var graph_module = require("@arangodb/enterprise-graph");
  ~var graph = graph_module._create("myGraph", [], [], {isSmart: true, numberOfShards: 9});
@@ -245,11 +245,11 @@ correct sharding already).
 
 ```js
 ---
-name: enterpriseGraphCreateGraphHowTo3_cluster
+name: enterpriseGraphCreateGraphHowTo3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
  ~var graph_module = require("@arangodb/enterprise-graph");
  ~var graph = graph_module._create("myGraph", [], [], {isSmart: true, numberOfShards: 9});
@@ -287,11 +287,11 @@ request, only then the option counts.
 
 ```js
 ---
-name: enterpriseGraphCreateGraphHowTo4_cluster
+name: enterpriseGraphCreateGraphHowTo4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var rel = graph_module._relation("isCustomer", "shop", "customer")

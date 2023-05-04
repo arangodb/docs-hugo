@@ -25,11 +25,11 @@ required and cannot be modified later.
 
 ```js
 ---
-name: smartGraphCreateGraphHowTo1_cluster
+name: smartGraphCreateGraphHowTo1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var graph = graph_module._create("myGraph", [], [], {smartGraphAttribute: "region", numberOfShards: 9});
@@ -45,11 +45,11 @@ and cannot be modified later.
 
 ```js
 ---
-name: smartGraphCreateGraphHowToDisjoint1_cluster
+name: smartGraphCreateGraphHowToDisjoint1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var graph = graph_module._create("myGraph", [], [], {smartGraphAttribute: "region", numberOfShards: 9, isDisjoint: true});
@@ -68,11 +68,11 @@ without trouble however, as they will have the correct sharding.
 
 ```js
 ---
-name: smartGraphCreateGraphHowTo2_cluster
+name: smartGraphCreateGraphHowTo2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
  ~var graph_module = require("@arangodb/smart-graph");
  ~var graph = graph_module._create("myGraph", [], [], {smartGraphAttribute: "region", numberOfShards: 9});
@@ -92,11 +92,11 @@ correct sharding already).
 
 ```js
 ---
-name: smartGraphCreateGraphHowTo3_cluster
+name: smartGraphCreateGraphHowTo3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
  ~var graph_module = require("@arangodb/smart-graph");
  ~var graph = graph_module._create("myGraph", [], [], {smartGraphAttribute: "region", numberOfShards: 9});
@@ -136,11 +136,11 @@ request, only then the option will count.
 
 ```js
 ---
-name: hybridSmartGraphCreateGraphHowTo1_cluster
+name: hybridSmartGraphCreateGraphHowTo1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var rel = graph_module._relation("isCustomer", "shop", "customer")
@@ -157,11 +157,11 @@ as a SatelliteCollection in this example:
 
 ```js
 ---
-name: hybridSmartGraphCreateGraphHowTo2_cluster
+name: hybridSmartGraphCreateGraphHowTo2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var rel = graph_module._relation("isCustomer", "shop", "customer")

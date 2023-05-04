@@ -43,7 +43,7 @@ name: generalGraphGetFromVertex
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("social");
@@ -68,7 +68,7 @@ name: generalGraphGetToVertex
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("social");
@@ -111,7 +111,7 @@ name: generalGraphModuleNeighbors1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -127,7 +127,7 @@ name: generalGraphModuleNeighbors2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -160,7 +160,7 @@ name: generalGraphModuleCommonNeighbors1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var graph = examples.loadGraph("routeplanner");
@@ -177,7 +177,7 @@ name: generalGraphModuleCommonNeighbors2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -207,7 +207,7 @@ name: generalGraphModuleCommonNeighborsAmount1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -226,7 +226,7 @@ name: generalGraphModuleCommonNeighborsAmount2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -267,7 +267,7 @@ name: generalGraphModuleProperties1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -283,7 +283,7 @@ name: generalGraphModuleProperties2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -310,7 +310,7 @@ name: generalGraphModuleAmountProperties1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var graph = examples.loadGraph("routeplanner");
@@ -326,7 +326,7 @@ name: generalGraphModuleAmountProperties2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var graph = examples.loadGraph("routeplanner");
@@ -366,7 +366,7 @@ name: generalGraphModulePaths1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var g = examples.loadGraph("social");
@@ -383,7 +383,7 @@ name: generalGraphModulePaths2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var g = examples.loadGraph("social");
@@ -436,7 +436,7 @@ name: generalGraphModuleShortestPaths1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var g = examples.loadGraph("routeplanner");
@@ -453,7 +453,7 @@ name: generalGraphModuleShortestPaths2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var g = examples.loadGraph("routeplanner");
@@ -481,7 +481,7 @@ name: generalGraphModuleDistanceTo1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var g = examples.loadGraph("routeplanner");
@@ -498,7 +498,7 @@ name: generalGraphModuleDistanceTo2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var g = examples.loadGraph("routeplanner");
@@ -544,7 +544,7 @@ name: generalGraphModuleAbsEccentricity1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -561,7 +561,7 @@ name: generalGraphModuleAbsEccentricity2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -578,7 +578,7 @@ name: generalGraphModuleAbsEccentricity3
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -607,7 +607,7 @@ name: generalGraphModuleEccentricity2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -623,7 +623,7 @@ name: generalGraphModuleEccentricity3
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -668,7 +668,7 @@ name: generalGraphModuleAbsCloseness1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -685,7 +685,7 @@ name: generalGraphModuleAbsCloseness2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -702,7 +702,7 @@ name: generalGraphModuleAbsCloseness3
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -731,7 +731,7 @@ name: generalGraphModuleCloseness1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var graph = examples.loadGraph("routeplanner");
@@ -748,7 +748,7 @@ name: generalGraphModuleCloseness2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var graph = examples.loadGraph("routeplanner");
@@ -765,7 +765,7 @@ name: generalGraphModuleCloseness3
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var graph = examples.loadGraph("routeplanner");
@@ -801,7 +801,7 @@ name: generalGraphModuleAbsBetweenness1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -818,7 +818,7 @@ name: generalGraphModuleAbsBetweenness2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -835,7 +835,7 @@ name: generalGraphModuleAbsBetweenness3
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -863,7 +863,7 @@ name: generalGraphModuleBetweenness1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -880,7 +880,7 @@ name: generalGraphModuleBetweenness2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -897,7 +897,7 @@ name: generalGraphModuleBetweenness3
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -930,7 +930,7 @@ name: generalGraphModuleRadius1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -947,7 +947,7 @@ name: generalGraphModuleRadius2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -964,7 +964,7 @@ name: generalGraphModuleRadius3
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -999,7 +999,7 @@ name: generalGraphModuleDiameter1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -1016,7 +1016,7 @@ name: generalGraphModuleDiameter2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");
@@ -1033,7 +1033,7 @@ name: generalGraphModuleDiameter3
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("routeplanner");

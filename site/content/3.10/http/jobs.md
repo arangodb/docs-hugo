@@ -55,7 +55,7 @@ paths:
 ---
 render: input/output
 name: job_fetch_result_01
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/job";
@@ -71,7 +71,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: job_fetch_result_02
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/job/notthere";
@@ -87,7 +87,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: job_fetch_result_03
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/version";
@@ -109,7 +109,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: job_fetch_result_04
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/collection";
@@ -165,7 +165,7 @@ paths:
 ---
 render: input/output
 name: job_cancel
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/cursor";
@@ -250,7 +250,7 @@ paths:
 ---
 render: input/output
 name: job_delete_01
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/version";
@@ -271,7 +271,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: job_delete_02
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/version";
@@ -302,7 +302,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: job_delete_03
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/version";
@@ -324,7 +324,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: job_delete_04
-release: stable
+release: stable_single
 version: '3.10'
 ---
 url = '/_api/job/AreYouThere'
@@ -393,7 +393,7 @@ paths:
 ---
 render: input
 name: job_getStatusById_01
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/version";
@@ -415,7 +415,7 @@ logRawResponse(response);
 ---
 render: input
 name: job_getStatusById_02
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/transaction";
@@ -443,7 +443,7 @@ logRawResponse(response);
 ---
 render: input/output
 name: job_getByType_01
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/version";
@@ -464,7 +464,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: job_getByType_02
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/version";
@@ -485,7 +485,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: job_getByType_03
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/transaction";

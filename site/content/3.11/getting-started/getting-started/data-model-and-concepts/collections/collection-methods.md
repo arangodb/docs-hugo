@@ -31,7 +31,7 @@ name: collectionDrop
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   col = db.example;
@@ -48,7 +48,7 @@ name: collectionDropSystem
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("_example", { isSystem: true });
   col = db._example;
@@ -76,7 +76,7 @@ name: collectionTruncate
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   col = db.example;
@@ -258,7 +258,7 @@ name: collectionProperties
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   db.example.properties();
@@ -273,7 +273,7 @@ name: collectionProperty
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   db.example.properties({ waitForSync : true });
@@ -313,7 +313,7 @@ name: collectionFigures
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ require("internal").wal.flush(true, true);
   db.demo.figures()
@@ -327,7 +327,7 @@ name: collectionFiguresDetails
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ require("internal").wal.flush(true, true);
   db.demo.figures(true)
@@ -393,7 +393,7 @@ name: collectionLoad
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   col = db.example;
@@ -463,7 +463,7 @@ name: CollectionUnload
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   col = db.example;
@@ -500,7 +500,7 @@ name: collectionRename
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   c = db.example;

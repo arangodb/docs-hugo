@@ -190,7 +190,7 @@ name: ensureUniquePersistentSingle
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 ~db._create("ids");
 db.ids.ensureIndex({ type: "persistent", fields: [ "myId" ], unique: true });
@@ -207,7 +207,7 @@ name: ensureUniquePersistentMultiColmun
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 ~db._create("ids");
 db.ids.ensureIndex({ type: "persistent", fields: [ "name.first", "name.last" ], unique: true });
@@ -238,7 +238,7 @@ name: ensurePersistent
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 ~db._create("names");
 db.names.ensureIndex({ type: "persistent", fields: [ "first" ] });

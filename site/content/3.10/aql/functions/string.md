@@ -34,7 +34,7 @@ name: aqlCharLength_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CHAR_LENGTH("foo")
 ```
@@ -45,7 +45,7 @@ name: aqlCharLength_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   LET value = {foo: "bar"}
   RETURN {
@@ -72,7 +72,7 @@ name: aqlConcatStrings_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONCAT("foo", "bar", "baz")
 ```
@@ -83,7 +83,7 @@ name: aqlConcatNumbers_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONCAT(1, 2, 3)
 ```
@@ -94,7 +94,7 @@ name: aqlConcatPrimitiveTypes_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONCAT(null, false, 0, true, "")
 ```
@@ -105,7 +105,7 @@ name: aqlConcatCompoundTypes_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONCAT([5, 6], {foo: "bar"})
 ```
@@ -125,7 +125,7 @@ name: aqlConcatStrings_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONCAT( [ "foo", "bar", "baz" ] )
 ```
@@ -136,7 +136,7 @@ name: aqlConcatNumbers_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONCAT( [1, 2, 3] )
 ```
@@ -147,7 +147,7 @@ name: aqlConcatPrimitiveTypes_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONCAT( [null, false, 0, true, ""] )
 ```
@@ -158,7 +158,7 @@ name: aqlConcatCompoundTypes_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONCAT( [[5, 6], {foo: "bar"}] )
 ```
@@ -185,7 +185,7 @@ name: aqlConcatSeparatorStrings_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONCAT_SEPARATOR(", ", "foo", "bar", "baz")
 ```
@@ -196,7 +196,7 @@ name: aqlConcatSeparatorNumbers_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONCAT_SEPARATOR(", ", 1, 2, 3)
 ```
@@ -207,7 +207,7 @@ name: aqlConcatSeparatorPrimitiveTypes_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONCAT_SEPARATOR(", ", null, false, 0, true, "")
 ```
@@ -218,7 +218,7 @@ name: aqlConcatSeparatorCompoundTypes_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONCAT_SEPARATOR(", ", [5, 6], {foo: "bar"})
 ```
@@ -241,7 +241,7 @@ name: aqlConcatSeparatorStrings_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONCAT_SEPARATOR(", ", ["foo", "bar", "baz"])
 ```
@@ -252,7 +252,7 @@ name: aqlConcatSeparatorNumbers_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONCAT_SEPARATOR(", ", [1, 2, 3])
 ```
@@ -263,7 +263,7 @@ name: aqlConcatSeparatorPrimitiveTypes_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONCAT_SEPARATOR(", ", [null, false, 0, true, ""])
 ```
@@ -274,7 +274,7 @@ name: aqlConcatSeparatorCompoundTypes_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONCAT_SEPARATOR(", ", [[5, 6], {foo: "bar"}])
 ```
@@ -306,7 +306,7 @@ name: aqlContainsMatch
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONTAINS("foobarbaz", "bar")
 ```
@@ -317,7 +317,7 @@ name: aqlContains
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONTAINS("foobarbaz", "horse")
 ```
@@ -328,7 +328,7 @@ name: aqlContainsMatchIndex
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONTAINS("foobarbaz", "bar", true)
 ```
@@ -339,7 +339,7 @@ name: aqlContainsNoMatchIndex
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CONTAINS("foobarbaz", "horse", true)
 ```
@@ -367,7 +367,7 @@ name: aqlCrc32
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN CRC32("foobar")
 ```
@@ -389,7 +389,7 @@ name: aqlEncodeUriComponent
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN ENCODE_URI_COMPONENT("fünf %")
 ```
@@ -418,7 +418,7 @@ name: aqlFindFirst_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN FIND_FIRST("foobarbaz", "ba")
 ```
@@ -429,7 +429,7 @@ name: aqlFindFirst_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN FIND_FIRST("foobarbaz", "ba", 4)
 ```
@@ -440,7 +440,7 @@ name: aqlFindFirst_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN FIND_FIRST("foobarbaz", "ba", 0, 3)
 ```
@@ -470,7 +470,7 @@ name: aqlFindLast_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN FIND_LAST("foobarbaz", "ba")
 ```
@@ -481,7 +481,7 @@ name: aqlFindLast_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN FIND_LAST("foobarbaz", "ba", 7)
 ```
@@ -492,7 +492,7 @@ name: aqlFindLast_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN FIND_LAST("foobarbaz", "ba", 0, 4)
 ```
@@ -515,7 +515,7 @@ name: aqlFnv64
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN FNV64("foobar")
 ```
@@ -543,7 +543,7 @@ name: aqlIPv4FromNumber_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN IPV4_FROM_NUMBER(0)
 ```
@@ -554,7 +554,7 @@ name: aqlIPv4FromNumber_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN IPV4_FROM_NUMBER(134744072)
 ```
@@ -565,7 +565,7 @@ name: aqlIPv4FromNumber_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN IPV4_FROM_NUMBER(2130706433)
 ```
@@ -576,7 +576,7 @@ name: aqlIPv4FromNumber_4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN IPV4_FROM_NUMBER(3232235521)
 ```
@@ -587,7 +587,7 @@ name: aqlIPv4FromNumber_5
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN IPV4_FROM_NUMBER(-23) // invalid, produces a warning
 ```
@@ -614,7 +614,7 @@ name: aqlIPv4ToNumber_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN IPV4_TO_NUMBER("0.0.0.0")
 ```
@@ -625,7 +625,7 @@ name: aqlIPv4ToNumber_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN IPV4_TO_NUMBER("8.8.8.8")
 ```
@@ -636,7 +636,7 @@ name: aqlIPv4ToNumber_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN IPV4_TO_NUMBER("127.0.0.1")
 ```
@@ -647,7 +647,7 @@ name: aqlIPv4ToNumber_4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN IPV4_TO_NUMBER("192.168.0.1")
 ```
@@ -658,7 +658,7 @@ name: aqlIPv4ToNumber_5
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN IPV4_TO_NUMBER("milk") // invalid, produces a warning
 ```
@@ -685,7 +685,7 @@ name: aqlIsIPv4_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN IS_IPV4("127.0.0.1")
 ```
@@ -696,7 +696,7 @@ name: aqlIsIPv4_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN IS_IPV4("8.8.8.8")
 ```
@@ -707,7 +707,7 @@ name: aqlIsIPv4_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN IS_IPV4("008.008.008.008")
 ```
@@ -718,7 +718,7 @@ name: aqlIsIPv4_4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN IS_IPV4("12345.2.3.4")
 ```
@@ -729,7 +729,7 @@ name: aqlIsIPv4_5
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN IS_IPV4("12.34")
 ```
@@ -740,7 +740,7 @@ name: aqlIsIPv4_6
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN IS_IPV4(8888)
 ```
@@ -763,7 +763,7 @@ name: aqlJsonParse_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN JSON_PARSE("123")
 ```
@@ -774,7 +774,7 @@ name: aqlJsonParse_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN JSON_PARSE("[ true, false, null, -0.5 ]")
 ```
@@ -785,7 +785,7 @@ name: aqlJsonParse_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN JSON_PARSE('{"a": 1}')
 ```
@@ -796,7 +796,7 @@ name: aqlJsonParse_4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN JSON_PARSE('"abc"')
 ```
@@ -807,7 +807,7 @@ name: aqlJsonParse_5
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN JSON_PARSE("abc") // invalid JSON
 ```
@@ -831,7 +831,7 @@ name: aqlJsonStringify_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN JSON_STRINGIFY(true)
 ```
@@ -842,7 +842,7 @@ name: aqlJsonStringify_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN JSON_STRINGIFY("abc")
 ```
@@ -853,7 +853,7 @@ name: aqlJsonStringify_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN JSON_STRINGIFY( [1, {'2': .5}] )
 ```
@@ -881,7 +881,7 @@ name: aqlLeft_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN LEFT("foobar", 3)
 ```
@@ -892,7 +892,7 @@ name: aqlLeft_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN LEFT("foobar", 10)
 ```
@@ -918,7 +918,7 @@ name: aqlLengthString_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN LENGTH("foobar")
 ```
@@ -929,7 +929,7 @@ name: aqlLengthString_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN LENGTH("电脑坏了")
 ```
@@ -954,7 +954,7 @@ name: aqlLevenshteinDistance_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN LEVENSHTEIN_DISTANCE("foobar", "bar")
 ```
@@ -965,7 +965,7 @@ name: aqlLevenshteinDistance_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN LEVENSHTEIN_DISTANCE(" ", "")
 ```
@@ -976,7 +976,7 @@ name: aqlLevenshteinDistance_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN LEVENSHTEIN_DISTANCE("The quick brown fox jumps over the lazy dog", "The quick black dog jumps over the brown fox")
 ```
@@ -987,7 +987,7 @@ name: aqlLevenshteinDistance_4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN LEVENSHTEIN_DISTANCE("der mötör trötet", "der trötet")
 ```
@@ -1040,7 +1040,7 @@ name: aqlLikeString_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN [
 LIKE("cart", "ca_t"),
@@ -1055,7 +1055,7 @@ name: aqlLikeString_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN [
 LIKE("foo bar baz", "bar"),
@@ -1070,7 +1070,7 @@ name: aqlLikeString_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN [
 LIKE("FoO bAr BaZ", "fOo%bAz"),
@@ -1097,7 +1097,7 @@ name: aqlLower
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN LOWER("AVOcado")
 ```
@@ -1124,7 +1124,7 @@ name: aqlLtrim_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN LTRIM("foo bar")
 ```
@@ -1135,7 +1135,7 @@ name: aqlLtrim_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN LTRIM("  foo bar  ")
 ```
@@ -1146,7 +1146,7 @@ name: aqlLtrim_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN LTRIM("--==[foo-bar]==--", "-=[]")
 ```
@@ -1169,7 +1169,7 @@ name: aqlMd5
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN MD5("foobar")
 ```
@@ -1205,7 +1205,7 @@ name: aqlNgramPositionalSimilarity
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN [
 NGRAM_POSITIONAL_SIMILARITY("quick fox", "quick foxx", 2),
@@ -1248,7 +1248,7 @@ name: aqlNgramSimilarity
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN [
 NGRAM_SIMILARITY("quick fox", "quick foxx", 2),
@@ -1278,7 +1278,7 @@ name: aqlRandomToken
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN [
 RANDOM_TOKEN(8),
@@ -1308,7 +1308,7 @@ name: aqlRegexMatches_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN REGEX_MATCHES("My-us3r_n4m3", "^[a-z0-9_-]{3,16}$", true)
 ```
@@ -1319,7 +1319,7 @@ name: aqlRegexMatches_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN REGEX_MATCHES("#4d82h4", "^#?([a-f0-9]{6} [a-f0-9]{3})$", true)
 ```
@@ -1330,7 +1330,7 @@ name: aqlRegexMatches_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN REGEX_MATCHES("john@doe.com", "^([a-z0-9_\\\\.-]+)@([\\\\da-z-]+)\\\\.([a-z\\\\.]{2,6})$", false)
 ```
@@ -1360,7 +1360,7 @@ name: aqlRegexSplit_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN REGEX_SPLIT("This is a line.\\n This is yet another line\\r\\n This again is a line.\\r Mac line ", "\\\\.?\\r\\n \\r \\n")
 ```
@@ -1371,7 +1371,7 @@ name: aqlRegexSplit_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN REGEX_SPLIT("hypertext language, programming", "[\\\\s, ]+")
 ```
@@ -1382,7 +1382,7 @@ name: aqlRegexSplit_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN [
 REGEX_SPLIT("Capture the article", "(the)"),
@@ -1396,7 +1396,7 @@ name: aqlRegexSplit_4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN REGEX_SPLIT("cA,Bc,A,BcA,BcA,Bc", "a,b", true, 3)
 ```
@@ -1424,7 +1424,7 @@ name: aqlRegexTest_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN REGEX_TEST("the quick brown fox", "the.*fox")
 ```
@@ -1435,7 +1435,7 @@ name: aqlRegexTest_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN REGEX_TEST("the quick brown fox", "^(a the)\\\\s+(quick slow).*f.x$")
 ```
@@ -1446,7 +1446,7 @@ name: aqlRegexTest_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN REGEX_TEST("the\\nquick\\nbrown\\nfox", "^the(\\n[a-w]+)+\\nfox$")
 ```
@@ -1476,7 +1476,7 @@ name: aqlRegexReplace_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN REGEX_REPLACE("the quick brown fox", "the.*fox", "jumped over")
 ```
@@ -1487,7 +1487,7 @@ name: aqlRegexReplace_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN REGEX_REPLACE("An Avocado", "a", "_")
 ```
@@ -1498,7 +1498,7 @@ name: aqlRegexReplace_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN REGEX_REPLACE("An Avocado", "a", "_", true)
 ```
@@ -1521,7 +1521,7 @@ name: aqlReverse_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN REVERSE("foobar")
 ```
@@ -1532,7 +1532,7 @@ name: aqlReverse_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN REVERSE("电脑坏了")
 ```
@@ -1560,7 +1560,7 @@ name: aqlRight_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN RIGHT("foobar", 3)
 ```
@@ -1571,7 +1571,7 @@ name: aqlRight_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN RIGHT("foobar", 10)
 ```
@@ -1600,7 +1600,7 @@ name: aqlRtrim_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN RTRIM("foo bar")
 ```
@@ -1611,7 +1611,7 @@ name: aqlRtrim_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN RTRIM("  foo bar  ")
 ```
@@ -1622,7 +1622,7 @@ name: aqlRtrim_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN RTRIM("--==[foo-bar]==--", "-=[]")
 ```
@@ -1645,7 +1645,7 @@ name: aqlSha1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SHA1("foobar")
 ```
@@ -1668,7 +1668,7 @@ name: aqlSha512
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SHA512("foobar")
 ```
@@ -1691,7 +1691,7 @@ name: aqlSoundex
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN [
 SOUNDEX("example"),
@@ -1727,7 +1727,7 @@ name: aqlSplit_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SPLIT( "foo-bar-baz", "-" )
 ```
@@ -1738,7 +1738,7 @@ name: aqlSplit_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SPLIT( "foo-bar-baz", "-", 1 )
 ```
@@ -1749,7 +1749,7 @@ name: aqlSplit_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SPLIT( "foo, bar & baz", [ ", ", " & " ] )
 ```
@@ -1775,7 +1775,7 @@ name: aqlStartsWith_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN STARTS_WITH("foobar", "foo")
 ```
@@ -1786,7 +1786,7 @@ name: aqlStartsWith_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN STARTS_WITH("foobar", "baz")
 ```
@@ -1815,7 +1815,7 @@ name: aqlStartsWith_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN STARTS_WITH("foobar", ["bar", "foo"])
 ```
@@ -1826,7 +1826,7 @@ name: aqlStartsWith_4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN STARTS_WITH("foobar", ["bar", "baz"])
 ```
@@ -1860,7 +1860,7 @@ name: aqlSubstitute_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SUBSTITUTE( "the quick brown foxx", "quick", "lazy" )
 ```
@@ -1871,7 +1871,7 @@ name: aqlSubstitute_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SUBSTITUTE( "the quick brown foxx", [ "quick", "foxx" ], [ "slow", "dog" ] )
 ```
@@ -1882,7 +1882,7 @@ name: aqlSubstitute_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SUBSTITUTE( "the quick brown foxx", [ "the", "foxx" ], [ "that", "dog" ], 1 )
 ```
@@ -1893,7 +1893,7 @@ name: aqlSubstitute_4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SUBSTITUTE( "the quick brown foxx", [ "the", "quick", "foxx" ], [ "A", "VOID!" ] )
 ```
@@ -1904,7 +1904,7 @@ name: aqlSubstitute_5
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SUBSTITUTE( "the quick brown foxx", [ "quick", "foxx" ], "xx" )
 ```
@@ -1933,7 +1933,7 @@ name: aqlSubstitute_6
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SUBSTITUTE("the quick brown foxx", {
 "quick": "small",
@@ -1948,7 +1948,7 @@ name: aqlSubstitute_7
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SUBSTITUTE("the quick brown foxx", { 
 "quick": "",
@@ -1963,7 +1963,7 @@ name: aqlSubstitute_8
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SUBSTITUTE("the quick brown foxx", {
 "quick": "small",
@@ -1999,7 +1999,7 @@ name: aqlSubstring_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SUBSTRING("Holy Guacamole!", 5)
 ```
@@ -2012,7 +2012,7 @@ name: aqlSubstring_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SUBSTRING("Holy Guacamole!", 10, 4)
 ```
@@ -2025,7 +2025,7 @@ name: aqlSubstring_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SUBSTRING("Holy Guacamole!", -5, 4)
 ```
@@ -2066,7 +2066,7 @@ name: aqlSubstringBytes_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SUBSTRING_BYTES("We ❤️ avocado!", 10)
 ```
@@ -2080,7 +2080,7 @@ name: aqlSubstringBytes_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SUBSTRING_BYTES("We ❤️ avocado!", 3, 3)
 ```
@@ -2094,7 +2094,7 @@ name: aqlSubstringBytes_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SUBSTRING_BYTES("We ❤️ avocado!", -15, 6)
 ```
@@ -2109,7 +2109,7 @@ name: aqlSubstringBytes_4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN SUBSTRING_BYTES("We ❤️ avocado!", -15, 4)
 ```
@@ -2145,7 +2145,7 @@ name: aqlTokens_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN TOKENS("Lörem ipsüm, DOLOR SIT Ämet.", "text_de")
 ```
@@ -2173,7 +2173,7 @@ name: aqlTokens_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN TOKENS("quick brown fox", "text_en")
 ```
@@ -2184,7 +2184,7 @@ name: aqlTokens_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN TOKENS(["quick brown", "fox"], "text_en")
 ```
@@ -2195,7 +2195,7 @@ name: aqlTokens_4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN TOKENS(["quick brown", ["fox"]], "text_en")
 ```
@@ -2227,7 +2227,7 @@ name: aqlToBase64
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN [
 TO_BASE64("ABC."),
@@ -2252,7 +2252,7 @@ name: aqlToHex
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN [
 TO_HEX("ABC."),
@@ -2296,7 +2296,7 @@ name: aqlTrim_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN TRIM("foo bar")
 ```
@@ -2307,7 +2307,7 @@ name: aqlTrim_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN TRIM("  foo bar  ")
 ```
@@ -2318,7 +2318,7 @@ name: aqlTrim_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN TRIM("--==[foo-bar]==--", "-=[]")
 ```
@@ -2329,7 +2329,7 @@ name: aqlTrim_4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN TRIM("  foobar\\t \\r\\n ")
 ```
@@ -2340,7 +2340,7 @@ name: aqlTrim_5
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN TRIM(";foo;bar;baz, ", ",; ")
 ```
@@ -2364,7 +2364,7 @@ name: aqlUpper
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   RETURN UPPER("AVOcado")
 ```
@@ -2385,7 +2385,7 @@ name: aqlUuid
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   FOR i IN 1..3
 RETURN UUID()

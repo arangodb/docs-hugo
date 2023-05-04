@@ -20,7 +20,7 @@ name: GRAPHTRAV_multiplePathSearch
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 dataset: mps_graph
 ---
 RETURN LENGTH(
@@ -40,7 +40,7 @@ name: GRAPHTRAV_multiplePathSearch2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 dataset: mps_graph
 ---
 FOR v, e, p IN 2..2 OUTBOUND "mps_verts/A" mps_edges

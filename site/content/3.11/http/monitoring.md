@@ -1176,7 +1176,7 @@ paths:
 ---
 render: input/output
 name: RestAdminStatistics1
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var url = "/_admin/statistics";
@@ -1316,7 +1316,7 @@ paths:
 ---
 render: input/output
 name: RestAdminStatisticsDescription1
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var url = "/_admin/statistics-description";
@@ -1389,7 +1389,7 @@ paths:
 ---
 render: input
 name: RestAdminMetricsV2
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var url = "/_admin/metrics/v2";
@@ -1456,7 +1456,7 @@ paths:
 ---
 render: input
 name: RestAdminMetrics
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var url = "/_admin/metrics";

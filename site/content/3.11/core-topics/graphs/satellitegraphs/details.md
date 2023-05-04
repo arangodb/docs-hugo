@@ -33,11 +33,11 @@ To create a SatelliteGraph in arangosh, use the `satellite-graph` module:
 
 ```js
 ---
-name: satelliteGraphCreate1_cluster
+name: satelliteGraphCreate1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_cluster
 ---
   var satelliteGraphModule = require("@arangodb/satellite-graph");
   var graph = satelliteGraphModule._create("satelliteGraph");
@@ -55,11 +55,11 @@ Adding vertex collections is analogous to General Graphs:
 
 ```js
 ---
-name: satelliteGraphCreate2_cluster
+name: satelliteGraphCreate2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_cluster
 ---
 ~ var satelliteGraphModule = require("@arangodb/satellite-graph");
   var graph = satelliteGraphModule._create("satelliteGraph");
@@ -82,11 +82,11 @@ if they don't exist already.
 
 ```js
 ---
-name: satelliteGraphCreate3_cluster
+name: satelliteGraphCreate3
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_cluster
 ---
 ~ var satelliteGraphModule = require("@arangodb/satellite-graph");
   var graph = satelliteGraphModule._create("satelliteGraph");
@@ -120,11 +120,11 @@ Creating an empty SatelliteGraph: No prototype collection is present.
 
 ```js
 ---
-name: satelliteGraphPrototype1_cluster
+name: satelliteGraphPrototype1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_cluster
 ---
   var satelliteGraphModule = require("@arangodb/satellite-graph");
   satelliteGraphModule._create("satelliteGraph");
@@ -137,11 +137,11 @@ This leads to the creation of a prototype collection `"myPrototypeColl"`
 
 ```js
 ---
-name: satelliteGraphPrototype2_cluster
+name: satelliteGraphPrototype2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_cluster
 ---
   var satelliteGraphModule = require("@arangodb/satellite-graph");
   var graph = satelliteGraphModule._create("satelliteGraph");
@@ -158,11 +158,11 @@ prototype collection.
 
 ```js
 ---
-name: satelliteGraphPrototype3_cluster
+name: satelliteGraphPrototype3
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_cluster
 ---
   var satelliteGraphModule = require("@arangodb/satellite-graph");
   var graph = satelliteGraphModule._create("satelliteGraph");
@@ -192,11 +192,11 @@ and a SatelliteGraph traversal query:
 
 ```js
 ---
-name: satelliteGraphGeneralGraph1_cluster
+name: satelliteGraphGeneralGraph1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_cluster
 ---
  var graphModule = require("@arangodb/general-graph");
  var satelliteGraphModule = require("@arangodb/satellite-graph");
@@ -212,11 +212,11 @@ release: stable
 
 ```js
 ---
-name: satelliteGraphGeneralGraph2_cluster
+name: satelliteGraphGeneralGraph2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_cluster
 ---
    ~ var graphModule = require("@arangodb/general-graph");
    ~ var satelliteGraphModule = require("@arangodb/satellite-graph");
@@ -237,11 +237,11 @@ release: stable
 
 ```js
 ---
-name: satelliteGraphGeneralGraph3_cluster
+name: satelliteGraphGeneralGraph3
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_cluster
 ---
    ~ var graphModule = require("@arangodb/general-graph");
    ~ var satelliteGraphModule = require("@arangodb/satellite-graph");

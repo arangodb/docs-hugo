@@ -17,7 +17,7 @@ name: viewDatabaseGet
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._createView("example", "arangosearch", {});
     view = db._view("example");
@@ -43,7 +43,7 @@ name: viewDatabaseNameKnown
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   db._view("demoView");
 ```
@@ -56,7 +56,7 @@ name: viewDatabaseNameUnknown
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   db._view("unknown");
 ```
@@ -87,7 +87,7 @@ name: viewDatabaseCreate
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   v = db._createView("example", "arangosearch");
   v.properties()
@@ -110,7 +110,7 @@ name: viewDatabaseList
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._createView("exampleView", "arangosearch");
   db._views();
@@ -140,7 +140,7 @@ name: viewDatabaseDrop
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   db._createView("exampleView", "arangosearch");
   db._dropView("exampleView");

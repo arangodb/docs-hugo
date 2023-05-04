@@ -35,7 +35,7 @@ name: 01_workWithAQL_profileQuerySimple
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~db._drop("acollection");
 ~db._create('acollection');
@@ -86,7 +86,7 @@ name: 02_workWithAQL_profileQuerySimpleIndex
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~db._create('acollection');
 ~db.acollection.ensureIndex({type:"persistent", fields:["value"]});
@@ -114,7 +114,7 @@ name: 03_workWithAQL_profileQuerySubquery
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~db._create('acollection');
 ~db.acollection.ensureIndex({type:"persistent", fields:["value"]});
@@ -150,7 +150,7 @@ name: 04_workWithAQL_profileQueryAggregation
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~db._create('myusers');
 ~["berlin", "paris", "cologne", "munich", "london"].forEach((c) => { ["peter", "david", "simon", "lars"].forEach( n => db.myusers.insert({ city : c, name : n, age: Math.floor(Math.random() * 75) }) ) });

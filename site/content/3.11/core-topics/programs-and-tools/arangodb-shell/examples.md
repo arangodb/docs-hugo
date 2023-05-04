@@ -75,7 +75,7 @@ name: shellUseDB
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 db._createDatabase("myapp");
 db._useDatabase("myapp");

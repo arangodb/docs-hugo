@@ -50,7 +50,7 @@ paths:
 ---
 render: input/output
 name: RestWalAccessTickRange
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/wal/range";
@@ -100,7 +100,7 @@ paths:
 ---
 render: input/output
 name: RestWalAccessFirstTick
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/wal/lastTick";
@@ -320,7 +320,7 @@ paths:
 ---
 render: input
 name: RestWalAccessTailingEmpty
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var re = require("@arangodb/replication");
@@ -339,7 +339,7 @@ logRawResponse(response);
 ---
 render: input
 name: RestWalAccessTailingSome
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var re = require("@arangodb/replication");
@@ -368,7 +368,7 @@ logJsonLResponse(response);
 ---
 render: input/output
 name: RestWalAccessTailingBufferLimit
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var re = require("@arangodb/replication");

@@ -320,7 +320,7 @@ name: aqlGeoLineString_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN GEO_LINESTRING([
 [35, 10], [45, 45]
@@ -343,7 +343,7 @@ name: aqlGeoMultiLineString_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN GEO_MULTILINESTRING([
 [[100.0, 0.0], [101.0, 1.0]],
@@ -366,7 +366,7 @@ name: aqlGeoMultiPoint_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN GEO_MULTIPOINT([
 [35, 10], [45, 45]
@@ -389,7 +389,7 @@ name: aqlGeoPoint_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN GEO_POINT(1.0, 2.0)
 ```
@@ -420,7 +420,7 @@ name: aqlGeoPolygon_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN GEO_POLYGON([
 [0.0, 0.0], [7.5, 2.5], [0.0, 5.0]
@@ -435,7 +435,7 @@ name: aqlGeoPolygon_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN GEO_POLYGON([
 [[35, 10], [45, 45], [15, 40], [10, 20], [35, 10]],
@@ -465,7 +465,7 @@ name: aqlGeoMultiPolygon_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN GEO_MULTIPOLYGON([
 [

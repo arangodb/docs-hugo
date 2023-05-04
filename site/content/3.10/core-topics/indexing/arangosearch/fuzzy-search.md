@@ -213,7 +213,7 @@ name: levenshtein_match_sample
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 var analyzers = require("@arangodb/analyzers");
 analyzers.save("text_en_no_stem", "text", { locale: "en", accent: false, case: "lower", stemming: false, stopwords: [] }, ["position", "frequency", "norm"]);
@@ -316,7 +316,7 @@ name: ngram_match_sample
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 var analyzers = require("@arangodb/analyzers");
 analyzers.save("trigram", "ngram", { min: 3, max: 3, preserveOriginal: false, streamType: "utf8" }, ["position", "frequency", "norm"]);

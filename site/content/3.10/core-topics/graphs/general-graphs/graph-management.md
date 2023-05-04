@@ -34,7 +34,7 @@ name: generalGraphEdgeDefinitionsSimple
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var graph_module = require("@arangodb/general-graph");
   directed_relation = graph_module._relation("lives_in", "user", "city");
@@ -64,7 +64,7 @@ name: generalGraphEdgeDefinitionsExtend
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var graph_module = require("@arangodb/general-graph");
   directed_relation = graph_module._relation("lives_in", "user", "city");
@@ -108,7 +108,7 @@ name: generalGraphRelationDefinitionSingle
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 var graph_module = require("@arangodb/general-graph");
 graph_module._relation("has_bought", "Customer", "Product");
@@ -122,7 +122,7 @@ name: generalGraphRelationDefinitionSave
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 var graph_module = require("@arangodb/general-graph");
 graph_module._relation("has_bought", ["Customer", "Company"], ["Groceries", "Electronics"]);
@@ -168,7 +168,7 @@ name: generalGraphCreateGraphNoData
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var graph_module = require("@arangodb/general-graph");
   graph = graph_module._create("myGraph");
@@ -184,7 +184,7 @@ name: generalGraphCreateGraphSingle
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 ~ db._drop("edges");
 ~ db._drop("vertices");
@@ -202,7 +202,7 @@ name: generalGraphCreateGraph2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var graph_module = require("@arangodb/general-graph");
   graph = graph_module._create("myGraph",
@@ -220,7 +220,7 @@ name: general_graph_create_graph_example1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var graph_module = require("@arangodb/general-graph");
   var edgeDefinitions = graph_module._edgeDefinitions();
@@ -246,7 +246,7 @@ name: general_graph_create_graph_example2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var graph_module = require("@arangodb/general-graph");
    var edgeDefinitions = graph_module._edgeDefinitions(
@@ -283,7 +283,7 @@ name: generalGraphList
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var graph_module = require("@arangodb/general-graph");
 ~ graph_module._create("myGraph");
@@ -301,7 +301,7 @@ name: generalGraphListObjects
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var graph_module = require("@arangodb/general-graph");
 ~ graph_module._create("myGraph", [ { collection: "edges", "from": [ "vertices" ], "to" : [ "vertices" ] } ]);
@@ -328,7 +328,7 @@ name: generalGraphLoadGraph
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 ~ var examples = require("@arangodb/graph-examples/example-graph.js");
 ~ var g1 = examples.loadGraph("social");
@@ -362,7 +362,7 @@ name: generalGraphDropGraphKeep
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 ~ var examples = require("@arangodb/graph-examples/example-graph.js");
 ~ var g1 = examples.loadGraph("social");
@@ -385,7 +385,7 @@ name: generalGraphDropGraphDropCollections
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 ~ var examples = require("@arangodb/graph-examples/example-graph.js");
 ~ var g1 = examples.loadGraph("social");
@@ -426,7 +426,7 @@ name: general_graph__extendEdgeDefinitions
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var graph_module = require("@arangodb/general-graph")
   var ed1 = graph_module._relation("myEC1", ["myVC1"], ["myVC2"]);
@@ -465,7 +465,7 @@ name: general_graph__editEdgeDefinition
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var graph_module = require("@arangodb/general-graph")
   var original = graph_module._relation("myEC1", ["myVC1"], ["myVC2"]);
@@ -500,7 +500,7 @@ name: general_graph__deleteEdgeDefinitionNoDrop
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var graph_module = require("@arangodb/general-graph")
   var ed1 = graph_module._relation("myEC1", ["myVC1"], ["myVC2"]);
@@ -520,7 +520,7 @@ name: general_graph__deleteEdgeDefinitionWithDrop
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var graph_module = require("@arangodb/general-graph")
   var ed1 = graph_module._relation("myEC1", ["myVC1"], ["myVC2"]);
@@ -565,7 +565,7 @@ name: general_graph__addVertexCollection
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var graph_module = require("@arangodb/general-graph");
   var ed1 = graph_module._relation("myEC1", ["myVC1"], ["myVC2"]);
@@ -593,7 +593,7 @@ name: general_graph__orphanCollections
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var graph_module = require("@arangodb/general-graph")
   var ed1 = graph_module._relation("myEC1", ["myVC1"], ["myVC2"]);
@@ -627,7 +627,7 @@ name: general_graph__removeVertexCollections
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var graph_module = require("@arangodb/general-graph")
   var ed1 = graph_module._relation("myEC1", ["myVC1"], ["myVC2"]);
@@ -660,7 +660,7 @@ name: generalGraphVertexCollectionSave
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("social");
@@ -689,7 +689,7 @@ name: generalGraphVertexCollectionReplace
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("social");
@@ -719,7 +719,7 @@ name: generalGraphVertexCollectionUpdate
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("social");
@@ -750,7 +750,7 @@ name: generalGraphVertexCollectionRemove
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("social");
@@ -785,7 +785,7 @@ name: generalGraphEdgeCollectionSave1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("social");
@@ -805,7 +805,7 @@ name: generalGraphEdgeCollectionSave2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("social");
@@ -838,7 +838,7 @@ name: generalGraphEdgeCollectionReplace
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("social");
@@ -868,7 +868,7 @@ name: generalGraphEdgeCollectionUpdate
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("social");
@@ -899,7 +899,7 @@ name: generalGraphEdgeCollectionRemove
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var examples = require("@arangodb/graph-examples/example-graph.js");
   var graph = examples.loadGraph("social");

@@ -178,7 +178,7 @@ paths:
 ---
 render: input/output
 name: RestIndexCreateNewPersistent
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var cn = "products";
@@ -205,7 +205,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestIndexCreateSparsePersistent
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var cn = "products";

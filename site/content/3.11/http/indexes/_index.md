@@ -70,7 +70,7 @@ paths:
 ---
 render: input/output
 name: RestIndexAllIndexes
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -131,7 +131,7 @@ paths:
 ---
 render: input/output
 name: RestIndexPrimaryIndex
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -299,7 +299,7 @@ paths:
 ---
 render: input/output
 name: RestIndexDeleteUniquePersistent
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";

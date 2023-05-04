@@ -25,7 +25,7 @@ name: dbName
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   require("@arangodb").db._name();
 ```
@@ -46,7 +46,7 @@ name: dbId
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   require("@arangodb").db._id();
 ```
@@ -67,7 +67,7 @@ name: dbPath
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   require("@arangodb").db._path();
 ```
@@ -107,11 +107,11 @@ attributes:
 
 ```js
 ---
-name: dbProperties_cluster
+name: dbProperties
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   require("@arangodb").db._properties();
 ```
@@ -281,7 +281,7 @@ name: dbVersion
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   require("@arangodb").db._version();
 ```

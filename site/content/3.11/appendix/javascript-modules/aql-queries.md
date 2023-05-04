@@ -19,7 +19,7 @@ name: QUERY_01_propertyOfQueries
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 var queries = require("@arangodb/aql/queries");
 queries.properties();
@@ -39,7 +39,7 @@ name: QUERY_02_listQueries
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~var queries = require("@arangodb/aql/queries");
 var theQuery = 'FOR sleepLoooong IN 1..5 LET sleepLoooonger = SLEEP(1000) RETURN sleepLoooong';
@@ -70,7 +70,7 @@ name: QUERY_03_listSlowQueries
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~var queries = require("@arangodb/aql/queries");
 queries.slow();
@@ -86,7 +86,7 @@ name: QUERY_04_clearSlowQueries
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~var queries = require("@arangodb/aql/queries");
 queries.clearSlow();
@@ -104,7 +104,7 @@ name: QUERY_05_killQueries
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~var queries = require("@arangodb/aql/queries");
 ~var tasks = require("@arangodb/tasks");

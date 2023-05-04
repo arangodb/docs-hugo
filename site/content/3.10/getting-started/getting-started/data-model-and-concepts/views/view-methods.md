@@ -21,7 +21,7 @@ name: viewDrop
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
     v = db._createView("example", "arangosearch");
   // or
@@ -46,7 +46,7 @@ name: viewName
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   v = db._view("demoView");
   v.name();
@@ -75,7 +75,7 @@ name: viewRename
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   v = db._createView("example", "arangosearch");
   v.name();
@@ -100,7 +100,7 @@ name: viewType
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   v = db._view("demoView");
   v.type();
@@ -123,7 +123,7 @@ name: viewGetProperties
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   v = db._view("demoView");
   v.properties();
@@ -155,7 +155,7 @@ name: viewModifyProperties
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   ~ db._createView("example", "arangosearch");
 v = db._view("example");
@@ -177,7 +177,7 @@ name: viewModifyPropertiesSearchAlias
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   ~ db._create("coll");
   ~ db.coll.ensureIndex({ name: "inv1", type: "inverted", fields: ["a"] });

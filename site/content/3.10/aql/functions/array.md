@@ -50,7 +50,7 @@ name: aqlArrayAppend_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN APPEND([ 1, 2, 3 ], [ 5, 6, 9 ])
 ```
@@ -61,7 +61,7 @@ name: aqlArrayAppend_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN APPEND([ 1, 2, 3 ], [ 3, 4, 5, 2, 9 ], true)
 ```
@@ -92,7 +92,7 @@ name: aqlArrayCountDistinct_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN COUNT_DISTINCT([ 1, 2, 3 ])
 ```
@@ -103,7 +103,7 @@ name: aqlArrayCountDistinct_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN COUNT_DISTINCT([ "yes", "no", "yes", "sauron", "no", "yes" ])
 ```
@@ -130,7 +130,7 @@ name: aqlArrayFirst_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN FIRST([ 1, 2, 3 ])
 ```
@@ -141,7 +141,7 @@ name: aqlArrayFirst_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN FIRST([])
 ```
@@ -168,7 +168,7 @@ name: aqlArrayFlatten_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN FLATTEN( [ 1, 2, [ 3, 4 ], 5, [ 6, 7 ], [ 8, [ 9, 10 ] ] ] )
 ```
@@ -181,7 +181,7 @@ name: aqlArrayFlatten_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN FLATTEN( [ 1, 2, [ 3, 4 ], 5, [ 6, 7 ], [ 8, [ 9, 10 ] ] ], 2 )
 ```
@@ -209,7 +209,7 @@ name: aqlArrayInterleave_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN INTERLEAVE( [1, 1, 1], [2, 2, 2], [3, 3, 3] )
 ```
@@ -220,7 +220,7 @@ name: aqlArrayInterleave_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN INTERLEAVE( [ 1 ], [2, 2], [3, 3, 3] )
 ```
@@ -231,7 +231,7 @@ name: aqlArrayInterleave_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 dataset: kShortestPathsGraph
 ---
 FOR v, e, p IN 1..3 OUTBOUND 'places/Toronto' GRAPH 'kShortestPathsGraph'
@@ -262,7 +262,7 @@ name: aqlArrayIntersection_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN INTERSECTION( [1,2,3,4,5], [2,3,4,5,6], [3,4,5,6,7] )
 ```
@@ -273,7 +273,7 @@ name: aqlArrayIntersection_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN INTERSECTION( [2,4,6], [8,10,12], [14,16,18] )
 ```
@@ -307,7 +307,7 @@ name: aqlArrayJaccard_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN JACCARD( [1,2,3,4], [3,4,5,6] )
 ```
@@ -318,7 +318,7 @@ name: aqlArrayJaccard_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN JACCARD( [1,1,2,2,2,3], [2,2,3,4] )
 ```
@@ -329,7 +329,7 @@ name: aqlArrayJaccard_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN JACCARD( [1,2,3], [] )
 ```
@@ -340,7 +340,7 @@ name: aqlArrayJaccard_4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN JACCARD( [], [] )
 ```
@@ -363,7 +363,7 @@ name: aqlArrayLast_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN LAST( [1,2,3,4,5] )
 ```
@@ -399,7 +399,7 @@ name: aqlArrayLength_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN LENGTH( "🥑" )
 ```
@@ -410,7 +410,7 @@ name: aqlArrayLength_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN LENGTH( 1234 )
 ```
@@ -421,7 +421,7 @@ name: aqlArrayLength_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN LENGTH( [1,2,3,4,5,6,7] )
 ```
@@ -432,7 +432,7 @@ name: aqlArrayLength_4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN LENGTH( false )
 ```
@@ -443,7 +443,7 @@ name: aqlArrayLength_5
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN LENGTH( {a:1, b:2, c:3, d:4, e:{f:5,g:6}} )
 ```
@@ -472,7 +472,7 @@ name: aqlArrayMinus_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN MINUS( [1,2,3,4], [3,4,5,6], [5,6,7,8] )
 ```
@@ -498,7 +498,7 @@ name: aqlArrayNth_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN NTH( [ "foo", "bar", "baz" ], 2 )
 ```
@@ -509,7 +509,7 @@ name: aqlArrayNth_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN NTH( [ "foo", "bar", "baz" ], 3 )
 ```
@@ -520,7 +520,7 @@ name: aqlArrayNth_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN NTH( [ "foo", "bar", "baz" ], -1 )
 ```
@@ -548,7 +548,7 @@ name: aqlArrayOutersection_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN OUTERSECTION( [ 1, 2, 3 ], [ 2, 3, 4 ], [ 3, 4, 5 ] )
 ```
@@ -575,7 +575,7 @@ name: aqlArrayPop_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN POP( [ 1, 2, 3, 4 ] )
 ```
@@ -586,7 +586,7 @@ name: aqlArrayPop_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN POP( [ 1 ] )
 ```
@@ -622,7 +622,7 @@ name: aqlArrayPosition_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN POSITION( [2,4,6,8], 4 )
 ```
@@ -636,7 +636,7 @@ name: aqlArrayPosition_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN POSITION( [2,4,6,8], 4, true )
 ```
@@ -652,7 +652,7 @@ name: aqlArrayPosition_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 LET arr = [ { value: "foo" }, { value: "bar" }, { value: "baz" }, { value: "bay"} ]
 RETURN POSITION(arr[*].value, "baz", true)
@@ -691,7 +691,7 @@ name: aqlArrayPush_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN PUSH([ 1, 2, 3 ], 4)
 ```
@@ -702,7 +702,7 @@ name: aqlArrayPush_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN PUSH([ 1, 2, 2, 3 ], 2, true)
 ```
@@ -730,7 +730,7 @@ name: aqlArrayRemoveNth_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN REMOVE_NTH( [ "a", "b", "c", "d", "e" ], 1 )
 ```
@@ -741,7 +741,7 @@ name: aqlArrayRemoveNth_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN REMOVE_NTH( [ "a", "b", "c", "d", "e" ], -2 )
 ```
@@ -780,7 +780,7 @@ name: aqlArrayReplaceNth_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN REPLACE_NTH( [ "a", "b", "c" ], 1 , "z")
 ```
@@ -791,7 +791,7 @@ name: aqlArrayReplaceNth_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN REPLACE_NTH( [ "a", "b", "c" ], 3 , "z")
 ```
@@ -802,7 +802,7 @@ name: aqlArrayReplaceNth_4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN REPLACE_NTH( [ "a", "b", "c" ], 6, "z", "y" )
 ```
@@ -813,7 +813,7 @@ name: aqlArrayReplaceNth_5
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN REPLACE_NTH( [ "a", "b", "c" ], -1, "z" )
 ```
@@ -824,7 +824,7 @@ name: aqlArrayReplaceNth_6
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN REPLACE_NTH( [ "a", "b", "c" ], -9, "z" )
 ```
@@ -837,7 +837,7 @@ name: aqlArrayReplaceNth_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   db._query('RETURN REPLACE_NTH( [ "a", "b", "c" ], 6 , "z")'); // xpError(ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH)
 ```
@@ -862,7 +862,7 @@ name: aqlArrayRemoveValue_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN REMOVE_VALUE( [ "a", "b", "b", "a", "c" ], "a" )
 ```
@@ -873,7 +873,7 @@ name: aqlArrayRemoveValue_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN REMOVE_VALUE( [ "a", "b", "b", "a", "c" ], "a", 1 )
 ```
@@ -897,7 +897,7 @@ name: aqlArrayRemoveValues_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN REMOVE_VALUES( [ "a", "a", "b", "c", "d", "e", "f" ], [ "a", "f", "d" ] )
 ```
@@ -920,7 +920,7 @@ name: aqlArrayReverse_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN REVERSE ( [2,4,6,8,10] )
 ```
@@ -947,7 +947,7 @@ name: aqlArrayShift_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN SHIFT( [ 1, 2, 3, 4 ] )
 ```
@@ -958,7 +958,7 @@ name: aqlArrayShift_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN SHIFT( [ 1 ] )
 ```
@@ -985,7 +985,7 @@ name: aqlArraySlice_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN SLICE( [ 1, 2, 3, 4, 5 ], 0, 1 )
 ```
@@ -996,7 +996,7 @@ name: aqlArraySlice_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN SLICE( [ 1, 2, 3, 4, 5 ], 1, 2 )
 ```
@@ -1007,7 +1007,7 @@ name: aqlArraySlice_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN SLICE( [ 1, 2, 3, 4, 5 ], 3 )
 ```
@@ -1018,7 +1018,7 @@ name: aqlArraySlice_4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN SLICE( [ 1, 2, 3, 4, 5 ], 1, -1 )
 ```
@@ -1029,7 +1029,7 @@ name: aqlArraySlice_5
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN SLICE( [ 1, 2, 3, 4, 5 ], 0, -2 )
 ```
@@ -1040,7 +1040,7 @@ name: aqlArraySlice_6
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN SLICE( [ 1, 2, 3, 4, 5 ], -3, 2 )
 ```
@@ -1063,7 +1063,7 @@ name: aqlArraySorted_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN SORTED( [ 8,4,2,10,6 ] )
 ```
@@ -1088,7 +1088,7 @@ name: aqlArraySortedUnique_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN SORTED_UNIQUE( [ 8,4,2,10,6,2,8,6,4 ] )
 ```
@@ -1116,7 +1116,7 @@ name: aqlArrayUnion_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN UNION(
 [ 1, 2, 3 ],
@@ -1135,7 +1135,7 @@ name: aqlArrayUnion_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN UNIQUE(
 UNION(
@@ -1164,7 +1164,7 @@ name: aqlArrayUnionDistinct_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN UNION_DISTINCT(
 [ 1, 2, 3 ],
@@ -1190,7 +1190,7 @@ name: aqlArrayUnique_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN UNIQUE( [ 1,2,2,3,3,3,4,4,4,4,5,5,5,5,5 ] )
 ```
@@ -1223,7 +1223,7 @@ name: aqlArrayUnshift_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN UNSHIFT( [ 1, 2, 3 ], 4 )
 ```
@@ -1234,7 +1234,7 @@ name: aqlArrayUnshift_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 RETURN UNSHIFT( [ 1, 2, 3 ], 2, true )
 ```

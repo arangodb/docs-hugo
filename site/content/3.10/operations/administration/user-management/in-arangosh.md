@@ -146,7 +146,7 @@ name: USER_02_saveUser
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 require('@arangodb/users').save('my-user', 'my-secret-password');
 ```
@@ -216,7 +216,7 @@ name: USER_03_replaceUser
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 require("@arangodb/users").replace("my-user", "my-changed-password");
 ```
@@ -247,7 +247,7 @@ name: USER_04_updateUser
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 require("@arangodb/users").update("my-user", "my-secret-password");
 ```
@@ -271,7 +271,7 @@ name: USER_05_isValidUser
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 require("@arangodb/users").isValid("my-user", "my-secret-password");
 ```
@@ -295,7 +295,7 @@ name: USER_07_removeUser
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 require("@arangodb/users").remove("my-user");
 ```
@@ -318,7 +318,7 @@ name: USER_04_documentUser
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 require("@arangodb/users").document("my-user");
 ```
@@ -337,7 +337,7 @@ name: USER_06_AllUsers
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 require("@arangodb/users").all();
 ```
@@ -360,7 +360,7 @@ name: USER_03_reloadUser
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 require("@arangodb/users").reload();
 ```
@@ -384,7 +384,7 @@ name: USER_05_permission
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 ~ require("@arangodb/users").grantDatabase("my-user", "testdb");
 require("@arangodb/users").permission("my-user", "testdb");

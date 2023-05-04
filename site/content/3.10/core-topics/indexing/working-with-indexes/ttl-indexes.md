@@ -194,7 +194,7 @@ name: ensureTtlIndex
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 ~db._create("test");
 db.test.ensureIndex({ type: "ttl", fields: [ "creationDate" ], expireAfter: 600 });

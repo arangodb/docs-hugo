@@ -25,7 +25,7 @@ name: 01_workWithAQL_all
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~addIgnoreCollection("mycollection")
 db._create("mycollection")
@@ -46,7 +46,7 @@ name: 02_workWithAQL_bindValues
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   db._query('FOR c IN @@collection FILTER c._key == @key RETURN c._key', {
     '@collection': 'mycollection', 
@@ -69,7 +69,7 @@ name: 02_workWithAQL_aqlTemplateString
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var key = 'testKey';
   aql`FOR c IN mycollection FILTER c._key == ${key} RETURN c._key`
@@ -83,7 +83,7 @@ name: 02_workWithAQL_aqlQuery
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var key = 'testKey';
   db._query(
@@ -100,7 +100,7 @@ name: 02_workWithAQL_aqlCollectionQuery
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var key = 'testKey';
   db._query(aql`FOR doc IN ${ db.mycollection } RETURN doc`).toArray();
@@ -122,7 +122,7 @@ name: 03_workWithAQL_getExtra
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   db._query(`FOR i IN 1..100
     INSERT { _key: CONCAT('test', TO_STRING(i)) } INTO mycollection`
@@ -159,7 +159,7 @@ name: 02_workWithAQL_count
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var cursor = db._query(
     'FOR i IN 1..42 RETURN i',
@@ -183,7 +183,7 @@ name: 02_workWithAQL_batchSize
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   db._query(
     'FOR i IN 1..3 RETURN i',
@@ -209,7 +209,7 @@ name: 02_workWithAQL_ttl
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   db._query(
     'FOR i IN 1..2000 RETURN i',
@@ -232,7 +232,7 @@ name: 02_workWithAQL_cache
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   db._query(
     'FOR i IN 1..2000 RETURN i',
@@ -257,7 +257,7 @@ name: 02_workWithAQL_memoryLimit
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   db._query(
     'FOR i IN 1..100000 SORT i RETURN i',
@@ -521,7 +521,7 @@ name: 04_workWithAQL_statements1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   stmt = db._createStatement( { "query": "FOR i IN [ 1, 2 ] RETURN i * 2" } );
 ```
@@ -534,7 +534,7 @@ name: 05_workWithAQL_statements2
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ var stmt = db._createStatement( { "query": "FOR i IN [ 1, 2 ] RETURN i * 2" } );
   cursor = stmt.execute();
@@ -553,7 +553,7 @@ name: 05_workWithAQL_statements3
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ var stmt = db._createStatement( { "query": "FOR i IN [ 1, 2 ] RETURN i * 2" } );
 ~ var cursor = stmt.execute();
@@ -569,7 +569,7 @@ name: 05_workWithAQL_statements4
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ var stmt = db._createStatement( { "query": "FOR i IN [ 1, 2 ] RETURN i * 2" } );
 ~ var c = stmt.execute();
@@ -594,7 +594,7 @@ name: 05_workWithAQL_statements5
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   var stmt = db._createStatement( { "query": "FOR i IN [ @one, @two ] RETURN i * 2" } );
   stmt.bind("one", 1);
@@ -610,7 +610,7 @@ name: 05_workWithAQL_statements6
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ var stmt = db._createStatement( { "query": "FOR i IN [ @one, @two ] RETURN i * 2" } );
 ~ stmt.bind("one", 1);
@@ -627,7 +627,7 @@ name: 05_workWithAQL_statements7
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ var stmt = db._createStatement( { "query": "FOR i IN [ @one, @two ] RETURN i * 2" } );
 ~ stmt.bind("one", 1);
@@ -645,7 +645,7 @@ name: 05_workWithAQL_statements8
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   stmt = db._createStatement( { 
     "query": "FOR i IN [ @one, @two ] RETURN i * 2", 
@@ -668,7 +668,7 @@ name: 05_workWithAQL_statements9
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   stmt = db._createStatement( {
     "query": "FOR i IN [ 1, 2, 3, 4 ] RETURN i",
@@ -684,7 +684,7 @@ name: 05_workWithAQL_statements10
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ var stmt = db._createStatement( { "query": "FOR i IN [ 1, 2, 3, 4 ] RETURN i", "count": true } );
   var cursor = stmt.execute();
@@ -721,7 +721,7 @@ name: 06_workWithAQL_statements11
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   stmt = db._createStatement( {
     "query": "FOR i IN [ 1, 2, 3, 4 ] RETURN i",
@@ -737,7 +737,7 @@ name: 06_workWithAQL_statements12
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ var stmt = db._createStatement( { "query": "FOR i IN [ 1, 2, 3, 4 ] RETURN i", options: {"profile": true}} );
   var cursor = stmt.execute();
@@ -755,7 +755,7 @@ name: 06_workWithAQL_statements13
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   db._parse( "FOR i IN [ 1, 2 ] RETURN i" );
 ```

@@ -24,7 +24,7 @@ name: generalGraphCreateGraphHowTo1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var graph_module = require("@arangodb/general-graph");
   var graph = graph_module._create("myGraph");
@@ -40,7 +40,7 @@ name: generalGraphCreateGraphHowTo2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 ~ var graph_module = require("@arangodb/general-graph");
 ~ var graph = graph_module._create("myGraph");
@@ -59,7 +59,7 @@ name: generalGraphCreateGraphHowTo3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 ~ var graph_module = require("@arangodb/general-graph");
 ~ var graph = graph_module._create("myGraph");

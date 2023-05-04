@@ -632,7 +632,7 @@ paths:
 ---
 render: input/output
 name: RestIndexCreateNewInverted
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";

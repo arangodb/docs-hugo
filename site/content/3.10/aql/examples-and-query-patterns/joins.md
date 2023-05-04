@@ -674,7 +674,7 @@ name: joinTuples
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 dataset: joinSampleDataset
 bindVars: 
   {

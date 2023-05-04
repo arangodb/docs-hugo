@@ -176,7 +176,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialList
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -674,7 +674,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialCreate
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var graph = require("@arangodb/general-graph");
@@ -705,7 +705,7 @@ graph._drop("myGraph", true);
 ---
 render: input/output
 name: HttpGharialCreateSmart
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var graph = require("@arangodb/general-graph");
@@ -743,7 +743,7 @@ graph._drop("smartGraph", true);
 ---
 render: input/output
 name: HttpGharialCreateDisjointSmart
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var graph = require("@arangodb/general-graph");
@@ -782,7 +782,7 @@ graph._drop("disjointSmartGraph", true);
 ---
 render: input/output
 name: HttpGharialCreateSmartWithSatellites
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var graph = require("@arangodb/general-graph");
@@ -821,7 +821,7 @@ graph._drop("smartGraph", true);
 ---
 render: input/output
 name: HttpGharialCreateEnterprise
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var graph = require("@arangodb/general-graph");
@@ -858,7 +858,7 @@ graph._drop("enterpriseGraph", true);
 ---
 render: input/output
 name: HttpGharialCreateSatellite
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var graph = require("@arangodb/general-graph");
@@ -1071,7 +1071,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialGetGraph
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var graph = require("@arangodb/general-graph");
@@ -1200,7 +1200,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialDrop
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -1299,7 +1299,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialListVertex
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -1704,7 +1704,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialAddVertexCol
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -2109,7 +2109,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialRemoveVertexCollection
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -2131,7 +2131,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: HttpGharialRemoveVertexCollectionFailed
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -2233,7 +2233,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialListEdge
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -2669,7 +2669,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialAddEdgeCol
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -3120,7 +3120,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialReplaceEdgeCol
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -3503,7 +3503,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialEdgeDefinitionRemove
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -3777,7 +3777,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialAddVertex
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -4031,7 +4031,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialGetVertex
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -4412,7 +4412,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialModifyVertex
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -4793,7 +4793,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialReplaceVertex
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -5066,7 +5066,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialDeleteVertex
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -5423,7 +5423,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialAddEdge
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -5692,7 +5692,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialGetEdge
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -6135,7 +6135,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialPatchEdge
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -6584,7 +6584,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialPutEdge
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -6879,7 +6879,7 @@ paths:
 ---
 render: input/output
 name: HttpGharialDeleteEdge
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
