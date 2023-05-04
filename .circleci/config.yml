@@ -267,6 +267,9 @@ jobs:
           name: Build
           command: |
             cmake --build --preset community-pr --parallel 8 --target arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench
+            if [ << parameters.enterprise >> = true ]; then
+              cmake --build --preset << parameters.preset >> --parallel 8 --target arangobackup
+            fi
       - run:
           name: Size leaderboard
           command: |
@@ -281,7 +284,7 @@ jobs:
           command: sccache -s
       - run:
           name: Create archive of compiled instance
-          command: tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/
+          command: tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/ enterprise/js
       - persist_to_workspace:
           root: .
           paths:
@@ -357,17 +360,17 @@ workflows:
     when: { equal: [ compile, << pipeline.parameters.WORKFLOW >> ] }
     jobs:
       - compile-linux:
-          name: build-ce
-          preset: community-pr
-          edition: x64-community
-          enterprise: false
+          name: build-ee
+          preset: enterprise-pr
+          edition: x64-enterprise
+          enterprise: true
           branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
       - checkout:
           name: cloneNewRepo
           repository: git@github.com:arangodb/docs-hugo.git
           branch: main
           requires:
-            - build-ce
+            - build-ee
       - create-image:
           requires:
             - cloneNewRepo
