@@ -29,6 +29,10 @@ parameters:
   commit-generated:
     type: boolean
     default: true
+
+  enterprise-branch:
+    type: string
+    default: ""
   
 
 jobs:
