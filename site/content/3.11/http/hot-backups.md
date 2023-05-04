@@ -98,7 +98,7 @@ paths:
 ---
 render: input/output
 name: RestBackupCreateBackup
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var url = "/_admin/backup/create";
@@ -165,7 +165,7 @@ paths:
 ---
 render: input/output
 name: RestBackupRestoreBackup
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var backup = require("@arangodb/hotbackup").create();
@@ -247,7 +247,7 @@ paths:
 ---
 render: input/output
 name: RestBackupDeleteBackup
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var backup = require("@arangodb/hotbackup").create();
@@ -311,7 +311,7 @@ paths:
 ---
 render: input/output
 name: RestBackupListBackup
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var backup = require("@arangodb/hotbackup").create();
@@ -424,7 +424,7 @@ paths:
 ---
 render: input/output
 name: RestBackupUploadBackup
-release: stable
+release: stable_single
 version: '3.11'
 ---
 try {
@@ -458,7 +458,7 @@ body = {
 ---
 render: input/output
 name: RestBackupUploadBackupStarted
-release: stable
+release: stable_single
 version: '3.11'
 ---
 try {
@@ -579,7 +579,7 @@ paths:
 ---
 render: input/output
 name: RestBackupDownloadBackup
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var hotbackup = require("@arangodb/hotbackup");
@@ -628,7 +628,7 @@ body = {
 ---
 render: input/output
 name: RestBackupDownloadBackupStarted
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var hotbackup = require("@arangodb/hotbackup");

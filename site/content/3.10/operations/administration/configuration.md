@@ -338,7 +338,7 @@ name: listCurrentConfigOpts
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 db._executeTransaction({ collections: {}, action: function() {return require("internal").options(); } })
 ```

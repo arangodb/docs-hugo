@@ -8,6 +8,12 @@ archetype: default
 AQL offers the following functions to filter data based on
 [fulltext indexes](../../core-topics/indexing/working-with-indexes/fulltext-indexes.md).
 
+{{< warning >}}
+The fulltext index type is deprecated from version 3.10 onwards.
+It is recommended to use [Inverted indexes](../../core-topics/indexing/working-with-indexes/inverted-indexes.md) or
+[ArangoSearch](../../core-topics/indexing/arangosearch/_index.md) for advanced full-text search capabilities.
+{{< /warning >}}
+
 ## FULLTEXT()
 
 `FULLTEXT(coll, attribute, query, limit) → docArray`

@@ -55,11 +55,11 @@ Create a graph without relations. Edge definitions can be added later:
 
 ```js
 ---
-name: satelliteGraphManagementCreate1_cluster
+name: satelliteGraphManagementCreate1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
 var satelliteGraphModule = require("@arangodb/satellite-graph");
 var graph = satelliteGraphModule._create("satelliteGraph");
@@ -72,11 +72,11 @@ Create a graph using an edge collection `edges` and a single vertex collection
 
 ```js
 ---
-name: satelliteGraphManagementCreate2_cluster
+name: satelliteGraphManagementCreate2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
 var graph_module = require("@arangodb/satellite-graph");
 var edgeDefinitions = [ graph_module._relation("edges", "vertices", "vertices") ];
@@ -89,11 +89,11 @@ Create a graph with edge definitions and orphan collections:
 
 ```js
 ---
-name: satelliteGraphManagementCreate3_cluster
+name: satelliteGraphManagementCreate3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
 var graph_module = require("@arangodb/satellite-graph");
 var edgeDefinitions = [ graph_module._relation("myRelation", ["male", "female"], ["male", "female"]) ];
@@ -138,11 +138,11 @@ Create a SatelliteGraph and list its orphan collections:
 
 ```js
 ---
-name: satelliteGraphManagementModify1_cluster
+name: satelliteGraphManagementModify1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
 var graph_module = require("@arangodb/satellite-graph");
 var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -155,11 +155,11 @@ Remove the orphan collection from the SatelliteGraph and drop the collection:
 
 ```js
 ---
-name: satelliteGraphManagementModify2_cluster
+name: satelliteGraphManagementModify2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
    ~var graph_module = require("@arangodb/satellite-graph");
    ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -173,11 +173,11 @@ Attempting to remove a non-orphan collection results in an error:
 
 ```js
 ---
-name: satelliteGraphManagementModify3_cluster
+name: satelliteGraphManagementModify3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
    ~var graph_module = require("@arangodb/satellite-graph");
    ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -191,11 +191,11 @@ sharding for other collections (`edges`).
 
 ```js
 ---
-name: satelliteGraphManagementModify4_cluster
+name: satelliteGraphManagementModify4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
 var graph_module = require("@arangodb/satellite-graph");
 var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -215,11 +215,11 @@ drop collections that you might have removed from the graph beforehand.
 
 ```js
 ---
-name: satelliteGraphManagementModify5_cluster
+name: satelliteGraphManagementModify5
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
 var graph_module = require("@arangodb/satellite-graph");
 var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -252,11 +252,11 @@ Create a SatelliteGraph, then delete the edge definition and drop the edge colle
 
 ```js
 ---
-name: satelliteGraphManagementModify6_cluster
+name: satelliteGraphManagementModify6
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
 var graph_module = require("@arangodb/satellite-graph");
 var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -271,11 +271,11 @@ any relation (i.e. after the deletion of the edge definition):
 
 ```js
 ---
-name: satelliteGraphManagementModify7_cluster
+name: satelliteGraphManagementModify7
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
    ~var graph_module = require("@arangodb/satellite-graph");
    ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -307,11 +307,11 @@ Delete a SatelliteGraph and drop its collections:
 
 ```js
 ---
-name: satelliteGraphManagementRemove1_cluster
+name: satelliteGraphManagementRemove1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
    ~var graph_module = require("@arangodb/satellite-graph");
    ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -328,11 +328,11 @@ collections first.
 
 ```js
 ---
-name: satelliteGraphManagementRemove2_cluster
+name: satelliteGraphManagementRemove2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
    ~var graph_module = require("@arangodb/satellite-graph");
    ~var relation = graph_module._relation("edges", "vertices", "vertices");

@@ -48,7 +48,7 @@ name: ensureVertexCentricIndex
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~db._createEdgeCollection("collection");
 db.collection.ensureIndex({ type: "persistent", fields: [ "_from", "type" ] })

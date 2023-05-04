@@ -301,7 +301,7 @@ paths:
 ---
 render: input
 name: RestBatchMultipartHeader
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var parts = [
@@ -345,7 +345,7 @@ logPlainResponse(response);
 ---
 render: input
 name: RestBatchImplicitBoundary
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var parts = [

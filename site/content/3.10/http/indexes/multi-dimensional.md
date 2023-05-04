@@ -88,7 +88,7 @@ paths:
 ---
 render: input/output
 name: RestIndexCreateNewZkd
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var cn = "intervals";

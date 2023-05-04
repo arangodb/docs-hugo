@@ -93,7 +93,7 @@ paths:
 ---
 render: input/output
 name: RestDatabaseGetInfo
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/database/current";
@@ -129,7 +129,7 @@ paths:
 ---
 render: input/output
 name: RestDatabaseGetUser
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/database/user";
@@ -171,7 +171,7 @@ paths:
 ---
 render: input/output
 name: RestDatabaseGet
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/database";
@@ -296,7 +296,7 @@ paths:
 ---
 render: input/output
 name: RestDatabaseCreate
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/database";
@@ -327,7 +327,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestDatabaseCreateUsers
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/database";
@@ -402,7 +402,7 @@ paths:
 ---
 render: input/output
 name: RestDatabaseDrop
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/database";

@@ -70,11 +70,11 @@ Create a graph without relations. Edge definitions can be added later:
 
 ```js
 ---
-name: enterpriseGraphCreate1_cluster
+name: enterpriseGraphCreate1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var graph = graph_module._create("myGraph", [], [], {isSmart: true, numberOfShards: 9});
@@ -87,11 +87,11 @@ Create a graph using an edge collection `edges` and a single vertex collection
 
 ```js
 ---
-name: enterpriseGraphCreate2_cluster
+name: enterpriseGraphCreate2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var edgeDefinitions = [ graph_module._relation("edges", "vertices", "vertices") ];
@@ -104,11 +104,11 @@ Create a graph with edge definitions and orphan collections:
 
 ```js
 ---
-name: enterpriseGraphCreate3_cluster
+name: enterpriseGraphCreate3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var edgeDefinitions = [ graph_module._relation("myRelation", ["male", "female"], ["male", "female"]) ];
@@ -154,11 +154,11 @@ Create an EnterpriseGraph and list its orphan collections:
 
 ```js
 ---
-name: enterpriseGraphModify1_cluster
+name: enterpriseGraphModify1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -171,11 +171,11 @@ Remove the orphan collection from the EnterpriseGraph and drop the collection:
 
 ```js
 ---
-name: enterpriseGraphModify2_cluster
+name: enterpriseGraphModify2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
  ~var graph_module = require("@arangodb/enterprise-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -189,11 +189,11 @@ Attempting to remove a non-orphan collection results in an error:
 
 ```js
 ---
-name: enterpriseGraphModify3_cluster
+name: enterpriseGraphModify3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
  ~var graph_module = require("@arangodb/enterprise-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -207,11 +207,11 @@ sharding for other collections (`edges`).
 
 ```js
 ---
-name: enterpriseGraphModify4_cluster
+name: enterpriseGraphModify4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -231,11 +231,11 @@ drop collections that you might have removed from the graph beforehand.
 
 ```js
 ---
-name: enterpriseGraphModify5_cluster
+name: enterpriseGraphModify5
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -268,11 +268,11 @@ Create an EnterpriseGraph, then delete the edge definition and drop the edge col
 
 ```js
 ---
-name: enterpriseGraphModify6_cluster
+name: enterpriseGraphModify6
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -287,11 +287,11 @@ any relation (i.e. after the deletion of the edge definition):
 
 ```js
 ---
-name: enterpriseGraphModify7_cluster
+name: enterpriseGraphModify7
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
  ~var graph_module = require("@arangodb/enterprise-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -323,11 +323,11 @@ Delete an EnterpriseGraph and drop its collections:
 
 ```js
 ---
-name: enterpriseGraphRemove1_cluster
+name: enterpriseGraphRemove1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
  ~var graph_module = require("@arangodb/enterprise-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -344,11 +344,11 @@ collections first.
 
 ```js
 ---
-name: enterpriseGraphRemove2_cluster
+name: enterpriseGraphRemove2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
  ~var graph_module = require("@arangodb/enterprise-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");

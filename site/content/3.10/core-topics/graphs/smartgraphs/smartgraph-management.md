@@ -88,11 +88,11 @@ Create a graph without relations. Edge definitions can be added later:
 
 ```js
 ---
-name: smartGraphCreate1_cluster
+name: smartGraphCreate1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var graph = graph_module._create("myGraph", [], [], {smartGraphAttribute: "region", numberOfShards: 9});
@@ -105,11 +105,11 @@ Create a graph using an edge collection `edges` and a single vertex collection
 
 ```js
 ---
-name: smartGraphCreate2_cluster
+name: smartGraphCreate2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var edgeDefinitions = [ graph_module._relation("edges", "vertices", "vertices") ];
@@ -122,11 +122,11 @@ Create a graph with edge definitions and orphan collections:
 
 ```js
 ---
-name: smartGraphCreate3_cluster
+name: smartGraphCreate3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var edgeDefinitions = [ graph_module._relation("myRelation", ["male", "female"], ["male", "female"]) ];
@@ -172,11 +172,11 @@ Create a SmartGraph and list its orphan collections:
 
 ```js
 ---
-name: smartGraphModify1_cluster
+name: smartGraphModify1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -189,11 +189,11 @@ Remove the orphan collection from the SmartGraph and drop the collection:
 
 ```js
 ---
-name: smartGraphModify2_cluster
+name: smartGraphModify2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
  ~var graph_module = require("@arangodb/smart-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -207,11 +207,11 @@ Attempting to remove a non-orphan collection results in an error:
 
 ```js
 ---
-name: smartGraphModify3_cluster
+name: smartGraphModify3
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
  ~var graph_module = require("@arangodb/smart-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -225,11 +225,11 @@ sharding for other collections (`edges`).
 
 ```js
 ---
-name: smartGraphModify4_cluster
+name: smartGraphModify4
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -249,11 +249,11 @@ drop collections that you might have removed from the graph beforehand.
 
 ```js
 ---
-name: smartGraphModify5_cluster
+name: smartGraphModify5
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -286,11 +286,11 @@ Create a SmartGraph, then delete the edge definition and drop the edge collectio
 
 ```js
 ---
-name: smartGraphModify6_cluster
+name: smartGraphModify6
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -305,11 +305,11 @@ any relation (i.e. after the deletion of the edge definition):
 
 ```js
 ---
-name: smartGraphModify7_cluster
+name: smartGraphModify7
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
  ~var graph_module = require("@arangodb/smart-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -341,11 +341,11 @@ Delete a SmartGraph and drop its collections:
 
 ```js
 ---
-name: smartGraphRemove1_cluster
+name: smartGraphRemove1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
  ~var graph_module = require("@arangodb/smart-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -362,11 +362,11 @@ collections first.
 
 ```js
 ---
-name: smartGraphRemove2_cluster
+name: smartGraphRemove2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_cluster
 ---
  ~var graph_module = require("@arangodb/smart-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");

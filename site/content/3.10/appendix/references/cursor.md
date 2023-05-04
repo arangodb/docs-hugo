@@ -36,7 +36,7 @@ name: cursorHasNext
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 ~ db._create("five");
 ~ db.five.save({ name : "one" });
@@ -68,7 +68,7 @@ name: cursorNext
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 ~ db._create("five");
 ~ db.five.save({ name : "one" });
@@ -99,7 +99,7 @@ name: executeQueryNoBatchSize
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 ~ db._create("users");
 ~ db.users.save({ name: "Gerhard" });
@@ -125,7 +125,7 @@ name: executeQueryBatchSize
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 ~ db._create("users");
 ~ db.users.save({ name: "Gerhard" });

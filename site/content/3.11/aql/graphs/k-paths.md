@@ -188,7 +188,7 @@ name: GRAPHKP_01_create_graph
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~addIgnoreCollection("places");
 ~addIgnoreCollection("connections");
@@ -206,7 +206,7 @@ name: GRAPHKP_01_Aberdeen_to_London
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 dataset: kShortestPathsGraph
 ---
 FOR p IN 1..10 OUTBOUND K_PATHS 'places/Aberdeen' TO 'places/London'
@@ -223,7 +223,7 @@ name: GRAPHKP_02_Aberdeen_to_Toronto
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 dataset: kShortestPathsGraph
 ---
 FOR p IN 1..10 OUTBOUND K_PATHS 'places/Aberdeen' TO 'places/Toronto'
@@ -239,7 +239,7 @@ name: GRAPHKP_99_drop_graph
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 examples.dropGraph("kShortestPathsGraph");

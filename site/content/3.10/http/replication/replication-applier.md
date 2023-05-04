@@ -137,7 +137,7 @@ paths:
 ---
 render: input/output
 name: RestReplicationApplierGetConfig
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var url = "/_api/replication/applier-config";
@@ -355,7 +355,7 @@ paths:
 ---
 render: input/output
 name: RestReplicationApplierSetConfig
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var re = require("@arangodb/replication");
@@ -438,7 +438,7 @@ paths:
 ---
 render: input/output
 name: RestReplicationApplierStart
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var re = require("@arangodb/replication");
@@ -497,7 +497,7 @@ paths:
 ---
 render: input/output
 name: RestReplicationApplierStop
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var re = require("@arangodb/replication");
@@ -649,7 +649,7 @@ paths:
 ---
 render: input/output
 name: RestReplicationApplierStateNotRunning
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var re = require("@arangodb/replication");
@@ -667,7 +667,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestReplicationApplierStateRunning
-release: stable
+release: stable_single
 version: '3.10'
 ---
 var re = require("@arangodb/replication");

@@ -162,7 +162,7 @@ paths:
 ---
 render: input/output
 name: RestDocumentHandlerReadDocument
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -185,7 +185,7 @@ logJsonResponse(response);
 ---
 render: input
 name: RestDocumentHandlerReadDocumentIfNoneMatch
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -207,7 +207,7 @@ assert(response.code === 304);
 ---
 render: input/output
 name: RestDocumentHandlerReadDocumentUnknownHandle
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var url = "/_api/document/products/unknown-identifier";
@@ -308,7 +308,7 @@ paths:
 ---
 render: input
 name: RestDocumentHandlerReadDocumentHead
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -540,7 +540,7 @@ paths:
 ---
 render: input/output
 name: RestDocumentHandlerPostCreate1
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -563,7 +563,7 @@ db._drop(cn);
 ---
 render: input/output
 name: RestDocumentHandlerPostAccept1
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -586,7 +586,7 @@ db._drop(cn);
 ---
 render: input/output
 name: RestDocumentHandlerPostWait1
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -609,7 +609,7 @@ db._drop(cn);
 ---
 render: input/output
 name: RestDocumentHandlerPostUnknownCollection1
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -629,7 +629,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestDocumentHandlerPostBadJson1
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -652,7 +652,7 @@ db._drop(cn);
 ---
 render: input/output
 name: RestDocumentHandlerPostReturnNew
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -675,7 +675,7 @@ db._drop(cn);
 ---
 render: input/output
 name: RestDocumentHandlerPostOverwrite
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -895,7 +895,7 @@ paths:
 ---
 render: input/output
 name: RestDocumentHandlerUpdateDocument
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -918,7 +918,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestDocumentHandlerUpdateDocumentUnknownHandle
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -942,7 +942,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestDocumentHandlerUpdateDocumentIfMatchOther
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -1187,7 +1187,7 @@ paths:
 ---
 render: input/output
 name: RestDocumentHandlerPatchDocument
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -1222,7 +1222,7 @@ logJsonResponse(response5);
 ---
 render: input/output
 name: RestDocumentHandlerPatchDocumentMerge
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -1379,7 +1379,7 @@ paths:
 ---
 render: input/output
 name: RestDocumentHandlerDeleteDocument
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -1402,7 +1402,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestDocumentHandlerDeleteDocumentUnknownHandle
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -1426,7 +1426,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestDocumentHandlerDeleteDocumentIfMatchOther
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -1589,7 +1589,7 @@ paths:
 ---
 render: input/output
 name: RestDocumentHandlerReadMultiDocument
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -1829,7 +1829,7 @@ paths:
 ---
 render: input/output
 name: RestDocumentHandlerPostMulti1
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -1852,7 +1852,7 @@ db._drop(cn);
 ---
 render: input/output
 name: RestDocumentHandlerPostMulti2
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -1875,7 +1875,7 @@ db._drop(cn);
 ---
 render: input/output
 name: RestDocumentHandlerPostBadJsonMulti
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -2392,7 +2392,7 @@ paths:
 ---
 render: input/output
 name: RestDocumentHandlerDeleteDocumentKeyMulti
-release: stable
+release: stable_single
 version: '3.11'
 ---
 ~ var assertEqual = require("jsunity").jsUnity.assertions.assertEqual;
@@ -2422,7 +2422,7 @@ version: '3.11'
 ---
 render: input/output
 name: RestDocumentHandlerDeleteDocumentIdentifierMulti
-release: stable
+release: stable_single
 version: '3.11'
 ---
 ~ var assertEqual = require("jsunity").jsUnity.assertions.assertEqual;
@@ -2452,7 +2452,7 @@ version: '3.11'
 ---
 render: input/output
 name: RestDocumentHandlerDeleteDocumentObjectMulti
-release: stable
+release: stable_single
 version: '3.11'
 ---
 ~ var assertEqual = require("jsunity").jsUnity.assertions.assertEqual;
@@ -2482,7 +2482,7 @@ version: '3.11'
 ---
 render: input/output
 name: RestDocumentHandlerDeleteDocumentUnknownMulti
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -2519,7 +2519,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestDocumentHandlerDeleteDocumentRevMulti
-release: stable
+release: stable_single
 version: '3.11'
 ---
 ~ var assertEqual = require("jsunity").jsUnity.assertions.assertEqual;
@@ -2552,7 +2552,7 @@ version: '3.11'
 ---
 render: input/output
 name: RestDocumentHandlerDeleteDocumentRevConflictMulti
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";

@@ -69,7 +69,7 @@ name: analyzerTextOffset
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var analyzers = require("@arangodb/analyzers");
   analyzers.save("text_en_offset", "text", { locale: "en", stopwords: [] }, ["position", "frequency", "norm", "offset"]);
@@ -139,7 +139,7 @@ name: searchHighlighting_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var coll = db._create("food");
   var docs = db.food.save([
@@ -178,7 +178,7 @@ name: searchHighlighting_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
   var coll = db._create("food");
   var docs = db.food.save([

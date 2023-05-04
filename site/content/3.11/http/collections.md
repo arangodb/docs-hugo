@@ -59,7 +59,7 @@ paths:
 ---
 render: input/output
 name: RestCollectionGetAllCollections
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var url = "/_api/collection";
@@ -360,7 +360,7 @@ paths:
 ---
 render: input/output
 name: RestCollectionGetCollectionIdentifier
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -381,7 +381,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestCollectionGetCollectionName
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -439,7 +439,7 @@ paths:
 ---
 render: input/output
 name: RestCollectionGetCollectionCount
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -550,7 +550,7 @@ paths:
 ---
 render: input/output
 name: RestCollectionGetCollectionFigures
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -573,7 +573,7 @@ db._drop(cn);
 ---
 render: input/output
 name: RestCollectionGetCollectionFiguresDetails
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -656,8 +656,8 @@ paths:
 ```curl
 ---
 render: input/output
-name: RestGetResponsibleShardExample_cluster
-release: stable
+name: RestGetResponsibleShardExample
+release: stable_cluster
 version: '3.11'
 ---
 var cn = "testCollection";
@@ -726,8 +726,8 @@ paths:
 ```curl
 ---
 render: input
-name: RestGetShards_cluster
-release: stable
+name: RestGetShards
+release: stable_cluster
 version: '3.11'
 ---
 var cn = "testCollection";
@@ -745,8 +745,8 @@ db._drop(cn);
 ```curl
 ---
 render: input
-name: RestGetShardsWithDetails_cluster
-release: stable
+name: RestGetShardsWithDetails
+release: stable_cluster
 version: '3.11'
 ---
 var cn = "testCollection";
@@ -803,7 +803,7 @@ paths:
 ---
 render: input/output
 name: RestCollectionGetCollectionRevision
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -895,7 +895,7 @@ paths:
 ---
 render: input/output
 name: RestCollectionGetCollectionChecksum
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -917,7 +917,7 @@ db._drop(cn);
 ---
 render: input/output
 name: RestCollectionGetCollectionChecksumNoRev
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -1475,7 +1475,7 @@ paths:
 ---
 render: input/output
 name: RestCollectionCreateCollection
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var url = "/_api/collection";
@@ -1508,7 +1508,7 @@ db._drop("testCollectionEdges");
 ---
 render: input/output
 name: RestCollectionCreateKeyopt
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var url = "/_api/collection";
@@ -1583,7 +1583,7 @@ paths:
 ---
 render: input/output
 name: RestCollectionDeleteCollectionIdentifier
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products1";
@@ -1603,7 +1603,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestCollectionDeleteCollectionName
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products1";
@@ -1624,7 +1624,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestCollectionDeleteCollectionSystem
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "_example";
@@ -1696,7 +1696,7 @@ paths:
 ---
 render: input/output
 name: RestCollectionIdentifierTruncate
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -1787,7 +1787,7 @@ paths:
 ---
 render: input/output
 name: RestCollectionIdentifierLoad
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -1862,7 +1862,7 @@ paths:
 ---
 render: input/output
 name: RestCollectionIdentifierUnload
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -1941,7 +1941,7 @@ paths:
 ---
 render: input/output
 name: RestCollectionIdentifierLoadIndexesIntoMemory
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -2098,7 +2098,7 @@ paths:
 ---
 render: input/output
 name: RestCollectionIdentifierPropertiesSync
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -2174,7 +2174,7 @@ paths:
 ---
 render: input/output
 name: RestCollectionIdentifierRename
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products1";
@@ -2264,7 +2264,7 @@ paths:
 ---
 render: input/output
 name: RestApiCollectionCompact
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "testCollection";

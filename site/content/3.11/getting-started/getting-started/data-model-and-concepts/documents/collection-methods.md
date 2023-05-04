@@ -23,7 +23,7 @@ name: 001_collectionAll
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("five");
   db.five.insert({ name : "one" });
@@ -43,7 +43,7 @@ name: 002_collectionAllNext
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("five");
   db.five.insert({ name : "one" });
@@ -125,7 +125,7 @@ name: 003_collectionByExample
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("users");
   db.users.insert({ name: "Gerhard" });
@@ -146,7 +146,7 @@ name: 004_collectionByExampleNext
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("users");
   db.users.insert({ name: "Gerhard" });
@@ -179,7 +179,7 @@ name: collectionFirstExample
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("users");
 ~ db.users.insert({ name: "Gerhard" });
@@ -211,7 +211,7 @@ name: collectionCount
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("users");
   db.users.count();
@@ -286,7 +286,7 @@ name: documentsCollectionNameValidPlain
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
 ~ var myid = db.example.insert({_key: "2873916"});
@@ -302,7 +302,7 @@ name: documentsCollectionNameValidByKey
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
 ~ var myid = db.example.insert({_key: "2873916"});
@@ -318,7 +318,7 @@ name: documentsCollectionNameValidByObject
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
 ~ var myid = db.example.insert({_key: "2873916"});
@@ -334,7 +334,7 @@ name: documentsCollectionNameValidMulti
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
 ~ var myid = db.example.insert({_key: "2873916"});
@@ -351,7 +351,7 @@ name: documentsCollectionNameUnknown
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
 ~ var myid = db.example.insert({_key: "2873916"});
@@ -367,7 +367,7 @@ name: documentsCollectionNameHandle
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   db.example.document(""); // xpError(ERROR_ARANGO_DOCUMENT_HANDLE_BAD)
@@ -445,7 +445,7 @@ name: collectionLookupByKeys
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._drop("example");
 ~ db._create("example");
@@ -559,7 +559,7 @@ name: documentsCollectionInsertSingle
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   db.example.insert({ Hello : "World" });
@@ -573,7 +573,7 @@ name: documentsCollectionInsertMulti
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   db.example.insert([{ Hello : "World" }, {Hello: "there"}])
@@ -587,7 +587,7 @@ name: documentsCollectionInsertSingleOverwrite
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   db.example.insert({ _key : "666", Hello : "World" });
@@ -679,7 +679,7 @@ name: documentsCollectionReplace1
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   a1 = db.example.insert({ a : 1 });
@@ -696,7 +696,7 @@ name: documentsCollectionReplaceHandle
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
 ~ var myid = db.example.insert({_key: "3903044"});
@@ -799,7 +799,7 @@ name: documentsCollection_UpdateDocument
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   a1 = db.example.insert({"a" : 1});
@@ -820,7 +820,7 @@ name: documentsCollection_UpdateHandleSingle
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
 ~ var myid = db.example.insert({_key: "18612115"});
@@ -837,7 +837,7 @@ name: documentsCollection_UpdateHandleKeepNull
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
 ~ var myid = db.example.insert({_key: "19988371"});
@@ -861,7 +861,7 @@ name: documentsCollection_UpdateHandleArray
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
 ~ var myid = db.example.insert({_key: "20774803"});
@@ -956,7 +956,7 @@ name: documentDocumentRemoveSimple
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   a1 = db.example.insert({ a : 1 });
@@ -974,7 +974,7 @@ name: documentDocumentRemoveConflict
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   a1 = db.example.insert({ a : 1 });
@@ -1009,7 +1009,7 @@ name: collectionRemoveByKeys
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._drop("example");
 ~ db._create("example");
@@ -1058,7 +1058,7 @@ name: 010_documentsCollectionRemoveByExample
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
 ~ db.example.insert({ Hello : "world" });
@@ -1105,7 +1105,7 @@ name: 011_documentsCollectionReplaceByExample
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   db.example.insert({ Hello : "world" });
@@ -1172,7 +1172,7 @@ name: 012_documentsCollectionUpdateByExample
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   db.example.insert({ Hello : "world", foo : "bar" });
@@ -1223,7 +1223,7 @@ name: EDGCOL_02_Relation
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   db._create("vertex");
   db._createEdgeCollection("relation");
@@ -1257,7 +1257,7 @@ name: EDGCOL_02_inEdges
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   db._create("vertex");
   db._createEdgeCollection("relation");
@@ -1293,7 +1293,7 @@ name: EDGCOL_02_outEdges
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
   db._create("vertex");
   db._createEdgeCollection("relation");
@@ -1340,7 +1340,7 @@ name: collectionIterate
 description: ''
 render: input/output
 version: '3.11'
-release: stable
+release: stable_single
 ---
 ~ db._create("example");
   var arr = [];

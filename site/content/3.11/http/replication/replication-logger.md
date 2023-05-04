@@ -84,7 +84,7 @@ paths:
 ---
 render: input/output
 name: RestReplicationLoggerStateActive
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var re = require("@arangodb/replication");
@@ -259,7 +259,7 @@ paths:
 ---
 render: input
 name: RestReplicationLoggerFollowEmpty
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var re = require("@arangodb/replication");
@@ -278,7 +278,7 @@ logRawResponse(response);
 ---
 render: input
 name: RestReplicationLoggerFollowSome
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var re = require("@arangodb/replication");
@@ -307,7 +307,7 @@ logJsonLResponse(response);
 ---
 render: input/output
 name: RestReplicationLoggerFollowBufferLimit
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var re = require("@arangodb/replication");
@@ -371,7 +371,7 @@ paths:
 ---
 render: input/output
 name: RestReplicationLoggerFirstTick
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var url = "/_api/replication/logger-first-tick";
@@ -426,7 +426,7 @@ paths:
 ---
 render: input/output
 name: RestReplicationLoggerTickRanges
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var url = "/_api/replication/logger-tick-ranges";

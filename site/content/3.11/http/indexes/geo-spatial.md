@@ -99,7 +99,7 @@ paths:
 ---
 render: input/output
 name: RestIndexCreateGeoLocation
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";
@@ -125,7 +125,7 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestIndexCreateGeoLatitudeLongitude
-release: stable
+release: stable_single
 version: '3.11'
 ---
 var cn = "products";

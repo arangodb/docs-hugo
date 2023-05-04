@@ -89,7 +89,7 @@ name: ensureFulltextIndex
 description: ''
 render: input/output
 version: '3.10'
-release: stable
+release: stable_single
 ---
 ~db._create("example");
 db.example.ensureIndex({ type: "fulltext", fields: [ "text" ], minLength: 3 });
