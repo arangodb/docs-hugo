@@ -255,7 +255,7 @@ jobs:
       - run:
           name: Checkout ArangoDB
           command: |
-            git clone --depth 1 https://github.com/arangodb/arangodb.git --branch << parameters.branch >> --recurse-submodules --shallow-submodules -j 8 /root/project
+            git clone --depth 1 https://github.com/arangodb/arangodb.git --branch << parameters.branch >> --recurse-submodules --shallow-submodules -j 8 /root/project/enterprise
       - run:
           name: Print SCCache Settings
           command: sccache -s
