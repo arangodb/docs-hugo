@@ -255,7 +255,7 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "f9:49:75:1a:ad:44:89:10:4b:3c:70:70:ba:d3:c3:ce"
+            - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
       - run:
           name: Checkout Enterprise
           command: |
