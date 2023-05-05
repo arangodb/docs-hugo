@@ -260,7 +260,6 @@ jobs:
           name: Checkout Enterprise
           command: |
             if [ << parameters.enterprise >> == true ]; then
-              ssh-keyscan github.com >> ~/.ssh/known_hosts
               if ["<< pipeline.parameters.enterprise-branch >>" == ""]; then
                 set +e
                 git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git "$CIRCLE_BRANCH"
