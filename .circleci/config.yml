@@ -115,7 +115,7 @@ jobs:
       - run:
           name: Build site
           command: |
-            pwd && cd workspace/docs-hugo/site && hugo -b https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app --minify -e prod --templateMetrics --templateMetricsHints && ls
+            pwd && cd workspace/docs-hugo/site && hugo -b https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--docs.arangodb.com --minify -e prod --templateMetrics --templateMetricsHints && ls
             
       - persist_to_workspace:
           root: .
@@ -149,7 +149,7 @@ jobs:
       - run:
           name: Set environment variables and launch toolchain
           command: |
-            export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app
+            export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--docs.arangodb.com
             export DOCKER_ENV=examples
             export ARANGODB_MAIN_SRC='/root/project/workspace/arangodb'
             export GENERATORS=<< pipeline.parameters.GENERATORS >>
@@ -218,7 +218,7 @@ jobs:
             SHA=$CIRCLE_SHA1
             AUTH=dandimeo:$GITHUB_PAT
             URL=$API/repos/$USER/$REPO/statuses/$SHA
-            DESCRIPTION=https://deploy-preview-${CIRCLE_PULL_REQUEST##*/}--startling-truffle-6032f2.netlify.app
+            DESCRIPTION=https://deploy-preview-${CIRCLE_PULL_REQUEST##*/}--docs.arangodb.com
             echo "$DESCRIPTION"
             # Compose the body.
             BODY='
