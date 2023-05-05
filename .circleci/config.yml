@@ -253,13 +253,10 @@ jobs:
       SCCACHE_ERROR_LOG: /tmp/sccache.log
       SCCACHE_LOG: info,sccache::cache=debug,sccache::compiler::compiler=debug
     steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
       - run:
           name: Checkout Enterprise
           command: |
-              git clone --depth 1 git@github.com:arangodb/enterprise.git --branch << pipeline.parameters.ARANGODB_MAIN_BRANCH >> /root/project/enterprise
+              git clone --depth 1 https://github.com/arangodb/enterprise --branch << pipeline.parameters.ARANGODB_MAIN_BRANCH >> /root/project/enterprise
       - run:
           name: Print SCCache Settings
           command: sccache -s
