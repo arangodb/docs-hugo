@@ -29,6 +29,10 @@ parameters:
   commit-generated:
     type: boolean
     default: true
+
+  enterprise-branch:
+    type: string
+    default: ""
   
 
 jobs:
@@ -111,7 +115,7 @@ jobs:
       - run:
           name: Build site
           command: |
-            pwd && cd workspace/docs-hugo/site && hugo -b https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app --minify -e prod --templateMetrics --templateMetricsHints && ls
+            pwd && cd workspace/docs-hugo/site && hugo -b https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--docs.arangodb.com --minify -e prod --templateMetrics --templateMetricsHints && ls
             
       - persist_to_workspace:
           root: .
@@ -145,7 +149,7 @@ jobs:
       - run:
           name: Set environment variables and launch toolchain
           command: |
-            export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--startling-truffle-6032f2.netlify.app
+            export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--docs.arangodb.com
             export DOCKER_ENV=examples
             export ARANGODB_MAIN_SRC='/root/project/workspace/arangodb'
             export GENERATORS=<< pipeline.parameters.GENERATORS >>
@@ -214,7 +218,7 @@ jobs:
             SHA=$CIRCLE_SHA1
             AUTH=dandimeo:$GITHUB_PAT
             URL=$API/repos/$USER/$REPO/statuses/$SHA
-            DESCRIPTION=https://deploy-preview-${CIRCLE_PULL_REQUEST##*/}--startling-truffle-6032f2.netlify.app
+            DESCRIPTION=https://deploy-preview-${CIRCLE_PULL_REQUEST##*/}--docs.arangodb.com
             echo "$DESCRIPTION"
             # Compose the body.
             BODY='
@@ -253,20 +257,39 @@ jobs:
           fingerprints:
             - "f9:49:75:1a:ad:44:89:10:4b:3c:70:70:ba:d3:c3:ce"
       - run:
-          name: Checkout ArangoDB
+          name: Checkout Enterprise
           command: |
-            git clone --depth 1 https://github.com/arangodb/arangodb.git --branch << parameters.branch >> --recurse-submodules --shallow-submodules -j 8 /root/project
+            if [ << parameters.enterprise >> == true ]; then
+              ssh-keyscan github.com >> ~/.ssh/known_hosts
+              if ["<< pipeline.parameters.enterprise-branch >>" == ""]; then
+                set +e
+                git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git "$CIRCLE_BRANCH"
+                if [ "$?" == "0" ] ; then
+                  ENTERPRISE_BRANCH=$CIRCLE_BRANCH
+                else
+                  ENTERPRISE_BRANCH=devel
+                fi
+                set -e
+              else
+                ENTERPRISE_BRANCH=<< pipeline.parameters.enterprise-branch >>
+              fi
+              echo "Using enterprise branch $ENTERPRISE_BRANCH"
+              git clone --depth 1 git@github.com:arangodb/enterprise.git --branch "$ENTERPRISE_BRANCH" /root/project/enterprise
+            fi
       - run:
           name: Print SCCache Settings
           command: sccache -s
       - run:
           name: Configure
           command: |
-            cmake --preset community-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
+            cmake --preset << parameters.preset >> -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
       - run:
           name: Build
           command: |
-            cmake --build --preset community-pr --parallel 8 --target arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench
+            cmake --build --preset << parameters.preset >> --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest
+            if [ << parameters.enterprise >> = true ]; then
+              cmake --build --preset << parameters.preset >> --parallel 8 --target arangobackup
+            fi
       - run:
           name: Size leaderboard
           command: |
@@ -281,7 +304,7 @@ jobs:
           command: sccache -s
       - run:
           name: Create archive of compiled instance
-          command: tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/
+          command: tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/ enterprise/js
       - persist_to_workspace:
           root: .
           paths:
@@ -357,17 +380,17 @@ workflows:
     when: { equal: [ compile, << pipeline.parameters.WORKFLOW >> ] }
     jobs:
       - compile-linux:
-          name: build-ce
-          preset: community-pr
-          edition: x64-community
-          enterprise: false
+          name: build-ee
+          preset: enterprise-pr
+          edition: x64-enterprise
+          enterprise: true
           branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
       - checkout:
           name: cloneNewRepo
           repository: git@github.com:arangodb/docs-hugo.git
           branch: main
           requires:
-            - build-ce
+            - build-ee
       - create-image:
           requires:
             - cloneNewRepo
