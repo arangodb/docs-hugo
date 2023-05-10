@@ -251,14 +251,7 @@ jobs:
       - run:
           name: Checkout ArangoDB
           command: |
-            mkdir /root/project && cd /root/project
-            git init
-            git remote add origin https://github.com/arangodb/arangodb.git
-            git fetch --depth 1 origin << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
-            git checkout << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
-            git submodule init
-            git submodule update --recursive --depth 1 --jobs 8
-
+            git clone --depth 1 https://github.com/arangodb/arangodb.git --branch << pipeline.parameters.ARANGODB_MAIN_BRANCH >> /root/project
       - run:
           name: Checkout Enterprise
           command: |
