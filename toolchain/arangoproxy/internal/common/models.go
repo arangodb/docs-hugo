@@ -38,13 +38,14 @@ type Example struct {
 
 // The yaml part in the codeblock
 type ExampleOptions struct {
-	Release     string                 `yaml:"release,omitempty" json:"release,omitempty"` // Arango instance to be used: nightly, release ...
-	Description string                 `yaml:"description" json:"description"`             // What appears on codeblock header
-	Name        string                 `yaml:"name" json:"name"`                           // Example Name
-	Run         bool                   `yaml:"run,omitempty" json:"run,omitempty"`         // Choose if the example has to be run or not
-	Version     string                 `yaml:"version" json:"version"`                     // Arango instance version to launch the example against
-	Render      RenderType             `yaml:"render" json:"render"`                       // Return the example code, the example output or both
-	Explain     bool                   `yaml:"explain,omitempty" json:"explain,omitempty"` // AQL @EXPLAIN flag
+	ServerName  string                 `yaml:"server_name,omitempty" json:"server_name,omitempty"` // Arango instance to be used: nightly, release ...
+	Description string                 `yaml:"description" json:"description"`                     // What appears on codeblock header
+	Name        string                 `yaml:"name" json:"name"`                                   // Example Name
+	Type        string                 `yaml:"type" json:"type"`                                   // Example Name
+	Run         bool                   `yaml:"run,omitempty" json:"run,omitempty"`                 // Choose if the example has to be run or not
+	Version     string                 `yaml:"version" json:"version"`                             // Arango instance version to launch the example against
+	Render      RenderType             `yaml:"render" json:"render"`                               // Return the example code, the example output or both
+	Explain     bool                   `yaml:"explain,omitempty" json:"explain,omitempty"`         // AQL @EXPLAIN flag
 	BindVars    map[string]interface{} `yaml:"bindVars,omitempty" json:"bindVars,omitempty"`
 	Dataset     string                 `yaml:"dataset,omitempty" json:"dataset,omitempty"`
 }

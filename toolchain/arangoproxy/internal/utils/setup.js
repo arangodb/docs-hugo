@@ -21,7 +21,9 @@ db.demo.save({
 db._drop("animals");
 db._create("animals"); 
 addIgnoreCollection("animals");
+addIgnoreCollection("mycollection")
+db._create("mycollection")
 
 db._dropView("demoView");
-db._createView("demoView", "arangosearch");
-addIgnoreCollection("demoView");
+//db._createView("demoView", "arangosearch");
+//addIgnoreCollection("demoView");

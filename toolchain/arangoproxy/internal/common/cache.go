@@ -15,7 +15,7 @@ func (service Service) SaveCachedExampleResponse(chnl chan map[string]interface{
 		case cacheRequest := <-chnl:
 			exampleResponse := cacheRequest["response"].(ExampleResponse)
 
-			hashName := fmt.Sprintf("%s_%s_%s", exampleResponse.Options.Name, exampleResponse.Options.Release, exampleResponse.Options.Version)
+			hashName := fmt.Sprintf("%s_%s_%s", exampleResponse.Options.Name, exampleResponse.Options.ServerName, exampleResponse.Options.Type)
 			requestHash := cacheRequest["request"].(string)
 			responseHash, err := utils.EncodeToBase64(exampleResponse)
 			//if hashName == "" {
