@@ -262,7 +262,7 @@ jobs:
       - run:
           name: Checkout Enterprise
           command: |
-                git clone --depth 1 git@github.com:arangodb/enterprise.git --branch devel
+              git clone https://github.com/arangodb/arangodb
       - run:
           name: Print SCCache Settings
           command: sccache -s
