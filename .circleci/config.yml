@@ -18,6 +18,10 @@ parameters:
     type: string
     default: "devel"
 
+  ARANGODB_ENTERPRISE_BRANCH:
+    type: string
+    default: "devel"
+
   ARANGODB_DOCS_OLD_BRANCH:
     type: string
     default: "main"
@@ -29,11 +33,6 @@ parameters:
   commit-generated:
     type: boolean
     default: true
-
-  enterprise-branch:
-    type: string
-    default: ""
-  
 
 jobs:
   checkout: #Checkout a desired repository
@@ -235,16 +234,6 @@ jobs:
       
 
   compile-linux:
-    parameters:
-      preset:
-        type: string
-      edition:
-        type: string
-      enterprise:
-        type: boolean
-      branch:
-        type: string
-        default: devel
     docker:
       - image: arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.8
     resource_class: xlarge
@@ -260,22 +249,47 @@ jobs:
             - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
       - run:
+          name: Checkout ArangoDB
+          command: |
+            mkdir /root/project && cd /root/project
+            git init
+            git remote add origin https://github.com/arangodb/arangodb.git
+            git fetch --depth 1 origin << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
+            git checkout << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
+            git submodule init
+            git submodule update --recursive --depth 1 --jobs 8
+
+      - run:
           name: Checkout Enterprise
           command: |
-              git clone git@github.com:arangodb/enterprise.git
+              ssh-keyscan github.com >> ~/.ssh/known_hosts
+              if ["<< pipeline.parameters.ARANGODB_ENTERPRISE_BRANCH >>" == ""]; then
+                set +e
+                git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
+                if [ "$?" == "0" ] ; then
+                  ENTERPRISE_BRANCH=<< pipeline.parameters.ARANGODB_MAIN_BRANCH >>
+                else
+                  ENTERPRISE_BRANCH=devel
+                fi
+                set -e
+              else
+                ENTERPRISE_BRANCH=<< pipeline.parameters.ARANGODB_ENTERPRISE_BRANCH >>
+              fi
+              echo "Using enterprise branch $ENTERPRISE_BRANCH"
+              git clone --depth 1 git@github.com:arangodb/enterprise.git --branch "$ENTERPRISE_BRANCH" /root/project/enterprise
       - run:
           name: Print SCCache Settings
           command: sccache -s
       - run:
           name: Configure
           command: |
-            cmake --preset << parameters.preset >> -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
+            cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
       - run:
           name: Build
           command: |
-            cmake --build --preset << parameters.preset >> --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest
+            cmake --build --preset enterprise-pr --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest
             if [ << parameters.enterprise >> = true ]; then
-              cmake --build --preset << parameters.preset >> --parallel 8 --target arangobackup
+              cmake --build --preset enterprise-pr --parallel 8 --target arangobackup
             fi
       - run:
           name: Size leaderboard
@@ -367,17 +381,12 @@ workflows:
     when: { equal: [ compile, << pipeline.parameters.WORKFLOW >> ] }
     jobs:
       - compile-linux:
-          name: build-ee
-          preset: enterprise-pr
-          edition: x64-enterprise
-          enterprise: true
-          branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
       - checkout:
           name: cloneNewRepo
           repository: git@github.com:arangodb/docs-hugo.git
           branch: main
           requires:
-            - build-ee
+            - compile-linux
       - create-image:
           requires:
             - cloneNewRepo
