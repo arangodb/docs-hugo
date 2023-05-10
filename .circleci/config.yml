@@ -287,10 +287,7 @@ jobs:
       - run:
           name: Build
           command: |
-            cmake --build --preset enterprise-pr --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest
-            if [ << parameters.enterprise >> = true ]; then
-              cmake --build --preset enterprise-pr --parallel 8 --target arangobackup
-            fi
+            cmake --build --preset enterprise-pr --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest arangobackup
       - run:
           name: Size leaderboard
           command: |
