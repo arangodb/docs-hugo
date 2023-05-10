@@ -380,7 +380,7 @@ workflows:
   community-pr:
     when: { equal: [ compile, << pipeline.parameters.WORKFLOW >> ] }
     jobs:
-      - compile-linux:
+      - compile-linux
       - checkout:
           name: cloneNewRepo
           repository: git@github.com:arangodb/docs-hugo.git
