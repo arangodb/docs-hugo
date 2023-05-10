@@ -10,13 +10,27 @@ fi
 
 if ! command -v yq &> /dev/null
   then
-      wget https://github.com/mikefarah/yq/releases/latest/download/yq_linux_"$ARCH" -O /usr/bin/yq &&\
+      echo "[INIT] yq command not found, downloading"
+      wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_"$ARCH" -O /usr/bin/yq &&\
       chmod +x /usr/bin/yq
   fi
 
 if [[ -z "${DOCKER_ENV}" ]]; then
   DOCKER_ENV="dev"
 fi
+
+if [[ -z "${GENERATORS}" ]]; then
+  GENERATORS="examples metrics error-codes api-docs options"
+fi
+
+### Generator flags
+generate_examples=false
+generate_startup=false
+generate_metrics=false
+generate_error_codes=false
+generate_apidocs=false
+
+start_servers=false
 
 GENERATOR_VERSION="$1"
 
@@ -128,14 +142,24 @@ function setup_arangoproxy() {
   echo ""
 
   echo "[SETUP ARANGOPROXY] Retrieve server ip"
-  ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$name")
-  echo "IP: "$ip""
+  single_server_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$name")
+  echo "IP: "$single_server_ip""
   echo ""
 
-  printf -v url "http://%s:8529" $ip
+  printf -v url "http://%s:8529" $single_server_ip
 
-  echo "[SETUP ARANGOPROXY] Copy server configuration in arangoproxy repositories"
-  yq e '.repositories += [{"name": "'"$name"'", "image": "'"$image"'", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
+  echo "[SETUP ARANGOPROXY] Copy single server configuration in arangoproxy repositories"
+  yq e '.repositories += [{"name": "'"$name"'", "type": "single", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
+
+  echo "[SETUP ARANGOPROXY] Retrieve server ip"
+  cluster_server_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$name"_agent1)
+  echo "IP: "$cluster_server_ip""
+  echo ""
+
+  printf -v url "http://%s:5001" $cluster_server_ip
+
+  echo "[SETUP ARANGOPROXY] Copy cluster server configuration in arangoproxy repositories"
+  yq e '.repositories += [{"name": "'"$name"'", "type": "cluster", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
   echo "[SETUP ARANGOPROXY] Done"
 }
 
@@ -226,6 +250,12 @@ function trap_container_exit() {
   do
     siteContainerStatus=$(docker ps -a -q --filter "name=site" --filter "status=exited")
     if [ "$siteContainerStatus" != "" ] ; then
+
+      terminate=true
+    fi
+    arangoproxyContainerStatus=$(docker ps -a -q --filter "name=arangoproxy" --filter "status=exited")
+    if [ "$arangoproxyContainerStatus" != "" ] ; then
+      echo "[TERMINATE] Arangoproxy exited, shutting down all containers" >> arangoproxy-log.log
       terminate=true
     fi
   done
@@ -242,20 +272,10 @@ function clean_terminate_toolchain() {
 }
 
 
-
-### Generator flags
-generate_examples=false
-generate_startup=false
-generate_metrics=false
-generate_error_codes=false
-generate_apidocs=false
-
-start_servers=false
-
 ## MAIN
 
 echo "[TOOLCHAIN] Starting toolchain"
-echo "[TOOLCHAIN] Args: $@"
+echo "[TOOLCHAIN] Generators: $@"
 
 # Check for requested operations
 for var in "$@"
@@ -285,6 +305,10 @@ done
 
 ## Expand environment variables in config.yaml, if present
 yq  '(.. | select(tag == "!!str")) |= envsubst(nu)' -i config.yaml
+
+echo "[TOOLCHAIN] Expanded Config file:"
+cat config.yaml
+echo ""
 
 ## Generators that do not need arangodb instances at all
 if [ "$generate_apidocs" = true ] ; then
@@ -339,7 +363,10 @@ if [ "$start_servers" = true ] ; then
 
   if [ "$generate_examples" = true ] ; then
     cd ../../
-    docker compose --env-file toolchain/docker-env/"$DOCKER_ENV".env build
+    echo "[GENERATE-EXAMPLES] docker-compose build arangoproxy and site images"
+    docker compose --env-file toolchain/docker-env/"$DOCKER_ENV".env build 1&> /dev/null
+
+    echo "[GENERATE-EXAMPLES]  Run arangoproxy and site containers"
     docker run -d --name site --network=docs_net --ip=192.168.129.130 --env-file toolchain/docker-env/"$DOCKER_ENV".env -p 1313:1313 --volumes-from toolchain --log-opt tag="{{.Name}}" site 
     docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 --env-file toolchain/docker-env/"$DOCKER_ENV".env --volumes-from toolchain --log-opt tag="{{.Name}}" arangoproxy
     docker logs --details --follow arangoproxy > arangoproxy-log.log &
