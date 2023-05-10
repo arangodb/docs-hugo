@@ -256,26 +256,12 @@ jobs:
       - add_ssh_keys:
           fingerprints:
             - "7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a"
+            - "28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e"
+            - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
       - run:
           name: Checkout Enterprise
           command: |
-              if [ << parameters.enterprise >> == true ]; then
-                ssh-keyscan github.com >> ~/.ssh/known_hosts
-                if ["<< pipeline.parameters.enterprise-branch >>" == ""]; then
-                  set +e
-                  git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git "$CIRCLE_BRANCH"
-                  if [ "$?" == "0" ] ; then
-                    ENTERPRISE_BRANCH=$CIRCLE_BRANCH
-                  else
-                    ENTERPRISE_BRANCH=devel
-                  fi
-                  set -e
-                else
-                  ENTERPRISE_BRANCH=<< pipeline.parameters.enterprise-branch >>
-                fi
-                echo "Using enterprise branch $ENTERPRISE_BRANCH"
-                git clone --depth 1 git@github.com:arangodb/enterprise.git --branch "$ENTERPRISE_BRANCH" /root/project/enterprise
-              fi
+                git clone --depth 1 git@github.com:arangodb/enterprise.git --branch devel
       - run:
           name: Print SCCache Settings
           command: sccache -s
