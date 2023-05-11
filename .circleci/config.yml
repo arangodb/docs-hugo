@@ -277,7 +277,6 @@ jobs:
           command: |
             cd /root/project
             mkdir build
-            cd build
             cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DUSE_ENTERPRISE=ON
       - run:
           name: Build
