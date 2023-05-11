@@ -275,11 +275,18 @@ jobs:
       - run:
           name: Configure
           command: |
-            cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
+            cd /root/project
+            mkdir build
+            cd build
+            cmake .. -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib \
+            -DCMAKE_BUILD_TYPE="RelWithDebInfo" -DCMAKE_BUILD_TYPE="RelWithDebInfo" -DCMAKE_C_FLAGS="-fno-stack-protector"  -DCMAKE_CXX_FLAGS="-fno-stack-protector" -DCMAKE_EXE_LINKER_FLAGS="-Wl,--build-id" -DUSE_IPO="Off" -DUSE_STRICT_OPENSSL_VERSION=ON -DUSE_MINIMAL_DEBUGINFO=ON -DSTATIC_EXECUTABLES=ON \
+            -DUSE_LIBUNWIND=ON -DTARGET_ARCHITECTURE="sandy-bridge" \ 
+            -DUSE_MAINTAINER_MODE=ON -DUSE_GOOGLE_TESTS=ON -DUSE_FAILURE_TESTS=ON \
+            -DCMAKE_BUILD_TYPE="Release" -DUSE_ENTERPRISE=ON -DUSE_JEMALLOC=ON -DUSE_IPO=ON
       - run:
           name: Build
           command: |
-            cmake --build --preset enterprise-pr --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest arangobackup
+            cmake --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest arangobackup
       - run:
           name: Size leaderboard
           command: |
