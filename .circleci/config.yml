@@ -275,7 +275,11 @@ jobs:
       - run:
           name: Configure
           command: |
-            cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
+            cmake -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib \
+               -DCMAKE_BUILD_TYPE="RelWithDebInfo" -DCMAKE_BUILD_TYPE="RelWithDebInfo" -DCMAKE_C_FLAGS="-fno-stack-protector"  -DCMAKE_CXX_FLAGS="-fno-stack-protector" -DCMAKE_EXE_LINKER_FLAGS="-Wl,--build-id" -DUSE_IPO="Off" -DUSE_STRICT_OPENSSL_VERSION="On" -DUSE_MINIMAL_DEBUGINFO="On" -DSTATIC_EXECUTABLES="On" \
+               -DUSE_LIBUNWIND="On" -DTARGET_ARCHITECTURE="sandy-bridge" \ 
+               -DUSE_MAINTAINER_MODE="On" -DUSE_GOOGLE_TESTS="On" -DUSE_FAILURE_TESTS="On" \
+               -DCMAKE_BUILD_TYPE="Release" -DUSE_ENTERPRISE="On" -DUSE_JEMALLOC="On" -DUSE_IPO="On"
       - run:
           name: Build
           command: |
