@@ -256,6 +256,7 @@ jobs:
           name: Checkout Enterprise
           command: |
               ssh-keyscan github.com >> ~/.ssh/known_hosts
+              ENTERPRISE_BRANCH=<< pipeline.parameters.ARANGODB_ENTERPRISE_BRANCH >>
               if ["<< pipeline.parameters.ARANGODB_ENTERPRISE_BRANCH >>" == ""]; then
                 set +e
                 git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
@@ -265,8 +266,6 @@ jobs:
                   ENTERPRISE_BRANCH=devel
                 fi
                 set -e
-              else
-                ENTERPRISE_BRANCH=<< pipeline.parameters.ARANGODB_ENTERPRISE_BRANCH >>
               fi
               echo "Using enterprise branch $ENTERPRISE_BRANCH"
               git clone --depth 1 git@github.com:arangodb/enterprise.git --branch "$ENTERPRISE_BRANCH" /root/project/enterprise
