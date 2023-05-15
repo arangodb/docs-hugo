@@ -72,7 +72,8 @@ name: windowAggregationRow
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 dataset: observationsSampleDataset
 ---
 FOR t IN observations
@@ -127,7 +128,8 @@ name: windowAggregationRowGrouped
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 dataset: observationsSampleDataset
 ---
 FOR t IN observations
@@ -196,7 +198,8 @@ name: windowAggregationRangeValue
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 dataset: observationsSampleDataset
 ---
 FOR t IN observations
@@ -262,7 +265,8 @@ name: windowAggregationRangeDuration
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 dataset: observationsSampleDataset
 ---
 FOR t IN observations

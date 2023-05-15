@@ -147,7 +147,8 @@ paths:
 ---
 render: input/output
 name: RestTransactionSingle
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var cn = "products";
@@ -173,7 +174,8 @@ db._drop(cn);
 ---
 render: input/output
 name: RestTransactionMulti
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var cn1 = "materials";
@@ -212,7 +214,8 @@ db._drop(cn2);
 ---
 render: input/output
 name: RestTransactionAbortInternal
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var cn = "products";
@@ -244,7 +247,8 @@ db._drop(cn);
 ---
 render: input/output
 name: RestTransactionAbort
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var cn = "products";
@@ -271,7 +275,8 @@ db._drop(cn);
 ---
 render: input/output
 name: RestTransactionNonExisting
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var cn = "products";

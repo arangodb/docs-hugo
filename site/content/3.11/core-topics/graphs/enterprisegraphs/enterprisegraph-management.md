@@ -74,7 +74,8 @@ name: enterpriseGraphCreate1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var graph = graph_module._create("myGraph", [], [], {isSmart: true, numberOfShards: 9});
@@ -91,7 +92,8 @@ name: enterpriseGraphCreate2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var edgeDefinitions = [ graph_module._relation("edges", "vertices", "vertices") ];
@@ -108,7 +110,8 @@ name: enterpriseGraphCreate3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var edgeDefinitions = [ graph_module._relation("myRelation", ["male", "female"], ["male", "female"]) ];
@@ -158,7 +161,8 @@ name: enterpriseGraphModify1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -175,7 +179,8 @@ name: enterpriseGraphModify2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
  ~var graph_module = require("@arangodb/enterprise-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -193,7 +198,8 @@ name: enterpriseGraphModify3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
  ~var graph_module = require("@arangodb/enterprise-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -211,7 +217,8 @@ name: enterpriseGraphModify4
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -235,7 +242,8 @@ name: enterpriseGraphModify5
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -272,7 +280,8 @@ name: enterpriseGraphModify6
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -291,7 +300,8 @@ name: enterpriseGraphModify7
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
  ~var graph_module = require("@arangodb/enterprise-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -327,7 +337,8 @@ name: enterpriseGraphRemove1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
  ~var graph_module = require("@arangodb/enterprise-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -348,7 +359,8 @@ name: enterpriseGraphRemove2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
  ~var graph_module = require("@arangodb/enterprise-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");

@@ -94,7 +94,8 @@ name: viewUsage_01
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ db._create("colA");
 ~ db._create("colB");
@@ -114,7 +115,8 @@ name: viewUsage_02
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 view = db._view("myView");
 ```
@@ -127,7 +129,8 @@ name: viewUsage_03
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 view.properties();
 ```
@@ -140,7 +143,8 @@ name: viewUsage_04
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 view.properties({cleanupIntervalStep: 12});
 ```
@@ -155,7 +159,8 @@ name: viewUsage_05
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 view.properties({links: {colA: {includeAllFields: true}}});
 ```
@@ -168,7 +173,8 @@ name: viewUsage_06
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 view.properties({links: {colB: {fields: {text: {}}}}});
 ```
@@ -181,7 +187,8 @@ name: viewUsage_07
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 view.properties({links: {colA: null}});
 ```
@@ -194,7 +201,8 @@ name: viewUsage_08
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ removeIgnoreCollection("colA");
 ~ removeIgnoreCollection("colB");

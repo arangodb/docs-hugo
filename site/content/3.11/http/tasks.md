@@ -80,7 +80,8 @@ paths:
 ---
 render: input/output
 name: RestTasksListAll
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/tasks";
@@ -172,7 +173,8 @@ paths:
 ---
 render: input/output
 name: RestTasksListOne
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/tasks";
@@ -190,7 +192,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestTasksListNonExisting
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/tasks/non-existing-task";
@@ -309,7 +312,8 @@ paths:
 ---
 render: input/output
 name: RestTasksCreate
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/tasks/";
@@ -392,7 +396,8 @@ paths:
 ---
 render: input/output
 name: RestTasksPutWithId
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/tasks/";
@@ -484,7 +489,8 @@ paths:
 ---
 render: input/output
 name: RestTasksDeleteFail
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/tasks/NoTaskWithThatName";
@@ -501,7 +507,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestTasksDelete
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/tasks/";

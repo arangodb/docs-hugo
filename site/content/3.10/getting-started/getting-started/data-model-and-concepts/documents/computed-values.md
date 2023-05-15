@@ -151,7 +151,8 @@ name: computedValuesCreatedAt
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
   var coll = db._create("users", {
     computedValues: [
@@ -178,7 +179,8 @@ name: computedValuesModifiedAt
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
   var coll = db._create("users", {
     computedValues: [
@@ -207,7 +209,8 @@ name: computedValuesCombine
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
   var coll = db._create("users", {
     computedValues: [
@@ -234,7 +237,8 @@ name: computedValuesKeepNull
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
   var coll = db._create("users", {
     computedValues: [
@@ -268,7 +272,8 @@ name: computedValuesSubattribute
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
   var coll = db._create("users", {
     computedValues: [

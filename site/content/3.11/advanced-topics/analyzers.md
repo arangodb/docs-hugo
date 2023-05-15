@@ -29,7 +29,8 @@ name: analyzerCustomTokens
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers")
   var a = analyzers.save("custom", "text", {
@@ -242,7 +243,8 @@ name: analyzerIdentity
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   db._query(`RETURN TOKENS("UPPER lower dïäcríticš", "identity")`).toArray();
 ```
@@ -277,7 +279,8 @@ name: analyzerDelimiter
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("delimiter_hyphen", "delimiter", {
@@ -309,7 +312,8 @@ name: analyzerStem
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("stem_en", "stem", {
@@ -350,7 +354,8 @@ name: analyzerNorm1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("norm_upper", "norm", {
@@ -368,7 +373,8 @@ name: analyzerNorm2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("norm_accent", "norm", {
@@ -386,7 +392,8 @@ name: analyzerNorm3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("norm_accent_lower", "norm", {
@@ -457,7 +464,8 @@ name: analyzerNgram1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("trigram", "ngram", {
@@ -478,7 +486,8 @@ name: analyzerNgram2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("bigram_markers", "ngram", {
@@ -581,7 +590,8 @@ name: analyzerTextStem
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   db._query(`RETURN TOKENS("Crazy fast NoSQL-database!", "text_en")`).toArray();
 ```
@@ -595,7 +605,8 @@ name: analyzerTextNoStem
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers")
   var a = analyzers.save("text_en_nostem", "text", {
@@ -617,7 +628,8 @@ name: analyzerTextEdgeNgram
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ var analyzers = require("@arangodb/analyzers")
   var a = analyzers.save("text_edge_ngrams", "text", {
@@ -669,7 +681,8 @@ name: analyzerCollation
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var en = analyzers.save("collation_en", "collation", { locale: "en" }, ["frequency", "norm", "position"]);
@@ -760,7 +773,8 @@ name: analyzerAqlSoundex
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("soundex", "aql", { queryString: "RETURN SOUNDEX(@param)" },
@@ -777,7 +791,8 @@ name: analyzerAqlConcat
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("concat", "aql", { queryString:
@@ -797,7 +812,8 @@ name: analyzerAqlFilterNull
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("filter", "aql", { keepNull: false, queryString:
@@ -818,7 +834,8 @@ name: analyzerAqlFilter
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("filter", "aql", { queryString:
@@ -855,7 +872,8 @@ name: analyzerAqlCollapse
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a1 = analyzers.save("collapsed", "aql", { collapsePositions: true, queryString:
@@ -925,7 +943,8 @@ name: analyzerPipelineUpperNgram
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("ngram_upper", "pipeline", { pipeline: [
@@ -943,7 +962,8 @@ name: analyzerPipelineDelimiterStem
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("delimiter_stem", "pipeline", { pipeline: [
@@ -1002,7 +1022,8 @@ name: analyzerStopwords
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("stop", "stopwords", {
@@ -1021,7 +1042,8 @@ name: analyzerPipelineStopwords
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("norm_stop", "pipeline", { "pipeline": [
@@ -1080,7 +1102,8 @@ name: analyzerSegmentationBreak
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var all = analyzers.save("segment_all", "segmentation", { break: "all" }, ["frequency", "norm", "position"]);
@@ -1127,7 +1150,8 @@ name: analyzerMinHash
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var analyzerMinHash = analyzers.save("minhash5", "minhash", { analyzer: { type: "segmentation", properties: { break: "alpha", case: "lower" } }, numHashes: 5 }, ["frequency", "norm", "position"]);
@@ -1318,7 +1342,8 @@ name: analyzerGeoJSON
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("geo_json", "geojson", {}, ["frequency", "norm", "position"]);
@@ -1424,7 +1449,8 @@ name: analyzerGeoS2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("geo_efficient", "geo_s2", { format: "latLngInt" }, ["frequency", "norm", "position"]);
@@ -1523,7 +1549,8 @@ name: analyzerGeoPointPair
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("geo_pair", "geopoint", {}, ["frequency", "norm", "position"]);
@@ -1567,7 +1594,8 @@ name: analyzerGeoPointLatLng
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("geo_latlng", "geopoint", {

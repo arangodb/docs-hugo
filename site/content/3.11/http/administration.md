@@ -195,7 +195,8 @@ paths:
 ---
 render: input/output
 name: RestVersion
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var response = logCurlRequest('GET', '/_api/version');
@@ -210,7 +211,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestVersionDetails
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var response = logCurlRequest('GET', '/_api/version?details=true');
@@ -253,7 +255,8 @@ paths:
 ---
 render: input/output
 name: RestEngine
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var response = logCurlRequest('GET', '/_api/engine');
@@ -524,7 +527,8 @@ paths:
 ---
 render: input/output
 name: RestAdminStatus
-release: stable_cluster
+server_name: stable
+type: cluster
 version: '3.11'
 ---
 var url = "/_admin/status";
@@ -638,7 +642,8 @@ paths:
 ---
 render: input/output
 name: RestAdminSupportInfo
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_admin/support-info";
@@ -653,7 +658,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestAdminSupportInfo
-release: stable_cluster
+server_name: stable
+type: cluster
 version: '3.11'
 ---
 var url = "/_admin/support-info";
@@ -794,7 +800,8 @@ paths:
 ---
 render: input/output
 name: RestAdminLicenseGet
-release: stable_cluster
+server_name: stable
+type: cluster
 version: '3.11'
 ---
 var assertTypeOf = require("jsunity").jsUnity.assertions.assertTypeOf;
@@ -1032,7 +1039,8 @@ paths:
 ---
 render: input/output
 name: RestAdminCompact
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var response = logCurlRequest('PUT', '/_admin/compact', '');
@@ -1340,7 +1348,8 @@ paths:
 ---
 render: input/output
 name: RestEndpointGet
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/endpoint";

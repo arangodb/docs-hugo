@@ -37,7 +37,8 @@ name: satelliteGraphCreate1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var satelliteGraphModule = require("@arangodb/satellite-graph");
   var graph = satelliteGraphModule._create("satelliteGraph");
@@ -59,7 +60,8 @@ name: satelliteGraphCreate2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
 ~ var satelliteGraphModule = require("@arangodb/satellite-graph");
   var graph = satelliteGraphModule._create("satelliteGraph");
@@ -86,7 +88,8 @@ name: satelliteGraphCreate3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
 ~ var satelliteGraphModule = require("@arangodb/satellite-graph");
   var graph = satelliteGraphModule._create("satelliteGraph");
@@ -124,7 +127,8 @@ name: satelliteGraphPrototype1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var satelliteGraphModule = require("@arangodb/satellite-graph");
   satelliteGraphModule._create("satelliteGraph");
@@ -141,7 +145,8 @@ name: satelliteGraphPrototype2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var satelliteGraphModule = require("@arangodb/satellite-graph");
   var graph = satelliteGraphModule._create("satelliteGraph");
@@ -162,7 +167,8 @@ name: satelliteGraphPrototype3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var satelliteGraphModule = require("@arangodb/satellite-graph");
   var graph = satelliteGraphModule._create("satelliteGraph");
@@ -196,7 +202,8 @@ name: satelliteGraphGeneralGraph1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
  var graphModule = require("@arangodb/general-graph");
  var satelliteGraphModule = require("@arangodb/satellite-graph");
@@ -216,7 +223,8 @@ name: satelliteGraphGeneralGraph2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
    ~ var graphModule = require("@arangodb/general-graph");
    ~ var satelliteGraphModule = require("@arangodb/satellite-graph");
@@ -241,7 +249,8 @@ name: satelliteGraphGeneralGraph3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
    ~ var graphModule = require("@arangodb/general-graph");
    ~ var satelliteGraphModule = require("@arangodb/satellite-graph");

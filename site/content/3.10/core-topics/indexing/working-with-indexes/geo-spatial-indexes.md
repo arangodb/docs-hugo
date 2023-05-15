@@ -677,7 +677,8 @@ name: geoIndexCreateForArrayAttribute1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~db._create("geo")
  db.geo.ensureIndex({ type: "geo", fields: [ "loc" ] });
@@ -692,7 +693,8 @@ name: geoIndexCreateForArrayAttribute2
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~db._create("geo2")
 db.geo2.ensureIndex({ type: "geo", fields: [ "location.latitude", "location.longitude" ] });
@@ -707,7 +709,8 @@ name: geoIndexSortOptimization
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~db._create("geoSort")
 db.geoSort.ensureIndex({ type: "geo", fields: [ "latitude", "longitude" ] });
@@ -730,7 +733,8 @@ name: geoIndexFilterOptimization
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~db._create("geoFilter")
 db.geoFilter.ensureIndex({ type: "geo", fields: [ "latitude", "longitude" ] });

@@ -37,7 +37,8 @@ name: AQLEXP_01_axplainer
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~addIgnoreCollection("test")
 ~db._drop("test");
@@ -59,7 +60,8 @@ name: AQLEXP_01_explainCreate
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 stmt = db._createStatement("FOR i IN test FILTER i.value > 97 SORT i.value RETURN i.value");
 stmt.explain();
@@ -83,7 +85,8 @@ name: AQLEXP_02_explainOverview
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~var stmt = db._createStatement("FOR i IN test FILTER i.value > 97 SORT i.value RETURN i.value");
 stmt.explain().plan.nodes.map(function (node) { return node.type; });
@@ -136,7 +139,8 @@ name: AQLEXP_03_explainRules
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~var stmt = db._createStatement("FOR i IN test FILTER i.value > 97 SORT i.value RETURN i.value");
 stmt.explain().plan.rules;
@@ -180,7 +184,8 @@ name: AQLEXP_04_explainCollections
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~var stmt = db._createStatement("FOR i IN test FILTER i.value > 97 SORT i.value RETURN i.value");
 stmt.explain().plan.collections
@@ -217,7 +222,8 @@ name: AQLEXP_05_explainAllPlans
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~var stmt = db._createStatement("FOR i IN test FILTER i.value > 97 SORT i.value RETURN i.value");
 stmt.explain({ allPlans: true });
@@ -237,7 +243,8 @@ name: AQLEXP_06_explainUnoptimizedPlans
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~var stmt = db._createStatement("FOR i IN test FILTER i.value > 97 SORT i.value RETURN i.value");
 stmt.explain({ optimizer: { rules: [ "-all" ] } });
@@ -262,7 +269,8 @@ name: AQLEXP_07_explainSingleRulePlans
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~var stmt = db._createStatement("FOR i IN test FILTER i.value > 97 SORT i.value RETURN i.value");
 stmt.explain({ optimizer: { rules: [ "-all", "+use-index-range" ] } });
@@ -277,7 +285,8 @@ name: AQLEXP_08_explainDisableSingleRulePlans
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~var stmt = db._createStatement("FOR i IN test FILTER i.value > 97 SORT i.value RETURN i.value");
 stmt.explain({ optimizer: { rules: [ "-use-index-range", "-use-index-for-sort" ] } });
@@ -292,7 +301,8 @@ name: AQLEXP_09_explainMaxNumberOfPlans
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~var stmt = db._createStatement("FOR i IN test FILTER i.value > 97 SORT i.value RETURN i.value");
 stmt.explain({ maxNumberOfPlans: 1 });
@@ -321,7 +331,8 @@ name: AQLEXP_10_explainWarn
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 var stmt = db._createStatement("FOR i IN 1..10 RETURN 1 / 0")
 stmt.explain().warnings;

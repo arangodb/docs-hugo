@@ -87,7 +87,8 @@ paths:
 ---
 render: input/output
 name: RestCreateUser
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 ~try { require("@arangodb/users").remove("admin@example"); } catch (err) {}
@@ -169,7 +170,8 @@ paths:
 ---
 render: input/output
 name: RestReplaceUser
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var users = require("@arangodb/users");
@@ -252,7 +254,8 @@ paths:
 ---
 render: input/output
 name: RestUpdateUser
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var users = require("@arangodb/users");
@@ -309,7 +312,8 @@ paths:
 ---
 render: input/output
 name: RestDeleteUser
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var users = require("@arangodb/users");
@@ -365,7 +369,8 @@ paths:
 ---
 render: input/output
 name: RestFetchUser
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var users = require("@arangodb/users");
@@ -419,7 +424,8 @@ paths:
 ---
 render: input/output
 name: RestFetchAllUser
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var url = "/_api/user";
@@ -496,7 +502,8 @@ paths:
 ---
 render: input/output
 name: RestGrantDatabase
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var users = require("@arangodb/users");
@@ -585,7 +592,8 @@ paths:
 ---
 render: input/output
 name: RestGrantCollection
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var users = require("@arangodb/users");
@@ -649,7 +657,8 @@ paths:
 ---
 render: input/output
 name: RestRevokeDatabase
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var users = require("@arangodb/users");
@@ -716,7 +725,8 @@ paths:
 ---
 render: input/output
 name: RestRevokeCollection
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var users = require("@arangodb/users");
@@ -792,7 +802,8 @@ paths:
 ---
 render: input/output
 name: RestFetchUserDatabaseList
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var users = require("@arangodb/users");
@@ -814,7 +825,8 @@ users.remove(theUser);
 ---
 render: input/output
 name: RestFetchUserDatabaseListFull
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var users = require("@arangodb/users");
@@ -877,7 +889,8 @@ paths:
 ---
 render: input/output
 name: RestFetchUserDatabasePermission
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var users = require("@arangodb/users");
@@ -947,7 +960,8 @@ paths:
 ---
 render: input/output
 name: RestFetchUserCollectionPermission
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var users = require("@arangodb/users");

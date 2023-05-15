@@ -1335,7 +1335,8 @@ name: aqlOffsetInfo
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ db._create("food");
 ~ db.food.save({ name: "avocado", description: { en: "The avocado is a medium-sized, evergreen tree, native to the Americas." } });

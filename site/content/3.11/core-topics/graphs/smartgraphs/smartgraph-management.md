@@ -92,7 +92,8 @@ name: smartGraphCreate1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var graph = graph_module._create("myGraph", [], [], {smartGraphAttribute: "region", numberOfShards: 9});
@@ -109,7 +110,8 @@ name: smartGraphCreate2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var edgeDefinitions = [ graph_module._relation("edges", "vertices", "vertices") ];
@@ -126,7 +128,8 @@ name: smartGraphCreate3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var edgeDefinitions = [ graph_module._relation("myRelation", ["male", "female"], ["male", "female"]) ];
@@ -176,7 +179,8 @@ name: smartGraphModify1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -193,7 +197,8 @@ name: smartGraphModify2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
  ~var graph_module = require("@arangodb/smart-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -211,7 +216,8 @@ name: smartGraphModify3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
  ~var graph_module = require("@arangodb/smart-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -229,7 +235,8 @@ name: smartGraphModify4
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -253,7 +260,8 @@ name: smartGraphModify5
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -290,7 +298,8 @@ name: smartGraphModify6
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -309,7 +318,8 @@ name: smartGraphModify7
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
  ~var graph_module = require("@arangodb/smart-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -345,7 +355,8 @@ name: smartGraphRemove1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
  ~var graph_module = require("@arangodb/smart-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -366,7 +377,8 @@ name: smartGraphRemove2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
  ~var graph_module = require("@arangodb/smart-graph");
  ~var relation = graph_module._relation("edges", "vertices", "vertices");

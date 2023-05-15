@@ -87,7 +87,8 @@ paths:
 ---
 render: input/output
 name: RestIndexCreateNewTtlIndex
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var cn = "sessions";

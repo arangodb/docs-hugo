@@ -176,7 +176,8 @@ name: GRAPHKSP_01_create_graph
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~addIgnoreCollection("places");
 ~addIgnoreCollection("connections");
@@ -200,7 +201,8 @@ name: GRAPHKSP_01_Aberdeen_to_London
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
 FOR v, e IN OUTBOUND SHORTEST_PATH 'places/Aberdeen' TO 'places/London'
@@ -216,7 +218,8 @@ name: GRAPHKSP_02_Aberdeen_to_London
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
 FOR p IN OUTBOUND K_SHORTEST_PATHS 'places/Aberdeen' TO 'places/London'
@@ -233,7 +236,8 @@ name: GRAPHKSP_03_Aberdeen_to_London
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
 FOR p IN OUTBOUND K_SHORTEST_PATHS 'places/Aberdeen' TO 'places/London'
@@ -255,7 +259,8 @@ name: GRAPHKSP_04_Aberdeen_to_Toronto
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
 FOR p IN OUTBOUND K_SHORTEST_PATHS 'places/Aberdeen' TO 'places/Toronto'
@@ -281,7 +286,8 @@ name: GRAPHKSP_05_StAndrews_to_Cologne
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
 FOR p IN OUTBOUND K_SHORTEST_PATHS 'places/StAndrews' TO 'places/Cologne'
@@ -306,7 +312,8 @@ name: GRAPHKSP_99_drop_graph
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 examples.dropGraph("kShortestPathsGraph");

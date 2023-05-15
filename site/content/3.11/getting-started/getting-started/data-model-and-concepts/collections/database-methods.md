@@ -31,7 +31,8 @@ name: collectionDatabaseNameKnown
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   db._collection("demo");
 ```
@@ -51,7 +52,8 @@ name: collectionDatabaseNameUnknown
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   db._collection("unknown");
 ```
@@ -311,7 +313,8 @@ name: collectionDatabaseCreateSuccess
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   c = db._create("users");
   c.properties();
@@ -326,7 +329,8 @@ name: collectionDatabaseCreateProperties
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   c = db._create("users", { waitForSync: true });
   c.properties();
@@ -341,7 +345,8 @@ name: collectionDatabaseCreateKey
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   db._create("users",
  { keyOptions: { type: "autoincrement", offset: 10, increment: 5 } });
@@ -359,7 +364,8 @@ name: collectionDatabaseCreateSpecialKey
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   db._create("users", { keyOptions: { allowUserKeys: false } });
   db.users.save({ name: "user 1" });
@@ -409,7 +415,8 @@ name: collectionsDatabaseName
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ db._create("example");
   db._collections();
@@ -434,7 +441,8 @@ name: collectionDatabaseCollectionName
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ db._create("example");
   db.example;
@@ -483,7 +491,8 @@ name: collectionDatabaseDropByObject
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ db._create("example");
   col = db.example;
@@ -500,7 +509,8 @@ name: collectionDatabaseDropName
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ db._create("example");
   col = db.example;
@@ -516,7 +526,8 @@ name: collectionDatabaseDropSystem
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ db._create("_example", { isSystem: true });
   col = db._example;
@@ -555,7 +566,8 @@ name: collectionDatabaseTruncateByObject
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ db._create("example");
   col = db.example;
@@ -574,7 +586,8 @@ name: collectionDatabaseTruncateName
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ db._create("example");
   col = db.example;

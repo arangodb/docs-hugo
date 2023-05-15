@@ -16,7 +16,8 @@ name: shellPaste
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
  for (var i = 0; i < 10; i ++) {
   require("@arangodb").print("Hello world " + i + "!\n");
@@ -45,7 +46,8 @@ name: lastExpressionResult
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 42 * 23
 ```
@@ -59,7 +61,8 @@ name: lastExpressionResultCaptured
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 var calculationResult = 42 * 23
 ```
@@ -73,7 +76,8 @@ name: printFunction
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 print({ a: "123", b: [1,2,3], c: "test" });
 ```
@@ -87,7 +91,8 @@ name: usingToArray
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 db._create("five")
 for (i = 0; i < 5; i++) db.five.save({value:i})
@@ -136,7 +141,8 @@ name: shellHelp
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 db._help(); 
 ```

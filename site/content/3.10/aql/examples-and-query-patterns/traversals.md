@@ -18,7 +18,8 @@ name: COMBINING_GRAPH_01_create_graph
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var g = examples.loadGraph("routeplanner");
@@ -34,7 +35,8 @@ name: COMBINING_GRAPH_02_show_geo
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: routeplanner
 bindVars: 
   {
@@ -55,7 +57,8 @@ name: COMBINING_GRAPH_03_explain_geo
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: routeplanner
 explain: true
 bindVars: 
@@ -77,7 +80,8 @@ name: COMBINING_GRAPH_04_combine
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: routeplanner
 bindVars: 
   {
@@ -103,7 +107,8 @@ name: COMBINING_GRAPH_05_combine_let
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: routeplanner
 bindVars: 
   {
@@ -128,7 +133,8 @@ name: COMBINING_GRAPH_06_cleanup
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~var examples = require("@arangodb/graph-examples/example-graph.js");
 ~var g = examples.loadGraph("routeplanner");

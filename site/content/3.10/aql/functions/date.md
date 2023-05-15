@@ -230,7 +230,8 @@ name: datedyofwk1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_DAYOFWEEK("2020-08-29")
 ```
@@ -241,7 +242,8 @@ name: datedyofwk2
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_DAYOFWEEK(0)
 ```
@@ -263,7 +265,8 @@ name: dateyr1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_YEAR("2020-08-29")
 ```
@@ -274,7 +277,8 @@ name: dateyr2
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_YEAR(0)
 ```
@@ -296,7 +300,8 @@ name: datemn1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_MONTH("2020-08-29")
 ```
@@ -307,7 +312,8 @@ name: datemn2
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_MONTH(0)
 ```
@@ -329,7 +335,8 @@ name: datedy1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_DAY("2020-08-29")
 ```
@@ -340,7 +347,8 @@ name: datedy2
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_DAY(0)
 ```
@@ -362,7 +370,8 @@ name: datehr1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_HOUR("2020-08-29T16:30:05.123")
 ```
@@ -384,7 +393,8 @@ name: datemin1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_MINUTE("2020-08-29T16:30:05.123")
 ```
@@ -406,7 +416,8 @@ name: datesec1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_SECOND("2020-08-29T16:30:05.123")
 ```
@@ -426,7 +437,8 @@ name: datemilsec1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_MILLISECOND("2020-08-29T16:30:05.123")
 ```
@@ -449,7 +461,8 @@ name: datedyofyr1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_DAYOFYEAR("2020-08-29")
 ```
@@ -475,7 +488,8 @@ name: dateisofwk1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_ISOWEEK("2020-08-29")
 ```
@@ -497,7 +511,8 @@ name: datelpyr1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_LEAPYEAR("2020-01-01")
 ```
@@ -508,7 +523,8 @@ name: datelpyr2
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_LEAPYEAR("2021-01-01")
 ```
@@ -534,7 +550,8 @@ name: dateqtr1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_QUARTER("2020-08-29")
 ```
@@ -556,7 +573,8 @@ name: datedysmn1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_DAYS_IN_MONTH("2020-08-01")
 ```
@@ -567,7 +585,8 @@ name: datedysmn2
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_DAYS_IN_MONTH("2020-09-01")
 ```
@@ -578,7 +597,8 @@ name: datedysmn3
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_DAYS_IN_MONTH("2020-02-01")
 ```
@@ -589,7 +609,8 @@ name: datedysmn4
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_DAYS_IN_MONTH("2021-02-01")
 ```
@@ -622,7 +643,8 @@ name: dateTruncGroup
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 bindVars: 
   {
       "data": [
@@ -669,7 +691,8 @@ name: dateRoundAggregate
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 bindVars: 
   {
       "sensorData": [
@@ -1038,7 +1061,8 @@ name: aqlDateTimeToLocal_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN [
   DATE_UTCTOLOCAL("2020-03-15T00:00:00.000", "Europe/Berlin"),
@@ -1053,7 +1077,8 @@ name: aqlDateTimeToLocal_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN [
   DATE_UTCTOLOCAL("2020-03-15T00:00:00.000", "Asia/Shanghai"),
@@ -1069,7 +1094,8 @@ name: aqlDateTimeToLocal_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_UTCTOLOCAL(DATE_NOW(), "Africa/Lagos", true)
 ```
@@ -1110,7 +1136,8 @@ name: aqlDateTimeToUTC_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN [
   DATE_LOCALTOUTC("2020-03-15T00:00:00.000", "Europe/Berlin"),
@@ -1125,7 +1152,8 @@ name: aqlDateTimeToUTC_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN [
   DATE_LOCALTOUTC("2020-03-15T00:00:00.000", "Asia/Shanghai"),
@@ -1141,7 +1169,8 @@ name: aqlDateTimeToUTC_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN DATE_LOCALTOUTC("2021-03-16T12:00:00.000", "Africa/Lagos", true)
 ```
@@ -1191,7 +1220,8 @@ name: working_with_date_time
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 db._create("exampleTime");
 var timestamps = ["2014-05-07T14:19:09.522","2014-05-07T21:19:09.522","2014-05-08T04:19:09.522","2014-05-08T11:19:09.522","2014-05-08T18:19:09.522"];

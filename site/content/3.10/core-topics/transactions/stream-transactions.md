@@ -116,7 +116,8 @@ name: jsStreamTransaction_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ db._create("tasks");
 ~ db.tasks.save({ _key: "123", type: "sendEmail", date: "2022-07-07T15:20:00.000Z" });

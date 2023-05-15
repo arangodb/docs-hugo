@@ -29,7 +29,8 @@ name: GRAPHTRAV_removeVertex1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 dataset: knows_graph
 ---
 LET edgeKeys = (FOR v, e IN 1..1 ANY 'persons/eve' GRAPH 'knows_graph' RETURN e._key)
@@ -50,7 +51,8 @@ name: GRAPHTRAV_removeVertex2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 dataset: knows_graph
 ---
 LET edgeKeys = (FOR v, e IN 1..1 ANY 'persons/eve' GRAPH 'knows_graph'
@@ -77,7 +79,8 @@ name: GRAPHTRAV_removeVertex3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 dataset: routeplanner
 ---
 LET edgeKeys = (FOR v, e IN 1..1 ANY 'germanCity/Berlin' GRAPH 'routeplanner' RETURN e._key)

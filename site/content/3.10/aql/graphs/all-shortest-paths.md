@@ -113,7 +113,8 @@ name: GRAPHASP_01_create_graph
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~addIgnoreCollection("places");
 ~addIgnoreCollection("connections");
@@ -138,7 +139,8 @@ name: GRAPHASP_01_Carlisle_to_London
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
 FOR v, e IN OUTBOUND SHORTEST_PATH 'places/Carlisle' TO 'places/London'
@@ -154,7 +156,8 @@ name: GRAPHASP_02_Carlisle_to_London
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
 FOR p IN OUTBOUND ALL_SHORTEST_PATHS 'places/Carlisle' TO 'places/London'
@@ -171,7 +174,8 @@ name: GRAPHASP_03_Carlisle_to_London
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
 FOR p IN OUTBOUND K_SHORTEST_PATHS 'places/Carlisle' TO 'places/London'
@@ -188,7 +192,8 @@ name: GRAPHASP_04_Carlisle_to_Toronto
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
 FOR p IN OUTBOUND ALL_SHORTEST_PATHS 'places/Carlisle' TO 'places/Toronto'
@@ -206,7 +211,8 @@ name: GRAPHASP_99_drop_graph
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 examples.dropGraph("kShortestPathsGraph");

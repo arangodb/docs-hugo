@@ -31,7 +31,8 @@ name: 01_workWithAQL_databaseExplain
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 db._explain("LET s = SLEEP(0.25) LET t = SLEEP(0.5) RETURN 1", {}, {colors: false});
 ```
@@ -63,7 +64,8 @@ name: 01_workWithAQL_databaseProfileQuery
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 db._profileQuery("LET s = SLEEP(0.25) LET t = SLEEP(0.5) RETURN 1", {}, {colors: false});
 ```
@@ -95,7 +97,8 @@ name: 07_workWithAQL_statementsExplain
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
  var stmt = db._createStatement(
  "FOR user IN _users RETURN user");
@@ -111,7 +114,8 @@ name: 08_workWithAQL_statementsPlans
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
  var formatPlan = function (plan) {
  return { estimatedCost: plan.estimatedCost,
@@ -129,7 +133,8 @@ name: 09_workWithAQL_statementsPlansBind
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
  var stmt = db._createStatement(
   `FOR doc IN @@collection FILTER doc.user == @user RETURN doc`
@@ -151,7 +156,8 @@ name: 10_workWithAQL_statementsPlansOptimizer0
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
  var stmt = db._createStatement(
   "FOR user IN _users FILTER user.user == 'root' RETURN user");
@@ -167,7 +173,8 @@ name: 10_workWithAQL_statementsPlansOptimizer1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~var stmt = db._createStatement("FOR user IN _users FILTER user.user == 'root' RETURN user");
  stmt.explain({ allPlans: true }).plans.map(
@@ -189,7 +196,8 @@ name: 10_workWithAQL_statementsPlansOptimizer2
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~var stmt = db._createStatement("FOR user IN _users FILTER user.user == 'root' RETURN user");
  stmt.explain({ optimizer: {
@@ -205,7 +213,8 @@ name: 10_workWithAQL_statementsPlansOptimizer3
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 var query = "FOR doc IN mycollection FILTER doc.value > 42 RETURN doc";
 require("@arangodb/aql/explainer").explain(query, {colors:false});
@@ -229,7 +238,8 @@ name: 10_workWithAQL_debugging1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 var query = "FOR doc IN mycollection FILTER doc.value > 42 RETURN doc";
 require("@arangodb/aql/explainer").debugDump("/tmp/query-debug-info", query);
@@ -247,7 +257,8 @@ name: 10_workWithAQL_debugging2
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 var query = "FOR doc IN @@collection FILTER doc.value > @value RETURN doc";
 var bind = { value: 42, "@collection": "mycollection" };
@@ -269,7 +280,8 @@ name: 10_workWithAQL_debugging3
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 var query = "FOR doc IN @@collection FILTER doc.value > @value RETURN doc";
 var bind = { value: 42, "@collection": "mycollection" };

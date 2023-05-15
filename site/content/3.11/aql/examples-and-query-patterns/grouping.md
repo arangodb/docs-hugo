@@ -334,7 +334,8 @@ name: aqlDateGroupingLocalTime_1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 bindVars: 
   {
         "activities": [

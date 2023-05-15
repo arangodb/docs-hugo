@@ -241,7 +241,8 @@ name: GRAPHTRAV_graphPruneExample1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
   FOR v, e, p IN 0..10 OUTBOUND "places/Toronto" GRAPH "kShortestPathsGraph"
@@ -276,7 +277,8 @@ name: GRAPHTRAV_graphPruneExample2
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
   FOR v, e, p IN 2..3 OUTBOUND "places/London" GRAPH "kShortestPathsGraph"
@@ -292,7 +294,8 @@ name: GRAPHTRAV_graphPruneExample3
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
   FOR v, e, p IN 2..3 OUTBOUND "places/London" GRAPH "kShortestPathsGraph"
@@ -323,7 +326,8 @@ name: GRAPHTRAV_graphPruneExample4
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
   FOR v, e, p IN 2..3 OUTBOUND "places/London" GRAPH "kShortestPathsGraph"
@@ -347,7 +351,8 @@ name: GRAPHTRAV_graphPruneExample5
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
   FOR v, e, p IN 2..3 OUTBOUND "places/London" GRAPH "kShortestPathsGraph"
@@ -370,7 +375,8 @@ name: GRAPHTRAV_graphPruneExample6
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
   FOR v, e, p IN 2..5 OUTBOUND "places/London" GRAPH "kShortestPathsGraph"
@@ -400,7 +406,8 @@ name: GRAPHTRAV_graphPruneExample7
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
   FOR v, e, p IN 2..3 OUTBOUND "places/London" GRAPH "kShortestPathsGraph"
@@ -419,7 +426,8 @@ name: GRAPHTRAV_graphPruneExample8
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
   FOR v,e,p IN 2..3 OUTBOUND "places/London" GRAPH "kShortestPathsGraph"
@@ -451,7 +459,8 @@ name: GRAPHTRAV_graphPruneExample9
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: kShortestPathsGraph
 ---
   FOR v,e,p IN 2..3 OUTBOUND "places/London" GRAPH "kShortestPathsGraph"
@@ -514,7 +523,8 @@ name: GRAPHTRAV_graphFilterEdges
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 ---
 FOR v, e, p IN 1..5 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
@@ -532,7 +542,8 @@ name: GRAPHTRAV_graphFilterVertices
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 ---
 FOR v, e, p IN 1..5 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
@@ -550,7 +561,8 @@ name: GRAPHTRAV_graphFilterCombine
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 ---
 FOR v, e, p IN 1..5 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
@@ -580,7 +592,8 @@ name: GRAPHTRAV_graphFilterEntirePath
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 ---
 FOR v, e, p IN 1..5 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
@@ -596,7 +609,8 @@ name: GRAPHTRAV_graphFilterPathEdges
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 ---
 FOR v, e, p IN 1..5 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
@@ -615,7 +629,8 @@ name: GRAPHTRAV_graphFilterPathAnyEdge
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 ---
 FOR v, e, p IN 1..5 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
@@ -651,7 +666,8 @@ name: GRAPHTRAV_01_create_graph
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~addIgnoreCollection("circles");
 ~addIgnoreCollection("edges");
@@ -672,7 +688,8 @@ name: GRAPHTRAV_02_traverse_all_a
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 ---
 FOR v IN 1..3 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
@@ -685,7 +702,8 @@ name: GRAPHTRAV_02_traverse_all_b
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 ---
 FOR v IN 1..3 OUTBOUND 'circles/A' edges RETURN v._key
@@ -705,7 +723,8 @@ name: GRAPHTRAV_03_traverse_3a
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 ---
 FOR v IN 2..2 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
@@ -718,7 +737,8 @@ name: GRAPHTRAV_03_traverse_3b
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 ---
 FOR v IN 2 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
@@ -742,7 +762,8 @@ name: GRAPHTRAV_04_traverse_4a
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 ---
 FOR v, e, p IN 1..3 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
@@ -756,7 +777,8 @@ name: GRAPHTRAV_04_traverse_4b
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 ---
 FOR v, e, p IN 1..3 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
@@ -778,7 +800,8 @@ name: GRAPHTRAV_05_traverse_5a
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 ---
 FOR v,e,p IN 1..3 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
@@ -793,7 +816,8 @@ name: GRAPHTRAV_05_traverse_5b
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 ---
 FOR v,e,p IN 1..3 OUTBOUND 'circles/A' GRAPH 'traversalGraph'
@@ -816,7 +840,8 @@ name: GRAPHTRAV_06_traverse_6a
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 ---
 FOR v IN 1..3 OUTBOUND 'circles/E' GRAPH 'traversalGraph'
@@ -829,7 +854,8 @@ name: GRAPHTRAV_06_traverse_6b
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 ---
 FOR v IN 1..3 INBOUND 'circles/E' GRAPH 'traversalGraph'
@@ -842,7 +868,8 @@ name: GRAPHTRAV_06_traverse_6c
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 ---
 FOR v IN 1..3 ANY 'circles/E' GRAPH 'traversalGraph'
@@ -874,7 +901,8 @@ name: GRAPHTRAV_07_traverse_7
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 explain: true
 ---
@@ -890,7 +918,8 @@ name: GRAPHTRAV_07_traverse_8
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 dataset: traversalGraph
 explain: true
 ---
@@ -914,7 +943,8 @@ name: GRAPHTRAV_99_drop_graph
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~examples.loadGraph("traversalGraph");
 var examples = require("@arangodb/graph-examples/example-graph.js");

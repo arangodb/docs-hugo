@@ -15,7 +15,8 @@ name: 06_workWithAQL_statementsExtra
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
   db._query(`
     FOR i IN 1..@count INSERT

@@ -80,7 +80,8 @@ name: collectionGetIndexes
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~db._create("test");
 ~db.test.ensureIndex({ type: "persistent", fields: ["attribute"], unique: true });
@@ -100,7 +101,8 @@ name: collectionGetIndexesStats
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ db._create("coll");
 ~ db.coll.save({ attr: "foo" });
@@ -228,7 +230,8 @@ name: collectionEnsureIndex
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~db._create("test");
 db.test.ensureIndex({ type: "persistent", fields: [ "a" ], sparse: true });
@@ -260,7 +263,8 @@ name: col_dropIndex
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~db._create("example");
 var idx1 = db.example.ensureIndex({ type: "persistent", fields: ["a", "b"] });
@@ -307,7 +311,8 @@ name: loadIndexesIntoMemory
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~db._drop("example");
 ~db._createEdgeCollection("example");
@@ -329,7 +334,8 @@ name: IndexIdentifier
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~db._create("example");
 db.example.ensureIndex({ type: "persistent", fields: [ "a", "b" ] });
@@ -360,7 +366,8 @@ name: dropIndex
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~db._create("example");
 var idx1 = db.example.ensureIndex({ type: "persistent", fields: [ "a", "b" ] });
@@ -386,7 +393,8 @@ name: IndexVerify
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~db._create("example");
 var explain = require("@arangodb/aql/explainer").explain;

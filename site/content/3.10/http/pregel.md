@@ -114,7 +114,8 @@ paths:
 ---
 render: input/output
 name: RestPregelStartConnectedComponents
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 
@@ -374,7 +375,8 @@ paths:
 ---
 render: input/output
 name: RestPregelStatusConnectedComponents
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 
@@ -621,7 +623,8 @@ paths:
 ---
 render: input/output
 name: RestPregelStatusAllConnectedComponents
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 
@@ -698,7 +701,8 @@ paths:
 ---
 render: input/output
 name: RestPregelCancelConnectedComponents
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 

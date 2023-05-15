@@ -238,7 +238,8 @@ paths:
 ---
 render: input/output
 name: RestImportJsonList
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 db._flushCache();
@@ -269,7 +270,8 @@ db._drop(cn);
 ---
 render: input/output
 name: RestImportJsonLines
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 db._flushCache();
@@ -300,7 +302,8 @@ db._drop(cn);
 ---
 render: input/output
 name: RestImportJsonType
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 db._flushCache();
@@ -331,7 +334,8 @@ db._drop(cn);
 ---
 render: input/output
 name: RestImportJsonEdge
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 db._flushCache();
@@ -363,7 +367,8 @@ db._drop("products");
 ---
 render: input/output
 name: RestImportJsonEdgeInvalid
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 db._flushCache();
@@ -390,7 +395,8 @@ db._drop(cn);
 ---
 render: input/output
 name: RestImportJsonUniqueContinue
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var cn = "products";
@@ -418,7 +424,8 @@ db._drop(cn);
 ---
 render: input/output
 name: RestImportJsonUniqueFail
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var cn = "products";
@@ -442,7 +449,8 @@ db._drop(cn);
 ---
 render: input/output
 name: RestImportJsonInvalidCollection
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var cn = "products";
@@ -462,7 +470,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestImportJsonInvalidBody
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var cn = "products";
@@ -485,7 +494,8 @@ db._drop(cn);
 ---
 render: input/output
 name: RestImportCsvExample
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var cn = "products";
@@ -512,7 +522,8 @@ db._drop(cn);
 ---
 render: input/output
 name: RestImportCsvEdge
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var cn = "links";
@@ -542,7 +553,8 @@ db._drop("products");
 ---
 render: input/output
 name: RestImportCsvEdgeInvalid
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var cn = "links";
@@ -567,7 +579,8 @@ db._drop(cn);
 ---
 render: input/output
 name: RestImportCsvInvalidBody
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var cn = "products";

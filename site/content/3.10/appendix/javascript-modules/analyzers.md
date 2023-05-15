@@ -41,7 +41,8 @@ name: analyzerCreate
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 var analyzers = require("@arangodb/analyzers");
 analyzers.save("csv", "delimiter", { "delimiter": "," }, ["frequency", "norm", "position"]);
@@ -66,7 +67,8 @@ name: analyzerByName
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 var analyzers = require("@arangodb/analyzers");
 analyzers.analyzer("text_en");
@@ -88,7 +90,8 @@ name: analyzerList
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 var analyzers = require("@arangodb/analyzers");
 analyzers.toArray();
@@ -113,7 +116,8 @@ name: analyzerRemove
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 var analyzers = require("@arangodb/analyzers");
 ~analyzers.save("csv", "delimiter", { "delimiter": "," }, []);
@@ -139,7 +143,8 @@ name: analyzerName
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 var analyzers = require("@arangodb/analyzers");
 analyzers.analyzer("text_en").name();
@@ -159,7 +164,8 @@ name: analyzerType
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 var analyzers = require("@arangodb/analyzers");
 analyzers.analyzer("text_en").type();
@@ -179,7 +185,8 @@ name: analyzerProperties
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 var analyzers = require("@arangodb/analyzers");
 analyzers.analyzer("text_en").properties();
@@ -199,7 +206,8 @@ name: analyzerFeatures
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 var analyzers = require("@arangodb/analyzers");
 analyzers.analyzer("text_en").features();

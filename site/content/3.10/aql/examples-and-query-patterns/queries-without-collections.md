@@ -18,7 +18,8 @@ name: aqlWithoutCollections_1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN "this will be returned"
 ```
@@ -31,7 +32,8 @@ name: aqlWithoutCollections_2
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET array = [1, 2, 3, 4]
 RETURN { array, sum: SUM(array) }
@@ -46,7 +48,8 @@ name: aqlWithoutCollections_3
 description: ''
 render: input/output
 version: '3.10'
-release: stable_single
+server_name: stable
+type: single
 ---
 FOR year IN [ 2011, 2012, 2013 ]
   FOR quarter IN [ 1, 2, 3, 4 ]

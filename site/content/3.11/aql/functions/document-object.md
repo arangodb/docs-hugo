@@ -35,7 +35,8 @@ name: aqlAttributes
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN ATTRIBUTES( { "foo": "bar", "_key": "123", "_custom": "yes" } )
 ```
@@ -48,7 +49,8 @@ name: aqlAttributesRemoveInternal
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN ATTRIBUTES( { "foo": "bar", "_key": "123", "_custom": "yes" }, true )
 ```
@@ -61,7 +63,8 @@ name: aqlAttributesSort
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN ATTRIBUTES( { "foo": "bar", "_key": "123", "_custom": "yes" }, false, true )
 ```
@@ -132,7 +135,8 @@ name: aqlHas_1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN HAS( { name: "Jane" }, "name" )
 ```
@@ -145,7 +149,8 @@ name: aqlHas_2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN HAS( { name: "Jane" }, "age" )
 ```
@@ -158,7 +163,8 @@ name: aqlHas_3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN HAS( { name: null }, "name" )
 ```
@@ -190,7 +196,8 @@ name: aqlIsSameCollection
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN [
   IS_SAME_COLLECTION( "_users", "_users/my-user" ),
@@ -225,7 +232,8 @@ name: aqlKeep_1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN KEEP(doc, "foo")
@@ -240,7 +248,8 @@ name: aqlKeep_2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN KEEP(doc, "bar")
@@ -254,7 +263,8 @@ name: aqlKeep_3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN KEEP(doc, "baz")
@@ -268,7 +278,8 @@ name: aqlKeep_4
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN KEEP(doc, "foo", "baz")
@@ -293,7 +304,8 @@ name: aqlKeep_5
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN KEEP(doc, ["foo", "baz"])
@@ -325,7 +337,8 @@ name: aqlKeepRecursive_1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN KEEP_RECURSIVE(doc, "foo")
@@ -340,7 +353,8 @@ name: aqlKeepRecursive_2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN KEEP_RECURSIVE(doc, "bar")
@@ -355,7 +369,8 @@ name: aqlKeepRecursive_3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN KEEP_RECURSIVE(doc, "baz")
@@ -369,7 +384,8 @@ name: aqlKeepRecursive_4
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN KEEP_RECURSIVE(doc, "foo", "bar")
@@ -384,7 +400,8 @@ name: aqlKeepRecursive_5
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN KEEP_RECURSIVE(doc, "foo", "baz")
@@ -399,7 +416,8 @@ name: aqlKeepRecursive_6
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN KEEP_RECURSIVE(doc, "foo", "bar", "baz")
@@ -424,7 +442,8 @@ name: aqlKeepRecursive_7
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN KEEP_RECURSIVE(doc, ["foo", "baz"])
@@ -452,7 +471,8 @@ name: aqlLengthObject
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN LENGTH({ name: "Emma", age: 36, phone: { mobile: "..." } })
 ```
@@ -508,7 +528,8 @@ name: aqlMatches_1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = {
   name: "jane",
@@ -527,7 +548,8 @@ name: aqlMatches_2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN MATCHES(
   { "test": 1 },
@@ -564,7 +586,8 @@ name: aqlMerge_1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN MERGE(
   { "user1": { "name": "Jane" } },
@@ -581,7 +604,8 @@ name: aqlMerge_2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN MERGE(
   { "users": { "name": "Jane" } },
@@ -606,7 +630,8 @@ name: aqlMerge_3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN MERGE(
   [
@@ -640,7 +665,8 @@ name: aqlMergeRecursive_1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN MERGE_RECURSIVE(
   { "user-1": { "name": "Jane", "livesIn": { "city": "LA" } } },
@@ -669,7 +695,8 @@ name: aqlMergeRecursive_2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN MERGE_RECURSIVE(
   [
@@ -704,7 +731,8 @@ name: aqlParseIdentifier_1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN PARSE_IDENTIFIER("_users/my-user")
 ```
@@ -717,7 +745,8 @@ name: aqlParseIdentifier_2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN PARSE_IDENTIFIER( { "_id": "mycollection/mykey", "value": "some value" } )
 ```
@@ -747,7 +776,8 @@ name: aqlTranslate_1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN TRANSLATE("FR", { US: "United States", UK: "United Kingdom", FR: "France" } )
 ```
@@ -760,7 +790,8 @@ name: aqlTranslate_2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN TRANSLATE(42, { foo: "bar", bar: "baz" } )
 ```
@@ -774,7 +805,8 @@ name: aqlTranslate_3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN TRANSLATE(42, { foo: "bar", bar: "baz" }, "not found!")
 ```
@@ -788,7 +820,8 @@ name: aqlTranslate_4
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN TRANSLATE(42, { "42": true } )
 ```
@@ -818,7 +851,8 @@ name: aqlUnset_1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN UNSET(doc, "foo")
@@ -833,7 +867,8 @@ name: aqlUnset_2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN UNSET(doc, "bar")
@@ -847,7 +882,8 @@ name: aqlUnset_3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN UNSET(doc, "baz")
@@ -862,7 +898,8 @@ name: aqlUnset_4
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN UNSET(doc, "foo", "baz")
@@ -887,7 +924,8 @@ name: aqlUnset_5
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN UNSET(doc, ["foo", "bar"])
@@ -919,7 +957,8 @@ name: aqlUnsetRecursive_1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN UNSET_RECURSIVE(doc, "foo")
@@ -933,7 +972,8 @@ name: aqlUnsetRecursive_2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN UNSET_RECURSIVE(doc, "bar")
@@ -947,7 +987,8 @@ name: aqlUnsetRecursive_3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN UNSET_RECURSIVE(doc, "baz")
@@ -961,7 +1002,8 @@ name: aqlUnsetRecursive_4
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN UNSET_RECURSIVE(doc, "foo", "bar")
@@ -976,7 +1018,8 @@ name: aqlUnsetRecursive_5
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN UNSET_RECURSIVE(doc, "foo", "baz")
@@ -991,7 +1034,8 @@ name: aqlUnsetRecursive_6
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN UNSET_RECURSIVE(doc, "foo", "bar", "baz")
@@ -1015,7 +1059,8 @@ name: aqlUnsetRecursive_7
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN UNSET_RECURSIVE(doc, ["baz"])
@@ -1043,7 +1088,8 @@ name: aqlValue_1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   LET obj = { foo: { bar: "baz" } }
   RETURN VALUE(obj, ["foo", "bar"])
@@ -1058,7 +1104,8 @@ name: aqlValue_2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
   LET obj = { foo: [ { bar: "baz" }, { bar: { inner: true } } ] }
   RETURN VALUE(obj, ["foo", 1, "bar"])
@@ -1087,7 +1134,8 @@ name: aqlValues_1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN VALUES( { "_id": "users/jane", "name": "Jane", "age": 35 } )
 ```
@@ -1100,7 +1148,8 @@ name: aqlValues_2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN VALUES( { "_id": "users/jane", "name": "Jane", "age": 35 }, true )
 ```
@@ -1126,7 +1175,8 @@ name: aqlZip
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 RETURN ZIP( [ "name", "active", "hobbies" ], [ "some user", true, [ "swimming", "riding" ] ] )
 ```

@@ -83,7 +83,8 @@ paths:
 ---
 render: input/output
 name: RestEdgesReadEdgesAny
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var db = require("@arangodb").db;
@@ -114,7 +115,8 @@ db._drop("vertices");
 ---
 render: input/output
 name: RestEdgesReadEdgesIn
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var db = require("@arangodb").db;
@@ -145,7 +147,8 @@ db._drop("vertices");
 ---
 render: input/output
 name: RestEdgesReadEdgesOut
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var db = require("@arangodb").db;

@@ -227,7 +227,8 @@ name: graph_create_knows_sample
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var g = examples.loadGraph("knows_graph");
@@ -253,7 +254,8 @@ name: graph_create_social_sample
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var graph = examples.loadGraph("social");
@@ -277,7 +279,8 @@ name: graph_create_cities_sample
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var g = examples.loadGraph("routeplanner");
@@ -304,7 +307,8 @@ name: graph_create_traversal_sample
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var g = examples.loadGraph("traversalGraph");
@@ -331,7 +335,8 @@ name: graph_create_kshortestpaths_sample
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var g = examples.loadGraph("kShortestPathsGraph");
@@ -353,7 +358,8 @@ name: graph_create_world_sample
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var g = examples.loadGraph("worldCountry");
@@ -380,7 +386,8 @@ name: graph_create_mps_sample
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var g = examples.loadGraph("mps_graph");
@@ -407,7 +414,8 @@ name: graph_create_connectedcomponentsgraph_sample
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var g = examples.loadGraph("connectedComponentsGraph");

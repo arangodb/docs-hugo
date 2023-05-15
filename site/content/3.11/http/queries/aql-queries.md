@@ -954,7 +954,8 @@ paths:
 ---
 render: input/output
 name: RestCursorCreateCursorForLimitReturnSingle
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var cn = "products";
@@ -984,7 +985,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestCursorCreateCursorForLimitReturn
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var cn = "products";
@@ -1017,7 +1019,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestCursorCreateCursorOption
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/cursor";
@@ -1041,7 +1044,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestCursorOptimizerRules
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/cursor";
@@ -1068,7 +1072,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestCursorProfileQuery
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/cursor";
@@ -1092,7 +1097,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestCursorDeleteQuery
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var cn = "products";
@@ -1122,7 +1128,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestCursorDeleteIgnore
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var cn = "products";
@@ -1151,7 +1158,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestCursorModifyArray
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var cn = "documents";
@@ -1178,7 +1186,8 @@ db._drop(cn);
 ---
 render: input/output
 name: RestCursorMemoryLimit
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/cursor";
@@ -1196,7 +1205,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestCursorCreateCursorMissingBody
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/cursor";
@@ -1213,7 +1223,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestCursorCreateCursorUnknownCollection
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/cursor";
@@ -1235,7 +1246,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestCursorDeleteQueryFail
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var cn = "products";
@@ -1335,7 +1347,8 @@ paths:
 ---
 render: input/output
 name: RestCursorPostForLimitReturnCont
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/cursor";
@@ -1369,7 +1382,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestCursorPostMissingCursorIdentifier
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/cursor";
@@ -1386,7 +1400,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestCursorPostInvalidCursorIdentifier
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/cursor/123123";
@@ -1466,7 +1481,8 @@ paths:
 ---
 render: input/output
 name: RestCursorForLimitReturnCont
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/cursor";
@@ -1500,7 +1516,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestCursorMissingCursorIdentifier
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/cursor";
@@ -1517,7 +1534,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestCursorInvalidCursorIdentifier
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/cursor/123123";
@@ -1679,7 +1697,8 @@ paths:
 ---
 render: input/output
 name: RestCursorPostBatch
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/cursor";
@@ -1746,7 +1765,8 @@ paths:
 ---
 render: input/output
 name: RestCursorDelete
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/cursor";
@@ -2247,7 +2267,8 @@ paths:
 ---
 render: input/output
 name: RestExplainValid
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/explain";
@@ -2272,7 +2293,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestExplainOptimizerRules
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/explain";
@@ -2298,7 +2320,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestExplainOptions
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/explain";
@@ -2331,7 +2354,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestExplainAllPlans
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/explain";
@@ -2359,7 +2383,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestExplainWarning
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/explain";
@@ -2379,7 +2404,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestExplainInvalid
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/explain";
@@ -2403,7 +2429,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestExplainEmpty
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/explain";
@@ -2469,7 +2496,8 @@ paths:
 ---
 render: input/output
 name: RestQueryValid
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/query";
@@ -2487,7 +2515,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestQueryInvalid
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/query";
@@ -2573,7 +2602,8 @@ paths:
 ---
 render: input/output
 name: RestQueryRules
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/query/rules";

@@ -114,7 +114,8 @@ paths:
 ---
 render: input/output
 name: RestPregelStartConnectedComponents
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 
@@ -374,7 +375,8 @@ paths:
 ---
 render: input/output
 name: RestPregelStatusConnectedComponents
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 
@@ -621,7 +623,8 @@ paths:
 ---
 render: input/output
 name: RestPregelStatusAllConnectedComponents
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 
@@ -698,7 +701,8 @@ paths:
 ---
 render: input/output
 name: RestPregelCancelConnectedComponents
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 
@@ -952,7 +956,8 @@ paths:
 ---
 render: input/output
 name: RestPregelConnectedComponentsStatisticsId
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 
@@ -1205,7 +1210,8 @@ paths:
 ---
 render: input/output
 name: RestPregelConnectedComponentsStatistics
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 
@@ -1272,7 +1278,8 @@ paths:
 ---
 render: input/output
 name: RestPregelConnectedComponentsRemoveStatisticsId
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 
@@ -1333,7 +1340,8 @@ paths:
 ---
 render: input/output
 name: RestPregelConnectedComponentsRemoveStatistics
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 

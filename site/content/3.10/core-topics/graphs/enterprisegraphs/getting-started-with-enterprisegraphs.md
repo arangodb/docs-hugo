@@ -203,7 +203,8 @@ name: enterpriseGraphCreateGraphHowTo1
 description: ''
 render: input/output
 version: '3.10'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var graph = graph_module._create("myGraph", [], [], {isSmart: true, numberOfShards: 9});
@@ -225,7 +226,8 @@ name: enterpriseGraphCreateGraphHowTo2
 description: ''
 render: input/output
 version: '3.10'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
  ~var graph_module = require("@arangodb/enterprise-graph");
  ~var graph = graph_module._create("myGraph", [], [], {isSmart: true, numberOfShards: 9});
@@ -249,7 +251,8 @@ name: enterpriseGraphCreateGraphHowTo3
 description: ''
 render: input/output
 version: '3.10'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
  ~var graph_module = require("@arangodb/enterprise-graph");
  ~var graph = graph_module._create("myGraph", [], [], {isSmart: true, numberOfShards: 9});
@@ -291,7 +294,8 @@ name: enterpriseGraphCreateGraphHowTo4
 description: ''
 render: input/output
 version: '3.10'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/enterprise-graph");
   var rel = graph_module._relation("isCustomer", "shop", "customer")

@@ -318,7 +318,8 @@ paths:
 ---
 render: input/output
 name: RestViewPostViewArangoSearch
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var url = "/_api/view";
@@ -369,7 +370,8 @@ paths:
 ---
 render: input/output
 name: RestViewGetViewIdentifierArangoSearch
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var viewName = "testView";
@@ -391,7 +393,8 @@ db._dropView("testView");
 ---
 render: input/output
 name: RestViewGetViewNameArangoSearch
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var viewName = "testView";
@@ -443,7 +446,8 @@ paths:
 ---
 render: input/output
 name: RestViewGetViewPropertiesIdentifierArangoSearch
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var viewName = "products";
@@ -465,7 +469,8 @@ db._dropView(viewName);
 ---
 render: input/output
 name: RestViewGetViewPropertiesNameArangoSearch
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var viewName = "products";
@@ -507,7 +512,8 @@ paths:
 ---
 render: input/output
 name: RestViewGetAllViews
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var url = "/_api/view";
@@ -673,7 +679,8 @@ paths:
 ---
 render: input/output
 name: RestViewPutPropertiesArangoSearch
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var viewName = "products";
@@ -844,7 +851,8 @@ paths:
 ---
 render: input/output
 name: RestViewPatchPropertiesArangoSearch
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var viewName = "products";
@@ -901,7 +909,8 @@ paths:
 ---
 render: input/output
 name: RestViewPutRename
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var viewName = "products1";
@@ -956,7 +965,8 @@ paths:
 ---
 render: input/output
 name: RestViewDeleteViewIdentifierArangoSearch
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var viewName = "testView";
@@ -976,7 +986,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestViewDeleteViewNameArangoSearch
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var viewName = "testView";

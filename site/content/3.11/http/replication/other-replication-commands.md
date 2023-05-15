@@ -36,7 +36,8 @@ paths:
 ---
 render: input/output
 name: RestReplicationServerId
-release: stable_single
+server_name: stable
+type: single
 version: '3.11'
 ---
 var url = "/_api/replication/server-id";

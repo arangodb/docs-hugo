@@ -29,7 +29,8 @@ name: smartGraphCreateGraphHowTo1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var graph = graph_module._create("myGraph", [], [], {smartGraphAttribute: "region", numberOfShards: 9});
@@ -49,7 +50,8 @@ name: smartGraphCreateGraphHowToDisjoint1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var graph = graph_module._create("myGraph", [], [], {smartGraphAttribute: "region", numberOfShards: 9, isDisjoint: true});
@@ -72,7 +74,8 @@ name: smartGraphCreateGraphHowTo2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
  ~var graph_module = require("@arangodb/smart-graph");
  ~var graph = graph_module._create("myGraph", [], [], {smartGraphAttribute: "region", numberOfShards: 9});
@@ -96,7 +99,8 @@ name: smartGraphCreateGraphHowTo3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
  ~var graph_module = require("@arangodb/smart-graph");
  ~var graph = graph_module._create("myGraph", [], [], {smartGraphAttribute: "region", numberOfShards: 9});
@@ -140,7 +144,8 @@ name: hybridSmartGraphCreateGraphHowTo1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var rel = graph_module._relation("isCustomer", "shop", "customer")
@@ -161,7 +166,8 @@ name: hybridSmartGraphCreateGraphHowTo2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
   var graph_module = require("@arangodb/smart-graph");
   var rel = graph_module._relation("isCustomer", "shop", "customer")

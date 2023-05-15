@@ -72,7 +72,8 @@ paths:
 ---
 render: input/output
 name: RestAnalyzerPost
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var analyzers = require("@arangodb/analyzers");
@@ -130,7 +131,8 @@ paths:
 ---
 render: input/output
 name: RestAnalyzerGet
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var analyzers = require("@arangodb/analyzers");
@@ -174,7 +176,8 @@ paths:
 ---
 render: input/output
 name: RestAnalyzersGet
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 // retrieval
@@ -241,7 +244,8 @@ paths:
 ---
 render: input/output
 name: RestAnalyzerDelete
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var analyzers = require("@arangodb/analyzers");
@@ -263,7 +267,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestAnalyzerDeleteForce
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var analyzers = require("@arangodb/analyzers");

@@ -59,7 +59,8 @@ name: satelliteGraphManagementCreate1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
 var satelliteGraphModule = require("@arangodb/satellite-graph");
 var graph = satelliteGraphModule._create("satelliteGraph");
@@ -76,7 +77,8 @@ name: satelliteGraphManagementCreate2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
 var graph_module = require("@arangodb/satellite-graph");
 var edgeDefinitions = [ graph_module._relation("edges", "vertices", "vertices") ];
@@ -93,7 +95,8 @@ name: satelliteGraphManagementCreate3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
 var graph_module = require("@arangodb/satellite-graph");
 var edgeDefinitions = [ graph_module._relation("myRelation", ["male", "female"], ["male", "female"]) ];
@@ -142,7 +145,8 @@ name: satelliteGraphManagementModify1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
 var graph_module = require("@arangodb/satellite-graph");
 var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -159,7 +163,8 @@ name: satelliteGraphManagementModify2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
    ~var graph_module = require("@arangodb/satellite-graph");
    ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -177,7 +182,8 @@ name: satelliteGraphManagementModify3
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
    ~var graph_module = require("@arangodb/satellite-graph");
    ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -195,7 +201,8 @@ name: satelliteGraphManagementModify4
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
 var graph_module = require("@arangodb/satellite-graph");
 var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -219,7 +226,8 @@ name: satelliteGraphManagementModify5
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
 var graph_module = require("@arangodb/satellite-graph");
 var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -256,7 +264,8 @@ name: satelliteGraphManagementModify6
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
 var graph_module = require("@arangodb/satellite-graph");
 var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -275,7 +284,8 @@ name: satelliteGraphManagementModify7
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
    ~var graph_module = require("@arangodb/satellite-graph");
    ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -311,7 +321,8 @@ name: satelliteGraphManagementRemove1
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
    ~var graph_module = require("@arangodb/satellite-graph");
    ~var relation = graph_module._relation("edges", "vertices", "vertices");
@@ -332,7 +343,8 @@ name: satelliteGraphManagementRemove2
 description: ''
 render: input/output
 version: '3.11'
-release: stable_cluster
+server_name: stable
+type: cluster
 ---
    ~var graph_module = require("@arangodb/satellite-graph");
    ~var relation = graph_module._relation("edges", "vertices", "vertices");

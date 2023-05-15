@@ -41,7 +41,8 @@ name: documentsDocumentName
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ db._create("example");
 ~ var myid = db.example.insert({_key: "12345"});
@@ -136,7 +137,8 @@ name: documentsDocumentReplace
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ db._create("example");
   a1 = db.example.insert({ a : 1 });
@@ -218,7 +220,8 @@ name: documentDocumentUpdate
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ db._create("example");
   a1 = db.example.insert({ a : 1 });
@@ -286,7 +289,8 @@ name: documentsCollectionRemoveSuccess
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ db._create("example");
   a1 = db.example.insert({ a : 1 });
@@ -304,7 +308,8 @@ name: documentsCollectionRemoveConflict
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ db._create("example");
   a1 = db.example.insert({ a : 1 });
@@ -323,7 +328,8 @@ name: documentsCollectionRemoveSignature
 description: ''
 render: input/output
 version: '3.11'
-release: stable_single
+server_name: stable
+type: single
 ---
 ~ db._create("example");
 db.example.insert({ _key: "11265325374", a:  1 } );

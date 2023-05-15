@@ -150,7 +150,8 @@ paths:
 ---
 render: input/output
 name: RestTransactionBeginSingle
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 const cn = "products";
@@ -177,7 +178,8 @@ db._drop(cn);
 ---
 render: input/output
 name: RestTransactionBeginNonExisting
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 const cn = "products";
@@ -238,7 +240,8 @@ paths:
 ---
 render: input/output
 name: RestTransactionGet
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 db._drop("products");
@@ -330,7 +333,8 @@ paths:
 ---
 render: input/output
 name: RestTransactionBeginAbort
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 const cn = "products";
@@ -422,7 +426,8 @@ paths:
 ---
 render: input/output
 name: RestTransactionBeginCommit
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 const cn = "products";
@@ -472,7 +477,8 @@ paths:
 ---
 render: input/output
 name: RestTransactionsGet
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 db._drop("products");

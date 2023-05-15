@@ -141,7 +141,8 @@ paths:
 ---
 render: input/output
 name: RestAqlfunctionCreate
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var url = "/_api/aqlfunction";
@@ -279,7 +280,8 @@ paths:
 ---
 render: input/output
 name: RestAqlfunctionDelete
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var url = "/_api/aqlfunction/square::x::y";
@@ -302,7 +304,8 @@ logJsonResponse(response);
 ---
 render: input/output
 name: RestAqlfunctionDeleteFails
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var url = "/_api/aqlfunction/myfunction::x::y";
@@ -417,7 +420,8 @@ paths:
 ---
 render: input/output
 name: RestAqlfunctionsGetAll
-release: stable_single
+server_name: stable
+type: single
 version: '3.10'
 ---
 var url = "/_api/aqlfunction/test";
