@@ -51,7 +51,6 @@ def generateAPIDocs():
             continue
 
         for file in files:
-            print(file)
             processFile(f"{root}/{file}".replace("\\", "/"))
 
     print("END")

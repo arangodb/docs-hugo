@@ -68,9 +68,9 @@ generate_apidocs=false
 start_servers=false
 
 ## Expand environment variables in config.yaml, if present
-yq  '(.. | select(tag == "!!str")) |= envsubst' -i config.yaml
+yq  '(.. | select(tag == "!!str")) |= envsubst' -i ../docker/config.yaml
 
-GENERATORS=$(yq -r '.generators' config.yaml)
+GENERATORS=$(yq -r '.generators' ../docker/config.yaml)
 
 # Check for requested operations
 if [[ $GENERATORS == *"examples"* ]]; then
@@ -97,7 +97,7 @@ fi
 
 
 echo "[TOOLCHAIN] Expanded Config file:"
-cat config.yaml
+cat ../docker/config.yaml
 echo ""
 
 echo "[TOOLCHAIN] Clean arangoproxy config file"
@@ -200,7 +200,7 @@ function setup_arangoproxy() {
   docker cp "$container_name":/usr/share/ ../arangoproxy/arangosh/"$name"/"$version"/usr/
   docker cp "$container_name":/etc/arangodb3/arangosh.conf ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/etc/relative/arangosh.conf
 
-  sed -i -e 's~startup-directory.*~startup-directory = /home/toolchain/arangoproxy/arangosh/'"$name"'/usr/share/arangodb3/js~' ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/etc/relative/arangosh.conf
+  sed -i -e 's~startup-directory.*~startup-directory = /home/toolchain/arangoproxy/arangosh/'"$name"'/'"$version"'/usr/share/arangodb3/js~' ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/etc/relative/arangosh.conf
   echo ""
 
   log "[SETUP ARANGOPROXY] Retrieve server ip"
@@ -338,7 +338,7 @@ function start_server() {
 
 function generate_startup_options {
   container_name="$1"
-  dst_folder=$(yq -r '.program-options' config.yaml)
+  dst_folder=$(yq -r '.program-options' ../docker/config.yaml)
   log "[GENERATE OPTIONS] Starting options dump for container " "$container_name"
   echo ""
   ALLPROGRAMS="arangobench arangod arangodump arangoexport arangoimport arangoinspect arangorestore arangosh"
@@ -422,7 +422,7 @@ echo "[TOOLCHAIN] Starting toolchain"
 echo "[TOOLCHAIN] Generators: $GENERATORS"
 
 
-  mapfile servers < <(yq e -o=j -I=0 '.servers[]' config.yaml )
+  mapfile servers < <(yq e -o=j -I=0 '.servers[]' ../docker/config.yaml )
 
   for server in "${servers[@]}"; do
     name=$(echo "$server" | yq e '.name' -)
@@ -460,13 +460,12 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
 
   ## Start arangoproxy and site containers to build examples and site
   if [ "$generate_examples" = true ] ; then
+    docker build --target arangoproxy ../docker/ -t arangoproxy
+    docker  build --target hugo ../docker/ -t site
     cd ../../
-    echo "[GENERATE-EXAMPLES] docker-compose build arangoproxy and site images"
-    docker compose --env-file toolchain/docker-env/"$DOCKER_ENV".env build 1&> /dev/null
-
     echo "[GENERATE-EXAMPLES]  Run arangoproxy and site containers"
-    docker run -d --name site --network=docs_net --ip=192.168.129.130 --env-file toolchain/docker-env/"$DOCKER_ENV".env -p 1313:1313 --volumes-from toolchain --log-opt tag="{{.Name}}" site 
-    docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 --env-file toolchain/docker-env/"$DOCKER_ENV".env --volumes-from toolchain --log-opt tag="{{.Name}}" arangoproxy
+    docker run -d --name site --network=docs_net --ip=192.168.129.130 --env-file toolchain/docker/env/"$DOCKER_ENV".env -p 1313:1313 --volumes-from toolchain --log-opt tag="{{.Name}}" site 
+    docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 --env-file toolchain/docker/env/"$DOCKER_ENV".env --volumes-from toolchain --log-opt tag="{{.Name}}" arangoproxy
     docker logs --details --follow arangoproxy > arangoproxy-log.log &
     docker logs --details --follow site > site-log.log &
     trap_container_exit &

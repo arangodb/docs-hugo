@@ -44,7 +44,7 @@ parameters:
   
   commit-generated:
     type: boolean
-    default: true
+    default: false
 
 jobs:
   checkout: #Checkout a desired repository
@@ -106,27 +106,20 @@ jobs:
 
 
   plain-build: 
-    docker:
-      - image: cimg/base:current
-    resource_class: large
+    machine:
+      image: ubuntu-2004:current
+      docker_layer_caching: true 
+    resource_class: medium
     steps:
       - attach_workspace:
           at: .
 
       - run:
-          name: Check folders
-          command: |
-            pwd && ls && cd workspace && ls
-
-      - run:
-          name: Install Hugo
-          command: |
-            curl -sSL  https://github.com/gohugoio/hugo/releases/download/v0.111.0/hugo_0.111.0_linux-amd64.tar.gz -o hugo-archive.tar.gz && ls -la && sudo tar -xzf hugo-archive.tar.gz -C /usr/local/bin
-
-      - run:
           name: Build site
           command: |
-            pwd && cd workspace/docs-hugo/site && hugo -b https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--docs-hugo.netlify.app --minify -e prod --templateMetrics --templateMetricsHints && ls
+            export HUGO_ENV=prod
+            export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--docs-hugo.netlify.app
+            pwd && cd workspace/docs-hugo/toolchain/docker && docker compose -f docker-compose.plain-build.yml up --build
             
       - persist_to_workspace:
           root: .
