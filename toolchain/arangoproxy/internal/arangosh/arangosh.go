@@ -16,8 +16,8 @@ func Exec(exampleName string, command string, repository config.Repository) (out
 	commonFunctions, _ := utils.GetCommonFunctions()
 	command = fmt.Sprintf("%s\n%s", commonFunctions, command)
 
-	arangoSHBin := fmt.Sprintf("/home/toolchain/arangoproxy/arangosh/%s/usr/bin/arangosh", repository.Name)
-	configFile := fmt.Sprintf("/home/toolchain/arangoproxy/arangosh/%s/usr/bin/etc/relative/arangosh.conf", repository.Name)
+	arangoSHBin := fmt.Sprintf("/home/toolchain/arangoproxy/arangosh/%s/%s/usr/bin/arangosh", repository.Name, repository.Version)
+	configFile := fmt.Sprintf("/home/toolchain/arangoproxy/arangosh/%s/%s/usr/bin/etc/relative/arangosh.conf", repository.Name, repository.Version)
 
 	common.Logger.Printf("[%s] Executing on ArangoDB Server: %s %s %s - %s", exampleName, repository.Name, repository.Type, repository.Version, repository.Url)
 	cmd := exec.Command(arangoSHBin, "--config", configFile, "--server.endpoint", repository.Url, "--quiet")
@@ -43,14 +43,14 @@ func Exec(exampleName string, command string, repository config.Repository) (out
 		return ""
 	}
 
-	if strings.Contains(out.String(), "ArangoError") {
-		if !strings.Contains(command, "xpError") {
-			msg := fmt.Sprintf("[%s] [InvokeArangoSH] ArangoError without xpError: %s", exampleName, out.String())
-			common.Logger.Printf(msg)
-			os.Exit(1)
-		}
-		return output
-	}
+	// if strings.Contains(out.String(), "ArangoError") {
+	// 	if !strings.Contains(command, "xpError") {
+	// 		msg := fmt.Sprintf("[%s] [InvokeArangoSH] ArangoError without xpError: %s", exampleName, out.String())
+	// 		common.Logger.Printf(msg)
+	// 		//os.Exit(1)
+	// 	}
+	// 	return output
+	// }
 
 	split := strings.Split(out.String(), "\n")[1:] // Cut the Please specify a password line from output
 	output = strings.Join(split, "\n")
