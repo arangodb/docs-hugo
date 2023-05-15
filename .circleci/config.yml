@@ -387,7 +387,7 @@ workflows:
   generate:
     when: { equal: [ generate, << pipeline.parameters.WORKFLOW >> ] }
     jobs:
-      - build-with-generated:
+      - build-with-generated
       - deploy:
           requires:
             - build-with-generated
