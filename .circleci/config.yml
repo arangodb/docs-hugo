@@ -149,17 +149,18 @@ jobs:
       - run:
           name: Clone arangodb branches
           command: |
+            echo << pipeline.parameters.ARANGODB_BRANCH >>
             export IFS=","
             if [ "<< pipeline.parameters.ARANGODB_BRANCH >>" != "" ] ; then
               branch_name=$(env | grep ^ARANGODB_BRANCH= | cut -d= -f2 | cut -d, -f2)
               git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name
             fi
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_2 >>" != "" ] ; then
-              branch_name=$(env | grep ^ARANGODB_BRANCH= | cut -d= -f2 | cut -d, -f2)
+              branch_name=$(env | grep ^ARANGODB_BRANCH_2= | cut -d= -f2 | cut -d, -f2)
               git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name
             fi
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_3 >>" != "" ] ; then
-              branch_name=$(env | grep ^ARANGODB_BRANCH= | cut -d= -f2 | cut -d, -f2)
+              branch_name=$(env | grep ^ARANGODB_BRANCH_3= | cut -d= -f2 | cut -d, -f2)
               git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name
             fi
 
