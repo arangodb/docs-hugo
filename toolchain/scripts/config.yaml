@@ -1,12 +1,16 @@
-program-options: ${PROGRAMOPTIONS_DST}
-error-codes: 
-  src: ${ARANGODB_MAIN_SRC}/lib/Basics/errors.dat
-  dst: ${ERRORCODES_DST}
-metrics: 
-  src: ${ARANGODB_MAIN_SRC}
-  dst: ${METRICS_DST}
-apidocs: ${APIDOCS_DST}
+generators: ${GENERATORS}
 servers:
-  - name: ${SERVER_NAME}
-    image: ${SERVER_BRANCH}
-    version: ${SERVER_VERSION}
+  - name: ${ARANGODB_BRANCH_1_NAME}
+    image: ${ARANGODB_BRANCH_1_IMAGE}
+    version: ${ARANGODB_BRANCH_1_VERSION}
+    src:  ${ARANGODB_SRC}
+
+  - name: ${ARANGODB_BRANCH_2_NAME}
+    image: ${ARANGODB_BRANCH_2_IMAGE}
+    version: ${ARANGODB_BRANCH_2_VERSION}
+    src:  ${ARANGODB_SRC_2}
+
+  - name: ${ARANGODB_BRANCH_3_NAME}
+    image: ${ARANGODB_BRANCH_3_IMAGE}
+    version: ${ARANGODB_BRANCH_3_VERSION}
+    src:  ${ARANGODB_SRC_3}

@@ -35,7 +35,7 @@ func InitRepositories() {
 	common.Repositories = make(map[string]config.Repository)
 	fmt.Printf("INIT REPOSITORIES CONF %s\n", config.Conf.Repositories)
 	for _, repo := range config.Conf.Repositories {
-		common.Repositories[fmt.Sprintf("%s_%s", repo.Name, repo.Version)] = repo
+		common.Repositories[fmt.Sprintf("%s_%s_%s", repo.Name, repo.Type, repo.Version)] = repo
 		cmd, _ := utils.GetSetupFunctions()
 		arangosh.Exec("INIT COMMAND", cmd, repo)
 	}

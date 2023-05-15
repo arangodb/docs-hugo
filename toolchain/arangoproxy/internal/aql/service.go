@@ -18,7 +18,7 @@ func (service AQLService) Execute(request common.Example, cacheChannel chan map[
 	defer common.Recover(fmt.Sprintf("AQLService.Execute(%s)", request.Code))
 	commands := service.formatRequestCode(&request)
 
-	repository, _ := common.GetRepository(request.Options.Release, request.Options.Version)
+	repository, _ := common.GetRepository(request.Options.ServerName, request.Options.Type, request.Options.Version)
 
 	// Check if dataset to be used
 	if request.Options.Dataset != "" {

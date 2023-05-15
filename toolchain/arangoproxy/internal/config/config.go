@@ -28,7 +28,7 @@ func LoadConfig(file string) error {
 
 type Repository struct {
 	Name    string `yaml:"name"` // ArangoDB instance name
-	Image   string `yaml:"image"`
+	Type    string `yaml:"type"`
 	Version string `yaml:"version"`
 	Url     string `yaml:"url"` // Instance URL+Port to connect to
 }
