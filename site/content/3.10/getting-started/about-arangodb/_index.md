@@ -6,7 +6,8 @@ description: >-
   of features and a rich ecosystem
 archetype: chapter
 ---
-![ArangoDB Overview Diagram](../../../images/arangodb-overview-diagram.png)
+
+The following page has been modified as of CircleCI plain-build test 1. The initial image has been removed
 
 It supports a variety of data access patterns with a single, composable query
 language thanks to its multi-model approach that combines the analytical power
