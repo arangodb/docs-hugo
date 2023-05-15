@@ -139,17 +139,17 @@ function pull_image_from_circleci() {
   log "[CIRCLECI-PULL] Invoke"
   branch_name="$1"
   image_name=$(echo ${branch_name##*/})
-  log "[CIRCLECI-PULL] Branch Name: " "$branch_name"
-  log "[CIRCLECI-PULL] Image Name: " "$image_name"
+  log "[CIRCLECI-PULL] Branch Name: $branch_name"
+  log "[CIRCLECI-PULL] Image Name: $image_name"
 
   ## Get latest pipeline of the feature-pr branch
   circle_ci_pipeline=$(curl -s https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/pipeline?branch=$branch_name)
   pipeline_id=$(echo "$circle_ci_pipeline" | jq '.items[0].id' | tr -d '"')
-  log "[CIRCLECI-PULL] Latest PipelineID of compiled branch: ""$pipeline_id"
+  log "[CIRCLECI-PULL] Latest PipelineID of compiled branch: $pipeline_id"
 
   ## Check the pipeline is newer than the local image tag of the branch
   isLocalImageTheLatest=$(docker images --filter=reference=$image_name:* | grep $pipeline_id)
-  log "[CIRCLECI-PULL] Check latest docker image id" "$isLocalImageTheLatest"
+  log "[CIRCLECI-PULL] Check latest docker image id - $isLocalImageTheLatest"
   if [ "$isLocalImageTheLatest" != "" ] ; then
     return
   fi
@@ -158,7 +158,7 @@ function pull_image_from_circleci() {
 
   ## Get the workflows of the pipeline
   workflow_id=$(curl -s https://circleci.com/api/v2/pipeline/$pipeline_id/workflow | jq -r '.items[] | "\(.id)"')
-  log "[CIRCLECI-PULL] Latest WorkflowID: ""$workflow_id"
+  log "[CIRCLECI-PULL] Latest WorkflowID: $workflow_id"
   
   ## Get jobs of the workflow
   jobs_numbers_string=$(curl -s https://circleci.com/api/v2/workflow/$workflow_id/job\? | jq -r '.items[] | select (.type? == "build") | .job_number')
@@ -193,7 +193,6 @@ function setup_arangoproxy() {
   log "[SETUP ARANGOPROXY] Setup dedicated arangosh in arangoproxy"
 
   mkdir -p ../arangoproxy/arangosh/"$name"/"$version"/usr ../arangoproxy/arangosh/"$name"/"$version"/usr/bin ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/etc/relative
-  ls arangosh
   docker cp "$container_name":/usr/bin/arangosh ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/arangosh
   docker cp "$container_name":/usr/bin/icudtl.dat ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/icudtl.dat
 
