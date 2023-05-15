@@ -7,18 +7,18 @@ services:
       context: .
       target: toolchain
     volumes:
-      - ${ARANGODB_MAIN_SRC}:${ARANGODB_MAIN_SRC}
+      - ${ARANGODB_SRC:-/dev/null}:${ARANGODB_SRC:-/dev/null}
+      - ${ARANGODB_SRC_2:-/tmp/1}:${ARANGODB_SRC_2:-/tmp/1}
+      - ${ARANGODB_SRC_3:-/tmp/2}:${ARANGODB_SRC_3:-/tmp/2}
       - ../../:/home/
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       - HUGO_URL
       - DOCKER_ENV
       - GENERATORS
-      - ARANGODB_MAIN_SRC
-      - PROGRAMOPTIONS_DST
-      - ERRORCODES_DST
-      - METRICS_DST
-      - APIDOCS_DST
-      - SERVER_NAME
-      - SERVER_BRANCH
-      - SERVER_VERSION
+      - ARANGODB_SRC
+      - ARANGODB_SRC_2
+      - ARANGODB_SRC_3
+      - ARANGODB_BRANCH
+      - ARANGODB_BRANCH_2
+      - ARANGODB_BRANCH_3
