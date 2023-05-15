@@ -6,7 +6,7 @@ description: >-
   of features and a rich ecosystem
 archetype: chapter
 ---
-![ArangoDB Overview Diagram](../../../images/arangodb-overview-diagram.png)
+This page has been changed in the PR-branch plain-about-arangodb-1. The Overview Diagram image was removed.
 
 It supports a variety of data access patterns with a single, composable query
 language thanks to its multi-model approach that combines the analytical power
