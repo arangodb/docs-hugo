@@ -29,6 +29,18 @@ parameters:
   ARANGODB_DOCS_NEW_BRANCH:
     type: string
     default: $CIRCLE_BRANCH
+
+  ARANGODB_BRANCH:
+    type: string
+    default: "stable,arangodb/arangodb:latest,3.10,"
+
+  ARANGODB_BRANCH_2:
+    type: string
+    default: ""
+
+  ARANGODB_BRANCH_3:
+    type: string
+    default: ""
   
   commit-generated:
     type: boolean
@@ -146,19 +158,44 @@ jobs:
             cd workspace && git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
 
       - run:
+          name: Clone arangodb branches
+          command: |
+            export IFS=","
+            if [ "<< pipeline.parameters.ARANGODB_BRANCH >>" != "" ] ; then
+              branch_name=$(env | grep ^ARANGODB_BRANCH= | cut -d= -f2 | cut -d, -f2)
+              git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name
+            fi
+            if [ "<< pipeline.parameters.ARANGODB_BRANCH_2 >>" != "" ] ; then
+              branch_name=$(env | grep ^ARANGODB_BRANCH= | cut -d= -f2 | cut -d, -f2)
+              git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name
+            fi
+            if [ "<< pipeline.parameters.ARANGODB_BRANCH_3 >>" != "" ] ; then
+              branch_name=$(env | grep ^ARANGODB_BRANCH= | cut -d= -f2 | cut -d, -f2)
+              git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name
+            fi
+
+      - run:
           name: Set environment variables and launch toolchain
           command: |
             export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--docs-hugo.netlify.app
             export DOCKER_ENV=examples
-            export ARANGODB_MAIN_SRC='/root/project/workspace/arangodb'
+            export IFS=","
+            if [ "<< pipeline.parameters.ARANGODB_BRANCH >>" != "" ] ; then
+              branch_name=$(env | grep ^ARANGODB_BRANCH= | cut -d= -f2 | cut -d, -f2)
+              export ARANGODB_BRANCH=<< pipeline.parameters.ARANGODB_BRANCH >>
+              export ARANGODB_SRC=/root/project/workspace/$branch_name
+            fi
+            if [ "<< pipeline.parameters.ARANGODB_BRANCH_2 >>" != "" ] ; then
+              branch_name=$(env | grep ^ARANGODB_BRANCH= | cut -d= -f2 | cut -d, -f2)
+              export ARANGODB_BRANCH=<< pipeline.parameters.ARANGODB_BRANCH >>
+              export ARANGODB_SRC_2=/root/project/workspace/$branch_name
+            fi
+            if [ "<< pipeline.parameters.ARANGODB_BRANCH_3 >>" != "" ] ; then
+              branch_name=$(env | grep ^ARANGODB_BRANCH= | cut -d= -f2 | cut -d, -f2)
+              export ARANGODB_BRANCH=<< pipeline.parameters.ARANGODB_BRANCH >>
+              export ARANGODB_SRC_3=/root/project/workspace/$branch_name
+            fi
             export GENERATORS=<< pipeline.parameters.GENERATORS >>
-            export PROGRAMOPTIONS_DST='/root/project/workspace/docs-hugo/site/data'
-            export ERRORCODES_DST='/root/project/workspace/docs-hugo/site/data'
-            export METRICS_DST='/root/project/workspace/docs-hugo/site/data'
-            export APIDOCS_DST='./api-docs.json'
-            export SERVER_NAME=stable
-            export SERVER_BRANCH=<< pipeline.parameters.ARANGODB_MAIN_BRANCH >>
-            export SERVER_VERSION=<< pipeline.parameters.VERSION >>
             cd workspace/docs-hugo/toolchain/scripts && docker compose up
       
       - persist_to_workspace:
@@ -275,17 +312,12 @@ jobs:
       - run:
           name: Configure
           command: |
-            cd /root/project
-            mkdir build
-            cd build
-            cmake .. -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib \
-            -DCMAKE_BUILD_TYPE="RelWithDebInfo" -DCMAKE_BUILD_TYPE="RelWithDebInfo" -DCMAKE_C_FLAGS="-fno-stack-protector"  -DCMAKE_CXX_FLAGS="-fno-stack-protector" -DCMAKE_EXE_LINKER_FLAGS="-Wl,--build-id" -DUSE_IPO="Off" -DUSE_STRICT_OPENSSL_VERSION=ON -DUSE_MINIMAL_DEBUGINFO=ON -DSTATIC_EXECUTABLES=ON \
-            -DUSE_LIBUNWIND=ON -DTARGET_ARCHITECTURE="sandy-bridge" \ 
-            -DUSE_ENTERPRISE=ON -DUSE_JEMALLOC=ON -DUSE_IPO=ON
+            cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
+
       - run:
           name: Build
           command: |
-            cmake --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest arangobackup
+            cmake --build --preset enterprise-pr --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest arangobackup
       - run:
           name: Size leaderboard
           command: |
@@ -355,13 +387,7 @@ workflows:
   generate:
     when: { equal: [ generate, << pipeline.parameters.WORKFLOW >> ] }
     jobs:
-      - checkout:
-          name: cloneMainRepo
-          repository: git@github.com:arangodb/arangodb.git
-          branch: << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
       - build-with-generated:
-          requires:
-            - cloneMainRepo
       - deploy:
           requires:
             - build-with-generated
