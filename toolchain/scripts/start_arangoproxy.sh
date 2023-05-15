@@ -2,7 +2,17 @@
 
 ## Args: $1=architecture
 
-. /home/toolchain/scripts/functions.sh
+function checkIPIsReachable() {
+   res=$(curl -s -I $1 | grep HTTP/ | awk {'print $2'})
+   if [ "$res" = "200" ]; then
+     echo "Connection success"
+   else
+     echo "Connection failed for $1"
+    sleep 2s
+    checkIPIsReachable $1
+   fi
+}
+
 
 wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_"$ARCH" -O /usr/bin/yq &&\
     chmod +x /usr/bin/yq

@@ -1,0 +1,14 @@
+generators: examples
+servers:
+  - name: stable
+    image: be-impatient-so-we-see-errors
+    version: "3.10"
+    src: /home/dan/work/projects/arangodb-new/arangodb
+  - name: stable
+    image: be-impatient-so-we-see-errors
+    version: "3.11"
+    src: /home/dan/work/projects/arangodb-new/arangodb
+  - name: ""
+    image: ""
+    version: ""
+    src: ""

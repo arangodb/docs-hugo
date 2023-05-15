@@ -1,0 +1,13 @@
+version: "3.5"
+services:
+  site:
+    container_name: plain-build
+    image: site
+    build:
+      context: .
+      target: hugo
+    volumes:
+      - ../../:/home/
+    environment:
+      - HUGO_URL
+      - HUGO_ENV
