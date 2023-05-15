@@ -189,7 +189,7 @@ jobs:
               export ARANGODB_SRC_3=/root/project/workspace/$branch_name
             fi
             export GENERATORS=<< pipeline.parameters.GENERATORS >>
-            cd workspace/docs-hugo/toolchain/scripts && docker compose up
+            cd workspace/docs-hugo/toolchain/docker && docker compose up
       
       - persist_to_workspace:
           root: .
