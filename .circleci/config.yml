@@ -153,30 +153,32 @@ jobs:
       - run:
           name: Clone arangodb branches
           command: |
-            export IFS=","
             if [ "<< pipeline.parameters.ARANGODB_BRANCH >>" != "" ] ; then
               branch_name=$(echo << pipeline.parameters.ARANGODB_BRANCH >> | cut -d= -f2 | cut -d, -f2)
               version=$(echo << pipeline.parameters.ARANGODB_BRANCH >> | cut -d= -f2 | cut -d, -f3)
               git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name
               image_name=$(echo ${branch_name##*/})
-              main_hash=$(git rev-parse --short --verify $branch_name)
+              main_hash=$(awk 'END{print}' $branch_name/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)
               docker pull arangodb/docs-hugo:$image_name-$version-$main_hash
+              docker tag arangodb/docs-hugo:$image_name-$version-$main_hash $image_name-$version
             fi
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_2 >>" != "" ] ; then
               branch_name=$(echo << pipeline.parameters.ARANGODB_BRANCH_2 >> | cut -d= -f2 | cut -d, -f2)
               version=$(echo << pipeline.parameters.ARANGODB_BRANCH_2 >> | cut -d= -f2 | cut -d, -f3)
               git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name
               image_name=$(echo ${branch_name##*/})
-              main_hash=$(git rev-parse --short --verify $branch_name)
+              main_hash=$(awk 'END{print}' $branch_name/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)
               docker pull arangodb/docs-hugo:$image_name-$version-$main_hash
+              docker tag arangodb/docs-hugo:$image_name-$version-$main_hash $image_name-$version
             fi
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_3 >>" != "" ] ; then
               branch_name=$(echo << pipeline.parameters.ARANGODB_BRANCH_3 >> | cut -d= -f2 | cut -d, -f2)
               version=$(echo << pipeline.parameters.ARANGODB_BRANCH_3 >> | cut -d= -f2 | cut -d, -f3)
               git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name
               image_name=$(echo ${branch_name##*/})
-              main_hash=$(git rev-parse --short --verify $branch_name)
+              main_hash=$(awk 'END{print}' $branch_name/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)
               docker pull arangodb/docs-hugo:$image_name-$version-$main_hash
+              docker tag arangodb/docs-hugo:$image_name-$version-$main_hash $image_name-$version
             fi
 
       - run:
@@ -184,7 +186,6 @@ jobs:
           command: |
             export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--docs-hugo.netlify.app
             export DOCKER_ENV=examples
-            export IFS=","
             if [ "<< pipeline.parameters.ARANGODB_BRANCH >>" != "" ] ; then
               branch_name=$(echo << pipeline.parameters.ARANGODB_BRANCH >> | cut -d= -f2 | cut -d, -f2)
               export ARANGODB_BRANCH=<< pipeline.parameters.ARANGODB_BRANCH >>
