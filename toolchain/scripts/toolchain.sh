@@ -131,8 +131,8 @@ function pull_image() {
     return
   fi
 
-  log "[PULL IMAGE] Cannot find image on Dockerhub, try on CircleCI"
-  pull_image_from_circleci "$image_name"
+  #log "[PULL IMAGE] Cannot find image on Dockerhub, try on CircleCI"
+  #pull_image_from_circleci "$image_name"
 }
 
 function pull_image_from_circleci() {
@@ -172,8 +172,8 @@ function pull_image_from_circleci() {
     artifact_urls=$(echo "$job_artifacts" | jq -r '.items[] | .url')
     for artifact_url in "$artifact_urls"
     do
-      echo "[CIRCLECI-PULL] Downloading artifacts of job number: " "$job_number"
-      echo "[CIRCLECI-PULL] Link: " "$artifact_url"
+      echo "[CIRCLECI-PULL] Downloading artifacts of job number: $job_number"
+      echo "[CIRCLECI-PULL] Link: $artifact_url"
       wget "$artifact_url"
     done
   done
@@ -247,7 +247,7 @@ function start_server() {
   echo ""
 
   ## Download the server image from Dockerhub/CircleCI
-  pull_image "$branch_name"
+  #pull_image "$branch_name"
 
   ## Cut the firstword/ from the branch field
   image_name=$(echo ${branch_name##*/})
