@@ -153,19 +153,30 @@ jobs:
       - run:
           name: Clone arangodb branches
           command: |
-            echo << pipeline.parameters.ARANGODB_BRANCH >>
             export IFS=","
             if [ "<< pipeline.parameters.ARANGODB_BRANCH >>" != "" ] ; then
               branch_name=$(echo << pipeline.parameters.ARANGODB_BRANCH >> | cut -d= -f2 | cut -d, -f2)
+              version=$(echo << pipeline.parameters.ARANGODB_BRANCH >> | cut -d= -f2 | cut -d, -f3)
               git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name
+              image_name=$(echo ${branch_name##*/})
+              main_hash=$(git rev-parse --short --verify $branch_name)
+              docker pull arangodb/docs-hugo:$image_name-$version-$main_hash
             fi
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_2 >>" != "" ] ; then
-              branch_name=$(env | grep ^ARANGODB_BRANCH_2= | cut -d= -f2 | cut -d, -f2)
+              branch_name=$(echo << pipeline.parameters.ARANGODB_BRANCH_2 >> | cut -d= -f2 | cut -d, -f2)
+              version=$(echo << pipeline.parameters.ARANGODB_BRANCH_2 >> | cut -d= -f2 | cut -d, -f3)
               git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name
+              image_name=$(echo ${branch_name##*/})
+              main_hash=$(git rev-parse --short --verify $branch_name)
+              docker pull arangodb/docs-hugo:$image_name-$version-$main_hash
             fi
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_3 >>" != "" ] ; then
-              branch_name=$(env | grep ^ARANGODB_BRANCH_3= | cut -d= -f2 | cut -d, -f2)
+              branch_name=$(echo << pipeline.parameters.ARANGODB_BRANCH_3 >> | cut -d= -f2 | cut -d, -f2)
+              version=$(echo << pipeline.parameters.ARANGODB_BRANCH_3 >> | cut -d= -f2 | cut -d, -f3)
               git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name
+              image_name=$(echo ${branch_name##*/})
+              main_hash=$(git rev-parse --short --verify $branch_name)
+              docker pull arangodb/docs-hugo:$image_name-$version-$main_hash
             fi
 
       - run:
@@ -181,12 +192,12 @@ jobs:
             fi
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_2 >>" != "" ] ; then
               branch_name=$(echo << pipeline.parameters.ARANGODB_BRANCH_2 >> | cut -d= -f2 | cut -d, -f2)
-              export ARANGODB_BRANCH_2=<< pipeline.parameters.ARANGODB_BRANCH >>
+              export ARANGODB_BRANCH_2=<< pipeline.parameters.ARANGODB_BRANCH_2 >>
               export ARANGODB_SRC_2=/root/project/workspace/$branch_name
             fi
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_3 >>" != "" ] ; then
               branch_name=$(echo << pipeline.parameters.ARANGODB_BRANCH_3 >> | cut -d= -f2 | cut -d, -f2)
-              export ARANGODB_BRANCH_3=<< pipeline.parameters.ARANGODB_BRANCH >>
+              export ARANGODB_BRANCH_3=<< pipeline.parameters.ARANGODB_BRANCH_3 >>
               export ARANGODB_SRC_3=/root/project/workspace/$branch_name
             fi
             export GENERATORS=<< pipeline.parameters.GENERATORS >>
@@ -355,6 +366,8 @@ jobs:
             cd workspace/docs-hugo/toolchain/scripts/compile
             ## arangodb/docs-hugo:be-impatient-so-we-see-errors-3.10-12b6883
             docker build -t arangodb/docs-hugo:$image_name-<< pipeline.parameters.VERSION >>-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
+
             docker push arangodb/docs-hugo:$image_name-<< pipeline.parameters.VERSION >>-$main_hash
 
 
