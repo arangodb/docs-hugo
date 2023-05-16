@@ -41,6 +41,10 @@ parameters:
   ARANGODB_BRANCH_3:
     type: string
     default: ""
+
+  COMPILE:
+    type: boolean
+    default: false
   
   commit-generated:
     type: boolean
@@ -176,13 +180,13 @@ jobs:
               export ARANGODB_SRC=/root/project/workspace/$branch_name
             fi
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_2 >>" != "" ] ; then
-              branch_name=$(env | grep ^ARANGODB_BRANCH= | cut -d= -f2 | cut -d, -f2)
-              export ARANGODB_BRANCH=<< pipeline.parameters.ARANGODB_BRANCH >>
+              branch_name=$(echo << pipeline.parameters.ARANGODB_BRANCH_2 >> | cut -d= -f2 | cut -d, -f2)
+              export ARANGODB_BRANCH_2=<< pipeline.parameters.ARANGODB_BRANCH >>
               export ARANGODB_SRC_2=/root/project/workspace/$branch_name
             fi
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_3 >>" != "" ] ; then
-              branch_name=$(env | grep ^ARANGODB_BRANCH= | cut -d= -f2 | cut -d, -f2)
-              export ARANGODB_BRANCH=<< pipeline.parameters.ARANGODB_BRANCH >>
+              branch_name=$(echo << pipeline.parameters.ARANGODB_BRANCH_3 >> | cut -d= -f2 | cut -d, -f2)
+              export ARANGODB_BRANCH_3=<< pipeline.parameters.ARANGODB_BRANCH >>
               export ARANGODB_SRC_3=/root/project/workspace/$branch_name
             fi
             export GENERATORS=<< pipeline.parameters.GENERATORS >>
@@ -344,16 +348,14 @@ jobs:
       - run:
           name: Create docker image from install.tar.gz and save it
           command: |
-            cp install.tar.gz workspace/docs-hugo/toolchain/scripts
-            cd workspace/docs-hugo/toolchain/scripts
-            image_name=$(echo ${CIRCLE_BRANCH##*/})
-            docker build -t $image_name:<< pipeline.id >> --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
-            mkdir /tmp/artifacts
-            docker save $image_name:<< pipeline.id >> > /tmp/artifacts/$image_name:<< pipeline.id >>.tar.gz
+            main_hash=$(git rev-parse --short --verify << pipeline.parameters.ARANGODB_MAIN_BRANCH >>)
+            image_name=$(echo ${<< pipeline.parameters.ARANGODB_MAIN_BRANCH >>##*/})
 
-      - store_artifacts:
-          path: /tmp/artifacts
-
+            cp install.tar.gz workspace/docs-hugo/toolchain/scripts/compile
+            cd workspace/docs-hugo/toolchain/scripts/compile
+            ## arangodb/docs-hugo:be-impatient-so-we-see-errors-3.10-12b6883
+            docker build -t arangodb/docs-hugo:$image_name-<< pipeline.parameters.VERSION >>-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
+            docker push arangodb/docs-hugo:$image_name-<< pipeline.parameters.VERSION >>-$main_hash
 
 
 workflows:
@@ -395,7 +397,7 @@ workflows:
       - checkout:
           name: cloneNewRepo
           repository: git@github.com:arangodb/docs-hugo.git
-          branch: main
+          branch: circle-ci-alpha
           requires:
             - compile-linux
       - create-image:
