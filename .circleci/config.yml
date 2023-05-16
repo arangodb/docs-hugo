@@ -152,7 +152,7 @@ jobs:
             echo << pipeline.parameters.ARANGODB_BRANCH >>
             export IFS=","
             if [ "<< pipeline.parameters.ARANGODB_BRANCH >>" != "" ] ; then
-              branch_name=$(env | grep ^ARANGODB_BRANCH= | cut -d= -f2 | cut -d, -f2)
+              branch_name=$(echo << pipeline.parameters.ARANGODB_BRANCH >> | cut -d= -f2 | cut -d, -f2)
               git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name
             fi
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_2 >>" != "" ] ; then
@@ -171,7 +171,7 @@ jobs:
             export DOCKER_ENV=examples
             export IFS=","
             if [ "<< pipeline.parameters.ARANGODB_BRANCH >>" != "" ] ; then
-              branch_name=$(env | grep ^ARANGODB_BRANCH= | cut -d= -f2 | cut -d, -f2)
+              branch_name=$(echo << pipeline.parameters.ARANGODB_BRANCH >> | cut -d= -f2 | cut -d, -f2)
               export ARANGODB_BRANCH=<< pipeline.parameters.ARANGODB_BRANCH >>
               export ARANGODB_SRC=/root/project/workspace/$branch_name
             fi
