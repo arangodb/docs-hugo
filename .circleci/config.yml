@@ -360,7 +360,7 @@ jobs:
           name: Create docker image from install.tar.gz and save it
           command: |
             main_hash=$(git rev-parse --short --verify << pipeline.parameters.ARANGODB_MAIN_BRANCH >>)
-            image_name=$(echo << pipeline.parameters.ARANGODB_MAIN_BRANCH | cut -d/ -f2)
+            image_name=$(echo << pipeline.parameters.ARANGODB_MAIN_BRANCH >> | cut -d/ -f2)
 
             cp install.tar.gz workspace/docs-hugo/toolchain/scripts/compile
             cd workspace/docs-hugo/toolchain/scripts/compile
