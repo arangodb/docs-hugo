@@ -363,14 +363,16 @@ jobs:
           command: |
             main_hash=$(git rev-parse --short --verify << pipeline.parameters.ARANGODB_MAIN_BRANCH >>)
             image_name=$(echo << pipeline.parameters.ARANGODB_MAIN_BRANCH >> | cut -d/ -f2)
-
+            mkdir /tmp/artifacts
+            cp install.tar.gz /tmp/artifacts
             cp install.tar.gz workspace/docs-hugo/toolchain/scripts/compile
             cd workspace/docs-hugo/toolchain/scripts/compile
             ## arangodb/docs-hugo:be-impatient-so-we-see-errors-3.10-12b6883
             docker build -t arangodb/docs-hugo:$image_name-<< pipeline.parameters.VERSION >>-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
-
             docker push arangodb/docs-hugo:$image_name-<< pipeline.parameters.VERSION >>-$main_hash
+      - store_artifacts:
+          path: /tmp/artifacts
 
 
 workflows:
