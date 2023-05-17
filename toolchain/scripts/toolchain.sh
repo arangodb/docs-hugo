@@ -402,7 +402,7 @@ function trap_container_exit() {
   done
   echo "[TERMINATE] Before docker compose stop all" >> arangoproxy-log.log
   docker container ps -a
-  docker container stop $(docker ps -aq)
+  #docker container stop $(docker ps -aq)
   echo "[TERMINATE] After docker container stop all" >> arangoproxy-log.log
   echo "[TERMINATE] After docker container stop all"
 
