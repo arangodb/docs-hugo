@@ -227,6 +227,17 @@ jobs:
             fi
             export GENERATORS=<< pipeline.parameters.GENERATORS >>
             cd docs-hugo/toolchain/docker && docker compose up
+
+      - run:
+          name: Commit generated files
+          command: |
+            if [ "<< pipeline.parameters.commit-generated >>" = true ] ; then
+                cd /home/circleci/project/docs-hugo/site
+                git config user.email "daniele@arangodb.com"
+                git config user.name "CircleCI Job"
+                git commit --allow-empty -m "[ci skip] Automatic commit of generated files from CircleCI" data/
+                git push 
+            fi
       
       - persist_to_workspace:
           root: .
@@ -420,9 +431,6 @@ workflows:
       - deploy:
           requires:
             - build-with-generated
-      - commit-generated:
-          requires:
-            - deploy
       - show-deploy-preview:
           requires:
             - deploy
