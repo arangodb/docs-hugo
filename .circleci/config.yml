@@ -319,12 +319,12 @@ jobs:
       - run:
           name: Configure
           command: |
-            cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
+            cmake --preset community-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
 
       - run:
           name: Build
           command: |
-            cmake --build --preset enterprise-pr --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest arangobackup
+            cmake --build --preset community-pr --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest
       - run:
           name: Size leaderboard
           command: |
@@ -339,7 +339,7 @@ jobs:
           command: sccache -s
       - run:
           name: Create archive of compiled instance
-          command: tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/ enterprise/js
+          command: tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/
       - persist_to_workspace:
           root: .
           paths:
@@ -364,16 +364,12 @@ jobs:
             main_hash=$(git rev-parse --short --verify << pipeline.parameters.ARANGODB_MAIN_BRANCH >>)
             image_name=$(echo << pipeline.parameters.ARANGODB_MAIN_BRANCH >> | cut -d/ -f2)
             mkdir /tmp/artifacts
-            cp install.tar.gz /tmp/artifacts
             cp install.tar.gz workspace/docs-hugo/toolchain/scripts/compile
             cd workspace/docs-hugo/toolchain/scripts/compile
             ## arangodb/docs-hugo:be-impatient-so-we-see-errors-3.10-12b6883
             docker build -t arangodb/docs-hugo:$image_name-<< pipeline.parameters.VERSION >>-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
             docker push arangodb/docs-hugo:$image_name-<< pipeline.parameters.VERSION >>-$main_hash
-      - store_artifacts:
-          path: /tmp/artifacts
-
 
 workflows:
   plain:
