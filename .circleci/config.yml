@@ -161,10 +161,11 @@ jobs:
                 git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $preview_branch $preview_branch
                 docker pull $branch_name
               else 
-                git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name $branch_name
                 pwd && ls
                 image_name=$(echo ${branch_name##*/})
-                main_hash=$(awk 'END{print}' $branch_name/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)
+                git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name $branch_name
+
+                main_hash=$(awk 'END{print}' $image_name/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)
                 docker pull arangodb/docs-hugo:$image_name-$version-$main_hash
                 docker tag arangodb/docs-hugo:$image_name-$version-$main_hash $image_name-$version
               fi
@@ -177,10 +178,11 @@ jobs:
                 git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $preview_branch $preview_branch
                 docker pull $branch_name
               else 
-                git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name $branch_name
                 pwd && ls
                 image_name=$(echo ${branch_name##*/})
-                main_hash=$(awk 'END{print}' $branch_name/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)
+                git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name $branch_name
+
+                main_hash=$(awk 'END{print}' $image_name/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)
                 docker pull arangodb/docs-hugo:$image_name-$version-$main_hash
                 docker tag arangodb/docs-hugo:$image_name-$version-$main_hash $image_name-$version
               fi
@@ -203,12 +205,24 @@ jobs:
             if [ "<< pipeline.parameters.ARANGODB_BRANCH >>" != "" ] ; then
               branch_name=$(echo << pipeline.parameters.ARANGODB_BRANCH >> | cut -d= -f2 | cut -d, -f2)
               export ARANGODB_BRANCH=<< pipeline.parameters.ARANGODB_BRANCH >>
-              export ARANGODB_SRC=/root/project/workspace/$branch_name
+              if [[ $branch_name == *"arangodb/enterprise"* ]]; then
+                preview_branch=$(echo $branch_name | cut -d: -f2 | cut -d- -f1)
+                export ARANGODB_SRC=/root/project/workspace/$preview_branch
+              else
+                image_name=$(echo ${branch_name##*/})
+                export ARANGODB_SRC=/root/project/workspace/$image_name
+              fi
             fi
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_2 >>" != "" ] ; then
               branch_name=$(echo << pipeline.parameters.ARANGODB_BRANCH_2 >> | cut -d= -f2 | cut -d, -f2)
               export ARANGODB_BRANCH_2=<< pipeline.parameters.ARANGODB_BRANCH_2 >>
-              export ARANGODB_SRC_2=/root/project/workspace/$branch_name
+              if [[ $branch_name == *"arangodb/enterprise"* ]]; then
+                preview_branch=$(echo $branch_name | cut -d: -f2 | cut -d- -f1)
+                export ARANGODB_SRC=/root/project/workspace/$preview_branch
+              else
+                image_name=$(echo ${branch_name##*/})
+                export ARANGODB_SRC=/root/project/workspace/$image_name
+              fi
             fi
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_3 >>" != "" ] ; then
               branch_name=$(echo << pipeline.parameters.ARANGODB_BRANCH_3 >> | cut -d= -f2 | cut -d, -f2)
