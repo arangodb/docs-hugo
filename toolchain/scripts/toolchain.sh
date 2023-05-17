@@ -400,9 +400,13 @@ function trap_container_exit() {
       terminate=true
     fi
   done
+  echo "[TERMINATE] Before docker compose stop all" >> arangoproxy-log.log
+  docker container ps -a
+  #docker container stop $(docker ps -aq)
+  echo "[TERMINATE] After docker container stop all" >> arangoproxy-log.log
+  echo "[TERMINATE] After docker container stop all"
 
-  docker container stop $(docker ps -aq)
-  exit 1
+  docker container stop toolchain
 }
 
 function clean_terminate_toolchain() {
