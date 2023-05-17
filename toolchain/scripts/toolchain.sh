@@ -390,12 +390,13 @@ function trap_container_exit() {
   do
     siteContainerStatus=$(docker ps -a -q --filter "name=site" --filter "status=exited")
     if [ "$siteContainerStatus" != "" ] ; then
+      echo "[TERMINATE] Site exited, shutting down all containers" >> arangoproxy-log.log
 
       terminate=true
     fi
     arangoproxyContainerStatus=$(docker ps -a -q --filter "name=arangoproxy" --filter "status=exited")
     if [ "$arangoproxyContainerStatus" != "" ] ; then
-      echo "[TERMINATE] Arangoproxy exited, shutting down all containers" >> arangoproxy-log.log
+      echo "[TERMINATE] Arangoproxy exited, shutting down all containers" >> site-log.log
       terminate=true
     fi
   done
