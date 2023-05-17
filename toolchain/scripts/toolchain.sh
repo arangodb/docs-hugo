@@ -406,7 +406,7 @@ function trap_container_exit() {
   echo "[TERMINATE] After docker container stop all" >> arangoproxy-log.log
   echo "[TERMINATE] After docker container stop all"
 
-  exit 1
+  docker container stop toolchain
 }
 
 function clean_terminate_toolchain() {
