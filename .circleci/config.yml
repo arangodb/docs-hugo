@@ -249,7 +249,9 @@ jobs:
             - run:
                 name: Commit cache file to github
                 command: |
+                  pwd && ls
                   cd docs-hugo
+                  ls
                   git config user.email "daniele@arangodb.com"
                   git config user.name "CircleCI Job"
                   git commit --allow-empty -m "[ci skip] Automatic commit of generated files from CircleCI" site/data/
