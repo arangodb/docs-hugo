@@ -73,15 +73,11 @@ jobs:
       - run:
           name: Clone arangodb main repo
           command: |
-            cd workspace && git clone --depth 1 << parameters.repository >> --branch << parameters.branch >>
-      - run:
-          name: check cloned folders
-          command: |
-            pwd && ls && cd workspace && ls
+            git clone --depth 1 << parameters.repository >> --branch << parameters.branch >>
       - persist_to_workspace:
           root: .
           paths:
-            - workspace
+            - .
 
   migration: 
     docker:
@@ -253,7 +249,7 @@ jobs:
             - run:
                 name: Commit cache file to github
                 command: |
-                  cd workspace/docs-hugo
+                  cd docs-hugo
                   git config user.email "daniele@arangodb.com"
                   git config user.name "CircleCI Job"
                   git commit --allow-empty -m "[ci skip] Automatic commit of generated files from CircleCI" site/data/
@@ -272,7 +268,7 @@ jobs:
 
       - run:
           name: Deploy to netlify
-          command: netlify deploy --dir=workspace/docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"
+          command: netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"
 
   show-deploy-preview:
     docker:
@@ -392,8 +388,8 @@ jobs:
             main_hash=$(git rev-parse --short --verify << pipeline.parameters.ARANGODB_MAIN_BRANCH >>)
             image_name=$(echo << pipeline.parameters.ARANGODB_MAIN_BRANCH >> | cut -d/ -f2)
             mkdir /tmp/artifacts
-            cp install.tar.gz workspace/docs-hugo/toolchain/scripts/compile
-            cd workspace/docs-hugo/toolchain/scripts/compile
+            cp install.tar.gz docs-hugo/toolchain/scripts/compile
+            cd docs-hugo/toolchain/scripts/compile
             ## arangodb/docs-hugo:be-impatient-so-we-see-errors-3.10-12b6883
             docker build -t arangodb/docs-hugo:$image_name-<< pipeline.parameters.VERSION >>-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
