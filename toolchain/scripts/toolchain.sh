@@ -112,76 +112,42 @@ function log(){
   echo "[$LOG_TARGET] "$1""
 }
 
+function return_image_id() {
+  echo "$1"
+}
+
 
 ### IMAGE PULL/START FUNCTIONS
 
 function pull_image() {
   log "[PULL-IMAGE] Invoke"
-  image_name="$1"
-
-  log "[PULL IMAGE] Start pull of image " "$image_name"
-  echo ""
+  branch_name="$1"
+  version="$2"
+  src="$3"
 
   # Check the image is an official dockerhub image
-  log "[PULL IMAGE] Try from Dockerhub"
-  docker pull "$image_name"
+  log "[PULL IMAGE] Try from Offical ArangoDB Dockerhub"
+  docker pull "$branch_name"
 
-  if [ $? -eq 0 ]; then
+  if [ "$?" == "0" ]; then
     log "[PULL IMAGE] Image downloaded from Dockerhub"
     return
   fi
 
-  log "[PULL IMAGE] Cannot find image on Dockerhub, try on CircleCI"
-  pull_image_from_circleci "$image_name"
-}
-
-function pull_image_from_circleci() {
-  log "[CIRCLECI-PULL] Invoke"
-  branch_name="$1"
+  log "[PULL IMAGE] Try from Private arangodb/docs-hugo Dockerhub repository"
   image_name=$(echo ${branch_name##*/})
-  log "[CIRCLECI-PULL] Branch Name: $branch_name"
-  log "[CIRCLECI-PULL] Image Name: $image_name"
+  main_hash=$(awk 'END{print}' $src/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)
 
-  ## Get latest pipeline of the feature-pr branch
-  circle_ci_pipeline=$(curl -s https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/pipeline?branch=$branch_name)
-  pipeline_id=$(echo "$circle_ci_pipeline" | jq '.items[0].id' | tr -d '"')
-  log "[CIRCLECI-PULL] Latest PipelineID of compiled branch: $pipeline_id"
+  docker_tag="arangodb/docs-hugo:$image_name-$version-$main_hash"
 
-  ## Check the pipeline is newer than the local image tag of the branch
-  isLocalImageTheLatest=$(docker images --filter=reference=$image_name:* | grep $pipeline_id)
-  log "[CIRCLECI-PULL] Check latest docker image id - $isLocalImageTheLatest"
-  if [ "$isLocalImageTheLatest" != "" ] ; then
-    return
+  image_id=$(docker images --filter=reference=$docker_tag | awk 'NR==2' | awk '{print $3}')
+  if [ "$image_id" == "" ]; then
+    docker pull $docker_tag
+    docker tag $docker_tag $image_name-$version
   fi
-
-  log "Local image is not the latest one, donwloading latest"
-
-  ## Get the workflows of the pipeline
-  workflow_id=$(curl -s https://circleci.com/api/v2/pipeline/$pipeline_id/workflow | jq -r '.items[] | "\(.id)"')
-  log "[CIRCLECI-PULL] Latest WorkflowID: $workflow_id"
-  
-  ## Get jobs of the workflow
-  jobs_numbers_string=$(curl -s https://circleci.com/api/v2/workflow/$workflow_id/job\? | jq -r '.items[] | select (.type? == "build") | .job_number')
-
-  unset IFS
-  read -ra jobs_numbers -d '' <<<"$jobs_numbers_string"
-
-  for job_number in "${jobs_numbers[@]}"
-  do
-    job_artifacts=$(curl --request GET --url https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/$job_number/artifacts --header 'authorization: Basic REPLACE_BASIC_AUTH')
-    artifact_urls=$(echo "$job_artifacts" | jq -r '.items[] | .url')
-    for artifact_url in "$artifact_urls"
-    do
-      echo "[CIRCLECI-PULL] Downloading artifacts of job number: " "$job_number"
-      echo "[CIRCLECI-PULL] Link: " "$artifact_url"
-      wget "$artifact_url"
-    done
-  done
-
-  # Load image from tar
-  docker load < "$image_name":"$pipeline_id".tar.gz
-  log "[PULL IMAGE] Image loaded from CircleCI Artifact"
 }
+
+
 
 function setup_arangoproxy() {
   name=$1
@@ -228,9 +194,10 @@ function start_server() {
   name=$1
   branch_name=$2
   version=$3
+  src=$4
   container_name="$name"_"$version"
-  examples=$4
-  options=$5
+  examples=$5
+  options=$6
 
   log "[START_SERVER] Setup server"
   echo "$name" "$image" "$version"
@@ -246,17 +213,29 @@ function start_server() {
   docker container rm "$container_name" "$container_name"_agent1 "$container_name"_dbserver1 "$container_name"_dbserver2 "$container_name"_dbserver3 "$container_name"_coordinator1 arangoproxy site  || true
   echo ""
 
-  ## Download the server image from Dockerhub/CircleCI
-  pull_image "$branch_name"
-
-  ## Cut the firstword/ from the branch field
+   ## Cut the firstword/ from the branch field
   image_name=$(echo ${branch_name##*/})
 
   ## Get the docker image id to run of the server
-  image_id=$(docker images --filter=reference=$image_name | awk 'NR==2' | awk '{print $3}')
+  image_id=$(docker images --filter=reference=$image_name-$version | awk 'NR==2' | awk '{print $3}')
   if [ "$image_id" == "" ]; then
-      image_id=$(docker images --filter=reference=$branch_name | awk 'NR==2' | awk '{print $3}') ## this is used for official arangodb images, arangodb/arangodb:tag
+    image_id=$(docker images --filter=reference=$branch_name | awk 'NR==2' | awk '{print $3}') ## this is used for official arangodb images, arangodb/arangodb:tag
+    if [ "$image_id" == "" ]; then
+    ## Download the server image from Dockerhub/CircleCI
+      if [ "$DOCKER_ENV" == "dev" ]; then
+        pull_image "$branch_name" "$version" "$src"
+        image_id=$(docker images --filter=reference=$image_name-$version | awk 'NR==2' | awk '{print $3}')
+      else
+        echo "[START_SERVER] No Image ID find to run"
+        echo "[ERROR] Aborting"
+        exit 1
+      fi
+    fi
   fi
+
+  
+
+ 
   log "$image_id"
 
 
@@ -453,7 +432,7 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
 
     ## Generators stat do need arangodb instances running
     if [ "$start_servers" = true ] ; then
-      start_server "$name" "$image" "$version" "$generate_examples" "$generate_startup"
+      start_server "$name" "$image" "$version" "$arangodb_src" "$generate_examples" "$generate_startup"
     fi
   done
 

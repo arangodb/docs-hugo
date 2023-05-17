@@ -1,4 +1,4 @@
-FROM ubuntu:latest AS arangoproxy
+FROM golang:1.19 AS arangoproxy
 
 ARG BUILDARCH
 RUN echo ${BUILDARCH}
@@ -12,7 +12,7 @@ CMD cd /home/toolchain/scripts ; ./start_arangoproxy.sh
 
 
 
-FROM ubuntu:latest AS hugo
+FROM golang:1.19 AS hugo
 
 RUN apt-get update && \
     apt-get install -y git curl
