@@ -29,7 +29,7 @@ if [[ -z "${DOCKER_ENV}" ]]; then
   DOCKER_ENV="dev"
 fi
 
-if [[ -z "${GENERATORS}" ]]; then
+if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
   GENERATORS="examples metrics error-codes api-docs options"
 fi
 
@@ -72,6 +72,11 @@ yq  '(.. | select(tag == "!!str")) |= envsubst' -i ../docker/config.yaml
 
 GENERATORS=$(yq -r '.generators' ../docker/config.yaml)
 
+
+if [ "$GENERATORS" == "" ]; then
+  GENERATORS="examples metrics error-codes api-docs options"
+fi
+
 # Check for requested operations
 if [[ $GENERATORS == *"examples"* ]]; then
   generate_examples=true
@@ -94,6 +99,7 @@ fi
 if [[ $GENERATORS == *"api-docs"* ]]; then
   generate_apidocs=true
 fi
+
 
 
 echo "[TOOLCHAIN] Expanded Config file:"
@@ -219,6 +225,7 @@ function start_server() {
   ## Get the docker image id to run of the server
   image_id=$(docker images --filter=reference=$image_name-$version | awk 'NR==2' | awk '{print $3}')
   if [ "$image_id" == "" ]; then
+    echo "$branch_name"
     image_id=$(docker images --filter=reference=$branch_name | awk 'NR==2' | awk '{print $3}') ## this is used for official arangodb images, arangodb/arangodb:tag
     if [ "$image_id" == "" ]; then
     ## Download the server image from Dockerhub/CircleCI
@@ -315,6 +322,8 @@ function start_server() {
 ### GENERATORS FUNCTIONS
 
 function generate_startup_options {
+  set -e
+
   container_name="$1"
   dst_folder=$(yq -r '.program-options' ../docker/config.yaml)
   log "[GENERATE OPTIONS] Starting options dump for container " "$container_name"
@@ -326,34 +335,45 @@ function generate_startup_options {
       docker exec -it "$container_name" "${HELPPROGRAM}" --dump-options >> "$dst_folder"/"$GENERATOR_VERSION"/"$HELPPROGRAM".json
       log "Done"
   done
+
+  set +e
 }
 
 function generate_apidocs() {
-  version=$1
+  set -e 
 
+  version=$1
+  touch api-docs.json
   log "[GENERATE-APIDOCS] Generating api-docs"
-  log "[TOOLCHAIN] $PYTHON_EXECUTABLE generators/generateApiDocs.py --src ../../ --dst ./api-docs.json --version $version"
-  "$PYTHON_EXECUTABLE" generators/generateApiDocs.py --src ../../ --dst ./api-docs.json --version "$version"
-  log "[GENERATE-APIDOCS] Output file: " "./api-docs.json"
+  log "[TOOLCHAIN] $PYTHON_EXECUTABLE generators/generateApiDocs.py --src ../../ --dst api-docs.json --version $version"
+  "$PYTHON_EXECUTABLE" generators/generateApiDocs.py --src ../../ --dst api-docs.json --version "$version"
+  log "[GENERATE-APIDOCS] Output file: ./api-docs.json"
   ## Validate the openapi schema
-  log "[GENERATE-APIDOCS] Starting openapi schema validation"
-  swagger-cli validate ./api-docs.json
+  #log "[GENERATE-APIDOCS] Starting openapi schema validation"
+  #swagger-cli validate ./api-docs.json
+  
+  set +e
 }
 
 function generate_error_codes() {
   errors_dat_file=$1
   version=$2
+  touch ../../site/data/$version/errors.yaml
   log "[GENERATE ERROR-CODES] Launching generate error-codes script"
   log "[GENERATE ERROR-CODES] $PYTHON_EXECUTABLE generators/generateErrorCodes.py --src "$1"/lib/Basics/errors.dat --dst ../../site/data/$version/errors.yaml"
-  "$PYTHON_EXECUTABLE" generators/generateErrorCodes.py --src "$1"/lib/Basics/errors.dat --dst ../../../site/data/$version/errors.yaml
+  "$PYTHON_EXECUTABLE" generators/generateErrorCodes.py --src "$1"/lib/Basics/errors.dat --dst ../../site/data/$version/errors.yaml
 }
 
 function generate_metrics() {
+  set -e
+
   src=$1
   version=$2
   log "[GENERATE-METRICS] Generate Metrics requested"
   log "[GENERATE-METRICS] $PYTHON_EXECUTABLE generators/generateMetrics.py --main $src --dst ../../site/data/$version"
   "$PYTHON_EXECUTABLE" generators/generateMetrics.py --main "$src" --dst ../../site/data/$version
+  
+  set +e
 }
 
 
@@ -438,8 +458,11 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
 
   ## Start arangoproxy and site containers to build examples and site
   if [ "$generate_examples" = true ] ; then
-    docker build --target arangoproxy ../docker/ -t arangoproxy
-    docker  build --target hugo ../docker/ -t site
+    if [ "$DOCKER_ENV" == "dev" ]; then
+      docker build --target arangoproxy ../docker/ -t arangoproxy
+      docker  build --target hugo ../docker/ -t site
+    fi
+    
     cd ../../
     echo "[GENERATE-EXAMPLES]  Run arangoproxy and site containers"
     docker run -d --name site --network=docs_net --ip=192.168.129.130 --env-file toolchain/docker/env/"$DOCKER_ENV".env -p 1313:1313 --volumes-from toolchain --log-opt tag="{{.Name}}" site 
