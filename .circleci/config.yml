@@ -233,10 +233,11 @@ jobs:
             cd docs-hugo/toolchain/docker && docker compose up
       
       - persist_to_workspace:
-          root: .
+          root: /
           paths:
-            - workspace/docs-hugo/site/public
-            - workspace/docs-hugo/site/data
+            - /home/circleci/project/docs-hugo/site/public
+            - /home/circleci/project/docs-hugo/site/data
+
 
   commit-generated: 
     docker:
