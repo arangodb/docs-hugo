@@ -149,8 +149,7 @@ jobs:
       - run:
           name: Clone arangodb branches
           command: |
-            cd docs-hugo/.circleci
-            source ./utils.sh
+            source docs-hugo/.circleci/utils.sh
             if [ "<< pipeline.parameters.ARANGODB_BRANCH >>" != "" ] ; then
               generate_setup-arangodb-branches << pipeline.parameters.ARANGODB_BRANCH >>
             fi
@@ -160,12 +159,15 @@ jobs:
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_3 >>" != "" ] ; then
               generate_setup-arangodb-branches << pipeline.parameters.ARANGODB_BRANCH_3 >>
             fi
+            pwd && ls
 
       - run:
           name: Set environment variables and launch toolchain
           command: |
+            source docs-hugo/.circleci/utils.sh
             export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--docs-hugo.netlify.app
             export DOCKER_ENV=examples
+            
             if [ "<< pipeline.parameters.ARANGODB_BRANCH >>" != "" ] ; then
               generate_setup-environment-var-branch << pipeline.parameters.ARANGODB_BRANCH >>
             fi
