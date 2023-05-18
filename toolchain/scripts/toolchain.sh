@@ -308,7 +308,7 @@ function start_server() {
 
 
   if [ "$options" = true ] ; then
-    generate_startup_options "$name"
+    generate_startup_options "$container_name" "$version"
   fi
 
    if [ "$examples" = true ] ; then
@@ -325,14 +325,17 @@ function generate_startup_options {
   set -e
 
   container_name="$1"
-  dst_folder=$(yq -r '.program-options' ../docker/config.yaml)
+  version="$2"
   log "[GENERATE OPTIONS] Starting options dump for container " "$container_name"
   echo ""
-  ALLPROGRAMS="arangobench arangod arangodump arangoexport arangoimport arangoinspect arangorestore arangosh"
+  declare -a ALLPROGRAMS=("arangobench" "arangod" "arangodump" "arangoexport" "arangoimport" "arangoinspect" "arangorestore" "arangosh")
 
-  for HELPPROGRAM in ${ALLPROGRAMS}; do
+  for HELPPROGRAM in ${ALLPROGRAMS[@]}; do
+      pwd
       log "[GENERATE OPTIONS] Dumping program options of ${HELPPROGRAM}"
-      docker exec -it "$container_name" "${HELPPROGRAM}" --dump-options >> "$dst_folder"/"$GENERATOR_VERSION"/"$HELPPROGRAM".json
+      log "docker exec -it $container_name ${HELPPROGRAM} --dump-options >> ../../site/data/$version/$HELPPROGRAM.json"
+
+      docker exec "$container_name" "${HELPPROGRAM}" --dump-options >> ../../site/data/$version/"$HELPPROGRAM".json
       log "Done"
   done
 

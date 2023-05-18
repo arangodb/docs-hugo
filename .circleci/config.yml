@@ -20,7 +20,15 @@ parameters:
 
   ARANGODB_ENTERPRISE_BRANCH:
     type: string
-    default: "devel"
+    default: ""
+
+  ARANGODB_ENTERPRISE_BRANCH_2:
+    type: string
+    default: ""
+
+  ARANGODB_ENTERPRISE_BRANCH_3:
+    type: string
+    default: ""
 
   ARANGODB_DOCS_OLD_BRANCH:
     type: string
@@ -119,7 +127,7 @@ jobs:
           command: |
             export HUGO_ENV=prod
             export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--docs-hugo.netlify.app
-            pwd && cd workspace/docs-hugo/toolchain/docker && docker compose -f docker-compose.plain-build.yml up --build
+            cd workspace/docs-hugo/toolchain/docker && docker compose -f docker-compose.plain-build.yml up --build
             
       - persist_to_workspace:
           root: .
@@ -151,15 +159,14 @@ jobs:
           command: |
             source docs-hugo/.circleci/utils.sh
             if [ "<< pipeline.parameters.ARANGODB_BRANCH >>" != "" ] ; then
-              generate_setup-arangodb-branches << pipeline.parameters.ARANGODB_BRANCH >>
+              generate_setup-arangodb-branches << pipeline.parameters.ARANGODB_BRANCH >> << pipeline.parameters.ARANGODB_ENTERPRISE_BRANCH >>
             fi
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_2 >>" != "" ] ; then
-              generate_setup-arangodb-branches << pipeline.parameters.ARANGODB_BRANCH_2 >>
+              generate_setup-arangodb-branches << pipeline.parameters.ARANGODB_BRANCH_2 >> << pipeline.parameters.ARANGODB_ENTERPRISE_BRANCH_2 >>
             fi
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_3 >>" != "" ] ; then
-              generate_setup-arangodb-branches << pipeline.parameters.ARANGODB_BRANCH_3 >>
+              generate_setup-arangodb-branches << pipeline.parameters.ARANGODB_BRANCH_3 >> << pipeline.parameters.ARANGODB_ENTERPRISE_BRANCH_3 >>
             fi
-            pwd && ls
 
       - run:
           name: Set environment variables and launch toolchain
@@ -167,6 +174,7 @@ jobs:
             source docs-hugo/.circleci/utils.sh
             export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--docs-hugo.netlify.app
             export DOCKER_ENV=examples
+            export GENERATORS=<< pipeline.parameters.GENERATORS >>
             
             if [ "<< pipeline.parameters.ARANGODB_BRANCH >>" != "" ] ; then
               generate_setup-environment-var-branch << pipeline.parameters.ARANGODB_BRANCH >>
@@ -177,7 +185,6 @@ jobs:
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_3 >>" != "" ] ; then
               generate_setup-environment-var-branch << pipeline.parameters.ARANGODB_BRANCH_3 >>
             fi
-            export GENERATORS=<< pipeline.parameters.GENERATORS >>
             cd docs-hugo/toolchain/docker && docker compose up
 
       - run:
@@ -197,26 +204,7 @@ jobs:
             - docs-hugo/site/public
             - docs-hugo/site/data
 
-
-  commit-generated: 
-    docker:
-      - image: cimg/base:current
-    resource_class: small
-    
-    steps:
-      - attach_workspace:
-          at: .
-      - when:
-          condition: << pipeline.parameters.commit-generated >>
-          steps:
-            - run:
-                name: Commit cache file to github
-                command: |
-                  cd /home/circleci/project/docs-hugo/site
-                  git config user.email "daniele@arangodb.com"
-                  git config user.name "CircleCI Job"
-                  git commit --allow-empty -m "[ci skip] Automatic commit of generated files from CircleCI" data/
-                  git push 
+ 
 
   deploy:
     docker:
