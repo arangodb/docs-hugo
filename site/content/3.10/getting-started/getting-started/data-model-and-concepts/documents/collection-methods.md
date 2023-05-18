@@ -27,13 +27,11 @@ server_name: stable
 type: single
 ---
 ~ db._create("five");
-  db.five.insert({ name : "one_new" });
-  db.five.insert({ name : "two_new" });
-  db.five.insert({ name : "three_new" });
-  db.five.insert({ name : "four_new" });
-  db.five.insert({ name : "five_new" });
-  db.five.insert({ name : "six_new" });
-  db.five.insert({ name : "seven_new" });
+  db.five.insert({ name : "one" });
+  db.five.insert({ name : "two" });
+  db.five.insert({ name : "three" });
+  db.five.insert({ name : "four" });
+  db.five.insert({ name : "five" });
   db.five.all().toArray();
 ~ db._drop("five");
 ```
