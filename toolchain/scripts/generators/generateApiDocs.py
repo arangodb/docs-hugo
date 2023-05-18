@@ -89,13 +89,13 @@ def processFile(filepath):
 
         summary = re.search(r"^#{1,6} (.+)", endpoint, re.MULTILINE)
         if "summary" in endpointDict["paths"][path][method]:
-            print(f"WARNING: Summary field already in spec {path}-{method}")
+            print(f"WARNING: Summary field already in spec {method}-{path}")
 
         if summary:
             endpointDict["paths"][path][method]["summary"] = summary.group(1)
         
         if not "summary" in endpointDict["paths"][path][method] and not summary:
-            print(f"WARNING: Missing both summary field and headline in spec {path}-{method}")
+            print(f"WARNING: Missing both summary field and headline in spec {method}-{path}")
 
         
         apiDocsRes["paths"][path][method] = endpointDict["paths"][path][method]
