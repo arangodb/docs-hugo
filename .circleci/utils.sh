@@ -2,18 +2,21 @@
 
 function generate_setup-arangodb-branches(){
     ARANGODB_BRANCH="$1"
+    echo "[SETUP] Setup server $ARANGODB_BRANCH"
     branch_name=$(echo $ARANGODB_BRANCH | cut -d= -f2 | cut -d, -f2)
     version=$(echo $ARANGODB_BRANCH | cut -d= -f2 | cut -d, -f3)
     if [[ "$branch_name" == *"arangodb/enterprise"* ]]; then
+        echo "[SETUP] An official ArangoDB Enterprise image has been chosen"
         preview_branch=$(echo $branch_name | cut -d: -f2 | cut -d- -f1)
         git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $preview_branch $preview_branch
         docker pull $branch_name
     else 
-        pwd && ls
+        echo "[SETUP] A Feature-PR Docker image has been choosen"
         image_name=$(echo ${branch_name##*/})
         git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name $image_name
 
         main_hash=$(awk 'END{print}' $image_name/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)
+        echo "[SETUP] Check TAG Image arangodb/docs-hugo:$image_name-$version-$main_hash"
         docker pull arangodb/docs-hugo:$image_name-$version-$main_hash
         docker tag arangodb/docs-hugo:$image_name-$version-$main_hash $image_name-$version
     fi
