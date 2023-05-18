@@ -20,7 +20,15 @@ parameters:
 
   ARANGODB_ENTERPRISE_BRANCH:
     type: string
-    default: "devel"
+    default: ""
+
+  ARANGODB_ENTERPRISE_BRANCH_2:
+    type: string
+    default: ""
+
+  ARANGODB_ENTERPRISE_BRANCH_3:
+    type: string
+    default: ""
 
   ARANGODB_DOCS_OLD_BRANCH:
     type: string
@@ -151,13 +159,13 @@ jobs:
           command: |
             source docs-hugo/.circleci/utils.sh
             if [ "<< pipeline.parameters.ARANGODB_BRANCH >>" != "" ] ; then
-              generate_setup-arangodb-branches << pipeline.parameters.ARANGODB_BRANCH >>
+              generate_setup-arangodb-branches << pipeline.parameters.ARANGODB_BRANCH >> << pipeline.parameters.ARANGODB_ENTERPRISE_BRANCH >>
             fi
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_2 >>" != "" ] ; then
-              generate_setup-arangodb-branches << pipeline.parameters.ARANGODB_BRANCH_2 >>
+              generate_setup-arangodb-branches << pipeline.parameters.ARANGODB_BRANCH_2 >> << pipeline.parameters.ARANGODB_ENTERPRISE_BRANCH_2 >>
             fi
             if [ "<< pipeline.parameters.ARANGODB_BRANCH_3 >>" != "" ] ; then
-              generate_setup-arangodb-branches << pipeline.parameters.ARANGODB_BRANCH_3 >>
+              generate_setup-arangodb-branches << pipeline.parameters.ARANGODB_BRANCH_3 >> << pipeline.parameters.ARANGODB_ENTERPRISE_BRANCH_3 >>
             fi
 
       - run:
