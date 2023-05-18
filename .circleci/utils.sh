@@ -6,14 +6,14 @@ function generate_setup-arangodb-branches(){
     version=$(echo $ARANGODB_BRANCH | cut -d= -f2 | cut -d, -f3)
     if [[ "$branch_name" == *"arangodb/enterprise"* ]]; then
         preview_branch=$(echo $branch_name | cut -d: -f2 | cut -d- -f1)
-        git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $preview_branch ../../$preview_branch
+        git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $preview_branch $preview_branch
         docker pull $branch_name
     else 
         pwd && ls
         image_name=$(echo ${branch_name##*/})
-        git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name ../../$image_name
+        git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name $image_name
 
-        main_hash=$(awk 'END{print}' ../../$image_name/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)
+        main_hash=$(awk 'END{print}' $image_name/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)
         docker pull arangodb/docs-hugo:$image_name-$version-$main_hash
         docker tag arangodb/docs-hugo:$image_name-$version-$main_hash $image_name-$version
     fi
