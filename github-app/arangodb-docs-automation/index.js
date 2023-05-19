@@ -7,6 +7,7 @@
  */
 module.exports = (app) => {
   app.on(["check_suite.requested", "check_run.rerequested"], check);
+  app.on(["pull_request.opened"], pullRequestOpen);
 
   async function check(context) {
     const startTime = new Date();
@@ -30,6 +31,10 @@ module.exports = (app) => {
         },
       })
     );
+  }
+
+  async function pullRequestOpen(context) {
+    app.log.info(context)
   }
 
   // For more information on building apps:
