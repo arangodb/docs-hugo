@@ -19,6 +19,8 @@ module.exports = (app) => {
 
   async function pullRequestOpen(context) {
     context.log(context.payload);
+    context.log("PR BODY")
+    context.log(context.payload.body)
   }
 
   // For more information on building apps:
