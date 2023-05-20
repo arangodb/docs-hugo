@@ -1,5 +1,3 @@
-// Checks API example
-// See: https://developer.github.com/v3/checks/ to learn more
 
 /**
  * This is the main entrypoint to your Probot app
@@ -18,14 +16,17 @@ module.exports = (app) => {
   }
 
   async function pullRequestOpen(context) {
-    context.log(context.payload);
     context.log("PR BODY")
-    context.log(context.payload.body)
+    //context.log(context.payload.pull_request.body)
+    parsePullRequestTemplate(context.payload.pull_request.body);
   }
 
-  // For more information on building apps:
-  // https://probot.github.io/docs/
+  function parsePullRequestTemplate(body) {
+    lines = body.match(/[^\r\n]+/g);
+    lines.forEach((line) => {
+      app.log.info("line");
+      app.log.info(line)
+    });
+  }
 
-  // To get your app running against GitHub, see:
-  // https://probot.github.io/docs/development/
 };
