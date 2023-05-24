@@ -16,7 +16,8 @@
     "test": "jest"
   },
   "dependencies": {
-    "probot": "^12.2.4"
+    "probot": "^12.2.4",
+    "body-parser": "latest"
   },
   "devDependencies": {
     "jest": "^29.0.0",
