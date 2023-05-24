@@ -9,12 +9,13 @@ import (
 
 var Repositories map[string]config.Repository
 
-func GetRepository(release, version string) (config.Repository, error) {
-	if repository, exists := Repositories[fmt.Sprintf("%s_%s", release, version)]; exists {
+func GetRepository(name, typ, version string) (config.Repository, error) {
+	Logger.Printf("GET REPO %s %s %s", name, typ, version)
+	if repository, exists := Repositories[fmt.Sprintf("%s_%s_%s", name, typ, version)]; exists {
 		return repository, nil
 	}
 
-	return config.Repository{}, errors.New("repository " + release + "_" + version + " not found")
+	return config.Repository{}, errors.New("repository " + name + "_" + version + " not found")
 }
 
 /*

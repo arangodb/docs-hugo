@@ -249,9 +249,10 @@ def processExamples(docuBlock):
 
         exampleName = re.search(r"(?<={).*(?=})", block).group(0)
         exampleBlock["options"]["name"] = exampleName
-        exampleBlock["options"]["release"] = "stable_single"
+        exampleBlock["options"]["server_name"] = "stable"
+        exampleBlock["options"]["type"] = "single"
         if "_cluster" in exampleBlock["options"]["name"]:
-            exampleBlock["options"]["release"] = "stable_cluster"
+            exampleBlock["options"]["type"] = "cluster"
             exampleBlock["options"]["name"] = exampleBlock["options"]["name"].replace("_cluster", "")
 
         exampleBlock["options"]["version"] = version
