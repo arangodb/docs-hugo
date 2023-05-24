@@ -1,0 +1,16 @@
+generators: ${GENERATORS}
+servers:
+  - name: ${ARANGODB_BRANCH_1_NAME}
+    image: ${ARANGODB_BRANCH_1_IMAGE}
+    version: ${ARANGODB_BRANCH_1_VERSION}
+    src:  ${ARANGODB_SRC}
+
+  - name: ${ARANGODB_BRANCH_2_NAME}
+    image: ${ARANGODB_BRANCH_2_IMAGE}
+    version: ${ARANGODB_BRANCH_2_VERSION}
+    src:  ${ARANGODB_SRC_2}
+
+  - name: ${ARANGODB_BRANCH_3_NAME}
+    image: ${ARANGODB_BRANCH_3_IMAGE}
+    version: ${ARANGODB_BRANCH_3_VERSION}
+    src:  ${ARANGODB_SRC_3}

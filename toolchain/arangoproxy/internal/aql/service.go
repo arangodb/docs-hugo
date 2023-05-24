@@ -14,11 +14,11 @@ type AQLService struct {
 	common.Service
 }
 
-func (service AQLService) Execute(request common.Example) (res AQLResponse) {
+func (service AQLService) Execute(request common.Example, cacheChannel chan map[string]interface{}) (res AQLResponse) {
 	defer common.Recover(fmt.Sprintf("AQLService.Execute(%s)", request.Code))
 	commands := service.formatRequestCode(&request)
 
-	repository, _ := common.GetRepository(request.Options.Release, request.Options.Version)
+	repository, _ := common.GetRepository(request.Options.ServerName, request.Options.Type, request.Options.Version)
 
 	// Check if dataset to be used
 	if request.Options.Dataset != "" {
@@ -32,7 +32,7 @@ func (service AQLService) Execute(request common.Example) (res AQLResponse) {
 
 	// Example is not cached, execute it against the arango instance
 	//commands = utils.TryCatchWrap(commands)
-	cmdOutput := arangosh.Exec(commands, repository)
+	cmdOutput := arangosh.Exec(request.Options.Name, commands, repository)
 
 	res.ExampleResponse.Input, res.ExampleResponse.Options = request.Code, request.Options
 
@@ -42,7 +42,10 @@ func (service AQLService) Execute(request common.Example) (res AQLResponse) {
 
 	common.FormatResponse(&res.ExampleResponse)
 	if cmdOutput != "" {
-		service.SaveCachedExampleResponse(request, res.ExampleResponse)
+		cacheRequest := make(map[string]interface{})
+		cacheRequest["request"] = request.Base64Request
+		cacheRequest["response"] = res.ExampleResponse
+		cacheChannel <- cacheRequest
 	}
 
 	res.BindVars = request.Options.BindVars
