@@ -1,9 +1,9 @@
 webserver: ':8080'
 logFile: log.txt
 datasetsFile: '../internal/aql/datasets.json'
-cache: '/home/site/data/cache.json'
+cache: '/home/site/data/'
 repositories:
   - name: stable
-    image: testimage
-    version: "3.10"
+    image: be-impatient-so-we-see-errors
+    version: "3.11"
     url: http://192.168.129.2:8529

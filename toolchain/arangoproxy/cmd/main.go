@@ -51,7 +51,7 @@ func init() {
 }
 
 func main() {
-	common.Logger.Print("Available endpoints:\n - /js\n - /aql\n - /openapi\n - /curl\n")
+	common.Logger.Print("Available endpoints:\n - /js\n - /aql\n - /curl\n")
 	common.Logger.Printf("Starting Server at %s\n", config.Conf.WebServer)
 
 	internal.StartController(config.Conf.WebServer)

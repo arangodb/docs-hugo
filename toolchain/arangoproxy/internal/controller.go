@@ -14,19 +14,20 @@ import (
 
 // Dependency Injection
 var (
-	JSService   = js.JSService{}
-	HTTPService = httpapi.HTTPService{}
-	AQLService  = aql.AQLService{}
+	CommonService = common.Service{}
+	JSService     = js.JSService{}
+	HTTPService   = httpapi.HTTPService{}
+	AQLService    = aql.AQLService{}
 
-	SpecListenerChannel = make(chan httpapi.HTTPSpecRequest)
+	CacheChannel = make(chan map[string]interface{})
 )
 
 // Start and expose the webserver
 func StartController(url string) {
+	go CommonService.SaveCachedExampleResponse(CacheChannel)
 	// Create routes
 	http.HandleFunc("/health", HealthHandler)
 	http.HandleFunc("/js", JSHandler)
-	http.HandleFunc("/openapi", HTTPSpecHandler)
 	http.HandleFunc("/curl", HTTPExampleHandler)
 	http.HandleFunc("/aql", AQLHandler)
 	http.HandleFunc("/go", TODOHandler)
@@ -45,7 +46,7 @@ func JSHandler(w http.ResponseWriter, r *http.Request) {
 
 	common.Logger.Printf("[js/CONTROLLER] Processing Example %s\n", request.Options.Name)
 
-	resp := JSService.ExecuteExample(request)
+	resp := JSService.ExecuteExample(request, CacheChannel)
 	response, err := json.Marshal(resp)
 	if err != nil {
 		fmt.Printf("[js/CONTROLLER] Error marshalling response: %s\n", err.Error())
@@ -66,7 +67,7 @@ func HTTPExampleHandler(w http.ResponseWriter, r *http.Request) {
 
 	common.Logger.Printf("[curl/CONTROLLER] Processing Example %s\n", request.Options.Name)
 
-	resp, err := HTTPService.ExecuteHTTPExample(request)
+	resp, err := HTTPService.ExecuteHTTPExample(request, CacheChannel)
 	if err != nil {
 		common.Logger.Printf("[HTTP] Error caused by request\n%s", request.Code)
 	}
@@ -81,27 +82,6 @@ func HTTPExampleHandler(w http.ResponseWriter, r *http.Request) {
 	w.Write(response)
 }
 
-// Handler for openapi codeblocks
-func HTTPSpecHandler(w http.ResponseWriter, r *http.Request) {
-	request, err := httpapi.ParseRequest(r.Body)
-	if err != nil {
-		common.Logger.Printf("[openapi/CONTROLLER] Error Parsing Request: %s\n", err.Error())
-		x, _ := json.Marshal(httpapi.HTTPResponse{})
-		w.Write(x)
-		return
-	}
-	response := httpapi.HTTPResponse{ApiSpec: request.ApiSpec}
-	jsonResponse, err := json.Marshal(response)
-	if err != nil {
-		common.Logger.Printf("[openapi/CONTROLLER] Error Marshalling Response: %s\n", err.Error())
-		x, _ := json.Marshal(httpapi.HTTPResponse{})
-		w.Write(x)
-		return
-	}
-
-	w.Write(jsonResponse)
-}
-
 // Handler for aql codeblocks
 func AQLHandler(w http.ResponseWriter, r *http.Request) {
 	request, err := common.ParseExample(r.Body, common.AQL)
@@ -112,7 +92,7 @@ func AQLHandler(w http.ResponseWriter, r *http.Request) {
 
 	common.Logger.Printf("[aql/CONTROLLER] Processing Example %s\n", request.Options.Name)
 
-	resp := AQLService.Execute(request)
+	resp := AQLService.Execute(request, CacheChannel)
 	response, err := json.Marshal(resp)
 	if err != nil {
 		fmt.Printf("[aql/CONTROLLER] Error marshalling response: %s\n", err.Error())
