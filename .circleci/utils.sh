@@ -31,14 +31,14 @@ function generate_setup-arangodb-branches(){
         echo "[SETUP] An official ArangoDB Enterprise image has been chosen"
         preview_branch=$(echo $branch_name | cut -d: -f2 | cut -d- -f1)
         git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $preview_branch $preview_branch
-        clone-arangodb-enterprise $preview_branch $ENTERPRISE_BRANCH
+        # clone-arangodb-enterprise $preview_branch $ENTERPRISE_BRANCH
         echo "[SETUP] Pull Docker Image $branch_name"
         docker pull $branch_name
     else 
         echo "[SETUP] A Feature-PR Docker image has been choosen"
         image_name=$(echo ${branch_name##*/})
         git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name $image_name
-        clone-arangodb-enterprise $branch_name $ENTERPRISE_BRANCH
+        # clone-arangodb-enterprise $branch_name $ENTERPRISE_BRANCH
 
         main_hash=$(awk 'END{print}' $image_name/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)
         echo "[SETUP] Check TAG Image arangodb/docs-hugo:$image_name-$version-$main_hash"
