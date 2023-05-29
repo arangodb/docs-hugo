@@ -295,6 +295,7 @@ jobs:
           command: |
             if [ "<< parameters.arangodb-branch >>" == "" ] || [[ "<< parameters.arangodb-branch >>" == *"arangodb/enterprise"* ]]; then
               circleci-agent step halt
+              exit 0
             fi
 
             ARANGODB_BRANCH=<< parameters.arangodb-branch >>
