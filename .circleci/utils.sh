@@ -59,3 +59,4 @@ function generate_setup-environment-var-branch() {
         export ARANGODB_SRC=/home/circleci/project/$image_name
     fi
 }
+
