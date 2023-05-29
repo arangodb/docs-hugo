@@ -30,6 +30,10 @@ parameters:
     type: boolean
     default: false
 
+  create-pr:
+    type: boolean
+    default: false
+
 jobs:
   plain-build: 
     machine:
@@ -72,6 +76,9 @@ jobs:
       commit-generated:
         type: boolean
         default: false
+      create-pr:
+        type: boolean
+        default: false
     machine:
       image: ubuntu-2004:current
       docker_layer_caching: true 
@@ -88,6 +95,10 @@ jobs:
           name: Clone docs-hugo repo
           command: |
             git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+            if [ "<< parameters.create-pr >>" = true ]; then
+              version=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
+              git checkout -b automatic-generate-$version-content
+            fi
 
       - run:
           name: Clone arangodb branches
@@ -130,7 +141,12 @@ jobs:
                 git config user.email "daniele@arangodb.com"
                 git config user.name "CircleCI Job"
                 git commit --allow-empty -m "[ci skip] Automatic commit of generated files from CircleCI" data/
-                git push 
+                if [ "<< parameters.create-pr >>" = true ]; then
+                  version=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
+                  git psuh -u origin automatic-generate-$version-content
+                else
+                  git push
+                fi
             fi
       
       - persist_to_workspace:
@@ -156,9 +172,6 @@ jobs:
           name: Deploy to netlify
           command: netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"
 
-
-      
-      
 
   compile-linux:
     parameters:
@@ -312,7 +325,7 @@ jobs:
 
             cp install.tar.gz docs-hugo/toolchain/scripts/compile
             cd docs-hugo/toolchain/scripts/compile
-            
+
             docker build -t arangodb/docs-hugo:$image_name-$VERSION-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
             docker push arangodb/docs-hugo:$image_name-$VERSION-$main_hash
@@ -366,6 +379,7 @@ workflows:
           arangodb-branch-3: << pipeline.parameters.arangodb-branch-3 >>
           generators: << pipeline.parameters.generators >>
           commit-generated: << pipeline.parameters.commit-generated >>
+          create-pr: << pipeline.parameters.create-pr >>
           requires:
             - create-image-1
             - create-image-2
