@@ -69,6 +69,9 @@ jobs:
       generators:
         type: string
         default: examples
+      commit-generated:
+        type: boolean
+        default: false
     machine:
       image: ubuntu-2004:current
       docker_layer_caching: true 
