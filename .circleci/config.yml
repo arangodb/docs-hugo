@@ -185,7 +185,7 @@ jobs:
       - run:
           name: Check Branch Image already exists
           command: |
-            if [ "<< parameters.arangodb-branch >>" == "" ]; then
+            if [ "<< parameters.arangodb-branch >>" == "" ] || [[ "<< parameters.arangodb-branch >>" == *"arangodb/enterprise"* ]]; then
               circleci-agent step halt
               exit 0
             fi
@@ -293,7 +293,7 @@ jobs:
       - run:
           name: Create docker image from install.tar.gz and save it
           command: |
-            if [ "<< parameters.arangodb-branch >>" == "" ]; then
+            if [ "<< parameters.arangodb-branch >>" == "" ] || [[ "<< parameters.arangodb-branch >>" == *"arangodb/enterprise"* ]]; then
               circleci-agent step halt
             fi
 
@@ -337,6 +337,24 @@ workflows:
           name: compile-3
           arangodb-branch: << pipeline.parameters.arangodb-branch-3 >>
           version: ""
+      - create-image:
+          name: create-image-1
+          arangodb-branch: << pipeline.parameters.arangodb-branch >>
+          version: ""
+          requires:
+            - compile-1
+      - create-image:
+          name: create-image-2
+          arangodb-branch: << pipeline.parameters.arangodb-branch-2 >>
+          version: ""
+          requires:
+            - compile-2
+      - create-image:
+          name: create-image-3
+          arangodb-branch: << pipeline.parameters.arangodb-branch-3 >>
+          version: ""
+          requires:
+            - compile-3
       - build-with-generated:
           name: build-with-generated
           arangodb-branch: << pipeline.parameters.arangodb-branch >>
@@ -345,9 +363,9 @@ workflows:
           generators: << pipeline.parameters.generators >>
           commit-generated: << pipeline.parameters.commit-generated >>
           requires:
-            - compile-1
-            - compile-2
-            - compile-3
+            - create-image-1
+            - create-image-2
+            - create-image-3
       - deploy:
           requires:
             - build-with-generated
