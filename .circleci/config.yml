@@ -305,11 +305,14 @@ jobs:
               VERSION=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
             fi
 
+            git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+
             main_hash=$(awk 'END{print}' .git/logs/HEAD | awk '{print $2}' | cut -c1-9)
             image_name=$(echo $ARANGODB_BRANCH | cut -d/ -f2)
-            mkdir /tmp/artifacts
+
             cp install.tar.gz docs-hugo/toolchain/scripts/compile
             cd docs-hugo/toolchain/scripts/compile
+            
             docker build -t arangodb/docs-hugo:$image_name-$VERSION-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
             docker push arangodb/docs-hugo:$image_name-$VERSION-$main_hash
