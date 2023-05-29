@@ -187,6 +187,7 @@ jobs:
           command: |
             if [ "<< parameters.arangodb-branch >>" == "" ]; then
               circleci-agent step halt
+              exit 0
             fi
 
             ARANGODB_BRANCH=<< parameters.arangodb-branch >>
@@ -200,7 +201,7 @@ jobs:
             apk add skopeo
             latestRemoteHash=$(git ls-remote https://github.com/arangodb/arangodb.git $ARANGODB_BRANCH | awk '{print $1}' | cut -c1-9)
             remoteImageTag="arangodb/docs-hugo:$image_name-$VERSION-$latestRemoteHash"
-
+            set +e
             skopeo inspect docker://$remoteImageTag 
             if [ "$?" != "0" ]; then
               exit 0
