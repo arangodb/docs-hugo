@@ -300,7 +300,7 @@ workflows:
   plain:
     when: { equal: [ plain-build, << pipeline.parameters.workflow >> ] }
     jobs:
-      - plain-build:
+      - plain-build
       - deploy:
           requires:
             - plain-build
