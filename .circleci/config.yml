@@ -201,7 +201,7 @@ jobs:
             latestRemoteHash=$(git ls-remote https://github.com/arangodb/arangodb.git $ARANGODB_BRANCH | awk '{print $1}' | cut -c1-9)
             remoteImageTag="arangodb/docs-hugo:$image_name-$VERSION-$latestRemoteHash"
 
-            remoteImageExists=$(skopeo inspect docker://$remoteImageTag)
+            skopeo inspect docker://$remoteImageTag 
             if [ "$?" != "0" ]; then
               exit 0
             fi 
