@@ -202,9 +202,10 @@ jobs:
             remoteImageTag="arangodb/docs-hugo:$image_name-$VERSION-$latestRemoteHash"
 
             remoteImageExists=$(skopeo inspect docker://$remoteImageTag)
-            if [ "$?" == "0" ]; then
-              circleci-agent step halt
+            if [ "$?" != "0" ]; then
+              exit 0
             fi 
+            circleci-agent step halt
       - run:
           name: Checkout ArangoDB
           command: |
