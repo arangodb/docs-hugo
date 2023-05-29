@@ -210,16 +210,28 @@ jobs:
       - run:
           name: Checkout ArangoDB
           command: |
-            git clone --depth 1 https://github.com/arangodb/arangodb.git --branch << parameters.arangodb-branch >> /root/project
+            ARANGODB_BRANCH=<< parameters.arangodb-branch >>
+            VERSION=<< parameters.version >>
+            if [ "$VERSION" == "" ]; then
+              ARANGODB_BRANCH=$(echo << parameters.arangodb-branch >> | cut -d, -f2)
+              VERSION=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
+            fi
+            git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $ARANGODB_BRANCH /root/project
       - run:
           name: Checkout Enterprise
           command: |
+              ARANGODB_BRANCH=<< parameters.arangodb-branch >>
+              VERSION=<< parameters.version >>
+              if [ "$VERSION" == "" ]; then
+                ARANGODB_BRANCH=$(echo << parameters.arangodb-branch >> | cut -d, -f2)
+                VERSION=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
+              fi
               ssh-keyscan github.com >> ~/.ssh/known_hosts
-              ENTERPRISE_BRANCH=<< parameters.arangodb-branch >>
+              ENTERPRISE_BRANCH=$ARANGODB_BRANCH
               set +e
-              git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git << parameters.arangodb-branch >>
+              git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git $ARANGODB_BRANCH
               if [ "$?" == "0" ] ; then
-                ENTERPRISE_BRANCH=<< parameters.arangodb-branch >>
+                ENTERPRISE_BRANCH=$ARANGODB_BRANCH
               else
                 ENTERPRISE_BRANCH=devel
               fi
