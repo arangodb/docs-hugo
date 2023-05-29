@@ -53,7 +53,7 @@ jobs:
       - persist_to_workspace:
           root: .
           paths:
-            - workspace/docs-hugo
+            - docs-hugo/site/public
 
   build-with-generated:
     parameters:
