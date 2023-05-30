@@ -386,18 +386,26 @@ workflows:
   generate:
     when: { equal: [ generate, << pipeline.parameters.workflow >> ] }
     jobs:
+      - approve-workflow:
+          type: approval
       - compile-linux:
           name: compile-1
           arangodb-branch: << pipeline.parameters.arangodb-branch >>
           version: ""
+          requires:
+            - approve-workflow
       - compile-linux:
           name: compile-2
           arangodb-branch: << pipeline.parameters.arangodb-branch-2 >>
           version: ""
+          requires:
+            - approve-workflow
       - compile-linux:
           name: compile-3
           arangodb-branch: << pipeline.parameters.arangodb-branch-3 >>
           version: ""
+          requires:
+            - approve-workflow
       - create-image:
           name: create-image-1
           arangodb-branch: << pipeline.parameters.arangodb-branch >>
