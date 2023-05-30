@@ -12,7 +12,7 @@ parameters:
 
   version:
     type: string
-    default: "3.10"
+    default: ""
 
   arangodb-branch:
     type: string
