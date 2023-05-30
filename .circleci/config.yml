@@ -311,6 +311,15 @@ jobs:
               exit 0
             fi
 
+            set +e
+            find .git > /dev/null
+            if [ "$?" == "0" ]; then
+              circleci-agent step halt
+              exit 0
+            fi 
+            set -e
+
+
             ARANGODB_BRANCH=<< parameters.arangodb-branch >>
             VERSION=<< parameters.version >>
             if [ "$VERSION" == "" ]; then
