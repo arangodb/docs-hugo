@@ -352,7 +352,7 @@ jobs:
             BODY='
               {
                 "state": "success",
-                "target_url": "'"$CIRCLE_BUILD_URL"'",
+                "target_url": "'"$DESCRIPTION"'",
                 "description": "'"$DESCRIPTION"'",
                 "context": "ci/circleci: deploy"
               }
