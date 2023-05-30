@@ -92,6 +92,14 @@ jobs:
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
 
       - run:
+          name: Validate parameters
+          command: |
+            if [ "<< parameters.arangodb-branch >>" == "" ] && [ "<< parameters.arangodb-branch-2 >>" == "" ] && [ "<< parameters.arangodb-branch-3 >>" == "" ]; then
+              echo "No arangodb-branch parameter supplied, terminating"
+              exit 1
+            fi
+
+      - run:
           name: Clone docs-hugo repo
           command: |
             git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
@@ -143,7 +151,7 @@ jobs:
                 git commit --allow-empty -m "[ci skip] Automatic commit of generated files from CircleCI" data/
                 if [ "<< parameters.create-pr >>" = true ]; then
                   version=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
-                  git psuh -u origin automatic-generate-$version-content
+                  git push -u origin automatic-generate-$version-content
                 else
                   git push
                 fi
