@@ -23,9 +23,9 @@ function generate_setup-arangodb-branches(){
     ENTERPRISE_BRANCH="$2"
 
     echo "[SETUP] Setup server $ARANGODB_BRANCH"
-    branch_name=$(echo $ARANGODB_BRANCH | cut -d= -f2 | cut -d, -f2)
+    branch_name=$(echo $ARANGODB_BRANCH | cut -d= -f2 | cut -d ' ' -f2 | cut -d, -f2)
     echo "$branch_name"
-    version=$(echo $ARANGODB_BRANCH | cut -d= -f2 | cut -d, -f3)
+    version=$(echo $ARANGODB_BRANCH | cut -d= -f2 | cut -d ' ' -f2 | cut -d, -f3)
 
     if [[ "$branch_name" == *"arangodb/enterprise"* ]]; then
         echo "[SETUP] An official ArangoDB Enterprise image has been chosen"
