@@ -1,144 +1,84 @@
 version: 2.1
 
 parameters:
-  WORKFLOW:
+  workflow:
     type: enum
     enum: [no-op, plain-build, generate, compile]
     default: no-op
 
-  GENERATORS:
+  generators:
     type: string
     default: ""
 
-  VERSION:
-    type: string
-    default: "3.10"
-
-  ARANGODB_MAIN_BRANCH:
-    type: string
-    default: "devel"
-
-  ARANGODB_ENTERPRISE_BRANCH:
+  version:
     type: string
     default: ""
 
-  ARANGODB_ENTERPRISE_BRANCH_2:
+  arangodb-branch:
     type: string
     default: ""
 
-  ARANGODB_ENTERPRISE_BRANCH_3:
+  arangodb-branch-2:
     type: string
     default: ""
 
-  ARANGODB_DOCS_OLD_BRANCH:
-    type: string
-    default: "main"
-
-  ARANGODB_DOCS_NEW_BRANCH:
-    type: string
-    default: $CIRCLE_BRANCH
-
-  ARANGODB_BRANCH:
-    type: string
-    default: "stable,arangodb/arangodb:latest,3.10,"
-
-  ARANGODB_BRANCH_2:
+  arangodb-branch-3:
     type: string
     default: ""
 
-  ARANGODB_BRANCH_3:
-    type: string
-    default: ""
-
-  COMPILE:
-    type: boolean
-    default: false
-  
   commit-generated:
     type: boolean
     default: false
 
+  create-pr:
+    type: boolean
+    default: false
+
 jobs:
-  checkout: #Checkout a desired repository
-    docker:
-      - image: cimg/base:current
-    resource_class: small
-    parameters:
-      repository:
-        type: string
-        default: docs-hugo
-      branch:
-        type: string
-        default: main
-
-    steps:
-      - add_ssh_keys:
-          fingerprints:
-            - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
-      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
-
-      - run: mkdir -p workspace
-      - run:
-          name: Clone arangodb main repo
-          command: |
-            git clone --depth 1 << parameters.repository >> --branch << parameters.branch >>
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-
-  migration: 
-    docker:
-      - image: cimg/python:3.11.2
-    resource_class: small
-    steps:
-      - attach_workspace:
-          at: .
-      - run:
-          name: Download migration dependencies
-          command: |
-            pip install pyyaml python-frontmatter commonmark
-      - run: 
-          name: Migrate 3.10
-          command: |
-            cd workspace/docs-hugo/migration-tools/ && ./migration.sh migrate /home/circleci/project/workspace/docs /home/circleci/project/workspace/docs-hugo /home/circleci/project/workspace/arangodb 3.10
-      - run: 
-          name: Migrate 3.11
-          command: |
-            cd workspace/docs-hugo/migration-tools/ && ./migration.sh migrate /home/circleci/project/workspace/docs /home/circleci/project/workspace/docs-hugo /home/circleci/project/workspace/arangodb 3.11
-      - persist_to_workspace:
-          root: .
-          paths:
-            - workspace/docs-hugo
-            - workspace/arangodb
-
-
   plain-build: 
     machine:
       image: ubuntu-2004:current
       docker_layer_caching: true 
     resource_class: medium
     steps:
-      - attach_workspace:
-          at: .
+      - run: 
+          name: Clone docs repo
+          command: |
+            git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+
 
       - run:
           name: Build site
           command: |
             export HUGO_ENV=prod
             export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--docs-hugo.netlify.app
-            cd workspace/docs-hugo/toolchain/docker && docker compose -f docker-compose.plain-build.yml up --build
+            cd docs-hugo/toolchain/docker && docker compose -f docker-compose.plain-build.yml up --build
             
       - persist_to_workspace:
           root: .
           paths:
-            - workspace/docs-hugo
+            - docs-hugo/site/public
 
   build-with-generated:
     parameters:
+      arangodb-branch:
+        type: string
+        default: ""
+      arangodb-branch-2:
+        type: string
+        default: ""
+      arangodb-branch-3:
+        type: string
+        default: ""  
       generators:
         type: string
         default: examples
+      commit-generated:
+        type: boolean
+        default: false
+      create-pr:
+        type: boolean
+        default: false
     machine:
       image: ubuntu-2004:current
       docker_layer_caching: true 
@@ -155,19 +95,23 @@ jobs:
           name: Clone docs-hugo repo
           command: |
             git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+            if [ "<< parameters.create-pr >>" = true ]; then
+              version=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
+              git checkout -b automatic-generate-$version-content
+            fi
 
       - run:
           name: Clone arangodb branches
           command: |
             source docs-hugo/.circleci/utils.sh
-            if [ "<< pipeline.parameters.ARANGODB_BRANCH >>" != "" ] ; then
-              generate_setup-arangodb-branches << pipeline.parameters.ARANGODB_BRANCH >> << pipeline.parameters.ARANGODB_ENTERPRISE_BRANCH >>
+            if [ "<< parameters.arangodb-branch >>" != "" ] ; then
+              generate_setup-arangodb-branches << parameters.arangodb-branch >>
             fi
-            if [ "<< pipeline.parameters.ARANGODB_BRANCH_2 >>" != "" ] ; then
-              generate_setup-arangodb-branches << pipeline.parameters.ARANGODB_BRANCH_2 >> << pipeline.parameters.ARANGODB_ENTERPRISE_BRANCH_2 >>
+            if [ "<< parameters.arangodb-branch-2 >>" != "" ] ; then
+              generate_setup-arangodb-branches << parameters.arangodb-branch-2 >>
             fi
-            if [ "<< pipeline.parameters.ARANGODB_BRANCH_3 >>" != "" ] ; then
-              generate_setup-arangodb-branches << pipeline.parameters.ARANGODB_BRANCH_3 >> << pipeline.parameters.ARANGODB_ENTERPRISE_BRANCH_3 >>
+            if [ "<< parameters.arangodb-branch-3 >>" != "" ] ; then
+              generate_setup-arangodb-branches << parameters.arangodb-branch-3 >>
             fi
 
       - run:
@@ -176,28 +120,33 @@ jobs:
             source docs-hugo/.circleci/utils.sh
             export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--docs-hugo.netlify.app
             export DOCKER_ENV=examples
-            export GENERATORS=<< pipeline.parameters.GENERATORS >>
+            export GENERATORS=<< parameters.generators >>
             
-            if [ "<< pipeline.parameters.ARANGODB_BRANCH >>" != "" ] ; then
-              generate_setup-environment-var-branch << pipeline.parameters.ARANGODB_BRANCH >>
+            if [ "<< parameters.arangodb-branch >>" != "" ] ; then
+              generate_setup-environment-var-branch << parameters.arangodb-branch >>
             fi
-            if [ "<< pipeline.parameters.ARANGODB_BRANCH_2 >>" != "" ] ; then
-              generate_setup-environment-var-branch << pipeline.parameters.ARANGODB_BRANCH_2 >>
+            if [ "<< parameters.arangodb-branch-2 >>" != "" ] ; then
+              generate_setup-environment-var-branch << parameters.arangodb-branch-2 >>
             fi
-            if [ "<< pipeline.parameters.ARANGODB_BRANCH_3 >>" != "" ] ; then
-              generate_setup-environment-var-branch << pipeline.parameters.ARANGODB_BRANCH_3 >>
+            if [ "<< parameters.arangodb-branch-3 >>" != "" ] ; then
+              generate_setup-environment-var-branch << parameters.arangodb-branch-3 >>
             fi
             cd docs-hugo/toolchain/docker && docker compose up
 
       - run:
           name: Commit generated files
           command: |
-            if [ "<< pipeline.parameters.commit-generated >>" = true ] ; then
+            if [ "<< parameters.commit-generated >>" = true ] ; then
                 cd /home/circleci/project/docs-hugo/site
                 git config user.email "daniele@arangodb.com"
                 git config user.name "CircleCI Job"
                 git commit --allow-empty -m "[ci skip] Automatic commit of generated files from CircleCI" data/
-                git push 
+                if [ "<< parameters.create-pr >>" = true ]; then
+                  version=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
+                  git psuh -u origin automatic-generate-$version-content
+                else
+                  git push
+                fi
             fi
       
       - persist_to_workspace:
@@ -223,38 +172,15 @@ jobs:
           name: Deploy to netlify
           command: netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"
 
-  show-deploy-preview:
-    docker:
-      - image: cimg/node:19.7.0
-    resource_class: small
-    steps:
-      - run:
-          name: Update Github check status message
-          when: on_success
-          command: |
-            API=https://api.github.com
-            USER=$CIRCLE_PROJECT_USERNAME
-            REPO=$CIRCLE_PROJECT_REPONAME
-            SHA=$CIRCLE_SHA1
-            AUTH=dandimeo:$GITHUB_PAT
-            URL=$API/repos/$USER/$REPO/statuses/$SHA
-            DESCRIPTION=https://deploy-preview-${CIRCLE_PULL_REQUEST##*/}--docs-hugo.netlify.app
-            echo "$DESCRIPTION"
-            # Compose the body.
-            BODY='
-              {
-                "state": "success",
-                "target_url": "'"$CIRCLE_BUILD_URL"'",
-                "description": "'"$DESCRIPTION"'",
-                "context": "ci/circleci: deploy"
-              }
-            '
-            # Post the status (use echo-pipe not \<<< for greater shell compat).
-            echo $BODY | curl -u $AUTH -XPOST -d@- $URL
-      
-      
 
   compile-linux:
+    parameters:
+      arangodb-branch:
+        type: string
+        default: ""
+      version:
+        type: string
+        default: ""
     docker:
       - image: arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.8
     resource_class: xlarge
@@ -270,24 +196,59 @@ jobs:
             - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
       - run:
+          name: Check Branch Image already exists
+          command: |
+            if [ "<< parameters.arangodb-branch >>" == "" ] || [[ "<< parameters.arangodb-branch >>" == *"arangodb/enterprise"* ]]; then
+              circleci-agent step halt
+              exit 0
+            fi
+
+            ARANGODB_BRANCH=<< parameters.arangodb-branch >>
+            VERSION=<< parameters.version >>
+            if [ "$VERSION" == "" ]; then
+              ARANGODB_BRANCH=$(echo << parameters.arangodb-branch >> | cut -d, -f2)
+              VERSION=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
+            fi
+
+            image_name=$(echo $ARANGODB_BRANCH | cut -d/ -f2)
+            apk add skopeo
+            latestRemoteHash=$(git ls-remote https://github.com/arangodb/arangodb.git $ARANGODB_BRANCH | awk '{print $1}' | cut -c1-9)
+            remoteImageTag="arangodb/docs-hugo:$image_name-$VERSION-$latestRemoteHash"
+            set +e
+            skopeo inspect docker://$remoteImageTag 
+            if [ "$?" != "0" ]; then
+              exit 0
+            fi 
+            circleci-agent step halt
+      - run:
           name: Checkout ArangoDB
           command: |
-            git clone --depth 1 https://github.com/arangodb/arangodb.git --branch << pipeline.parameters.ARANGODB_MAIN_BRANCH >> /root/project
+            ARANGODB_BRANCH=<< parameters.arangodb-branch >>
+            VERSION=<< parameters.version >>
+            if [ "$VERSION" == "" ]; then
+              ARANGODB_BRANCH=$(echo << parameters.arangodb-branch >> | cut -d, -f2)
+              VERSION=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
+            fi
+            git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $ARANGODB_BRANCH /root/project
       - run:
           name: Checkout Enterprise
           command: |
-              ssh-keyscan github.com >> ~/.ssh/known_hosts
-              ENTERPRISE_BRANCH=<< pipeline.parameters.ARANGODB_ENTERPRISE_BRANCH >>
-              if ["<< pipeline.parameters.ARANGODB_ENTERPRISE_BRANCH >>" == ""]; then
-                set +e
-                git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git << pipeline.parameters.ARANGODB_MAIN_BRANCH >>
-                if [ "$?" == "0" ] ; then
-                  ENTERPRISE_BRANCH=<< pipeline.parameters.ARANGODB_MAIN_BRANCH >>
-                else
-                  ENTERPRISE_BRANCH=devel
-                fi
-                set -e
+              ARANGODB_BRANCH=<< parameters.arangodb-branch >>
+              VERSION=<< parameters.version >>
+              if [ "$VERSION" == "" ]; then
+                ARANGODB_BRANCH=$(echo << parameters.arangodb-branch >> | cut -d, -f2)
+                VERSION=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
               fi
+              ssh-keyscan github.com >> ~/.ssh/known_hosts
+              ENTERPRISE_BRANCH=$ARANGODB_BRANCH
+              set +e
+              git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git $ARANGODB_BRANCH
+              if [ "$?" == "0" ] ; then
+                ENTERPRISE_BRANCH=$ARANGODB_BRANCH
+              else
+                ENTERPRISE_BRANCH=devel
+              fi
+              set -e
               echo "Using enterprise branch $ENTERPRISE_BRANCH"
               git clone --depth 1 git@github.com:arangodb/enterprise.git --branch "$ENTERPRISE_BRANCH" /root/project/enterprise
       - run:
@@ -323,6 +284,13 @@ jobs:
             - .
 
   create-image:
+    parameters:
+      arangodb-branch:
+        type: string
+        default: ""
+      version:
+        type: string
+        default: ""
     machine:
       image: ubuntu-2004:current
       docker_layer_caching: true 
@@ -338,27 +306,76 @@ jobs:
       - run:
           name: Create docker image from install.tar.gz and save it
           command: |
-            main_hash=$(git rev-parse --short --verify << pipeline.parameters.ARANGODB_MAIN_BRANCH >>)
-            image_name=$(echo << pipeline.parameters.ARANGODB_MAIN_BRANCH >> | cut -d/ -f2)
-            mkdir /tmp/artifacts
+            if [ "<< parameters.arangodb-branch >>" == "" ] || [[ "<< parameters.arangodb-branch >>" == *"arangodb/enterprise"* ]]; then
+              circleci-agent step halt
+              exit 0
+            fi
+
+            set +e
+            find .git > /dev/null
+            if [ "$?" != "0" ]; then
+              circleci-agent step halt
+              exit 0
+            fi 
+            set -e
+
+
+            ARANGODB_BRANCH=<< parameters.arangodb-branch >>
+            VERSION=<< parameters.version >>
+            if [ "$VERSION" == "" ]; then
+              ARANGODB_BRANCH=$(echo << parameters.arangodb-branch >> | cut -d, -f2)
+              VERSION=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
+            fi
+
+            git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+
+            main_hash=$(awk 'END{print}' .git/logs/HEAD | awk '{print $2}' | cut -c1-9)
+            image_name=$(echo $ARANGODB_BRANCH | cut -d/ -f2)
+
             cp install.tar.gz docs-hugo/toolchain/scripts/compile
             cd docs-hugo/toolchain/scripts/compile
-            ## arangodb/docs-hugo:be-impatient-so-we-see-errors-3.10-12b6883
-            docker build -t arangodb/docs-hugo:$image_name-<< pipeline.parameters.VERSION >>-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
+
+            docker build -t arangodb/docs-hugo:$image_name-$VERSION-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
-            docker push arangodb/docs-hugo:$image_name-<< pipeline.parameters.VERSION >>-$main_hash
+            docker push arangodb/docs-hugo:$image_name-$VERSION-$main_hash
+
+
+  show-deploy-preview:
+    docker:
+      - image: cimg/node:19.7.0
+    resource_class: small
+    steps:
+      - run:
+          name: Update Github check status message
+          when: on_success
+          command: |
+            API=https://api.github.com
+            USER=$CIRCLE_PROJECT_USERNAME
+            REPO=$CIRCLE_PROJECT_REPONAME
+            SHA=$CIRCLE_SHA1
+            AUTH=dandimeo:$GITHUB_PAT
+            URL=$API/repos/$USER/$REPO/statuses/$SHA
+            DESCRIPTION=https://deploy-preview-${CIRCLE_PULL_REQUEST##*/}--docs-hugo.netlify.app
+            echo "$DESCRIPTION"
+            # Compose the body.
+            BODY='
+              {
+                "state": "success",
+                "target_url": "'"$DESCRIPTION"'",
+                "description": "'"$DESCRIPTION"'",
+                "context": "ci/circleci: deploy"
+              }
+            '
+            # Post the status (use echo-pipe not \<<< for greater shell compat).
+            echo $BODY | curl -u $AUTH -XPOST -d@- $URL
+
+
 
 workflows:
   plain:
-    when: { equal: [ plain-build, << pipeline.parameters.WORKFLOW >> ] }
+    when: { equal: [ plain-build, << pipeline.parameters.workflow >> ] }
     jobs:
-      - checkout:
-          name: cloneNewRepo
-          repository: git@github.com:arangodb/docs-hugo.git
-          branch: << pipeline.parameters.ARANGODB_DOCS_NEW_BRANCH >>    
-      - plain-build:
-          requires:
-            - cloneNewRepo
+      - plain-build
       - deploy:
           requires:
             - plain-build
@@ -367,9 +384,50 @@ workflows:
             - deploy
     
   generate:
-    when: { equal: [ generate, << pipeline.parameters.WORKFLOW >> ] }
+    when: { equal: [ generate, << pipeline.parameters.workflow >> ] }
     jobs:
-      - build-with-generated
+      - compile-linux:
+          name: compile-1
+          arangodb-branch: << pipeline.parameters.arangodb-branch >>
+          version: ""
+      - compile-linux:
+          name: compile-2
+          arangodb-branch: << pipeline.parameters.arangodb-branch-2 >>
+          version: ""
+      - compile-linux:
+          name: compile-3
+          arangodb-branch: << pipeline.parameters.arangodb-branch-3 >>
+          version: ""
+      - create-image:
+          name: create-image-1
+          arangodb-branch: << pipeline.parameters.arangodb-branch >>
+          version: ""
+          requires:
+            - compile-1
+      - create-image:
+          name: create-image-2
+          arangodb-branch: << pipeline.parameters.arangodb-branch-2 >>
+          version: ""
+          requires:
+            - compile-2
+      - create-image:
+          name: create-image-3
+          arangodb-branch: << pipeline.parameters.arangodb-branch-3 >>
+          version: ""
+          requires:
+            - compile-3
+      - build-with-generated:
+          name: build-with-generated
+          arangodb-branch: << pipeline.parameters.arangodb-branch >>
+          arangodb-branch-2: << pipeline.parameters.arangodb-branch-2 >>
+          arangodb-branch-3: << pipeline.parameters.arangodb-branch-3 >>
+          generators: << pipeline.parameters.generators >>
+          commit-generated: << pipeline.parameters.commit-generated >>
+          create-pr: << pipeline.parameters.create-pr >>
+          requires:
+            - create-image-1
+            - create-image-2
+            - create-image-3
       - deploy:
           requires:
             - build-with-generated
@@ -378,15 +436,16 @@ workflows:
             - deploy
 
   community-pr:
-    when: { equal: [ compile, << pipeline.parameters.WORKFLOW >> ] }
+    when: { equal: [ compile, << pipeline.parameters.workflow >> ] }
     jobs:
-      - compile-linux
-      - checkout:
-          name: cloneNewRepo
-          repository: git@github.com:arangodb/docs-hugo.git
-          branch: circle-ci-alpha
-          requires:
-            - compile-linux
+      - compile-linux:
+          name: "compile"
+          arangodb-branch: << pipeline.parameters.arangodb-branch >>
+          version: << pipeline.parameters.version >>
+
       - create-image:
+          name: "create-image"
+          arangodb-branch: << pipeline.parameters.arangodb-branch >>
+          version: << pipeline.parameters.version >>
           requires:
-            - cloneNewRepo
+            - compile
