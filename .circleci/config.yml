@@ -330,6 +330,38 @@ jobs:
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
             docker push arangodb/docs-hugo:$image_name-$VERSION-$main_hash
 
+
+  show-deploy-preview:
+    docker:
+      - image: cimg/node:19.7.0
+    resource_class: small
+    steps:
+      - run:
+          name: Update Github check status message
+          when: on_success
+          command: |
+            API=https://api.github.com
+            USER=$CIRCLE_PROJECT_USERNAME
+            REPO=$CIRCLE_PROJECT_REPONAME
+            SHA=$CIRCLE_SHA1
+            AUTH=dandimeo:$GITHUB_PAT
+            URL=$API/repos/$USER/$REPO/statuses/$SHA
+            DESCRIPTION=https://deploy-preview-${CIRCLE_PULL_REQUEST##*/}--docs-hugo.netlify.app
+            echo "$DESCRIPTION"
+            # Compose the body.
+            BODY='
+              {
+                "state": "success",
+                "target_url": "'"$CIRCLE_BUILD_URL"'",
+                "description": "'"$DESCRIPTION"'",
+                "context": "ci/circleci: deploy"
+              }
+            '
+            # Post the status (use echo-pipe not \<<< for greater shell compat).
+            echo $BODY | curl -u $AUTH -XPOST -d@- $URL
+
+
+
 workflows:
   plain:
     when: { equal: [ plain-build, << pipeline.parameters.workflow >> ] }
@@ -338,6 +370,9 @@ workflows:
       - deploy:
           requires:
             - plain-build
+      - show-deploy-preview:
+          requires:
+            - deploy
     
   generate:
     when: { equal: [ generate, << pipeline.parameters.workflow >> ] }
@@ -387,6 +422,9 @@ workflows:
       - deploy:
           requires:
             - build-with-generated
+      - show-deploy-preview:
+          requires:
+            - deploy
 
   community-pr:
     when: { equal: [ compile, << pipeline.parameters.workflow >> ] }
