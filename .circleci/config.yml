@@ -400,18 +400,24 @@ workflows:
           name: compile-1
           arangodb-branch: << pipeline.parameters.arangodb-branch >>
           version: ""
+          context:
+            - sccache-aws-bucket
           requires:
             - approve-workflow
       - compile-linux:
           name: compile-2
           arangodb-branch: << pipeline.parameters.arangodb-branch-2 >>
           version: ""
+          context:
+            - sccache-aws-bucket
           requires:
             - approve-workflow
       - compile-linux:
           name: compile-3
           arangodb-branch: << pipeline.parameters.arangodb-branch-3 >>
           version: ""
+          context:
+            - sccache-aws-bucket
           requires:
             - approve-workflow
       - create-image:
