@@ -16,7 +16,7 @@ parameters:
 
   arangodb-branch:
     type: string
-    default: "devel"
+    default: ""
 
   arangodb-branch-2:
     type: string
