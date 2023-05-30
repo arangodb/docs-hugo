@@ -313,7 +313,7 @@ jobs:
 
             set +e
             find .git > /dev/null
-            if [ "$?" == "0" ]; then
+            if [ "$?" != "0" ]; then
               circleci-agent step halt
               exit 0
             fi 
