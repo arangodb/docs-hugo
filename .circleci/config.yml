@@ -59,6 +59,62 @@ jobs:
           paths:
             - docs-hugo/site/public
 
+  clone-arangodb-branches:
+    parameters:
+      arangodb-branch:
+        type: string
+        default: ""
+      arangodb-branch-2:
+        type: string
+        default: ""
+      arangodb-branch-3:
+        type: string
+        default: ""  
+    docker:
+      - image: arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.8
+    resource_class: xlarge
+    environment:
+      GIT_SSH_COMMAND: ssh
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a"
+            - "28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e"
+            - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
+      - run:
+          name: Validate parameters
+          command: |
+            if [ "<< parameters.arangodb-branch >>" == "" ] && [ "<< parameters.arangodb-branch-2 >>" == "" ] && [ "<< parameters.arangodb-branch-3 >>" == "" ]; then
+              echo "No arangodb-branch parameter supplied, terminating"
+              exit 1
+            fi
+
+      - run:
+          name: Clone docs-hugo repo
+          command: |
+            git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+
+      - run:
+          name: Clone arangodb branches
+          command: |
+            source docs-hugo/.circleci/utils.sh
+            if [ "<< parameters.arangodb-branch >>" != "" ] ; then
+              clone-branch << parameters.arangodb-branch >>
+            fi
+            if [ "<< parameters.arangodb-branch-2 >>" != "" ] ; then
+              clone-branch << parameters.arangodb-branch-2 >>
+            fi
+            if [ "<< parameters.arangodb-branch-3 >>" != "" ] ; then
+              clone-branch << parameters.arangodb-branch-3 >>
+            fi
+
+      - persist_to_workspace:
+          root: .
+          paths:
+            - .
+
+
   build-with-generated:
     parameters:
       arangodb-branch:
@@ -79,55 +135,20 @@ jobs:
       create-pr:
         type: boolean
         default: false
-    docker:
-      - image: arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.8
-    resource_class: xlarge
-    environment:
-      GIT_SSH_COMMAND: ssh
+    machine:
+      image: ubuntu-2004:current
+      docker_layer_caching: true 
+    resource_class: large
     steps:
       - add_ssh_keys:
           fingerprints:
             - "7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a"
             - "28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e"
             - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
+      - attach_workspace:
+          at: .
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
-      - setup_remote_docker:
-          version: 20.10.14
-      - run: apk --no-cache add docker-cli docker-cli-compose
-      - run:
-          name: Validate parameters
-          command: |
-            if [ "<< parameters.arangodb-branch >>" == "" ] && [ "<< parameters.arangodb-branch-2 >>" == "" ] && [ "<< parameters.arangodb-branch-3 >>" == "" ]; then
-              echo "No arangodb-branch parameter supplied, terminating"
-              exit 1
-            fi
-
-      - run:
-          name: Clone docs-hugo repo
-          command: |
-            git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
-            if [ "<< parameters.create-pr >>" = true ]; then
-              version=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
-              cd docs-hugo/
-              git checkout -b automatic-generate-$version-content
-            fi
-
-      - run:
-          name: Clone arangodb branches
-          command: |
-            source docs-hugo/.circleci/utils.sh
-            if [ "<< parameters.arangodb-branch >>" != "" ] ; then
-              generate_setup-arangodb-branches << parameters.arangodb-branch >>
-            fi
-            if [ "<< parameters.arangodb-branch-2 >>" != "" ] ; then
-              generate_setup-arangodb-branches << parameters.arangodb-branch-2 >>
-            fi
-            if [ "<< parameters.arangodb-branch-3 >>" != "" ] ; then
-              generate_setup-arangodb-branches << parameters.arangodb-branch-3 >>
-            fi
-
-
-
+      
       - run:
           name: Set environment variables and launch toolchain
           command: |
@@ -137,12 +158,15 @@ jobs:
             export GENERATORS='<< parameters.generators >>'
             
             if [ "<< parameters.arangodb-branch >>" != "" ] ; then
+              pull-branch-image << parameters.arangodb-branch >>
               generate_setup-environment-var-branch << parameters.arangodb-branch >> ""
             fi
             if [ "<< parameters.arangodb-branch-2 >>" != "" ] ; then
+              pull-branch-image << parameters.arangodb-branch-2 >>
               generate_setup-environment-var-branch << parameters.arangodb-branch-2 >> "_2"
             fi
             if [ "<< parameters.arangodb-branch-3 >>" != "" ] ; then
+              pull-branch-image << parameters.arangodb-branch-3 >>
               generate_setup-environment-var-branch << parameters.arangodb-branch-3 >> "_3"
             fi
             cd docs-hugo/toolchain/docker && docker compose up
@@ -151,16 +175,23 @@ jobs:
           name: Commit generated files
           command: |
             if [ "<< parameters.commit-generated >>" = true ] ; then
-                cd /home/circleci/project/docs-hugo/site
-                git config user.email "daniele@arangodb.com"
-                git config user.name "CircleCI Job"
-                git commit --allow-empty -m "[ci skip] Automatic commit of generated files from CircleCI" data/
-                if [ "<< parameters.create-pr >>" = true ]; then
-                  version=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
-                  git push -u origin automatic-generate-$version-content
-                else
-                  git push
-                fi
+              if [ "<< parameters.create-pr >>" = true ]; then
+                version=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
+                cd docs-hugo/
+                git checkout -b automatic-generate-$version-content
+              fi
+
+              cd /home/circleci/project/docs-hugo/site
+              git config user.email "daniele@arangodb.com"
+              git config user.name "CircleCI Job"
+              git commit --allow-empty -m "[ci skip] Automatic commit of generated files from CircleCI" data/
+
+              if [ "<< parameters.create-pr >>" = true ]; then
+                version=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
+                git push -u origin automatic-generate-$version-content
+              else
+                git push
+              fi
             fi
       
       - persist_to_workspace:
@@ -438,6 +469,15 @@ workflows:
           version: ""
           requires:
             - compile-3
+      - clone-arangodb-branches:
+          name: clone-arangodb-branches
+          arangodb-branch: << pipeline.parameters.arangodb-branch >>
+          arangodb-branch-2: << pipeline.parameters.arangodb-branch-2 >>
+          arangodb-branch-3: << pipeline.parameters.arangodb-branch-3 >>
+          requires:
+            - create-image-1
+            - create-image-2
+            - create-image-3
       - build-with-generated:
           name: build-with-generated
           arangodb-branch: << pipeline.parameters.arangodb-branch >>
@@ -447,9 +487,7 @@ workflows:
           commit-generated: << pipeline.parameters.commit-generated >>
           create-pr: false
           requires:
-            - create-image-1
-            - create-image-2
-            - create-image-3
+            - clone-arangodb-branches
       - deploy:
           requires:
             - build-with-generated
@@ -460,6 +498,11 @@ workflows:
   generate-scheduled:
     when: { equal: [ generate-scheduled, << pipeline.parameters.workflow >> ] }
     jobs:
+      - clone-arangodb-branches:
+          name: clone-arangodb-branches
+          arangodb-branch: "stable,arangodb/enterprise-preview:3.10-nightly,3.10,"
+          arangodb-branch-2: "stable,arangodb/enterprise-preview:3.11-nightly,3.11,"
+          arangodb-branch-3: ""
       - build-with-generated:
           name: build-with-generated
           arangodb-branch: "stable,arangodb/enterprise-preview:3.10-nightly,3.10,"
@@ -468,6 +511,8 @@ workflows:
           generators: "metrics error-codes options"
           commit-generated: true
           create-pr: true
+          requires:
+            - clone-arangodb-branches
       
 
   community-pr:
