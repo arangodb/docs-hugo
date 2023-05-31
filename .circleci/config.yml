@@ -109,6 +109,8 @@ jobs:
               clone-branch << parameters.arangodb-branch-3 >>
             fi
 
+            rm utils.sh
+
       - persist_to_workspace:
           root: .
           paths:
