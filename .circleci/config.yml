@@ -36,9 +36,9 @@ parameters:
 
 jobs:
   plain-build: 
-    docker:
-      - image: cimg/base:2021.04
-    resource_class: xlarge
+    machine:
+      image: ubuntu-2004:current
+    resource_class: large
     steps:
       - run: 
           name: Clone docs repo
