@@ -188,7 +188,8 @@ jobs:
               cd /home/circleci/project/docs-hugo/site
               git config user.email "daniele@arangodb.com"
               git config user.name "CircleCI Job"
-              git commit --allow-empty -m "Automatic commit of generated files from CircleCI" data/
+              git add data/
+              git commit --allow-empty -m "Automatic commit of generated files from CircleCI"
 
               if [ "<< parameters.create-pr >>" = true ]; then
                 git push -u origin scheduled-content-generate

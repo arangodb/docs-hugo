@@ -1,7 +1,7 @@
 #!/bin/bash
 
 function clone-arangodb-enterprise() {
-    ARANGODB_BRANCH="$1"
+    BRANCH="$1"
     ENTERPRISE_BRANCH="devel"
     set +e
     git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git "$1"
@@ -10,14 +10,14 @@ function clone-arangodb-enterprise() {
     fi
     set -e
     echo "Using enterprise branch $ENTERPRISE_BRANCH"
-    git clone --depth 1 git@github.com:arangodb/enterprise.git --branch "$ENTERPRISE_BRANCH" $ARANGODB_BRANCH/enterprise
+    git clone --depth 1 git@github.com:arangodb/enterprise.git --branch "$ENTERPRISE_BRANCH" $BRANCH/enterprise
 }
 
 function clone-branch() {
-    ARANGODB_BRANCH="$1"
+    BRANCH="$1"
 
-    echo "[SETUP] Setup server $ARANGODB_BRANCH"
-    branch_name=$(echo $ARANGODB_BRANCH | cut -d= -f2 | cut -d ' ' -f2 | cut -d, -f2)
+    echo "[SETUP] Setup server $BRANCH"
+    branch_name=$(echo $BRANCH | cut -d= -f2 | cut -d ' ' -f2 | cut -d, -f2)
     echo "$branch_name"
 
     if [[ "$branch_name" == *"arangodb/enterprise"* ]]; then
@@ -34,12 +34,12 @@ function clone-branch() {
 }
 
 function pull-branch-image(){
-    ARANGODB_BRANCH="$1"
+    BRANCH="$1"
 
-    echo "[SETUP] Setup server $ARANGODB_BRANCH"
-    branch_name=$(echo $ARANGODB_BRANCH | cut -d= -f2 | cut -d ' ' -f2 | cut -d, -f2)
+    echo "[SETUP] Setup server $BRANCH"
+    branch_name=$(echo $BRANCH | cut -d= -f2 | cut -d ' ' -f2 | cut -d, -f2)
     echo "$branch_name"
-    version=$(echo $ARANGODB_BRANCH | cut -d= -f2 | cut -d ' ' -f2 | cut -d, -f3)
+    version=$(echo $BRANCH | cut -d= -f2 | cut -d ' ' -f2 | cut -d, -f3)
 
     if [[ "$branch_name" == *"arangodb/enterprise"* ]]; then
         echo "[SETUP] An official ArangoDB Enterprise image has been chosen"
