@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   workflow:
     type: enum
-    enum: [no-op, plain-build, generate, compile]
+    enum: [no-op, plain-build, generate, compile, generate-scheduled]
     default: no-op
 
   generators:
@@ -105,6 +105,7 @@ jobs:
             git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
             if [ "<< parameters.create-pr >>" = true ]; then
               version=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
+              cd docs-hugo/
               git checkout -b automatic-generate-$version-content
             fi
 
@@ -400,24 +401,18 @@ workflows:
           name: compile-1
           arangodb-branch: << pipeline.parameters.arangodb-branch >>
           version: ""
-          context:
-            - sccache-aws-bucket
           requires:
             - approve-workflow
       - compile-linux:
           name: compile-2
           arangodb-branch: << pipeline.parameters.arangodb-branch-2 >>
           version: ""
-          context:
-            - sccache-aws-bucket
           requires:
             - approve-workflow
       - compile-linux:
           name: compile-3
           arangodb-branch: << pipeline.parameters.arangodb-branch-3 >>
           version: ""
-          context:
-            - sccache-aws-bucket
           requires:
             - approve-workflow
       - create-image:
@@ -450,6 +445,24 @@ workflows:
             - create-image-1
             - create-image-2
             - create-image-3
+      - deploy:
+          requires:
+            - build-with-generated
+      - show-deploy-preview:
+          requires:
+            - deploy
+  
+  generate-scheduled:
+    when: { equal: [ generate-scheduled, << pipeline.parameters.workflow >> ] }
+    jobs:
+      - build-with-generated:
+          name: build-with-generated
+          arangodb-branch: << pipeline.parameters.arangodb-branch >>
+          arangodb-branch-2: << pipeline.parameters.arangodb-branch-2 >>
+          arangodb-branch-3: << pipeline.parameters.arangodb-branch-3 >>
+          generators: << pipeline.parameters.generators >>
+          commit-generated: << pipeline.parameters.commit-generated >>
+          create-pr: << pipeline.parameters.create-pr >>
       - deploy:
           requires:
             - build-with-generated
