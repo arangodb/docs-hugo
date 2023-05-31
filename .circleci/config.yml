@@ -139,7 +139,6 @@ jobs:
         default: false
     machine:
       image: ubuntu-2004:current
-      docker_layer_caching: true 
     resource_class: large
     steps:
       - add_ssh_keys:
