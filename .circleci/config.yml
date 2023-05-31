@@ -135,16 +135,16 @@ jobs:
             source docs-hugo/.circleci/utils.sh
             export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--docs-hugo.netlify.app
             export DOCKER_ENV=examples
-            export GENERATORS=<< parameters.generators >>
+            export GENERATORS='<< parameters.generators >>'
             
             if [ "<< parameters.arangodb-branch >>" != "" ] ; then
-              generate_setup-environment-var-branch << parameters.arangodb-branch >>
+              generate_setup-environment-var-branch << parameters.arangodb-branch >> ""
             fi
             if [ "<< parameters.arangodb-branch-2 >>" != "" ] ; then
-              generate_setup-environment-var-branch << parameters.arangodb-branch-2 >>
+              generate_setup-environment-var-branch << parameters.arangodb-branch-2 >> "_2"
             fi
             if [ "<< parameters.arangodb-branch-3 >>" != "" ] ; then
-              generate_setup-environment-var-branch << parameters.arangodb-branch-3 >>
+              generate_setup-environment-var-branch << parameters.arangodb-branch-3 >> "_3"
             fi
             cd docs-hugo/toolchain/docker && docker compose up
 

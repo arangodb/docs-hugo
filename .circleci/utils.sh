@@ -15,7 +15,6 @@ function clone-arangodb-enterprise() {
 
 function generate_setup-arangodb-branches(){
     ARANGODB_BRANCH="$1"
-    ENTERPRISE_BRANCH="$2"
 
     echo "[SETUP] Setup server $ARANGODB_BRANCH"
     branch_name=$(echo $ARANGODB_BRANCH | cut -d= -f2 | cut -d ' ' -f2 | cut -d, -f2)
@@ -48,10 +47,10 @@ function generate_setup-environment-var-branch() {
     export ARANGODB_BRANCH=$ARANGODB_BRANCH
     if [[ "$branch_name" == *"arangodb/enterprise"* ]]; then
         preview_branch=$(echo $branch_name | cut -d: -f2 | cut -d- -f1)
-        export ARANGODB_SRC=/home/circleci/project/$preview_branch
+        export ARANGODB_SRC"$2"=/home/circleci/project/$preview_branch
     else
         image_name=$(echo ${branch_name##*/})
-        export ARANGODB_SRC=/home/circleci/project/$image_name
+        export ARANGODB_SRC"$2"=/home/circleci/project/$image_name
     fi
 }
 
