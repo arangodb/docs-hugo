@@ -38,7 +38,6 @@ jobs:
   plain-build: 
     machine:
       image: ubuntu-2004:current
-      docker_layer_caching: true 
     resource_class: large
     steps:
       - run: 
@@ -46,13 +45,14 @@ jobs:
           command: |
             git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
 
-
       - run:
           name: Build site
           command: |
+            curl -L https://github.com/gohugoio/hugo/releases/download/v0.112.5/hugo_0.112.5_linux-amd64.deb -o hugo.deb
+            sudo apt install -y ./hugo.deb
             export HUGO_ENV=prod
             export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--docs-hugo.netlify.app
-            cd docs-hugo/toolchain/docker && docker compose -f docker-compose.plain-build.yml up --build
+            cd docs-hugo/site && hugo -e $HUGO_ENV -b $HUGO_URL --minify
             
       - persist_to_workspace:
           root: .
@@ -188,8 +188,7 @@ jobs:
               cd /home/circleci/project/docs-hugo/site
               git config user.email "daniele@arangodb.com"
               git config user.name "CircleCI Job"
-              git add data/
-              git commit --allow-empty -m "Automatic commit of generated files from CircleCI"
+              git commit --allow-empty -m "Automatic commit of generated files from CircleCI" data/
 
               if [ "<< parameters.create-pr >>" = true ]; then
                 git push -u origin scheduled-content-generate
