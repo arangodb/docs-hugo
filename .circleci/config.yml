@@ -440,7 +440,7 @@ workflows:
           arangodb-branch-3: << pipeline.parameters.arangodb-branch-3 >>
           generators: << pipeline.parameters.generators >>
           commit-generated: << pipeline.parameters.commit-generated >>
-          create-pr: << pipeline.parameters.create-pr >>
+          create-pr: false
           requires:
             - create-image-1
             - create-image-2
@@ -457,18 +457,13 @@ workflows:
     jobs:
       - build-with-generated:
           name: build-with-generated
-          arangodb-branch: << pipeline.parameters.arangodb-branch >>
-          arangodb-branch-2: << pipeline.parameters.arangodb-branch-2 >>
-          arangodb-branch-3: << pipeline.parameters.arangodb-branch-3 >>
-          generators: << pipeline.parameters.generators >>
-          commit-generated: << pipeline.parameters.commit-generated >>
-          create-pr: << pipeline.parameters.create-pr >>
-      - deploy:
-          requires:
-            - build-with-generated
-      - show-deploy-preview:
-          requires:
-            - deploy
+          arangodb-branch: "stable,arangodb/enterprise-preview:3.10-nightly,3.10,"
+          arangodb-branch-2: "stable,arangodb/enterprise-preview:3.11-nightly,3.11,"
+          arangodb-branch-3: "stable,arangodb/enterprise-preview:3.12-nightly,3.12,"
+          generators: "metrics error-codes options"
+          commit-generated: true
+          create-pr: true
+      
 
   community-pr:
     when: { equal: [ compile, << pipeline.parameters.workflow >> ] }
