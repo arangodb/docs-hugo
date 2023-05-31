@@ -91,14 +91,14 @@ jobs:
             fi
 
       - run:
-          name: Clone docs-hugo repo
+          name: Download circleci utils script from docs-hugo repo
           command: |
-            git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+            curl https://raw.githubusercontent.com/arangodb/docs-hugo/main/.circleci/utils.sh > utils.sh
 
       - run:
           name: Clone arangodb branches
           command: |
-            source docs-hugo/.circleci/utils.sh
+            source utils.sh
             if [ "<< parameters.arangodb-branch >>" != "" ] ; then
               clone-branch << parameters.arangodb-branch >>
             fi
@@ -147,7 +147,10 @@ jobs:
             - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
       - attach_workspace:
           at: .
+      
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
+      - run: git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+
       
       - run:
           name: Set environment variables and launch toolchain
