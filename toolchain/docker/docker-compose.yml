@@ -2,7 +2,7 @@ version: "3.5"
 services:
   toolchain:
     container_name: toolchain
-    image: toolchain
+    image: arangodb/docs-hugo:toolchain
     build:
       context: .
       target: toolchain

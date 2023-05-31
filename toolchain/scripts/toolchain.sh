@@ -466,8 +466,16 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
 
   ## Start arangoproxy and site containers to build examples and site
   if [ "$generate_examples" = true ] ; then
+
+    if [ "$DOCKER_ENV" == "dev" ]; then
       docker build --target arangoproxy ../docker/ -t arangoproxy
       docker  build --target hugo ../docker/ -t site
+    else 
+      docker pull arangodb/docs-hugo:arangoproxy
+      docker pull arangodb/docs-hugo:site
+      docker tag arangodb/docs-hugo:arangoproxy arangoproxy
+      docker pull arangodb/docs-hugo:site site
+    fi
     
     cd ../../
     echo "[GENERATE-EXAMPLES]  Run arangoproxy and site containers"
