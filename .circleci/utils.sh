@@ -58,9 +58,9 @@ function pull-branch-image(){
 
 
 function generate_setup-environment-var-branch() {
-    ARANGODB_BRANCH="$1"
-    branch_name=$(echo $ARANGODB_BRANCH | cut -d= -f2 | cut -d, -f2)
-    export ARANGODB_BRANCH"$2"=$ARANGODB_BRANCH
+    BRANCH="$1"
+    branch_name=$(echo $BRANCH | cut -d= -f2 | cut -d, -f2)
+    export ARANGODB_BRANCH"$2"=$BRANCH
     if [[ "$branch_name" == *"arangodb/enterprise"* ]]; then
         preview_branch=$(echo $branch_name | cut -d: -f2 | cut -d- -f1)
         export ARANGODB_SRC"$2"=/home/circleci/project/$preview_branch
