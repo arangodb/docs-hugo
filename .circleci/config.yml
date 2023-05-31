@@ -501,6 +501,11 @@ workflows:
       - clone-arangodb-branches:
           name: clone-arangodb-branches
           arangodb-branch: "stable,arangodb/enterprise-preview:3.10-nightly,3.10,"
+          arangodb-branch-2: ""
+          arangodb-branch-3: ""
+      - clone-arangodb-branches:
+          name: clone-arangodb-branches-2
+          arangodb-branch: ""
           arangodb-branch-2: "stable,arangodb/enterprise-preview:3.11-nightly,3.11,"
           arangodb-branch-3: ""
       - build-with-generated:
@@ -513,6 +518,7 @@ workflows:
           create-pr: true
           requires:
             - clone-arangodb-branches
+            - clone-arangodb-branches-2
       
 
   community-pr:
