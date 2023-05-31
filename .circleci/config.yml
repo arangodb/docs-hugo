@@ -79,10 +79,9 @@ jobs:
       create-pr:
         type: boolean
         default: false
-    machine:
-      image: ubuntu-2004:current
-      docker_layer_caching: true 
-    resource_class: large
+    docker:
+      - image: arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.8
+    resource_class: xlarge
     environment:
       GIT_SSH_COMMAND: ssh
     steps:
