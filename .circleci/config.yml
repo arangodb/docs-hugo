@@ -192,6 +192,7 @@ jobs:
 
               if [ "<< parameters.create-pr >>" = true ]; then
                 git push -u origin scheduled-content-generate
+                curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: scheduled-create-pr'
               else
                 git push
               fi
