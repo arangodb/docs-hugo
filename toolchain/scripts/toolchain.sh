@@ -244,10 +244,22 @@ function start_server() {
 
  
   log "$image_id"
+  declare -a single_addresses=("192.168.129.2" "192.168.129.12" "192.168.129.22" "192.168.129.32")
+  single_address=""
 
+  for address in "${single_addresses[@]}";
+  do
+    docs_net_ips=$(docker network inspect docs_net | grep "$address"/)
+    if [ "$docs_net_ips" == "" ]; then
+      single_address=$address
+      break
+    fi
+  done
 
   log "[START_SERVER] Run single server"
-  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name" -d "$image_id"
+  log "[START_SERVER] Using $single_address as single server ip"
+
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --ip="$single_address" --name "$container_name" -d "$image_id" --server.endpoint http+tcp://"$single_address":8529
 
   log "[START_SERVER] Run cluster server"
 
@@ -467,7 +479,8 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
   ## Start arangoproxy and site containers to build examples and site
   if [ "$generate_examples" = true ] ; then
 
-    if [ "$DOCKER_ENV" == "dev" ]; then
+    if [ "$DOCKER_ENV" == "dev" ]; then 
+      export DOCKER_BUILDKIT=1
       docker build --target arangoproxy ../docker/ -t arangoproxy
       docker  build --target hugo ../docker/ -t site
     else 
