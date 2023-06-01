@@ -498,10 +498,3 @@ workflows:
           version: << pipeline.parameters.version >>
           context:
             - sccache-aws-bucket
-
-      - create-image:
-          name: "create-image"
-          arangodb-branch: << pipeline.parameters.arangodb-branch >>
-          version: << pipeline.parameters.version >>
-          requires:
-            - compile
