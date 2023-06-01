@@ -14,9 +14,11 @@ cp -r /build/etc/arangodb3/* /etc/arangodb3
 mkdir -p /var/log/arangodb3
 mkdir -p /etc/arangodb3
 mkdir -p /usr/share/arangodb3/js
+mkdir -p /usr/share/arangodb3/enterprise
 
 cp -r /build/bin/* /usr/bin
 cp -r /js/* /usr/share/arangodb3/js
+cp -r /enterprise/* /usr/share/arangodb3/enterprise
 
 # Bind to all endpoints (in the container):
 sed -i -e 's~^endpoint.*8529$~endpoint = tcp://0.0.0.0:8529~' /etc/arangodb3/arangod.conf

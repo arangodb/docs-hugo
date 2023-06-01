@@ -14,9 +14,6 @@ function checkIPIsReachable() {
 }
 
 
-wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_"$ARCH" -O /usr/bin/yq &&\
-    chmod +x /usr/bin/yq
-
 # For each server in arangoproxy/cmd/configs/local.yaml filled by previous step, check the server is up and healthy
 mapfile servers < <(yq e -o=j -I=0 '.repositories.[]' /home/toolchain/arangoproxy/cmd/configs/local.yaml )
 
