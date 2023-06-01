@@ -88,6 +88,7 @@ if [ "$1" = 'arangod' ]; then
         $NUMACTL arangod --config /tmp/arangod.conf \
                 --server.endpoint tcp://127.0.0.1:$ARANGO_INIT_PORT \
                 --server.authentication false \
+                --javascript.module-directory /usr/share/arangodb3/enterprise/js
 		--log.file /tmp/init-log \
 		--log.foreground-tty false &
         pid="$!"
