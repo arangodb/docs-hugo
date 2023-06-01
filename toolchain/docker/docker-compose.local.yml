@@ -2,7 +2,10 @@ version: "3.5"
 services:
   toolchain:
     container_name: toolchain
-    image: arangodb/docs-hugo:toolchain
+    image: toolchain
+    build:
+      context: .
+      target: toolchain
     volumes:
       - ${ARANGODB_SRC:-/dev/null}:${ARANGODB_SRC:-/dev/null}
       - ${ARANGODB_SRC_2:-/tmp/1}:${ARANGODB_SRC_2:-/tmp/1}

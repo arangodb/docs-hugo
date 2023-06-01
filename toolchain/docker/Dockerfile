@@ -27,8 +27,14 @@ CMD cd /home/toolchain/scripts ; ./start_hugo.sh
 
 FROM ubuntu:latest AS toolchain
 
+ARG BUILDARCH
+RUN echo ${BUILDARCH}
+ENV ARCH=${BUILDARCH}
+
 RUN  apt-get update \
   && apt-get install -y wget python3 python3-pip software-properties-common curl jq
+
+RUN wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_${BUILDARCH} -O /usr/bin/yq && chmod +x /usr/bin/yq
 
 ## Install python scripts deps
 RUN pip3 install pyyaml
@@ -42,8 +48,6 @@ RUN npm install -g @apidevtools/swagger-cli
 RUN curl -fsSL https://get.docker.com -o get-docker.sh
 RUN sh get-docker.sh
 
-ARG BUILDARCH
-RUN echo ${BUILDARCH}
-ENV ARCH=${BUILDARCH}
+
 
 CMD cd /home/toolchain/scripts ; ./toolchain.sh
