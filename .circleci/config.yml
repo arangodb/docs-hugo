@@ -326,7 +326,7 @@ jobs:
           command: sccache -s
       - run:
           name: Create archive of compiled instance
-          command: tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/
+          command: tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/ enterprise/
       - persist_to_workspace:
           root: .
           paths:
