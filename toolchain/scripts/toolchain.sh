@@ -474,7 +474,7 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
       docker pull arangodb/docs-hugo:arangoproxy
       docker pull arangodb/docs-hugo:site
       docker tag arangodb/docs-hugo:arangoproxy arangoproxy
-      docker pull arangodb/docs-hugo:site site
+      docker tag arangodb/docs-hugo:site site
     fi
     
     cd ../../
