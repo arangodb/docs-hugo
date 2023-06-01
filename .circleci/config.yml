@@ -86,8 +86,8 @@ jobs:
           name: Validate parameters
           command: |
             if [ "<< parameters.arangodb-branch >>" == "" ] && [ "<< parameters.arangodb-branch-2 >>" == "" ] && [ "<< parameters.arangodb-branch-3 >>" == "" ]; then
-              echo "No arangodb-branch parameter supplied, terminating"
-              exit 1
+              circleci-agent step halt
+              exit 0
             fi
 
       - run:
@@ -480,14 +480,27 @@ workflows:
           requires:
             - compile-3
       - clone-arangodb-branches:
-          name: clone-arangodb-branches
+          name: clone-arangodb-branches-1
           arangodb-branch: << pipeline.parameters.arangodb-branch >>
-          arangodb-branch-2: << pipeline.parameters.arangodb-branch-2 >>
-          arangodb-branch-3: << pipeline.parameters.arangodb-branch-3 >>
+          arangodb-branch-2: ""
+          arangodb-branch-3: ""
           requires:
             - create-image-1
+      - clone-arangodb-branches:
+          name: clone-arangodb-branches-2
+          arangodb-branch: ""
+          arangodb-branch-2: << pipeline.parameters.arangodb-branch-2 >>
+          arangodb-branch-3: ""
+          requires:
             - create-image-2
+      - clone-arangodb-branches:
+          name: clone-arangodb-branches-3
+          arangodb-branch: ""
+          arangodb-branch-2: ""
+          arangodb-branch-3: << pipeline.parameters.arangodb-branch-3 >>
+          requires:
             - create-image-3
+
       - build-with-generated:
           name: build-with-generated
           arangodb-branch: << pipeline.parameters.arangodb-branch >>
@@ -497,7 +510,9 @@ workflows:
           commit-generated: << pipeline.parameters.commit-generated >>
           create-pr: false
           requires:
-            - clone-arangodb-branches
+            - clone-arangodb-branches-1
+            - clone-arangodb-branches-2
+            - clone-arangodb-branches-3
       - deploy:
           requires:
             - build-with-generated
