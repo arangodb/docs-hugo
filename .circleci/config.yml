@@ -332,6 +332,7 @@ jobs:
       - run:
           name: Create docker image
           command: |
+            cp install.tar.gz /tmp/
             ARANGODB_BRANCH=<< parameters.arangodb-branch >>
             VERSION=<< parameters.version >>
             if [ "$VERSION" == "" ]; then
@@ -349,6 +350,9 @@ jobs:
             docker build -t arangodb/docs-hugo:$image_name-$VERSION-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
             docker push arangodb/docs-hugo:$image_name-$VERSION-$main_hash
+      - store_artifacts:
+          path: /tmp/install.tar.gz
+      
 
   show-deploy-preview:
     docker:
