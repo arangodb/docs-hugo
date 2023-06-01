@@ -139,7 +139,6 @@ jobs:
         default: false
     machine:
       image: ubuntu-2004:current
-      docker_layer_caching: true 
     resource_class: large
     steps:
       - add_ssh_keys:
@@ -188,10 +187,12 @@ jobs:
               cd /home/circleci/project/docs-hugo/site
               git config user.email "daniele@arangodb.com"
               git config user.name "CircleCI Job"
-              git commit --allow-empty -m "Automatic commit of generated files from CircleCI" data/
+              git add data/
+              git commit --allow-empty -m "Automatic commit of generated files from CircleCI"
 
               if [ "<< parameters.create-pr >>" = true ]; then
                 git push -u origin scheduled-content-generate
+                curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: scheduled-create-pr'
               else
                 git push
               fi
