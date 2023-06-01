@@ -33,7 +33,7 @@ if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
   GENERATORS="examples metrics error-codes api-docs options"
 fi
 
-if [[ -z "${ARANGODB_SRC}" ]]; then
+if [[ -z "${ARANGODB_SRC}" ]] && [[ -z "${ARANGODB_SRC_2}" ]] && [[ -z "${ARANGODB_SRC_3}" ]]; then
   echo "[INIT] ERROR: No ARANGODB_SRC variable set, please set it."
   exit 1
 fi
