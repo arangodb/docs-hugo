@@ -2,7 +2,7 @@
 set -e
 
 if [ -z "$ARANGO_INIT_PORT" ] ; then
-    ARANGO_INIT_PORT=8999
+    ARANGO_INIT_PORT=8529
 fi
 
 AUTHENTICATION="true"
@@ -82,87 +82,6 @@ if [ "$1" = 'arangod' ]; then
         else
             ARANGOSH_ARGS=" --server.authentication false"
         fi
-
-        echo "Initializing database...Hang on..."
-
-        $NUMACTL arangod --config /tmp/arangod.conf \
-                --server.endpoint tcp://127.0.0.1:$ARANGO_INIT_PORT \
-                --server.authentication false \
-                --javascript.module-directory /usr/share/arangodb3/enterprise/js
-		--log.file /tmp/init-log \
-		--log.foreground-tty false &
-        pid="$!"
-
-        counter=0
-        ARANGO_UP=0
-
-        while [ "$ARANGO_UP" = "0" ]; do
-            if [ $counter -gt 0 ]; then
-                sleep 1
-            fi
-
-            if [ "$counter" -gt 100 ]; then
-                echo "ArangoDB didn't start correctly during init"
-                cat /tmp/init-log
-                exit 1
-            fi
-
-            let counter=counter+1
-            ARANGO_UP=1
-
-            $NUMACTL arangosh \
-                --server.endpoint=tcp://127.0.0.1:$ARANGO_INIT_PORT \
-                --server.authentication false \
-                --javascript.execute-string "db._version()" \
-                > /dev/null 2>&1 || ARANGO_UP=0
-        done
-
-        if [ "$(id -u)" = "0" ] ; then
-            foxx server set default http://127.0.0.1:$ARANGO_INIT_PORT
-        else
-            echo Not setting foxx server default because we are not root.
-        fi
-
-        for f in /docker-entrypoint-initdb.d/*; do
-            case "$f" in
-            *.sh)
-                echo "$0: running $f"
-                . "$f"
-                ;;
-            *.js)
-                echo "$0: running $f"
-                $NUMACTL arangosh ${ARANGOSH_ARGS} \
-                        --server.endpoint=tcp://127.0.0.1:$ARANGO_INIT_PORT \
-                        --javascript.execute "$f"
-                ;;
-            */dumps)
-                echo "$0: restoring databases"
-                for d in $f/*; do
-                    DBName=$(echo ${d}|sed "s;$f/;;")
-                    echo "restoring $d into ${DBName}";
-                    $NUMACTL arangorestore \
-                        ${ARANGOSH_ARGS} \
-                        --server.endpoint=tcp://127.0.0.1:$ARANGO_INIT_PORT \
-                        --create-database true \
-                        --include-system-collections true \
-                        --server.database "$DBName" \
-                        --input-directory "$d"
-                done
-                echo
-                ;;
-            esac
-        done
-
-        if [ "$(id -u)" = "0" ] ; then
-            foxx server remove default
-        fi
-
-        if ! kill -s TERM "$pid" || ! wait "$pid"; then
-            echo >&2 'ArangoDB Init failed.'
-            exit 1
-        fi
-
-        echo "Database initialized...Starting System..."
     fi
 
     # if we really want to start arangod and not bash or any other thing
