@@ -238,6 +238,8 @@ jobs:
       SCCACHE_ERROR_LOG: /tmp/sccache.log
       SCCACHE_LOG: info,sccache::cache=debug,sccache::compiler::compiler=debug
     steps:
+      - setup_remote_docker:
+          version: 20.10.14
       - add_ssh_keys:
           fingerprints:
             - "7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a"
@@ -327,67 +329,26 @@ jobs:
       - run:
           name: Create archive of compiled instance
           command: tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/ enterprise/
-      - persist_to_workspace:
-          root: .
-          paths:
-            - .
-
-  create-image:
-    parameters:
-      arangodb-branch:
-        type: string
-        default: ""
-      version:
-        type: string
-        default: ""
-    machine:
-      image: ubuntu-2004:current
-      docker_layer_caching: true 
-    resource_class: medium
-    environment:
-      GIT_SSH_COMMAND: ssh
-      SCCACHE_ERROR_LOG: /tmp/sccache.log
-      SCCACHE_LOG: info,sccache::cache=debug,sccache::compiler::compiler=debug
-    steps:
-      - attach_workspace:
-          at: .
-
       - run:
-          name: Create docker image from install.tar.gz and save it
+          name: Create docker image
           command: |
-            if [ "<< parameters.arangodb-branch >>" == "" ] || [[ "<< parameters.arangodb-branch >>" == *"arangodb/enterprise"* ]]; then
-              circleci-agent step halt
-              exit 0
-            fi
-
-            set +e
-            find .git > /dev/null
-            if [ "$?" != "0" ]; then
-              circleci-agent step halt
-              exit 0
-            fi 
-            set -e
-
-
             ARANGODB_BRANCH=<< parameters.arangodb-branch >>
             VERSION=<< parameters.version >>
             if [ "$VERSION" == "" ]; then
               ARANGODB_BRANCH=$(echo << parameters.arangodb-branch >> | cut -d, -f2)
               VERSION=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
             fi
-
             git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
-
+            apk add docker-cli
             main_hash=$(awk 'END{print}' .git/logs/HEAD | awk '{print $2}' | cut -c1-9)
             image_name=$(echo $ARANGODB_BRANCH | cut -d/ -f2)
 
-            cp install.tar.gz docs-hugo/toolchain/scripts/compile
+            mv install.tar.gz docs-hugo/toolchain/scripts/compile
             cd docs-hugo/toolchain/scripts/compile
 
             docker build -t arangodb/docs-hugo:$image_name-$VERSION-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
             docker push arangodb/docs-hugo:$image_name-$VERSION-$main_hash
-
 
   show-deploy-preview:
     docker:
@@ -461,45 +422,27 @@ workflows:
           version: ""
           requires:
             - approve-workflow
-      - create-image:
-          name: create-image-1
-          arangodb-branch: << pipeline.parameters.arangodb-branch >>
-          version: ""
-          requires:
-            - compile-1
-      - create-image:
-          name: create-image-2
-          arangodb-branch: << pipeline.parameters.arangodb-branch-2 >>
-          version: ""
-          requires:
-            - compile-2
-      - create-image:
-          name: create-image-3
-          arangodb-branch: << pipeline.parameters.arangodb-branch-3 >>
-          version: ""
-          requires:
-            - compile-3
       - clone-arangodb-branches:
           name: clone-arangodb-branches-1
           arangodb-branch: << pipeline.parameters.arangodb-branch >>
           arangodb-branch-2: ""
           arangodb-branch-3: ""
           requires:
-            - create-image-1
+            - compile-1
       - clone-arangodb-branches:
           name: clone-arangodb-branches-2
           arangodb-branch: ""
           arangodb-branch-2: << pipeline.parameters.arangodb-branch-2 >>
           arangodb-branch-3: ""
           requires:
-            - create-image-2
+            - compile-2
       - clone-arangodb-branches:
           name: clone-arangodb-branches-3
           arangodb-branch: ""
           arangodb-branch-2: ""
           arangodb-branch-3: << pipeline.parameters.arangodb-branch-3 >>
           requires:
-            - create-image-3
+            - compile-3
 
       - build-with-generated:
           name: build-with-generated
