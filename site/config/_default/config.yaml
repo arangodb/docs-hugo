@@ -33,8 +33,14 @@ markup:
         block: true
         title: true
 
+outputFormats:
+  navigation:
+    baseName: nav
+    isHTML: true
+    mediaType: text/html
+
 outputs:
-  home: ["HTML", "RSS", "JSON"]
+  home: ["HTML", "navigation"]
 
 caches:
   assets:

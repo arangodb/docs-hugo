@@ -7,8 +7,8 @@
 
     <link rel="shortcut icon" href="https://www.arangodb.com/wp-content/uploads/2018/07/www.arangodb.com-favicon.png">
 
-    {{- partial "favicon.html" . }}
-    {{- partial "stylesheet.html" . }}
+    {{- partialCached "favicon.html" . }}
+    {{- partialCached "stylesheet.html" . }}
   </head>
 <body>
     <div id="page-wrapper" class="page_content_splash" style="height: auto;">
@@ -27,7 +27,7 @@
               <div class="container-right">
                 </div>
             </header>
-            {{- partial "menu.html" . }}
+            <iframe src="/nav.html" title="description" class="menu-iframe active"></iframe>
             <div class="container-main">
               <div class="row-main">
                   <nav id="breadcrumbs">
