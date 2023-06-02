@@ -1,14 +1,6 @@
         </div>
       </main><!-- #body-inner -->
-{{- partial "custom-comments.html" . }}
-<!---
-{{- partial "custom-footer.html" . }} 
---> 
     </div><!-- #body -->
 {{- partialCached "back-to-top.html" . }}
-    <script src="{{"js/clipboard.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
-    <script src="{{"js/perfect-scrollbar.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
-    <script src="{{"js/featherlight.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
-    <script src="{{"js/theme.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
   </body>
 </html>
