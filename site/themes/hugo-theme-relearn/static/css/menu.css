@@ -1,3 +1,29 @@
+.menu-iframe {
+    border: none;
+}
+
+.menu-iframe {
+    grid-area: sidenav;
+    display: flex;
+    align-items: stretch;
+    /*position: -webkit-sticky;*/
+    position: sticky;
+    z-index: 2;
+    top: 4rem;
+    height: 101vh;
+    background-color: var(--SIDEBAR-BACKGROUND-COLOR);
+   /* background-color: rgb(64, 69, 69) !important;*/
+    /*
+    background-image: url("/images/menu-bg.jpg");
+background-position: center center;
+background-size:cover;
+*/
+    left: 0;
+    width: 0;
+    transition:  width 0.3s ease-in-out;
+
+}
+
 #sidebar {
     grid-area: sidenav;
     display: flex;
@@ -20,6 +46,7 @@ background-size:cover;
 
 }
 
+.menu-iframe.active,
 #sidebar.active {
     width: 17rem;
 }
