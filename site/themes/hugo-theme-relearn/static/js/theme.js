@@ -896,12 +896,13 @@ $(window).scroll(function(){
 
   function loadPage(target) {
     var href = target;
-    if (href == window.location.href) {
+    if (href == parent.location.href) {
         console.log("same page");
         renderVersion();
         return;
     }
     var url = href.replace(/#.*$/, "");
+    console.log(url)
     $.get({
       url: url,
       success: function(newDoc) {
@@ -912,7 +913,7 @@ $(window).scroll(function(){
           title = match[1];
         }
   
-        $(".container-main").replaceWith($(".container-main", newDoc));
+        $(".container-main", parent.document).replaceWith($(".container-main", newDoc));
   
         currentPage = url;
         if (matches = href.match(/.*?(#.*)$/)) {
@@ -932,9 +933,9 @@ $(window).scroll(function(){
         }
         initNewPage();
 
-        window.history.pushState("navchange", title, url);
+        parent.history.pushState("navchange", title, url);
 
-        var _hsq = window._hsq = window._hsq || [];
+        var _hsq = parent._hsq = parent._hsq || [];
         _hsq.push(['setPath', url]);
         _hsq.push(['trackPageView']);
         var popStateEvent = new PopStateEvent('popstate', { state: "navchange" });
@@ -950,7 +951,6 @@ $(window).scroll(function(){
     loadMenu();
     initCopyToClipboard();
     initClickHandlers();
-
     images = document.querySelectorAll("[x-style]");
     for (let image of images) {
         styles = image.getAttribute("x-style");
@@ -958,7 +958,7 @@ $(window).scroll(function(){
         image.removeAttribute("x-style")
     }
 
-    document.querySelector(".sidebar-toggle-navigation").addEventListener("click", e => {
+    parent.document.querySelector(".sidebar-toggle-navigation").addEventListener("click", e => {
         if (showSidenav) {
             $("#sidebar").removeClass("active");
             showSidenav = false;
