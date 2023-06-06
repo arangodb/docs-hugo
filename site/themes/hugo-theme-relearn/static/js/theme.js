@@ -896,13 +896,12 @@ $(window).scroll(function(){
 
   function loadPage(target) {
     var href = target;
-    if (href == parent.location.href) {
+    if (href == window.location.href) {
         console.log("same page");
         renderVersion();
         return;
     }
     var url = href.replace(/#.*$/, "");
-    console.log(url)
     $.get({
       url: url,
       success: function(newDoc) {
@@ -913,7 +912,7 @@ $(window).scroll(function(){
           title = match[1];
         }
   
-        $(".container-main", parent.document).replaceWith($(".container-main", newDoc));
+        $(".container-main").replaceWith($(".container-main", newDoc));
   
         currentPage = url;
         if (matches = href.match(/.*?(#.*)$/)) {
@@ -933,9 +932,9 @@ $(window).scroll(function(){
         }
         initNewPage();
 
-        parent.history.pushState("navchange", title, url);
+        window.history.pushState("navchange", title, url);
 
-        var _hsq = parent._hsq = parent._hsq || [];
+        var _hsq = window._hsq = window._hsq || [];
         _hsq.push(['setPath', url]);
         _hsq.push(['trackPageView']);
         var popStateEvent = new PopStateEvent('popstate', { state: "navchange" });
@@ -958,7 +957,7 @@ $(window).scroll(function(){
         image.removeAttribute("x-style")
     }
 
-    parent.document.querySelector(".sidebar-toggle-navigation").addEventListener("click", e => {
+    document.querySelector(".sidebar-toggle-navigation").addEventListener("click", e => {
         if (showSidenav) {
             $("#sidebar").removeClass("active");
             showSidenav = false;
@@ -1055,6 +1054,20 @@ function copyCode(event) {
     }, () => {
       console.log("clipboard copy failed")
     });
+ }
+
+ function expand(event) {
+    $t=$(this);
+
+    if($t.parent('.expand-expanded.expand-marked').length){ 
+        $t.next().css('display','none') 
+    } else if($t.parent('.expand-marked').length){ 
+        $t.next().css('display','block') 
+    }else{
+        $t.next('.expand-content').slideToggle(100); 
+    } 
+    
+    $t.parent().toggleClass('expand-expanded');
  }
 
 

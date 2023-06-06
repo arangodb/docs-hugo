@@ -9,11 +9,13 @@
 
     {{- partialCached "favicon.html" . }}
     {{- partialCached "stylesheet.html" . }}
+    {{- partial "javascript.html" . }}
+
   </head>
 <body>
     <div id="page-wrapper" class="page_content_splash" style="height: auto;">
       <section id="page-main">
-        <section class="page-container">
+        <section class="page-container" id="page-container">
           <!-- HEADER -->
             <header id="header" style="transition: 0.5s padding ease-out, 0.15s" class="zn_header_white header-splash-new nav-down header-splash-wrap header1">
               <!--LOGO-->
@@ -27,7 +29,19 @@
               <div class="container-right">
                 </div>
             </header>
-            <iframe src="/nav.html" title="description" class="menu-iframe active"></iframe>
+            <iframe src="/nav.html" title="description" id="menu-iframe" class="menu-iframe active">qualocsa</iframe>
+            <script>
+              var iframe =  document.getElementById('menu-iframe');
+              console.log(iframe)
+              iframe.addEventListener("load", function() {
+                var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
+              content= iFrameBody.getElementById('sidebar');
+              console.log(content)
+              document.getElementById("page-container").appendChild(content)
+              document.getElementById("page-container").removeChild(iframe)
+              });
+              
+            </script>
             <div class="container-main">
               <div class="row-main">
                   <nav id="breadcrumbs">
