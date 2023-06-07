@@ -369,7 +369,7 @@ jobs:
             SHA=$CIRCLE_SHA1
             AUTH=dandimeo:$GITHUB_PAT
             URL=$API/repos/$USER/$REPO/statuses/$SHA
-            DESCRIPTION=https://deploy-preview-${CIRCLE_PULL_REQUEST##*/}--docs-hugo.netlify.app
+            DESCRIPTION=https://"$CIRCLE_SHA1"--docs-hugo.netlify.app
             echo "$DESCRIPTION"
             # Compose the body.
             BODY='
