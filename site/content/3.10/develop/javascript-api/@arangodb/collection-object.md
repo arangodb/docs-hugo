@@ -1075,10 +1075,14 @@ version: '3.10'
 server_name: stable
 type: single
 ---
-~ db._create("example");
-  db.example.insert({ Hello : "World" });
-  db.example.insert({ Hello : "World" }, {waitForSync: true});
-~ db._drop("example");
+~ db._create("testcoll");
+  db.testcoll.insert({ Hello : "World" });
+  db.testcoll.insert({ Hello : "World" }, {waitForSync: true});
+~ db._create("anothercoll");
+  db.anothercoll.insert({ Hello : "Another collection" });
+  db.anothercoll.insert({ Hello : "Another collection" }, {waitForSync: true});
+~ db._drop("testcoll");
+~ db._drop("anothercoll");
 ```
 
 ```js
