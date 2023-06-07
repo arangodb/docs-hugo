@@ -219,7 +219,7 @@ jobs:
 
       - run:
           name: Deploy to netlify
-          command: netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"
+          command: netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --prod
 
 
   compile-linux:
