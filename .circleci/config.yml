@@ -51,7 +51,7 @@ jobs:
             curl -L https://github.com/gohugoio/hugo/releases/download/v0.112.5/hugo_0.112.5_linux-amd64.deb -o hugo.deb
             sudo apt install -y ./hugo.deb
             export HUGO_ENV=prod
-            export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--docs-hugo.netlify.app
+            export HUGO_URL=https://"$CIRCLE_SHA1"--docs-hugo.netlify.app
             cd docs-hugo/site && hugo -e $HUGO_ENV -b $HUGO_URL --minify
             
       - persist_to_workspace:
@@ -157,7 +157,7 @@ jobs:
           name: Set environment variables and launch toolchain
           command: |
             source docs-hugo/.circleci/utils.sh
-            export HUGO_URL=https://deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"--docs-hugo.netlify.app
+            export HUGO_URL=https://"$CIRCLE_SHA1"--docs-hugo.netlify.app
             export DOCKER_ENV=examples
             export GENERATORS='<< parameters.generators >>'
             
@@ -219,7 +219,7 @@ jobs:
 
       - run:
           name: Deploy to netlify
-          command: netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias deploy-preview-"${CIRCLE_PULL_REQUEST##*/}"
+          command: netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias $CIRCLE_SHA1
 
 
   compile-linux:
