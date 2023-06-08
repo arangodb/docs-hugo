@@ -51,7 +51,7 @@ jobs:
             curl -L https://github.com/gohugoio/hugo/releases/download/v0.112.5/hugo_0.112.5_linux-amd64.deb -o hugo.deb
             sudo apt install -y ./hugo.deb
             export HUGO_ENV=prod
-            export HUGO_URL=https://"$CIRCLE_SHA1"--docs-hugo.netlify.app
+            export HUGO_URL=https://docs-dev.arangodb.com
             cd docs-hugo/site && hugo -e $HUGO_ENV -b $HUGO_URL --minify
             
       - persist_to_workspace:
@@ -219,7 +219,7 @@ jobs:
 
       - run:
           name: Deploy to netlify
-          command: netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias $CIRCLE_SHA1
+          command: netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --prod
 
 
   compile-linux:
