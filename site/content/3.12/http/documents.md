@@ -164,7 +164,7 @@ render: input/output
 name: RestDocumentHandlerReadDocument
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 db._drop("payments");
 db._create("payments");
@@ -188,7 +188,7 @@ render: input
 name: RestDocumentHandlerReadDocumentIfNoneMatch
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -211,7 +211,7 @@ render: input/output
 name: RestDocumentHandlerReadDocumentUnknownHandle
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var url = "/_api/document/products/unknown-identifier";
 
@@ -313,7 +313,7 @@ render: input
 name: RestDocumentHandlerReadDocumentHead
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -546,7 +546,7 @@ render: input/output
 name: RestDocumentHandlerPostCreate1
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -570,7 +570,7 @@ render: input/output
 name: RestDocumentHandlerPostAccept1
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -594,7 +594,7 @@ render: input/output
 name: RestDocumentHandlerPostWait1
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -618,7 +618,7 @@ render: input/output
 name: RestDocumentHandlerPostUnknownCollection1
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 
@@ -639,7 +639,7 @@ render: input/output
 name: RestDocumentHandlerPostBadJson1
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -663,7 +663,7 @@ render: input/output
 name: RestDocumentHandlerPostReturnNew
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -687,7 +687,7 @@ render: input/output
 name: RestDocumentHandlerPostOverwrite
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -908,7 +908,7 @@ render: input/output
 name: RestDocumentHandlerUpdateDocument
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -932,7 +932,7 @@ render: input/output
 name: RestDocumentHandlerUpdateDocumentUnknownHandle
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -957,7 +957,7 @@ render: input/output
 name: RestDocumentHandlerUpdateDocumentIfMatchOther
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -1203,7 +1203,7 @@ render: input/output
 name: RestDocumentHandlerPatchDocument
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -1239,7 +1239,7 @@ render: input/output
 name: RestDocumentHandlerPatchDocumentMerge
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -1397,7 +1397,7 @@ render: input/output
 name: RestDocumentHandlerDeleteDocument
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -1421,7 +1421,7 @@ render: input/output
 name: RestDocumentHandlerDeleteDocumentUnknownHandle
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -1446,7 +1446,7 @@ render: input/output
 name: RestDocumentHandlerDeleteDocumentIfMatchOther
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -1610,7 +1610,7 @@ render: input/output
 name: RestDocumentHandlerReadMultiDocument
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -1851,7 +1851,7 @@ render: input/output
 name: RestDocumentHandlerPostMulti1
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -1875,7 +1875,7 @@ render: input/output
 name: RestDocumentHandlerPostMulti2
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -1899,7 +1899,7 @@ render: input/output
 name: RestDocumentHandlerPostBadJsonMulti
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -2417,7 +2417,7 @@ render: input/output
 name: RestDocumentHandlerDeleteDocumentKeyMulti
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 ~ var assertEqual = require("jsunity").jsUnity.assertions.assertEqual;
   var cn = "products";
@@ -2448,7 +2448,7 @@ render: input/output
 name: RestDocumentHandlerDeleteDocumentIdentifierMulti
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 ~ var assertEqual = require("jsunity").jsUnity.assertions.assertEqual;
   var cn = "products";
@@ -2479,7 +2479,7 @@ render: input/output
 name: RestDocumentHandlerDeleteDocumentObjectMulti
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 ~ var assertEqual = require("jsunity").jsUnity.assertions.assertEqual;
   var cn = "products";
@@ -2510,7 +2510,7 @@ render: input/output
 name: RestDocumentHandlerDeleteDocumentUnknownMulti
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
@@ -2548,7 +2548,7 @@ render: input/output
 name: RestDocumentHandlerDeleteDocumentRevMulti
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 ~ var assertEqual = require("jsunity").jsUnity.assertions.assertEqual;
   var cn = "products";
@@ -2582,7 +2582,7 @@ render: input/output
 name: RestDocumentHandlerDeleteDocumentRevConflictMulti
 server_name: stable
 type: single
-version: '3.10'
+version: '3.12'
 ---
 var cn = "products";
 db._drop(cn);
