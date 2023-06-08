@@ -490,7 +490,7 @@ workflows:
           name: clone-arangodb-branches-3.12
           arangodb-branch: ""
           arangodb-branch-2: ""
-          arangodb-branch-3: "stable,arangodb/enterprise-preview:3.12-nightly,3.12,"
+          arangodb-branch-3: "stable,arangodb/enterprise-preview:devel-nightly,3.12,"
       - build-with-generated:
           name: build-with-generated
           arangodb-branch: "stable,arangodb/enterprise-preview:3.10-nightly,3.10,"
