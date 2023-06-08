@@ -230,8 +230,11 @@ jobs:
       version:
         type: string
         default: ""
+      openssl:
+        type: string
+        default: ""
     docker:
-      - image: arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.8
+      - image: arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl<< parameters.openssl >>
     resource_class: xlarge
     environment:
       GIT_SSH_COMMAND: ssh
@@ -408,6 +411,7 @@ workflows:
           name: compile-1
           arangodb-branch: << pipeline.parameters.arangodb-branch >>
           version: ""
+          openssl: "1.1.1t"
           requires:
             - approve-workflow
       - compile-linux:
@@ -416,6 +420,7 @@ workflows:
           name: compile-2
           arangodb-branch: << pipeline.parameters.arangodb-branch-2 >>
           version: ""
+          openssl: "3.0.9"
           requires:
             - approve-workflow
       - compile-linux:
@@ -424,6 +429,7 @@ workflows:
           name: compile-3
           arangodb-branch: << pipeline.parameters.arangodb-branch-3 >>
           version: ""
+          openssl: "3.1.1"
           requires:
             - approve-workflow
       - clone-arangodb-branches:
