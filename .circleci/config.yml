@@ -411,7 +411,7 @@ workflows:
           name: compile-1
           arangodb-branch: << pipeline.parameters.arangodb-branch >>
           version: ""
-          openssl: "1.1.1t"
+          openssl: "1.1.1u"
           requires:
             - approve-workflow
       - compile-linux:
