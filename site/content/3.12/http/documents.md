@@ -166,19 +166,19 @@ server_name: stable
 type: single
 version: '3.12'
 ---
-var cn = "products";
-db._drop(cn);
-db._create(cn);
+db._drop("payments");
+db._create("payments");
 
-var document = db.products.save({"hello":"world"});
-var url = "/_api/document/" + document._id;
+var document = db.payments.save({"today":"45"});
+var id = document._id;
+var url = "/_api/document/" + id;
 
 var response = logCurlRequest('GET', url);
 
 assert(response.code === 200);
 
 logJsonResponse(response);
-  ~ db._drop(cn);
+  ~ db._drop("payments");
 ```
 
 
