@@ -68,18 +68,18 @@
             {{ if $response.error }}
               Error found in the example: {{ $response.error }}
             {{ end }}
-            {{ $name }}
             {{ if in $response.options.render "input" }}
               {{ transform.Highlight $response.input "" }}
             {{ end }}
             {{ if in $response.options.render "output" }}
 
               {{ $x := transform.Highlight $response.output "" }}
+              {{ $block := printf "%s\n%s" $response.input $x | markdownify}}
               {{- partial "shortcodes/expand.html" (dict
                 "context" .
-                "content" $x
+                "content" $block
                 "open"    "open"
-                "title"   "show output"
+                "title"   $name
               ) }}
             {{ end }}
           {{ end }}
