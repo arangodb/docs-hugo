@@ -408,7 +408,7 @@ workflows:
       - compile-linux:
           context:
             - sccache-aws-bucket
-          name: compile-1
+          name: compile-3.10
           arangodb-branch: << pipeline.parameters.arangodb-branch >>
           version: ""
           openssl: "1.1.1t"
@@ -417,7 +417,7 @@ workflows:
       - compile-linux:
           context:
             - sccache-aws-bucket
-          name: compile-2
+          name: compile-3.11
           arangodb-branch: << pipeline.parameters.arangodb-branch-2 >>
           version: ""
           openssl: "3.0.9"
@@ -426,7 +426,7 @@ workflows:
       - compile-linux:
           context:
             - sccache-aws-bucket
-          name: compile-3
+          name: compile-3.12
           arangodb-branch: << pipeline.parameters.arangodb-branch-3 >>
           version: ""
           openssl: "3.1.1"
@@ -438,21 +438,21 @@ workflows:
           arangodb-branch-2: ""
           arangodb-branch-3: ""
           requires:
-            - compile-1
+            - compile-3.10
       - clone-arangodb-branches:
           name: clone-arangodb-branches-2
           arangodb-branch: ""
           arangodb-branch-2: << pipeline.parameters.arangodb-branch-2 >>
           arangodb-branch-3: ""
           requires:
-            - compile-2
+            - compile-3.11
       - clone-arangodb-branches:
           name: clone-arangodb-branches-3
           arangodb-branch: ""
           arangodb-branch-2: ""
           arangodb-branch-3: << pipeline.parameters.arangodb-branch-3 >>
           requires:
-            - compile-3
+            - compile-3.12
 
       - build-with-generated:
           name: build-with-generated
@@ -477,26 +477,32 @@ workflows:
     when: { equal: [ generate-scheduled, << pipeline.parameters.workflow >> ] }
     jobs:
       - clone-arangodb-branches:
-          name: clone-arangodb-branches
+          name: clone-arangodb-branches-3.10
           arangodb-branch: "stable,arangodb/enterprise-preview:3.10-nightly,3.10,"
           arangodb-branch-2: ""
           arangodb-branch-3: ""
       - clone-arangodb-branches:
-          name: clone-arangodb-branches-2
+          name: clone-arangodb-branches-3.11
           arangodb-branch: ""
           arangodb-branch-2: "stable,arangodb/enterprise-preview:3.11-nightly,3.11,"
           arangodb-branch-3: ""
+      - clone-arangodb-branches:
+          name: clone-arangodb-branches-3.12
+          arangodb-branch: ""
+          arangodb-branch-2: ""
+          arangodb-branch-3: "stable,arangodb/enterprise-preview:devel-nightly,3.12,"
       - build-with-generated:
           name: build-with-generated
           arangodb-branch: "stable,arangodb/enterprise-preview:3.10-nightly,3.10,"
           arangodb-branch-2: "stable,arangodb/enterprise-preview:3.11-nightly,3.11,"
-          arangodb-branch-3: ""
+          arangodb-branch-3: "stable,arangodb/enterprise-preview:devel-nightly,3.12,"
           generators: "metrics error-codes options"
           commit-generated: true
           create-pr: true
           requires:
-            - clone-arangodb-branches
-            - clone-arangodb-branches-2
+            - clone-arangodb-branches-3.10
+            - clone-arangodb-branches-3.11
+            - clone-arangodb-branches-3.12
       
 
   community-pr:
