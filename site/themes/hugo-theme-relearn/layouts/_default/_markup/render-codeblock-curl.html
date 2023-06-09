@@ -31,18 +31,17 @@
           {{ if $response.error }}
             Error found in the example: {{ $response.error }}
           {{ end }}
-          {{ if in $response.options.render "input" }}
-            {{ transform.Highlight $response.input "" }}
-          {{ end }}
+          {{ $input := transform.Highlight $response.input "" }}
           {{ if in $response.options.render "output" }}
 
-            {{ $x := transform.Highlight $response.output "" }}
-            {{- partial "shortcodes/expand.html" (dict
-              "context" .
-              "content" $x
-              "open"    "open"
-              "title"   "show output"
-            ) }}
+          {{ $output := transform.Highlight $response.output "" }}
+          {{ $block := printf "%s\n%s" $input $output | markdownify}}
+          {{- partial "shortcodes/expand.html" (dict
+            "context" .
+            "content" $block
+            "open"    "open"
+            "title"   $name
+          ) }}
           {{ end }}
         {{ end }}
       {{ end }}
@@ -68,13 +67,11 @@
             {{ if $response.error }}
               Error found in the example: {{ $response.error }}
             {{ end }}
-            {{ if in $response.options.render "input" }}
-              {{ transform.Highlight $response.input "" }}
-            {{ end }}
+            {{ $input := transform.Highlight $response.input "" }}
             {{ if in $response.options.render "output" }}
 
-              {{ $x := transform.Highlight $response.output "" }}
-              {{ $block := printf "%s\n%s" $response.input $x | markdownify}}
+              {{ $output := transform.Highlight $response.output "" }}
+              {{ $block := printf "%s\n%s" $input $output | markdownify}}
               {{- partial "shortcodes/expand.html" (dict
                 "context" .
                 "content" $block
