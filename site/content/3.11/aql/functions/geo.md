@@ -16,12 +16,6 @@ type: single
 RETURN DATE_ISO8601(DATE_NOW()) // nicely formatted
 ```
 
-```aql
----
----
-RETURN DATE_NOW() // test blank frontmatter
-```
-
 ## Geo utility functions
 
 The following helper functions **can** use geo indexes, but do not have to in
