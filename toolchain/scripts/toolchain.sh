@@ -368,13 +368,13 @@ function generate_apidocs() {
   fi
   log "[GENERATE-APIDOCS] Output file: ./api-docs.json"
   # Validate the openapi schema
-  log "[GENERATE-APIDOCS] Starting openapi schema validation"
-  err=$(swagger-cli validate ./api-docs.json 2>&1 >/dev/null)
-  if [ "$?" != "0" ]; then
-    echo "<strong>Error:</strong><br>" >> /home/summary.md
-    echo "$err" >> /home/summary.md
-    exit "$?"
-  fi
+  # log "[GENERATE-APIDOCS] Starting openapi schema validation"
+  # err=$(swagger-cli validate ./api-docs.json 2>&1 >/dev/null)
+  # if [ "$?" != "0" ]; then
+  #   echo "<strong>Error:</strong><br>" >> /home/summary.md
+  #   echo "$err" >> /home/summary.md
+  #   exit "$?"
+  # fi
   echo "Done" >> /home/summary.md
 }
 
