@@ -1,3 +1,13 @@
+print("old collections");
+print(db._collections())
+for (let col of db._collections()) {
+
+  if (!col.properties().isSystem) {
+    db._drop(col._name);
+  }
+}
+print(db._collections())
+
 db._drop("ignore");
 db._create("ignore");
 db._drop("demo");
