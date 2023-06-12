@@ -221,6 +221,12 @@ jobs:
           name: Deploy to netlify
           command: netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias $CIRCLE_SHA1
 
+      - run:
+          name: Call Github App create check function
+          command: | 
+            cat docs-hugo/summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch: $CIRCLE_BRANCH'
+
+
 
   compile-linux:
     parameters:

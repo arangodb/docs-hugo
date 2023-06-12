@@ -28,13 +28,12 @@ func init() {
 		os.Exit(1)
 	}
 
-	internal.InitLog(config.Conf.Log)
 	internal.InitRepositories()
 	utils.LoadDatasets(config.Conf.Datasets)
 
-	common.Logger.Println(startupBanner)
-	common.Logger.Print("./arangoproxy -help for help usage\n\n")
-	common.Logger.Print("Init Setup\n")
+	common.Logger.Printf(startupBanner)
+	common.Logger.Printf("./arangoproxy -help for help usage\n\n")
+	common.Logger.Printf("Init Setup\n")
 
 	if help {
 		common.Logger.Printf("Usage: ...\n")
@@ -46,12 +45,12 @@ func init() {
 		internal.CleanCache()
 	}
 
-	common.Logger.Print("Setup Done\n---------\n")
+	common.Logger.Printf("Setup Done\n---------\n")
 
 }
 
 func main() {
-	common.Logger.Print("Available endpoints:\n - /js\n - /aql\n - /curl\n")
+	common.Logger.Printf("Available endpoints:\n - /js\n - /aql\n - /curl\n")
 	common.Logger.Printf("Starting Server at %s\n", config.Conf.WebServer)
 
 	internal.StartController(config.Conf.WebServer)
