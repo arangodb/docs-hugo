@@ -13,13 +13,14 @@ import (
 
 var configFile string
 var env string
-var help, cleanCache bool
+var help, cleanCache, useServers bool
 
 // Pre-Run Setup
 func init() {
 	flag.StringVar(&configFile, "config", "./configs/local.yaml", "path of config file")
 	flag.BoolVar(&help, "help", false, "Display help usage")
 	flag.BoolVar(&cleanCache, "no-cache", false, "Reset cache")
+	flag.BoolVar(&cleanCache, "use-servers", false, "Enable communication with arangodb servers")
 	flag.Parse()
 
 	err := config.LoadConfig(configFile)
@@ -28,8 +29,10 @@ func init() {
 		os.Exit(1)
 	}
 
-	internal.InitRepositories()
-	utils.LoadDatasets(config.Conf.Datasets)
+	if useServers {
+		internal.InitRepositories()
+		utils.LoadDatasets(config.Conf.Datasets)
+	}
 
 	common.Logger.Printf(startupBanner)
 	common.Logger.Printf("./arangoproxy -help for help usage\n\n")

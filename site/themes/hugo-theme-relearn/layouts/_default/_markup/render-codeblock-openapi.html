@@ -1,10 +1,22 @@
+{{ warnf "render codeblock" }}
+{{ $endpoint := printf "%s/openapi" site.Params.arangoproxyUrl }}
+{{ $remote := resources.GetRemote $endpoint (dict
+    "method" "post"
+    "body" .Inner
+  )
+}}
+{{ warnf "%v" $remote}}
+
 {{ $titleRE :=  findRE `(?m)## .*` .Inner }}
 {{ $yaml := findRE `(?ms)paths:.*` .Inner }}
+
+
 
 {{ $title := index $titleRE 0 }}
 {{ $yamlBlock := index $yaml 0 | transform.Unmarshal }}
 
 {{ with $yamlBlock }}
+ 
 
   {{ $title | markdownify }}
   
