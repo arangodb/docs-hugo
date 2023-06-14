@@ -23,6 +23,8 @@ var (
 
 	CacheChannel         = make(chan map[string]interface{})
 	OpenapiGlobalChannel = make(chan map[string]interface{})
+
+	Versions = common.LoadVersions()
 )
 
 // Start and expose the webserver
@@ -35,6 +37,7 @@ func StartController(url string) {
 	http.HandleFunc("/curl", HTTPExampleHandler)
 	http.HandleFunc("/aql", AQLHandler)
 	http.HandleFunc("/openapi", OpenapiHandler)
+	http.HandleFunc("/openapi-validate", ValidateOpenapiHandler)
 	http.HandleFunc("/go", TODOHandler)
 	http.HandleFunc("/java", TODOHandler)
 
@@ -109,13 +112,20 @@ func AQLHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func OpenapiHandler(w http.ResponseWriter, r *http.Request) {
-	common.Logger.Printf("Received")
+	common.Logger.Printf("received")
 	openapiYaml, err := OPENAPIService.ParseOpenapiPayload(r.Body)
 	if err != nil {
 		return
 	}
 
-	err = OPENAPIService.ProcessOpenapiSpec(openapiYaml, OpenapiGlobalChannel)
+	err = OPENAPIService.ProcessOpenapiSpec(openapiYaml, r.Header, OpenapiGlobalChannel)
+	w.WriteHeader(http.StatusOK)
+}
+
+func ValidateOpenapiHandler(w http.ResponseWriter, r *http.Request) {
+	common.Logger.Printf("VALIDATE")
+
+	OPENAPIService.ValidateOpenapiGlobalSpec()
 	w.WriteHeader(http.StatusOK)
 }
 
