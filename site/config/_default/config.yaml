@@ -1,7 +1,7 @@
 baseURL: "https://startling-truffle-6032f2.netlify.app"
 languageCode: "en-us"
 title: "ArangoDB Documentation"
-theme: "hugo-theme-relearn"
+theme: "arangodb-docs-theme"
 timeout: "200000000"
 UglifyURLs: true
 CanonifyURLs: true
