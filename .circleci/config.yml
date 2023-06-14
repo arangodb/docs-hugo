@@ -5,6 +5,10 @@ parameters:
     type: enum
     enum: [no-op, plain-build, generate, compile, generate-scheduled]
     default: no-op
+  
+  deploy-url:
+    type: string
+    default: $CIRCLE_BRANCH
 
   generators:
     type: string
@@ -51,7 +55,7 @@ jobs:
             curl -L https://github.com/gohugoio/hugo/releases/download/v0.112.5/hugo_0.112.5_linux-amd64.deb -o hugo.deb
             sudo apt install -y ./hugo.deb
             export HUGO_ENV=prod
-            export HUGO_URL=https://"$CIRCLE_SHA1"--docs-hugo.netlify.app
+            export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
             cd docs-hugo/site && hugo -e $HUGO_ENV -b $HUGO_URL --minify
             
       - persist_to_workspace:
@@ -157,7 +161,7 @@ jobs:
           name: Set environment variables and launch toolchain
           command: |
             source docs-hugo/.circleci/utils.sh
-            export HUGO_URL=https://"$CIRCLE_SHA1"--docs-hugo.netlify.app
+            export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
             export DOCKER_ENV=examples
             export GENERATORS='<< parameters.generators >>'
             
@@ -203,6 +207,7 @@ jobs:
           paths:
             - docs-hugo/site/public
             - docs-hugo/site/data
+            - docs-hugo/summary.md
 
  
 
@@ -219,7 +224,13 @@ jobs:
 
       - run:
           name: Deploy to netlify
-          command: netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias $CIRCLE_SHA1
+          command: netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias deploy-preview-<< pipeline.parameters.deploy-url >>
+
+      - run:
+          name: Call Github App create check function
+          command: | 
+            cat docs-hugo/summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
+
 
 
   compile-linux:
@@ -230,8 +241,11 @@ jobs:
       version:
         type: string
         default: ""
+      openssl:
+        type: string
+        default: ""
     docker:
-      - image: arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.8
+      - image: arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl<< parameters.openssl >>
     resource_class: xlarge
     environment:
       GIT_SSH_COMMAND: ssh
@@ -405,25 +419,28 @@ workflows:
       - compile-linux:
           context:
             - sccache-aws-bucket
-          name: compile-1
+          name: compile-3.10
           arangodb-branch: << pipeline.parameters.arangodb-branch >>
           version: ""
+          openssl: "1.1.1t"
           requires:
             - approve-workflow
       - compile-linux:
           context:
             - sccache-aws-bucket
-          name: compile-2
+          name: compile-3.11
           arangodb-branch: << pipeline.parameters.arangodb-branch-2 >>
           version: ""
+          openssl: "3.0.9"
           requires:
             - approve-workflow
       - compile-linux:
           context:
             - sccache-aws-bucket
-          name: compile-3
+          name: compile-3.12
           arangodb-branch: << pipeline.parameters.arangodb-branch-3 >>
           version: ""
+          openssl: "3.1.1"
           requires:
             - approve-workflow
       - clone-arangodb-branches:
@@ -432,21 +449,21 @@ workflows:
           arangodb-branch-2: ""
           arangodb-branch-3: ""
           requires:
-            - compile-1
+            - compile-3.10
       - clone-arangodb-branches:
           name: clone-arangodb-branches-2
           arangodb-branch: ""
           arangodb-branch-2: << pipeline.parameters.arangodb-branch-2 >>
           arangodb-branch-3: ""
           requires:
-            - compile-2
+            - compile-3.11
       - clone-arangodb-branches:
           name: clone-arangodb-branches-3
           arangodb-branch: ""
           arangodb-branch-2: ""
           arangodb-branch-3: << pipeline.parameters.arangodb-branch-3 >>
           requires:
-            - compile-3
+            - compile-3.12
 
       - build-with-generated:
           name: build-with-generated
@@ -471,26 +488,32 @@ workflows:
     when: { equal: [ generate-scheduled, << pipeline.parameters.workflow >> ] }
     jobs:
       - clone-arangodb-branches:
-          name: clone-arangodb-branches
+          name: clone-arangodb-branches-3.10
           arangodb-branch: "stable,arangodb/enterprise-preview:3.10-nightly,3.10,"
           arangodb-branch-2: ""
           arangodb-branch-3: ""
       - clone-arangodb-branches:
-          name: clone-arangodb-branches-2
+          name: clone-arangodb-branches-3.11
           arangodb-branch: ""
           arangodb-branch-2: "stable,arangodb/enterprise-preview:3.11-nightly,3.11,"
           arangodb-branch-3: ""
+      - clone-arangodb-branches:
+          name: clone-arangodb-branches-3.12
+          arangodb-branch: ""
+          arangodb-branch-2: ""
+          arangodb-branch-3: "stable,arangodb/enterprise-preview:devel-nightly,3.12,"
       - build-with-generated:
           name: build-with-generated
           arangodb-branch: "stable,arangodb/enterprise-preview:3.10-nightly,3.10,"
           arangodb-branch-2: "stable,arangodb/enterprise-preview:3.11-nightly,3.11,"
-          arangodb-branch-3: ""
+          arangodb-branch-3: "stable,arangodb/enterprise-preview:devel-nightly,3.12,"
           generators: "metrics error-codes options"
           commit-generated: true
           create-pr: true
           requires:
-            - clone-arangodb-branches
-            - clone-arangodb-branches-2
+            - clone-arangodb-branches-3.10
+            - clone-arangodb-branches-3.11
+            - clone-arangodb-branches-3.12
       
 
   community-pr:
