@@ -5,6 +5,10 @@ parameters:
     type: enum
     enum: [no-op, plain-build, generate, compile, generate-scheduled]
     default: no-op
+  
+  deploy-url:
+    type: string
+    default: $CIRCLE_BRANCH
 
   generators:
     type: string
@@ -51,7 +55,7 @@ jobs:
             curl -L https://github.com/gohugoio/hugo/releases/download/v0.112.5/hugo_0.112.5_linux-amd64.deb -o hugo.deb
             sudo apt install -y ./hugo.deb
             export HUGO_ENV=prod
-            export HUGO_URL=https://"$CIRCLE_SHA1"--docs-hugo.netlify.app
+            export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
             cd docs-hugo/site && hugo -e $HUGO_ENV -b $HUGO_URL --minify
             
       - persist_to_workspace:
@@ -157,7 +161,7 @@ jobs:
           name: Set environment variables and launch toolchain
           command: |
             source docs-hugo/.circleci/utils.sh
-            export HUGO_URL=https://"$CIRCLE_SHA1"--docs-hugo.netlify.app
+            export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
             export DOCKER_ENV=examples
             export GENERATORS='<< parameters.generators >>'
             
@@ -175,34 +179,50 @@ jobs:
             fi
             cd docs-hugo/toolchain/docker && docker compose up
 
-      - run:
-          name: Commit generated files
-          command: |
-            if [ "<< parameters.commit-generated >>" = true ] ; then
-              if [ "<< parameters.create-pr >>" = true ]; then
-                cd docs-hugo/
-                git checkout -b scheduled-content-generate
-              fi
+        - run:
+            name: Create archive of generated files
+            command: |
+              cd docs-hugo/site/data
+              tar -cvf /tmp/3.10-generated.tar 3.10/
+              tar -cvf /tmp/3.11-generated.tar 3.11/
+              tar -cvf /tmp/3.12-generated.tar 3.12/
 
-              cd /home/circleci/project/docs-hugo/site
-              git config user.email "daniele@arangodb.com"
-              git config user.name "CircleCI Job"
-              git add data/
-              git commit --allow-empty -m "Automatic commit of generated files from CircleCI"
+        - store_artifacts:
+            path: /tmp/3.10-generated.tar
 
-              if [ "<< parameters.create-pr >>" = true ]; then
-                git push -u origin scheduled-content-generate
-                curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: scheduled-create-pr'
-              else
-                git push
-              fi
-            fi
+        - store_artifacts:
+            path: /tmp/3.11-generated.tar
+
+        - store_artifacts:
+            path: /tmp/3.12-generated.tar
+
+      # - run:
+      #     name: Commit generated files
+      #     command: |
+      #       if [ "<< parameters.commit-generated >>" = true ] ; then
+      #         if [ "<< parameters.create-pr >>" = true ]; then
+      #           cd docs-hugo/
+      #           git checkout -b scheduled-content-generate
+      #         fi
+
+      #         cd /home/circleci/project/docs-hugo/site
+      #         git config user.email "daniele@arangodb.com"
+      #         git config user.name "CircleCI Job"
+      #         git add data/
+      #         git commit --allow-empty -m "Automatic commit of generated files from CircleCI"
+
+      #         if [ "<< parameters.create-pr >>" = true ]; then
+      #           git push -u origin scheduled-content-generate
+      #           curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: scheduled-create-pr'
+      #         else
+      #           git push
+      #         fi
+      #       fi
       
       - persist_to_workspace:
           root: .
           paths:
             - docs-hugo/site/public
-            - docs-hugo/site/data
             - docs-hugo/summary.md
 
  
@@ -220,7 +240,7 @@ jobs:
 
       - run:
           name: Deploy to netlify
-          command: netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias $CIRCLE_SHA1
+          command: netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias << pipeline.parameters.deploy-url >>
 
       - run:
           name: Call Github App create check function
