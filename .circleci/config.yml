@@ -53,13 +53,13 @@ jobs:
           name: Build site
           command: |
             export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
-            : > docs-hugo/summary.md
             cd docs-hugo/toolchain/docker && docker compose -f docker-compose.plain-build.yml --env-file env/plain-build.env up --exit-code-from site-frontend
             
       - persist_to_workspace:
           root: .
           paths:
             - docs-hugo/site/public
+            - docs-hugo/summary.md
 
   clone-arangodb-branches:
     parameters:
