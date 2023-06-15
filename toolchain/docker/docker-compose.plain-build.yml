@@ -34,3 +34,8 @@ networks:
   docs_net:
     driver: bridge
     name: docs_net
+    ipam:
+          driver: default
+          config:
+              - subnet: "192.168.129.0/24"
+                gateway: "192.168.129.1"
