@@ -83,7 +83,7 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 func (service OpenapiService) ValidateOpenapiGlobalSpec() error {
 	time.Sleep(time.Second * 2)
 	var wg sync.WaitGroup
-
+	common.Logger.Summary("## OPENAPI")
 	for _, version := range Versions {
 		wg.Add(1)
 		go service.ValidateFile(version.Name, &wg)
@@ -123,7 +123,7 @@ func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) e
 
 	cmd.Run()
 	common.Logger.Printf("%s\n\n\n%s", out.String(), er.String())
-	common.Logger.Summary("**%s**", out.String(), er.String())
+	common.Logger.Summary("**%s %s**", out.String(), er.String())
 	return nil
 }
 
