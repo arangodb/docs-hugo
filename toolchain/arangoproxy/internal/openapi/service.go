@@ -123,6 +123,7 @@ func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) e
 
 	cmd.Run()
 	common.Logger.Printf("%s\n\n\n%s", out.String(), er.String())
+	common.Logger.Summary("**%s**", out.String(), er.String())
 	return nil
 }
 
