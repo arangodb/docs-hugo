@@ -423,8 +423,6 @@ function clean_terminate_toolchain() {
 echo "[TOOLCHAIN] Starting toolchain"
 echo "[TOOLCHAIN] Generators: $GENERATORS"
 
-  : > /home/summary.md
-  echo "<h1>Generate Summary</h1>" >> /home/summary.md
   echo "<h2>Generators</h2>" >> /home/summary.md
   echo "$GENERATORS" >> /home/summary.md
   mapfile servers < <(yq e -o=j -I=0 '.servers[]' ../docker/config.yaml )
@@ -435,7 +433,7 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
     version=$(echo "$server" | yq e '.version' -)
     arangodb_src=$(echo "$server" | yq e '.src' -)
 
-    echo "<h2>$version:</h2> $image" >> /home/summary.md
+    echo "<li>$version: $image</li>" >> /home/summary.md
 
     if [ "$arangodb_src" == "" ] ; then
       continue
