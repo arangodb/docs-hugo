@@ -52,16 +52,22 @@ jobs:
       - run:
           name: Build site
           command: |
-            curl -L https://github.com/gohugoio/hugo/releases/download/v0.112.5/hugo_0.112.5_linux-amd64.deb -o hugo.deb
-            sudo apt install -y ./hugo.deb
-            export HUGO_ENV=prod
             export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
-            cd docs-hugo/site && hugo -e $HUGO_ENV -b $HUGO_URL --minify
+            set +e
+            cd docs-hugo/toolchain/docker
+            docker compose -f docker-compose.plain-build.yml --env-file env/plain-build.env up --abort-on-container-exit
+
+            if [ "$?" != "0" ]; then
+              cd ../../../
+              cat docs-hugo/summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
+              exit 1
+            fi 
             
       - persist_to_workspace:
           root: .
           paths:
             - docs-hugo/site/public
+            - docs-hugo/summary.md
 
   clone-arangodb-branches:
     parameters:
@@ -177,7 +183,13 @@ jobs:
               pull-branch-image << parameters.arangodb-branch-3 >>
               generate_setup-environment-var-branch << parameters.arangodb-branch-3 >> "_3"
             fi
+            set +e
             cd docs-hugo/toolchain/docker && docker compose up
+            if [ "$?" != "0" ]; then
+              cd ../../../
+              cat docs-hugo/summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
+              exit 1
+            fi 
 
       - run:
           name: Create archive of generated files
@@ -283,7 +295,8 @@ jobs:
 
       - run:
           name: Call Github App create check function
-          command: | 
+          command: |
+            cat docs-hugo/summary.md
             cat docs-hugo/summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
 
 
@@ -423,35 +436,6 @@ jobs:
           path: /tmp/install.tar.gz
       
 
-  show-deploy-preview:
-    docker:
-      - image: cimg/node:19.7.0
-    resource_class: small
-    steps:
-      - run:
-          name: Update Github check status message
-          when: on_success
-          command: |
-            API=https://api.github.com
-            USER=$CIRCLE_PROJECT_USERNAME
-            REPO=$CIRCLE_PROJECT_REPONAME
-            SHA=$CIRCLE_SHA1
-            AUTH=dandimeo:$GITHUB_PAT
-            URL=$API/repos/$USER/$REPO/statuses/$SHA
-            DESCRIPTION=https://"$CIRCLE_SHA1"--docs-hugo.netlify.app
-            echo "$DESCRIPTION"
-            # Compose the body.
-            BODY='
-              {
-                "state": "success",
-                "target_url": "'"$DESCRIPTION"'",
-                "description": "'"$DESCRIPTION"'",
-                "context": "ci/circleci: deploy"
-              }
-            '
-            # Post the status (use echo-pipe not \<<< for greater shell compat).
-            echo $BODY | curl -u $AUTH -XPOST -d@- $URL
-
 
 
 workflows:
@@ -462,10 +446,7 @@ workflows:
       - deploy:
           requires:
             - plain-build
-      - show-deploy-preview:
-          requires:
-            - deploy
-    
+
   generate:
     when: { equal: [ generate, << pipeline.parameters.workflow >> ] }
     jobs:
@@ -535,9 +516,6 @@ workflows:
       - deploy:
           requires:
             - build-with-generated
-      - show-deploy-preview:
-          requires:
-            - deploy
   
   generate-scheduled:
     when: { equal: [ generate-scheduled, << pipeline.parameters.workflow >> ] }

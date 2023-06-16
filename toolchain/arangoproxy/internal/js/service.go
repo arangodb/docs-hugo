@@ -11,12 +11,6 @@ type JSService struct {
 	common.Service
 }
 
-var collectionsToIgnore = new(common.IgnoreCollections)
-
-func init() {
-	collectionsToIgnore.ToIgnore = make(map[string]bool)
-}
-
 func (service JSService) ExecuteExample(request common.Example, cacheChannel chan map[string]interface{}) (res common.ExampleResponse) {
 	defer common.Recover(fmt.Sprintf("JSService.ExecuteExample(%s)", request.Code))
 	commands := formatRequestCode(request.Code)

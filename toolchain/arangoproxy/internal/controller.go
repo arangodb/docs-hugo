@@ -10,26 +10,34 @@ import (
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/common"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/httpapi"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/js"
+	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/openapi"
 )
 
 // Dependency Injection
 var (
-	CommonService = common.Service{}
-	JSService     = js.JSService{}
-	HTTPService   = httpapi.HTTPService{}
-	AQLService    = aql.AQLService{}
+	CommonService  = common.Service{}
+	JSService      = js.JSService{}
+	HTTPService    = httpapi.HTTPService{}
+	AQLService     = aql.AQLService{}
+	OPENAPIService = openapi.OpenapiService{}
 
-	CacheChannel = make(chan map[string]interface{})
+	CacheChannel         = make(chan map[string]interface{})
+	OpenapiGlobalChannel = make(chan map[string]interface{})
+
+	Versions = common.LoadVersions()
 )
 
 // Start and expose the webserver
 func StartController(url string) {
 	go CommonService.SaveCachedExampleResponse(CacheChannel)
+	go OPENAPIService.AddSpecToGlobalSpec(OpenapiGlobalChannel)
 	// Create routes
 	http.HandleFunc("/health", HealthHandler)
 	http.HandleFunc("/js", JSHandler)
 	http.HandleFunc("/curl", HTTPExampleHandler)
 	http.HandleFunc("/aql", AQLHandler)
+	http.HandleFunc("/openapi", OpenapiHandler)
+	http.HandleFunc("/openapi-validate", ValidateOpenapiHandler)
 	http.HandleFunc("/go", TODOHandler)
 	http.HandleFunc("/java", TODOHandler)
 
@@ -101,6 +109,24 @@ func AQLHandler(w http.ResponseWriter, r *http.Request) {
 	common.Logger.Printf("[aql/CONTROLLER] END Example %s\n", request.Options.Name)
 
 	w.Write(response)
+}
+
+func OpenapiHandler(w http.ResponseWriter, r *http.Request) {
+	common.Logger.Printf("received")
+	openapiYaml, err := OPENAPIService.ParseOpenapiPayload(r.Body)
+	if err != nil {
+		return
+	}
+
+	err = OPENAPIService.ProcessOpenapiSpec(openapiYaml, r.Header, OpenapiGlobalChannel)
+	w.WriteHeader(http.StatusOK)
+}
+
+func ValidateOpenapiHandler(w http.ResponseWriter, r *http.Request) {
+	common.Logger.Printf("VALIDATE")
+
+	OPENAPIService.ValidateOpenapiGlobalSpec()
+	w.WriteHeader(http.StatusOK)
 }
 
 func HealthHandler(w http.ResponseWriter, r *http.Request) {
