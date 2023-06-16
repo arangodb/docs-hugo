@@ -52,12 +52,12 @@ func Exec(exampleName string, code string, repository config.Repository) (output
 		if !strings.Contains(command, "xpError") && !strings.Contains(out.String(), "ArangoError 1207") && !strings.Contains(out.String(), "ArangoError 1203") {
 			// newCommand := arangoErrorFallback(code, out.String())
 			// if newCommand == "" {
-			// 	msg := fmt.Sprintf("[%s] [InvokeArangoSH] ArangoError without xpError: %s\n%s", command, exampleName, out.String())
-			// 	common.Logger.Printf(msg)
-			// 	common.Logger.Summary("<strong>Error</strong> generating example <strong>%s %s</strong>\n", exampleName, repository.Version)
-			// 	common.Logger.Summary("<strong>Stacktrace</strong><br>%s", out.String())
+			msg := fmt.Sprintf("[%s] [InvokeArangoSH] ArangoError without xpError: %s\n%s", command, exampleName, out.String())
+			common.Logger.Printf(msg)
+			common.Logger.Summary("<li><strong>%s</strong>: %s <strong>Error</strong>\n", repository.Version, exampleName)
+			common.Logger.Summary("<strong>Stacktrace</strong><br>%s</li>", out.String())
 
-			// 	os.Exit(1)
+			os.Exit(1)
 			// }
 			// Exec(exampleName, newCommand, repository)
 		}
@@ -67,7 +67,7 @@ func Exec(exampleName string, code string, repository config.Repository) (output
 	split := strings.Split(out.String(), "\n")[1:] // Cut the Please specify a password line from output
 	output = strings.Join(split, "\n")
 	common.Logger.Printf("[%s] [InvokeArangoSH] Command Output: %s", exampleName, output)
-	common.Logger.Summary("<strong>%s</strong>  -  %s &#x2713;<br>", repository.Version, exampleName)
+	common.Logger.Summary("<li><strong>%s</strong>  -  %s &#x2713;</li><br>", repository.Version, exampleName)
 
 	return output
 }
