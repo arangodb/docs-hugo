@@ -112,7 +112,6 @@ func AQLHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func OpenapiHandler(w http.ResponseWriter, r *http.Request) {
-	common.Logger.Printf("received")
 	openapiYaml, err := OPENAPIService.ParseOpenapiPayload(r.Body)
 	if err != nil {
 		return
