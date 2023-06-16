@@ -183,9 +183,9 @@ jobs:
           name: Create archive of generated files
           command: |
             cd docs-hugo/site/data
-            tar -cvf /tmp/3.10-generated.tar 3.10/
-            tar -cvf /tmp/3.11-generated.tar 3.11/
-            tar -cvf /tmp/3.12-generated.tar 3.12/
+            tar -cvf /tmp/3.10-generated.tar.gz 3.10/
+            tar -cvf /tmp/3.11-generated.tar.gz 3.11/
+            tar -cvf /tmp/3.12-generated.tar.gz 3.12/
 
       - store_artifacts:
           path: /tmp/3.10-generated.tar
@@ -196,28 +196,28 @@ jobs:
       - store_artifacts:
           path: /tmp/3.12-generated.tar
 
-      # - run:
-      #     name: Commit generated files
-      #     command: |
-      #       if [ "<< parameters.commit-generated >>" = true ] ; then
-      #         if [ "<< parameters.create-pr >>" = true ]; then
-      #           cd docs-hugo/
-      #           git checkout -b scheduled-content-generate
-      #         fi
+      - run:
+          name: Commit generated files
+          command: |
+            if [ "<< parameters.commit-generated >>" = true ] ; then
+              if [ "<< parameters.create-pr >>" = true ]; then
+                cd docs-hugo/
+                git checkout -b scheduled-content-generate
+              fi
 
-      #         cd /home/circleci/project/docs-hugo/site
-      #         git config user.email "daniele@arangodb.com"
-      #         git config user.name "CircleCI Job"
-      #         git add data/
-      #         git commit --allow-empty -m "Automatic commit of generated files from CircleCI"
+              cd /home/circleci/project/docs-hugo/site
+              git config user.email "daniele@arangodb.com"
+              git config user.name "CircleCI Job"
+              git add data/
+              git commit --allow-empty -m "Automatic commit of generated files from CircleCI"
 
-      #         if [ "<< parameters.create-pr >>" = true ]; then
-      #           git push -u origin scheduled-content-generate
-      #           curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: scheduled-create-pr'
-      #         else
-      #           git push
-      #         fi
-      #       fi
+              if [ "<< parameters.create-pr >>" = true ]; then
+                git push -u origin scheduled-content-generate
+                curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: scheduled-create-pr'
+              else
+                git push
+              fi
+            fi
       
       - persist_to_workspace:
           root: .
@@ -225,7 +225,40 @@ jobs:
             - docs-hugo/site/public
             - docs-hugo/summary.md
 
- 
+  commit-generated:
+    docker:
+      - image: cimg/node:19.7.0
+    resource_class: small
+    steps:
+      - run: 
+          name: Clone docs repo
+          command: |
+            git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+      - run:
+          name: Launch node script to get generated content from previous run
+          command: |
+            artifacts_job_id=$(node docs-hugo/.circleci/commit.js $CIRCLE_BRANCH)
+            base_url=https://output.circle-artifacts.com/output/job/"$artifacts_job_id"/artifacts/0/tmp
+            wget $base_url/3.10-generated.tar.gz
+            wget $base_url/3.11-generated.tar.gz
+            wget $base_url/3.12-generated.tar.gz
+            tar -xf 3.10-generated.tar.gz -C docs-hugo/site/data/
+            tar -xf 3.11-generated.tar.gz -C docs-hugo/site/data/
+            tar -xf 3.12-generated.tar.gz -C docs-hugo/site/data/
+      - run:
+          name: commit files
+          command: |
+            cd /home/circleci/project/docs-hugo/site
+            git config user.email "daniele@arangodb.com"
+            git config user.name "CircleCI Job"
+            git add data/
+            git commit --allow-empty -m "Automatic commit of generated files from CircleCI"
+            git push
+            
+
+            
+
+
 
   deploy:
     docker:
@@ -530,6 +563,11 @@ workflows:
             - clone-arangodb-branches-3.10
             - clone-arangodb-branches-3.11
             - clone-arangodb-branches-3.12
+
+  commmit-generated:
+    when: { equal: [ commit-generated, << pipeline.parameters.workflow >> ] }
+    jobs:
+      - commit-generated
       
 
   community-pr:
