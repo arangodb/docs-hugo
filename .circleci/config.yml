@@ -366,7 +366,7 @@ jobs:
             set +e
             git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $ARANGODB_BRANCH /root/project
             if [ "$?" != "0" ]; then
-              echo "**ArangoDB Repo Git Clone Error**<br><br> $ARANGODB_BRANCH not found" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
+              echo "<strong>ArangoDB Repo Git Clone Error</strong><br><br> $ARANGODB_BRANCH not found" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
               exit 1
             fi 
             set -e
@@ -401,7 +401,7 @@ jobs:
             set +e
             cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
             if [ "$?" != "0" ]; then
-              echo "**ArangoDB Compile Error**<br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
+              echo "<strong>ArangoDB Compile Error</strong><br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
               exit 1
             fi 
             set -e

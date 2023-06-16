@@ -332,7 +332,7 @@ function start_server() {
 
 function generate_startup_options {
   set -e
-  echo "## Startup Options<br><br>" >> /home/summary.md
+  echo "<h2>Startup Options</h2>" >> /home/summary.md
 
   container_name="$1"
   version="$2"
@@ -423,8 +423,7 @@ function clean_terminate_toolchain() {
 echo "[TOOLCHAIN] Starting toolchain"
 echo "[TOOLCHAIN] Generators: $GENERATORS"
 
-  echo "# Generate Summary<br><br>" >> /home/summary.md
-  echo "## Generators<br><br>" >> /home/summary.md
+  echo "<h2>Generators</h2>" >> /home/summary.md
   echo "$GENERATORS" >> /home/summary.md
   mapfile servers < <(yq e -o=j -I=0 '.servers[]' ../docker/config.yaml )
 
@@ -434,7 +433,7 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
     version=$(echo "$server" | yq e '.version' -)
     arangodb_src=$(echo "$server" | yq e '.src' -)
 
-    echo " - $version: $image<br>" >> /home/summary.md
+    echo "<li>$version: $image</li>" >> /home/summary.md
 
     if [ "$arangodb_src" == "" ] ; then
       continue
@@ -446,12 +445,12 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
 
 
     if [ "$generate_error_codes" = true ] ; then
-      echo "## Error-Codes<br><br>" >> /home/summary.md
+      echo "<h2>Error-Codes</h2>" >> /home/summary.md
       generate_error_codes "$arangodb_src" "$version"
     fi
 
     if [ "$generate_metrics" = true ] ; then
-      echo "## Metrics<br><br>" >> /home/summary.md
+      echo "<h2>Metrics</h2>" >> /home/summary.md
       generate_metrics "$arangodb_src" "$version"
     fi
 
@@ -463,7 +462,7 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
 
   ## Start arangoproxy and site containers to build examples and site
   if [ "$generate_examples" = true ] ; then
-    echo "## Examples<br><br>" >> /home/summary.md
+    echo "<h2>Examples</h2>" >> /home/summary.md
 
     if [ "$DOCKER_ENV" == "dev" ]; then 
       export DOCKER_BUILDKIT=1

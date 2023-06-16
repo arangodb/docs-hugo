@@ -84,7 +84,7 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 func (service OpenapiService) ValidateOpenapiGlobalSpec() error {
 	time.Sleep(time.Second * 2)
 	var wg sync.WaitGroup
-	common.Logger.Summary("<br>## OPENAPI<br>")
+	common.Logger.Summary("<h2>OPENAPI</h2>")
 	for _, version := range Versions {
 		wg.Add(1)
 		go service.ValidateFile(version.Name, &wg)
@@ -126,7 +126,7 @@ func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) e
 	common.Logger.Printf("%s\n\n\n%s", out.String(), er.String())
 	if err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
-			common.Logger.Summary("%s - **Error %d**:\n", version, exitError.ExitCode())
+			common.Logger.Summary("%s - <strong>Error %d</strong>:", version, exitError.ExitCode())
 			common.Logger.Summary("%s", er.String())
 			time.Sleep(time.Second * 2)
 			os.Exit(exitError.ExitCode())
