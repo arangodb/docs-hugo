@@ -63,7 +63,7 @@ version: '3.10'
 server_name: stable
 type: single
 ---
-stmt = db._createStatement("FOR i IN test FILTER i.value > 97 SORT i.value RETURN i.value");
+stmt = db._createStatement("I WROTE A WRONG QUERY HELP!");
 stmt.explain();
 ```
 
