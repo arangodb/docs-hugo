@@ -30,7 +30,7 @@ if [[ -z "${DOCKER_ENV}" ]]; then
 fi
 
 if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
-  GENERATORS="examples metrics error-codes api-docs options"
+  GENERATORS="examples metrics error-codes options"
 fi
 
 if [[ -z "${ARANGODB_SRC}" ]] && [[ -z "${ARANGODB_SRC_2}" ]] && [[ -z "${ARANGODB_SRC_3}" ]]; then
@@ -74,7 +74,7 @@ GENERATORS=$(yq -r '.generators' ../docker/config.yaml)
 
 
 if [ "$GENERATORS" == "" ]; then
-  GENERATORS="examples metrics error-codes api-docs options"
+  GENERATORS="examples metrics error-codes options"
 fi
 
 # Check for requested operations
@@ -96,9 +96,6 @@ if [[ $GENERATORS == *"error-codes"* ]]; then
   generate_error_codes=true
 fi
 
-if [[ $GENERATORS == *"api-docs"* ]]; then
-  generate_apidocs=true
-fi
 
 
 
@@ -355,28 +352,6 @@ function generate_startup_options {
   set +e
 }
 
-function generate_apidocs() {
-  version=$1
-  touch api-docs.json
-  log "[GENERATE-APIDOCS] Generating api-docs"
-  log "[TOOLCHAIN] $PYTHON_EXECUTABLE generators/generateApiDocs.py --src ../../ --dst api-docs.json --version $version"
-  output=$("$PYTHON_EXECUTABLE" generators/generateApiDocs.py --src ../../ --dst api-docs.json --version "$version")
-  if [ "$?" != "0" ]; then
-    echo "<strong>Error:</strong><br>" >> /home/summary.md
-    echo "$output" >> /home/summary.md
-    exit "$?"
-  fi
-  log "[GENERATE-APIDOCS] Output file: ./api-docs.json"
-  # Validate the openapi schema
-  # log "[GENERATE-APIDOCS] Starting openapi schema validation"
-  # err=$(swagger-cli validate ./api-docs.json 2>&1 >/dev/null)
-  # if [ "$?" != "0" ]; then
-  #   echo "<strong>Error:</strong><br>" >> /home/summary.md
-  #   echo "$err" >> /home/summary.md
-  #   exit "$?"
-  # fi
-  echo "Done" >> /home/summary.md
-}
 
 function generate_error_codes() {
   errors_dat_file=$1
@@ -470,13 +445,6 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
 
     echo "[TOOLCHAIN] Processing Server $LOG_TARGET" 
 
-
-    ## Generators that do not need arangodb instances at all
-    if [ "$generate_apidocs" = true ] ; then
-      echo "<h2>API-Docs</h2>" >> /home/summary.md
-      generate_apidocs "$version"
-      
-    fi
 
     if [ "$generate_error_codes" = true ] ; then
       echo "<h2>Error-Codes</h2>" >> /home/summary.md

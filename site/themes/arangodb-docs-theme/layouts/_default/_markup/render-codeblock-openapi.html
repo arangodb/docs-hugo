@@ -1,10 +1,28 @@
+{{ $pageVersion := .Page.Scratch.Get "versionShort" }}
 {{ $titleRE :=  findRE `(?m)## .*` .Inner }}
+
+
+{{ $endpoint := printf "%s/openapi" site.Params.arangoproxyUrl }}
+{{ $remote := resources.GetRemote $endpoint (dict
+    "method" "post"
+    "body" .Inner
+    "headers" (dict 
+        "Content-Type" "application/json"
+        "Page-Version" $pageVersion
+        "Endpoint-Title" $titleRE
+    )
+  )
+}}
+
 {{ $yaml := findRE `(?ms)paths:.*` .Inner }}
+
+
 
 {{ $title := index $titleRE 0 }}
 {{ $yamlBlock := index $yaml 0 | transform.Unmarshal }}
 
 {{ with $yamlBlock }}
+ 
 
   {{ $title | markdownify }}
   
