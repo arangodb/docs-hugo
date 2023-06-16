@@ -245,12 +245,12 @@ jobs:
           command: |
             artifacts_job_id=$(node docs-hugo/.circleci/commit.js $CIRCLE_BRANCH)
             base_url=https://output.circle-artifacts.com/output/job/"$artifacts_job_id"/artifacts/0/tmp
-            wget $base_url/3.10-generated.tar.gz
-            wget $base_url/3.11-generated.tar.gz
-            wget $base_url/3.12-generated.tar.gz
-            tar -xf 3.10-generated.tar.gz -C docs-hugo/site/data/
-            tar -xf 3.11-generated.tar.gz -C docs-hugo/site/data/
-            tar -xf 3.12-generated.tar.gz -C docs-hugo/site/data/
+            wget $base_url/3.10-generated.tar
+            wget $base_url/3.11-generated.tar
+            wget $base_url/3.12-generated.tar
+            tar -xf 3.10-generated.tar -C docs-hugo/site/data/
+            tar -xf 3.11-generated.tar -C docs-hugo/site/data/
+            tar -xf 3.12-generated.tar -C docs-hugo/site/data/
       - run:
           name: commit files
           command: |
