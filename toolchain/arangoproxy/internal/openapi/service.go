@@ -76,7 +76,6 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 	path := reflect.ValueOf(spec["paths"].(map[string]interface{})).MapKeys()[0].String()
 	method := reflect.ValueOf(spec["paths"].(map[string]interface{})[path].(map[string]interface{})).MapKeys()[0].String()
 	spec["paths"].(map[string]interface{})[path].(map[string]interface{})[method].(map[string]interface{})["summary"] = summary
-	common.Logger.Printf("Process %s %s %s", version, path, method)
 	globalOpenapiChannel <- spec
 	return nil
 }
