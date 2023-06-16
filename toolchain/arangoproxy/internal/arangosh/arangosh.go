@@ -67,7 +67,7 @@ func Exec(exampleName string, code string, repository config.Repository) (output
 	split := strings.Split(out.String(), "\n")[1:] // Cut the Please specify a password line from output
 	output = strings.Join(split, "\n")
 	common.Logger.Printf("[%s] [InvokeArangoSH] Command Output: %s", exampleName, output)
-	common.Logger.Summary("  <strong>%s</strong>  -  %s &#x2713;\n", repository.Version, exampleName)
+	common.Logger.Summary("**%s**  -  %s &#x2713;<br>", repository.Version, exampleName)
 
 	return output
 }
