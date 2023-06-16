@@ -52,16 +52,14 @@ jobs:
       - run:
           name: Build site
           command: |
-            curl -L https://github.com/gohugoio/hugo/releases/download/v0.112.5/hugo_0.112.5_linux-amd64.deb -o hugo.deb
-            sudo apt install -y ./hugo.deb
-            export HUGO_ENV=prod
             export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
-            cd docs-hugo/site && hugo -e $HUGO_ENV -b $HUGO_URL --minify
+            cd docs-hugo/toolchain/docker && docker compose -f docker-compose.plain-build.yml --env-file env/plain-build.env up --exit-code-from site-frontend
             
       - persist_to_workspace:
           root: .
           paths:
             - docs-hugo/site/public
+            - docs-hugo/summary.md
 
   clone-arangodb-branches:
     parameters:

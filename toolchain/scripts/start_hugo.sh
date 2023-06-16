@@ -17,12 +17,8 @@ then
     apt install -y ./hugo.deb
 fi
 
-env
-
-if [ "$HUGO_ENV" != "prod" ] && [ "$HUGO_ENV" != "frontend" ]; then
-    echo "Waiting for arangoproxy to be ready"
-    checkIPIsReachable "http://arangoproxy:8080/health"
-fi
+echo "Waiting for arangoproxy to be ready"
+checkIPIsReachable "http://192.168.129.129:8080/health"
 
 cd /home/site
 
