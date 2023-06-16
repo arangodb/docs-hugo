@@ -54,8 +54,11 @@ jobs:
           command: |
             export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
             set +e
-            cd docs-hugo/toolchain/docker && docker compose -f docker-compose.plain-build.yml --env-file env/plain-build.env up --abort-on-container-exit
+            cd docs-hugo/toolchain/docker
+            docker compose -f docker-compose.plain-build.yml --env-file env/plain-build.env up --abort-on-container-exit
+
             if [ "$?" != "0" ]; then
+              cd ../../../
               cat docs-hugo/summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
               exit "$?"
             fi 
@@ -180,11 +183,14 @@ jobs:
               pull-branch-image << parameters.arangodb-branch-3 >>
               generate_setup-environment-var-branch << parameters.arangodb-branch-3 >> "_3"
             fi
+            set +e
             cd docs-hugo/toolchain/docker && docker compose up
             if [ "$?" != "0" ]; then
+              cd ../../../
               cat docs-hugo/summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
               exit "$?"
             fi 
+            set -e
 
       - run:
           name: Create archive of generated files
