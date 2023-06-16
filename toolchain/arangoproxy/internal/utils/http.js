@@ -167,7 +167,6 @@ var logCurlRequest = function () {
       throw new Error("your URL doesn't start with a /! the example will be broken. [" + arguments[1] + "]");
   }
   var r = logCurlRequestRaw.apply(logCurlRequestRaw, arguments);
-  db._collections();
   return r;
 };
 

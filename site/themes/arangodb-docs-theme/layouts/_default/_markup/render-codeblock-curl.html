@@ -1,0 +1,103 @@
+{{ if in .Inner "---" }}
+  {{ $metadata := findRE `(?ms)---.*---` .Inner }}
+  {{ $test := index $metadata 0 | transform.Unmarshal }}
+  {{ $name := $test.name }}
+  {{ $version := $test.version }}
+  {{ $serverName := $test.server_name }}
+  {{ $type := $test.type }}
+  {{ $cacheEntry := printf "%s_%s_%s" $name $serverName $type }}
+  {{ $pageVersion := .Page.Scratch.Get "versionShort" }}
+
+  {{ $dataFolderByVersion := index site.Data $pageVersion }}
+  {{ $cache := index $dataFolderByVersion "cache"}}
+  {{ $cacheFound :=  index $cache $cacheEntry }}
+
+  {{ if not $cacheFound }}
+    {{ warnf "CACHE NOT FOUND '%v'" $cacheEntry }}
+    {{ if site.Params.useArangoproxy }}
+      {{ $endpoint := printf "%s/curl" site.Params.arangoproxyUrl }}
+      {{ $body := .Inner | base64Encode}}
+      {{ warnf "SENDING '%v'" $body}}
+      {{ $remote := resources.GetRemote $endpoint (dict
+          "method" "post"
+          "body" $body
+        )
+      }}
+      {{ if $remote }}
+        {{ if $remote.Err }}
+          {{ warnf "[curl] ERROR CALLING ENDPOINT %#v" .Position }}
+        {{ else }}
+          {{ $response := unmarshal $remote.Content }}
+          {{ if $response.error }}
+            Error found in the example: {{ $response.error }}
+          {{ end }}
+          {{ $input := transform.Highlight $response.input "" }}
+          {{ if in $response.options.render "output" }}
+
+          {{ $output := transform.Highlight $response.output "" }}
+          {{ $block := printf "%s\n%s" $input $output | markdownify}}
+          {{- partial "shortcodes/expand.html" (dict
+            "context" .
+            "content" $block
+            "open"    "open"
+            "title"   $name
+          ) }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ else }}
+    {{ $oldRequest := $cacheFound.request }}
+    {{ $newRequest :=  printf "%s" .Inner | base64Encode  }}
+    {{ if ne $oldRequest $newRequest }}
+      {{ warnf "CACHE CHANGED '%v' '%v'" $oldRequest $newRequest }}
+      {{ if site.Params.useArangoproxy }}
+        {{ $endpoint := printf "%s/curl" site.Params.arangoproxyUrl }}
+        {{ $body := .Inner | base64Encode}}
+        {{ $remote := resources.GetRemote $endpoint (dict
+            "method" "post"
+            "body" $body
+          )
+        }}
+        {{ if $remote }}
+          {{ if $remote.Err }}
+            {{ warnf "[curl] ERROR CALLING ENDPOINT %#v" .Position }}
+          {{ else }}
+            {{ $response := unmarshal $remote.Content }}
+            {{ if $response.error }}
+              Error found in the example: {{ $response.error }}
+            {{ end }}
+            {{ $input := transform.Highlight $response.input "" }}
+            {{ if in $response.options.render "output" }}
+
+              {{ $output := transform.Highlight $response.output "" }}
+              {{ $block := printf "%s\n%s" $input $output | markdownify}}
+              {{- partial "shortcodes/expand.html" (dict
+                "context" .
+                "content" $block
+                "open"    "open"
+                "title"   $name
+              ) }}
+            {{ end }}
+          {{ end }}
+        {{ end }}
+      {{ end }}
+    {{ else }}
+      {{ with $cacheFound }}
+        {{ $request := .request | base64Decode | transform.Unmarshal  }}
+        {{ $response := .response | base64Decode | transform.Unmarshal }}
+        {{ $input := transform.Highlight $response.input "" }}
+        {{ $output := transform.Highlight $response.output "" }}
+        {{ $block := printf "%s\n%s" $input $output | markdownify}}
+          {{- partial "shortcodes/expand.html" (dict
+            "context" .
+            "content" $block
+            "open"    "open"
+            "title"   $name
+          ) }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ else }}
+  {{ transform.Highlight .Inner "" }} 
+{{ end }}

@@ -30,7 +30,7 @@ if [[ -z "${DOCKER_ENV}" ]]; then
 fi
 
 if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
-  GENERATORS="examples metrics error-codes api-docs options"
+  GENERATORS="examples metrics error-codes options"
 fi
 
 if [[ -z "${ARANGODB_SRC}" ]] && [[ -z "${ARANGODB_SRC_2}" ]] && [[ -z "${ARANGODB_SRC_3}" ]]; then
@@ -74,7 +74,7 @@ GENERATORS=$(yq -r '.generators' ../docker/config.yaml)
 
 
 if [ "$GENERATORS" == "" ]; then
-  GENERATORS="examples metrics error-codes api-docs options"
+  GENERATORS="examples metrics error-codes options"
 fi
 
 # Check for requested operations
@@ -96,9 +96,6 @@ if [[ $GENERATORS == *"error-codes"* ]]; then
   generate_error_codes=true
 fi
 
-if [[ $GENERATORS == *"api-docs"* ]]; then
-  generate_apidocs=true
-fi
 
 
 
@@ -184,15 +181,15 @@ function setup_arangoproxy() {
   log "[SETUP ARANGOPROXY] Copy single server configuration in arangoproxy repositories"
   yq e '.repositories += [{"name": "'"$name"'", "type": "single", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
 
-  log "[SETUP ARANGOPROXY] Retrieve server ip"
-  cluster_server_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container_name"_agent1)
-  log "IP: "$cluster_server_ip""
-  echo ""
+  # log "[SETUP ARANGOPROXY] Retrieve server ip"
+  # cluster_server_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container_name"_agent1)
+  # log "IP: "$cluster_server_ip""
+  # echo ""
 
-  printf -v url "http://%s:5001" $cluster_server_ip
+  # printf -v url "http://%s:5001" $cluster_server_ip
 
-  log "[SETUP ARANGOPROXY] Copy cluster server configuration in arangoproxy repositories"
-  yq e '.repositories += [{"name": "'"$name"'", "type": "cluster", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
+  # log "[SETUP ARANGOPROXY] Copy cluster server configuration in arangoproxy repositories"
+  # yq e '.repositories += [{"name": "'"$name"'", "type": "cluster", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
   log "[SETUP ARANGOPROXY] Done"
 }
 
@@ -261,62 +258,62 @@ function start_server() {
 
   docker run -e ARANGO_NO_AUTH=1 --net docs_net --ip="$single_address" --name "$container_name" -d "$image_id" --server.endpoint http+tcp://"$single_address":8529
 
-  log "[START_SERVER] Run cluster server"
+  # log "[START_SERVER] Run cluster server"
 
-  ## We have to check there is a free ip for every agency server we will start
-  declare -a agency_addresses=("192.168.129.10" "192.168.129.20" "192.168.129.30" "192.168.129.40")
-  agency_address=""
+  # ## We have to check there is a free ip for every agency server we will start
+  # declare -a agency_addresses=("192.168.129.10" "192.168.129.20" "192.168.129.30" "192.168.129.40")
+  # agency_address=""
 
-  for address in "${agency_addresses[@]}";
-  do
-    docs_net_ips=$(docker network inspect docs_net | grep "$address"/)
-    if [ "$docs_net_ips" == "" ]; then
-      agency_address=$address
-      break
-    fi
-  done
+  # for address in "${agency_addresses[@]}";
+  # do
+  #   docs_net_ips=$(docker network inspect docs_net | grep "$address"/)
+  #   if [ "$docs_net_ips" == "" ]; then
+  #     agency_address=$address
+  #     break
+  #   fi
+  # done
 
   
-  log "[START_SERVER] Using $agency_address as agency ip"
+  # log "[START_SERVER] Using $agency_address as agency ip"
 
-  ## Agencies
-  docker run -e ARANGO_NO_AUTH=1 --net docs_net --ip="$agency_address" --name "$container_name"_agent1 -d "$image_id" --server.endpoint http+tcp://"$agency_address":5001 \
-     --agency.my-address=tcp://"$agency_address":5001   --server.authentication false   --agency.activate true  \
-    --agency.size 1   --agency.endpoint tcp://"$agency_address":5001   --agency.supervision true   --database.directory agent1
+  # ## Agencies
+  # docker run -e ARANGO_NO_AUTH=1 --net docs_net --ip="$agency_address" --name "$container_name"_agent1 -d "$image_id" --server.endpoint http+tcp://"$agency_address":5001 \
+  #    --agency.my-address=tcp://"$agency_address":5001   --server.authentication false   --agency.activate true  \
+  #   --agency.size 1   --agency.endpoint tcp://"$agency_address":5001   --agency.supervision true   --database.directory agent1
 
   # docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_agent2 -d "$image" --server.endpoint tcp://0.0.0.0:5002 \
   #    --agency.my-address=tcp://"$agency_address":5002   --server.authentication false   --agency.activate true  \
   #   --agency.size 2   --agency.endpoint tcp://"$agency_address":5001   --agency.supervision true   --database.directory agent2
 
   ## DB-Servers
-  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_dbserver1 -d "$image_id" --server.endpoint tcp://0.0.0.0:6001 \
-    --server.authentication false \
-    --cluster.my-address http+tcp://"$agency_address":6001 \
-    --cluster.my-role DBSERVER \
-    --cluster.agency-endpoint tcp://"$agency_address":5001 \
-    --database.directory dbserver1
+#   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_dbserver1 -d "$image_id" --server.endpoint tcp://0.0.0.0:6001 \
+#     --server.authentication false \
+#     --cluster.my-address http+tcp://"$agency_address":6001 \
+#     --cluster.my-role DBSERVER \
+#     --cluster.agency-endpoint tcp://"$agency_address":5001 \
+#     --database.directory dbserver1
 
- docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_dbserver2 -d "$image_id" --server.endpoint tcp://0.0.0.0:6002 \
-    --server.authentication false \
-    --cluster.my-address http+tcp://"$agency_address":6002 \
-    --cluster.my-role DBSERVER \
-    --cluster.agency-endpoint tcp://"$agency_address":5001 \
-    --database.directory dbserver2
+#  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_dbserver2 -d "$image_id" --server.endpoint tcp://0.0.0.0:6002 \
+#     --server.authentication false \
+#     --cluster.my-address http+tcp://"$agency_address":6002 \
+#     --cluster.my-role DBSERVER \
+#     --cluster.agency-endpoint tcp://"$agency_address":5001 \
+#     --database.directory dbserver2
 
-   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_dbserver3 -d "$image_id" --server.endpoint tcp://0.0.0.0:6003 \
-    --server.authentication false \
-    --cluster.my-address http+tcp://"$agency_address":6003 \
-    --cluster.my-role DBSERVER \
-    --cluster.agency-endpoint tcp://"$agency_address":5001 \
-    --database.directory dbserver3
+#    docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_dbserver3 -d "$image_id" --server.endpoint tcp://0.0.0.0:6003 \
+#     --server.authentication false \
+#     --cluster.my-address http+tcp://"$agency_address":6003 \
+#     --cluster.my-role DBSERVER \
+#     --cluster.agency-endpoint tcp://"$agency_address":5001 \
+#     --database.directory dbserver3
 
-  ## Coordinators
-  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_coordinator1 -d "$image_id" --server.endpoint tcp://0.0.0.0:7001 \
-    --server.authentication false \
-    --cluster.my-address tcp://"$agency_address":7001 \
-    --cluster.my-role COORDINATOR \
-    --cluster.agency-endpoint tcp://"$agency_address":5001 \
-    --database.directory coordinator1 
+#   ## Coordinators
+#   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_coordinator1 -d "$image_id" --server.endpoint tcp://0.0.0.0:7001 \
+#     --server.authentication false \
+#     --cluster.my-address tcp://"$agency_address":7001 \
+#     --cluster.my-role COORDINATOR \
+#     --cluster.agency-endpoint tcp://"$agency_address":5001 \
+#     --database.directory coordinator1 
 
 
   if [ "$options" = true ] ; then
@@ -335,6 +332,7 @@ function start_server() {
 
 function generate_startup_options {
   set -e
+  echo "<h2>Startup Options</h2>" >> /home/summary.md
 
   container_name="$1"
   version="$2"
@@ -354,21 +352,6 @@ function generate_startup_options {
   set +e
 }
 
-function generate_apidocs() {
-  set -e 
-
-  version=$1
-  touch api-docs.json
-  log "[GENERATE-APIDOCS] Generating api-docs"
-  log "[TOOLCHAIN] $PYTHON_EXECUTABLE generators/generateApiDocs.py --src ../../ --dst api-docs.json --version $version"
-  "$PYTHON_EXECUTABLE" generators/generateApiDocs.py --src ../../ --dst api-docs.json --version "$version"
-  log "[GENERATE-APIDOCS] Output file: ./api-docs.json"
-  ## Validate the openapi schema
-  #log "[GENERATE-APIDOCS] Starting openapi schema validation"
-  #swagger-cli validate ./api-docs.json
-  
-  set +e
-}
 
 function generate_error_codes() {
   errors_dat_file=$1
@@ -424,6 +407,7 @@ function trap_container_exit() {
   docker container stop toolchain
 }
 
+
 function clean_terminate_toolchain() {
   echo "[TOOLCHAIN] Terminate signal trapped"
   echo "[TOOLCHAIN] Shutting down running containers"
@@ -439,7 +423,10 @@ function clean_terminate_toolchain() {
 echo "[TOOLCHAIN] Starting toolchain"
 echo "[TOOLCHAIN] Generators: $GENERATORS"
 
-
+  : > /home/summary.md
+  echo "<h1>Generate Summary</h1>" >> /home/summary.md
+  echo "<h2>Generators</h2>" >> /home/summary.md
+  echo "$GENERATORS" >> /home/summary.md
   mapfile servers < <(yq e -o=j -I=0 '.servers[]' ../docker/config.yaml )
 
   for server in "${servers[@]}"; do
@@ -447,6 +434,8 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
     image=$(echo "$server" | yq e '.image' -)
     version=$(echo "$server" | yq e '.version' -)
     arangodb_src=$(echo "$server" | yq e '.src' -)
+
+    echo "<h2>$version:</h2> $image" >> /home/summary.md
 
     if [ "$arangodb_src" == "" ] ; then
       continue
@@ -457,16 +446,13 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
     echo "[TOOLCHAIN] Processing Server $LOG_TARGET" 
 
 
-    ## Generators that do not need arangodb instances at all
-    if [ "$generate_apidocs" = true ] ; then
-      generate_apidocs "$version"
-    fi
-
     if [ "$generate_error_codes" = true ] ; then
+      echo "<h2>Error-Codes</h2>" >> /home/summary.md
       generate_error_codes "$arangodb_src" "$version"
     fi
 
     if [ "$generate_metrics" = true ] ; then
+      echo "<h2>Metrics</h2>" >> /home/summary.md
       generate_metrics "$arangodb_src" "$version"
     fi
 
@@ -478,6 +464,7 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
 
   ## Start arangoproxy and site containers to build examples and site
   if [ "$generate_examples" = true ] ; then
+    echo "<h2>Examples</h2>" >> /home/summary.md
 
     if [ "$DOCKER_ENV" == "dev" ]; then 
       export DOCKER_BUILDKIT=1

@@ -72,7 +72,7 @@ func RemoveAllTestCollections() string {
 	return fmt.Sprintf(`
 	for (let col of db._collections()) {
 
-		if (!col.properties().isSystem && !toIgnore.includes(col._name)) {
+		if (!col.properties().isSystem) {
 			db._drop(col._name);
 		}
 	}

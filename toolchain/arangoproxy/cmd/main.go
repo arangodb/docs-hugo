@@ -13,13 +13,14 @@ import (
 
 var configFile string
 var env string
-var help, cleanCache bool
+var help, cleanCache, useServers bool
 
 // Pre-Run Setup
 func init() {
 	flag.StringVar(&configFile, "config", "./configs/local.yaml", "path of config file")
 	flag.BoolVar(&help, "help", false, "Display help usage")
 	flag.BoolVar(&cleanCache, "no-cache", false, "Reset cache")
+	flag.BoolVar(&cleanCache, "use-servers", false, "Enable communication with arangodb servers")
 	flag.Parse()
 
 	err := config.LoadConfig(configFile)
@@ -28,13 +29,14 @@ func init() {
 		os.Exit(1)
 	}
 
-	internal.InitLog(config.Conf.Log)
-	internal.InitRepositories()
-	utils.LoadDatasets(config.Conf.Datasets)
+	if useServers {
+		internal.InitRepositories()
+		utils.LoadDatasets(config.Conf.Datasets)
+	}
 
-	common.Logger.Println(startupBanner)
-	common.Logger.Print("./arangoproxy -help for help usage\n\n")
-	common.Logger.Print("Init Setup\n")
+	common.Logger.Printf(startupBanner)
+	common.Logger.Printf("./arangoproxy -help for help usage\n\n")
+	common.Logger.Printf("Init Setup\n")
 
 	if help {
 		common.Logger.Printf("Usage: ...\n")
@@ -46,12 +48,12 @@ func init() {
 		internal.CleanCache()
 	}
 
-	common.Logger.Print("Setup Done\n---------\n")
+	common.Logger.Printf("Setup Done\n---------\n")
 
 }
 
 func main() {
-	common.Logger.Print("Available endpoints:\n - /js\n - /aql\n - /curl\n")
+	common.Logger.Printf("Available endpoints:\n - /js\n - /aql\n - /curl\n")
 	common.Logger.Printf("Starting Server at %s\n", config.Conf.WebServer)
 
 	internal.StartController(config.Conf.WebServer)
