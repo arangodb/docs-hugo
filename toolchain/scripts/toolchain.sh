@@ -433,11 +433,12 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
     version=$(echo "$server" | yq e '.version' -)
     arangodb_src=$(echo "$server" | yq e '.src' -)
 
-    echo "<li>$version: $image</li>" >> /home/summary.md
 
     if [ "$arangodb_src" == "" ] ; then
       continue
     fi
+
+    echo "<li><strong>$version</strong>: $image</li>" >> /home/summary.md
 
     LOG_TARGET="$name $image $version"
 
