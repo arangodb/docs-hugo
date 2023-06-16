@@ -20,15 +20,8 @@ paths:
         with the following attributes:
       parameters:
         - name: details
-          in: query
-          required: false
-          description: |
-            If set to *true*, the response will contain a *details* attribute with
-            additional information about included components and their versions. The
-            attribute names and internals of the *details* object may vary depending on
-            platform and ArangoDB version.
-          schema:
-            type: boolean
+          in: boh
+          
       responses:
         '200':
           description: |
