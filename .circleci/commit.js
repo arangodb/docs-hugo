@@ -1,7 +1,5 @@
 
-const fs = require("fs");
 const { exit } = require("process");
-const request = require("request")
 const args = process.argv.slice(2);
 
 async function commit_generated() {
@@ -34,9 +32,7 @@ async function commit_generated() {
 
             let artifactsData = await artifacts.json();
             if (artifactsData.items.length == 0) continue
-            for (let artifact of artifactsData.items) {
-                console.log(artifact.url)
-            }
+            console.log(job.id)
             exit()
         }
     }
