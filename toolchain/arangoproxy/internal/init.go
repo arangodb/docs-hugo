@@ -3,8 +3,6 @@ package internal
 import (
 	"encoding/json"
 	"fmt"
-	"io"
-	"log"
 	"os"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/arangosh"
@@ -12,12 +10,6 @@ import (
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/config"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/utils"
 )
-
-func InitLog(logFilepath string) {
-	logFile, _ := os.OpenFile(logFilepath, os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
-	mw := io.MultiWriter(os.Stdout, logFile)
-	common.Logger = log.New(mw, "", log.Ldate|log.Ltime)
-}
 
 func CleanCache() {
 	os.OpenFile(config.Conf.Cache, os.O_TRUNC, 0644)

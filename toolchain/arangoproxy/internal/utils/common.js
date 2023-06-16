@@ -1,13 +1,13 @@
 
 var assert = function(condition) {
-  if (! condition) {
+  if (!condition) {
     throw new Error('assertion failed');
   }
 };
 
 function cleanupAfterExample() {
   for (let col of db._collections()) {
-    if (db.ignore.exists(collectionName) != false){
+    if (db.ignore.exists(col) != false || col._name == "ignore"){
       continue
     }
 
@@ -40,6 +40,8 @@ var removeIgnoreCollection = function(collectionName) {
 var removeIgnoreView = function (viewName) {
   removeIgnoreCollection(viewName);
 };
+
+
 
 
 

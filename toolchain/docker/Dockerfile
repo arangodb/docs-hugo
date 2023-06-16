@@ -7,6 +7,9 @@ RUN apt-get update && apt-get install -y \
     python3.6
 
 RUN wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_$ARCH -O /usr/bin/yq && chmod +x /usr/bin/yq
+RUN curl -sL https://deb.nodesource.com/setup_18.x  | bash -
+RUN apt-get -y install nodejs
+RUN npm install -g @apidevtools/swagger-cli
 
 CMD cd /home/toolchain/scripts ; ./start_arangoproxy.sh
 
@@ -46,11 +49,6 @@ RUN wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_$A
 ## Install python scripts deps
 RUN pip3 install pyyaml
 
-
-## Install npm for swagger-cli usage
-RUN curl -sL https://deb.nodesource.com/setup_18.x  | bash -
-RUN apt-get -y install nodejs
-RUN npm install -g @apidevtools/swagger-cli
 
 RUN curl -fsSL https://get.docker.com -o get-docker.sh
 RUN sh get-docker.sh
