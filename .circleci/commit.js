@@ -6,7 +6,7 @@ async function commit_generated() {
 
     let response = await fetch('https://circleci.com/api/v2/insights/gh/arangodb/docs-hugo/workflows/generate?branch='+args[0], {
         method: 'GET',
-        headers: {'content-type': 'application/json', 'Circle-Token': process.env.CIRCLE_OIDC_TOKEN_V2},
+        headers: {'content-type': 'application/json', 'Circle-Token': process.env.CIRCLECI_API_TOKEN},
     })
     
     let data = await response.json();
@@ -19,7 +19,7 @@ async function commit_generated() {
 
         let jobs = await fetch('https://circleci.com/api/v2/workflow/'+workflow.id+'/job', {
             method: 'GET',
-            headers: {'content-type': 'application/json', 'Circle-Token': process.env.CIRCLE_OIDC_TOKEN_V2},
+            headers: {'content-type': 'application/json', 'Circle-Token': process.env.CIRCLECI_API_TOKEN},
         })
         
         let jobsData = await jobs.json();
@@ -27,7 +27,7 @@ async function commit_generated() {
             if (job.name != "build-with-generated") continue
             let artifacts = await fetch('https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/'+job.job_number+'/artifacts', {
                 method: 'GET',
-                headers: {'content-type': 'application/json', 'Circle-Token': process.env.CIRCLE_OIDC_TOKEN_V2},
+                headers: {'content-type': 'application/json', 'Circle-Token': process.env.CIRCLECI_API_TOKEN},
             })
 
             let artifactsData = await artifacts.json();
