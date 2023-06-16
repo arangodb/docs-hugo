@@ -421,35 +421,6 @@ jobs:
           path: /tmp/install.tar.gz
       
 
-  show-deploy-preview:
-    docker:
-      - image: cimg/node:19.7.0
-    resource_class: small
-    steps:
-      - run:
-          name: Update Github check status message
-          when: on_success
-          command: |
-            API=https://api.github.com
-            USER=$CIRCLE_PROJECT_USERNAME
-            REPO=$CIRCLE_PROJECT_REPONAME
-            SHA=$CIRCLE_SHA1
-            AUTH=dandimeo:$GITHUB_PAT
-            URL=$API/repos/$USER/$REPO/statuses/$SHA
-            DESCRIPTION=https://"$CIRCLE_SHA1"--docs-hugo.netlify.app
-            echo "$DESCRIPTION"
-            # Compose the body.
-            BODY='
-              {
-                "state": "success",
-                "target_url": "'"$DESCRIPTION"'",
-                "description": "'"$DESCRIPTION"'",
-                "context": "ci/circleci: deploy"
-              }
-            '
-            # Post the status (use echo-pipe not \<<< for greater shell compat).
-            echo $BODY | curl -u $AUTH -XPOST -d@- $URL
-
 
 
 workflows:
@@ -460,10 +431,7 @@ workflows:
       - deploy:
           requires:
             - plain-build
-      - show-deploy-preview:
-          requires:
-            - deploy
-    
+
   generate:
     when: { equal: [ generate, << pipeline.parameters.workflow >> ] }
     jobs:
@@ -533,9 +501,6 @@ workflows:
       - deploy:
           requires:
             - build-with-generated
-      - show-deploy-preview:
-          requires:
-            - deploy
   
   generate-scheduled:
     when: { equal: [ generate-scheduled, << pipeline.parameters.workflow >> ] }
