@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   workflow:
     type: enum
-    enum: [no-op, plain-build, generate, compile, generate-scheduled]
+    enum: [no-op, plain-build, generate, compile, generate-scheduled, commit-generated]
     default: no-op
   
   deploy-url:
@@ -567,7 +567,11 @@ workflows:
   commmit-generated:
     when: { equal: [ commit-generated, << pipeline.parameters.workflow >> ] }
     jobs:
-      - commit-generated
+      - approve-workflow:
+          type: approval
+      - commit-generated:
+          requires:
+            - approve-workflow
       
 
   community-pr:
