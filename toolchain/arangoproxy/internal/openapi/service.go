@@ -128,6 +128,7 @@ func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) e
 		if exitError, ok := err.(*exec.ExitError); ok {
 			common.Logger.Summary("%s - **Error %d**:\n", version, exitError.ExitCode())
 			common.Logger.Summary("%s", er.String())
+			time.Sleep(time.Second * 2)
 			os.Exit(exitError.ExitCode())
 		}
 	}
