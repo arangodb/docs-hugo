@@ -6,6 +6,7 @@ import (
 	"io"
 	"io/ioutil"
 	"net/http"
+	"os"
 	"os/exec"
 	"reflect"
 	"strings"
@@ -52,7 +53,7 @@ func (service OpenapiService) ParseOpenapiPayload(request io.Reader) (map[string
 		return nil, err
 	}
 
-	common.Logger.Summary(string(req))
+	// common.Logger.Summary(string(req))
 
 	//req = editDescriptions(req)
 
@@ -121,9 +122,16 @@ func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) e
 	cmd.Stdout = &out
 	cmd.Stderr = &er
 
-	cmd.Run()
+	err := cmd.Run()
 	common.Logger.Printf("%s\n\n\n%s", out.String(), er.String())
-	common.Logger.Summary("**%s %s**", out.String(), er.String())
+	if err != nil {
+		if exitError, ok := err.(*exec.ExitError); ok {
+			common.Logger.Summary("%s - **Error %d**:\n", version, exitError.ExitCode())
+			common.Logger.Summary("%s", er.String())
+			os.Exit(exitError.ExitCode())
+		}
+	}
+	common.Logger.Summary("%s &#x2713;", version)
 	return nil
 }
 
