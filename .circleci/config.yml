@@ -53,9 +53,8 @@ jobs:
           name: Build site
           command: |
             export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
-            cd docs-hugo/toolchain/docker
             set +e
-            docker compose -f docker-compose.plain-build.yml --env-file env/plain-build.env up --abort-on-container-exit
+            cd docs-hugo/toolchain/docker && docker compose -f docker-compose.plain-build.yml --env-file env/plain-build.env up --abort-on-container-exit
             if [ "$?" != "0" ]; then
               cat docs-hugo/summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
               exit "$?"
