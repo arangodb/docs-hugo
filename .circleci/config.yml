@@ -235,6 +235,7 @@ jobs:
             - "7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a"
             - "28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e"
             - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
+        run: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run: 
           name: Clone docs repo
           command: |
@@ -244,12 +245,12 @@ jobs:
           command: |
             artifacts_job_id=$(node docs-hugo/.circleci/commit.js $CIRCLE_BRANCH)
             base_url=https://output.circle-artifacts.com/output/job/"$artifacts_job_id"/artifacts/0/tmp
-            wget $base_url/3.10-generated.tar.gz
-            wget $base_url/3.11-generated.tar.gz
-            wget $base_url/3.12-generated.tar.gz
-            tar -xf 3.10-generated.tar.gz -C docs-hugo/site/data/
-            tar -xf 3.11-generated.tar.gz -C docs-hugo/site/data/
-            tar -xf 3.12-generated.tar.gz -C docs-hugo/site/data/
+            wget $base_url/3.10-generated.tar
+            wget $base_url/3.11-generated.tar
+            wget $base_url/3.12-generated.tar
+            tar -xf 3.10-generated.tar -C docs-hugo/site/data/
+            tar -xf 3.11-generated.tar -C docs-hugo/site/data/
+            tar -xf 3.12-generated.tar -C docs-hugo/site/data/
       - run:
           name: commit files
           command: |
