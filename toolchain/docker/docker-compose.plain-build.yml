@@ -9,6 +9,8 @@ services:
     networks:
       docs_net:
         ipv4_address: 192.168.129.130
+    ports:
+      - "1313:1313"
     volumes:
       - ../../:/home/
     environment:
