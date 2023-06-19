@@ -1,31 +1,27 @@
-$("input.toggle").click(function(event) {
-    var arrow = $(event.target).next()[0];
-    if(arrow.classList.contains("open")) {
-        arrow.classList.remove("open");
-        arrow.classList.add("closed");
-    } else {
-        arrow.classList.remove("closed");
-        arrow.classList.add("open");
-    }
-    var submenu = $(event.target).next().next().next();
-    submenu.slideToggle();
-    
-});
+
+
+
+function toggleMenuItem(event) {
+    const listItem = event.target.parentNode;
+    if (listItem.classList.contains("menu-leaf-entry")) 
+        return
+
+    listItem.childNodes[0].classList.toggle("open");
+    jQuery(listItem.childNodes[2]).slideToggle();
+}
+
+function menuToggleClick(event) {
+    toggleMenuItem(event);
+}
+
 
 function menuEntryClick(event) {
-    loadPage(event.target.getAttribute('href'));
-    var arrow = $(event.target).prev()[0];
-    if(arrow.classList.contains("open")) {
-        arrow.classList.remove("open");
-        arrow.classList.add("closed");
-    } else {
-        arrow.classList.remove("closed");
-        arrow.classList.add("open");
-    }
     if (event.target.getAttribute('href') == window.location.href) {
-        var submenu = $(event.target).next();
-        submenu.slideToggle();
+        toggleMenuItem(event)
+        return
     }
+
+    loadPage(event.target.getAttribute('href'));
 }
 
 function renderVersion() {
@@ -40,22 +36,25 @@ function renderVersion() {
     }
 };
 
+function closeAllEntries() {
+    $(".dd-item.active").removeClass("active");
+    $(".dd-item > label.open").removeClass("open");
+    $(".submenu").hide();
+    $(".dd-item.parent").removeClass("parent");
+}
 
-function loadMenu() {
-    var menuEntry = document.querySelectorAll('li.menu-section-entry');
-    for ( let entry of menuEntry ) {
-        if (entry.classList.contains("parent") || entry.classList.contains("active")) {
-            entry.childNodes[1].classList.add("open");
-            entry.childNodes[1].classList.remove("closed");
-
-            var submenu = entry.querySelector('.submenu');
-            submenu.style.display = 'block';
-        } else {
-            entry.childNodes[1].classList.remove("open")
-            entry.childNodes[1].classList.add("closed")
-
-            var submenu = entry.querySelector('.submenu');
-            submenu.style.display = 'none';
+function loadMenu(url) {
+    closeAllEntries();
+    var current = $('.dd-item > a[href="' + url + '"]').parent();
+    
+    current.addClass("active");
+    while (current.length > 0 && current.prop("class") != "topics collapsible-menu") {
+        if (current.prop("tagName") == "LI") {
+            current.addClass("parent");
+            jQuery(current.children()[0]).addClass("open") //Open label arrow
+            jQuery(current.children()[2]).show()
         }
+        
+        current = current.parent();
     }
 }

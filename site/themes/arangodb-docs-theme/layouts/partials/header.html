@@ -8,7 +8,7 @@
     <link rel="shortcut icon" href="https://www.arangodb.com/wp-content/uploads/2018/07/www.arangodb.com-favicon.png">
 
     {{- partialCached "favicon.html" . }}
-    {{- partialCached "stylesheet.html" . }}
+    {{- partial "stylesheet.html" . }}
     {{- partial "javascript.html" . }}
 
   </head>
@@ -32,9 +32,8 @@
             <iframe src="/nav.html" title="description" id="menu-iframe" class="menu-iframe active">qualocsa</iframe>
             <script>
               var iframe =  document.getElementById('menu-iframe');
-              console.log(iframe)
               iframe.addEventListener("load", function() {
-                var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
+              var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
               content= iFrameBody.getElementById('sidebar');
               console.log(content)
               document.getElementById("page-container").appendChild(content)

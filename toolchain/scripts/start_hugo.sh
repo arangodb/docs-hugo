@@ -24,7 +24,7 @@ cd /home/site
 
 hugoOptions="--verbose --templateMetrics"
 if [ "$HUGO_ENV" = "development" ] || [ "$HUGO_ENV" = "frontend" ]; then
-    hugoOptions="serve --buildDrafts --watch --bind=0.0.0.0"
+    hugoOptions="serve --buildDrafts --watch --bind=0.0.0.0 --ignoreCache --noHTTPCache"
 fi
 
 echo "Hugo Settings:"

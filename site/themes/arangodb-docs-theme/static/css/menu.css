@@ -303,19 +303,6 @@ li.active > a {
 
 
 
-.menu-section-entry > label.open::before,
-.menu-section-entry.parent > label::before,
-.menu-section-entryactive > label::before {
-    font-family: "Font Awesome 5 Free";
-    content: "\f078";
-    display: inline-block;
-    /* padding-right: 3px; */
-    vertical-align: middle;
-    font-weight: 900;
-    font-size: 10px;
-    padding-top: 8px;
-    color: grey;
-}
 
 .menu-section-entry > label.closed::before {
     font-family: "Font Awesome 5 Free";
@@ -325,6 +312,7 @@ li.active > a {
     vertical-align: middle;
     font-weight: 900;
     font-size: 10px;
+    padding-top: 0px;
     color: grey;
 }
 
