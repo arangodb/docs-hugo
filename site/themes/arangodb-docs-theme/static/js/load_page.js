@@ -25,7 +25,7 @@ function updateHistory(title, url) {
 function loadPage(target) {
     var href = target;
     if (href == window.location.href) {
-        return false;
+        return
     }
     var url = href.replace(/#.*$/, "");
     $.get({
