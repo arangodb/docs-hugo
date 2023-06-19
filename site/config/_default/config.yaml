@@ -8,7 +8,7 @@ CanonifyURLs: true
 
 module:
   mounts:
-    - source: "themes/hugo-theme-relearn/images"
+    - source: "themes/arangodb-docs-theme/images"
       target: "static/images"
     
     - source: "content/images"
