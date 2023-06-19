@@ -34,6 +34,7 @@ function loadPage(target) {
         replaceArticle(href, newDoc)
           
         loadMenu(url);
+        generateToc();
         //initNewPage();
 
         updateHistory(title, url);

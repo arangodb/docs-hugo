@@ -302,8 +302,6 @@ li.active > a {
 }
 
 
-
-
 .menu-section-entry > label.closed::before {
     font-family: "Font Awesome 5 Free";
     content: "\f054";

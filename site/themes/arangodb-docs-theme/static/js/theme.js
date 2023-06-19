@@ -647,7 +647,6 @@ function observeVideo(video) {
 const showOnPx = 100;
 
 window.addEventListener("load", () => {
-    getCurrentVersion();
     initNewPage();
     document.addEventListener("scroll", e => {
     if (window.pageYOffset > showOnPx) {
