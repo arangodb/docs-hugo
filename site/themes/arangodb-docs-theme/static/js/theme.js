@@ -762,7 +762,7 @@ function copyURI(evt) {
 
 
 
-var headlineLevels = ["h1", "h2", "h3", "h4", "h5", "h6"]
+var headlineLevels = ["h2", "h3", "h4", "h5", "h6"]
 var maxHeadlineLevel = 2;
 
 var generateToc = function() {
@@ -772,7 +772,7 @@ var generateToc = function() {
     }
 
     var nodes = contentBlock.querySelectorAll(headlineLevels.slice(0, maxHeadlineLevel).join(","));
-    if (nodes.length == 0) {
+    if (nodes.length < 2) {
       return;
     }
     var currentLevel = 1;
