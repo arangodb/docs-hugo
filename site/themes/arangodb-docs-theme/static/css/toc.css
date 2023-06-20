@@ -49,16 +49,16 @@
 }
 
 
-#TableOfContents .level-1 {
+#TableOfContents .level-1 > a {
     font-size: 15px;
 }
 
-#TableOfContents .level-2 {
+#TableOfContents .level-2 > a {
     padding-left: 2em;
     font-size: 15px;
 }
 
-#TableOfContents .level-3 {
+#TableOfContents .level-3 > a {
     padding-left: 3em;
     font-size: 14px;
 }
