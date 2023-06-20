@@ -36,7 +36,7 @@
           {{- if or .IsSection .IsHome }}
             {{- safeHTML .Params.head }}
             {{- if $pages }}
-              {{ if and (ne .Params.menuTitle "3.10") (ne .Params.menuTitle "3.11")}}
+              {{ if and (ne .Params.menuTitle "3.10") (ne .Params.menuTitle "3.11") (ne .Params.menuTitle "3.12")}}
                 {{ if eq .Layout "label" }}
                 <li data-nav-id="{{.RelPermalink}}" title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><label for="section-" class="closed {{.RelPermalink}}" onclick="event.preventDefault();menuToggleClick(event)" >
                 </label>
@@ -50,7 +50,7 @@
                 {{ end }}
               {{ end }}
   
-            <ul class='{{if or (eq .Params.menuTitle "3.10") (eq .Params.menuTitle "3.11")}} version-menu {{ .Params.menuTitle }} {{ else }} submenu {{ end }}'>
+            <ul class='{{if or (eq .Params.menuTitle "3.10") (eq .Params.menuTitle "3.11") (eq .Params.menuTitle "3.12")}} version-menu {{ .Params.menuTitle }} {{ else }} submenu {{ end }}'>
                   {{- range $pages.ByWeight }}
                     {{- template "section-tree-nav" dict "sect" . "currentnode" $currentNode }}
                   {{- end }}
