@@ -360,6 +360,10 @@ dd-item.menu-section-entry.parent > .submenu {
     display: block;
 }
 
+.menu-title {
+    pointer-events: none;
+}
+
 .sidenav-container-flex::-webkit-scrollbar {
     display: none;
   }
