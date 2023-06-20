@@ -35,6 +35,11 @@ function changeVersion() {
         changeVersion();
     }
 
+    if (location.pathname == "/") {
+        initArticle(window.location.href)
+        return
+    }
+
     var newUrl = window.location.href.replace(oldVersion, newVersion)
     loadPage(newUrl);
 }
