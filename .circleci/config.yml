@@ -292,6 +292,7 @@ jobs:
       - run:
           name: Deploy to netlify
           command: netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias << pipeline.parameters.deploy-url >>
+          no_output_timeout: 1h
 
       - run:
           name: Call Github App create check function
