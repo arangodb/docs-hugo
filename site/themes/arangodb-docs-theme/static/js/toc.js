@@ -71,7 +71,7 @@ function tocHiglighter() {
 
   for (var i = anchors.length-1; i >= 0; i--){
     if (scrollTop > $(anchors[i]).offset().top - 140) {
-      var heading = anchors[i].getAttribute('id')
+        var heading = anchors[i].getAttribute('id')
 
         let highlightedHref = $('#TableOfContents a[href="#' + heading + '"]')
         highlightedHref.addClass('is-active');

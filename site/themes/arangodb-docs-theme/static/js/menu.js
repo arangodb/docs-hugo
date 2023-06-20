@@ -44,6 +44,8 @@ function closeAllEntries() {
 }
 
 function loadMenu(url) {
+    url = url.replace(/#.*$/, "");
+
     closeAllEntries();
     var current = $('.dd-item > a[href="' + url + '"]').parent();
     

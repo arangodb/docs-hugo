@@ -36,62 +36,7 @@ function scrollbarWidth(){
 }
 
 
-
-function switchTab(tabGroup, event) {
-    var tabId = event.target.value;
-    var tabs = jQuery(".tab-panel").has("[data-tab-group='"+tabGroup+"'][data-tab-item='"+tabId+"']");
-    var allTabItems = tabs.find("[data-tab-group='"+tabGroup+"']");
-    var targetTabItems = tabs.find("[data-tab-group='"+tabGroup+"'][data-tab-item='"+tabId+"']");
-    // if event is undefined then switchTab was called from restoreTabSelection
-    // so it's not a button event and we don't need to safe the selction or
-    // prevent page jump
-    var isButtonEvent = event != undefined;
-
-    if(isButtonEvent){
-      // save button position relative to viewport
-      var yposButton = event.target.getBoundingClientRect().top;
-    }
-
-    allTabItems.removeClass("active");
-    targetTabItems.addClass("active");
-
-    if(isButtonEvent){
-      // reset screen to the same position relative to clicked button to prevent page jump
-      var yposButtonDiff = event.target.getBoundingClientRect().top - yposButton;
-      window.scrollTo(window.scrollX, window.scrollY+yposButtonDiff);
-
-      // Store the selection to make it persistent
-      if(window.localStorage){
-          var selectionsJSON = window.localStorage.getItem(baseUriFull+"tab-selections");
-          if(selectionsJSON){
-            var tabSelections = JSON.parse(selectionsJSON);
-          }else{
-            var tabSelections = {};
-          }
-          tabSelections[tabGroup] = tabId;
-          window.localStorage.setItem(baseUriFull+"tab-selections", JSON.stringify(tabSelections));
-      }
-    }
-}
-
-function restoreTabSelections() {
-    if(window.localStorage){
-        var selectionsJSON = window.localStorage.getItem(baseUriFull+"tab-selections");
-        if(selectionsJSON){
-          var tabSelections = JSON.parse(selectionsJSON);
-        }else{
-          var tabSelections = {};
-        }
-        Object.keys(tabSelections).forEach(function(tabGroup) {
-          var tabItem = tabSelections[tabGroup];
-          switchTab(tabGroup, tabItem);
-        });
-    }
-}
-
-
 function initAnchorClipboard(){
-
     $(".anchor").on('mouseleave', function(e) {
         $(this).attr('aria-label', null).removeClass('tooltipped tooltipped-s tooltipped-w');
     });
@@ -137,95 +82,6 @@ function initArrowNav(){
     });
 }
 
-function initMenuScrollbar(){
-    if( isPrint ){
-        return;
-    }
-
-    var elc = document.querySelector('#page-main');
-    var elm = document.querySelector('#sidebar');
-    var elt = document.querySelector('#TableOfContents');
-
-    var autofocus = false;
-    document.addEventListener('keydown', function(event){
-        // for initial keyboard scrolling support, no element
-        // may be hovered, but we still want to react on
-        // cursor/page up/down. because we can't hack
-        // the scrollbars implementation, we try to trick
-        // it and give focus to the scrollbar - only
-        // to just remove the focus right after scrolling
-        // happend
-        var c = elc && elc.matches(':hover');
-        var m = elm && elm.matches(':hover');
-        var t = elt && elt.matches(':hover');
-        var f = event.target.matches( formelements );
-        if( !c && !m && !t && !f ){
-            // only do this hack if none of our scrollbars
-            // is hovered
-            autofocus = true;
-            // if we are showing the sidebar as a flyout we
-            // want to scroll the content-wrapper, otherwise we want
-            // to scroll the body
-            var nt = document.querySelector('body').matches('.toc-flyout');
-            var nm = document.querySelector('body').matches('.sidebar-flyout');
-            if( nt ){
-                pst && pst.scrollbarY.focus();
-            }
-            else if( nm ){
-                psm && psm.scrollbarY.focus();
-            }
-            else{
-                document.querySelector('.container-main').focus();
-                psc && psc.scrollbarY.focus();
-            }
-        }
-    });
-    // scrollbars will install their own keyboard handlers
-    // that need to be executed inbetween our own handlers
-    // PSC removed for #242 #243 #244
-    // psc = elc && new PerfectScrollbar('.container-main');
-    psm = elm && new PerfectScrollbar('#sidebar');
-    pst = elt && new PerfectScrollbar('#TableOfContents');
-    document.addEventListener('keydown', function(){
-        // if we facked initial scrolling, we want to
-        // remove the focus to not leave visual markers on
-        // the scrollbar
-        if( autofocus ){
-            psc && psc.scrollbarY.blur();
-            psm && psm.scrollbarY.blur();
-            pst && pst.scrollbarY.blur();
-            autofocus = false;
-        }
-    });
-    // on resize, we have to redraw the scrollbars to let new height
-    // affect their size
-    window.addEventListener('resize', function(){
-        pst && pst.update();
-        psm && psm.update();
-        psc && psc.update();
-    });
-    // now that we may have collapsible menus, we need to call a resize
-    // for the menu scrollbar if sections are expanded/collapsed
-    document.querySelectorAll('#sidebar .collapsible-menu input.toggle').forEach( function(e){
-        e.addEventListener('change', function(){
-            psm && psm.update();
-        });
-    });
-
-    // finally, we want to adjust the contents right padding if there is a scrollbar visible
-    var scrollbarSize = scrollbarWidth();
-    function adjustContentWidth(){
-        var left = parseFloat( getComputedStyle( elc ).getPropertyValue( 'padding-left' ) );
-        var right = left;
-        if( elc.scrollHeight > elc.clientHeight ){
-            // if we have a scrollbar reduce the right margin by the scrollbar width
-            right = Math.max( 0, left - scrollbarSize );
-        }
-        elc.style[ 'padding-right' ] = '' + right + 'px';
-    }
-    window.addEventListener('resize', adjustContentWidth );
-    adjustContentWidth();
-}
 
 function initLightbox(){
     // wrap image inside a lightbox (to get a full size view in a popup)
@@ -448,11 +304,8 @@ function scrollToFragment() {
     }
     window.setTimeout(function(){
         var e = document.querySelector( window.location.hash );
-        if( e && e.scrollIntoView ){
-            e.scrollIntoView({
-                block: 'start',
-            });
-        }
+        console.log(e)
+        e.scrollIntoView();
     }, 10);
 }
 
@@ -526,9 +379,7 @@ function getUrlParameter(sPageURL) {
 
 jQuery(function() {
     initArrowNav();
-    initMenuScrollbar();
     scrollToActiveMenu();
-    scrollToFragment();
     initLightbox();
     initImageStyles();
     initAnchorClipboard();
@@ -639,26 +490,15 @@ function observeVideo(video) {
     observer.observe(video);
 }
 
-// Table of contents h2 highlighter
-
-
-// Back To Top Button
-
-const showOnPx = 100;
-
-window.addEventListener("load", () => {
-    initArticle(window.location.href)
-});
-
-window.addEventListener("scroll", () => {
-    if (window.pageYOffset > showOnPx) {
+function backToTopButton() {
+    if (window.pageYOffset > 100) {
         document.querySelector(".back-to-top").classList.remove("hidden");
     } else {
         document.querySelector(".back-to-top").classList.add("hidden");
     }
-});
+}
 
-$(window).scroll(function(){
+function readaptHeaderOnScroll() {
     $("#breadcrumbs").css({"top": "0em"});
     $("#sidebar").css({"top": "0em"} );
     if (window.pageYOffset > 20) {
@@ -666,11 +506,22 @@ $(window).scroll(function(){
     } else {
         $(".searchbox.default-animation").css({"top": "4em"} );
     }
+}
+
+
+window.addEventListener("load", () => {
+    initArticle(window.location.href)
+    scrollToFragment();
+});
+
+window.addEventListener("scroll", () => {
+    backToTopButton();
+    readaptHeaderOnScroll();
 });
 
 const goToTop = () => {
     window.scrollTo({top: 0, behavior: 'smooth'});
-  };
+};
 
 
 var showSidenav = true;
@@ -688,63 +539,3 @@ function copyURI(evt) {
       console.log("clipboard copy failed")
     });
 }
-
-
-
-
-function initCopyToClipboard() {
-    $('code').each(function() {
-        var code = $(this);
-        var parent = code.parent();
-        var inPre = parent.prop('tagName') == 'PRE';
-
-        if (inPre) {
-            code.addClass('copy-to-clipboard-code');
-            if( inPre ){
-                parent.addClass( 'copy-to-clipboard' );
-            }
-            else{
-                code.replaceWith($('<span/>', {'class': 'copy-to-clipboard'}).append(code.clone() ));
-                code = parent.children('.copy-to-clipboard').last().children('.copy-to-clipboard-code');
-            }
-            var span = $('<span>').addClass("copy-to-clipboard-button").attr("title", window.T_Copy_to_clipboard).attr("onclick", "copyCode(event);")
-            code.before(span);
-            span.mouseleave( function() {
-                setTimeout(function(){
-                    span.removeClass("tooltipped");
-                },1000);
-        });
-    }
-    });
-}
-
-function copyCode(event) {
-    var parent = $(event.target).parent().parent().find('code')[0].childNodes;
-    var text = ""
-    for (let child of parent) {
-        text = text + $(child).text();
-    }
-    navigator.clipboard.writeText(text).then(() => {
-        console.log("Copied")
-        $(event.target).attr('aria-label', window.T_Copied_to_clipboard).addClass('tooltipped');
-    }, () => {
-      console.log("clipboard copy failed")
-    });
- }
-
- function expand(event) {
-    $t=$(this);
-
-    if($t.parent('.expand-expanded.expand-marked').length){ 
-        $t.next().css('display','none') 
-    } else if($t.parent('.expand-marked').length){ 
-        $t.next().css('display','block') 
-    }else{
-        $t.next('.expand-content').slideToggle(100); 
-    } 
-
-    $t.parent().toggleClass('expand-expanded');
- }
-
-
-
