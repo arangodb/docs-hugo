@@ -1,83 +1,54 @@
 
-var headlineLevels = ["h1", "h2", "h3", "h4", "h5", "h6"]
+var headlineLevels = ["h2", "h3", "h4", "h5", "h6"]
 var maxHeadlineLevel = 2;
 
 function getHeadlines() {
     var contentBlock = document.querySelector("article");
     if (!contentBlock) {
-      return;
+      return [0, false];
     }
-    return contentBlock.querySelectorAll(headlineLevels.slice(0, maxHeadlineLevel).join(","))
+    var nodes = contentBlock.querySelectorAll(headlineLevels.slice(0, maxHeadlineLevel).join(","))
+    if (nodes.length < 2) {
+      return [0, false];
+    }
+
+    return [nodes, true];
 }
 
-var generateToc = function() {
-    var contentBlock = document.querySelector("article");
-    if (!contentBlock) {
-      return;
-    }
 
-    var nodes = contentBlock.querySelectorAll(headlineLevels.slice(0, maxHeadlineLevel).join(","));
-    if (nodes.length == 0) {
-      return;
-    }
-    var currentLevel = 1;
-    var currentParent = document.createElement("ul");
-    var parents = [
-      {
-        level: 1,
-        element: currentParent
-      }
-    ];
-    var lastElement = currentParent;
-    for (var i = 0; i < nodes.length; i++) {
-      var node = nodes.item(i);
-      var level = parseInt(node.tagName[1], 10);
-      if (level < currentLevel) {
-        while (level < currentLevel) {
-          parents.pop();
-          currentParent = parents[parents.length - 1].element;
-          currentLevel = parents[parents.length - 1].level;
-        }
-      } else if (level > currentLevel) {
-        var newParent = document.createElement("ul");
-        if (lastElement) {
-          lastElement.appendChild(newParent);
-        }
-        currentParent = newParent;
-        currentLevel = level;
-        parents.push({
-          level: level,
-          element: currentParent
-        });
-      }
-  
-      var li = document.createElement("li");
-      var a = document.createElement("a");
-      a.className = "level-"+level;
-      a.href = "#" + node.id;
-      a.textContent = node.textContent;
-  
-      li.appendChild(a);
-      currentParent.appendChild(li);
-  
-      lastElement = li;
-    }
-  
-    var root;
-    if (parents.length > 0) {
-      root = parents[0].element;
-    } else {
-      root = currentParent;
+var generateToc = function() {
+    const [nodes, ok] = getHeadlines();
+    if (!ok) {
+      return
     }
 
     var nav = document.createElement("nav");
     nav.className = "ps";
-    nav.appendChild(root);
+
+    nodes.forEach(function (heading, index) {
+      var headerFragment = heading.getAttribute('id')
+      var level = heading.nodeName.replace('H', '')
+
+      var anchor = document.createElement('a');
+      anchor.setAttribute('name', 'toc' + index);
+      anchor.setAttribute('id', 'toc' + index);
+
+      var link = document.createElement('a');
+      link.setAttribute('href', "#"+headerFragment);
+      link.textContent = heading.textContent;
+
+      var div = document.createElement('div');
+      div.setAttribute('class', "level-"+level);
+
+      div.appendChild(link);
+      nav.appendChild(div);
+      heading.parentNode.insertBefore(anchor, heading);
+    });
+
+    
     document.querySelector("#TableOfContents").appendChild(nav)
     document.querySelector('.toc-container').style.display = 'block';
   };
-
-  var anchors = getHeadlines();
 
   $(window).on('resize', function() {
     if (window.innerWidth < 1000) {
@@ -85,21 +56,30 @@ var generateToc = function() {
     }
 });
 
-$(window).scroll(function(){
-    var scrollTop = $(document).scrollTop();
-    // highlight the last scrolled-to: set everything inactive first
-    for (var i = 0; i < anchors.length; i++){
-        let highlightedHref = $('#TableOfContents ul ul li a[href="#' + $(anchors[i]).attr('id') + '"]');
-        highlightedHref.removeClass('is-active');
-    }
-    
-    // then iterate backwards, on the first match highlight it and break
-    for (var i = anchors.length-1; i >= 0; i--){
-        if (scrollTop > $(anchors[i]).offset().top - 140) {
-            let highlightedHref = $('#TableOfContents ul ul li a[href="#' + $(anchors[i]).attr('id') + '"]')
-            highlightedHref.addClass('is-active');
-            break;
-        }
-    }
-});
+function tocHiglighter() {
+  const [anchors, ok] = getHeadlines()
+  if (!ok) {
+    return
+  }
 
+  var scrollTop = $(document).scrollTop();
+  for (var i = 0; i < anchors.length; i++){
+    var heading = anchors[i].getAttribute('id')
+    let highlightedHref = $('#TableOfContents a[href="#' + heading + '"]');
+    highlightedHref.removeClass('is-active');
+  }
+
+  for (var i = anchors.length-1; i >= 0; i--){
+    if (scrollTop > $(anchors[i]).offset().top - 140) {
+      var heading = anchors[i].getAttribute('id')
+
+        let highlightedHref = $('#TableOfContents a[href="#' + heading + '"]')
+        highlightedHref.addClass('is-active');
+        break;
+    }
+  }
+}
+
+$(window).scroll(function(){
+  tocHiglighter();
+});

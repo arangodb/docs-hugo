@@ -22,8 +22,6 @@ function getCurrentVersion() {
 
 window.addEventListener("load", () => {
     getCurrentVersion();
-    renderVersion();
-    loadMenu(window.location.href);
 });
 
 function changeVersion() {
@@ -39,6 +37,4 @@ function changeVersion() {
 
     var newUrl = window.location.href.replace(oldVersion, newVersion)
     loadPage(newUrl);
-    renderVersion();
-    loadMenu(window.location.href);
 }

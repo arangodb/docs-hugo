@@ -22,54 +22,58 @@ function updateHistory(title, url) {
   dispatchEvent(popStateEvent);
 }
 
-function loadPage(target) {
-    var href = target;
-    if (href == window.location.href) {
+function styleImages() {
+  images = document.querySelectorAll("[x-style]");
+  for (let image of images) {
+      styles = image.getAttribute("x-style");
+      image.setAttribute("style", styles)
+      image.removeAttribute("x-style")
+  }
+}
+
+function showSidebarHandler() {
+  document.querySelector(".sidebar-toggle-navigation").addEventListener("click", e => {
+    if (showSidenav) {
+        $("#sidebar").removeClass("active");
+        showSidenav = false;
         return
     }
-    var url = href.replace(/#.*$/, "");
-    $.get({
-      url: url,
-      success: function(newDoc) {
-        replaceArticle(href, newDoc)
-          
-        loadMenu(url);
-        generateToc();
-        //initNewPage();
 
-        updateHistory(title, url);
-        return true;
-      }
-    });
+    $("#sidebar").addClass("active");
+    showSidenav = true;
+    e.preventDefault();
+});
+}
+
+
+
+function loadPage(target) {
+  var href = target;
+  if (href == window.location.href) {
+      return
   }
+  var url = href.replace(/#.*$/, "");
+  $.get({
+    url: url,
+    success: function(newDoc) {
+      replaceArticle(href, newDoc)
+      initArticle(url);
+      updateHistory(title, url);
+      return true;
+    }
+  });
+}
 
 
-  // function initNewPage() {
-  //   //getCurrentVersion();
-  //   renderVersion();
-  //   loadMenu();
-  //   initCopyToClipboard();
-  //   initClickHandlers();
-  //   images = document.querySelectorAll("[x-style]");
-  //   for (let image of images) {
-  //       styles = image.getAttribute("x-style");
-  //       image.setAttribute("style", styles)
-  //       image.removeAttribute("x-style")
-  //   }
 
-  //   document.querySelector(".sidebar-toggle-navigation").addEventListener("click", e => {
-  //       if (showSidenav) {
-  //           $("#sidebar").removeClass("active");
-  //           showSidenav = false;
-  //           return
-  //       }
 
-  //       $("#sidebar").addClass("active");
-  //       showSidenav = true;
-  //       e.preventDefault();
-  //   });
-
-  //   anchors = getHeadlines();
-  //   generateToc();
-  //   goToTop();
-  // }
+function initArticle(url) {
+  renderVersion();
+  loadMenu(url)
+  initCopyToClipboard();
+  initClickHandlers();
+  generateToc();
+  goToTop();
+  styleImages();
+  showSidebarHandler();
+}

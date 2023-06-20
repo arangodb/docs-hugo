@@ -647,14 +647,15 @@ function observeVideo(video) {
 const showOnPx = 100;
 
 window.addEventListener("load", () => {
-    initNewPage();
-    document.addEventListener("scroll", e => {
+    initArticle(window.location.href)
+});
+
+window.addEventListener("scroll", () => {
     if (window.pageYOffset > showOnPx) {
         document.querySelector(".back-to-top").classList.remove("hidden");
-      } else {
+    } else {
         document.querySelector(".back-to-top").classList.add("hidden");
-      }
-    });
+    }
 });
 
 $(window).scroll(function(){
