@@ -195,9 +195,9 @@ jobs:
           name: Create archive of generated files
           command: |
             cd docs-hugo/site/data
-            tar -cvf /tmp/3.10-generated.tar.gz 3.10/
-            tar -cvf /tmp/3.11-generated.tar.gz 3.11/
-            tar -cvf /tmp/3.12-generated.tar.gz 3.12/
+            tar -cvf /tmp/3.10-generated.tar 3.10/
+            tar -cvf /tmp/3.11-generated.tar 3.11/
+            tar -cvf /tmp/3.12-generated.tar 3.12/
 
       - store_artifacts:
           path: /tmp/3.10-generated.tar
