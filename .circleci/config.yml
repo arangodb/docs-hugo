@@ -238,17 +238,15 @@ jobs:
             - docs-hugo/summary.md
 
   commit-generated:
-    docker:
-      - image: cimg/node:19.7.0
-    resource_class: small
-    environment:
-      GIT_TRACE: true
-      GIT_CURL_VERBOSE: true
-      GIT_SSH_COMMAND: "ssh -vvv"
+    machine:
+      image: ubuntu-2004:current
+    resource_class: large
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "1e:e3:7e:8c:55:be:3d:56:bc:4c:1c:d7:d6:26:f2:e5"
+            - "7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a"
+            - "28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e"
+            - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run: 
           name: Clone docs repo
@@ -257,6 +255,9 @@ jobs:
       - run:
           name: Launch node script to get generated content from previous run
           command: |
+            curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash 
+            source ~/.bashrc   
+            nvm install --lts 
             artifacts_job_id=$(node docs-hugo/.circleci/commit.js $CIRCLE_BRANCH)
             base_url=https://output.circle-artifacts.com/output/job/"$artifacts_job_id"/artifacts/0/tmp
             wget $base_url/3.10-generated.tar
