@@ -242,9 +242,9 @@ jobs:
       - image: cimg/node:19.7.0
     resource_class: small
     environment:
-      GIT_TRACE=true
-      GIT_CURL_VERBOSE=true
-      GIT_SSH_COMMAND="ssh -vvv"
+      GIT_TRACE: true
+      GIT_CURL_VERBOSE: true
+      GIT_SSH_COMMAND: "ssh -vvv"
     steps:
       - add_ssh_keys:
           fingerprints:
