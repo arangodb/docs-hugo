@@ -20,7 +20,7 @@ func init() {
 	flag.StringVar(&configFile, "config", "./configs/local.yaml", "path of config file")
 	flag.BoolVar(&help, "help", false, "Display help usage")
 	flag.BoolVar(&cleanCache, "no-cache", false, "Reset cache")
-	flag.BoolVar(&cleanCache, "use-servers", false, "Enable communication with arangodb servers")
+	flag.BoolVar(&useServers, "use-servers", false, "Enable communication with arangodb servers")
 	flag.Parse()
 
 	err := config.LoadConfig(configFile)

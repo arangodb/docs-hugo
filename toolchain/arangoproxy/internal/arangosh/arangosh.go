@@ -15,7 +15,7 @@ import (
 )
 
 func Exec(exampleName string, code string, repository config.Repository) (output string) {
-	time.Sleep(time.Second * 2)
+	//time.Sleep(time.Second * 2)
 	commonFunctions, _ := utils.GetCommonFunctions()
 	command := fmt.Sprintf("%s\n%s", commonFunctions, code)
 
@@ -57,11 +57,13 @@ func Exec(exampleName string, code string, repository config.Repository) (output
 			common.Logger.Summary("<li><strong>%s</strong>: %s <strong>Error</strong>\n", repository.Version, exampleName)
 			common.Logger.Summary("<strong>Stacktrace</strong><br>%s</li>", out.String())
 
-			os.Exit(1)
+			//os.Exit(1)
 			// }
 			// Exec(exampleName, newCommand, repository)
 		}
-		//return output
+		split := strings.Split(out.String(), "\n")[1:] // Cut the Please specify a password line from output
+		output = strings.Join(split, "\n")
+		return output
 	}
 
 	split := strings.Split(out.String(), "\n")[1:] // Cut the Please specify a password line from output
