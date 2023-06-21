@@ -246,6 +246,10 @@ jobs:
       GIT_CURL_VERBOSE: true
       GIT_SSH_COMMAND: "ssh -vvv"
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "1e:e3:7e:8c:55:be:3d:56:bc:4c:1c:d7:d6:26:f2:e5"
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - run: 
           name: Clone docs repo
           command: |
