@@ -4,6 +4,7 @@
   {{ $name := $test.name }}
   {{ $version := $test.version }}
   {{ $serverName := $test.server_name }}
+  {{ $description := $test.description }}
   {{ $type := $test.type }}
   {{ $cacheEntry := printf "%s_%s_%s" $name $serverName $type }}
   {{ $pageVersion := .Page.Scratch.Get "versionShort" }}
@@ -11,6 +12,8 @@
   {{ $dataFolderByVersion := index site.Data $pageVersion }}
   {{ $cache := index $dataFolderByVersion "cache"}}
   {{ $cacheFound :=  index $cache $cacheEntry }}
+
+  {{ $description }}
 
   {{ if not $cacheFound }}
     {{ warnf "CACHE NOT FOUND '%v'" $cacheEntry }}
@@ -72,6 +75,7 @@
 
               {{ $output := transform.Highlight $response.output "" }}
               {{ $block := printf "%s\n%s" $input $output | markdownify}}
+              
               {{- partial "shortcodes/expand.html" (dict
                 "context" .
                 "content" $block

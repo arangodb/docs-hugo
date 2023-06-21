@@ -23,7 +23,6 @@ fi
 
 echo "[INIT] Toolchain setup"
 echo "[INIT] Environment variables:"
-echo $(env | grep ARANGODB_)
 
 if [[ -z "${DOCKER_ENV}" ]]; then
   DOCKER_ENV="dev"
@@ -37,6 +36,8 @@ if [[ -z "${ARANGODB_SRC}" ]] && [[ -z "${ARANGODB_SRC_2}" ]] && [[ -z "${ARANGO
   echo "[INIT] ERROR: No ARANGODB_SRC variable set, please set it."
   exit 1
 fi
+
+echo "  DOCKER_ENV=$DOCKER_ENV"
 
 
 export IFS=","
@@ -212,8 +213,8 @@ function start_server() {
   echo ""
 
   log "[START_SERVER] Cleanup old containers"
-  docker container stop "$container_name" "$container_name"_agent1 "$container_name"_dbserver1 "$container_name"_dbserver2 "$container_name"_dbserver3 "$container_name"_coordinator1 arangoproxy site || true
-  docker container rm "$container_name" "$container_name"_agent1 "$container_name"_dbserver1 "$container_name"_dbserver2 "$container_name"_dbserver3 "$container_name"_coordinator1 arangoproxy site  || true
+  docker container stop "$container_name" "$container_name"_agent1 "$container_name"_dbserver1 "$container_name"_dbserver2 "$container_name"_dbserver3 "$container_name"_coordinator1 arangoproxy site &> /dev/null || true
+  docker container rm "$container_name" "$container_name"_agent1 "$container_name"_dbserver1 "$container_name"_dbserver2 "$container_name"_dbserver3 "$container_name"_coordinator1 arangoproxy site &> /dev/null  || true
   echo ""
 
    ## Cut the firstword/ from the branch field
@@ -465,16 +466,20 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
   if [ "$generate_examples" = true ] ; then
     echo "<h2>Examples</h2>" >> /home/summary.md
 
+    set -e
+
     if [ "$DOCKER_ENV" == "dev" ]; then 
       export DOCKER_BUILDKIT=1
-      docker build --target arangoproxy ../docker/ -t arangoproxy
-      docker  build --target hugo ../docker/ -t site
+      docker build --target arangoproxy ../docker/ -t arangoproxy &> /dev/null
+      docker  build --target hugo ../docker/ -t site &> /dev/null
     else 
-      docker pull arangodb/docs-hugo:arangoproxy
-      docker pull arangodb/docs-hugo:site
-      docker tag arangodb/docs-hugo:arangoproxy arangoproxy
-      docker tag arangodb/docs-hugo:site site
+      docker pull arangodb/docs-hugo:arangoproxy > /dev/null
+      docker pull arangodb/docs-hugo:site > /dev/null
+      docker tag arangodb/docs-hugo:arangoproxy arangoproxy > /dev/null
+      docker tag arangodb/docs-hugo:site site > /dev/null
     fi
+
+    set +e
     
     cd ../../
     echo "[GENERATE-EXAMPLES]  Run arangoproxy and site containers"
