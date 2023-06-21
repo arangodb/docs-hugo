@@ -42,12 +42,12 @@
                 <li data-nav-id="{{.RelPermalink}}" title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><label for="section-" class="closed {{.RelPermalink}}" onclick="event.preventDefault();menuToggleClick(event)" >
                 </label>
                   <a>
-                    <div>{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}</div>
+                    <div>{{ .Params.menuTitle | markdownify }}</div>
                     </a> 
                 {{ else }}
                 <li data-nav-id="{{.RelPermalink}}" title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item menu-section-entry {{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><label for="section-" class="closed {{.RelPermalink}}" onclick="event.preventDefault();menuToggleClick(event)" >
                 </label>
-                  <a href="{{.Permalink}}" class="toggle menu-section-entry" onclick="event.preventDefault();menuEntryClick(event)"><div class="menu-title">{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}</div></a>
+                  <a href="{{.Permalink}}" class="toggle menu-section-entry" onclick="event.preventDefault();menuEntryClick(event)"><div class="menu-title">{{ .Params.menuTitle | markdownify }}</div></a>
                 {{ end }}
               {{ end }}
   
@@ -58,11 +58,11 @@
                 </ul>
               {{- else }}
   
-            <li data-nav-id="{{.RelPermalink}}" test1 title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}}"><a href="{{.Permalink}}" onclick="event.preventDefault();menuEntryClick(event)"><div class="menu-title">{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}</div></a></li>
+            <li data-nav-id="{{.RelPermalink}}" test1 title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}}"><a href="{{.Permalink}}" onclick="event.preventDefault();menuEntryClick(event)"><div class="menu-title">{{ .Params.menuTitle  | markdownify }}</div></a></li>
               {{- end }}
           {{- else }}
   
-              <li data-nav-id="{{.RelPermalink}}" test2 title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}} menu-leaf-entry"><a href="{{.Permalink}}" onclick="event.preventDefault();menuEntryClick(event)"><div class="menu-title">{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}</div></a></li>
+              <li data-nav-id="{{.RelPermalink}}" test2 title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}} menu-leaf-entry"><a href="{{.Permalink}}" onclick="event.preventDefault();menuEntryClick(event)"><div class="menu-title">{{ .Params.menuTitle  | markdownify }}</div></a></li>
           {{- end }}
         {{- end }}
       {{- end }}
