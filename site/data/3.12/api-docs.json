@@ -12327,6 +12327,298 @@
    }
   },
   "/_api/gharial/{graph}/edge/{collection}/{edge}": {
+   "delete": {
+    "description": "Removes an edge from the collection.\n",
+    "operationId": "deleteEdge",
+    "parameters": [
+     {
+      "description": "The name of the graph.\n",
+      "in": "path",
+      "name": "graph",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     },
+     {
+      "description": "The name of the edge collection the edge belongs to.\n",
+      "in": "path",
+      "name": "collection",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     },
+     {
+      "description": "The *_key* attribute of the edge.\n",
+      "in": "path",
+      "name": "edge",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     },
+     {
+      "description": "Define if the request should wait until synced to disk.\n",
+      "in": "query",
+      "name": "waitForSync",
+      "required": false,
+      "schema": {
+       "type": "boolean"
+      }
+     },
+     {
+      "description": "Define if a presentation of the deleted document should\nbe returned within the response object.\n",
+      "in": "query",
+      "name": "returnOld",
+      "required": false,
+      "schema": {
+       "type": "boolean"
+      }
+     },
+     {
+      "description": "If the \"If-Match\" header is given, then it must contain exactly one Etag. The document is updated,\nif it has the same revision as the given Etag. Otherwise a HTTP 412 is returned. As an alternative\nyou can supply the Etag in an attribute rev in the URL.\n",
+      "in": "header",
+      "name": "if-match",
+      "required": false,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "code": {
+           "description": "The response code.\n",
+           "type": "integer"
+          },
+          "error": {
+           "description": "Flag if there was an error (true) or not (false).\nIt is false in this response.\n",
+           "type": "boolean"
+          },
+          "old": {
+           "description": "The complete deleted edge document.\nIncludes all attributes stored before this operation.\nWill only be present if returnOld is true.\n",
+           "properties": {
+            "_from": {
+             "description": "The _from value of the stored data.\n",
+             "type": "string"
+            },
+            "_id": {
+             "description": "The _id value of the stored data.\n",
+             "type": "string"
+            },
+            "_key": {
+             "description": "The _key value of the stored data.\n",
+             "type": "string"
+            },
+            "_rev": {
+             "description": "The _rev value of the stored data.\n",
+             "type": "string"
+            },
+            "_to": {
+             "description": "The _to value of the stored data.\n",
+             "type": "string"
+            }
+           },
+           "required": [
+            "_id",
+            "_key",
+            "_rev",
+            "_from",
+            "_to"
+           ],
+           "type": "object"
+          },
+          "removed": {
+           "description": "Is set to true if the remove was successful.\n",
+           "type": "boolean"
+          }
+         },
+         "required": [
+          "error",
+          "code",
+          "removed"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Returned if the edge could be removed.\n"
+     },
+     "202": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "code": {
+           "description": "The response code.\n",
+           "type": "integer"
+          },
+          "error": {
+           "description": "Flag if there was an error (true) or not (false).\nIt is false in this response.\n",
+           "type": "boolean"
+          },
+          "old": {
+           "description": "The complete deleted edge document.\nIncludes all attributes stored before this operation.\nWill only be present if returnOld is true.\n",
+           "properties": {
+            "_from": {
+             "description": "The _from value of the stored data.\n",
+             "type": "string"
+            },
+            "_id": {
+             "description": "The _id value of the stored data.\n",
+             "type": "string"
+            },
+            "_key": {
+             "description": "The _key value of the stored data.\n",
+             "type": "string"
+            },
+            "_rev": {
+             "description": "The _rev value of the stored data.\n",
+             "type": "string"
+            },
+            "_to": {
+             "description": "The _to value of the stored data.\n",
+             "type": "string"
+            }
+           },
+           "required": [
+            "_id",
+            "_key",
+            "_rev",
+            "_from",
+            "_to"
+           ],
+           "type": "object"
+          },
+          "removed": {
+           "description": "Is set to true if the remove was successful.\n",
+           "type": "boolean"
+          }
+         },
+         "required": [
+          "error",
+          "code",
+          "removed"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Returned if the request was successful but waitForSync is false.\n"
+     },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "code": {
+           "description": "The response code.\n",
+           "type": "integer"
+          },
+          "error": {
+           "description": "Flag if there was an error (true) or not (false).\nIt is true in this response.\n",
+           "type": "boolean"
+          },
+          "errorMessage": {
+           "description": "A message created for this error.\n",
+           "type": "string"
+          },
+          "errorNum": {
+           "description": "ArangoDB error number for the error that occurred.\n",
+           "type": "integer"
+          }
+         },
+         "required": [
+          "error",
+          "code",
+          "errorNum",
+          "errorMessage"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Returned if your user has insufficient rights.\nIn order to delete vertices in the graph  you at least need to have the following privileges\n"
+     },
+     "404": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "code": {
+           "description": "The response code.\n",
+           "type": "integer"
+          },
+          "error": {
+           "description": "Flag if there was an error (true) or not (false).\nIt is true in this response.\n",
+           "type": "boolean"
+          },
+          "errorMessage": {
+           "description": "A message created for this error.\n",
+           "type": "string"
+          },
+          "errorNum": {
+           "description": "ArangoDB error number for the error that occurred.\n",
+           "type": "integer"
+          }
+         },
+         "required": [
+          "error",
+          "code",
+          "errorNum",
+          "errorMessage"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Returned in the following cases\n* No graph with this name could be found.\n* This collection is not part of the graph.\n* The edge to remove does not exist.\n"
+     },
+     "412": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "code": {
+           "description": "The response code.\n",
+           "type": "integer"
+          },
+          "error": {
+           "description": "Flag if there was an error (true) or not (false).\nIt is true in this response.\n",
+           "type": "boolean"
+          },
+          "errorMessage": {
+           "description": "A message created for this error.\n",
+           "type": "string"
+          },
+          "errorNum": {
+           "description": "ArangoDB error number for the error that occurred.\n",
+           "type": "integer"
+          }
+         },
+         "required": [
+          "error",
+          "code",
+          "errorNum",
+          "errorMessage"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Returned if if-match header is given, but the stored documents revision is different.\n"
+     }
+    },
+    "summary": " Remove an edge",
+    "tags": [
+     "Graphs"
+    ]
+   },
    "get": {
     "description": "Gets an edge from the given collection.\n",
     "operationId": "getEdge",
@@ -12583,6 +12875,915 @@
      }
     },
     "summary": " Get an edge",
+    "tags": [
+     "Graphs"
+    ]
+   },
+   "patch": {
+    "description": "Updates the data of the specific edge in the collection.\n",
+    "operationId": "updateEdge",
+    "parameters": [
+     {
+      "description": "The name of the graph.\n",
+      "in": "path",
+      "name": "graph",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     },
+     {
+      "description": "The name of the edge collection the edge belongs to.\n",
+      "in": "path",
+      "name": "collection",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     },
+     {
+      "description": "The *_key* attribute of the vertex.\n",
+      "in": "path",
+      "name": "edge",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     },
+     {
+      "description": "Define if the request should wait until synced to disk.\n",
+      "in": "query",
+      "name": "waitForSync",
+      "required": false,
+      "schema": {
+       "type": "boolean"
+      }
+     },
+     {
+      "description": "Define if values set to null should be stored.\nBy default (true) the given documents attribute(s) will be set to null.\nIf this parameter is false the attribute(s) will instead be deleted from the\ndocument.\n",
+      "in": "query",
+      "name": "keepNull",
+      "required": false,
+      "schema": {
+       "type": "boolean"
+      }
+     },
+     {
+      "description": "Define if a presentation of the deleted document should\nbe returned within the response object.\n",
+      "in": "query",
+      "name": "returnOld",
+      "required": false,
+      "schema": {
+       "type": "boolean"
+      }
+     },
+     {
+      "description": "Define if a presentation of the new document should\nbe returned within the response object.\n",
+      "in": "query",
+      "name": "returnNew",
+      "required": false,
+      "schema": {
+       "type": "boolean"
+      }
+     },
+     {
+      "description": "If the \"If-Match\" header is given, then it must contain exactly one Etag. The document is updated,\nif it has the same revision as the given Etag. Otherwise a HTTP 412 is returned. As an alternative\nyou can supply the Etag in an attribute rev in the URL.\n",
+      "in": "header",
+      "name": "if-match",
+      "required": false,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "properties": {
+         "edge": {
+          "description": "The body has to contain a JSON object containing exactly the attributes that should be overwritten, all other attributes remain unchanged.\n",
+          "type": "object"
+         }
+        },
+        "required": [
+         "edge"
+        ],
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "code": {
+           "description": "The response code.\n",
+           "type": "integer"
+          },
+          "edge": {
+           "description": "The internal attributes for the edge.\n",
+           "properties": {
+            "_from": {
+             "description": "The _from value of the stored data.\n",
+             "type": "string"
+            },
+            "_id": {
+             "description": "The _id value of the stored data.\n",
+             "type": "string"
+            },
+            "_key": {
+             "description": "The _key value of the stored data.\n",
+             "type": "string"
+            },
+            "_rev": {
+             "description": "The _rev value of the stored data.\n",
+             "type": "string"
+            },
+            "_to": {
+             "description": "The _to value of the stored data.\n",
+             "type": "string"
+            }
+           },
+           "required": [
+            "_id",
+            "_key",
+            "_rev",
+            "_from",
+            "_to"
+           ],
+           "type": "object"
+          },
+          "error": {
+           "description": "Flag if there was an error (true) or not (false).\nIt is false in this response.\n",
+           "type": "boolean"
+          },
+          "new": {
+           "description": "The complete newly written edge document.\nIncludes all written attributes in the request body\nand all internal attributes generated by ArangoDB.\nWill only be present if returnNew is true.\n",
+           "properties": {
+            "_from": {
+             "description": "The _from value of the stored data.\n",
+             "type": "string"
+            },
+            "_id": {
+             "description": "The _id value of the stored data.\n",
+             "type": "string"
+            },
+            "_key": {
+             "description": "The _key value of the stored data.\n",
+             "type": "string"
+            },
+            "_rev": {
+             "description": "The _rev value of the stored data.\n",
+             "type": "string"
+            },
+            "_to": {
+             "description": "The _to value of the stored data.\n",
+             "type": "string"
+            }
+           },
+           "required": [
+            "_id",
+            "_key",
+            "_rev",
+            "_from",
+            "_to"
+           ],
+           "type": "object"
+          },
+          "old": {
+           "description": "The complete overwritten edge document.\nIncludes all attributes stored before this operation.\nWill only be present if returnOld is true.\n",
+           "properties": {
+            "_from": {
+             "description": "The _from value of the stored data.\n",
+             "type": "string"
+            },
+            "_id": {
+             "description": "The _id value of the stored data.\n",
+             "type": "string"
+            },
+            "_key": {
+             "description": "The _key value of the stored data.\n",
+             "type": "string"
+            },
+            "_rev": {
+             "description": "The _rev value of the stored data.\n",
+             "type": "string"
+            },
+            "_to": {
+             "description": "The _to value of the stored data.\n",
+             "type": "string"
+            }
+           },
+           "required": [
+            "_id",
+            "_key",
+            "_rev",
+            "_from",
+            "_to"
+           ],
+           "type": "object"
+          }
+         },
+         "required": [
+          "error",
+          "code",
+          "edge"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Returned if the edge could be updated, and waitForSync is false.\n"
+     },
+     "202": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "code": {
+           "description": "The response code.\n",
+           "type": "integer"
+          },
+          "edge": {
+           "description": "The internal attributes for the edge.\n",
+           "properties": {
+            "_from": {
+             "description": "The _from value of the stored data.\n",
+             "type": "string"
+            },
+            "_id": {
+             "description": "The _id value of the stored data.\n",
+             "type": "string"
+            },
+            "_key": {
+             "description": "The _key value of the stored data.\n",
+             "type": "string"
+            },
+            "_rev": {
+             "description": "The _rev value of the stored data.\n",
+             "type": "string"
+            },
+            "_to": {
+             "description": "The _to value of the stored data.\n",
+             "type": "string"
+            }
+           },
+           "required": [
+            "_id",
+            "_key",
+            "_rev",
+            "_from",
+            "_to"
+           ],
+           "type": "object"
+          },
+          "error": {
+           "description": "Flag if there was an error (true) or not (false).\nIt is false in this response.\n",
+           "type": "boolean"
+          },
+          "new": {
+           "description": "The complete newly written edge document.\nIncludes all written attributes in the request body\nand all internal attributes generated by ArangoDB.\nWill only be present if returnNew is true.\n",
+           "properties": {
+            "_from": {
+             "description": "The _from value of the stored data.\n",
+             "type": "string"
+            },
+            "_id": {
+             "description": "The _id value of the stored data.\n",
+             "type": "string"
+            },
+            "_key": {
+             "description": "The _key value of the stored data.\n",
+             "type": "string"
+            },
+            "_rev": {
+             "description": "The _rev value of the stored data.\n",
+             "type": "string"
+            },
+            "_to": {
+             "description": "The _to value of the stored data.\n",
+             "type": "string"
+            }
+           },
+           "required": [
+            "_id",
+            "_key",
+            "_rev",
+            "_from",
+            "_to"
+           ],
+           "type": "object"
+          },
+          "old": {
+           "description": "The complete overwritten edge document.\nIncludes all attributes stored before this operation.\nWill only be present if returnOld is true.\n",
+           "properties": {
+            "_from": {
+             "description": "The _from value of the stored data.\n",
+             "type": "string"
+            },
+            "_id": {
+             "description": "The _id value of the stored data.\n",
+             "type": "string"
+            },
+            "_key": {
+             "description": "The _key value of the stored data.\n",
+             "type": "string"
+            },
+            "_rev": {
+             "description": "The _rev value of the stored data.\n",
+             "type": "string"
+            },
+            "_to": {
+             "description": "The _to value of the stored data.\n",
+             "type": "string"
+            }
+           },
+           "required": [
+            "_id",
+            "_key",
+            "_rev",
+            "_from",
+            "_to"
+           ],
+           "type": "object"
+          }
+         },
+         "required": [
+          "error",
+          "code",
+          "edge"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Returned if the request was successful but waitForSync is false.\n"
+     },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "code": {
+           "description": "The response code.\n",
+           "type": "integer"
+          },
+          "error": {
+           "description": "Flag if there was an error (true) or not (false).\nIt is true in this response.\n",
+           "type": "boolean"
+          },
+          "errorMessage": {
+           "description": "A message created for this error.\n",
+           "type": "string"
+          },
+          "errorNum": {
+           "description": "ArangoDB error number for the error that occurred.\n",
+           "type": "integer"
+          }
+         },
+         "required": [
+          "error",
+          "code",
+          "errorNum",
+          "errorMessage"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Returned if your user has insufficient rights.\nIn order to update edges in the graph  you at least need to have the following privileges\n"
+     },
+     "404": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "code": {
+           "description": "The response code.\n",
+           "type": "integer"
+          },
+          "error": {
+           "description": "Flag if there was an error (true) or not (false).\nIt is true in this response.\n",
+           "type": "boolean"
+          },
+          "errorMessage": {
+           "description": "A message created for this error.\n",
+           "type": "string"
+          },
+          "errorNum": {
+           "description": "ArangoDB error number for the error that occurred.\n",
+           "type": "integer"
+          }
+         },
+         "required": [
+          "error",
+          "code",
+          "errorNum",
+          "errorMessage"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Returned in the following cases\n* No graph with this name could be found.\n* This collection is not part of the graph.\n* The edge to update does not exist.\n* either `_from` or `_to` vertex does not exist (if updated).\n"
+     },
+     "412": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "code": {
+           "description": "The response code.\n",
+           "type": "integer"
+          },
+          "error": {
+           "description": "Flag if there was an error (true) or not (false).\nIt is true in this response.\n",
+           "type": "boolean"
+          },
+          "errorMessage": {
+           "description": "A message created for this error.\n",
+           "type": "string"
+          },
+          "errorNum": {
+           "description": "ArangoDB error number for the error that occurred.\n",
+           "type": "integer"
+          }
+         },
+         "required": [
+          "error",
+          "code",
+          "errorNum",
+          "errorMessage"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Returned if if-match header is given, but the stored documents revision is different.\n"
+     }
+    },
+    "summary": " Modify an edge",
+    "tags": [
+     "Graphs"
+    ]
+   },
+   "put": {
+    "description": "Replaces the data of an edge in the collection.\n",
+    "operationId": "replaceEdge",
+    "parameters": [
+     {
+      "description": "The name of the graph.\n",
+      "in": "path",
+      "name": "graph",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     },
+     {
+      "description": "The name of the edge collection the edge belongs to.\n",
+      "in": "path",
+      "name": "collection",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     },
+     {
+      "description": "The *_key* attribute of the vertex.\n",
+      "in": "path",
+      "name": "edge",
+      "required": true,
+      "schema": {
+       "type": "string"
+      }
+     },
+     {
+      "description": "Define if the request should wait until synced to disk.\n",
+      "in": "query",
+      "name": "waitForSync",
+      "required": false,
+      "schema": {
+       "type": "boolean"
+      }
+     },
+     {
+      "description": "Define if values set to null should be stored. By default the key is not removed from the document.\n",
+      "in": "query",
+      "name": "keepNull",
+      "required": false,
+      "schema": {
+       "type": "boolean"
+      }
+     },
+     {
+      "description": "Define if a presentation of the deleted document should\nbe returned within the response object.\n",
+      "in": "query",
+      "name": "returnOld",
+      "required": false,
+      "schema": {
+       "type": "boolean"
+      }
+     },
+     {
+      "description": "Define if a presentation of the new document should\nbe returned within the response object.\n",
+      "in": "query",
+      "name": "returnNew",
+      "required": false,
+      "schema": {
+       "type": "boolean"
+      }
+     },
+     {
+      "description": "If the \"If-Match\" header is given, then it must contain exactly one Etag. The document is updated,\nif it has the same revision as the given Etag. Otherwise a HTTP 412 is returned. As an alternative\nyou can supply the Etag in an attribute rev in the URL.\n",
+      "in": "header",
+      "name": "if-match",
+      "required": false,
+      "schema": {
+       "type": "string"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "properties": {
+         "_from": {
+          "description": "The source vertex of this edge. Has to be valid within\nthe used edge definition.\n",
+          "type": "string"
+         },
+         "_to": {
+          "description": "The target vertex of this edge. Has to be valid within\nthe used edge definition.\n",
+          "type": "string"
+         }
+        },
+        "required": [
+         "_from",
+         "_to"
+        ],
+        "type": "object"
+       }
+      }
+     }
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "code": {
+           "description": "The response code.\n",
+           "type": "integer"
+          },
+          "edge": {
+           "description": "The internal attributes for the edge\n",
+           "properties": {
+            "_from": {
+             "description": "The _from value of the stored data.\n",
+             "type": "string"
+            },
+            "_id": {
+             "description": "The _id value of the stored data.\n",
+             "type": "string"
+            },
+            "_key": {
+             "description": "The _key value of the stored data.\n",
+             "type": "string"
+            },
+            "_rev": {
+             "description": "The _rev value of the stored data.\n",
+             "type": "string"
+            },
+            "_to": {
+             "description": "The _to value of the stored data.\n",
+             "type": "string"
+            }
+           },
+           "required": [
+            "_id",
+            "_key",
+            "_rev",
+            "_from",
+            "_to"
+           ],
+           "type": "object"
+          },
+          "error": {
+           "description": "Flag if there was an error (true) or not (false).\nIt is false in this response.\n",
+           "type": "boolean"
+          },
+          "new": {
+           "description": "The complete newly written edge document.\nIncludes all written attributes in the request body\nand all internal attributes generated by ArangoDB.\nWill only be present if returnNew is true.\n",
+           "properties": {
+            "_from": {
+             "description": "The _from value of the stored data.\n",
+             "type": "string"
+            },
+            "_id": {
+             "description": "The _id value of the stored data.\n",
+             "type": "string"
+            },
+            "_key": {
+             "description": "The _key value of the stored data.\n",
+             "type": "string"
+            },
+            "_rev": {
+             "description": "The _rev value of the stored data.\n",
+             "type": "string"
+            },
+            "_to": {
+             "description": "The _to value of the stored data.\n",
+             "type": "string"
+            }
+           },
+           "required": [
+            "_id",
+            "_key",
+            "_rev",
+            "_from",
+            "_to"
+           ],
+           "type": "object"
+          },
+          "old": {
+           "description": "The complete overwritten edge document.\nIncludes all attributes stored before this operation.\nWill only be present if returnOld is true.\n",
+           "properties": {
+            "_from": {
+             "description": "The _from value of the stored data.\n",
+             "type": "string"
+            },
+            "_id": {
+             "description": "The _id value of the stored data.\n",
+             "type": "string"
+            },
+            "_key": {
+             "description": "The _key value of the stored data.\n",
+             "type": "string"
+            },
+            "_rev": {
+             "description": "The _rev value of the stored data.\n",
+             "type": "string"
+            },
+            "_to": {
+             "description": "The _to value of the stored data.\n",
+             "type": "string"
+            }
+           },
+           "required": [
+            "_id",
+            "_key",
+            "_rev",
+            "_from",
+            "_to"
+           ],
+           "type": "object"
+          }
+         },
+         "required": [
+          "error",
+          "code",
+          "edge"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Returned if the request was successful but waitForSync is true.\n"
+     },
+     "202": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "code": {
+           "description": "The response code.\n",
+           "type": "integer"
+          },
+          "edge": {
+           "description": "The internal attributes for the edge\n",
+           "properties": {
+            "_from": {
+             "description": "The _from value of the stored data.\n",
+             "type": "string"
+            },
+            "_id": {
+             "description": "The _id value of the stored data.\n",
+             "type": "string"
+            },
+            "_key": {
+             "description": "The _key value of the stored data.\n",
+             "type": "string"
+            },
+            "_rev": {
+             "description": "The _rev value of the stored data.\n",
+             "type": "string"
+            },
+            "_to": {
+             "description": "The _to value of the stored data.\n",
+             "type": "string"
+            }
+           },
+           "required": [
+            "_id",
+            "_key",
+            "_rev",
+            "_from",
+            "_to"
+           ],
+           "type": "object"
+          },
+          "error": {
+           "description": "Flag if there was an error (true) or not (false).\nIt is false in this response.\n",
+           "type": "boolean"
+          },
+          "new": {
+           "description": "The complete newly written edge document.\nIncludes all written attributes in the request body\nand all internal attributes generated by ArangoDB.\nWill only be present if returnNew is true.\n",
+           "properties": {
+            "_from": {
+             "description": "The _from value of the stored data.\n",
+             "type": "string"
+            },
+            "_id": {
+             "description": "The _id value of the stored data.\n",
+             "type": "string"
+            },
+            "_key": {
+             "description": "The _key value of the stored data.\n",
+             "type": "string"
+            },
+            "_rev": {
+             "description": "The _rev value of the stored data.\n",
+             "type": "string"
+            },
+            "_to": {
+             "description": "The _to value of the stored data.\n",
+             "type": "string"
+            }
+           },
+           "required": [
+            "_id",
+            "_key",
+            "_rev",
+            "_from",
+            "_to"
+           ],
+           "type": "object"
+          },
+          "old": {
+           "description": "The complete overwritten edge document.\nIncludes all attributes stored before this operation.\nWill only be present if returnOld is true.\n",
+           "properties": {
+            "_from": {
+             "description": "The _from value of the stored data.\n",
+             "type": "string"
+            },
+            "_id": {
+             "description": "The _id value of the stored data.\n",
+             "type": "string"
+            },
+            "_key": {
+             "description": "The _key value of the stored data.\n",
+             "type": "string"
+            },
+            "_rev": {
+             "description": "The _rev value of the stored data.\n",
+             "type": "string"
+            },
+            "_to": {
+             "description": "The _to value of the stored data.\n",
+             "type": "string"
+            }
+           },
+           "required": [
+            "_id",
+            "_key",
+            "_rev",
+            "_from",
+            "_to"
+           ],
+           "type": "object"
+          }
+         },
+         "required": [
+          "error",
+          "code",
+          "edge"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Returned if the request was successful but waitForSync is false.\n"
+     },
+     "403": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "code": {
+           "description": "The response code.\n",
+           "type": "integer"
+          },
+          "error": {
+           "description": "Flag if there was an error (true) or not (false).\nIt is true in this response.\n",
+           "type": "boolean"
+          },
+          "errorMessage": {
+           "description": "A message created for this error.\n",
+           "type": "string"
+          },
+          "errorNum": {
+           "description": "ArangoDB error number for the error that occurred.\n",
+           "type": "integer"
+          }
+         },
+         "required": [
+          "error",
+          "code",
+          "errorNum",
+          "errorMessage"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Returned if your user has insufficient rights.\nIn order to replace edges in the graph  you at least need to have the following privileges\n"
+     },
+     "404": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "code": {
+           "description": "The response code.\n",
+           "type": "integer"
+          },
+          "error": {
+           "description": "Flag if there was an error (true) or not (false).\nIt is true in this response.\n",
+           "type": "boolean"
+          },
+          "errorMessage": {
+           "description": "A message created for this error.\n",
+           "type": "string"
+          },
+          "errorNum": {
+           "description": "ArangoDB error number for the error that occurred.\n",
+           "type": "integer"
+          }
+         },
+         "required": [
+          "error",
+          "code",
+          "errorNum",
+          "errorMessage"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Returned in the following cases\n* No graph with this name could be found.\n* This collection is not part of the graph.\n* The edge to replace does not exist.\n* either `_from` or `_to` vertex does not exist.\n"
+     },
+     "412": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "code": {
+           "description": "The response code.\n",
+           "type": "integer"
+          },
+          "error": {
+           "description": "Flag if there was an error (true) or not (false).\nIt is true in this response.\n",
+           "type": "boolean"
+          },
+          "errorMessage": {
+           "description": "A message created for this error.\n",
+           "type": "string"
+          },
+          "errorNum": {
+           "description": "ArangoDB error number for the error that occurred.\n",
+           "type": "integer"
+          }
+         },
+         "required": [
+          "error",
+          "code",
+          "errorNum",
+          "errorMessage"
+         ],
+         "type": "object"
+        }
+       }
+      },
+      "description": "Returned if if-match header is given, but the stored documents revision is different.\n"
+     }
+    },
+    "summary": " Replace an edge",
     "tags": [
      "Graphs"
     ]
