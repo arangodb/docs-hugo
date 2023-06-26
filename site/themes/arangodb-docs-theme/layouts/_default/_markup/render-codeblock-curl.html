@@ -13,8 +13,6 @@
   {{ $cache := index $dataFolderByVersion "cache"}}
   {{ $cacheFound :=  index $cache $cacheEntry }}
 
-  {{ $description }}
-
   {{ if not $cacheFound }}
     {{ warnf "CACHE NOT FOUND '%v'" $cacheEntry }}
     {{ if site.Params.useArangoproxy }}
@@ -44,6 +42,7 @@
             "content" $block
             "open"    "open"
             "title"   $name
+            "description" $description
           ) }}
           {{ end }}
         {{ end }}
@@ -81,6 +80,7 @@
                 "content" $block
                 "open"    "open"
                 "title"   $name
+                "description" $description
               ) }}
             {{ end }}
           {{ end }}
@@ -98,6 +98,7 @@
             "content" $block
             "open"    "open"
             "title"   $name
+            "description" $description
           ) }}
       {{ end }}
     {{ end }}
