@@ -266,7 +266,7 @@ def processExample_new(docublock):
 
         if "@END_EXAMPLE_" in line:
             blockExamples.append(exampleBlock)
-            exampleBlock = {'options': {"description": ""}, 'code': ""}
+            exampleBlock = {'options': {"description": "", "version": version}, 'code': ""}
             inExample = False
             continue
 
