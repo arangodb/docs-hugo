@@ -1,5 +1,5 @@
 {{ $pageVersion := .Page.Scratch.Get "versionShort" }}
-{{ $titleRE :=  findRE `(?m)## .*` .Inner }}
+{{ $titleRE :=  findRE `(?m)#{1,} .*` .Inner }}
 
 
 {{ $endpoint := printf "%s/openapi" site.Params.arangoproxyUrl }}
