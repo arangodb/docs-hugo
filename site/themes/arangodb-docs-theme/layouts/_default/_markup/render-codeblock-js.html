@@ -3,6 +3,7 @@
   {{ $test := index $metadata 0 | transform.Unmarshal }}
   {{ $name := $test.name }}
   {{ $serverName := $test.server_name }}
+  {{ $description := $test.description }}
   {{ $type := $test.type }}
   {{ $cacheEntry := printf "%s_%s_%s" $name $serverName $type }}
   {{ $pageVersion := .Page.Scratch.Get "versionShort" }}
@@ -40,6 +41,7 @@
               "content" $x
               "open"    "open"
               "title"   "show output"
+              "description" $description
             ) }}
           {{ end }}
         {{ end }}
@@ -77,6 +79,7 @@
                 "content" $x
                 "open"    "open"
                 "title"   "show output"
+                "description" $description
               ) }}
             {{ end }}
           {{ end }}
@@ -96,6 +99,7 @@
             "content" $x
             "open"    "open"
             "title"   "show output"
+            "description" $description
           ) }}
         {{ end }}
       {{ end }}
