@@ -68,7 +68,7 @@ func (service OpenapiService) ParseOpenapiPayload(request io.Reader) (map[string
 }
 
 func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, headers http.Header, globalOpenapiChannel chan map[string]interface{}) error {
-	summary := strings.Replace(headers.Get("Endpoint-Title"), "#", "", -1)
+	summary := strings.TrimLeft(headers.Get("Endpoint-Title"), "# ")
 	version := headers.Get("Page-Version")
 
 	spec["version"] = version
