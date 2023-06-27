@@ -13,7 +13,8 @@ def migrateStructure(label, document, manual, i):
 		document = yaml.full_load(directoryTree)
 
 		if manual != "manual":
-			create_index("", {"text": manual.upper(), "href": "index.html"}, manual+"/", i)
+			title = getManualTitle(manual)
+			create_index("", {"text": title, "href": "index.html"}, manual+"/", i)
 			document = document[1:]
 
 	extendedSection = ''
@@ -161,3 +162,15 @@ def mapFiles(old, new):
 	oldFilePath = re.search(oldFileRE, old, re.MULTILINE).group(0)
 	oldFilePath = re.sub("\/{2,}", "/", oldFilePath, 0, re.MULTILINE)
 	urlMap[version][oldFilePath] = new
+
+def getManualTitle(manual):
+	if manual == "arangograph":
+		return "ArangoGraph"
+	elif manual == "aql":
+		return "AQL"
+	elif manual == "http":
+		return "HTTP"
+	elif manual == "drivers":
+		return "Drivers"
+	else:
+		return ""
