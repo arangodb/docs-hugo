@@ -51,7 +51,7 @@ Non-NFC-normalized names are rejected by the server.
 ## Manage databases
 
 ```openapi
-### Information of the database
+### Get information about the current database
 
 paths:
   /_api/database/current:
@@ -62,19 +62,13 @@ paths:
 
         The response is a JSON object with the following attributes:
 
-        - *name*: the name of the current database
-
-        - *id*: the id of the current database
-
-        - *path*: the filesystem path of the current database
-
-        - *isSystem*: whether or not the current database is the *_system* database
-
-        - *sharding*: the default sharding method for collections created in this database
-
-        - *replicationFactor*: the default replication factor for collections in this database
-
-        - *writeConcern*: the default write concern for collections in this database
+        - `name`: the name of the current database
+        - `id`: the id of the current database
+        - `path`: the filesystem path of the current database
+        - `isSystem`: whether or not the current database is the `_system` database
+        - `sharding`: the default sharding method for collections created in this database
+        - `replicationFactor`: the default replication factor for collections in this database
+        - `writeConcern`: the default write concern for collections in this database
       responses:
         '200':
           description: |
@@ -88,6 +82,9 @@ paths:
       tags:
         - Databases
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -108,7 +105,7 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-### List of accessible databases
+### List the accessible databases
 
 paths:
   /_api/database/user:
@@ -127,6 +124,9 @@ paths:
       tags:
         - Databases
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -147,7 +147,7 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-### List of databases
+### List all databases
 
 paths:
   /_api/database:
@@ -156,9 +156,7 @@ paths:
       description: |
         Retrieves the list of all existing databases
 
-        **Note**: retrieving the list of databases is only possible from within the *_system* database.
-
-        **Note**: You should use the *GET user API* to fetch the list of the available databases now.
+        **Note**: retrieving the list of databases is only possible from within the `_system` database.
       responses:
         '200':
           description: |
@@ -168,10 +166,13 @@ paths:
             is returned if the request is invalid.
         '403':
           description: |
-            is returned if the request was not executed in the *_system* database.
+            is returned if the request was not executed in the `_system` database.
       tags:
         - Databases
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -192,18 +193,18 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-### Create database
+### Create a database
 
 paths:
   /_api/database:
     post:
       operationId: createDatabase
       description: |
-        Creates a new database
+        Creates a new database.
 
-        The response is a JSON object with the attribute *result* set to *true*.
+        The response is a JSON object with the attribute `result` set to `true`.
 
-        **Note**: creating a new database is only possible from within the *_system* database.
+        **Note**: Creating a new database is only possible from within the `_system` database.
       requestBody:
         content:
           application/json:
@@ -249,9 +250,9 @@ paths:
                   description: |
                     An array of user objects. The users will be granted *Administrate* permissions
                     for the new database. Users that do not exist yet will be created.
-                    If *users* is not specified or does not contain any users, the default user
-                    *root* will be used to ensure that the new database will be accessible after it
-                    is created. The *root* user is created with an empty password should it not
+                    If `users` is not specified or does not contain any users, the default user
+                    `root` will be used to ensure that the new database will be accessible after it
+                    is created. The `root` user is created with an empty password should it not
                     exist. Each user object can contain the following attributes:
                   type: array
                   items:
@@ -269,8 +270,8 @@ paths:
                       active:
                         description: |
                           A flag indicating whether the user account should be activated or not.
-                          The default value is *true*. If set to *false*, then the user won't be able to
-                          log into the database. The default is *true*. The attribute is ignored for users
+                          The default value is `true`. If set to `false`, then the user won't be able to
+                          log into the database. The default is `true`. The attribute is ignored for users
                           that already exist.
                         type: boolean
                       extra:
@@ -293,7 +294,7 @@ paths:
             specified name already exists.
         '403':
           description: |
-            is returned if the request was not executed in the *_system* database.
+            is returned if the request was not executed in the `_system` database.
         '409':
           description: |
             is returned if a database with the specified name already exists.
@@ -301,11 +302,14 @@ paths:
         - Databases
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
 description: |-
-  Creating a database named *example*.
+  Creating a database named `example`.
 version: '3.10'
 render: input/output
 name: RestDatabaseCreate
@@ -340,9 +344,10 @@ type: single
 ```curl
 ---
 description: |-
-  Creating a database named *mydb* with two users, flexible sharding and
+  Creating a database named `mydb` with two users, flexible sharding and
   default replication factor of 3 for collections that will be part of
   the newly created database.
+version: '3.10'
 render: input/output
 name: RestDatabaseCreateUsers
 server_name: stable
@@ -380,7 +385,7 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-### Drop database
+### Drop a database
 
 paths:
   /_api/database/{database-name}:
@@ -389,8 +394,8 @@ paths:
       description: |
         Drops the database along with all data stored in it.
 
-        **Note**: dropping a database is only possible from within the *_system* database.
-        The *_system* database itself cannot be dropped.
+        **Note**: dropping a database is only possible from within the `_system` database.
+        The `_system` database itself cannot be dropped.
       parameters:
         - name: database-name
           in: path
@@ -408,13 +413,16 @@ paths:
             is returned if the request is malformed.
         '403':
           description: |
-            is returned if the request was not executed in the *_system* database.
+            is returned if the request was not executed in the `_system` database.
         '404':
           description: |
             is returned if the database could not be found.
       tags:
         - Databases
 ```
+
+**Examples**
+
 
 
 ```curl

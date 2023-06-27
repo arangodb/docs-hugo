@@ -278,7 +278,7 @@ may use the following RESTful API. A `POST` request reloads the secret, a
 `GET` request may be used to load information about the currently used secrets.
 
 ```openapi
-### Fetch information about the currently loaded secrets
+### Get information about the loaded JWT secrets
 
 paths:
   /_admin/server/jwt:
@@ -301,7 +301,7 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (*false* in this case)
+                      boolean flag to indicate whether an error occurred (`false` in this case)
                     type: boolean
                   code:
                     description: |
@@ -365,7 +365,7 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (*false* in this case)
+                      boolean flag to indicate whether an error occurred (`false` in this case)
                     type: boolean
                   code:
                     description: |

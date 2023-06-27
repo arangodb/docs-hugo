@@ -6,6 +6,8 @@ description: >-
   Troubleshooting
 archetype: chapter
 ---
+- [Query debug packages](query-debug-packages.md)
+
 - [ArangoDB Server (`arangod`)](arangod.md)
 
 - [Emergency Console](emergency-console.md)

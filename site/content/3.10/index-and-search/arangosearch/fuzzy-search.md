@@ -217,9 +217,14 @@ version: '3.10'
 server_name: stable
 type: single
 ---
-var analyzers = require("@arangodb/analyzers");
-analyzers.save("text_en_no_stem", "text", { locale: "en", accent: false, case: "lower", stemming: false, stopwords: [] }, ["position", "frequency", "norm"]);
+  var analyzers = require("@arangodb/analyzers");
+  analyzers.save("text_en_no_stem", "text", { locale: "en", accent: false, case: "lower", stemming: false, stopwords: [] }, ["frequency", "norm"]);
+~ analyzers.remove("text_en_no_stem");
 ```
+
+The `frequency` and `norm` [Analyzer features](../analyzers.md#analyzer-features)
+are set because the following examples require them for the `BM25()` scoring
+function to work.
 
 #### View definition
 
@@ -321,9 +326,14 @@ version: '3.10'
 server_name: stable
 type: single
 ---
-var analyzers = require("@arangodb/analyzers");
-analyzers.save("trigram", "ngram", { min: 3, max: 3, preserveOriginal: false, streamType: "utf8" }, ["position", "frequency", "norm"]);
+  var analyzers = require("@arangodb/analyzers");
+  analyzers.save("trigram", "ngram", { min: 3, max: 3, preserveOriginal: false, streamType: "utf8" }, ["frequency", "position"]);
+~ analyzers.remove("trigram");
 ```
+
+The `frequency` and `position` [Analyzer features](../analyzers.md#analyzer-features)
+are set because the following examples require them for the `NGRAM_MATCH()`
+filter function to work.
 
 #### View definition
 

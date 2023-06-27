@@ -25,17 +25,17 @@ http://localhost:8529/_api/index/demo/63563528
 ```
 
 ```openapi
-## Read all indexes of a collection
+## List all indexes of a collection
 
 paths:
   /_api/index:
     get:
       operationId: listIndexes
       description: |
-        Returns an object with an attribute *indexes* containing an array of all
+        Returns an object with an `indexes` attribute containing an array of all
         index descriptions for the given collection. The same information is also
-        available in the *identifiers* as an object with the index handles as
-        keys.
+        available in the `identifiers` attribute as an object with the index identifiers
+        as object keys.
       parameters:
         - name: collection
           in: query
@@ -66,6 +66,9 @@ paths:
         - Indexes
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -94,7 +97,7 @@ type: single
   ~ db._drop(cn);
 ```
 ```openapi
-## Read index
+## Get an index
 
 paths:
   /_api/index/{index-id}:
@@ -104,13 +107,13 @@ paths:
         The result is an object describing the index. It has at least the following
         attributes:
 
-        - *id*: the identifier of the index
+        - `id`: the identifier of the index
 
-        - *type*: the index type
+        - `type`: the index type
 
         All other attributes are type-dependent. For example, some indexes provide
-        *unique* or *sparse* flags, whereas others don't. Some indexes also provide
-        a selectivity estimate in the *selectivityEstimate* attribute of the result.
+        `unique` or `sparse` flags, whereas others don't. Some indexes also provide
+        a selectivity estimate in the `selectivityEstimate` attribute of the result.
       parameters:
         - name: index-id
           in: path
@@ -130,6 +133,9 @@ paths:
       tags:
         - Indexes
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -155,7 +161,7 @@ type: single
   ~ db._drop(cn);
 ```
 ```openapi
-## Create index
+## Create an index
 
 paths:
   /_api/index:
@@ -216,7 +222,7 @@ paths:
         have no effect on indexes other than persistent indexes.
 
         The optional attribute **cacheEnabled** is supported by indexes of type
-        *persistent*. This attribute controls whether an extra in-memory hash cache is
+        `persistent`. This attribute controls whether an extra in-memory hash cache is
         created for the index. The hash cache can be used to speed up index lookups.
         The cache can only be used for queries that look up all index attributes via
         an equality lookup (`==`). The hash cache cannot be used for range scans,
@@ -269,19 +275,19 @@ paths:
             target index will not support, then an *HTTP 400* is returned.
         '404':
           description: |
-            If *collection* is unknown, then an *HTTP 404* is returned.
+            If `collection` is unknown, then an *HTTP 404* is returned.
       tags:
         - Indexes
 ```
 ```openapi
-## Delete index
+## Delete an index
 
 paths:
   /_api/index/{index-id}:
     delete:
       operationId: deleteIndex
       description: |
-        Deletes an index with *index-id*.
+        Deletes an index with `index-id`.
       parameters:
         - name: index-id
           in: path
@@ -297,10 +303,13 @@ paths:
             returned.
         '404':
           description: |
-            If the *index-id* is unknown, then an *HTTP 404* is returned.
+            If the `index-id` is unknown, then an *HTTP 404* is returned.
       tags:
         - Indexes
 ```
+
+**Examples**
+
 
 
 ```curl

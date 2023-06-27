@@ -489,6 +489,15 @@ Enterprise Edition:
   Like the existing `geojson` Analyzer, but with an additional `format` property
   that can be set to `"latLngDouble"` (default), `"latLngInt"`, or `"s2Point"`.
 
+#### `geojson` Analyzer
+
+<small>Introduced in: v3.10.5</small>
+
+Analyzers of the `geojson` type have a new `legacy` property. The default is `false`.
+
+This option controls how GeoJSON Polygons are interpreted.
+See the [`geojson` Analyzer](../../index-and-search/analyzers.md#geojson).
+
 #### Views API
 
 Views of the type `arangosearch` support new caching options in the
@@ -519,6 +528,16 @@ objects.
 
 See the [`arangosearch` Views Reference](../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
 for details.
+
+#### Geo-spatial indexes
+
+Indexes of the `geo` type have a new `legacyPolygons` option.
+
+If `geoJson` is set to `true`, then this option controls how GeoJSON Polygons
+are interpreted. Also see [Legacy Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons).
+
+The default is `true` for geo indexes that were created in versions
+before 3.10, and `false` for geo indexes created in 3.10 or later.
 
 #### Collection truncation markers
 
@@ -793,7 +812,7 @@ Both endpoints return a new `detail` attribute with additional Pregel run detail
         - (the same attributes like under `aggregatedStatus`)
 
 For a detailed description of the attributes, see
-[Pregel HTTP API](../../http/pregel.md#get-the-pregel-job-execution-status).
+[Pregel HTTP API](../../http/pregel.md#get-a-pregel-job-execution-status).
 
 #### Log level API
 
@@ -816,6 +835,13 @@ following two new statistics in the `stats` attribute of the response now:
   explain (in bytes)
 - `executionTime` (number): The (wall-clock) time in seconds needed to explain
   the query.
+
+#### Optimizer rule descriptions
+
+<small>Introduced in: v3.10.9</small>
+
+The `GET /_api/query/rules` endpoint now includes a `description` attribute for
+every optimizer rule that briefly explains what it does.
 
 ## JavaScript API
 

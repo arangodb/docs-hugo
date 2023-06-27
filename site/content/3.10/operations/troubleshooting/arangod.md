@@ -1,7 +1,7 @@
 ---
 title: Troubleshooting _arangod_
 menuTitle: arangod
-weight: 5
+weight: 10
 description: >-
   If the server does not start, you cannot connect to it or if it crashes then read on.
 archetype: default

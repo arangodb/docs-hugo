@@ -35,7 +35,7 @@ Supported transactional API operations include:
   of managed graphs (_General Graph_ / _Gharial_ API)
 
 ```openapi
-## Begin transaction
+## Begin a Stream Transaction
 
 paths:
   /_api/transaction/begin:
@@ -57,14 +57,14 @@ paths:
         For successfully started transactions, the returned JSON object has the
         following properties:
 
-        - *error*: boolean flag to indicate if an error occurred (*false*
+        - `error`: boolean flag to indicate if an error occurred (`false`
           in this case)
 
-        - *code*: the HTTP status code
+        - `code`: the HTTP status code
 
-        - *result*: result containing
-            - *id*: the identifier of the transaction
-            - *status*: containing the string 'running'
+        - `result`: result containing
+            - `id`: the identifier of the transaction
+            - `status`: containing the string 'running'
 
         If the transaction specification is either missing or malformed, the server
         will respond with *HTTP 400* or *HTTP 404*.
@@ -72,13 +72,13 @@ paths:
         The body of the response will then contain a JSON object with additional error
         details. The object has the following attributes:
 
-        - *error*: boolean flag to indicate that an error occurred (*true* in this case)
+        - `error`: boolean flag to indicate that an error occurred (`true` in this case)
 
-        - *code*: the HTTP status code
+        - `code`: the HTTP status code
 
-        - *errorNum*: the server error number
+        - `errorNum`: the server error number
 
-        - *errorMessage*: a descriptive error message
+        - `errorMessage`: a descriptive error message
       parameters:
         - name: x-arango-allow-dirty-read
           in: header
@@ -99,10 +99,10 @@ paths:
               properties:
                 collections:
                   description: |
-                    *collections* must be a JSON object that can have one or all sub-attributes
-                    *read*, *write* or *exclusive*, each being an array of collection names or a
+                    `collections` must be a JSON object that can have one or all sub-attributes
+                    `read`, `write` or `exclusive`, each being an array of collection names or a
                     single collection name as string. Collections that will be written to in the
-                    transaction must be declared with the *write* or *exclusive* attribute or it
+                    transaction must be declared with the `write` or `exclusive` attribute or it
                     will fail, whereas non-declared collections from which is solely read will be
                     added lazily.
                   type: string
@@ -120,7 +120,7 @@ paths:
                     an optional numeric value that can be used to set a
                     timeout in seconds for waiting on collection locks. This option is only
                     meaningful when using exclusive locks. If not specified, a default
-                    value will be used. Setting *lockTimeout* to *0* will make ArangoDB
+                    value will be used. Setting `lockTimeout` to `0` will make ArangoDB
                     not time out waiting for a lock.
                   type: integer
                 maxTransactionSize:
@@ -145,6 +145,9 @@ paths:
       tags:
         - Transactions
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -182,6 +185,7 @@ type: single
 ---
 description: |-
   Referring to a non-existing collection
+version: '3.10'
 render: input/output
 name: RestTransactionBeginNonExisting
 server_name: stable
@@ -203,7 +207,7 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-## Get transaction status
+## Get the status of a Stream Transaction
 
 paths:
   /_api/transaction/{transaction-id}:
@@ -213,9 +217,9 @@ paths:
         The result is an object describing the status of the transaction.
         It has at least the following attributes:
 
-        - *id*: the identifier of the transaction
+        - `id`: the identifier of the transaction
 
-        - *status*: the status of the transaction. One of "running", "committed" or "aborted".
+        - `status`: the status of the transaction. One of "running", "committed" or "aborted".
       parameters:
         - name: transaction-id
           in: path
@@ -240,6 +244,9 @@ paths:
       tags:
         - Transactions
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -272,7 +279,7 @@ type: single
   ~ db._drop("products");
 ```
 ```openapi
-## Commit transaction
+## Commit a Stream Transaction
 
 paths:
   /_api/transaction/{transaction-id}:
@@ -285,14 +292,14 @@ paths:
         If the transaction can be committed, *HTTP 200* will be returned.
         The returned JSON object has the following properties:
 
-        - *error*: boolean flag to indicate if an error occurred (*false*
+        - `error`: boolean flag to indicate if an error occurred (`false`
           in this case)
 
-        - *code*: the HTTP status code
+        - `code`: the HTTP status code
 
-        - *result*: result containing
-            - *id*: the identifier of the transaction
-            - *status*: containing the string 'committed'
+        - `result`: result containing
+            - `id`: the identifier of the transaction
+            - `status`: containing the string 'committed'
 
         If the transaction cannot be found, committing is not allowed or the
         transaction was aborted, the server
@@ -301,13 +308,13 @@ paths:
         The body of the response will then contain a JSON object with additional error
         details. The object has the following attributes:
 
-        - *error*: boolean flag to indicate that an error occurred (*true* in this case)
+        - `error`: boolean flag to indicate that an error occurred (`true` in this case)
 
-        - *code*: the HTTP status code
+        - `code`: the HTTP status code
 
-        - *errorNum*: the server error number
+        - `errorNum`: the server error number
 
-        - *errorMessage*: a descriptive error message
+        - `errorMessage`: a descriptive error message
       parameters:
         - name: transaction-id
           in: path
@@ -336,6 +343,9 @@ paths:
       tags:
         - Transactions
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -368,7 +378,7 @@ type: single
   ~ db._drop(cn);
 ```
 ```openapi
-## Abort transaction
+## Abort a Stream Transaction
 
 paths:
   /_api/transaction/{transaction-id}:
@@ -381,14 +391,14 @@ paths:
         If the transaction can be aborted, *HTTP 200* will be returned.
         The returned JSON object has the following properties:
 
-        - *error*: boolean flag to indicate if an error occurred (*false*
+        - `error`: boolean flag to indicate if an error occurred (`false`
           in this case)
 
-        - *code*: the HTTP status code
+        - `code`: the HTTP status code
 
-        - *result*: result containing
-            - *id*: the identifier of the transaction
-            - *status*: containing the string 'aborted'
+        - `result`: result containing
+            - `id`: the identifier of the transaction
+            - `status`: containing the string 'aborted'
 
         If the transaction cannot be found, aborting is not allowed or the
         transaction was already committed, the server
@@ -397,13 +407,13 @@ paths:
         The body of the response will then contain a JSON object with additional error
         details. The object has the following attributes:
 
-        - *error*: boolean flag to indicate that an error occurred (*true* in this case)
+        - `error`: boolean flag to indicate that an error occurred (`true` in this case)
 
-        - *code*: the HTTP status code
+        - `code`: the HTTP status code
 
-        - *errorNum*: the server error number
+        - `errorNum`: the server error number
 
-        - *errorMessage*: a descriptive error message
+        - `errorMessage`: a descriptive error message
       parameters:
         - name: transaction-id
           in: path
@@ -432,6 +442,9 @@ paths:
       tags:
         - Transactions
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -464,21 +477,21 @@ type: single
   ~ db._drop(cn);
 ```
 ```openapi
-## Get currently running transactions
+## List the running Stream Transactions
 
 paths:
   /_api/transaction:
     get:
       operationId: listStreamTransactions
       description: |
-        The result is an object with the attribute *transactions*, which contains
+        The result is an object with the `transactions` attribute, which contains
         an array of transactions.
         In a cluster the array will contain the transactions from all Coordinators.
 
         Each array entry contains an object with the following attributes:
 
-        - *id*: the transaction's id
-        - *state*: the transaction's status
+        - `id`: the transaction's id
+        - `state`: the transaction's status
       responses:
         '200':
           description: |
@@ -486,6 +499,9 @@ paths:
       tags:
         - Transactions
 ```
+
+**Examples**
+
 
 
 ```curl

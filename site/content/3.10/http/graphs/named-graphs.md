@@ -172,6 +172,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -673,6 +676,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -716,6 +722,7 @@ description: |-
   Create a SmartGraph. This graph uses 9 shards and
   is sharded by the "region" attribute.
   Available in the Enterprise Edition only.
+version: '3.10'
 render: input/output
 name: HttpGharialCreateSmart
 server_name: stable
@@ -761,6 +768,7 @@ description: |-
   Available in the Enterprise Edition only.
   Note that as you are using a disjoint version, you can only
   create edges between vertices sharing the same region.
+version: '3.10'
 render: input/output
 name: HttpGharialCreateDisjointSmart
 server_name: stable
@@ -808,6 +816,7 @@ description: |-
   collections are split into 9 shards
   and are sharded by the "region" attribute.
   Available in the Enterprise Edition only.
+version: '3.10'
 render: input/output
 name: HttpGharialCreateSmartWithSatellites
 server_name: stable
@@ -852,6 +861,7 @@ description: |-
   Create an EnterpriseGraph. This graph uses 9 shards,
   it does not make use of specific sharding attributes.
   Available in the Enterprise Edition only.
+version: '3.10'
 render: input/output
 name: HttpGharialCreateEnterprise
 server_name: stable
@@ -896,6 +906,7 @@ description: |-
   Make sure to keep this graph small as it is cloned
   to every server.
   Available in the Enterprise Edition only.
+version: '3.10'
 render: input/output
 name: HttpGharialCreateSatellite
 server_name: stable
@@ -1107,6 +1118,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -1239,6 +1253,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -1341,6 +1358,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -1364,7 +1384,7 @@ type: single
 ~ examples.dropGraph("social");
 ```
 ```openapi
-### Add vertex collection
+### Add a vertex collection
 
 paths:
   /_api/gharial/{graph}/vertex:
@@ -1749,6 +1769,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -1775,7 +1798,7 @@ type: single
   examples.dropGraph("social");
 ```
 ```openapi
-### Remove vertex collection
+### Remove a vertex collection
 
 paths:
   /_api/gharial/{graph}/vertex/{collection}:
@@ -2157,6 +2180,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -2188,6 +2214,7 @@ type: single
 ---
 description: |-
   You cannot remove vertex collections that are used in edge collections:
+version: '3.10'
 render: input/output
 name: HttpGharialRemoveVertexCollectionFailed
 server_name: stable
@@ -2288,6 +2315,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -2311,7 +2341,7 @@ type: single
 ~ examples.dropGraph("social");
 ```
 ```openapi
-### Add edge definition
+### Add an edge definition
 
 paths:
   /_api/gharial/{graph}/edge:
@@ -2320,8 +2350,8 @@ paths:
       description: |
         Adds an additional edge definition to the graph.
 
-        This edge definition has to contain a *collection* and an array of
-        each *from* and *to* vertex collections.  An edge definition can only
+        This edge definition has to contain a `collection` and an array of
+        each `from` and `to` vertex collections.  An edge definition can only
         be added if this definition is either not used in any other graph, or
         it is used with exactly the same definition. It is not possible to
         store a definition "e" from "v1" to "v2" in the one graph, and "e"
@@ -2726,6 +2756,9 @@ paths:
       tags:
         - Graphs
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -3181,6 +3214,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -3209,14 +3245,14 @@ type: single
   examples.dropGraph("social");
 ```
 ```openapi
-### Remove an edge definition from the graph
+### Remove an edge definition
 
 paths:
   /_api/gharial/{graph}/edge/{collection}:
     delete:
       operationId: deleteEdgeDefinition
       description: |
-        Remove one edge definition from the graph.  This will only remove the
+        Remove one edge definition from the graph. This will only remove the
         edge collection, the vertex collections remain untouched and can still
         be used in your queries.
       parameters:
@@ -3567,6 +3603,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -3844,6 +3883,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -3897,7 +3939,7 @@ paths:
           in: path
           required: true
           description: |
-            The *_key* attribute of the vertex.
+            The `_key` attribute of the vertex.
           schema:
             type: string
         - name: rev
@@ -3914,17 +3956,17 @@ paths:
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one Etag. The document is returned,
-            if it has the same revision as the given Etag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the Etag in an query parameter *rev*.
+            If the "If-Match" header is given, then it must contain exactly one ETag. The document is returned,
+            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
+            you can supply the ETag in an query parameter `rev`.
           schema:
             type: string
         - name: if-none-match
           in: header
           required: false
           description: |
-            If the "If-None-Match" header is given, then it must contain exactly one Etag. The document is returned,
-            only if it has a different revision as the given Etag. Otherwise a HTTP 304 is returned.
+            If the "If-None-Match" header is given, then it must contain exactly one ETag. The document is returned,
+            only if it has a different revision as the given ETag. Otherwise a HTTP 304 is returned.
           schema:
             type: string
       responses:
@@ -4101,6 +4143,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -4151,7 +4196,7 @@ paths:
           in: path
           required: true
           description: |
-            The *_key* attribute of the vertex.
+            The `_key` attribute of the vertex.
           schema:
             type: string
         - name: waitForSync
@@ -4165,10 +4210,11 @@ paths:
           in: query
           required: false
           description: |
-            Define if values set to null should be stored.
-            By default (true) the given documents attribute(s) will be set to null.
-            If this parameter is false the attribute(s) will instead be delete from the
-            document.
+            Define if values set to `null` should be stored.
+            By default (`true`), the given documents attribute(s) are set to `null`.
+            If this parameter is set to `false`, top-level attribute and sub-attributes with
+            a `null` value in the request are removed from the document (but not attributes
+            of objects that are nested inside of arrays).
           schema:
             type: boolean
         - name: returnOld
@@ -4191,9 +4237,9 @@ paths:
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one Etag. The document is updated,
-            if it has the same revision as the given Etag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the Etag in an attribute rev in the URL.
+            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
+            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
+            you can supply the ETag in an attribute rev in the URL.
           schema:
             type: string
       requestBody:
@@ -4485,6 +4531,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -4538,7 +4587,7 @@ paths:
           in: path
           required: true
           description: |
-            The *_key* attribute of the vertex.
+            The `_key` attribute of the vertex.
           schema:
             type: string
         - name: waitForSync
@@ -4552,7 +4601,11 @@ paths:
           in: query
           required: false
           description: |
-            Define if values set to null should be stored. By default the key is not removed from the document.
+            Define if values set to `null` should be stored.
+            By default (`true`), the given documents attribute(s) are set to `null`.
+            If this parameter is set to `false`, top-level attribute and sub-attributes with
+            a `null` value in the request are removed from the document (but not attributes
+            of objects that are nested inside of arrays).
           schema:
             type: boolean
         - name: returnOld
@@ -4575,9 +4628,9 @@ paths:
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one Etag. The document is updated,
-            if it has the same revision as the given Etag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the Etag in an attribute rev in the URL.
+            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
+            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
+            you can supply the ETag in an attribute rev in the URL.
           schema:
             type: string
       requestBody:
@@ -4869,6 +4922,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -4923,7 +4979,7 @@ paths:
           in: path
           required: true
           description: |
-            The *_key* attribute of the vertex.
+            The `_key` attribute of the vertex.
           schema:
             type: string
         - name: waitForSync
@@ -4945,9 +5001,9 @@ paths:
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one Etag. The document is updated,
-            if it has the same revision as the given Etag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the Etag in an attribute rev in the URL.
+            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
+            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
+            you can supply the ETag in an attribute rev in the URL.
           schema:
             type: string
       responses:
@@ -5145,6 +5201,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -5178,8 +5237,8 @@ paths:
     post:
       operationId: createEdge
       description: |
-        Creates a new edge in the collection.
-        Within the body the edge has to contain a *_from* and *_to* value referencing to valid vertices in the graph.
+        Creates a new edge in the specified collection.
+        Within the body the edge has to contain a `_from` and `_to` value referencing to valid vertices in the graph.
         Furthermore the edge has to be valid in the definition of the used edge collection.
       parameters:
         - name: graph
@@ -5505,6 +5564,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -5563,7 +5625,7 @@ paths:
           in: path
           required: true
           description: |
-            The *_key* attribute of the edge.
+            The `_key` attribute of the edge.
           schema:
             type: string
         - name: rev
@@ -5580,17 +5642,17 @@ paths:
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one Etag. The document is returned,
-            if it has the same revision as the given Etag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the Etag in an attribute rev in the URL.
+            If the "If-Match" header is given, then it must contain exactly one ETag. The document is returned,
+            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
+            you can supply the ETag in an attribute rev in the URL.
           schema:
             type: string
         - name: if-none-match
           in: header
           required: false
           description: |
-            If the "If-None-Match" header is given, then it must contain exactly one Etag. The document is returned,
-            only if it has a different revision as the given Etag. Otherwise a HTTP 304 is returned.
+            If the "If-None-Match" header is given, then it must contain exactly one ETag. The document is returned,
+            only if it has a different revision as the given ETag. Otherwise a HTTP 304 is returned.
           schema:
             type: string
       responses:
@@ -5777,6 +5839,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -5801,14 +5866,14 @@ type: single
   examples.dropGraph("social");
 ```
 ```openapi
-### Modify an edge
+### Update an edge
 
 paths:
   /_api/gharial/{graph}/edge/{collection}/{edge}:
     patch:
       operationId: updateEdge
       description: |
-        Updates the data of the specific edge in the collection.
+        Partially modify the data of the specific edge in the collection.
       parameters:
         - name: graph
           in: path
@@ -5828,7 +5893,7 @@ paths:
           in: path
           required: true
           description: |
-            The *_key* attribute of the vertex.
+            The `_key` attribute of the vertex.
           schema:
             type: string
         - name: waitForSync
@@ -5842,10 +5907,11 @@ paths:
           in: query
           required: false
           description: |
-            Define if values set to null should be stored.
-            By default (true) the given documents attribute(s) will be set to null.
-            If this parameter is false the attribute(s) will instead be deleted from the
-            document.
+            Define if values set to `null` should be stored.
+            By default (`true`), the given documents attribute(s) are set to `null`.
+            If this parameter is set to `false`, top-level attribute and sub-attributes with
+            a `null` value in the request are removed from the document (but not attributes
+            of objects that are nested inside of arrays).
           schema:
             type: boolean
         - name: returnOld
@@ -5868,9 +5934,9 @@ paths:
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one Etag. The document is updated,
-            if it has the same revision as the given Etag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the Etag in an attribute rev in the URL.
+            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
+            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
+            you can supply the ETag in an attribute rev in the URL.
           schema:
             type: string
       requestBody:
@@ -6223,6 +6289,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -6276,7 +6345,7 @@ paths:
           in: path
           required: true
           description: |
-            The *_key* attribute of the vertex.
+            The `_key` attribute of the vertex.
           schema:
             type: string
         - name: waitForSync
@@ -6290,7 +6359,11 @@ paths:
           in: query
           required: false
           description: |
-            Define if values set to null should be stored. By default the key is not removed from the document.
+            Define if values set to `null` should be stored.
+            By default (`true`), the given documents attribute(s) are set to `null`.
+            If this parameter is set to `false`, top-level attribute and sub-attributes with
+            a `null` value in the request are removed from the document (but not attributes
+            of objects that are nested inside of arrays).
           schema:
             type: boolean
         - name: returnOld
@@ -6313,9 +6386,9 @@ paths:
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one Etag. The document is updated,
-            if it has the same revision as the given Etag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the Etag in an attribute rev in the URL.
+            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
+            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
+            you can supply the ETag in an attribute rev in the URL.
           schema:
             type: string
       requestBody:
@@ -6675,6 +6748,9 @@ paths:
         - Graphs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -6731,7 +6807,7 @@ paths:
           in: path
           required: true
           description: |
-            The *_key* attribute of the edge.
+            The `_key` attribute of the edge.
           schema:
             type: string
         - name: waitForSync
@@ -6753,9 +6829,9 @@ paths:
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one Etag. The document is updated,
-            if it has the same revision as the given Etag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the Etag in an attribute rev in the URL.
+            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
+            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
+            you can supply the ETag in an attribute rev in the URL.
           schema:
             type: string
       responses:
@@ -6972,6 +7048,9 @@ paths:
       tags:
         - Graphs
 ```
+
+**Examples**
+
 
 
 ```curl

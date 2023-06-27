@@ -234,6 +234,9 @@ paths:
         - Import
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -274,6 +277,7 @@ type: single
 ---
 description: |-
   Importing documents using JSON objects separated by new lines (JSONL):
+version: '3.12'
 render: input/output
 name: RestImportJsonLines
 server_name: stable
@@ -308,6 +312,7 @@ type: single
 ---
 description: |-
   Using the `auto` type detection:
+version: '3.12'
 render: input/output
 name: RestImportJsonType
 server_name: stable
@@ -343,6 +348,7 @@ type: single
 description: |-
   Importing JSONL into an edge collection, with `_from`, `_to` and `name`
   attributes:
+version: '3.12'
 render: input/output
 name: RestImportJsonEdge
 server_name: stable
@@ -379,6 +385,7 @@ type: single
 description: |-
   Importing an array of JSON objects into an edge collection,
   omitting `_from` or `_to`:
+version: '3.12'
 render: input/output
 name: RestImportJsonEdgeInvalid
 server_name: stable
@@ -409,6 +416,7 @@ type: single
 ---
 description: |-
   Violating a unique constraint, but allowing partial imports:
+version: '3.12'
 render: input/output
 name: RestImportJsonUniqueContinue
 server_name: stable
@@ -440,6 +448,7 @@ type: single
 ---
 description: |-
   Violating a unique constraint, not allowing partial imports:
+version: '3.12'
 render: input/output
 name: RestImportJsonUniqueFail
 server_name: stable
@@ -467,6 +476,7 @@ type: single
 ---
 description: |-
   Using a non-existing collection:
+version: '3.12'
 render: input/output
 name: RestImportJsonInvalidCollection
 server_name: stable
@@ -490,6 +500,7 @@ type: single
 ---
 description: |-
   Using a malformed body with an array of JSON objects being expected:
+version: '3.12'
 render: input/output
 name: RestImportJsonInvalidBody
 server_name: stable
@@ -518,6 +529,7 @@ description: |-
   Importing two documents using the JSON arrays format. The documents have a
   `_key`, `value1`, and `value2` attribute each. One line in the import data is
   empty and skipped:
+version: '3.12'
 render: input/output
 name: RestImportCsvExample
 server_name: stable
@@ -549,6 +561,7 @@ type: single
 description: |-
   Importing JSON arrays into an edge collection, with `_from`, `_to`, and `name`
   attributes:
+version: '3.12'
 render: input/output
 name: RestImportCsvEdge
 server_name: stable
@@ -582,6 +595,7 @@ type: single
 ---
 description: |-
   Importing JSON arrays into an edge collection, omitting `_from` or `_to`:
+version: '3.12'
 render: input/output
 name: RestImportCsvEdgeInvalid
 server_name: stable
@@ -610,6 +624,7 @@ type: single
 ---
 description: |-
   Using a malformed body with JSON arrays being expected:
+version: '3.12'
 render: input/output
 name: RestImportCsvInvalidBody
 server_name: stable

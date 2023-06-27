@@ -10,7 +10,7 @@ See [Distributed Iterative Graph Processing (Pregel)](../data-science/pregel/_in
 for details.
 
 ```openapi
-## Start Pregel job execution
+## Start a Pregel job execution
 
 paths:
   /_api/control_pregel:
@@ -110,6 +110,9 @@ paths:
         - Pregel
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -159,7 +162,7 @@ type: single
 
 ```
 ```openapi
-## Get Pregel job execution status
+## Get a Pregel job execution status
 
 paths:
   /_api/control_pregel/{id}:
@@ -375,6 +378,9 @@ paths:
         - Pregel
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -422,7 +428,7 @@ type: single
 
 ```
 ```openapi
-## Get currently running Pregel jobs
+## List the running Pregel jobs
 
 paths:
   /_api/control_pregel:
@@ -626,6 +632,9 @@ paths:
         - Pregel
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -669,7 +678,7 @@ type: single
 
 ```
 ```openapi
-## Cancel Pregel job execution
+## Cancel a Pregel job execution
 
 paths:
   /_api/control_pregel/{id}:
@@ -706,6 +715,9 @@ paths:
       tags:
         - Pregel
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -966,6 +978,9 @@ paths:
         - Pregel
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -1223,6 +1238,9 @@ paths:
         - Pregel
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -1294,6 +1312,9 @@ paths:
         - Pregel
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -1358,6 +1379,9 @@ paths:
       tags:
         - Pregel
 ```
+
+**Examples**
+
 
 
 ```curl

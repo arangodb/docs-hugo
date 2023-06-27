@@ -24,7 +24,7 @@ For a more detailed description of how transactions work in ArangoDB please
 refer to [Transactions](../../develop/transactions/_index.md). 
 
 ```openapi
-## Execute transaction
+## Execute a JavaScript Transaction
 
 paths:
   /_api/transaction:
@@ -35,17 +35,17 @@ paths:
 
         If the transaction is fully executed and committed on the server,
         *HTTP 200* will be returned. Additionally, the return value of the
-        code defined in *action* will be returned in the *result* attribute.
+        code defined in `action` will be returned in the `result` attribute.
 
         For successfully committed transactions, the returned JSON object has the
         following properties:
 
-        - *error*: boolean flag to indicate if an error occurred (*false*
+        - `error`: boolean flag to indicate if an error occurred (`false`
           in this case)
 
-        - *code*: the HTTP status code
+        - `code`: the HTTP status code
 
-        - *result*: the return value of the transaction
+        - `result`: the return value of the transaction
 
         If the transaction specification is either missing or malformed, the server
         will respond with *HTTP 400*.
@@ -53,16 +53,16 @@ paths:
         The body of the response will then contain a JSON object with additional error
         details. The object has the following attributes:
 
-        - *error*: boolean flag to indicate that an error occurred (*true* in this case)
+        - `error`: boolean flag to indicate that an error occurred (`true` in this case)
 
-        - *code*: the HTTP status code
+        - `code`: the HTTP status code
 
-        - *errorNum*: the server error number
+        - `errorNum`: the server error number
 
-        - *errorMessage*: a descriptive error message
+        - `errorMessage`: a descriptive error message
 
         If a transaction fails to commit, either by an exception thrown in the
-        *action* code, or by an internal error, the server will respond with
+        `action` code, or by an internal error, the server will respond with
         an error.
         Any other errors will be returned with any of the return codes
         *HTTP 400*, *HTTP 409*, or *HTTP 500*.
@@ -74,12 +74,12 @@ paths:
               properties:
                 collections:
                   description: |
-                    *collections* must be a JSON object that can have one or all sub-attributes
-                    *read*, *write* or *exclusive*, each being an array of collection names or a
+                    `collections` must be a JSON object that can have one or all sub-attributes
+                    `read`, `write` or `exclusive`, each being an array of collection names or a
                     single collection name as string. Collections that will be written to in the
-                    transaction must be declared with the *write* or *exclusive* attribute or it
+                    transaction must be declared with the `write` or `exclusive` attribute or it
                     will fail, whereas non-declared collections from which is solely read will be
-                    added lazily. The optional sub-attribute *allowImplicit* can be set to *false*
+                    added lazily. The optional sub-attribute `allowImplicit` can be set to `false`
                     to let transactions fail in case of undeclared collections for reading.
                     Collections for reading should be fully declared if possible, to avoid
                     deadlocks.
@@ -89,9 +89,9 @@ paths:
                     the actual transaction operations to be executed, in the
                     form of stringified JavaScript code. The code will be executed on server
                     side, with late binding. It is thus critical that the code specified in
-                    *action* properly sets up all the variables it needs.
-                    If the code specified in *action* ends with a return statement, the
-                    value returned will also be returned by the REST API in the *result*
+                    `action` properly sets up all the variables it needs.
+                    If the code specified in `action` ends with a return statement, the
+                    value returned will also be returned by the REST API in the `result`
                     attribute if the transaction committed successfully.
                   type: string
                 waitForSync:
@@ -108,12 +108,12 @@ paths:
                     an optional numeric value that can be used to set a
                     timeout in seconds for waiting on collection locks. This option is only
                     meaningful when using exclusive locks. If not specified, a default value of
-                    900 seconds will be used. Setting *lockTimeout* to *0* will make ArangoDB
+                    900 seconds will be used. Setting `lockTimeout` to `0` will make ArangoDB
                     not time out waiting for a lock.
                   type: integer
                 params:
                   description: |
-                    optional arguments passed to *action*.
+                    optional arguments passed to `action`.
                   type: string
                 maxTransactionSize:
                   description: |
@@ -142,6 +142,9 @@ paths:
       tags:
         - Transactions
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -178,6 +181,7 @@ type: single
 ---
 description: |-
   Executing a transaction using multiple collections
+version: '3.11'
 render: input/output
 name: RestTransactionMulti
 server_name: stable
@@ -220,6 +224,7 @@ type: single
 ---
 description: |-
   Aborting a transaction due to an internal error
+version: '3.11'
 render: input/output
 name: RestTransactionAbortInternal
 server_name: stable
@@ -255,6 +260,7 @@ type: single
 ---
 description: |-
   Aborting a transaction by explicitly throwing an exception
+version: '3.11'
 render: input/output
 name: RestTransactionAbort
 server_name: stable
@@ -285,6 +291,7 @@ type: single
 ---
 description: |-
   Referring to a non-existing collection
+version: '3.11'
 render: input/output
 name: RestTransactionNonExisting
 server_name: stable

@@ -23,7 +23,7 @@ User management operations are not included in ArangoDB's replication.
 ## Manage users
 
 ```openapi
-### Create User
+### Create a user
 
 paths:
   /_api/user:
@@ -50,7 +50,7 @@ paths:
                 active:
                   description: |
                     An optional flag that specifies whether the user is active. If not
-                    specified, this will default to *true*.
+                    specified, this will default to `true`.
                   type: boolean
                 extra:
                   description: |
@@ -71,7 +71,7 @@ paths:
             from the request.
         '401':
           description: |
-            Returned if you have *No access* database access level to the *_system*
+            Returned if you have *No access* database access level to the `_system`
             database.
         '403':
           description: |
@@ -82,6 +82,9 @@ paths:
       tags:
         - Users
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -105,7 +108,7 @@ type: single
     ~require("@arangodb/users").remove("admin@example");
 ```
 ```openapi
-### Replace User
+### Replace a user
 
 paths:
   /_api/user/{user}:
@@ -168,6 +171,9 @@ paths:
         - Users
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -193,14 +199,14 @@ type: single
     users.remove(theUser);
 ```
 ```openapi
-### Modify User
+### Update a user
 
 paths:
   /_api/user/{user}:
     patch:
       operationId: updateUserData
       description: |
-        Partially updates the data of an existing user. You need server access level
+        Partially modifies the data of an existing user. You need server access level
         *Administrate* in order to execute this REST call. Additionally, users can
         change their own data.
       parameters:
@@ -254,6 +260,9 @@ paths:
         - Users
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -279,15 +288,17 @@ type: single
     users.remove(theUser);
 ```
 ```openapi
-### Remove User
+### Remove a user
 
 paths:
   /_api/user/{user}:
     delete:
       operationId: deleteUser
       description: |
-        Removes an existing user, identified by *user*.  You need *Administrate* for
-        the server access level in order to execute this REST call.
+        Removes an existing user, identified by `user`.
+
+        You need *Administrate* permissions for the server access level in order to
+        execute this REST call.
       parameters:
         - name: user
           in: path
@@ -302,7 +313,7 @@ paths:
             Is returned if the user was removed by the server
         '401':
           description: |
-            Returned if you have *No access* database access level to the *_system*
+            Returned if you have *No access* database access level to the `_system`
             database.
         '403':
           description: |
@@ -313,6 +324,9 @@ paths:
       tags:
         - Users
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -337,7 +351,7 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-### Fetch User
+### Get a user
 
 paths:
   /_api/user/{user}:
@@ -361,7 +375,7 @@ paths:
             The user was found.
         '401':
           description: |
-            Returned if you have *No access* database access level to the *_system*
+            Returned if you have *No access* database access level to the `_system`
             database.
         '403':
           description: |
@@ -372,6 +386,9 @@ paths:
       tags:
         - Users
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -397,23 +414,23 @@ type: single
     users.remove(theUser);
 ```
 ```openapi
-### List available Users
+### List available users
 
 paths:
   /_api/user/:
     get:
       operationId: listUsers
       description: |
-        Fetches data about all users.  You need the *Administrate* server access level
+        Fetches data about all users. You need the *Administrate* server access level
         in order to execute this REST call.  Otherwise, you will only get information
         about yourself.
 
         The call will return a JSON object with at least the following
         attributes on success:
 
-        - *user*: The name of the user as a string.
-        - *active*: An optional flag that specifies whether the user is active.
-        - *extra*: A JSON object with extra user information. It is used by the web
+        - `user`: The name of the user as a string.
+        - `active`: An optional flag that specifies whether the user is active.
+        - `extra`: A JSON object with extra user information. It is used by the web
           interface to store graph viewer settings and saved queries.
       responses:
         '200':
@@ -421,7 +438,7 @@ paths:
             The users that were found.
         '401':
           description: |
-            Returned if you have *No access* database access level to the *_system*
+            Returned if you have *No access* database access level to the `_system`
             database.
         '403':
           description: |
@@ -429,6 +446,9 @@ paths:
       tags:
         - Users
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -452,14 +472,14 @@ type: single
 ## Manage permissions
 
 ```openapi
-### Set the database access level
+### Set a user's database access level
 
 paths:
   /_api/user/{user}/database/{dbname}:
     put:
       operationId: setUserDatabasePermissions
       description: |
-        Sets the database access levels for the database *dbname* of user *user*. You
+        Sets the database access levels for the database `dbname` of user `user`. You
         need the *Administrate* server access level in order to execute this REST
         call.
       requestBody:
@@ -501,7 +521,7 @@ paths:
             from the request.
         '401':
           description: |
-            Returned if you have *No access* database access level to the *_system*
+            Returned if you have *No access* database access level to the `_system`
             database.
         '403':
           description: |
@@ -509,6 +529,9 @@ paths:
       tags:
         - Users
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -535,15 +558,15 @@ type: single
     users.remove(theUser);
 ```
 ```openapi
-### Set the collection access level
+### Set a user's collection access level
 
 paths:
   /_api/user/{user}/database/{dbname}/{collection}:
     put:
       operationId: setUserCollectionPermissions
       description: |
-        Sets the collection access level for the *collection* in the database *dbname*
-        for user *user*. You need the *Administrate* server access level in order to
+        Sets the collection access level for the `collection` in the database `dbname`
+        for user `user`. You need the *Administrate* server access level in order to
         execute this REST call.
       requestBody:
         content:
@@ -593,7 +616,7 @@ paths:
             from the request.
         '401':
           description: |
-            Returned if you have *No access* database access level to the *_system*
+            Returned if you have *No access* database access level to the `_system`
             database.
         '403':
           description: |
@@ -601,6 +624,9 @@ paths:
       tags:
         - Users
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -631,17 +657,19 @@ type: single
     users.remove(theUser);
 ```
 ```openapi
-### Clear the database access level
+### Clear a user's database access level
 
 paths:
   /_api/user/{user}/database/{dbname}:
     delete:
       operationId: deleteUserDatabasePermissions
       description: |
-        Clears the database access level for the database *dbname* of user *user*. As
-        consequence the default database access level is used. If there is no defined
-        default database access level, it defaults to *No access*. You need permission
-        to the *_system* database in order to execute this REST call.
+        Clears the database access level for the database `dbname` of user `user`. As
+        consequence, the default database access level is used. If there is no defined
+        default database access level, it defaults to *No access*.
+
+        You need write permissions (*Administrate* access level) for the `_system`
+        database in order to execute this REST call.
       parameters:
         - name: user
           in: path
@@ -669,6 +697,9 @@ paths:
         - Users
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -694,18 +725,20 @@ logJsonResponse(response);
 users.remove(theUser);
 ```
 ```openapi
-### Clear the collection access level
+### Clear a user's collection access level
 
 paths:
   /_api/user/{user}/database/{dbname}/{collection}:
     delete:
       operationId: deleteUserCollectionPermissions
       description: |
-        Clears the collection access level for the collection *collection* in the
-        database *dbname* of user *user*.  As consequence the default collection
+        Clears the collection access level for the collection `collection` in the
+        database `dbname` of user `user`. As consequence, the default collection
         access level is used. If there is no defined default collection access level,
-        it defaults to *No access*.  You need permissions to the *_system* database in
-        order to execute this REST call.
+        it defaults to *No access*.
+
+        You need write permissions (*Administrate* access level) for the `_system`
+        database in order to execute this REST call.
       parameters:
         - name: user
           in: path
@@ -739,6 +772,9 @@ paths:
         - Users
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -768,22 +804,24 @@ type: single
   users.remove(theUser);
 ```
 ```openapi
-### List the accessible databases for a user
+### List a user's accessible databases
 
 paths:
   /_api/user/{user}/database/:
     get:
       operationId: listUserDatabases
       description: |
-        Fetch the list of databases available to the specified *user*. You need
-        *Administrate* for the server access level in order to execute this REST call.
+        Fetch the list of databases available to the specified `user`.
+
+        You need *Administrate* permissions for the server access level in order to
+        execute this REST call.
 
         The call will return a JSON object with the per-database access
-        privileges for the specified user. The *result* object will contain
+        privileges for the specified user. The `result` object will contain
         the databases names as object keys, and the associated privileges
         for the database as values.
 
-        In case you specified *full*, the result will contain the permissions
+        In case you specified `full`, the result will contain the permissions
         for the databases as well as the permissions for the collections.
       parameters:
         - name: user
@@ -809,7 +847,7 @@ paths:
             If the access privileges are not right etc.
         '401':
           description: |
-            Returned if you have *No access* database access level to the *_system*
+            Returned if you have *No access* database access level to the `_system`
             database.
         '403':
           description: |
@@ -817,6 +855,9 @@ paths:
       tags:
         - Users
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -848,6 +889,7 @@ type: single
 ---
 description: |-
   With the full response format:
+version: '3.11'
 render: input/output
 name: RestFetchUserDatabaseListFull
 server_name: stable
@@ -868,7 +910,7 @@ logJsonResponse(response);
 users.remove(theUser);
 ```
 ```openapi
-### Get the database access level
+### Get a user's database access level
 
 paths:
   /_api/user/{user}/database/{dbname}:
@@ -900,7 +942,7 @@ paths:
             If the access privileges are not right etc.
         '401':
           description: |
-            Returned if you have *No access* database access level to the *_system*
+            Returned if you have *No access* database access level to the `_system`
             database.
         '403':
           description: |
@@ -908,6 +950,9 @@ paths:
       tags:
         - Users
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -934,7 +979,7 @@ logJsonResponse(response);
 users.remove(theUser);
 ```
 ```openapi
-### Get the specific collection access level
+### Get a user's collection access level
 
 paths:
   /_api/user/{user}/database/{dbname}/{collection}:
@@ -973,7 +1018,7 @@ paths:
             If the access privileges are not right etc.
         '401':
           description: |
-            Returned if you have *No access* database access level to the *_system*
+            Returned if you have *No access* database access level to the `_system`
             database.
         '403':
           description: |
@@ -981,6 +1026,9 @@ paths:
       tags:
         - Users
 ```
+
+**Examples**
+
 
 
 ```curl

@@ -13,22 +13,22 @@ instance. While these APIs are also available on DB-Server instances, accessing 
 as a user is not supported. This API replaces some of the APIs in `/_api/replication`.
 
 ```openapi
-## Return tick ranges available in the operations of WAL
+## Get the tick ranges available in the WAL
 
 paths:
   /_api/wal/range:
     get:
       operationId: getWalRange
       description: |
-        Returns the currently available ranges of tick values for all WAL files.
-        The tick values can be used to determine if certain
+        Returns the currently available ranges of tick values for all Write-Ahead Log
+        (WAL) files. The tick values can be used to determine if certain
         data (identified by tick value) are still available for replication.
 
         The body of the response contains a JSON object.
-        * *tickMin*: minimum tick available
-        * *tickMax*: maximum tick available
-        * *time*: the server time as string in format "YYYY-MM-DDTHH:MM:SSZ"
-        * *server*: An object with fields *version* and *serverId*
+        - `tickMin`: minimum tick available
+        - `tickMax`: maximum tick available
+        - `time`: the server time as string in format `YYYY-MM-DDTHH:MM:SSZ`
+        - `server`: An object with fields `version` and `serverId`
       responses:
         '200':
           description: |
@@ -45,6 +45,9 @@ paths:
       tags:
         - Replication
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -67,7 +70,7 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-## Return last available tick value
+## Get the last available tick value
 
 paths:
   /_api/wal/lastTick:
@@ -77,10 +80,10 @@ paths:
         Returns the last available tick value that can be served from the server's
         replication log. This corresponds to the tick of the latest successful operation.
 
-        The result is a JSON object containing the attributes *tick*, *time* and *server*.
-        * *tick*: contains the last available tick, *time*
-        * *time*: the server time as string in format "YYYY-MM-DDTHH:MM:SSZ"
-        * *server*: An object with fields *version* and *serverId*
+        The result is a JSON object containing the attributes `tick`, `time` and `server`.
+        - `tick`: contains the last available tick, `time`
+        - `time`: the server time as string in format `YYYY-MM-DDTHH:MM:SSZ`
+        - `server`: An object with fields `version` and `serverId`
 
         **Note**: this method is not supported on a Coordinator in a cluster.
       responses:
@@ -99,6 +102,9 @@ paths:
       tags:
         - Replication
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -258,7 +264,7 @@ paths:
           required: false
           description: |
             Should be set to the value of the `x-arango-replication-lastscanned` header
-            or alternatively 0 on first try. This allows the RocksDB storage engine to break up
+            or alternatively `0` on the first try. This allows the RocksDB storage engine to break up
             large transactions over multiple responses.
           schema:
             type: number
@@ -324,6 +330,9 @@ paths:
         - Replication
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -352,6 +361,7 @@ type: single
 ---
 description: |-
   A few log events *(One JSON document per line)*
+version: '3.12'
 render: input
 name: RestWalAccessTailingSome
 server_name: stable
@@ -384,6 +394,7 @@ type: single
 ---
 description: |-
   More events than would fit into the response
+version: '3.12'
 render: input/output
 name: RestWalAccessTailingBufferLimit
 server_name: stable

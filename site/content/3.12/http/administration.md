@@ -10,7 +10,7 @@ archetype: default
 ## Information
 
 ```openapi
-### Return server version
+### Get the server version
 
 paths:
   /_api/version:
@@ -24,9 +24,9 @@ paths:
           in: query
           required: false
           description: |
-            If set to *true*, the response will contain a *details* attribute with
+            If set to `true`, the response will contain a `details` attribute with
             additional information about included components and their versions. The
-            attribute names and internals of the *details* object may vary depending on
+            attribute names and internals of the `details` object may vary depending on
             platform and ArangoDB version.
           schema:
             type: boolean
@@ -41,28 +41,28 @@ paths:
                 properties:
                   server:
                     description: |
-                      will always contain *arango*
+                      will always contain `arango`
                     type: string
                   version:
                     description: |
                       the server version string. The string has the format
-                      "*major*.*minor*.*sub*". *major* and *minor* will be numeric, and *sub*
+                      `major.minor.sub`. `major` and `minor` will be numeric, and `sub`
                       may contain a number or a textual version.
                     type: string
                   details:
                     description: |
                       an optional JSON object with additional details. This is
-                      returned only if the *details* query parameter is set to *true* in the
+                      returned only if the `details` query parameter is set to `true` in the
                       request.
                     type: object
                     properties:
                       architecture:
                         description: |
-                          The CPU architecture, i.e. *64bit*
+                          The CPU architecture, i.e. `64bit`
                         type: string
                       arm:
                         description: |
-                          *false* - this is not running on an ARM cpu
+                          `false` - this is not running on an ARM cpu
                         type: string
                       asan:
                         description: |
@@ -94,23 +94,23 @@ paths:
                         type: string
                       debug:
                         description: |
-                          *false* for production binaries
+                          `false` for production binaries
                         type: string
                       endianness:
                         description: |
-                          currently only *little* is supported
+                          currently only `little` is supported
                         type: string
                       failure-tests:
                         description: |
-                          *false* for production binaries (the facility to invoke fatal errors is disabled)
+                          `false` for production binaries (the facility to invoke fatal errors is disabled)
                         type: string
                       fd-client-event-handler:
                         description: |
-                          which method do we use to handle fd-sets, *poll* should be here on linux.
+                          which method do we use to handle fd-sets, `poll` should be here on linux.
                         type: string
                       fd-setsize:
                         description: |
-                          if not *poll* the fd setsize is valid for the maximum number of file descriptors
+                          if not `poll` the fd setsize is valid for the maximum number of file descriptors
                         type: string
                       full-version-string:
                         description: |
@@ -122,11 +122,11 @@ paths:
                         type: string
                       jemalloc:
                         description: |
-                          *true* if we use jemalloc
+                          `true` if we use jemalloc
                         type: string
                       maintainer-mode:
                         description: |
-                          *false* if this is a production binary
+                          `false` if this is a production binary
                         type: string
                       openssl-version:
                         description: |
@@ -134,11 +134,11 @@ paths:
                         type: string
                       platform:
                         description: |
-                          the host os - *linux*, *windows* or *darwin*
+                          the host os - `linux`, `windows` or `darwin`
                         type: string
                       reactor-type:
                         description: |
-                          *epoll* TODO
+                          `epoll`
                         type: string
                       rocksdb-version:
                         description: |
@@ -150,11 +150,11 @@ paths:
                         type: string
                       sizeof int:
                         description: |
-                          number of bytes for *integers*
+                          number of bytes for integers
                         type: string
                       sizeof void*:
                         description: |
-                          number of bytes for *void pointers*
+                          number of bytes for void pointers
                         type: string
                       sse42:
                         description: |
@@ -178,7 +178,7 @@ paths:
                         type: string
                       mode:
                         description: |
-                          the mode we're running as - one of [*server*, *console*, *script*]
+                          The mode arangod runs in. Possible values: `server`, `console`, `script`
                         type: string
                       host:
                         description: |
@@ -190,6 +190,9 @@ paths:
       tags:
         - Administration
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -215,6 +218,7 @@ type: single
 ---
 description: |-
   Return the version information with details
+version: '3.12'
 render: input/output
 name: RestVersionDetails
 server_name: stable
@@ -228,7 +232,7 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-### Return server database engine type
+### Get the storage engine type
 
 paths:
   /_api/engine:
@@ -248,13 +252,16 @@ paths:
                 properties:
                   name:
                     description: |
-                      will be *rocksdb*
+                      will be `rocksdb`
                     type: string
                 required:
                   - name
       tags:
         - Administration
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -275,14 +282,14 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-### Return system time
+### Get the system time
 
 paths:
   /_admin/time:
     get:
       operationId: getTime
       description: |
-        The call returns an object with the attribute *time*. This contains the
+        The call returns an object with the `time` attribute. This contains the
         current system time as a Unix timestamp with microsecond precision.
       responses:
         '200':
@@ -295,7 +302,7 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (*false* in this case)
+                      boolean flag to indicate whether an error occurred (`false` in this case)
                     type: boolean
                   code:
                     description: |
@@ -313,7 +320,7 @@ paths:
         - Administration
 ```
 ```openapi
-### Return status information
+### Get server status information
 
 paths:
   /_admin/status:
@@ -531,6 +538,9 @@ paths:
         - Administration
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -575,7 +585,7 @@ paths:
         - Administration
 ```
 ```openapi
-### Return the required version of the database
+### Get the required database version
 
 paths:
   /_admin/database/target-version:
@@ -583,7 +593,7 @@ paths:
       operationId: getDatabaseVersion
       description: |
         Returns the database version that this server requires.
-        The version is returned in the *version* attribute of the result.
+        The version is returned in the `version` attribute of the result.
       responses:
         '200':
           description: |
@@ -648,6 +658,9 @@ paths:
         - Administration
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -672,11 +685,11 @@ type: single
 ---
 description: |-
   Query support information from a cluster
+version: '3.12'
 render: input/output
 name: RestAdminSupportInfo
 server_name: stable
 type: cluster
-version: '3.12'
 ---
 
     var url = "/_admin/support-info";
@@ -710,14 +723,14 @@ paths:
         - Administration
 ```
 ```openapi
-### Update whether or not a server is in read-only mode
+### Set the server mode to read-only or default
 
 paths:
   /_admin/server/mode:
     put:
       operationId: setServerMode
       description: |
-        Update mode information about a server. The json response will contain
+        Update mode information about a server. The JSON response will contain
         a field `mode` with the value `readonly` or `default`. In a read-only server
         all write operations will fail with an error code of `1004` (_ERROR_READ_ONLY_).
         Creating or dropping of databases and collections will also fail with error
@@ -754,7 +767,7 @@ The endpoints for license management allow you to view the current license
 status and update the license of your ArangoDB Enterprise Edition deployment.
 
 ```openapi
-### Return information about the current license
+### Get information about the current license
 
 paths:
   /_admin/license:
@@ -811,6 +824,9 @@ paths:
       tags:
         - Administration
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -876,7 +892,7 @@ paths:
 ## Shutdown
 
 ```openapi
-### Initiate shutdown sequence
+### Start the shutdown sequence
 
 paths:
   /_admin/shutdown:
@@ -924,7 +940,7 @@ paths:
         - Administration
 ```
 ```openapi
-### Query progress of soft shutdown process
+### Query the soft shutdown progress
 
 paths:
   /_admin/shutdown:
@@ -940,7 +956,7 @@ paths:
          - AQL cursors (in particular streaming cursors)
          - Transactions (in particular stream transactions)
          - Pregel runs (conducted by this Coordinator)
-         - Ongoing asynchronous requests (using the `x-arango-async: store` HTTP header
+         - Ongoing asynchronous requests (using the `x-arango-async: store` HTTP header)
          - Finished asynchronous requests, whose result has not yet been
            collected
          - Queued low priority requests (most normal requests)
@@ -1011,21 +1027,23 @@ paths:
 ## Miscellaneous actions
 
 ```openapi
-### Compact the entire database system data
+### Compact all databases
 
 paths:
   /_admin/compact:
     put:
       operationId: compactAllDatabases
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         This command can cause a full rewrite of all data in all databases, which may
         take very long for large databases. It should thus only be used with care and
         only when additional I/O load can be tolerated for a prolonged time.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
         This endpoint can be used to reclaim disk space after substantial data
-        deletions have taken place. It requires superuser access.
+        deletions have taken place, by compacting the entire database system data.
+
+        The endpoint requires superuser access.
       requestBody:
         content:
           application/json:
@@ -1035,12 +1053,12 @@ paths:
                 changeLevel:
                   description: |
                     whether or not compacted data should be moved to the minimum possible level.
-                    The default value is *false*.
+                    The default value is `false`.
                   type: boolean
                 compactBottomMostLevel:
                   description: |
                     Whether or not to compact the bottommost level of data.
-                    The default value is *false*.
+                    The default value is `false`.
                   type: boolean
       responses:
         '200':
@@ -1052,6 +1070,9 @@ paths:
       tags:
         - Administration
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -1071,23 +1092,24 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-### Reloads the routing information
+### Reload the routing table
 
 paths:
   /_admin/routing/reload:
     post:
       operationId: reloadRouting
       description: |
-        Reloads the routing information from the collection *routing*.
+        Reloads the routing information from the `_routing` system collection if it
+        exists, and makes Foxx rebuild its local routing table on the next request.
       responses:
         '200':
           description: |
-            Routing information was reloaded successfully.
+            The routing information has been reloaded successfully.
       tags:
         - Administration
 ```
 ```openapi
-### Return current request
+### Echo a request
 
 paths:
   /_admin/echo:
@@ -1261,18 +1283,18 @@ paths:
         - Administration
 ```
 ```openapi
-### Execute program
+### Execute a script
 
 paths:
   /_admin/execute:
     post:
       operationId: executeCode
       description: |
-        Executes the javascript code in the body on the server as the body
-        of a function with no arguments. If you have a *return* statement
+        Executes the JavaScript code in the body on the server as the body
+        of a function with no arguments. If you have a `return` statement
         then the return value you produce will be returned as content type
-        *application/json*. If the parameter *returnAsJSON* is set to
-        *true*, the result will be a JSON object describing the return value
+        `application/json`. If the parameter `returnAsJSON` is set to
+        `true`, the result will be a JSON object describing the return value
         directly, otherwise a string produced by JSON.stringify will be
         returned.
 
@@ -1299,7 +1321,7 @@ paths:
           description: |
             is returned when everything went well, or if a timeout occurred. In the
             latter case a body of type application/json indicating the timeout
-            is returned. depending on *returnAsJSON* this is a json object or a plain string.
+            is returned. depending on `returnAsJSON` this is a json object or a plain string.
         '403':
           description: |
             is returned if ArangoDB is not running in cluster mode.
@@ -1329,17 +1351,17 @@ Note that all endpoint management operations can only be accessed via
 the default `_system` database and none of the other databases.
 
 ```openapi
-### Return list of all endpoints
+### List the endpoints of a single server (deprecated)
 
 paths:
   /_api/endpoint:
     get:
       operationId: listEndpoints
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         This route should no longer be used.
         It is considered as deprecated from version 3.4.0 on.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
         Returns an array of all configured endpoints the server is listening on.
 
@@ -1363,6 +1385,9 @@ paths:
       tags:
         - Administration
 ```
+
+**Examples**
+
 
 
 ```curl

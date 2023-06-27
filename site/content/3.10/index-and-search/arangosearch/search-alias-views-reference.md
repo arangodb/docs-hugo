@@ -11,14 +11,54 @@ sophisticated information retrieval capabilities such as full-text search for
 unstructured or semi-structured data provided by the inverted indexes that they
 are comprised of.
 
-Views can be managed in the web interface, via an [HTTP API](../../http/views/_index.md) and
-through a [JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#views).
+## How to use `search-alias` Views
 
-Views can be queried with AQL via the
-[SEARCH operation](../../aql/high-level-operations/search.md).
+You need to create one or more [inverted indexes](../indexing/working-with-indexes/persistent-indexes.md).
+All settings about how data shall be indexed are part of the inverted index
+definition. You can then create a `search-alias` View and add inverted indexes
+to it. You can also create the View first and later create and add the inverted
+indexes to it.
+
+Some of the inverted index settings only apply if they are used in a
+`search-alias` View, whereas others equally apply whether you use an inverted
+index standalone or as part of a View.
+
+Inverted indexes can be managed as follows:
+- via the [Indexes HTTP API](../../http/indexes/inverted.md)
+- through the [JavaScript API](../indexing/working-with-indexes/_index.md#creating-an-index)
+  with `<collection>.ensureIndex()`
+
+Views of type `search-alias` can be managed as follows:
+- via the [Views HTTP API](../../http/views/_index.md)
+- through the [JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#views)
+
+Once you set up a View, you can query it via AQL with the
+[`SEARCH` operation](../../aql/high-level-operations/search.md).
 
 See [Information Retrieval with ArangoSearch](_index.md) for an
-introduction.
+introduction to Views and how to search them.
+
+## Create `search-alias` Views using the JavaScript API
+
+The following example shows how you can create a `search-alias` View in _arangosh_:
+
+```js
+---
+name: viewSearchAliasCreate
+description: ''
+render: input/output
+version: '3.10'
+server_name: stable
+type: single
+---
+  var coll = db._create("books");
+  var idx = coll.ensureIndex({ type: "inverted", name: "inv-idx", fields: [ { name: "title", analyzer: "text_en" } ] });
+  db._createView("products", "search-alias", { indexes: [
+    { collection: "books", index: "inv-idx" }
+  ] });
+~ db._dropView("products");
+~ db._drop(coll.name());
+```
 
 ## View Definition
 

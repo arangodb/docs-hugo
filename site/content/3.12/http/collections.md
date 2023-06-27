@@ -27,18 +27,18 @@ http://localhost:8529/_api/collection/demo
 ## Get information about collections
 
 ```openapi
-### reads all collections
+### List all collections
 
 paths:
   /_api/collection:
     get:
       operationId: listCollections
       description: |
-        Returns an object with an attribute *result* containing an
-        array of all collection descriptions.
+        Returns an object with a `result` attribute containing an array with the
+        descriptions of all collections in the current database.
 
-        By providing the optional query parameter *excludeSystem* with a value of
-        *true*, all system collections will be excluded from the response.
+        By providing the optional `excludeSystem` query parameter with a value of
+        `true`, all system collections are excluded from the response.
       parameters:
         - name: excludeSystem
           in: query
@@ -54,6 +54,9 @@ paths:
       tags:
         - Collections
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -76,36 +79,36 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-### Return information about a collection
+### Get the collection information
 
 paths:
   /_api/collection/{collection-name}:
     get:
       operationId: getCollection
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
         You should reference them via their names instead.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
         The result is an object describing the collection with the following
         attributes:
 
-        - *id*: The identifier of the collection.
+        - `id`: The identifier of the collection.
 
-        - *name*: The name of the collection.
+        - `name`: The name of the collection.
 
-        - *status*: The status of the collection as number.
+        - `status`: The status of the collection as number.
           - 3: loaded
           - 5: deleted
 
         Every other status indicates a corrupted collection.
 
-        - *type*: The type of the collection as number.
+        - `type`: The type of the collection as number.
           - 2: document collection (normal case)
           - 3: edge collection
 
-        - *isSystem*: If *true* then the collection is a system collection.
+        - `isSystem`: If `true` then the collection is a system collection.
       parameters:
         - name: collection-name
           in: path
@@ -117,23 +120,23 @@ paths:
       responses:
         '404':
           description: |
-            If the *collection-name* is unknown, then a *HTTP 404* is
+            If the `collection-name` is unknown, then a *HTTP 404* is
             returned.
       tags:
         - Collections
 ```
 ```openapi
-### Read properties of a collection
+### Get the properties of a collection
 
 paths:
   /_api/collection/{collection-name}/properties:
     get:
       operationId: getCollectionProperties
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
         You should reference them via their names instead.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
         Returns all properties of the specified collection.
       parameters:
@@ -147,11 +150,11 @@ paths:
       responses:
         '400':
           description: |
-            If the *collection-name* is missing, then a *HTTP 400* is
+            If the `collection-name` is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the *collection-name* is unknown, then a *HTTP 404*
+            If the `collection-name` is unknown, then a *HTTP 404*
             is returned.
         '200':
           description: ''
@@ -360,6 +363,9 @@ paths:
         - Collections
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -390,6 +396,7 @@ type: single
 ---
 description: |-
   Using a name:
+version: '3.12'
 render: input/output
 name: RestCollectionGetCollectionName
 server_name: stable
@@ -409,22 +416,21 @@ type: single
     db._drop(cn);
 ```
 ```openapi
-### Return number of documents in a collection
+### Get the document count of a collection
 
 paths:
   /_api/collection/{collection-name}/count:
     get:
       operationId: getCollectionCount
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
         You should reference them via their names instead.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
-        In addition to the above, the result also contains the number of documents.
-        **Note** that this will always load the collection into memory.
+        Get the number of documents in a collection.
 
-        - *count*: The number of documents inside the collection.
+        - `count`: The number of documents stored in the specified collection.
       parameters:
         - name: collection-name
           in: path
@@ -436,15 +442,18 @@ paths:
       responses:
         '400':
           description: |
-            If the *collection-name* is missing, then a *HTTP 400* is
+            If the `collection-name` is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the *collection-name* is unknown, then a *HTTP 404*
+            If the `collection-name` is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -474,17 +483,17 @@ type: single
     db._drop(cn);
 ```
 ```openapi
-### Return statistics for a collection
+### Get the collection statistics
 
 paths:
   /_api/collection/{collection-name}/figures:
     get:
       operationId: getCollectionFigures
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
         You should reference them via their names instead.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
         In addition to the above, the result also contains the number of documents
         and additional statistical information about the collection.
@@ -551,15 +560,18 @@ paths:
                   - figures
         '400':
           description: |
-            If the *collection-name* is missing, then a *HTTP 400* is
+            If the `collection-name` is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the *collection-name* is unknown, then a *HTTP 404*
+            If the `collection-name` is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -592,6 +604,7 @@ type: single
 ```curl
 ---
 description: ''
+version: '3.12'
 render: input/output
 name: RestCollectionGetCollectionFiguresDetails
 server_name: stable
@@ -613,7 +626,7 @@ type: single
     db._drop(cn);
 ```
 ```openapi
-### Return responsible shard for a document
+### Get the responsible shard for a document
 
 paths:
   /_api/collection/{collection-name}/responsibleShard:
@@ -627,7 +640,7 @@ paths:
         The request must body must contain a JSON document with at least the
         collection's shard key attributes set to some values.
 
-        The response is a JSON object with a *shardId* attribute, which will
+        The response is a JSON object with a `shardId` attribute, which will
         contain the ID of the responsible shard.
 
         **Note** : This method is only available in a cluster Coordinator.
@@ -658,14 +671,14 @@ paths:
             Returns the ID of the responsible shard.
         '400':
           description: |
-            If the *collection-name* is missing, then a *HTTP 400* is
+            If the `collection-name` is missing, then a *HTTP 400* is
             returned.
             Additionally, if not all of the collection's shard key
             attributes are present in the input document, then a
             *HTTP 400* is returned as well.
         '404':
           description: |
-            If the *collection-name* is unknown, then an *HTTP 404*
+            If the `collection-name` is unknown, then an *HTTP 404*
             is returned.
         '501':
           description: |
@@ -673,6 +686,9 @@ paths:
       tags:
         - Collections
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -699,7 +715,7 @@ type: cluster
     db._drop(cn);
 ```
 ```openapi
-### Return the shard ids of a collection
+### Get the shard IDs of a collection
 
 paths:
   /_api/collection/{collection-name}/shards:
@@ -734,11 +750,11 @@ paths:
             Returns the collection's shards.
         '400':
           description: |
-            If the *collection-name* is missing, then a *HTTP 400* is
+            If the `collection-name` is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the *collection-name* is unknown, then an *HTTP 404*
+            If the `collection-name` is unknown, then an *HTTP 404*
             is returned.
         '501':
           description: |
@@ -746,6 +762,9 @@ paths:
       tags:
         - Collections
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -775,11 +794,11 @@ type: cluster
 ---
 description: |-
   Retrieves the list of shards with the responsible servers:
+version: '3.12'
 render: input
 name: RestGetShardsWithDetails
 server_name: stable
 type: cluster
-version: '3.12'
 ---
 
     var cn = "testCollection";
@@ -793,23 +812,23 @@ version: '3.12'
     db._drop(cn);
 ```
 ```openapi
-### Return collection revision id
+### Get the collection revision ID
 
 paths:
   /_api/collection/{collection-name}/revision:
     get:
       operationId: getCollectionRevision
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
         You should reference them via their names instead.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
         The response will contain the collection's latest used revision id.
         The revision id is a server-generated string that clients can use to
         check whether data in a collection has changed since the last revision check.
 
-        - *revision*: The collection revision id as a string.
+        - `revision`: The collection revision id as a string.
       parameters:
         - name: collection-name
           in: path
@@ -821,15 +840,18 @@ paths:
       responses:
         '400':
           description: |
-            If the *collection-name* is missing, then a *HTTP 400* is
+            If the `collection-name` is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the *collection-name* is unknown, then a *HTTP 404*
+            If the `collection-name` is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -856,17 +878,17 @@ type: single
     db._drop(cn);
 ```
 ```openapi
-### Return checksum for the collection
+### Get the collection checksum
 
 paths:
   /_api/collection/{collection-name}/checksum:
     get:
       operationId: getCollectionChecksum
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
         You should reference them via their names instead.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
         Will calculate a checksum of the meta-data (keys and optionally revision ids) and
         optionally the document data in the collection.
@@ -876,22 +898,22 @@ paths:
         returned too so one can make sure the checksums are calculated for the same
         state of data.
 
-        By default, the checksum will only be calculated on the *_key* system attribute
+        By default, the checksum will only be calculated on the `_key` system attribute
         of the documents contained in the collection. For edge collections, the system
-        attributes *_from* and *_to* will also be included in the calculation.
+        attributes `_from` and `_to` will also be included in the calculation.
 
-        By setting the optional query parameter *withRevisions* to *true*, then revision
-        ids (*_rev* system attributes) are included in the checksumming.
+        By setting the optional query parameter `withRevisions` to `true`, then revision
+        ids (`_rev` system attributes) are included in the checksumming.
 
-        By providing the optional query parameter *withData* with a value of *true*,
+        By providing the optional query parameter `withData` with a value of `true`,
         the user-defined document attributes will be included in the calculation too.
         **Note**: Including user-defined attributes will make the checksumming slower.
 
         The response is a JSON object with the following attributes:
 
-        - *checksum*: The calculated checksum as a number.
+        - `checksum`: The calculated checksum as a number.
 
-        - *revision*: The collection revision id as a string.
+        - `revision`: The collection revision id as a string.
       parameters:
         - name: collection-name
           in: path
@@ -917,15 +939,18 @@ paths:
       responses:
         '400':
           description: |
-            If the *collection-name* is missing, then a *HTTP 400* is
+            If the `collection-name` is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the *collection-name* is unknown, then a *HTTP 404*
+            If the `collection-name` is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -959,6 +984,7 @@ type: single
 description: |-
   Retrieving the checksum of a collection including the collection data,
   but not the revisions:
+version: '3.12'
 render: input/output
 name: RestCollectionGetCollectionChecksumNoRev
 server_name: stable
@@ -982,17 +1008,17 @@ type: single
 ## Create and delete collections
 
 ```openapi
-### Create collection
+### Create a collection
 
 paths:
   /_api/collection:
     post:
       operationId: createCollection
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
         You should reference them via their names instead.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
         Creates a new collection with a given name. The request must contain an
         object with the following attributes.
@@ -1515,6 +1541,9 @@ paths:
         - Collections
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -1555,6 +1584,7 @@ type: single
 ```curl
 ---
 description: ''
+version: '3.12'
 render: input/output
 name: RestCollectionCreateKeyopt
 server_name: stable
@@ -1580,26 +1610,26 @@ type: single
     db._drop("testCollectionUsers");
 ```
 ```openapi
-### Drops a collection
+### Drop a collection
 
 paths:
   /_api/collection/{collection-name}:
     delete:
       operationId: deleteCollection
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
         You should reference them via their names instead.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
-        Drops the collection identified by *collection-name*.
+        Drops the collection identified by `collection-name`.
 
         If the collection was successfully dropped, an object is returned with
         the following attributes:
 
-        - *error*: *false*
+        - `error`: `false`
 
-        - *id*: The identifier of the dropped collection.
+        - `id`: The identifier of the dropped collection.
       parameters:
         - name: collection-name
           in: path
@@ -1613,20 +1643,23 @@ paths:
           required: false
           description: |
             Whether or not the collection to drop is a system collection. This parameter
-            must be set to *true* in order to drop a system collection.
+            must be set to `true` in order to drop a system collection.
           schema:
             type: boolean
       responses:
         '400':
           description: |
-            If the *collection-name* is missing, then a *HTTP 400* is
+            If the `collection-name` is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the *collection-name* is unknown, then a *HTTP 404* is returned.
+            If the `collection-name` is unknown, then a *HTTP 404* is returned.
       tags:
         - Collections
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -1657,6 +1690,7 @@ type: single
 ---
 description: |-
   Using a name:
+version: '3.12'
 render: input/output
 name: RestCollectionDeleteCollectionName
 server_name: stable
@@ -1681,6 +1715,7 @@ type: single
 ---
 description: |-
   Dropping a system collection
+version: '3.12'
 render: input/output
 name: RestCollectionDeleteCollectionSystem
 server_name: stable
@@ -1700,17 +1735,17 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-### Truncate collection
+### Truncate a collection
 
 paths:
   /_api/collection/{collection-name}/truncate:
     put:
       operationId: truncateCollection
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
         You should reference them via their names instead.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
         Removes all documents from the collection, but leaves the indexes intact.
       parameters:
@@ -1725,31 +1760,34 @@ paths:
           in: query
           required: false
           description: |
-            If *true* then the data is synchronized to disk before returning from the
-            truncate operation (default *false*)
+            If `true` then the data is synchronized to disk before returning from the
+            truncate operation (default `false`)
           schema:
             type: boolean
         - name: compact
           in: query
           required: false
           description: |
-            If *true* (default) then the storage engine is told to start a compaction
+            If `true` (default) then the storage engine is told to start a compaction
             in order to free up disk space. This can be resource intensive. If the only
-            intention is to start over with an empty collection, specify *false*.
+            intention is to start over with an empty collection, specify `false`.
           schema:
             type: boolean
       responses:
         '400':
           description: |
-            If the *collection-name* is missing, then a *HTTP 400* is
+            If the `collection-name` is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the *collection-name* is unknown, then a *HTTP 404*
+            If the `collection-name` is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -1778,52 +1816,52 @@ type: single
 ## Modify collections
 
 ```openapi
-### Load collection
+### Load a collection
 
 paths:
   /_api/collection/{collection-name}/load:
     put:
       operationId: loadCollection
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         The load function is deprecated from version 3.8.0 onwards and is a no-op
         from version 3.9.0 onwards. It should no longer be used, as it may be removed
         in a future version of ArangoDB.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
-        {{< warning >}}
+        {{</* warning */>}}
         Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
         You should reference them via their names instead.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
         Since ArangoDB version 3.9.0 this API does nothing. Previously it used to
         load a collection into memory.
 
         The request body object might optionally contain the following attribute:
 
-        - *count*: If set, this controls whether the return value should include
-          the number of documents in the collection. Setting *count* to
-          *false* may speed up loading a collection. The default value for
-          *count* is *true*.
+        - `count`: If set, this controls whether the return value should include
+          the number of documents in the collection. Setting `count` to
+          `false` may speed up loading a collection. The default value for
+          `count` is `true`.
 
         A call to this API returns an object with the following attributes for
         compatibility reasons:
 
-        - *id*: The identifier of the collection.
+        - `id`: The identifier of the collection.
 
-        - *name*: The name of the collection.
+        - `name`: The name of the collection.
 
-        - *count*: The number of documents inside the collection. This is only
-          returned if the *count* input parameters is set to *true* or has
+        - `count`: The number of documents inside the collection. This is only
+          returned if the `count` input parameters is set to `true` or has
           not been specified.
 
-        - *status*: The status of the collection as number.
+        - `status`: The status of the collection as number.
 
-        - *type*: The collection type. Valid types are:
+        - `type`: The collection type. Valid types are:
           - 2: document collection
           - 3: edge collection
 
-        - *isSystem*: If *true* then the collection is a system collection.
+        - `isSystem`: If `true` then the collection is a system collection.
       parameters:
         - name: collection-name
           in: path
@@ -1835,15 +1873,18 @@ paths:
       responses:
         '400':
           description: |
-            If the *collection-name* is missing, then a *HTTP 400* is
+            If the `collection-name` is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the *collection-name* is unknown, then a *HTTP 404*
+            If the `collection-name` is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -1869,40 +1910,40 @@ type: single
     db._drop(cn);
 ```
 ```openapi
-### Unload collection
+### Unload a collection
 
 paths:
   /_api/collection/{collection-name}/unload:
     put:
       operationId: unloadCollection
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         The unload function is deprecated from version 3.8.0 onwards and is a no-op
         from version 3.9.0 onwards. It should no longer be used, as it may be removed
         in a future version of ArangoDB.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
-        {{< warning >}}
+        {{</* warning */>}}
         Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
         You should reference them via their names instead.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
         Since ArangoDB version 3.9.0 this API does nothing. Previously it used to
         unload a collection from memory, while preserving all documents.
         When calling the API an object with the following attributes is
         returned for compatibility reasons:
 
-        - *id*: The identifier of the collection.
+        - `id`: The identifier of the collection.
 
-        - *name*: The name of the collection.
+        - `name`: The name of the collection.
 
-        - *status*: The status of the collection as number.
+        - `status`: The status of the collection as number.
 
-        - *type*: The collection type. Valid types are:
+        - `type`: The collection type. Valid types are:
           - 2: document collection
           - 3: edges collection
 
-        - *isSystem*: If *true* then the collection is a system collection.
+        - `isSystem`: If `true` then the collection is a system collection.
       parameters:
         - name: collection-name
           in: path
@@ -1914,14 +1955,17 @@ paths:
       responses:
         '400':
           description: |
-            If the *collection-name* is missing, then a *HTTP 400* is
+            If the `collection-name` is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the *collection-name* is unknown, then a *HTTP 404* is returned.
+            If the `collection-name` is unknown, then a *HTTP 404* is returned.
       tags:
         - Collections
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -1947,17 +1991,17 @@ type: single
     db._drop(cn);
 ```
 ```openapi
-### Load Indexes into Memory
+### Load collection indexes into memory
 
 paths:
   /_api/collection/{collection-name}/loadIndexesIntoMemory:
     put:
       operationId: loadCollectionIndexes
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
         You should reference them via their names instead.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
         You can call this endpoint to try to cache this collection's index entries in
         the main memory. Index lookups served from the memory cache can be much faster
@@ -2005,6 +2049,9 @@ paths:
         - Collections
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -2029,17 +2076,17 @@ type: single
     db._drop(cn);
 ```
 ```openapi
-### Change properties of a collection
+### Change the properties of a collection
 
 paths:
   /_api/collection/{collection-name}/properties:
     put:
       operationId: updateCollectionProperties
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
         You should reference them via their names instead.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
         Changes the properties of a collection. Only the provided attributes are
         updated. Collection properties **cannot be changed** once a collection is
@@ -2061,13 +2108,13 @@ paths:
               properties:
                 waitForSync:
                   description: |
-                    If *true* then the data is synchronized to disk before returning from a
+                    If `true` then the data is synchronized to disk before returning from a
                     document create, update, replace or removal operation. (default: false)
                   type: boolean
                 cacheEnabled:
                   description: |
                     Whether the in-memory hash cache for documents should be enabled for this
-                    collection (default: *false*). Can be controlled globally with the `--cache.size`
+                    collection (default: `false`). Can be controlled globally with the `--cache.size`
                     startup option. The cache can speed up repeated reads of the same documents via
                     their document keys. If the same documents are not fetched often or are
                     modified frequently, then you may disable the cache to avoid the maintenance
@@ -2127,7 +2174,7 @@ paths:
                       - overwrite
                 replicationFactor:
                   description: |
-                    (The default is *1*): in a cluster, this attribute determines how many copies
+                    (The default is `1`): in a cluster, this attribute determines how many copies
                     of each shard are kept on different DB-Servers. The value 1 means that only one
                     copy (no synchronous replication) is kept. A value of k means that k-1 replicas
                     are kept. For SatelliteCollections, it needs to be the string `"satellite"`,
@@ -2155,15 +2202,18 @@ paths:
       responses:
         '400':
           description: |
-            If the *collection-name* is missing, then a *HTTP 400* is
+            If the `collection-name` is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the *collection-name* is unknown, then a *HTTP 404*
+            If the `collection-name` is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -2189,35 +2239,35 @@ type: single
     db._drop(cn);
 ```
 ```openapi
-### Rename collection
+### Rename a collection
 
 paths:
   /_api/collection/{collection-name}/rename:
     put:
       operationId: renameCollection
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
         You should reference them via their names instead.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
         Renames a collection. Expects an object with the attribute(s)
 
-        - *name*: The new name.
+        - `name`: The new name.
 
         It returns an object with the attributes
 
-        - *id*: The identifier of the collection.
+        - `id`: The identifier of the collection.
 
-        - *name*: The new name of the collection.
+        - `name`: The new name of the collection.
 
-        - *status*: The status of the collection as number.
+        - `status`: The status of the collection as number.
 
-        - *type*: The collection type. Valid types are:
+        - `type`: The collection type. Valid types are:
           - 2: document collection
           - 3: edges collection
 
-        - *isSystem*: If *true* then the collection is a system collection.
+        - `isSystem`: If `true` then the collection is a system collection.
 
         If renaming the collection succeeds, then the collection is also renamed in
         all graph definitions inside the `_graphs` collection in the current database.
@@ -2234,15 +2284,18 @@ paths:
       responses:
         '400':
           description: |
-            If the *collection-name* is missing, then a *HTTP 400* is
+            If the `collection-name` is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the *collection-name* is unknown, then a *HTTP 404*
+            If the `collection-name` is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -2271,7 +2324,7 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-### Recalculate count of a collection
+### Recalculate the document count of a collection
 
 paths:
   /_api/collection/{collection-name}/recalculateCount:
@@ -2282,7 +2335,7 @@ paths:
 
         It returns an object with the attributes
 
-        - *result*: will be *true* if recalculating the document count succeeded.
+        - `result`: will be `true` if recalculating the document count succeeded.
       parameters:
         - name: collection-name
           in: path
@@ -2297,12 +2350,12 @@ paths:
             If the document count was recalculated successfully, *HTTP 200* is returned.
         '404':
           description: |
-            If the *collection-name* is unknown, then a *HTTP 404* is returned.
+            If the `collection-name` is unknown, then a *HTTP 404* is returned.
       tags:
         - Collections
 ```
 ```openapi
-### Compact the data of a collection
+### Compact a collection
 
 paths:
   /_api/collection/{collection-name}/compact:
@@ -2336,6 +2389,9 @@ paths:
       tags:
         - Collections
 ```
+
+**Examples**
+
 
 
 ```curl

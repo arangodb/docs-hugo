@@ -6,7 +6,7 @@ description: ''
 archetype: default
 ---
 ```openapi
-## Create geo-spatial index
+## Create a geo-spatial index
 
 paths:
   /_api/index#geo:
@@ -71,9 +71,24 @@ paths:
                     followed by latitude. This corresponds to the format described in
                     http://geojson.org/geojson-spec.html#positions
                   type: boolean
+                legacyPolygons:
+                  description: |
+                    If `geoJson` is set to `true`, then this option controls how GeoJSON Polygons
+                    are interpreted.
+
+                    - If `legacyPolygons` is `true`, the smaller of the two regions defined by a
+                      linear ring is interpreted as the interior of the ring and a ring can at most
+                      enclose half the Earth's surface.
+                    - If `legacyPolygons` is `false`, the area to the left of the boundary ring's
+                      path is considered to be the interior and a ring can enclose the entire
+                      surface of the Earth.
+
+                    The default is `true` for geo indexes that were created in versions before 3.10,
+                    and `false` for geo indexes created in 3.10 or later.
+                  type: boolean
                 inBackground:
                   description: |
-                    The optional attribute **inBackground** can be set to `true` to create the index
+                    You can set this option to `true` to create the index
                     in the background, which will not write-lock the underlying collection for
                     as long as if the index is built in the foreground. The default value is `false`.
                   type: boolean
@@ -94,6 +109,9 @@ paths:
       tags:
         - Indexes
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -130,6 +148,7 @@ type: single
 ---
 description: |-
   Creating a geo index with latitude and longitude attributes
+version: '3.12'
 render: input/output
 name: RestIndexCreateGeoLatitudeLongitude
 server_name: stable

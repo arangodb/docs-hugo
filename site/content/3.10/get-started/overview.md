@@ -63,7 +63,7 @@ You can also install ArangoDB locally or on your own server hardware.
 See [Install ArangoDB on-premises](on-premises-installation.md) for more details.
 
 If you want to migrate from an on-premises system to the fully managed ArangoGraph
-cloud platform, check out the [Cloud Migration Tool](../arangograph/guides/migrate-to-the-cloud.md).
+cloud platform, check out the [Cloud Migration Tool](../arangograph/migrate-to-the-cloud.md).
 
 ## Interactive Tutorials
 

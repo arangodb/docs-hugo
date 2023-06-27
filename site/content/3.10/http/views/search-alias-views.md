@@ -57,14 +57,17 @@ paths:
       responses:
         '400':
           description: |
-            If the *name* or *type* attribute are missing or invalid, then an *HTTP 400*
+            If the `name` or `type` attribute are missing or invalid, then an *HTTP 400*
             error is returned.
         '409':
           description: |
-            If a View called *name* already exists, then an *HTTP 409* error is returned.
+            If a View called `name` already exists, then an *HTTP 409* error is returned.
       tags:
         - Views
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -77,23 +80,26 @@ server_name: stable
 type: single
 ---
 
+    var coll = db._create("books");
+    var idx = coll.ensureIndex({ type: "inverted", name: "inv-idx", fields: [ { name: "title", analyzer: "text_en" } ] });
+
     var url = "/_api/view";
     var body = {
-      name: "testViewBasics",
-      type: "search-alias"
+      name: "products",
+      type: "search-alias",
+      indexes: [
+        { collection: "books", index: "inv-idx" }
+      ]
     };
-
     var response = logCurlRequest('POST', url, body);
-
     assert(response.code === 201);
-
     logJsonResponse(response);
 
-    db._flushCache();
-    db._dropView("testViewBasics");
+    db._dropView("products");
+    db._drop(coll.name());
 ```
 ```openapi
-## Return information about a View
+## Get information about a View
 
 paths:
   /_api/view/{view-name}:
@@ -101,9 +107,9 @@ paths:
       operationId: getView
       description: |
         The result is an object briefly describing the View with the following attributes:
-        - *id*: The identifier of the View
-        - *name*: The name of the View
-        - *type*: The type of the View as string
+        - `id`: The identifier of the View
+        - `name`: The name of the View
+        - `type`: The type of the View as string
       parameters:
         - name: view-name
           in: path
@@ -115,10 +121,13 @@ paths:
       responses:
         '404':
           description: |
-            If the *view-name* is unknown, then a *HTTP 404* is returned.
+            If the `view-name` is unknown, then a *HTTP 404* is returned.
       tags:
         - Views
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -132,18 +141,14 @@ server_name: stable
 type: single
 ---
 
-    var viewName = "testView";
-    var viewType = "arangosearch";
+    var view = db._createView("productsView", "arangosearch");
 
-    var view = db._createView(viewName, viewType);
     var url = "/_api/view/"+ view._id;
-
     var response = logCurlRequest('GET', url);
     assert(response.code === 200);
-
     logJsonResponse(response);
 
-    db._dropView("testView");
+    db._dropView("productsView");
 ```
 
 
@@ -151,32 +156,29 @@ type: single
 ---
 description: |-
   Using a name:
+version: '3.10'
 render: input/output
 name: RestViewGetViewNameArangoSearch
 server_name: stable
 type: single
 ---
 
-    var viewName = "testView";
-    var viewType = "arangosearch";
+    var view = db._createView("productsView", "arangosearch");
 
-    var view = db._createView(viewName, viewType);
-    var url = "/_api/view/testView";
-
+    var url = "/_api/view/productsView";
     var response = logCurlRequest('GET', url);
     assert(response.code === 200);
-
     logJsonResponse(response);
 
-    db._dropView("testView");
+    db._dropView("productsView");
 ```
 ```openapi
 ## Read properties of a View
 
 paths:
-  /_api/view/{view-name}/properties:
+  /_api/view/{view-name}/properties#searchalias:
     get:
-      operationId: getViewProperties
+      operationId: getViewPropertiesSearchAlias
       description: |
         Returns an object containing the definition of the View identified by *view-name*.
 
@@ -201,6 +203,9 @@ paths:
         - Views
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -208,23 +213,22 @@ description: |-
   Using an identifier:
 version: '3.10'
 render: input/output
-name: RestViewGetViewPropertiesIdentifierArangoSearch
+name: RestViewGetViewPropertiesIdentifierSearchAlias
 server_name: stable
 type: single
 ---
 
-    var viewName = "products";
-    var viewType = "arangosearch";
+    var coll = db._create("books");
+    var idx = coll.ensureIndex({ type: "inverted", name: "inv-idx", fields: [ { name: "title", analyzer: "text_en" } ] });
+    var view = db._createView("productsView", "search-alias", { indexes: [ { collection: "books", index: "inv-idx" } ] });
 
-    var view = db._createView(viewName, viewType);
     var url = "/_api/view/"+ view._id + "/properties";
-
     var response = logCurlRequest('GET', url);
-
     assert(response.code === 200);
-
     logJsonResponse(response);
-    db._dropView(viewName);
+
+    db._dropView("productsView");
+    db._drop("books");
 ```
 
 
@@ -232,24 +236,24 @@ type: single
 ---
 description: |-
   Using a name:
+version: '3.10'
 render: input/output
-name: RestViewGetViewPropertiesNameArangoSearch
+name: RestViewGetViewPropertiesNameSearchAlias
 server_name: stable
 type: single
 ---
 
-    var viewName = "products";
-    var viewType = "arangosearch";
+    var coll = db._create("books");
+    var idx = coll.ensureIndex({ type: "inverted", name: "inv-idx", fields: [ { name: "title", analyzer: "text_en" } ] });
+    var view = db._createView("productsView", "search-alias", { indexes: [ { collection: "books", index: "inv-idx" } ] });
 
-    var view = db._createView(viewName, viewType);
-    var url = "/_api/view/products/properties";
-
+    var url = "/_api/view/productsView/properties";
     var response = logCurlRequest('GET', url);
-
     assert(response.code === 200);
-
     logJsonResponse(response);
-    db._dropView(viewName);
+
+    db._dropView("productsView");
+    db._drop("books");
 ```
 ```openapi
 ## List all Views
@@ -261,9 +265,9 @@ paths:
       description: |
         Returns an object containing a listing of all Views in a database, regardless
         of their type. It is an array of objects with the following attributes:
-        - *id*
-        - *name*
-        - *type*
+        - `id`
+        - `name`
+        - `type`
       responses:
         '200':
           description: |
@@ -271,6 +275,9 @@ paths:
       tags:
         - Views
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -284,16 +291,19 @@ server_name: stable
 type: single
 ---
 
+    var viewSearchAlias = db._createView("productsView", "search-alias");
+    var viewArangoSearch = db._createView("reviewsView", "arangosearch");
+
     var url = "/_api/view";
-
     var response = logCurlRequest('GET', url);
-
     assert(response.code === 200);
-
     logJsonResponse(response);
+
+    db._dropView("productsView");
+    db._dropView("reviewsView");
 ```
 ```openapi
-## Changes properties of a search-alias View
+## Replace the properties of a search-alias View
 
 paths:
   /_api/view/{view-name}/properties#searchalias:
@@ -380,13 +390,16 @@ paths:
                   - indexes
         '400':
           description: |
-            If the *view-name* is missing, then a *HTTP 400* is returned.
+            If the `view-name` is missing, then a *HTTP 400* is returned.
         '404':
           description: |
-            If the *view-name* is unknown, then a *HTTP 404* is returned.
+            If the `view-name` is unknown, then a *HTTP 404* is returned.
       tags:
         - Views
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -399,30 +412,24 @@ server_name: stable
 type: single
 ---
 
-    var viewName = "products";
-    var viewType = "search-alias";
-    var indexName1 = "inv_title";
-    var indexName2 = "inv_descr";
-
     var coll = db._create("books");
-    coll.ensureIndex({ type: "inverted", name: indexName1, fields: ["title"] });
-    coll.ensureIndex({ type: "inverted", name: indexName2, fields: ["description"] });
+    coll.ensureIndex({ type: "inverted", name: "inv_title", fields: ["title"] });
+    coll.ensureIndex({ type: "inverted", name: "inv_descr", fields: ["description"] });
 
-    var view = db._createView(viewName, viewType, {
-      indexes: [ { collection: coll.name(), index: indexName1 } ] });
+    var view = db._createView("productsView", "search-alias", {
+      indexes: [ { collection: coll.name(), index: "inv_title" } ] });
 
     var url = "/_api/view/"+ view.name() + "/properties";
     var response = logCurlRequest('PUT', url, {
-      "indexes": [ { collection: coll.name(), index: indexName2 } ] });
-
+      "indexes": [ { collection: coll.name(), index: "inv_descr" } ] });
     assert(response.code === 200);
-
     logJsonResponse(response);
-    db._dropView(viewName);
+
+    db._dropView(view.name());
     db._drop(coll.name());
 ```
 ```openapi
-## Partially changes properties of a search-alias View
+## Update the properties of a search-alias View
 
 paths:
   /_api/view/{view-name}/properties#searchalias:
@@ -514,13 +521,16 @@ paths:
                   - indexes
         '400':
           description: |
-            If the *view-name* is missing, then a *HTTP 400* is returned.
+            If the `view-name` is missing, then a *HTTP 400* is returned.
         '404':
           description: |
-            If the *view-name* is unknown, then a *HTTP 404* is returned.
+            If the `view-name` is unknown, then a *HTTP 404* is returned.
       tags:
         - Views
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -533,26 +543,20 @@ server_name: stable
 type: single
 ---
 
-    var viewName = "products";
-    var viewType = "search-alias";
-    var indexName1 = "inv_title";
-    var indexName2 = "inv_descr";
-
     var coll = db._create("books");
-    coll.ensureIndex({ type: "inverted", name: indexName1, fields: ["title"] });
-    coll.ensureIndex({ type: "inverted", name: indexName2, fields: ["description"] });
+    coll.ensureIndex({ type: "inverted", name: "inv_title", fields: ["title"] });
+    coll.ensureIndex({ type: "inverted", name: "inv_descr", fields: ["description"] });
 
-    var view = db._createView(viewName, viewType, {
-      indexes: [ { collection: coll.name(), index: indexName1 } ] });
+    var view = db._createView("productsView", "search-alias", {
+      indexes: [ { collection: coll.name(), index: "inv_title" } ] });
 
     var url = "/_api/view/"+ view.name() + "/properties";
     var response = logCurlRequest('PATCH', url, {
-      "indexes": [ { collection: coll.name(), index: indexName2 } ] });
-
+      "indexes": [ { collection: coll.name(), index: "inv_descr" } ] });
     assert(response.code === 200);
-
     logJsonResponse(response);
-    db._dropView(viewName);
+
+    db._dropView(view.name());
     db._drop(coll.name());
 ```
 ```openapi
@@ -564,12 +568,12 @@ paths:
       operationId: renameView
       description: |
         Renames a View. Expects an object with the attribute(s)
-        - *name*: The new name
+        - `name`: The new name
 
         It returns an object with the attributes
-        - *id*: The identifier of the View.
-        - *name*: The new name of the View.
-        - *type*: The View type.
+        - `id`: The identifier of the View.
+        - `name`: The new name of the View.
+        - `type`: The View type.
 
         **Note**: This method is not available in a cluster.
       parameters:
@@ -583,13 +587,16 @@ paths:
       responses:
         '400':
           description: |
-            If the *view-name* is missing, then a *HTTP 400* is returned.
+            If the `view-name` is missing, then a *HTTP 400* is returned.
         '404':
           description: |
-            If the *view-name* is unknown, then a *HTTP 404* is returned.
+            If the `view-name` is unknown, then a *HTTP 404* is returned.
       tags:
         - Views
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -602,34 +609,29 @@ server_name: stable
 type: single
 ---
 
-    var viewName = "products1";
-    var viewType = "arangosearch";
+    var view = db._createView("productsView", "arangosearch");
 
-    var view = db._createView(viewName, viewType);
     var url = "/_api/view/" + view.name() + "/rename";
-
-    var response = logCurlRequest('PUT', url, { name: "viewNewName" });
-
+    var response = logCurlRequest('PUT', url, { name: "catalogView" });
     assert(response.code === 200);
-    db._flushCache();
-    db._dropView("viewNewName");
-
     logJsonResponse(response);
+
+    db._dropView("catalogView");
 ```
 ```openapi
-## Drops a View
+## Drop a View
 
 paths:
   /_api/view/{view-name}:
     delete:
       operationId: deleteView
       description: |
-        Drops the View identified by *view-name*.
+        Drops the View identified by `view-name`.
 
         If the View was successfully dropped, an object is returned with
         the following attributes:
-        - *error*: *false*
-        - *id*: The identifier of the dropped View
+        - `error`: `false`
+        - `id`: The identifier of the dropped View
       parameters:
         - name: view-name
           in: path
@@ -641,13 +643,16 @@ paths:
       responses:
         '400':
           description: |
-            If the *view-name* is missing, then a *HTTP 400* is returned.
+            If the `view-name` is missing, then a *HTTP 400* is returned.
         '404':
           description: |
-            If the *view-name* is unknown, then a *HTTP 404* is returned.
+            If the `view-name` is unknown, then a *HTTP 404* is returned.
       tags:
         - Views
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -661,15 +666,11 @@ server_name: stable
 type: single
 ---
 
-    var viewName = "testView";
-    var viewType = "arangosearch";
+    var view = db._createView("productsView", "arangosearch");
 
-    var view = db._createView(viewName, viewType);
     var url = "/_api/view/"+ view._id;
-
     var response = logCurlRequest('DELETE', url);
     assert(response.code === 200);
-
     logJsonResponse(response);
 ```
 
@@ -678,20 +679,17 @@ type: single
 ---
 description: |-
   Using a name:
+version: '3.10'
 render: input/output
 name: RestViewDeleteViewNameArangoSearch
 server_name: stable
 type: single
 ---
 
-    var viewName = "testView";
-    var viewType = "arangosearch";
+    var view = db._createView("productsView", "arangosearch");
 
-    var view = db._createView(viewName, viewType);
-    var url = "/_api/view/testView";
-
+    var url = "/_api/view/productsView";
     var response = logCurlRequest('DELETE', url);
     assert(response.code === 200);
-
     logJsonResponse(response);
 ```

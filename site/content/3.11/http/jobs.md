@@ -8,14 +8,14 @@ description: >-
 archetype: default
 ---
 ```openapi
-## Return result of an async job
+## Get the results of an async job
 
 paths:
   /_api/job/{job-id}:
     put:
       operationId: getJobResult
       description: |
-        Returns the result of an async job identified by job-id. If the async job
+        Returns the result of an async job identified by `job-id`. If the async job
         result is present on the server, the result will be removed from the list of
         result. That means this method can be called for each job-id once.
         The method will return the original job result's headers and body, plus the
@@ -51,6 +51,9 @@ paths:
         - Jobs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -76,6 +79,7 @@ type: single
 ---
 description: |-
   Providing a job-id for a non-existing job:
+version: '3.11'
 render: input/output
 name: job_fetch_result_02
 server_name: stable
@@ -95,6 +99,7 @@ type: single
 ---
 description: |-
   Fetching the result of an HTTP GET job:
+version: '3.11'
 render: input/output
 name: job_fetch_result_03
 server_name: stable
@@ -120,6 +125,7 @@ type: single
 ---
 description: |-
   Fetching the result of an HTTP POST job that failed:
+version: '3.11'
 render: input/output
 name: job_fetch_result_04
 server_name: stable
@@ -140,7 +146,7 @@ type: single
   logJsonResponse(response);
 ```
 ```openapi
-## Cancel async job
+## Cancel an async job
 
 paths:
   /_api/job/{job-id}/cancel:
@@ -173,6 +179,9 @@ paths:
       tags:
         - Jobs
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -211,7 +220,7 @@ type: single
   logJsonResponse(response);
 ```
 ```openapi
-## Deletes async job
+## Delete async job results
 
 paths:
   /_api/job/{job-id}:
@@ -262,6 +271,9 @@ paths:
         - Jobs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -292,6 +304,7 @@ type: single
 ---
 description: |-
   Deleting expired jobs:
+version: '3.11'
 render: input/output
 name: job_delete_02
 server_name: stable
@@ -326,6 +339,7 @@ type: single
 ---
 description: |-
   Deleting the result of a specific job:
+version: '3.11'
 render: input/output
 name: job_delete_03
 server_name: stable
@@ -351,6 +365,7 @@ type: single
 ---
 description: |-
   Deleting the result of a non-existing job:
+version: '3.11'
 render: input/output
 name: job_delete_04
 server_name: stable
@@ -363,7 +378,7 @@ type: single
   logJsonResponse(response);
 ```
 ```openapi
-## List async jobs by status or get status of specific job
+## List async jobs by status or get the status of specific job
 
 paths:
   /_api/job/{job-id}:
@@ -418,6 +433,9 @@ paths:
         - Jobs
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -450,6 +468,7 @@ type: single
 description: |-
   Querying the status of a pending job:
   (therefore we create a long running job...)
+version: '3.11'
 render: input
 name: job_getStatusById_02
 server_name: stable
@@ -481,6 +500,7 @@ type: single
 ---
 description: |-
   Fetching the list of `done` jobs:
+version: '3.11'
 render: input/output
 name: job_getByType_01
 server_name: stable
@@ -505,6 +525,7 @@ type: single
 ---
 description: |-
   Fetching the list of `pending` jobs:
+version: '3.11'
 render: input/output
 name: job_getByType_02
 server_name: stable
@@ -530,6 +551,7 @@ type: single
 description: |-
   Fetching the list of a `pending` jobs while a long-running job is executing
   (and aborting it):
+version: '3.11'
 render: input/output
 name: job_getByType_03
 server_name: stable

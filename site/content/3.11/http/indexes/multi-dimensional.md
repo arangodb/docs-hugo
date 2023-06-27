@@ -6,14 +6,14 @@ description: ''
 archetype: default
 ---
 ```openapi
-## Create multi-dimensional index
+## Create a multi-dimensional index
 
 paths:
   /_api/index#zkd:
     post:
       operationId: createIndexZkd
       description: |
-        Creates a multi-dimensional index for the collection *collection-name*, if
+        Creates a multi-dimensional index for the collection `collection-name`, if
         it does not already exist. The call expects an object containing the index
         details.
       parameters:
@@ -32,7 +32,7 @@ paths:
               properties:
                 type:
                   description: |
-                    must be equal to *"zkd"*.
+                    must be equal to `"zkd"`.
                   type: string
                 name:
                   description: |
@@ -49,17 +49,17 @@ paths:
                     type: string
                 unique:
                   description: |
-                    if *true*, then create a unique index.
+                    if `true`, then create a unique index.
                   type: boolean
                 inBackground:
                   description: |
-                    The optional attribute **inBackground** can be set to *true* to create the index
+                    You can set this option to `true` to create the index
                     in the background, which will not write-lock the underlying collection for
-                    as long as if the index is built in the foreground. The default value is *false*.
+                    as long as if the index is built in the foreground. The default value is `false`.
                   type: boolean
                 fieldValueTypes:
                   description: |
-                    must be equal to *"double"*. Currently only doubles are supported as values.
+                    must be equal to `"double"`. Currently only doubles are supported as values.
                   type: string
               required:
                 - type
@@ -76,13 +76,16 @@ paths:
             is returned.
         '404':
           description: |
-            If the *collection-name* is unknown, then a *HTTP 404* is returned.
+            If the `collection-name` is unknown, then a *HTTP 404* is returned.
         '400':
           description: |
             If the index definition is invalid, then a *HTTP 400* is returned.
       tags:
         - Indexes
 ```
+
+**Examples**
+
 
 
 ```curl

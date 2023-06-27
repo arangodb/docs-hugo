@@ -18,18 +18,18 @@ path you will get a result in form of a set with two items:
 ### Example execution
 
 Let's take a look at a simple example to explain how it works.
-This is the graph that we are going to find a shortest path on:
+This is the graph that you are going to find a shortest path on:
 
 ![traversal graph](../../../../../images/traversal_graph.png)
 
-Now we use the following parameters for our query:
+You can use the following parameters for the query:
 
-1. We start at the vertex **A**.
-2. We finish with the vertex **D**.
+1. You start at the vertex **A**.
+2. You finish with the vertex **D**.
 
-So obviously we will have the vertices **A**, **B**, **C** and **D** on the
-shortest path in exactly this order. Than the shortest path statement will
-return the following pairs:
+So, obviously, you have the vertices **A**, **B**, **C** and **D** on the
+shortest path in exactly this order. Then, the shortest path statement
+returns the following pairs:
 
 | Vertex | Edge  |
 |--------|-------|
@@ -38,12 +38,12 @@ return the following pairs:
 |    C   | B → C |
 |    D   | C → D |
 
-Note: The first edge will always be `null` because there is no edge pointing
+Note that the first edge is always `null` because there is no edge pointing
 to the *startVertex*.
 
 ## Syntax
 
-Now let's see how we can write a shortest path query.
+The next step is to see how you can write a shortest path query.
 You have two options here, you can either use a named graph or a set of edge
 collections (anonymous graph).
 
@@ -120,16 +120,17 @@ direction for each collection in your path search.
 
 ## Conditional shortest path
 
-The SHORTEST_PATH computation will only find an unconditioned shortest path.
+The `SHORTEST_PATH` computation only finds an unconditioned shortest path.
 With this construct it is not possible to define a condition like: "Find the
 shortest path where all edges are of type *X*". If you want to do this, use a
 normal [Traversal](../../graphs/traversals/_index.md) instead with the option
 `{order: "bfs"}` in combination with `LIMIT 1`.
 
-Please also consider [to use `WITH`](../high-level-operations/with.md) to specify the collections you expect to be involved.
+Please also consider using [`WITH`](../high-level-operations/with.md) to specify the
+collections you expect to be involved.
 
 ## Examples
-We will create a simple symmetric traversal demonstration graph:
+Creating a simple symmetric traversal demonstration graph:
 
 ![traversal graph](../../../../../images/traversal_graph.png)
 
@@ -144,13 +145,13 @@ type: single
 ---
 ~addIgnoreCollection("circles");
 ~addIgnoreCollection("edges");
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("traversalGraph");
 db.circles.toArray();
 db.edges.toArray();
 ```
 
-We start with the shortest path from **A** to **D** as above:
+Start with the shortest path from **A** to **D** as above:
 
 ```js
 ---
@@ -165,10 +166,11 @@ db._query("FOR v, e IN OUTBOUND SHORTEST_PATH 'circles/A' TO 'circles/D' GRAPH '
 db._query("FOR v, e IN OUTBOUND SHORTEST_PATH 'circles/A' TO 'circles/D' edges RETURN [v._key, e._key]");
 ```
 
-We can see our expectations are fulfilled. We find the vertices in the correct ordering and
-the first edge is *null*, because no edge is pointing to the start vertex on this path.
+You can see that expectations are fulfilled. You find the vertices in the
+correct ordering and the first edge is *null*, because no edge is pointing
+to the start vertex on this path.
 
-We can also compute shortest paths based on documents found in collections:
+You can also compute shortest paths based on documents found in collections:
 
 ```js
 ---
@@ -194,7 +196,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 examples.dropGraph("traversalGraph");
 ~removeIgnoreCollection("circles");
 ~removeIgnoreCollection("edges");

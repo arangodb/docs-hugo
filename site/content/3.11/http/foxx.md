@@ -15,7 +15,7 @@ For more information on Foxx and its JavaScript APIs see the
 ## Management
 
 ```openapi
-### List installed services
+### List the installed services
 
 paths:
   /_api/foxx:
@@ -26,15 +26,15 @@ paths:
 
         Returns a list of objects with the following attributes:
 
-        - *mount*: the mount path of the service
-        - *development*: *true* if the service is running in development mode
-        - *legacy*: *true* if the service is running in 2.8 legacy compatibility mode
-        - *provides*: the service manifest's *provides* value or an empty object
+        - `mount`: the mount path of the service
+        - `development`: `true` if the service is running in development mode
+        - `legacy`: `true` if the service is running in 2.8 legacy compatibility mode
+        - `provides`: the service manifest's `provides` value or an empty object
 
         Additionally the object may contain the following attributes if they have been set on the manifest:
 
-        - *name*: a string identifying the service type
-        - *version*: a semver-compatible version string
+        - `name`: a string identifying the service type
+        - `version`: a semver-compatible version string
       parameters:
         - name: excludeSystem
           in: query
@@ -51,7 +51,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Service description
+### Get the service description
 
 paths:
   /_api/foxx/service:
@@ -62,16 +62,16 @@ paths:
 
         Returns an object with the following attributes:
 
-        - *mount*: the mount path of the service
-        - *path*: the local file system path of the service
-        - *development*: *true* if the service is running in development mode
-        - *legacy*: *true* if the service is running in 2.8 legacy compatibility mode
-        - *manifest*: the normalized JSON manifest of the service
+        - `mount`: the mount path of the service
+        - `path`: the local file system path of the service
+        - `development`: `true` if the service is running in development mode
+        - `legacy`: `true` if the service is running in 2.8 legacy compatibility mode
+        - `manifest`: the normalized JSON manifest of the service
 
         Additionally the object may contain the following attributes if they have been set on the manifest:
 
-        - *name*: a string identifying the service type
-        - *version*: a semver-compatible version string
+        - `name`: a string identifying the service type
+        - `version`: a semver-compatible version string
       parameters:
         - name: mount
           in: query
@@ -91,7 +91,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Install new service
+### Install a new service
 
 paths:
   /_api/foxx:
@@ -109,19 +109,19 @@ paths:
 
         A service definition is an object or form with the following properties or fields:
 
-        - *configuration*: a JSON object describing configuration values
-        - *dependencies*: a JSON object describing dependency settings
-        - *source*: a fully qualified URL or an absolute path on the server's file system
+        - `configuration`: a JSON object describing configuration values
+        - `dependencies`: a JSON object describing dependency settings
+        - `source`: a fully qualified URL or an absolute path on the server's file system
 
-        When using multipart data, the *source* field can also alternatively be a file field
+        When using multipart data, the `source` field can also alternatively be a file field
         containing either a zip bundle or a standalone JavaScript file.
 
         When using a standalone JavaScript file the given file will be executed
         to define our service's HTTP endpoints. It is the same which would be defined
         in the field `main` of the service manifest.
 
-        If *source* is a URL, the URL must be reachable from the server.
-        If *source* is a file system path, the path will be resolved on the server.
+        If `source` is a URL, the URL must be reachable from the server.
+        If `source` is a file system path, the path will be resolved on the server.
         In either case the path or URL is expected to resolve to a zip bundle,
         JavaScript file or (in case of a file system path) directory.
 
@@ -164,7 +164,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Uninstall service
+### Uninstall a service
 
 paths:
   /_api/foxx/service:
@@ -197,7 +197,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Replace service
+### Replace a service
 
 paths:
   /_api/foxx/service:
@@ -220,19 +220,19 @@ paths:
 
         A service definition is an object or form with the following properties or fields:
 
-        - *configuration*: a JSON object describing configuration values
-        - *dependencies*: a JSON object describing dependency settings
-        - *source*: a fully qualified URL or an absolute path on the server's file system
+        - `configuration`: a JSON object describing configuration values
+        - `dependencies`: a JSON object describing dependency settings
+        - `source`: a fully qualified URL or an absolute path on the server's file system
 
-        When using multipart data, the *source* field can also alternatively be a file field
+        When using multipart data, the `source` field can also alternatively be a file field
         containing either a zip bundle or a standalone JavaScript file.
 
         When using a standalone JavaScript file the given file will be executed
         to define our service's HTTP endpoints. It is the same which would be defined
         in the field `main` of the service manifest.
 
-        If *source* is a URL, the URL must be reachable from the server.
-        If *source* is a file system path, the path will be resolved on the server.
+        If `source` is a URL, the URL must be reachable from the server.
+        If `source` is a file system path, the path will be resolved on the server.
         In either case the path or URL is expected to resolve to a zip bundle,
         JavaScript file or (in case of a file system path) directory.
 
@@ -282,7 +282,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Upgrade service
+### Upgrade a service
 
 paths:
   /_api/foxx/service:
@@ -305,19 +305,19 @@ paths:
 
         A service definition is an object or form with the following properties or fields:
 
-        - *configuration*: a JSON object describing configuration values
-        - *dependencies*: a JSON object describing dependency settings
-        - *source*: a fully qualified URL or an absolute path on the server's file system
+        - `configuration`: a JSON object describing configuration values
+        - `dependencies`: a JSON object describing dependency settings
+        - `source`: a fully qualified URL or an absolute path on the server's file system
 
-        When using multipart data, the *source* field can also alternatively be a file field
+        When using multipart data, the `source` field can also alternatively be a file field
         containing either a zip bundle or a standalone JavaScript file.
 
         When using a standalone JavaScript file the given file will be executed
         to define our service's HTTP endpoints. It is the same which would be defined
         in the field `main` of the service manifest.
 
-        If *source* is a URL, the URL must be reachable from the server.
-        If *source* is a file system path, the path will be resolved on the server.
+        If `source` is a URL, the URL must be reachable from the server.
+        If `source` is a file system path, the path will be resolved on the server.
         In either case the path or URL is expected to resolve to a zip bundle,
         JavaScript file or (in case of a file system path) directory.
 
@@ -370,7 +370,7 @@ paths:
 ## Configuration
 
 ```openapi
-### Get configuration options
+### Get the configuration options
 
 paths:
   /_api/foxx/configuration:
@@ -380,7 +380,7 @@ paths:
         Fetches the current configuration for the service at the given mount path.
 
         Returns an object mapping the configuration option names to their definitions
-        including a human-friendly *title* and the *current* value (if any).
+        including a human-friendly `title` and the `current` value (if any).
       parameters:
         - name: mount
           in: query
@@ -397,7 +397,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Update configuration options
+### Update the configuration options
 
 paths:
   /_api/foxx/configuration:
@@ -436,7 +436,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Replace configuration options
+### Replace the configuration options
 
 paths:
   /_api/foxx/configuration:
@@ -475,7 +475,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Get dependency options
+### Get the dependency options
 
 paths:
   /_api/foxx/dependencies:
@@ -485,7 +485,7 @@ paths:
         Fetches the current dependencies for service at the given mount path.
 
         Returns an object mapping the dependency names to their definitions
-        including a human-friendly *title* and the *current* mount path (if any).
+        including a human-friendly `title` and the `current` mount path (if any).
       parameters:
         - name: mount
           in: query
@@ -502,7 +502,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Update dependencies options
+### Update the dependency options
 
 paths:
   /_api/foxx/dependencies:
@@ -541,7 +541,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Replace dependencies options
+### Replace the dependency options
 
 paths:
   /_api/foxx/dependencies:
@@ -583,7 +583,7 @@ paths:
 ## Miscellaneous
 
 ```openapi
-### List service scripts
+### List the service scripts
 
 paths:
   /_api/foxx/scripts:
@@ -609,7 +609,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Run service script
+### Run a service script
 
 paths:
   /_api/foxx/scripts/{name}:
@@ -653,7 +653,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Run service tests
+### Run the service tests
 
 paths:
   /_api/foxx/tests:
@@ -664,21 +664,21 @@ paths:
 
         Supported test reporters are:
 
-        - *default*: a simple list of test cases
-        - *suite*: an object of test cases nested in suites
-        - *stream*: a raw stream of test results
-        - *xunit*: an XUnit/JUnit compatible structure
-        - *tap*: a raw TAP compatible stream
+        - `default`: a simple list of test cases
+        - `suite`: an object of test cases nested in suites
+        - `stream`: a raw stream of test results
+        - `xunit`: an XUnit/JUnit compatible structure
+        - `tap`: a raw TAP compatible stream
 
-        The *Accept* request header can be used to further control the response format:
+        The `Accept` request header can be used to further control the response format:
 
-        When using the *stream* reporter `application/x-ldjson` will result
+        When using the `stream` reporter `application/x-ldjson` will result
         in the response body being formatted as a newline-delimited JSON stream.
 
-        When using the *tap* reporter `text/plain` or `text/*` will result
+        When using the `tap` reporter `text/plain` or `text/*` will result
         in the response body being formatted as a plain text TAP report.
 
-        When using the *xunit* reporter `application/xml` or `text/xml` will result
+        When using the `xunit` reporter `application/xml` or `text/xml` will result
         in the response body being formatted as XML instead of JSONML.
 
         Otherwise the response body will be formatted as non-prettyprinted JSON.
@@ -701,7 +701,7 @@ paths:
           in: query
           required: false
           description: |
-            Use the matching format for the reporter, regardless of the *Accept* header.
+            Use the matching format for the reporter, regardless of the `Accept` header.
           schema:
             type: boolean
         - name: filter
@@ -720,7 +720,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Enable development mode
+### Enable the development mode
 
 paths:
   /_api/foxx/development:
@@ -753,7 +753,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Disable development mode
+### Disable the development mode
 
 paths:
   /_api/foxx/development:
@@ -781,7 +781,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Service README
+### Get the service README
 
 paths:
   /_api/foxx/readme:
@@ -808,7 +808,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Swagger description
+### Get the Swagger description
 
 paths:
   /_api/foxx/swagger:
@@ -834,7 +834,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Download service bundle
+### Download a service bundle
 
 paths:
   /_api/foxx/download:
@@ -866,7 +866,7 @@ paths:
         - Foxx
 ```
 ```openapi
-### Commit local service state
+### Commit the local service state
 
 paths:
   /_api/foxx/commit:

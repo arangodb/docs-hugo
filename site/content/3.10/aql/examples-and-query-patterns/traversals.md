@@ -22,7 +22,7 @@ version: '3.10'
 server_name: stable
 type: single
 ---
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var g = examples.loadGraph("routeplanner");
 ~examples.dropGraph("routeplanner");
 ```
@@ -137,7 +137,7 @@ version: '3.10'
 server_name: stable
 type: single
 ---
-~var examples = require("@arangodb/graph-examples/example-graph.js");
+~var examples = require("@arangodb/graph-examples/example-graph");
 ~var g = examples.loadGraph("routeplanner");
 examples.dropGraph("routeplanner");
 ```

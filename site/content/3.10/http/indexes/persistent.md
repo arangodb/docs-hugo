@@ -174,6 +174,9 @@ paths:
         - Indexes
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -210,6 +213,7 @@ type: single
 ---
 description: |-
   Creating a sparse persistent index
+version: '3.10'
 render: input/output
 name: RestIndexCreateSparsePersistent
 server_name: stable

@@ -20,7 +20,7 @@ archetype: default
 ### April 2023
 
 - Adds automated ArangoDB version upgrades to ArangoGraph, following the
-  [ArangoGraph Versioning Policy](guides/deployments/upgrades-and-versioning.md), ensuring customers benefit from the
+  [ArangoGraph Versioning Policy](deployments/upgrades-and-versioning.md), ensuring customers benefit from the
   latest bug fixes and improvements
 - Improvements made to networking subsystem provide a latency improvement of between
   10-30% (depending on the specific workload)

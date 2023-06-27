@@ -73,23 +73,24 @@ endpoints to request and delete multiple documents in one request.
 ### Single document operations
 
 ```openapi
-#### Read document
+#### Get a document
 
 paths:
   /_api/document/{collection}/{key}:
     get:
       operationId: getDocument
       description: |
-        Returns the document identified by *document-id*. The returned
-        document contains three special attributes: *_id* containing the document
-        identifier, *_key* containing key which uniquely identifies a document
-        in a given collection and *_rev* containing the revision.
+        Returns the document identified by the collection name and document key.
+        The returned document contains three special attributes:
+        - `_id` containing the document identifier
+        - `_key` containing key which uniquely identifies a document in a given collection
+        - `_rev` containing the revision
       parameters:
         - name: collection
           in: path
           required: true
           description: |
-            Name of the *collection* from which the document is to be read.
+            Name of the collection from which the document is to be read.
           schema:
             type: string
         - name: key
@@ -104,8 +105,8 @@ paths:
           required: false
           description: |
             If the "If-None-Match" header is given, then it must contain exactly one
-            Etag. The document is returned, if it has a different revision than the
-            given Etag. Otherwise an *HTTP 304* is returned.
+            ETag. The document is returned, if it has a different revision than the
+            given ETag. Otherwise an *HTTP 304* is returned.
           schema:
             type: string
         - name: If-Match
@@ -113,8 +114,8 @@ paths:
           required: false
           description: |
             If the "If-Match" header is given, then it must contain exactly one
-            Etag. The document is returned, if it has the same revision as the
-            given Etag. Otherwise a *HTTP 412* is returned.
+            ETag. The document is returned, if it has the same revision as the
+            given ETag. Otherwise a *HTTP 412* is returned.
           schema:
             type: string
         - name: x-arango-allow-dirty-read
@@ -152,11 +153,14 @@ paths:
           description: |
             is returned if an "If-Match" header is given and the found
             document has a different version. The response will also contain the found
-            document's current revision in the *_rev* attribute. Additionally, the
-            attributes *_id* and *_key* will be returned.
+            document's current revision in the `_rev` attribute. Additionally, the
+            attributes `_id` and `_key` will be returned.
       tags:
         - Documents
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -189,7 +193,8 @@ type: single
 ```curl
 ---
 description: |-
-  Use a document identifier and an Etag:
+  Use a document identifier and an ETag:
+version: '3.11'
 render: input
 name: RestDocumentHandlerReadDocumentIfNoneMatch
 server_name: stable
@@ -215,6 +220,7 @@ type: single
 ---
 description: |-
   Unknown document identifier:
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerReadDocumentUnknownHandle
 server_name: stable
@@ -230,14 +236,14 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-#### Read document header
+#### Get a document header
 
 paths:
   /_api/document/{collection}/{key}:
     head:
       operationId: getDocumentHeader
       description: |
-        Like *GET*, but only returns the header fields and not the body. You
+        Like `GET`, but only returns the header fields and not the body. You
         can use this call to get the current revision of a document or check if
         the document was deleted.
       parameters:
@@ -245,7 +251,7 @@ paths:
           in: path
           required: true
           description: |
-            Name of the *collection* from which the document is to be read.
+            Name of the `collection` from which the document is to be read.
           schema:
             type: string
         - name: key
@@ -260,9 +266,9 @@ paths:
           required: false
           description: |
             If the "If-None-Match" header is given, then it must contain exactly one
-            Etag. If the current document revision is not equal to the specified Etag,
+            ETag. If the current document revision is not equal to the specified ETag,
             an *HTTP 200* response is returned. If the current document revision is
-            identical to the specified Etag, then an *HTTP 304* is returned.
+            identical to the specified ETag, then an *HTTP 304* is returned.
           schema:
             type: string
         - name: If-Match
@@ -270,8 +276,8 @@ paths:
           required: false
           description: |
             If the "If-Match" header is given, then it must contain exactly one
-            Etag. The document is returned, if it has the same revision as the
-            given Etag. Otherwise a *HTTP 412* is returned.
+            ETag. The document is returned, if it has the same revision as the
+            given ETag. Otherwise a *HTTP 412* is returned.
           schema:
             type: string
         - name: x-arango-allow-dirty-read
@@ -309,10 +315,13 @@ paths:
           description: |
             is returned if an "If-Match" header is given and the found
             document has a different version. The response will also contain the found
-            document's current revision in the *Etag* header.
+            document's current revision in the `ETag` header.
       tags:
         - Documents
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -338,7 +347,7 @@ type: single
   ~ db._drop(cn);
 ```
 ```openapi
-#### Create document
+#### Create a document
 
 paths:
   /_api/document/{collection}:
@@ -353,7 +362,7 @@ paths:
         the URL part or the query parameter collection respectively counts.
 
         If the document was created successfully, then the `Location` header
-        contains the path to the newly created document. The `Etag` header field
+        contains the path to the newly created document. The `ETag` header field
         contains the revision of the document. Both are only set in the single
         document case.
 
@@ -474,11 +483,11 @@ paths:
           required: false
           description: |
             If the intention is to delete existing attributes with the update-insert
-            command, the URL query parameter `keepNull` can be used with a value of
-            `false`. This modifies the behavior of the patch command to remove any
-            attributes from the existing document that are contained in the patch document
-            with an attribute value of `null`.
-            This option controls the update-insert behavior only.
+            command, set the `keepNull` URL query parameter to `false`. This modifies the
+            behavior of the patch command to remove top-level attributes and sub-attributes
+            from the existing document that are contained in the patch document with an
+            attribute value of `null` (but not attributes of objects that are nested inside
+            of arrays). This option controls the update-insert behavior only.
           schema:
             type: boolean
         - name: mergeObjects
@@ -549,6 +558,9 @@ paths:
         - Documents
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -584,6 +596,7 @@ type: single
 description: |-
   Create a document in a collection named `products` with a collection-level
   `waitForSync` value of `false`.
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerPostAccept1
 server_name: stable
@@ -611,6 +624,7 @@ type: single
 description: |-
   Create a document in a collection with a collection-level `waitForSync`
   value of `false`, but using the `waitForSync` query parameter.
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerPostWait1
 server_name: stable
@@ -637,6 +651,7 @@ type: single
 ---
 description: |-
   Unknown collection name
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerPostUnknownCollection1
 server_name: stable
@@ -660,6 +675,7 @@ type: single
 ---
 description: |-
   Illegal document
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerPostBadJson1
 server_name: stable
@@ -686,6 +702,7 @@ type: single
 ---
 description: |-
   Use of returnNew:
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerPostReturnNew
 server_name: stable
@@ -711,6 +728,7 @@ type: single
 ```curl
 ---
 description: ''
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerPostOverwrite
 server_name: stable
@@ -738,7 +756,7 @@ type: single
     db._drop(cn);
 ```
 ```openapi
-#### Replace document
+#### Replace a document
 
 paths:
   /_api/document/{collection}/{key}:
@@ -764,7 +782,7 @@ paths:
 
         If the document exists and can be updated, then an *HTTP 201* or
         an *HTTP 202* is returned (depending on `waitForSync`, see below),
-        the `Etag` header field contains the new revision of the document
+        the `ETag` header field contains the new revision of the document
         and the `Location` header contains a complete URL under which the
         document can be queried.
 
@@ -929,6 +947,9 @@ paths:
         - Documents
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -961,6 +982,7 @@ type: single
 ---
 description: |-
   Unknown document identifier
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerUpdateDocumentUnknownHandle
 server_name: stable
@@ -988,6 +1010,7 @@ type: single
 ---
 description: |-
   Produce a revision conflict
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerUpdateDocumentIfMatchOther
 server_name: stable
@@ -1011,7 +1034,7 @@ type: single
   ~ db._drop(cn);
 ```
 ```openapi
-#### Update document
+#### Update a document
 
 paths:
   /_api/document/{collection}/{key}:
@@ -1044,7 +1067,7 @@ paths:
 
         If the document exists and can be updated, then an *HTTP 201* or
         an *HTTP 202* is returned (depending on `waitForSync`, see below),
-        the `Etag` header field contains the new revision of the document
+        the `ETag` header field contains the new revision of the document
         (in double quotes) and the `Location` header contains a complete URL
         under which the document can be queried.
 
@@ -1112,10 +1135,11 @@ paths:
           required: false
           description: |
             If the intention is to delete existing attributes with the patch
-            command, the URL query parameter `keepNull` can be used with a value
-            of `false`. This modifies the behavior of the patch command to
-            remove any attributes from the existing document that are contained
-            in the patch document with an attribute value of `null`.
+            command, set the `keepNull` URL query parameter to `false`. This modifies the
+            behavior of the patch command to remove top-level attributes and sub-attributes
+            from the existing document that are contained in the patch document with an
+            attribute value of `null` (but not attributes of objects that are nested inside
+            of arrays).
           schema:
             type: boolean
         - name: mergeObjects
@@ -1231,6 +1255,9 @@ paths:
         - Documents
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -1275,6 +1302,7 @@ type: single
 ---
 description: |-
   Merging attributes of an object using `mergeObjects`:
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerPatchDocumentMerge
 server_name: stable
@@ -1309,7 +1337,7 @@ type: single
   ~ db._drop(cn);
 ```
 ```openapi
-#### Removes a document
+#### Remove a document
 
 paths:
   /_api/document/{collection}/{key}:
@@ -1430,6 +1458,9 @@ paths:
         - Documents
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -1462,6 +1493,7 @@ type: single
 ---
 description: |-
   Unknown document identifier:
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerDeleteDocumentUnknownHandle
 server_name: stable
@@ -1489,6 +1521,7 @@ type: single
 ---
 description: |-
   Revision conflict:
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerDeleteDocumentIfMatchOther
 server_name: stable
@@ -1553,18 +1586,18 @@ Generally, the bulk operations expect an input array and the result body
 contains a JSON array of the same length.
 
 ```openapi
-#### Read multiple documents
+#### Get multiple documents
 
 paths:
   /_api/document/{collection}#get:
     put:
       operationId: getDocuments
       description: |
-        Returns the documents identified by their *_key* in the body objects.
+        Returns the documents identified by their `_key` in the body objects.
         The body of the request _must_ contain a JSON array of either
-        strings (the *_key* values to lookup) or search documents.
+        strings (the `_key` values to lookup) or search documents.
 
-        A search document _must_ contain at least a value for the *_key* field.
+        A search document _must_ contain at least a value for the `_key` field.
         A value for `_rev` _may_ be specified to verify whether the document
         has the same revision value, unless _ignoreRevs_ is set to false.
 
@@ -1573,22 +1606,22 @@ paths:
         are treated as hints to improve performance. Should the shard keys
         values be incorrect ArangoDB may answer with a *not found* error.
 
-        The returned array of documents contain three special attributes: *_id* containing the document
-        identifier, *_key* containing key which uniquely identifies a document
-        in a given collection and *_rev* containing the revision.
+        The returned array of documents contain three special attributes: `_id` containing the document
+        identifier, `_key` containing key which uniquely identifies a document
+        in a given collection and `_rev` containing the revision.
       parameters:
         - name: collection
           in: path
           required: true
           description: |
-            Name of the *collection* from which the documents are to be read.
+            Name of the `collection` from which the documents are to be read.
           schema:
             type: string
         - name: onlyget
           in: query
           required: true
           description: |
-            This parameter is required to be **true**, otherwise a replace
+            This parameter is required to be `true`, otherwise a replace
             operation is executed!
           schema:
             type: boolean
@@ -1596,8 +1629,8 @@ paths:
           in: query
           required: false
           description: |
-            Should the value be *true* (the default)
-            If a search document contains a value for the *_rev* field,
+            Should the value be `true` (the default)
+            If a search document contains a value for the `_rev` field,
             then the document is only returned if it has the same revision value.
             Otherwise a precondition failed error is returned.
           schema:
@@ -1649,6 +1682,9 @@ paths:
       tags:
         - Documents
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -1824,11 +1860,11 @@ paths:
           required: false
           description: |
             If the intention is to delete existing attributes with the update-insert
-            command, the URL query parameter `keepNull` can be used with a value of
-            `false`. This modifies the behavior of the patch command to remove any
-            attributes from the existing document that are contained in the patch document
-            with an attribute value of `null`.
-            This option controls the update-insert behavior only.
+            command, set the `keepNull` URL query parameter to `false`. This modifies the
+            behavior of the patch command to remove top-level attributes and sub-attributes
+            from the existing document that are contained in the patch document with an
+            attribute value of `null` (but not attributes of objects that are nested inside
+            of arrays). This option controls the update-insert behavior only.
           schema:
             type: boolean
         - name: mergeObjects
@@ -1894,6 +1930,9 @@ paths:
         - Documents
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -1926,6 +1965,7 @@ type: single
 ---
 description: |-
   Use of returnNew:
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerPostMulti2
 server_name: stable
@@ -1952,6 +1992,7 @@ type: single
 ---
 description: |-
   Partially illegal documents:
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerPostBadJsonMulti
 server_name: stable
@@ -1973,7 +2014,7 @@ type: single
     db._drop(cn);
 ```
 ```openapi
-#### Replace documents
+#### Replace multiple documents
 
 paths:
   /_api/document/{collection}:
@@ -2139,7 +2180,7 @@ paths:
         - Documents
 ```
 ```openapi
-#### Update documents
+#### Update multiple documents
 
 paths:
   /_api/document/{collection}:
@@ -2231,10 +2272,11 @@ paths:
           required: false
           description: |
             If the intention is to delete existing attributes with the patch
-            command, the URL query parameter `keepNull` can be used with a value
-            of `false`. This modifies the behavior of the patch command to
-            remove any attributes from the existing document that are contained
-            in the patch document with an attribute value of `null`.
+            command, set the `keepNull` URL query parameter to `false`. This modifies the
+            behavior of the patch command to remove top-level attributes and sub-attributes
+            from the existing document that are contained in the patch document with an
+            attribute value of `null` (but not attributes of objects that are nested inside
+            of arrays).
           schema:
             type: boolean
         - name: mergeObjects
@@ -2333,7 +2375,7 @@ paths:
         - Documents
 ```
 ```openapi
-#### Removes multiple documents
+#### Remove multiple documents
 
 paths:
   /_api/document/{collection}:
@@ -2467,6 +2509,9 @@ paths:
         - Documents
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -2506,6 +2551,7 @@ type: single
 ---
 description: |-
   Using document identifiers:
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerDeleteDocumentIdentifierMulti
 server_name: stable
@@ -2539,6 +2585,7 @@ type: single
 ---
 description: |-
   Using objects with document keys:
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerDeleteDocumentObjectMulti
 server_name: stable
@@ -2572,6 +2619,7 @@ type: single
 ---
 description: |-
   Unknown documents:
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerDeleteDocumentUnknownMulti
 server_name: stable
@@ -2612,6 +2660,7 @@ type: single
 ---
 description: |-
   Check revisions:
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerDeleteDocumentRevMulti
 server_name: stable
@@ -2648,6 +2697,7 @@ type: single
 ---
 description: |-
   Revision conflict:
+version: '3.11'
 render: input/output
 name: RestDocumentHandlerDeleteDocumentRevConflictMulti
 server_name: stable

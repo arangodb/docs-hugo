@@ -18,13 +18,16 @@ All user functions managed through this interface are stored in the
 collection directly, but only via the dedicated interfaces.
 
 ```openapi
-## Create AQL user function
+## Create a user-defined AQL function
 
 paths:
   /_api/aqlfunction:
     post:
       operationId: createAqlUserFunction
       description: |
+        Registers a user-defined function (UDF) written in JavaScript for the use in
+        AQL queries in the current database.
+
         In case of success, HTTP 200 is returned.
         If the function isn't valid etc. HTTP 400 including a detailed error message will be returned.
       requestBody:
@@ -46,7 +49,7 @@ paths:
                     an optional boolean value to indicate whether the function
                     results are fully deterministic (function return value solely depends on
                     the input value and return value is the same for repeated calls with same
-                    input). The *isDeterministic* attribute is currently not used but may be
+                    input). The `isDeterministic` attribute is currently not used but may be
                     used later for optimizations.
                   type: boolean
               required:
@@ -64,7 +67,7 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (*false* in this case)
+                      boolean flag to indicate whether an error occurred (`false` in this case)
                     type: boolean
                   code:
                     description: |
@@ -72,7 +75,7 @@ paths:
                     type: integer
                   isNewlyCreated:
                     description: |
-                      boolean flag to indicate whether the function was newly created (*false* in this case)
+                      boolean flag to indicate whether the function was newly created (`false` in this case)
                     type: boolean
                 required:
                   - error
@@ -89,7 +92,7 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (*false* in this case)
+                      boolean flag to indicate whether an error occurred (`false` in this case)
                     type: boolean
                   code:
                     description: |
@@ -97,7 +100,7 @@ paths:
                     type: integer
                   isNewlyCreated:
                     description: |
-                      boolean flag to indicate whether the function was newly created (*true* in this case)
+                      boolean flag to indicate whether the function was newly created (`true` in this case)
                     type: boolean
                 required:
                   - error
@@ -114,7 +117,7 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (*true* in this case)
+                      boolean flag to indicate whether an error occurred (`true` in this case)
                     type: boolean
                   code:
                     description: |
@@ -136,6 +139,9 @@ paths:
       tags:
         - Queries
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -162,14 +168,15 @@ type: single
   logJsonResponse(response);
 ```
 ```openapi
-## Remove existing AQL user function
+## Remove a user-defined AQL function
 
 paths:
   /_api/aqlfunction/{name}:
     delete:
       operationId: deleteAqlUserFunction
       description: |
-        Removes an existing AQL user function or function group, identified by *name*.
+        Deletes an existing user-defined function (UDF) or function group identified by
+        `name` from the current database.
       parameters:
         - name: name
           in: path
@@ -182,11 +189,11 @@ paths:
           in: query
           required: false
           description: |
-            - *true* The function name provided in *name* is treated as
+            - `true` The function name provided in `name` is treated as
               a namespace prefix, and all functions in the specified namespace will be deleted.
               The returned number of deleted functions may become 0 if none matches the string.
-            - *false* The function name provided in *name* must be fully
-              qualified, including any namespaces. If none matches the *name*, HTTP 404 is returned.
+            - `false` The function name provided in `name` must be fully
+              qualified, including any namespaces. If none matches the `name`, HTTP 404 is returned.
           schema:
             type: string
       responses:
@@ -201,7 +208,7 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (*false* in this case)
+                      boolean flag to indicate whether an error occurred (`false` in this case)
                     type: boolean
                   code:
                     description: |
@@ -209,8 +216,8 @@ paths:
                     type: integer
                   deletedCount:
                     description: |
-                      The number of deleted user functions, always `1` when `group` is set to *false*.
-                      Any number `>= 0` when `group` is set to *true*
+                      The number of deleted user functions, always `1` when `group` is set to `false`.
+                      Any number `>= 0` when `group` is set to `true`.
                     type: integer
                 required:
                   - error
@@ -226,7 +233,7 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (*true* in this case)
+                      boolean flag to indicate whether an error occurred (`true` in this case)
                     type: boolean
                   code:
                     description: |
@@ -255,7 +262,7 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (*true* in this case)
+                      boolean flag to indicate whether an error occurred (`true` in this case)
                     type: boolean
                   code:
                     description: |
@@ -277,6 +284,9 @@ paths:
       tags:
         - Queries
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -310,6 +320,7 @@ type: single
 ---
 description: |-
   function not found:
+version: '3.10'
 render: input/output
 name: RestAqlfunctionDeleteFails
 server_name: stable
@@ -324,22 +335,23 @@ type: single
   logJsonResponse(response);
 ```
 ```openapi
-## Return registered AQL user functions
+## List the registered user-defined AQL functions
 
 paths:
   /_api/aqlfunction:
     get:
       operationId: listAqlUserFunctions
       description: |
-        Returns all registered AQL user functions.
+        Returns all registered user-defined functions (UDFs) for the use in AQL of the
+        current database.
 
-        The call will return a JSON array with status codes and all user functions found under *result*.
+        The call returns a JSON array with status codes and all user functions found under `result`.
       parameters:
         - name: namespace
           in: query
           required: false
           description: |
-            Returns all registered AQL user functions from namespace *namespace* under *result*.
+            Returns all registered AQL user functions from the specified namespace.
           schema:
             type: string
       responses:
@@ -353,7 +365,7 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (*false* in this case)
+                      boolean flag to indicate whether an error occurred (`false` in this case)
                     type: boolean
                   code:
                     description: |
@@ -361,7 +373,7 @@ paths:
                     type: integer
                   result:
                     description: |
-                      All functions, or the ones matching the *namespace* parameter
+                      All functions, or the ones matching the `namespace` parameter
                     type: array
                     items:
                       type: object
@@ -379,7 +391,7 @@ paths:
                             an optional boolean value to indicate whether the function
                             results are fully deterministic (function return value solely depends on
                             the input value and return value is the same for repeated calls with same
-                            input). The *isDeterministic* attribute is currently not used but may be
+                            input). The `isDeterministic` attribute is currently not used but may be
                             used later for optimizations.
                           type: boolean
                       required:
@@ -400,7 +412,7 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (*true* in this case)
+                      boolean flag to indicate whether an error occurred (`true` in this case)
                     type: boolean
                   code:
                     description: |
@@ -422,6 +434,9 @@ paths:
       tags:
         - Queries
 ```
+
+**Examples**
+
 
 
 ```curl

@@ -70,7 +70,7 @@ used for multiple accounts.
 
    ![ArangoGraph Dashboard](../../images/arangograph-dashboard.png)
 
-   You can also [create a deployment](../arangograph/guides/deployments/_index.md#how-to-create-a-new-deployment)
+   You can also [create a deployment](../arangograph/deployments/_index.md#how-to-create-a-new-deployment)
    manually, if you want fine-grained configuration options.
 2. The new deployment is displayed in the list of deployments for the 
    respective project (here: _Avocado_).
@@ -112,12 +112,12 @@ You can create your own organization(s) and invite collaborators or join
 existing ones via invites. Your organization contains projects.
 Your projects hold your deployments.
 
-- [**Organizations**](../arangograph/guides/organizations/_index.md)
+- [**Organizations**](../arangograph/organizations/_index.md)
   represent (commercial) entities such as companies.
   You can be part of multiple organizations with a single user account.
-  - [**Projects**](../arangograph/guides/projects.md)
+  - [**Projects**](../arangograph/projects.md)
     represent organizational units such as teams or applications.
-    - [**Deployments**](../arangograph/guides/deployments/_index.md)
+    - [**Deployments**](../arangograph/deployments/_index.md)
       are the actual instances of ArangoDB clusters.
 
 When you sign up for ArangoGraph, an organization and a default project are
@@ -133,11 +133,11 @@ example datasets and manage projects and deployments.
 ![Start tour in menu](../../images/arangograph-tour-start.png)
 
 Alternatively, follow the steps of the linked guides:
-- [Create a new project](../arangograph/guides/projects.md#how-to-create-a-new-project) (optional)
-- [Create a new deployment](../arangograph/guides/deployments/_index.md#how-to-create-a-new-deployment)
-- [Install a new certificate](../arangograph/guides/security-and-access-control/x-509-certificates.md) (optional)
-- [Access your deployment](../arangograph/guides/deployments/_index.md#how-to-access-your-deployment)
-- [Delete your deployment](../arangograph/guides/deployments/_index.md#how-to-delete-a-deployment)
+- [Create a new project](../arangograph/projects.md#how-to-create-a-new-project) (optional)
+- [Create a new deployment](../arangograph/deployments/_index.md#how-to-create-a-new-deployment)
+- [Install a new certificate](../arangograph/security-and-access-control/x-509-certificates.md) (optional)
+- [Access your deployment](../arangograph/deployments/_index.md#how-to-access-your-deployment)
+- [Delete your deployment](../arangograph/deployments/_index.md#how-to-delete-a-deployment)
 
 ## Free-to-Try vs. Professional Service
 
@@ -147,8 +147,8 @@ After the trial period, your deployments are automatically deleted.
 
 You can convert to the professional service model at any time by adding 
 your billing details and at least one payment method. See:
-- [How to add billing details to organizations](../arangograph/guides/organizations/billing.md#how-to-add-billing-details)
-- [How to add a payment method to an organization](../arangograph/guides/organizations/billing.md#how-to-add-a-payment-method)
+- [How to add billing details to organizations](../arangograph/organizations/billing.md#how-to-add-billing-details)
+- [How to add a payment method to an organization](../arangograph/organizations/billing.md#how-to-add-a-payment-method)
 
 ## Managed Cloud Service vs. On-premises Comparison: Key Differences
 

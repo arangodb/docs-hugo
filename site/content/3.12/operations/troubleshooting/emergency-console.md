@@ -1,7 +1,7 @@
 ---
 title: Emergency Console
 menuTitle: Emergency Console
-weight: 10
+weight: 15
 description: >-
   The ArangoDB database server has two modes of operation
 archetype: default

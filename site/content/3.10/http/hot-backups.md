@@ -24,14 +24,14 @@ before using the API.
 {{< /warning >}}
 
 ```openapi
-## Create backup
+## Create a backup
 
 paths:
   /_admin/backup/create:
     post:
       operationId: createBackup
       description: |
-        Creates a consistent backup "as soon as possible", very much
+        Creates a consistent local backup "as soon as possible", very much
         like a snapshot in time, with a given label. The ambiguity in the
         phrase "as soon as possible" refers to the next window during which a
         global write lock across all databases can be obtained in order to
@@ -94,6 +94,9 @@ paths:
         - Hot Backups
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -123,14 +126,14 @@ type: single
     };
 ```
 ```openapi
-## Restore backup
+## Restore a backup
 
 paths:
   /_admin/backup/restore:
     post:
       operationId: restoreBackup
       description: |
-        Restores a consistent backup from a
+        Restores a consistent local backup from a
         snapshot in time, with a given id. The backup snapshot must reside on
         the ArangoDB service locally.
       requestBody:
@@ -163,6 +166,9 @@ paths:
       tags:
         - Hot Backups
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -249,6 +255,9 @@ paths:
         - Hot Backups
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -275,7 +284,7 @@ type: single
     };
 ```
 ```openapi
-## List backups
+## List all backups
 
 paths:
   /_admin/backup/list:
@@ -307,14 +316,17 @@ paths:
         '404':
           description: |
             If an `id` or a list of ids was given and the given ids were not found
-            as identifiers of a backup, an *HTTP 404 NOT FOUND* is returned.
+            as identifiers of a backup, an *HTTP 404 Not Found* is returned.
         '405':
           description: |
             If the list command is invoked with any HTTP
-            method other than `POST`, then an *HTTP 405 METHOD NOT ALLOWED* is returned.
+            method other than `POST`, then an *HTTP 405 Method Not Allowed* is returned.
       tags:
         - Hot Backups
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -432,6 +444,9 @@ paths:
         - Hot Backups
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -475,6 +490,7 @@ type: single
 description: |-
   The `result` object of the body holds the `uploadId` string attribute which can
   be used to follow the upload process.
+version: '3.10'
 render: input/output
 name: RestBackupUploadBackupStarted
 server_name: stable
@@ -594,6 +610,9 @@ paths:
         - Hot Backups
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -652,6 +671,7 @@ type: single
 description: |-
   The `result` object of the body holds the `downloadId` string attribute which
   can be used to follow the download process.
+version: '3.10'
 render: input/output
 name: RestBackupDownloadBackupStarted
 server_name: stable

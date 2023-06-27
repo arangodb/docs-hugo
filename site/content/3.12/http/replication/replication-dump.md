@@ -14,77 +14,77 @@ to either start a full or a partial synchronization of data, e.g. to initiate a 
 or the incremental data synchronization.
 
 ```openapi
-### Return inventory of collections and indexes
+### Get a replication inventory
 
 paths:
   /_api/replication/inventory:
     get:
       operationId: getReplicationInventory
       description: |
-        Returns the array of collections and their indexes, and the array of views available. These
+        Returns the array of collections and their indexes, and the array of Views available. These
         arrays can be used by replication clients to initiate an initial synchronization with the
         server.
         The response will contain all collections, their indexes and views in the requested database
-        if *global* is not set, and all collections, indexes and views in all databases if *global*
+        if `global` is not set, and all collections, indexes and views in all databases if `global`
         is set.
-        In case *global* is not set, it is possible to restrict the response to a single collection
-        by setting the *collection* parameter. In this case the response will contain only information
-        about the requested collection in the *collections* array, and no information about views
-        (i.e. the *views* response attribute will be an empty array).
+        In case `global` is not set, it is possible to restrict the response to a single collection
+        by setting the `collection` parameter. In this case the response will contain only information
+        about the requested collection in the `collections` array, and no information about views
+        (i.e. the `views` response attribute will be an empty array).
 
-        The response will contain a JSON object with the *collections*, *views*, *state* and
-        *tick* attributes.
+        The response will contain a JSON object with the `collections`, `views`, `state` and
+        `tick` attributes.
 
-        *collections* is an array of collections with the following sub-attributes:
+        `collections` is an array of collections with the following sub-attributes:
 
-        - *parameters*: the collection properties
+        - `parameters`: the collection properties
 
-        - *indexes*: an array of the indexes of a the collection. Primary indexes and edge indexes
+        - `indexes`: an array of the indexes of a the collection. Primary indexes and edge indexes
            are not included in this array.
 
-        The *state* attribute contains the current state of the replication logger. It
+        The `state` attribute contains the current state of the replication logger. It
         contains the following sub-attributes:
 
-        - *running*: whether or not the replication logger is currently active. Note:
-          since ArangoDB 2.2, the value will always be *true*
+        - `running`: whether or not the replication logger is currently active. Note:
+          since ArangoDB 2.2, the value will always be `true`
 
-        - *lastLogTick*: the value of the last tick the replication logger has written
+        - `lastLogTick`: the value of the last tick the replication logger has written
 
-        - *time*: the current time on the server
+        - `time`: the current time on the server
 
-        *views* is an array of available views.
+        `views` is an array of available views.
 
-        Replication clients should note the *lastLogTick* value returned. They can then
+        Replication clients should note the `lastLogTick` value returned. They can then
         fetch collections' data using the dump method up to the value of lastLogTick, and
         query the continuous replication log for log events after this tick value.
 
         To create a full copy of the collections on the server, a replication client
         can execute these steps:
 
-        - call the */inventory* API method. This returns the *lastLogTick* value and the
+        - call the `/inventory` API method. This returns the `lastLogTick` value and the
           array of collections and indexes from the server.
 
-        - for each collection returned by */inventory*, create the collection locally and
-          call */dump* to stream the collection data to the client, up to the value of
-          *lastLogTick*.
+        - for each collection returned by `/inventory`, create the collection locally and
+          call `/dump` to stream the collection data to the client, up to the value of
+          `lastLogTick`.
           After that, the client can create the indexes on the collections as they were
-          reported by */inventory*.
+          reported by `/inventory`.
 
         If the clients wants to continuously stream replication log events from the logger
         server, the following additional steps need to be carried out:
 
-        - the client should call */_api/wal/tail* initially to fetch the first batch of
-          replication events that were logged after the client's call to */inventory*.
+        - the client should call `/_api/wal/tail` initially to fetch the first batch of
+          replication events that were logged after the client's call to `/inventory`.
 
-          The call to */_api/wal/tail* should use a *from* parameter with the value of the
-          *lastLogTick* as reported by */inventory*. The call to */_api/wal/tail* will
-          return the *x-arango-replication-lastincluded* header which will contain the
+          The call to `/_api/wal/tail` should use a `from` parameter with the value of the
+          `lastLogTick` as reported by `/inventory`. The call to `/_api/wal/tail` will
+          return the `x-arango-replication-lastincluded` header which will contain the
           last tick value included in the response.
 
-        - the client can then continuously call */_api/wal/tail* to incrementally fetch new
+        - the client can then continuously call `/_api/wal/tail` to incrementally fetch new
           replication events that occurred after the last transfer.
 
-          Calls should use a *from* parameter with the value of the *x-arango-replication-lastincluded*
+          Calls should use a `from` parameter with the value of the `x-arango-replication-lastincluded`
           header of the previous response. If there are no more replication events, the
           response will be empty and clients can go to sleep for a while and try again
           later.
@@ -101,14 +101,14 @@ paths:
           in: query
           required: false
           description: |
-            Include system collections in the result. The default value is *true*.
+            Include system collections in the result. The default value is `true`.
           schema:
             type: boolean
         - name: global
           in: query
           required: false
           description: |
-            Include all databases in the response. Only works on `_system` The default value is *false*.
+            Include all databases in the response. Only works on `_system` The default value is `false`.
           schema:
             type: boolean
         - name: batchId
@@ -147,24 +147,24 @@ The *batch* method will create a snapshot of the current state that then can be
 dumped. A batchId is required when using the dump API with RocksDB.
 
 ```openapi
-### Create new dump batch
+### Create a new dump batch
 
 paths:
   /_api/replication/batch:
     post:
       operationId: createReplicationBatch
       description: |
-        {{< info >}}
+        {{</* info */>}}
         This is an internally used endpoint.
-        {{< /info >}}
+        {{</* /info */>}}
 
         Creates a new dump batch and returns the batch's id.
 
         The response is a JSON object with the following attributes:
 
-        - *id*: the id of the batch
-        - *lastTick*: snapshot tick value using when creating the batch
-        - *state*: additional leader state information (only present if the
+        - `id`: the id of the batch
+        - `lastTick`: snapshot tick value using when creating the batch
+        - `state`: additional leader state information (only present if the
           `state` URL parameter was set to `true` in the request)
 
         **Note**: on a Coordinator, this request must have a `DBserver`
@@ -209,16 +209,16 @@ paths:
         - Replication
 ```
 ```openapi
-### Deletes an existing dump batch
+### Delete an existing dump batch
 
 paths:
   /_api/replication/batch/{id}:
     delete:
       operationId: deleteReplicationBatch
       description: |
-        {{< info >}}
+        {{</* info */>}}
         This is an internally used endpoint.
-        {{< /info >}}
+        {{</* /info */>}}
 
         Deletes the existing dump batch, allowing compaction and cleanup to resume.
 
@@ -248,21 +248,21 @@ paths:
         - Replication
 ```
 ```openapi
-### Prolong existing dump batch
+### Extend the TTL of a dump batch
 
 paths:
   /_api/replication/batch/{id}:
     put:
       operationId: extendReplicationBatch
       description: |
-        {{< info >}}
+        {{</* info */>}}
         This is an internally used endpoint.
-        {{< /info >}}
+        {{</* /info */>}}
 
-        Extends the ttl of an existing dump batch, using the batch's id and
-        the provided ttl value.
+        Extends the time-to-live (TTL) of an existing dump batch, using the batch's ID and
+        the provided TTL value.
 
-        If the batch's ttl can be extended successfully, the response is empty.
+        If the batch's TTL can be extended successfully, the response is empty.
 
         **Note**: on a Coordinator, this request must have a `DBserver`
         query parameter which must be an ID of a DB-Server.
@@ -319,44 +319,44 @@ To get to an identical state of data, replication clients should apply the indiv
 parts of the dump results in the same order as they are provided.
 
 ```openapi
-### Return data of a collection
+### Get a replication dump
 
 paths:
   /_api/replication/dump:
     get:
       operationId: getReplicationDump
       description: |
-        Returns the data from the collection for the requested range.
+        Returns the data from a collection for the requested range.
 
 
-        The *chunkSize* query parameter can be used to control the size of the result.
-        It must be specified in bytes. The *chunkSize* value will only be honored
-        approximately. Otherwise a too low *chunkSize* value could cause the server
+        The `chunkSize` query parameter can be used to control the size of the result.
+        It must be specified in bytes. The `chunkSize` value will only be honored
+        approximately. Otherwise a too low `chunkSize` value could cause the server
         to not be able to put just one entry into the result and return it.
-        Therefore, the *chunkSize* value will only be consulted after an entry has
+        Therefore, the `chunkSize` value will only be consulted after an entry has
         been written into the result. If the result size is then greater than
-        *chunkSize*, the server will respond with as many entries as there are
-        in the response already. If the result size is still less than *chunkSize*,
+        `chunkSize`, the server will respond with as many entries as there are
+        in the response already. If the result size is still less than `chunkSize`,
         the server will try to return more data if there's more data left to return.
 
-        If *chunkSize* is not specified, some server-side default value will be used.
+        If `chunkSize` is not specified, some server-side default value will be used.
 
-        The *Content-Type* of the result is *application/x-arango-dump*. This is an
+        The `Content-Type` of the result is `application/x-arango-dump`. This is an
         easy-to-process format, with all entries going onto separate lines in the
         response body.
 
         Each line itself is a JSON object, with at least the following attributes:
 
-        - *tick*: the operation's tick attribute
+        - `tick`: the operation's tick attribute
 
-        - *key*: the key of the document/edge or the key used in the deletion operation
+        - `key`: the key of the document/edge or the key used in the deletion operation
 
-        - *rev*: the revision id of the document/edge or the deletion operation
+        - `rev`: the revision id of the document/edge or the deletion operation
 
-        - *data*: the actual document/edge data for types 2300 and 2301. The full
+        - `data`: the actual document/edge data for types 2300 and 2301. The full
           document/edge data will be returned even for updates.
 
-        - *type*: the type of entry. Possible values for *type* are:
+        - `type`: the type of entry. Possible values for `type` are:
 
           - 2300: document insertion/update
 
@@ -409,19 +409,19 @@ paths:
         - Replication
 ```
 ```openapi
-### Return Merkle tree for a collection
+### Get the replication revision tree
 
 paths:
   /_api/replication/revisions/tree:
     get:
       operationId: getReplicationRevisionTree
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         This revision-based replication endpoint will only work with collections
         created in ArangoDB v3.8.0 or later.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
-        Returns the Merkle tree from the collection.
+        Returns the Merkle tree associated with the specified collection.
 
         The result will be JSON/VelocyPack in the following format:
         ```
@@ -491,19 +491,19 @@ paths:
         - Replication
 ```
 ```openapi
-### Rebuild Merkle tree for a collection
+### Rebuild the replication revision tree
 
 paths:
   /_api/replication/revisions/tree:
     post:
       operationId: rebuildReplicationRevisionTree
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         This revision-based replication endpoint will only work with collections
         created in ArangoDB v3.8.0 or later.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
-        Rebuilds the Merkle tree for the collection.
+        Rebuilds the Merkle tree for a collection.
 
         If successful, there will be no return body.
       parameters:
@@ -537,19 +537,19 @@ paths:
         - Replication
 ```
 ```openapi
-### Return revision IDs within requested ranges
+### List document revision IDs within requested ranges
 
 paths:
   /_api/replication/revisions/ranges:
     put:
       operationId: listReplicationRevisionRanges
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         This revision-based replication endpoint will only work with the RocksDB
         engine, and with collections created in ArangoDB v3.8.0 or later.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
-        Returns the revision IDs of documents within requested ranges
+        Returns the revision IDs of documents within the requested ranges.
 
         The body of the request should be JSON/VelocyPack and should consist of an
         array of pairs of string-encoded revision IDs:
@@ -642,19 +642,19 @@ paths:
         - Replication
 ```
 ```openapi
-### Return documents by revision
+### Get documents by revision
 
 paths:
   /_api/replication/revisions/documents:
     put:
       operationId: listReplicationRevisionDocuments
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         This revision-based replication endpoint will only work with collections
         created in ArangoDB v3.8.0 or later.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
-        Returns documents by revision
+        Returns documents by revision for replication.
 
         The body of the request should be JSON/VelocyPack and should consist of an
         array of string-encoded revision IDs:
@@ -722,7 +722,7 @@ paths:
         - Replication
 ```
 ```openapi
-### Synchronize data from a remote endpoint
+### Start replication from a remote endpoint
 
 paths:
   /_api/replication/sync:
@@ -841,7 +841,7 @@ paths:
         - Replication
 ```
 ```openapi
-### Return cluster inventory of collections and indexes
+### Get the cluster collections and indexes
 
 paths:
   /_api/replication/clusterInventory:
@@ -851,17 +851,16 @@ paths:
         Returns the array of collections and indexes available on the cluster.
 
         The response will be an array of JSON objects, one for each collection.
-        Each collection containscontains exactly two keys "parameters" and
-        "indexes". This
-        information comes from Plan/Collections/{DB-Name}/* in the Agency,
-        just that the *indexes* attribute there is relocated to adjust it to
+        Each collection contains exactly two keys, `parameters` and `indexes`.
+        This information comes from `Plan/Collections/{DB-Name}/*` in the Agency,
+        just that the `indexes` attribute there is relocated to adjust it to
         the data format of arangodump.
       parameters:
         - name: includeSystem
           in: query
           required: false
           description: |
-            Include system collections in the result. The default value is *true*.
+            Include system collections in the result. The default value is `true`.
           schema:
             type: boolean
       responses:

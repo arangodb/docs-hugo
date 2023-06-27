@@ -1,6 +1,6 @@
 ---
 title: ArangoGraph Insights Platform
-menuTitle: ARANGOGRAPH
+menuTitle: ArangoGraph
 weight: 10
 description: >-
   The ArangoGraph Insights Platform provides the entire functionality of

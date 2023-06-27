@@ -203,7 +203,7 @@ ArangoDB comes with a set of easily graspable graphs that are used to demonstrat
 You can use the `add samples` tab in the `create graph` window in the web interface, or load the module `@arangodb/graph-examples/example-graph` in arangosh and use it to create instances of these graphs in your ArangoDB.
 Once you've created them, you can [inspect them in the web interface](../components/web-interface/graphs.md) - which was used to create the pictures below.
 
-You [can easily look into the innards of this script](https://github.com/arangodb/arangodb/blob/devel/js/common/modules/%40arangodb/graph-examples/example-graph.js) for reference about how to manage graphs programmatically.
+You [can easily look into the innards of this script](https://github.com/arangodb/arangodb/blob/devel/js/common/modules/%40arangodb/graph-examples/example-graph) for reference about how to manage graphs programmatically.
 
 ### The Knows\_Graph
 
@@ -231,7 +231,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var g = examples.loadGraph("knows_graph");
 db.persons.toArray()
 db.knows.toArray();
@@ -258,7 +258,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("social");
 db.female.toArray()
 db.male.toArray()
@@ -283,7 +283,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var g = examples.loadGraph("routeplanner");
 db.frenchCity.toArray();
 db.germanCity.toArray();
@@ -311,7 +311,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var g = examples.loadGraph("traversalGraph");
 db.circles.toArray();
 db.edges.toArray();
@@ -339,7 +339,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var g = examples.loadGraph("kShortestPathsGraph");
 db.places.toArray();
 db.connections.toArray();
@@ -362,7 +362,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var g = examples.loadGraph("worldCountry");
 db.worldVertices.toArray();
 db.worldEdges.toArray();
@@ -390,7 +390,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var g = examples.loadGraph("mps_graph");
 db.mps_verts.toArray();
 db.mps_edges.toArray();
@@ -418,7 +418,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var g = examples.loadGraph("connectedComponentsGraph");
 db.components.toArray();
 db.connections.toArray();

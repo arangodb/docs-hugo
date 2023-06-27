@@ -119,7 +119,7 @@ type: single
 ---
 ~addIgnoreCollection("places");
 ~addIgnoreCollection("connections");
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("kShortestPathsGraph");
 db.places.toArray();
 db.connections.toArray();
@@ -215,7 +215,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 examples.dropGraph("kShortestPathsGraph");
 ~removeIgnoreCollection("places");
 ~removeIgnoreCollection("connections");

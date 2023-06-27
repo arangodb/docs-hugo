@@ -10,7 +10,7 @@ archetype: default
 ## Logs
 
 ```openapi
-### Read global logs from the server
+### Get the global server logs
 
 paths:
   /_admin/log/entries:
@@ -32,60 +32,60 @@ paths:
           in: query
           required: false
           description: |
-            Returns all log entries up to log level *upto*. Note that *upto* must be
-            - *fatal* or *0*
-            - *error* or *1*
-            - *warning* or *2*
-            - *info* or *3*
-            - *debug*  or *4*
-            The default value is *info*.
+            Returns all log entries up to log level `upto`. Note that `upto` must be
+            - `fatal` or `0`
+            - `error` or `1`
+            - `warning` or `2`
+            - `info` or `3`
+            - `debug`  or `4`
+            The default value is `info`.
           schema:
             type: string
         - name: level
           in: query
           required: false
           description: |
-            Returns all log entries of log level *level*. Note that the query parameters
-            *upto* and *level* are mutually exclusive.
+            Returns all log entries of log level `level`. Note that the query parameters
+            `upto` and `level` are mutually exclusive.
           schema:
             type: string
         - name: start
           in: query
           required: false
           description: |
-            Returns all log entries such that their log entry identifier (*lid* .)
-            is greater or equal to *start*.
+            Returns all log entries such that their log entry identifier (`lid` .)
+            is greater or equal to `start`.
           schema:
             type: number
         - name: size
           in: query
           required: false
           description: |
-            Restricts the result to at most *size* log entries.
+            Restricts the result to at most `size` log entries.
           schema:
             type: number
         - name: offset
           in: query
           required: false
           description: |
-            Starts to return log entries skipping the first *offset* log entries. *offset*
-            and *size* can be used for pagination.
+            Starts to return log entries skipping the first `offset` log entries. `offset`
+            and `size` can be used for pagination.
           schema:
             type: number
         - name: search
           in: query
           required: false
           description: |
-            Only return the log entries containing the text specified in *search*.
+            Only return the log entries containing the text specified in `search`.
           schema:
             type: string
         - name: sort
           in: query
           required: false
           description: |
-            Sort the log entries either ascending (if *sort* is *asc*) or descending
-            (if *sort* is *desc*) according to their *id* values. Note that the *id*
-            imposes a chronological order. The default value is *asc*.
+            Sort the log entries either ascending (if `sort` is `asc`) or descending
+            (if `sort` is `desc`) according to their `id` values. Note that the `id`
+            imposes a chronological order. The default value is `asc`.
           schema:
             type: string
         - name: serverId
@@ -103,7 +103,7 @@ paths:
             is returned if the request is valid.
         '400':
           description: |
-            is returned if invalid values are specified for *upto* or *level*.
+            is returned if invalid values are specified for `upto` or `level`.
         '403':
           description: |
             is returned if there are insufficient privileges to access the logs.
@@ -111,18 +111,18 @@ paths:
         - Monitoring
 ```
 ```openapi
-### Read global logs from the server (deprecated)
+### Get the global server logs (deprecated)
 
 paths:
   /_admin/log:
     get:
       operationId: getLog
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         This endpoint should no longer be used. It is deprecated from version 3.8.0 on.
         Use `/_admin/log/entries` instead, which provides the same data in a more
         intuitive and easier to process format.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
         Returns fatal, error, warning or info log messages from the server's global log.
         The result is a JSON object with the attributes described below.
@@ -136,60 +136,60 @@ paths:
           in: query
           required: false
           description: |
-            Returns all log entries up to log level *upto*. Note that *upto* must be
-            - *fatal* or *0*
-            - *error* or *1*
-            - *warning* or *2*
-            - *info* or *3*
-            - *debug*  or *4*
-            The default value is *info*.
+            Returns all log entries up to log level `upto`. Note that `upto` must be
+            - `fatal` or `0`
+            - `error` or `1`
+            - `warning` or `2`
+            - `info` or `3`
+            - `debug`  or `4`
+            The default value is `info`.
           schema:
             type: string
         - name: level
           in: query
           required: false
           description: |
-            Returns all log entries of log level *level*. Note that the query parameters
-            *upto* and *level* are mutually exclusive.
+            Returns all log entries of log level `level`. Note that the query parameters
+            `upto` and `level` are mutually exclusive.
           schema:
             type: string
         - name: start
           in: query
           required: false
           description: |
-            Returns all log entries such that their log entry identifier (*lid* value)
-            is greater or equal to *start*.
+            Returns all log entries such that their log entry identifier (`lid` value)
+            is greater or equal to `start`.
           schema:
             type: number
         - name: size
           in: query
           required: false
           description: |
-            Restricts the result to at most *size* log entries.
+            Restricts the result to at most `size` log entries.
           schema:
             type: number
         - name: offset
           in: query
           required: false
           description: |
-            Starts to return log entries skipping the first *offset* log entries. *offset*
-            and *size* can be used for pagination.
+            Starts to return log entries skipping the first `offset` log entries. `offset`
+            and `size` can be used for pagination.
           schema:
             type: number
         - name: search
           in: query
           required: false
           description: |
-            Only return the log entries containing the text specified in *search*.
+            Only return the log entries containing the text specified in `search`.
           schema:
             type: string
         - name: sort
           in: query
           required: false
           description: |
-            Sort the log entries either ascending (if *sort* is *asc*) or descending
-            (if *sort* is *desc*) according to their *lid* values. Note that the *lid*
-            imposes a chronological order. The default value is *asc*.
+            Sort the log entries either ascending (if `sort` is `asc`) or descending
+            (if `sort` is `desc`) according to their `lid` values. Note that the `lid`
+            imposes a chronological order. The default value is `asc`.
           schema:
             type: string
         - name: serverId
@@ -249,7 +249,7 @@ paths:
                   - totalAmount
         '400':
           description: |
-            is returned if invalid values are specified for *upto* or *level*.
+            is returned if invalid values are specified for `upto` or `level`.
         '403':
           description: |
             is returned if there are insufficient privileges to access the logs.
@@ -257,7 +257,7 @@ paths:
         - Monitoring
 ```
 ```openapi
-### Return the current server log level
+### Get the server log levels
 
 paths:
   /_admin/log/level:
@@ -291,7 +291,7 @@ paths:
         - Monitoring
 ```
 ```openapi
-### Modify and return the current server log level
+### Set the server log levels
 
 paths:
   /_admin/log/level:
@@ -587,7 +587,7 @@ paths:
         - Monitoring
 ```
 ```openapi
-### Return the current server log structured parameters
+### Get the structured log settings
 
 paths:
   /_admin/log/structured:
@@ -618,7 +618,7 @@ paths:
         - Monitoring
 ```
 ```openapi
-### Modify and return the current server log parameters
+### Set the structured log settings
 
 paths:
   /_admin/log/structured:
@@ -673,29 +673,29 @@ paths:
 ## Statistics
 
 ```openapi
-### Read the statistics
+### Get the statistics
 
 paths:
   /_admin/statistics:
     get:
       operationId: getStatistics
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         This endpoint should no longer be used. It is deprecated from version 3.8.0 on.
         Use `/_admin/metrics/v2` instead, which provides the data exposed by this API
         and a lot more.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
         Returns the statistics information. The returned object contains the
         statistics figures grouped together according to the description returned by
-        *_admin/statistics-description*. For instance, to access a figure *userTime*
-        from the group *system*, you first select the sub-object describing the
-        group stored in *system* and in that sub-object the value for *userTime* is
+        `/_admin/statistics-description`. For instance, to access a figure `userTime`
+        from the group `system`, you first select the sub-object describing the
+        group stored in `system` and in that sub-object the value for `userTime` is
         stored in the attribute of the same name.
 
         In case of a distribution, the returned object contains the total count in
-        *count* and the distribution list in *counts*. The sum (or total) of the
-        individual values is returned in *sum*.
+        `count` and the distribution list in `counts`. The sum (or total) of the
+        individual values is returned in `sum`.
 
         The transaction statistics show the local started, committed and aborted
         transactions as well as intermediate commits done for the server queried. The
@@ -719,7 +719,7 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (*false* in this case)
+                      boolean flag to indicate whether an error occurred (`false` in this case)
                     type: boolean
                   code:
                     description: |
@@ -735,7 +735,7 @@ paths:
                     type: string
                   enabled:
                     description: |
-                      *true* if the server has the statistics module enabled. If not, don't expect any values.
+                      `true` if the server has the statistics module enabled. If not, don't expect any values.
                     type: boolean
                   system:
                     description: |
@@ -1172,6 +1172,9 @@ paths:
         - Monitoring
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -1191,38 +1194,38 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-### Statistics description
+### Get the statistics description
 
 paths:
   /_admin/statistics-description:
     get:
       operationId: getStatisticsDescription
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         This endpoint should no longer be used. It is deprecated from version 3.8.0 on.
         Use `/_admin/metrics/v2` instead, which provides the data exposed by the
         statistics API and a lot more.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
-        Returns a description of the statistics returned by */_admin/statistics*.
+        Returns a description of the statistics returned by `/_admin/statistics`.
         The returned objects contains an array of statistics groups in the attribute
-        *groups* and an array of statistics figures in the attribute *figures*.
+        `groups` and an array of statistics figures in the attribute `figures`.
 
         A statistics group is described by
 
-        - *group*: The identifier of the group.
-        - *name*: The name of the group.
-        - *description*: A description of the group.
+        - `group`: The identifier of the group.
+        - `name`: The name of the group.
+        - `description`: A description of the group.
 
         A statistics figure is described by
 
-        - *group*: The identifier of the group to which this figure belongs.
-        - *identifier*: The identifier of the figure. It is unique within the group.
-        - *name*: The name of the figure.
-        - *description*: A description of the figure.
-        - *type*: Either *current*, *accumulated*, or *distribution*.
-        - *cuts*: The distribution vector.
-        - *units*: Units in which the figure is measured.
+        - `group`: The identifier of the group to which this figure belongs.
+        - `identifier`: The identifier of the figure. It is unique within the group.
+        - `name`: The name of the figure.
+        - `description`: A description of the figure.
+        - `type`: Either `current`, `accumulated`, or `distribution`.
+        - `cuts`: The distribution vector.
+        - `units`: Units in which the figure is measured.
       responses:
         '200':
           description: |
@@ -1280,7 +1283,7 @@ paths:
                           type: string
                         type:
                           description: |
-                            Either *current*, *accumulated*, or *distribution*.
+                            Either `current`, `accumulated`, or `distribution`.
                           type: string
                         cuts:
                           description: |
@@ -1304,7 +1307,7 @@ paths:
                     type: integer
                   error:
                     description: |
-                      the error, *false* in this case
+                      the error, `false` in this case
                     type: boolean
                 required:
                   - groups
@@ -1314,6 +1317,9 @@ paths:
       tags:
         - Monitoring
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -1351,7 +1357,7 @@ future.
 ### Metrics API v2
 
 ```openapi
-#### Read the metrics
+#### Get the metrics
 
 paths:
   /_admin/metrics/v2:
@@ -1391,6 +1397,9 @@ paths:
         - Monitoring
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -1415,18 +1424,18 @@ type: single
 ### Metrics API
 
 ```openapi
-#### Read the metrics
+#### Get the metrics (deprecated)
 
 paths:
   /_admin/metrics:
     get:
       operationId: getMetrics
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         This endpoint should no longer be used. It is deprecated from version 3.8.0 on.
-        Use `/_admin/metrics/v2` instead, which provides the data exposed by this API
-        and a lot more.
-        {{< /warning >}}
+        Use `/_admin/metrics/v2` instead. From version 3.10.0 onward, `/_admin/metrics`
+        returns the same metrics as `/_admin/metrics/v2`.
+        {{</* /warning */>}}
 
         Returns the instance's current metrics in Prometheus format. The
         returned document collects all instance metrics, which are measured
@@ -1460,6 +1469,9 @@ paths:
       tags:
         - Monitoring
 ```
+
+**Examples**
+
 
 
 ```curl

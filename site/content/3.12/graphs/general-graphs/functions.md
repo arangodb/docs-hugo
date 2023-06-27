@@ -47,7 +47,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("social");
   var any = require("@arangodb").db.relation.any();
   graph._fromVertex("relation/" + any._key);
@@ -73,7 +73,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("social");
   var any = require("@arangodb").db.relation.any();
   graph._toVertex("relation/" + any._key);
@@ -117,7 +117,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._neighbors({isCapital : true});
 ~ examples.dropGraph("routeplanner");
@@ -134,7 +134,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._neighbors('germanCity/Hamburg', {direction : 'outbound', maxDepth : 2});
 ~ examples.dropGraph("routeplanner");
@@ -168,7 +168,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._commonNeighbors({isCapital : true}, {isCapital : true});
 ~ examples.dropGraph("routeplanner");
@@ -186,7 +186,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._commonNeighbors(
     'germanCity/Hamburg',
@@ -217,7 +217,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   var example = { isCapital: true };
   var options = { includeData: true };
@@ -237,7 +237,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   var options = { direction: 'outbound', maxDepth: 2, includeData: true };
   graph._countCommonNeighbors('germanCity/Hamburg', {}, options, options);
@@ -279,7 +279,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._commonProperties({}, {});
 ~ examples.dropGraph("routeplanner");
@@ -296,7 +296,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._commonProperties({}, {}, {ignoreProperties: 'population'});
 ~ examples.dropGraph("routeplanner");
@@ -324,7 +324,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._countCommonProperties({}, {});
 ~ examples.dropGraph("routeplanner");
@@ -341,7 +341,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
   graph._countCommonProperties({}, {}, {vertex1CollectionRestriction : 'germanCity',
   vertex2CollectionRestriction : 'germanCity' ,ignoreProperties: 'population'});
@@ -382,7 +382,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var g = examples.loadGraph("social");
   g._paths();
 ~ examples.dropGraph("social");
@@ -400,7 +400,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var g = examples.loadGraph("social");
   g._paths({direction : 'inbound', minLength : 1, maxLength :  2});
 ~ examples.dropGraph("social");
@@ -454,7 +454,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var g = examples.loadGraph("routeplanner");
   g._shortestPath({}, {}, {weight : 'distance', endVertexCollectionRestriction : 'frenchCity',
   startVertexCollectionRestriction : 'germanCity'});
@@ -472,7 +472,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var g = examples.loadGraph("routeplanner");
   g._shortestPath([{_id: 'germanCity/Cologne'},{_id: 'germanCity/Munich'}], 'frenchCity/Lyon',
   {weight : 'distance'});
@@ -501,7 +501,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var g = examples.loadGraph("routeplanner");
   g._distanceTo({}, {}, {weight : 'distance', endVertexCollectionRestriction : 'frenchCity',
   startVertexCollectionRestriction : 'germanCity'});
@@ -519,7 +519,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var g = examples.loadGraph("routeplanner");
   g._distanceTo([{_id: 'germanCity/Cologne'},{_id: 'germanCity/Munich'}], 'frenchCity/Lyon',
   {weight : 'distance'});
@@ -566,7 +566,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._absoluteEccentricity({});
 ~ examples.dropGraph("routeplanner");
@@ -584,7 +584,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._absoluteEccentricity({}, {weight : 'distance'});
 ~ examples.dropGraph("routeplanner");
@@ -602,7 +602,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._absoluteEccentricity({}, {startVertexCollectionRestriction : 'germanCity',
   direction : 'outbound', weight : 'distance'});
@@ -632,7 +632,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._eccentricity();
 ~ examples.dropGraph("routeplanner");
@@ -649,7 +649,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._eccentricity({weight : 'distance'});
 ~ examples.dropGraph("routeplanner");
@@ -695,7 +695,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._absoluteCloseness({});
 ~ examples.dropGraph("routeplanner");
@@ -713,7 +713,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._absoluteCloseness({}, {weight : 'distance'});
 ~ examples.dropGraph("routeplanner");
@@ -731,7 +731,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._absoluteCloseness({}, {startVertexCollectionRestriction : 'germanCity',
   direction : 'outbound', weight : 'distance'});
@@ -761,7 +761,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._closeness();
 ~ examples.dropGraph("routeplanner");
@@ -779,7 +779,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._closeness({weight : 'distance'});
 ~ examples.dropGraph("routeplanner");
@@ -797,7 +797,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._closeness({direction : 'outbound', weight : 'distance'});
 ~ examples.dropGraph("routeplanner");
@@ -834,7 +834,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._absoluteBetweenness({});
 ~ examples.dropGraph("routeplanner");
@@ -852,7 +852,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._absoluteBetweenness({weight : 'distance'});
 ~ examples.dropGraph("routeplanner");
@@ -870,7 +870,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._absoluteBetweenness({direction : 'outbound', weight : 'distance'});
 ~ examples.dropGraph("routeplanner");
@@ -899,7 +899,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._betweenness();
 ~ examples.dropGraph("routeplanner");
@@ -917,7 +917,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._betweenness({weight : 'distance'});
 ~ examples.dropGraph("routeplanner");
@@ -935,7 +935,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._betweenness({direction : 'outbound', weight : 'distance'});
 ~ examples.dropGraph("routeplanner");
@@ -969,7 +969,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._radius();
 ~ examples.dropGraph("routeplanner");
@@ -987,7 +987,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._radius({weight : 'distance'});
 ~ examples.dropGraph("routeplanner");
@@ -1005,7 +1005,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._radius({direction : 'outbound', weight : 'distance'});
 ~ examples.dropGraph("routeplanner");
@@ -1041,7 +1041,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._diameter();
 ~ examples.dropGraph("routeplanner");
@@ -1059,7 +1059,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._diameter({weight : 'distance'});
 ~ examples.dropGraph("routeplanner");
@@ -1077,7 +1077,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
   graph._diameter({direction : 'outbound', weight : 'distance'});
 ~ examples.dropGraph("routeplanner");

@@ -1,7 +1,7 @@
 ---
 title: Cluster Troubleshooting
 menuTitle: Cluster
-weight: 15
+weight: 20
 description: >-
   Troubleshooting issues of ArangoDB cluster deployments
 archetype: chapter

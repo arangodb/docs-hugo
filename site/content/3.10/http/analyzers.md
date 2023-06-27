@@ -14,7 +14,7 @@ See the description of [Analyzers](../index-and-search/analyzers.md) for an
 introduction and the available types, properties and features.
 
 ```openapi
-## Create an Analyzer with the supplied definition
+## Create an Analyzer
 
 paths:
   /_api/analyzer:
@@ -68,6 +68,9 @@ paths:
         - Analyzers
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -97,7 +100,7 @@ type: single
   analyzers.remove(analyzerName, true);
 ```
 ```openapi
-## Return the Analyzer definition
+## Get an Analyzer definition
 
 paths:
   /_api/analyzer/{analyzer-name}:
@@ -106,10 +109,10 @@ paths:
       description: |
         Retrieves the full definition for the specified Analyzer name.
         The resulting object contains the following attributes:
-        - *name*: the Analyzer name
-        - *type*: the Analyzer type
-        - *properties*: the properties used to configure the specified type
-        - *features*: the set of features to set on the Analyzer generated fields
+        - `name`: the Analyzer name
+        - `type`: the Analyzer type
+        - `properties`: the properties used to configure the specified type
+        - `features`: the set of features to set on the Analyzer generated fields
       parameters:
         - name: analyzer-name
           in: path
@@ -128,6 +131,9 @@ paths:
       tags:
         - Analyzers
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -165,10 +171,10 @@ paths:
       description: |
         Retrieves a an array of all Analyzer definitions.
         The resulting array contains objects with the following attributes:
-        - *name*: the Analyzer name
-        - *type*: the Analyzer type
-        - *properties*: the properties used to configure the specified type
-        - *features*: the set of features to set on the Analyzer generated fields
+        - `name`: the Analyzer name
+        - `type`: the Analyzer type
+        - `properties`: the properties used to configure the specified type
+        - `features`: the set of features to set on the Analyzer generated fields
       responses:
         '200':
           description: |
@@ -176,6 +182,9 @@ paths:
       tags:
         - Analyzers
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -204,12 +213,12 @@ paths:
     delete:
       operationId: deleteAnalyzer
       description: |
-        Removes an Analyzer configuration identified by *analyzer-name*.
+        Removes an Analyzer configuration identified by `analyzer-name`.
 
         If the Analyzer definition was successfully dropped, an object is returned with
         the following attributes:
-        - *error*: *false*
-        - *name*: The name of the removed Analyzer
+        - `error`: `false`
+        - `name`: The name of the removed Analyzer
       parameters:
         - name: analyzer-name
           in: path
@@ -223,7 +232,7 @@ paths:
           required: false
           description: |
             The Analyzer configuration should be removed even if it is in-use.
-            The default value is *false*.
+            The default value is `false`.
           schema:
             type: boolean
       responses:
@@ -232,7 +241,7 @@ paths:
             The Analyzer configuration was removed successfully.
         '400':
           description: |
-            The *analyzer-name* was not supplied or another request parameter was not
+            The `analyzer-name` was not supplied or another request parameter was not
             valid.
         '403':
           description: |
@@ -242,17 +251,20 @@ paths:
             Such an Analyzer configuration does not exist.
         '409':
           description: |
-            The specified Analyzer configuration is still in use and *force* was omitted or
-            *false* specified.
+            The specified Analyzer configuration is still in use and `force` was omitted or
+            `false` specified.
       tags:
         - Analyzers
 ```
+
+**Examples**
+
 
 
 ```curl
 ---
 description: |-
-  Removing without *force*:
+  Removing without `force`:
 version: '3.10'
 render: input/output
 name: RestAnalyzerDelete
@@ -278,7 +290,8 @@ console.error(JSON.stringify(response));
 ```curl
 ---
 description: |-
-  Removing with *force*:
+  Removing with `force`:
+version: '3.10'
 render: input/output
 name: RestAnalyzerDeleteForce
 server_name: stable

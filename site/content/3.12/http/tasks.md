@@ -8,7 +8,7 @@ description: >-
 archetype: default
 ---
 ```openapi
-## Fetch all tasks or one task
+## List all tasks
 
 paths:
   /_api/tasks/:
@@ -76,6 +76,9 @@ paths:
         - Tasks
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -97,14 +100,14 @@ type: single
 
 ```
 ```openapi
-## Fetch one task with id
+## Get a task
 
 paths:
   /_api/tasks/{id}:
     get:
       operationId: getTask
       description: |
-        fetches one existing task on the server specified by *id*
+        fetches one existing task on the server specified by `id`
       parameters:
         - name: id
           in: path
@@ -171,6 +174,9 @@ paths:
         - Tasks
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -196,6 +202,7 @@ type: single
 ```curl
 ---
 description: Trying to fetch a non-existing task
+version: '3.12'
 render: input/output
 name: RestTasksListNonExisting
 server_name: stable
@@ -211,7 +218,7 @@ type: single
 
 ```
 ```openapi
-## creates a task
+## Create a task
 
 paths:
   /_api/tasks:
@@ -294,7 +301,7 @@ paths:
                     type: number
                   error:
                     description: |
-                      *false* in this case
+                      `false` in this case
                     type: boolean
                 required:
                   - id
@@ -312,6 +319,9 @@ paths:
       tags:
         - Tasks
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -345,14 +355,16 @@ type: single
 
 ```
 ```openapi
-## creates a task with id
+## Create a task with ID
 
 paths:
   /_api/tasks/{id}:
     put:
       operationId: createTaskWithId
       description: |
-        registers a new task with the specified id
+        Registers a new task with the specified ID.
+
+        Not compatible with load balancers.
       parameters:
         - name: id
           in: path
@@ -394,10 +406,13 @@ paths:
       responses:
         '400':
           description: |
-            If the task *id* already exists or the rest body is not accurate, *HTTP 400* is returned.
+            If the task `id` already exists or the rest body is not accurate, *HTTP 400* is returned.
       tags:
         - Tasks
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -430,14 +445,14 @@ type: single
     curlRequest('DELETE', url + 'sampleTask');
 ```
 ```openapi
-## deletes the task with id
+## Delete a task
 
 paths:
   /_api/tasks/{id}:
     delete:
       operationId: deleteTask
       description: |
-        Deletes the task identified by *id* on the server.
+        Deletes the task identified by `id` on the server.
       parameters:
         - name: id
           in: path
@@ -461,14 +476,14 @@ paths:
                     type: number
                   error:
                     description: |
-                      *false* in this case
+                      `false` in this case
                     type: boolean
                 required:
                   - code
                   - error
         '404':
           description: |
-            If the task *id* is unknown, then an *HTTP 404* is returned.
+            If the task `id` is unknown, then an *HTTP 404* is returned.
           content:
             application/json:
               schema:
@@ -480,7 +495,7 @@ paths:
                     type: number
                   error:
                     description: |
-                      *true* in this case
+                      `true` in this case
                     type: boolean
                   errorMessage:
                     description: |
@@ -493,6 +508,9 @@ paths:
       tags:
         - Tasks
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -520,6 +538,7 @@ type: single
 ---
 description: |-
   Remove existing task:
+version: '3.12'
 render: input/output
 name: RestTasksDelete
 server_name: stable

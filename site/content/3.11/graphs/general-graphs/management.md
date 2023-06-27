@@ -343,7 +343,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-~ var examples = require("@arangodb/graph-examples/example-graph.js");
+~ var examples = require("@arangodb/graph-examples/example-graph");
 ~ var g1 = examples.loadGraph("social");
   var graph_module = require("@arangodb/general-graph");
   graph = graph_module._graph("social");
@@ -378,7 +378,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-~ var examples = require("@arangodb/graph-examples/example-graph.js");
+~ var examples = require("@arangodb/graph-examples/example-graph");
 ~ var g1 = examples.loadGraph("social");
   var graph_module = require("@arangodb/general-graph");
   graph_module._drop("social");
@@ -402,7 +402,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-~ var examples = require("@arangodb/graph-examples/example-graph.js");
+~ var examples = require("@arangodb/graph-examples/example-graph");
 ~ var g1 = examples.loadGraph("social");
   var graph_module = require("@arangodb/general-graph");
   graph_module._drop("social", true);
@@ -685,7 +685,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("social");
   graph.male.save({name: "Floyd", _key: "floyd"});
 ~ examples.dropGraph("social");
@@ -715,7 +715,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("social");
   graph.male.save({neym: "Jon", _key: "john"});
   graph.male.replace("male/john", {name: "John"});
@@ -746,7 +746,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("social");
   graph.female.save({name: "Lynda", _key: "linda"});
   graph.female.update("female/linda", {name: "Linda", _key: "linda"});
@@ -778,7 +778,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("social");
   graph.male.save({name: "Kermit", _key: "kermit"});
   db._exists("male/kermit")
@@ -814,7 +814,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("social");
   graph.relation.save({
     _from: "male/bob",
@@ -835,7 +835,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("social");
     graph.relation.save(
      "relation/aliceAndBob",
@@ -869,7 +869,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("social");
   graph.relation.save("female/alice", "female/diana", {typo: "nose", _key: "aliceAndDiana"});
   graph.relation.replace("relation/aliceAndDiana", {type: "knows", _from: "female/alice", _to: "female/diana"});
@@ -900,7 +900,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("social");
   graph.relation.save("female/alice", "female/diana", {type: "knows", _key: "aliceAndDiana"});
   graph.relation.update("relation/aliceAndDiana", {type: "quarreled", _key: "aliceAndDiana"});
@@ -932,7 +932,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-  var examples = require("@arangodb/graph-examples/example-graph.js");
+  var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("social");
   graph.relation.save("female/alice", "female/diana", {_key: "aliceAndDiana"});
   db._exists("relation/aliceAndDiana")

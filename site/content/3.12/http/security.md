@@ -18,7 +18,7 @@ See [Audit logging](../operations/security/audit-logging.md#configuration).
 ## Encryption in transit
 
 ```openapi
-### Return a summary of the TLS data
+### Get the TLS data
 
 paths:
   /_admin/server/tls:
@@ -29,8 +29,8 @@ paths:
         `result` with the following components:
 
           - `keyfile`: Information about the key file.
-          - `clientCA`: Information about the CA for client certificate
-            verification.
+          - `clientCA`: Information about the Certificate Authority (CA) for
+            client certificate verification.
 
         If server name indication (SNI) is used and multiple key files are
         configured for different server names, then there is an additional
@@ -57,16 +57,16 @@ paths:
         - Security
 ```
 ```openapi
-### Trigger a reload of the TLS data and return a summary
+### Reload the TLS data
 
 paths:
   /_admin/server/tls:
     post:
       operationId: reloadServerTls
       description: |
-        This API call triggers a reload of all the TLS data and then
-        returns a summary. The JSON response is exactly as in the corresponding
-        GET request (see there).
+        This API call triggers a reload of all the TLS data (server key, client-auth CA)
+        and then returns a summary. The JSON response is exactly as in the corresponding
+        GET request.
 
         This is a protected API and can only be executed with superuser rights.
       responses:
@@ -75,7 +75,7 @@ paths:
             This API will return HTTP 200 if everything is ok
         '403':
           description: |
-            This API will return HTTP 403 FORBIDDEN if it is not called with
+            This API will return HTTP 403 Forbidden if it is not called with
             superuser rights.
       tags:
         - Security
@@ -84,14 +84,14 @@ paths:
 ## Encryption at rest
 
 ```openapi
-### Rotate the encryption at rest keystore
+### Rotate the encryption at rest key
 
 paths:
   /_admin/server/encryption:
     post:
       operationId: rotateEncryptionAtRestKey
       description: |
-        Change the user supplied encryption at rest key by sending a request without
+        Change the user-supplied encryption at rest key by sending a request without
         payload to this endpoint. The file supplied via `--rocksdb.encryption-keyfolder`
         will be reloaded and the internal encryption key will be re-encrypted with the
         new user key.
@@ -111,7 +111,7 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (*false* in this case)
+                      boolean flag to indicate whether an error occurred (`false` in this case)
                     type: boolean
                   code:
                     description: |

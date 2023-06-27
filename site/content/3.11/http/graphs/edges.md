@@ -25,7 +25,7 @@ document. See [Addresses of documents](../documents.md#addresses-of-documents)
 for details.
 
 ```openapi
-## Read in- or outbound edges
+## Get inbound and outbound edges
 
 paths:
   /_api/edges/{collection-id}:
@@ -33,7 +33,7 @@ paths:
       operationId: getVertexEdges
       description: |
         Returns an array of edges starting or ending in the vertex identified by
-        *vertex*.
+        `vertex`.
       parameters:
         - name: collection-id
           in: path
@@ -53,7 +53,7 @@ paths:
           in: query
           required: false
           description: |
-            Selects *in* or *out* direction for edges. If not set, any edges are
+            Selects `in` or `out` direction for edges. If not set, any edges are
             returned.
           schema:
             type: string
@@ -78,6 +78,9 @@ paths:
       tags:
         - Graphs
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -119,6 +122,7 @@ type: single
 ---
 description: |-
   In edges
+version: '3.11'
 render: input/output
 name: RestEdgesReadEdgesIn
 server_name: stable
@@ -153,6 +157,7 @@ type: single
 ---
 description: |-
   Out edges
+version: '3.11'
 render: input/output
 name: RestEdgesReadEdgesOut
 server_name: stable

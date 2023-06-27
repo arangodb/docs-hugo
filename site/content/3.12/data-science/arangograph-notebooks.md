@@ -14,4 +14,4 @@ ArangoML platform services. This makes it much easier to leverage these
 resources without having to download any data locally or to remember user IDs,
 passwords, and endpoint URLs.
 
-For more information, see the [Notebooks](../arangograph/guides/notebooks.md) documentation.
+For more information, see the [Notebooks](../arangograph/notebooks.md) documentation.

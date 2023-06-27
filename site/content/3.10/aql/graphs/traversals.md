@@ -672,7 +672,7 @@ type: single
 ---
 ~addIgnoreCollection("circles");
 ~addIgnoreCollection("edges");
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("traversalGraph");
 db.circles.toArray();
 db.edges.toArray();
@@ -948,7 +948,7 @@ server_name: stable
 type: single
 ---
 ~examples.loadGraph("traversalGraph");
-var examples = require("@arangodb/graph-examples/example-graph.js");
+var examples = require("@arangodb/graph-examples/example-graph");
 examples.dropGraph("traversalGraph");
 ```
 

@@ -6,18 +6,18 @@ description: ''
 archetype: default
 ---
 ```openapi
-## Create fulltext index
+## Create a full-text index
 
 paths:
   /_api/index#fulltext:
     post:
       operationId: createIndexFulltext
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         The fulltext index type is deprecated from version 3.10 onwards.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
-        Creates a fulltext index for the collection *collection-name*, if
+        Creates a fulltext index for the collection `collection-name`, if
         it does not already exist. The call expects an object containing the index
         details.
       parameters:
@@ -36,7 +36,7 @@ paths:
               properties:
                 type:
                   description: |
-                    must be equal to *"fulltext"*.
+                    must be equal to `"fulltext"`.
                   type: string
                 name:
                   description: |
@@ -60,9 +60,9 @@ paths:
                   type: integer
                 inBackground:
                   description: |
-                    The optional attribute **inBackground** can be set to *true* to create the index
+                    You can set this option to `true` to create the index
                     in the background, which will not write-lock the underlying collection for
-                    as long as if the index is built in the foreground. The default value is *false*.
+                    as long as if the index is built in the foreground. The default value is `false`.
                   type: boolean
               required:
                 - type
@@ -79,10 +79,13 @@ paths:
             is returned.
         '404':
           description: |
-            If the *collection-name* is unknown, then a *HTTP 404* is returned.
+            If the `collection-name` is unknown, then a *HTTP 404* is returned.
       tags:
         - Indexes
 ```
+
+**Examples**
+
 
 
 ```curl

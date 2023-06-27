@@ -40,4 +40,4 @@ Additional tools which are available separately:
 |-----------------|-------------------|
 | [Foxx CLI](foxx-cli/_index.md) | Command line tool for managing and developing Foxx services
 | [kube-arangodb](../../deploy/deployment/kubernetes/_index.md) | Operators to manage Kubernetes deployments
-| [Oasisctl](../../arangograph/api/oasisctl/_index.md) | Command-line tool for managing the ArangoGraph Insights Platform
+| [Oasisctl](../../arangograph/oasisctl/_index.md) | Command-line tool for managing the ArangoGraph Insights Platform

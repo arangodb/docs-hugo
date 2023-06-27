@@ -11,7 +11,7 @@ archetype: default
 {{< info >}}
 
 A similar feature is also available in the
-[ArangoGraph Insights Platform](../../arangograph/guides/security-and-access-control/_index.md#using-an-audit-log).
+[ArangoGraph Insights Platform](../../arangograph/security-and-access-control/_index.md#using-an-audit-log).
 {{< /info >}}
 {{< tag "ArangoDB Enterprise" >}}
 ## Configuration

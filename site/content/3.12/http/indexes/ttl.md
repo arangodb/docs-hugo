@@ -6,14 +6,14 @@ description: ''
 archetype: default
 ---
 ```openapi
-## Create TTL index
+## Create a TTL index
 
 paths:
   /_api/index#ttl:
     post:
       operationId: createIndexTtl
       description: |
-        Creates a TTL index for the collection *collection-name* if it
+        Creates a time-to-live (TTL) index for the collection `collection-name` if it
         does not already exist. The call expects an object containing the index
         details.
       parameters:
@@ -32,7 +32,7 @@ paths:
               properties:
                 type:
                   description: |
-                    must be equal to *"ttl"*.
+                    must be equal to `"ttl"`.
                   type: string
                 name:
                   description: |
@@ -56,9 +56,9 @@ paths:
                   type: number
                 inBackground:
                   description: |
-                    The optional attribute **inBackground** can be set to *true* to create the index
+                    You can set this option to `true` to create the index
                     in the background, which will not write-lock the underlying collection for
-                    as long as if the index is built in the foreground. The default value is *false*.
+                    as long as if the index is built in the foreground. The default value is `false`.
                   type: boolean
               required:
                 - type
@@ -78,10 +78,13 @@ paths:
             returned, as there can be at most one TTL index per collection.
         '404':
           description: |
-            If the *collection-name* is unknown, then a *HTTP 404* is returned.
+            If the `collection-name` is unknown, then a *HTTP 404* is returned.
       tags:
         - Indexes
 ```
+
+**Examples**
+
 
 
 ```curl

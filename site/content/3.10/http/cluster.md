@@ -11,7 +11,7 @@ archetype: default
 ## Monitoring
 
 ```openapi
-### Queries statistics of a DB-Server
+### Get the statistics of a DB-Server
 
 paths:
   /_admin/cluster/statistics:
@@ -41,14 +41,17 @@ paths:
         - Cluster
 ```
 ```openapi
-### Queries the health of cluster for monitoring
+### Get the cluster health
 
 paths:
   /_admin/cluster/health:
     get:
       operationId: getClusterHealth
       description: |
-        Queries the health of the cluster for monitoring purposes. The response is a JSON object, containing the standard `code`, `error`, `errorNum`, and `errorMessage` fields as appropriate. The endpoint-specific fields are as follows:
+        Queries the health of the cluster as assessed by the supervision (Agency) for
+        monitoring purposes. The response is a JSON object, containing the standard
+        `code`, `error`, `errorNum`, and `errorMessage` fields as appropriate.
+        The endpoint-specific fields are as follows:
 
         - `ClusterId`: A UUID string identifying the cluster
         - `Health`: An object containing a descriptive sub-object for each node in the cluster.
@@ -87,7 +90,7 @@ paths:
 ## Endpoints
 
 ```openapi
-### Get information about all Coordinator endpoints
+### List all Coordinator endpoints
 
 paths:
   /_api/cluster/endpoints:
@@ -111,7 +114,7 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate whether an error occurred (*true* in this case)
+                      boolean flag to indicate whether an error occurred (`true` in this case)
                     type: boolean
                   code:
                     description: |
@@ -144,14 +147,14 @@ paths:
 ## Cluster node information
 
 ```openapi
-### Return id of a server in a cluster
+### Get the server ID
 
 paths:
   /_admin/server/id:
     get:
       operationId: getServerId
       description: |
-        Returns the id of a server in a cluster. The request will fail if the
+        Returns the ID of a server in a cluster. The request will fail if the
         server is not running in cluster mode.
       responses:
         '200':
@@ -164,7 +167,7 @@ paths:
         - Cluster
 ```
 ```openapi
-### Return the role of a server in a cluster
+### Get the server role
 
 paths:
   /_admin/server/role:
@@ -172,15 +175,7 @@ paths:
       operationId: getServerRole
       description: |
         Returns the role of a server in a cluster.
-        The role is returned in the *role* attribute of the result.
-        Possible return values for *role* are:
-        - *SINGLE*: the server is a standalone server without clustering
-        - *COORDINATOR*: the server is a Coordinator in a cluster
-        - *PRIMARY*: the server is a DB-Server in a cluster
-        - *SECONDARY*: this role is not used anymore
-        - *AGENT*: the server is an Agency node in a cluster
-        - *UNDEFINED*: in a cluster, *UNDEFINED* is returned if the server role cannot be
-           determined.
+        The server role is returned in the `role` attribute of the result.
       responses:
         '200':
           description: |
@@ -192,7 +187,7 @@ paths:
                 properties:
                   error:
                     description: |
-                      always *false*
+                      always `false`
                     type: boolean
                   code:
                     description: |
@@ -204,7 +199,14 @@ paths:
                     type: integer
                   role:
                     description: |
-                      one of [ *SINGLE*, *COORDINATOR*, *PRIMARY*, *SECONDARY*, *AGENT*, *UNDEFINED*]
+                      The server role. Possible values:
+                      - `SINGLE`: the server is a standalone server without clustering
+                      - `COORDINATOR`: the server is a Coordinator in a cluster
+                      - `PRIMARY`: the server is a DB-Server in a cluster
+                      - `SECONDARY`: this role is not used anymore
+                      - `AGENT`: the server is an Agency node in a cluster
+                      - `UNDEFINED`: in a cluster, this is returned if the server role cannot be
+                         determined.
                     type: string
                 required:
                   - error
@@ -218,13 +220,15 @@ paths:
 ## Maintenance
 
 ```openapi
-### Enable or disable the supervision maintenance mode
+### Set the cluster maintenance mode
 
 paths:
   /_admin/cluster/maintenance:
     put:
       operationId: setClusterMaintenance
       description: |
+        Enable or disable the cluster supervision (Agency) maintenance mode.
+
         This API allows to temporarily enable the supervision maintenance mode. Please be aware that no
         automatic failovers of any kind will take place while the maintenance mode is enabled.
         The cluster supervision reactivates itself automatically at some point after disabling it.
@@ -258,7 +262,7 @@ paths:
         - Cluster
 ```
 ```openapi
-### Query the maintenance status of a DB-Server
+### Get the maintenance status of a DB-Server
 
 paths:
   /_admin/cluster/maintenance/{DB-Server-ID}:
@@ -325,13 +329,15 @@ paths:
         - Cluster
 ```
 ```openapi
-### Enable or disable the DB-Server maintenance mode
+### Set the maintenance status of a DB-Server
 
 paths:
   /_admin/cluster/maintenance/{DB-Server-ID}:
     put:
       operationId: setDbserverMaintenance
       description: |
+        Enable or disable the maintenance mode of a DB-Server.
+
         For rolling upgrades or rolling restarts, DB-Servers can be put into
         maintenance mode, so that no attempts are made to re-distribute the data in a
         cluster for such planned events. DB-Servers in maintenance mode are not
@@ -616,7 +622,7 @@ Note that both these API calls only ever schedules up to 1000 move shard jobs.
 For large data sets, you might want to repeat the call after completion.
 
 ```openapi
-### Compute the current cluster imbalance
+### Get the current cluster imbalance
 
 paths:
   /_admin/cluster/rebalance:
@@ -730,6 +736,10 @@ paths:
                             description: |
                               The sum of shards, counting leader and follower shards.
                             type: integer
+                          totalShardsFromSystemCollections:
+                            description: |
+                              The sum of system collection shards, counting leader shards only.
+                            type: integer
                           imbalance:
                             description: |
                               The measure of the total imbalance. A high value indicates a high imbalance.
@@ -740,6 +750,7 @@ paths:
                           - numberShards
                           - totalUsed
                           - totalShards
+                          - totalShardsFromSystemCollections
                           - imbalance
                     required:
                       - leader
@@ -800,7 +811,7 @@ paths:
                   type: boolean
                 excludeSystemCollections:
                   description: |
-                    Remove system collections from the rebalance plan. (Default: `false`)
+                    Ignore system collections in the rebalance plan. (Default: `false`)
                   type: boolean
                 piFactor:
                   description: |
@@ -926,6 +937,10 @@ paths:
                                 description: |
                                   The sum of shards, counting leader and follower shards.
                                 type: integer
+                              totalShardsFromSystemCollections:
+                                description: |
+                                  The sum of system collection shards, counting leader shards only.
+                                type: integer
                               imbalance:
                                 description: |
                                   The measure of the total imbalance. A high value indicates a high imbalance.
@@ -936,6 +951,7 @@ paths:
                               - numberShards
                               - totalUsed
                               - totalShards
+                              - totalShardsFromSystemCollections
                               - imbalance
                         required:
                           - leader
@@ -1028,6 +1044,10 @@ paths:
                                 description: |
                                   The sum of shards, counting leader and follower shards.
                                 type: integer
+                              totalShardsFromSystemCollections:
+                                description: |
+                                  The sum of system collection shards, counting leader shards only.
+                                type: integer
                               imbalance:
                                 description: |
                                   The measure of the total imbalance. A high value indicates a high imbalance.
@@ -1038,6 +1058,7 @@ paths:
                               - numberShards
                               - totalUsed
                               - totalShards
+                              - totalShardsFromSystemCollections
                               - imbalance
                         required:
                           - leader
@@ -1193,7 +1214,7 @@ paths:
                   type: boolean
                 excludeSystemCollections:
                   description: |
-                    Remove system collections from the rebalance plan. (Default: `false`)
+                    Ignore system collections in the rebalance plan. (Default: `false`)
                   type: boolean
                 piFactor:
                   description: |
@@ -1319,6 +1340,10 @@ paths:
                                 description: |
                                   The sum of shards, counting leader and follower shards.
                                 type: integer
+                              totalShardsFromSystemCollections:
+                                description: |
+                                  The sum of system collection shards, counting leader shards only.
+                                type: integer
                               imbalance:
                                 description: |
                                   The measure of the total imbalance. A high value indicates a high imbalance.
@@ -1329,6 +1354,7 @@ paths:
                               - numberShards
                               - totalUsed
                               - totalShards
+                              - totalShardsFromSystemCollections
                               - imbalance
                         required:
                           - leader
@@ -1421,6 +1447,10 @@ paths:
                                 description: |
                                   The sum of shards, counting leader and follower shards.
                                 type: integer
+                              totalShardsFromSystemCollections:
+                                description: |
+                                  The sum of system collection shards, counting leader shards only.
+                                type: integer
                               imbalance:
                                 description: |
                                   The measure of the total imbalance. A high value indicates a high imbalance.
@@ -1431,6 +1461,7 @@ paths:
                               - numberShards
                               - totalUsed
                               - totalShards
+                              - totalShardsFromSystemCollections
                               - imbalance
                         required:
                           - leader

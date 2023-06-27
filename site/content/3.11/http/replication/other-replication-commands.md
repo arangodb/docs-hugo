@@ -6,7 +6,7 @@ description: ''
 archetype: default
 ---
 ```openapi
-## Return server id
+## Get the replication server ID
 
 paths:
   /_api/replication/server-id:
@@ -16,7 +16,7 @@ paths:
         Returns the servers id. The id is also returned by other replication API
         methods, and this method is an easy means of determining a server's id.
 
-        The body of the response is a JSON object with the attribute *serverId*. The
+        The body of the response is a JSON object with the attribute `serverId`. The
         server id is returned as a string.
       responses:
         '200':
@@ -31,6 +31,9 @@ paths:
       tags:
         - Replication
 ```
+
+**Examples**
+
 
 
 ```curl

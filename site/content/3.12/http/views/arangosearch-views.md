@@ -92,30 +92,6 @@ paths:
                     cache in cluster deployments by only using the cache for leader shards, see the
                     `--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).
                   type: boolean
-                optimizeTopK:
-                  description: |
-                    An array of strings defining sort expressions that you want to optimize.
-                    This is also known as _WAND optimization_.
-
-                    If you query a View with the `SEARCH` operation in combination with a
-                    `SORT` and `LIMIT` operation, search results can be retrieved faster if the
-                    `SORT` expression matches one of the optimized expressions.
-
-                    Only sorting by highest rank is supported, that is, sorting by the result
-                    of a scoring function in descending order (`DESC`). Use `@doc` in the expression
-                    where you would normally pass the document variable emitted by the `SEARCH`
-                    operation to the scoring function.
-
-                    You can define up tp 64 expressions per View.
-
-                    Example: `["BM25(@doc) DESC", "TFIDF(@doc, true) DESC"]`
-
-                    Default: `[]`
-
-                    This property is available in the Enterprise Edition only.
-                  type: array
-                  items:
-                    type: string
                 storedValues:
                   description: |
                     An array of objects to describe which document attributes to store in the View
@@ -314,6 +290,9 @@ paths:
         - Views
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -327,21 +306,17 @@ type: single
 
     var url = "/_api/view";
     var body = {
-      name: "testViewBasics",
+      name: "products",
       type: "arangosearch"
     };
-
     var response = logCurlRequest('POST', url, body);
-
     assert(response.code === 201);
-
     logJsonResponse(response);
 
-    db._flushCache();
-    db._dropView("testViewBasics");
+    db._dropView("products");
 ```
 ```openapi
-## Return information about a View
+## Get information about a View
 
 paths:
   /_api/view/{view-name}:
@@ -349,9 +324,9 @@ paths:
       operationId: getView
       description: |
         The result is an object briefly describing the View with the following attributes:
-        - *id*: The identifier of the View
-        - *name*: The name of the View
-        - *type*: The type of the View as string
+        - `id`: The identifier of the View
+        - `name`: The name of the View
+        - `type`: The type of the View as string
       parameters:
         - name: view-name
           in: path
@@ -363,10 +338,13 @@ paths:
       responses:
         '404':
           description: |
-            If the *view-name* is unknown, then a *HTTP 404* is returned.
+            If the `view-name` is unknown, then a *HTTP 404* is returned.
       tags:
         - Views
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -380,18 +358,14 @@ server_name: stable
 type: single
 ---
 
-    var viewName = "testView";
-    var viewType = "arangosearch";
+    var view = db._createView("productsView", "arangosearch");
 
-    var view = db._createView(viewName, viewType);
     var url = "/_api/view/"+ view._id;
-
     var response = logCurlRequest('GET', url);
     assert(response.code === 200);
-
     logJsonResponse(response);
 
-    db._dropView("testView");
+    db._dropView("productsView");
 ```
 
 
@@ -399,34 +373,31 @@ type: single
 ---
 description: |-
   Using a name:
+version: '3.12'
 render: input/output
 name: RestViewGetViewNameArangoSearch
 server_name: stable
 type: single
 ---
 
-    var viewName = "testView";
-    var viewType = "arangosearch";
+    var view = db._createView("productsView", "arangosearch");
 
-    var view = db._createView(viewName, viewType);
-    var url = "/_api/view/testView";
-
+    var url = "/_api/view/productsView";
     var response = logCurlRequest('GET', url);
     assert(response.code === 200);
-
     logJsonResponse(response);
 
-    db._dropView("testView");
+    db._dropView("productsView");
 ```
 ```openapi
-## Read properties of a View
+## Get the properties of a View
 
 paths:
   /_api/view/{view-name}/properties:
     get:
       operationId: getViewProperties
       description: |
-        Returns an object containing the definition of the View identified by *view-name*.
+        Returns an object containing the definition of the View identified by `view-name`.
 
         The result is an object with a full description of a specific View, including
         View type dependent properties.
@@ -441,13 +412,16 @@ paths:
       responses:
         '400':
           description: |
-            If the *view-name* is missing, then a *HTTP 400* is returned.
+            If the `view-name` is missing, then a *HTTP 400* is returned.
         '404':
           description: |
-            If the *view-name* is unknown, then a *HTTP 404* is returned.
+            If the `view-name` is unknown, then a *HTTP 404* is returned.
       tags:
         - Views
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -461,18 +435,16 @@ server_name: stable
 type: single
 ---
 
-    var viewName = "products";
-    var viewType = "arangosearch";
+    var coll = db._create("books");
+    var view = db._createView("productsView", "arangosearch", { links: { books: { fields: { title: { analyzers: ["text_en"] } } } } });
 
-    var view = db._createView(viewName, viewType);
     var url = "/_api/view/"+ view._id + "/properties";
-
     var response = logCurlRequest('GET', url);
-
     assert(response.code === 200);
-
     logJsonResponse(response);
-    db._dropView(viewName);
+
+    db._dropView("productsView");
+    db._drop("books");
 ```
 
 
@@ -480,24 +452,23 @@ type: single
 ---
 description: |-
   Using a name:
+version: '3.12'
 render: input/output
 name: RestViewGetViewPropertiesNameArangoSearch
 server_name: stable
 type: single
 ---
 
-    var viewName = "products";
-    var viewType = "arangosearch";
+    var coll = db._create("books");
+    var view = db._createView("productsView", "arangosearch", { links: { books: { fields: { title: { analyzers: ["text_en"] } } } } });
 
-    var view = db._createView(viewName, viewType);
-    var url = "/_api/view/products/properties";
-
+    var url = "/_api/view/productsView/properties";
     var response = logCurlRequest('GET', url);
-
     assert(response.code === 200);
-
     logJsonResponse(response);
-    db._dropView(viewName);
+
+    db._dropView("productsView");
+    db._drop("books");
 ```
 ```openapi
 ## List all Views
@@ -509,9 +480,9 @@ paths:
       description: |
         Returns an object containing a listing of all Views in a database, regardless
         of their type. It is an array of objects with the following attributes:
-        - *id*
-        - *name*
-        - *type*
+        - `id`
+        - `name`
+        - `type`
       responses:
         '200':
           description: |
@@ -519,6 +490,9 @@ paths:
       tags:
         - Views
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -532,28 +506,31 @@ server_name: stable
 type: single
 ---
 
+    var viewSearchAlias = db._createView("productsView", "search-alias");
+    var viewArangoSearch = db._createView("reviewsView", "arangosearch");
+
     var url = "/_api/view";
-
     var response = logCurlRequest('GET', url);
-
     assert(response.code === 200);
-
     logJsonResponse(response);
+
+    db._dropView("productsView");
+    db._dropView("reviewsView");
 ```
 ```openapi
-## Change properties of an arangosearch View
+## Replace the properties of an arangosearch View
 
 paths:
   /_api/view/{view-name}/properties:
     put:
       operationId: replaceViewProperties
       description: |
-        Changes the properties of a View by replacing them.
+        Changes all properties of a View by replacing them.
 
         On success an object with the following attributes is returned:
-        - *id*: The identifier of the View
-        - *name*: The name of the View
-        - *type*: The View type
+        - `id`: The identifier of the View
+        - `name`: The name of the View
+        - `type`: The View type
         - all additional `arangosearch` View implementation-specific properties
       parameters:
         - name: view-name
@@ -682,13 +659,16 @@ paths:
       responses:
         '400':
           description: |
-            If the *view-name* is missing, then a *HTTP 400* is returned.
+            If the `view-name` is missing, then a *HTTP 400* is returned.
         '404':
           description: |
-            If the *view-name* is unknown, then a *HTTP 404* is returned.
+            If the `view-name` is unknown, then a *HTTP 404* is returned.
       tags:
         - Views
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -701,33 +681,29 @@ server_name: stable
 type: single
 ---
 
-    var viewName = "products";
-    var viewType = "arangosearch";
+    var view = db._createView("productsView", "arangosearch");
 
-    var view = db._createView(viewName, viewType);
     var url = "/_api/view/"+ view.name() + "/properties";
-
     var response = logCurlRequest('PUT', url, { "locale": "en" });
-
     assert(response.code === 200);
-
     logJsonResponse(response);
-    db._dropView(viewName);
+
+    db._dropView(view.name());
 ```
 ```openapi
-## Partially changes properties of an arangosearch View
+## Update the properties of an arangosearch View
 
 paths:
   /_api/view/{view-name}/properties:
     patch:
       operationId: updateViewProperties
       description: |
-        Changes the properties of a View by updating the specified attributes.
+        Partially changes the properties of a View by updating the specified attributes.
 
         On success an object with the following attributes is returned:
-        - *id*: The identifier of the View
-        - *name*: The name of the View
-        - *type*: The View type
+        - `id`: The identifier of the View
+        - `name`: The name of the View
+        - `type`: The View type
         - all additional `arangosearch` View implementation-specific properties
       parameters:
         - name: view-name
@@ -856,13 +832,16 @@ paths:
       responses:
         '400':
           description: |
-            If the *view-name* is missing, then a *HTTP 400* is returned.
+            If the `view-name` is missing, then a *HTTP 400* is returned.
         '404':
           description: |
-            If the *view-name* is unknown, then a *HTTP 404* is returned.
+            If the `view-name` is unknown, then a *HTTP 404* is returned.
       tags:
         - Views
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -875,18 +854,14 @@ server_name: stable
 type: single
 ---
 
-    var viewName = "products";
-    var viewType = "arangosearch";
+    var view = db._createView("productsView", "arangosearch");
 
-    var view = db._createView(viewName, viewType);
     var url = "/_api/view/"+ view.name() + "/properties";
-
     var response = logCurlRequest('PATCH', url, { "locale": "en" });
-
     assert(response.code === 200);
-
     logJsonResponse(response);
-    db._dropView(viewName);
+
+    db._dropView("productsView");
 ```
 ```openapi
 ## Rename a View
@@ -897,12 +872,12 @@ paths:
       operationId: renameView
       description: |
         Renames a View. Expects an object with the attribute(s)
-        - *name*: The new name
+        - `name`: The new name
 
         It returns an object with the attributes
-        - *id*: The identifier of the View.
-        - *name*: The new name of the View.
-        - *type*: The View type.
+        - `id`: The identifier of the View.
+        - `name`: The new name of the View.
+        - `type`: The View type.
 
         **Note**: This method is not available in a cluster.
       parameters:
@@ -916,13 +891,16 @@ paths:
       responses:
         '400':
           description: |
-            If the *view-name* is missing, then a *HTTP 400* is returned.
+            If the `view-name` is missing, then a *HTTP 400* is returned.
         '404':
           description: |
-            If the *view-name* is unknown, then a *HTTP 404* is returned.
+            If the `view-name` is unknown, then a *HTTP 404* is returned.
       tags:
         - Views
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -935,34 +913,29 @@ server_name: stable
 type: single
 ---
 
-    var viewName = "products1";
-    var viewType = "arangosearch";
+    var view = db._createView("productsView", "arangosearch");
 
-    var view = db._createView(viewName, viewType);
     var url = "/_api/view/" + view.name() + "/rename";
-
-    var response = logCurlRequest('PUT', url, { name: "viewNewName" });
-
+    var response = logCurlRequest('PUT', url, { name: "catalogView" });
     assert(response.code === 200);
-    db._flushCache();
-    db._dropView("viewNewName");
-
     logJsonResponse(response);
+
+    db._dropView("catalogView");
 ```
 ```openapi
-## Drops a View
+## Drop a View
 
 paths:
   /_api/view/{view-name}:
     delete:
       operationId: deleteView
       description: |
-        Drops the View identified by *view-name*.
+        Drops the View identified by `view-name`.
 
         If the View was successfully dropped, an object is returned with
         the following attributes:
-        - *error*: *false*
-        - *id*: The identifier of the dropped View
+        - `error`: `false`
+        - `id`: The identifier of the dropped View
       parameters:
         - name: view-name
           in: path
@@ -974,13 +947,16 @@ paths:
       responses:
         '400':
           description: |
-            If the *view-name* is missing, then a *HTTP 400* is returned.
+            If the `view-name` is missing, then a *HTTP 400* is returned.
         '404':
           description: |
-            If the *view-name* is unknown, then a *HTTP 404* is returned.
+            If the `view-name` is unknown, then a *HTTP 404* is returned.
       tags:
         - Views
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -994,15 +970,11 @@ server_name: stable
 type: single
 ---
 
-    var viewName = "testView";
-    var viewType = "arangosearch";
+    var view = db._createView("productsView", "arangosearch");
 
-    var view = db._createView(viewName, viewType);
     var url = "/_api/view/"+ view._id;
-
     var response = logCurlRequest('DELETE', url);
     assert(response.code === 200);
-
     logJsonResponse(response);
 ```
 
@@ -1011,20 +983,17 @@ type: single
 ---
 description: |-
   Using a name:
+version: '3.12'
 render: input/output
 name: RestViewDeleteViewNameArangoSearch
 server_name: stable
 type: single
 ---
 
-    var viewName = "testView";
-    var viewType = "arangosearch";
+    var view = db._createView("productsView", "arangosearch");
 
-    var view = db._createView(viewName, viewType);
-    var url = "/_api/view/testView";
-
+    var url = "/_api/view/productsView";
     var response = logCurlRequest('DELETE', url);
     assert(response.code === 200);
-
     logJsonResponse(response);
 ```

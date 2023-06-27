@@ -266,13 +266,17 @@ the cursor, even before you requested the last batch.
 ## Execute AQL queries
 
 ```openapi
-### Create cursor
+### Create a cursor
 
 paths:
   /_api/cursor:
     post:
       operationId: createAqlQueryCursor
       description: |
+        Submits an AQL query for execution in the current database. The server returns
+        a result batch and may indicate that further batches need to be fetched using
+        a cursor identifier.
+
         The query details include the query string plus optional query options and
         bind parameters. These values need to be passed in a JSON representation in
         the body of the POST request.
@@ -319,8 +323,8 @@ paths:
                   description: |
                     maximum number of result documents to be transferred from
                     the server to the client in one roundtrip. If this attribute is
-                    not set, a server-controlled default value will be used. A *batchSize* value of
-                    *0* is disallowed.
+                    not set, a server-controlled default value will be used. A `batchSize` value of
+                    `0` is disallowed.
                   type: integer
                 ttl:
                   description: |
@@ -331,19 +335,20 @@ paths:
                     after the specified amount of time. This is useful to ensure garbage collection
                     of cursors that are not fully fetched by clients. If not set, a server-defined
                     value will be used (default: 30 seconds).
+                    The time-to-live is renewed upon every access to the cursor.
                   type: integer
                 cache:
                   description: |
                     flag to determine whether the AQL query results cache
-                    shall be used. If set to *false*, then any query cache lookup will be skipped
-                    for the query. If set to *true*, it will lead to the query cache being checked
-                    for the query if the query cache mode is either *on* or *demand*.
+                    shall be used. If set to `false`, then any query cache lookup will be skipped
+                    for the query. If set to `true`, it will lead to the query cache being checked
+                    for the query if the query cache mode is either `on` or `demand`.
                   type: boolean
                 memoryLimit:
                   description: |
                     the maximum number of memory (measured in bytes) that the query is allowed to
                     use. If set, then the query will fail with error "resource limit exceeded" in
-                    case it allocates too much memory. A value of *0* indicates that there is no
+                    case it allocates too much memory. A value of `0` indicates that there is no
                     memory limit.
                   type: integer
                 bindVars:
@@ -360,26 +365,26 @@ paths:
                   properties:
                     fullCount:
                       description: |
-                        if set to *true* and the query contains a *LIMIT* clause, then the
-                        result will have an *extra* attribute with the sub-attributes *stats*
-                        and *fullCount*, `{ ... , "extra": { "stats": { "fullCount": 123 } } }`.
-                        The *fullCount* attribute will contain the number of documents in the result before the
+                        if set to `true` and the query contains a `LIMIT` clause, then the
+                        result will have an `extra` attribute with the sub-attributes `stats`
+                        and `fullCount`, `{ ... , "extra": { "stats": { "fullCount": 123 } } }`.
+                        The `fullCount` attribute will contain the number of documents in the result before the
                         last top-level LIMIT in the query was applied. It can be used to count the number of
                         documents that match certain filter criteria, but only return a subset of them, in one go.
                         It is thus similar to MySQL's *SQL_CALC_FOUND_ROWS* hint. Note that setting the option
                         will disable a few LIMIT optimizations and may lead to more documents being processed,
-                        and thus make queries run longer. Note that the *fullCount* attribute may only
+                        and thus make queries run longer. Note that the `fullCount` attribute may only
                         be present in the result if the query has a top-level LIMIT clause and the LIMIT
                         clause is actually used in the query.
                       type: boolean
                     fillBlockCache:
                       description: |
-                        if set to *true* or not specified, this will make the query store the data it
+                        if set to `true` or not specified, this will make the query store the data it
                         reads via the RocksDB storage engine in the RocksDB block cache. This is usually
-                        the desired behavior. The option can be set to *false* for queries that are
+                        the desired behavior. The option can be set to `false` for queries that are
                         known to either read a lot of data which would thrash the block cache, or for queries
                         that read data which are known to be outside of the hot set. By setting the option
-                        to *false*, data read by the query will not make it into the RocksDB block cache if
+                        to `false`, data read by the query will not make it into the RocksDB block cache if
                         not already in there, thus leaving more room for the actual hot set.
                       type: boolean
                     maxNumberOfPlans:
@@ -403,17 +408,17 @@ paths:
                       type: integer
                     failOnWarning:
                       description: |
-                        When set to *true*, the query will throw an exception and abort instead of producing
+                        When set to `true`, the query will throw an exception and abort instead of producing
                         a warning. This option should be used during development to catch potential issues
-                        early. When the attribute is set to *false*, warnings will not be propagated to
+                        early. When the attribute is set to `false`, warnings will not be propagated to
                         exceptions and will be returned with the query result.
                         There is also a server configuration option `--query.fail-on-warning` for setting the
-                        default value for *failOnWarning* so it does not need to be set on a per-query level.
+                        default value for `failOnWarning` so it does not need to be set on a per-query level.
                       type: boolean
                     allowRetry:
                       description: |
-                        Set this option to `true` to make it possible to retry fetching the latest batch
-                        from a cursor.
+                        Set this option to `true` to make it possible to retry
+                        fetching the latest batch from a cursor. The default is `false`.
 
                         If retrieving a result batch fails because of a connection issue, you can ask
                         for that batch again using the `POST /_api/cursor/<cursor-id>/<batch-id>`
@@ -422,12 +427,31 @@ paths:
                         `nextBatchId` attribute, indicating the ID of the batch after the current.
                         You can remember and use this batch ID should retrieving the next batch fail.
 
-                        You can only request the latest batch again. Earlier batches are not kept on the
-                        server-side.
+                        You can only request the latest batch again (or the next batch).
+                        Earlier batches are not kept on the server-side.
+                        Requesting a batch again does not advance the cursor.
+
+                        You can also call this endpoint with the next batch identifier, i.e. the value
+                        returned in the `nextBatchId` attribute of a previous request. This advances the
+                        cursor and returns the results of the next batch. This is only supported if there
+                        are more results in the cursor (i.e. `hasMore` is `true` in the latest batch).
+
+                        From v3.11.1 onward, you may use the `POST /_api/cursor/<cursor-id>/<batch-id>`
+                        endpoint even if the `allowRetry` attribute is `false` to fetch the next batch,
+                        but you cannot request a batch again unless you set it to `true`.
+
+                        To allow refetching of the very last batch of the query, the server cannot
+                        automatically delete the cursor. After the first attempt of fetching the last
+                        batch, the server would normally delete the cursor to free up resources. As you
+                        might need to reattempt the fetch, it needs to keep the final batch when the
+                        `allowRetry` option is enabled. Once you successfully received the last batch,
+                        you should call the `DELETE /_api/cursor/<cursor-id>` endpoint so that the
+                        server doesn't unnecessarily keep the batch until the cursor times out
+                        (`ttl` query option).
                       type: boolean
                     stream:
                       description: |
-                        Can be enabled to execute the query lazily. If set to *true*, then the query is
+                        Can be enabled to execute the query lazily. If set to `true`, then the query is
                         executed as long as necessary to produce up to `batchSize` results. These
                         results are returned immediately and the query is suspended until the client
                         asks for the next batch (if there are more results). Depending on the query
@@ -453,7 +477,7 @@ paths:
                         - Query statistics, profiling data and warnings are delivered as part of the
                           last batch.
 
-                        If the `stream` option is *false* (default), then the complete result of the
+                        If the `stream` option is `false` (default), then the complete result of the
                         query is calculated before any of it is returned to the client. The server
                         stores the full result in memory (on the contacted Coordinator if in a cluster).
                         All other resources are freed immediately (locks, RocksDB snapshots). The query
@@ -534,6 +558,25 @@ paths:
                         The query has to be executed within the given runtime or it is killed.
                         The value is specified in seconds. The default value is `0.0` (no timeout).
                       type: number
+                    maxDNFConditionMembers:
+                      description: |
+                        A threshold for the maximum number of `OR` sub-nodes in the internal
+                        representation of an AQL `FILTER` condition.
+
+                        Yon can use this option to limit the computation time and memory usage when
+                        converting complex AQL `FILTER` conditions into the internal DNF
+                        (disjunctive normal form) format. `FILTER` conditions with a lot of logical
+                        branches (`AND`, `OR`, `NOT`) can take a large amount of processing time and
+                        memory. This query option limits the computation time and memory usage for
+                        such conditions.
+
+                        Once the threshold value is reached during the DNF conversion of a `FILTER`
+                        condition, the conversion is aborted, and the query continues with a simplified
+                        internal representation of the condition, which **cannot be used for index lookups**.
+
+                        You can set the threshold globally instead of per query with the
+                        `--query.max-dnf-condition-members` startup option.
+                      type: integer
                     maxTransactionSize:
                       description: |
                         The transaction size limit in bytes.
@@ -593,7 +636,8 @@ paths:
                     type: integer
                   result:
                     description: |
-                      An array of result documents (might be empty if query has no results).
+                      An array of result documents for the current batch
+                      (might be empty if the query has no results).
                     type: array
                     items:
                       type: ''
@@ -601,6 +645,10 @@ paths:
                     description: |
                       A boolean indicator whether there are more results
                       available for the cursor on the server.
+
+                      Note that even if `hasMore` returns `true`, the next call might still return no
+                      documents. Once `hasMore` is `false`, the cursor is exhausted and the client
+                      can stop asking for more results.
                     type: boolean
                   count:
                     description: |
@@ -609,20 +657,25 @@ paths:
                     type: integer
                   id:
                     description: |
-                      The ID of a temporary cursor created on the server for fetching more result batches.
+                      The ID of the cursor for fetching more result batches.
                     type: string
                   nextBatchId:
                     description: |
-                      Only set if the `allowRetry` query option is enabled.
+                      Only set if the `allowRetry` query option is enabled in v3.11.0.
+                      From v3.11.1 onward, this attribute is always set, except in the last batch.
 
                       The ID of the batch after the current one. The first batch has an ID of `1` and
                       the value is incremented by 1 with every batch. You can remember and use this
                       batch ID should retrieving the next batch fail. Use the
                       `POST /_api/cursor/<cursor-id>/<batch-id>` endpoint to ask for the batch again.
+                      You can also request the next batch.
                     type: string
                   extra:
                     description: |
                       An optional JSON object with extra information about the query result.
+
+                      Only delivered as part of the first batch, or the last batch in case of a cursor
+                      with the `stream` option enabled.
                     type: object
                     properties:
                       warnings:
@@ -807,6 +860,9 @@ paths:
                           optimizing plan:
                             description: ''
                             type: number
+                          instantiating executors:
+                            description: ''
+                            type: number
                           executing:
                             description: ''
                             type: number
@@ -820,6 +876,7 @@ paths:
                           - loading collections
                           - instantiating plan
                           - optimizing plan
+                          - instantiating executors
                           - executing
                           - finalizing
                       plan:
@@ -867,7 +924,7 @@ paths:
                           estimatedCost:
                             description: |
                               The estimated cost of the query.
-                            type: integer
+                            type: number
                           estimatedNrItems:
                             description: |
                               The estimated number of results.
@@ -901,8 +958,8 @@ paths:
                   - cached
         '400':
           description: |
-            is returned if the JSON representation is malformed or the query specification is
-            missing from the request.
+            is returned if the JSON representation is malformed, the query specification is
+            missing from the request, or if the query is invalid.
           content:
             application/json:
               schema:
@@ -910,7 +967,7 @@ paths:
                 properties:
                   error:
                     description: |
-                      boolean flag to indicate that an error occurred (*true* in this case)
+                      boolean flag to indicate that an error occurred (`true` in this case)
                     type: boolean
                   code:
                     description: |
@@ -954,6 +1011,9 @@ paths:
         - Queries
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -993,6 +1053,7 @@ type: single
 ---
 description: |-
   Execute a query and extract a part of the result
+version: '3.12'
 render: input/output
 name: RestCursorCreateCursorForLimitReturn
 server_name: stable
@@ -1029,6 +1090,7 @@ type: single
 ---
 description: |-
   Using the query option "fullCount"
+version: '3.12'
 render: input/output
 name: RestCursorCreateCursorOption
 server_name: stable
@@ -1056,6 +1118,7 @@ type: single
 ---
 description: |-
   Enabling and disabling optimizer rules
+version: '3.12'
 render: input/output
 name: RestCursorOptimizerRules
 server_name: stable
@@ -1087,6 +1150,7 @@ type: single
 description: |-
   Execute instrumented query and return result together with
   execution plan and profiling information
+version: '3.12'
 render: input/output
 name: RestCursorProfileQuery
 server_name: stable
@@ -1115,6 +1179,7 @@ type: single
 description: |-
   Execute a data-modification query and retrieve the number of
   modified documents
+version: '3.12'
 render: input/output
 name: RestCursorDeleteQuery
 server_name: stable
@@ -1147,7 +1212,8 @@ type: single
 ```curl
 ---
 description: |-
-  Execute a data-modification query with option *ignoreErrors*
+  Execute a data-modification query with option `ignoreErrors`
+version: '3.12'
 render: input/output
 name: RestCursorDeleteIgnore
 server_name: stable
@@ -1183,6 +1249,7 @@ description: |-
   with key `test` in the collection `documents`. The normal update behavior of the
   `UPDATE` operation is to replace the array attribute completely, but using the
   `PUSH()` function allows you to append to the array:
+version: '3.12'
 render: input/output
 name: RestCursorModifyArray
 server_name: stable
@@ -1225,6 +1292,7 @@ description: |-
   startup option `--query.memory-limit`) is used for restricting the maximum amount
   of memory the query can use. A memory limit value of `0` means that the maximum
   amount of memory for the query is not restricted.
+version: '3.12'
 render: input/output
 name: RestCursorMemoryLimit
 server_name: stable
@@ -1246,6 +1314,7 @@ type: single
 ---
 description: |-
   Bad query - Missing body
+version: '3.12'
 render: input/output
 name: RestCursorCreateCursorMissingBody
 server_name: stable
@@ -1266,6 +1335,7 @@ type: single
 ---
 description: |-
   Bad query - Unknown collection
+version: '3.12'
 render: input/output
 name: RestCursorCreateCursorUnknownCollection
 server_name: stable
@@ -1292,6 +1362,7 @@ type: single
 description: |-
   Bad query - Execute a data-modification query that attempts to remove a non-existing
   document
+version: '3.12'
 render: input/output
 name: RestCursorDeleteQueryFail
 server_name: stable
@@ -1317,32 +1388,17 @@ type: single
   ~ db._drop(cn);
 ```
 ```openapi
-### Read next batch from cursor
+### Read the next batch from a cursor
 
 paths:
   /_api/cursor/{cursor-identifier}:
     post:
-      operationId: modifyQueryCursorPost
+      operationId: getNextAqlQueryCursorBatch
       description: |
-        If the cursor is still alive, returns an object with the following
-        attributes:
+        If the cursor is still alive, returns an object with the next query result batch.
 
-        - *id*: a *cursor-identifier*
-        - *result*: a list of documents for the current batch
-        - *hasMore*: *false* if this was the last batch
-        - *count*: if present the total number of elements
-        - *code*: an HTTP status code
-        - *error*: a boolean flag to indicate whether an error occurred
-        - *errorNum*: a server error number (if *error* is *true*)
-        - *errorMessage*: a descriptive error message (if *error* is *true*)
-        - *extra*: an object with additional information about the query result, with
-          the nested objects *stats* and *warnings*. Only delivered as part of the last
-          batch in case of a cursor with the *stream* option enabled.
-
-        Note that even if *hasMore* returns *true*, the next call might
-        still return no documents. If, however, *hasMore* is *false*, then
-        the cursor is exhausted.  Once the *hasMore* attribute has a value of
-        *false*, the client can stop.
+        If the cursor is not fully consumed, the time-to-live for the cursor
+        is renewed by this API call.
       parameters:
         - name: cursor-identifier
           in: path
@@ -1360,15 +1416,374 @@ paths:
               schema:
                 type: object
                 properties:
+                  error:
+                    description: |
+                      A flag to indicate that an error occurred (`false` in this case).
+                    type: boolean
+                  code:
+                    description: |
+                      The HTTP status code.
+                    type: integer
+                  result:
+                    description: |
+                      An array of result documents for the current batch
+                      (might be empty if the query has no results).
+                    type: array
+                    items:
+                      type: ''
+                  hasMore:
+                    description: |
+                      A boolean indicator whether there are more results
+                      available for the cursor on the server.
+
+                      Note that even if `hasMore` returns `true`, the next call might still return no
+                      documents. Once `hasMore` is `false`, the cursor is exhausted and the client
+                      can stop asking for more results.
+                    type: boolean
+                  count:
+                    description: |
+                      The total number of result documents available (only
+                      available if the query was executed with the `count` attribute set).
+                    type: integer
+                  id:
+                    description: |
+                      The ID of the cursor for fetching more result batches.
+                    type: string
                   nextBatchId:
                     description: |
-                      Only set if the `allowRetry` query option is enabled.
+                      Only set if the `allowRetry` query option is enabled in v3.11.0.
+                      From v3.11.1 onward, this attribute is always set, except in the last batch.
 
                       The ID of the batch after the current one. The first batch has an ID of `1` and
                       the value is incremented by 1 with every batch. You can remember and use this
                       batch ID should retrieving the next batch fail. Use the
                       `POST /_api/cursor/<cursor-id>/<batch-id>` endpoint to ask for the batch again.
+                      You can also request the next batch.
                     type: string
+                  extra:
+                    description: |
+                      An optional JSON object with extra information about the query result.
+
+                      Only delivered as part of the first batch, or the last batch in case of a cursor
+                      with the `stream` option enabled.
+                    type: object
+                    properties:
+                      warnings:
+                        description: |
+                          A list of query warnings.
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              description: |
+                                An error code.
+                              type: integer
+                            message:
+                              description: |
+                                A description of the problem.
+                              type: string
+                          required:
+                            - code
+                            - message
+                            - code
+                            - message
+                      stats:
+                        description: |
+                          An object with query statistics.
+                        type: object
+                        properties:
+                          writesExecuted:
+                            description: |
+                              The total number of data-modification operations successfully executed.
+                            type: integer
+                          writesIgnored:
+                            description: |
+                              The total number of data-modification operations that were unsuccessful,
+                              but have been ignored because of the `ignoreErrors` query option.
+                            type: integer
+                          scannedFull:
+                            description: |
+                              The total number of documents iterated over when scanning a collection
+                              without an index. Documents scanned by subqueries are included in the result, but
+                              operations triggered by built-in or user-defined AQL functions are not.
+                            type: integer
+                          scannedIndex:
+                            description: |
+                              The total number of documents iterated over when scanning a collection using
+                              an index. Documents scanned by subqueries are included in the result, but operations
+                              triggered by built-in or user-defined AQL functions are not.
+                            type: integer
+                          cursorsCreated:
+                            description: |
+                              The total number of cursor objects created during query execution. Cursor
+                              objects are created for index lookups.
+                            type: integer
+                          cursorsRearmed:
+                            description: |
+                              The total number of times an existing cursor object was repurposed.
+                              Repurposing an existing cursor object is normally more efficient compared to destroying an
+                              existing cursor object and creating a new one from scratch.
+                            type: integer
+                          cacheHits:
+                            description: |
+                              The total number of index entries read from in-memory caches for indexes
+                              of type edge or persistent. This value is only non-zero when reading from indexes
+                              that have an in-memory cache enabled, and when the query allows using the in-memory
+                              cache (i.e. using equality lookups on all index attributes).
+                            type: integer
+                          cacheMisses:
+                            description: |
+                              The total number of cache read attempts for index entries that could not
+                              be served from in-memory caches for indexes of type edge or persistent. This value
+                              is only non-zero when reading from indexes that have an in-memory cache enabled, the
+                              query allows using the in-memory cache (i.e. using equality lookups on all index attributes)
+                              and the looked up values are not present in the cache.
+                            type: integer
+                          filtered:
+                            description: |
+                              The total number of documents removed after executing a filter condition
+                              in a `FilterNode` or another node that post-filters data. Note that nodes of the
+                              `IndexNode` type can also filter documents by selecting only the required index range
+                              from a collection, and the `filtered` value only indicates how much filtering was done by a
+                              post filter in the `IndexNode` itself or following `FilterNode` nodes.
+                              Nodes of the `EnumerateCollectionNode` and `TraversalNode` types can also apply
+                              filter conditions and can report the number of filtered documents.
+                            type: integer
+                          httpRequests:
+                            description: |
+                              The total number of cluster-internal HTTP requests performed.
+                            type: integer
+                          fullCount:
+                            description: |
+                              The total number of documents that matched the search condition if the query's
+                              final top-level `LIMIT` operation were not present.
+                              This attribute may only be returned if the `fullCount` option was set when starting the
+                              query and only contains a sensible value if the query contains a `LIMIT` operation on
+                              the top level.
+                            type: integer
+                          executionTime:
+                            description: |
+                              The query execution time (wall-clock time) in seconds.
+                            type: number
+                          peakMemoryUsage:
+                            description: |
+                              The maximum memory usage of the query while it was running. In a cluster,
+                              the memory accounting is done per shard, and the memory usage reported is the peak
+                              memory usage value from the individual shards.
+                              Note that to keep things lightweight, the per-query memory usage is tracked on a relatively
+                              high level, not including any memory allocator overhead nor any memory used for temporary
+                              results calculations (e.g. memory allocated/deallocated inside AQL expressions and function
+                              calls).
+                            type: integer
+                          intermediateCommits:
+                            description: |
+                              The number of intermediate commits performed by the query. This is only non-zero
+                              for write queries, and only for queries that reached either the `intermediateCommitSize`
+                              or `intermediateCommitCount` thresholds. Note: in a cluster, intermediate commits can happen
+                              on each participating DB-Server.
+                            type: integer
+                          nodes:
+                            description: |
+                              When the query is executed with the `profile` option set to at least `2`,
+                              then this attribute contains runtime statistics per query execution node.
+                              For a human readable output, you can execute
+                              `db._profileQuery(<query>, <bind-vars>)` in arangosh.
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  description: |
+                                    The execution node ID to correlate the statistics with the `plan` returned in
+                                    the `extra` attribute.
+                                  type: integer
+                                calls:
+                                  description: |
+                                    The number of calls to this node.
+                                  type: integer
+                                items:
+                                  description: |
+                                    The number of items returned by this node. Items are the temporary results
+                                    returned at this stage.
+                                  type: integer
+                                runtime:
+                                  description: |
+                                    The execution time of this node in seconds.
+                                  type: number
+                              required:
+                                - id
+                                - calls
+                                - items
+                                - runtime
+                                - id
+                                - calls
+                                - items
+                                - runtime
+                        required:
+                          - writesExecuted
+                          - writesIgnored
+                          - scannedFull
+                          - scannedIndex
+                          - cursorsCreated
+                          - cursorsRearmed
+                          - cacheHits
+                          - cacheMisses
+                          - filtered
+                          - httpRequests
+                          - executionTime
+                          - peakMemoryUsage
+                          - writesExecuted
+                          - writesIgnored
+                          - scannedFull
+                          - scannedIndex
+                          - cursorsCreated
+                          - cursorsRearmed
+                          - cacheHits
+                          - cacheMisses
+                          - filtered
+                          - httpRequests
+                          - executionTime
+                          - peakMemoryUsage
+                      profile:
+                        description: |
+                          The duration of the different query execution phases in seconds.
+                        type: object
+                        properties:
+                          initializing:
+                            description: ''
+                            type: number
+                          parsing:
+                            description: ''
+                            type: number
+                          optimizing ast:
+                            description: ''
+                            type: number
+                          loading collections:
+                            description: ''
+                            type: number
+                          instantiating plan:
+                            description: ''
+                            type: number
+                          optimizing plan:
+                            description: ''
+                            type: number
+                          instantiating executors:
+                            description: ''
+                            type: number
+                          executing:
+                            description: ''
+                            type: number
+                          finalizing:
+                            description: ''
+                            type: number
+                        required:
+                          - initializing
+                          - parsing
+                          - optimizing ast
+                          - loading collections
+                          - instantiating plan
+                          - optimizing plan
+                          - instantiating executors
+                          - executing
+                          - finalizing
+                          - initializing
+                          - parsing
+                          - optimizing ast
+                          - loading collections
+                          - instantiating plan
+                          - optimizing plan
+                          - instantiating executors
+                          - executing
+                          - finalizing
+                      plan:
+                        description: |
+                          The execution plan.
+                        type: object
+                        properties:
+                          nodes:
+                            description: |
+                              A nested list of the execution plan nodes.
+                            type: array
+                            items:
+                              type: object
+                          rules:
+                            description: |
+                              A list with the names of the applied optimizer rules.
+                            type: array
+                            items:
+                              type: string
+                          collections:
+                            description: |
+                              A list of the collections involved in the query. The list only includes the
+                              collections that can statically be determined at query compile time.
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  description: |
+                                    The collection name.
+                                  type: string
+                                type:
+                                  description: |
+                                    How the collection is used. Can be `"read"`, `"write"`, or `"exclusive"`.
+                                  type: string
+                              required:
+                                - name
+                                - type
+                                - name
+                                - type
+                          variables:
+                            description: |
+                              All of the query variables, including user-created and internal ones.
+                            type: array
+                            items:
+                              type: object
+                          estimatedCost:
+                            description: |
+                              The estimated cost of the query.
+                            type: integer
+                          estimatedNrItems:
+                            description: |
+                              The estimated number of results.
+                            type: integer
+                          isModificationQuery:
+                            description: |
+                              Whether the query contains write operations.
+                            type: boolean
+                        required:
+                          - nodes
+                          - rules
+                          - collections
+                          - variables
+                          - estimatedCost
+                          - estimatedNrItems
+                          - isModificationQuery
+                          - nodes
+                          - rules
+                          - collections
+                          - variables
+                          - estimatedCost
+                          - estimatedNrItems
+                          - isModificationQuery
+                    required:
+                      - warnings
+                      - stats
+                      - warnings
+                      - stats
+                  cached:
+                    description: |
+                      A boolean flag indicating whether the query result was served
+                      from the query cache or not. If the query result is served from the query
+                      cache, the `extra` return attribute will not contain any `stats` sub-attribute
+                      and no `profile` sub-attribute.
+                    type: boolean
+                required:
+                  - error
+                  - code
+                  - hasMore
+                  - cached
         '400':
           description: |
             If the cursor identifier is omitted, the server will respond with *HTTP 404*.
@@ -1389,6 +1804,9 @@ paths:
       tags:
         - Queries
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -1433,6 +1851,7 @@ type: single
 ---
 description: |-
   Missing identifier
+version: '3.12'
 render: input/output
 name: RestCursorPostMissingCursorIdentifier
 server_name: stable
@@ -1453,6 +1872,7 @@ type: single
 ---
 description: |-
   Unknown identifier
+version: '3.12'
 render: input/output
 name: RestCursorPostInvalidCursorIdentifier
 server_name: stable
@@ -1468,36 +1888,39 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-### Read next batch from cursor (deprecated)
+### Read the next batch from a cursor (deprecated)
 
 paths:
   /_api/cursor/{cursor-identifier}:
     put:
       operationId: getNextAqlQueryCursorBatchPut
       description: |
-        {{< warning >}}
+        {{</* warning */>}}
         This endpoint is deprecated in favor its functionally equivalent POST counterpart.
-        {{< /warning >}}
+        {{</* /warning */>}}
 
         If the cursor is still alive, returns an object with the following
         attributes:
 
-        - *id*: a *cursor-identifier*
-        - *result*: a list of documents for the current batch
-        - *hasMore*: *false* if this was the last batch
-        - *count*: if present the total number of elements
-        - *code*: an HTTP status code
-        - *error*: a boolean flag to indicate whether an error occurred
-        - *errorNum*: a server error number (if *error* is *true*)
-        - *errorMessage*: a descriptive error message (if *error* is *true*)
-        - *extra*: an object with additional information about the query result, with
-          the nested objects *stats* and *warnings*. Only delivered as part of the last
-          batch in case of a cursor with the *stream* option enabled.
+        - `id`: a `cursor-identifier`
+        - `result`: a list of documents for the current batch
+        - `hasMore`: `false` if this was the last batch
+        - `count`: if present the total number of elements
+        - `code`: an HTTP status code
+        - `error`: a boolean flag to indicate whether an error occurred
+        - `errorNum`: a server error number (if `error` is `true`)
+        - `errorMessage`: a descriptive error message (if `error` is `true`)
+        - `extra`: an object with additional information about the query result, with
+          the nested objects `stats` and `warnings`. Only delivered as part of the last
+          batch in case of a cursor with the `stream` option enabled.
 
-        Note that even if *hasMore* returns *true*, the next call might
-        still return no documents. If, however, *hasMore* is *false*, then
-        the cursor is exhausted.  Once the *hasMore* attribute has a value of
-        *false*, the client can stop.
+        Note that even if `hasMore` returns `true`, the next call might
+        still return no documents. If, however, `hasMore` is `false`, then
+        the cursor is exhausted.  Once the `hasMore` attribute has a value of
+        `false`, the client can stop.
+
+        If the cursor is not fully consumed, the time-to-live for the cursor
+        is renewed by this API call.
       parameters:
         - name: cursor-identifier
           in: path
@@ -1530,6 +1953,9 @@ paths:
       tags:
         - Queries
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -1574,6 +2000,7 @@ type: single
 ---
 description: |-
   Missing identifier
+version: '3.12'
 render: input/output
 name: RestCursorMissingCursorIdentifier
 server_name: stable
@@ -1594,6 +2021,7 @@ type: single
 ---
 description: |-
   Unknown identifier
+version: '3.12'
 render: input/output
 name: RestCursorInvalidCursorIdentifier
 server_name: stable
@@ -1609,7 +2037,7 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-### Read batch from cursor again
+### Read a batch from the cursor again
 
 paths:
   /_api/cursor/{cursor-identifier}/{batch-identifier}:
@@ -1628,6 +2056,10 @@ paths:
         returned in the `nextBatchId` attribute of a previous request. This advances the
         cursor and returns the results of the next batch.
 
+        From v3.11.1 onward, you may use this endpoint even if the `allowRetry`
+        attribute is `false` to fetch the next batch, but you cannot request a batch
+        again unless you set it to `true`.
+
         Note that it is only supported to query the last returned batch identifier or
         the directly following batch identifier. The latter is only supported if there
         are more results in the cursor (i.e. `hasMore` is `true` in the latest batch).
@@ -1636,6 +2068,8 @@ paths:
         application, it should explicitly delete the cursor to inform the server that it
         successfully received and processed the batch so that the server can free up
         resources.
+
+        The time-to-live for the cursor is renewed by this API call.
       parameters:
         - name: cursor-identifier
           in: path
@@ -1672,18 +2106,19 @@ paths:
                     type: integer
                   result:
                     description: |
-                      An array of result documents for the current batch.
+                      An array of result documents for the current batch
+                      (might be empty if the query has no results).
                     type: array
                     items:
                       type: ''
                   hasMore:
                     description: |
-                      A boolean indicator whether there are more results available for the cursor on
-                      the server. `false` if this is the last batch.
+                      A boolean indicator whether there are more results
+                      available for the cursor on the server.
 
                       Note that even if `hasMore` returns `true`, the next call might still return no
-                      documents. If, however, `hasMore` is `false`, then the cursor is exhausted.
-                      Once the `hasMore` attribute has a value of `false`, the client can stop.
+                      documents. Once `hasMore` is `false`, the cursor is exhausted and the client
+                      can stop asking for more results.
                     type: boolean
                   count:
                     description: |
@@ -1694,18 +2129,379 @@ paths:
                     description: |
                       The ID of the cursor for fetching more result batches.
                     type: string
+                  nextBatchId:
+                    description: |
+                      Only set if the `allowRetry` query option is enabled in v3.11.0.
+                      From v3.11.1 onward, this attribute is always set, except in the last batch.
+
+                      The ID of the batch after the current one. The first batch has an ID of `1` and
+                      the value is incremented by 1 with every batch. You can remember and use this
+                      batch ID should retrieving the next batch fail. Use the
+                      `POST /_api/cursor/<cursor-id>/<batch-id>` endpoint to ask for the batch again.
+                      You can also request the next batch.
+                    type: string
                   extra:
                     description: |
-                      An optional JSON object with extra information about the query result. It can
-                      have the attributes `stats`, `warnings`, `plan`, and `profile` with nested
-                      objects, like the initial cursor response. Every batch can include `warnings`.
-                      The other attributes are only delivered as part of the last batch in case of a
-                      cursor with the `stream` option enabled.
+                      An optional JSON object with extra information about the query result.
+
+                      Only delivered as part of the first batch, or the last batch in case of a cursor
+                      with the `stream` option enabled.
                     type: object
+                    properties:
+                      warnings:
+                        description: |
+                          A list of query warnings.
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            code:
+                              description: |
+                                An error code.
+                              type: integer
+                            message:
+                              description: |
+                                A description of the problem.
+                              type: string
+                          required:
+                            - code
+                            - message
+                            - code
+                            - message
+                            - code
+                            - message
+                      stats:
+                        description: |
+                          An object with query statistics.
+                        type: object
+                        properties:
+                          writesExecuted:
+                            description: |
+                              The total number of data-modification operations successfully executed.
+                            type: integer
+                          writesIgnored:
+                            description: |
+                              The total number of data-modification operations that were unsuccessful,
+                              but have been ignored because of the `ignoreErrors` query option.
+                            type: integer
+                          scannedFull:
+                            description: |
+                              The total number of documents iterated over when scanning a collection
+                              without an index. Documents scanned by subqueries are included in the result, but
+                              operations triggered by built-in or user-defined AQL functions are not.
+                            type: integer
+                          scannedIndex:
+                            description: |
+                              The total number of documents iterated over when scanning a collection using
+                              an index. Documents scanned by subqueries are included in the result, but operations
+                              triggered by built-in or user-defined AQL functions are not.
+                            type: integer
+                          cursorsCreated:
+                            description: |
+                              The total number of cursor objects created during query execution. Cursor
+                              objects are created for index lookups.
+                            type: integer
+                          cursorsRearmed:
+                            description: |
+                              The total number of times an existing cursor object was repurposed.
+                              Repurposing an existing cursor object is normally more efficient compared to destroying an
+                              existing cursor object and creating a new one from scratch.
+                            type: integer
+                          cacheHits:
+                            description: |
+                              The total number of index entries read from in-memory caches for indexes
+                              of type edge or persistent. This value is only non-zero when reading from indexes
+                              that have an in-memory cache enabled, and when the query allows using the in-memory
+                              cache (i.e. using equality lookups on all index attributes).
+                            type: integer
+                          cacheMisses:
+                            description: |
+                              The total number of cache read attempts for index entries that could not
+                              be served from in-memory caches for indexes of type edge or persistent. This value
+                              is only non-zero when reading from indexes that have an in-memory cache enabled, the
+                              query allows using the in-memory cache (i.e. using equality lookups on all index attributes)
+                              and the looked up values are not present in the cache.
+                            type: integer
+                          filtered:
+                            description: |
+                              The total number of documents removed after executing a filter condition
+                              in a `FilterNode` or another node that post-filters data. Note that nodes of the
+                              `IndexNode` type can also filter documents by selecting only the required index range
+                              from a collection, and the `filtered` value only indicates how much filtering was done by a
+                              post filter in the `IndexNode` itself or following `FilterNode` nodes.
+                              Nodes of the `EnumerateCollectionNode` and `TraversalNode` types can also apply
+                              filter conditions and can report the number of filtered documents.
+                            type: integer
+                          httpRequests:
+                            description: |
+                              The total number of cluster-internal HTTP requests performed.
+                            type: integer
+                          fullCount:
+                            description: |
+                              The total number of documents that matched the search condition if the query's
+                              final top-level `LIMIT` operation were not present.
+                              This attribute may only be returned if the `fullCount` option was set when starting the
+                              query and only contains a sensible value if the query contains a `LIMIT` operation on
+                              the top level.
+                            type: integer
+                          executionTime:
+                            description: |
+                              The query execution time (wall-clock time) in seconds.
+                            type: number
+                          peakMemoryUsage:
+                            description: |
+                              The maximum memory usage of the query while it was running. In a cluster,
+                              the memory accounting is done per shard, and the memory usage reported is the peak
+                              memory usage value from the individual shards.
+                              Note that to keep things lightweight, the per-query memory usage is tracked on a relatively
+                              high level, not including any memory allocator overhead nor any memory used for temporary
+                              results calculations (e.g. memory allocated/deallocated inside AQL expressions and function
+                              calls).
+                            type: integer
+                          intermediateCommits:
+                            description: |
+                              The number of intermediate commits performed by the query. This is only non-zero
+                              for write queries, and only for queries that reached either the `intermediateCommitSize`
+                              or `intermediateCommitCount` thresholds. Note: in a cluster, intermediate commits can happen
+                              on each participating DB-Server.
+                            type: integer
+                          nodes:
+                            description: |
+                              When the query is executed with the `profile` option set to at least `2`,
+                              then this attribute contains runtime statistics per query execution node.
+                              For a human readable output, you can execute
+                              `db._profileQuery(<query>, <bind-vars>)` in arangosh.
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                id:
+                                  description: |
+                                    The execution node ID to correlate the statistics with the `plan` returned in
+                                    the `extra` attribute.
+                                  type: integer
+                                calls:
+                                  description: |
+                                    The number of calls to this node.
+                                  type: integer
+                                items:
+                                  description: |
+                                    The number of items returned by this node. Items are the temporary results
+                                    returned at this stage.
+                                  type: integer
+                                runtime:
+                                  description: |
+                                    The execution time of this node in seconds.
+                                  type: number
+                              required:
+                                - id
+                                - calls
+                                - items
+                                - runtime
+                                - id
+                                - calls
+                                - items
+                                - runtime
+                                - id
+                                - calls
+                                - items
+                                - runtime
+                        required:
+                          - writesExecuted
+                          - writesIgnored
+                          - scannedFull
+                          - scannedIndex
+                          - cursorsCreated
+                          - cursorsRearmed
+                          - cacheHits
+                          - cacheMisses
+                          - filtered
+                          - httpRequests
+                          - executionTime
+                          - peakMemoryUsage
+                          - writesExecuted
+                          - writesIgnored
+                          - scannedFull
+                          - scannedIndex
+                          - cursorsCreated
+                          - cursorsRearmed
+                          - cacheHits
+                          - cacheMisses
+                          - filtered
+                          - httpRequests
+                          - executionTime
+                          - peakMemoryUsage
+                          - writesExecuted
+                          - writesIgnored
+                          - scannedFull
+                          - scannedIndex
+                          - cursorsCreated
+                          - cursorsRearmed
+                          - cacheHits
+                          - cacheMisses
+                          - filtered
+                          - httpRequests
+                          - executionTime
+                          - peakMemoryUsage
+                      profile:
+                        description: |
+                          The duration of the different query execution phases in seconds.
+                        type: object
+                        properties:
+                          initializing:
+                            description: ''
+                            type: number
+                          parsing:
+                            description: ''
+                            type: number
+                          optimizing ast:
+                            description: ''
+                            type: number
+                          loading collections:
+                            description: ''
+                            type: number
+                          instantiating plan:
+                            description: ''
+                            type: number
+                          optimizing plan:
+                            description: ''
+                            type: number
+                          instantiating executors:
+                            description: ''
+                            type: number
+                          executing:
+                            description: ''
+                            type: number
+                          finalizing:
+                            description: ''
+                            type: number
+                        required:
+                          - initializing
+                          - parsing
+                          - optimizing ast
+                          - loading collections
+                          - instantiating plan
+                          - optimizing plan
+                          - instantiating executors
+                          - executing
+                          - finalizing
+                          - initializing
+                          - parsing
+                          - optimizing ast
+                          - loading collections
+                          - instantiating plan
+                          - optimizing plan
+                          - instantiating executors
+                          - executing
+                          - finalizing
+                          - initializing
+                          - parsing
+                          - optimizing ast
+                          - loading collections
+                          - instantiating plan
+                          - optimizing plan
+                          - instantiating executors
+                          - executing
+                          - finalizing
+                      plan:
+                        description: |
+                          The execution plan.
+                        type: object
+                        properties:
+                          nodes:
+                            description: |
+                              A nested list of the execution plan nodes.
+                            type: array
+                            items:
+                              type: object
+                          rules:
+                            description: |
+                              A list with the names of the applied optimizer rules.
+                            type: array
+                            items:
+                              type: string
+                          collections:
+                            description: |
+                              A list of the collections involved in the query. The list only includes the
+                              collections that can statically be determined at query compile time.
+                            type: array
+                            items:
+                              type: object
+                              properties:
+                                name:
+                                  description: |
+                                    The collection name.
+                                  type: string
+                                type:
+                                  description: |
+                                    How the collection is used. Can be `"read"`, `"write"`, or `"exclusive"`.
+                                  type: string
+                              required:
+                                - name
+                                - type
+                                - name
+                                - type
+                                - name
+                                - type
+                          variables:
+                            description: |
+                              All of the query variables, including user-created and internal ones.
+                            type: array
+                            items:
+                              type: object
+                          estimatedCost:
+                            description: |
+                              The estimated cost of the query.
+                            type: integer
+                          estimatedNrItems:
+                            description: |
+                              The estimated number of results.
+                            type: integer
+                          isModificationQuery:
+                            description: |
+                              Whether the query contains write operations.
+                            type: boolean
+                        required:
+                          - nodes
+                          - rules
+                          - collections
+                          - variables
+                          - estimatedCost
+                          - estimatedNrItems
+                          - isModificationQuery
+                          - nodes
+                          - rules
+                          - collections
+                          - variables
+                          - estimatedCost
+                          - estimatedNrItems
+                          - isModificationQuery
+                          - nodes
+                          - rules
+                          - collections
+                          - variables
+                          - estimatedCost
+                          - estimatedNrItems
+                          - isModificationQuery
+                    required:
+                      - warnings
+                      - stats
+                      - warnings
+                      - stats
+                      - warnings
+                      - stats
+                  cached:
+                    description: |
+                      A boolean flag indicating whether the query result was served
+                      from the query cache or not. If the query result is served from the query
+                      cache, the `extra` return attribute will not contain any `stats` sub-attribute
+                      and no `profile` sub-attribute.
+                    type: boolean
                 required:
                   - error
                   - code
                   - hasMore
+                  - cached
         '400':
           description: |
             If the cursor and the batch identifier are omitted, the server responds with
@@ -1754,6 +2550,9 @@ paths:
         - Queries
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -1789,7 +2588,7 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-### Delete cursor
+### Delete a cursor
 
 paths:
   /_api/cursor/{cursor-identifier}:
@@ -1824,6 +2623,9 @@ paths:
       tags:
         - Queries
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -1869,7 +2671,7 @@ all currently executing queries. You can also list slow queries and clear this
 list.
 
 ```openapi
-### Returns the properties for the AQL query tracking
+### Get the AQL query tracking configuration
 
 paths:
   /_api/query/properties:
@@ -1879,27 +2681,27 @@ paths:
         Returns the current query tracking configuration. The configuration is a
         JSON object with the following properties:
 
-        - *enabled*: if set to *true*, then queries will be tracked. If set to
-          *false*, neither queries nor slow queries will be tracked.
+        - `enabled`: if set to `true`, then queries will be tracked. If set to
+          `false`, neither queries nor slow queries will be tracked.
 
-        - *trackSlowQueries*: if set to *true*, then slow queries will be tracked
+        - `trackSlowQueries`: if set to `true`, then slow queries will be tracked
           in the list of slow queries if their runtime exceeds the value set in
-          *slowQueryThreshold*. In order for slow queries to be tracked, the *enabled*
-          property must also be set to *true*.
+          `slowQueryThreshold`. In order for slow queries to be tracked, the `enabled`
+          property must also be set to `true`.
 
-        - *trackBindVars*: if set to *true*, then bind variables used in queries will
+        - `trackBindVars`: if set to `true`, then bind variables used in queries will
           be tracked.
 
-        - *maxSlowQueries*: the maximum number of slow queries to keep in the list
+        - `maxSlowQueries`: the maximum number of slow queries to keep in the list
           of slow queries. If the list of slow queries is full, the oldest entry in
           it will be discarded when additional slow queries occur.
 
-        - *slowQueryThreshold*: the threshold value for treating a query as slow. A
+        - `slowQueryThreshold`: the threshold value for treating a query as slow. A
           query with a runtime greater or equal to this threshold value will be
           put into the list of slow queries when slow query tracking is enabled.
-          The value for *slowQueryThreshold* is specified in seconds.
+          The value for `slowQueryThreshold` is specified in seconds.
 
-        - *maxQueryStringLength*: the maximum query string length to keep in the
+        - `maxQueryStringLength`: the maximum query string length to keep in the
           list of queries. Query strings can have arbitrary lengths, and this property
           can be used to save memory in case very long query strings are used. The
           value is specified in bytes.
@@ -1914,15 +2716,15 @@ paths:
         - Queries
 ```
 ```openapi
-### Changes the properties for the AQL query tracking
+### Update the AQL query tracking configuration
 
 paths:
   /_api/query/properties:
     put:
       operationId: updateAqlQueryTrackingProperties
       description: |
-        The properties need to be passed in the attribute *properties* in the body
-        of the HTTP request. *properties* needs to be a JSON object.
+        The properties need to be passed in the attribute `properties` in the body
+        of the HTTP request. `properties` needs to be a JSON object.
 
         After the properties have been changed, the current set of properties will
         be returned in the HTTP response.
@@ -1934,19 +2736,19 @@ paths:
               properties:
                 enabled:
                   description: |
-                    If set to *true*, then queries will be tracked. If set to
-                    *false*, neither queries nor slow queries will be tracked.
+                    If set to `true`, then queries will be tracked. If set to
+                    `false`, neither queries nor slow queries will be tracked.
                   type: boolean
                 trackSlowQueries:
                   description: |
-                    If set to *true*, then slow queries will be tracked
+                    If set to `true`, then slow queries will be tracked
                     in the list of slow queries if their runtime exceeds the value set in
-                    *slowQueryThreshold*. In order for slow queries to be tracked, the *enabled*
-                    property must also be set to *true*.
+                    `slowQueryThreshold`. In order for slow queries to be tracked, the `enabled`
+                    property must also be set to `true`.
                   type: boolean
                 trackBindVars:
                   description: |
-                    If set to *true*, then the bind variables used in queries will be tracked
+                    If set to `true`, then the bind variables used in queries will be tracked
                     along with queries.
                   type: boolean
                 maxSlowQueries:
@@ -1960,7 +2762,7 @@ paths:
                     The threshold value for treating a query as slow. A
                     query with a runtime greater or equal to this threshold value will be
                     put into the list of slow queries when slow query tracking is enabled.
-                    The value for *slowQueryThreshold* is specified in seconds.
+                    The value for `slowQueryThreshold` is specified in seconds.
                   type: integer
                 maxQueryStringLength:
                   description: |
@@ -1987,7 +2789,7 @@ paths:
         - Queries
 ```
 ```openapi
-### Returns the currently running AQL queries
+### List the running AQL queries
 
 paths:
   /_api/query/current:
@@ -1997,43 +2799,44 @@ paths:
         Returns an array containing the AQL queries currently running in the selected
         database. Each query is a JSON object with the following attributes:
 
-        - *id*: the query's id
+        - `id`: the query's id
 
-        - *database*: the name of the database the query runs in
+        - `database`: the name of the database the query runs in
 
-        - *user*: the name of the user that started the query
+        - `user`: the name of the user that started the query
 
-        - *query*: the query string (potentially truncated)
+        - `query`: the query string (potentially truncated)
 
-        - *bindVars*: the bind parameter values used by the query
+        - `bindVars`: the bind parameter values used by the query
 
-        - *started*: the date and time when the query was started
+        - `started`: the date and time when the query was started
 
-        - *runTime*: the query's run time up to the point the list of queries was
+        - `runTime`: the query's run time up to the point the list of queries was
           queried
 
-        - *peakMemoryUsage*: the query's peak memory usage in bytes (in increments of 32KB)
+        - `peakMemoryUsage`: the query's peak memory usage in bytes (in increments of 32KB)
 
-        - *state*: the query's current execution state (as a string). One of:
+        - `state`: the query's current execution state (as a string). One of:
           - `"initializing"`
           - `"parsing"`
           - `"optimizing ast"`
           - `"loading collections"`
           - `"instantiating plan"`
           - `"optimizing plan"`
+          - `"instantiating executors"`
           - `"executing"`
           - `"finalizing"`
           - `"finished"`
           - `"killed"`
           - `"invalid"`
 
-        - *stream*: whether or not the query uses a streaming cursor
+        - `stream`: whether or not the query uses a streaming cursor
       parameters:
         - name: all
           in: query
           required: false
           description: |
-            If set to *true*, will return the currently running queries in all databases,
+            If set to `true`, will return the currently running queries in all databases,
             not just the selected one.
             Using the parameter is only allowed in the system database and with superuser
             privileges.
@@ -2048,13 +2851,13 @@ paths:
             The server will respond with *HTTP 400* in case of a malformed request,
         '403':
           description: |
-            *HTTP 403* is returned in case the *all* parameter was used, but the request
+            *HTTP 403* is returned in case the `all` parameter was used, but the request
             was made in a different database than _system, or by an non-privileged user.
       tags:
         - Queries
 ```
 ```openapi
-### Returns the list of slow AQL queries
+### List the slow AQL queries
 
 paths:
   /_api/query/slow:
@@ -2070,32 +2873,32 @@ paths:
 
         Each query is a JSON object with the following attributes:
 
-        - *id*: the query's id
+        - `id`: the query's id
 
-        - *database*: the name of the database the query runs in
+        - `database`: the name of the database the query runs in
 
-        - *user*: the name of the user that started the query
+        - `user`: the name of the user that started the query
 
-        - *query*: the query string (potentially truncated)
+        - `query`: the query string (potentially truncated)
 
-        - *bindVars*: the bind parameter values used by the query
+        - `bindVars`: the bind parameter values used by the query
 
-        - *started*: the date and time when the query was started
+        - `started`: the date and time when the query was started
 
-        - *runTime*: the query's total run time
+        - `runTime`: the query's total run time
 
-        - *peakMemoryUsage*: the query's peak memory usage in bytes (in increments of 32KB)
+        - `peakMemoryUsage`: the query's peak memory usage in bytes (in increments of 32KB)
 
-        - *state*: the query's current execution state (will always be "finished"
+        - `state`: the query's current execution state (will always be "finished"
           for the list of slow queries)
 
-        - *stream*: whether or not the query uses a streaming cursor
+        - `stream`: whether or not the query uses a streaming cursor
       parameters:
         - name: all
           in: query
           required: false
           description: |
-            If set to *true*, will return the slow queries from all databases, not just
+            If set to `true`, will return the slow queries from all databases, not just
             the selected one.
             Using the parameter is only allowed in the system database and with superuser
             privileges.
@@ -2110,26 +2913,26 @@ paths:
             The server will respond with *HTTP 400* in case of a malformed request,
         '403':
           description: |
-            *HTTP 403* is returned in case the *all* parameter was used, but the request
+            *HTTP 403* is returned in case the `all` parameter was used, but the request
             was made in a different database than _system, or by an non-privileged user.
       tags:
         - Queries
 ```
 ```openapi
-### Clears the list of slow AQL queries
+### Clear the list of slow AQL queries
 
 paths:
   /_api/query/slow:
     delete:
       operationId: clearSlowAqlQueryList
       description: |
-        Clears the list of slow AQL queries in the currently selected database
+        Clears the list of slow AQL queries for the current database.
       parameters:
         - name: all
           in: query
           required: false
           description: |
-            If set to *true*, will clear the slow query history in all databases, not just
+            If set to `true`, will clear the slow query history in all databases, not just
             the selected one.
             Using the parameter is only allowed in the system database and with superuser
             privileges.
@@ -2155,7 +2958,7 @@ specified. The kill flag of the query is then set, and the query is aborted as
 soon as it reaches a cancelation point.
 
 ```openapi
-### Kills a running AQL query
+### Kill a running AQL query
 
 paths:
   /_api/query/{query-id}:
@@ -2176,7 +2979,7 @@ paths:
           in: query
           required: false
           description: |
-            If set to *true*, will attempt to kill the specified query in all databases,
+            If set to `true`, will attempt to kill the specified query in all databases,
             not just the selected one.
             Using the parameter is only allowed in the system database and with superuser
             privileges.
@@ -2231,30 +3034,30 @@ paths:
 
         By default, the explain operation will return the optimal plan as chosen by
         the query optimizer The optimal plan is the plan with the lowest total estimated
-        cost. The plan will be returned in the attribute *plan* of the response object.
-        If the option *allPlans* is specified in the request, the result will contain
+        cost. The plan will be returned in the attribute `plan` of the response object.
+        If the option `allPlans` is specified in the request, the result will contain
         all plans created by the optimizer. The plans will then be returned in the
-        attribute *plans*.
+        attribute `plans`.
 
-        The result will also contain an attribute *warnings*, which is an array of
+        The result will also contain an attribute `warnings`, which is an array of
         warnings that occurred during optimization or execution plan creation. Additionally,
-        a *stats* attribute is contained in the result with some optimizer statistics.
-        If *allPlans* is set to *false*, the result will contain an attribute *cacheable*
+        a `stats` attribute is contained in the result with some optimizer statistics.
+        If `allPlans` is set to `false`, the result will contain an attribute `cacheable`
         that states whether the query results can be cached on the server if the query
-        result cache were used. The *cacheable* attribute is not present when *allPlans*
-        is set to *true*.
+        result cache were used. The `cacheable` attribute is not present when `allPlans`
+        is set to `true`.
 
         Each plan in the result is a JSON object with the following attributes:
-        - *nodes*: the array of execution nodes of the plan.
+        - `nodes`: the array of execution nodes of the plan.
 
-        - *estimatedCost*: the total estimated cost for the plan. If there are multiple
+        - `estimatedCost`: the total estimated cost for the plan. If there are multiple
           plans, the optimizer will choose the plan with the lowest total cost.
 
-        - *collections*: an array of collections used in the query
+        - `collections`: an array of collections used in the query
 
-        - *rules*: an array of rules the optimizer applied.
+        - `rules`: an array of rules the optimizer applied.
 
-        - *variables*: array of variables used in the query (note: this may contain
+        - `variables`: array of variables used in the query (note: this may contain
           internal variables created by the optimizer)
       requestBody:
         content:
@@ -2265,8 +3068,8 @@ paths:
                 query:
                   description: |
                     the query which you want explained; If the query references any bind variables,
-                    these must also be passed in the attribute *bindVars*. Additional
-                    options for the query can be passed in the *options* attribute.
+                    these must also be passed in the attribute `bindVars`. Additional
+                    options for the query can be passed in the `options` attribute.
                   type: string
                 bindVars:
                   description: |
@@ -2282,8 +3085,8 @@ paths:
                   properties:
                     allPlans:
                       description: |
-                        if set to *true*, all possible execution plans will be returned.
-                        The default is *false*, meaning only the optimal plan will be returned.
+                        if set to `true`, all possible execution plans will be returned.
+                        The default is `false`, meaning only the optimal plan will be returned.
                       type: boolean
                     maxNumberOfPlans:
                       description: |
@@ -2311,9 +3114,9 @@ paths:
         '200':
           description: |
             If the query is valid, the server will respond with *HTTP 200* and
-            return the optimal execution plan in the *plan* attribute of the response.
-            If option *allPlans* was set in the request, an array of plans will be returned
-            in the *allPlans* attribute instead.
+            return the optimal execution plan in the `plan` attribute of the response.
+            If option `allPlans` was set in the request, an array of plans will be returned
+            in the `allPlans` attribute instead.
         '400':
           description: |
             The server will respond with *HTTP 400* in case of a malformed request,
@@ -2328,6 +3131,9 @@ paths:
       tags:
         - Queries
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -2363,6 +3169,7 @@ type: single
 ---
 description: |-
   A plan with some optimizer rules applied
+version: '3.12'
 render: input/output
 name: RestExplainOptimizerRules
 server_name: stable
@@ -2392,6 +3199,7 @@ type: single
 ---
 description: |-
   Using some options
+version: '3.12'
 render: input/output
 name: RestExplainOptions
 server_name: stable
@@ -2428,6 +3236,7 @@ type: single
 ---
 description: |-
   Returning all plans
+version: '3.12'
 render: input/output
 name: RestExplainAllPlans
 server_name: stable
@@ -2459,6 +3268,7 @@ type: single
 ---
 description: |-
   A query that produces a warning
+version: '3.12'
 render: input/output
 name: RestExplainWarning
 server_name: stable
@@ -2482,6 +3292,7 @@ type: single
 ---
 description: |-
   Invalid query (missing bind parameter)
+version: '3.12'
 render: input/output
 name: RestExplainInvalid
 server_name: stable
@@ -2514,6 +3325,7 @@ description: |-
 
   The following example shows a query with a non-sensible filter condition that
   the optimizer has removed so that there are less top-level statements.
+version: '3.12'
 render: input/output
 name: RestExplainEmpty
 server_name: stable
@@ -2561,11 +3373,11 @@ paths:
           description: |
             If the query is valid, the server will respond with *HTTP 200* and
             return the names of the bind parameters it found in the query (if any) in
-            the *bindVars* attribute of the response. It will also return an array
-            of the collections used in the query in the *collections* attribute.
-            If a query can be parsed successfully, the *ast* attribute of the returned
+            the `bindVars` attribute of the response. It will also return an array
+            of the collections used in the query in the `collections` attribute.
+            If a query can be parsed successfully, the `ast` attribute of the returned
             JSON will contain the abstract syntax tree representation of the query.
-            The format of the *ast* is subject to change in future versions of
+            The format of the `ast` is subject to change in future versions of
             ArangoDB, but it can be used to inspect how ArangoDB interprets a given
             query. Note that the abstract syntax tree will be returned without any
             optimizations applied to it.
@@ -2577,6 +3389,9 @@ paths:
       tags:
         - Queries
 ```
+
+**Examples**
+
 
 
 ```curl
@@ -2605,6 +3420,7 @@ type: single
 ---
 description: |-
   an invalid query
+version: '3.12'
 render: input/output
 name: RestQueryInvalid
 server_name: stable
@@ -2621,7 +3437,7 @@ type: single
     logJsonResponse(response);
 ```
 ```openapi
-### Return all AQL optimizer rules
+### List all AQL optimizer rules
 
 paths:
   /_api/query/rules:
@@ -2688,6 +3504,9 @@ paths:
       tags:
         - Queries
 ```
+
+**Examples**
+
 
 
 ```curl

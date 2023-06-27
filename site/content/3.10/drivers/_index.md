@@ -1,6 +1,6 @@
 ---
 title: ArangoDB Drivers Documentation
-menuTitle: DRIVERS
+menuTitle: Drivers
 weight: 25
 description: >-
   ArangoDB drivers and integrations allow you to use ArangoDB as a database

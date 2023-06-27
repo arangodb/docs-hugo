@@ -224,7 +224,7 @@ request is determined by scanning the original URL (the URL that contains
 part operations of a batch. When doing so, any other database name used 
 in a batch part will be ignored.
 ```openapi
-### executes a batch request
+### Execute a batch request
 
 paths:
   /_api/batch:
@@ -297,6 +297,9 @@ paths:
         - Batch Requests
 ```
 
+**Examples**
+
+
 
 ```curl
 ---
@@ -365,6 +368,7 @@ type: single
 description: |-
   Sending a batch request, setting the boundary implicitly (the server will
   in this case try to find the boundary at the beginning of the request body).
+version: '3.12'
 render: input
 name: RestBatchImplicitBoundary
 server_name: stable
