@@ -30,17 +30,6 @@
                 </div>
             </header>
             <iframe src="/nav.html" title="description" id="menu-iframe" class="menu-iframe active">qualocsa</iframe>
-            <script>
-              var iframe =  document.getElementById('menu-iframe');
-              iframe.addEventListener("load", function() {
-              var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
-              content= iFrameBody.getElementById('sidebar');
-              console.log(content)
-              document.getElementById("page-container").appendChild(content)
-              document.getElementById("page-container").removeChild(iframe)
-              });
-              
-            </script>
             {{- $assetBusting := not .Site.Params.disableAssetsBusting }}
             {{- $pageBaseLang := replaceRE "([a-z]+).*" "${1}" .Page.Lang }}
             {{- $contentlangs := (union (slice | append .Site.Params.additionalContentLanguage) (slice $pageBaseLang)) }}
@@ -60,7 +49,6 @@
               var index_url={{ "index.json" | relLangURL }};
     
             </script>
-            <script src="{{"js/auto-complete.js" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" defer></script>
             <script src="{{"js/lunr.min.js" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" defer></script>
             <script src="{{"js/lunr.stemmer.support.min.js" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" defer></script>
             <script src="{{"js/lunr.multi.min.js" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" defer></script>
@@ -68,6 +56,7 @@
               {{- $file := (printf "js/lunr.%s.min.js" .) }}
             <script src="{{ $file | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" defer></script>
             {{- end }}
+           
             <script src="{{ "js/search.js" | relURL }}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" defer></script>
             <div class="container-main">
               <div class="row-main">
