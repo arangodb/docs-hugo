@@ -487,7 +487,7 @@ def render_yaml(block, title):
     return res
 
 def parse_examples(blockExamples):
-    res = ''
+    res = '\n**Examples**\n\n'
     for example in blockExamples:
         exampleOptions = yaml.dump(example["options"], sort_keys=False, default_flow_style=False)
         code = example["code"]
