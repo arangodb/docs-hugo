@@ -8,6 +8,7 @@ function toggleMenuItem(event) {
 
     listItem.childNodes[0].classList.toggle("open");
     jQuery(listItem.childNodes[2]).slideToggle();
+    console.log(listItem)
 }
 
 function menuToggleClick(event) {
@@ -17,9 +18,13 @@ function menuToggleClick(event) {
 
 function menuEntryClick(event) {
     if (event.target.getAttribute('href') == window.location.href) {
+        console.log("ok")
         toggleMenuItem(event)
         return
     }
+
+    console.log("kkk")
+    console.log(event.target.getAttribute('href'))
 
     loadPage(event.target.getAttribute('href'));
 }

@@ -40,7 +40,7 @@ outputFormats:
     mediaType: text/html
 
 outputs:
-  home: ["HTML", "navigation"]
+  home: ["HTML", "navigation", "JSON"]
 
 caches:
   assets:
