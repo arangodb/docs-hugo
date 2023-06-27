@@ -169,10 +169,10 @@ def processHTTPDocuBlock(docuBlock, tag, headerLevel):
             for line in block.rstrip().split("\n"):
                 if "{% hint " in line:
                     currentHint = line.replace("{% hint '", "").replace("' %}", "")
-                    line = f"{{{{< {currentHint} >}}}}\n"
+                    line = f"{{{{</* {currentHint} */>}}}}\n"
                     description = description + line
                 elif "{% endhint " in line:
-                    line = f"{{{{< /{currentHint} >}}}}\n"
+                    line = f"{{{{</* /{currentHint} */>}}}}\n"
                     description = description + line
                 else:
                     description = description + line + "\n"

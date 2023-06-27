@@ -55,7 +55,7 @@ func (service OpenapiService) ParseOpenapiPayload(request io.Reader) (map[string
 
 	// common.Logger.Summary(string(req))
 
-	//req = editDescriptions(req)
+	req = editDescriptions(req)
 
 	optionsYaml := make(map[string]interface{})
 	err = yaml.Unmarshal(req, &optionsYaml)
