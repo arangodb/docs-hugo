@@ -23,6 +23,9 @@ func FormatResponse(response *ExampleResponse) {
 	}
 
 	searchErrorsInResponse(response)
+	if response.Output == "" {
+		response.Output = "Empty Output"
+	}
 }
 
 func searchErrorsInResponse(response *ExampleResponse) {

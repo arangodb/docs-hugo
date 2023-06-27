@@ -28,7 +28,7 @@ RUN echo ${BUILDARCH}
 ENV ARCH=${BUILDARCH}
 
 RUN wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_$ARCH -O /usr/bin/yq && chmod +x /usr/bin/yq
-RUN wget -q https://github.com/gohugoio/hugo/releases/download/v0.112.5/hugo_0.112.5_linux-$ARCH.deb -O hugo.deb
+RUN wget -q https://github.com/gohugoio/hugo/releases/download/v0.114.1/hugo_extended_0.114.1_linux-$ARCH.deb -O hugo.deb
 RUN apt-get install -y ./hugo.deb
 
 CMD cd /home/toolchain/scripts ; ./start_hugo.sh

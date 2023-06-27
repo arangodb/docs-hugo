@@ -182,15 +182,15 @@ function setup_arangoproxy() {
   log "[SETUP ARANGOPROXY] Copy single server configuration in arangoproxy repositories"
   yq e '.repositories += [{"name": "'"$name"'", "type": "single", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
 
-  # log "[SETUP ARANGOPROXY] Retrieve server ip"
-  # cluster_server_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container_name"_agent1)
-  # log "IP: "$cluster_server_ip""
-  # echo ""
+  log "[SETUP ARANGOPROXY] Retrieve server ip"
+  cluster_server_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container_name"_agent1)
+  log "IP: "$cluster_server_ip""
+  echo ""
 
-  # printf -v url "http://%s:5001" $cluster_server_ip
+  printf -v url "http://%s:5001" $cluster_server_ip
 
-  # log "[SETUP ARANGOPROXY] Copy cluster server configuration in arangoproxy repositories"
-  # yq e '.repositories += [{"name": "'"$name"'", "type": "cluster", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
+  log "[SETUP ARANGOPROXY] Copy cluster server configuration in arangoproxy repositories"
+  yq e '.repositories += [{"name": "'"$name"'", "type": "cluster", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
   log "[SETUP ARANGOPROXY] Done"
 }
 
@@ -259,62 +259,62 @@ function start_server() {
 
   docker run -e ARANGO_NO_AUTH=1 --net docs_net --ip="$single_address" --name "$container_name" -d "$image_id" --server.endpoint http+tcp://"$single_address":8529
 
-  # log "[START_SERVER] Run cluster server"
+  log "[START_SERVER] Run cluster server"
 
-  # ## We have to check there is a free ip for every agency server we will start
-  # declare -a agency_addresses=("192.168.129.10" "192.168.129.20" "192.168.129.30" "192.168.129.40")
-  # agency_address=""
+  ## We have to check there is a free ip for every agency server we will start
+  declare -a agency_addresses=("192.168.129.10" "192.168.129.20" "192.168.129.30" "192.168.129.40")
+  agency_address=""
 
-  # for address in "${agency_addresses[@]}";
-  # do
-  #   docs_net_ips=$(docker network inspect docs_net | grep "$address"/)
-  #   if [ "$docs_net_ips" == "" ]; then
-  #     agency_address=$address
-  #     break
-  #   fi
-  # done
+  for address in "${agency_addresses[@]}";
+  do
+    docs_net_ips=$(docker network inspect docs_net | grep "$address"/)
+    if [ "$docs_net_ips" == "" ]; then
+      agency_address=$address
+      break
+    fi
+  done
 
   
-  # log "[START_SERVER] Using $agency_address as agency ip"
+  log "[START_SERVER] Using $agency_address as agency ip"
 
-  # ## Agencies
-  # docker run -e ARANGO_NO_AUTH=1 --net docs_net --ip="$agency_address" --name "$container_name"_agent1 -d "$image_id" --server.endpoint http+tcp://"$agency_address":5001 \
-  #    --agency.my-address=tcp://"$agency_address":5001   --server.authentication false   --agency.activate true  \
-  #   --agency.size 1   --agency.endpoint tcp://"$agency_address":5001   --agency.supervision true   --database.directory agent1
+  ## Agencies
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --ip="$agency_address" --name "$container_name"_agent1 -d "$image_id" --server.endpoint http+tcp://"$agency_address":5001 \
+     --agency.my-address=tcp://"$agency_address":5001   --server.authentication false   --agency.activate true  \
+    --agency.size 1   --agency.endpoint tcp://"$agency_address":5001   --agency.supervision true   --database.directory agent1
 
-  # docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_agent2 -d "$image" --server.endpoint tcp://0.0.0.0:5002 \
-  #    --agency.my-address=tcp://"$agency_address":5002   --server.authentication false   --agency.activate true  \
-  #   --agency.size 2   --agency.endpoint tcp://"$agency_address":5001   --agency.supervision true   --database.directory agent2
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_agent2 -d "$image" --server.endpoint tcp://0.0.0.0:5002 \
+     --agency.my-address=tcp://"$agency_address":5002   --server.authentication false   --agency.activate true  \
+    --agency.size 2   --agency.endpoint tcp://"$agency_address":5001   --agency.supervision true   --database.directory agent2
 
-  ## DB-Servers
-#   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_dbserver1 -d "$image_id" --server.endpoint tcp://0.0.0.0:6001 \
-#     --server.authentication false \
-#     --cluster.my-address http+tcp://"$agency_address":6001 \
-#     --cluster.my-role DBSERVER \
-#     --cluster.agency-endpoint tcp://"$agency_address":5001 \
-#     --database.directory dbserver1
+  # DB-Servers
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_dbserver1 -d "$image_id" --server.endpoint tcp://0.0.0.0:6001 \
+    --server.authentication false \
+    --cluster.my-address http+tcp://"$agency_address":6001 \
+    --cluster.my-role DBSERVER \
+    --cluster.agency-endpoint tcp://"$agency_address":5001 \
+    --database.directory dbserver1
 
-#  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_dbserver2 -d "$image_id" --server.endpoint tcp://0.0.0.0:6002 \
-#     --server.authentication false \
-#     --cluster.my-address http+tcp://"$agency_address":6002 \
-#     --cluster.my-role DBSERVER \
-#     --cluster.agency-endpoint tcp://"$agency_address":5001 \
-#     --database.directory dbserver2
+ docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_dbserver2 -d "$image_id" --server.endpoint tcp://0.0.0.0:6002 \
+    --server.authentication false \
+    --cluster.my-address http+tcp://"$agency_address":6002 \
+    --cluster.my-role DBSERVER \
+    --cluster.agency-endpoint tcp://"$agency_address":5001 \
+    --database.directory dbserver2
 
-#    docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_dbserver3 -d "$image_id" --server.endpoint tcp://0.0.0.0:6003 \
-#     --server.authentication false \
-#     --cluster.my-address http+tcp://"$agency_address":6003 \
-#     --cluster.my-role DBSERVER \
-#     --cluster.agency-endpoint tcp://"$agency_address":5001 \
-#     --database.directory dbserver3
+   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_dbserver3 -d "$image_id" --server.endpoint tcp://0.0.0.0:6003 \
+    --server.authentication false \
+    --cluster.my-address http+tcp://"$agency_address":6003 \
+    --cluster.my-role DBSERVER \
+    --cluster.agency-endpoint tcp://"$agency_address":5001 \
+    --database.directory dbserver3
 
-#   ## Coordinators
-#   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_coordinator1 -d "$image_id" --server.endpoint tcp://0.0.0.0:7001 \
-#     --server.authentication false \
-#     --cluster.my-address tcp://"$agency_address":7001 \
-#     --cluster.my-role COORDINATOR \
-#     --cluster.agency-endpoint tcp://"$agency_address":5001 \
-#     --database.directory coordinator1 
+  ## Coordinators
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_coordinator1 -d "$image_id" --server.endpoint tcp://0.0.0.0:7001 \
+    --server.authentication false \
+    --cluster.my-address tcp://"$agency_address":7001 \
+    --cluster.my-role COORDINATOR \
+    --cluster.agency-endpoint tcp://"$agency_address":5001 \
+    --database.directory coordinator1 
 
 
   if [ "$options" = true ] ; then

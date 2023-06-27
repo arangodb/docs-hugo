@@ -15,7 +15,7 @@ import (
 )
 
 func Exec(exampleName string, code string, repository config.Repository) (output string) {
-	//time.Sleep(time.Second * 2)
+	time.Sleep(time.Second * 1)
 	commonFunctions, _ := utils.GetCommonFunctions()
 	command := fmt.Sprintf("%s\n%s", commonFunctions, code)
 
@@ -70,7 +70,6 @@ func Exec(exampleName string, code string, repository config.Repository) (output
 	output = strings.Join(split, "\n")
 	common.Logger.Printf("[%s] [InvokeArangoSH] Command Output: %s", exampleName, output)
 	common.Logger.Summary("<li><strong>%s</strong>  -  %s &#x2713;</li><br>", repository.Version, exampleName)
-
 	return output
 }
 
