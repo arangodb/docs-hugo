@@ -55,7 +55,7 @@ func (service OpenapiService) ParseOpenapiPayload(request io.Reader) (map[string
 
 	// common.Logger.Summary(string(req))
 
-	//req = editDescriptions(req)
+	req = editDescriptions(req)
 
 	optionsYaml := make(map[string]interface{})
 	err = yaml.Unmarshal(req, &optionsYaml)
@@ -138,11 +138,11 @@ func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) e
 func editDescriptions(req []byte) []byte {
 	payloadString := string(req)
 
-	payloadString = strings.Replace(payloadString, "{{< warning >}}", "> **WARNING:**\n", -1)
-	payloadString = strings.Replace(payloadString, "{{< info >}}", "> **INFO:**\n", -1)
-	payloadString = strings.Replace(payloadString, "{{< danger >}}", "> **DANGER:**\n", -1)
-	payloadString = strings.Replace(payloadString, "{{< success >}}", "> **SUCCESS:**\n", -1)
-	payloadString = strings.Replace(payloadString, "{{< tip >}}", "> **TIP:**\n", -1)
+	payloadString = strings.Replace(payloadString, "{{< warning >}}", "> **WARNING:**", -1)
+	payloadString = strings.Replace(payloadString, "{{< info >}}", "> **INFO:**", -1)
+	payloadString = strings.Replace(payloadString, "{{< danger >}}", "> **DANGER:**", -1)
+	payloadString = strings.Replace(payloadString, "{{< success >}}", "> **SUCCESS:**", -1)
+	payloadString = strings.Replace(payloadString, "{{< tip >}}", "> **TIP:**", -1)
 
 	payloadString = strings.Replace(payloadString, "{{< /tip >}}", "", -1)
 	payloadString = strings.Replace(payloadString, "{{< /warning >}}", "", -1)
