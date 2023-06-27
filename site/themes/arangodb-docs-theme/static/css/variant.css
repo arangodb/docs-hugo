@@ -94,7 +94,7 @@
 body {
     background-color: var(--INTERNAL-MAIN-BG-color);
     color: var(--INTERNAL-MAIN-TEXT-color);
-    font-family: var(--INTERNAL-MAIN-font);
+    font-family: var(--MAIN-FONT);
 }
 
 a,

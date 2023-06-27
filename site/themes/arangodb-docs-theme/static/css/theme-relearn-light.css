@@ -14,7 +14,7 @@
     --MAIN-LINK-HOVER-color: #90ba6d; /* hoverd link color of content */
     --MAIN-BG-color: #ffffff; /* background color of content */
     --MAIN-TITLES-TEXT-color: #4a4a4a; /* text color of h2-h6 titles and transparent box titles */
-    --MAIN-FONT: "Menlo","Consolas";
+    --MAIN-FONT: "objektiv-mk1";
 
     /* adjusted to relearn-light chroma style */
     --CODE-BLOCK-color: white; /* fallback text color of block code; should be adjusted to your selected chroma style */
@@ -46,8 +46,36 @@
     --BOX-BG-color: rgba( 255, 255, 255, .833 ); /* background color of colored boxes */
     --BOX-TEXT-color: rgba( 16, 16, 16, 1 ); /* text color of colored box content */
 
+
+    /* TYPOGRAPHY */
+
+    /* SIZE */
+    --TYPOGRAPHY-H1-SIZE: 32px;
+    --TYPOGRAPHY-H2-SIZE: 24px;
+    --TYPOGRAPHY-H3-SIZE: 18.7px;
+    --TYPOGRAPHY-H4-SIZE: 16px;
+    --TYPOGRAPHY-H5-SIZE: 13.28px;
+
+    /* LINE HEIGHTS */
+    --TYPOGRAPHY-H1-SPACING: 50px;
+    --TYPOGRAPHY-H2-SPACING: 36px;
+    --TYPOGRAPHY-H3-SPACING: 26.91px;
+    --TYPOGRAPHY-H4-SPACING: 26px;
+    --TYPOGRAPHY-H5-SPACING: 22px;
+
+    /* WEIGHTS */
+    --TYPOGRAPHY-THIN-TEXT: 250;
+    --TYPOGRAPHY-LIGHT-TEXT: 300;
+    --TYPOGRAPHY-REGULAR-TEXT: 400;
+    --TYPOGRAPHY-SEMIBOLD-TEXT: 500;
+    --TYPOGRAPHY-BOLD-TEXT: 700;
+
+    --TYPOGRAPHY-BODY-TEXT: 16px;
+
+
+
     --SIDEBAR-BACKGROUND-COLOR:  rgb(64, 69, 69);
-    --SIDEBAR-ENTRY-COLOR: rgba(255, 255, 255, 0.8);
+    --SIDEBAR-ENTRY-COLOR: #345B06;
 
     --CONTENT-BACKGROUND-COLOR: #ffffff;
     --HEADER-BACKGROUND-COLOR: #ffffff;

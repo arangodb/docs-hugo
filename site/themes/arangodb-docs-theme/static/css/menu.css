@@ -33,13 +33,6 @@ background-size:cover;
     z-index: 2;
     top: 4rem;
     height: 101vh;
-    background-color: var(--SIDEBAR-BACKGROUND-COLOR);
-   /* background-color: rgb(64, 69, 69) !important;*/
-    /*
-    background-image: url("/images/menu-bg.jpg");
-background-position: center center;
-background-size:cover;
-*/
     left: 0;
     width: 0;
     transition:  width 0.3s ease-in-out;
@@ -234,6 +227,15 @@ background-size:cover;
     transition: 0.5s;
 }
 
+#sidebar ul li a:hover {
+    box-sizing: border-box;
+    border: 0 solid rgb(106 170 33);
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    --tw-bg-opacity: 0.2;
+    background-color: rgb(106 170 33/var(--tw-bg-opacity));
+}
+
 #sidenav li.dd-item.active > a {
     color: #577138;
     font-weight: bold;
@@ -289,6 +291,12 @@ li.parent > a {
 
 li.active > a {
     font-weight: bold;
+    box-sizing: border-box;
+    border: 0 solid rgb(106 170 33);
+    border-top-right-radius: 1rem;
+    border-bottom-right-radius: 1rem;
+    --tw-bg-opacity: 0.5;
+    background-color: rgb(106 170 33/var(--tw-bg-opacity));
 }
 
 .toggle.menu-section-entry {

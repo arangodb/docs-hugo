@@ -4,12 +4,12 @@ html {
  }
 
 body {
-    font-family: "Inter", sans-serif;
+    font-family: var(--MAIN-FONT);
     padding: 0;
     margin: 0;
     line-height: 1.5rem;
     font-weight: 100;
-    font-size: 15px;
+    font-size: var(--TYPOGRAPHY-BODY-TEXT);
 }
 
 #page-wrapper {
@@ -234,7 +234,6 @@ img {
     top: 4.1em;
     padding-left: 0.7em;
     display: flex;
-    background: var(--SIDEBAR-BACKGROUND-COLOR);
     height: 4.7vh;
     padding-top: 8px;
 }
@@ -403,7 +402,6 @@ label {
     display: flex;
     flex-direction: row;
     align-items: center;
-    background: var(--SIDEBAR-BACKGROUND-COLOR);
     float: left;
     height: auto;
     margin-bottom: 1rem;
@@ -529,7 +527,6 @@ h1, h2, h3, .h3, h4, .h4 {
 }
 
 body h1, body h2, body h3, body h4, body h5, body h6 {
-    font-family: 'Inter', sans-serif !important;
     position: relative;
     line-height: 1.2;
     text-align: left;
@@ -538,7 +535,7 @@ body h1, body h2, body h3, body h4, body h5, body h6 {
 hgroup > h1 {
     margin-top: 2.5rem;
     color: var(--H1-COLOR);
-    font-size: 2rem;
+    font-size: var(--TYPOGRAPHY-H1-SIZE);
 }
 
 hgroup > p {
@@ -609,16 +606,6 @@ article > p {
     color: var(--TOC-ENTRY-COLOR);
 }
 
-body h1, body h2, body h3, body h4, body h5, body h6 {
-    font-family: 'Inter', sans-serif !important;
-    position: relative;
-    line-height: 1.2;
-    text-align: left;
-}
-
-body h2, body h3 {
-    font-weight: bold;
-}
 
 article > h3 {
     color: var(--H2-COLOR);

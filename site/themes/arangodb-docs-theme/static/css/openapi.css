@@ -1,8 +1,6 @@
 .openapi {
     --border-radius: 2px;
     --layout: row;
-    --font-mono: "Consolas", menlo, monospace;
-    --font-regular: "Inter", Helvetica, Arial, sans-serif;
     --scroll-bar-width: 8px;
     --nav-item-padding: 7px 16px 7px 10px;
     --resp-area-height: 400px;
