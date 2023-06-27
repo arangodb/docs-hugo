@@ -59,10 +59,10 @@ def migrate_hrefs(paragraph, filepath):
             content = "/".join(content.split("/")[5:])  ## Cut http:/ / arangodb.com/ docs/ version/ 
             paragraph = paragraph.replace(absURL, content)
 
-        if re.search(r"http[s]*://|,", content):
+        if re.search(r"https?://|,", content):
             continue
 
-        if re.search(r".png|.jpg|.jpeg", content):
+        if re.search(r"\.(?:png|jpg|jpeg|webp)", content):
             paragraph = migrate_image(filepath, paragraph, href)
             continue
         

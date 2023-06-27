@@ -14,7 +14,8 @@ var autoComplete = (function(){
         if (!document.querySelector) return;
 
         // helpers
-        function hasClass(el, className){ return el.classList ? el.classList.contains(className) : new RegExp('\\b'+ className+'\\b').test(el.className); }
+        function hasClass(el, className){ 
+            return el.classList ? el.classList.contains(className) : new RegExp('\\b'+ className+'\\b').test(el.className); }
 
         function addEvent(el, type, handler){
             if (el.attachEvent) el.attachEvent('on'+type, handler); else el.addEventListener(type, handler);
@@ -43,8 +44,6 @@ var autoComplete = (function(){
             selectorToInsert: 0,
             renderItem: function (item, search){
                 // escape special characters
-                console.log("item " + item);
-                console.log("search " + search);
                 search = search.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
                 var re = new RegExp("(" + search.split(' ').join('|') + ")", "gi");
                 return '<div class="autocomplete-suggestion" data-val="' + item + '">' + item.replace(re, "<b>$1</b>") + '</div>';
@@ -85,9 +84,9 @@ var autoComplete = (function(){
                     pageXOffset = window.pageXOffset || document.documentElement.scrollLeft;
                     pageYOffset = window.pageYOffset || document.documentElement.scrollTop;
                 }
-                that.sc.style.left = '40vw';
+                that.sc.style.left = '30vw';
                 that.sc.style.top = '12vh';
-                //that.sc.style.width = Math.round(rect.right - rect.left) + 'px'; // outerWidth
+                that.sc.style.width = Math.round(rect.right - rect.left) * 3 + 'px'; // outerWidth
    
                 if (!resize) {
                     that.sc.style.display = 'block';

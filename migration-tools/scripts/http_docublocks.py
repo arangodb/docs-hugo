@@ -169,10 +169,10 @@ def processHTTPDocuBlock(docuBlock, tag, headerLevel):
             for line in block.rstrip().split("\n"):
                 if "{% hint " in line:
                     currentHint = line.replace("{% hint '", "").replace("' %}", "")
-                    line = f"{{{{< {currentHint} >}}}}\n"
+                    line = f"{{{{</* {currentHint} */>}}}}\n"
                     description = description + line
                 elif "{% endhint " in line:
-                    line = f"{{{{< /{currentHint} >}}}}\n"
+                    line = f"{{{{</* /{currentHint} */>}}}}\n"
                     description = description + line
                 else:
                     description = description + line + "\n"
@@ -266,7 +266,7 @@ def processExample_new(docublock):
 
         if "@END_EXAMPLE_" in line:
             blockExamples.append(exampleBlock)
-            exampleBlock = {'options': {"description": ""}, 'code': ""}
+            exampleBlock = {'options': {"description": "", "version": version}, 'code': ""}
             inExample = False
             continue
 
@@ -487,7 +487,7 @@ def render_yaml(block, title):
     return res
 
 def parse_examples(blockExamples):
-    res = ''
+    res = '\n**Examples**\n\n'
     for example in blockExamples:
         exampleOptions = yaml.dump(example["options"], sort_keys=False, default_flow_style=False)
         code = example["code"]

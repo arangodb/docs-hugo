@@ -111,6 +111,8 @@ func NewExampleResponse(input, output string, options ExampleOptions) (res *Exam
 	res.Input, res.Options = input, options
 	if strings.Contains(string(options.Render), "output") {
 		res.Output = output
+	} else {
+		res.Output = "Empty output"
 	}
 
 	FormatResponse(res)
