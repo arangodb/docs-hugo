@@ -13,6 +13,7 @@ def migrateStructure(label, document, manual, i):
 		document = yaml.full_load(directoryTree)
 
 		if manual != "manual":
+			print(f"Processing {manual}")
 			title = getManualTitle(manual)
 			create_index("", {"text": title, "href": "index.html"}, manual+"/", i)
 			document = document[1:]
@@ -32,7 +33,11 @@ def migrateStructure(label, document, manual, i):
 			continue
 
 		if "subtitle" in item:
+			if manual == "arangograph":
+				continue
+			
 			subtitle = item["subtitle"].title()
+			print(f"{manual} - {subtitle}")
 			label = create_index_empty(extendedSection, {"text": subtitle, "href": ""}, extendedSection, i)
 			continue
 
