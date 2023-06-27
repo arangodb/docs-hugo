@@ -17,14 +17,13 @@ function menuToggleClick(event) {
 
 
 function menuEntryClick(event) {
-    if (event.target.getAttribute('href') == window.location.href) {
-        console.log("ok")
+    if (event.target.pathname == window.location.pathname) {
         toggleMenuItem(event)
         return
     }
 
-    console.log("kkk")
-    console.log(event.target.getAttribute('href'))
+    console.log("redirecting to")
+    console.log(event.target.pathname)
 
     loadPage(event.target.getAttribute('href'));
 }

@@ -29,6 +29,14 @@ func init() {
 	Versions = common.LoadVersions()
 
 	for _, version := range Versions {
+		tags := []map[string]string{}
+		yamlFile, err := ioutil.ReadFile("/home/site/data/openapi_tags.yaml")
+		if err != nil {
+			common.Logger.Printf("[ERROR] Opening openapi_tags file: %s", err.Error())
+			os.Exit(1)
+		}
+
+		yaml.Unmarshal(yamlFile, &tags)
 		OpenapiGlobalMap[version.Name] = map[string]interface{}{
 			"openapi": "3.1.0",
 			"info": map[string]interface{}{
@@ -37,12 +45,8 @@ func init() {
 				"title":       "ArangoDB",
 			},
 			"paths": make(map[string]interface{}),
+			"tags":  tags,
 		}
-		tags := []map[string]string{}
-		yamlFile, _ := ioutil.ReadFile("/home/site/data/openapi_tags.yaml")
-
-		yaml.Unmarshal(yamlFile, &tags)
-		OpenapiGlobalMap["tags"] = tags
 	}
 }
 
