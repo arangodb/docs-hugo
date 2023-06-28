@@ -114,7 +114,7 @@
                   <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
                     <meta itemprop="position" content="{{ $depth }}" />
                     <a itemprop="item" href="{{ .page.RelPermalink }}"{{if not .depth}} aria-disabled="true"{{end}}>
-                      <span itemprop="name" class="breadcrumb-entry">{{ replace .page.Title "{{ pageVersion }}" $pageVersion | markdownify }}</span>
+                      <span itemprop="name" class="breadcrumb-entry">{{ .page.Params.menuTitle | markdownify }}</span>
                     </a>{{ if .depth }} > {{ end }}
                   </li>
                   {{ end }}

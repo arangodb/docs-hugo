@@ -3,7 +3,7 @@
     width: 32vw;
     border: 1px solid #000;
     top: 50px;
-    background-color: var(--SIDEBAR-BACKGROUND-COLOR);
+    background-color: #fafafa;
     display: none;
     z-index: 9999;
     max-height: 500px;

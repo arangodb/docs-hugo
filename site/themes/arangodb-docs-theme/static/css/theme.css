@@ -397,7 +397,6 @@ label {
 }
 
 #breadcrumbs {
-    position: sticky;
     grid-area: breadcrumbs;
     display: flex;
     flex-direction: row;
@@ -409,7 +408,6 @@ label {
     text-overflow: ellipsis;
     white-space: nowrap;
     height: 2.9rem;
-    z-index: 99;
 }
 
 .toc-container {
@@ -540,8 +538,8 @@ hgroup > h1 {
 
 hgroup > p {
     margin-bottom: 20px;
-    font-weight: 200;
-    font-size: 1.4em;
+    font-weight: var(--TYPOGRAPHY-SEMIBOLD-TEXT);
+    font-size: var(--TYPOGRAPHY-H3-SIZE);
 }
 
 p {
@@ -1050,6 +1048,7 @@ blockquote p {
 #breadcrumbs > ol > li > a {
     font-weight: 700;
     color: var(--SIDEBAR-ENTRY-COLOR);
+    font-size: var(--TYPOGRAPHY-H5-SIZE);
 }
 
 .hidden {
@@ -1058,4 +1057,9 @@ blockquote p {
 
 small {
     font-size: 80%;
+}
+
+hgroup > h1, article > h2, article > h3, article > h4, article > h5  {
+    color: var(--HEADERS-COLOR);
+    font-weight: var(--TYPOGRAPHY-BOLD-TEXT);
 }
