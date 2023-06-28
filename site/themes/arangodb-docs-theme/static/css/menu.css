@@ -12,12 +12,6 @@
     top: 4rem;
     height: 101vh;
     background-color: var(--SIDEBAR-BACKGROUND-COLOR);
-   /* background-color: rgb(64, 69, 69) !important;*/
-    /*
-    background-image: url("/images/menu-bg.jpg");
-background-position: center center;
-background-size:cover;
-*/
     left: 0;
     width: 0;
     transition:  width 0.3s ease-in-out;
@@ -36,6 +30,7 @@ background-size:cover;
     left: 0;
     width: 0;
     transition:  width 0.3s ease-in-out;
+    background-color: var(--SIDEBAR-BACKGROUND-COLOR);
 
 }
 
@@ -143,7 +138,6 @@ background-size:cover;
 #sidebar ul.topics li.active > ul,
 #sidebar ul.topics li.alwaysopen > ul {
     display: block;
-    font-size: 13px;
 }
 
 
@@ -233,7 +227,7 @@ background-size:cover;
     border-top-right-radius: 1rem;
     border-bottom-right-radius: 1rem;
     --tw-bg-opacity: 0.2;
-    background-color: rgb(106 170 33/var(--tw-bg-opacity));
+    background-color: rgb(188 180 196/var(--tw-bg-opacity));
 }
 
 #sidenav li.dd-item.active > a {
@@ -370,6 +364,11 @@ dd-item.menu-section-entry.parent > .submenu {
 
 .menu-title {
     pointer-events: none;
+}
+
+.dd-item.active > a > .menu-title,
+.dd-item.parent > a > .menu-title {
+    color: #345B06;
 }
 
 .sidenav-container-flex::-webkit-scrollbar {

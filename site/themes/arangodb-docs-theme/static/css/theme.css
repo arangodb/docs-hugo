@@ -125,6 +125,10 @@ a, a:hover {
     border-bottom: inherit;
 }
 
+a:hover {
+    border-bottom: 1px solid;
+}
+
 
 input[type=date], input[type=datetime], input[type=datetime-local], input[type=email], input[type=month], input[type=number], input[type=password], input[type=search], input[type=tel], input[type=text], input[type=time], input[type=url], input[type=week], textarea, select {
     border: 1px solid;
@@ -361,11 +365,8 @@ label {
     padding-right: 1rem;
     text-overflow: ellipsis;
     white-space: break-spaces;
-    color: var(--SIDEBAR-ENTRY-COLOR);
-    font-family: objektiv-mk1 !important;
-    font-size: 14px !important;
-    line-height: 18px !important;
-    font-family: objektiv-mk1,Helvetica Neue,Helvetica,Arial,sans-serif;
+    color: rgba(56, 59, 57, 1);
+    font-family: Helvetica !important;
     margin-bottom: 13px;
 }
 
@@ -391,7 +392,7 @@ label {
         'breadcrumbs breadcrumbs'
         'article toc'
         'footer footer';
-    grid-template-columns: 2fr 1fr;
+    grid-template-columns: 3fr 1fr;
     grid-template-rows: auto 1fr;
     background-color: var(--CONTENT-BACKGROUND-COLOR);
 }
@@ -411,7 +412,7 @@ label {
 }
 
 .toc-container {
-    margin: 20px 24px 40px 30px;
+    margin: 20px 0px 40px 30px;
     grid-area: toc;
     font-size: 15px;
     display: none;
@@ -456,7 +457,7 @@ label {
 
 
 article.default {
-    margin: 0px 10em;
+    margin: 0px 6em;
     min-height: 600px;
     grid-area: article;
     max-width: calc(100wh - 50px);
@@ -514,42 +515,10 @@ article ul li {
     overflow: auto;
     position: fixed;
     top: 15vh;
+    width: 100%;
 }
 
-h1 {
-    margin-bottom: 35px;
-}
 
-h1, h2, h3, .h3, h4, .h4 {
-    font-weight: 100;
-}
-
-body h1, body h2, body h3, body h4, body h5, body h6 {
-    position: relative;
-    line-height: 1.2;
-    text-align: left;
-}
-
-hgroup > h1 {
-    margin-top: 2.5rem;
-    color: var(--H1-COLOR);
-    font-size: var(--TYPOGRAPHY-H1-SIZE);
-}
-
-hgroup > p {
-    margin-bottom: 20px;
-    font-weight: var(--TYPOGRAPHY-SEMIBOLD-TEXT);
-    font-size: var(--TYPOGRAPHY-H3-SIZE);
-}
-
-p {
-    margin-bottom: 20px;
-}
-
-article > p {
-    font-size: 0.9rem important;
-    line-height: 1.5rem;
-}
 
 .lead {
     font-size: 1.4em;
@@ -605,39 +574,9 @@ article > p {
 }
 
 
-article > h3 {
-    color: var(--H2-COLOR);
-    font-size: 1.2rem;
-    margin-top: 2rem;
-}
-
-article > h4 {
-    color: var(--H2-COLOR);
-    font-size: 1rem;
-    margin-top: 2rem;
-}
-
-article > h5 {
-    color: var(--H2-COLOR);
-    font-size: 0.8rem;
-    margin-top: 2rem;
-}
-
-article > h8 {
-    color: var(--H2-COLOR);
-    font-size: 0.6rem;
-    margin-top: 2rem;
-}
 
 body h2 {
     text-align: left;
-}
-
-article > h2 {
-    color: var(--H2-COLOR);
-    font-size: 1.5rem;
-    border-bottom: 1px solid #e2e8f0;
-    padding: 0.4rem 0 0.5rem;
 }
 
 nav.pagination {
@@ -785,7 +724,7 @@ div.box {
     border: 1px solid #c6ebfd;
     border-radius: 7px;
     margin-bottom: 30px;
-    margin-top: 1rem;
+    margin-top: 2rem;
 }
 
 div.box.info {
@@ -846,7 +785,7 @@ div.box > .box-content-container > .box-content > .box-text > p {
 }
 
 .box-text {
-    padding-left: 1em;
+    padding: 24px;
 }
 
 .label {
@@ -1048,7 +987,7 @@ blockquote p {
 #breadcrumbs > ol > li > a {
     font-weight: 700;
     color: var(--SIDEBAR-ENTRY-COLOR);
-    font-size: var(--TYPOGRAPHY-H5-SIZE);
+    font-size: var(--TYPOGRAPHY-H4-SIZE);
 }
 
 .hidden {
@@ -1062,4 +1001,32 @@ small {
 hgroup > h1, article > h2, article > h3, article > h4, article > h5  {
     color: var(--HEADERS-COLOR);
     font-weight: var(--TYPOGRAPHY-BOLD-TEXT);
+}
+
+hgroup > h1 {
+    font-size: var(--TYPOGRAPHY-H1-SIZE);
+    margin: 40px 0 40px 0;
+    line-height: var(--TYPOGRAPHY-H1-HEIGHT);
+}
+
+article > h2 {
+    font-size: var(--TYPOGRAPHY-H2-SIZE);
+    padding-top: 32px;
+    line-height: var(--TYPOGRAPHY-H2-HEIGHT);
+}
+
+article > h3 {
+    font-size: var(--TYPOGRAPHY-H3-SIZE);
+    padding-top: 24px;
+    line-height: var(--TYPOGRAPHY-H3-HEIGHT);
+}
+
+article > h4 {
+    font-size: var(--TYPOGRAPHY-H4-SIZE);
+    padding-top: 16px;
+    line-height: var(--TYPOGRAPHY-H4-HEIGHT);
+}
+
+p {
+    line-height: 24px;
 }

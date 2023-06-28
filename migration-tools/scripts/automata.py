@@ -438,6 +438,15 @@ def processFile(page, content, filepath):
                 page.content = page.content + tagShortcode
                 continue
 
+            if '{% include program-option.html options=options' in line:
+                line = line.replace('{% include program-option.html options=options', "{{% program-options")
+                line = line.replace('%}', '%}}')
+                page.content = page.content + line
+                continue
+
+            if 'assign optionsFile = page.version.version' in line or 'assign options = site.data' in line:
+                continue
+
             ## Assign ver
             if "{% assign ver" in line:
                 if "3.10" in line:
@@ -462,6 +471,8 @@ def processFile(page, content, filepath):
 
             if "{% include metrics.md" in line:
                 line = "{{% metrics %}}\n"
+                page.content = page.content + line
+                continue
 
             buffer.append(line)
             page.content = page.content + line
