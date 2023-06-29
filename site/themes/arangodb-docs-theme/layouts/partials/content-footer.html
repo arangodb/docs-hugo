@@ -1,5 +1,66 @@
+{{ $currentPage := .}}
+{{ $curPosition := 0 }}
+{{ $nextIndex := 0 }}
+{{ $prevIndex := 0 }}
+{{ $prev := "" }}
+{{ $next := ""}}
+
+{{- $pages := .CurrentSection.Pages }}
+
+{{- range $pages }}
+  {{- if eq $currentPage . }}
+    {{- $nextIndex = add $curPosition 1 }}
+
+    {{ if and (eq $curPosition 0) (not $currentPage.IsSection) }}
+      {{ $prev = .Parent }}
+    {{ else }}
+      {{- $prevIndex = sub $curPosition 1 }}
+      {{- $prev = index $pages $prevIndex }}
+    {{ end }}
+  {{ else }}
+    {{- $curPosition = add $curPosition 1 }}
+  {{- end }}
+{{- end }}
+{{- $next = index $pages $nextIndex }}
+
+{{ if not $next }}
+  {{ $curPosition = 0 }}
+  {{ $parent := $currentPage.Parent }}
+  {{ with $parent.Parent }}
+  {{ $pages = $parent.Parent.Pages}}
+  {{ range $pages }}
+    {{ if eq $parent . }}
+      {{ $nextIndex = add $curPosition 1 }}
+      {{ $next = index $pages $nextIndex }}
+    {{ else }}
+      {{ $curPosition = add $curPosition 1 }}
+    {{ end }}
+  {{ end }}
+  {{ end }}
+{{ end }}
+
+{{ if $currentPage.IsSection }}
+  {{ $curPosition = 0 }}
+  {{ $pages = $currentPage.Parent.Pages }}
+
+  {{ range $pages }}
+    {{- if eq $currentPage . }}
+      {{ if eq $curPosition 0 }}
+        {{ $prev = .Parent }}
+      {{ else }}
+        {{- $prevIndex = sub $curPosition 1 }}
+        {{ $prev = index $pages $prevIndex }}
+
+      {{ end }}
+    {{ else }}
+      {{- $curPosition = add $curPosition 1 }}
+    {{- end }}
+  {{- end }}
+{{ end}}
+
+
 <span class="prev">
-  {{- with ($.Scratch.Get "relearnPrevPage") }}
+  {{ with $prev }}
           
           <a class="nav nav-prev" href="{{.RelPermalink}}" title="{{.Params.menuTitle}} (&#129104;)">
             <i class="fas fa-chevron-left fa-fw"></i><p>{{.Params.menuTitle | markdownify}}</p></a>
@@ -8,7 +69,7 @@
 </span>
 
 <span class="next">
-  {{- with ($.Scratch.Get "relearnNextPage") }}
+  {{ with $next }}
             <a class="nav nav-next" href="{{.RelPermalink}}" title="{{.Params.menuTitle}} (&#129106;)">
               <p>{{.Params.menuTitle | markdownify}}</p><i class="fas fa-chevron-right fa-fw"></i></a>
           {{- end }}
