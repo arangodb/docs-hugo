@@ -66,7 +66,7 @@ function tocHiglighter() {
   for (var i = 0; i < anchors.length; i++){
     var heading = anchors[i].getAttribute('id')
     let highlightedHref = $('#TableOfContents a[href="#' + heading + '"]');
-    highlightedHref.removeClass('is-active');
+    highlightedHref.parent().removeClass('is-active');
   }
 
   for (var i = anchors.length-1; i >= 0; i--){
@@ -74,7 +74,7 @@ function tocHiglighter() {
         var heading = anchors[i].getAttribute('id')
 
         let highlightedHref = $('#TableOfContents a[href="#' + heading + '"]')
-        highlightedHref.addClass('is-active');
+        highlightedHref.parent().addClass('is-active');
         break;
     }
   }

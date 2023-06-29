@@ -41,7 +41,6 @@
 }
 
 #TableOfContents a {
-    border-left: 1px solid #e2e8f0;
     display: inline-block;
     padding: 0.25rem 0 0.25rem 0.5rem;
     text-decoration: none;
@@ -54,19 +53,36 @@
 }
 
 #TableOfContents .level-2 > a {
-    padding-left: 2em;
     font-size: 15px;
 }
 
 #TableOfContents .level-3 > a {
-    padding-left: 3em;
+    padding-left: 1em;
     font-size: 14px;
 }
 
 #TableOfContents .is-active {
-    color: var(--MAIN-LINK-color);
     font-weight: bold;
-    border-left: 3px solid var(--MAIN-LINK-color);
-    padding-left: 3.5em;
+    --tw-bg-opacity: 0.3;
+    background-color: rgb(106 170 33/var(--tw-bg-opacity));
+    border-top-left-radius: 0.75rem;
+    border-bottom-left-radius: 0.75rem;
+}
+
+#TableOfContents .is-active > a {
+    color: #222222;
+    font-weight: var(--TYPOGRAPHY-BOLD-TEXT);
+}
+
+#TableOfContents .level-1:hover,
+#TableOfContents .level-2:hover,
+#TableOfContents .level-3:hover,
+#TableOfContents .level-4:hover, 
+#TableOfContents .level-5:hover {
+    font-weight: bold;
+    --tw-bg-opacity: 1;
+    background-color: rgb(230 247 255/var(--tw-bg-opacity));
+    border-top-left-radius: 0.75rem;
+    border-bottom-left-radius: 0.75rem;
 }
 

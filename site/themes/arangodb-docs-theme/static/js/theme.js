@@ -516,7 +516,6 @@ window.addEventListener("load", () => {
 
 window.addEventListener("scroll", () => {
     backToTopButton();
-    readaptHeaderOnScroll();
 });
 
 const goToTop = () => {
