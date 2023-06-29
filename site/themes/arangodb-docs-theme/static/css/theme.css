@@ -386,9 +386,10 @@ label {
 }
 
 .container-main {
-    max-width: 1500px;
+    max-width: 100%;
     grid-area: contents;
     background-color: var(--CONTENT-BACKGROUND-COLOR);
+    margin-left: 20vw;
 }
 
 .row-main {

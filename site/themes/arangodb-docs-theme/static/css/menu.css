@@ -22,16 +22,17 @@
     grid-area: sidenav;
     display: flex;
     align-items: stretch;
-    /*position: -webkit-sticky;*/
-    position: sticky;
-    z-index: 2;
-    top: 4rem;
-    height: 101vh;
+    position: fixed;
+    z-index: 9999;
+    /* top: 4rem; */
+    height: 94vh;
     left: 0;
     width: 1vw;
-    transition:  width 0.3s ease-in-out;
+    transition: width 0.3s ease-in-out;
     background-color: var(--SIDEBAR-BACKGROUND-COLOR);
     box-shadow: -3px 0 5px 0 #555;
+    margin-top: 7vh;
+    /* margin-bottom: 0rem; */
 }
 
 .menu-iframe.active,
