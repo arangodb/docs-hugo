@@ -730,14 +730,16 @@ ol > li {
 /* Hints */
 
 div.box {
-    border: 1px solid #c6ebfd;
     border-radius: 7px;
     margin-bottom: 30px;
     margin-top: 2rem;
 }
 
 div.box.info {
+    border: 1px solid #2dc8ed;
+
     border-left: 5px solid #2dc8ed;
+
     background: #f0fcff;
 }
 
@@ -762,17 +764,26 @@ div.box.danger > .box-content-container > .box-content > i {
 }
 
 div.box.success {
+    border: 1px solid #a3ef53;
+
     border-left: 5px solid #a3ef53;
+
     background: #efffeb;
 }
 
 div.box.warning {
+    border: 1px solid #e3b03a;
+
     border-left: 5px solid #e3b03a;
+
     background: #fffff3;
 }
 
 div.box.danger {
+    border: 1px solid #fd5d1d;
+
     border-left: 5px solid #fd5d1d;
+
     background: #ffdede;
 }
 
