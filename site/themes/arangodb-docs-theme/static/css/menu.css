@@ -258,8 +258,7 @@
 #sidebar ul li a:hover {
     box-sizing: border-box;
     border: 0 solid rgb(106 170 33);
-    border-top-right-radius: 1rem;
-    border-bottom-right-radius: 1rem;
+    border-radius: 1rem;
     --tw-bg-opacity: 0.2;
     background-color: rgb(188 180 196/var(--tw-bg-opacity));
 }
@@ -326,8 +325,7 @@ li.active > a {
     font-weight: bold;
     box-sizing: border-box;
     border: 0 solid rgb(106 170 33);
-    border-top-right-radius: 1rem;
-    border-bottom-right-radius: 1rem;
+    border-radius: 1rem;
     --tw-bg-opacity: 0.5;
     background-color: rgb(106 170 33/var(--tw-bg-opacity));
 }
