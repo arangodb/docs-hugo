@@ -25,6 +25,19 @@
                 </div>
                 <!-- END LOGO-->
                 
+                
+              </div>
+              <div class="search-and-version-container" >
+                <div class="searchbox default-animation">
+                  <input data-search-input id="search-by" type="search" placeholder="Search...">
+                </div>
+                <div class="version-selector">
+                  <select id="arangodb-version" onchange="changeVersion();">
+                    <option value="3.12">3.12</option>
+                    <option value="3.11">3.11</option>
+                    <option value="3.10">3.10</option>
+                  </select>
+                </div>
               </div>
               <div class="container-right">
                 </div>
@@ -58,18 +71,21 @@
             {{- end }}
            
             <script src="{{ "js/search.js" | relURL }}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" defer></script>
+
             <div class="container-main">
               <div class="row-main">
                   <nav id="breadcrumbs">
+                    <!--
                       <a href="#" class="sidebar-toggle-navigation">
                         <span></span>
                         <span></span>
                         <span></span>
                       </a>
-
+                      -->
+                      <a href="#" class="home-link is-current" aria-label="Go to home page" onclick="goToHomepage(event);"></a>
                   {{- $showBreadcrumb := (and (not .Params.disableBreadcrumb) (not .Site.Params.disableBreadcrumb)) }}
                   {{- if $showBreadcrumb }}
-                  <a href="#" class="home-link is-current" aria-label="Go to home page" onclick="goToHomepage(event);"></a>
+                  
                     <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
                       <meta itemprop="itemListOrder" content="Descending" />
                       {{- template "breadcrumb" dict "page" . "depth" 0 }}

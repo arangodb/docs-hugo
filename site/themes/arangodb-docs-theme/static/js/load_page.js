@@ -32,7 +32,7 @@ function styleImages() {
 }
 
 function showSidebarHandler() {
-  document.querySelector(".sidebar-toggle-navigation").addEventListener("click", e => {
+  document.querySelector("#sidebar-toggle-navigation").addEventListener("click", e => {
     if (showSidenav) {
         $("#sidebar").removeClass("active");
         showSidenav = false;

@@ -29,6 +29,7 @@ body .page-container {
         'sidenav footer';
     grid-template-columns: minmax(0px, auto) 4fr;
     grid-template-rows: 4rem 1fr;
+    background: var(--CONTENT-BACKGROUND-COLOR);
 }
 
 /* HEADER */
@@ -51,7 +52,7 @@ header {
     width: 100%;
     box-shadow: 0 0 10px rgb(0 0 0 / 20%);
     z-index: 1001;
-    /*position: fixed;*/
+    position: fixed;
     font-family: 'Inter', sans-serif !important;
     min-height: 0;
 }
@@ -190,13 +191,8 @@ img {
 }
 
 .version-selector {
-    width: 4.3em;
-    margin-left: 1rem;
-    /* height: 4rem; */
     border: none;
-    right: 18px;
-    position: absolute;
-    margin-top: 3px;
+    margin-top: 2px;
 }
 
 #arangodb-version {
@@ -233,17 +229,26 @@ img {
 .searchbox.default-animation {
     font-size: 16px;
     line-height: 40px;
-    width: 16em;
     z-index: 9999;
     top: 4.1em;
     padding-left: 0.7em;
     display: flex;
     height: 4.7vh;
-    padding-top: 8px;
 }
 
 #search-by {
-    width: 16rem;
+    width: 20rem;
+}
+#search-by::before {
+    font-family: "Font Awesome 5 Free";
+    content: "\f054";
+    display: inline-block;
+    /* padding-right: 3px; */
+    vertical-align: middle;
+    font-weight: 900;
+    font-size: 10px;
+    padding-top: 0px;
+    color: grey;
 }
 .searchbar-toggle {
     color: white;
@@ -384,6 +389,7 @@ label {
 .container-main {
     max-width: 1500px;
     grid-area: contents;
+    background-color: var(--CONTENT-BACKGROUND-COLOR);
 }
 
 .row-main {
@@ -457,7 +463,7 @@ label {
 
 
 article.default {
-    margin: 0px 6em;
+    margin: 0px 10vw;
     min-height: 600px;
     grid-area: article;
     max-width: calc(100wh - 50px);
@@ -507,7 +513,7 @@ article ul li {
 }
 
 #breadcrumbs > ol {
-    margin: 5px 0px 0px 0px;
+    margin: 5px 0px 0px 7vw;
 }
 
 .toc {
@@ -516,6 +522,7 @@ article ul li {
     position: fixed;
     top: 15vh;
     width: 100%;
+    background: var(--CONTENT-BACKGROUND-COLOR);
 }
 
 
@@ -566,11 +573,15 @@ article ul li {
 }
 
 #TableOfContents a {
-    border-left: 1px solid #e2e8f0;
     display: inline-block;
-    padding: 0.8rem 0 0.25rem 0.5rem;
     text-decoration: none;
     color: var(--TOC-ENTRY-COLOR);
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+#TableOfContents a:hover {
+    border-bottom: none;
 }
 
 
@@ -645,7 +656,6 @@ code, p code {
 
 hr {
     border: unset;
-    border-bottom: 1px solid #E8EDEB;
     margin: 8px 0;
     width: 100%;
 }

@@ -1,24 +1,24 @@
+<div id="sidebar" class="default-animation active">
+  <div class="sidenav-container-flex">
+    <div class="sidenav-navigation">
 
+      <div id="content-wrapper" class="highlightable">
+        
+      
+        <ul class="topics{{ if .Site.Params.collapsibleMenu }} collapsible-menu{{ end }}">
+          {{- range .Site.Sections.ByWeight }}
+            {{- template "section-tree-nav" dict "sect" . "currentnode" . }}
+          {{- end }}
+        </ul>
+        <div class="footermargin footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter"></div>
+        <hr class="default-animation footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter"/>
+        </div>
+      </div>
+    </div>
+    <button id="sidebar-toggle-navigation">
+    </button>
+  </div>
 
-    <div id="sidebar" class="default-animation active">
-        <div class="sidenav-container-flex">
-          <div class="sidenav-navigation">
-  
-        <div id="content-wrapper" class="highlightable">
-          
-          {{ partial "search.html" . }}
-          
-          <ul class="topics{{ if .Site.Params.collapsibleMenu }} collapsible-menu{{ end }}">
-            {{- range .Site.Sections.ByWeight }}
-              {{- template "section-tree-nav" dict "sect" . "currentnode" . }}
-            {{- end }}
-          </ul>
-          <div class="footermargin footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter"></div>
-          <hr class="default-animation footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter"/>
-        </div>
-          </div>
-          </div>
-        </div>
       {{- define "section-tree-nav" }}
         {{- $currentNode := .currentnode }}
         {{ $pageVersion := $currentNode.Page.Scratch.Get "version"  }}
@@ -57,9 +57,10 @@
                   {{- end }}
                 </ul>
               {{- else }}
-  
+            {{ if ne .RelPermalink "/hooks/" }}
             <li data-nav-id="{{.RelPermalink}}" test1 title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}}"><a href="{{.RelPermalink}}" onclick="event.preventDefault();menuEntryClick(event)"><div class="menu-title">{{ .Params.menuTitle  | markdownify }}</div></a></li>
-              {{- end }}
+            {{ end }}  
+            {{- end }}
           {{- else }}
   
               <li data-nav-id="{{.RelPermalink}}" test2 title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}} menu-leaf-entry"><a href="{{.RelPermalink}}" onclick="event.preventDefault();menuEntryClick(event)"><div class="menu-title">{{ .Params.menuTitle  | markdownify }}</div></a></li>

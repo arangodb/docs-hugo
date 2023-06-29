@@ -10,11 +10,11 @@
     --SECONDARY-color: #486ac9; /* brand secondary color */
 
     --MAIN-TEXT-color: #101010; /* text color of content and h1 titles */
-    --MAIN-LINK-color: #859853; /* hoverd link color of content */
-    --MAIN-LINK-HOVER-color: #90ba6d; /* hoverd link color of content */
+    --MAIN-LINK-color: #4183c4; /* hoverd link color of content */
+    --MAIN-LINK-HOVER-color: #4183c4; /* hoverd link color of content */
     --MAIN-BG-color: #ffffff; /* background color of content */
     --MAIN-TITLES-TEXT-color: #4a4a4a; /* text color of h2-h6 titles and transparent box titles */
-    --MAIN-FONT: "objektiv-mk1";
+    --MAIN-FONT: "Helvetica";
 
     /* adjusted to relearn-light chroma style */
     --CODE-BLOCK-color: white; /* fallback text color of block code; should be adjusted to your selected chroma style */
@@ -45,6 +45,8 @@
     --BOX-CAPTION-color: rgba( 255, 255, 255, 1 ); /* text color of colored box titles */
     --BOX-BG-color: rgba( 255, 255, 255, .833 ); /* background color of colored boxes */
     --BOX-TEXT-color: rgba( 16, 16, 16, 1 ); /* text color of colored box content */
+
+    --LIGHT-GREEN: rgb(106, 170, 33);
 
 
     /* TYPOGRAPHY */
@@ -81,8 +83,8 @@
     --SIDEBAR-BACKGROUND-COLOR:  #f2f2f2;
     --SIDEBAR-ENTRY-COLOR: #345B06;
 
-    --CONTENT-BACKGROUND-COLOR: #ffffff;
-    --HEADER-BACKGROUND-COLOR: #ffffff;
+    --CONTENT-BACKGROUND-COLOR: #f2f2f2;
+    --HEADER-BACKGROUND-COLOR: #f2f2f2;
     --H1-COLOR: #3f3b3b;
     --H2-COLOR: #534949;
 
