@@ -3,7 +3,7 @@
 {{ $pageVersion := $page.Page.Scratch.Get "version" }}
 
 {{- with $page }}
-    <article class="chapter">
+    <article class="default">
       {{- partial "deprecated.html" . }}
       {{- partial "in-development.html" . }}
       <hgroup>
