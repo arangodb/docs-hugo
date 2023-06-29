@@ -80,8 +80,8 @@
 #TableOfContents .level-4:hover, 
 #TableOfContents .level-5:hover {
     font-weight: bold;
-    --tw-bg-opacity: 1;
-    background-color: rgb(230 247 255/var(--tw-bg-opacity));
+    --tw-bg-opacity: 0.2;
+    background-color: rgb(188 180 196/var(--tw-bg-opacity));
     border-top-left-radius: 0.75rem;
     border-bottom-left-radius: 0.75rem;
 }
