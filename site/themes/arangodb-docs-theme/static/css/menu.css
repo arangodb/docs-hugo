@@ -146,6 +146,7 @@
 
 #sidebar ul.topics {
     margin: 1vh 1vw;
+    margin-bottom: 5vh;
 }
 
 #sidebar ul.topics > ul {
