@@ -19,7 +19,7 @@ data can be read directly from the index without actual sort operation.
 You can only set the `primarySort` option and the related
 `primarySortCompression` and `primarySortCache` options on View creation.
 
-{% include youtube.html id="bKeKzexInm0" %}
+{{< youtube id="bKeKzexInm0" >}}
 
 `arangosearch` View definition example:
 

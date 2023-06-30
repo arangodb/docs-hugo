@@ -20,7 +20,7 @@ Every such path will be returned as a JSON object with three components:
 
 If no `weightAttribute` is given, the weight of the path is just its length.
 
-{% include youtube.html id="XdITulJFdVo" %}
+{{< youtube id="XdITulJFdVo" >}}
 
 **Example**
 

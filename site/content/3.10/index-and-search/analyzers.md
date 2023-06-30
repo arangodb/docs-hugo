@@ -50,7 +50,7 @@ indexes, to be able to rank results for instance.
 Analyzers can be managed via an [HTTP API](../http/analyzers.md) and through
 a [JavaScript module](../develop/javascript-api/analyzers.md).
 
-{% include youtube.html id="tbOTYL26reg" %}
+{{< youtube id="tbOTYL26reg" >}}
 
 ## Value Handling
 

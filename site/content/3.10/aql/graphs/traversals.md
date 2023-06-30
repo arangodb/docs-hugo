@@ -227,7 +227,7 @@ conditions during the traversal as opposed to filtering the results afterwards
 (post-filtering). This reduces the amount of data to be checked by stopping the
 traversal down specific paths early.
 
-{% include youtube.html id="4LVeeC0ciCQ" %}
+{{< youtube id="4LVeeC0ciCQ" >}}
 
 You can specify one `PRUNE` expression per graph traversal, but it can contain
 an arbitrary number of conditions. You can use the vertex, edge, and path
