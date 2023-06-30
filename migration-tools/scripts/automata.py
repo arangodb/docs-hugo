@@ -265,6 +265,9 @@ def processFile(page, content, filepath):
                     continue
 
                 if content[i+1].startswith("---") and flags["endFrontMatter"]:
+                    if " | " in line: ## is a table!
+                        page.content = page.content + line
+                        continue
                     page.content = page.content + "## " + line
                     continue
 
