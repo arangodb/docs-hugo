@@ -24,15 +24,13 @@
     align-items: stretch;
     position: fixed;
     z-index: 9999;
-    /* top: 4rem; */
-    height: 94vh;
+    top: 4.2em;
+    height: 100%;
     left: 0;
     width: 1vw;
     transition: width 0.3s ease-in-out;
     background-color: var(--SIDEBAR-BACKGROUND-COLOR);
     box-shadow: -3px 0 5px 0 #555;
-    margin-top: 7vh;
-    /* margin-bottom: 0rem; */
 }
 
 .menu-iframe.active,

@@ -474,6 +474,12 @@ def processFile(page, content, filepath):
                 page.content = page.content + line
                 continue
 
+            if "{% include youtube.html" in line:
+                line = line.replace("{% include youtube.html", "{{< youtube")
+                line = line.replace("%}", ">}}")
+                page.content = page.content + line
+                continue
+
             buffer.append(line)
             page.content = page.content + line
     except Exception as ex:
