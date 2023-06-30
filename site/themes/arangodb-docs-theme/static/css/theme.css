@@ -1,6 +1,7 @@
 html {
     margin: 0 !important;
     scroll-padding-top: 8rem;
+    background-color: var(--CONTENT-BACKGROUND-COLOR);
  }
 
 body {
