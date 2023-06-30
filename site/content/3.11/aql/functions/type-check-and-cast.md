@@ -260,7 +260,7 @@ Return the data type name of *value*.
 - returns **typeName** (string): data type name of *value*
   (`"null"`, `"bool"`, `"number"`, `"string"`, `"array"` or `"object"`)
 
-## Example Value   | Data Type Name
+Example Value   | Data Type Name
 ---------------:|---------------
 `null`          | `"null"`
 `true`          | `"bool"`

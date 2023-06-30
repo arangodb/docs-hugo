@@ -56,7 +56,7 @@ The schema of an endpoint is comprised of a protocol and a socket in the format
 `protocol+socket://`. There are alternatives and shorthands for some combinations,
 `ssl://` is equivalent to `http+ssl://` and `https://` for instance:
 
-## Protocol     | Socket           | Schema
+Protocol     | Socket           | Schema
 -------------|------------------|-----------
 HTTP         | TCP              | `http+tcp`, `http+srv`, `http`, `tcp`
 HTTP         | TCP with SSL/TLS | `http+ssl`, `https`, `ssl`

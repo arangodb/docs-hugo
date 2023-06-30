@@ -1702,7 +1702,7 @@ features. The Analyzers of type `text` all tokenize strings with stemming
 enabled, no stop words configured, accent removal and case conversion to
 lowercase turned on and the `frequency`, `norm` and `position` features
 
-## Name       | Type       | Locale (Language) | Case    | Accent  | Stemming | Stop words | Features |
+Name       | Type       | Locale (Language) | Case    | Accent  | Stemming | Stop words | Features |
 -----------|------------|-------------------|---------|---------|----------|------------|----------|
 `identity` | `identity` |                   |         |         |          |            | `["frequency", "norm"]`
 `text_de`  | `text`     | `de` (German)     | `lower` | `false` | `true`   | `[ ]`      | `["frequency", "norm", "position"]`
@@ -1750,7 +1750,7 @@ Also see [Known Issues](../release-notes/version-3.10/known-issues-in-3-10.md#ar
 Stemming support is provided by [Snowball](https://snowballstem.org/),
 which supports the following languages:
 
-## Language     | Code
+Language     | Code
 -------------|-----
 Arabic     * | `ar`
 Armenian  ** | `hy`
