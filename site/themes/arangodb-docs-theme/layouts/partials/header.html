@@ -28,6 +28,7 @@
                 
               </div>
               <div class="search-and-version-container" >
+                <a href="#" class="home-link is-current" aria-label="Go to home page" onclick="goToHomepage(event);"></a>
                 <div class="searchbox default-animation">
                   <input data-search-input id="search-by" type="search" placeholder="Search...">
                 </div>
@@ -75,14 +76,7 @@
             <div class="container-main">
               <div class="row-main">
                   <nav id="breadcrumbs">
-                    <!--
-                      <a href="#" class="sidebar-toggle-navigation">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                      </a>
-                      -->
-                      <a href="#" class="home-link is-current" aria-label="Go to home page" onclick="goToHomepage(event);"></a>
+
                   {{- $showBreadcrumb := (and (not .Params.disableBreadcrumb) (not .Site.Params.disableBreadcrumb)) }}
                   {{- if $showBreadcrumb }}
                   
