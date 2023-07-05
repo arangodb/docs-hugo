@@ -335,7 +335,7 @@ extra options are available for locking down JavaScript access to server functio
   and one-off tasks.
 
 - `--javascript.transactions`: You can set this option to `false` to turn off
-  [JavaScript Transactions](../../http/transactions/javascript-transactions.md). It disallows
+  [JavaScript Transactions](../../develop/http/transactions/javascript-transactions.md). It disallows
   the execution of user-defined JavaScript code on the server inside of
   JavaScript Transactions.
 

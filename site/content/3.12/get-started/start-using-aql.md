@@ -65,4 +65,4 @@ If you are using Foxx, see [how to write database queries](../develop/foxx-micro
 for examples including tagged template strings.
 
 If you want to run AQL queries from your application via the HTTP REST API,
-see the full API description at [HTTP interface for AQL queries](../http/queries/aql-queries.md).
+see the full API description at [HTTP interface for AQL queries](../develop/http/queries/aql-queries.md).

@@ -470,7 +470,7 @@ the entire query result in RAM, use a streaming query (see the
 
 If you set this option to `true` and execute the query against a cluster
 deployment, then the Coordinator is allowed to read from any shard replica and
-not only from the leader. See [Read from followers](../../http/documents.md#read-from-followers)
+not only from the leader. See [Read from followers](../../develop/http/documents.md#read-from-followers)
 for details.
 
 {{< tag "ArangoDB Enterprise""ArangoGraph" >}}

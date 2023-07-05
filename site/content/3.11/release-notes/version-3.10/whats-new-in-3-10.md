@@ -338,7 +338,7 @@ enumeration node, if using just scoring for a sort operation.
   that return many documents.
 
 
-[Inverted indexes](../../http/indexes/inverted.md) also support similar new caching
+[Inverted indexes](../../develop/http/indexes/inverted.md) also support similar new caching
 options.
 
 <small>Introduced in: v3.10.2</small>
@@ -404,7 +404,7 @@ Also see [Server security options](../../operations/security/security-options.md
 
 ### ArangoSearch metrics and figures
 
-The [Metrics HTTP API](../../http/monitoring.md#metrics) has been
+The [Metrics HTTP API](../../develop/http/monitoring.md#metrics) has been
 extended with metrics for ArangoSearch for monitoring `arangosearch` View links
 and inverted indexes.
 
@@ -924,7 +924,7 @@ Also see:
 - [AQL `UPDATE` operation](../../aql/high-level-operations/update.md#refillindexcaches)
 - [AQL `REPLACE` operation](../../aql/high-level-operations/replace.md#refillindexcaches)
 - [AQL `REMOVE` operation](../../aql/high-level-operations/remove.md#refillindexcaches)
-- [Document HTTP API](../../http/documents.md)
+- [Document HTTP API](../../develop/http/documents.md)
 - [Edge cache refill options](#edge-cache-refill-options)
 
 ### Extended query explain statistics
@@ -1044,7 +1044,7 @@ that have copies of the data. Therefore, the read throughput is higher.
 
 This feature is only available in the Enterprise Edition.
 
-For more information, see [Read from followers](../../http/documents.md#read-from-followers).
+For more information, see [Read from followers](../../develop/http/documents.md#read-from-followers).
 
 ## Improved shard rebalancing
 
@@ -1058,7 +1058,7 @@ You can do any of the following by using the API:
 - Execute the given set of move shard operations.
 - Compute a set of move shard operations to improve balance and execute them immediately. 
 
-For more information, see the [Cluster](../../http/cluster.md#get-the-current-cluster-imbalance) 
+For more information, see the [Cluster](../../develop/http/cluster.md#get-the-current-cluster-imbalance) 
 section of the HTTP API documentation.
 
 ## Query result spillover to decrease memory usage
@@ -1090,7 +1090,7 @@ You can also set the thresholds per query in the JavaScript and HTTP APIs.
 For details, see:
 - [`temp` startup options](../../components/arangodb-server/options.md#--tempintermediate-results-path)
 - [Executing queries from _arangosh_](../../aql/how-to-invoke-aql/with-arangosh.md#spilloverthresholdmemoryusage)
-- [HTTP interfaces for AQL queries](../../http/queries/aql-queries.md#create-a-cursor)
+- [HTTP interfaces for AQL queries](../../develop/http/queries/aql-queries.md#create-a-cursor)
 
 ## Server options
 
@@ -1104,7 +1104,7 @@ You can set the new `--server.early-connections` startup option to `true` to
 let the instance respond to the `/_api/version`, `/_admin/version`, and
 `/_admin/status` REST APIs early.
 
-See [Respond to liveliness probes](../../http/general-request-handling.md#respond-to-liveliness-probes).
+See [Respond to liveliness probes](../../develop/http/general-request-handling.md#respond-to-liveliness-probes).
 
 ### Cache RocksDB index and filter blocks by default
 

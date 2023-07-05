@@ -336,7 +336,7 @@ to extend the timeout.
 
 The maintenance mode ends automatically after the defined timeout.
 
-Also see the [HTTP interface for cluster maintenance](../../http/cluster.md#get-the-maintenance-status-of-a-db-server).
+Also see the [HTTP interface for cluster maintenance](../../develop/http/cluster.md#get-the-maintenance-status-of-a-db-server).
 
 ### Endpoints augmented
 
@@ -418,8 +418,8 @@ Enterprise Edition:
 
 #### Query API
 
-The [`GET /_api/query/current`](../../http/queries/aql-queries.md#list-the-running-aql-queries)
-and [`GET /_api/query/slow`](../../http/queries/aql-queries.md#list-the-slow-aql-queries)
+The [`GET /_api/query/current`](../../develop/http/queries/aql-queries.md#list-the-running-aql-queries)
+and [`GET /_api/query/slow`](../../develop/http/queries/aql-queries.md#list-the-slow-aql-queries)
 endpoints include a new numeric `peakMemoryUsage` attribute.
 
 
@@ -471,7 +471,7 @@ persisted execution statistics for Pregel jobs:
 - `DELETE /_api/control_pregel/history` to delete the persisted execution
   statistics of all Pregel jobs
 
-See [Pregel HTTP API](../../http/pregel.md) for details.
+See [Pregel HTTP API](../../develop/http/pregel.md) for details.
 
 #### Cluster rebalance API
 

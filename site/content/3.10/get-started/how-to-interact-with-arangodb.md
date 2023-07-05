@@ -34,7 +34,7 @@ interact with the server. You can also use it for automating tasks.
 ### Drivers and Integrations
 
 When you start using ArangoDB in your project, you will likely use an official
-or community-made [driver](../drivers/_index.md) written in the same language as your project.
+or community-made [driver](../develop/drivers/_index.md) written in the same language as your project.
 Drivers implement a programming interface that should feel natural for that
 programming language, and do all the talking to the server.
 
@@ -54,7 +54,7 @@ as well as the drivers and integrations for different programming languages and
 environments. They all provide a convenient way to work with ArangoDB, but you
 may use the low-level REST API directly as needed.
 
-See the [HTTP](../http/_index.md) documentation to learn more about the API, how requests
+See the [HTTP](../develop/http/_index.md) documentation to learn more about the API, how requests
 are handled and what endpoints are available.
 
 ## Set Up and Deploy ArangoDB

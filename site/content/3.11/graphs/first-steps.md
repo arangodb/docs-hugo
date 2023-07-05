@@ -72,7 +72,7 @@ They use the full spectrum of ArangoDB's graph features. You may access them via
   - [Graph Functions](general-graphs/functions.md) for working with edges and vertices, to analyze them and their relations
 - [JavaScript SmartGraph implementation, for scalable graphs](smartgraphs/_index.md)
   - [SmartGraph Management](smartgraphs/management.md); creating & manipulating SmartGraph definitions; Differences to General Graph 
-- [RESTful General Graph interface](../http/graphs/named-graphs.md) used to implement graph management in client drivers
+- [RESTful General Graph interface](../develop/http/graphs/named-graphs.md) used to implement graph management in client drivers
 
 ### Manipulating collections of named graphs with regular document functions
 
@@ -193,7 +193,7 @@ and [_arangorestore_](../components/tools/arangorestore/_index.md) to restore a 
 
 ## Managing graphs
 
-By default you should use [the interface your driver provides to manage graphs](../http/graphs/named-graphs.md#management).
+By default you should use [the interface your driver provides to manage graphs](../develop/http/graphs/named-graphs.md#management).
 
 This is i.e. documented [in Graphs-Section of the ArangoDB Java driver](https://github.com/arangodb/arangodb-java-driver#graphs).
 
@@ -405,7 +405,7 @@ Components (WCC).
 
 Also see:
 - [Distributed Iterative Graph Processing (Pregel)](../data-science/pregel/_index.md)
-- [Pregel HTTP API](../http/pregel.md)
+- [Pregel HTTP API](../develop/http/pregel.md)
 
 ![Three disjoint subgraphs with 36 nodes and edges in total](../../images/connected_components.png)
 

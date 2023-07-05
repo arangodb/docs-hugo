@@ -555,7 +555,7 @@ and modern cloud platforms like Kubernetes.
 We also expect improved request throughput in cases where there are many
 concurrent requests.
 
-See: [HTTP Switching Protocols](../../http/general-request-handling.md#switch-protocols)
+See: [HTTP Switching Protocols](../../develop/http/general-request-handling.md#switch-protocols)
 
 ### Server Name Indication (Enterprise Edition)
 
@@ -572,7 +572,7 @@ There are now new APIs and startup options for JWT secrets. The new option
 JWT secret file.
 
 Additionally the `/_admin/server/jwt` API can be used to
-[reload the JWT secrets](../../http/authentication.md#hot-reload-jwt-secrets)
+[reload the JWT secrets](../../develop/http/authentication.md#hot-reload-jwt-secrets)
 of a local arangod process without having to restart it (hot-reload).
 This may be used to roll out new JWT secrets throughout an ArangoDB cluster.
 
@@ -587,13 +587,13 @@ Furthermore, one can query the current TLS setup at runtime with the
 SHA-256 hash of the private key is returned.
 
 This allows
-[rotation of TLS keys and certificates](../../http/security.md#encryption-in-transit)
+[rotation of TLS keys and certificates](../../develop/http/security.md#encryption-in-transit)
 without a server restart.
 
 ### Encryption at rest key rotation (Enterprise Edition)
 
 It is possible to change the user supplied encryption key via the
-[HTTP API](../../http/security.md#encryption-at-rest)
+[HTTP API](../../develop/http/security.md#encryption-at-rest)
 by sending a POST request without payload to the new endpoint
 `/_admin/server/encryption`. The file supplied via `--rocksdb.encryption-keyfile`
 will be reloaded and the internal encryption key will be re-encrypted with the
@@ -633,7 +633,7 @@ primary keys during the insert.
 
 The query options are available in [AQL](../../aql/high-level-operations/insert.md#query-options),
 the [JS API](../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options) and
-[HTTP API](../../http/documents.md#create-a-document).
+[HTTP API](../../develop/http/documents.md#create-a-document).
 
 ### Override detected total memory and CPU cores
 
@@ -802,7 +802,7 @@ also been backported to ArangoDB v3.6.4.
 The amount of exported metrics for monitoring has been extended and is now 
 available in a format compatible with Prometheus. You can now easily scrape 
 on `/_admin/metrics`.
-See [Metrics HTTP API](../../http/monitoring.md#metrics).
+See [Metrics HTTP API](../../develop/http/monitoring.md#metrics).
 
 The following metrics have been added in ArangoDB 3.7:
 

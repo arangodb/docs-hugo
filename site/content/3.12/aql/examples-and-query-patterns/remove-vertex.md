@@ -9,7 +9,7 @@ archetype: default
 Deleting vertices with associated edges is currently not handled via AQL while 
 the [graph management interface](../../graphs/general-graphs/management.md#remove-a-vertex)
 and the
-[REST API for the graph module](../../http/graphs/named-graphs.md#remove-a-vertex)
+[REST API for the graph module](../../develop/http/graphs/named-graphs.md#remove-a-vertex)
 offer a vertex deletion functionality.
 However, as shown in this example based on the
 [knows_graph](../../graphs/first-steps.md#the-knows_graph), a query for this 

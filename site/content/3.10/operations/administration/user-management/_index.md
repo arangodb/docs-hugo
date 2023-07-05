@@ -37,7 +37,7 @@ service arangodb restart
 User management is possible in the [web interface](../../../components/web-interface/users.md)
 while logged on to the *\_system* database and in
 [arangosh](in-arangosh.md), as well as via the
-[HTTP API](../../../http/users.md).
+[HTTP API](../../../develop/http/users.md).
 
 There is a built-in user account `root` which cannot be removed. Note that it
 has an empty password by default, so make sure to set a strong password

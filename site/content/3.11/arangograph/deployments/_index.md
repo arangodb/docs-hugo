@@ -301,7 +301,7 @@ For more details about available resources and usage limits, refer to the
 
 ## How to connect a driver to your deployment
 
-[ArangoDB drivers](../../drivers/_index.md) allow you to use your ArangoGraph
+[ArangoDB drivers](../../develop/drivers/_index.md) allow you to use your ArangoGraph
 deployment as a database system for your applications. Drivers act as interfaces
 between different programming languages and ArangoDB, which enable you to
 connect to and manipulate ArangoDB deployments from within compiled programs

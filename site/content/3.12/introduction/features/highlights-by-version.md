@@ -265,7 +265,7 @@ Also see [What's New in 3.6](../../release-notes/version-3.6/whats-new-in-3-6.md
   stop walking down certain paths early in a graph traversal to improve its
   efficiency.
 
-- [**Stream Transaction API**](../../http/transactions/stream-transactions.md):
+- [**Stream Transaction API**](../../develop/http/transactions/stream-transactions.md):
   Perform multi-document transactions with individual begin and commit / abort
   commands using the new HTTP endpoints or via a supported driver.
 
@@ -386,7 +386,7 @@ Also see [What's New in 3.3](../../release-notes/version-3.3/whats-new-in-3-3.md
   patterns, identify communities and perform in-depth analytics of large graph
   data sets.
 
-- [**Fault-Tolerant Foxx**](../../http/foxx.md): The Foxx management
+- [**Fault-Tolerant Foxx**](../../develop/http/foxx.md): The Foxx management
   internals have been rewritten from the ground up to make sure
   multi-coordinator cluster setups always keep their services in sync and
   new Coordinators are fully initialized even when all existing Coordinators

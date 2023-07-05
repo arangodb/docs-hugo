@@ -18,4 +18,4 @@ with Prometheus through the [Prometheus-Operator by CoreOS](https://github.com/c
 Furthermore, the operator can run sidecar containers for ArangoDB
 deployments of type Cluster which expose metrics in Prometheus format. See:
 - [`spec.metrics` reference](deployment-resource-reference.md#specmetricsenabled-bool)
-- [Metrics HTTP API](../../../http/monitoring.md#metrics)
+- [Metrics HTTP API](../../../develop/http/monitoring.md#metrics)

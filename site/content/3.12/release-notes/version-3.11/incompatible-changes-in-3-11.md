@@ -100,7 +100,7 @@ preceding or trailing colon.
 
 Writes to the same document in quick succession can result in write-write
 conflicts, requiring you to retry the operations. In v3.11, single document
-operations via the [HTTP Interface for Documents](../../http/documents.md) try to
+operations via the [HTTP Interface for Documents](../../develop/http/documents.md) try to
 avoid conflicts by locking the key of the document before performing the
 modification. This serializes the write operations on the same document.
 The behavior of AQL queries, Stream Transactions, and multi-document operations

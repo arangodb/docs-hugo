@@ -149,7 +149,7 @@ unique ID that is part of your ArangoGraph deployment endpoint URL.
 
 ## How to connect to your application
 
-[ArangoDB drivers](../../drivers/_index.md), also called connectors, allow you to
+[ArangoDB drivers](../../develop/drivers/_index.md), also called connectors, allow you to
 easily connect ArangoGraph deployments to your application. 
 
 1. Navigate to the **Deployments** tab and click the **View** button to show the

@@ -169,7 +169,7 @@ You can additionally enable the primary sort cache to always cache the primary
 sort columns in memory, which can improve the query performance. For
 `arangosearch` Views, set the [`primarySortCache` View property](arangosearch-views-reference.md#view-properties)
 to `true`. For inverted indexes, set the `cache` option of the
-[`primarySort` property](../../http/indexes/inverted.md) to `true`.
+[`primarySort` property](../../develop/http/indexes/inverted.md) to `true`.
 
 _`arangosearch` View:_
 
@@ -420,7 +420,7 @@ db._createView("articlesView", "search-alias", { indexes: [
 ] });
 ```
 
-See the [inverted index `storedValues` property](../../http/indexes/inverted.md)
+See the [inverted index `storedValues` property](../../develop/http/indexes/inverted.md)
 for details.
 
 ## Condition Optimization Options
@@ -542,7 +542,7 @@ db._createView("myView", "search-alias", { indexes: [
 ] });
 ```
 
-See the [inverted index `cache` property](../../http/indexes/inverted.md) for details.
+See the [inverted index `cache` property](../../develop/http/indexes/inverted.md) for details.
 
 The `"norm"` Analyzer feature has performance implications even if the cache is
 used. You can create custom Analyzers without this feature to disable the
@@ -561,7 +561,7 @@ document IDs in the index to actual documents.
 To enable this feature for `arangosearch` Views, set the
 [`primaryKeyCache` View property](arangosearch-views-reference.md#view-properties) to
 `true` on View creation. For inverted indexes, set the
-[`primaryKeyCache` property](../../http/indexes/inverted.md) to `true`.
+[`primaryKeyCache` property](../../develop/http/indexes/inverted.md) to `true`.
 
 _`arangosearch` View:_
 

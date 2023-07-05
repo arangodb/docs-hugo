@@ -269,7 +269,7 @@ whereas it is 10 in the OneShard case.
 ArangoDB's transactional guarantees are tunable. For transactions to be ACID
 on the leader shards in a cluster, a few things need to be considered:
 
-- The AQL query or [Stream Transaction](../../http/transactions/stream-transactions.md)
+- The AQL query or [Stream Transaction](../../develop/http/transactions/stream-transactions.md)
   must be eligible for the OneShard optimization, so that it is executed on a
   single DB-Server node.
 - To ensure durability, enable `waitForSync` on query level to wait until data

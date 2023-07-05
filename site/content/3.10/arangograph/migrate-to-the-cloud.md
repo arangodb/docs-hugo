@@ -194,7 +194,7 @@ migration-related processes as soon as possible.
 ### Switching the local cluster to read-only mode
 
 The `arangosync-migration set-server-mode` command allows switching
-[read-only mode](../http/administration.md#set-the-server-mode-to-read-only-or-default)
+[read-only mode](../develop/http/administration.md#set-the-server-mode-to-read-only-or-default)
 for your local cluster on and off.
 
 In a read-only mode, all write operations are going to fail with an error code

@@ -208,7 +208,7 @@ are available in the *Enterprise Edition*.
 
 ## Foxx
 
-* There is now an [official HTTP API for managing services](../../http/foxx.md),
+* There is now an [official HTTP API for managing services](../../develop/http/foxx.md),
   allowing services to be installed, modified, uninstalled and reconfigured without
   the administrative web interface.
 

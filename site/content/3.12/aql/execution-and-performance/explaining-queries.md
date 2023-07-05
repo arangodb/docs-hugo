@@ -18,7 +18,7 @@ An explain throws an error if the given query is syntactically invalid. Otherwis
 returns the execution plan and some information about what optimizations could be applied to
 the query. The query is not executed.
 
-You can explain a query using the [HTTP REST API](../../http/queries/aql-queries.md#explain-an-aql-query)
+You can explain a query using the [HTTP REST API](../../develop/http/queries/aql-queries.md#explain-an-aql-query)
 or via _arangosh_.
 
 ## Inspecting query plans

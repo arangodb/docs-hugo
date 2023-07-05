@@ -50,22 +50,22 @@ arangod startup will be aborted with a descriptive error message.
 ## HTTP REST API
 The following APIs have been added:
 
-- [The new Stream Transaction API](../../http/transactions/_index.md)
-- [The new ArangoSearch Analyzer management API](../../http/analyzers.md)
-- [The management of the new TTL indexes](../../http/indexes/ttl.md); this enhances the existing index-API
-- [Query the actual shard a document lives in](../../http/collections.md#get-the-responsible-shard-for-a-document)
+- [The new Stream Transaction API](../../develop/http/transactions/_index.md)
+- [The new ArangoSearch Analyzer management API](../../develop/http/analyzers.md)
+- [The management of the new TTL indexes](../../develop/http/indexes/ttl.md); this enhances the existing index-API
+- [Query the actual shard a document lives in](../../develop/http/collections.md#get-the-responsible-shard-for-a-document)
 
 The following APIs have been expanded:
 
-- The [ArangoSearch management API](../../http/views/arangosearch-views.md) has the new `commitIntervalMsec` attribute in all routes
+- The [ArangoSearch management API](../../develop/http/views/arangosearch-views.md) has the new `commitIntervalMsec` attribute in all routes
 - Indexes can now have user-defined names
-- The new "ttl" index type has been added to the [index creation API](../../http/indexes/_index.md)
+- The new "ttl" index type has been added to the [index creation API](../../develop/http/indexes/_index.md)
 - [Collection creation API now provides the `smartJoinAttribute` parameter](../../develop/javascript-api/@arangodb/db-object.md#db_createcollection-name--properties--type--options)
-- [`filter` foxx-tests](../../http/foxx.md#miscellaneous) for testing
+- [`filter` foxx-tests](../../develop/http/foxx.md#miscellaneous) for testing
 
 The following documentation has been enhanced:
 
-- the documentation for [collection creation and fetching its properties](../../http/collections.md) has been made more precise
+- the documentation for [collection creation and fetching its properties](../../develop/http/collections.md) has been made more precise
 
 ## Web interface
 

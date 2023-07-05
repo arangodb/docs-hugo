@@ -249,7 +249,7 @@ settings are used in this case:
 
 ### Additional configuration options
 
-See the full list of options in the [HTTP API](../../../http/indexes/inverted.md)
+See the full list of options in the [HTTP API](../../../develop/http/indexes/inverted.md)
 documentation.
 
 ### Restrictions

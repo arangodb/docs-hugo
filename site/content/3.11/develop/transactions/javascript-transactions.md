@@ -465,5 +465,5 @@ db.c2.count(); // 0
 
 ## HTTP API
 
-See the [HTTP Interface for JavaScript Transactions](../../http/transactions/javascript-transactions.md)
+See the [HTTP Interface for JavaScript Transactions](../http/transactions/javascript-transactions.md)
 documentation.

@@ -9,7 +9,7 @@ archetype: default
 Below you find usage examples and advanced configuration possibilities for
 SatelliteGraphs. The examples use _arangosh_ and the
 `@arangodb/satellite-graph` module. You can also manage SatelliteGraphs via
-the [HTTP API](../../http/graphs/named-graphs.md).
+the [HTTP API](../../develop/http/graphs/named-graphs.md).
 
 ## How to create a SatelliteGraph
 

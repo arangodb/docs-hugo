@@ -1,7 +1,7 @@
 ---
 title: ArangoGraph Insights Platform
 menuTitle: ArangoGraph
-weight: 10
+weight: 65
 description: >-
   The ArangoGraph Insights Platform provides the entire functionality of
   ArangoDB as a service, without the need to run or manage databases yourself.

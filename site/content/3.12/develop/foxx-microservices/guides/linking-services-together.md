@@ -95,7 +95,7 @@ Like [configuration](../reference/configuration.md),
 dependencies can be assigned using
 the [web interface](../../../components/web-interface/services.md),
 the [Foxx CLI](../../../components/tools/foxx-cli/_index.md) or
-the [Foxx HTTP API](../../../http/foxx.md#configuration).
+the [Foxx HTTP API](../../http/foxx.md#configuration).
 
 The value for each dependency should be the database-relative mount path of
 the service (including the leading slash). Both services need to be mounted in

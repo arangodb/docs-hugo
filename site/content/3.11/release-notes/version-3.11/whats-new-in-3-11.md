@@ -48,7 +48,7 @@ to be requested from the RocksDB storage engine.
   that return many documents.
 
 
-[Inverted indexes](../../http/indexes/inverted.md) also support similar new caching
+[Inverted indexes](../../develop/http/indexes/inverted.md) also support similar new caching
 options.
 
 <small>Introduced in: v3.10.2</small>
@@ -235,7 +235,7 @@ Instead of batching the array of documents (with a default batch size of `1000`)
 a single request per DB-Server is used internally to transfer the data.
 
 The optimization brings the AQL `INSERT` performance close to the performance of
-the specialized HTTP API for [creating multiple documents](../../http/documents.md#create-multiple-documents).
+the specialized HTTP API for [creating multiple documents](../../develop/http/documents.md#create-multiple-documents).
 
 The pattern that is recognized by the optimizer is as follows:
 
@@ -354,7 +354,7 @@ Also see:
 - [AQL `UPDATE` operation](../../aql/high-level-operations/update.md#refillindexcaches)
 - [AQL `REPLACE` operation](../../aql/high-level-operations/replace.md#refillindexcaches)
 - [AQL `REMOVE` operation](../../aql/high-level-operations/remove.md#refillindexcaches)
-- [Document HTTP API](../../http/documents.md)
+- [Document HTTP API](../../develop/http/documents.md)
 - [Index cache refill options](#index-cache-refill-options)
 
 ### Retry request for result batch
@@ -977,7 +977,7 @@ To enable tracing for traversals and path searches at startup, you can set
 `--log.level graphs=trace`.
 
 To enable or disable it at runtime, you can call the
-[`PUT /_admin/log/level`](../../http/monitoring.md#set-the-server-log-levels)
+[`PUT /_admin/log/level`](../../develop/http/monitoring.md#set-the-server-log-levels)
 endpoint of the HTTP API and set the log level using a request body like
 `{"graphs":"TRACE"}`.
 
@@ -1003,7 +1003,7 @@ for details.
 
 You can also use the newly added HTTP endpoints with the
 `/_api/control_pregel/history` route.
-See [Pregel HTTP API](../../http/pregel.md) for details.
+See [Pregel HTTP API](../../develop/http/pregel.md) for details.
 
 You can still use the old interfaces (the `pregel.status()` method as well as
 the `GET /_api/control_pregel` and `GET /_api/control_pregel/{id}` endpoints).

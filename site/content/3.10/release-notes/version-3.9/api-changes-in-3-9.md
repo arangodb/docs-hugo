@@ -51,7 +51,7 @@ If an EdgeDefinition contains a collection name that is also contained in the
 `satellites` option, the collection will be created as a SatelliteCollection.
 Otherwise, it will be ignored. This option only takes effect using SmartGraphs.
 
-Also see [Graph Management](../../http/graphs/named-graphs.md#management).
+Also see [Graph Management](../../develop/http/graphs/named-graphs.md#management).
 
 ### Extended naming convention for databases
 

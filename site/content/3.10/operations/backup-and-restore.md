@@ -71,7 +71,7 @@ procedure is recommended.
 
 Hot backup and restore associated operations can be performed with the
 [_arangobackup_](../components/tools/arangobackup/_index.md) client tool and the
-[Hot Backup HTTP API](../http/hot-backups.md).
+[Hot Backup HTTP API](../develop/http/hot-backups.md).
 
 {{< tag "ArangoDB Enterprise""ArangoGraph" >}}
 Many operations cannot afford downtimes and thus require administrators and

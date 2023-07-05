@@ -158,11 +158,11 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   AQL queries are executed transactionally (with exceptions), either committing
   or rolling back data modifications automatically.
 
-- [**Stream Transactions**](../../http/transactions/stream-transactions.md):
+- [**Stream Transactions**](../../develop/http/transactions/stream-transactions.md):
   Transactions with individual begin and commit / abort commands that can span
   multiple AQL queries and API calls of supported APIs.
 
-- [**JavaScript Transactions**](../../http/transactions/javascript-transactions.md):
+- [**JavaScript Transactions**](../../develop/http/transactions/javascript-transactions.md):
   Single-request transactions written in JavaScript that leverage ArangoDB's
   JavaScript API.
 
@@ -268,6 +268,6 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   You can import from JSON, JSONL, CSV, and TSV files, and export to JSON, JSONL,
   CSV, TSV, XML, and XGMML files.
 
-- [**Metrics**](../../http/monitoring.md#metrics):
+- [**Metrics**](../../develop/http/monitoring.md#metrics):
   Monitor the healthiness and performance of ArangoDB servers using the metrics
   exported in the Prometheus format.

@@ -50,7 +50,7 @@ The configuration is comprised of type-specific properties and list of features.
 The features control the additional metadata to be generated to augment View
 indexes, to be able to rank results for instance.
 
-Analyzers can be managed via an [HTTP API](../http/analyzers.md) and through
+Analyzers can be managed via an [HTTP API](../develop/http/analyzers.md) and through
 a [JavaScript module](../develop/javascript-api/analyzers.md).
 
 {{< youtube id="tbOTYL26reg" >}}

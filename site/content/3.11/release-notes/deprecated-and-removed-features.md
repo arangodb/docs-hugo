@@ -54,14 +54,14 @@ detailed information about breaking changes before upgrading.
   [Foxx guide](../develop/foxx-microservices/guides/using-node-modules.md).
 
 - **Batch Requests API**:
-  The [batch request REST API](../http/batch-requests.md) is deprecated and will be 
+  The [batch request REST API](../develop/http/batch-requests.md) is deprecated and will be 
   removed in a future version. Instead of using this API, please use the 
-  [HTTP interface for documents](../http/documents.md#multiple-document-operations)
+  [HTTP interface for documents](../develop/http/documents.md#multiple-document-operations)
   that can insert, update, replace or remove arrays of documents.
 
 - **PUT method in Cursor API**:
   The HTTP endpoint `PUT /_api/cursor/<cursor-id>` in the
-  [Cursor REST API](../http/queries/aql-queries.md) is deprecated and will be
+  [Cursor REST API](../develop/http/queries/aql-queries.md) is deprecated and will be
   removed in a future version. Please use the drop-in replacement
   `POST /_api/cursor/<cursor-id>` instead. The POST endpoint is functionally
   equivalent to the PUT endpoint, but does not violate idempotency requirements

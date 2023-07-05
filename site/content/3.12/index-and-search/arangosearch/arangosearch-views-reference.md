@@ -15,7 +15,7 @@ attributes, unlike collections with user-defined indexes.
 
 Views can be managed as follows:
 - in the web interface, in the **VIEWS** section
-- via the [Views HTTP API](../../http/views/_index.md)
+- via the [Views HTTP API](../../develop/http/views/_index.md)
 - through the [JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#views)
 
 Once you set up a View, you can query it via AQL with the

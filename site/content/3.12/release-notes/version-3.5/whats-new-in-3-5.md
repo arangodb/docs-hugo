@@ -437,7 +437,7 @@ Please note that this API is only meaningful and available on a cluster coordina
 
 See:
 - [Get responsible shard in JS API](../../develop/javascript-api/@arangodb/collection-object.md#collectiongetresponsiblesharddocument)
-- [Get responsible shard in HTTP API](../../http/collections.md#get-the-responsible-shard-for-a-document)
+- [Get responsible shard in HTTP API](../../develop/http/collections.md#get-the-responsible-shard-for-a-document)
 
 ### Foxx API for running tests
 
@@ -471,7 +471,7 @@ applications due to programming errors or that were left over because client
 connections were interrupted. Also see
 [Known Issues](known-issues-in-3-5.md#stream-transactions)
 
-See: [Stream Transaction HTTP API](../../http/transactions/stream-transactions.md)
+See: [Stream Transaction HTTP API](../../develop/http/transactions/stream-transactions.md)
 
 ### Minimal replication Factor
 

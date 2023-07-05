@@ -583,7 +583,7 @@ Also see:
 - [AQL `UPDATE` operation](../../aql/high-level-operations/update.md#refillindexcaches)
 - [AQL `REPLACE` operation](../../aql/high-level-operations/replace.md#refillindexcaches)
 - [AQL `REMOVE` operation](../../aql/high-level-operations/remove.md#refillindexcaches)
-- [Document HTTP API](../../http/documents.md)
+- [Document HTTP API](../../develop/http/documents.md)
 - [Edge cache refill options](#edge-cache-refill-options)
 
 ## Multi-dimensional Indexes (experimental)
@@ -955,7 +955,7 @@ There are two new REST API routes to do the same, `GET /_admin/license` and
 `PUT /_admin/license`.
 
 See [License Management](../../operations/administration/license-management.md) and the
-[License Management HTTP API](../../http/administration.md#license).
+[License Management HTTP API](../../develop/http/administration.md#license).
 
 ## Miscellaneous changes
 
