@@ -13,9 +13,10 @@ def migrateStructure(label, document, manual, i):
 		document = yaml.full_load(directoryTree)
 
 		if manual != "manual":
+
 			print(f"Processing {manual}")
-			title = getManualTitle(manual)
-			create_index("", {"text": title, "href": "index.html"}, manual+"/", i)
+			title, label = getManualTitle(manual)
+			label = create_index(label, {"text": title, "href": "index.html"}, manual+"/", i)
 			document = document[1:]
 
 	extendedSection = ''
@@ -34,6 +35,12 @@ def migrateStructure(label, document, manual, i):
 
 		if "subtitle" in item:
 			if manual == "arangograph":
+				continue
+
+			if manual == "drivers":
+				subtitle = item["subtitle"].title()
+				print(f"{manual} - {subtitle}")
+				label = create_index_empty("develop/"+extendedSection, {"text": subtitle, "href": ""}, extendedSection, i)
 				continue
 			
 			subtitle = item["subtitle"].title()
@@ -57,10 +64,6 @@ def create_index(label, item, extendedSection, i):
 	folderName = item["text"].lower().replace(" ", "-").replace("/", "")
 	label = label + "/" + folderName
 
-	# if label in hardcodedActions:
-	# 	if hardcodedActions[label]["action"] == "move-inside":
-	# 		label = hardcodedActions[label]["target"] + "/" + label
-
 	Path(cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}')).mkdir(parents=True, exist_ok=True)
 
 	indexPath = cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}/_index.md')
@@ -73,10 +76,6 @@ def create_index(label, item, extendedSection, i):
 		"weight": 5 * i+5
 		}
 
-	# if label in hardcodedActions:
-	# 	if hardcodedActions[label]["action"] == "move-after":
-	# 		infos[indexPath]["weight"] = infos[hardcodedActions[label]["target"]] + 5
-
 
 	mapFiles(oldFilePath, indexPath)
 	return label
@@ -84,10 +83,6 @@ def create_index(label, item, extendedSection, i):
 def create_index_empty(label, item, extendedSection, i):
 	folderName = item["text"].lower().replace(" ", "-").replace("/", "")
 	label = label + "/" + folderName
-
-	# if label in hardcodedActions:
-	# 	if hardcodedActions[label]["action"] == "move-inside":
-	# 		label = hardcodedActions[label]["target"] + "/" + label
 
 	Path(cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}')).mkdir(parents=True, exist_ok=True)
 
@@ -99,9 +94,6 @@ def create_index_empty(label, item, extendedSection, i):
 		"weight": 5 * i+5,
 		}
 
-	# if label in hardcodedActions:
-	# 	if hardcodedActions[label]["action"] == "move-after":
-	# 		infos[indexPath]["weight"] = infos[hardcodedActions[label]["target"]] + 5
 
 	dstFile = open(indexPath, "w")
 	dstFile.write("")
@@ -170,12 +162,12 @@ def mapFiles(old, new):
 
 def getManualTitle(manual):
 	if manual == "arangograph":
-		return "ArangoGraph"
+		return "ArangoGraph", ""
 	elif manual == "aql":
-		return "AQL"
+		return "AQL", ""
 	elif manual == "http":
-		return "HTTP"
+		return "HTTP", "develop"
 	elif manual == "drivers":
-		return "Drivers"
+		return "Drivers", "develop"
 	else:
-		return ""
+		return "", ""

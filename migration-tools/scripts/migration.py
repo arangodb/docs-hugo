@@ -19,10 +19,10 @@ import automata
 def createStructure():
 	print("----- CREATING FOLDERS STRUCTURE")
 	structure.migrateStructure('', None, "manual", 0)
-	structure.migrateStructure('http', None, "http", 3)
-	structure.migrateStructure('arangograph', None, "arangograph", 1)
-	structure.migrateStructure('aql', None, "aql", 2)
-	structure.migrateStructure('drivers', None, "drivers", 4)
+	structure.migrateStructure('http', None, "http", 56)
+	structure.migrateStructure('arangograph', None, "arangograph", 12)
+	structure.migrateStructure('aql', None, "aql", 13)
+	structure.migrateStructure('drivers', None, "drivers", 55)
 
 	print("----- DONE\n")
 
