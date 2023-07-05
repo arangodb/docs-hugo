@@ -7,6 +7,8 @@ description: >-
   reported event and ranges from debug information to fatal errors
 archetype: default
 ---
+{{< description >}}
+
 The log levels in ArangoDB are, from most to least severe:
 
 - `FATAL`

@@ -7,6 +7,8 @@ description: >-
   individual begin and commit/abort commands
 archetype: default
 ---
+{{< description >}}
+
 For an introduction to this transaction type, see
 [Stream Transactions](../../develop/transactions/stream-transactions.md).
 

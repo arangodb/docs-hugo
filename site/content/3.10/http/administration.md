@@ -7,6 +7,8 @@ description: >-
   shut down server nodes, and start actions like compaction
 archetype: default
 ---
+{{< description >}}
+
 ## Information
 
 ```openapi

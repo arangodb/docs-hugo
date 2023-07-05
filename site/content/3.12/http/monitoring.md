@@ -7,6 +7,8 @@ description: >-
   the server logs, statistics, and metrics
 archetype: default
 ---
+{{< description >}}
+
 ## Logs
 
 ```openapi

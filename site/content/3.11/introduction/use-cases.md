@@ -7,6 +7,8 @@ description: >-
   graphs, documents, key-value, search engine, and machine learning all in one
 archetype: default
 ---
+{{< description >}}
+
 ## ArangoDB as a Graph Database
 
 ArangoDB as a graph database is a great fit for use cases like fraud detection,

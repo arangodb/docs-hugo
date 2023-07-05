@@ -7,6 +7,8 @@ description: >-
   of similar kinds together
 archetype: default
 ---
+{{< description >}}
+
 A collection can contain a set of documents, similar to how a folder contains
 files. You can store documents with varying data structures in a single
 collection, but a collection is typically used to only store one type of

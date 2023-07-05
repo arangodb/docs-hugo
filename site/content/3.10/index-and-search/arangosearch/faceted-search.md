@@ -7,6 +7,8 @@ description: >-
   overall
 archetype: default
 ---
+{{< description >}}
+
 A popular method for filtering items in an online shop is to display product
 categories in a list, together with the number of items in each category.
 This way, users get an idea of how many items will be left after applying a

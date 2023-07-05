@@ -7,6 +7,8 @@ description: >-
   improved performance and transactional guarantees for cluster deployments
 archetype: default
 ---
+{{< description >}}
+
 {{< tag "ArangoDB Enterprise""ArangoGraph" >}}
 The OneShard option for ArangoDB clusters restricts all collections of a
 database to a single shard and places them on one DB-Server node. This way,

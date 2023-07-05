@@ -6,6 +6,8 @@ description: >-
   Colocated Jupyter Notebooks within the ArangoGraph Insights Platform
 archetype: default
 ---
+{{< description >}}
+
 {{< info >}}
 This documentation describes the beta version of the Notebooks feature and is
 subject to change. The beta version is free for all.

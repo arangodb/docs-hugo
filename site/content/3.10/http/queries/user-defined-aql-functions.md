@@ -7,6 +7,8 @@ description: >-
   registered AQL extensions
 archetype: default
 ---
+{{< description >}}
+
 AQL user functions are a means to extend the functionality
 of ArangoDB's query language (AQL) with user-defined JavaScript code.
 

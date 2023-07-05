@@ -7,6 +7,8 @@ description: >-
   leverages ArangoDB's JavaScript API by submitting a single HTTP request
 archetype: default
 ---
+{{< description >}}
+
 JavaScript Transactions are executed on the server. Transactions can be 
 initiated by clients by sending the transaction description for execution to
 the server.

@@ -6,6 +6,8 @@ description: >-
   Search for exact strings, numbers or number ranges, as well as booleans without Analyzer transformations applied
 archetype: default
 ---
+{{< description >}}
+
 If you want to find strictly equal values, then the `identity` Analyzer is what
 you need. It will not apply any transformations. It is a no-operation Analyzer
 that passes everything through unaltered.

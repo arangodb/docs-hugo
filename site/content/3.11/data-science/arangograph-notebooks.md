@@ -6,6 +6,8 @@ description: >-
   Colocated Jupyter Notebooks within the ArangoGraph Insights Platform
 archetype: default
 ---
+{{< description >}}
+
 The ArangoGraph Notebook is a JupyterLab notebook embedded in the
 [ArangoGraph Insights Platform](https://cloud.arangodb.com/).
 The notebook integrates seamlessly with the platform,

@@ -7,6 +7,8 @@ description: >-
   system for your applications
 archetype: chapter
 ---
+{{< description >}}
+
 ## Drivers
 
 Database drivers, also called connectors, adapters, or client libraries, let you

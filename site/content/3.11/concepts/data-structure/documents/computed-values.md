@@ -3,10 +3,14 @@ title: Computed Values
 menuTitle: Computed Values
 weight: 10
 description: >-
-  <small>Introduced in: v3.10.0</small>
+  You can configure collections to generate document attributes when documents
+  are created or modified, using an AQL expression
 archetype: default
 ---
+<small>Introduced in: v3.10.0</small>
 
+{{< description >}}
+{.lead}
 
 If you want to add default values to new documents, maintain auxiliary
 attributes for search queries, or similar, you can set these attributes manually

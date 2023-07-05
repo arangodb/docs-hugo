@@ -7,6 +7,8 @@ description: >-
   deployment and choose when to roll out your upgrades
 archetype: default
 ---
+{{< description >}}
+
 {{< info >}}
 Please note that this policy comes into effect in April 2023.
 {{< /info >}}

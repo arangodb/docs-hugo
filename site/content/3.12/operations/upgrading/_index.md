@@ -7,6 +7,8 @@ description: >-
   is only possible with the backup or by dumping and restoring all data
 archetype: chapter
 ---
+{{< description >}}
+
 ## Upgrade methods
 
 There are two main ways to upgrade ArangoDB:

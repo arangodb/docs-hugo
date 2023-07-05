@@ -7,6 +7,8 @@ description: >-
   stored in ArangoDB
 archetype: chapter
 ---
+{{< description >}}
+
 Distributed graph processing enables you to do online analytical processing
 directly on graphs stored in ArangoDB. This is intended to help you gain
 analytical insights on your data, without having to use external processing

@@ -8,6 +8,8 @@ description: >-
   support for free
 archetype: default
 ---
+{{< description >}}
+
 The Community Edition features are outlined below. For additional information,
 see [arangodb.com/community-server/](https://www.arangodb.com/community-server/).
 

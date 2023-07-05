@@ -8,6 +8,8 @@ description: >-
   user credentials or the JWT secret of the deployment
 archetype: default
 ---
+{{< description >}}
+
 Client authentication can be achieved by using the `Authorization` HTTP header
 in client requests. ArangoDB supports authentication via HTTP Basic or JWT.
 

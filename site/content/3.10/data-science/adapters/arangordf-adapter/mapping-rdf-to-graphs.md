@@ -7,6 +7,8 @@ description: >-
   predicate, and an object, can be mapped to ArangoDB's property graph model
 archetype: default
 ---
+{{< description >}}
+
 This document serves as a guide to getting started with 
 [RDF](https://www.w3.org/TR/rdf11-concepts/) and ArangoDB. In it 
 we highlight some potential approaches for working with RDF graphs and then some 

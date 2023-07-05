@@ -7,6 +7,8 @@ description: >-
   that is used for managing clusters
 archetype: default
 ---
+{{< description >}}
+
 The Agency is the ArangoDB component which manages the entire ArangoDB cluster. 
 ArangoDB itself mainly uses the Agency as a central place to store the configuration
 and the cluster nodes health management. It implements the Raft consensus protocol to act as

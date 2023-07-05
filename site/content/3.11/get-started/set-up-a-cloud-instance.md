@@ -7,6 +7,8 @@ description: >-
   setting up and accessing your first ArangoGraph deployment
 archetype: default
 ---
+{{< description >}}
+
 For general information about the ArangoGraph Insights Platform, see
 [cloud.arangodb.com](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 
@@ -89,10 +91,7 @@ used for multiple accounts.
 
    ![ArangoGraph Deployment Ready](../../images/arangograph-deployment-ready.png)
 
-4. You can copy the ArangoDB password for the root user by clicking the second
-   button below the label __ROOT PASSWORD__. Then click the __Open endpoint__
-   button to open the ArangoDB web interface. Enter the credentials
-   (user `root` and its password) and log in.
+4. Click the __Open endpoint__ button to open the ArangoDB web interface.
 
 5. You can install example datasets and follow the accompanying guides to get
    started with ArangoDB and its query language. In the ArangoGraph dashboard, click

@@ -8,6 +8,8 @@ description: >-
   relevance
 archetype: default
 ---
+{{< description >}}
+
 Views allows you to perform complex searches at high performance. They are
 accelerated by inverted indexes that are updated near real-time.
 

@@ -8,6 +8,8 @@ description: >-
   responded
 archetype: default
 ---
+{{< description >}}
+
 {{< info >}}
 
 A similar feature is also available in the

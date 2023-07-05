@@ -6,6 +6,8 @@ description: >-
   Loosely match strings to find partial congruences and to compensate for typing errors
 archetype: default
 ---
+{{< description >}}
+
 Fuzzy search is an umbrella term for various approximate matching algorithms.
 What they allow you to do is to find matches even if the search terms are not
 spelled exactly like the words in the stored text. This includes terms that

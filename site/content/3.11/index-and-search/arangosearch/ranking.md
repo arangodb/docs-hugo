@@ -6,6 +6,8 @@ description: >-
   You can query Views and return the most relevant results first based on their ranking score
 archetype: default
 ---
+{{< description >}}
+
 ArangoSearch supports the two most popular ranking schemes:
 
 - [Okapi BM25](https://en.wikipedia.org/wiki/Okapi_BM25)

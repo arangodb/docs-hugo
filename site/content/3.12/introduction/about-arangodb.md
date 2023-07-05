@@ -3,10 +3,14 @@ title: What is ArangoDB?
 menuTitle: About ArangoDB
 weight: 10
 description: >-
-  ArangoDB is a scalable database management system for graphs, with a broad range
-  of features and a rich ecosystem
+  ArangoDB is a scalable graph database system with native support for other
+  data models and a built-in search engine, for the cloud and on-premises
 archetype: default
 ---
+ArangoDB is a scalable database management system for graphs, with a broad range
+of features and a rich ecosystem
+{.lead}
+
 ![ArangoDB Overview Diagram](../../images/arangodb-overview-diagram.png)
 
 It supports a variety of data access patterns with a single, composable query

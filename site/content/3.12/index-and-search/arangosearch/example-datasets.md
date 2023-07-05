@@ -6,6 +6,8 @@ description: >-
   Datasets you may use for experimenting with ArangoSearch features
 archetype: default
 ---
+{{< description >}}
+
 ## IMDB Movie Dataset
 
 This is a movies and actors dataset based on data of the

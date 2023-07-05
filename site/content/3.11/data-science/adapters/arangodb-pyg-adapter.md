@@ -6,6 +6,8 @@ description: >-
   The ArangoDB-PyG Adapter exports Graphs from ArangoDB into PyTorch Geometric (PyG), a PyTorch-based Graph Neural Network library, and vice-versa
 archetype: default
 ---
+{{< description >}}
+
 PyTorch Geometric (PyG) is a library built upon [PyTorch](https://pytorch.org/)
 to easily write and train Graph Neural Networks (GNNs) for a wide range of
 applications related to structured data.

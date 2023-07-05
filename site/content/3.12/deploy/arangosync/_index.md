@@ -6,6 +6,8 @@ description: >-
   A detailed guide to deploying datacenter-to-datacenter replicated clusters
 archetype: chapter
 ---
+{{< description >}}
+
 {{< tag "ArangoDB Enterprise" >}}
 This chapter introduces ArangoDB's _Datacenter-to-Datacenter Replication_ (DC2DC).
 

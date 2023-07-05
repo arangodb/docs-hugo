@@ -3,10 +3,13 @@ title: Transforming data with Analyzers
 menuTitle: Analyzers
 weight: 155
 description: >-
-  Analyzers allow you to transform data, for sophisticated text processing and
-  searching, either standalone or in combination with Views
+  Analyzers parse input values and transform them into sets of sub-values, for example by breaking up text into words.
 archetype: default
 ---
+Analyzers allow you to transform data, for sophisticated text processing and
+searching, either standalone or in combination with Views
+{.lead}
+
 While AQL string functions allow for basic text manipulation, true text
 processing including tokenization, language-specific word stemming, case
 conversion and removal of diacritical marks (accents) from characters only

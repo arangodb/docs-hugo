@@ -7,6 +7,8 @@ description: >-
   supported by a rich ecosystem of integrations and drivers
 archetype: chapter
 ---
+{{< description >}}
+
 ## Editions
 
 ### Community Edition

@@ -7,6 +7,8 @@ description: >-
   by adding or updating specific attributes
 archetype: default
 ---
+{{< description >}}
+
 Each `UPDATE` operation is restricted to a single collection, and the
 [collection name](../../concepts/data-structure/collections.md#collection-names) must not be dynamic.
 Only a single `UPDATE` statement per collection is allowed per AQL query, and

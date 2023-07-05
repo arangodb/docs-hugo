@@ -7,6 +7,8 @@ description: >-
   optionally restricted to incoming or outgoing edges
 archetype: default
 ---
+{{< description >}}
+
 You can use the general [Document API](../documents.md) to create,
 read, modify, and delete edge documents. The only difference to working with
 vertex documents is that the `_from` and `_to` attributes are mandatory and

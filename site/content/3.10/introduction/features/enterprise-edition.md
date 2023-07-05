@@ -8,6 +8,8 @@ description: >-
   query capabilities
 archetype: default
 ---
+{{< description >}}
+
 The Enterprise Edition has all the features of the
 [Community Edition](community-edition.md) and, on top of that, the
 features outlined below. For additional information, see

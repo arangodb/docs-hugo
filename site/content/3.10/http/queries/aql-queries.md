@@ -7,6 +7,8 @@ description: >-
   validate queries written in ArangoDB's query language
 archetype: default
 ---
+{{< description >}}
+
 ## Cursors
 
 Results of AQL queries are returned as cursors in order to batch the communication

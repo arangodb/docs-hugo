@@ -7,6 +7,8 @@ description: >-
   and removing inverted indexes
 archetype: default
 ---
+{{< description >}}
+
 ```openapi
 ## Create a search-alias View
 

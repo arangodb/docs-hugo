@@ -3,10 +3,13 @@ title: Highlights by Version
 menuTitle: Highlights by Version
 weight: 15
 description: >-
-  The most notable features in the Community and Enterprise Edition of ArangoDB,
-  grouped by version
+  List of top features in Community and Enterprise Edition by release series
 archetype: default
 ---
+The most notable features in the Community and Enterprise Edition of ArangoDB,
+grouped by version
+{.lead}
+
 ## Version 3.11
 
 **All Editions**

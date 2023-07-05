@@ -7,6 +7,8 @@ description: >-
   data science tools
 archetype: chapter
 ---
+{{< description >}}
+
 ArangoDB Adapters provide a convenient way to integrate ArangoDB with popular
 data science tools. By enabling you to to use your preferred programming
 languages and libraries, these adapters simplify the data analysis

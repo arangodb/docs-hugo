@@ -7,6 +7,8 @@ description: >-
   ArangoDB's shell to interact with the server using the JavaScript language
 archetype: chapter
 ---
+{{< description >}}
+
 The JavaScript API is available on the server-side in the following contexts:
 
 - [Foxx microservices](../foxx-microservices/_index.md)

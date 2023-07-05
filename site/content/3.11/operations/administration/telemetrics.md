@@ -7,6 +7,8 @@ description: >-
   being utilized, but you can disable this data collection
 archetype: default
 ---
+{{< description >}}
+
 ArangoDB gathers metrics by default, to identify the primary usage patterns and
 features, and to measure their adoption rate.
 

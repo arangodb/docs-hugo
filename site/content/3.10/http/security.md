@@ -7,6 +7,8 @@ description: >-
   encryption at rest, and encryption in transit
 archetype: default
 ---
+{{< description >}}
+
 ## Audit logging
 
 You can get and set the log level for the `audit-*` log topics using the regular

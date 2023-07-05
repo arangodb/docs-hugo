@@ -7,6 +7,8 @@ description: >-
   distributed ArangoDB setups, as well as by users to control the replication
 archetype: chapter
 ---
+{{< description >}}
+
 The replication architecture and components are described in more details in 
 [Replication](../../deploy/architecture/replication.md).
 

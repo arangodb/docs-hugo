@@ -6,6 +6,8 @@ description: >-
   The HTTP API for Views lets you manage Views of any type
 archetype: chapter
 ---
+{{< description >}}
+
 ## Addresses of Views
 
 All Views in ArangoDB have a unique identifier and a unique

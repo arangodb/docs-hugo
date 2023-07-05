@@ -7,6 +7,8 @@ description: >-
   replacing their attributes
 archetype: default
 ---
+{{< description >}}
+
 Each `REPLACE` operation is restricted to a single collection, and the
 [collection name](../../concepts/data-structure/collections.md#collection-names) must not be dynamic.
 Only a single `REPLACE` statement per collection is allowed per AQL query, and

@@ -6,6 +6,8 @@ description: >-
   The ArangoDB-DGL Adapter exports graphs from ArangoDB into Deep Graph Library (DGL), a Python package for graph neural networks, and vice-versa
 archetype: default
 ---
+{{< description >}}
+
 The [Deep Graph Library (DGL)](https://www.dgl.ai/) is an
 easy-to-use, high performance and scalable
 Python package for deep learning on graphs. DGL is framework agnostic, meaning
