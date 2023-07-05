@@ -522,7 +522,6 @@ article ul li {
     overflow: auto;
     position: fixed;
     top: 15vh;
-    width: 100%;
     background: var(--CONTENT-BACKGROUND-COLOR);
 }
 
@@ -597,6 +596,7 @@ nav.pagination {
     line-height: 1;
     padding: 0.75rem 1rem 2rem;
     display: flex;
+    height: 50vh;
 }
 
 pre code {
