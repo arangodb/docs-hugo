@@ -9,7 +9,7 @@
       {{- partial "in-development.html" . }}
       <hgroup>
       <h1>{{ replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}</h1>
-      <p>
+      <p class="lead">
         {{ .Description }}
       </p>
       </hgroup>

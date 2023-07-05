@@ -529,7 +529,8 @@ article ul li {
 
 
 .lead {
-    font-size: 1.4em;
+    font-size: 1.5em;
+    margin-bottom: 24px;
 }
 
 .sidebar-toggle-navigation > span {
@@ -678,6 +679,7 @@ nav.pagination span {
     flex-direction: column;
 }
 
+
 nav.pagination .next {
     justify-content: flex-end;
     flex-direction: row;
@@ -689,6 +691,16 @@ nav.pagination .next {
 
 .nav-prev > i {
     padding: 17px 15px 0px 0px;
+}
+
+.nav-prev:hover,
+.nav-next:hover {
+    border-bottom: 0;
+}
+
+.nav-prev > p,
+.nav-next > p {
+    margin-top: 0.8rem;
 }
 
 .nav-next {
