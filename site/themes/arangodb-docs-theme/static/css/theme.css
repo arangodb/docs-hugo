@@ -193,7 +193,7 @@ img {
 
 .version-selector {
     border: none;
-    margin-top: 2px;
+    margin-top: 9px;
 }
 
 #arangodb-version {
@@ -234,6 +234,7 @@ img {
     top: 4.1em;
     padding-left: 0.7em;
     display: flex;
+    margin-top: 7px;
 }
 
 #search-by {
@@ -522,14 +523,14 @@ article ul li {
     overflow: auto;
     position: fixed;
     top: 15vh;
-    width: 100%;
     background: var(--CONTENT-BACKGROUND-COLOR);
 }
 
 
 
 .lead {
-    font-size: 1.4em;
+    font-size: 1.5em;
+    margin-bottom: 24px;
 }
 
 .sidebar-toggle-navigation > span {
@@ -678,6 +679,7 @@ nav.pagination span {
     flex-direction: column;
 }
 
+
 nav.pagination .next {
     justify-content: flex-end;
     flex-direction: row;
@@ -689,6 +691,16 @@ nav.pagination .next {
 
 .nav-prev > i {
     padding: 17px 15px 0px 0px;
+}
+
+.nav-prev:hover,
+.nav-next:hover {
+    border-bottom: 0;
+}
+
+.nav-prev > p,
+.nav-next > p {
+    margin-top: 0.8rem;
 }
 
 .nav-next {

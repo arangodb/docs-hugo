@@ -300,12 +300,13 @@ def processFile(page, content, filepath):
                 if not buffer:
                     continue
 
-                page.frontMatter.description = "".join(buffer)
-                page.content = page.content.replace("".join(buffer), "")
-                buffer = []
+                line = line.replace("{:class=\"lead\"}", "{.lead}")
+                page.content = page.content + line
                 continue
             
             if "{{ page.description }}" in line:
+                line = line.replace("{{ page.description }}", "{{< description >}}")
+                page.content = page.content + line
                 continue
 
             ## Headers
@@ -546,16 +547,17 @@ def is_index(filename):
 
 
 class Page():
-	def __init__(self):
-		self.frontMatter = FrontMatter()
-		self.content = ""
 
-	def toString(self):
-		res = self.frontMatter.toString()
-		cleanedFrontMatter = re.sub(r"^\s*$\n", '', res, 0, re.MULTILINE | re.DOTALL)
-		res =  f"{cleanedFrontMatter}{self.content}"
-		#res = re.sub(r"(?<=---)\n*", '\n', f"{cleanedFrontMatter}{self.content}", 0, re.MULTILINE | re.DOTALL)
-		return res
+    def __init__(self):
+        self.frontMatter = FrontMatter()
+        self.content = ""
+
+    def toString(self):
+        res = self.frontMatter.toString()
+        cleanedFrontMatter = re.sub(r"^\s*$\n", '', res, 0, re.MULTILINE | re.DOTALL)
+        res =  f"{cleanedFrontMatter}{self.content}"
+        #res = re.sub(r"(?<=---)\n*", '\n', f"{cleanedFrontMatter}{self.content}", 0, re.MULTILINE | re.DOTALL)
+        return res
 
 class FrontMatter():
     def __init__(self):

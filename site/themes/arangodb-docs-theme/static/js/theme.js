@@ -538,3 +538,15 @@ function copyURI(evt) {
       console.log("clipboard copy failed")
     });
 }
+
+function toggleExpandShortcode(event) {
+    var t = $(event.target)
+    if(t.parent('.expand-expanded.expand-marked').length){
+        t.next().css('display','none') 
+    }else if(t.parent('.expand-marked').length){
+        t.next().css('display','block') }
+    else{ 
+        t.next('.expand-content').slideToggle(100); 
+    } 
+    t.parent().toggleClass('expand-expanded');
+}

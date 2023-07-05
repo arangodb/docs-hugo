@@ -62,6 +62,11 @@ function tocHiglighter() {
     return
   }
 
+  anchors.forEach((anchor) => {
+
+  });
+  
+
   var scrollTop = $(document).scrollTop();
   for (var i = 0; i < anchors.length; i++){
     var heading = anchors[i].getAttribute('id')
@@ -70,7 +75,7 @@ function tocHiglighter() {
   }
 
   for (var i = anchors.length-1; i >= 0; i--){
-    if (scrollTop > $(anchors[i]).offset().top - 140) {
+    if (scrollTop > $(anchors[i]).offset().top - 180) {
         var heading = anchors[i].getAttribute('id')
 
         let highlightedHref = $('#TableOfContents a[href="#' + heading + '"]')
@@ -83,3 +88,5 @@ function tocHiglighter() {
 $(window).scroll(function(){
   tocHiglighter();
 });
+
+
