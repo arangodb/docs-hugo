@@ -4565,7 +4565,7 @@
              "type": "array"
             },
             "expression": {
-             "description": "An AQL `RETURN` operation with an expression that computes the desired value.\nSee [Computed Value Expressions](../concepts/data-structure/documents/computed-values.md#computed-value-expressions) for details.\n",
+             "description": "An AQL `RETURN` operation with an expression that computes the desired value.\nSee [Computed Value Expressions](../../concepts/data-structure/documents/computed-values.md#computed-value-expressions) for details.\n",
              "type": "string"
             },
             "failOnWarning": {
@@ -4651,7 +4651,7 @@
           "type": "integer"
          },
          "schema": {
-          "description": "Optional object that specifies the collection level schema for\ndocuments. The attribute keys `rule`, `level` and `message` must follow the\nrules documented in [Document Schema Validation](../concepts/data-structure/documents/schema-validation.md)\n",
+          "description": "Optional object that specifies the collection level schema for\ndocuments. The attribute keys `rule`, `level` and `message` must follow the\nrules documented in [Document Schema Validation](../../concepts/data-structure/documents/schema-validation.md)\n",
           "type": "object"
          },
          "shardKeys": {
@@ -5421,7 +5421,7 @@
              "type": "array"
             },
             "expression": {
-             "description": "An AQL `RETURN` operation with an expression that computes the desired value.\nSee [Computed Value Expressions](../concepts/data-structure/documents/computed-values.md#computed-value-expressions) for details.\n",
+             "description": "An AQL `RETURN` operation with an expression that computes the desired value.\nSee [Computed Value Expressions](../../concepts/data-structure/documents/computed-values.md#computed-value-expressions) for details.\n",
              "type": "string"
             },
             "failOnWarning": {
@@ -5455,7 +5455,7 @@
           "type": "integer"
          },
          "schema": {
-          "description": "Optional object that specifies the collection level schema for\ndocuments. The attribute keys `rule`, `level` and `message` must follow the\nrules documented in [Document Schema Validation](../concepts/data-structure/documents/schema-validation.md)\n",
+          "description": "Optional object that specifies the collection level schema for\ndocuments. The attribute keys `rule`, `level` and `message` must follow the\nrules documented in [Document Schema Validation](../../concepts/data-structure/documents/schema-validation.md)\n",
           "type": "object"
          },
          "waitForSync": {
@@ -5933,7 +5933,7 @@
     ]
    },
    "post": {
-    "description": "To start an execution you need to specify the algorithm name and a named graph\n(SmartGraph in cluster). Alternatively you can specify the vertex and edge\ncollections. Additionally you can specify custom parameters which vary for each\nalgorithm, see [Pregel - Available Algorithms](../data-science/pregel/pregel-algorithms.md).\n",
+    "description": "To start an execution you need to specify the algorithm name and a named graph\n(SmartGraph in cluster). Alternatively you can specify the vertex and edge\ncollections. Additionally you can specify custom parameters which vary for each\nalgorithm, see [Pregel - Available Algorithms](../../data-science/pregel/pregel-algorithms.md).\n",
     "operationId": "createPregelJob",
     "requestBody": {
      "content": {
@@ -20247,7 +20247,7 @@
           "type": "object"
          },
          "links": {
-          "description": "Expects an object with the attribute keys being names of to be linked collections,\nand the link properties as attribute values. See\n[`arangosearch` View Link Properties](../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)\nfor details.\n",
+          "description": "Expects an object with the attribute keys being names of to be linked collections,\nand the link properties as attribute values. See\n[`arangosearch` View Link Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)\nfor details.\n",
           "type": "object"
          },
          "name": {
@@ -20499,7 +20499,7 @@
           "type": "object"
          },
          "links": {
-          "description": "Expects an object with the attribute keys being names of to be linked collections,\nand the link properties as attribute values. See\n[`arangosearch` View Link Properties](../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)\nfor details.\n",
+          "description": "Expects an object with the attribute keys being names of to be linked collections,\nand the link properties as attribute values. See\n[`arangosearch` View Link Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)\nfor details.\n",
           "type": "object"
          }
         },
@@ -20557,7 +20557,7 @@
           "type": "object"
          },
          "links": {
-          "description": "Expects an object with the attribute keys being names of to be linked collections,\nand the link properties as attribute values. See\n[`arangosearch` View Link Properties](../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)\nfor details.\n",
+          "description": "Expects an object with the attribute keys being names of to be linked collections,\nand the link properties as attribute values. See\n[`arangosearch` View Link Properties](../../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)\nfor details.\n",
           "type": "object"
          }
         },
