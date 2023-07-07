@@ -14,7 +14,6 @@
     --MAIN-LINK-HOVER-color: #4183c4; /* hoverd link color of content */
     --MAIN-BG-color: #ffffff; /* background color of content */
     --MAIN-TITLES-TEXT-color: #4a4a4a; /* text color of h2-h6 titles and transparent box titles */
-    --MAIN-FONT: "Helvetica";
 
     /* adjusted to relearn-light chroma style */
     --CODE-BLOCK-color: white; /* fallback text color of block code; should be adjusted to your selected chroma style */
@@ -50,6 +49,8 @@
 
 
     /* TYPOGRAPHY */
+    --MAIN-FONT: helvetica neue,Helvetica,Arial,sans-serif;
+
 
     /* SIZE */
     --TYPOGRAPHY-H1-SIZE: 40px;
