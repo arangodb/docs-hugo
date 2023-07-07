@@ -38,6 +38,12 @@
     width: 20vw;
 }
 
+@media screen and (max-width: 768px) {
+    .menu-iframe.active, #sidebar.active {
+        width: 100%;
+    }
+}
+
 
 
 .sidenav-container {
@@ -121,6 +127,12 @@
     z-index: 999;
     border: 1px solid rgb(106 170 33/0.3);
     border-radius: 24px;
+}
+
+@media screen and (max-width: 768px) {
+    #sidebar.active > #sidebar-toggle-navigation {
+        left: 95vw;
+    }
 }
 
 #sidebar.active > #sidebar-toggle-navigation::after {
