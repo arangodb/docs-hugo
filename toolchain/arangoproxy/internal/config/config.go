@@ -1,6 +1,7 @@
 package config
 
 import (
+	"io"
 	"os"
 
 	"gopkg.in/yaml.v3"
@@ -27,8 +28,10 @@ func LoadConfig(file string) error {
 }
 
 type Repository struct {
-	Name    string `yaml:"name"` // ArangoDB instance name
-	Type    string `yaml:"type"`
-	Version string `yaml:"version"`
-	Url     string `yaml:"url"` // Instance URL+Port to connect to
+	Name       string         `yaml:"name"` // ArangoDB instance name
+	Type       string         `yaml:"type"`
+	Version    string         `yaml:"version"`
+	Url        string         `yaml:"url"` // Instance URL+Port to connect to
+	StdoutPipe io.ReadCloser  `yaml:"-"`
+	StdinPipe  io.WriteCloser `yaml:"-"`
 }

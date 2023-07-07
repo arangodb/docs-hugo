@@ -3,7 +3,6 @@ package httpapi
 import (
 	"fmt"
 
-	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/arangosh"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/common"
 )
 
@@ -11,14 +10,20 @@ type HTTPService struct {
 	common.Service
 }
 
-func (service HTTPService) ExecuteHTTPExample(request common.Example, cacheChannel chan map[string]interface{}) (res common.ExampleResponse, err error) {
+func (service HTTPService) ExecuteHTTPExample(request common.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan string) (res common.ExampleResponse, err error) {
 	defer common.Recover(fmt.Sprintf("HTTPService.ExecuteHTTPExample(%s)", request.Code))
 
 	commands := formatCommand(request.Code)
 	repository, _ := common.GetRepository(request.Options.ServerName, request.Options.Type, request.Options.Version)
 
 	//commands = utils.TryCatchWrap(commands)
-	cmdOutput := arangosh.Exec(request.Options.Name, commands, repository)
+	exampleData := map[string]interface{}{
+		"name":       request.Options.Name,
+		"code":       commands,
+		"repository": repository,
+	}
+	exampleChannel <- exampleData
+	cmdOutput := <-outputChannel
 
 	curlRequest, curlOutput, err := formatArangoResponse(cmdOutput, string(request.Options.Render))
 	if err != nil {

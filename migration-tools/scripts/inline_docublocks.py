@@ -56,7 +56,7 @@ def migrateInlineDocuBlocks(block):
     
     newBlock["code"] = "\n".join(block.split("\n")[1:]).lstrip(" ").replace("    ", "")
     codeblock = render_codeblock(newBlock)
-    codeblock = codeblock.replace("|", " ")
+    codeblock = re.sub(r"^ *\|", "", codeblock, 0, re.MULTILINE)
 
     ## static fixes
     codeblock = codeblock.replace("bindVars:  -", "bindVars: ")
@@ -67,6 +67,7 @@ def migrateInlineDocuBlocks(block):
 
 def render_codeblock(block):
     exampleOptions = yaml.dump(block["options"], sort_keys=False, default_flow_style=False)
+    exampleOptions = exampleOptions.replace("bindVars: |-", "bindVars: ")
     code = block["code"]
     indentationToRemove = len(code.split("\n")[0]) - len(code.split("\n")[0].lstrip(' '))
     code = re.sub("^ {"+str(indentationToRemove)+"}", '', code, 0, re.MULTILINE)

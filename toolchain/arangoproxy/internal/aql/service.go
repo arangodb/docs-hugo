@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"strings"
 
-	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/arangosh"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/common"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/utils"
 )
@@ -14,7 +13,7 @@ type AQLService struct {
 	common.Service
 }
 
-func (service AQLService) Execute(request common.Example, cacheChannel chan map[string]interface{}) (res AQLResponse) {
+func (service AQLService) Execute(request common.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan string) (res AQLResponse) {
 	defer common.Recover(fmt.Sprintf("AQLService.Execute(%s)", request.Code))
 	commands := service.formatRequestCode(&request)
 
@@ -24,7 +23,7 @@ func (service AQLService) Execute(request common.Example, cacheChannel chan map[
 	if request.Options.Dataset != "" {
 		createDSCmd := utils.Datasets[request.Options.Dataset].Create
 		removeDSCmd := utils.Datasets[request.Options.Dataset].Remove
-		commands = utils.DATASET_HEADER + "\n" + removeDSCmd + "\n" + createDSCmd + "\n" + commands + "\n" + removeDSCmd
+		commands = removeDSCmd + "\n" + createDSCmd + "\n" + commands + "\n" + removeDSCmd
 	}
 
 	// If xpError on, don't use try catch wrap
@@ -32,7 +31,13 @@ func (service AQLService) Execute(request common.Example, cacheChannel chan map[
 
 	// Example is not cached, execute it against the arango instance
 	//commands = utils.TryCatchWrap(commands)
-	cmdOutput := arangosh.Exec(request.Options.Name, commands, repository)
+	exampleData := map[string]interface{}{
+		"name":       request.Options.Name,
+		"code":       commands,
+		"repository": repository,
+	}
+	exampleChannel <- exampleData
+	cmdOutput := <-outputChannel
 
 	res.ExampleResponse.Input, res.ExampleResponse.Options = request.Code, request.Options
 

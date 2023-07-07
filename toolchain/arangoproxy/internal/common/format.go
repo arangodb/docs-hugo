@@ -1,6 +1,7 @@
 package common
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 
@@ -10,6 +11,21 @@ import (
 /*
 	Functions to reformat inputs/outputs
 */
+
+func AdjustCodeForArangosh(code string) string {
+	code = strings.Replace(code, "~", "", -1)
+	if !(strings.Contains(code, "EOFD")) {
+		code = fmt.Sprintf("%s\nprint('EOFD');\n\n\n\n", code)
+	}
+
+	re := regexp.MustCompile(`(?m)let |const `)
+	code = re.ReplaceAllString(code, "var ")
+
+	re = regexp.MustCompile(`(?m)}\n *catch`)
+	code = re.ReplaceAllString(code, "} catch")
+
+	return code
+}
 
 func FormatResponse(response *ExampleResponse) {
 	codeComments := regexp.MustCompile(`(?m)~.*`) // Cut the ~... strings from the displayed input

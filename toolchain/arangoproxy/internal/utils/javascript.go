@@ -49,36 +49,6 @@ func TryCatchWrap(code string) string {
 	return fmt.Sprintf("try {\n%s\n} catch(err) {\n print('ERROR');\nprint('Arango Error ' + err.errorNum);\nprint('END ERR');\n }", code)
 }
 
-func Assert(condition string) string {
-	return fmt.Sprintf(`
-if (!%s) {
-	throw new Error('assertion ' + %s + ' failed');
-}`, condition, condition)
-}
-
-func LogCurlRequest(args string) string {
-	curlRequest := fmt.Sprintf(`
-print('REQUEST');
-print([%s]);
-print('END REQ');
-var swallowText = function () {};
-var curlRequestRaw = internal.appendCurlRequest(swallowText, swallowText, swallowText);
-var response = curlRequestRaw.apply(curlRequestRaw, [%s]);`, args, args)
-
-	return fmt.Sprintf("%s\n", curlRequest)
-}
-
-func RemoveAllTestCollections() string {
-	return fmt.Sprintf(`
-	for (let col of db._collections()) {
-
-		if (!col.properties().isSystem) {
-			db._drop(col._name);
-		}
-	}
-	`)
-}
-
 func DatasetExists(dataset string) string {
 	createDSCmd := DATASET_HEADER + "\n" + Datasets[dataset].Create
 	removeDSCmd := DATASET_HEADER + "\n" + Datasets[dataset].Remove
