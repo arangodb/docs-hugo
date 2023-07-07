@@ -73,7 +73,7 @@ func ParseExample(request io.Reader, exampleType ExampleType) (Example, error) {
 	optionsYaml := ExampleOptions{}
 	err = yaml.Unmarshal(options, &optionsYaml)
 	if err != nil {
-		return Example{}, fmt.Errorf("ParseExample error parsing options: %s", err.Error())
+		return Example{}, fmt.Errorf("ParseExample error parsing options: %s\nBroken content: %s", err.Error(), string(options))
 	}
 
 	code := strings.Replace(string(decodedRequest), string(options), "", -1)

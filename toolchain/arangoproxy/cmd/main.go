@@ -29,11 +29,6 @@ func init() {
 		os.Exit(1)
 	}
 
-	if useServers {
-		internal.InitRepositories()
-		utils.LoadDatasets(config.Conf.Datasets)
-	}
-
 	common.Logger.Printf(startupBanner)
 	common.Logger.Printf("./arangoproxy -help for help usage\n\n")
 	common.Logger.Printf("Init Setup\n")
@@ -55,6 +50,13 @@ func init() {
 func main() {
 	common.Logger.Printf("Available endpoints:\n - /js\n - /aql\n - /curl\n")
 	common.Logger.Printf("Starting Server at %s\n", config.Conf.WebServer)
+
+	if useServers {
+		internal.InitRepositories()
+		common.Logger.Printf("[INIT] Repositories Init Done")
+		utils.LoadDatasets(config.Conf.Datasets)
+		common.Logger.Printf("[INIT] Datasets Loaded")
+	}
 
 	internal.StartController(config.Conf.WebServer)
 }

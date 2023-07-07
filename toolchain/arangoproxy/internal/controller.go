@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/aql"
+	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/arangosh"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/common"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/httpapi"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/js"
@@ -24,6 +25,9 @@ var (
 	CacheChannel         = make(chan map[string]interface{})
 	OpenapiGlobalChannel = make(chan map[string]interface{})
 
+	ExampleChannel = make(chan map[string]interface{})
+	OutputChannel  = make(chan string)
+
 	Versions = common.LoadVersions()
 )
 
@@ -31,6 +35,7 @@ var (
 func StartController(url string) {
 	go CommonService.SaveCachedExampleResponse(CacheChannel)
 	go OPENAPIService.AddSpecToGlobalSpec(OpenapiGlobalChannel)
+	go arangosh.ExecRoutine(ExampleChannel, OutputChannel)
 	// Create routes
 	http.HandleFunc("/health", HealthHandler)
 	http.HandleFunc("/js", JSHandler)
@@ -54,7 +59,7 @@ func JSHandler(w http.ResponseWriter, r *http.Request) {
 
 	common.Logger.Printf("[js/CONTROLLER] Processing Example %s\n", request.Options.Name)
 
-	resp := JSService.ExecuteExample(request, CacheChannel)
+	resp := JSService.ExecuteExample(request, CacheChannel, ExampleChannel, OutputChannel)
 	response, err := json.Marshal(resp)
 	if err != nil {
 		fmt.Printf("[js/CONTROLLER] Error marshalling response: %s\n", err.Error())
@@ -75,7 +80,7 @@ func HTTPExampleHandler(w http.ResponseWriter, r *http.Request) {
 
 	common.Logger.Printf("[curl/CONTROLLER] Processing Example %s\n", request.Options.Name)
 
-	resp, err := HTTPService.ExecuteHTTPExample(request, CacheChannel)
+	resp, err := HTTPService.ExecuteHTTPExample(request, CacheChannel, ExampleChannel, OutputChannel)
 	if err != nil {
 		common.Logger.Printf("[HTTP] Error caused by request\n%s", request.Code)
 	}
@@ -100,7 +105,7 @@ func AQLHandler(w http.ResponseWriter, r *http.Request) {
 
 	common.Logger.Printf("[aql/CONTROLLER] Processing Example %s\n", request.Options.Name)
 
-	resp := AQLService.Execute(request, CacheChannel)
+	resp := AQLService.Execute(request, CacheChannel, ExampleChannel, OutputChannel)
 	response, err := json.Marshal(resp)
 	if err != nil {
 		fmt.Printf("[aql/CONTROLLER] Error marshalling response: %s\n", err.Error())

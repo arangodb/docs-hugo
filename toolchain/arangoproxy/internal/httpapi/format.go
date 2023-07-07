@@ -5,18 +5,11 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/common"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/utils"
 	"github.com/dlclark/regexp2"
 )
 
 func formatCommand(code string) string {
-	httpFuncs, err := utils.GetHTTPFunctions()
-	if err != nil {
-		common.Logger.Printf("Error reading functions: %s\n", err.Error())
-	}
-	code = fmt.Sprintf("%s\n%s\n", httpFuncs, code)
-
 	multiLineRE := regexp.MustCompile(`(?m)[+]\s*\n*`)
 	allMultiLines := multiLineRE.FindAllString(code, -1)
 	for _, multiLine := range allMultiLines {

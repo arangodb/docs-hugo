@@ -271,6 +271,10 @@ def processExample_new(docublock):
             continue
 
         if inExample:
+            if exampleBlock["code"] == "" and line == "\n":
+                continue
+
+            line = re.sub(r"^ *\|", "", line, 0, re.MULTILINE)
             exampleBlock["code"] = exampleBlock["code"] + "\n" + line
             if "logJsonResponse" in line:
                 exampleBlock["options"]["render"] = "input/output"
