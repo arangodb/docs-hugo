@@ -54,7 +54,6 @@ header {
     box-shadow: 0 0 10px rgb(0 0 0 / 20%);
     z-index: 1001;
     position: fixed;
-    font-family: 'Inter', sans-serif !important;
     min-height: 0;
 }
 
@@ -372,7 +371,6 @@ label {
     text-overflow: ellipsis;
     white-space: break-spaces;
     color: rgba(56, 59, 57, 1);
-    font-family: Helvetica !important;
     margin-bottom: 13px;
 }
 
@@ -604,7 +602,6 @@ pre code {
 }
 
 code, p code {
-    font-family: monospace, fixed;
     font-size: 14px;
     overflow: auto;
     word-wrap: break-word;
@@ -918,7 +915,6 @@ background-color: rgb(64, 69, 69) !important;
 }
 
 .footer-col-title {
-    font-family: Akzidenz-Grotesk Std;
     font-weight: 500;
     font-size: 16px;
     margin-bottom: 24px;

@@ -79,7 +79,6 @@ a.section-link {
     color: #0b1117;
     text-overflow: ellipsis;
     overflow: hidden;
-    font-family: 'Euclid Circular A',Akzidenz,'Helvetica Neue',Helvetica,Arial,sans-serif;
     font-size: 16px;
     line-height: 28px;
 }
@@ -102,7 +101,6 @@ a.section-link {
 
 .card-body > p {
     margin: unset;
-    font-family: 'Euclid Circular A',Akzidenz,'Helvetica Neue',Helvetica,Arial,sans-serif;
     color: #001E2B;
     font-size: 16px;
     line-height: 28px;
