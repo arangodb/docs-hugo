@@ -33,6 +33,12 @@
     box-shadow: -3px 0 5px 0 #555;
 }
 
+@media screen and (max-height: 900px) {
+    #sidebar {
+        height: 93vh;
+    }
+}
+
 .menu-iframe.active,
 #sidebar.active {
     width: 20vw;

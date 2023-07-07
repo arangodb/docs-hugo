@@ -408,6 +408,15 @@ label {
     grid-template-rows: auto 1fr;
 }
 
+@media screen and (max-width: 480px) {
+    .row-main {
+        grid-template-areas:
+        'breadcrumbs breadcrumbs'
+        'article article'
+        'footer footer';
+    }
+}
+
 #breadcrumbs {
     grid-area: breadcrumbs;
     display: flex;
@@ -484,7 +493,7 @@ article.default {
 
 @media screen and (max-width: 1200px) {
     article.default {
-        margin: 0 0 0 1em;
+        margin: 0 1em 0 1em;
     }
 }
 
@@ -996,6 +1005,7 @@ blockquote p {
 
 .expand-label {
     font-size: 1.1rem;
+
 }
 
 .expand-label::before {
