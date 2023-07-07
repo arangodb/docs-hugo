@@ -550,3 +550,18 @@ function toggleExpandShortcode(event) {
     } 
     t.parent().toggleClass('expand-expanded');
 }
+
+function moveTags() {
+    var tags = document.querySelectorAll(".labels")
+    for (let tag of tags) {
+        var prev = tag.previousSibling;
+        var isHeader = $(prev).is(':header');
+        while (!isHeader) {
+            prev = prev.previousSibling;
+            isHeader = $(prev).is(':header');
+        }
+        newTag = tag.outerHTML
+        prev.insertAdjacentHTML('afterEnd', newTag);
+        tag.remove();
+    }
+}
