@@ -200,6 +200,12 @@ img {
     background: none;
 }
 
+@media screen and (max-width: 768px) {
+    #arangodb-version {
+        width: 4rem;
+    }
+}
+
 .container-right {
     box-sizing: border-box;
     margin: 0;
@@ -441,22 +447,29 @@ label {
         font-size: 16px;
         transition: 0.4s;
         line-height: 40px;
-        width: 13em;
+        width: 14em;
         z-index: 99999;
-        position: fixed;
-        top: 4.1em;
+        /* position: fixed; */
+        /* top: 4.1em; */
         /* padding-left: 1.7em; */
-        display: flex;
-        right: 1rem;
+        /* display: flex; */
+        /* right: 1rem; */
+        display: block;
+    }
+    #search-by {
+        width: 12rem;
     }
     .version-selector {
-        width: 4.3em;
-        /* margin-left: 1rem; */
-        /* height: 4rem; */
         border: none;
-        right: 0rem;
-        position: absolute;
-        margin-top: 3px;
+    }
+    .container-main {
+        margin-left: 0;
+    }
+}
+
+@media screen and (max-width: 372px) {
+    #search-by {
+        width: 7rem;
     }
 }
 
@@ -983,7 +996,6 @@ blockquote p {
 
 .expand-label {
     font-size: 1.1rem;
-    color: var(--CODEBLOCK-BACKGROUND-COLOR);
 }
 
 .expand-label::before {
