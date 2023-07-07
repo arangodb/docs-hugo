@@ -24,7 +24,7 @@ menu:
 
 markup:
   highlight:
-    style: "nord"
+    style: "lovelace"
   goldmark:
     renderer:
       unsafe: true

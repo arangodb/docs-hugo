@@ -2,7 +2,7 @@
 {{ $description := .description }}
 {{ $content := .content }}
 
-{{ $description }}
+<p>{{ $description }}</p>
 
 {{ $input := transform.Highlight $content.input "" }}
 {{ $input }}
