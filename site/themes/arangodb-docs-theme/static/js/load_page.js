@@ -70,10 +70,12 @@ function loadPage(target) {
 function initArticle(url) {
   renderVersion();
   loadMenu(url)
+  moveTags();
   initCopyToClipboard();
   initClickHandlers();
   generateToc();
   goToTop();
   styleImages();
   showSidebarHandler();
+  
 }
