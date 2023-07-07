@@ -400,7 +400,6 @@ label {
         'footer footer';
     grid-template-columns: 3fr 1fr;
     grid-template-rows: auto 1fr;
-    background-color: var(--CONTENT-BACKGROUND-COLOR);
 }
 
 #breadcrumbs {
@@ -521,7 +520,6 @@ article ul li {
     overflow: auto;
     position: fixed;
     top: 15vh;
-    background: var(--CONTENT-BACKGROUND-COLOR);
 }
 
 
