@@ -37,9 +37,9 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers")
-  var a = analyzers.save("custom", "text", {
-    locale: "en",
-    stopwords: ["a", "example"]
+ var a = analyzers.save("custom", "text", {
+   locale: "en",
+   stopwords: ["a", "example"]
   }, []);
   db._query(`RETURN TOKENS("UPPER & lower, a Stemming Example.", "custom")`).toArray();
 ~ analyzers.remove(a.name);
@@ -297,8 +297,8 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers");
-  var a = analyzers.save("delimiter_hyphen", "delimiter", {
-    delimiter: "-"
+ var a = analyzers.save("delimiter_hyphen", "delimiter", {
+   delimiter: "-"
   }, []);
   db._query(`RETURN TOKENS("some-delimited-words", "delimiter_hyphen")`).toArray();
 ~ analyzers.remove(a.name);
@@ -331,8 +331,8 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers");
-  var a = analyzers.save("stem_en", "stem", {
-    locale: "en"
+ var a = analyzers.save("stem_en", "stem", {
+   locale: "en"
   }, []);
   db._query(`RETURN TOKENS("databases", "stem_en")`).toArray();
 ~ analyzers.remove(a.name);
@@ -374,9 +374,9 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers");
-  var a = analyzers.save("norm_upper", "norm", {
-    locale: "en",
-    case: "upper"
+ var a = analyzers.save("norm_upper", "norm", {
+   locale: "en",
+   case: "upper"
   }, []);
   db._query(`RETURN TOKENS("UPPER lower dïäcríticš", "norm_upper")`).toArray();
 ~ analyzers.remove(a.name);
@@ -394,9 +394,9 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers");
-  var a = analyzers.save("norm_accent", "norm", {
-    locale: "en",
-    accent: false
+ var a = analyzers.save("norm_accent", "norm", {
+   locale: "en",
+   accent: false
   }, []);
   db._query(`RETURN TOKENS("UPPER lower dïäcríticš", "norm_accent")`).toArray();
 ~ analyzers.remove(a.name);
@@ -414,10 +414,10 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers");
-  var a = analyzers.save("norm_accent_lower", "norm", {
-    locale: "en",
-    accent: false,
-    case: "lower"
+ var a = analyzers.save("norm_accent_lower", "norm", {
+   locale: "en",
+   accent: false,
+   case: "lower"
   }, []);
   db._query(`RETURN TOKENS("UPPER lower dïäcríticš", "norm_accent_lower")`).toArray();
 ~ analyzers.remove(a.name);
@@ -487,11 +487,11 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers");
-  var a = analyzers.save("trigram", "ngram", {
-    min: 3,
-    max: 3,
-    preserveOriginal: false,
-    streamType: "utf8"
+ var a = analyzers.save("trigram", "ngram", {
+   min: 3,
+   max: 3,
+   preserveOriginal: false,
+   streamType: "utf8"
   }, []);
   db._query(`RETURN TOKENS("foobar", "trigram")`).toArray();
 ~ analyzers.remove(a.name);
@@ -510,13 +510,13 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers");
-  var a = analyzers.save("bigram_markers", "ngram", {
-    min: 2,
-    max: 2,
-    preserveOriginal: true,
-    startMarker: "^",
-    endMarker: "$",
-    streamType: "utf8"
+ var a = analyzers.save("bigram_markers", "ngram", {
+   min: 2,
+   max: 2,
+   preserveOriginal: true,
+   startMarker: "^",
+   endMarker: "$",
+   streamType: "utf8"
   }, []);
   db._query(`RETURN TOKENS("foobar", "bigram_markers")`).toArray();
 ~ analyzers.remove(a.name);
@@ -630,12 +630,12 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers")
-  var a = analyzers.save("text_en_nostem", "text", {
-    locale: "en",
-    case: "lower",
-    accent: false,
-    stemming: false,
-    stopwords: []
+ var a = analyzers.save("text_en_nostem", "text", {
+   locale: "en",
+   case: "lower",
+   accent: false,
+   stemming: false,
+   stopwords: []
   }, [])
   db._query(`RETURN TOKENS("Crazy fast NoSQL-database!", "text_en_nostem")`).toArray();
 ~ analyzers.remove(a.name);
@@ -654,17 +654,17 @@ server_name: stable
 type: single
 ---
 ~ var analyzers = require("@arangodb/analyzers")
-  var a = analyzers.save("text_edge_ngrams", "text", {
-    edgeNgram: { min: 3, max: 8, preserveOriginal: true },
-    locale: "en",
-    case: "lower",
-    accent: false,
-    stemming: false,
-    stopwords: [ "the" ]
+ var a = analyzers.save("text_edge_ngrams", "text", {
+   edgeNgram: { min: 3, max: 8, preserveOriginal: true },
+   locale: "en",
+   case: "lower",
+   accent: false,
+   stemming: false,
+   stopwords: [ "the" ]
   }, [])
-  db._query(`RETURN TOKENS(
-    "The quick brown fox jumps over the dogWithAVeryLongName",
-    "text_edge_ngrams"
+ db._query(`RETURN TOKENS(
+   "The quick brown fox jumps over the dogWithAVeryLongName",
+   "text_edge_ngrams"
   )`).toArray();
 ~ analyzers.remove(a.name);
 ```
@@ -711,13 +711,13 @@ type: single
   var en = analyzers.save("collation_en", "collation", { locale: "en" }, []);
   var sv = analyzers.save("collation_sv", "collation", { locale: "sv" }, []);
   var test = db._create("test");
-  var docs = db.test.save([
-    { text: "a" },
-    { text: "å" },
-    { text: "b" },
-    { text: "z" },
+ var docs = db.test.save([
+   { text: "a" },
+   { text: "å" },
+   { text: "b" },
+   { text: "z" },
   ]);
-  var view = db._createView("view", "arangosearch",
+ var view = db._createView("view", "arangosearch",
 { links: { test: { analyzers: [ "collation_en", "collation_sv" ], includeAllFields: true }}});
 ~ assert(db._query(`FOR d IN view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 4);
   db._query("FOR doc IN view SEARCH ANALYZER(doc.text < TOKENS('c', 'collation_en')[0], 'collation_en') RETURN doc.text");
@@ -817,8 +817,8 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers");
-  var a = analyzers.save("concat", "aql", { queryString:
-    "RETURN LOWER(LEFT(@param, 5)) == 'inter' ? CONCAT(@param, 'ism') : CONCAT('inter', @param)"
+ var a = analyzers.save("concat", "aql", { queryString:
+   "RETURN LOWER(LEFT(@param, 5)) == 'inter' ? CONCAT(@param, 'ism') : CONCAT('inter', @param)"
   }, []);
   db._query("RETURN TOKENS('state', 'concat')");
   db._query("RETURN TOKENS('international', 'concat')");
@@ -838,8 +838,8 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers");
-  var a = analyzers.save("filter", "aql", { keepNull: false, queryString:
-    "RETURN LOWER(LEFT(@param, 2)) == 'ir' ? null : @param"
+ var a = analyzers.save("filter", "aql", { keepNull: false, queryString:
+   "RETURN LOWER(LEFT(@param, 2)) == 'ir' ? null : @param"
   }, []);
   db._query("RETURN TOKENS('regular', 'filter')");
   db._query("RETURN TOKENS('irregular', 'filter')");
@@ -860,13 +860,13 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers");
-  var a = analyzers.save("filter", "aql", { queryString:
-    "FILTER LOWER(LEFT(@param, 2)) != 'ir' RETURN @param"
+ var a = analyzers.save("filter", "aql", { queryString:
+   "FILTER LOWER(LEFT(@param, 2)) != 'ir' RETURN @param"
   }, []);
   var coll = db._create("coll");
   var doc1 = db.coll.save({ value: "regular" });
   var doc2 = db.coll.save({ value: "irregular" });
-  var view = db._createView("view", "arangosearch",
+ var view = db._createView("view", "arangosearch",
 { links: { coll: { fields: { value: { analyzers: ["filter"] }}}}})
 ~ assert(db._query(`FOR d IN view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] > 0);
   db._query("FOR doc IN view SEARCH ANALYZER(doc.value IN ['regular', 'irregular'], 'filter') RETURN doc");
@@ -898,15 +898,15 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers");
-  var a1 = analyzers.save("collapsed", "aql", { collapsePositions: true, queryString:
-    "FOR d IN SPLIT(@param, '-') RETURN d"
+ var a1 = analyzers.save("collapsed", "aql", { collapsePositions: true, queryString:
+   "FOR d IN SPLIT(@param, '-') RETURN d"
   }, ["frequency", "position"]);
-  var a2 = analyzers.save("uncollapsed", "aql", { collapsePositions: false, queryString:
-    "FOR d IN SPLIT(@param, '-') RETURN d"
+ var a2 = analyzers.save("uncollapsed", "aql", { collapsePositions: false, queryString:
+   "FOR d IN SPLIT(@param, '-') RETURN d"
   }, ["frequency", "position"]);
   var coll = db._create("coll");
   var doc = db.coll.save({ text: "A-B-C-D" });
-  var view = db._createView("view", "arangosearch",
+ var view = db._createView("view", "arangosearch",
 { links: { coll: { analyzers: [ "collapsed", "uncollapsed" ], includeAllFields: true }}});
 ~ assert(db._query(`FOR d IN view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 1);
   db._query("FOR d IN view SEARCH PHRASE(d.text, {TERM: 'B'}, 1, {TERM: 'D'}, 'uncollapsed') RETURN d");
@@ -969,9 +969,9 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers");
-  var a = analyzers.save("ngram_upper", "pipeline", { pipeline: [
-    { type: "norm", properties: { locale: "en", case: "upper" } },
-    { type: "ngram", properties: { min: 2, max: 2, preserveOriginal: false, streamType: "utf8" } }
+ var a = analyzers.save("ngram_upper", "pipeline", { pipeline: [
+   { type: "norm", properties: { locale: "en", case: "upper" } },
+   { type: "ngram", properties: { min: 2, max: 2, preserveOriginal: false, streamType: "utf8" } }
   ] }, []);
   db._query(`RETURN TOKENS("Quick brown foX", "ngram_upper")`).toArray();
 ~ analyzers.remove(a.name);
@@ -989,10 +989,10 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers");
-  var a = analyzers.save("delimiter_stem", "pipeline", { pipeline: [
-    { type: "delimiter", properties: { delimiter: "," } },
-    { type: "delimiter", properties: { delimiter: ";" } },
-    { type: "stem", properties: { locale: "en" } }
+ var a = analyzers.save("delimiter_stem", "pipeline", { pipeline: [
+   { type: "delimiter", properties: { delimiter: "," } },
+   { type: "delimiter", properties: { delimiter: ";" } },
+   { type: "stem", properties: { locale: "en" } }
   ] }, []);
   db._query(`RETURN TOKENS("delimited,stemmable;words", "delimiter_stem")`).toArray();
 ~ analyzers.remove(a.name);
@@ -1050,8 +1050,8 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers");
-  var a = analyzers.save("stop", "stopwords", {
-    stopwords: ["616e64","746865"], hex: true
+ var a = analyzers.save("stop", "stopwords", {
+   stopwords: ["616e64","746865"], hex: true
   }, []);
   db._query("RETURN FLATTEN(TOKENS(SPLIT('the fox and the dog and a theater', ' '), 'stop'))");
 ~ analyzers.remove(a.name);
@@ -1070,9 +1070,9 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers");
-  var a = analyzers.save("norm_stop", "pipeline", { "pipeline": [
-    { type: "norm", properties: { locale: "en", accent: false, case: "lower" } },
-    { type: "stopwords", properties: { stopwords: ["and","the"], hex: false } },
+ var a = analyzers.save("norm_stop", "pipeline", { "pipeline": [
+   { type: "norm", properties: { locale: "en", accent: false, case: "lower" } },
+   { type: "stopwords", properties: { stopwords: ["and","the"], hex: false } },
   ]}, []);
   db._query("RETURN FLATTEN(TOKENS(SPLIT('The fox AND the dog äñḏ a ţhéäter', ' '), 'norm_stop'))");
 ~ analyzers.remove(a.name);
@@ -1133,12 +1133,12 @@ type: single
   var all = analyzers.save("segment_all", "segmentation", { break: "all" }, []);
   var alpha = analyzers.save("segment_alpha", "segmentation", { break: "alpha" }, []);
   var graphic = analyzers.save("segment_graphic", "segmentation", { break: "graphic" }, []);
-  db._query(`LET str = 'Test\twith An_EMAIL-address+123@example.org\n蝴蝶。\u2028бутерброд'
-    RETURN {
-  "all": TOKENS(str, 'segment_all'),
-  "alpha": TOKENS(str, 'segment_alpha'),
-  "graphic": TOKENS(str, 'segment_graphic'),
-    }
+ db._query(`LET str = 'Test\twith An_EMAIL-address+123@example.org\n蝴蝶。\u2028бутерброд'
+   RETURN {
+ "all": TOKENS(str, 'segment_all'),
+ "alpha": TOKENS(str, 'segment_alpha'),
+ "graphic": TOKENS(str, 'segment_graphic'),
+   }
   `);
 ~ analyzers.remove(all.name);
 ~ analyzers.remove(alpha.name);
@@ -1180,12 +1180,12 @@ type: single
   var analyzers = require("@arangodb/analyzers");
   var analyzerMinHash = analyzers.save("minhash5", "minhash", { analyzer: { type: "segmentation", properties: { break: "alpha", case: "lower" } }, numHashes: 5 }, []);
   var analyzerSegment = analyzers.save("segment", "segmentation", { break: "alpha", case: "lower" }, []);
-  db._query(`
-    LET str1 = "The quick brown fox jumps over the lazy dog."
-    LET str2 = "The fox jumps over the crazy dog."
-    RETURN {
-  approx: JACCARD(TOKENS(str1, "minhash5"), TOKENS(str2, "minhash5")),
-  actual: JACCARD(TOKENS(str1, "segment"), TOKENS(str2, "segment"))
+ db._query(`
+   LET str1 = "The quick brown fox jumps over the lazy dog."
+   LET str2 = "The fox jumps over the crazy dog."
+   RETURN {
+ approx: JACCARD(TOKENS(str1, "minhash5"), TOKENS(str2, "minhash5")),
+ actual: JACCARD(TOKENS(str1, "segment"), TOKENS(str2, "segment"))
 }`);
 ~ analyzers.remove(analyzerMinHash.name);
 ~ analyzers.remove(analyzerSegment.name);
@@ -1408,26 +1408,26 @@ type: single
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("geo_json", "geojson", {}, []);
   db._create("geo");
-  var docs = db.geo.save([
-    { location: { type: "Point", coordinates: [6.937, 50.932] } },
-    { location: { type: "Point", coordinates: [6.956, 50.941] } },
-    { location: { type: "Point", coordinates: [6.962, 50.932] } },
+ var docs = db.geo.save([
+   { location: { type: "Point", coordinates: [6.937, 50.932] } },
+   { location: { type: "Point", coordinates: [6.956, 50.941] } },
+   { location: { type: "Point", coordinates: [6.962, 50.932] } },
   ]);
-  db._createView("geo_view", "arangosearch", {
-    links: {
-  geo: {
-    fields: {
-  location: {
-    analyzers: ["geo_json"]
-  }
-    }
-  }
-    }
+ db._createView("geo_view", "arangosearch", {
+   links: {
+ geo: {
+   fields: {
+ location: {
+   analyzers: ["geo_json"]
+ }
+   }
+ }
+   }
   });
 ~ assert(db._query(`FOR d IN geo_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 3);
-  db._query(`LET point = GEO_POINT(6.93, 50.94)
-    FOR doc IN geo_view
-  SEARCH ANALYZER(GEO_DISTANCE(doc.location, point) < 2000, "geo_json")
+ db._query(`LET point = GEO_POINT(6.93, 50.94)
+   FOR doc IN geo_view
+ SEARCH ANALYZER(GEO_DISTANCE(doc.location, point) < 2000, "geo_json")
   RETURN MERGE(doc, { distance: GEO_DISTANCE(doc.location, point) })`).toArray();
 ~ db._dropView("geo_view");
 ~ analyzers.remove("geo_json", true);
@@ -1518,26 +1518,26 @@ type: single
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("geo_efficient", "geo_s2", { format: "latLngInt" }, []);
   db._create("geo");
-  var docs = db.geo.save([
-    { location: { type: "Point", coordinates: [6.937, 50.932] } },
-    { location: { type: "Point", coordinates: [6.956, 50.941] } },
-    { location: { type: "Point", coordinates: [6.962, 50.932] } },
+ var docs = db.geo.save([
+   { location: { type: "Point", coordinates: [6.937, 50.932] } },
+   { location: { type: "Point", coordinates: [6.956, 50.941] } },
+   { location: { type: "Point", coordinates: [6.962, 50.932] } },
   ]);
-  db._createView("geo_view", "arangosearch", {
-    links: {
-  geo: {
-    fields: {
-  location: {
-    analyzers: ["geo_efficient"]
-  }
-    }
-  }
-    }
+ db._createView("geo_view", "arangosearch", {
+   links: {
+ geo: {
+   fields: {
+ location: {
+   analyzers: ["geo_efficient"]
+ }
+   }
+ }
+   }
   });
 ~ assert(db._query(`FOR d IN geo_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 3);
-  db._query(`LET point = GEO_POINT(6.93, 50.94)
-    FOR doc IN geo_view
-  SEARCH ANALYZER(GEO_DISTANCE(doc.location, point) < 2000, "geo_efficient")
+ db._query(`LET point = GEO_POINT(6.93, 50.94)
+   FOR doc IN geo_view
+ SEARCH ANALYZER(GEO_DISTANCE(doc.location, point) < 2000, "geo_efficient")
   RETURN MERGE(doc, { distance: GEO_DISTANCE(doc.location, point) })`).toArray();
 ~ db._dropView("geo_view");
 ~ analyzers.remove("geo_efficient", true);
@@ -1621,26 +1621,26 @@ type: single
   var analyzers = require("@arangodb/analyzers");
   var a = analyzers.save("geo_pair", "geopoint", {}, []);
   db._create("geo");
-  var docs = db.geo.save([
-    { location: [50.932, 6.937] },
-    { location: [50.941, 6.956] },
-    { location: [50.932, 6.962] },
+ var docs = db.geo.save([
+   { location: [50.932, 6.937] },
+   { location: [50.941, 6.956] },
+   { location: [50.932, 6.962] },
   ]);
-  db._createView("geo_view", "arangosearch", {
-    links: {
-  geo: {
-    fields: {
-  location: {
-    analyzers: ["geo_pair"]
-  }
-    }
-  }
-    }
+ db._createView("geo_view", "arangosearch", {
+   links: {
+ geo: {
+   fields: {
+ location: {
+   analyzers: ["geo_pair"]
+ }
+   }
+ }
+   }
   });
 ~ assert(db._query(`FOR d IN geo_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 3);
-  db._query(`LET point = GEO_POINT(6.93, 50.94)
-    FOR doc IN geo_view
-  SEARCH ANALYZER(GEO_DISTANCE(doc.location, point) < 2000, "geo_pair")
+ db._query(`LET point = GEO_POINT(6.93, 50.94)
+   FOR doc IN geo_view
+ SEARCH ANALYZER(GEO_DISTANCE(doc.location, point) < 2000, "geo_pair")
   RETURN MERGE(doc, { distance: GEO_DISTANCE([doc.location[1], doc.location[0]], point) })`).toArray();
 ~ db._dropView("geo_view");
 ~ analyzers.remove("geo_pair", true);
@@ -1664,31 +1664,31 @@ server_name: stable
 type: single
 ---
   var analyzers = require("@arangodb/analyzers");
-  var a = analyzers.save("geo_latlng", "geopoint", {
-    latitude: ["lat"],
-    longitude: ["lng"]
+ var a = analyzers.save("geo_latlng", "geopoint", {
+   latitude: ["lat"],
+   longitude: ["lng"]
   }, []);
   db._create("geo");
-  var docs = db.geo.save([
-    { location: { lat: 50.932, lng: 6.937 } },
-    { location: { lat: 50.941, lng: 6.956 } },
-    { location: { lat: 50.932, lng: 6.962 } },
+ var docs = db.geo.save([
+   { location: { lat: 50.932, lng: 6.937 } },
+   { location: { lat: 50.941, lng: 6.956 } },
+   { location: { lat: 50.932, lng: 6.962 } },
   ]);
-  db._createView("geo_view", "arangosearch", {
-    links: {
-  geo: {
-    fields: {
-  location: {
-    analyzers: ["geo_latlng"]
-  }
-    }
-  }
-    }
+ db._createView("geo_view", "arangosearch", {
+   links: {
+ geo: {
+   fields: {
+ location: {
+   analyzers: ["geo_latlng"]
+ }
+   }
+ }
+   }
   });
 ~ assert(db._query(`FOR d IN geo_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 3);
-  db._query(`LET point = GEO_POINT(6.93, 50.94)
-    FOR doc IN geo_view
-  SEARCH ANALYZER(GEO_DISTANCE(doc.location, point) < 2000, "geo_latlng")
+ db._query(`LET point = GEO_POINT(6.93, 50.94)
+   FOR doc IN geo_view
+ SEARCH ANALYZER(GEO_DISTANCE(doc.location, point) < 2000, "geo_latlng")
   RETURN MERGE(doc, { distance: GEO_DISTANCE([doc.location.lng, doc.location.lat], point) })`).toArray();
 ~ db._dropView("geo_view");
 ~ analyzers.remove("geo_latlng", true);

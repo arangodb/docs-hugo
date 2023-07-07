@@ -42,10 +42,10 @@ type: single
 ~db._drop("acollection");
 ~db._create('acollection');
 ~for (let i=0; i < 10000; i++) { db.acollection.insert({value:i}); }
- db._profileQuery(`
- FOR doc IN acollection
-   FILTER doc.value < 10
-   RETURN doc`, {}, {colors: false}
+db._profileQuery(`
+FOR doc IN acollection
+  FILTER doc.value < 10
+  RETURN doc`, {}, {colors: false}
 );
 ~db._drop("acollection");
 ```
@@ -94,10 +94,10 @@ type: single
 ~db._create('acollection');
 ~db.acollection.ensureIndex({type:"persistent", fields:["value"]});
 ~for (let i=0; i < 10000; i++) { db.acollection.insert({value:i}); }
- db._profileQuery(`
- FOR doc IN acollection
-   FILTER doc.value < 10
-   RETURN doc`, {}, {colors: false}
+db._profileQuery(`
+FOR doc IN acollection
+  FILTER doc.value < 10
+  RETURN doc`, {}, {colors: false}
 );
 ~db._drop("acollection");
 ```
@@ -123,11 +123,11 @@ type: single
 ~db._create('acollection');
 ~db.acollection.ensureIndex({type:"persistent", fields:["value"]});
 ~for (let i=0; i < 10000;i++) { db.acollection.insert({value:i}); }
- db._profileQuery(`
- LET list = (FOR doc in acollection FILTER doc.value > 90 RETURN doc)
- FOR a IN list 
-   FILTER a.value < 91 
-   RETURN a`, {}, {colors: false, optimizer:{rules:["-all"]}}
+db._profileQuery(`
+LET list = (FOR doc in acollection FILTER doc.value > 90 RETURN doc)
+FOR a IN list 
+  FILTER a.value < 91 
+  RETURN a`, {}, {colors: false, optimizer:{rules:["-all"]}}
 );
 ~db._drop("acollection");
 ```
@@ -159,16 +159,16 @@ type: single
 ---
 ~db._create('myusers');
 ~["berlin", "paris", "cologne", "munich", "london"].forEach((c) => { ["peter", "david", "simon", "lars"].forEach( n => db.myusers.insert({ city : c, name : n, age: Math.floor(Math.random() * 75) }) ) });
- db._profileQuery(`
- FOR u IN myusers
-   COLLECT ageGroup = FLOOR(u.age / 10) * 10
-   AGGREGATE minAge = MIN(u.age), maxAge = MAX(u.age), len = LENGTH(u)
-   RETURN {
- ageGroup, 
- minAge, 
- maxAge,
- len
-   }`, {}, {colors: false}
+db._profileQuery(`
+FOR u IN myusers
+  COLLECT ageGroup = FLOOR(u.age / 10) * 10
+  AGGREGATE minAge = MIN(u.age), maxAge = MAX(u.age), len = LENGTH(u)
+  RETURN {
+ageGroup, 
+minAge, 
+maxAge,
+len
+  }`, {}, {colors: false}
 );
 ~db._drop("myusers")
 ```

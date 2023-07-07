@@ -1388,7 +1388,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  RETURN REGEX_MATCHES("#4d82h4", "^#?([a-f0-9]{6} [a-f0-9]{3})$", true)
+  RETURN REGEX_MATCHES("#4d82h4", "^#?([a-f0-9]{6}|[a-f0-9]{3})$", true)
 ```
 
 ```aql
@@ -1431,7 +1431,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  RETURN REGEX_SPLIT("This is a line.\\n This is yet another line\\r\\n This again is a line.\\r Mac line ", "\\\\.?\\r\\n \\r \\n")
+  RETURN REGEX_SPLIT("This is a line.\\n This is yet another line\\r\\n This again is a line.\\r Mac line ", "\\\\.?\\r\\n|\\r|\\n")
 ```
 
 ```aql
@@ -1511,7 +1511,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  RETURN REGEX_TEST("the quick brown fox", "^(a the)\\\\s+(quick slow).*f.x$")
+  RETURN REGEX_TEST("the quick brown fox", "^(a|the)\\\\s+(quick|slow).*f.x$")
 ```
 
 ```aql

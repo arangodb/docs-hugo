@@ -19,20 +19,20 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-  db._query(`
-    FOR i IN 1..@count INSERT
-  { _key: CONCAT('anothertest', TO_STRING(i)) }
-  INTO mycollection`,
-   { count: 100 },
-   {},
-   { fullCount: true }
+ db._query(`
+   FOR i IN 1..@count INSERT
+ { _key: CONCAT('anothertest', TO_STRING(i)) }
+ INTO mycollection`,
+  { count: 100 },
+  {},
+  { fullCount: true }
   ).getExtra();
-  db._query({
-    "query": `FOR i IN 200..@count INSERT
-  { _key: CONCAT('anothertest', TO_STRING(i)) }
-  INTO mycollection`,
-   "bindVars": { count: 300 },
-   "options": { fullCount: true }
+ db._query({
+   "query": `FOR i IN 200..@count INSERT
+ { _key: CONCAT('anothertest', TO_STRING(i)) }
+ INTO mycollection`,
+  "bindVars": { count: 300 },
+  "options": { fullCount: true }
   }).getExtra();
 ```
 

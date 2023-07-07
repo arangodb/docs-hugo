@@ -159,15 +159,15 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var coll = db._create("users", {
-    computedValues: [
-  {
-    name: "createdAt",
-    expression: "RETURN DATE_NOW()",
-    overwrite: true,
-    computeOn: ["insert"]
-  }
-    ]
+ var coll = db._create("users", {
+   computedValues: [
+ {
+   name: "createdAt",
+   expression: "RETURN DATE_NOW()",
+   overwrite: true,
+   computeOn: ["insert"]
+ }
+   ]
   });
   var doc = db.users.save({ name: "Paula Plant" });
   db.users.toArray();
@@ -187,15 +187,15 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var coll = db._create("users", {
-    computedValues: [
-  {
-    name: "modifiedAt",
-    expression: "RETURN ZIP(['date', 'time'], SPLIT(DATE_ISO8601(DATE_NOW()), 'T'))",
-    overwrite: false,
-    computeOn: ["update", "replace"]
-  }
-    ]
+ var coll = db._create("users", {
+   computedValues: [
+ {
+   name: "modifiedAt",
+   expression: "RETURN ZIP(['date', 'time'], SPLIT(DATE_ISO8601(DATE_NOW()), 'T'))",
+   overwrite: false,
+   computeOn: ["update", "replace"]
+ }
+   ]
   });
   var doc = db.users.save({ _key: "123", name: "Paula Plant" });
   doc = db.users.update("123", { email: "gardener@arangodb.com" });
@@ -217,14 +217,14 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var coll = db._create("users", {
-    computedValues: [
-  {
-    name: "searchTags",
-    expression: "RETURN APPEND(@doc.is[* FILTER CURRENT.public == true RETURN LOWER(CURRENT.name)], @doc.loves[* RETURN LOWER(CURRENT)])",
-    overwrite: true
-  }
-    ]
+ var coll = db._create("users", {
+   computedValues: [
+ {
+   name: "searchTags",
+   expression: "RETURN APPEND(@doc.is[* FILTER CURRENT.public == true RETURN LOWER(CURRENT.name)], @doc.loves[* RETURN LOWER(CURRENT)])",
+   overwrite: true
+ }
+   ]
   });
   var doc = db.users.save({ name: "Paula Plant", is: [ { name: "Gardener", public: true }, { name: "female" } ], loves: ["AVOCADOS", "Databases"] });
   var idx = db.users.ensureIndex({ type: "persistent", fields: ["searchTags[*]"] });
@@ -245,20 +245,20 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var coll = db._create("users", {
-    computedValues: [
-  {
-    name: "fullName",
-    expression: "RETURN @doc.firstName != null AND @doc.lastName != null ? CONCAT_SEPARATOR(' ', @doc.firstName, @doc.lastName) : null",
-    overwrite: false,
-    keepNull: false
-  }
-    ]
+ var coll = db._create("users", {
+   computedValues: [
+ {
+   name: "fullName",
+   expression: "RETURN @doc.firstName != null AND @doc.lastName != null ? CONCAT_SEPARATOR(' ', @doc.firstName, @doc.lastName) : null",
+   overwrite: false,
+   keepNull: false
+ }
+   ]
   });
-  var docs = db.users.save([
-    { firstName: "Paula", lastName: "Plant" },
-    { firstName: "James" },
-    { lastName: "Barrett", fullName: "Andy J. Barrett" }
+ var docs = db.users.save([
+   { firstName: "Paula", lastName: "Plant" },
+   { firstName: "James" },
+   { lastName: "Barrett", fullName: "Andy J. Barrett" }
   ]);
   db.users.toArray();
 ~ db._drop("users");
@@ -280,18 +280,18 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-  var coll = db._create("users", {
-    computedValues: [
-  {
-    name: "name",
-    expression: "RETURN IS_STRING(@doc.name.first) AND IS_STRING(@doc.name.last) ? MERGE(@doc.name, { 'full': CONCAT_SEPARATOR(' ', @doc.name.first, @doc.name.last) }) : @doc.name",
-    overwrite: true // must be true to replace the top-level "name" attribute
-  }
-    ]
+ var coll = db._create("users", {
+   computedValues: [
+ {
+   name: "name",
+   expression: "RETURN IS_STRING(@doc.name.first) AND IS_STRING(@doc.name.last) ? MERGE(@doc.name, { 'full': CONCAT_SEPARATOR(' ', @doc.name.first, @doc.name.last) }) : @doc.name",
+   overwrite: true // must be true to replace the top-level "name" attribute
+ }
+   ]
   });
-  var docs = db.users.save([
-    { name: { first: "James" } },
-    { name: { first: "Paula", last: "Plant" } }
+ var docs = db.users.save([
+   { name: { first: "James" } },
+   { name: { first: "Paula", last: "Plant" } }
   ]);
   db.users.toArray();
 ~ db._drop("users");

@@ -121,9 +121,9 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-  var formatPlan = function (plan) {
-    return { estimatedCost: plan.estimatedCost,
-  nodes: plan.nodes.map(function(node) {
+ var formatPlan = function (plan) {
+   return { estimatedCost: plan.estimatedCost,
+ nodes: plan.nodes.map(function(node) {
 return node.type; }) }; };
   formatPlan(stmt.explain().plan);
 ```
@@ -140,8 +140,8 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-  var stmt = db._createStatement(
-    `FOR doc IN @@collection FILTER doc.user == @user RETURN doc`
+ var stmt = db._createStatement(
+   `FOR doc IN @@collection FILTER doc.user == @user RETURN doc`
   );
 stmt.bind({ "@collection" : "_users", "user" : "root" });
 stmt.explain();
@@ -163,7 +163,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
-  var stmt = db._createStatement(
+ var stmt = db._createStatement(
 "FOR user IN _users FILTER user.user == 'root' RETURN user");
   stmt.explain({ allPlans: true }).plans.length;
 ```
@@ -181,7 +181,7 @@ server_name: stable
 type: single
 ---
 ~ var stmt = db._createStatement("FOR user IN _users FILTER user.user == 'root' RETURN user");
-  stmt.explain({ allPlans: true }).plans.map(
+ stmt.explain({ allPlans: true }).plans.map(
 function(plan) { return formatPlan(plan); });
 ```
 
@@ -205,7 +205,7 @@ server_name: stable
 type: single
 ---
 ~ var stmt = db._createStatement("FOR user IN _users FILTER user.user == 'root' RETURN user");
-  stmt.explain({ optimizer: {
+ stmt.explain({ optimizer: {
 rules: [ "-all", "+remove-redundant-calculations" ] } });
 ```
 

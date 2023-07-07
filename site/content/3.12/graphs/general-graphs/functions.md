@@ -188,10 +188,10 @@ type: single
 ---
   var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
-  graph._commonNeighbors(
-    'germanCity/Hamburg',
-    {},
-    {direction : 'outbound', maxDepth : 2},
+ graph._commonNeighbors(
+   'germanCity/Hamburg',
+   {},
+   {direction : 'outbound', maxDepth : 2},
 {direction : 'outbound', maxDepth : 2});
 ~ examples.dropGraph("routeplanner");
 ```
@@ -343,7 +343,7 @@ type: single
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-  graph._countCommonProperties({}, {}, {vertex1CollectionRestriction : 'germanCity',
+ graph._countCommonProperties({}, {}, {vertex1CollectionRestriction : 'germanCity',
   vertex2CollectionRestriction : 'germanCity' ,ignoreProperties: 'population'});
 ~ examples.dropGraph("routeplanner");
 ```
@@ -456,7 +456,7 @@ type: single
 ---
   var examples = require("@arangodb/graph-examples/example-graph");
   var g = examples.loadGraph("routeplanner");
-  g._shortestPath({}, {}, {weight : 'distance', endVertexCollectionRestriction : 'frenchCity',
+ g._shortestPath({}, {}, {weight : 'distance', endVertexCollectionRestriction : 'frenchCity',
   startVertexCollectionRestriction : 'germanCity'});
 ~ examples.dropGraph("routeplanner");
 ```
@@ -474,7 +474,7 @@ type: single
 ---
   var examples = require("@arangodb/graph-examples/example-graph");
   var g = examples.loadGraph("routeplanner");
-  g._shortestPath([{_id: 'germanCity/Cologne'},{_id: 'germanCity/Munich'}], 'frenchCity/Lyon',
+ g._shortestPath([{_id: 'germanCity/Cologne'},{_id: 'germanCity/Munich'}], 'frenchCity/Lyon',
   {weight : 'distance'});
 ~ examples.dropGraph("routeplanner");
 ```
@@ -503,7 +503,7 @@ type: single
 ---
   var examples = require("@arangodb/graph-examples/example-graph");
   var g = examples.loadGraph("routeplanner");
-  g._distanceTo({}, {}, {weight : 'distance', endVertexCollectionRestriction : 'frenchCity',
+ g._distanceTo({}, {}, {weight : 'distance', endVertexCollectionRestriction : 'frenchCity',
   startVertexCollectionRestriction : 'germanCity'});
 ~ examples.dropGraph("routeplanner");
 ```
@@ -521,7 +521,7 @@ type: single
 ---
   var examples = require("@arangodb/graph-examples/example-graph");
   var g = examples.loadGraph("routeplanner");
-  g._distanceTo([{_id: 'germanCity/Cologne'},{_id: 'germanCity/Munich'}], 'frenchCity/Lyon',
+ g._distanceTo([{_id: 'germanCity/Cologne'},{_id: 'germanCity/Munich'}], 'frenchCity/Lyon',
   {weight : 'distance'});
 ~ examples.dropGraph("routeplanner");
 ```
@@ -604,7 +604,7 @@ type: single
 ---
   var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
-  graph._absoluteEccentricity({}, {startVertexCollectionRestriction : 'germanCity',
+ graph._absoluteEccentricity({}, {startVertexCollectionRestriction : 'germanCity',
   direction : 'outbound', weight : 'distance'});
 ~ examples.dropGraph("routeplanner");
 ```
@@ -733,7 +733,7 @@ type: single
 ---
   var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("routeplanner");
-  graph._absoluteCloseness({}, {startVertexCollectionRestriction : 'germanCity',
+ graph._absoluteCloseness({}, {startVertexCollectionRestriction : 'germanCity',
   direction : 'outbound', weight : 'distance'});
 ~ examples.dropGraph("routeplanner");
 ```

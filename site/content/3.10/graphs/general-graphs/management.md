@@ -213,7 +213,7 @@ server_name: stable
 type: single
 ---
   var graph_module = require("@arangodb/general-graph");
-  graph = graph_module._create("myGraph",
+ graph = graph_module._create("myGraph",
   [graph_module._relation("myRelation", ["male", "female"], ["male", "female"])], ["sessions"]);
 ~ graph_module._drop("myGraph", true);
 ```
@@ -234,8 +234,8 @@ type: single
   var graph_module = require("@arangodb/general-graph");
   var edgeDefinitions = graph_module._edgeDefinitions();
   graph_module._extendEdgeDefinitions(edgeDefinitions, graph_module._relation("friend_of", "Customer", "Customer"));
-  graph_module._extendEdgeDefinitions(
-  edgeDefinitions, graph_module._relation(
+ graph_module._extendEdgeDefinitions(
+ edgeDefinitions, graph_module._relation(
   "has_bought", ["Customer", "Company"], ["Groceries", "Electronics"]));
   graph_module._create("myStore", edgeDefinitions);
 ~ graph_module._drop("myStore");
@@ -259,8 +259,8 @@ server_name: stable
 type: single
 ---
   var graph_module = require("@arangodb/general-graph");
-   var edgeDefinitions = graph_module._edgeDefinitions(
-   graph_module._relation("friend_of", ["Customer"], ["Customer"]), graph_module._relation(
+  var edgeDefinitions = graph_module._edgeDefinitions(
+  graph_module._relation("friend_of", ["Customer"], ["Customer"]), graph_module._relation(
    "has_bought", ["Customer", "Company"], ["Groceries", "Electronics"]));
   graph_module._create("myStore", edgeDefinitions);
 ~ graph_module._drop("myStore");
@@ -816,9 +816,9 @@ type: single
 ---
   var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("social");
-  graph.relation.save({
-    _from: "male/bob",
-    _to: "female/alice",
+ graph.relation.save({
+   _from: "male/bob",
+   _to: "female/alice",
 _key: "bobAndAlice", type: "married" });
 ~ examples.dropGraph("social");
 ```
@@ -837,9 +837,9 @@ type: single
 ---
   var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("social");
-    graph.relation.save(
-     "relation/aliceAndBob",
-      "female/alice",
+ graph.relation.save(
+  "relation/aliceAndBob",
+   "female/alice",
  {type: "married", _key: "bobAndAlice"}); // xpError(ERROR_GRAPH_INVALID_EDGE)
 ~ examples.dropGraph("social");
 ```

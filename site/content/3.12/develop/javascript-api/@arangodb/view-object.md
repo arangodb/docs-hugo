@@ -114,11 +114,11 @@ type: single
 ---
   ~ db._createView("example", "arangosearch");
 v = db._view("example");
-    v.properties();
+ v.properties();
 // set cleanupIntervalStep to 12
-    v.properties({cleanupIntervalStep: 12});
+ v.properties({cleanupIntervalStep: 12});
 // add a link
-    v.properties({links: {demo: {}}})
+ v.properties({links: {demo: {}}})
 // remove a link
 v.properties({links: {demo: null}})
   ~ db._dropView("example");
@@ -139,15 +139,15 @@ type: single
   ~ db.coll.ensureIndex({ name: "inv1", type: "inverted", fields: ["a"] });
   ~ db.coll.ensureIndex({ name: "inv2", type: "inverted", fields: ["b[*]"] });
   ~ db.coll.ensureIndex({ name: "inv3", type: "inverted", fields: ["c"] });
-  ~ db._createView("example", "search-alias", { indexes: [
-  ~  { collection: "coll", index: "inv1" },
-  ~  { collection: "coll", index: "inv2" }
+~ db._createView("example", "search-alias", { indexes: [
+~  { collection: "coll", index: "inv1" },
+~  { collection: "coll", index: "inv2" }
   ~ ] });
 var v = db._view("example");
 v.properties();
-    v.properties({ indexes: [
-      { collection: "coll", index: "inv1", operation: "del" },
-      { collection: "coll", index: "inv3" }
+ v.properties({ indexes: [
+   { collection: "coll", index: "inv1", operation: "del" },
+   { collection: "coll", index: "inv3" }
 ] });
   ~ db._dropView("example");
   ~ db._drop("coll");
@@ -201,7 +201,7 @@ version: '3.12'
 server_name: stable
 type: single
 ---
-    v = db._createView("example", "arangosearch");
+ v = db._createView("example", "arangosearch");
   // or
   v = db._view("example");
   v.drop();

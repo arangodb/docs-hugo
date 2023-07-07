@@ -87,7 +87,7 @@ type: single
 ~db._create("test");
 ~db.test.ensureIndex({ type: "persistent", fields: ["attribute"], unique: true });
 ~db.test.ensureIndex({ type: "persistent", fields: ["uniqueAttribute"], unique: true });
- ~db.test.ensureIndex({ type: "persistent", fields: [
+~db.test.ensureIndex({ type: "persistent", fields: [
 "attribute", "secondAttribute.subAttribute"] });
 db.test.getIndexes();
 ~db._drop("test");

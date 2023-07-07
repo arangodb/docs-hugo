@@ -731,10 +731,10 @@ type: single
 ---
 ~db._create("geoSort")
 db.geoSort.ensureIndex({ type: "geo", fields: [ "latitude", "longitude" ] });
-  for (i = -90;  i <= 90;  i += 10) {
-  for (j = -180; j <= 180; j += 10) {
-  db.geoSort.save({ name : "Name/" + i + "/" + j, latitude : i, longitude : j });
-  }
+ for (i = -90;  i <= 90;  i += 10) {
+ for (j = -180; j <= 180; j += 10) {
+ db.geoSort.save({ name : "Name/" + i + "/" + j, latitude : i, longitude : j });
+ }
   }
 var query = "FOR doc in geoSort SORT DISTANCE(doc.latitude, doc.longitude, 0, 0) LIMIT 5 RETURN doc"
 db._explain(query, {}, {colors: false});
@@ -755,10 +755,10 @@ type: single
 ---
 ~db._create("geoFilter")
 db.geoFilter.ensureIndex({ type: "geo", fields: [ "latitude", "longitude" ] });
-  for (i = -90;  i <= 90;  i += 10) {
-  for (j = -180; j <= 180; j += 10) {
-  db.geoFilter.save({ name : "Name/" + i + "/" + j, latitude : i, longitude : j });
-  }
+ for (i = -90;  i <= 90;  i += 10) {
+ for (j = -180; j <= 180; j += 10) {
+ db.geoFilter.save({ name : "Name/" + i + "/" + j, latitude : i, longitude : j });
+ }
   }
 var query = "FOR doc in geoFilter FILTER DISTANCE(doc.latitude, doc.longitude, 0, 0) < 2000 RETURN doc"
 db._explain(query, {}, {colors: false});

@@ -20,8 +20,8 @@ version: '3.12'
 server_name: stable
 type: single
 ---
- for (var i = 0; i < 10; i ++) {
-  require("@arangodb").print("Hello world " + i + "!\n");
+for (var i = 0; i < 10; i ++) {
+ require("@arangodb").print("Hello world " + i + "!\n");
 }
 ```
 

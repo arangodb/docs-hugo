@@ -883,9 +883,9 @@ type: single
 ~ db._drop("example");
 ~ db._create("example");
   keys = [ ];
-  for (var i = 0; i < 10; ++i) {
-    db.example.insert({ _key: "test" + i, value: i });
-    keys.push("test" + i);
+ for (var i = 0; i < 10; ++i) {
+   db.example.insert({ _key: "test" + i, value: i });
+   keys.push("test" + i);
   }
   db.example.documents(keys);
 ~ db._drop("example");
@@ -1147,8 +1147,8 @@ type: single
 ---
 ~ db._create("example");
   var arr = [];
-  for (var i = 0;  i < 10;  i++) {
-    arr.push({ i });
+ for (var i = 0;  i < 10;  i++) {
+   arr.push({ i });
   }
   var meta = db.example.save(arr);
   var data = [];
@@ -1334,9 +1334,9 @@ type: single
 ~ db._drop("example");
 ~ db._create("example");
   keys = [ ];
-  for (var i = 0; i < 10; ++i) {
-    db.example.insert({ _key: "test" + i, value: i });
-    keys.push("test" + i);
+ for (var i = 0; i < 10; ++i) {
+   db.example.insert({ _key: "test" + i, value: i });
+   keys.push("test" + i);
   }
   db.example.removeByKeys(keys);
 ~ db._drop("example");
@@ -1648,12 +1648,12 @@ type: single
 ~ db._create("example");
 ~ var myid = db.example.insert({_key: "19988371"});
   db.example.insert({"a" : 1});
- db.example.update("example/19988371",
+db.example.update("example/19988371",
    { "b" : null, "c" : null, "d" : 3 });
   db.example.document("example/19988371");
   db.example.update("example/19988371", { "a" : null }, false, false);
   db.example.document("example/19988371");
-  db.example.update("example/19988371",
+ db.example.update("example/19988371",
 { "b" : null, "c": null, "d" : null }, false, false);
   db.example.document("example/19988371");
 ~ db._drop("example");
@@ -1672,13 +1672,13 @@ type: single
 ---
 ~ db._create("example");
 ~ var myid = db.example.insert({_key: "20774803"});
-   db.example.insert({"a" : { "one" : 1, "two" : 2, "three" : 3 },
+  db.example.insert({"a" : { "one" : 1, "two" : 2, "three" : 3 },
   "b" : { }});
-  db.example.update("example/20774803", {"a" : { "four" : 4 },
+ db.example.update("example/20774803", {"a" : { "four" : 4 },
  "b" : { "b1" : 1 }});
   db.example.document("example/20774803");
-  db.example.update("example/20774803", { "a" : { "one" : null },
-  "b" : null },
+ db.example.update("example/20774803", { "a" : { "one" : null },
+ "b" : null },
 false, false);
   db.example.document("example/20774803");
 ~ db._drop("example");
@@ -1780,7 +1780,7 @@ type: single
   var myGraph = {};
   myGraph.v1 = db.vertex.insert({ name : "vertex 1" });
   myGraph.v2 = db.vertex.insert({ name : "vertex 2" });
-  myGraph.e1 = db.relation.insert(myGraph.v1, myGraph.v2,
+ myGraph.e1 = db.relation.insert(myGraph.v1, myGraph.v2,
   { label : "knows"});
   db._document(myGraph.e1);
   db.relation.edges(myGraph.e1._id);
@@ -1814,7 +1814,7 @@ type: single
 ~ var myGraph = {};
   myGraph.v1 = db.vertex.insert({ name : "vertex 1" });
   myGraph.v2 = db.vertex.insert({ name : "vertex 2" });
-  myGraph.e1 = db.relation.insert(myGraph.v1, myGraph.v2,
+ myGraph.e1 = db.relation.insert(myGraph.v1, myGraph.v2,
   { label : "knows"});
   db._document(myGraph.e1);
   db.relation.inEdges(myGraph.v1._id);
@@ -1850,7 +1850,7 @@ type: single
 ~ var myGraph = {};
   myGraph.v1 = db.vertex.insert({ name : "vertex 1" });
   myGraph.v2 = db.vertex.insert({ name : "vertex 2" });
-  myGraph.e1 = db.relation.insert(myGraph.v1, myGraph.v2,
+ myGraph.e1 = db.relation.insert(myGraph.v1, myGraph.v2,
   { label : "knows"});
   db._document(myGraph.e1);
   db.relation.outEdges(myGraph.v1._id);

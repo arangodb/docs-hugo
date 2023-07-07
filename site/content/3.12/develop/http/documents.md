@@ -2531,9 +2531,9 @@ type: single
     db._drop(cn);
     db._create(cn, { waitForSync: true });
 
-  | var documents = db.products.save( [
-  |   { "_key": "1", "type": "tv" },
-  |   { "_key": "2", "type": "cookbook" }
+ var documents = db.products.save( [
+   { "_key": "1", "type": "tv" },
+   { "_key": "2", "type": "cookbook" }
     ] );
 
     var url = "/_api/document/" + cn;
@@ -2565,9 +2565,9 @@ type: single
     db._drop(cn);
     db._create(cn, { waitForSync: true });
 
-  | var documents = db.products.save( [
-  |   { "_key": "1", "type": "tv" },
-  |   { "_key": "2", "type": "cookbook" }
+ var documents = db.products.save( [
+   { "_key": "1", "type": "tv" },
+   { "_key": "2", "type": "cookbook" }
     ] );
 
     var url = "/_api/document/" + cn;
@@ -2599,9 +2599,9 @@ type: single
     db._drop(cn);
     db._create(cn, { waitForSync: true });
 
-  | var documents = db.products.save( [
-  |   { "_key": "1", "type": "tv" },
-  |   { "_key": "2", "type": "cookbook" }
+ var documents = db.products.save( [
+   { "_key": "1", "type": "tv" },
+   { "_key": "2", "type": "cookbook" }
     ] );
 
     var url = "/_api/document/" + cn;
@@ -2634,9 +2634,9 @@ type: single
     db._create(cn, { waitForSync: true });
     db._create("other", { waitForSync: true });
 
-  | var documents = db.products.save( [
-  |   { "_key": "1", "type": "tv" },
-  |   { "_key": "2", "type": "cookbook" }
+ var documents = db.products.save( [
+   { "_key": "1", "type": "tv" },
+   { "_key": "2", "type": "cookbook" }
     ] );
     db.products.remove(documents);
     db.other.save( { "_key": "2" } );
@@ -2647,9 +2647,9 @@ type: single
     var response = logCurlRequest('DELETE', url, body);
 
     assert(response.code === 202);
-  | response.parsedBody.forEach(function(doc) {
-  |   assert(doc.error === true);
-  |   assert(doc.errorNum === 1202);
+ response.parsedBody.forEach(function(doc) {
+   assert(doc.error === true);
+   assert(doc.errorNum === 1202);
     });
 
     logJsonResponse(response);
@@ -2674,15 +2674,15 @@ type: single
     db._drop(cn);
     db._create(cn, { waitForSync: true });
 
-  | var documents = db.products.save( [
-  |   { "_key": "1", "type": "tv" },
-  |   { "_key": "2", "type": "cookbook" }
+ var documents = db.products.save( [
+   { "_key": "1", "type": "tv" },
+   { "_key": "2", "type": "cookbook" }
     ] );
 
     var url = "/_api/document/" + cn + "?ignoreRevs=false";
-  | var body = [
-  |   { "_key": "1", "_rev": documents[0]._rev },
-  |   { "_key": "2", "_rev": documents[1]._rev }
+ var body = [
+   { "_key": "1", "_rev": documents[0]._rev },
+   { "_key": "2", "_rev": documents[1]._rev }
     ];
 
     var response = logCurlRequest('DELETE', url, body);
@@ -2710,23 +2710,23 @@ type: single
     db._drop(cn);
     db._create(cn, { waitForSync: true });
 
-  | var documents = db.products.save( [
-  |   { "_key": "1", "type": "tv" },
-  |   { "_key": "2", "type": "cookbook" }
+ var documents = db.products.save( [
+   { "_key": "1", "type": "tv" },
+   { "_key": "2", "type": "cookbook" }
     ] );
 
     var url = "/_api/document/" + cn + "?ignoreRevs=false";
-  | var body = [
-  |   { "_key": "1", "_rev": "non-matching revision" },
-  |   { "_key": "2", "_rev": "non-matching revision" }
+ var body = [
+   { "_key": "1", "_rev": "non-matching revision" },
+   { "_key": "2", "_rev": "non-matching revision" }
     ];
 
     var response = logCurlRequest('DELETE', url, body);
 
     assert(response.code === 202);
-  | response.parsedBody.forEach(function(doc) {
-  |   assert(doc.error === true);
-  |   assert(doc.errorNum === 1200);
+ response.parsedBody.forEach(function(doc) {
+   assert(doc.error === true);
+   assert(doc.errorNum === 1200);
     });
 
     logJsonResponse(response);

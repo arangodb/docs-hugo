@@ -51,9 +51,9 @@ version: '3.10'
 server_name: stable
 type: single
 ---
-  db._query('FOR c IN @@collection FILTER c._key == @key RETURN c._key', {
-    '@collection': 'mycollection', 
-    'key': 'testKey'
+ db._query('FOR c IN @@collection FILTER c._key == @key RETURN c._key', {
+   '@collection': 'mycollection', 
+   'key': 'testKey'
   }).toArray();
 ```
 
@@ -91,8 +91,8 @@ server_name: stable
 type: single
 ---
   var key = 'testKey';
-  db._query(
-    aql`FOR c IN mycollection FILTER c._key == ${key} RETURN c._key`
+ db._query(
+   aql`FOR c IN mycollection FILTER c._key == ${key} RETURN c._key`
   ).toArray();
 ```
 
@@ -131,8 +131,8 @@ version: '3.10'
 server_name: stable
 type: single
 ---
-  db._query(`FOR i IN 1..100
-    INSERT { _key: CONCAT('test', TO_STRING(i)) } INTO mycollection`
+ db._query(`FOR i IN 1..100
+   INSERT { _key: CONCAT('test', TO_STRING(i)) } INTO mycollection`
   ).getExtra();
 ```
 
@@ -169,11 +169,11 @@ version: '3.10'
 server_name: stable
 type: single
 ---
-  var cursor = db._query(
-    'FOR i IN 1..42 RETURN i',
-    {},
-    { count: true },
-    {}
+ var cursor = db._query(
+   'FOR i IN 1..42 RETURN i',
+   {},
+   { count: true },
+   {}
   );
   cursor.count();
   cursor.toArray().length;
@@ -194,11 +194,11 @@ version: '3.10'
 server_name: stable
 type: single
 ---
-  db._query(
-    'FOR i IN 1..3 RETURN i',
-    {},
-    { batchSize: 2 },
-    {}
+ db._query(
+   'FOR i IN 1..3 RETURN i',
+   {},
+   { batchSize: 2 },
+   {}
   ).toArray(); // full result retrieved in two batches
 ```
 
@@ -221,11 +221,11 @@ version: '3.10'
 server_name: stable
 type: single
 ---
-  db._query(
-    'FOR i IN 1..2000 RETURN i',
-    {},
-    { ttl: 5 },
-    {}
+ db._query(
+   'FOR i IN 1..2000 RETURN i',
+   {},
+   { ttl: 5 },
+   {}
   ).toArray(); // Each batch needs to be fetched within 5 seconds
 ```
 
@@ -245,11 +245,11 @@ version: '3.10'
 server_name: stable
 type: single
 ---
-  db._query(
-    'FOR i IN 1..2000 RETURN i',
-    {},
-    { cache: true },
-    {}
+ db._query(
+   'FOR i IN 1..2000 RETURN i',
+   {},
+   { cache: true },
+   {}
   ).toArray(); // result may get taken from cache
 ```
 
@@ -271,10 +271,10 @@ version: '3.10'
 server_name: stable
 type: single
 ---
-  db._query(
-    'FOR i IN 1..100000 SORT i RETURN i',
-    {},
-    { memoryLimit: 100000 }
+ db._query(
+   'FOR i IN 1..100000 SORT i RETURN i',
+   {},
+   { memoryLimit: 100000 }
   ).toArray(); // xpError(ERROR_RESOURCE_LIMIT)
 ```
 
@@ -546,13 +546,13 @@ type: single
 ~ db.users.save({ name: "Gerhard" });
 ~ db.users.save({ name: "Helmut" });
 ~ db.users.save({ name: "Angela" });
-  var result = db.users.all().toArray();
-  print(result);
-  var q = db._query("FOR x IN users RETURN x");
-  result = [ ];
-  while (q.hasNext()) {
-    result.push(q.next());
-  }
+ var result = db.users.all().toArray();
+ print(result);
+ var q = db._query("FOR x IN users RETURN x");
+ result = [ ];
+ while (q.hasNext()) {
+   result.push(q.next());
+ }
   print(result);
 ~ db._drop("users")
 ```
@@ -573,18 +573,18 @@ type: single
 ~ db.users.save({ name: "Gerhard" });
 ~ db.users.save({ name: "Helmut" });
 ~ db.users.save({ name: "Angela" });
-  var result = [ ];
-  var q = db.users.all();
-  q.execute(1);
-  while(q.hasNext()) {
-    result.push(q.next());
-  }
-  print(result);
-  result = [ ];
-  q = db._query("FOR x IN users RETURN x", {}, { batchSize: 1 });
-  while (q.hasNext()) {
-    result.push(q.next());
-  }
+ var result = [ ];
+ var q = db.users.all();
+ q.execute(1);
+ while(q.hasNext()) {
+   result.push(q.next());
+ }
+ print(result);
+ result = [ ];
+ q = db._query("FOR x IN users RETURN x", {}, { batchSize: 1 });
+ while (q.hasNext()) {
+   result.push(q.next());
+ }
   print(result);
 ~ db._drop("users")
 ```
@@ -702,12 +702,12 @@ version: '3.10'
 server_name: stable
 type: single
 ---
-  stmt = db._createStatement( { 
-    "query": "FOR i IN [ @one, @two ] RETURN i * 2", 
-    "bindVars": { 
-  "one": 1, 
-  "two": 2 
-    } 
+ stmt = db._createStatement( { 
+   "query": "FOR i IN [ @one, @two ] RETURN i * 2", 
+   "bindVars": { 
+ "one": 1, 
+ "two": 2 
+   } 
   });
 ```
 
@@ -726,8 +726,8 @@ version: '3.10'
 server_name: stable
 type: single
 ---
-  stmt = db._createStatement( {
-    "query": "FOR i IN [ 1, 2, 3, 4 ] RETURN i",
+ stmt = db._createStatement( {
+   "query": "FOR i IN [ 1, 2, 3, 4 ] RETURN i",
 "count": true } );
 ```
 
@@ -781,8 +781,8 @@ version: '3.10'
 server_name: stable
 type: single
 ---
-  stmt = db._createStatement( {
-    "query": "FOR i IN [ 1, 2, 3, 4 ] RETURN i",
+ stmt = db._createStatement( {
+   "query": "FOR i IN [ 1, 2, 3, 4 ] RETURN i",
 options: {"profile": true}} );
 ```
 

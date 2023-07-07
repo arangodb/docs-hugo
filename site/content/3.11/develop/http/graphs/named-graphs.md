@@ -693,8 +693,8 @@ type: single
 ---
 
   var graph = require("@arangodb/general-graph");
-| if (graph._exists("myGraph")) {
-|    graph._drop("myGraph", true);
+ if (graph._exists("myGraph")) {
+    graph._drop("myGraph", true);
   }
   var url = "/_api/gharial";
   body = {
@@ -730,8 +730,8 @@ type: single
 ---
 
   var graph = require("@arangodb/general-graph");
-| if (graph._exists("smartGraph")) {
-|    graph._drop("smartGraph", true);
+ if (graph._exists("smartGraph")) {
+    graph._drop("smartGraph", true);
   }
   var url = "/_api/gharial";
   body = {
@@ -776,8 +776,8 @@ type: single
 ---
 
 var graph = require("@arangodb/general-graph");
-| if (graph._exists("disjointSmartGraph")) {
-|    graph._drop("disjointSmartGraph", true);
+ if (graph._exists("disjointSmartGraph")) {
+    graph._drop("disjointSmartGraph", true);
 }
 var url = "/_api/gharial";
 body = {
@@ -824,8 +824,8 @@ type: single
 ---
 
 var graph = require("@arangodb/general-graph");
-| if (graph._exists("smartGraph")) {
-|    graph._drop("smartGraph", true);
+ if (graph._exists("smartGraph")) {
+    graph._drop("smartGraph", true);
 }
 var url = "/_api/gharial";
 body = {
@@ -869,8 +869,8 @@ type: single
 ---
 
 var graph = require("@arangodb/general-graph");
-| if (graph._exists("enterpriseGraph")) {
-|    graph._drop("enterpriseGraph", true);
+ if (graph._exists("enterpriseGraph")) {
+    graph._drop("enterpriseGraph", true);
 }
 var url = "/_api/gharial";
 body = {
@@ -914,8 +914,8 @@ type: single
 ---
 
 var graph = require("@arangodb/general-graph");
-| if (graph._exists("satelliteGraph")) {
-|    graph._drop("satelliteGraph", true);
+ if (graph._exists("satelliteGraph")) {
+    graph._drop("satelliteGraph", true);
 }
 var url = "/_api/gharial";
 body = {
@@ -1133,8 +1133,8 @@ type: single
 ---
 
   var graph = require("@arangodb/general-graph");
-| if (graph._exists("myGraph")) {
-|    graph._drop("myGraph", true);
+ if (graph._exists("myGraph")) {
+    graph._drop("myGraph", true);
   }
   graph._create("myGraph", [{
     collection: "edges",

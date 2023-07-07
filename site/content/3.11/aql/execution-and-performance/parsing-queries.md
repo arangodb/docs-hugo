@@ -29,7 +29,7 @@ version: '3.11'
 server_name: stable
 type: single
 ---
- var stmt = db._createStatement(
+var stmt = db._createStatement(
   "FOR doc IN @@collection FILTER doc.foo == @bar RETURN doc");
 stmt.parse();
 ~removeIgnoreCollection("mycollection")

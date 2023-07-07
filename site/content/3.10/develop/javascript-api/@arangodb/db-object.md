@@ -510,7 +510,7 @@ version: '3.10'
 server_name: stable
 type: single
 ---
-  db._create("users",
+ db._create("users",
  { keyOptions: { type: "autoincrement", offset: 10, increment: 5 } });
   db.users.save({ name: "user 1" });
   db.users.save({ name: "user 2" });
@@ -1060,7 +1060,7 @@ type: single
 ---
 ~ db._create("example");
 db.example.insert({ _key: "11265325374", a:  1 } );
-  db.example.remove("example/11265325374",
+ db.example.remove("example/11265325374",
    { overwrite: true, waitForSync: false})
 ~ db._drop("example");
 ```
@@ -1140,7 +1140,7 @@ server_name: stable
 type: single
 ---
 ~ db._createView("example", "arangosearch", {});
-    view = db._view("example");
+ view = db._view("example");
   // or, alternatively
   view = db["example"]
 ~ db._dropView("example");

@@ -1352,8 +1352,8 @@ type: single
 ~ var analyzer = analyzers.save("text_en_offset", "text", { locale: "en", stopwords: [] }, ["frequency", "norm", "position", "offset"]);
 ~ db._createView("food_view", "arangosearch", { links: { food: { fields: { description: { fields: { en: { analyzers: ["text_en_offset"] } } } } } } });
 ~ assert(db._query(`FOR d IN food_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 2);
-  db._query(`FOR doc IN food_view
-    SEARCH ANALYZER(TOKENS("avocado tomato", "text_en_offset") ANY == doc.description.en, "text_en_offset")
+ db._query(`FOR doc IN food_view
+   SEARCH ANALYZER(TOKENS("avocado tomato", "text_en_offset") ANY == doc.description.en, "text_en_offset")
 RETURN OFFSET_INFO(doc, ["description.en"])`);
 ~ db._dropView("food_view");
 ~ db._drop("food");
