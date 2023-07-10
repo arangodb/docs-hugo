@@ -10,8 +10,6 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-var collectionsToIgnore = new(common.IgnoreCollections)
-
 type HTTPSpecRequest struct {
 	Filename string                 // The markdown file that triggered the openapi call
 	ApiSpec  map[string]interface{} `json:"spec"` // The swagger specification
@@ -19,10 +17,6 @@ type HTTPSpecRequest struct {
 
 type HTTPResponse struct {
 	ApiSpec map[string]interface{} `json:"spec"`
-}
-
-func init() {
-	collectionsToIgnore.ToIgnore = make(map[string]bool)
 }
 
 // Reads the Hugo openapi request, get the calling file and unmarshal the yaml spec

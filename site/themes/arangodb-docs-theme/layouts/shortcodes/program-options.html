@@ -1,6 +1,6 @@
 {{ $program := .Get "name" }}
 
-{{ $pageVersion := .Page.Scratch.Get "versionShort" }}
+{{ $pageVersion := .Page.Store.Get "versionShort" }}
 
 {{ $dataFolderByVersion := index site.Data $pageVersion }}
 {{ $options := index $dataFolderByVersion $program }}

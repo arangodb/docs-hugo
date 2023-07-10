@@ -51,7 +51,7 @@ func StartController(url string) {
 
 // Handler for the js codeblocks
 func JSHandler(w http.ResponseWriter, r *http.Request) {
-	request, err := common.ParseExample(r.Body, common.JS)
+	request, err := common.ParseExample(r.Body, r.Header, common.JS)
 	if err != nil {
 		common.Logger.Printf("[js/CONTROLLER] Error parsing request %s\n", err.Error())
 		return
@@ -72,7 +72,7 @@ func JSHandler(w http.ResponseWriter, r *http.Request) {
 
 // Handler for curl codeblocks
 func HTTPExampleHandler(w http.ResponseWriter, r *http.Request) {
-	request, err := common.ParseExample(r.Body, common.HTTP)
+	request, err := common.ParseExample(r.Body, r.Header, common.HTTP)
 	if err != nil {
 		common.Logger.Printf("[curl/CONTROLLER] Error parsing request %s\n", err.Error())
 		return
@@ -97,7 +97,7 @@ func HTTPExampleHandler(w http.ResponseWriter, r *http.Request) {
 
 // Handler for aql codeblocks
 func AQLHandler(w http.ResponseWriter, r *http.Request) {
-	request, err := common.ParseExample(r.Body, common.AQL)
+	request, err := common.ParseExample(r.Body, r.Header, common.AQL)
 	if err != nil {
 		common.Logger.Printf("[aql/CONTROLLER] Error parsing request %s\n", err.Error())
 		return
