@@ -82,7 +82,6 @@
     font-weight: bold;
     --tw-bg-opacity: 0.2;
     background-color: rgb(188 180 196/var(--tw-bg-opacity));
-    border-top-left-radius: 0.75rem;
-    border-bottom-left-radius: 0.75rem;
+    border-radius: 0.75rem;
 }
 
