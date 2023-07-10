@@ -12,7 +12,12 @@ function replaceArticle(href, newDoc) {
   }
 }
 
+
 function updateHistory(title, url) {
+  if (url == window.location.href) {
+    return
+  } 
+  
   window.history.pushState("navchange", "ArangoDB Documentation", url);
 
   var _hsq = window._hsq = window._hsq || [];
@@ -31,34 +36,15 @@ function styleImages() {
   }
 }
 
-function showSidebarHandler() {
-  document.querySelector("#sidebar-toggle-navigation").addEventListener("click", e => {
-    if (showSidenav) {
-        $("#sidebar").removeClass("active");
-        showSidenav = false;
-        return
-    }
-
-    $("#sidebar").addClass("active");
-    showSidenav = true;
-    e.preventDefault();
-});
-}
-
-
 
 function loadPage(target) {
   var href = target;
-  if (href == window.location.href) {
-      return
-  }
   var url = href.replace(/#.*$/, "");
   $.get({
     url: url,
     success: function(newDoc) {
       replaceArticle(href, newDoc)
       initArticle(url);
-      updateHistory(title, url);
       return true;
     }
   });
@@ -69,13 +55,11 @@ function loadPage(target) {
 
 function initArticle(url) {
   renderVersion();
-  loadMenu(url)
+  loadMenu(url);
   moveTags();
   initCopyToClipboard();
   initClickHandlers();
   generateToc();
   goToTop();
   styleImages();
-  showSidebarHandler();
-  
 }
