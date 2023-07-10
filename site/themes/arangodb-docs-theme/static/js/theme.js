@@ -529,7 +529,7 @@ var showSidenav = true;
 function goToHomepage(event){
     event.preventDefault();
     var origin = window.location.origin;
-    loadPage(origin);
+    updateHistory("", origin);
 }
 
 function copyURI(evt) {
@@ -565,3 +565,13 @@ function moveTags() {
         tag.remove();
     }
 }
+
+$(window).on('popstate', function (e) {
+    console.log("intercet popstate")
+    var state = e.originalEvent.state;
+    if (state !== null) {
+      console.log("load page");
+      console.log(window.location.href)
+      loadPage(window.location.href);
+    }
+  });

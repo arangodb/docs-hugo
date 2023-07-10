@@ -187,7 +187,6 @@ img {
     height: auto !important;
     width: auto !important;
     max-height: 100%;
-    margin-bottom: 1rem;
 }
 
 .version-selector {
@@ -444,13 +443,9 @@ label {
         display: none !important;
     }
     #breadcrumbs {
-        z-index:1;
-        height: 2.9rem;
-        /* right: 0rem; */
-        padding-left: 2rem;
-    }
-    #breadcrumbs > ol {
-        display: none;
+        z-index: 1;
+        white-space: break-spaces;
+        margin-top: 1rem;
     }
     .searchbox.default-animation {
         font-size: 16px;
@@ -458,11 +453,6 @@ label {
         line-height: 40px;
         width: 14em;
         z-index: 99999;
-        /* position: fixed; */
-        /* top: 4.1em; */
-        /* padding-left: 1.7em; */
-        /* display: flex; */
-        /* right: 1rem; */
         display: block;
     }
     #search-by {
@@ -494,6 +484,12 @@ article.default {
 @media screen and (max-width: 1200px) {
     article.default {
         margin: 0 1em 0 1em;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    article.default {
+        margin: 16px 32px 64px;
     }
 }
 
@@ -617,7 +613,7 @@ nav.pagination {
 }
 
 pre code {
-    color:rgb(216, 222, 233);
+    color: rgb(61 63 66);
 }
 
 code, p code {
@@ -872,6 +868,21 @@ div.box > .box-content-container > .box-content > .box-text > p {
     text-decoration: none;
     color: #444;
     background: 0 0;
+}
+
+.edit-page > .edit-page-icon:after {
+    content: "Contribute";
+    margin-left: 10px;
+    font-family: var(--MAIN-FONT);
+}
+
+@media screen and (max-width: 480px) {
+    .edit-page {
+        margin-right: 0;
+    }
+    .edit-page > .edit-page-icon:after {
+        content: "";
+    }
 }
 
 footer {

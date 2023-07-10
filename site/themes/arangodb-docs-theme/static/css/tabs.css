@@ -2,7 +2,7 @@
     background: none;
     transition: 0.4s;
     position: absolute;
-    left: 97%;
+    right: 16px;
 }
 
 .copy-to-clipboard-button::before {
@@ -25,6 +25,7 @@
     word-break: break-word;
     white-space: break-spaces;
     color: var(--CODEBLOCK-TEXT-COLOR);
+    padding-right: 18px;
 }
 
 pre {

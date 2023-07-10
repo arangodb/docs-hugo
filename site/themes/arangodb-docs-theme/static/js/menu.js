@@ -25,7 +25,7 @@ function menuEntryClick(event) {
     console.log("redirecting to")
     console.log(event.target.pathname)
 
-    loadPage(event.target.getAttribute('href'));
+    updateHistory("", event.target.getAttribute('href'));
 }
 
 function renderVersion() {
@@ -64,3 +64,7 @@ function loadMenu(url) {
         current = current.parent();
     }
 }
+
+function showSidebarHandler() {
+    $("#sidebar").toggleClass("active");
+  }

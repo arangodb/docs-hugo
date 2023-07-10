@@ -41,5 +41,5 @@ function changeVersion() {
     }
 
     var newUrl = window.location.href.replace(oldVersion, newVersion)
-    loadPage(newUrl);
+    updateHistory("", newUrl);
 }
