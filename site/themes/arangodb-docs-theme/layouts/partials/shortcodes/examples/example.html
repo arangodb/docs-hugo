@@ -10,7 +10,7 @@
 {{ $description := $test.description }}
 {{ $type := $test.type }}
 {{ $cacheEntry := printf "%s_%s_%s" $name $serverName $type }}
-{{ $pageVersion := $context.Scratch.Get "versionShort" }}
+{{ $pageVersion := $context.Page.Scratch.Get "versionShort" }}
 
 {{ $dataFolderByVersion := index site.Data $pageVersion }}
 {{ $cache := index $dataFolderByVersion "cache"}}
@@ -26,7 +26,7 @@
 
         {{ if site.Params.useArangoproxy }}
             {{- partial "shortcodes/examples/generate.html" (dict
-            "context" .
+            "context" $context
             "example" $content
             "language" $language
             "name" $name
@@ -42,12 +42,13 @@
     "content" $response
     "name" $name
     "description" $description
+    "language" $language
     ) }}
 {{ else }}
     {{ if site.Params.useArangoproxy }}
 
         {{- partial "shortcodes/examples/generate.html" (dict
-        "context" .
+        "context" $context
         "example" $content
         "language" $language
         "name" $name
