@@ -244,6 +244,7 @@ def processFile(page, content, filepath):
 
             if flags["inDocublock"]:
                 buffer.append(line)
+
                 
             ## Trap and skip inline docublocks extra line
             if re.search(r"{%.*arangoshexample|{%.*aqlexample|@END_EXAMPLE_", line, re.MULTILINE):
@@ -482,6 +483,9 @@ def processFile(page, content, filepath):
                 line = line.replace("{% include youtube.html", "{{< youtube")
                 line = line.replace("%}", ">}}")
                 page.content = page.content + line
+                continue
+
+            if "{% raw %}" in line or "{% endraw %}" in line:
                 continue
 
             buffer.append(line)
