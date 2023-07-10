@@ -93,12 +93,10 @@ running in Kubernetes:
 
 2. Extract the access package from the source ArangoDB cluster.
 
-   {% raw %}
    ```bash
    kubectl get secret src-accesspackage --template='{{index .data "accessPackage.yaml"}}' | \
      base64 -D > accessPackage.yaml
    ```
-   {% endraw %}
 
 3. Configure the source DNS names.
 
@@ -326,11 +324,9 @@ The process for creating and using an access package for authentication at the s
 - Wait for the `ArangoDeployment` operator to create a `Secret` named `my-access-package`.
 - Extract the access package from the Kubernetes source cluster using:
 
-{% raw %}
 ```bash
 kubectl get secret my-access-package --template='{{index .data "accessPackage.yaml"}}' | base64 -D > accessPackage.yaml
 ```
-{% endraw %}
 
 - Insert the secrets found in the access package in the Kubernetes destination cluster using:
 
