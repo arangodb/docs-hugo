@@ -541,9 +541,7 @@ type: cluster
 ```
 
 {{% /comment %}}
-{% assign rulesFile = page.version.version | remove: "." | append: "-optimizer-rules" -%}
-{% include aql-optimizer-rules.md options=options %}
-
+{{% optimizer-rules %}}
 ### Additional optimizations applied
 
 #### Scan-Only Optimization

@@ -327,6 +327,8 @@ version: '3.11'
 server_name: stable
 type: single
 ---
+~ require('@arangodb/users').save('my-user', 'my-secret-password');
+
 require("@arangodb/users").document("my-user");
 ```
 
