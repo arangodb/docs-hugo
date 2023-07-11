@@ -62,8 +62,7 @@
 
 #TableOfContents .is-active {
     font-weight: bold;
-    --tw-bg-opacity: 0.3;
-    background-color: rgb(106 170 33/var(--tw-bg-opacity));
+    background-color: var(--COLOR-LIGHT-GREEN);
     border-radius: 0.75em;
     margin-right: 10px;
 }

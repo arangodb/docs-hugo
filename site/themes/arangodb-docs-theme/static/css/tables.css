@@ -13,7 +13,7 @@ table>*>tr>* {
 }
 
 thead {
-    background-color: #d9f2ce;
+    background-color: var(--COLOR-LIGHT-GREEN);
 }
 
 th, td {

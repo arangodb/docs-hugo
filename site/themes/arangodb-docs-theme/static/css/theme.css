@@ -838,7 +838,7 @@ div.box > .box-content-container > .box-content > .box-text > p {
     display: inline-block;
     padding: 0.2rem 0.8rem;
     border-radius: 0.25rem;
-    background: #c7f6d9;
+    background: var(--COLOR-LIGHT-GREEN);
     color: #0d0c0c;
     line-height: 21px;
     font-size: 1em;
