@@ -341,9 +341,9 @@ function generate_startup_options() {
   for HELPPROGRAM in ${ALLPROGRAMS[@]}; do
       pwd
       log "[GENERATE OPTIONS] Dumping program options of ${HELPPROGRAM}"
-      log "docker exec -it $container_name ${HELPPROGRAM} --dump-options >> ../../site/data/$version/$HELPPROGRAM.json"
+      log "docker exec -it $container_name ${HELPPROGRAM} --dump-options > ../../site/data/$version/$HELPPROGRAM.json"
 
-      docker exec "$container_name" "${HELPPROGRAM}" --dump-options >> ../../site/data/$version/"$HELPPROGRAM".json
+      docker exec "$container_name" "${HELPPROGRAM}" --dump-options > ../../site/data/$version/"$HELPPROGRAM".json
       log "Done"
   done
 
@@ -358,9 +358,9 @@ function generate_optimizer_rules() {
   version="$2"
   log "[GENERATE OPTIMIZER] Generating optimizer rules " "$container_name"
   echo ""
+  export IFS=""
   functions=$(cat generators/generateOptimizerRules.js)
-  docker exec "$container_name"_agency arangosh --server.authentication false --javascript.execute-string $functions >> ../../site/data/$version/optimizer-rules.json
-  sed -i '1d' ../../site/data/$version/optimizer-rules.json
+  docker exec "$container_name"_agency arangosh --server.authentication false --javascript.execute-string $functions > ../../site/data/$version/optimizer-rules.json
   log "Done"
 
   set +e

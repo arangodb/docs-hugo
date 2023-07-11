@@ -488,6 +488,13 @@ def processFile(page, content, filepath):
             if "{% raw %}" in line or "{% endraw %}" in line:
                 continue
 
+            if "{% assign rulesFile" in line:
+                continue
+
+            if "{% include aql-optimizer-rules" in line:
+                page.content = page.content + "{{% optimizer-rules %}}"
+                continue
+
             buffer.append(line)
             page.content = page.content + line
     except Exception as ex:
