@@ -13,7 +13,7 @@ import (
 */
 
 func AdjustCodeForArangosh(code string) string {
-	code = strings.Replace(code, "~", "var x = ", -1)
+	code = strings.Replace(code, "~", "", -1)
 	if !(strings.Contains(code, "EOFD")) {
 		code = fmt.Sprintf("%s\nprint('EOFD');\n\n\n\n", code)
 	}
