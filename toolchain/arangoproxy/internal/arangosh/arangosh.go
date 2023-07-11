@@ -96,6 +96,7 @@ func Exec(exampleName string, code string, repository config.Repository) (output
 }
 
 func notFoundFallbackCode(code, output string) string {
+	output = strings.Replace(output, "name: ", "", -1)
 	collNotFoundRE := regexp2.MustCompile(`(?m)(?<=collection or view not found: )\w+|(?<=ArangoError: collection )'?\w+`, 0)
 	collections := utils.Regexp2FindAllString(collNotFoundRE, output)
 	if len(collections) == 0 {
