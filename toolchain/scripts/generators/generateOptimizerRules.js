@@ -30,7 +30,7 @@ function generateOptimizerRules() {
     var rules = internal.arango.GET(url);
     assert(Array.isArray(rules));
     assert(rules.some(e => e.flags && e.flags.clusterOnly));
-    print(rules);
+    print(JSON.stringify(rules,null,2));
 }
 
 checkHealth();
