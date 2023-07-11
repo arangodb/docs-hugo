@@ -1,19 +1,38 @@
 #!/bin/bash
+##################################
+#### Toolchain Launch Script
+##################################
 
+### Entrypoint of the toolchain docker image launched using docker compose.
+### This script sets up everything needed by the toolchain to work and generate content.
+### Check Env Vars, Launch ArangoDB docker images, Launch arangoproxy and site containers, generate content
 
-
+function checkIPIsReachable() {
+   res=$(curl -s -I $1 | grep HTTP/ | awk {'print $2'})
+   if [ "$res" = "200" ]; then
+     echo "Connection success"
+   else
+     echo "Connection failed for $1"
+    sleep 2s
+    checkIPIsReachable $1
+   fi
+}
 
 ### SETUP
+#### Check/set env vars, install requirements
 
 PYTHON_EXECUTABLE="python"
 DOCKER_COMPOSE_ARGS=""
 LOG_TARGET=""
 
+
+### Check whether python or python3 is installed
 if ! command -v "$PYTHON_EXECUTABLE" &> /dev/null
   then
   PYTHON_EXECUTABLE="python3"
 fi
 
+### Check yq is installed
 if ! command -v yq &> /dev/null
   then
   echo "[INIT] yq command not found, downloading"
@@ -25,13 +44,15 @@ echo "[INIT] Toolchain setup"
 echo "[INIT] Environment variables:"
 
 if [[ -z "${DOCKER_ENV}" ]]; then
-  DOCKER_ENV="dev"
+  DOCKER_ENV="dev"   ## dev as default env
 fi
 
+## if no generators set, defaults to all
 if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
-  GENERATORS="examples metrics error-codes options"
+  GENERATORS="examples metrics error-codes options optimizer"
 fi
 
+## at least one arangodb src folder must be provided
 if [[ -z "${ARANGODB_SRC}" ]] && [[ -z "${ARANGODB_SRC_2}" ]] && [[ -z "${ARANGODB_SRC_3}" ]]; then
   echo "[INIT] ERROR: No ARANGODB_SRC variable set, please set it."
   exit 1
@@ -40,6 +61,7 @@ fi
 echo "  DOCKER_ENV=$DOCKER_ENV"
 
 
+## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
 export IFS=","
 if [ "$ARANGODB_BRANCH" != "" ] ; then
       export ARANGODB_BRANCH_1_NAME=$(env | grep ^ARANGODB_BRANCH= | cut -d= -f2 | cut -d, -f1)
@@ -65,6 +87,7 @@ generate_startup=false
 generate_metrics=false
 generate_error_codes=false
 generate_apidocs=false
+generate_optimizer=false
 
 start_servers=false
 
@@ -75,7 +98,7 @@ GENERATORS=$(yq -r '.generators' ../docker/config.yaml)
 
 
 if [ "$GENERATORS" == "" ]; then
-  GENERATORS="examples metrics error-codes options"
+  GENERATORS="examples metrics error-codes options optimizer"
 fi
 
 # Check for requested operations
@@ -97,6 +120,12 @@ if [[ $GENERATORS == *"error-codes"* ]]; then
   generate_error_codes=true
 fi
 
+if [[ $GENERATORS == *"optimizer"* ]]; then
+  generate_optimizer=true
+  start_servers=true
+fi
+
+
 
 
 
@@ -104,6 +133,7 @@ echo "[TOOLCHAIN] Expanded Config file:"
 cat ../docker/config.yaml
 echo ""
 
+## Flush repositories field of arangoproxy config
 echo "[TOOLCHAIN] Clean arangoproxy config file"
 yq '.repositories = []' -i ../arangoproxy/cmd/configs/local.yaml 
 
@@ -111,7 +141,7 @@ echo "[INIT] Setup Finished"
 
 
 
-
+## Utility to print with [current arangodb server] attached
 function log(){
   echo "[$LOG_TARGET] "$1""
 }
@@ -122,7 +152,9 @@ function return_image_id() {
 
 
 ### IMAGE PULL/START FUNCTIONS
-
+#### Pull an ArangoDB Image
+#### First try using the official arangodb repository (e.g. arangodb/enterprise-preview)
+#### If fails, try using the arangodb/docs-hugo repository used to store feature-pr compiled images
 function pull_image() {
   log "[PULL-IMAGE] Invoke"
   branch_name="$1"
@@ -140,19 +172,20 @@ function pull_image() {
 
   log "[PULL IMAGE] Try from Private arangodb/docs-hugo Dockerhub repository"
   image_name=$(echo ${branch_name##*/})
-  main_hash=$(awk 'END{print}' $src/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)
+  main_hash=$(awk 'END{print}' $src/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)  ## Get hash of latest commit of git branch of arangodb/arangodb repo
 
   docker_tag="arangodb/docs-hugo:$image_name-$version-$main_hash"
 
   image_id=$(docker images --filter=reference=$docker_tag | awk 'NR==2' | awk '{print $3}')
   if [ "$image_id" == "" ]; then
     docker pull $docker_tag
-    docker tag $docker_tag $image_name-$version
+    docker tag $docker_tag $image_name-$version ## tag with an easier name for easier local access to the image
   fi
 }
 
 
-
+## Copy arangosh executable from the ArangoDB docker container to the arangoproxy container
+## Write to the arangoproxy config file the ArangoDB images IPs 
 function setup_arangoproxy() {
   name=$1
   image=$2
@@ -162,7 +195,10 @@ function setup_arangoproxy() {
 
   log "[SETUP ARANGOPROXY] Setup dedicated arangosh in arangoproxy"
 
+  ## Create directory where arangosh executable will be stored
   mkdir -p ../arangoproxy/arangosh/"$name"/"$version"/usr ../arangoproxy/arangosh/"$name"/"$version"/usr/bin ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/etc/relative
+
+  ## Copy arangosh executables from ArangoDB docker container to arangoproxy container
   docker cp "$container_name":/usr/bin/arangosh ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/arangosh
   docker cp "$container_name":/usr/bin/icudtl.dat ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/icudtl.dat
 
@@ -172,6 +208,7 @@ function setup_arangoproxy() {
   sed -i -e 's~startup-directory.*~startup-directory = /home/toolchain/arangoproxy/arangosh/'"$name"'/'"$version"'/usr/share/arangodb3/js~' ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/etc/relative/arangosh.conf
   echo ""
 
+  ## Retrieve the single server ip and write it to arangoproxy config
   log "[SETUP ARANGOPROXY] Retrieve server ip"
   single_server_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container_name")
   log "IP: "$single_server_ip""
@@ -179,6 +216,7 @@ function setup_arangoproxy() {
 
   printf -v url "http://%s:8529" $single_server_ip
 
+  ## Retrieve the cluster server ip and write it to arangoproxy config
   log "[SETUP ARANGOPROXY] Copy single server configuration in arangoproxy repositories"
   yq e '.repositories += [{"name": "'"$name"'", "type": "single", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
 
@@ -187,13 +225,15 @@ function setup_arangoproxy() {
   log "IP: "$cluster_server_ip""
   echo ""
 
-  printf -v url "http://%s:4001" $cluster_server_ip
+  printf -v url "http://%s:8529" $cluster_server_ip
 
   log "[SETUP ARANGOPROXY] Copy cluster server configuration in arangoproxy repositories"
   yq e '.repositories += [{"name": "'"$name"'", "type": "cluster", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
   log "[SETUP ARANGOPROXY] Done"
 }
 
+
+### Setup and run an ArangoDB docker image
 function start_server() {
   name=$1
   branch_name=$2
@@ -202,22 +242,24 @@ function start_server() {
   container_name="$name"_"$version"
   examples=$5
   options=$6
+  optimizer=$7
 
   log "[START_SERVER] Setup server"
   echo "$name" "$image" "$version"
   echo ""
 
-  ## create the docs_net network if doesn't exist
+  ## Create the docs_net docker network if it doesn't exist
   log "[START_SERVER] setup docs_net docker network"
   docker network inspect docs_net >/dev/null 2>&1 || docker network create --driver=bridge --subnet=192.168.129.0/24 docs_net
   echo ""
 
+  ## Stop and remove old containers of this ArangoDB docker image
   log "[START_SERVER] Cleanup old containers"
   docker container stop "$container_name" "$container_name"_agency "$container_name"_coordinator "$container_name"_dbserver arangoproxy site &> /dev/null || true
   docker container rm "$container_name" "$container_name"_agency "$container_name"_coordinator "$container_name"_dbserver arangoproxy site &> /dev/null  || true
   echo ""
 
-   ## Cut the firstword/ from the branch field
+  ## Cut the firstword/ from the branch field
   image_name=$(echo ${branch_name##*/})
 
   ## Get the docker image id to run of the server
@@ -237,16 +279,16 @@ function start_server() {
       fi
     fi
   fi
-
-  
-
  
   log "$image_id"
+
+  ## Single server available addresses
   declare -a single_addresses=("192.168.129.2" "192.168.129.12" "192.168.129.22" "192.168.129.32")
   single_address=""
 
   for address in "${single_addresses[@]}";
   do
+    ## Check $address is already occupied
     docs_net_ips=$(docker network inspect docs_net | grep "$address"/)
     if [ "$docs_net_ips" == "" ]; then
       single_address=$address
@@ -262,102 +304,18 @@ function start_server() {
   log "[START_SERVER] Run cluster server"
 
 
-
 echo Starting agency...
 docker run -d --net=docs_net -e ARANGO_NO_AUTH=1 --name="$container_name"_agency \
   "$image_id" \
-  --agency.endpoint tcp://0.0.0.0:4001 \
-  --agency.size 1 \
-  --agency.wait-for-sync false \
-  --agency.supervision false \
-  --agency.supervision-frequency 5 \
-  --server.endpoint tcp://0.0.0.0:4001 \
-  --server.statistics false 
-
-
-docker run -d --net=docs_net -e ARANGO_NO_AUTH=1 --name="$container_name"_dbserver \
-      "$image_id" \
-                --cluster.agency-endpoint tcp://127.0.0.1:4001 \
-                --cluster.my-address tcp://127.0.0.1:5001 \
-                --server.endpoint tcp://127.0.0.1:5001 \
-                --cluster.my-role "DBSERVER" \
-                --log.level trace \
-                --server.statistics false
-
-
-docker run -d --net=docs_net -e ARANGO_NO_AUTH=1 --name="$container_name"_coordinator \
-      "$image_id" \
-                --cluster.agency-endpoint tcp://127.0.0.1:4001 \
-                --cluster.my-address tcp://127.0.0.1:6001 \
-                --server.endpoint tcp://0.0.0.0:6001 \
-                --cluster.my-role "COORDINATOR" \
-                --log.level trace \
-                --server.statistics false
-
-
-
-
-
-
-
-#   ## We have to check there is a free ip for every agency server we will start
-#   declare -a agency_addresses=("192.168.129.10" "192.168.129.20" "192.168.129.30" "192.168.129.40")
-#   agency_address=""
-
-#   for address in "${agency_addresses[@]}";
-#   do
-#     docs_net_ips=$(docker network inspect docs_net | grep "$address"/)
-#     if [ "$docs_net_ips" == "" ]; then
-#       agency_address=$address
-#       break
-#     fi
-#   done
-
-  
-#   log "[START_SERVER] Using $agency_address as agency ip"
-
-#   ## Agencies
-#   docker run -e ARANGO_NO_AUTH=1 --net docs_net --ip="$agency_address" --name "$container_name"_agent1 -d "$image_id" --server.endpoint http+tcp://"$agency_address":5001 \
-#      --agency.my-address=tcp://"$agency_address":5001   --server.authentication false   --agency.activate true  \
-#     --agency.size 1   --agency.endpoint tcp://"$agency_address":5001   --agency.supervision true   --database.directory agent1
-
-#   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$name"_agent2 -d "$image" --server.endpoint tcp://0.0.0.0:5002 \
-#      --agency.my-address=tcp://"$agency_address":5002   --server.authentication false   --agency.activate true  \
-#     --agency.size 2   --agency.endpoint tcp://"$agency_address":5001   --agency.supervision true   --database.directory agent2
-
-#   # DB-Servers
-#   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_dbserver1 -d "$image_id" --server.endpoint tcp://0.0.0.0:6001 \
-#     --server.authentication false \
-#     --cluster.my-address http+tcp://"$agency_address":6001 \
-#     --cluster.my-role DBSERVER \
-#     --cluster.agency-endpoint tcp://"$agency_address":5001 \
-#     --database.directory dbserver1
-
-#  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_dbserver2 -d "$image_id" --server.endpoint tcp://0.0.0.0:6002 \
-#     --server.authentication false \
-#     --cluster.my-address http+tcp://"$agency_address":6002 \
-#     --cluster.my-role DBSERVER \
-#     --cluster.agency-endpoint tcp://"$agency_address":5001 \
-#     --database.directory dbserver2
-
-#    docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_dbserver3 -d "$image_id" --server.endpoint tcp://0.0.0.0:6003 \
-#     --server.authentication false \
-#     --cluster.my-address http+tcp://"$agency_address":6003 \
-#     --cluster.my-role DBSERVER \
-#     --cluster.agency-endpoint tcp://"$agency_address":5001 \
-#     --database.directory dbserver3
-
-#   ## Coordinators
-#   docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name"_coordinator1 -d "$image_id" --server.endpoint tcp://0.0.0.0:7001 \
-#     --server.authentication false \
-#     --cluster.my-address tcp://"$agency_address":7001 \
-#     --cluster.my-role COORDINATOR \
-#     --cluster.agency-endpoint tcp://"$agency_address":5001 \
-#     --database.directory coordinator1 
+   arangodb --starter.local --starter.data-dir=./localdata
 
 
   if [ "$options" = true ] ; then
     generate_startup_options "$container_name" "$version"
+  fi
+
+  if [ "$optimizer" = true ] ; then
+    generate_optimizer_rules "$container_name" "$version"
   fi
 
    if [ "$examples" = true ] ; then
@@ -370,7 +328,7 @@ docker run -d --net=docs_net -e ARANGO_NO_AUTH=1 --name="$container_name"_coordi
 
 ### GENERATORS FUNCTIONS
 
-function generate_startup_options {
+function generate_startup_options() {
   set -e
   echo "<h2>Startup Options</h2>" >> /home/summary.md
 
@@ -390,6 +348,23 @@ function generate_startup_options {
   done
 
   set +e
+}
+
+function generate_optimizer_rules() {
+  set -e
+  echo "<h2>Optimizer Rules</h2>" >> /home/summary.md
+
+  container_name="$1"
+  version="$2"
+  log "[GENERATE OPTIMIZER] Generating optimizer rules " "$container_name"
+  echo ""
+  functions=$(cat generators/generateOptimizerRules.js)
+  docker exec "$container_name"_agency arangosh --server.authentication false --javascript.execute-string $functions >> ../../site/data/$version/optimizer-rules.json
+  sed -i '1d' ../../site/data/$version/optimizer-rules.json
+  log "Done"
+
+  set +e
+
 }
 
 
@@ -422,6 +397,8 @@ function generate_metrics() {
 
 ### SYSTEM HANDLERS FUNCTIONS
 
+### This function runs in background waiting to intercept an exit signal from arangoproxy/site container
+### as soon as the signal arrives, the toolchain is terminated
 function trap_container_exit() {
   terminate=false
   while [ "$terminate" = false ] ;
@@ -497,7 +474,7 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
 
     ## Generators stat do need arangodb instances running
     if [ "$start_servers" = true ] ; then
-      start_server "$name" "$image" "$version" "$arangodb_src" "$generate_examples" "$generate_startup"
+      start_server "$name" "$image" "$version" "$arangodb_src" "$generate_examples" "$generate_startup" "$generate_optimizer"
     fi
   done
 
@@ -508,10 +485,12 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
     set -e
 
     if [ "$DOCKER_ENV" == "dev" ]; then 
+      ## If working locally, build the latest local image
       export DOCKER_BUILDKIT=1
       docker build --target arangoproxy ../docker/ -t arangoproxy
       docker  build --target hugo ../docker/ -t site
     else 
+      ## CI/CD env, do not build images, pull them from remote repo
       docker pull arangodb/docs-hugo:arangoproxy > /dev/null
       docker pull arangodb/docs-hugo:site > /dev/null
       docker tag arangodb/docs-hugo:arangoproxy arangoproxy > /dev/null
@@ -524,11 +503,19 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
     echo "[GENERATE-EXAMPLES]  Run arangoproxy and site containers"
     docker run -d --name site --network=docs_net --ip=192.168.129.130 --env-file toolchain/docker/env/"$DOCKER_ENV".env -p 1313:1313 --volumes-from toolchain --log-opt tag="{{.Name}}" site 
     docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 --env-file toolchain/docker/env/"$DOCKER_ENV".env --volumes-from toolchain --log-opt tag="{{.Name}}" arangoproxy
+
+    ## redirect logs of arangoproxy and site containers to files
     docker logs --details --follow arangoproxy > arangoproxy-log.log &
     docker logs --details --follow site > site-log.log &
+
+    ## Run the container exit signal interceptor in background
     trap_container_exit &
     #trap clean_terminate_toolchain SIGINT SIGTERM SIGKILL
+
+    ## tail to stdout the log files
     tail -f arangoproxy-log.log site-log.log
+
+    ## If a container exits, the tail gets interrupted and the script will arrive here
     echo "[TERMINATE] Site container exited"
     echo "[TERMINATE] Terminating toolchain"
   fi

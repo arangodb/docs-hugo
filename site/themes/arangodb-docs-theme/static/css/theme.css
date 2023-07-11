@@ -863,10 +863,10 @@ div.box > .box-content-container > .box-content > .box-text > p {
 }
 
 .edit-page:hover {
-    position: relative;
     text-decoration: none;
     color: #444;
     background: 0 0;
+    border-bottom: 0px;
 }
 
 .edit-page > .edit-page-icon:after {
