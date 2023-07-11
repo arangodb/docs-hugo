@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"net/http"
 	"regexp"
 	"strings"
-	"sync"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/config"
 	"gopkg.in/yaml.v3"
@@ -48,10 +48,12 @@ type ExampleOptions struct {
 	Explain     bool                   `yaml:"explain,omitempty" json:"explain,omitempty"`         // AQL @EXPLAIN flag
 	BindVars    map[string]interface{} `yaml:"bindVars,omitempty" json:"bindVars,omitempty"`
 	Dataset     string                 `yaml:"dataset,omitempty" json:"dataset,omitempty"`
+	Filename    string                 `yaml:"-" json:"-"`
+	Position    string                 `yaml:"-" json:"-"`
 }
 
 // Get an example code block, parse the yaml options and the code itself
-func ParseExample(request io.Reader, exampleType ExampleType) (Example, error) {
+func ParseExample(request io.Reader, headers http.Header, exampleType ExampleType) (Example, error) {
 	req, err := ioutil.ReadAll(request)
 	if err != nil {
 		Logger.Printf("Error reading Example body: %s\n", err.Error())
@@ -75,6 +77,9 @@ func ParseExample(request io.Reader, exampleType ExampleType) (Example, error) {
 	if err != nil {
 		return Example{}, fmt.Errorf("ParseExample error parsing options: %s\nBroken content: %s", err.Error(), string(options))
 	}
+
+	optionsYaml.Filename = headers.Get("Page")
+	optionsYaml.Position = headers.Get("Codeblock-Start")
 
 	code := strings.Replace(string(decodedRequest), string(options), "", -1)
 
@@ -127,9 +132,4 @@ func (r ExampleResponse) String() string {
 	}
 
 	return string(j)
-}
-
-type IgnoreCollections struct {
-	Mutex    sync.Mutex
-	ToIgnore map[string]bool
 }

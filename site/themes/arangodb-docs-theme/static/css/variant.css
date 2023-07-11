@@ -91,11 +91,7 @@
     --INTERNAL-BOX-WARNING-TEXT-color: var(--BOX-WARNING-TEXT-color, var(--INTERNAL-BOX-RED-TEXT-color));
 }
 
-body {
-    background-color: var(--INTERNAL-MAIN-BG-color);
-    color: var(--INTERNAL-MAIN-TEXT-color);
-    font-family: var(--MAIN-FONT);
-}
+
 
 a,
 .anchor,

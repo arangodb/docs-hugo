@@ -1,5 +1,5 @@
 {{- $isInDevelopment := $.Page.Scratch.Get "underDevelopment" }}
-{{ $shortVersion := $.Page.Scratch.Get "versionShort" }}
+{{ $shortVersion := $.Page.Store.Get "versionShort" }}
 
 
 {{ if $isInDevelopment }}

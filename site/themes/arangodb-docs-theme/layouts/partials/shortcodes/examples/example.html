@@ -10,7 +10,7 @@
 {{ $description := $test.description }}
 {{ $type := $test.type }}
 {{ $cacheEntry := printf "%s_%s_%s" $name $serverName $type }}
-{{ $pageVersion := $context.Page.Scratch.Get "versionShort" }}
+{{ $pageVersion := $context.Page.Store.Get "versionShort" }}
 
 {{ $dataFolderByVersion := index site.Data $pageVersion }}
 {{ $cache := index $dataFolderByVersion "cache"}}
