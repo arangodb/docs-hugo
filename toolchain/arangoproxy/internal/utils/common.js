@@ -207,7 +207,7 @@ var appendCurlRequest = function (shellAppender, jsonAppender, rawAppender) {
     curl += '--dump - http://localhost:8529' + url;
 
     if (body !== undefined && body !== '' && body) {
-      curl += '\n'+JSON.stringify(body);
+      curl += '\n'+JSON.stringify(body, undefined, 2);
     }
 
     print("REQ");
