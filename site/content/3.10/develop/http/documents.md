@@ -197,7 +197,7 @@ type: single
 description: |-
   Use a document identifier and an ETag:
 version: '3.10'
-render: input
+render: input/output
 name: RestDocumentHandlerReadDocumentIfNoneMatch
 server_name: stable
 type: single
@@ -330,7 +330,7 @@ paths:
 ---
 description: ''
 version: '3.10'
-render: input
+render: input/output
 name: RestDocumentHandlerReadDocumentHead
 server_name: stable
 type: single

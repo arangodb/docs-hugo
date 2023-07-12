@@ -1407,7 +1407,7 @@ paths:
 ---
 description: ''
 version: '3.11'
-render: input
+render: input/output
 name: RestAdminMetricsV2
 server_name: stable
 type: single
@@ -1480,7 +1480,7 @@ paths:
 ---
 description: ''
 version: '3.11'
-render: input
+render: input/output
 name: RestAdminMetrics
 server_name: stable
 type: single

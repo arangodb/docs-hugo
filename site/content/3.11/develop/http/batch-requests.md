@@ -322,7 +322,7 @@ description: |-
   `Content-Type` HTTP header.
   *Please note the reply is not displayed all accurate.*
 version: '3.11'
-render: input
+render: input/output
 name: RestBatchMultipartHeader
 server_name: stable
 type: single
@@ -371,7 +371,7 @@ description: |-
   Sending a batch request, setting the boundary implicitly (the server will
   in this case try to find the boundary at the beginning of the request body).
 version: '3.11'
-render: input
+render: input/output
 name: RestBatchImplicitBoundary
 server_name: stable
 type: single

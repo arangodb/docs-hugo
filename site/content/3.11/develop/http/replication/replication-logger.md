@@ -271,7 +271,7 @@ paths:
 description: |-
   No log events available
 version: '3.11'
-render: input
+render: input/output
 name: RestReplicationLoggerFollowEmpty
 server_name: stable
 type: single
@@ -294,7 +294,7 @@ type: single
 description: |-
   A few log events *(One JSON document per line)*
 version: '3.11'
-render: input
+render: input/output
 name: RestReplicationLoggerFollowSome
 server_name: stable
 type: single

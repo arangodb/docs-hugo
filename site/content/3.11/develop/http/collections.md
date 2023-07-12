@@ -774,7 +774,7 @@ paths:
 description: |-
   Retrieves the list of shards:
 version: '3.11'
-render: input
+render: input/output
 name: RestGetShards
 server_name: stable
 type: cluster
@@ -797,7 +797,7 @@ type: cluster
 description: |-
   Retrieves the list of shards with the responsible servers:
 version: '3.11'
-render: input
+render: input/output
 name: RestGetShardsWithDetails
 server_name: stable
 type: cluster

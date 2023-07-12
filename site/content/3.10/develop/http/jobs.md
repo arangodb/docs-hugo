@@ -444,7 +444,7 @@ paths:
 description: |-
   Querying the status of a done job:
 version: '3.10'
-render: input
+render: input/output
 name: job_getStatusById_01
 server_name: stable
 type: single
@@ -471,7 +471,7 @@ description: |-
   Querying the status of a pending job:
   (therefore we create a long running job...)
 version: '3.10'
-render: input
+render: input/output
 name: job_getStatusById_02
 server_name: stable
 type: single

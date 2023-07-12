@@ -339,7 +339,7 @@ paths:
 description: |-
   No log events available
 version: '3.10'
-render: input
+render: input/output
 name: RestWalAccessTailingEmpty
 server_name: stable
 type: single
@@ -362,7 +362,7 @@ type: single
 description: |-
   A few log events *(One JSON document per line)*
 version: '3.10'
-render: input
+render: input/output
 name: RestWalAccessTailingSome
 server_name: stable
 type: single
