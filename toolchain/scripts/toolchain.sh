@@ -332,7 +332,7 @@ export IFS=""
 
 
 function generate_startup_options() {
-  echo "<h2>Startup Options</h2>" >> /home/summary-generators.md
+  echo "<h2>Startup Options</h2>" >> /home/summary.md
 
   container_name="$1"
   version="$2"
@@ -340,7 +340,7 @@ function generate_startup_options() {
   
   declare -a ALLPROGRAMS=("arangobench" "arangod" "arangodump" "arangoexport" "arangoimport" "arangoinspect" "arangorestore" "arangosh")
 
-  echo "<li><strong>$version</strong>:<ul>" >> /home/summary-generators.md
+  echo "<li><strong>$version</strong>:<ul>" >> /home/summary.md
 
   for HELPPROGRAM in ${ALLPROGRAMS[@]}; do
       log "[GENERATE OPTIONS] Dumping program options of ${HELPPROGRAM}"
@@ -350,20 +350,20 @@ function generate_startup_options() {
       
       if [ $? -ne 0 ]; then
         log "[GENERATE OPTIONS] [ERROR] $res"
-        echo "<li><strong>${HELPPROGRAM}</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary-generators.md
+        echo "<li><strong>${HELPPROGRAM}</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary.md
         exit 1
       fi
 
       echo $res > ../../site/data/$version/"$HELPPROGRAM".json
-      echo "<li><strong>${HELPPROGRAM}</strong>: &#x2713;</li>" >> /home/summary-generators.md
+      echo "<li><strong>${HELPPROGRAM}</strong>: &#x2713;</li>" >> /home/summary.md
       log "Done"
   done
-  echo "</ul></li>" >> /home/summary-generators.md
+  echo "</ul></li>" >> /home/summary.md
 
 }
 
 function generate_optimizer_rules() {
-  echo "<h2>Optimizer Rules</h2>" >> /home/summary-generators.md
+  echo "<h2>Optimizer Rules</h2>" >> /home/summary.md
 
   container_name="$1"
   version="$2"
@@ -374,19 +374,19 @@ function generate_optimizer_rules() {
 
   if [ $? -ne 0 ]; then
     log "[GENERATE OPTIMIZER] [ERROR] $res"
-    echo "<li><strong>$version</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary-generators.md
+    echo "<li><strong>$version</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary.md
     exit 1
   fi
 
   echo $res > ../../site/data/$version/optimizer-rules.json
-  echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary-generators.md
+  echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary.md
 
   log "Done"
 }
 
 
 function generate_error_codes() {
-  echo "<h2>Error Codes</h2>" >> /home/summary-generators.md
+  echo "<h2>Error Codes</h2>" >> /home/summary.md
 
   errors_dat_file=$1
   version=$2
@@ -398,16 +398,16 @@ function generate_error_codes() {
 
   if [ $? -ne 0 ]; then
     log "[GENERATE ERROR-CODES] [ERROR] $res"
-    echo "<li><strong>$version</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary-generators.md
+    echo "<li><strong>$version</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary.md
     exit 1
   fi
 
-  echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary-generators.md
+  echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary.md
   log "Done"
 }
 
 function generate_metrics() {
-  echo "<h2>Metrics</h2>" >> /home/summary-generators.md
+  echo "<h2>Metrics</h2>" >> /home/summary.md
 
   src=$1
   version=$2
@@ -418,11 +418,11 @@ function generate_metrics() {
 
   if [ $? -ne 0 ]; then
     log "[GENERATE METRICS] [ERROR] $res"
-    echo "<li><strong>$version</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary-generators.md
+    echo "<li><strong>$version</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary.md
     exit 1
   fi
 
-  echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary-generators.md
+  echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary.md
   log "Done"
   
 }
@@ -479,8 +479,8 @@ function clean_terminate_toolchain() {
 echo "[TOOLCHAIN] Starting toolchain"
 echo "[TOOLCHAIN] Generators: $GENERATORS"
 
-  echo "<h2>Generators</h2>" >> /home/summary-generators.md
-  echo "$GENERATORS" >> /home/summary-generators.md
+  echo "<h2>Generators</h2>" >> /home/summary.md
+  echo "$GENERATORS" >> /home/summary.md
   mapfile servers < <(yq e -o=j -I=0 '.servers[]' ../docker/config.yaml )
 
   for server in "${servers[@]}"; do
@@ -494,7 +494,7 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
       continue
     fi
 
-    echo "<li><strong>$version</strong>: $image</li>" >> /home/summary-generators.md
+    echo "<li><strong>$version</strong>: $image</li>" >> /home/summary.md
 
     LOG_TARGET="$name $image $version"
 
