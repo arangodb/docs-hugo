@@ -54,8 +54,6 @@ func ExecRoutine(example chan map[string]interface{}, outChannel chan string) {
 				}
 			}
 
-			common.Logger.Summary("<li><strong>%s</strong>  -  %s &#x2713;</li><br>", repository.Version, name)
-
 			outChannel <- out
 		}
 	}
