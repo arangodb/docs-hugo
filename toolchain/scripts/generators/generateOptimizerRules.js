@@ -28,8 +28,21 @@ function checkHealth() {
 function generateOptimizerRules() {
     var url = "/_api/query/rules";
     var rules = internal.arango.GET(url);
-    assert(Array.isArray(rules));
-    assert(rules.some(e => e.flags && e.flags.clusterOnly));
+
+    try {
+        assert(Array.isArray(rules));
+    } catch(err) {
+        msg = "Assertion failed: returned rules is not an Array!"
+        throw new Error(msg);
+    }
+
+    try {
+        assert(rules.some(e => e.flags && e.flags.clusterOnly));
+    } catch(err) {
+        msg = "Assertion failed: no clusterOnly flags!"
+        throw new Error(msg);
+    }
+
     print(JSON.stringify(rules,null,2));
 }
 

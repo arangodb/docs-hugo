@@ -439,8 +439,9 @@ def processFile(page, content, filepath):
                 for t in tags:
                     tagShortcode = tagShortcode + f'"{t}"'
 
-                tagShortcode = tagShortcode + ' >}}'    
-                page.content = page.content + tagShortcode
+                tagShortcode = tagShortcode + ' >}}' 
+                originalSpaces = len(line) - len(line.lstrip())  
+                page.content = page.content + " "*originalSpaces + tagShortcode
                 continue
 
             if '{% include program-option.html options=options' in line:

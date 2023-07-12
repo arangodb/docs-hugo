@@ -328,65 +328,103 @@ docker run -d --net=docs_net -e ARANGO_NO_AUTH=1 --name="$container_name"_agency
 
 ### GENERATORS FUNCTIONS
 
+export IFS=""
+
+
 function generate_startup_options() {
-  set -e
   echo "<h2>Startup Options</h2>" >> /home/summary.md
 
   container_name="$1"
   version="$2"
   log "[GENERATE OPTIONS] Starting options dump for container " "$container_name"
-  echo ""
+  
   declare -a ALLPROGRAMS=("arangobench" "arangod" "arangodump" "arangoexport" "arangoimport" "arangoinspect" "arangorestore" "arangosh")
 
+  echo "<li><strong>$version</strong>:<ul>" >> /home/summary.md
+
   for HELPPROGRAM in ${ALLPROGRAMS[@]}; do
-      pwd
       log "[GENERATE OPTIONS] Dumping program options of ${HELPPROGRAM}"
       log "docker exec -it $container_name ${HELPPROGRAM} --dump-options > ../../site/data/$version/$HELPPROGRAM.json"
 
-      docker exec "$container_name" "${HELPPROGRAM}" --dump-options > ../../site/data/$version/"$HELPPROGRAM".json
+      res=$((docker exec "$container_name" "${HELPPROGRAM}" --dump-options) 2>&1)
+      
+      if [ $? -ne 0 ]; then
+        log "[GENERATE OPTIONS] [ERROR] $res"
+        echo "<li><strong>${HELPPROGRAM}</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary.md
+        exit 1
+      fi
+
+      echo $res > ../../site/data/$version/"$HELPPROGRAM".json
+      echo "<li><strong>${HELPPROGRAM}</strong>: &#x2713;</li>" >> /home/summary.md
       log "Done"
   done
+  echo "</ul></li>" >> /home/summary.md
 
-  set +e
 }
 
 function generate_optimizer_rules() {
-  set -e
   echo "<h2>Optimizer Rules</h2>" >> /home/summary.md
 
   container_name="$1"
   version="$2"
   log "[GENERATE OPTIMIZER] Generating optimizer rules " "$container_name"
   echo ""
-  export IFS=""
   functions=$(cat generators/generateOptimizerRules.js)
-  docker exec "$container_name"_agency arangosh --server.authentication false --javascript.execute-string $functions > ../../site/data/$version/optimizer-rules.json
+  res=$(docker exec "$container_name"_agency arangosh --server.authentication false --javascript.execute-string $functions) 
+
+  if [ $? -ne 0 ]; then
+    log "[GENERATE OPTIMIZER] [ERROR] $res"
+    echo "<li><strong>$version</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary.md
+    exit 1
+  fi
+
+  echo $res > ../../site/data/$version/optimizer-rules.json
+  echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary.md
+
   log "Done"
-
-  set +e
-
 }
 
 
 function generate_error_codes() {
+  echo "<h2>Error Codes</h2>" >> /home/summary.md
+
   errors_dat_file=$1
   version=$2
   touch ../../site/data/$version/errors.yaml
+
   log "[GENERATE ERROR-CODES] Launching generate error-codes script"
   log "[GENERATE ERROR-CODES] $PYTHON_EXECUTABLE generators/generateErrorCodes.py --src "$1"/lib/Basics/errors.dat --dst ../../site/data/$version/errors.yaml"
-  "$PYTHON_EXECUTABLE" generators/generateErrorCodes.py --src "$1"/lib/Basics/errors.dat --dst ../../site/data/$version/errors.yaml
+  res=$(("$PYTHON_EXECUTABLE" generators/generateErrorCodes.py --src "$1"/lib/Basics/errors.dat --dst ../../site/data/$version/errors.yaml) 2>&1)
+
+  if [ $? -ne 0 ]; then
+    log "[GENERATE ERROR-CODES] [ERROR] $res"
+    echo "<li><strong>$version</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary.md
+    exit 1
+  fi
+
+  echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary.md
+  log "Done"
 }
 
 function generate_metrics() {
-  set -e
+  echo "<h2>Metrics</h2>" >> /home/summary.md
 
   src=$1
   version=$2
+
   log "[GENERATE-METRICS] Generate Metrics requested"
   log "[GENERATE-METRICS] $PYTHON_EXECUTABLE generators/generateMetrics.py --main $src --dst ../../site/data/$version"
-  "$PYTHON_EXECUTABLE" generators/generateMetrics.py --main "$src" --dst ../../site/data/$version
+  res=$(("$PYTHON_EXECUTABLE" generators/generateMetrics.py --main "$src" --dst ../../site/data/$version) 2>&1)
+
+  if [ $? -ne 0 ]; then
+    log "[GENERATE METRICS] [ERROR] $res"
+    echo "<li><strong>$version</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary.md
+    exit 1
+  fi
+
+  echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary.md
+  log "Done"
   
-  set +e
 }
 
 
@@ -415,6 +453,7 @@ function trap_container_exit() {
       terminate=true
     fi
   done
+
   echo "[TERMINATE] Before docker compose stop all" >> arangoproxy-log.log
   docker container ps -a
   #docker container stop $(docker ps -aq)
@@ -463,12 +502,10 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
 
 
     if [ "$generate_error_codes" = true ] ; then
-      echo "<h2>Error-Codes</h2>" >> /home/summary.md
       generate_error_codes "$arangodb_src" "$version"
     fi
 
     if [ "$generate_metrics" = true ] ; then
-      echo "<h2>Metrics</h2>" >> /home/summary.md
       generate_metrics "$arangodb_src" "$version"
     fi
 
