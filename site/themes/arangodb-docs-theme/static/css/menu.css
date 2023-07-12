@@ -443,3 +443,24 @@ dd-item.menu-section-entry.parent > .submenu {
     z-index: 999;
     width: 53vw;
 }
+
+/* Works on Firefox */
+.sidenav-navigation {
+    scrollbar-width: thin;
+    scrollbar-color: blue orange;
+  }
+  
+  /* Works on Chrome, Edge, and Safari */
+  .sidenav-navigation::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .sidenav-navigation::-webkit-scrollbar-track {
+    background: #fafafa;
+  }
+  
+  .sidenav-navigation::-webkit-scrollbar-thumb {
+    background-color: #b6acac;
+    border-radius: 20px;
+    border: 1px solid #b6acac;
+  }
