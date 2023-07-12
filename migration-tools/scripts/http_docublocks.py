@@ -249,10 +249,7 @@ def processExample_new(docublock):
     for i, line in enumerate(lines):
         if "@EXAMPLE_" in line:
             inExample = True
-            if 'ARANGOSH_RUN' in line:
-                exampleBlock["options"]["render"] = "input"
-            if 'ARANGOSH_OUTPUT' in line:
-                exampleBlock["options"]["render"] = "input/output"
+            exampleBlock["options"]["render"] = "input/output"
 
             exampleName = re.search(r"(?<={).*(?=})", line).group(0)
             exampleBlock["options"]["name"] = exampleName

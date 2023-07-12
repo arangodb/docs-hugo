@@ -252,10 +252,35 @@ var curlRequest = function () {
 
 var logJsonResponseRaw = internal.appendJsonResponse(rawAppender, rawAppender);
 var logJsonResponse = internal.appendJsonResponse(rawAppender, jsonAppender);
-var logJsonLResponse = internal.appendJsonLResponse(rawAppender, jsonLAppender);
+
+var logJsonLResponseRaw = internal.appendJsonLResponse(rawAppender, jsonLAppender);
+var logJsonLResponse = function (response) {
+  var r = logJsonLResponseRaw.apply(logJsonLResponseRaw, [response]);
+  print("RESP");
+  print(output);
+  print("ENDRESP");
+  output = "";
+}
+
 var logHtmlResponse = internal.appendRawResponse(rawAppender, htmlAppender);
-var logRawResponse = internal.appendRawResponse(rawAppender, rawAppender);
-var logPlainResponse = internal.appendPlainResponse(plainAppender, plainAppender);
+var logRawResponseRaw = internal.appendRawResponse(rawAppender, rawAppender);
+var logRawResponse = function (response) {
+  var r = logRawResponseRaw.apply(logRawResponseRaw, [response]);
+  print("RESP");
+  print(output);
+  print("ENDRESP");
+  output = "";
+};
+
+var logPlainResponseRaw = internal.appendPlainResponse(plainAppender, plainAppender);
+var logPlainResponse = function (response) {
+  var r = logPlainResponseRaw.apply(logPlainResponseRaw, [response]);
+  print("RESP");
+  print(output);
+  print("ENDRESP");
+  output = "";
+}
+
 var logJsonResponse = function (response) {
   var r = logJsonResponseRaw.apply(logJsonResponseRaw, [response]);
   print("RESP");

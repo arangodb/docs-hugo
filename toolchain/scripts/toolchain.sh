@@ -299,7 +299,7 @@ function start_server() {
   log "[START_SERVER] Run single server"
   log "[START_SERVER] Using $single_address as single server ip"
 
-  docker run -e ARANGO_NO_AUTH=1 --net docs_net --ip="$single_address" --name "$container_name" -d "$image_id" --server.endpoint http+tcp://"$single_address":8529
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --ip="$single_address" --name "$container_name" -d "$image_id" --server.endpoint http+tcp://0.0.0.0:8529
 
   log "[START_SERVER] Run cluster server"
 
