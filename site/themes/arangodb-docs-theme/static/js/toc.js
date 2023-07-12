@@ -62,31 +62,32 @@ function tocHiglighter() {
     return
   }
 
-  anchors.forEach((anchor) => {
-
-  });
-  
 
   var scrollTop = $(document).scrollTop();
   for (var i = 0; i < anchors.length; i++){
     var heading = anchors[i].getAttribute('id')
-    let highlightedHref = $('#TableOfContents a[href="#' + heading + '"]');
-    highlightedHref.parent().removeClass('is-active');
+    let oldHRef = $('#TableOfContents a[href="#' + heading + '"]');
+    oldHRef.parent().removeClass('is-active');
   }
 
   for (var i = anchors.length-1; i >= 0; i--){
     if (scrollTop > $(anchors[i]).offset().top - 180) {
-        var heading = anchors[i].getAttribute('id')
 
-        let highlightedHref = $('#TableOfContents a[href="#' + heading + '"]')
+      var heading = anchors[i].getAttribute('id')
+        highlightedHref = $('#TableOfContents a[href="#' + heading + '"]')
+        highlightedHref.parent()[0].scrollIntoView({behavior: "smooth"});
         highlightedHref.parent().addClass('is-active');
         break;
     }
   }
+
+  activeHrefs = $('#TableOfContents > .ps > .is-active')
+  if (activeHrefs.length == 0) document.querySelectorAll('.toc-content')[0].scrollIntoView();
 }
 
 $(window).scroll(function(){
   tocHiglighter();
 });
+
 
 

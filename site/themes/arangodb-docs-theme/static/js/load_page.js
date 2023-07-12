@@ -39,12 +39,11 @@ function styleImages() {
 
 function loadPage(target) {
   var href = target;
-  var url = href.replace(/#.*$/, "");
   $.get({
-    url: url,
+    url: href,
     success: function(newDoc) {
       replaceArticle(href, newDoc)
-      initArticle(url);
+      initArticle(href);
       return true;
     }
   });

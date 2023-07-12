@@ -518,8 +518,10 @@ window.addEventListener("scroll", () => {
     backToTopButton();
 });
 
+
 const goToTop = () => {
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    if (window.location.hash.length == 0)
+        window.scrollTo({top: 0});
 };
 
 
@@ -575,3 +577,4 @@ $(window).on('popstate', function (e) {
       loadPage(window.location.href);
     }
   });
+

@@ -35,6 +35,10 @@
     margin: 0px 0px 0px 0px;
 }
 
+#TableOfContents {
+    margin-right: 1rem;
+}
+
 #TableOfContents ul {
     list-style: none;
     margin: 0 0 0 0;
@@ -85,3 +89,24 @@
     border-radius: 0.75rem;
 }
 
+
+/* Works on Firefox */
+.toc {
+    scrollbar-width: thin;
+    scrollbar-color: blue orange;
+  }
+  
+  /* Works on Chrome, Edge, and Safari */
+  .toc::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .toc::-webkit-scrollbar-track {
+    background: #fafafa;
+  }
+  
+  .toc::-webkit-scrollbar-thumb {
+    background-color: #b6acac;
+    border-radius: 20px;
+    border: 1px solid #b6acac;
+  }
