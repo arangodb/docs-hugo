@@ -766,11 +766,33 @@ div.box {
 }
 
 div.box.info {
-    border: 1px solid #2dc8ed;
-
-    border-left: 5px solid #2dc8ed;
-
+    border: 1px solid var(--INFO-BORDER-COLOR);
+    border-left: 5px solid var(--INFO-BORDER-COLOR);
     background: var(--INFO-BG-COLOR);
+}
+
+div.box.warning {
+    border: 1px solid var(--WARNING-BORDER-COLOR);
+    border-left: 5px solid var(--WARNING-BORDER-COLOR);
+    background: var(--WARNING-BG-COLOR);
+}
+
+div.box.danger {
+    border: 1px solid var(--DANGER-BORDER-COLOR);
+    border-left: 5px solid var(--DANGER-BORDER-COLOR);
+    background: var(--DANGER-BG-COLOR);
+}
+
+div.box.tip {
+    border: 1px solid var(--TIP-BORDER-COLOR);
+    border-left: 5px solid var(--TIP-BORDER-COLOR);
+    background: var(--TIP-BG-COLOR);
+}
+
+div.box.security {
+    border: 1px solid var(--SECURITY-BORDER-COLOR);
+    border-left: 5px solid var(--SECURITY-BORDER-COLOR);
+    background: var(--SECURITY-BG-COLOR);
 }
 
 div.box-content {
@@ -793,29 +815,17 @@ div.box.danger > .box-content-container > .box-content > i {
     font-size: 1.2em;
 }
 
-div.box.success {
-    border: 1px solid #a3ef53;
-
-    border-left: 5px solid #a3ef53;
-
-    background: #efffeb;
+div.box.tip > .box-content-container > .box-content > i {
+    color: var(--TIP-ICON-COLOR);
+    font-size: 1.2em;
 }
 
-div.box.warning {
-    border: 1px solid #e3b03a;
-
-    border-left: 5px solid #e3b03a;
-
-    background: var(--WARNING-BG-COLOR);
+div.box.security > .box-content-container > .box-content > i {
+    color: var(--SECURITY-ICON-COLOR);
+    font-size: 1.2em;
 }
 
-div.box.danger {
-    border: 1px solid #fd5d1d;
 
-    border-left: 5px solid #fd5d1d;
-
-    background: var(--DANGER-BG-COLOR);
-}
 
 div > .box-content-container {
     padding: 0px 0px 0px 12px;
@@ -1104,3 +1114,15 @@ p {
     line-height: 24px;
 }
 
+.highlight {
+    margin-top: 16px;
+}
+
+li {
+    margin-bottom: 1em;
+}
+
+ul ul, ul ol, ol ul, ol ol {
+    margin-top: 1rem;
+    margin-bottom: 0;
+}
