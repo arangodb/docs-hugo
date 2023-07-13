@@ -1,4 +1,4 @@
-package common
+package models
 
 import (
 	"io"
@@ -16,6 +16,7 @@ var Logger *ArangoproxyLogger
 func init() {
 	logFile, _ := os.OpenFile("/home/summary.md", os.O_CREATE|os.O_APPEND|os.O_RDWR, 0666)
 	summaryWriter := io.Writer(logFile)
+
 	Logger = new(ArangoproxyLogger)
 	Logger.logger = log.New(os.Stdout, "", log.Ldate|log.Ltime)
 	Logger.summary = log.New(summaryWriter, "", 0)

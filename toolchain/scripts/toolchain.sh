@@ -53,7 +53,7 @@ if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
 fi
 
 ## at least one arangodb src folder must be provided
-if [[ -z "${ARANGODB_SRC}" ]] && [[ -z "${ARANGODB_SRC_2}" ]] && [[ -z "${ARANGODB_SRC_3}" ]]; then
+if [[ -z "${ARANGODB_SRC_3_10}" ]] && [[ -z "${ARANGODB_SRC_3_11}" ]] && [[ -z "${ARANGODB_SRC_3_12}" ]]; then
   echo "[INIT] ERROR: No ARANGODB_SRC variable set, please set it."
   exit 1
 fi
@@ -62,23 +62,22 @@ echo "  DOCKER_ENV=$DOCKER_ENV"
 
 
 ## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
-export IFS=","
-if [ "$ARANGODB_BRANCH" != "" ] ; then
-      export ARANGODB_BRANCH_1_NAME=$(env | grep ^ARANGODB_BRANCH= | cut -d= -f2 | cut -d, -f1)
-      export ARANGODB_BRANCH_1_IMAGE=$(env | grep ^ARANGODB_BRANCH= | cut -d= -f2 | cut -d, -f2)
-      export ARANGODB_BRANCH_1_VERSION=$(env | grep ^ARANGODB_BRANCH= | cut -d= -f2 | cut -d, -f3)
+if [ "$ARANGODB_BRANCH_3_10" != "" ] ; then
+      export ARANGODB_BRANCH_3_10_NAME="stable"
+      export ARANGODB_BRANCH_3_10_IMAGE="$ARANGODB_BRANCH_3_10"
+      export ARANGODB_BRANCH_3_10_VERSION="3.10"
 fi
 
-if [ "$ARANGODB_BRANCH_2" != "" ] ; then
-      export ARANGODB_BRANCH_2_NAME=$(env | grep ^ARANGODB_BRANCH_2= | cut -d= -f2 | cut -d, -f1)
-      export ARANGODB_BRANCH_2_IMAGE=$(env | grep ^ARANGODB_BRANCH_2= | cut -d= -f2 | cut -d, -f2)
-      export ARANGODB_BRANCH_2_VERSION=$(env | grep ^ARANGODB_BRANCH_2= | cut -d= -f2 | cut -d, -f3)
+if [ "$ARANGODB_BRANCH_3_11" != "" ] ; then
+      export ARANGODB_BRANCH_3_11_NAME="stable"
+      export ARANGODB_BRANCH_3_11_IMAGE="$ARANGODB_BRANCH_3_11"
+      export ARANGODB_BRANCH_3_11_VERSION="3.11"
 fi
 
-if [ "$ARANGODB_BRANCH_3" != "" ] ; then
-      export ARANGODB_BRANCH_3_NAME=$(env | grep ^ARANGODB_BRANCH_3= | cut -d= -f2 | cut -d, -f1)
-      export ARANGODB_BRANCH_3_IMAGE=$(env | grep ^ARANGODB_BRANCH_3= | cut -d= -f2 | cut -d, -f2)
-      export ARANGODB_BRANCH_3_VERSION=$(env | grep ^ARANGODB_BRANCH_3= | cut -d= -f2 | cut -d, -f3)
+if [ "$ARANGODB_BRANCH_3_12" != "" ] ; then
+      export ARANGODB_BRANCH_3_12_NAME="stable"
+      export ARANGODB_BRANCH_3_12_IMAGE="$ARANGODB_BRANCH_3_12"
+      export ARANGODB_BRANCH_3_12_VERSION="3.12"
 fi
 
 ### Generator flags

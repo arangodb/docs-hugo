@@ -1,4 +1,4 @@
-package common
+package models
 
 import (
 	"encoding/base64"
@@ -10,7 +10,6 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/config"
 	"gopkg.in/yaml.v3"
 )
 
@@ -29,11 +28,11 @@ const (
 
 // @Example represents an example request to be supplied to an arango instance
 type Example struct {
-	Type          ExampleType       `json:"type"`
-	Options       ExampleOptions    `json:"options"` // The codeblock yaml part
-	Code          string            `json:"code"`
-	Repository    config.Repository `json:"-"`
-	Base64Request string            `json:"-"`
+	Type          ExampleType    `json:"type"`
+	Options       ExampleOptions `json:"options"` // The codeblock yaml part
+	Code          string         `json:"code"`
+	Repository    Repository     `json:"-"`
+	Base64Request string         `json:"-"`
 }
 
 // The yaml part in the codeblock
@@ -42,7 +41,6 @@ type ExampleOptions struct {
 	Description string                 `yaml:"description" json:"description"`                     // What appears on codeblock header
 	Name        string                 `yaml:"name" json:"name"`                                   // Example Name
 	Type        string                 `yaml:"type" json:"type"`                                   // Example Name
-	Run         bool                   `yaml:"run,omitempty" json:"run,omitempty"`                 // Choose if the example has to be run or not
 	Version     string                 `yaml:"version" json:"version"`                             // Arango instance version to launch the example against
 	Render      RenderType             `yaml:"render" json:"render"`                               // Return the example code, the example output or both
 	Explain     bool                   `yaml:"explain,omitempty" json:"explain,omitempty"`         // AQL @EXPLAIN flag
@@ -53,7 +51,7 @@ type ExampleOptions struct {
 }
 
 // Get an example code block, parse the yaml options and the code itself
-func ParseExample(request io.Reader, headers http.Header, exampleType ExampleType) (Example, error) {
+func ParseExample(request io.Reader, headers http.Header) (Example, error) {
 	req, err := ioutil.ReadAll(request)
 	if err != nil {
 		Logger.Printf("Error reading Example body: %s\n", err.Error())
@@ -83,7 +81,7 @@ func ParseExample(request io.Reader, headers http.Header, exampleType ExampleTyp
 
 	code := strings.Replace(string(decodedRequest), string(options), "", -1)
 
-	return Example{Type: exampleType, Options: optionsYaml, Code: code, Base64Request: string(req)}, nil
+	return Example{Type: "", Options: optionsYaml, Code: code, Base64Request: string(req)}, nil
 }
 
 func (r Example) String() string {
@@ -114,6 +112,7 @@ type ExampleResponse struct {
 func NewExampleResponse(input, output string, options ExampleOptions) (res *ExampleResponse) {
 	res = new(ExampleResponse)
 	res.Input, res.Options = input, options
+
 	if strings.Contains(string(options.Render), "output") {
 		res.Output = output
 	} else {
@@ -132,4 +131,25 @@ func (r ExampleResponse) String() string {
 	}
 
 	return string(j)
+}
+
+func FormatResponse(response *ExampleResponse) {
+	codeComments := regexp.MustCompile(`(?m)~.*`) // Cut the ~... strings from the displayed input
+	response.Input = codeComments.ReplaceAllString(response.Input, "")
+
+	re := regexp.MustCompile(`(?m)^\s*$\r?\n`) // Cut all excessive spaces and newlines from output
+	response.Input = re.ReplaceAllString(response.Input, "")
+	if strings.Contains(string(response.Options.Render), "output") {
+		response.Output = re.ReplaceAllString(response.Output, "")
+		response.Output = strings.TrimPrefix(strings.TrimPrefix(response.Output, "\n"), "\r\n")
+	}
+
+	if response.Output == "" {
+		response.Output = "Empty Output"
+	}
+}
+
+type AQLResponse struct {
+	ExampleResponse
+	BindVars map[string]interface{} `json:"bindVars"`
 }

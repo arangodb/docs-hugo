@@ -22,11 +22,15 @@ parameters:
     type: string
     default: ""
 
-  arangodb-branch-2:
+  arangodb-3_10:
     type: string
     default: ""
 
-  arangodb-branch-3:
+  arangodb-3_11:
+    type: string
+    default: ""
+
+  arangodb-3_12:
     type: string
     default: ""
 
@@ -74,12 +78,6 @@ jobs:
       arangodb-branch:
         type: string
         default: ""
-      arangodb-branch-2:
-        type: string
-        default: ""
-      arangodb-branch-3:
-        type: string
-        default: ""  
     docker:
       - image: arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.8
     resource_class: xlarge
@@ -95,7 +93,7 @@ jobs:
       - run:
           name: Validate parameters
           command: |
-            if [ "<< parameters.arangodb-branch >>" == "" ] && [ "<< parameters.arangodb-branch-2 >>" == "" ] && [ "<< parameters.arangodb-branch-3 >>" == "" ]; then
+            if [ "<< parameters.arangodb-branch >>" == "" ]; then
               circleci-agent step halt
               exit 0
             fi
@@ -103,7 +101,7 @@ jobs:
       - run:
           name: Download circleci utils script from docs-hugo repo
           command: |
-            curl https://raw.githubusercontent.com/arangodb/docs-hugo/main/.circleci/utils.sh > utils.sh
+            curl "https://raw.githubusercontent.com/arangodb/docs-hugo/${CIRCLE_BRANCH}/.circleci/utils.sh" > utils.sh
 
       - run:
           name: Clone arangodb branches
@@ -111,12 +109,6 @@ jobs:
             source utils.sh
             if [ "<< parameters.arangodb-branch >>" != "" ] ; then
               clone-branch << parameters.arangodb-branch >>
-            fi
-            if [ "<< parameters.arangodb-branch-2 >>" != "" ] ; then
-              clone-branch << parameters.arangodb-branch-2 >>
-            fi
-            if [ "<< parameters.arangodb-branch-3 >>" != "" ] ; then
-              clone-branch << parameters.arangodb-branch-3 >>
             fi
 
             rm utils.sh
@@ -129,13 +121,13 @@ jobs:
 
   build-with-generated:
     parameters:
-      arangodb-branch:
+      arangodb-3_10:
         type: string
         default: ""
-      arangodb-branch-2:
+      arangodb-3_11:
         type: string
         default: ""
-      arangodb-branch-3:
+      arangodb-3_12:
         type: string
         default: ""  
       generators:
@@ -171,18 +163,19 @@ jobs:
             export DOCKER_ENV=examples
             export GENERATORS='<< parameters.generators >>'
             
-            if [ "<< parameters.arangodb-branch >>" != "" ] ; then
-              pull-branch-image << parameters.arangodb-branch >>
-              generate_setup-environment-var-branch << parameters.arangodb-branch >> ""
+            if [ "<< parameters.arangodb-3_10 >>" != "" ] ; then
+              pull-branch-image << parameters.arangodb-3_10 >> "3.10"
+              generate_setup-environment-var-branch << parameters.arangodb-3_10 >> "3_10"
             fi
-            if [ "<< parameters.arangodb-branch-2 >>" != "" ] ; then
-              pull-branch-image << parameters.arangodb-branch-2 >>
-              generate_setup-environment-var-branch << parameters.arangodb-branch-2 >> "_2"
+            if [ "<< parameters.arangodb-3_11 >>" != "" ] ; then
+              pull-branch-image << parameters.arangodb-3_11 >> "3.11"
+              generate_setup-environment-var-branch << parameters.arangodb-3_11 >> "3_11"
             fi
-            if [ "<< parameters.arangodb-branch-3 >>" != "" ] ; then
-              pull-branch-image << parameters.arangodb-branch-3 >>
-              generate_setup-environment-var-branch << parameters.arangodb-branch-3 >> "_3"
+            if [ "<< parameters.arangodb-3_12 >>" != "" ] ; then
+              pull-branch-image << parameters.arangodb-3_12 >> "3.12"
+              generate_setup-environment-var-branch << parameters.arangodb-3_12 >> "3_12"
             fi
+
             set +e
             cd docs-hugo/toolchain/docker
             docker compose up
@@ -480,7 +473,7 @@ workflows:
           context:
             - sccache-aws-bucket
           name: compile-3.10
-          arangodb-branch: << pipeline.parameters.arangodb-branch >>
+          arangodb-branch: << pipeline.parameters.arangodb-3_10 >>
           version: ""
           openssl: "1.1.1t"
           requires:
@@ -489,7 +482,7 @@ workflows:
           context:
             - sccache-aws-bucket
           name: compile-3.11
-          arangodb-branch: << pipeline.parameters.arangodb-branch-2 >>
+          arangodb-branch: << pipeline.parameters.arangodb-3_11 >>
           version: ""
           openssl: "3.0.9"
           requires:
@@ -498,45 +491,39 @@ workflows:
           context:
             - sccache-aws-bucket
           name: compile-3.12
-          arangodb-branch: << pipeline.parameters.arangodb-branch-3 >>
+          arangodb-branch: << pipeline.parameters.arangodb-3_12 >>
           version: ""
           openssl: "3.1.1"
           requires:
             - approve-workflow
       - clone-arangodb-branches:
-          name: clone-arangodb-branches-1
-          arangodb-branch: << pipeline.parameters.arangodb-branch >>
-          arangodb-branch-2: ""
-          arangodb-branch-3: ""
+          name: clone-arangodb-3.10
+          arangodb-branch: << pipeline.parameters.arangodb-3_10 >>
           requires:
             - compile-3.10
       - clone-arangodb-branches:
-          name: clone-arangodb-branches-2
-          arangodb-branch: ""
-          arangodb-branch-2: << pipeline.parameters.arangodb-branch-2 >>
-          arangodb-branch-3: ""
+          name: clone-arangodb-3.11
+          arangodb-branch: << pipeline.parameters.arangodb-3_11 >>
           requires:
             - compile-3.11
       - clone-arangodb-branches:
-          name: clone-arangodb-branches-3
-          arangodb-branch: ""
-          arangodb-branch-2: ""
-          arangodb-branch-3: << pipeline.parameters.arangodb-branch-3 >>
+          name: clone-arangodb-3.12
+          arangodb-branch: << pipeline.parameters.arangodb-3_12 >>
           requires:
             - compile-3.12
 
       - build-with-generated:
           name: build-with-generated
-          arangodb-branch: << pipeline.parameters.arangodb-branch >>
-          arangodb-branch-2: << pipeline.parameters.arangodb-branch-2 >>
-          arangodb-branch-3: << pipeline.parameters.arangodb-branch-3 >>
+          arangodb-3_10: << pipeline.parameters.arangodb-3_10 >>
+          arangodb-3_11: << pipeline.parameters.arangodb-3_11 >>
+          arangodb-3_12: << pipeline.parameters.arangodb-3_12 >>
           generators: << pipeline.parameters.generators >>
           commit-generated: << pipeline.parameters.commit-generated >>
           create-pr: false
           requires:
-            - clone-arangodb-branches-1
-            - clone-arangodb-branches-2
-            - clone-arangodb-branches-3
+            - clone-arangodb-3.10
+            - clone-arangodb-3.11
+            - clone-arangodb-3.12
       - deploy:
           requires:
             - build-with-generated
@@ -545,32 +532,26 @@ workflows:
     when: { equal: [ generate-scheduled, << pipeline.parameters.workflow >> ] }
     jobs:
       - clone-arangodb-branches:
-          name: clone-arangodb-branches-3.10
-          arangodb-branch: "stable,arangodb/enterprise-preview:3.10-nightly,3.10,"
-          arangodb-branch-2: ""
-          arangodb-branch-3: ""
+          name: clone-arangodb-3.10
+          arangodb-branch: "arangodb/enterprise-preview:3.10-nightly"
       - clone-arangodb-branches:
-          name: clone-arangodb-branches-3.11
-          arangodb-branch: ""
-          arangodb-branch-2: "stable,arangodb/enterprise-preview:3.11-nightly,3.11,"
-          arangodb-branch-3: ""
+          name: clone-arangodb-3.11
+          arangodb-branch: "arangodb/enterprise-preview:3.11-nightly"
       - clone-arangodb-branches:
-          name: clone-arangodb-branches-3.12
-          arangodb-branch: ""
-          arangodb-branch-2: ""
-          arangodb-branch-3: "stable,arangodb/enterprise-preview:devel-nightly,3.12,"
+          name: clone-arangodb-3.12
+          arangodb-branch: "arangodb/enterprise-preview:devel-nightly"
       - build-with-generated:
           name: build-with-generated
-          arangodb-branch: "stable,arangodb/enterprise-preview:3.10-nightly,3.10,"
-          arangodb-branch-2: "stable,arangodb/enterprise-preview:3.11-nightly,3.11,"
-          arangodb-branch-3: "stable,arangodb/enterprise-preview:devel-nightly,3.12,"
+          arangodb-3_10: "arangodb/enterprise-preview:3.10-nightly"
+          arangodb-3_11: "arangodb/enterprise-preview:3.11-nightly"
+          arangodb-3_12: "arangodb/enterprise-preview:devel-nightly"
           generators: "metrics error-codes options optimizer oasisctl"
           commit-generated: true
           create-pr: true
           requires:
-            - clone-arangodb-branches-3.10
-            - clone-arangodb-branches-3.11
-            - clone-arangodb-branches-3.12
+            - clone-arangodb-3.10
+            - clone-arangodb-3.11
+            - clone-arangodb-3.12
 
   commmit-generated:
     when: { equal: [ commit-generated, << pipeline.parameters.workflow >> ] }
