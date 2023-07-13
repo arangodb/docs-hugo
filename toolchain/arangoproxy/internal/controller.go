@@ -6,21 +6,17 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/aql"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/arangosh"
-	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/common"
-	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/httpapi"
-	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/js"
-	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/openapi"
+	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
+	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/service"
 )
 
 // Dependency Injection
 var (
-	CommonService  = common.Service{}
-	JSService      = js.JSService{}
-	HTTPService    = httpapi.HTTPService{}
-	AQLService     = aql.AQLService{}
-	OPENAPIService = openapi.OpenapiService{}
+	JSService      = service.JSService{}
+	CurlService    = service.CurlService{}
+	AQLService     = service.AQLService{}
+	OPENAPIService = service.OpenapiService{}
 
 	CacheChannel         = make(chan map[string]interface{})
 	OpenapiGlobalChannel = make(chan map[string]interface{})
@@ -28,82 +24,87 @@ var (
 	ExampleChannel = make(chan map[string]interface{})
 	OutputChannel  = make(chan string)
 
-	Versions = common.LoadVersions()
+	Versions = models.LoadVersions()
 )
 
 // Start and expose the webserver
 func StartController(url string) {
-	go CommonService.SaveCachedExampleResponse(CacheChannel)
+	launchRoutines()
+	createRoutes()
+	log.Fatal(http.ListenAndServe(url, nil))
+}
+
+func launchRoutines() {
+	go SaveCachedExampleResponse(CacheChannel)
 	go OPENAPIService.AddSpecToGlobalSpec(OpenapiGlobalChannel)
 	go arangosh.ExecRoutine(ExampleChannel, OutputChannel)
-	// Create routes
+}
+
+func createRoutes() {
 	http.HandleFunc("/health", HealthHandler)
 	http.HandleFunc("/js", JSHandler)
-	http.HandleFunc("/curl", HTTPExampleHandler)
+	http.HandleFunc("/curl", CurlExampleHandler)
 	http.HandleFunc("/aql", AQLHandler)
 	http.HandleFunc("/openapi", OpenapiHandler)
 	http.HandleFunc("/openapi-validate", ValidateOpenapiHandler)
 	http.HandleFunc("/go", TODOHandler)
 	http.HandleFunc("/java", TODOHandler)
-
-	log.Fatal(http.ListenAndServe(url, nil))
 }
 
-// Handler for the js codeblocks
 func JSHandler(w http.ResponseWriter, r *http.Request) {
-	request, err := common.ParseExample(r.Body, r.Header, common.JS)
+	request, err := models.ParseExample(r.Body, r.Header)
 	if err != nil {
-		common.Logger.Printf("[js/CONTROLLER] Error parsing request %s\n", err.Error())
+		models.Logger.Printf("[js/CONTROLLER] Error parsing request %s\n", err.Error())
 		return
 	}
 
-	common.Logger.Printf("[js/CONTROLLER] Processing Example %s\n", request.Options.Name)
+	models.Logger.Printf("[js/CONTROLLER] Processing Example %s\n", request.Options.Name)
 
-	resp := JSService.ExecuteExample(request, CacheChannel, ExampleChannel, OutputChannel)
+	resp := JSService.Execute(request, CacheChannel, ExampleChannel, OutputChannel)
 	response, err := json.Marshal(resp)
 	if err != nil {
 		fmt.Printf("[js/CONTROLLER] Error marshalling response: %s\n", err.Error())
 		return
 	}
-	common.Logger.Printf("[js/CONTROLLER] END Example %s\n", request.Options.Name)
+
+	models.Logger.Printf("[js/CONTROLLER] END Example %s\n", request.Options.Name)
 
 	w.Write(response)
 }
 
-// Handler for curl codeblocks
-func HTTPExampleHandler(w http.ResponseWriter, r *http.Request) {
-	request, err := common.ParseExample(r.Body, r.Header, common.HTTP)
+func CurlExampleHandler(w http.ResponseWriter, r *http.Request) {
+	request, err := models.ParseExample(r.Body, r.Header)
 	if err != nil {
-		common.Logger.Printf("[curl/CONTROLLER] Error parsing request %s\n", err.Error())
+		models.Logger.Printf("[curl/CONTROLLER] Error parsing request %s\n", err.Error())
 		return
 	}
 
-	common.Logger.Printf("[curl/CONTROLLER] Processing Example %s\n", request.Options.Name)
+	models.Logger.Printf("[curl/CONTROLLER] Processing Example %s\n", request.Options.Name)
 
-	resp, err := HTTPService.ExecuteHTTPExample(request, CacheChannel, ExampleChannel, OutputChannel)
+	resp, err := CurlService.Execute(request, CacheChannel, ExampleChannel, OutputChannel)
 	if err != nil {
-		common.Logger.Printf("[HTTP] Error caused by request\n%s", request.Code)
+		models.Logger.Printf("[HTTP] Error caused by request\n%s", request.Code)
 	}
+
 	response, err := json.Marshal(resp)
 	if err != nil {
-		common.Logger.Printf("[curl/CONTROLLER] Error marshalling response: %s\n", err.Error())
+		models.Logger.Printf("[curl/CONTROLLER] Error marshalling response: %s\n", err.Error())
 		return
 	}
 
-	common.Logger.Printf("[curl/CONTROLLER] END Example %s\n", request.Options.Name)
+	models.Logger.Printf("[curl/CONTROLLER] END Example %s\n", request.Options.Name)
 
 	w.Write(response)
 }
 
-// Handler for aql codeblocks
 func AQLHandler(w http.ResponseWriter, r *http.Request) {
-	request, err := common.ParseExample(r.Body, r.Header, common.AQL)
+	request, err := models.ParseExample(r.Body, r.Header)
 	if err != nil {
-		common.Logger.Printf("[aql/CONTROLLER] Error parsing request %s\n", err.Error())
+		models.Logger.Printf("[aql/CONTROLLER] Error parsing request %s\n", err.Error())
 		return
 	}
 
-	common.Logger.Printf("[aql/CONTROLLER] Processing Example %s\n", request.Options.Name)
+	models.Logger.Printf("[aql/CONTROLLER] Processing Example %s\n", request.Options.Name)
 
 	resp := AQLService.Execute(request, CacheChannel, ExampleChannel, OutputChannel)
 	response, err := json.Marshal(resp)
@@ -111,30 +112,30 @@ func AQLHandler(w http.ResponseWriter, r *http.Request) {
 		fmt.Printf("[aql/CONTROLLER] Error marshalling response: %s\n", err.Error())
 		return
 	}
-	common.Logger.Printf("[aql/CONTROLLER] END Example %s\n", request.Options.Name)
+	models.Logger.Printf("[aql/CONTROLLER] END Example %s\n", request.Options.Name)
 
 	w.Write(response)
 }
 
 func OpenapiHandler(w http.ResponseWriter, r *http.Request) {
-	openapiYaml, err := OPENAPIService.ParseOpenapiPayload(r.Body)
+	openapiYaml, err := models.ParseOpenapiPayload(r.Body)
 	if err != nil {
 		return
 	}
 
-	err = OPENAPIService.ProcessOpenapiSpec(openapiYaml, r.Header, OpenapiGlobalChannel)
+	OPENAPIService.ProcessOpenapiSpec(openapiYaml, r.Header, OpenapiGlobalChannel)
 	w.WriteHeader(http.StatusOK)
 }
 
 func ValidateOpenapiHandler(w http.ResponseWriter, r *http.Request) {
-	common.Logger.Printf("VALIDATE")
+	models.Logger.Printf("Validate openapi specs")
 
 	OPENAPIService.ValidateOpenapiGlobalSpec()
 	w.WriteHeader(http.StatusOK)
 }
 
 func HealthHandler(w http.ResponseWriter, r *http.Request) {
-	common.Logger.Printf("Health OK\n")
+	models.Logger.Printf("Health OK\n")
 	w.WriteHeader(http.StatusOK)
 }
 

@@ -1,9 +1,13 @@
 webserver: ':8080'
 logFile: log.txt
-datasetsFile: '../internal/aql/datasets.json'
+datasetsFile: '../internal/utils/datasets.json'
 cache: '/home/site/data/'
 repositories:
   - name: stable
-    image: be-impatient-so-we-see-errors
-    version: "3.11"
+    type: single
+    version: "3.12"
     url: http://192.168.129.2:8529
+  - name: stable
+    type: cluster
+    version: "3.12"
+    url: http://192.168.129.3:8529

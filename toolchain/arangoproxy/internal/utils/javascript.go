@@ -1,75 +1,12 @@
 package utils
 
 import (
-	"encoding/json"
-	"fmt"
-	"io/ioutil"
 	"os"
 )
-
-/*
-	These functions are a porting from the arangodb old toolchain defined in exampleHeader.js and client/internal.js
-	used for example generation
-*/
-
-const (
-	DATASET_HEADER = `
-let db = require('internal').db;
-let examples = require("@arangodb/graph-examples/example-graph.js");
-let user_examples = require("@arangodb/examples/example-users.js");`
-
-	REMOVE_ALL_COLLECTIONS = `
-for (let col of db._collections()) {
-	if (!col.properties().isSystem) {
-		db._drop(col._name);
-	}
-}
-`
-)
-
-type Dataset struct {
-	Create string `json:"create"`
-	Remove string `json:"remove"`
-}
-
-var Datasets = make(map[string]Dataset)
-
-func LoadDatasets(datasetsFile string) error {
-
-	fileStream, err := ioutil.ReadFile(datasetsFile)
-	if err != nil {
-		return err
-	}
-
-	err = json.Unmarshal(fileStream, &Datasets)
-	return err
-}
-
-func TryCatchWrap(code string) string {
-	return fmt.Sprintf("try {\n%s\n} catch(err) {\n print('ERROR');\nprint('Arango Error ' + err.errorNum);\nprint('END ERR');\n }", code)
-}
-
-func DatasetExists(dataset string) string {
-	createDSCmd := DATASET_HEADER + "\n" + Datasets[dataset].Create
-	removeDSCmd := DATASET_HEADER + "\n" + Datasets[dataset].Remove
-	iff := fmt.Sprintf(`const ds = %s;
-	if (ds !== '') {
-		%s
-		%s
-	  }`, dataset, removeDSCmd, createDSCmd)
-
-	return iff
-}
 
 func GetCommonFunctions() (string, error) {
 	file, err := os.ReadFile("../internal/utils/common.js")
 	return string(file), err
-}
-
-func GetHTTPFunctions() (string, error) {
-	file, err := os.ReadFile("../internal/utils/http.js")
-	return string(file), err
-
 }
 
 func GetSetupFunctions() (string, error) {
