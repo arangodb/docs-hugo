@@ -1087,9 +1087,9 @@
     "introducedIn" : [
       "v3.11.2"
     ],
-    "longDescription" : "This value controls the LZ4-internal acceleration factor for the \nLZ4 compression. Higher values typically yield less compression in exchange\nfor faster compression speeds.",
+    "longDescription" : "This value controls the LZ4-internal acceleration factor for the \nLZ4 compression. Higher values typically yield less compression in exchange\nfor faster compression and decompression speeds. An increase of 1 commonly leads\nto a compression speed increase of 3%, and could slightly increase decompression\nspeed.",
     "maxInclusive" : true,
-    "maxValue" : 10,
+    "maxValue" : 65537,
     "minInclusive" : true,
     "minValue" : 1,
     "obsolete" : false,
@@ -1239,7 +1239,7 @@
       "agent",
       "single"
     ],
-    "default" : 3536195584,
+    "default" : 3587574784,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -7256,7 +7256,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 16292265984,
+    "base" : 16497782784,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7264,7 +7264,7 @@
       "agent",
       "single"
     ],
-    "default" : 13196735447,
+    "default" : 13363204055,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7554,7 +7554,7 @@
     "type" : "double"
   },
   "query.memory-limit" : {
-    "base" : 16292265984,
+    "base" : 16497782784,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7562,7 +7562,7 @@
       "agent",
       "single"
     ],
-    "default" : 9775359590,
+    "default" : 9898669671,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -8797,7 +8797,7 @@
       "agent",
       "single"
     ],
-    "default" : 4243434700,
+    "default" : 4305089740,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -11262,7 +11262,7 @@
       "agent",
       "single"
     ],
-    "default" : 5657912934,
+    "default" : 5740119654,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
