@@ -88,6 +88,7 @@ generate_metrics=false
 generate_error_codes=false
 generate_apidocs=false
 generate_optimizer=false
+generate_oasisctl=false
 
 start_servers=false
 
@@ -98,7 +99,7 @@ GENERATORS=$(yq -r '.generators' ../docker/config.yaml)
 
 
 if [ "$GENERATORS" == "" ]; then
-  GENERATORS="examples metrics error-codes options optimizer"
+  GENERATORS="examples metrics error-codes options optimizer oasisctl"
 fi
 
 # Check for requested operations
@@ -123,6 +124,10 @@ fi
 if [[ $GENERATORS == *"optimizer"* ]]; then
   generate_optimizer=true
   start_servers=true
+fi
+
+if [[ $GENERATORS == *"oasisctl"* ]]; then
+  generate_oasisctl=true
 fi
 
 
@@ -427,6 +432,42 @@ function generate_metrics() {
   
 }
 
+function generate_oasisctl() {
+  echo "<h2>OasisCTL</h2>" >> /home/summary.md
+
+  version=$1
+
+  log "[GENERATE OASISCTL] Generate OasisCTL docs"
+
+
+  mkdir -p /tmp/oasisctl
+  mkdir -p /tmp/preserve
+
+  cp ../../site/content/$version/arangograph/oasisctl/_index.md /tmp/preserve/oasisctl.md > /dev/null
+  rm -r ../../site/content/$version/arangograph/oasisctl/* > /dev/null
+
+  log "[GENERATE OASISCTL] oasisctl generate-docs --link-file-ext .html --replace-underscore-with - --output-dir /tmp/oasisctl)"
+  res=$(oasisctl generate-docs --link-file-ext .html --replace-underscore-with - --output-dir /tmp/oasisctl)
+  if [ $? -ne 0 ]; then
+    log "[GENERATE OASISCTL] [ERROR] Error from oasisctl generate-docs: $res"
+    echo "<li><strong>$version</strong>: <strong> ERROR: Error from oasisctl generate-docs: </strong>$res</li>" >> /home/summary.md
+    exit 1
+  fi
+
+  log "[GENERATE OASISCTL] "$PYTHON_EXECUTABLE" generators/oasisctl.py --src /tmp/oasisctl --dst ../../site/content/$version/arangograph/oasisctl/"
+  res=$(("$PYTHON_EXECUTABLE" generators/oasisctl.py --src /tmp/oasisctl --dst ../../site/content/$version/arangograph/oasisctl/) 2>&1 )
+  if [ $? -ne 0 ]; then
+    log "[GENERATE OASISCTL] [ERROR] Error from oasisctl.py: $res"
+    echo "<li><strong>$version</strong>: <strong> ERROR: Error from oasisctl.py: </strong>$res</li>" >> /home/summary.md
+    exit 1
+  fi
+
+  cp /tmp/preserve/oasisctl.md ../../site/content/$version/arangograph/oasisctl/_index.md
+
+  echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary.md
+  log "Done"
+}
+
 
 
 ## -------------------
@@ -481,6 +522,7 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
 
   echo "<h2>Generators</h2>" >> /home/summary.md
   echo "$GENERATORS" >> /home/summary.md
+
   mapfile servers < <(yq e -o=j -I=0 '.servers[]' ../docker/config.yaml )
 
   for server in "${servers[@]}"; do
@@ -507,6 +549,10 @@ echo "[TOOLCHAIN] Generators: $GENERATORS"
 
     if [ "$generate_metrics" = true ] ; then
       generate_metrics "$arangodb_src" "$version"
+    fi
+
+    if [ "$generate_oasisctl" = true ] ; then
+      generate_oasisctl "$version"
     fi
 
     ## Generators stat do need arangodb instances running
