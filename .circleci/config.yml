@@ -101,7 +101,7 @@ jobs:
       - run:
           name: Download circleci utils script from docs-hugo repo
           command: |
-            curl https://raw.githubusercontent.com/arangodb/docs-hugo/main/.circleci/utils.sh > utils.sh
+            curl https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_BRANCH/.circleci/utils.sh > utils.sh
 
       - run:
           name: Clone arangodb branches
