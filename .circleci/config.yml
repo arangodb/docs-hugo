@@ -334,17 +334,10 @@ jobs:
               exit 0
             fi
 
-            ARANGODB_BRANCH=<< parameters.arangodb-branch >>
-            VERSION=<< parameters.version >>
-            if [ "$VERSION" == "" ]; then
-              ARANGODB_BRANCH=$(echo << parameters.arangodb-branch >> | cut -d, -f2)
-              VERSION=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
-            fi
-
-            image_name=$(echo $ARANGODB_BRANCH | cut -d/ -f2)
+            image_name=$(echo << parameters.arangodb-branch >> | cut -d/ -f2)
             apk add skopeo
-            latestRemoteHash=$(git ls-remote https://github.com/arangodb/arangodb.git $ARANGODB_BRANCH | awk '{print $1}' | cut -c1-9)
-            remoteImageTag="arangodb/docs-hugo:$image_name-$VERSION-$latestRemoteHash"
+            latestRemoteHash=$(git ls-remote https://github.com/arangodb/arangodb.git << parameters.arangodb-branch >> | awk '{print $1}' | cut -c1-9)
+            remoteImageTag="arangodb/docs-hugo:$image_name-<< parameters.version >>-$latestRemoteHash"
             set +e
             skopeo inspect docker://$remoteImageTag 
             if [ "$?" != "0" ]; then
@@ -354,17 +347,10 @@ jobs:
       - run:
           name: Checkout ArangoDB
           command: |
-            ARANGODB_BRANCH=<< parameters.arangodb-branch >>
-            VERSION=<< parameters.version >>
-            if [ "$VERSION" == "" ]; then
-              ARANGODB_BRANCH=$(echo << parameters.arangodb-branch >> | cut -d, -f2)
-              VERSION=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
-            fi
-
             set +e
-            git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $ARANGODB_BRANCH /root/project
+            git clone --depth 1 https://github.com/arangodb/arangodb.git --branch << parameters.arangodb-branch >> /root/project
             if [ "$?" != "0" ]; then
-              echo "<strong>ArangoDB Repo Git Clone Error</strong><br><br> $ARANGODB_BRANCH not found" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
+              echo "<strong>ArangoDB Repo Git Clone Error</strong><br><br> << parameters.arangodb-branch >> not found" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
               exit 1
             fi 
             set -e
@@ -372,18 +358,12 @@ jobs:
       - run:
           name: Checkout Enterprise
           command: |
-              ARANGODB_BRANCH=<< parameters.arangodb-branch >>
-              VERSION=<< parameters.version >>
-              if [ "$VERSION" == "" ]; then
-                ARANGODB_BRANCH=$(echo << parameters.arangodb-branch >> | cut -d, -f2)
-                VERSION=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
-              fi
               ssh-keyscan github.com >> ~/.ssh/known_hosts
-              ENTERPRISE_BRANCH=$ARANGODB_BRANCH
+              ENTERPRISE_BRANCH=<< parameters.arangodb-branch >>
               set +e
-              git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git $ARANGODB_BRANCH
+              git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git << parameters.arangodb-branch >>
               if [ "$?" == "0" ] ; then
-                ENTERPRISE_BRANCH=$ARANGODB_BRANCH
+                ENTERPRISE_BRANCH=<< parameters.arangodb-branch >>
               else
                 ENTERPRISE_BRANCH=devel
               fi
@@ -434,23 +414,18 @@ jobs:
           name: Create docker image
           command: |
             cp install.tar.gz /tmp/
-            ARANGODB_BRANCH=<< parameters.arangodb-branch >>
-            VERSION=<< parameters.version >>
-            if [ "$VERSION" == "" ]; then
-              ARANGODB_BRANCH=$(echo << parameters.arangodb-branch >> | cut -d, -f2)
-              VERSION=$(echo << parameters.arangodb-branch >> | cut -d, -f3)
-            fi
+
             git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
             apk add docker-cli
             main_hash=$(awk 'END{print}' .git/logs/HEAD | awk '{print $2}' | cut -c1-9)
-            image_name=$(echo $ARANGODB_BRANCH | cut -d/ -f2)
+            image_name=$(echo << parameters.arangodb-branch >> | cut -d/ -f2)
 
             mv install.tar.gz docs-hugo/toolchain/scripts/compile
             cd docs-hugo/toolchain/scripts/compile
 
-            docker build -t arangodb/docs-hugo:$image_name-$VERSION-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
+            docker build -t arangodb/docs-hugo:$image_name-<< parameters.version >>-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
-            docker push arangodb/docs-hugo:$image_name-$VERSION-$main_hash
+            docker push arangodb/docs-hugo:$image_name-<< parameters.version >>-$main_hash
       
 
 
@@ -474,8 +449,8 @@ workflows:
             - sccache-aws-bucket
           name: compile-3.10
           arangodb-branch: << pipeline.parameters.arangodb-3_10 >>
-          version: ""
-          openssl: "1.1.1t"
+          version: "3.10"
+          openssl: "3.0.9"
           requires:
             - approve-workflow
       - compile-linux:
@@ -483,7 +458,7 @@ workflows:
             - sccache-aws-bucket
           name: compile-3.11
           arangodb-branch: << pipeline.parameters.arangodb-3_11 >>
-          version: ""
+          version: "3.11"
           openssl: "3.0.9"
           requires:
             - approve-workflow
@@ -492,7 +467,7 @@ workflows:
             - sccache-aws-bucket
           name: compile-3.12
           arangodb-branch: << pipeline.parameters.arangodb-3_12 >>
-          version: ""
+          version: "3.12"
           openssl: "3.1.1"
           requires:
             - approve-workflow
