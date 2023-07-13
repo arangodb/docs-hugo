@@ -1,3 +1,12 @@
+var iframe =  document.getElementById('menu-iframe');
+iframe.addEventListener("load", function() {
+  var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
+  content= iFrameBody.getElementById('sidebar');
+
+  document.getElementById("page-container").appendChild(content);
+  document.getElementById("page-container").removeChild(iframe);
+});
+
 function replaceArticle(href, newDoc) {
   var re = new RegExp(/<title>(.*)<\/title>/, 'mg');
   var match = re.exec(newDoc);
