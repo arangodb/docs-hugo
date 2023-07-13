@@ -5,6 +5,7 @@ iframe.addEventListener("load", function() {
 
   document.getElementById("page-container").appendChild(content);
   document.getElementById("page-container").removeChild(iframe);
+  menuEntryClick();
 });
 
 function replaceArticle(href, newDoc) {
@@ -36,6 +37,8 @@ function updateHistory(title, url) {
   dispatchEvent(popStateEvent);
 }
 
+
+
 function styleImages() {
   images = document.querySelectorAll("[x-style]");
   for (let image of images) {
@@ -58,6 +61,14 @@ function loadPage(target) {
   });
 }
 
+function internalLinkListener() {
+  $('.link-internal').click(function(event) {
+    event.preventDefault();
+    console.log(event.target)
+    updateHistory("", event.target.getAttribute('href'))
+  })
+}
+
 
 
 
@@ -70,4 +81,5 @@ function initArticle(url) {
   generateToc();
   goToTop();
   styleImages();
+  internalLinkListener();
 }
