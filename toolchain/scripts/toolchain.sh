@@ -62,7 +62,6 @@ echo "  DOCKER_ENV=$DOCKER_ENV"
 
 
 ## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
-export IFS=","
 if [ "$ARANGODB_BRANCH_3_10" != "" ] ; then
       export ARANGODB_BRANCH_3_10_NAME="stable"
       export ARANGODB_BRANCH_3_10_IMAGE="$ARANGODB_BRANCH_3_10"
@@ -70,15 +69,15 @@ if [ "$ARANGODB_BRANCH_3_10" != "" ] ; then
 fi
 
 if [ "$ARANGODB_BRANCH_3_11" != "" ] ; then
-      export ARANGODB_BRANCH_3_10_NAME="stable"
-      export ARANGODB_BRANCH_3_10_IMAGE="$ARANGODB_BRANCH_3_11"
-      export ARANGODB_BRANCH_3_10_VERSION="3.11"
+      export ARANGODB_BRANCH_3_11_NAME="stable"
+      export ARANGODB_BRANCH_3_11_IMAGE="$ARANGODB_BRANCH_3_11"
+      export ARANGODB_BRANCH_3_11_VERSION="3.11"
 fi
 
 if [ "$ARANGODB_BRANCH_3_12" != "" ] ; then
-      export ARANGODB_BRANCH_3_10_NAME="stable"
-      export ARANGODB_BRANCH_3_10_IMAGE="$ARANGODB_BRANCH_3_12"
-      export ARANGODB_BRANCH_3_10_VERSION="3.12"
+      export ARANGODB_BRANCH_3_12_NAME="stable"
+      export ARANGODB_BRANCH_3_12_IMAGE="$ARANGODB_BRANCH_3_12"
+      export ARANGODB_BRANCH_3_12_VERSION="3.12"
 fi
 
 ### Generator flags
