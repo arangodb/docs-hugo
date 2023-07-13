@@ -184,8 +184,9 @@ jobs:
               generate_setup-environment-var-branch << parameters.arangodb-branch-3 >> "_3"
             fi
             set +e
-            cd docs-hugo/toolchain/docker && docker compose up
-            if [ "$?" != "0" ]; then
+            cd docs-hugo/toolchain/docker
+            docker compose up
+            if [ $? -ne 0 ]; then
               cd ../../../
               cat docs-hugo/summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
               exit 1
