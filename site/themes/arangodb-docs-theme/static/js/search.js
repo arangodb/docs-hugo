@@ -1,12 +1,5 @@
 var lunrIndex, pagesIndex;
 
-var iframe =  document.getElementById('menu-iframe');
-iframe.addEventListener("load", function() {
-var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
-content= iFrameBody.getElementById('sidebar');
-
-document.getElementById("page-container").appendChild(content)
-document.getElementById("page-container").removeChild(iframe)
 
 var autoComplete = (function(){
     // "use strict";
@@ -271,7 +264,7 @@ function initLunr() {
             // Set up lunrjs by declaring the fields we use
             // Also provide their boost level for the ranking
             lunrIndex = lunr(function() {
-                this.use(lunr.multiLanguage.apply(null, contentLangs));
+                this.use(lunr.multiLanguage.apply(null, ["en"]));
                 this.ref('index');
                 this.field('title', {
                     boost: 15
@@ -372,4 +365,4 @@ $(function() {
     // https://github.com/Pixabay/JavaScript-autoComplete/blob/master/auto-complete.js#L191
     var selector = $('#search-by').get(0);
 });
-});
+
