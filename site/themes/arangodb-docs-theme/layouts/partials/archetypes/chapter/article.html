@@ -12,7 +12,7 @@
       {{ with $content }}
          {{ . }}
       {{ else }}
-          {{- template "generateSection" dict "section" $page }}
+          {{- template "generateSection" dict "section" $page "pageVersion" $pageVersion }}
       {{ end }}
       <nav class="pagination">
         {{- partial "content-footer.html" . }}
@@ -22,13 +22,15 @@
 
 {{- define "generateSection" }}
 {{ $section := .section }}
+{{ $pageVersion := .pageVersion }}
 
 <div class="cards">
   {{ range $section.Pages }}
+  {{ $title := replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}
 
     {{- partial "shortcodes/card.html" (dict
     "Inner" .Description
-    "title" .Title
+    "title"  $title
     "link" .RelPermalink
       ) }}  
   
