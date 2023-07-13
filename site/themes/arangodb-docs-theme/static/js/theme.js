@@ -391,6 +391,8 @@ jQuery(function() {
     videosAutoplayer();
 });
 
+
+
 jQuery.extend({
     highlight: function(node, re, nodeName, className) {
         if (node.nodeType === 3 && node.parentElement && node.parentElement.namespaceURI == 'http://www.w3.org/1999/xhtml') { // text nodes
@@ -589,4 +591,6 @@ $(window).on('popstate', function (e) {
       loadPage(window.location.href);
     }
   });
+
+
 

@@ -230,7 +230,7 @@ def getHugoMetrics(content):
 
 
 def processFile(page, content, filepath):
-    flags = {"frontMatter": False, "endFrontMatter": False, "description": False, "redirect": False, "title": False, "inCodeblock": False, "hint": {"active": False, "type": ""}, "capture": False, "inDocublock": False, "assign-ver": {"active": False, "isValid": False}}
+    flags = {"frontMatter": False, "endFrontMatter": False, "description": False, "redirect": False, "title": False, "inDetails": False, "inCodeblock": False, "hint": {"active": False, "type": ""}, "capture": False, "inDocublock": False, "assign-ver": {"active": False, "isValid": False}}
 
     buffer = []
     try:
@@ -329,7 +329,10 @@ def processFile(page, content, filepath):
                 if spaces:
                     page.content = page.content + spaces.group(0)
 
-                page.content = page.content + f"{{{{< {hintType} >}}}}"
+                if flags["inDetails"]:
+                    page.content = page.content + f"{{{{</* {hintType} */>}}}}"
+                else:
+                    page.content = page.content + f"{{{{< {hintType} >}}}}"
                 
                 if hintPart[1]:
                     page.content = page.content + hintPart[1]
@@ -343,7 +346,11 @@ def processFile(page, content, filepath):
                 if spaces:
                     page.content = page.content + spaces.group(0)
 
-                page.content = page.content + f"{{{{< /{hintType} >}}}}\n"
+                if flags["inDetails"]:
+                    page.content = page.content + f"{{{{</* /{hintType} */>}}}}\n"
+                else:
+                    page.content = page.content + f"{{{{< /{hintType} >}}}}\n"
+
                 continue
 
             if flags["hint"]["active"]:
@@ -369,12 +376,14 @@ def processFile(page, content, filepath):
 
             ## Details
             if "{% details" in line:
+                flags["inDetails"] = True
                 title = line.replace("{% details '", "").replace("' %}\n", "")
-                page.content = page.content + '{{{{% expand title="{}" %}}}}\n'.format(title)
+                page.content = page.content + '{{{{< expand title="{}" >}}}}\n'.format(title)
                 continue
 
             if "{% enddetail" in line:
-                page.content = page.content + "{{% /expand %}}\n"
+                flags["inDetails"] = False
+                page.content = page.content + "{{< /expand >}}\n"
                 continue
             
             ## Codeblocks
