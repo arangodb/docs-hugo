@@ -23,7 +23,7 @@ function clone-branch() {
         echo "[SETUP] An official ArangoDB Enterprise image has been chosen"
         preview_branch=$(echo $BRANCH | cut -d: -f2 | cut -d- -f1)
         git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $preview_branch $preview_branch
-        clone-arangodb-enterprise $preview_branch
+        clone-arangodb-enterprise $preview_branch $preview_branch
     else 
         echo "[SETUP] A Feature-PR Docker image has been choosen"
         image_name=$(echo ${BRANCH##*/})

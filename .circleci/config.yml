@@ -109,6 +109,7 @@ jobs:
             source utils.sh
             if [ "<< parameters.arangodb-branch >>" != "" ] ; then
               clone-branch << parameters.arangodb-branch >>
+            fi
 
             rm utils.sh
 
