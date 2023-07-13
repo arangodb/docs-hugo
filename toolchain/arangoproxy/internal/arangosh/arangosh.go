@@ -93,7 +93,7 @@ func checkArangoError(name, code, out string, repository models.Repository) stri
 		}
 	}
 
-	return ""
+	return out
 }
 
 func handleCollectionNotFound(name, code, out string, repository models.Repository) string {
