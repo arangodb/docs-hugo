@@ -220,7 +220,7 @@ jobs:
               cd /home/circleci/project/docs-hugo/site
               git config user.email "daniele@arangodb.com"
               git config user.name "CircleCI Job"
-              git add data/
+              git add data/ content/
               git commit --allow-empty -m "Automatic commit of generated files from CircleCI"
 
               if [ "<< parameters.create-pr >>" = true ]; then
@@ -563,7 +563,7 @@ workflows:
           arangodb-branch: "stable,arangodb/enterprise-preview:3.10-nightly,3.10,"
           arangodb-branch-2: "stable,arangodb/enterprise-preview:3.11-nightly,3.11,"
           arangodb-branch-3: "stable,arangodb/enterprise-preview:devel-nightly,3.12,"
-          generators: "metrics error-codes options optimizer"
+          generators: "metrics error-codes options optimizer oasisctl"
           commit-generated: true
           create-pr: true
           requires:
