@@ -37,16 +37,14 @@ func (service AQLService) Execute(request common.Example, cacheChannel chan map[
 	res.ExampleResponse.Input, res.ExampleResponse.Options = request.Code, request.Options
 
 	if strings.Contains(string(request.Options.Render), "output") {
-		res.Output = fmt.Sprintf("%s\n%s", res.Output, cmdOutput)
+		res.ExampleResponse.Output = fmt.Sprintf("%s\n%s", res.Output, cmdOutput)
 	}
 
 	common.FormatResponse(&res.ExampleResponse)
-	if cmdOutput != "" {
-		cacheRequest := make(map[string]interface{})
-		cacheRequest["request"] = request.Base64Request
-		cacheRequest["response"] = res.ExampleResponse
-		cacheChannel <- cacheRequest
-	}
+	cacheRequest := make(map[string]interface{})
+	cacheRequest["request"] = request.Base64Request
+	cacheRequest["response"] = res.ExampleResponse
+	cacheChannel <- cacheRequest
 
 	res.BindVars = request.Options.BindVars
 

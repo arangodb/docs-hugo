@@ -123,7 +123,6 @@ background-size:cover;
 
 #sidebar ul.topics {
     margin: 0 1rem;
-    margin-top: 3rem;
 }
 
 #sidebar ul.topics > ul {
@@ -302,21 +301,6 @@ li.active > a {
 }
 
 
-
-.menu-section-entry > label.open::before,
-.menu-section-entry.parent > label::before,
-.menu-section-entryactive > label::before {
-    font-family: "Font Awesome 5 Free";
-    content: "\f078";
-    display: inline-block;
-    /* padding-right: 3px; */
-    vertical-align: middle;
-    font-weight: 900;
-    font-size: 10px;
-    padding-top: 8px;
-    color: grey;
-}
-
 .menu-section-entry > label.closed::before {
     font-family: "Font Awesome 5 Free";
     content: "\f054";
@@ -325,6 +309,7 @@ li.active > a {
     vertical-align: middle;
     font-weight: 900;
     font-size: 10px;
+    padding-top: 0px;
     color: grey;
 }
 
@@ -373,6 +358,10 @@ dd-item.menu-section-entry.active > .submenu {
 }
 dd-item.menu-section-entry.parent > .submenu {
     display: block;
+}
+
+.menu-title {
+    pointer-events: none;
 }
 
 .sidenav-container-flex::-webkit-scrollbar {

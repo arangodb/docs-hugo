@@ -1,11 +1,11 @@
 
-        {{- partialCached "stylesheet.html" . }}
 
     <div id="sidebar" class="default-animation active">
         <div class="sidenav-container-flex">
           <div class="sidenav-navigation">
   
         <div id="content-wrapper" class="highlightable">
+          
           {{ partial "search.html" . }}
           
           <ul class="topics{{ if .Site.Params.collapsibleMenu }} collapsible-menu{{ end }}">
@@ -39,15 +39,15 @@
             {{- if $pages }}
               {{ if and (ne .Params.menuTitle "3.10") (ne .Params.menuTitle "3.11") (ne .Params.menuTitle "3.12")}}
                 {{ if eq .Layout "label" }}
-                <li data-nav-id="{{.RelPermalink}}" title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><input type="checkbox" id="section-" class="toggle menu-label-entry"/><label for="section-" class="closed" >
+                <li data-nav-id="{{.RelPermalink}}" title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><label for="section-" class="closed {{.RelPermalink}}" onclick="event.preventDefault();menuToggleClick(event)" >
                 </label>
                   <a>
-                    <div>{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}</div>
+                    <div>{{ .Params.menuTitle | markdownify }}</div>
                     </a> 
                 {{ else }}
-                <li data-nav-id="{{.RelPermalink}}" title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item menu-section-entry {{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><input type="checkbox" id="section-" class="toggle"/><label for="section-" class="closed">
+                <li data-nav-id="{{.RelPermalink}}" title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item menu-section-entry {{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><label for="section-" class="closed {{.RelPermalink}}" onclick="event.preventDefault();menuToggleClick(event)" >
                 </label>
-                  <a href="{{.Permalink}}" class="toggle menu-section-entry" onclick="event.preventDefault();menuEntryClick(event)">{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}</a>
+                  <a href="{{.RelPermalink}}" class="toggle menu-section-entry" onclick="event.preventDefault();menuEntryClick(event)"><div class="menu-title">{{ .Params.menuTitle | markdownify }}</div></a>
                 {{ end }}
               {{ end }}
   
@@ -58,11 +58,11 @@
                 </ul>
               {{- else }}
   
-            <li data-nav-id="{{.RelPermalink}}" test1 title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}}"><a href="{{.Permalink}}" onclick="event.preventDefault();menuEntryClick(event)">{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}</a></li>
+            <li data-nav-id="{{.RelPermalink}}" test1 title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}}"><a href="{{.RelPermalink}}" onclick="event.preventDefault();menuEntryClick(event)"><div class="menu-title">{{ .Params.menuTitle  | markdownify }}</div></a></li>
               {{- end }}
           {{- else }}
   
-              <li data-nav-id="{{.RelPermalink}}" test2 title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}} menu-leaf-entry"><a href="{{.Permalink}}" onclick="event.preventDefault();menuEntryClick(event)">{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}</a></li>
+              <li data-nav-id="{{.RelPermalink}}" test2 title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}} menu-leaf-entry"><a href="{{.RelPermalink}}" onclick="event.preventDefault();menuEntryClick(event)"><div class="menu-title">{{ .Params.menuTitle  | markdownify }}</div></a></li>
           {{- end }}
         {{- end }}
       {{- end }}

@@ -1,0 +1,25 @@
+{{ $example := .example }}
+{{ $language := .language }}
+{{ $name := .name }}
+{{ $description := .description }}
+
+{{ $endpoint := printf "%s/%s" site.Params.arangoproxyUrl $language }}
+{{ $body := $example | base64Encode}}
+{{ $remote := resources.GetRemote $endpoint (dict
+    "method" "post"
+    "body" $body
+)
+}}
+{{ if $remote }}
+    {{ if $remote.Err }}
+        {{ warnf "[curl] ERROR CALLING ENDPOINT %#v" .Position }}
+    {{ else }}
+        {{ $response := unmarshal $remote.Content }}
+        {{- partial "shortcodes/examples/render.html" (dict
+        "context" .
+        "content" $response
+        "name" $name
+        "description" $description
+        ) }}
+    {{ end }}
+{{ end }}

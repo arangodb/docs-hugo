@@ -190,7 +190,7 @@ img {
     margin-left: 1rem;
     /* height: 4rem; */
     border: none;
-    right: 0;
+    right: 18px;
     position: absolute;
     margin-top: 3px;
 }
@@ -231,7 +231,6 @@ img {
     line-height: 40px;
     width: 16em;
     z-index: 9999;
-    position: fixed;
     top: 4.1em;
     padding-left: 0.7em;
     display: flex;

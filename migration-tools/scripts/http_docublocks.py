@@ -132,7 +132,7 @@ def migrateHTTPDocuBlocks(docublock):
 
 
 def processHTTPDocuBlock(docuBlock, tag, headerLevel):
-    blockExamples = processExamples(docuBlock)
+    blockExamples = processExample_new(docuBlock+"@endDocuBlock")
 
     docuBlock = re.sub(r"@EXAMPLES.*", "", docuBlock, 0, re.MULTILINE | re.DOTALL)
     newBlock = {"paths": {}}
@@ -169,10 +169,10 @@ def processHTTPDocuBlock(docuBlock, tag, headerLevel):
             for line in block.rstrip().split("\n"):
                 if "{% hint " in line:
                     currentHint = line.replace("{% hint '", "").replace("' %}", "")
-                    line = f"{{{{< {currentHint} >}}}}\n"
+                    line = f"{{{{</* {currentHint} */>}}}}\n"
                     description = description + line
                 elif "{% endhint " in line:
-                    line = f"{{{{< /{currentHint} >}}}}\n"
+                    line = f"{{{{</* /{currentHint} */>}}}}\n"
                     description = description + line
                 else:
                     description = description + line + "\n"
@@ -235,37 +235,50 @@ def processHTTPDocuBlock(docuBlock, tag, headerLevel):
 
 ### BLOCK PROCESSING    
 
-def processExamples(docuBlock):
-    examples = re.findall(r"(?<=@EXAMPLE_)(.*?)(?=@END_EXAMPLE_)", docuBlock, re.MULTILINE | re.DOTALL)
+def processExample_new(docublock):
+    examples = re.findall(r"(?<=@EXAMPLES)(.*?)(?=@endDocuBlock)", docublock, re.MULTILINE | re.DOTALL)
+    if not examples:
+        return []
     blockExamples = []
 
-    for block in examples:
-        exampleBlock = {'options': {}, 'code': ""}
-        exampleType = re.search(r"ARANGO.*(?={)", block).group(0)
-        if exampleType == "ARANGOSH_RUN":
-            exampleBlock["options"]["render"] = "input"
-        elif exampleType == "ARANGOSH_OUTPUT":
-            exampleBlock["options"]["render"] = "input/output"
+    inExample = False
+    exampleBlock = {'options': {"description": "", "version": version}, 'code': ""}
 
-        exampleName = re.search(r"(?<={).*(?=})", block).group(0)
-        exampleBlock["options"]["name"] = exampleName
-        exampleBlock["options"]["server_name"] = "stable"
-        exampleBlock["options"]["type"] = "single"
-        if "_cluster" in exampleBlock["options"]["name"]:
-            exampleBlock["options"]["type"] = "cluster"
-            exampleBlock["options"]["name"] = exampleBlock["options"]["name"].replace("_cluster", "")
+    lines = examples[0].split("\n")
 
-        exampleBlock["options"]["version"] = version
-        code = re.search(r"(?<="+exampleType+"{"+exampleName+"}\n).*", block, re.MULTILINE | re.DOTALL).group(0)
-        code = code.replace("|", " ")
-        exampleBlock["code"] = code
+    for i, line in enumerate(lines):
+        if "@EXAMPLE_" in line:
+            inExample = True
+            if 'ARANGOSH_RUN' in line:
+                exampleBlock["options"]["render"] = "input"
+            if 'ARANGOSH_OUTPUT' in line:
+                exampleBlock["options"]["render"] = "input/output"
 
-        if "logJsonResponse" in code:
-            exampleBlock["options"]["render"] = "input/output"
+            exampleName = re.search(r"(?<={).*(?=})", line).group(0)
+            exampleBlock["options"]["name"] = exampleName
+            exampleBlock["options"]["server_name"] = "stable"
+            exampleBlock["options"]["type"] = "single"
+            if "_cluster" in exampleBlock["options"]["name"]:
+                exampleBlock["options"]["type"] = "cluster"
+                exampleBlock["options"]["name"] = exampleBlock["options"]["name"].replace("_cluster", "")
+                exampleBlock["options"]["version"] = version
+            continue
 
-        blockExamples.append(exampleBlock)
+        if "@END_EXAMPLE_" in line:
+            blockExamples.append(exampleBlock)
+            exampleBlock = {'options': {"description": "", "version": version}, 'code': ""}
+            inExample = False
+            continue
 
+        if inExample:
+            exampleBlock["code"] = exampleBlock["code"] + "\n" + line
+            if "logJsonResponse" in line:
+                exampleBlock["options"]["render"] = "input/output"
+
+        if not inExample:
+            exampleBlock["options"]["description"] = exampleBlock["options"]["description"] + "\n" + line
     return blockExamples
+
 
 def processHeader(docuBlock, newBlock):
     headerRe = re.search(r".*}", docuBlock).group(0)
@@ -474,7 +487,7 @@ def render_yaml(block, title):
     return res
 
 def parse_examples(blockExamples):
-    res = ''
+    res = '\n**Examples**\n\n'
     for example in blockExamples:
         exampleOptions = yaml.dump(example["options"], sort_keys=False, default_flow_style=False)
         code = example["code"]
@@ -486,7 +499,7 @@ def parse_examples(blockExamples):
 ---\n\
 {exampleOptions}\
 ---\n\
-{code}\
+{code}\n\
 ```\n\
 '
         res = res + "\n" + codeBlock

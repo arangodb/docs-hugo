@@ -22,12 +22,10 @@ func (service JSService) ExecuteExample(request common.Example, cacheChannel cha
 	cmdOutput := arangosh.Exec(request.Options.Name, commands, repository)
 
 	res = *common.NewExampleResponse(request.Code, cmdOutput, request.Options)
-	if cmdOutput != "" {
-		cacheRequest := make(map[string]interface{})
-		cacheRequest["request"] = request.Base64Request
-		cacheRequest["response"] = res
-		cacheChannel <- cacheRequest
-	}
+	cacheRequest := make(map[string]interface{})
+	cacheRequest["request"] = request.Base64Request
+	cacheRequest["response"] = res
+	cacheChannel <- cacheRequest
 
 	return
 }
