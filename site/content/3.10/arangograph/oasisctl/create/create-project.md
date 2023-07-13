@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl create project command
 title: Oasisctl Create Project
 menuTitle: Create Project
-weight: 100
+weight: 95
+description: >-
+  Description of the oasisctl create project command
+archetype: default
 ---
+Create a new project
+
 ## Synopsis
+
 Create a new project
 
 ```
@@ -13,6 +17,7 @@ oasisctl create project [flags]
 ```
 
 ## Options
+
 ```
       --description string       Description of the project
   -h, --help                     help for project
@@ -20,7 +25,8 @@ oasisctl create project [flags]
   -o, --organization-id string   Identifier of the organization to create the project in
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -28,5 +34,6 @@ oasisctl create project [flags]
 ```
 
 ## See also
+
 * [oasisctl create](_index.md)	 - Create resources
 

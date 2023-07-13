@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl generate-docs command
-title: Oasisctl Generate-Docs
-menuTitle: Generate-Docs
-weight: 15
+title: Oasisctl Generate-docs
+menuTitle: Generate Docs
+weight: 60
+description: >-
+  Description of the oasisctl generate-docs command
+archetype: default
 ---
+Generate output
+
 ## Synopsis
+
 Generate output
 
 ```
@@ -13,6 +17,7 @@ oasisctl generate-docs [flags]
 ```
 
 ## Options
+
 ```
   -h, --help                             help for generate-docs
   -l, --link-file-ext string             What file extensions the links should point to
@@ -20,7 +25,8 @@ oasisctl generate-docs [flags]
   -r, --replace-underscore-with string   Replace the underscore in links with the given character
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -28,5 +34,6 @@ oasisctl generate-docs [flags]
 ```
 
 ## See also
+
 * [oasisctl](options.md)	 - ArangoGraph Insights Platform
 

@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl get command
 title: Oasisctl Get
 menuTitle: Get
-weight: 5
+weight: 65
+description: >-
+  Description of the oasisctl get command
+archetype: chapter
 ---
+Get information
+
 ## Synopsis
+
 Get information
 
 ```
@@ -13,11 +17,13 @@ oasisctl get [flags]
 ```
 
 ## Options
+
 ```
   -h, --help   help for get
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -25,14 +31,15 @@ oasisctl get [flags]
 ```
 
 ## See also
+
 * [oasisctl](../options.md)	 - ArangoGraph Insights Platform
-* [oasisctl get auditlog](get-auditlog.md)	 - Get auditlog archive
+* [oasisctl get auditlog](get-audit-log.md)	 - Get auditlog archive
 * [oasisctl get backup](get-backup.md)	 - Get a backup
-* [oasisctl get cacertificate](get-cacertificate.md)	 - Get a CA certificate the authenticated user has access to
+* [oasisctl get cacertificate](get-ca-certificate.md)	 - Get a CA certificate the authenticated user has access to
 * [oasisctl get deployment](get-deployment.md)	 - Get a deployment the authenticated user has access to
 * [oasisctl get example](get-example.md)	 - Get a single example dataset
 * [oasisctl get group](get-group.md)	 - Get a group the authenticated user has access to
-* [oasisctl get ipallowlist](get-ipallowlist.md)	 - Get an IP allowlist the authenticated user has access to
+* [oasisctl get ipallowlist](get-ip-allowlist.md)	 - Get an IP allowlist the authenticated user has access to
 * [oasisctl get metrics](get-metrics.md)	 - Get metrics information
 * [oasisctl get notebook](get-notebook.md)	 - Get a notebook
 * [oasisctl get organization](get-organization.md)	 - Get an organization the authenticated user is a member of
@@ -44,5 +51,5 @@ oasisctl get [flags]
 * [oasisctl get role](get-role.md)	 - Get a role the authenticated user has access to
 * [oasisctl get self](get-self.md)	 - Get information about the authenticated user
 * [oasisctl get server](get-server.md)	 - Get server information
-* [oasisctl get tandc](get-tandc.md)	 - Get current terms and conditions or get one by ID
+* [oasisctl get tandc](get-terms-and-conditions.md)	 - Get current terms and conditions or get one by ID
 

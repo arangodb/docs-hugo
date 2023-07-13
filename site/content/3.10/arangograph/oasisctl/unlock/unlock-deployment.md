@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl unlock deployment command
 title: Oasisctl Unlock Deployment
 menuTitle: Unlock Deployment
-weight: 15
+weight: 10
+description: >-
+  Description of the oasisctl unlock deployment command
+archetype: default
 ---
+Unlock a deployment, so it can be deleted
+
 ## Synopsis
+
 Unlock a deployment, so it can be deleted
 
 ```
@@ -13,6 +17,7 @@ oasisctl unlock deployment [flags]
 ```
 
 ## Options
+
 ```
   -d, --deployment-id string     Identifier of the deployment
   -h, --help                     help for deployment
@@ -20,7 +25,8 @@ oasisctl unlock deployment [flags]
   -p, --project-id string        Identifier of the project
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -28,5 +34,6 @@ oasisctl unlock deployment [flags]
 ```
 
 ## See also
+
 * [oasisctl unlock](_index.md)	 - Unlock resources
 

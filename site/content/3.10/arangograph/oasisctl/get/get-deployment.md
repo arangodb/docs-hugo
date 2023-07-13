@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl get deployment command
 title: Oasisctl Get Deployment
 menuTitle: Get Deployment
-weight: 40
+weight: 35
+description: >-
+  Description of the oasisctl get deployment command
+archetype: default
 ---
+Get a deployment the authenticated user has access to
+
 ## Synopsis
+
 Get a deployment the authenticated user has access to
 
 ```
@@ -13,6 +17,7 @@ oasisctl get deployment [flags]
 ```
 
 ## Options
+
 ```
   -d, --deployment-id string     Identifier of the deployment
   -h, --help                     help for deployment
@@ -21,7 +26,8 @@ oasisctl get deployment [flags]
       --show-root-password       show the root password of the database
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -29,5 +35,6 @@ oasisctl get deployment [flags]
 ```
 
 ## See also
+
 * [oasisctl get](_index.md)	 - Get information
 
