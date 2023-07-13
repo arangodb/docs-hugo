@@ -208,7 +208,7 @@ jobs:
             if [ "<< parameters.commit-generated >>" = true ] ; then
               if [ "<< parameters.create-pr >>" = true ]; then
                 cd docs-hugo/
-                git checkout -b scheduled-content-generate
+                git checkout -b scheduled-content-generate-$CIRCLE_BUILD_NUM
               fi
 
               cd /home/circleci/project/docs-hugo/site
@@ -218,7 +218,7 @@ jobs:
               git commit --allow-empty -m "Automatic commit of generated files from CircleCI"
 
               if [ "<< parameters.create-pr >>" = true ]; then
-                git push -u origin scheduled-content-generate
+                git push -u origin scheduled-content-generate-$CIRCLE_BUILD_NUM
                 curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: scheduled-create-pr'
               else
                 git push
