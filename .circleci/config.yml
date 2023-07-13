@@ -22,15 +22,15 @@ parameters:
     type: string
     default: ""
 
-  arangodb-3.10:
+  arangodb-3_10:
     type: string
     default: ""
 
-  arangodb-3.11:
+  arangodb-3_11:
     type: string
     default: ""
 
-  arangodb-3.12:
+  arangodb-3_12:
     type: string
     default: ""
 
@@ -120,13 +120,13 @@ jobs:
 
   build-with-generated:
     parameters:
-      arangodb-3.10:
+      arangodb-3_10:
         type: string
         default: ""
-      arangodb-3.11:
+      arangodb-3_11:
         type: string
         default: ""
-      arangodb-3.12:
+      arangodb-3_12:
         type: string
         default: ""  
       generators:
@@ -162,17 +162,17 @@ jobs:
             export DOCKER_ENV=examples
             export GENERATORS='<< parameters.generators >>'
             
-            if [ "<< parameters.arangodb-3.10 >>" != "" ] ; then
-              pull-branch-image << parameters.arangodb-3.10 >> "3.10"
-              generate_setup-environment-var-branch << parameters.arangodb-3.10 >> "3_10"
+            if [ "<< parameters.arangodb-3_10 >>" != "" ] ; then
+              pull-branch-image << parameters.arangodb-3_10 >> "3.10"
+              generate_setup-environment-var-branch << parameters.arangodb-3_10 >> "3_10"
             fi
-            if [ "<< parameters.arangodb-3.11 >>" != "" ] ; then
-              pull-branch-image << parameters.arangodb-3.11 >> "3.11"
-              generate_setup-environment-var-branch << parameters.arangodb-3.11 >> "3_11"
+            if [ "<< parameters.arangodb-3_11 >>" != "" ] ; then
+              pull-branch-image << parameters.arangodb-3_11 >> "3.11"
+              generate_setup-environment-var-branch << parameters.arangodb-3_11 >> "3_11"
             fi
-            if [ "<< parameters.arangodb-3.12 >>" != "" ] ; then
-              pull-branch-image << parameters.arangodb-3.12 >> "3.12"
-              generate_setup-environment-var-branch << parameters.arangodb-3.12 >> "3_12"
+            if [ "<< parameters.arangodb-3_12 >>" != "" ] ; then
+              pull-branch-image << parameters.arangodb-3_12 >> "3.12"
+              generate_setup-environment-var-branch << parameters.arangodb-3_12 >> "3_12"
             fi
 
             set +e
@@ -472,7 +472,7 @@ workflows:
           context:
             - sccache-aws-bucket
           name: compile-3.10
-          arangodb-branch: << pipeline.parameters.arangodb-3.10 >>
+          arangodb-branch: << pipeline.parameters.arangodb-3_10 >>
           version: ""
           openssl: "1.1.1t"
           requires:
@@ -481,7 +481,7 @@ workflows:
           context:
             - sccache-aws-bucket
           name: compile-3.11
-          arangodb-branch: << pipeline.parameters.arangodb-3.11 >>
+          arangodb-branch: << pipeline.parameters.arangodb-3_11 >>
           version: ""
           openssl: "3.0.9"
           requires:
@@ -490,32 +490,32 @@ workflows:
           context:
             - sccache-aws-bucket
           name: compile-3.12
-          arangodb-branch: << pipeline.parameters.arangodb-3.12 >>
+          arangodb-branch: << pipeline.parameters.arangodb-3_12 >>
           version: ""
           openssl: "3.1.1"
           requires:
             - approve-workflow
       - clone-arangodb-branches:
           name: clone-arangodb-3.10
-          arangodb-branch: << pipeline.parameters.arangodb-3.10 >>
+          arangodb-branch: << pipeline.parameters.arangodb-3_10 >>
           requires:
             - compile-3.10
       - clone-arangodb-branches:
           name: clone-arangodb-3.11
-          arangodb-branch: << pipeline.parameters.arangodb-3.11 >>
+          arangodb-branch: << pipeline.parameters.arangodb-3_11 >>
           requires:
             - compile-3.11
       - clone-arangodb-branches:
           name: clone-arangodb-3.12
-          arangodb-branch: << pipeline.parameters.arangodb-3.12 >>
+          arangodb-branch: << pipeline.parameters.arangodb-3_12 >>
           requires:
             - compile-3.12
 
       - build-with-generated:
           name: build-with-generated
-          arangodb-3.10: << pipeline.parameters.arangodb-3.10 >>
-          arangodb-3.11: << pipeline.parameters.arangodb-3.11 >>
-          arangodb-3.12: << pipeline.parameters.arangodb-3.12 >>
+          arangodb-3_10: << pipeline.parameters.arangodb-3_10 >>
+          arangodb-3_11: << pipeline.parameters.arangodb-3_11 >>
+          arangodb-3_12: << pipeline.parameters.arangodb-3_12 >>
           generators: << pipeline.parameters.generators >>
           commit-generated: << pipeline.parameters.commit-generated >>
           create-pr: false
@@ -541,9 +541,9 @@ workflows:
           arangodb-branch: "arangodb/enterprise-preview:devel-nightly"
       - build-with-generated:
           name: build-with-generated
-          arangodb-3.10: "arangodb/enterprise-preview:3.10-nightly"
-          arangodb-3.11: "arangodb/enterprise-preview:3.11-nightly"
-          arangodb-3.12: "arangodb/enterprise-preview:devel-nightly"
+          arangodb-3_10: "arangodb/enterprise-preview:3.10-nightly"
+          arangodb-3_11: "arangodb/enterprise-preview:3.11-nightly"
+          arangodb-3_12: "arangodb/enterprise-preview:devel-nightly"
           generators: "metrics error-codes options optimizer oasisctl"
           commit-generated: true
           create-pr: true
