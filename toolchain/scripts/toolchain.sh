@@ -49,7 +49,7 @@ fi
 
 ## if no generators set, defaults to all
 if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
-  GENERATORS="examples metrics error-codes options optimizer"
+  GENERATORS="examples metrics error-codes options optimizer oasisctl"
 fi
 
 ## at least one arangodb src folder must be provided
