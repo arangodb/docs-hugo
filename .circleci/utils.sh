@@ -51,12 +51,13 @@ function create-docker-image() {
     curl https://raw.githubusercontent.com/arangodb/docs-hugo/DOC-416/toolchain/scripts/compile/tar-to-docker.Dockerfile > create-docker/tar-to-docker.Dockerfile
     curl https://raw.githubusercontent.com/arangodb/docs-hugo/main/toolchain/scripts/compile/setup-tar-to-docker.sh > create-docker/setup-tar-to-docker.sh
     curl https://raw.githubusercontent.com/arangodb/docs-hugo/main/toolchain/scripts/compile/docker-entrypoint.sh > create-docker/docker-entrypoint.sh
-    chmod +x setup-tar-to-docker.sh
-    chmod +x docker-entrypoint.sh
 
     mv install.tar.gz create-docker/
 
     cd create-docker
+    chmod +x setup-tar-to-docker.sh
+    chmod +x docker-entrypoint.sh
+    
     docker build -t arangodb/docs-hugo:$image_name-$VER-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
 
     echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
