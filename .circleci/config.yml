@@ -300,7 +300,7 @@ jobs:
       - persist_to_workspace:
           root: /tmp
           paths:
-            - << parameters.version >>
+            - << parameters.version >>/*
       - run:
           name: Check Branch Image already exists
           command: |
