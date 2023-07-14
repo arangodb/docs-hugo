@@ -2539,7 +2539,7 @@
   },
   "/_admin/server/availability": {
    "get": {
-    "description": "Return availability information about a server.\n\nThis is a public API so it does *not* require authentication. It is meant to be\nused only in the context of server monitoring.\n",
+    "description": "Return availability information about a server.\n\nThe response is a JSON object with an attribute \"mode\". The \"mode\" can either\nbe \"readonly\", if the server is in read-only mode, or \"default\", if it is not.\nPlease note that the JSON object with \"mode\" is only returned in case the server\ndoes not respond with HTTP response code 503.\n\nThis is a public API so it does *not* require authentication. It is meant to be\nused only in the context of server monitoring.\n",
     "operationId": "getServerAvailability",
     "responses": {
      "200": {
