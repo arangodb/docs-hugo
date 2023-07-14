@@ -409,7 +409,9 @@ jobs:
           command: sccache -s
       - run:
           name: Create archive of compiled instance
-          command: tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/ enterprise/
+          command: |
+            curl https://github.com/arangodb-helper/arangodb/releases/download/0.15.8/arangodb-linux-amd64 -o build/bin
+            tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/ enterprise/
       - run:
           name: Create docker image
           command: |

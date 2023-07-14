@@ -20,9 +20,6 @@ cp -r /build/bin/* /usr/bin
 cp -r /js/* /usr/share/arangodb3/js
 cp -r /enterprise/* /usr/share/arangodb3/enterprise
 
-curl https://github.com/arangodb-helper/arangodb/releases/download/0.15.8/arangodb-linux-amd64 -o /usr/bin/arangodb
-chmod +x /usr/bin/arangodb
-
 # Bind to all endpoints (in the container):
 sed -i -e 's~^endpoint.*8529$~endpoint = tcp://0.0.0.0:8529~' /etc/arangodb3/arangod.conf
 # Remove the uid setting in the config file, since we want to be able
