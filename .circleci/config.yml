@@ -242,7 +242,9 @@ jobs:
           at: .
       - run:
           name: Install netlify-cli
-          command: sudo npm install -g --silent netlify-cli
+          command: |
+            sudo npm install -g npm@9.8.0
+            sudo npm install -g --silent netlify-cli
 
       - run:
           name: Deploy to netlify
