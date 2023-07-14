@@ -364,7 +364,7 @@ jobs:
             source utils.sh
             create-docker-image << parameters.arangodb-branch >> << parameters.version >>
       - persist_to_workspace:
-          root: .
+          root: /
           paths:
             - /tmp/<< parameters.version >>
       
