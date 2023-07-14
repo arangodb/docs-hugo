@@ -23,5 +23,5 @@
         {{ end -}}
     {{ end -}}
   {{ end -}}
-<a  href="{{ $permalink | safeURL }}" {{ with .Title }} title="{{ . }}"{{ end }} {{ if $isRemote }} target="_blank" rel="noopener noreferrer" {{ end }}>{{ .Text | safeHTML }}</a>
+<a  href="{{ $permalink | safeURL }}" {{ with .Title }} title="{{ . }}"{{ end }} {{ if $isRemote }} target="_blank" rel="noopener noreferrer" {{ else }} class="link-internal" {{ end }}>{{ .Text | safeHTML }}</a>
 {{- /* whitespace control */ -}}

@@ -1126,3 +1126,7 @@ ul ul, ul ol, ol ul, ol ol {
     margin-top: 1rem;
     margin-bottom: 0;
 }
+
+.link-internal > * {
+    pointer-events: none;
+}

@@ -3,7 +3,7 @@
         <div class="box-content">
             <i class="fa fa-times-circle"></i>
             <div class="box-text">
-                {{ .InnerDeindent | markdownify  }}
+                {{ .InnerDeindent | .Page.RenderString }}
             </div>
         </div>
     </div>

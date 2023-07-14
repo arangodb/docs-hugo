@@ -16,16 +16,17 @@ function menuToggleClick(event) {
 }
 
 
-function menuEntryClick(event) {
-    if (event.target.pathname == window.location.pathname) {
-        toggleMenuItem(event)
-        return
-    }
+function menuEntryClick() {
+    $('.menu-link').click(function(event) {
+        event.preventDefault();
+        if (event.target.pathname == window.location.pathname) {
+            toggleMenuItem(event)
+            return
+        }
+        console.log(event.target)
+        updateHistory("", event.target.getAttribute('href'))
+    });
 
-    console.log("redirecting to")
-    console.log(event.target.pathname)
-
-    updateHistory("", event.target.getAttribute('href'));
 }
 
 function renderVersion() {
