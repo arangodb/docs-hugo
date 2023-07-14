@@ -235,7 +235,7 @@ jobs:
 
   deploy:
     docker:
-      - image: cimg/node:19.7.0
+      - image: cimg/node:20.4.0
     resource_class: small
     steps:
       - attach_workspace:
@@ -243,7 +243,6 @@ jobs:
       - run:
           name: Install netlify-cli
           command: |
-            sudo npm install -g npm@9.8.0
             sudo npm install -g --silent netlify-cli
 
       - run:
