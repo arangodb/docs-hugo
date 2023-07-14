@@ -366,7 +366,7 @@ jobs:
       - persist_to_workspace:
           root: /
           paths:
-            - /tmp/<< parameters.version >>
+            - tmp/<< parameters.version >>
       
 
 
