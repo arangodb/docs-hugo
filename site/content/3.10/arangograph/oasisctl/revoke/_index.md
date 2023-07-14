@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl revoke command
 title: Oasisctl Revoke
 menuTitle: Revoke
-weight: 5
+weight: 120
+description: >-
+  Description of the oasisctl revoke command
+archetype: chapter
 ---
+Revoke keys & tokens
+
 ## Synopsis
+
 Revoke keys & tokens
 
 ```
@@ -13,11 +17,13 @@ oasisctl revoke [flags]
 ```
 
 ## Options
+
 ```
   -h, --help   help for revoke
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -25,7 +31,8 @@ oasisctl revoke [flags]
 ```
 
 ## See also
+
 * [oasisctl](../options.md)	 - ArangoGraph Insights Platform
-* [oasisctl revoke apikey](revoke-apikey.md)	 - Revoke an API key with given identifier
+* [oasisctl revoke apikey](revoke-api-key.md)	 - Revoke an API key with given identifier
 * [oasisctl revoke metrics](revoke-metrics.md)	 - Revoke keys & tokens
 

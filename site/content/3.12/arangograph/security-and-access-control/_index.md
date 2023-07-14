@@ -101,14 +101,14 @@ Windows command to generate below list (cmd.exe):
 oasisctl list roles --organization-id <id> --format json | jq -r ".[] | select(.predefined == true) | \"**\(.description)** (`\(.id)`):\n\(.permissions ^| split(\", \") ^| map(\"- `\(.)`\n\") ^| join(\"\"))""
 {{% /comment %}}
 
-{{% expand title="List of predefined roles and their permissions" %}}
+{{< expand title="List of predefined roles and their permissions" >}}
 
-{{< tip >}}
+{{</* tip */>}}
 The roles below are described following this pattern:
 
 **Role description** (`role ID`):
 - `Permission`
-{{< /tip >}}
+{{</* /tip */>}}
 
 **Audit Log Admin** (`auditlog-admin`):
 - `audit.auditlog.create`
@@ -429,7 +429,7 @@ The roles below are described following this pattern:
 - `iam.user.get-personal-data`
 - `iam.user.update`
 
-{{% /expand %}}
+{{< /expand >}}
 
 ### How to create a custom role
 
