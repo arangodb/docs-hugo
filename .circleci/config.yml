@@ -209,6 +209,7 @@ jobs:
             curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash 
             source ~/.bashrc   
             nvm install --lts 
+
             artifacts_job_id=$(node docs-hugo/.circleci/commit.js $CIRCLE_BRANCH)
             base_url=https://output.circle-artifacts.com/output/job/"$artifacts_job_id"/artifacts/0/tmp
             wget $base_url/3.10-generated.tar
@@ -308,13 +309,13 @@ jobs:
               exit 0
             fi
 
-            image_name=$(echo << parameters.arangodb-branch >> | cut -d/ -f2)
             apk add skopeo
+
+            image_name=$(echo << parameters.arangodb-branch >> | cut -d/ -f2)
             latestRemoteHash=$(git ls-remote https://github.com/arangodb/arangodb.git << parameters.arangodb-branch >> | awk '{print $1}' | cut -c1-9)
-            remoteImageTag="arangodb/docs-hugo:$image_name-<< parameters.version >>-$latestRemoteHash"
 
             set +e
-            skopeo inspect docker://$remoteImageTag 
+            skopeo inspect docker://"arangodb/docs-hugo:$image_name-<< parameters.version >>-$latestRemoteHash" 
             if [ "$?" != "0" ]; then
               exit 0
             fi 
@@ -366,6 +367,7 @@ jobs:
       - run:
           name: Create docker image
           command: |
+            curl "https://raw.githubusercontent.com/arangodb/docs-hugo/${CIRCLE_BRANCH}/.circleci/utils.sh" > utils.sh
             source utils.sh
             create-docker-image << parameters.arangodb-branch >> << parameters.version >>
 
