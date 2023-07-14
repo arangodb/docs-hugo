@@ -85,12 +85,6 @@ function generate_setup-environment-var-branch() {
     BRANCH="$1"
     version="$2"
     export ARANGODB_BRANCH_"$2"=$BRANCH
-    if [[ "$BRANCH" == *"arangodb/enterprise"* ]]; then
-        preview_branch=$(echo $BRANCH | cut -d: -f2 | cut -d- -f1)
-        export ARANGODB_SRC_"$2"=/home/circleci/project/$preview_branch
-    else
-        image_name=$(echo ${BRANCH##*/})
-        export ARANGODB_SRC_"$2"=/home/circleci/project/$image_name
-    fi
+    export ARANGODB_SRC_"$2"=/home/circleci/project/$version/project
 }
 
