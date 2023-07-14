@@ -34,7 +34,7 @@ function clone-branch() {
     clone-arangodb-enterprise $branch_name
 
     mkdir -p /tmp/$VER
-    cp -r /root/project /tmp/$VER
+    cp -r /root/project/* /tmp/$VER
 }
 
 function create-docker-image() {
