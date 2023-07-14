@@ -1,0 +1,103 @@
+{
+ "info": {
+  "description": "ArangoDB REST API Interface",
+  "title": "ArangoDB",
+  "version": "3.11.0"
+ },
+ "openapi": "3.1.0",
+ "paths": {},
+ "tags": [
+  {
+   "description": "Manage session tokens and JWT secrets",
+   "name": "Authentication"
+  },
+  {
+   "description": "Manage ArangoDB user accounts",
+   "name": "Users"
+  },
+  {
+   "description": "Manage databases for organizing collections",
+   "name": "Databases"
+  },
+  {
+   "description": "Manage collections for organizing documents",
+   "name": "Collections"
+  },
+  {
+   "description": "Perform CRUD operations on JSON-based records",
+   "name": "Documents"
+  },
+  {
+   "description": "Manage named graphs and query edges",
+   "name": "Graphs"
+  },
+  {
+   "description": "Run, process, and manage AQL queries",
+   "name": "Queries"
+  },
+  {
+   "description": "Run distributed graph algorithms",
+   "name": "Pregel"
+  },
+  {
+   "description": "Execute JavaScript and Stream Transactions",
+   "name": "Transactions"
+  },
+  {
+   "description": "Improve the performance of queries",
+   "name": "Indexes"
+  },
+  {
+   "description": "Manage Views to use ArangoSearch for information retrieval",
+   "name": "Views"
+  },
+  {
+   "description": "Manage Analyzers for transforming data",
+   "name": "Analyzers"
+  },
+  {
+   "description": "Load JSON data in bulk",
+   "name": "Import"
+  },
+  {
+   "description": "Manage microservices written in JavaScript",
+   "name": "Foxx"
+  },
+  {
+   "description": "Execute requests asynchronously",
+   "name": "Jobs"
+  },
+  {
+   "description": "Set up JavaScript code to run periodically or timed",
+   "name": "Tasks"
+  },
+  {
+   "description": "Run multiple operations using a single request",
+   "name": "Batch Requests"
+  },
+  {
+   "description": "Control data replication for deployments",
+   "name": "Replication"
+  },
+  {
+   "description": "Access logs, statistics, and metrics",
+   "name": "Monitoring"
+  },
+  {
+   "description": "Configure audit logging, encryption at rest and encryption in transit",
+   "name": "Security"
+  },
+  {
+   "description": "Get server information, manage licenses, shut down nodes, and more",
+   "name": "Administration"
+  },
+  {
+   "description": "Get information, monitor, and administrate cluster deployments",
+   "name": "Cluster"
+  },
+  {
+   "description": "Manage incremental data backups",
+   "name": "Hot Backups"
+  }
+ ]
+}
