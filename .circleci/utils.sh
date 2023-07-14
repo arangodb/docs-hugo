@@ -77,7 +77,7 @@ function pull-branch-image(){
     else 
         echo "[SETUP] A Feature-PR Docker image has been choosen"
         image_name=$(echo ${BRANCH##*/})
-        main_hash=$(awk 'END{print}' $image_name/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)
+        main_hash=$(awk 'END{print}' $version/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)
         echo "[SETUP] Check TAG Image arangodb/docs-hugo:$image_name-$version-$main_hash"
         docker pull arangodb/docs-hugo:$image_name-$version-$main_hash
         docker tag arangodb/docs-hugo:$image_name-$version-$main_hash $image_name-$version
