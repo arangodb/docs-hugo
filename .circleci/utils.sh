@@ -28,6 +28,8 @@ function clone-branch() {
         branch_name=$(echo ${BRANCH##*/})
     fi 
 
+    echo "[SETUP] Git clone $branch_name"
+
     git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name /root/project
     clone-arangodb-enterprise $branch_name
 
