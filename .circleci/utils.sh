@@ -2,7 +2,6 @@
 
 function clone-arangodb-enterprise() {
     BRANCH="$1"
-    FOLDER="$2"
     ENTERPRISE_BRANCH="devel"
     set +e
     git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git "$1"
@@ -11,25 +10,50 @@ function clone-arangodb-enterprise() {
     fi
     set -e
     echo "Using enterprise branch $ENTERPRISE_BRANCH"
-    git clone --depth 1 git@github.com:arangodb/enterprise.git --branch "$ENTERPRISE_BRANCH" $FOLDER/enterprise
+    git clone --depth 1 git@github.com:arangodb/enterprise.git --branch "$ENTERPRISE_BRANCH" /root/project/enterprise
 }
 
 function clone-branch() {
     BRANCH="$1"
+    VER="$2"
+    branch_name=""
 
     echo "[SETUP] Setup server $BRANCH"
 
     if [[ "$BRANCH" == *"arangodb/enterprise"* ]]; then
         echo "[SETUP] An official ArangoDB Enterprise image has been chosen"
-        preview_branch=$(echo $BRANCH | cut -d: -f2 | cut -d- -f1)
-        git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $preview_branch $preview_branch
-        clone-arangodb-enterprise $preview_branch $preview_branch
+        branch_name=$(echo $BRANCH | cut -d: -f2 | cut -d- -f1)
     else 
         echo "[SETUP] A Feature-PR Docker image has been choosen"
-        image_name=$(echo ${BRANCH##*/})
-        git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $BRANCH $image_name
-        clone-arangodb-enterprise $BRANCH $image_name
+        branch_name=$(echo ${BRANCH##*/})
     fi 
+
+    git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $preview_branch /root/project
+    clone-arangodb-enterprise $preview_branch
+
+    mkdir -p /tmp/$VER
+    cp -r /root/project /tmp/$VER
+}
+
+function create-docker-image() {
+    BRANCH="$1"
+    VER="$2"
+    apk add docker-cli
+
+    main_hash=$(awk 'END{print}' .git/logs/HEAD | awk '{print $2}' | cut -c1-9)
+    image_name=$(echo $BRANCH | cut -d/ -f2)
+
+    mkdir -p create-docker/
+
+    curl https://raw.githubusercontent.com/arangodb/docs-hugo/DOC-416/toolchain/scripts/compile/tar-to-docker.Dockerfile > create-docker/tar-to-docker.Dockerfile
+    curl https://raw.githubusercontent.com/arangodb/docs-hugo/main/toolchain/scripts/compile/setup-tar-to-docker.sh > create-docker/setup-tar-to-docker.sh
+    curl https://raw.githubusercontent.com/arangodb/docs-hugo/main/toolchain/scripts/compile/docker-entrypoint.sh > create-docker/docker-entrypoint.sh
+
+    mv install.tar.gz create-docker/
+
+    docker build -t arangodb/docs-hugo:$image_name-$VER-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
+    echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
+    docker push arangodb/docs-hugo:$image_name-$VER-$main_hash
 }
 
 function pull-branch-image(){
