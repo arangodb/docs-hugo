@@ -294,6 +294,7 @@ jobs:
             curl "https://raw.githubusercontent.com/arangodb/docs-hugo/${CIRCLE_BRANCH}/.circleci/utils.sh" > utils.sh
             source utils.sh
 
+            rm -r /root/project/*
             clone-branch << parameters.arangodb-branch >> << parameters.version >>
       - run:
           name: Check Branch Image already exists
