@@ -1,8 +1,8 @@
 FROM alpine:3.16 AS base
 MAINTAINER Max Neunhoeffer <hackers@arangodb.com>
 
-RUN apk add --no-cache pwgen nodejs numactl numactl-tools
-RUN apk add --no-cache npm && npm install -g foxx-cli && apk del npm curl
+RUN apk add --no-cache pwgen nodejs numactl numactl-tools curl
+RUN apk add --no-cache npm && npm install -g foxx-cli && apk del npm
 
 ENV GLIBCXX_FORCE_NEW=1
 
