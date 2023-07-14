@@ -53,16 +53,24 @@
 
 
 #TableOfContents .level-1 > a {
-    font-size: 15px;
+    font-size: 16px;
 }
 
 #TableOfContents .level-2 > a {
-    font-size: 15px;
+    font-size: 16px;
+    font-weight: 100;
 }
 
 #TableOfContents .level-3 > a {
     padding-left: 1em;
     font-size: 14px;
+    font-weight: 100;
+}
+
+#TableOfContents .level-4 > a {
+    padding-left: 2em;
+    font-size: 10px;
+    font-weight: 100;
 }
 
 #TableOfContents .is-active {
