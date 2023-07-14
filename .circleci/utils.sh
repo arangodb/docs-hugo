@@ -28,8 +28,8 @@ function clone-branch() {
         branch_name=$(echo ${BRANCH##*/})
     fi 
 
-    git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $preview_branch /root/project
-    clone-arangodb-enterprise $preview_branch
+    git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name /root/project
+    clone-arangodb-enterprise $branch_name
 
     mkdir -p /tmp/$VER
     cp -r /root/project /tmp/$VER
@@ -38,6 +38,7 @@ function clone-branch() {
 function create-docker-image() {
     BRANCH="$1"
     VER="$2"
+
     apk add docker-cli
 
     main_hash=$(awk 'END{print}' .git/logs/HEAD | awk '{print $2}' | cut -c1-9)
