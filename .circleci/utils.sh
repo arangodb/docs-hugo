@@ -23,6 +23,7 @@ function clone-branch() {
     if [[ "$BRANCH" == *"arangodb/enterprise"* ]]; then
         echo "[SETUP] An official ArangoDB Enterprise image has been chosen"
         branch_name=$(echo $BRANCH | cut -d: -f2 | cut -d- -f1)
+    fi
 
     echo "[SETUP] Git clone $branch_name"
 
