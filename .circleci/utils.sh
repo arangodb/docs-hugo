@@ -16,17 +16,13 @@ function clone-arangodb-enterprise() {
 function clone-branch() {
     BRANCH="$1"
     VER="$2"
-    branch_name=""
+    branch_name="$1"
 
     echo "[SETUP] Setup server $BRANCH"
 
     if [[ "$BRANCH" == *"arangodb/enterprise"* ]]; then
         echo "[SETUP] An official ArangoDB Enterprise image has been chosen"
         branch_name=$(echo $BRANCH | cut -d: -f2 | cut -d- -f1)
-    else 
-        echo "[SETUP] A Feature-PR Docker image has been choosen"
-        branch_name=$(echo ${BRANCH##*/})
-    fi 
 
     echo "[SETUP] Git clone $branch_name"
 
