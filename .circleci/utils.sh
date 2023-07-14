@@ -40,23 +40,25 @@ function clone-branch() {
 function create-docker-image() {
     BRANCH="$1"
     VER="$2"
+    DOCS_BRANCH="$3"
 
-    apk add docker-cli
-
-    main_hash=$(awk 'END{print}' .git/logs/HEAD | awk '{print $2}' | cut -c1-9)
-    image_name=$(echo $BRANCH | cut -d/ -f2)
 
     mkdir -p create-docker/
 
-    curl https://raw.githubusercontent.com/arangodb/docs-hugo/DOC-416/toolchain/scripts/compile/tar-to-docker.Dockerfile > create-docker/tar-to-docker.Dockerfile
-    curl https://raw.githubusercontent.com/arangodb/docs-hugo/main/toolchain/scripts/compile/setup-tar-to-docker.sh > create-docker/setup-tar-to-docker.sh
-    curl https://raw.githubusercontent.com/arangodb/docs-hugo/main/toolchain/scripts/compile/docker-entrypoint.sh > create-docker/docker-entrypoint.sh
+    curl "https://raw.githubusercontent.com/arangodb/docs-hugo/$DOCS_BRANCH/toolchain/scripts/compile/tar-to-docker.Dockerfile" > create-docker/tar-to-docker.Dockerfile
+    curl "https://raw.githubusercontent.com/arangodb/docs-hugo/$DOCS_BRANCH/toolchain/scripts/compile/setup-tar-to-docker.sh" > create-docker/setup-tar-to-docker.sh
+    curl "https://raw.githubusercontent.com/arangodb/docs-hugo/$DOCS_BRANCH/toolchain/scripts/compile/docker-entrypoint.sh" > create-docker/docker-entrypoint.sh
 
     mv install.tar.gz create-docker/
 
     cd create-docker
     chmod +x setup-tar-to-docker.sh
     chmod +x docker-entrypoint.sh
+
+    apk add docker-cli
+
+    main_hash=$(awk 'END{print}' .git/logs/HEAD | awk '{print $2}' | cut -c1-9)
+    image_name=$(echo $BRANCH | cut -d/ -f2)
     
     docker build -t arangodb/docs-hugo:$image_name-$VER-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
 

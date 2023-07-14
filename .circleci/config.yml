@@ -369,7 +369,7 @@ jobs:
           command: |
             curl "https://raw.githubusercontent.com/arangodb/docs-hugo/${CIRCLE_BRANCH}/.circleci/utils.sh" > utils.sh
             source utils.sh
-            create-docker-image << parameters.arangodb-branch >> << parameters.version >>
+            create-docker-image << parameters.arangodb-branch >> << parameters.version >> $CIRCLE_BRANCH
 
       
 
