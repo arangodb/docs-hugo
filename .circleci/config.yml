@@ -296,6 +296,10 @@ jobs:
 
             rm -r /root/project/*
             clone-branch << parameters.arangodb-branch >> << parameters.version >>
+      - persist_to_workspace:
+          root: /
+          paths:
+            - tmp/<< parameters.version >>
       - run:
           name: Check Branch Image already exists
           command: |
@@ -364,10 +368,7 @@ jobs:
           command: |
             source utils.sh
             create-docker-image << parameters.arangodb-branch >> << parameters.version >>
-      - persist_to_workspace:
-          root: /
-          paths:
-            - tmp/<< parameters.version >>
+
       
 
 
