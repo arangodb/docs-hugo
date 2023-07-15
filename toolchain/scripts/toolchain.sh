@@ -213,18 +213,12 @@ function clean_docker_environment() {
 function run_arangoproxy_and_site() {
   set -e
 
-  if [ "$DOCKER_ENV" == "dev" ]; then 
-    ## If working locally, build the latest local image
-    export DOCKER_BUILDKIT=1
-    docker build --target arangoproxy ../docker/ -t arangoproxy
-    docker  build --target hugo ../docker/ -t site
-  else 
-    ## CI/CD env, do not build images, pull them from remote repo
-    docker pull arangodb/docs-hugo:arangoproxy > /dev/null
-    docker pull arangodb/docs-hugo:site > /dev/null
-    docker tag arangodb/docs-hugo:arangoproxy arangoproxy > /dev/null
-    docker tag arangodb/docs-hugo:site site > /dev/null
-  fi
+
+  log "[run_arangoproxy_and_site] Pull arangoproxy and site images"
+  docker pull arangodb/docs-hugo:arangoproxy
+  docker pull arangodb/docs-hugo:site
+  docker tag arangodb/docs-hugo:arangoproxy arangoproxy
+  docker tag arangodb/docs-hugo:site site
 
   set +e
   
