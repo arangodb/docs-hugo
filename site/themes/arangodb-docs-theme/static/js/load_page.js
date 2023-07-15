@@ -3,8 +3,7 @@ iframe.addEventListener("load", function() {
   var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
   content= iFrameBody.getElementById('sidebar');
 
-  document.getElementById("page-container").appendChild(content);
-  document.getElementById("page-container").removeChild(iframe);
+  $("#menu-iframe").replaceWith(content);
   menuEntryClick();
 });
 
