@@ -33,6 +33,6 @@ oasisctl add [flags]
 ## See also
 
 * [oasisctl](../options.md)	 - ArangoGraph Insights Platform
-* [oasisctl add auditlog](add-audit-log.md)	 - Add auditlog resources
+* [oasisctl add auditlog](add-auditlog.md)	 - Add auditlog resources
 * [oasisctl add group](add-group.md)	 - Add group resources
 

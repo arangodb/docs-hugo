@@ -33,6 +33,6 @@ oasisctl revoke [flags]
 ## See also
 
 * [oasisctl](../options.md)	 - ArangoGraph Insights Platform
-* [oasisctl revoke apikey](revoke-api-key.md)	 - Revoke an API key with given identifier
+* [oasisctl revoke apikey](revoke-apikey.md)	 - Revoke an API key with given identifier
 * [oasisctl revoke metrics](revoke-metrics.md)	 - Revoke keys & tokens
 

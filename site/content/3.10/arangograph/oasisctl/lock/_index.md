@@ -33,9 +33,9 @@ oasisctl lock [flags]
 ## See also
 
 * [oasisctl](../options.md)	 - ArangoGraph Insights Platform
-* [oasisctl lock cacertificate](lock-ca-certificate.md)	 - Lock a CA certificate, so it cannot be deleted
+* [oasisctl lock cacertificate](lock-cacertificate.md)	 - Lock a CA certificate, so it cannot be deleted
 * [oasisctl lock deployment](lock-deployment.md)	 - Lock a deployment, so it cannot be deleted
-* [oasisctl lock ipallowlist](lock-ip-allowlist.md)	 - Lock an IP allowlist, so it cannot be deleted
+* [oasisctl lock ipallowlist](lock-ipallowlist.md)	 - Lock an IP allowlist, so it cannot be deleted
 * [oasisctl lock organization](lock-organization.md)	 - Lock an organization, so it cannot be deleted
 * [oasisctl lock policy](lock-policy.md)	 - Lock a backup policy
 * [oasisctl lock project](lock-project.md)	 - Lock a project, so it cannot be deleted

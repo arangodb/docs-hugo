@@ -29,7 +29,7 @@ oasisctl [flags]
 
 * [oasisctl accept](accept/_index.md)	 - Accept invites
 * [oasisctl add](add/_index.md)	 - Add resources
-* [oasisctl auditlog](audit-log/_index.md)	 - AuditLog resources
+* [oasisctl auditlog](auditlog/_index.md)	 - AuditLog resources
 * [oasisctl backup](backup/_index.md)	 - Backup commands
 * [oasisctl clone](clone/_index.md)	 - Clone resources
 * [oasisctl completion](completion.md)	 - Generates bash completion scripts
