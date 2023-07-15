@@ -62,6 +62,13 @@ def migrateStructure(label, document, manual, i):
 def create_index(label, item, extendedSection, i):
 	oldFileName = item["href"].replace(".html", ".md")
 	folderName = item["text"].lower().replace(" ", "-").replace("/", "")
+
+	if "oasisctl-" in oldFileName:
+		print(oldFileName)
+		print(folderName)
+		folderName = item["text"].lower().replace(" ", "").replace("/", "")
+		print(folderName)
+
 	label = label + "/" + folderName
 
 	Path(cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}')).mkdir(parents=True, exist_ok=True)
@@ -107,10 +114,14 @@ def create_files_new(label, item, extendedSection, i):
 	if label == '':
 		return create_file_no_label(item, extendedSection, i)
 
+
 	newFilename = item["text"].replace(".NET", "dotnet").replace(".", "-").lower()
 	newFilename = "-".join(newFilename.split(" ")) + ".md"
 
 	newFilename = re.sub(r"<code>|<\/code>|@\w+\/", "", newFilename, 0, re.MULTILINE).replace("/", "-").replace("@", "")
+	
+	if "oasisctl-" in oldFileName:
+		newFilename = item["href"].replace(".html", ".md").replace("oasisctl-", "")
 
 	filePath = cleanLine(f'{NEW_TOOLCHAIN}/content/{version}/{label}/{newFilename}')
 
