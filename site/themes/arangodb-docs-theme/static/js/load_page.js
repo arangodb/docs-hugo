@@ -63,13 +63,15 @@ function internalLinkListener() {
 
 
 function initArticle(url) {
-  moveTags();
   initCopyToClipboard();
   initClickHandlers();
+  console.log("init article generate toc")
   generateToc();
   goToTop();
   styleImages();
   internalLinkListener();
+  moveTags();
+
 }
 
 var iframe =  document.getElementById('menu-iframe');
