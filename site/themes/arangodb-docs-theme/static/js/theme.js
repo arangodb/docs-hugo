@@ -511,10 +511,7 @@ function readaptHeaderOnScroll() {
 }
 
 
-window.addEventListener("load", () => {
-    initArticle(window.location.href)
-    scrollToFragment();
-});
+
 
 window.addEventListener("scroll", () => {
     backToTopButton();
@@ -582,15 +579,6 @@ function moveTags() {
     }
 }
 
-$(window).on('popstate', function (e) {
-    console.log("intercet popstate")
-    var state = e.originalEvent.state;
-    if (state !== null) {
-      console.log("load page");
-      console.log(window.location.href)
-      loadPage(window.location.href);
-    }
-  });
 
 
 

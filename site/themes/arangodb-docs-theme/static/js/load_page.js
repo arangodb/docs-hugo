@@ -1,12 +1,3 @@
-var iframe =  document.getElementById('menu-iframe');
-iframe.addEventListener("load", function() {
-  var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
-  content= iFrameBody.getElementById('sidebar');
-
-  $("#menu-iframe").replaceWith(content);
-  menuEntryClick();
-});
-
 function replaceArticle(href, newDoc) {
   var re = new RegExp(/<title>(.*)<\/title>/, 'mg');
   var match = re.exec(newDoc);
@@ -50,6 +41,8 @@ function styleImages() {
 
 function loadPage(target) {
   var href = target;
+  renderVersion();
+  loadMenu(href);
   $.get({
     url: href,
     success: function(newDoc) {
@@ -69,11 +62,7 @@ function internalLinkListener() {
 }
 
 
-
-
 function initArticle(url) {
-  renderVersion();
-  loadMenu(url);
   moveTags();
   initCopyToClipboard();
   initClickHandlers();
@@ -82,3 +71,25 @@ function initArticle(url) {
   styleImages();
   internalLinkListener();
 }
+
+var iframe =  document.getElementById('menu-iframe');
+iframe.addEventListener("load", function() {
+  var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
+  content= iFrameBody.getElementById('sidebar');
+
+  $("#menu-iframe").replaceWith(content);
+  console.log("replaced")
+  menuEntryClick();
+  loadPage(window.location.href)
+  console.log("dopo")
+});
+
+$(window).on('popstate', function (e) {
+  console.log("intercet popstate")
+  var state = e.originalEvent.state;
+  if (state !== null) {
+    console.log("load page");
+    console.log(window.location.href)
+    loadPage(window.location.href);
+  }
+});
