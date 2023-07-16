@@ -26,7 +26,6 @@ function menuEntryClick() {
         console.log(event.target)
         updateHistory("", event.target.getAttribute('href'))
     });
-
 }
 
 function renderVersion() {
