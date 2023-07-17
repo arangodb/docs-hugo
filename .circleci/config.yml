@@ -60,7 +60,7 @@ jobs:
             export HUGO_ENV=prod
             set +e
             cd docs-hugo/toolchain/docker
-            docker compose -f docker-compose.plain-build.yml abort-on-container-exit
+            docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
 
             if [ "$?" != "0" ]; then
               cd ../../../
