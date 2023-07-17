@@ -478,7 +478,6 @@ article.default {
     min-height: 600px;
     grid-area: article;
     max-width: calc(100wh - 50px);
-    overflow-x: auto;
 }
 
 @media screen and (max-width: 1200px) {
