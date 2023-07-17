@@ -474,10 +474,9 @@ label {
 
 
 article.default {
-    margin: 0px 10vw;
+    margin: 0 3vw 0 10vw;
     min-height: 600px;
     grid-area: article;
-    max-width: calc(100wh - 50px);
 }
 
 @media screen and (max-width: 1200px) {
@@ -508,12 +507,9 @@ article.home {
 }
 
 article.chapter {
-    margin-left: 10em;
+    margin: 0 3vw 0 10vw;
     min-height: 600px;
     grid-area: article;
-    max-width: calc(100wh - 50px);
-    overflow-x: auto;
-    width: 55vw;
 }
 
 @media screen and (max-width: 1200px) {
