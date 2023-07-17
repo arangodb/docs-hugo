@@ -138,11 +138,21 @@ func FormatResponse(response *ExampleResponse) {
 	response.Input = codeComments.ReplaceAllString(response.Input, "")
 
 	response.Input = strings.TrimLeft(response.Input, "\r\n")
+	response.Input = strings.TrimLeft(response.Input, "\n")
 	response.Input = strings.TrimRight(response.Input, "\r\n")
+	response.Input = strings.TrimRight(response.Input, "\n")
+
+	response.Input = strings.ReplaceAll(response.Input, "\n\n\n", "\n")
+	response.Input = strings.ReplaceAll(response.Input, "\r\n\r\n\r\n", "\r\n")
 
 	if strings.Contains(string(response.Options.Render), "output") {
 		response.Output = strings.TrimLeft(response.Output, "\r\n")
+		response.Output = strings.TrimLeft(response.Output, "\n")
 		response.Output = strings.TrimRight(response.Output, "\r\n")
+		response.Output = strings.TrimRight(response.Output, "\n")
+
+		response.Output = strings.ReplaceAll(response.Output, "\n\n\n", "\n")
+		response.Output = strings.ReplaceAll(response.Output, "\r\n\r\n\r\n", "\r\n")
 	}
 
 	if response.Output == "" {
