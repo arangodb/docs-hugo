@@ -57,10 +57,10 @@ jobs:
           name: Build site
           command: |
             export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
-            export HUGO_ENV=frontend
+            export HUGO_ENV=prod
             set +e
             cd docs-hugo/toolchain/docker
-            docker compose -f docker-compose.plain-build.yml --env-file env/plain-build.env up --abort-on-container-exit
+            docker compose -f docker-compose.plain-build.yml --abort-on-container-exit
 
             if [ "$?" != "0" ]; then
               cd ../../../
