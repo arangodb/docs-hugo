@@ -5,10 +5,12 @@ var maxHeadlineLevel = 2;
 function getHeadlines() {
     var contentBlock = document.querySelector("article");
     if (!contentBlock) {
+      console.log("getHeadlines() no article found")
       return [0, false];
     }
     var nodes = contentBlock.querySelectorAll(headlineLevels.slice(0, maxHeadlineLevel).join(","))
     if (nodes.length < 2) {
+      console.log("headers < 2")
       return [0, false];
     }
 

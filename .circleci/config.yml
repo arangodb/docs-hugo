@@ -436,6 +436,27 @@ workflows:
   generate-scheduled:
     when: { equal: [ generate-scheduled, << pipeline.parameters.workflow >> ] }
     jobs:
+      - compile-linux:
+          context:
+            - sccache-aws-bucket
+          name: compile-3.10
+          arangodb-branch: "arangodb/enterprise-preview:3.10-nightly"
+          version: "3.10"
+          openssl: "3.0.9"
+      - compile-linux:
+          context:
+            - sccache-aws-bucket
+          name: compile-3.11
+          arangodb-branch: "arangodb/enterprise-preview:3.11-nightly"
+          version: "3.11"
+          openssl: "3.0.9"
+      - compile-linux:
+          context:
+            - sccache-aws-bucket
+          name: compile-3.12
+          arangodb-branch: "arangodb/enterprise-preview:devel-nightly"
+          version: "3.12"
+          openssl: "3.1.1"
       - build-with-generated:
           name: build-with-generated
           arangodb-3_10: "arangodb/enterprise-preview:3.10-nightly"
