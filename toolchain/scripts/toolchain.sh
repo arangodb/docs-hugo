@@ -25,10 +25,6 @@ fi
 echo "[INIT] Toolchain setup"
 echo "[INIT] Environment variables:"
 
-if [[ -z "${DOCKER_ENV}" ]]; then
-  DOCKER_ENV="dev"   ## dev as default env
-fi
-
 ## if no generators set, defaults to all
 if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
   GENERATORS="examples metrics error-codes options optimizer oasisctl"
@@ -40,7 +36,6 @@ if [[ -z "${ARANGODB_SRC_3_10}" ]] && [[ -z "${ARANGODB_SRC_3_11}" ]] && [[ -z "
   exit 1
 fi
 
-echo "  DOCKER_ENV=$DOCKER_ENV"
 
 
 ## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
@@ -99,6 +94,11 @@ function main() {
 
   ## Generate content and start server
   for server in "${servers[@]}"; do
+    arangodb_src=$(echo "$server" | yq e '.src' -)
+    if [ "$arangodb_src" == "" ] ; then
+      continue
+    fi
+
     process_server "$server"
   done
 
@@ -236,7 +236,7 @@ function run_arangoproxy_and_site() {
   docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 \
     -e HUGO_URL="$HUGO_URL" \
     -e HUGO_ENV="$HUGO_ENV" \
-    --volumes-from toolchain \ 
+    --volumes-from toolchain \
     --log-opt tag="{{.Name}}" \
      arangoproxy
 }
@@ -315,10 +315,6 @@ function process_server() {
   version=$(echo "$server" | yq e '.version' -)
   arangodb_src=$(echo "$server" | yq e '.src' -)
 
-  if [ "$arangodb_src" == "" ] ; then
-    continue
-  fi
-
   echo "<li><strong>$version</strong>: $image</li>" >> /home/summary.md
 
   LOG_TARGET="$name $image $version"
@@ -336,7 +332,7 @@ function process_server() {
 
     image_id=$(get_docker_imageid $image $image_name $version)
     if [ "$image_id" == "" ]; then
-      if [ "$DOCKER_ENV" == "dev" ]; then
+      if [ "$ENV" == "local" ]; then
         pull_image "$image" "$version" "$src"
         image_id=$(docker images --filter=reference=$image_name-$version | awk 'NR==2' | awk '{print $3}')
       else

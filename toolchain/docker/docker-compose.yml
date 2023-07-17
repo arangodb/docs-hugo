@@ -10,6 +10,7 @@ services:
       - ../../:/home/
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
+      ENV: ${ENV:-local}
       HUGO_URL: ${HUGO_URL:-http://localhost}
       HUGO_ENV: ${HUGO_ENV:-development}
       GENERATORS: ${GENERATORS}
