@@ -14,8 +14,8 @@ services:
     volumes:
       - ../../:/home/
     environment:
-      - HUGO_URL: ${HUGO_URL:-http://localhost}
-      - HUGO_ENV: ${HUGO_ENV:-frontend}
+      HUGO_URL: ${HUGO_URL:-http://localhost}
+      HUGO_ENV: ${HUGO_ENV:-frontend}
 
   arangoproxy-frontend:
     container_name: arangoproxy-frontend
@@ -29,8 +29,8 @@ services:
     volumes:
       - ../../:/home/
     environment:
-      - HUGO_URL: ${HUGO_URL:-http://localhost}
-      - HUGO_ENV: ${HUGO_ENV:-frontend}
+      HUGO_URL: ${HUGO_URL:-http://localhost}
+      HUGO_ENV: ${HUGO_ENV:-frontend}
 
 networks:
   docs_net:
