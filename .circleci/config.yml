@@ -57,6 +57,7 @@ jobs:
           name: Build site
           command: |
             export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
+            export HUGO_ENV=frontend
             set +e
             cd docs-hugo/toolchain/docker
             docker compose -f docker-compose.plain-build.yml --env-file env/plain-build.env up --abort-on-container-exit
@@ -117,7 +118,7 @@ jobs:
             ls
             source docs-hugo/.circleci/utils.sh
             export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
-            export DOCKER_ENV=examples
+            export HUGO_ENV=examples
             export GENERATORS='<< parameters.generators >>'
             
             if [ "<< parameters.arangodb-3_10 >>" != "" ] ; then
