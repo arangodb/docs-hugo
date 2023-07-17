@@ -10,8 +10,8 @@ services:
       - ../../:/home/
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - HUGO_URL
-      - DOCKER_ENV
+      HUGO_URL: ${HUGO_URL:-http://localhost}
+      HUGO_ENV: ${HUGO_ENV:-development}
       - GENERATORS
       - ARANGODB_SRC_3_10
       - ARANGODB_SRC_3_11

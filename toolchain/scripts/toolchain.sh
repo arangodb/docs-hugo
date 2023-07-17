@@ -224,8 +224,21 @@ function run_arangoproxy_and_site() {
   
   cd ../../
   echo "[run_arangoproxy_and_site]  Run arangoproxy and site containers"
-  docker run -d --name site --network=docs_net --ip=192.168.129.130 --env-file toolchain/docker/env/"$DOCKER_ENV".env -p 1313:1313 --volumes-from toolchain --log-opt tag="{{.Name}}" site 
-  docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 --env-file toolchain/docker/env/"$DOCKER_ENV".env --volumes-from toolchain --log-opt tag="{{.Name}}" arangoproxy
+
+  docker run -d --name site --network=docs_net --ip=192.168.129.130 \
+    -e HUGO_URL="$HUGO_URL" \
+    -e HUGO_ENV="$HUGO_ENV" \
+    -p 1313:1313 \
+    --volumes-from toolchain \
+    --log-opt tag="{{.Name}}" \
+    site
+
+  docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 \
+    -e HUGO_URL="$HUGO_URL" \
+    -e HUGO_ENV="$HUGO_ENV" \
+    --volumes-from toolchain \ 
+    --log-opt tag="{{.Name}}" \
+     arangoproxy
 }
 
 function setup_arangoproxy() {
