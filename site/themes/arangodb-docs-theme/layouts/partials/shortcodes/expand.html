@@ -1,5 +1,5 @@
 {{- $context := .context }}
-{{- $content := .content }}
+{{- $content := .content | markdownify }}
 {{- $title := .title | default (T "Expand-title") }}
 {{- $description := .description }}
 {{- $expanded := .open | default false }}
@@ -12,13 +12,13 @@
         {{- if $expanded }} expand-expanded{{ end -}}
     ">
         {{/* things are getting complicated when search tries to open the expand box while jquery sets the display CSS on the element */}}{{ "" -}}
-        <a class="expand-label" onclick="$t=$(this); if($t.parent('.expand-expanded.expand-marked').length){ $t.next().css('display','none') }else if($t.parent('.expand-marked').length){ $t.next().css('display','block') }else{ $t.next('.expand-content').slideToggle(100); } $t.parent().toggleClass('expand-expanded');">
+        <a class="expand-label" onclick="toggleExpandShortcode(event)">
             {{ $title }}
         </a>
         <div class="expand-content" style="display:
             {{- if $expanded }} block{{ else }} none{{ end -}}
         ;">
-    {{ $description }}
+    {{ $description | markdownify }}
     {{ $content | safeHTML }}
         </div>
     </div>

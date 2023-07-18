@@ -1,12 +1,5 @@
 var lunrIndex, pagesIndex;
 
-var iframe =  document.getElementById('menu-iframe');
-iframe.addEventListener("load", function() {
-var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
-content= iFrameBody.getElementById('sidebar');
-console.log(content)
-document.getElementById("page-container").appendChild(content)
-document.getElementById("page-container").removeChild(iframe)
 
 var autoComplete = (function(){
     // "use strict";
@@ -77,7 +70,6 @@ var autoComplete = (function(){
                 var pageXOffset = 0;
                 var pageYOffset = 0;
                 if (parentElement != undefined) {
-                    console.log("Parent Element " + parentElement)
                     parentOffsetLeft = parentElement.getBoundingClientRect().left;
                     parentOffsetTop = parentElement.getBoundingClientRect().top;
                 } else {
@@ -273,8 +265,7 @@ function initLunr() {
             // Set up lunrjs by declaring the fields we use
             // Also provide their boost level for the ranking
             lunrIndex = lunr(function() {
-                console.log("lunr index")
-                this.use(lunr.multiLanguage.apply(null, contentLangs));
+                this.use(lunr.multiLanguage.apply(null, ["en"]));
                 this.ref('index');
                 this.field('title', {
                     boost: 15
@@ -379,6 +370,5 @@ $(function() {
     // https://github.com/Pixabay/JavaScript-autoComplete/blob/master/auto-complete.js#L191
     console.log("after autocomplete new")
     var selector = $('#search-by').get(0);
-    console.log(selector)
 });
-});
+

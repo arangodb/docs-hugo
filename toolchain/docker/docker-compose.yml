@@ -4,18 +4,19 @@ services:
     container_name: toolchain
     image: arangodb/docs-hugo:toolchain
     volumes:
-      - ${ARANGODB_SRC:-/dev/null}:${ARANGODB_SRC:-/dev/null}
-      - ${ARANGODB_SRC_2:-/tmp/1}:${ARANGODB_SRC_2:-/tmp/1}
-      - ${ARANGODB_SRC_3:-/tmp/2}:${ARANGODB_SRC_3:-/tmp/2}
+      - ${ARANGODB_SRC_3_10:-/dev/null}:${ARANGODB_SRC_3_10:-/dev/null}
+      - ${ARANGODB_SRC_3_11:-/tmp/1}:${ARANGODB_SRC_3_11:-/tmp/1}
+      - ${ARANGODB_SRC_3_12:-/tmp/2}:${ARANGODB_SRC_3_12:-/tmp/2}
       - ../../:/home/
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
-      - HUGO_URL
-      - DOCKER_ENV
-      - GENERATORS
-      - ARANGODB_SRC
-      - ARANGODB_SRC_2
-      - ARANGODB_SRC_3
-      - ARANGODB_BRANCH
-      - ARANGODB_BRANCH_2
-      - ARANGODB_BRANCH_3
+      ENV: ${ENV:-local}
+      HUGO_URL: ${HUGO_URL:-http://localhost}
+      HUGO_ENV: ${HUGO_ENV:-development}
+      GENERATORS: ${GENERATORS}
+      ARANGODB_SRC_3_10: ${ARANGODB_SRC_3_10}
+      ARANGODB_SRC_3_11: ${ARANGODB_SRC_3_11}
+      ARANGODB_SRC_3_12: ${ARANGODB_SRC_3_12}
+      ARANGODB_BRANCH_3_10: ${ARANGODB_BRANCH_3_10}
+      ARANGODB_BRANCH_3_11: ${ARANGODB_BRANCH_3_11}
+      ARANGODB_BRANCH_3_12: ${ARANGODB_BRANCH_3_12}

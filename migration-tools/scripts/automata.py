@@ -230,7 +230,7 @@ def getHugoMetrics(content):
 
 
 def processFile(page, content, filepath):
-    flags = {"frontMatter": False, "endFrontMatter": False, "description": False, "redirect": False, "title": False, "inCodeblock": False, "hint": {"active": False, "type": ""}, "capture": False, "inDocublock": False, "assign-ver": {"active": False, "isValid": False}}
+    flags = {"frontMatter": False, "endFrontMatter": False, "description": False, "redirect": False, "title": False, "inDetails": False, "inCodeblock": False, "hint": {"active": False, "type": ""}, "capture": False, "inDocublock": False, "assign-ver": {"active": False, "isValid": False}}
 
     buffer = []
     try:
@@ -244,6 +244,7 @@ def processFile(page, content, filepath):
 
             if flags["inDocublock"]:
                 buffer.append(line)
+
                 
             ## Trap and skip inline docublocks extra line
             if re.search(r"{%.*arangoshexample|{%.*aqlexample|@END_EXAMPLE_", line, re.MULTILINE):
@@ -265,6 +266,9 @@ def processFile(page, content, filepath):
                     continue
 
                 if content[i+1].startswith("---") and flags["endFrontMatter"]:
+                    if " | " in line: ## is a table!
+                        page.content = page.content + line
+                        continue
                     page.content = page.content + "## " + line
                     continue
 
@@ -297,12 +301,13 @@ def processFile(page, content, filepath):
                 if not buffer:
                     continue
 
-                page.frontMatter.description = "".join(buffer)
-                page.content = page.content.replace("".join(buffer), "")
-                buffer = []
+                line = line.replace("{:class=\"lead\"}", "{.lead}")
+                page.content = page.content + line
                 continue
             
             if "{{ page.description }}" in line:
+                line = line.replace("{{ page.description }}", "{{< description >}}")
+                page.content = page.content + line
                 continue
 
             ## Headers
@@ -324,7 +329,10 @@ def processFile(page, content, filepath):
                 if spaces:
                     page.content = page.content + spaces.group(0)
 
-                page.content = page.content + f"{{{{< {hintType} >}}}}"
+                if flags["inDetails"]:
+                    page.content = page.content + f"{{{{</* {hintType} */>}}}}"
+                else:
+                    page.content = page.content + f"{{{{< {hintType} >}}}}"
                 
                 if hintPart[1]:
                     page.content = page.content + hintPart[1]
@@ -338,7 +346,11 @@ def processFile(page, content, filepath):
                 if spaces:
                     page.content = page.content + spaces.group(0)
 
-                page.content = page.content + f"{{{{< /{hintType} >}}}}\n"
+                if flags["inDetails"]:
+                    page.content = page.content + f"{{{{</* /{hintType} */>}}}}\n"
+                else:
+                    page.content = page.content + f"{{{{< /{hintType} >}}}}\n"
+
                 continue
 
             if flags["hint"]["active"]:
@@ -364,12 +376,14 @@ def processFile(page, content, filepath):
 
             ## Details
             if "{% details" in line:
+                flags["inDetails"] = True
                 title = line.replace("{% details '", "").replace("' %}\n", "")
-                page.content = page.content + '{{{{% expand title="{}" %}}}}\n'.format(title)
+                page.content = page.content + '{{{{< expand title="{}" >}}}}\n'.format(title)
                 continue
 
             if "{% enddetail" in line:
-                page.content = page.content + "{{% /expand %}}\n"
+                flags["inDetails"] = False
+                page.content = page.content + "{{< /expand >}}\n"
                 continue
             
             ## Codeblocks
@@ -434,8 +448,18 @@ def processFile(page, content, filepath):
                 for t in tags:
                     tagShortcode = tagShortcode + f'"{t}"'
 
-                tagShortcode = tagShortcode + ' >}}'    
-                page.content = page.content + tagShortcode
+                tagShortcode = tagShortcode + ' >}}' 
+                originalSpaces = len(line) - len(line.lstrip())  
+                page.content = page.content + " "*originalSpaces + tagShortcode
+                continue
+
+            if '{% include program-option.html options=options' in line:
+                line = line.replace('{% include program-option.html options=options', "{{% program-options")
+                line = line.replace('%}', '%}}')
+                page.content = page.content + line
+                continue
+
+            if 'assign optionsFile = page.version.version' in line or 'assign options = site.data' in line:
                 continue
 
             ## Assign ver
@@ -462,6 +486,24 @@ def processFile(page, content, filepath):
 
             if "{% include metrics.md" in line:
                 line = "{{% metrics %}}\n"
+                page.content = page.content + line
+                continue
+
+            if "{% include youtube.html" in line:
+                line = line.replace("{% include youtube.html", "{{< youtube")
+                line = line.replace("%}", ">}}")
+                page.content = page.content + line
+                continue
+
+            if "{% raw %}" in line or "{% endraw %}" in line:
+                continue
+
+            if "{% assign rulesFile" in line:
+                continue
+
+            if "{% include aql-optimizer-rules" in line:
+                page.content = page.content + "{{% optimizer-rules %}}"
+                continue
 
             buffer.append(line)
             page.content = page.content + line
@@ -526,16 +568,17 @@ def is_index(filename):
 
 
 class Page():
-	def __init__(self):
-		self.frontMatter = FrontMatter()
-		self.content = ""
 
-	def toString(self):
-		res = self.frontMatter.toString()
-		cleanedFrontMatter = re.sub(r"^\s*$\n", '', res, 0, re.MULTILINE | re.DOTALL)
-		res =  f"{cleanedFrontMatter}{self.content}"
-		#res = re.sub(r"(?<=---)\n*", '\n', f"{cleanedFrontMatter}{self.content}", 0, re.MULTILINE | re.DOTALL)
-		return res
+    def __init__(self):
+        self.frontMatter = FrontMatter()
+        self.content = ""
+
+    def toString(self):
+        res = self.frontMatter.toString()
+        cleanedFrontMatter = re.sub(r"^\s*$\n", '', res, 0, re.MULTILINE | re.DOTALL)
+        res =  f"{cleanedFrontMatter}{self.content}"
+        #res = re.sub(r"(?<=---)\n*", '\n', f"{cleanedFrontMatter}{self.content}", 0, re.MULTILINE | re.DOTALL)
+        return res
 
 class FrontMatter():
     def __init__(self):

@@ -1,34 +1,59 @@
 package internal
 
 import (
-	"encoding/json"
 	"fmt"
-	"os"
+	"os/exec"
+	"sync"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/arangosh"
-	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/common"
-	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/config"
+	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/utils"
 )
 
-func CleanCache() {
-	os.OpenFile(config.Conf.Cache, os.O_TRUNC, 0644)
-	emptyFile := make(map[string]string)
-	emptyFileBrackets, _ := json.Marshal(emptyFile)
-	os.WriteFile(config.Conf.Cache, emptyFileBrackets, 0644)
-	for _, repository := range config.Conf.Repositories {
-		arangosh.Exec("INIT COMMAND", utils.REMOVE_ALL_COLLECTIONS, repository) // FIXME
+func InitRepositories() {
+	models.Repositories = make(map[string]models.Repository)
+	fmt.Printf("Repositories found in config file %s\n", models.Conf.Repositories)
+	var wg sync.WaitGroup
+
+	for _, repo := range models.Conf.Repositories {
+		wg.Wait()
+		wg.Add(2)
+
+		openRepoStream(&repo)
+
+		models.Repositories[fmt.Sprintf("%s_%s_%s", repo.Name, repo.Type, repo.Version)] = repo
+
+		commonFunctions, _ := utils.GetCommonFunctions()
+		arangosh.Exec("Load common functions", commonFunctions, repo)
+		wg.Done()
+
 		cmd, _ := utils.GetSetupFunctions()
-		arangosh.Exec("INIT COMMAND", cmd, repository)
+		arangosh.Exec("Init collections", cmd, repo)
+		wg.Done()
 	}
 }
 
-func InitRepositories() {
-	common.Repositories = make(map[string]config.Repository)
-	fmt.Printf("INIT REPOSITORIES CONF %s\n", config.Conf.Repositories)
-	for _, repo := range config.Conf.Repositories {
-		common.Repositories[fmt.Sprintf("%s_%s_%s", repo.Name, repo.Type, repo.Version)] = repo
-		cmd, _ := utils.GetSetupFunctions()
-		arangosh.Exec("INIT COMMAND", cmd, repo)
+func openRepoStream(repository *models.Repository) {
+	arangoSHBin := fmt.Sprintf("/home/toolchain/arangoproxy/arangosh/%s/%s/usr/bin/arangosh", repository.Name, repository.Version)
+	configFile := fmt.Sprintf("/home/toolchain/arangoproxy/arangosh/%s/%s/usr/bin/etc/relative/arangosh.conf", repository.Name, repository.Version)
+
+	cmd := exec.Command(arangoSHBin, "--config", configFile, "--server.endpoint", repository.Url, "--quiet")
+
+	stdin, err := cmd.StdinPipe()
+	if err != nil {
+		models.Logger.Printf("[openRepoStream] Error Open STDINPIPE %s", err.Error())
 	}
+
+	stdout, err := cmd.StdoutPipe()
+	if err != nil {
+		models.Logger.Printf("[openRepoStream] Error Open STDOUTPIPE %s", err.Error())
+	}
+
+	if err := cmd.Start(); err != nil {
+		models.Logger.Printf("[openRepoStream] Error Start Command %s", err.Error())
+	}
+
+	repository.StdinPipe = stdin
+	repository.StdoutPipe = stdout
+	models.Logger.Printf("[openRepoStream] Done - Streams: \n%s\n%s", repository.StdinPipe, repository.StdoutPipe)
 }

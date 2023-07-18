@@ -53,10 +53,12 @@ def migrateInlineDocuBlocks(block):
         newBlock["options"]["bindVars"] = bindVarsRe.group(0).replace("@BV ", "")
         block = re.sub(r"@BV {.*}\n", "", block, 0, re.MULTILINE | re.DOTALL)
 
-    
+
     newBlock["code"] = "\n".join(block.split("\n")[1:]).lstrip(" ").replace("    ", "")
+    if "USER_04_documentUser" in newBlock["options"]["name"]:
+        newBlock["code"] = "\n~ require('@arangodb/users').save('my-user', 'my-secret-password');\n" + newBlock["code"]
     codeblock = render_codeblock(newBlock)
-    codeblock = codeblock.replace("|", " ")
+    codeblock = re.sub(r"^ *\|", "", codeblock, 0, re.MULTILINE)
 
     ## static fixes
     codeblock = codeblock.replace("bindVars:  -", "bindVars: ")
@@ -67,6 +69,7 @@ def migrateInlineDocuBlocks(block):
 
 def render_codeblock(block):
     exampleOptions = yaml.dump(block["options"], sort_keys=False, default_flow_style=False)
+    exampleOptions = exampleOptions.replace("bindVars: |-", "bindVars: ")
     code = block["code"]
     indentationToRemove = len(code.split("\n")[0]) - len(code.split("\n")[0].lstrip(' '))
     code = re.sub("^ {"+str(indentationToRemove)+"}", '', code, 0, re.MULTILINE)

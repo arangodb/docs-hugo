@@ -24,7 +24,7 @@ menu:
 
 markup:
   highlight:
-    style: "nord"
+    noClasses: false
   goldmark:
     renderer:
       unsafe: true

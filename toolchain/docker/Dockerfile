@@ -42,9 +42,12 @@ RUN echo ${BUILDARCH}
 ENV ARCH=${BUILDARCH}
 
 RUN  apt-get update \
-  && apt-get install -y wget python3 python3-pip software-properties-common curl jq
+  && apt-get install -y --fix-missing wget unzip python3 python3-pip software-properties-common curl jq
 
 RUN wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_$ARCH -O /usr/bin/yq && chmod +x /usr/bin/yq
+RUN wget https://github.com/arangodb-managed/oasisctl/releases/download/v1.19.0/oasisctl.zip && unzip oasisctl.zip
+RUN cd bin/linux/$ARCH && mv oasisctl /usr/bin/oasisctl && chmod +x /usr/bin/oasisctl
+
 
 ## Install python scripts deps
 RUN pip3 install pyyaml

@@ -1,8 +1,6 @@
 .openapi {
     --border-radius: 2px;
     --layout: row;
-    --font-mono: "Consolas", menlo, monospace;
-    --font-regular: "Inter", Helvetica, Arial, sans-serif;
     --scroll-bar-width: 8px;
     --nav-item-padding: 7px 16px 7px 10px;
     --resp-area-height: 400px;
@@ -164,10 +162,13 @@
 }
 
 .openapi-prop-content {
-    border: 1px solid #f5ecec;
-    border-radius: 9px;
     margin: 10px 0 10px 0;
     padding: 0 10px 0 10px;
+    transition: 150ms ease-in-out;
+    transition-property: border,box-shadow;
+    border: 1px solid #E8EDEB;
+    box-shadow: 0 4px 10px -7px rgb(0 30 43 / 30%);
+    border-radius: 24px;
 }
 
 .openapi-table-row.collapsed > *:nth-child(n+3){

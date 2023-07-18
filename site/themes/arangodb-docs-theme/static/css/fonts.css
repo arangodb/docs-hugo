@@ -51,3 +51,10 @@
     font-style: normal;
     font-weight: 700;
   }
+
+  @font-face {
+    font-family: "Inter";
+    src:  url(../fonts/Inter-Medium.ttf) format("ttf");
+    font-style: normal;
+    font-weight: 400;
+  }

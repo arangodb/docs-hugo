@@ -2,21 +2,21 @@
     background: none;
     transition: 0.4s;
     position: absolute;
-    left: 97%;
+    right: 16px;
 }
 
 .copy-to-clipboard-button::before {
     font-family: "Font Awesome 5 Free";
     content: "\f0c5";
     font-weight: 900;
-    color: #e8dcdc;
+    color: #53785c;
 }
 
 .copy-to-clipboard-button.tooltipped::before {
     font-family: "Font Awesome 5 Free";
     content: "\f00c";
     font-weight: 900;
-    color: #e8dcdc;
+    color: #53785c;
 }
 
 .copy-to-clipboard > .copy-to-clipboard-code {
@@ -25,14 +25,28 @@
     word-break: break-word;
     white-space: break-spaces;
     color: var(--CODEBLOCK-TEXT-COLOR);
+    padding-right: 18px;
+    font-family: Consolas,liberation mono,Menlo,Courier,monospace;
+    font-size: 1rem;
 }
 
 pre {
-    margin-bottom: 0;
-    margin-top: 0;
+    margin-bottom: 2rem;
     background-color: var(--CODEBLOCK-BACKGROUND-COLOR);
     line-height: 1.8rem;
     position: relative;
+    padding: 18px;
+    display: flex;
+    min-height: 10px;
+    flex-direction: column;
+    position: relative;
+    color: #202951;
+    margin: 0 1rem 2rem 0;
+    transition: 150ms ease-in-out;
+    transition-property: border,box-shadow;
+    border: 0;
+    box-shadow: 0 4px 10px -4px rgb(0 30 43 / 30%);
+    border-radius: 24px;
 }
 
 .tab-nav {

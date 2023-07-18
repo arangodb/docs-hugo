@@ -1,13 +1,14 @@
 {{ $name := .name}}
 {{ $description := .description }}
 {{ $content := .content }}
+{{ $language := .language }}
 
-{{ $description }}
+<p>{{ $description }}</p>
 
-{{ $input := transform.Highlight $content.input "" }}
+{{ $input := transform.Highlight $content.input $language }}
 {{ $input }}
 
-{{ $output := transform.Highlight $content.output "" }}
+{{ $output := transform.Highlight $content.output $language }}
 {{ $block := printf "%s" $output | markdownify}}
     {{- partial "shortcodes/expand.html" (dict
     "context" .

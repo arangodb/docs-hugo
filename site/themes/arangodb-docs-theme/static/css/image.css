@@ -51,4 +51,18 @@ figcaption {
     font-size: 0.8rem;
 }
 
+.arangodb-logo-small {
+    display: none;
+}
+
+@media screen and (max-width: 768px) {
+    .arangodb-logo-small {
+        display: block;
+        height: 2rem;
+        margin-left: 10px;
+    }
+    .arangodb-logo-large {
+        display: none;
+    }
+}
 

@@ -5,10 +5,12 @@ var maxHeadlineLevel = 2;
 function getHeadlines() {
     var contentBlock = document.querySelector("article");
     if (!contentBlock) {
+      console.log("getHeadlines() no article found")
       return [0, false];
     }
     var nodes = contentBlock.querySelectorAll(headlineLevels.slice(0, maxHeadlineLevel).join(","))
     if (nodes.length < 2) {
+      console.log("headers < 2")
       return [0, false];
     }
 
@@ -62,24 +64,32 @@ function tocHiglighter() {
     return
   }
 
+
   var scrollTop = $(document).scrollTop();
   for (var i = 0; i < anchors.length; i++){
     var heading = anchors[i].getAttribute('id')
-    let highlightedHref = $('#TableOfContents a[href="#' + heading + '"]');
-    highlightedHref.removeClass('is-active');
+    let oldHRef = $('#TableOfContents a[href="#' + heading + '"]');
+    oldHRef.parent().removeClass('is-active');
   }
 
   for (var i = anchors.length-1; i >= 0; i--){
-    if (scrollTop > $(anchors[i]).offset().top - 140) {
-        var heading = anchors[i].getAttribute('id')
+    if (scrollTop > $(anchors[i]).offset().top - 180) {
 
-        let highlightedHref = $('#TableOfContents a[href="#' + heading + '"]')
-        highlightedHref.addClass('is-active');
+      var heading = anchors[i].getAttribute('id')
+        highlightedHref = $('#TableOfContents a[href="#' + heading + '"]')
+        highlightedHref.parent()[0].scrollIntoView({behavior: "smooth"});
+        highlightedHref.parent().addClass('is-active');
         break;
     }
   }
+
+  activeHrefs = $('#TableOfContents > .ps > .is-active')
+  if (activeHrefs.length == 0) document.querySelectorAll('.toc-content')[0].scrollIntoView();
 }
 
 $(window).scroll(function(){
   tocHiglighter();
 });
+
+
+
