@@ -1,5 +1,10 @@
-<div class="box notices cstyle success">
-    <div class="box-content">
-        <div class="box-text">{{ .InnerDeindent | markdownify  }}</div>
+<div class="box notices cstyle tip">
+    <div class="box-content-container">
+        <div class="box-content">
+            <i class="fas fa-check"></i>
+            <div class="box-text">
+                {{ .InnerDeindent | markdownify }}
+            </div>
+        </div>
     </div>
 </div>

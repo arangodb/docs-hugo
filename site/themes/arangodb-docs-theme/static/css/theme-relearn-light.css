@@ -10,11 +10,10 @@
     --SECONDARY-color: #486ac9; /* brand secondary color */
 
     --MAIN-TEXT-color: #101010; /* text color of content and h1 titles */
-    --MAIN-LINK-color: #859853; /* hoverd link color of content */
-    --MAIN-LINK-HOVER-color: #90ba6d; /* hoverd link color of content */
+    --MAIN-LINK-color: #4183c4; /* hoverd link color of content */
+    --MAIN-LINK-HOVER-color: #4183c4; /* hoverd link color of content */
     --MAIN-BG-color: #ffffff; /* background color of content */
     --MAIN-TITLES-TEXT-color: #4a4a4a; /* text color of h2-h6 titles and transparent box titles */
-    --MAIN-FONT: "Menlo","Consolas";
 
     /* adjusted to relearn-light chroma style */
     --CODE-BLOCK-color: white; /* fallback text color of block code; should be adjusted to your selected chroma style */
@@ -46,24 +45,81 @@
     --BOX-BG-color: rgba( 255, 255, 255, .833 ); /* background color of colored boxes */
     --BOX-TEXT-color: rgba( 16, 16, 16, 1 ); /* text color of colored box content */
 
-    --SIDEBAR-BACKGROUND-COLOR:  rgb(64, 69, 69);
-    --SIDEBAR-ENTRY-COLOR: rgba(255, 255, 255, 0.8);
+    --LIGHT-GREEN: rgb(106, 170, 33);
 
-    --CONTENT-BACKGROUND-COLOR: #ffffff;
-    --HEADER-BACKGROUND-COLOR: #ffffff;
+
+    /* TYPOGRAPHY */
+    --MAIN-FONT: Helvetica;
+
+
+    /* SIZE */
+    --TYPOGRAPHY-H1-SIZE: 40px;
+    --TYPOGRAPHY-H2-SIZE: 32px;
+    --TYPOGRAPHY-H3-SIZE: 24px;
+    --TYPOGRAPHY-H4-SIZE: 16px;
+    --TYPOGRAPHY-H5-SIZE: 13.28px;
+
+    /* LINE HEIGHTS */
+    --TYPOGRAPHY-H1-HEIGHT: 48px;
+    --TYPOGRAPHY-H2-HEIGHT: 40px;
+    --TYPOGRAPHY-H3-HEIGHT: 30px;
+    --TYPOGRAPHY-H4-HEIGHT: 24px;
+    --TYPOGRAPHY-H5-HEIGHT: 22px;
+
+    --TYPOGRAPHY-BODY-LINE-HEIGHT: 24px;
+
+    /* WEIGHTS */
+    --TYPOGRAPHY-THIN-TEXT: 250;
+    --TYPOGRAPHY-LIGHT-TEXT: 300;
+    --TYPOGRAPHY-REGULAR-TEXT: 400;
+    --TYPOGRAPHY-SEMIBOLD-TEXT: 500;
+    --TYPOGRAPHY-BOLD-TEXT: 700;
+
+    --TYPOGRAPHY-BODY-TEXT: 16px;
+
+
+    /* COLORS */
+    --COLOR-LIGHT-GREEN: rgb(106 170 33/0.3);
+
+    --HEADERS-COLOR: #345B06;
+
+
+
+    --SIDEBAR-BACKGROUND-COLOR:  #fafafa;
+    --SIDEBAR-ENTRY-COLOR: #345B06;
+
+    --CONTENT-BACKGROUND-COLOR: #fafafa;
+    --HEADER-BACKGROUND-COLOR: #fafafa;
     --H1-COLOR: #3f3b3b;
     --H2-COLOR: #534949;
 
     --TOC-ENTRY-COLOR:#4a4a4a;
 
-    --CODEBLOCK-BACKGROUND-COLOR: #2e3440;
-    --CODEBLOCK-TEXT-COLOR: rgb(216, 222, 233);
-    --CODE-COLOR: #878778;
+    --CODEBLOCK-BACKGROUND-COLOR: #EEEEEE;
+    --CODEBLOCK-TEXT-COLOR:  rgb(45 49 56);
+    --CODE-COLOR: #4c4c4c;
     --CODE-BG-COLOR: #f7f7f9;
     --TOC-ENTRY-COLOR: #4a4a4a;
     --SIDEBAR-SUBMENU-BORDER-COLOR: #c2b3b3;
 
-    --INFO-ICON-COLOR: #2dc8ed;
-    --WARNING-ICON-COLOR: #e3b03a;
-    --DANGER-ICON-COLOR: #fd5d1d;
+    /* ADMONITIONS */
+    --INFO-ICON-COLOR: #2196F3;
+    --INFO-BG-COLOR: #E3F2FD;
+    --INFO-BORDER-COLOR: #2196F3;
+
+    --WARNING-ICON-COLOR: #FF9800;
+    --WARNING-BORDER-COLOR: #FF9800;
+    --WARNING-BG-COLOR: #FFF3E0;
+
+    --DANGER-ICON-COLOR: #F44336;
+    --DANGER-BORDER-COLOR: #F44336;
+    --DANGER-BG-COLOR: #FFEBEE;
+
+    --TIP-ICON-COLOR: #4CAF50;
+    --TIP-BG-COLOR: #E8F5E9;
+    --TIP-BORDER-COLOR: #4CAF50;
+
+    --SECURITY-ICON-COLOR: #FF9800;
+    --SECURITY-BG-COLOR: #FFF3E0;
+    --SECURITY-BORDER-COLOR: #FF9800;
 }

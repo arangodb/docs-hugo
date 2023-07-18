@@ -7,9 +7,6 @@
       {{- partial "deprecated.html" . }}
       {{- partial "in-development.html" . }}
       <h1 class="page-title">{{ .Title | markdownify }}</h1>
-      <p class="lead">
-        {{ .Description }}
-      </p>
       {{ $content | safeHTML }}
       <nav class="pagination">
         {{- partial "content-footer.html" . }}

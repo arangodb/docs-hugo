@@ -1,5 +1,5 @@
 {{- $context := .context }}
-{{- $content := .content }}
+{{- $content := .content | markdownify }}
 {{- $title := .title | default (T "Expand-title") }}
 {{- $description := .description }}
 {{- $expanded := .open | default false }}
@@ -18,7 +18,7 @@
         <div class="expand-content" style="display:
             {{- if $expanded }} block{{ else }} none{{ end -}}
         ;">
-    {{ $description }}
+    {{ $description | markdownify }}
     {{ $content | safeHTML }}
         </div>
     </div>

@@ -20,56 +20,42 @@
             <header id="header" style="transition: 0.5s padding ease-out, 0.15s" class="zn_header_white header-splash-new nav-down header-splash-wrap header1">
               <!--LOGO-->
               <div class="version-logo-container">
-                <div class="logo-container hasinfocard_img">
+                <div class="logo-container hasinfocard_img arangodb-logo-large">
                   <div class="logo "><a href="https://www.arangodb.com/"><img src="/images/logo_main.png" alt="ArangoDB" title=""></a></div>
                 </div>
                 <!-- END LOGO-->
+                <div class="arangodb-logo-small">
+                  <a href="https://arangodb.com/">
+                    <img data-cfsrc="/docs/assets/ArangoDB_Logo_White_small.png" alt="ArangoDB Logo" src="https://www.arangodb.com/docs/assets/ArangoDB_Logo_White_small.png">
+                  </a>
+                </div>   
                 
+              </div>
+              <div class="search-and-version-container" >
+                <a href="#" class="home-link is-current" aria-label="Go to home page" onclick="goToHomepage(event);"></a>
+                <div class="searchbox default-animation">
+                  <input data-search-input id="search-by" type="search" placeholder="Search...">
+                </div>
+                <div class="version-selector">
+                  <select id="arangodb-version" onchange="changeVersion();">
+                    <option value="3.12">3.12</option>
+                    <option value="3.11">3.11</option>
+                    <option value="3.10">3.10</option>
+                  </select>
+                </div>
               </div>
               <div class="container-right">
                 </div>
             </header>
             <iframe src="/nav.html" title="description" id="menu-iframe" class="menu-iframe active">qualocsa</iframe>
-            {{- $assetBusting := not .Site.Params.disableAssetsBusting }}
-            {{- $pageBaseLang := replaceRE "([a-z]+).*" "${1}" .Page.Lang }}
-            {{- $contentlangs := (union (slice | append .Site.Params.additionalContentLanguage) (slice $pageBaseLang)) }}
-            {{- $quotedcontentlangs := slice }}
-            {{- $missingcontentlangs := slice }}
-            {{- range $contentlangs }}
-              {{- $file := (printf "js/lunr.%s.min.js" .) }}
-              {{- if fileExists (printf "/static/%s" $file) }}
-                {{- $quotedcontentlangs = $quotedcontentlangs | append (printf "'%s'" .) }}
-              {{- else }}
-                {{- $missingcontentlangs = $missingcontentlangs | append . }}
-              {{- end }}
-            {{- end }}
-            {{- $contentlangs = $contentlangs | complement $missingcontentlangs }}
-            <script>
-              var contentLangs=[{{ delimit $quotedcontentlangs ", " | safeJS }}];
-              var index_url={{ "index.json" | relLangURL }};
-    
-            </script>
-            <script src="{{"js/lunr.min.js" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" defer></script>
-            <script src="{{"js/lunr.stemmer.support.min.js" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" defer></script>
-            <script src="{{"js/lunr.multi.min.js" | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" defer></script>
-            {{- range $contentlangs }}
-              {{- $file := (printf "js/lunr.%s.min.js" .) }}
-            <script src="{{ $file | relURL}}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" defer></script>
-            {{- end }}
-           
-            <script src="{{ "js/search.js" | relURL }}{{ if $assetBusting }}?{{ now.Unix }}{{ end }}" defer></script>
+            
             <div class="container-main">
               <div class="row-main">
                   <nav id="breadcrumbs">
-                      <a href="#" class="sidebar-toggle-navigation">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                      </a>
 
                   {{- $showBreadcrumb := (and (not .Params.disableBreadcrumb) (not .Site.Params.disableBreadcrumb)) }}
                   {{- if $showBreadcrumb }}
-                  <a href="#" class="home-link is-current" aria-label="Go to home page" onclick="goToHomepage(event);"></a>
+                  
                     <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
                       <meta itemprop="itemListOrder" content="Descending" />
                       {{- template "breadcrumb" dict "page" . "depth" 0 }}
@@ -79,14 +65,12 @@
                       {{ .Title }}
                     </span>
                   {{- end }}
-                  <a class="edit-page" aria-label="" href="https://github.com/arangodb/docs/edit/main/site/content/{{ with .File }}{{ .Path }}{{ end }}" target="_blank"><i class="fab fa-fw fa-github"></i>
-                    Contribute</a>
+                  <a class="edit-page" aria-label="" href="https://github.com/arangodb/docs/edit/main/site/content/{{ with .File }}{{ .Path }}{{ end }}" target="_blank"><i class="fab fa-fw fa-github edit-page-icon"></i></a>
                   </nav>
                   <div class="toc-container">
                     <div class="toc">
                         <div class="toc-content">
                         <div class="toc-header"><p>On this page</p></div>
-                        <hr>
                         <nav id="TableOfContents" >
                             <nav id="TableOfContents">
                             </nav>
@@ -114,7 +98,7 @@
                   <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
                     <meta itemprop="position" content="{{ $depth }}" />
                     <a itemprop="item" href="{{ .page.RelPermalink }}"{{if not .depth}} aria-disabled="true"{{end}}>
-                      <span itemprop="name" class="breadcrumb-entry">{{ replace .page.Title "{{ pageVersion }}" $pageVersion | markdownify }}</span>
+                      <span itemprop="name" class="breadcrumb-entry">{{ .page.Params.menuTitle | markdownify }}</span>
                     </a>{{ if .depth }} > {{ end }}
                   </li>
                   {{ end }}

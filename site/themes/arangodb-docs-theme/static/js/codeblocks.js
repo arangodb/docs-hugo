@@ -78,11 +78,8 @@ function initCopyToClipboard() {
 }
 
 function copyCode(event) {
-    var parent = $(event.target).parent().parent().find('code')[0].childNodes;
-    var text = ""
-    for (let child of parent) {
-        text = text + $(child).text();
-    }
+    var parent = $(event.target).siblings('code')[0];
+    var text = parent.innerText;
     navigator.clipboard.writeText(text).then(() => {
         console.log("Copied")
         $(event.target).attr('aria-label', window.T_Copied_to_clipboard).addClass('tooltipped');

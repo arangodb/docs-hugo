@@ -8,9 +8,6 @@
       {{- partial "deprecated.html" . }}
       {{- partial "in-development.html" . }}
       <h1 class="page-title">{{ replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}</h1>
-      <p class="lead">
-        {{ .Description }}
-      </p>
       {{ $content | safeHTML }}
       <nav class="pagination">
         {{- partial "content-footer.html" . }}

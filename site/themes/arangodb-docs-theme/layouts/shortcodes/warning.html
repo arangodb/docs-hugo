@@ -3,7 +3,7 @@
         <div class="box-content">
             <i class="fas fa-exclamation-triangle"></i>
             <div class="box-text">
-                {{ .InnerDeindent | markdownify  }}
+                {{ .InnerDeindent | .Page.RenderString }}
             </div>
         </div>
     </div>

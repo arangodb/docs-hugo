@@ -12,12 +12,6 @@
     top: 4rem;
     height: 101vh;
     background-color: var(--SIDEBAR-BACKGROUND-COLOR);
-   /* background-color: rgb(64, 69, 69) !important;*/
-    /*
-    background-image: url("/images/menu-bg.jpg");
-background-position: center center;
-background-size:cover;
-*/
     left: 0;
     width: 0;
     transition:  width 0.3s ease-in-out;
@@ -28,28 +22,38 @@ background-size:cover;
     grid-area: sidenav;
     display: flex;
     align-items: stretch;
-    /*position: -webkit-sticky;*/
-    position: sticky;
-    z-index: 2;
-    top: 4rem;
-    height: 101vh;
-    background-color: var(--SIDEBAR-BACKGROUND-COLOR);
-   /* background-color: rgb(64, 69, 69) !important;*/
-    /*
-    background-image: url("/images/menu-bg.jpg");
-background-position: center center;
-background-size:cover;
-*/
+    position: fixed;
+    z-index: 9999;
+    top: 4.2em;
+    height: calc(100vh - 60px);
     left: 0;
-    width: 0;
-    transition:  width 0.3s ease-in-out;
+    width: 1vw;
+    transition: width 0.3s ease-in-out;
+    background-color: var(--SIDEBAR-BACKGROUND-COLOR);
+    box-shadow: -3px 0 5px 0 #555;
+}
 
+@media screen and (max-height: 900px) {
+    #sidebar {
+        height: 93vh;
+    }
 }
 
 .menu-iframe.active,
 #sidebar.active {
-    width: 17rem;
+    width: 20vw;
 }
+
+@media screen and (max-width: 768px) {
+    .menu-iframe.active, #sidebar.active {
+        width: 100%;
+    }
+}
+
+.menu-mobile {
+    display: none;
+}
+
 
 .sidenav-container {
     position: relative;
@@ -77,39 +81,84 @@ background-size:cover;
     scrollbar-width: none;  /* Firefox */
 }
 
-.sidebar-toggle-navigation {
-    width: 22px;
-    z-index: 9999;
-    -webkit-box-align: center;
+#sidebar > #sidebar-toggle-navigation {
+    position: relative;
+    position: fixed;
+    bottom: 3vh;
+    left: 0.2vw;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
     align-items: center;
-    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
     justify-content: center;
-    color: rgb(0, 104, 74);
     cursor: pointer;
-    padding: 0px 0px 0px 0px;
+    -webkit-transition: 150ms ease-in-out;
+    background-color: var(--CONTENT-BACKGROUND-COLOR);
+    z-index: 999;
+    border: 1px solid rgb(106 170 33/0.3);
+    border-radius: 24px;
 }
 
-.sidebar-toggle-navigation > span {
-    display: block;
-    background-color: #bfb5b5;
-    height: 2px;
+#sidebar > #sidebar-toggle-navigation::after {
+    font-family: "Font Awesome 5 Free";
+    content: "\f054";
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 900;
+    font-size: 18px;
+    padding-top: 0px;
+    color: grey;
 }
 
-.sidebar-toggle-navigation > span:nth-child(2) {
-    margin: 4px 0 4px auto;
-    width: 75%;
-    transition: 0.3s all;
+#sidebar.active > #sidebar-toggle-navigation {
+    position: relative;
+    position: fixed;
+    bottom: 3vh;
+    left: 19vw;
+    display: -webkit-box;
+    display: -webkit-flex;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    -webkit-justify-content: center;
+    justify-content: center;
+    cursor: pointer;
+    -webkit-transition: 150ms ease-in-out;
+    background-color: var(--CONTENT-BACKGROUND-COLOR);
+    z-index: 999;
+    border: 1px solid rgb(106 170 33/0.3);
+    border-radius: 24px;
 }
 
-.sidebar-toggle-navigation > span:nth-child(3) {
-    margin-left: auto;
-    width: 50%;
-    transition: 0.6s all;
+@media screen and (max-width: 400px) {
+    #sidebar.active > #sidebar-toggle-navigation {
+        left: 93vw;
+    }
 }
 
-.sidebar-toggle-navigation:hover > span:nth-child(2),
-.sidebar-toggle-navigation:hover > span:nth-child(3) {
-    width: 100%;
+@media screen and (max-width: 768px) {
+    #sidebar.active > #sidebar-toggle-navigation {
+        left: 95vw;
+    }
+}
+
+#sidebar.active > #sidebar-toggle-navigation::after {
+    font-family: "Font Awesome 5 Free";
+    content: "\f053";
+    display: inline-block;
+    vertical-align: middle;
+    font-weight: 900;
+    font-size: 18px;
+    padding-top: 0px;
+    color: grey;
 }
 
 
@@ -122,7 +171,8 @@ background-size:cover;
 }
 
 #sidebar ul.topics {
-    margin: 0 1rem;
+    margin: 1vh 1vw;
+    margin-bottom: 5vh;
 }
 
 #sidebar ul.topics > ul {
@@ -142,15 +192,12 @@ background-size:cover;
 
 #sidebar ul.topics ul ul {
     padding-bottom: 0;
-    border-left: 1px solid var(--SIDEBAR-SUBMENU-BORDER-COLOR);
-
 }
 
 #sidebar ul.topics li.parent > ul,
 #sidebar ul.topics li.active > ul,
 #sidebar ul.topics li.alwaysopen > ul {
     display: block;
-    font-size: 13px;
 }
 
 
@@ -234,6 +281,14 @@ background-size:cover;
     transition: 0.5s;
 }
 
+#sidebar ul li a:hover {
+    box-sizing: border-box;
+    border: 0 solid rgb(106 170 33);
+    border-radius: 1rem;
+    --tw-bg-opacity: 0.2;
+    background-color: rgb(188 180 196/var(--tw-bg-opacity));
+}
+
 #sidenav li.dd-item.active > a {
     color: #577138;
     font-weight: bold;
@@ -274,6 +329,11 @@ background-size:cover;
     font-weight: 900;
 }
 
+.sidenav-navigation {
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 .submenu {
     display: none;
 }
@@ -289,6 +349,11 @@ li.parent > a {
 
 li.active > a {
     font-weight: bold;
+    box-sizing: border-box;
+    border: 0 solid rgb(106 170 33);
+    border-radius: 1rem;
+    --tw-bg-opacity: 0.5;
+    background-color: rgb(106 170 33/var(--tw-bg-opacity));
 }
 
 .toggle.menu-section-entry {
@@ -364,6 +429,38 @@ dd-item.menu-section-entry.parent > .submenu {
     pointer-events: none;
 }
 
+.dd-item.active > a > .menu-title,
+.dd-item.parent > a > .menu-title {
+    color: #345B06;
+}
+
 .sidenav-container-flex::-webkit-scrollbar {
     display: none;
+  }
+
+.search-and-version-container {
+    display: flex;
+    z-index: 999;
+    width: 53vw;
+}
+
+/* Works on Firefox */
+.sidenav-navigation {
+    scrollbar-width: thin;
+    scrollbar-color: blue orange;
+  }
+  
+  /* Works on Chrome, Edge, and Safari */
+  .sidenav-navigation::-webkit-scrollbar {
+    width: 6px;
+  }
+  
+  .sidenav-navigation::-webkit-scrollbar-track {
+    background: #fafafa;
+  }
+  
+  .sidenav-navigation::-webkit-scrollbar-thumb {
+    background-color: #b6acac;
+    border-radius: 20px;
+    border: 1px solid #b6acac;
   }

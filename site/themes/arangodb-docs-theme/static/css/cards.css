@@ -11,7 +11,7 @@
 }
 
 .card {
-    flex: 1 1 25%;
+    flex: 1 1 40%;
     max-width: 50%;
     padding: 18px;
     display: flex;
@@ -19,11 +19,15 @@
     flex-direction: column;
     position: relative;
     color: #202951;
-    border: 1px solid #d7dee4!important;
-    border-radius: 8px;
-    /* height: 100%; */
-    transition: .125s;
     margin: 0 1rem 1rem 0;
+
+    transition: 150ms ease-in-out;
+    transition-property: border,box-shadow;
+    border: 1px solid #E8EDEB;
+    box-shadow: 0 4px 10px -4px rgb(0 30 43 / 30%);
+    background-color: white;
+    color: #1C2D38;
+    border-radius: 24px;
 }
 
 .card:hover {
@@ -75,7 +79,6 @@ a.section-link {
     color: #0b1117;
     text-overflow: ellipsis;
     overflow: hidden;
-    font-family: 'Euclid Circular A',Akzidenz,'Helvetica Neue',Helvetica,Arial,sans-serif;
     font-size: 16px;
     line-height: 28px;
 }
@@ -98,7 +101,6 @@ a.section-link {
 
 .card-body > p {
     margin: unset;
-    font-family: 'Euclid Circular A',Akzidenz,'Helvetica Neue',Helvetica,Arial,sans-serif;
     color: #001E2B;
     font-size: 16px;
     line-height: 28px;

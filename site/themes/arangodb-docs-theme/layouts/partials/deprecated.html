@@ -1,5 +1,5 @@
 {{- $deprecated := $.Page.Scratch.Get "deprecated" }}
-{{ $shortVersion := $.Page.Scratch.Get "versionShort" }}
+{{ $shortVersion := $.Page.Store.Get "versionShort" }}
 {{ $stableVersion := $.Page.Scratch.Get "stableVersion" }}
 
 

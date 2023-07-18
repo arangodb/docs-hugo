@@ -6,57 +6,52 @@ import (
 	"os"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal"
-	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/common"
-	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/config"
-	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/utils"
+	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
 )
 
 var configFile string
 var env string
-var help, cleanCache, useServers bool
+var help, useServers bool
 
 // Pre-Run Setup
 func init() {
 	flag.StringVar(&configFile, "config", "./configs/local.yaml", "path of config file")
 	flag.BoolVar(&help, "help", false, "Display help usage")
-	flag.BoolVar(&cleanCache, "no-cache", false, "Reset cache")
 	flag.BoolVar(&useServers, "use-servers", false, "Enable communication with arangodb servers")
 	flag.Parse()
 
-	err := config.LoadConfig(configFile)
+	err := models.LoadConfig(configFile)
 	if err != nil {
 		fmt.Printf("Error loading config: %s\n, aborting...", err.Error())
 		os.Exit(1)
 	}
 
-	if useServers {
-		internal.InitRepositories()
-		utils.LoadDatasets(config.Conf.Datasets)
-	}
-
-	common.Logger.Printf(startupBanner)
-	common.Logger.Printf("./arangoproxy -help for help usage\n\n")
-	common.Logger.Printf("Init Setup\n")
+	models.Logger.Printf(startupBanner)
+	models.Logger.Printf("./arangoproxy -help for help usage\n\n")
+	models.Logger.Printf("Init Setup\n")
 
 	if help {
-		common.Logger.Printf("Usage: ...\n")
+		models.Logger.Printf("Usage: ...\n")
 		os.Exit(0)
 	}
 
-	if cleanCache {
-		common.Logger.Printf("Deleting Cache\n")
-		internal.CleanCache()
-	}
-
-	common.Logger.Printf("Setup Done\n---------\n")
+	models.Logger.Printf("Setup Done\n---------\n")
 
 }
 
 func main() {
-	common.Logger.Printf("Available endpoints:\n - /js\n - /aql\n - /curl\n")
-	common.Logger.Printf("Starting Server at %s\n", config.Conf.WebServer)
+	models.Logger.Printf("Available endpoints:\n - /js\n - /aql\n - /curl\n - /openapi\n")
+	models.Logger.Printf("Starting Server at %s\n", models.Conf.WebServer)
 
-	internal.StartController(config.Conf.WebServer)
+	if useServers {
+		internal.InitRepositories()
+		models.Logger.Printf("[INIT] Repositories Init Done")
+
+		models.LoadDatasets(models.Conf.Datasets)
+		models.Logger.Printf("[INIT] Datasets Loaded")
+	}
+
+	internal.StartController(models.Conf.WebServer)
 }
 
 var startupBanner = `

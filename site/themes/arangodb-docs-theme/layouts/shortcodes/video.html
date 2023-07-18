@@ -7,10 +7,10 @@
 {{- else if eq $size "medium" -}}
     {{- $width = 600 -}}
 {{- else if eq $size "large" -}}
-    {{- $width = 1200 -}}    
+    {{- $width = 1200 -}} 
 {{- end }}
 
-<div class="video-box">
+<div class="video-box video">
     <video controls loop muted playsinline class="html-video" width="{{ printf "%dx" $width }}">
         <source src="{{ $video.RelPermalink }}" type="video/mp4">
     </video>

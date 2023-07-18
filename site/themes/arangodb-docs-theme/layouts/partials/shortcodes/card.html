@@ -3,7 +3,7 @@
 {{ $link := .link }}
 {{ $content := .Inner }}
 <div class="card">
-  <a href="{{ $link }}" />
+  <a href="{{ $link }}" class="link-internal" />
       <div class="card-head">
         {{ with $image }}<img class="card-icon" src="/images/section_icons/secure/checklist.png" aria-hidden="true">{{ end }}
         <div class="card-title">{{ $title }}</div>

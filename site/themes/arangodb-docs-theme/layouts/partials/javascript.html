@@ -2,10 +2,21 @@
 <script src="{{"js/clipboard.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 <script src="{{"js/perfect-scrollbar.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 <script src="{{"js/featherlight.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
-<script src="{{"js/load_page.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 <script src="{{"js/menu.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
+<script src="{{"js/load_page.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
+<script src="{{"js/toc.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
+
 <script src="{{"js/version.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 <script src="{{"js/openapi.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 <script src="{{"js/codeblocks.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
-<script src="{{"js/toc.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 <script src="{{"js/theme.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
+
+<script>
+    var index_url={{ "index.json" | relLangURL }};
+</script>
+
+<script src="{{"js/lunr.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
+<script src="{{"js/lunr.stemmer.support.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
+<script src="{{"js/lunr.multi.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
+<script src="{{"js/lunr.en.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
+<script src="{{ "js/search.js" | relURL }}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>

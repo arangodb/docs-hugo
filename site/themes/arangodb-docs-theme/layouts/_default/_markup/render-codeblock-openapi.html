@@ -1,4 +1,4 @@
-{{ $pageVersion := .Page.Scratch.Get "versionShort" }}
+{{ $pageVersion := .Page.Store.Get "versionShort" }}
 {{ $titleRE :=  findRE `(?m)#{1,} .*` .Inner }}
 
 

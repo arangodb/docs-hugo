@@ -12,7 +12,12 @@ function replaceArticle(href, newDoc) {
   }
 }
 
+
 function updateHistory(title, url) {
+  if (url == window.location.href) {
+    return
+  } 
+  
   window.history.pushState("navchange", "ArangoDB Documentation", url);
 
   var _hsq = window._hsq = window._hsq || [];
@@ -21,6 +26,8 @@ function updateHistory(title, url) {
   var popStateEvent = new PopStateEvent('popstate', { state: "navchange" });
   dispatchEvent(popStateEvent);
 }
+
+
 
 function styleImages() {
   images = document.querySelectorAll("[x-style]");
@@ -31,49 +38,60 @@ function styleImages() {
   }
 }
 
-function showSidebarHandler() {
-  document.querySelector(".sidebar-toggle-navigation").addEventListener("click", e => {
-    if (showSidenav) {
-        $("#sidebar").removeClass("active");
-        showSidenav = false;
-        return
-    }
-
-    $("#sidebar").addClass("active");
-    showSidenav = true;
-    e.preventDefault();
-});
-}
-
-
 
 function loadPage(target) {
   var href = target;
-  if (href == window.location.href) {
-      return
-  }
-  var url = href.replace(/#.*$/, "");
+  renderVersion();
+  loadMenu(href);
   $.get({
-    url: url,
+    url: href,
     success: function(newDoc) {
       replaceArticle(href, newDoc)
-      initArticle(url);
-      updateHistory(title, url);
+      initArticle(href);
       return true;
     }
   });
 }
 
-
+function internalLinkListener() {
+  $('.link-internal').click(function(event) {
+    event.preventDefault();
+    console.log(event.target)
+    updateHistory("", event.target.getAttribute('href'))
+  })
+}
 
 
 function initArticle(url) {
-  renderVersion();
-  loadMenu(url)
   initCopyToClipboard();
   initClickHandlers();
+  console.log("init article generate toc")
   generateToc();
   goToTop();
   styleImages();
-  showSidebarHandler();
+  internalLinkListener();
+  moveTags();
+
 }
+
+var iframe =  document.getElementById('menu-iframe');
+iframe.addEventListener("load", function() {
+  var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
+  content= iFrameBody.getElementById('sidebar');
+
+  $("#menu-iframe").replaceWith(content);
+  console.log("replaced")
+  menuEntryClick();
+  loadPage(window.location.href)
+  console.log("dopo")
+});
+
+$(window).on('popstate', function (e) {
+  console.log("intercet popstate")
+  var state = e.originalEvent.state;
+  if (state !== null) {
+    console.log("load page");
+    console.log(window.location.href)
+    loadPage(window.location.href);
+  }
+});
