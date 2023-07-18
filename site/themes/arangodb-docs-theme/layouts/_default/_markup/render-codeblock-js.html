@@ -1,11 +1,23 @@
+<<<<<<< HEAD
 {{ $metadata := findRE `(?ms)^---.*^---` .Inner }}
 
 {{ if $metadata }}
   {{- partial "shortcodes/examples/example.html" (dict
   "context" .
+=======
+{{ $metadata := findRE `(?ms)---.*---` .Inner }}
+
+{{ if $metadata }}
+  {{- partial "shortcodes/examples/example.html" (dict
+  "context" .Page
+>>>>>>> 1cb715b5b2a3a3291e709b50b4279e22685728dc
   "content" .Inner
   "language" "js"
   ) }}
 {{ else }}
+<<<<<<< HEAD
   {{ transform.Highlight .Inner "js" }} 
+=======
+  {{ transform.Highlight .Inner "" }} 
+>>>>>>> 1cb715b5b2a3a3291e709b50b4279e22685728dc
 {{ end }}

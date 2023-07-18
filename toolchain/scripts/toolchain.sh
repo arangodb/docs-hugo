@@ -36,6 +36,8 @@ if [[ -z "${ARANGODB_SRC_3_10}" ]] && [[ -z "${ARANGODB_SRC_3_11}" ]] && [[ -z "
   exit 1
 fi
 
+echo "  DOCKER_ENV=$DOCKER_ENV"
+
 
 
 ## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
