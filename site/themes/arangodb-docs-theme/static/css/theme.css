@@ -528,6 +528,12 @@ article ul li {
     margin: 5px 0px 0px 10vw;
 }
 
+@media screen and (max-width: 480px)
+{
+    #breadcrumbs > ol {
+        margin-right: 40px;
+    }
+}
 .toc {
     height: 78vh;
     overflow: auto;
@@ -887,6 +893,7 @@ div.box > .box-content-container > .box-content > .box-text > p {
 @media screen and (max-width: 480px) {
     .edit-page {
         margin-right: 0;
+        right: 0vw;
     }
     .edit-page > .edit-page-icon:after {
         content: "";

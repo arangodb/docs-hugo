@@ -68,7 +68,7 @@ function initCopyToClipboard() {
             }
             var span = $('<span>').addClass("copy-to-clipboard-button").attr("title", window.T_Copy_to_clipboard).attr("onclick", "copyCode(event);")
             code.before(span);
-            if ( code.text().split(/\r\n|\r|\n/).length > 8) {
+            if ( code.text().split(/\r\n|\r|\n/).length > 16) {
               var showMore = $('<button class="code-show-more"></button>')
               code.after(showMore);
             }
