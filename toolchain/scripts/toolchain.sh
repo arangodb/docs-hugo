@@ -30,8 +30,6 @@ if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
   GENERATORS="examples metrics error-codes options optimizer oasisctl"
 fi
 
-echo "  DOCKER_ENV=$DOCKER_ENV"
-
 ## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
 if [ "$ARANGODB_BRANCH_3_10" != "" ] ; then
       export ARANGODB_BRANCH_3_10_NAME="stable"
