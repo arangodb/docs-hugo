@@ -30,15 +30,6 @@ if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
   GENERATORS="examples metrics error-codes options optimizer oasisctl"
 fi
 
-## at least one arangodb src folder must be provided
-if [[ -z "${ARANGODB_SRC_3_10}" ]] && [[ -z "${ARANGODB_SRC_3_11}" ]] && [[ -z "${ARANGODB_SRC_3_12}" ]]; then
-  echo "[INIT] ERROR: No ARANGODB_SRC variable set, please set it."
-  exit 1
-fi
-
-echo "  DOCKER_ENV=$DOCKER_ENV"
-
-
 
 ## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
 if [ "$ARANGODB_BRANCH_3_10" != "" ] ; then
@@ -492,6 +483,11 @@ function generate_error_codes() {
 
   errors_dat_file=$1
   version=$2
+
+  if ["$errors_dat_file" == ""]; then
+    log "[generate_error_codes] ArangoDB Source code not found. Aborting"
+    exit 1
+  fi
   touch ../../site/data/$version/errors.yaml
 
   log "[generate_error_codes] Launching generate error-codes script"
@@ -513,6 +509,11 @@ function generate_metrics() {
 
   src=$1
   version=$2
+
+  if [$src == ""]; then
+    log "[generate_error_codes] ArangoDB Source code not found. Aborting"
+    exit 1
+  fi
 
   log "[generate_metrics] Generate Metrics requested"
   log "[generate_metrics] $PYTHON_EXECUTABLE generators/generateMetrics.py --main $src --dst ../../site/data/$version"
