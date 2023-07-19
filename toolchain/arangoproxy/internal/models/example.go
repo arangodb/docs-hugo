@@ -134,8 +134,10 @@ func (r ExampleResponse) String() string {
 }
 
 func FormatResponse(response *ExampleResponse) {
-	codeComments := regexp.MustCompile(`(?m)~.*`) // Cut the ~... strings from the displayed input
+	codeComments := regexp.MustCompile(`(?m) *~.*\n*`) // Cut the ~... strings from the displayed input
 	response.Input = codeComments.ReplaceAllString(response.Input, "")
+	newLines := regexp.MustCompile(`(?m)^ *\n^ *\n`)
+	response.Input = newLines.ReplaceAllString(response.Input, "")
 
 	response.Input = strings.TrimLeft(response.Input, "\r\n")
 	response.Input = strings.TrimLeft(response.Input, "\n")

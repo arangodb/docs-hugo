@@ -21,14 +21,17 @@
 
 .copy-to-clipboard > .copy-to-clipboard-code {
     margin: 0;
-    padding: 14px;
     word-break: break-word;
     white-space: break-spaces;
     color: var(--CODEBLOCK-TEXT-COLOR);
-    padding-right: 18px;
+    /* padding-right: 18px; */
+    /* padding-left: 18px; */
+    /* padding-top: 1.8rem; */
     font-family: Consolas,liberation mono,Menlo,Courier,monospace;
+    padding: 1.8rem;
+    padding-left: 16px;
     font-size: 1rem;
-    max-height: calc(14 * 2rem);
+    max-height: calc(17 * 1.8rem);
     overflow: hidden;
 }
 
