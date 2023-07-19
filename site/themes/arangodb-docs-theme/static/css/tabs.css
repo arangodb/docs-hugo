@@ -28,7 +28,7 @@
     padding-right: 18px;
     font-family: Consolas,liberation mono,Menlo,Courier,monospace;
     font-size: 1rem;
-    max-height: calc(16 * 2rem);
+    max-height: calc(14 * 2rem);
     overflow: hidden;
 }
 
