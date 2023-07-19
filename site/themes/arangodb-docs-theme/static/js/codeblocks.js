@@ -68,17 +68,10 @@ function initCopyToClipboard() {
             }
             var span = $('<span>').addClass("copy-to-clipboard-button").attr("title", window.T_Copy_to_clipboard).attr("onclick", "copyCode(event);")
             code.before(span);
-            if (code.find('span').length > 16) {
-              var showMore = $('<button class="code-show-more"></button>')
-              code.after(showMore);
-            } else {
-
             if ( code.text().split(/\r\n|\r|\n/).length > 8) {
-              console.log(code)
               var showMore = $('<button class="code-show-more"></button>')
               code.after(showMore);
             }
-          }
 
             span.mouseleave( function() {
                 setTimeout(function(){
@@ -89,16 +82,6 @@ function initCopyToClipboard() {
     });
 }
 
-function codeShowMoreListener() {
-  $('.code-show-more').click(function(event) {
-    event.preventDefault();
-    console.log(event.target)
-    var t = $(event.target)
-    t.toggleClass("expanded")
-    t.prev().toggleClass("expanded")
-
-  })
-}
 
 function copyCode(event) {
     var parent = $(event.target).siblings('code')[0];

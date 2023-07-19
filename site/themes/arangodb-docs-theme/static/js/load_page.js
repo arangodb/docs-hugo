@@ -61,18 +61,24 @@ function internalLinkListener() {
   })
 }
 
+function codeShowMoreListener() {
+  $('.code-show-more').click(function(event) {
+    var t = $(event.target)
+    t.toggleClass("expanded")
+    t.prev().toggleClass("expanded")
+  })
+}
+
 
 function initArticle(url) {
   initCopyToClipboard();
   initClickHandlers();
-  console.log("init article generate toc")
   generateToc();
   goToTop();
   styleImages();
   internalLinkListener();
   codeShowMoreListener();
   moveTags();
-
 }
 
 var iframe =  document.getElementById('menu-iframe');
@@ -81,18 +87,13 @@ iframe.addEventListener("load", function() {
   content= iFrameBody.getElementById('sidebar');
 
   $("#menu-iframe").replaceWith(content);
-  console.log("replaced")
   menuEntryClick();
   loadPage(window.location.href)
-  console.log("dopo")
 });
 
 $(window).on('popstate', function (e) {
-  console.log("intercet popstate")
   var state = e.originalEvent.state;
   if (state !== null) {
-    console.log("load page");
-    console.log(window.location.href)
     loadPage(window.location.href);
   }
 });
