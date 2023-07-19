@@ -3,6 +3,10 @@
 {{ $content := .content }}
 {{ $language := .language }}
 
+{{ if eq .language "curl" }}
+    {{ $language = "bash" }}
+{{ end }}
+
 <p>{{ $description }}</p>
 
 {{ $input := transform.Highlight $content.input $language }}
