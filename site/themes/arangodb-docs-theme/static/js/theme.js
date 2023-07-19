@@ -1,6 +1,8 @@
 var theme = true;
 
 
+
+
 // Common custom functions
 
 
@@ -22,8 +24,6 @@ const goToTop = () => {
     if (window.location.hash.length == 0)
         window.scrollTo({top: 0});
 };
-
-var showSidenav = true;
 
 function goToHomepage(event){
     event.preventDefault();

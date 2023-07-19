@@ -25,6 +25,8 @@ function menuEntryClick() {
         }
         console.log(event.target)
         updateHistory("", event.target.getAttribute('href'))
+        $('#sidebar.mobile').removeClass("active")
+
     });
 }
 

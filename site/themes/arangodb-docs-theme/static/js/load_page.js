@@ -1,3 +1,5 @@
+var isMobile=false;
+
 function replaceArticle(href, newDoc) {
   var re = new RegExp(/<title>(.*)<\/title>/, 'mg');
   var match = re.exec(newDoc);
@@ -70,6 +72,7 @@ function codeShowMoreListener() {
 }
 
 
+
 function initArticle(url) {
   initCopyToClipboard();
   initClickHandlers();
@@ -82,14 +85,24 @@ function initArticle(url) {
 }
 
 var iframe =  document.getElementById('menu-iframe');
+
 iframe.addEventListener("load", function() {
   var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
   content= iFrameBody.getElementById('sidebar');
 
   $("#menu-iframe").replaceWith(content);
   menuEntryClick();
+
   loadPage(window.location.href)
+
+  var isMobile = ( ( window.innerWidth <= 800 ) && ( window.innerHeight <= 900 ) );
+  if (isMobile) {
+      $('#sidebar').addClass("mobile")
+      $('#sidebar.mobile').removeClass("active")
+  }
 });
+
+
 
 $(window).on('popstate', function (e) {
   var state = e.originalEvent.state;
