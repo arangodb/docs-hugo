@@ -80,6 +80,8 @@ echo ""
 echo "[TOOLCHAIN] Clean arangoproxy config file"
 yq '.repositories = []' -i ../arangoproxy/cmd/configs/local.yaml 
 
+
+
 echo "[INIT] Setup Finished"
 
 
@@ -92,23 +94,28 @@ function main() {
   echo "<h2>Generators</h2>" >> /home/summary.md
   echo "$GENERATORS" >> /home/summary.md
 
+  clean_docker_environment
+
   mapfile servers < <(yq e -o=j -I=0 '.servers[]' ../docker/config.yaml )
 
   ## Generate content and start server
   for server in "${servers[@]}"; do
     arangodb_src=$(echo "$server" | yq e '.src' -)
-    if [ "$arangodb_src" == "" ] ; then
+    image=$(echo "$server" | yq e '.image' -)
+
+    if [ "$arangodb_src" == "" ] &&  [ "$image" == "" ]; then
       continue
     fi
 
     process_server "$server"
   done
 
+  run_arangoproxy_and_site
+
   ## Start arangoproxy and site containers to build examples and site
   if [[ $GENERATORS == *"examples"* ]] ; then
     echo "<h2>Examples</h2>" >> /home/summary.md
-
-    run_arangoproxy_and_site
+  fi
 
     ## redirect logs of arangoproxy and site containers to files
     docker logs --details --follow arangoproxy > arangoproxy-log.log &
@@ -124,7 +131,6 @@ function main() {
     ## If a container exits, the tail gets interrupted and the script will arrive here
     echo "[TERMINATE] Site container exited"
     echo "[TERMINATE] Terminating toolchain"
-  fi
 }
 
 
@@ -201,9 +207,15 @@ function clean_docker_environment() {
   docker network inspect docs_net >/dev/null 2>&1 || docker network create --driver=bridge --subnet=192.168.129.0/24 docs_net
 
   ## Stop and remove old containers of this ArangoDB docker image
+  log "[clean_docker_environment] Cleanup arangoproxy and site containers"
+  docker container stop arangoproxy site &> /dev/null || true
+  docker container rm  arangoproxy site &> /dev/null  || true
+}
+
+function clean_docker_arangodb_containers() {
   log "[clean_docker_environment] Cleanup old containers"
-  docker container stop "$container_name" "$container_name"_cluster arangoproxy site &> /dev/null || true
-  docker container rm "$container_name" "$container_name"_cluster arangoproxy site &> /dev/null  || true
+  docker container stop "$container_name" "$container_name"_cluster  &> /dev/null || true
+  docker container rm "$container_name" "$container_name"_cluster &> /dev/null  || true
 }
 
 
@@ -330,7 +342,7 @@ function process_server() {
     container_name="$name"_"$version"
     image_name=$(echo ${image##*/})
 
-    clean_docker_environment "$container_name"
+    clean_docker_arangodb_containers "$container_name"
 
     image_id=$(get_docker_imageid $image $image_name $version)
     if [ "$image_id" == "" ]; then
