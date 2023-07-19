@@ -21,13 +21,19 @@
 
 .copy-to-clipboard > .copy-to-clipboard-code {
     margin: 0;
-    padding: 0;
+    padding: 14px;
     word-break: break-word;
     white-space: break-spaces;
     color: var(--CODEBLOCK-TEXT-COLOR);
     padding-right: 18px;
     font-family: Consolas,liberation mono,Menlo,Courier,monospace;
     font-size: 1rem;
+    max-height: 32ch;
+    overflow: hidden;
+}
+
+.copy-to-clipboard > .copy-to-clipboard-code.expanded {
+    max-height: 100%;
 }
 
 pre {
@@ -35,7 +41,7 @@ pre {
     background-color: var(--CODEBLOCK-BACKGROUND-COLOR);
     line-height: 1.8rem;
     position: relative;
-    padding: 18px;
+    padding: 0;
     display: flex;
     min-height: 10px;
     flex-direction: column;
@@ -163,4 +169,17 @@ pre {
 }
 .example-item > .tab-panel {
     margin: 0;
+}
+
+pre > .code-show-more {
+    font-size: 1rem;
+    box-shadow: 0px 0px 0px #1c1616, 0px -2px 1px #888;
+}
+
+pre > .code-show-more::after {
+    content: "Show More"
+}
+
+pre > .code-show-more.expanded::after {
+    content: "Show Less"
 }

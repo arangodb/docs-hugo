@@ -70,6 +70,7 @@ function initArticle(url) {
   goToTop();
   styleImages();
   internalLinkListener();
+  codeShowMoreListener();
   moveTags();
 
 }
