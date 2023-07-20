@@ -181,7 +181,7 @@ jobs:
               git commit --allow-empty -m "Automatic commit of generated files from CircleCI"
 
               if [ "<< parameters.create-pr >>" = true ]; then
-                git push -u origin scheduled-content-generate-$CIRCLE_BUILD_NUM
+                git push -u origin << parameters.pr-branch >>-$CIRCLE_BUILD_NUM
                 curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: scheduled-create-pr' --header "docs-branch-name: << parameters.pr-branch >>-$CIRCLE_BUILD_NUM"
               else
                 git push
