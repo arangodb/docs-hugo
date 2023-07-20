@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   workflow:
     type: enum
-    enum: [no-op, plain-build, generate, compile, generate-scheduled, commit-generated]
+    enum: [no-op, plain-build, generate, compile, generate-scheduled, commit-generated, generate-oasisctl]
     default: no-op
   
   deploy-url:
@@ -96,6 +96,9 @@ jobs:
       create-pr:
         type: boolean
         default: false
+      pr-branch:
+        type: string
+        default: ""
     machine:
       image: ubuntu-2004:current
     resource_class: large
@@ -168,7 +171,7 @@ jobs:
             if [ "<< parameters.commit-generated >>" = true ] ; then
               if [ "<< parameters.create-pr >>" = true ]; then
                 cd docs-hugo/
-                git checkout -b scheduled-content-generate-$CIRCLE_BUILD_NUM
+                git checkout -b << parameters.pr-branch >>-$CIRCLE_BUILD_NUM
               fi
 
               cd /home/circleci/project/docs-hugo/site
@@ -179,7 +182,7 @@ jobs:
 
               if [ "<< parameters.create-pr >>" = true ]; then
                 git push -u origin scheduled-content-generate-$CIRCLE_BUILD_NUM
-                curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: scheduled-create-pr'
+                curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: scheduled-create-pr' --header "docs-branch-name: << parameters.pr-branch >>-$CIRCLE_BUILD_NUM"
               else
                 git push
               fi
@@ -465,9 +468,48 @@ workflows:
           arangodb-3_10: "arangodb/enterprise-preview:3.10-nightly"
           arangodb-3_11: "arangodb/enterprise-preview:3.11-nightly"
           arangodb-3_12: "arangodb/enterprise-preview:devel-nightly"
-          generators: "metrics error-codes options optimizer oasisctl"
+          generators: "metrics error-codes options optimizer"
           commit-generated: true
           create-pr: true
+          pr-branch: "scheduled-content-generate"
+          requires:
+            - compile-3.10
+            - compile-3.11
+            - compile-3.12
+
+  generate-oasisctl:
+    when: { equal: [ generate-oasisctl, << pipeline.parameters.workflow >> ] }
+    jobs:
+      - compile-linux:
+          context:
+            - sccache-aws-bucket
+          name: compile-3.10
+          arangodb-branch: "arangodb/enterprise-preview:3.10-nightly"
+          version: "3.10"
+          openssl: "3.0.9"
+      - compile-linux:
+          context:
+            - sccache-aws-bucket
+          name: compile-3.11
+          arangodb-branch: "arangodb/enterprise-preview:3.11-nightly"
+          version: "3.11"
+          openssl: "3.0.9"
+      - compile-linux:
+          context:
+            - sccache-aws-bucket
+          name: compile-3.12
+          arangodb-branch: "arangodb/enterprise-preview:devel-nightly"
+          version: "3.12"
+          openssl: "3.1.1"
+      - build-with-generated:
+          name: build-with-generated
+          arangodb-3_10: "arangodb/enterprise-preview:3.10-nightly"
+          arangodb-3_11: "arangodb/enterprise-preview:3.11-nightly"
+          arangodb-3_12: "arangodb/enterprise-preview:devel-nightly"
+          generators: "oasisctl"
+          commit-generated: true
+          create-pr: true
+          pr-branch: "scheduled-oasisctl-generate"
           requires:
             - compile-3.10
             - compile-3.11
