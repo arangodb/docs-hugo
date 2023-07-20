@@ -138,15 +138,9 @@
     border-radius: 24px;
 }
 
-@media screen and (max-width: 400px) {
-    #sidebar.active > #sidebar-toggle-navigation {
-        left: 93vw;
-    }
-}
-
 @media screen and (max-width: 768px) {
     #sidebar.active > #sidebar-toggle-navigation {
-        left: 95vw;
+        left: 90%;
     }
 }
 
