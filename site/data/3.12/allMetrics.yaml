@@ -173,6 +173,23 @@
     log compaction kicks in can be controlled via the startup option
     `--agency.compaction-keep-size`.
 
+- name: arangodb_agency_node_memory_usage
+  introducedIn: "3.12"
+  help: |
+    Memory used by agency store/cache.
+  unit: byte
+  type: gauge
+  # all other categories are too specific
+  category: Statistics
+  complexity: high
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+  description: |
+    Amount of memory used to represent the agency data structure. This measures memory usage on agency and the
+    cache usage on coordinators/dbservers.
+
 - name: arangodb_agency_read_no_leader_total
   renamedFrom: arangodb_agency_read_no_leader
   introducedIn: "3.8.0"
