@@ -19,13 +19,11 @@ func AdjustCodeForArangosh(code string) string {
 	if !(strings.Contains(code, "EOFD")) {
 		code = fmt.Sprintf("%s\nprint('EOFD');\n\n\n\n", code)
 	}
-
 	re := regexp.MustCompile(`(?m)let |const `)
 	code = re.ReplaceAllString(code, "var ")
-
+	code = strings.ReplaceAll(code, "\r\n", "\n")
 	re = regexp.MustCompile(`(?m)}\n *catch`)
 	code = re.ReplaceAllString(code, "} catch")
-
 	return code
 }
 
