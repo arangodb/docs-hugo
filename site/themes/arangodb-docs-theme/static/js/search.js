@@ -47,15 +47,15 @@ var autoComplete = (function(){
 
         // init
         var elems = typeof o.selector == 'object' ? [o.selector] : document.querySelectorAll(o.selector);
-        for (var i=0; i<elems.length; i++) {
-            var that = elems[i];
+            var that = document.querySelector('#search-by')
 
             // create suggestions container "sc"
-            that.sc = document.createElement('div');
-            that.sc.className = 'autocomplete-suggestions '+o.menuClass;
+            that.sc = document.querySelector('.search-results')
+            $(that.sc).addClass('autocomplete-suggestions '+o.menuClass);
 
             that.autocompleteAttr = that.getAttribute('autocomplete');
             that.setAttribute('autocomplete', 'off');
+            that.sections = {}
             that.cache = {};
             that.last_val = '';
 
@@ -64,47 +64,16 @@ var autoComplete = (function(){
 				parentElement = document.querySelector(o.selectorToInsert);
 			}
 			that.updateSC = function(resize, next){
-                var rect = that.getBoundingClientRect();
-				var parentOffsetLeft = 0;
-                var parentOffsetTop = 0;
-                var pageXOffset = 0;
-                var pageYOffset = 0;
-                if (parentElement != undefined) {
-                    parentOffsetLeft = parentElement.getBoundingClientRect().left;
-                    parentOffsetTop = parentElement.getBoundingClientRect().top;
-                } else {
-                    pageXOffset = window.pageXOffset || document.documentElement.scrollLeft;
-                    pageYOffset = window.pageYOffset || document.documentElement.scrollTop;
-                }
-                that.sc.style.left = '30vw';
-                that.sc.style.top = '12vh';
-                that.sc.style.width = Math.round(rect.right - rect.left) * 3 + 'px'; // outerWidth
-   
-                if (!resize) {
                     that.sc.style.display = 'block';
-                    var backgroundPage = document.querySelector('#page-wrapper');
-                    backgroundPage.style.opacity = '0.4';
-                    if (!that.sc.maxHeight) { that.sc.maxHeight = parseInt((window.getComputedStyle ? getComputedStyle(that.sc, null) : that.sc.currentStyle).maxHeight); }
-                    if (!that.sc.suggestionHeight) that.sc.suggestionHeight = that.sc.querySelector('.autocomplete-suggestion').offsetHeight;
-                    if (that.sc.suggestionHeight)
-                        if (!next) that.sc.scrollTop = 0;
-                        else {
-                            var scrTop = that.sc.scrollTop, selTop = next.getBoundingClientRect().top - that.sc.getBoundingClientRect().top;
-                            if (selTop + that.sc.suggestionHeight - that.sc.maxHeight > 0)
-                                that.sc.scrollTop = selTop + that.sc.suggestionHeight + scrTop - that.sc.maxHeight;
-                            else if (selTop < 0)
-                                that.sc.scrollTop = selTop + scrTop;
-                        }
                 }
-            }
             addEvent(window, 'resize', that.updateSC);
-           
 
             if (typeof o.selectorToInsert === "string" && document.querySelector(o.selectorToInsert) instanceof HTMLElement) {
                 document.querySelector(o.selectorToInsert).appendChild(that.sc);
             } else {
-                document.body.appendChild(that.sc);
+                document.querySelector('.search-results-container').appendChild(that.sc);
             }
+
 
             live('autocomplete-suggestion', 'mouseleave', function(e){
                 var sel = that.sc.querySelector('.autocomplete-suggestion.selected');
@@ -116,16 +85,25 @@ var autoComplete = (function(){
                 this.className += ' selected';
             }, that.sc);
 
+            live('search-container', 'mousedown', function(e){
+                console.log("mousedown")
+                console.log(this)
+                console.log(e.target)
+                if (this == e.target) {
+                    $(this).remove();
+                }
+            }, document.querySelectorAll('.search-container')[0]);
+
             live('autocomplete-suggestion', 'mousedown', function(e){
-                if (hasClass(this, 'autocomplete-suggestion')) { // else outside click
+                console.log("mousedown")
+                console.log(this)
+                console.log(e.target)
                     var v = this.getAttribute('data-val');
                     that.value = v;
                     o.onSelect(e, v, this);
-                    that.sc.style.display = 'none';
-                    var backgroundPage = document.querySelector('#page-wrapper');
-                    backgroundPage.style.opacity = '1';
-                }
             }, that.sc);
+
+
 
             that.blurHandler = function(){
                 try { var over_sb = document.querySelector('.autocomplete-suggestions:hover'); } catch(e){ var over_sb = 0; }
@@ -142,10 +120,33 @@ var autoComplete = (function(){
             var suggest = function(data){
                 var val = that.value;
                 that.cache[val] = data;
+                that.sections = {}
+
                 if (data.length && val.length >= o.minChars) {
-                    var s = '';
-                    for (var i=0;i<data.length;i++) s += o.renderItem(data[i], val);
-                    that.sc.innerHTML = s;
+                    for (var i=0;i<data.length;i++) {
+                        renderElem = o.renderItem(data[i], val);
+                        elemNode = $(renderElem)
+                        section = elemNode.attr('section')
+
+                        if (that.sections[section] == undefined) {
+                            that.sections[section] = ""
+                        }
+                        if (that.sections[section].includes(renderElem)) {
+                            continue
+                        }
+
+                        that.sections[section] += renderElem
+                    }
+
+                    processed = []
+                    for (const [key, value] of Object.entries(that.sections)) {
+                        if (processed.includes(key))
+                            continue
+
+                        section = $('<section class="search-results-section" id="section-'+key+'"><div class="search-results-section-title">'+key+'</div><hr><ul>'+value+'</ul></section>')
+                        $(that.sc).append(section)
+                        processed.push(key)
+                    }
                     that.updateSC(0);
                 }
                 else
@@ -175,10 +176,8 @@ var autoComplete = (function(){
                 }
                 // esc
                 else if (key == 27) { 
-                    that.value = that.last_val; 
-                    that.sc.style.display = 'none';
-                    var backgroundPage = document.querySelector('#page-wrapper');
-                    backgroundPage.style.opacity = '1';
+                    console.log("esc")
+                    $('.search-container').remove();
                  }
                 // enter
                 else if (key == 13 || key == 9) {
@@ -208,9 +207,6 @@ var autoComplete = (function(){
                         }
                     } else {
                         that.last_val = val;
-                        that.sc.style.display = 'none';
-                        var backgroundPage = document.querySelector('#page-wrapper');
-                        backgroundPage.style.opacity = '1';
                     }
                 }
             };
@@ -221,12 +217,9 @@ var autoComplete = (function(){
                 that.keyupHandler(e)
             };
             if (!o.minChars) addEvent(that, 'focus', that.focusHandler);
-        }
 
         // public destroy method
         this.destroy = function(){
-            var backgroundPage = document.querySelector('#page-wrapper');
-            backgroundPage.style.opacity = '1';
             for (var i=0; i<elems.length; i++) {
                 var that = elems[i];
                 removeEvent(window, 'resize', that.updateSC);
@@ -260,7 +253,6 @@ function initLunr() {
     // First retrieve the index file
     $.getJSON(index_url)
         .done(function(index) {
-            console.log("done")
             pagesIndex = index;
             // Set up lunrjs by declaring the fields we use
             // Also provide their boost level for the ranking
@@ -321,54 +313,68 @@ function searchPatterns(word) {
 
 // Let's get started
 initLunr();
-console.log("after init")
-$(function() {
-    var searchList = new autoComplete({
+function x() {
+    new autoComplete({
         /* selector for the search box element */
         selectorToInsert: '#header-wrapper',
         selector: '#search-by',
         /* source is the callback to perform the search */
         source: function(term, response) {
-            console.log("source")
             response(search(term));
         },
         /* renderItem displays individual search results */
         renderItem: function(item, term) {
-            console.log("render item")
             var page = pagesIndex[item.index];
             var numContextWords = 20;
             var contextPattern = '(?:\\S+ +){0,' + numContextWords + '}\\S*\\b(?:' +
                 item.matches.map( function(match){return match.replace(/\W/g, '\\$&')} ).join('|') +
                 ')\\b\\S*(?: +\\S+){0,' + numContextWords + '}';
             var context = page.content.match(new RegExp(contextPattern, 'i'));
-            var divcontext = document.createElement('div');
-            divcontext.className = 'context';
-            divcontext.innerText = (context || '');
-            var divsuggestion = document.createElement('div');
-            divsuggestion.className = 'autocomplete-suggestion';
-            divsuggestion.setAttribute('data-term', term);
-            divsuggestion.setAttribute('data-title', page.title);
+
+            var pageSection = page.uri.split("/")[2]
+            if (page.uri.split("/").length > 3) {
+                pageSection = pageSection + " - " + page.uri.split("/")[3]
+            }
+
+            var element = $('<li class="autocomplete-suggestion search-section-"'+pageSection+'" section="'+pageSection+'"></li>')
+
+            element.attr('data-term', term);
+            element.attr('data-title', page.title);
             var dataUri = baseUri + page.uri;
+
             var version = localStorage.getItem('docs-version');
             if (!dataUri.includes(version)) {
-                divsuggestion.style.display = 'none';
+                element.css("display", "none");
             }
-            divsuggestion.setAttribute('data-uri', dataUri);
-            divsuggestion.setAttribute('data-context', context);
-            divsuggestion.innerHTML = '<p class="suggestion-title">» ' + page.title + '</p>\n<p class="suggestion-path">' + page.uri + '</p>';
-            divsuggestion.appendChild(divcontext);
-            return divsuggestion.outerHTML;
+
+            element.attr('data-uri', dataUri);
+            element.attr('data-context', context);
+            element.html('<p class="suggestion-title">' + page.title + '</p>\n<p class="suggestion-path">' + context + '</p>');
+            return element.prop('outerHTML');
         },
         /* onSelect callback fires when a search suggestion is chosen */
         onSelect: function(e, term, item) {
-            console.log("onSelect")
             location.href = item.getAttribute('data-uri');
         }
     });
 
     // JavaScript-autoComplete only registers the focus event when minChars is 0 which doesn't make sense, let's do it ourselves
     // https://github.com/Pixabay/JavaScript-autoComplete/blob/master/auto-complete.js#L191
-    console.log("after autocomplete new")
     var selector = $('#search-by').get(0);
-});
+};
 
+function showSearchModal() {
+    var body = $('body');
+    
+    var searchContainer = $('<div class="search-container"></div>')
+    var searchModal = $('<div class="search-modal"></div>')
+
+    var searchBar = $('<header class="search-header">   <input data-search-input  id="search-by" type="search" placeholder="Search...">    </header>')
+    var searchResults = $('<div class="search-results-container"><div class="search-results"></div></div>')
+
+    searchModal.append(searchBar).append(searchResults)
+
+    searchContainer.append(searchModal)
+    body.append(searchContainer);
+    x();
+}

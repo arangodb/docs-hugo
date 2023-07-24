@@ -71,6 +71,12 @@ function codeShowMoreListener() {
   })
 }
 
+function showSearchListener() {
+  $('.searchbox').click(function(){
+    showSearchModal();
+  });
+}
+
 
 
 function initArticle(url) {
@@ -81,6 +87,7 @@ function initArticle(url) {
   styleImages();
   internalLinkListener();
   codeShowMoreListener();
+  showSearchListener();
   moveTags();
 }
 
