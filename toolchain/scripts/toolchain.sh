@@ -196,6 +196,9 @@ function clean_docker_environment() {
   log "[clean_docker_environment] setup docs_net docker network"
   docker network inspect docs_net >/dev/null 2>&1 || docker network create --driver=bridge --subnet=192.168.129.0/24 docs_net
 
+  log "[clean_docker_environment] setup arangosh docker volume"
+  docker volume create arangosh
+
   ## Stop and remove old containers of this ArangoDB docker image
   log "[clean_docker_environment] Cleanup arangoproxy and site containers"
   docker container stop arangoproxy site &> /dev/null || true
@@ -240,6 +243,7 @@ function run_arangoproxy_and_site() {
   docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 \
     -e HUGO_URL="$HUGO_URL" \
     -e HUGO_ENV="$HUGO_ENV" \
+    -v arangosh:/arangosh \
     --volumes-from toolchain \
     --log-opt tag="{{.Name}}" \
      arangoproxy
@@ -263,22 +267,16 @@ function setup_arangoproxy_arangosh() {
   name=$1
   image=$2
   version=$3
-
   container_name="$name"_"$version"
-
   log "[setup_arangoproxy_arangosh] Setup dedicated arangosh in arangoproxy"
-
   ## Create directory where arangosh executable will be stored
-  mkdir -p ../arangoproxy/arangosh/"$name"/"$version"/usr ../arangoproxy/arangosh/"$name"/"$version"/usr/bin ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/etc/relative
-
+  docker exec  $container_name sh -c "mkdir -p /tmp/arangosh/$name/$version/usr /tmp/arangosh/$name/$version/usr/bin /tmp/arangosh/$name/$version/usr/bin/etc/relative"
   ## Copy arangosh executables from ArangoDB docker container to arangoproxy container
-  docker cp "$container_name":/usr/bin/arangosh ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/arangosh
-  docker cp "$container_name":/usr/bin/icudtl.dat ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/icudtl.dat
-
-  docker cp "$container_name":/usr/share/ ../arangoproxy/arangosh/"$name"/"$version"/usr/
-  docker cp "$container_name":/etc/arangodb3/arangosh.conf ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/etc/relative/arangosh.conf
-
-  sed -i -e 's~startup-directory.*~startup-directory = /home/toolchain/arangoproxy/arangosh/'"$name"'/'"$version"'/usr/share/arangodb3/js~' ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/etc/relative/arangosh.conf
+  docker exec  $container_name sh -c "cp -r /usr/bin/arangosh /tmp/arangosh/$name/$version/usr/bin/arangosh"
+  #docker cp "$container_name":/usr/bin/icudtl.dat ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/icudtl.dat
+  docker exec  $container_name sh -c "cp -r /usr/share/ /tmp/arangosh/$name/$version/usr/"
+  docker exec  $container_name sh -c "cp -r /etc/arangodb3/arangosh.conf /tmp/arangosh/$name/$version/usr/bin/etc/relative/arangosh.conf"
+  docker exec arangoproxy bash -c "sed -i -e 's~startup-directory.*~startup-directory = /tmp/arangosh/'$name'/'$version'/usr/share/arangodb3/js~' /arangosh/arangosh/$name/$version/usr/bin/etc/relative/arangosh.conf"
   echo ""
 }
 
@@ -387,7 +385,7 @@ function run_arangodb_container() {
   image_id="$2"
 
   log "[run_arangodb_container] Run single server"
-  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name" -d "$image_id" --server.endpoint http+tcp://0.0.0.0:8529
+  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name" -v arangosh:/tmp -d "$image_id" --server.endpoint http+tcp://0.0.0.0:8529
 
   log "[run_arangodb_container] Run cluster server"
   docker run -d --net=docs_net -e ARANGO_NO_AUTH=1 --name="$container_name"_cluster \
