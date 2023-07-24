@@ -35,7 +35,7 @@ body .page-container {
 
 /* HEADER */
 
-header {
+#header {
     height: 4rem;
     padding: 16px 10px 10px 10px;
     display: flex;
@@ -69,6 +69,16 @@ header {
 .version-logo-container {
     display: flex;
     flex-direction: row;
+}
+
+.header-block-left {
+    display: flex;
+}
+
+@media screen and (max-width: 1024px) {
+    .version-logo-container {
+        margin-top: 12px;
+    }
 }
 
 .logo-container {
@@ -191,7 +201,13 @@ img {
 
 .version-selector {
     border: none;
-    margin-top: 9px;
+    margin-top: 0.6rem;
+}
+
+@media screen and (max-width: 1024px) {
+    .version-selector {
+        margin-top: 1.2rem;
+    }
 }
 
 #arangodb-version {
@@ -222,6 +238,7 @@ img {
     flex-shrink: 0;
 }
 
+
 #header .searchPanel {
     display: flex;
     flex-direction: row;
@@ -236,14 +253,35 @@ img {
     line-height: 40px;
     z-index: 9999;
     top: 4.1em;
-    padding-left: 0.7em;
     display: flex;
     margin-top: 7px;
 }
 
-#search-by {
-    width: 20rem;
+#search-icon {
+    display: none;
 }
+
+#search-bar {
+    width: 16rem;
+}
+
+@media screen and (max-width: 1024px) {
+    #search-bar {
+        display: none;
+    }
+    #search-icon {
+        display: block;
+    }
+}
+
+#search-by {
+    width: -webkit-fill-available;
+    padding: 0.75rem 1.25rem;
+    margin: 0.75rem 1.25rem;
+    border-radius: 9999px;
+    background: #EEEEEE;
+}
+
 #search-by::before {
     font-family: "Font Awesome 5 Free";
     content: "\f054";
@@ -255,6 +293,7 @@ img {
     padding-top: 0px;
     color: grey;
 }
+
 .searchbar-toggle {
     color: white;
     float: right;
@@ -449,9 +488,8 @@ label {
     }
     .searchbox.default-animation {
         font-size: 16px;
-        transition: 0.4s;
         line-height: 40px;
-        width: 14em;
+        width: auto;
         z-index: 99999;
         display: block;
     }
@@ -750,13 +788,14 @@ ol > li {
 
 .home-link {
     background: url(/images/home.svg) no-repeat 50% 45%;
-    background-size: 50%;
+    background-size: 80%;
     display: block;
-    height: 2.5rem;
+    height: auto;
     padding: 0;
-    margin-top: 4px;
-    width: 3rem;
+    margin-top: -3px;
+    width: 2rem;
 }
+
 
 /* Hints */
 
@@ -1131,4 +1170,8 @@ ul ul, ul ol, ol ul, ol ol {
 
 .link-internal > * {
     pointer-events: none;
+}
+
+#search-icon {
+    background: none;
 }
