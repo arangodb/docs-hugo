@@ -3,10 +3,6 @@ function getCurrentVersion() {
     var urlRe = url.match("\/[0-9.]+\/")
     var urlVersion = localStorage.getItem('docs-version');
 
-    if (urlVersion == undefined) {
-        urlVersion = "3.10"
-    }
-
     if (urlRe) {
         urlVersion = urlRe[0].replaceAll("\/", "");
     }

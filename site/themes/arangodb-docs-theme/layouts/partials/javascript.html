@@ -6,6 +6,16 @@
 <script src="{{"js/load_page.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 <script src="{{"js/toc.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 
+{{ $versions := index site.Data "versions" }}
+{{ range $i, $version := $versions }}
+    {{ if eq "stable" $version.alias }}
+        <script>
+            localStorage.setItem('docs-version', urlVersion);
+        </script>
+    {{ end }}
+{{ end }}
+
+
 <script src="{{"js/version.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 <script src="{{"js/openapi.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 <script src="{{"js/codeblocks.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
