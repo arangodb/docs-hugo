@@ -94,7 +94,10 @@ function initArticle(url) {
 var iframe =  document.getElementById('menu-iframe');
 
 iframe.addEventListener("load", function() {
+  console.log(iframe)
   var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
+  console.log("iframe get")
+  console.log(iFrameBody)
   content= iFrameBody.getElementById('sidebar');
 
   $("#menu-iframe").replaceWith(content);
