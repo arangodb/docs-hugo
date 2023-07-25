@@ -91,32 +91,47 @@ function initArticle(url) {
   moveTags();
 }
 
-var iframe =  document.getElementById('menu-iframe');
-
-iframe.addEventListener("load", function() {
+console.log("before window onload")
+window.onload = () => {
+  console.log("window onload")
+  var iframe =  document.getElementById('menu-iframe');
   console.log(iframe)
   var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
-  console.log("iframe get")
-  console.log(iFrameBody)
+    console.log(iFrameBody)
   content= iFrameBody.getElementById('sidebar');
-
   $("#menu-iframe").replaceWith(content);
   menuEntryClick();
 
   loadPage(window.location.href)
+}
 
-  var isMobile = ( ( window.innerWidth <= 800 ) && ( window.innerHeight <= 900 ) );
-  if (isMobile) {
-      $('#sidebar').addClass("mobile")
-      $('#sidebar.mobile').removeClass("active")
-  }
-});
+// var iframe =  document.getElementById('menu-iframe');
+
+// iframe.addEventListener("load", function() {
+//   console.log(iframe)
+//   var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
+//   console.log("iframe get")
+//   console.log(iFrameBody)
+//   content= iFrameBody.getElementById('sidebar');
+
+//   $("#menu-iframe").replaceWith(content);
+//   menuEntryClick();
+
+//   loadPage(window.location.href)
+
+//   var isMobile = ( ( window.innerWidth <= 800 ) && ( window.innerHeight <= 900 ) );
+//   if (isMobile) {
+//       $('#sidebar').addClass("mobile")
+//       $('#sidebar.mobile').removeClass("active")
+//   }
+// });
 
 
 
 $(window).on('popstate', function (e) {
   var state = e.originalEvent.state;
   if (state !== null) {
+    console.log("Received popstate event")
     loadPage(window.location.href);
   }
 });
