@@ -220,6 +220,7 @@ var autoComplete = (function(){
 
         // public destroy method
         this.destroy = function(){
+            console.log("destroy")
             for (var i=0; i<elems.length; i++) {
                 var that = elems[i];
                 removeEvent(window, 'resize', that.updateSC);
@@ -361,9 +362,11 @@ function x() {
     // JavaScript-autoComplete only registers the focus event when minChars is 0 which doesn't make sense, let's do it ourselves
     // https://github.com/Pixabay/JavaScript-autoComplete/blob/master/auto-complete.js#L191
     var selector = $('#search-by').get(0);
+    console.log(selector)
 };
 
 function showSearchModal() {
+    console.log("show search modal")
     var body = $('body');
     
     var searchContainer = $('<div class="search-container"></div>')
