@@ -173,7 +173,6 @@ function initArticle(url) {
   styleImages();
   internalLinkListener();
   codeShowMoreListener();
-  showSearchListener();
   moveTags();
 }
 
@@ -477,6 +476,8 @@ window.onload = () => {
     renderVersion();
     loadMenu(window.location.href);
     initArticle(window.location.href);
+    showSearchListener();
+
 
     var isMobile = ( ( window.innerWidth <= 800 ) && ( window.innerHeight <= 900 ) );
     if (isMobile) {
