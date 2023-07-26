@@ -1,5 +1,393 @@
 var theme = true;
 
+/*
+    Menu
+*/
+
+
+
+
+function toggleMenuItem(event) {
+    const listItem = event.target.parentNode;
+    if (listItem.classList.contains("menu-leaf-entry")) 
+        return
+
+    listItem.childNodes[0].classList.toggle("open");
+    jQuery(listItem.childNodes[2]).slideToggle();
+    console.log(listItem)
+}
+
+function menuToggleClick(event) {
+    toggleMenuItem(event);
+}
+
+
+function menuEntryClickListener() {
+    $('.menu-link').click(function(event) {
+        event.preventDefault();
+        if (event.target.pathname == window.location.pathname) {
+            toggleMenuItem(event)
+            return
+        }
+        console.log(event.target)
+        updateHistory("", event.target.getAttribute('href'))
+        $('#sidebar.mobile').removeClass("active")
+
+    });
+}
+
+function renderVersion() {
+    var version = localStorage.getItem('docs-version');
+    var menuEntry = document.getElementsByClassName('version-menu');
+    for ( let entry of menuEntry ) {
+        if (entry.classList.contains(version)) {
+            entry.style.display = 'block';
+        } else {
+            entry.style.display = 'none';
+        }
+    }
+};
+
+function closeAllEntries() {
+    $(".dd-item.active").removeClass("active");
+    $(".dd-item > label.open").removeClass("open");
+    $(".submenu").hide();
+    $(".dd-item.parent").removeClass("parent");
+}
+
+function loadMenu(url) {
+    url = url.replace(/#.*$/, "");
+
+    closeAllEntries();
+    var current = $('.dd-item > a[href="' + url + '"]').parent();
+    
+    current.addClass("active");
+    while (current.length > 0 && current.prop("class") != "topics collapsible-menu") {
+        if (current.prop("tagName") == "LI") {
+            current.addClass("parent");
+            jQuery(current.children()[0]).addClass("open") //Open label arrow
+            jQuery(current.children()[2]).show()
+        }
+        
+        current = current.parent();
+    }
+}
+
+function showSidebarHandler() {
+    $("#sidebar").toggleClass("active");
+  }
+
+
+/*
+
+ Load page
+
+*/
+
+var isMobile=false;
+
+function replaceArticle(href, newDoc) {
+  var re = new RegExp(/<title>(.*)<\/title>/, 'mg');
+  var match = re.exec(newDoc);
+  if (match) {
+    title = match[1];
+  }
+
+  $(".container-main").replaceWith($(".container-main", newDoc));
+
+  if (matches = href.match(/.*?(#.*)$/)) {
+    location.hash = matches[1];
+  }
+}
+
+
+function updateHistory(title, url) {
+  if (url == window.location.href) {
+    return
+  } 
+  
+  window.history.pushState("navchange", "ArangoDB Documentation", url);
+
+  var _hsq = window._hsq = window._hsq || [];
+  _hsq.push(['setPath', url]);
+  _hsq.push(['trackPageView']);
+  var popStateEvent = new PopStateEvent('popstate', { state: "navchange" });
+  dispatchEvent(popStateEvent);
+}
+
+
+
+function styleImages() {
+  images = document.querySelectorAll("[x-style]");
+  for (let image of images) {
+      styles = image.getAttribute("x-style");
+      image.setAttribute("style", styles)
+      image.removeAttribute("x-style")
+  }
+}
+
+
+function loadPage(target) {
+  var href = target;
+  renderVersion();
+  loadMenu(href);
+  $.get({
+    url: href,
+    success: function(newDoc) {
+      replaceArticle(href, newDoc)
+      initArticle(href);
+      return true;
+    }
+  });
+}
+
+function internalLinkListener() {
+  $('.link-internal').click(function(event) {
+    event.preventDefault();
+    console.log(event.target)
+    updateHistory("", event.target.getAttribute('href'))
+  })
+}
+
+function codeShowMoreListener() {
+  $('.code-show-more').click(function(event) {
+    var t = $(event.target)
+    t.toggleClass("expanded")
+    t.prev().toggleClass("expanded")
+  })
+}
+
+function showSearchListener() {
+  $('.searchbox').click(function(){
+    showSearchModal();
+  });
+}
+
+
+
+function initArticle(url) {
+  initCopyToClipboard();
+  initClickHandlers();
+  generateToc();
+  goToTop();
+  styleImages();
+  internalLinkListener();
+  codeShowMoreListener();
+  showSearchListener();
+  moveTags();
+}
+
+
+
+$(window).on('popstate', function (e) {
+  var state = e.originalEvent.state;
+  if (state !== null) {
+    console.log("Received popstate event")
+    loadPage(window.location.href);
+  }
+});
+
+
+
+
+
+
+/*
+
+ Table of contents
+
+*/
+
+
+var headlineLevels = ["h2", "h3", "h4", "h5", "h6"]
+var maxHeadlineLevel = 2;
+
+function getHeadlines() {
+    var contentBlock = document.querySelector("article");
+    if (!contentBlock) {
+      console.log("getHeadlines() no article found")
+      return [0, false];
+    }
+    var nodes = contentBlock.querySelectorAll(headlineLevels.slice(0, maxHeadlineLevel).join(","))
+    if (nodes.length < 2) {
+      console.log("headers < 2")
+      return [0, false];
+    }
+
+    return [nodes, true];
+}
+
+
+var generateToc = function() {
+    const [nodes, ok] = getHeadlines();
+    if (!ok) {
+      return
+    }
+
+    var nav = document.createElement("nav");
+    nav.className = "ps";
+
+    nodes.forEach(function (heading, index) {
+      var headerFragment = heading.getAttribute('id')
+      var level = heading.nodeName.replace('H', '')
+
+      var anchor = document.createElement('a');
+      anchor.setAttribute('name', 'toc' + index);
+      anchor.setAttribute('id', 'toc' + index);
+
+      var link = document.createElement('a');
+      link.setAttribute('href', "#"+headerFragment);
+      link.textContent = heading.textContent;
+
+      var div = document.createElement('div');
+      div.setAttribute('class', "level-"+level);
+
+      div.appendChild(link);
+      nav.appendChild(div);
+      heading.parentNode.insertBefore(anchor, heading);
+    });
+
+    
+    document.querySelector("#TableOfContents").appendChild(nav)
+    document.querySelector('.toc-container').style.display = 'block';
+  };
+
+  $(window).on('resize', function() {
+    if (window.innerWidth < 1000) {
+        $("#sidebar").removeClass("active");
+    }
+});
+
+function tocHiglighter() {
+  const [anchors, ok] = getHeadlines()
+  if (!ok) {
+    return
+  }
+
+
+  var scrollTop = $(document).scrollTop();
+  for (var i = 0; i < anchors.length; i++){
+    var heading = anchors[i].getAttribute('id')
+    let oldHRef = $('#TableOfContents a[href="#' + heading + '"]');
+    oldHRef.parent().removeClass('is-active');
+  }
+
+  for (var i = anchors.length-1; i >= 0; i--){
+    if (scrollTop > $(anchors[i]).offset().top - 180) {
+
+      var heading = anchors[i].getAttribute('id')
+        highlightedHref = $('#TableOfContents a[href="#' + heading + '"]')
+        highlightedHref.parent()[0].scrollIntoView({behavior: "smooth"});
+        highlightedHref.parent().addClass('is-active');
+        break;
+    }
+  }
+
+  activeHrefs = $('#TableOfContents > .ps > .is-active')
+  if (activeHrefs.length == 0) document.querySelectorAll('.toc-content')[0].scrollIntoView();
+}
+
+$(window).scroll(function(){
+  tocHiglighter();
+});
+
+
+
+
+/*
+    Version
+
+*/
+
+var stableVersion;
+
+function getCurrentVersion() {
+    var url = window.location.href;
+    var urlRe = url.match("\/[0-9.]+\/")
+    var urlVersion = stableVersion;
+    console.log(urlVersion)
+
+    if (urlRe) {
+        urlVersion = urlRe[0].replaceAll("\/", "");
+    }
+    console.log(urlVersion)
+    localStorage.setItem('docs-version', urlVersion);
+    console.log(urlVersion)
+    var versionSelector = document.getElementById("arangodb-version");
+    for(let option of versionSelector.options) {
+      if (option.value == urlVersion) {
+        option.selected = true;
+      }
+    }
+}
+
+
+function changeVersion() {
+    var oldVersion = localStorage.getItem('docs-version');
+    console.log(oldVersion)
+    var versionSelector = document.getElementById("arangodb-version");
+    var newVersion  = versionSelector.options[versionSelector.selectedIndex].value;
+
+    try {
+        localStorage.setItem('docs-version', newVersion);
+        renderVersion()
+        console.log(newVersion)
+    } catch(exception) {
+        changeVersion();
+    }
+
+    var newUrl = window.location.href.replace(oldVersion, newVersion)
+    updateHistory("", newUrl);
+}
+
+
+/*
+    Openapi
+
+*/
+
+function hideEmptyOpenapiDiv() {
+    var lists = document.getElementsByClassName("openapi-parameters")
+    for (let list of lists) {
+        if ($(list).find(".openapi-table").text().trim() == "") {
+            $(list).addClass("hidden");
+        }
+    }
+ }
+
+
+
+
+function initClickHandlers() {
+    hideEmptyOpenapiDiv();
+
+    $(".openapi-prop").click(function(event) {
+        if (this === event.target) {
+            $(event.target).toggleClass("collapsed");
+            console.log($(event.target).find('.openapi-prop-content').first())
+            $(event.target).find('.openapi-prop-content').first().toggleClass("hidden");
+        }
+    });
+    
+    $(".openapi-table.show-children").click(function(event) {
+        $(event.target).toggleClass("collapsed");
+        $(event.target).next(".openapi-table").toggleClass("hidden");
+    });
+
+    $('#search-by').keypress(
+        function(event){
+          if (event.which == '13') {
+            event.preventDefault();
+          }
+      });
+    
+}
+
+
+/*
+
+*/
+
 
 
 
@@ -77,3 +465,25 @@ function moveTags() {
     }
 }
 
+window.onload = () => {
+    var iframe =  document.getElementById('menu-iframe');
+    var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
+    content= iFrameBody.getElementById('sidebar');
+
+    $("#menu-iframe").replaceWith(content);
+
+    getCurrentVersion();
+    menuEntryClickListener();
+    renderVersion();
+    loadMenu(window.location.href);
+    initArticle(window.location.href);
+
+    var isMobile = ( ( window.innerWidth <= 800 ) && ( window.innerHeight <= 900 ) );
+    if (isMobile) {
+        $('#sidebar').addClass("mobile")
+        $('#sidebar.mobile').removeClass("active")
+    }
+
+    $('#show-page-loading').hide();
+    $('#page-wrapper').css("opacity", "1")
+}
