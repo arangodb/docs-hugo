@@ -1,19 +1,16 @@
 <!DOCTYPE html>
 <html lang="{{ .Page.Language | default "en" }}">
-  <head>
-    {{- partial "meta.html" . }}
-    {{- $link := "<link href=\"%s\" rel=\"%s\" type=\"%s\" title=\"%s\">" }}
-    <title>{{ if and .Title (not (eq .Title .Site.Title)) }}{{ .Title }} {{ default "::" .Site.Params.titleSeparator }} {{ end}}{{ .Site.Title }}</title>
 
-    <link rel="shortcut icon" href="https://www.arangodb.com/wp-content/uploads/2018/07/www.arangodb.com-favicon.png">
+  {{- partial "head.html" . }}
 
-    {{- partialCached "favicon.html" . }}
-    {{- partial "stylesheet.html" . }}
-    {{- partial "javascript.html" . }}
-
-  </head>
 <body>
-    <div id="page-wrapper" class="page_content_splash" style="height: auto;">
+    <div id="show-page-loading">
+      <div class="logo-loading-page">
+        <img src="/images/logo_main.png" alt="ArangoDB" title="" style="position: fixed; top: 0px; left: 0; right: 0; bottom: 154px; margin: auto; width: 232px !important;"></a>
+      </div>
+      <div class="loader"></div>
+    </div>
+    <div id="page-wrapper" class="page_content_splash" style="height: auto;opacity: 0;">
       <section id="page-main">
         <section class="page-container" id="page-container">
           <!-- HEADER -->
@@ -58,10 +55,11 @@
               </div>
 
             </header>
-            <iframe src="/nav.html" title="description" id="menu-iframe" class="menu-iframe active">qualocsa</iframe>
+            <iframe src="/nav.html" title="description" id="menu-iframe" class="menu-iframe active" style="opacity: 0;">qualocsa</iframe>
+
             
             <div class="container-main">
-              <div class="row-main">
+              <div class="row-main" id="row-main">
                   <nav id="breadcrumbs">
 
                   {{- $showBreadcrumb := (and (not .Params.disableBreadcrumb) (not .Site.Params.disableBreadcrumb)) }}
@@ -108,7 +106,7 @@
                {{ else }}
                   <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
                     <meta itemprop="position" content="{{ $depth }}" />
-                    <a itemprop="item" href="{{ .page.RelPermalink }}"{{if not .depth}} aria-disabled="true"{{end}}>
+                    <a itemprop="item" class="link-internal" href="{{ .page.RelPermalink }}"{{if not .depth}} aria-disabled="true"{{end}}>
                       <span itemprop="name" class="breadcrumb-entry">{{ .page.Params.menuTitle | markdownify }}</span>
                     </a>{{ if .depth }} > {{ end }}
                   </li>

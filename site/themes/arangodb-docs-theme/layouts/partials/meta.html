@@ -5,9 +5,6 @@
     {{- $gen := hugo.Generator }}
     {{- $gen = replaceRE "\\s*/>$" ">" $gen }}
     {{ $gen | safeHTML }}
-    {{- $ver := partial "version.txt" }}
-    {{- $ver := printf "<meta name=\"generator\" content=\"%s %s\">" "Relearn" $ver }}
-    {{ $ver | safeHTML }}
     {{- if not (and .Title (or (ne (.Scratch.Get "relearnIsHiddenStem") true) (ne .Site.Params.disableSeoHiddenPages true) ) ) }}
     <meta itemprop="description" name="description" content="ArangoDB is a scalable graph database system with native support for other data models and a built-in search engine, for the cloud and on-premises">
     <meta property="og:url" content="https://www.arangodb.com/docs/stable/">
