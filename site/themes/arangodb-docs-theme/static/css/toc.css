@@ -82,7 +82,6 @@
 
 #TableOfContents .is-active > a {
     color: #222222;
-    font-weight: var(--TYPOGRAPHY-BOLD-TEXT);
     padding-right: 1em;
 }
 

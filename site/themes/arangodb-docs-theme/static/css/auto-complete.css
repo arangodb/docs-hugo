@@ -105,3 +105,23 @@
     margin: 0;
     margin-left: 1rem;
 }
+
+.search-results-empty {
+    font-size: .9em;
+    margin: 0 auto;
+    padding: 36px 0;
+    text-align: center;
+    width: 80%;
+}
+
+.search-header {
+    display: flex;
+}
+
+.search-context {
+    flex: 1 1 40%;
+    padding: 0.3rem 1.25rem;
+    margin: 0.75rem 1.25rem;
+    border-radius: 0;
+    height: 3rem;
+}

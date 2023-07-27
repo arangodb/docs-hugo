@@ -1,5 +1,8 @@
 var lunrIndex, pagesIndex;
 
+const searchContexts = ["AQL", "ArangoGraph", "Components", "Tools", "HTTP", "JavaScript", "Drivers", "Foxx", "Operations"]
+
+
 
 var autoComplete = (function(){
     // "use strict";
@@ -55,7 +58,6 @@ var autoComplete = (function(){
 
             that.autocompleteAttr = that.getAttribute('autocomplete');
             that.setAttribute('autocomplete', 'off');
-            that.sections = {}
             that.cache = {};
             that.last_val = '';
 
@@ -86,71 +88,61 @@ var autoComplete = (function(){
             }, that.sc);
 
             live('search-container', 'mousedown', function(e){
-                console.log("mousedown")
-                console.log(this)
-                console.log(e.target)
                 if (this == e.target) {
                     $(this).remove();
                 }
             }, document.querySelectorAll('.search-container')[0]);
 
             live('autocomplete-suggestion', 'mousedown', function(e){
-                console.log("mousedown")
-                console.log(this)
-                console.log(e.target)
-                    var v = this.getAttribute('data-val');
-                    that.value = v;
-                    o.onSelect(e, v, this);
+                var v = this.getAttribute('data-val');
+                that.value = v;
+                o.onSelect(e, v, this);
             }, that.sc);
 
 
+            $('.search-context').change(function(){
+                that.value = that.last_val
+                o.source(that.last_val, suggest)
+            })
 
-            that.blurHandler = function(){
-                try { var over_sb = document.querySelector('.autocomplete-suggestions:hover'); } catch(e){ var over_sb = 0; }
-                if (!over_sb) {
-                    that.last_val = that.value;
-                    that.sc.style.display = 'none';
-                    var backgroundPage = document.querySelector('#page-wrapper');
-                    backgroundPage.style.opacity = '1';
-                    setTimeout(function(){ that.sc.style.display = 'none'; }, 350); // hide suggestions on fast input
-                } else if (that !== document.activeElement) setTimeout(function(){ that.focus(); }, 20);
-            };
-            addEvent(that, 'blur', that.blurHandler);
 
             var suggest = function(data){
                 var val = that.value;
                 that.cache[val] = data;
-                that.sections = {}
+                sections = {}
+                $(that.sc).empty();
 
                 if (data.length && val.length >= o.minChars) {
                     for (var i=0;i<data.length;i++) {
                         renderElem = o.renderItem(data[i], val);
+                        if (renderElem == undefined) {
+                            continue
+                        }
+
                         elemNode = $(renderElem)
                         section = elemNode.attr('section')
-
-                        if (that.sections[section] == undefined) {
-                            that.sections[section] = ""
+                        if (sections[section] == undefined) {
+                            sections[section] = ""
                         }
-                        if (that.sections[section].includes(renderElem)) {
+
+                        if (sections[section].includes(renderElem)) {
                             continue
                         }
 
-                        that.sections[section] += renderElem
+                        sections[section] += renderElem
                     }
+                        Object.keys(sections).sort().reduce(function (result, key) {
+                            searchContext = $('.search-context').find(":selected").val().toLowerCase();
+                            if (key.toLowerCase().includes(searchContext)) {
+                                section = $('<section class="search-results-section" id="section-'+key+'"><div class="search-results-section-title">'+key+'</div><hr><ul>'+sections[key]+'</ul></section>')
+                                $(that.sc).append(section)
+                            }
+                        });
 
-                    processed = []
-                    for (const [key, value] of Object.entries(that.sections)) {
-                        if (processed.includes(key))
-                            continue
-
-                        section = $('<section class="search-results-section" id="section-'+key+'"><div class="search-results-section-title">'+key+'</div><hr><ul>'+value+'</ul></section>')
-                        $(that.sc).append(section)
-                        processed.push(key)
-                    }
                     that.updateSC(0);
                 }
                 else
-                    that.sc.style.display = 'none';
+                    $(that.sc).append($('<div class="search-results-empty"><p>Nothing to show</p></div>'))
             }
 
             that.keydownHandler = function(e){
@@ -224,7 +216,7 @@ var autoComplete = (function(){
             for (var i=0; i<elems.length; i++) {
                 var that = elems[i];
                 removeEvent(window, 'resize', that.updateSC);
-                removeEvent(that, 'blur', that.blurHandler);
+                // removeEvent(that, 'blur', that.blurHandler);
                 removeEvent(that, 'focus', that.focusHandler);
                 removeEvent(that, 'keydown', that.keydownHandler);
                 removeEvent(that, 'keyup', that.keyupHandler);
@@ -314,6 +306,13 @@ function searchPatterns(word) {
 
 // Let's get started
 initLunr();
+var select = $('<select class="search-context" name="search-context"><option value="" selected><p>All Documentation</p></select>')
+
+for (let searchContext of searchContexts) {
+    select.append($('<option value="'+searchContext+'">'+searchContext+'</option>'))
+}
+
+
 function x() {
     new autoComplete({
         /* selector for the search box element */
@@ -337,6 +336,7 @@ function x() {
                 pageSection = pageSection + " - " + page.uri.split("/")[3]
             }
 
+
             var element = $('<li class="autocomplete-suggestion search-section-"'+pageSection+'" section="'+pageSection+'"></li>')
 
             element.attr('data-term', term);
@@ -345,7 +345,7 @@ function x() {
 
             var version = localStorage.getItem('docs-version');
             if (!dataUri.includes(version)) {
-                element.css("display", "none");
+                return undefined
             }
 
             element.attr('data-uri', dataUri);
@@ -362,7 +362,6 @@ function x() {
     // JavaScript-autoComplete only registers the focus event when minChars is 0 which doesn't make sense, let's do it ourselves
     // https://github.com/Pixabay/JavaScript-autoComplete/blob/master/auto-complete.js#L191
     var selector = $('#search-by').get(0);
-    console.log(selector)
 };
 
 function showSearchModal() {
@@ -372,7 +371,8 @@ function showSearchModal() {
     var searchContainer = $('<div class="search-container"></div>')
     var searchModal = $('<div class="search-modal"></div>')
 
-    var searchBar = $('<header class="search-header">   <input data-search-input  id="search-by" type="search" placeholder="Search...">    </header>')
+    var searchBar = $('<header class="search-header">   <input data-search-input  id="search-by" type="search" placeholder="Search...">  </header>')
+    searchBar.append(select)
     var searchResults = $('<div class="search-results-container"><div class="search-results"></div></div>')
 
     searchModal.append(searchBar).append(searchResults)
