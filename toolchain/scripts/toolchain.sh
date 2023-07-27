@@ -273,8 +273,11 @@ function setup_arangoproxy_arangosh() {
   docker exec  $container_name sh -c "mkdir -p /tmp/arangosh/$name/$version/usr /tmp/arangosh/$name/$version/usr/bin /tmp/arangosh/$name/$version/usr/bin/etc/relative"
   ## Copy arangosh executables from ArangoDB docker container to arangoproxy container
   docker exec  $container_name sh -c "cp -r /usr/bin/arangosh /tmp/arangosh/$name/$version/usr/bin/arangosh"
+
   #docker cp "$container_name":/usr/bin/icudtl.dat ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/icudtl.dat
   docker exec  $container_name sh -c "cp -r /usr/share/ /tmp/arangosh/$name/$version/usr/"
+  docker exec  $container_name sh -c "cp -r /usr/bin/icudtl.dat /tmp/arangosh/$name/$version/usr/share/arangodb3/"
+
   docker exec  $container_name sh -c "cp -r /etc/arangodb3/arangosh.conf /tmp/arangosh/$name/$version/usr/bin/etc/relative/arangosh.conf"
   docker exec arangoproxy bash -c "sed -i -e 's~startup-directory.*~startup-directory = /tmp/arangosh/'$name'/'$version'/usr/share/arangodb3/js~' /arangosh/arangosh/$name/$version/usr/bin/etc/relative/arangosh.conf"
   echo ""
