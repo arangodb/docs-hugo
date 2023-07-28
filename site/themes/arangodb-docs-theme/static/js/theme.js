@@ -304,14 +304,11 @@ function getCurrentVersion() {
     var url = window.location.href;
     var urlRe = url.match("\/[0-9.]+\/")
     var urlVersion = stableVersion;
-    console.log(urlVersion)
 
     if (urlRe) {
         urlVersion = urlRe[0].replaceAll("\/", "");
     }
-    console.log(urlVersion)
     localStorage.setItem('docs-version', urlVersion);
-    console.log(urlVersion)
     var versionSelector = document.getElementById("arangodb-version");
     for(let option of versionSelector.options) {
       if (option.value == urlVersion) {
@@ -453,8 +450,6 @@ function moveTags() {
         var isHeader = $(prev).is(':header')
         while (!isHeader) {
             prev = prev.previousSibling;
-            console.log(tag)
-            console.log(prev)
             isHeader = $(prev).is(':header')
         }
 
