@@ -488,10 +488,13 @@ function generate_optimizer_rules() {
 function generate_error_codes() {
   echo "<h2>Error Codes</h2>" >> /home/summary.md
 
-  errors_dat_file=$1
+  errors_dat_file="$1"
   version=$2
 
-  if ["$errors_dat_file" == ""]; then
+
+
+
+  if [ $errors_dat_file == "" ]; then
     log "[generate_error_codes] ArangoDB Source code not found. Aborting"
     exit 1
   fi
@@ -517,7 +520,7 @@ function generate_metrics() {
   src=$1
   version=$2
 
-  if [$src == ""]; then
+  if [ $src == "" ]; then
     log "[generate_error_codes] ArangoDB Source code not found. Aborting"
     exit 1
   fi
