@@ -724,6 +724,22 @@ header .logo {
 /* */
 
 /* Search Modal Results */
+.search-show-more {
+    font-size: 1rem;
+    margin: 0;
+    background: none;
+    width: 100%;
+    margin-top: 16px;
+    box-shadow: 0px 0px 0px #1c1616, 0px -2px 1px #888;
+}
+
+.search-show-more::after {
+    content: "Show More"
+}
+
+.search-show-more.expanded::after {
+    content: "Show Less"
+}
 .search-results-container{
     padding-left: 0;
     padding-right: 0;

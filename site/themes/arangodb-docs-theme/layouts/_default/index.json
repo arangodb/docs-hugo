@@ -1,7 +1,13 @@
 {{- $pages := slice }}
 {{- range .Site.Pages }}
 {{- if and .Title (or (ne (.Scratch.Get "relearnIsHiddenStem") true) (ne .Site.Params.disableSearchHiddenPages true) ) }}
-{{- $pages = $pages | append (dict "uri" .RelPermalink "title" .Title "tags" .Params.tags "description" .Description "content" (.Plain | htmlUnescape)) }}
+{{ $headings := "" }}
+
+{{ range .Page.Fragments.HeadingsMap}}
+    {{ $headings = printf "%s\n%s" $headings .Title }}
+{{ end }}
+
+{{- $pages = $pages | append (dict "uri" .RelPermalink "title" .Title "headings" $headings "description" .Description "content" (.Plain | htmlUnescape)) }}
 {{- end }}
 {{- end }}
 {{- $pages | jsonify (dict "indent" "  ") }}
