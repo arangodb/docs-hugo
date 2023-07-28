@@ -1,9 +1,5 @@
 var lunrIndex, pagesIndex;
 
-const searchContexts = ["AQL", "ArangoGraph", "Components", "Tools", "HTTP", "JavaScript", "Drivers", "Foxx", "Operations"]
-
-
-
 var autoComplete = (function(){
     // "use strict";
     function autoComplete(options){
@@ -100,12 +96,6 @@ var autoComplete = (function(){
             }, that.sc);
 
 
-            $('.search-context').change(function(){
-                that.value = that.last_val
-                o.source(that.last_val, suggest)
-            })
-
-
             var suggest = function(data){
                 var val = that.value;
                 that.cache[val] = data;
@@ -132,11 +122,8 @@ var autoComplete = (function(){
                         sections[section] += renderElem
                     }
                         Object.keys(sections).sort().reduce(function (result, key) {
-                            searchContext = $('.search-context').find(":selected").val().toLowerCase();
-                            if (key.toLowerCase().includes(searchContext)) {
-                                section = $('<section class="search-results-section" id="section-'+key+'"><div class="search-results-section-title">'+key+'</div><hr><ul>'+sections[key]+'</ul></section>')
-                                $(that.sc).append(section)
-                            }
+                            section = $('<section class="search-results-section" id="section-'+key+'"><div class="search-results-section-title">'+key+'</div><hr><ul>'+sections[key]+'</ul></section>')
+                            $(that.sc).append(section)
                         });
 
                     that.updateSC(0);
@@ -306,12 +293,6 @@ function searchPatterns(word) {
 
 // Let's get started
 initLunr();
-var select = $('<select class="search-context" name="search-context"><option value="" selected><p>All Documentation</p></select>')
-
-for (let searchContext of searchContexts) {
-    select.append($('<option value="'+searchContext+'">'+searchContext+'</option>'))
-}
-
 
 function x() {
     new autoComplete({
@@ -355,7 +336,8 @@ function x() {
         },
         /* onSelect callback fires when a search suggestion is chosen */
         onSelect: function(e, term, item) {
-            location.href = item.getAttribute('data-uri');
+            loadPage(item.getAttribute('data-uri'));
+            $('.search-container').remove();
         }
     });
 
@@ -372,7 +354,6 @@ function showSearchModal() {
     var searchModal = $('<div class="search-modal"></div>')
 
     var searchBar = $('<header class="search-header">   <input data-search-input  id="search-by" type="search" placeholder="Search...">  </header>')
-    searchBar.append(select)
     var searchResults = $('<div class="search-results-container"><div class="search-results"></div></div>')
 
     searchModal.append(searchBar).append(searchResults)
