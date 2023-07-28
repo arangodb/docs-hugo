@@ -57,7 +57,6 @@ var autoComplete = (function(){
             that.cache = {};
             that.last_val = '';
 
-			var parentElement;
             if (typeof o.selectorToInsert === "string" && document.querySelector(o.selectorToInsert) instanceof HTMLElement) {
 				parentElement = document.querySelector(o.selectorToInsert);
 			}
@@ -103,6 +102,7 @@ var autoComplete = (function(){
                 $(that.sc).empty();
 
                 if (data.length && val.length >= o.minChars) {
+                    var relevantHits = $('<section class="search-results-section" id="section-relevant"><div class="search-results-section-title">Relevant Hits</div><hr><ul></ul></section>')
                     for (var i=0;i<data.length;i++) {
                         renderElem = o.renderItem(data[i], val);
                         if (renderElem == undefined) {
@@ -120,12 +120,22 @@ var autoComplete = (function(){
                         }
 
                         sections[section] += renderElem
+                        if (i <= 10) 
+                            relevantHits.find('ul').append(renderElem)
                     }
-                        Object.keys(sections).sort().reduce(function (result, key) {
-                            section = $('<section class="search-results-section" id="section-'+key+'"><div class="search-results-section-title">'+key+'</div><hr><ul>'+sections[key]+'</ul></section>')
-                            $(that.sc).append(section)
-                        });
+                    $(that.sc).append(relevantHits)
+                    $(that.sc).append($('<button class="search-show-more"></button>'))
+                    $('.search-show-more').click(function() {
+                        $('.search-results-all').toggleClass("hidden");
+                        $(this).toggleClass("expanded")
+                    })
 
+                    var allHits = $('<div class="search-results-all hidden"></div>')
+                    Object.keys(sections).sort().reduce(function (result, key) {
+                        section = $('<section class="search-results-section" id="section-'+key+'"><div class="search-results-section-title">'+key+'</div><hr><ul>'+sections[key]+'</ul></section>')
+                        allHits.append(section)
+                    });
+                    $(that.sc).append(allHits)
                     that.updateSC(0);
                 }
                 else
@@ -155,7 +165,6 @@ var autoComplete = (function(){
                 }
                 // esc
                 else if (key == 27) { 
-                    console.log("esc")
                     $('.search-container').remove();
                  }
                 // enter
@@ -199,7 +208,6 @@ var autoComplete = (function(){
 
         // public destroy method
         this.destroy = function(){
-            console.log("destroy")
             for (var i=0; i<elems.length; i++) {
                 var that = elems[i];
                 removeEvent(window, 'resize', that.updateSC);
@@ -240,10 +248,16 @@ function initLunr() {
                 this.use(lunr.multiLanguage.apply(null, ["en"]));
                 this.ref('index');
                 this.field('title', {
-                    boost: 15
+                    boost: 30
                 });
-                this.field('tags', {
-                    boost: 10
+                this.field('description', {
+                    boost: 25
+                });
+                this.field('uri', {
+                    boost: 20
+                });
+                this.field('headings', {
+                    boost: 15
                 });
                 this.field('content', {
                     boost: 5
@@ -277,6 +291,8 @@ function search(term) {
     // Find the item in our index corresponding to the lunr one to have more info
     // Remove Lunr special search characters: https://lunrjs.com/guides/searching.html
     var searchTerm = lunr.tokenizer(term.replace(/[*:^~+-]/, ' ')).reduce( function(a,token){return a.concat(searchPatterns(token.str))}, []).join(' ');
+    var x = lunrIndex.search(searchTerm)
+    console.log(x)
     return !searchTerm ? [] : lunrIndex.search(searchTerm).map(function(result) {
         return { index: result.ref, matches: Object.keys(result.matchData.metadata) }
     });
@@ -347,7 +363,6 @@ function x() {
 };
 
 function showSearchModal() {
-    console.log("show search modal")
     var body = $('body');
     
     var searchContainer = $('<div class="search-container"></div>')
