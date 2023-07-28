@@ -93,9 +93,15 @@ function main() {
   for server in "${servers[@]}"; do
     arangodb_src=$(echo "$server" | yq e '.src' -)
     image=$(echo "$server" | yq e '.image' -)
+    version=$(echo "$server" | yq e '.version' -)
 
     if [ "$arangodb_src" == "" ] &&  [ "$image" == "" ]; then
       continue
+    fi
+
+    if [ $HUGO_ENV == "release" ]; then
+      rm -r ../../site/data/$version/*
+      echo "{}" > ../../site/data/$version/cache.json
     fi
 
     process_server "$server"
@@ -595,7 +601,8 @@ function trap_container_exit() {
   #docker container stop $(docker ps -aq)
   echo "[TERMINATE] After docker container stop all" >> arangoproxy-log.log
   echo "[TERMINATE] After docker container stop all"
-
+  docker container stop arangoproxy
+  docker container stop site
   docker container stop toolchain
 }
 
