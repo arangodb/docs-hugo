@@ -697,7 +697,6 @@ Below example creates two `collation` Analyzers, one with an English locale
 difference in alphabetical order using a simple range query that returns
 letters before `c`:
 
-    ~ assert(db._query(`FOR d IN view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 4);
 ```js
 ---
 name: analyzerCollation
@@ -887,7 +886,6 @@ Otherwise the position is set to the respective array index, 0 for `"A"`,
 |              `true` | 0 | 0 | 0 | 0 |
 |             `false` | 0 | 1 | 2 | 3 |
 
-    ~ assert(db._query(`FOR d IN view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 1);
 ```js
 ---
 name: analyzerAqlCollapse
@@ -1395,7 +1393,6 @@ and return the matched documents, including the calculated distance in meters.
 The stored coordinate pairs and the `GEO_POINT()` arguments are expected in
 longitude, latitude order:
 
-    ~ assert(db._query(`FOR d IN geo_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 3);
 ```js
 ---
 name: analyzerGeoJSON
@@ -1505,7 +1502,6 @@ and return the matched documents, including the calculated distance in meters.
 The stored coordinate pairs and the `GEO_POINT()` arguments are expected in
 longitude, latitude order:
 
-    ~ assert(db._query(`FOR d IN geo_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 3);
 ```js
 ---
 name: analyzerGeoS2
@@ -1608,7 +1604,6 @@ Then query for locations that are within a 3 kilometer radius of a given point.
 The stored coordinate pairs are in latitude, longitude order, but `GEO_POINT()` and
 `GEO_DISTANCE()` expect longitude, latitude order:
 
-    ~ assert(db._query(`FOR d IN geo_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 3);
 ```js
 ---
 name: analyzerGeoPointPair
@@ -1653,7 +1648,6 @@ specifies the attribute paths to the latitude and longitude attributes
 (relative to `location` attribute), and a View using the Analyzer.
 Then query for locations that are within a 3 kilometer radius of a given point:
 
-    ~ assert(db._query(`FOR d IN geo_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 3);
 ```js
 ---
 name: analyzerGeoPointLatLng

@@ -141,7 +141,6 @@ to dynamically get the respective value.
 
 _`search-alias` View:_
 
-    ~ assert(db._query(`FOR d IN food_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 4);
 ```js
 ---
 name: searchHighlighting_2
@@ -181,7 +180,6 @@ type: single
 
 _`arangosearch` View:_
 
-    ~ assert(db._query(`FOR d IN food_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 4);
 ```js
 ---
 name: searchHighlighting_1

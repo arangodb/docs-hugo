@@ -4,6 +4,8 @@ menuTitle: Options
 weight: 10
 description: >-
   arangoinspect Options
+  max-headline-level: 2
+pageToc:
 archetype: default
 ---
 Usage: `arangoinspect [<options>]`

@@ -1,7 +1,7 @@
 ---
 title: HTTP interface for Hot Backups
 menuTitle: Hot Backups
-weight: 125
+weight: 120
 description: >-
   The HTTP API for Hot Backups lets you manage incremental, zero-downtime data
   backups

@@ -4,6 +4,8 @@ menuTitle: Options
 weight: 5
 description: >-
   ArangoDB Server Options
+  max-headline-level: 2
+pageToc:
 archetype: default
 ---
 Usage: `arangod [<options>]`

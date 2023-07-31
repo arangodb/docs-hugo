@@ -19,6 +19,8 @@ the performance of such queries.
 They are the natural extension of the [SatelliteCollections](../../develop/satellitecollections.md)
 concept to graphs. The same benefits and caveats apply.
 
+![ArangoDB SatelliteGraphs](../../../images/SatelliteGraphs.webp)
+
 ## Why use a SatelliteGraph?
 
 When doing queries in an ArangoDB cluster, data has to be exchanged between

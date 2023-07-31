@@ -5,6 +5,8 @@ weight: 65
 description: >-
   The ArangoGraph Insights Platform provides the entire functionality of
   ArangoDB as a service, without the need to run or manage databases yourself.
+  disable: true
+pageToc:
 archetype: chapter
 ---
 The [ArangoGraph Insights Platform](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),

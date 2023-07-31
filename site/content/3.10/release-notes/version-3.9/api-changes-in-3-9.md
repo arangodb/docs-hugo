@@ -12,7 +12,9 @@ integrations for ArangoDB 3.9.
 
 ## HTTP RESTful API
 
-### Graph API (Gharial)
+### Behavior changes
+
+#### Graph API (Gharial)
 
 The following changes affect the behavior of the RESTful graph APIs at
 endpoints starting with path `/_api/gharial/`:
@@ -53,7 +55,7 @@ Otherwise, it will be ignored. This option only takes effect using SmartGraphs.
 
 Also see [Graph Management](../../develop/http/graphs/named-graphs.md#management).
 
-### Extended naming convention for databases
+#### Extended naming convention for databases
 
 There is a new startup option `--database.extended-names-databases` to allow
 database names to contain most UTF-8 characters.
@@ -83,7 +85,7 @@ client applications are prepared for this feature before enabling it.
 
 Also see [Database names](../../concepts/data-structure/databases.md#database-names).
 
-### Overload control
+#### Overload control
 
 Starting with version 3.9.0, ArangoDB returns an `x-arango-queue-time-seconds`
 HTTP header with all responses. This header contains the most recent request
@@ -112,7 +114,7 @@ in the header, arangod will reject the request and return HTTP 412
 In a cluster, the `x-arango-queue-time-seconds` request header will be
 checked on the receiving Coordinator, before any request forwarding.
 
-### Cursor API
+#### Cursor API
 
 <small>Introduced in: v3.9.11, v3.10.7</small>
 
@@ -142,6 +144,20 @@ part of the specified named graph (code `1926` and HTTP status `404 Not Found`).
 It is also an error if you specify an edge collection that is not part of the
 named graph's definition or of the list of edge collections (code `1939` and
 HTTP status `400 Bad Request`).
+
+#### Document API
+
+<small>Introduced in: v3.9.12</small>
+
+Using the Document API for reading multiple documents used to return an error
+if the request body was an empty array. Example:
+
+```bash
+> curl -XPUT -d '[]' 'http://localhost:8529/_api/document/coll?onlyget=true'
+{"code":500,"error":true,"errorMessage":"internal error","errorNum":4}
+```
+
+Now, a request like this succeeds and returns an empty array as response.
 
 ### Endpoint return value changes
 

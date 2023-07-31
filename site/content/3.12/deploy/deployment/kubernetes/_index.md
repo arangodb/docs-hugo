@@ -1,7 +1,7 @@
 ---
 title: ArangoDB Kubernetes Operator
 menuTitle: Kubernetes
-weight: 35
+weight: 30
 description: >-
   ArangoDB Kubernetes Operator
 archetype: chapter

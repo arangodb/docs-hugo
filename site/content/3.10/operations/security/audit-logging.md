@@ -6,6 +6,7 @@ description: >-
   Audit logs capture interactions with the database system and allow you to
   check who accessed it, what actions were performed, and how the system
   responded
+pageToc:
 archetype: default
 ---
 {{< description >}}

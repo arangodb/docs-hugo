@@ -4,6 +4,8 @@ menuTitle: ArangoSearch
 weight: 5
 description: >-
   ArangoSearch offers various AQL functions for search queries to control the search context, for filtering and scoring
+  max-headline-level: 3
+pageToc:
 archetype: default
 ---
 {{< description >}}
@@ -1345,7 +1347,6 @@ _n_-grams for search highlighting purposes.
 
 Search a View and get the offset information for the matches:
 
-    ~ assert(db._query(`FOR d IN food_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 2);
 ```js
 ---
 name: aqlOffsetInfo

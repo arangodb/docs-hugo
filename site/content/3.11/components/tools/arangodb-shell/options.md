@@ -4,6 +4,8 @@ menuTitle: Options
 weight: 15
 description: >-
   arangosh Options
+  max-headline-level: 2
+pageToc:
 archetype: default
 ---
 Usage: `arangosh [<options>]`

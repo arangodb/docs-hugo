@@ -37,7 +37,7 @@ its projects and deployments.
    [ArangoGraph tiers](../organizations/_index.md#arangograph-tiers) section.
    {{< /info >}}
 
-![ArangoGraph New Deployment](../../../../../../images/arangograph-new-deployment1.png)
+![ArangoGraph New Deployment](../../../images/arangograph-new-deployment1.png)
 
 {{< info >}}
 Deployments contain exactly **one policy**. Within that policy, you can define
@@ -73,11 +73,9 @@ role bindings to regulate access control on a deployment level.
 For any kind of production deployment we strongly advise to use an IP allowlist.
 {{< /security >}}
 
-![ArangoGraph New Deployment](../../../../../../images/arangograph-new-deployment1.png)
-
 ### In the __Configuration__ section
 
-Choose between a **OneShard**, **Sharded** or **Developer** deployment.
+Choose between a **OneShard**, **Sharded** or **Single Server** deployment.
 
 - OneShard deployments are suitable when your data set fits in a single node.
   They are ideal for graph use cases.
@@ -85,10 +83,15 @@ Choose between a **OneShard**, **Sharded** or **Developer** deployment.
 - Sharded deployments are suitable when your data set is larger than a single
   node. The data will be sharded across multiple nodes.
 
-- Developer deployments are suitable when you want to try out ArangoDB without
+- Single Server deployments are suitable when you want to try out ArangoDB without
   the need for high availability or scalability. The deployment will contain a
   single server only. Your data will not be replicated and your deployment can
   be restarted at any time.
+
+{{< info >}}
+Before you begin configuring your deployment, you first need to select the
+provider and region in the Location section.
+{{< /info >}}
 
 #### OneShard
 
@@ -108,7 +111,7 @@ your deployment runs out of disk space but cannot be resized because it reached
 the upper disk size limit already.
 {{< /info >}}
 
-![ArangoGraph Deployment OneShard](../../../images/arangograph-new-deployment2.png)
+![ArangoGraph Deployment OneShard](../../../images/arangograph-new-deployment-oneshard.png)
 
 #### Sharded
 
@@ -116,15 +119,15 @@ the upper disk size limit already.
   the number of nodes for your deployment. The more nodes you have, the higher
   the replication factor can be.
 
-![ArangoGraph Deployment Sharded](../../../images/arangograph-new-deployment3-sharded.png)
+![ArangoGraph Deployment Sharded](../../../images/arangograph-new-deployment-sharded.png)
 
-#### Developer
+#### Single Server
 
 - Like with OneShard and Sharded deployments, you choose memory and disk size.
   However note that the sizes you choose are for the entire deployment.
   For OneShard and Sharded deployments the chosen sizes are per node.
 
-![ArangoGraph Deployment Developer](../../../images/arangograph-new-deployment3-developer.png)
+![ArangoGraph Deployment Single Server](../../../images/arangograph-new-deployment-singleserver.png)
 
 ### In the __Summary__ section
 

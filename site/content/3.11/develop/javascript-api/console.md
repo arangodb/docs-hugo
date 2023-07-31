@@ -6,6 +6,8 @@ description: >-
   Implementation of the console module in the JavaScript API
 archetype: default
 ---
+`global.console === require('console')`
+
 **Note**: You don't need to load this module directly. The `console` object is
 globally defined throughout ArangoDB and provides access to all functions in
 this module.

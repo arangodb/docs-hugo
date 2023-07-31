@@ -4,6 +4,8 @@ menuTitle: Query Optimization
 weight: 25
 description: >-
   AQL queries are sent through an optimizer before execution
+  max-headline-level: 3
+pageToc:
 archetype: default
 ---
 AQL queries are sent through an optimizer before execution. The task of the optimizer is

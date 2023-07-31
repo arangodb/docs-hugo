@@ -20,6 +20,10 @@ See the [**Release notes**](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
 
+- **Standalone Agency and Agency HTTP API**:
+  The Standalone Agency deployment type and the corresponding Agency HTTP API
+  are no longer available starting with v3.12. 
+
 - **Pregel features**:
 
   The following features have been deprecated or removed from Pregel in v3.11:

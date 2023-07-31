@@ -95,7 +95,6 @@ db.test.getIndexes();
 
 Get the index definitions for a collection, including figures and hidden indexes:
 
-    ~ assert(db._query(`FOR d in ´arangosearch-view´ COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 2);
 ```js
 ---
 name: collectionGetIndexesStats

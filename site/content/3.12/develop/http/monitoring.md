@@ -5,6 +5,8 @@ weight: 100
 description: >-
   You can observe the activity and performance of ArangoDB deployments using
   the server logs, statistics, and metrics
+  max-headline-level: 4
+pageToc:
 archetype: default
 ---
 {{< description >}}

@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl update auditlog command
 title: Oasisctl Update Auditlog
-menuTitle: Update Auditlog
-weight: 10
+menuTitle: Update Audit Log
+weight: 5
+description: >-
+  Description of the oasisctl update auditlog command
+archetype: default
 ---
+Update an auditlog
+
 ## Synopsis
+
 Update an auditlog
 
 ```
@@ -13,6 +17,7 @@ oasisctl update auditlog [flags]
 ```
 
 ## Options
+
 ```
   -i, --auditlog-id string       Identifier of the auditlog to update.
       --default                  If set, this AuditLog is the default for the organization.
@@ -22,7 +27,8 @@ oasisctl update auditlog [flags]
   -o, --organization-id string   Identifier of the organization
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -30,5 +36,6 @@ oasisctl update auditlog [flags]
 ```
 
 ## See also
+
 * [oasisctl update](_index.md)	 - Update resources
 

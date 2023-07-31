@@ -34,7 +34,6 @@ queries.properties({slowStreamingQueryThreshold: 1});
 We [create a task](tasks.md) that spawns queries, so we have nice output. Since this task
 uses resources, you may want to increase `period` (and not forget to remove it... afterwards):
 
-    |~                           return query.query === theQuery;
 ```js
 ---
 name: QUERY_02_listQueries
@@ -102,7 +101,6 @@ queries.slow();
 
 Kill a running AQL query:
 
-    |   return query.query === theQuery;
 ```js
 ---
 name: QUERY_05_killQueries

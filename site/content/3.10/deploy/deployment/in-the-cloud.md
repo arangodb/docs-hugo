@@ -1,7 +1,7 @@
 ---
 title: Deploying Options in the _Cloud_
 menuTitle: In the Cloud
-weight: 40
+weight: 35
 description: ''
 archetype: default
 ---

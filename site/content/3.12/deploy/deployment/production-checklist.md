@@ -1,7 +1,7 @@
 ---
 title: ArangoDB Production Checklist
 menuTitle: Production Checklist
-weight: 45
+weight: 40
 description: >-
   Important steps to perform before you go live.
 archetype: default

@@ -843,6 +843,7 @@ server, dynamically choosing the **highest** mutually supported version of TLS.
 
   ```
   request type        before      now
+  -----------------------------------
   high priority          128     4096
   medium priority    1048576     4096
   low priority          4096     4096
