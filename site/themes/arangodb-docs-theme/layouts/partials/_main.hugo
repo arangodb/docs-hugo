@@ -1,7 +1,7 @@
-{{- partial "page-meta.hugo" . }}
 {{- partial "shortcodes/version.html" (dict
   "page" .Page
 ) }}
+
 {{- partial "output-partial.hugo" (dict "base" "header" "page" . "parameter" .) }}
 {{- if not .File }}
   {{- partial "output-partial.hugo" (dict "base" "body" "page" . "parameter" (dict "page" . "content" (partial "output-partial.hugo" (dict "base" "initial" "page" . "parameter" .)))) }}

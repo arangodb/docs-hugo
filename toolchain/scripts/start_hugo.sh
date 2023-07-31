@@ -23,7 +23,7 @@ checkIPIsReachable "http://192.168.129.129:8080/health"
 cd /home/site
 
 hugoOptions="--verbose --templateMetrics"
-if [ "$HUGO_ENV" = "development" ] || [ "$HUGO_ENV" = "frontend" ]; then
+if [ "$ENV" = "local" ]; then
     hugoOptions="serve --buildDrafts --watch --bind=0.0.0.0 --ignoreCache --noHTTPCache"
 fi
 

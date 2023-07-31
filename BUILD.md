@@ -98,6 +98,11 @@ If "metrics" or "error-codes" in generators, the following environment variable 
 ```shell
 export ARANGODB_SRC_{VERSION}=path/to/arangodb/source
 ```
+**For Windows Users**
+the ARANGODB_SRC_{VERSION} variable should be exported using a unix-like path
+```shell
+$Env:ARANGODB_SRC_3_11 = "/Drive/Path/TO/ArangoDB"
+```
 
 this environment variable and the "src" entry in the config file must match
 

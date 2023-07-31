@@ -245,6 +245,7 @@ def processFile(page, content, filepath):
             if flags["inDocublock"]:
                 buffer.append(line)
 
+
                 
             ## Trap and skip inline docublocks extra line
             if re.search(r"{%.*arangoshexample|{%.*aqlexample|@END_EXAMPLE_", line, re.MULTILINE):
@@ -277,11 +278,12 @@ def processFile(page, content, filepath):
             ## Front Matter
             if re.search(r"={3,}|-{3,}", line):
                 if flags["inDocublock"] or flags["inCodeblock"]:
-                    page.content = page.content + line
                     continue
 
                 if flags["endFrontMatter"] and "|" in line:
                     page.content = page.content + line
+                    print("2")
+                    print(line)
                     continue
 
                 flags["frontMatter"] = not flags["frontMatter"]
@@ -416,6 +418,7 @@ def processFile(page, content, filepath):
                 newCodeblock = inline_docublocks.migrateInlineDocuBlocks("".join(buffer))
                 newCodeblock = re.sub(r".*@END_EXAMPLE.*\n|.*@endDocuBlock.*\n", "", newCodeblock, 0, re.MULTILINE)
                 page.content = page.content + newCodeblock
+                print(newCodeblock)
                 buffer = []
                 continue
 
