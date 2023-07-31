@@ -15,6 +15,8 @@ migration-tools/migration/*.txt
 migration-tools/scripts/urls.json
 toolchain/scripts/arangoproxy/arangosh
 toolchain/arangoproxy/arangosh
+toolchain/docker/config.yaml
+toolchain/arangoproxy/cmd/configs/local.yaml
 
 site/resources
 .vagrant/
