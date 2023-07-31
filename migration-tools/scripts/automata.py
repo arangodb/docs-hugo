@@ -23,7 +23,7 @@ def migrate(filepath):
     else:
         page.frontMatter.layout = "default"
 
-    temp = re.sub(r"^---.*?^---", "", "\n".join(content), 0, re.MULTILINE | re.DOTALL)
+    temp = re.sub(r"---.*---", "", "\n".join(content), 0, re.MULTILINE | re.DOTALL)
 
     if temp == "": ## for pages derived from subtitles
         page.frontMatter.title = infos[filepath]["title"]
