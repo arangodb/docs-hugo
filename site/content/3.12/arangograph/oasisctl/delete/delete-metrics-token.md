@@ -1,15 +1,11 @@
 ---
+layout: default
+description: Description of the oasisctl delete metrics token command
 title: Oasisctl Delete Metrics Token
 menuTitle: Delete Metrics Token
-weight: 80
-description: >-
-  Description of the oasisctl delete metrics token command
-archetype: default
+weight: 85
 ---
-Delete a metrics token for a deployment
-
 ## Synopsis
-
 Delete a metrics token for a deployment
 
 ```
@@ -17,7 +13,6 @@ oasisctl delete metrics token [flags]
 ```
 
 ## Options
-
 ```
   -d, --deployment-id string     Identifier of the deployment
   -h, --help                     help for token
@@ -26,8 +21,7 @@ oasisctl delete metrics token [flags]
   -t, --token-id string          Identifier of the metrics token
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -35,6 +29,5 @@ oasisctl delete metrics token [flags]
 ```
 
 ## See also
-
 * [oasisctl delete metrics](delete-metrics.md)	 - Delete metrics resources
 

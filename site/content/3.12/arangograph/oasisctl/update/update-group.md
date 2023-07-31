@@ -1,15 +1,11 @@
 ---
+layout: default
+description: Description of the oasisctl update group command
 title: Oasisctl Update Group
 menuTitle: Update Group
-weight: 30
-description: >-
-  Description of the oasisctl update group command
-archetype: default
+weight: 35
 ---
-Update a group the authenticated user has access to
-
 ## Synopsis
-
 Update a group the authenticated user has access to
 
 ```
@@ -17,7 +13,6 @@ oasisctl update group [flags]
 ```
 
 ## Options
-
 ```
       --description string       Description of the group
   -g, --group-id string          Identifier of the group
@@ -26,8 +21,7 @@ oasisctl update group [flags]
   -o, --organization-id string   Identifier of the organization
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -35,6 +29,5 @@ oasisctl update group [flags]
 ```
 
 ## See also
-
 * [oasisctl update](_index.md)	 - Update resources
 
