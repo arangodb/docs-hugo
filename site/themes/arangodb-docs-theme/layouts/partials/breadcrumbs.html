@@ -1,0 +1,26 @@
+<nav id="breadcrumbs">
+    <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+    <meta itemprop="itemListOrder" content="Descending" />
+        {{- template "breadcrumb" dict "page" . "depth" 0 }}
+    </ol>
+    <a class="edit-page" aria-label="" href="https://github.com/arangodb/docs/edit/main/site/content/{{ with .File }}{{ .Path }}{{ end }}" target="_blank"><i class="fab fa-fw fa-github edit-page-icon"></i></a>
+</nav>
+
+ {{- define "breadcrumb" }}
+
+ {{- $parent := .page.Parent }}
+ {{- $ispublished := gt (int (len .page.Permalink)) 0 }}
+ {{- $depth := .depth }}
+ {{- if $ispublished }}
+   {{- $depth = add $depth 1 }}
+ {{- end }}
+ {{- if $parent }}
+   {{- template "breadcrumb" dict "page" $parent "depth" $depth }}
+ {{- end }}
+    <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
+      <meta itemprop="position" content="{{ $depth }}" />
+      <a itemprop="item" class="link-internal" href="{{ .page.RelPermalink }}"{{if not .depth}} aria-disabled="true"{{end}}>
+        <span itemprop="name" class="breadcrumb-entry">{{ .page.Params.menuTitle | markdownify }}</span>
+      </a>{{ if .depth }} > {{ end }}
+    </li>
+{{- end }}

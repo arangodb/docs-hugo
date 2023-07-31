@@ -1098,6 +1098,7 @@ header .logo {
         'article toc'
         'footer footer';
     grid-template-columns: 3fr 1fr;
+
     grid-template-rows: auto 1fr;
 }
 
@@ -1202,7 +1203,6 @@ header .logo {
     margin: 20px 0px 40px 30px;
     grid-area: toc;
     font-size: 15px;
-    display: none;
 
 }
 
@@ -1912,6 +1912,7 @@ nav.pagination {
     line-height: 1;
     padding: 0.75rem 1rem 2rem;
     display: flex;
+    grid-area: footer;
 }
 
 nav.pagination span {
