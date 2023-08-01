@@ -168,7 +168,6 @@ function showSearchListener() {
 function initArticle(url) {
   initCopyToClipboard();
   initClickHandlers();
-  generateToc();
   goToTop();
   styleImages();
   internalLinkListener();
@@ -215,47 +214,6 @@ function getHeadlines() {
 
     return [nodes, true];
 }
-
-
-var generateToc = function() {
-    const [nodes, ok] = getHeadlines();
-    if (!ok) {
-      return
-    }
-
-    var nav = document.createElement("nav");
-    nav.className = "ps";
-
-    nodes.forEach(function (heading, index) {
-      var headerFragment = heading.getAttribute('id')
-      var level = heading.nodeName.replace('H', '')
-
-      var anchor = document.createElement('a');
-      anchor.setAttribute('name', 'toc' + index);
-      anchor.setAttribute('id', 'toc' + index);
-
-      var link = document.createElement('a');
-      link.setAttribute('href', "#"+headerFragment);
-      link.textContent = heading.textContent;
-
-      var div = document.createElement('div');
-      div.setAttribute('class', "level-"+level);
-
-      div.appendChild(link);
-      nav.appendChild(div);
-      heading.parentNode.insertBefore(anchor, heading);
-    });
-
-    
-    document.querySelector("#TableOfContents").appendChild(nav)
-    document.querySelector('.toc-container').style.display = 'block';
-  };
-
-  $(window).on('resize', function() {
-    if (window.innerWidth < 1000) {
-        $("#sidebar").removeClass("active");
-    }
-});
 
 function tocHiglighter() {
   const [anchors, ok] = getHeadlines()

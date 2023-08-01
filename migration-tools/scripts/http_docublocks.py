@@ -102,7 +102,7 @@ def explodeNestedStructs(data, target, k):
 
 def migrateHTTPDocuBlocks(docublock):
     if 'errorCodes' in docublock:
-        return "{{< error-codes >}}"
+        return "{{% error-codes %}}"
     if 'documentRevision' in docublock:
         return ""
 
