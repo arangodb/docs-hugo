@@ -74,6 +74,8 @@ jobs:
           name: Push docker images
           command: |
             cd docs-hugo/toolchain/docker
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
+
             docker push arangodb/docs-hugo:site-<< parameters.architecture >>
             docker push arangodb/docs-hugo:arangoproxy-<< parameters.architecture >>
             docker push arangodb/docs-hugo:toolchain-<< parameters.architecture >>
