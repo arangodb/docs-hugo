@@ -51,9 +51,10 @@ jobs:
       executor:
         type: string
         default: "medium"
-    docker:
-      - image: cimg/base:current
-    resource_class: << parameters.executor >>
+    machine:
+      docker_layer_caching: true
+      image: ubuntu-2004:current
+      resource_class: << parameters.executor >>
     steps:
       - setup_remote_docker:
           version: 20.10.14
@@ -436,7 +437,7 @@ workflows:
     jobs:
       - create-docs-images:
           architecture: "arm64"
-          executor: "arm-medium"
+          executor: "arm.medium"
   plain:
     when: { equal: [ plain-build, << pipeline.parameters.workflow >> ] }
     jobs:
