@@ -397,7 +397,7 @@
   },
   "javascript.allow-external-process-control" : {
     "category" : "option",
-    "default" : false,
+    "default" : true,
     "deprecatedIn" : null,
     "description" : "Allow the execution and control of external processes from within JavaScript actions.",
     "dynamic" : false,
@@ -420,7 +420,7 @@
   },
   "javascript.allow-port-testing" : {
     "category" : "option",
-    "default" : false,
+    "default" : true,
     "deprecatedIn" : null,
     "description" : "Allow the testing of ports from within JavaScript actions.",
     "dynamic" : false,
@@ -752,6 +752,7 @@
   "javascript.module-directory" : {
     "category" : "option",
     "default" : [
+      "./enterprise/js"
     ],
     "deprecatedIn" : null,
     "description" : "Additional paths containing JavaScript modules.",
@@ -772,7 +773,7 @@
   },
   "javascript.startup-directory" : {
     "category" : "option",
-    "default" : "/usr/share/arangodb3/js",
+    "default" : "./js",
     "deprecatedIn" : null,
     "description" : "The startup paths containing the JavaScript files.",
     "dynamic" : false,
@@ -1650,7 +1651,7 @@
   },
   "server.authentication" : {
     "category" : "option",
-    "default" : true,
+    "default" : false,
     "deprecatedIn" : null,
     "description" : "Require authentication credentials when connecting (does not affect the server-side authentication settings).",
     "dynamic" : false,
@@ -1717,7 +1718,7 @@
   "server.endpoint" : {
     "category" : "option",
     "default" : [
-      "tcp://127.0.0.1:8529"
+      "http+tcp://127.0.0.1:8529"
     ],
     "deprecatedIn" : null,
     "description" : "The endpoint to connect to. Use 'none' to start without a server. Use http+ssl:// or vst+ssl:// as schema to connect to an SSL-secured server endpoint, otherwise http+tcp://, vst+tcp:// or unix://.",
