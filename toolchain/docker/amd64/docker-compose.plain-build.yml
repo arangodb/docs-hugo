@@ -2,7 +2,7 @@ version: "3.5"
 services:
   site-frontend:
     container_name: plain-build
-    image: arangodb/docs-hugo:site
+    image: arangodb/docs-hugo:site-amd64
     build:
       context: .
       target: hugo
@@ -21,7 +21,7 @@ services:
 
   arangoproxy-frontend:
     container_name: arangoproxy-frontend
-    image: arangodb/docs-hugo:arangoproxy
+    image: arangodb/docs-hugo:arangoproxy-amd64
     build:
       context: .
       target: arangoproxy

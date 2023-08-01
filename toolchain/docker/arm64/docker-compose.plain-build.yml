@@ -1,0 +1,47 @@
+version: "3.5"
+services:
+  site-frontend:
+    container_name: plain-build
+    image: arangodb/docs-hugo:site-arm64
+    build:
+      context: .
+      target: hugo
+    networks:
+      docs_net:
+        ipv4_address: 192.168.129.130
+    ports:
+      - "1313:1313"
+    volumes:
+      - ../../:/home/
+    environment:
+      HUGO_URL: ${HUGO_URL:-http://localhost}
+      HUGO_ENV: ${HUGO_ENV:-frontend}
+      ENV: ${ENV:-local}
+
+
+  arangoproxy-frontend:
+    container_name: arangoproxy-frontend
+    image: arangodb/docs-hugo:arangoproxy-arm64
+    build:
+      context: .
+      target: arangoproxy
+    networks:
+      docs_net:
+        ipv4_address: 192.168.129.129
+    volumes:
+      - ../../:/home/
+    environment:
+      HUGO_URL: ${HUGO_URL:-http://localhost}
+      HUGO_ENV: ${HUGO_ENV:-frontend}
+      ENV: ${ENV:-local}
+
+
+networks:
+  docs_net:
+    driver: bridge
+    name: docs_net
+    ipam:
+          driver: default
+          config:
+              - subnet: "192.168.129.0/24"
+                gateway: "192.168.129.1"

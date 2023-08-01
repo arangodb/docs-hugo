@@ -1,0 +1,22 @@
+version: "3.5"
+services:
+  toolchain:
+    container_name: toolchain
+    image: arangodb/docs-hugo:toolchain-arm64
+    volumes:
+      - ${ARANGODB_SRC_3_10:-/dev/null}:/tmp/3.10
+      - ${ARANGODB_SRC_3_11:-/tmp/1}:/tmp/3.11
+      - ${ARANGODB_SRC_3_12:-/tmp/2}:/tmp/3.12
+      - ../../:/home/
+      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      ENV: ${ENV:-local}
+      HUGO_URL: ${HUGO_URL:-http://localhost}
+      HUGO_ENV: ${HUGO_ENV:-development}
+      GENERATORS: ${GENERATORS}
+      ARANGODB_SRC_3_10: ${ARANGODB_SRC_3_10}
+      ARANGODB_SRC_3_11: ${ARANGODB_SRC_3_11}
+      ARANGODB_SRC_3_12: ${ARANGODB_SRC_3_12}
+      ARANGODB_BRANCH_3_10: ${ARANGODB_BRANCH_3_10}
+      ARANGODB_BRANCH_3_11: ${ARANGODB_BRANCH_3_11}
+      ARANGODB_BRANCH_3_12: ${ARANGODB_BRANCH_3_12}
