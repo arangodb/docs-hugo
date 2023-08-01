@@ -90,11 +90,10 @@ function main() {
 
   ## Generate content and start server
   for server in "${servers[@]}"; do
-    arangodb_src=$(echo "$server" | yq e '.src' -)
     image=$(echo "$server" | yq e '.image' -)
     version=$(echo "$server" | yq e '.version' -)
 
-    if [ "$arangodb_src" == "" ] &&  [ "$image" == "" ]; then
+    if [ "$image" == "" ]; then
       continue
     fi
 
@@ -228,10 +227,11 @@ function run_arangoproxy_and_site() {
 
 
   log "[run_arangoproxy_and_site] Pull arangoproxy and site images"
-  docker pull arangodb/docs-hugo:arangoproxy
-  docker pull arangodb/docs-hugo:site
-  docker tag arangodb/docs-hugo:arangoproxy arangoproxy
-  docker tag arangodb/docs-hugo:site site
+  arch=$(dpkg --print-architecture)
+  docker pull arangodb/docs-hugo:arangoproxy-"$arch"
+  docker pull arangodb/docs-hugo:site-"$arch"
+  docker tag arangodb/docs-hugo:arangoproxy-"$arch" arangoproxy
+  docker tag arangodb/docs-hugo:site-"$arch" site
 
   set +e
   
@@ -287,7 +287,6 @@ function setup_arangoproxy_arangosh() {
   docker exec  $container_name sh -c "cp -r /usr/bin/icudtl.dat /tmp/arangosh/$name/$version/usr/share/arangodb3/"
 
   docker exec  $container_name sh -c "cp -r /etc/arangodb3/arangosh.conf /tmp/arangosh/$name/$version/usr/bin/etc/relative/arangosh.conf"
-  docker exec arangoproxy bash -c "sed -i -e 's~startup-directory.*~startup-directory = /tmp/arangosh/'$name'/'$version'/usr/share/arangodb3/js~' /arangosh/arangosh/$name/$version/usr/bin/etc/relative/arangosh.conf"
   echo ""
 }
 
@@ -326,7 +325,6 @@ function process_server() {
   name=$(echo "$server" | yq e '.name' -)
   image=$(echo "$server" | yq e '.image' -)
   version=$(echo "$server" | yq e '.version' -)
-  arangodb_src=$(echo "$server" | yq e '.src' -)
 
   echo "<li><strong>$version</strong>: $image</li>" >> /home/summary.md
 
@@ -418,11 +416,11 @@ export IFS=""
 
 function generators_from_source() {
   if [[ $GENERATORS == *"error-codes"* ]]; then
-    generate_error_codes "$arangodb_src" "$version"
+    generate_error_codes "$version"
   fi
 
   if [[ $GENERATORS == *"metrics"* ]]; then
-    generate_metrics "$arangodb_src" "$version"
+    generate_metrics "$version"
   fi
 
   if [[ $GENERATORS == *"oasisctl"* ]]; then
@@ -489,21 +487,17 @@ function generate_optimizer_rules() {
 function generate_error_codes() {
   echo "<h2>Error Codes</h2>" >> /home/summary.md
 
-  errors_dat_file="$1"
-  version=$2
+  version=$1
 
-
-
-
-  if [ $errors_dat_file == "" ]; then
+  if [ $version == "" ]; then
     log "[generate_error_codes] ArangoDB Source code not found. Aborting"
     exit 1
   fi
   touch ../../site/data/$version/errors.yaml
 
   log "[generate_error_codes] Launching generate error-codes script"
-  log "[generate_error_codes] $PYTHON_EXECUTABLE generators/generateErrorCodes.py --src "$1"/lib/Basics/errors.dat --dst ../../site/data/$version/errors.yaml"
-  res=$(("$PYTHON_EXECUTABLE" generators/generateErrorCodes.py --src "$1"/lib/Basics/errors.dat --dst ../../site/data/$version/errors.yaml) 2>&1)
+  log "[generate_error_codes] $PYTHON_EXECUTABLE generators/generateErrorCodes.py --src /tmp/"$1"/lib/Basics/errors.dat --dst ../../site/data/$version/errors.yaml"
+  res=$(("$PYTHON_EXECUTABLE" generators/generateErrorCodes.py --src /tmp/"$1"/lib/Basics/errors.dat --dst ../../site/data/$version/errors.yaml) 2>&1)
 
   if [ $? -ne 0 ]; then
     log "[generate_error_codes] [ERROR] $res"
@@ -518,17 +512,16 @@ function generate_error_codes() {
 function generate_metrics() {
   echo "<h2>Metrics</h2>" >> /home/summary.md
 
-  src=$1
-  version=$2
+  version=$1
 
-  if [ $src == "" ]; then
+  if [ $version == "" ]; then
     log "[generate_error_codes] ArangoDB Source code not found. Aborting"
     exit 1
   fi
 
   log "[generate_metrics] Generate Metrics requested"
-  log "[generate_metrics] $PYTHON_EXECUTABLE generators/generateMetrics.py --main $src --dst ../../site/data/$version"
-  res=$(("$PYTHON_EXECUTABLE" generators/generateMetrics.py --main "$src" --dst ../../site/data/$version) 2>&1)
+  log "[generate_metrics] $PYTHON_EXECUTABLE generators/generateMetrics.py --main /tmp/"$version" --dst ../../site/data/$version"
+  res=$(("$PYTHON_EXECUTABLE" generators/generateMetrics.py --main /tmp/"$version" --dst ../../site/data/$version) 2>&1)
 
   if [ $? -ne 0 ]; then
     log "[generate_metrics] [ERROR] $res"
