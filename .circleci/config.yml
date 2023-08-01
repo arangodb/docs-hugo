@@ -55,6 +55,8 @@ jobs:
       - image: cimg/base:current
     resource_class: << parameters.executor >>
     steps:
+      - setup_remote_docker:
+          version: 20.10.14
       - run: 
           name: Clone docs repo
           command: |
