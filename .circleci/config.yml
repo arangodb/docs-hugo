@@ -65,6 +65,7 @@ jobs:
           name: Create docker images
           command: |
             cd docs-hugo/toolchain/docker
+            export DOCKER_BUILDKIT=1
             docker build -t arangodb/docs-hugo:site-<< parameters.architecture >> --target hugo .
             docker build -t arangodb/docs-hugo:arangoproxy-<< parameters.architecture >> --target arangoproxy .
             docker build -t arangodb/docs-hugo:toolchain-<< parameters.architecture >> --target toolchain .
