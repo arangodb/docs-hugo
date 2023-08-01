@@ -7,7 +7,7 @@ services:
       - ${ARANGODB_SRC_3_10:-/dev/null}:/tmp/3.10
       - ${ARANGODB_SRC_3_11:-/tmp/1}:/tmp/3.11
       - ${ARANGODB_SRC_3_12:-/tmp/2}:/tmp/3.12
-      - ../../:/home/
+      - ../../../:/home/
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
       ENV: ${ENV:-local}

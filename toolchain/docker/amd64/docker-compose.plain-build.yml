@@ -12,7 +12,7 @@ services:
     ports:
       - "1313:1313"
     volumes:
-      - ../../:/home/
+      - ../../../:/home/
     environment:
       HUGO_URL: ${HUGO_URL:-http://localhost}
       HUGO_ENV: ${HUGO_ENV:-frontend}
@@ -29,7 +29,7 @@ services:
       docs_net:
         ipv4_address: 192.168.129.129
     volumes:
-      - ../../:/home/
+      - ../../../:/home/
     environment:
       HUGO_URL: ${HUGO_URL:-http://localhost}
       HUGO_ENV: ${HUGO_ENV:-frontend}
