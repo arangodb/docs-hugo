@@ -20,7 +20,7 @@
 {{ $disabled := page.Params.pageToc.disabled | default false }}
 {{ if le $level $maxLevel }}
   {{ range $h := $headings }}
-    {{ with $h.Title }}<div class="level-{{ $level }}"><a href="#{{ $h.ID }}">{{ $h.Title }}</a></div>{{ end }}
+    {{ with $h.Title }}<div class="level-{{ $level }}"><a href="#{{ $h.ID }}">{{ $h.Title | markdownify }}</a></div>{{ end }}
     {{ template "nestedHeadline" dict "headings" $h.Headings "level" (add $level 1) }}
   {{ end }}
 {{ end }}
