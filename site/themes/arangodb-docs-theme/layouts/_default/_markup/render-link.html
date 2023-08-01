@@ -3,25 +3,36 @@
 {{ $path := $url.Path -}}
 {{ $currentPage := .Page.RelPermalink -}}
 {{ $fragment := "" -}}
-{{ with $url.Fragment }}{{ $fragment = printf "#%s" . }}{{ end -}}
-{{ $permalink := "" -}}
+{{ with $url.Fragment }}
+  {{ $fragment = printf "#%s" . }}
+{{ end -}}
 
-  {{ $isRemote := ne $url.Scheme "" -}}
-    {{ if $isRemote -}}
-      {{ $permalink = .Destination -}}
+{{ $permalink := "" -}}
+{{ $class := "" }}
+{{ $isRemote := ne $url.Scheme "" -}}
+
+{{ if $isRemote -}}
+  {{ $permalink = .Destination -}}
+{{ else -}}
+  {{ $isOnlyFragment := findRE `(?m)^#` $link }}
+  {{ if $isOnlyFragment }}
+    {{ $permalink = $fragment }}
+  {{ else }}
+    {{ $page := .Page.GetPage $path -}}
+    {{ with $page -}}
+      {{ $permalink = printf "%s%s" $page.RelPermalink $fragment -}}
+      {{ $class = "link-internal" }}
     {{ else -}}
-      {{ $page := .Page.GetPage $path -}}
-      {{ with $page -}}
-        {{ $permalink = printf "%s%s" $page.RelPermalink $fragment -}}
-      {{ else -}}
-        {{ if ne $currentPage "/" -}}
+      {{ if ne $currentPage "/" -}}
         {{ if site.Params.failOnBrokenLinks -}}
           {{ errorf "[ERROR] Broken link '%v' found in %s" $link $currentPage -}}
         {{ else -}}
           {{ warnf "[WARN] Broken link '%v' found in %s" $link $currentPage -}}
         {{ end -}}
-        {{ end -}}
+      {{ end -}}
     {{ end -}}
-  {{ end -}}
-<a  href="{{ $permalink | safeURL }}" {{ with .Title }} title="{{ . }}"{{ end }} {{ if $isRemote }} target="_blank" rel="noopener noreferrer" {{ else }} class="link-internal" {{ end }}>{{ .Text | safeHTML }}</a>
+  {{ end }}
+{{ end }}
+
+<a  href="{{ $permalink | safeURL }}" {{ with .Title }} title="{{ . }}"{{ end }} {{ if $isRemote }} target="_blank" rel="noopener noreferrer" {{ else }} class="{{ $class }}" {{ end }}>{{ .Text | safeHTML }}</a>
 {{- /* whitespace control */ -}}
