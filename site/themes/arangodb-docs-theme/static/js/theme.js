@@ -197,30 +197,8 @@ $(window).on('popstate', function (e) {
 */
 
 
-var headlineLevels = ["h2", "h3", "h4", "h5", "h6"]
-var maxHeadlineLevel = 2;
-
-function getHeadlines() {
-    var contentBlock = document.querySelector("article");
-    if (!contentBlock) {
-      console.log("getHeadlines() no article found")
-      return [0, false];
-    }
-    var nodes = contentBlock.querySelectorAll(headlineLevels.slice(0, maxHeadlineLevel).join(","))
-    if (nodes.length < 2) {
-      console.log("headers < 2")
-      return [0, false];
-    }
-
-    return [nodes, true];
-}
-
 function tocHiglighter() {
-  const [anchors, ok] = getHeadlines()
-  if (!ok) {
-    return
-  }
-
+  var anchors = document.querySelector("article").querySelectorAll("h2,h3,h4,h5,h6")
 
   var scrollTop = $(document).scrollTop();
   for (var i = 0; i < anchors.length; i++){

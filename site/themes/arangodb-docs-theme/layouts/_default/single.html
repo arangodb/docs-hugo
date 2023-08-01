@@ -26,4 +26,9 @@
                     {{ partial "breadcrumbs.html" . }}
                     {{- partial "output-partial.hugo" (dict "base" "body" "page" . "parameter" (dict "page" . "content" (partial "output-partial.hugo" (dict "base" "content" "page" . "parameter" .)))) }}
                     {{ partial "toc.html" . }}
+                  </div>
+                </main><!-- #body-inner -->
+              </div><!-- #body -->
+          {{- partialCached "back-to-top.html" . }}
+            </body>
 </html>
