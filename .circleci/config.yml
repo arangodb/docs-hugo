@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   workflow:
     type: enum
-    enum: [no-op, plain-build, generate, compile, generate-scheduled, commit-generated, generate-oasisctl]
+    enum: [no-op, plain-build, generate, compile, generate-scheduled, commit-generated, generate-oasisctl, create-docs-images-amd64, create-docs-images-arm64]
     default: no-op
   
   deploy-url:
@@ -43,6 +43,47 @@ parameters:
     default: false
 
 jobs:
+  create-docs-images:
+    parameters:
+      architecture:
+        type: string
+        default: "amd64"
+      executor:
+        type: string
+        default: "medium"
+    machine:
+      docker_layer_caching: true
+      image: ubuntu-2004:current
+      resource_class: << parameters.executor >>
+    steps:
+      - run: 
+          name: Clone docs repo
+          command: |
+            git clone --depth 1 https://github.com/arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+      - run: 
+          name: Create docker images
+          command: |
+            cd docs-hugo/toolchain/docker
+            export DOCKER_BUILDKIT=1
+            docker build -t arangodb/docs-hugo:site-<< parameters.architecture >> --target hugo .
+            docker build -t arangodb/docs-hugo:arangoproxy-<< parameters.architecture >> --target arangoproxy .
+            docker build -t arangodb/docs-hugo:toolchain-<< parameters.architecture >> --target toolchain .
+
+      - run: 
+          name: Push docker images
+          command: |
+            cd docs-hugo/toolchain/docker
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
+
+            docker push arangodb/docs-hugo:site-<< parameters.architecture >>
+            docker push arangodb/docs-hugo:arangoproxy-<< parameters.architecture >>
+            docker push arangodb/docs-hugo:toolchain-<< parameters.architecture >>
+
+
+
+
+
+
   plain-build: 
     machine:
       image: ubuntu-2004:current
@@ -60,7 +101,7 @@ jobs:
             export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
             export HUGO_ENV=prod
             set +e
-            cd docs-hugo/toolchain/docker
+            cd docs-hugo/toolchain/docker/amd64
             docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
 
             if [ "$?" != "0" ]; then
@@ -140,7 +181,7 @@ jobs:
             fi
 
             set +e
-            cd docs-hugo/toolchain/docker
+            cd docs-hugo/toolchain/docker/amd64
             docker compose up
             if [ $? -ne 0 ]; then
               cd ../../../
@@ -383,6 +424,18 @@ jobs:
 
 
 workflows:
+  create-docs-images-amd64:
+    when: { equal: [ create-docs-images-amd64, << pipeline.parameters.workflow >> ] }
+    jobs:
+      - create-docs-images:
+          architecture: "amd64"
+          executor: "medium"
+  create-docs-images-arm64:
+    when: { equal: [ create-docs-images-arm64, << pipeline.parameters.workflow >> ] }
+    jobs:
+      - create-docs-images:
+          architecture: "arm64"
+          executor: "arm.medium"
   plain:
     when: { equal: [ plain-build, << pipeline.parameters.workflow >> ] }
     jobs:
