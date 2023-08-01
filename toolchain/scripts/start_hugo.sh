@@ -13,7 +13,7 @@ function checkIPIsReachable() {
 
 if ! command -v hugo &> /dev/null
 then
-    curl -L  https://github.com/gohugoio/hugo/releases/download/v0.110.0/hugo_0.110.0_linux-"$ARCH".deb -o hugo.deb
+    curl -L  https://github.com/gohugoio/hugo/releases/download/v0.115.4/hugo_extended_0.115.4_linux-"$ARCH".deb -o hugo.deb
     apt install -y ./hugo.deb
 fi
 

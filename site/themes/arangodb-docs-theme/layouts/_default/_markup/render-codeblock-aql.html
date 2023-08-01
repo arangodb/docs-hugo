@@ -1,4 +1,4 @@
-{{ $metadata := findRE `(?ms)^---.*^---` .Inner }}
+{{ $metadata := findRE `(?ms)^---.*?^---` .Inner }}
 
 {{ if $metadata }}
   {{- partial "shortcodes/examples/example.html" (dict
@@ -7,5 +7,5 @@
   "language" "aql"
   ) }}
 {{ else }}
-  {{ transform.Highlight .Inner "js" }} 
+  {{ transform.Highlight .Inner "aql" }}
 {{ end }}
