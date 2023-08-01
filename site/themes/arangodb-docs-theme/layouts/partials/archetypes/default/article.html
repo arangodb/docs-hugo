@@ -11,5 +11,8 @@
       <h1>{{ replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}</h1>
       </hgroup>
       {{ $content | safeHTML }}
+      <nav class="pagination">
+        {{- partial "content-footer.html" . }}
+      </nav>
     </article>
 {{- end }}
