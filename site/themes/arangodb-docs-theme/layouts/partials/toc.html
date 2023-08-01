@@ -1,3 +1,4 @@
+{{ if gt (.Page.Fragments.HeadingsMap | len) 2 }}
 <div class="toc-container">
     <div class="toc">
         <div class="toc-content">
@@ -12,6 +13,7 @@
         </div>
     </div>
 </div>
+{{ end }}
 
 {{ define "nestedHeadline" }}
 {{ $headings := .headings }}
