@@ -30,7 +30,6 @@ if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
   GENERATORS="examples metrics error-codes options optimizer oasisctl"
 fi
 
-
 ## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
 if [ "$ARANGODB_BRANCH_3_10" != "" ] ; then
       export ARANGODB_BRANCH_3_10_NAME="stable"
@@ -240,6 +239,7 @@ function run_arangoproxy_and_site() {
   echo "[run_arangoproxy_and_site]  Run arangoproxy and site containers"
 
   docker run -d --name site --network=docs_net --ip=192.168.129.130 \
+    -e ENV="$ENV" \
     -e HUGO_URL="$HUGO_URL" \
     -e HUGO_ENV="$HUGO_ENV" \
     -p 1313:1313 \
@@ -248,6 +248,7 @@ function run_arangoproxy_and_site() {
     site
 
   docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 \
+    -e ENV="$ENV" \
     -e HUGO_URL="$HUGO_URL" \
     -e HUGO_ENV="$HUGO_ENV" \
     -v arangosh:/arangosh \
