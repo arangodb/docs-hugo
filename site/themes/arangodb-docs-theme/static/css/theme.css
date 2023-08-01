@@ -994,6 +994,7 @@ header .logo {
     white-space: break-spaces;
     color: rgba(56, 59, 57, 1);
     margin-bottom: 13px;
+    font-weight: 100;
 }
 
 #sidebar ul li a:hover {
