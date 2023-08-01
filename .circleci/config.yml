@@ -58,7 +58,7 @@ jobs:
       - run: 
           name: Clone docs repo
           command: |
-            git clone --depth 1 https://github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+            git clone --depth 1 https://github.com/arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
       - run: 
           name: Create docker images
           command: |
