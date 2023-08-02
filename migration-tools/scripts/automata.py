@@ -528,12 +528,16 @@ def processFrontMatterLine(page, line, flags, filepath):
 
     if line.startswith("page-toc"):
         flags["toc"] = True
+        flags["description"] = False
+        flags["redirect"] = False
         page.frontMatter.toc = to_lower_camel_case(line)
         return
 
     if line.startswith("description:"):
         flags["description"] = True
         flags["redirect"] = False
+        flags["toc"] = False
+
         page.frontMatter.description = line.replace("description: ", "")
         return
 
