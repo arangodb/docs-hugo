@@ -29,7 +29,8 @@ ENV ARCH=${BUILDARCH}
 COPY --from=golang:1.19-alpine /usr/local/go/ /usr/local/go/
 ENV PATH="/usr/local/go/bin:${PATH}"
 
-RUN apk add --update --no-cache git curl hugo bash
+RUN apk add --update --no-cache git curl bash
+RUN apk add --repository=https://dl-cdn.alpinelinux.org/alpine/edge/community --no-cache hugo
 
 RUN wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_$ARCH -O /usr/bin/yq && chmod +x /usr/bin/yq
 CMD cd /home/toolchain/scripts ; ./start_hugo.sh
