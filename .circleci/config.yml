@@ -292,10 +292,10 @@ jobs:
       - run:
           name: Deploy using netlify-cli docker image
           command: |
-            docker container run -it \
+            docker container run \
             -e NETLIFY_AUTH_TOKEN=$NETLIFY_ACCESS_TOKEN \
             -e NETLIFY_SITE_ID=$NETLIFY_SITE_ID \
-            -v docs-hugo/site/public:/project \
+            -v /home/circleci/project/docs-hugo/site/public:/project \
             ghcr.io/williamjacksn/netlify-cli \
             deploy --dir=/project --alias << pipeline.parameters.deploy-url >>
           no_output_timeout: 1h
