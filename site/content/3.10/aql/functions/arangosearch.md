@@ -4,8 +4,8 @@ menuTitle: ArangoSearch
 weight: 5
 description: >-
   ArangoSearch offers various AQL functions for search queries to control the search context, for filtering and scoring
-  max-headline-level: 3
 pageToc:
+  maxHeadlineLevel: 3
 archetype: default
 ---
 {{< description >}}

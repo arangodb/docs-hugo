@@ -7,6 +7,7 @@ description: >-
   check who accessed it, what actions were performed, and how the system
   responded
 pageToc:
+  maxHeadlineLevel: 3
 archetype: default
 ---
 {{< description >}}

@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl update metrics command
 title: Oasisctl Update Metrics
 menuTitle: Update Metrics
-weight: 45
+weight: 40
+description: >-
+  Description of the oasisctl update metrics command
+archetype: default
 ---
+Update metrics resources
+
 ## Synopsis
+
 Update metrics resources
 
 ```
@@ -13,11 +17,13 @@ oasisctl update metrics [flags]
 ```
 
 ## Options
+
 ```
   -h, --help   help for metrics
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -25,6 +31,7 @@ oasisctl update metrics [flags]
 ```
 
 ## See also
+
 * [oasisctl update](_index.md)	 - Update resources
 * [oasisctl update metrics token](update-metrics-token.md)	 - Update a metrics token
 

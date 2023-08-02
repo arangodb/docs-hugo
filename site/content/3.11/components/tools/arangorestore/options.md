@@ -4,8 +4,8 @@ menuTitle: Options
 weight: 10
 description: >-
   arangorestore Options
-  max-headline-level: 2
 pageToc:
+  maxHeadlineLevel: 2
 archetype: default
 ---
 Usage: `arangorestore [<options>]`

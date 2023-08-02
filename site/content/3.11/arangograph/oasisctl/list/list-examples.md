@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl list examples command
 title: Oasisctl List Examples
 menuTitle: List Examples
-weight: 100
+weight: 95
+description: >-
+  Description of the oasisctl list examples command
+archetype: default
 ---
+List all example datasets
+
 ## Synopsis
+
 List all example datasets
 
 ```
@@ -13,12 +17,14 @@ oasisctl list examples [flags]
 ```
 
 ## Options
+
 ```
   -h, --help                     help for examples
   -o, --organization-id string   Identifier of the organization
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -26,5 +32,6 @@ oasisctl list examples [flags]
 ```
 
 ## See also
+
 * [oasisctl list](_index.md)	 - List resources
 

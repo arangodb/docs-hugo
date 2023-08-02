@@ -5,8 +5,8 @@ weight: 15
 description: >-
   ArangoDB is a database system with a large solution space because it combines
   graphs, documents, key-value, search engine, and machine learning all in one
-  max-headline-level: 2
 pageToc:
+  maxHeadlineLevel: 2
 archetype: default
 ---
 {{< description >}}
