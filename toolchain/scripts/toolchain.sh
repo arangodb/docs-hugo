@@ -227,7 +227,15 @@ function run_arangoproxy_and_site() {
 
 
   log "[run_arangoproxy_and_site] Pull arangoproxy and site images"
-  arch=$(dpkg --print-architecture)
+  arch=$(uname -m)
+  if [ "$arch" == "x86_64" ]; then
+    arch="amd64"
+  fi
+
+  if [ "$arch" == "aarch64" ]; then
+    arch="arm64"
+  fi
+
   docker pull arangodb/docs-hugo:arangoproxy-"$arch"
   docker pull arangodb/docs-hugo:site-"$arch"
   docker tag arangodb/docs-hugo:arangoproxy-"$arch" arangoproxy
@@ -593,11 +601,6 @@ function trap_container_exit() {
     fi
   done
 
-  echo "[TERMINATE] Before docker compose stop all" >> arangoproxy-log.log
-  docker container ps -a
-  #docker container stop $(docker ps -aq)
-  echo "[TERMINATE] After docker container stop all" >> arangoproxy-log.log
-  echo "[TERMINATE] After docker container stop all"
   docker container stop arangoproxy
   docker container stop site
   docker container stop toolchain
