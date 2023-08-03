@@ -289,12 +289,13 @@ jobs:
           at: .
       - run:
           name: Deploy to netlify
-          command:  ./docker-netlify-cli/node_modules/.bin/netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias << pipeline.parameters.deploy-url >>
+          command:  /home/node/docker-netlify-cli/node_modules/.bin/netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias << pipeline.parameters.deploy-url >>
           no_output_timeout: 1h
 
       - run:
           name: Call Github App create check function
           command: |
+            apk add --no-cache curl
             cat docs-hugo/summary.md
             cat docs-hugo/summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
 
