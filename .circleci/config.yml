@@ -295,6 +295,7 @@ jobs:
       - run:
           name: Call Github App create check function
           command: |
+            apk add --no-cache curl
             cat docs-hugo/summary.md
             cat docs-hugo/summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
 
