@@ -263,10 +263,15 @@ function run_arangoproxy_and_site() {
   cd ../../
   echo "[run_arangoproxy_and_site]  Run arangoproxy and site containers"
   if [ $TRAP == 0 ]; then
+    HUGO_NUMWORKERMULTIPLIER=''
+    if [ "$HUGO_ENV" = "release" ]; then
+      HUGO_NUMWORKERMULTIPLIER=1
+    fi
     docker run -d --name site --network=docs_net --ip=192.168.129.130 \
       -e ENV="$ENV" \
       -e HUGO_URL="$HUGO_URL" \
       -e HUGO_ENV="$HUGO_ENV" \
+      -e HUGO_NUMWORKERMULTIPLIER="$HUGO_NUMWORKERMULTIPLIER" \
       -p 1313:1313 \
       --volumes-from toolchain \
       --log-opt tag="{{.Name}}" \

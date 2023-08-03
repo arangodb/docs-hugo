@@ -30,6 +30,6 @@ echo "Hugo Settings:"
 echo "   BaseURL:     $HUGO_URL"
 echo "   Environment: $HUGO_ENV"
 echo "   Options:     $hugoOptions"
-
+echo "   Parallel:    $HUGO_NUMWORKERMULTIPLIER"
 hugo $hugoOptions -e $HUGO_ENV -b $HUGO_URL --minify
 
