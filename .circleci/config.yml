@@ -282,19 +282,16 @@ jobs:
 
   deploy:
     docker:
-      - image: cimg/node:20.4.0
+      - image: cimg/base:2023.08
     resource_class: small
     steps:
+      - setup_remote_docker:
+          version: 20.10.14
       - attach_workspace:
           at: .
       - run:
-          name: Install netlify-cli
-          command: |
-            sudo npm install -g --silent netlify-cli
-
-      - run:
           name: Deploy to netlify
-          command: netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias << pipeline.parameters.deploy-url >>
+          command: docker run -v ./docs-hugo/site/public:/project arangodb/docs-hugo:deployer --dir=/project --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias << pipeline.parameters.deploy-url >>
           no_output_timeout: 1h
 
       - run:
