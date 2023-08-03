@@ -291,7 +291,7 @@ jobs:
           at: .
       - run:
           name: Deploy to netlify
-          command:  deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias << pipeline.parameters.deploy-url >>
+          command:  ./docker-netlify-cli/node_modules/.bin/netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias << pipeline.parameters.deploy-url >>
           no_output_timeout: 1h
 
       - run:
