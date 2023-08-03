@@ -53,3 +53,8 @@ RUN cd bin/linux/$ARCH && mv oasisctl /usr/bin/oasisctl && chmod +x /usr/bin/oas
 RUN pip3 install pyyaml
 
 ENTRYPOINT ["/home/toolchain/scripts/toolchain.sh"]
+
+FROM alpine:latest AS deployer
+RUN apk add --update --no-cache nodejs npm
+RUN npm install -g --silent netlify-cli
+ENTRYPOINT ["netlify"]
