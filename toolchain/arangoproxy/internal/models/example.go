@@ -46,6 +46,7 @@ type ExampleOptions struct {
 	Explain     bool                   `yaml:"explain,omitempty" json:"explain,omitempty"`         // AQL @EXPLAIN flag
 	BindVars    map[string]interface{} `yaml:"bindVars,omitempty" json:"bindVars,omitempty"`
 	Dataset     string                 `yaml:"dataset,omitempty" json:"dataset,omitempty"`
+	SaveCache   string                 `yaml:"-" json:"-"`
 	Filename    string                 `yaml:"-" json:"-"`
 	Position    string                 `yaml:"-" json:"-"`
 }
@@ -78,6 +79,7 @@ func ParseExample(request io.Reader, headers http.Header) (Example, error) {
 
 	optionsYaml.Filename = headers.Get("Page")
 	optionsYaml.Position = headers.Get("Codeblock-Start")
+	optionsYaml.SaveCache = headers.Get("Cache")
 
 	code := strings.Replace(string(decodedRequest), string(options), "", -1)
 
