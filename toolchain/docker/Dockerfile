@@ -52,4 +52,4 @@ RUN cd bin/linux/$ARCH && mv oasisctl /usr/bin/oasisctl && chmod +x /usr/bin/oas
 
 RUN pip3 install pyyaml
 
-CMD cd /home/toolchain/scripts ; ./toolchain.sh
+ENTRYPOINT ["/home/toolchain/scripts/toolchain.sh"]

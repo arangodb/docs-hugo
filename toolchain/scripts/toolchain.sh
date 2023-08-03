@@ -10,6 +10,24 @@
 ### SETUP
 #### Check/set env vars, install requirements
 
+TRAP=0
+
+function stop_all_containers() {
+  echo "[stop_all_containers] A stop signal has been captured. Stopping all containers"
+  TRAP=1
+  sleep 2
+  docker container stop arangoproxy
+  docker container stop site
+  docker ps --filter name=stable_* -q | xargs docker stop | xargs docker rm
+  echo "[stop_all_containers] Done"
+  exit 1
+}
+
+trap "stop_all_containers" EXIT HUP INT QUIT PIPE TERM KILL
+
+cd /home/toolchain/scripts
+
+
 PYTHON_EXECUTABLE="python"
 DOCKER_COMPOSE_ARGS=""
 LOG_TARGET=""
@@ -118,7 +136,6 @@ function main() {
 
     ## Run the container exit signal interceptor in background
     trap_container_exit &
-    #trap clean_terminate_toolchain SIGINT SIGTERM SIGKILL
 
     ## tail to stdout the log files
     tail -f arangoproxy-log.log site-log.log
@@ -245,24 +262,25 @@ function run_arangoproxy_and_site() {
   
   cd ../../
   echo "[run_arangoproxy_and_site]  Run arangoproxy and site containers"
+  if [ $TRAP == 0 ]; then
+    docker run -d --name site --network=docs_net --ip=192.168.129.130 \
+      -e ENV="$ENV" \
+      -e HUGO_URL="$HUGO_URL" \
+      -e HUGO_ENV="$HUGO_ENV" \
+      -p 1313:1313 \
+      --volumes-from toolchain \
+      --log-opt tag="{{.Name}}" \
+      site
 
-  docker run -d --name site --network=docs_net --ip=192.168.129.130 \
-    -e ENV="$ENV" \
-    -e HUGO_URL="$HUGO_URL" \
-    -e HUGO_ENV="$HUGO_ENV" \
-    -p 1313:1313 \
-    --volumes-from toolchain \
-    --log-opt tag="{{.Name}}" \
-    site
-
-  docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 \
-    -e ENV="$ENV" \
-    -e HUGO_URL="$HUGO_URL" \
-    -e HUGO_ENV="$HUGO_ENV" \
-    -v arangosh:/arangosh \
-    --volumes-from toolchain \
-    --log-opt tag="{{.Name}}" \
-     arangoproxy
+    docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 \
+      -e ENV="$ENV" \
+      -e HUGO_URL="$HUGO_URL" \
+      -e HUGO_ENV="$HUGO_ENV" \
+      -v arangosh:/arangosh \
+      --volumes-from toolchain \
+      --log-opt tag="{{.Name}}" \
+      arangoproxy
+  fi
 }
 
 function setup_arangoproxy() {
@@ -401,13 +419,15 @@ function run_arangodb_container() {
   container_name="$1"
   image_id="$2"
 
-  log "[run_arangodb_container] Run single server"
-  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name" -v arangosh:/tmp -d "$image_id" --server.endpoint http+tcp://0.0.0.0:8529
+  if [ $TRAP == 0 ]; then
+    log "[run_arangodb_container] Run single server"
+    docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name" -v arangosh:/tmp -d "$image_id" --server.endpoint http+tcp://0.0.0.0:8529
 
-  log "[run_arangodb_container] Run cluster server"
-  docker run -d --net=docs_net -e ARANGO_NO_AUTH=1 --name="$container_name"_cluster \
-    "$image_id" \
-    arangodb --starter.local --starter.data-dir=./localdata
+    log "[run_arangodb_container] Run cluster server"
+    docker run -d --net=docs_net -e ARANGO_NO_AUTH=1 --name="$container_name"_cluster \
+      "$image_id" \
+      arangodb --starter.local --starter.data-dir=./localdata
+  fi
 }
 
 
@@ -588,31 +608,23 @@ function trap_container_exit() {
   terminate=false
   while [ "$terminate" = false ] ;
   do
-    siteContainerStatus=$(docker ps -a -q --filter "name=site" --filter "status=exited")
-    if [ "$siteContainerStatus" != "" ] ; then
+    siteContainerStatus=$(docker ps | grep site)
+    if [ "$siteContainerStatus" == "" ] ; then
       echo "[TERMINATE] Site exited, shutting down all containers" >> arangoproxy-log.log
 
       terminate=true
     fi
-    arangoproxyContainerStatus=$(docker ps -a -q --filter "name=arangoproxy" --filter "status=exited")
-    if [ "$arangoproxyContainerStatus" != "" ] ; then
+    arangoproxyContainerStatus=$(docker ps | grep arangoproxy)
+    if [ "$arangoproxyContainerStatus" == "" ] ; then
       echo "[TERMINATE] Arangoproxy exited, shutting down all containers" >> site-log.log
       terminate=true
     fi
   done
 
-  docker container stop arangoproxy
-  docker container stop site
-  docker container stop toolchain
+  docker stop toolchain
 }
 
 
-function clean_terminate_toolchain() {
-  echo "[TOOLCHAIN] Terminate signal trapped"
-  echo "[TOOLCHAIN] Shutting down running containers"
-  trap - SIGINT SIGTERM # clear the trap
-  docker container stop $(docker ps -aq)
-}
 
 ## --------------------------
 
