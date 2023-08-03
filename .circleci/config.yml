@@ -291,7 +291,7 @@ jobs:
           at: .
       - run:
           name: Deploy to netlify
-          command: sudo docker run -v /home/circleci/project/docs-hugo/site/public:/project arangodb/docs-hugo:deployer deploy --dir=/project --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias << pipeline.parameters.deploy-url >>
+          command: sudo docker run -v /home/circleci/project/docs-hugo/site:/project arangodb/docs-hugo:deployer deploy --dir=/project/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias << pipeline.parameters.deploy-url >>
           no_output_timeout: 1h
 
       - run:
