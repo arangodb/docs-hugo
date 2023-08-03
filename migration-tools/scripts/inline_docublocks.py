@@ -57,8 +57,6 @@ def migrateInlineDocuBlocks(block):
     newBlock["code"] = "\n".join(block.split("\n")[1:]).lstrip(" ").replace("    ", "")
     if "USER_04_documentUser" in newBlock["options"]["name"]:
         newBlock["code"] = "\n~ require('@arangodb/users').save('my-user', 'my-secret-password');\n" + newBlock["code"]
-    if "GRAPHSP_03_A_to_D" in newBlock["options"]["name"]:
-        newBlock["code"] = "\n~ db._createEdgeCollection('edges');\n" + newBlock["code"] 
     codeblock = render_codeblock(newBlock)
     codeblock = re.sub(r"^ *\|", "", codeblock, 0, re.MULTILINE)
 
