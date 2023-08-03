@@ -3,6 +3,7 @@
 {{ $language := .language }}
 {{ $name := .name }}
 {{ $description := .description }}
+{{ $saveCache := .cache }}
 
 {{ $endpoint := printf "%s/%s" site.Params.arangoproxyUrl $language }}
 {{ $body := $example | base64Encode}}
@@ -12,6 +13,7 @@
     "headers" (dict 
         "Content-Type" "application/json"
         "Codeblock-Path" $context.Position
+        "Cache" $saveCache
     )
 )
 }}

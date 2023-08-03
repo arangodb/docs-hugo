@@ -17,44 +17,76 @@
 {{ $cacheFound :=  index $cache $cacheEntry }}
 
 
-{{ with $cacheFound }}
-    {{ $oldRequest := $cacheFound.request }}
-    {{ $newRequest :=  printf "%s" $content | base64Encode  }}
 
-    {{ if ne $oldRequest $newRequest }}
-        {{ warnf "CACHE CHANGED '%v' '%v'" $oldRequest $newRequest }}
 
-        {{ if site.Params.useArangoproxy }}
+
+
+{{ if site.Params.useArangoproxy }}
+    {{ $saveCache := true }}
+
+
+    {{ with $cacheFound }}
+        {{ $oldRequest := $cacheFound.request }}
+        {{ $newRequest :=  printf "%s" $content | base64Encode  }}
+
+        {{ if eq $oldRequest $newRequest }}
+            {{ if $context.Page.Store.Get $name }}
+                {{ $response := .response | base64Decode | transform.Unmarshal }}
+                {{- partial "shortcodes/examples/render.html" (dict
+                "context" .
+                "content" $response
+                "name" $name
+                "description" $description
+                "language" $language
+                ) }}
+            {{ else }}
+                {{- partial "shortcodes/examples/generate.html" (dict
+                "context" $context
+                "example" $content
+                "language" $language
+                "name" $name
+                "description" $description
+                "cache" false
+                ) }}
+                {{ $context.Page.Store.Set $name "true" }}
+            {{ end }}
+
+        {{ else }}
             {{- partial "shortcodes/examples/generate.html" (dict
             "context" $context
             "example" $content
             "language" $language
             "name" $name
             "description" $description
+            "cache" $saveCache
             ) }}
-            {{ return }}
+            {{ $context.Page.Store.Set $name "true" }}
         {{ end }}
-    {{ end }}
-
-    {{ $response := .response | base64Decode | transform.Unmarshal }}
-    {{- partial "shortcodes/examples/render.html" (dict
-    "context" .
-    "content" $response
-    "name" $name
-    "description" $description
-    "language" $language
-    ) }}
-{{ else }}
-    {{ if site.Params.useArangoproxy }}
-
+    {{ else }}
         {{- partial "shortcodes/examples/generate.html" (dict
         "context" $context
         "example" $content
         "language" $language
         "name" $name
         "description" $description
+        "cache" $saveCache
+        ) }}
+        {{ $context.Page.Store.Set $name "true" }}
+    {{ end }}
+
+{{ else }}
+    {{ with $cacheFound }}
+        {{ $response := .response | base64Decode | transform.Unmarshal }}
+        {{- partial "shortcodes/examples/render.html" (dict
+        "context" .
+        "content" $response
+        "name" $name
+        "description" $description
+        "language" $language
         ) }}
     {{ else }}
         {{ transform.Highlight $content "" }} 
     {{ end }}
 {{ end }}
+
+

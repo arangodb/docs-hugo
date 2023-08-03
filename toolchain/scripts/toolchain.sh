@@ -263,7 +263,7 @@ function run_arangoproxy_and_site() {
   cd ../../
   echo "[run_arangoproxy_and_site]  Run arangoproxy and site containers"
   if [ $TRAP == 0 ]; then
-    HUGO_NUMWORKERMULTIPLIER=''
+    HUGO_NUMWORKERMULTIPLIER=8
     if [ "$HUGO_ENV" = "release" ]; then
       HUGO_NUMWORKERMULTIPLIER=1
     fi
