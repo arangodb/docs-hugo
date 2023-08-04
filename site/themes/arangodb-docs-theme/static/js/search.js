@@ -47,6 +47,7 @@ var autoComplete = (function(){
         // init
         var elems = typeof o.selector == 'object' ? [o.selector] : document.querySelectorAll(o.selector);
             var that = document.querySelector('#search-by')
+            $(that).focus();
 
             // create suggestions container "sc"
             that.sc = document.querySelector('.search-results')
