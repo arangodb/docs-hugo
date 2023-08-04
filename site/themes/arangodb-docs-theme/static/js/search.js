@@ -353,7 +353,7 @@ function x() {
         },
         /* onSelect callback fires when a search suggestion is chosen */
         onSelect: function(e, term, item) {
-            loadPage(item.getAttribute('data-uri'));
+            updateHistory("", item.getAttribute('data-uri'));
             $('.search-container').remove();
         }
     });
