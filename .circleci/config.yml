@@ -104,12 +104,9 @@ jobs:
             cd docs-hugo/toolchain/docker/amd64
             docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
 
-            if [ "$?" != "0" ]; then
-              cd ../../../
-              cat docs-hugo/summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
-              exit 1
-            fi 
-            
+            cd ../../../
+            cat docs-hugo/summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
+          
       - persist_to_workspace:
           root: .
           paths:
@@ -183,11 +180,9 @@ jobs:
             set +e
             cd docs-hugo/toolchain/docker/amd64
             docker compose up
-            if [ $? -ne 0 ]; then
-              cd ../../../
-              cat docs-hugo/summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
-              exit 1
-            fi 
+
+            cd ../../../
+            cat docs-hugo/summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
 
       - run:
           name: Create archive of generated files
@@ -291,14 +286,6 @@ jobs:
           name: Deploy to netlify
           command:  /home/node/docker-netlify-cli/node_modules/.bin/netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias << pipeline.parameters.deploy-url >>
           no_output_timeout: 1h
-
-      - run:
-          name: Call Github App create check function
-          command: |
-            sudo apk add --no-cache curl
-            cat docs-hugo/summary.md
-            cat docs-hugo/summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
-
 
 
   compile-linux:
