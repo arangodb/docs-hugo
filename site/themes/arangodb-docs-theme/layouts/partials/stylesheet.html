@@ -20,7 +20,6 @@
 <script>
   {{ "// hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic:" | safeJS }}
   {{ "// https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72" | safeJS }}
-  var index_url={{ "index.json" | relLangURL }};
   var root_url="/";
   var baseUri=root_url.replace(/\/$/, '');
   {{ "// translations" | safeJS }}

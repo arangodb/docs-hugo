@@ -238,7 +238,7 @@ var autoComplete = (function(){
 })();
 
 // Initialize lunrjs using our generated index file
-function initLunr() {
+function initLunr(index_url) {
     // First retrieve the index file
     $.getJSON(index_url)
         .done(function(index) {
@@ -307,9 +307,6 @@ function searchPatterns(word) {
         word + '~' + Math.floor(word.length / 4) + '^1' // allow 1 in 4 letters to have a typo
     ];
 }
-
-// Let's get started
-initLunr();
 
 function x() {
     new autoComplete({

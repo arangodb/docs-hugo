@@ -1,6 +1,5 @@
 {{- $pages := slice }}
-{{- range .Site.Pages }}
-{{- if and .Title (or (ne (.Scratch.Get "relearnIsHiddenStem") true) (ne .Site.Params.disableSearchHiddenPages true) ) }}
+{{- range (where $.Site.Pages "Section" "3.12") }}
 {{ $headings := "" }}
 
 {{ range .Page.Fragments.HeadingsMap}}
@@ -8,6 +7,5 @@
 {{ end }}
 
 {{- $pages = $pages | append (dict "uri" .RelPermalink "title" .Title "headings" $headings "description" .Description "content" (.Plain | htmlUnescape)) }}
-{{- end }}
 {{- end }}
 {{- $pages | jsonify (dict "indent" "  ") }}

@@ -5,9 +5,7 @@
     {{- $link := "<link href=\"%s\" rel=\"%s\" type=\"%s\" title=\"%s\">" }}
     <title>{{ if and .Title (not (eq .Title .Site.Title)) }}{{ .Title }} {{ default "::" .Site.Params.titleSeparator }} {{ end}}{{ .Site.Title }}</title>
 
-    <link rel="shortcut icon" href="https://www.arangodb.com/wp-content/uploads/2018/07/www.arangodb.com-favicon.png">
-
-    {{- partialCached "favicon.html" . }}
+    <link href="{{ "/images/favicon.png" | relURL }}" rel="icon" type="image/png">
     {{- partial "javascript.html" . }}
 
 
