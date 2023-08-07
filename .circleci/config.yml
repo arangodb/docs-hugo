@@ -100,7 +100,7 @@ jobs:
             export ENV="circleci"
             export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
             export HUGO_ENV=frontend
-            set +e
+
             cd docs-hugo/toolchain/docker/amd64
             docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
 
@@ -176,7 +176,6 @@ jobs:
               generate_setup-environment-var-branch << parameters.arangodb-3_12 >> "3_12"
             fi
 
-            set +e
             cd docs-hugo/toolchain/docker/amd64
             docker compose up
 
@@ -217,7 +216,11 @@ jobs:
 
               if [ "<< parameters.create-pr >>" = true ]; then
                 git push -u origin << parameters.pr-branch >>-$CIRCLE_BUILD_NUM
-                curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: scheduled-create-pr' --header "docs-branch-name: << parameters.pr-branch >>-$CIRCLE_BUILD_NUM"
+                curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci \
+                  --header 'docs-webhook-event: scheduled-create-pr' \
+                  --header "docs-branch-name: << parameters.pr-branch >>-$CIRCLE_BUILD_NUM" \
+                  --header "docs-pr-title: [CircleCI Generated] << pipeline.parameters.workflow >>-$CIRCLE_BUILD_NUM" \
+                  --header "docs-pr-body: Automatically generated content from CircleCI << pipeline.parameters.workflow >> workflow"
               else
                 git push
               fi
