@@ -180,15 +180,20 @@
   unit: byte
   type: gauge
   # all other categories are too specific
-  category: Statistics
+  category: Agency
   complexity: high
   exposedBy:
     - coordinator
     - dbserver
     - agent
   description: |
-    Amount of memory used to represent the agency data structure. This measures memory usage on agency and the
-    cache usage on coordinators/dbservers.
+    Amount of memory used to represent the agency data structure. This measures memory usage on agents 
+    and also on Coordinators and DB servers, because these have a cached version of the agency's
+    `Plan` and `Current` sections. On agency followers this metric normally
+    remains at a low value because the agency key/value store is only built on
+    agency leaders.
+    This metric can be non-zero even on single servers because there is a small initial memory allocation
+    made at ArangoDB instance start.
 
 - name: arangodb_agency_read_no_leader_total
   renamedFrom: arangodb_agency_read_no_leader
@@ -1753,11 +1758,10 @@
   exposedBy:
     - coordinator
     - dbserver
-    - single
   description: |
     Amount of memory spent in ClusterInfo. ClusterInfo keeps all relevant 
     information about servers and shard distribution. It grows with the size
-    of servers, databases and shards in the cluster.
+    of servers, databases, collections/shards and indexes in the cluster.
 
 - name: arangodb_ioheartbeat_delays_total
   introducedIn: "3.8.7"
@@ -3964,22 +3968,6 @@
   description: |
     The total amount of network replication tailing requests.
 
-- name: arangodb_request_body_memory_usage
-  introducedIn: "3.12.0"
-  help: |
-    Memory consumed by incoming request bodies.
-  unit: bytes
-  type: gauge
-  category: Statistics
-  complexity: high
-  exposedBy:
-    - coordinator
-    - dbserver
-    - agent
-    - single
-  description: |
-    Measures the amount of memory currently allocated for incoming request bodies.
-
 - name: arangodb_request_body_size_http1
   introducedIn: "3.7.15"
   help: |
@@ -4030,6 +4018,26 @@
   description: |
     Histogram of the body sizes of the received VST requests in bytes.
     Note that this does include the binary header.
+
+- name: arangodb_requests_memory_usage
+  introducedIn: "3.12.0"
+  help: |
+    Memory consumed by incoming, queued, and currently processed requests.
+  unit: bytes
+  type: gauge
+  category: Statistics
+  complexity: high
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+    - single
+  description: |
+    Measures the amount of memory currently allocated for incoming, queued,
+    and currently processed requests. The memory usage includes the size of
+    the request headers and the request bodies.
+    This includes the memory usage of requests that are currently queued
+    in the server's scheduler queue and that are waiting to be processed.
 
 - name: arangodb_revision_tree_buffered_memory_usage
   introducedIn: "3.12.0"
