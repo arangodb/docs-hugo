@@ -245,6 +245,10 @@ function getCurrentVersion() {
         urlVersion = urlRe[0].replaceAll("\/", "");
     }
     localStorage.setItem('docs-version', urlVersion);
+    
+    searchIndexFile = window.location.origin + "/index_" + urlVersion.replace(".", "") + ".json"
+    initLunr(searchIndexFile)
+
     var versionSelector = document.getElementById("arangodb-version");
     for(let option of versionSelector.options) {
       if (option.value == urlVersion) {
@@ -256,7 +260,6 @@ function getCurrentVersion() {
 
 function changeVersion() {
     var oldVersion = localStorage.getItem('docs-version');
-    console.log(oldVersion)
     var versionSelector = document.getElementById("arangodb-version");
     var newVersion  = versionSelector.options[versionSelector.selectedIndex].value;
 
@@ -267,6 +270,9 @@ function changeVersion() {
     } catch(exception) {
         changeVersion();
     }
+
+    searchIndexFile = window.location.origin + "/index_" + newVersion.replace(".", "") + ".json"
+    initLunr(searchIndexFile)
 
     var newUrl = window.location.href.replace(oldVersion, newVersion)
     updateHistory("", newUrl);
