@@ -34,8 +34,8 @@ func InitRepositories() {
 }
 
 func openRepoStream(repository *models.Repository) {
-	arangoSHBin := fmt.Sprintf("/home/toolchain/arangoproxy/arangosh/%s/%s/usr/bin/arangosh", repository.Name, repository.Version)
-	configFile := fmt.Sprintf("/home/toolchain/arangoproxy/arangosh/%s/%s/usr/bin/etc/relative/arangosh.conf", repository.Name, repository.Version)
+	arangoSHBin := fmt.Sprintf("/arangosh/arangosh/%s/%s/usr/bin/arangosh", repository.Name, repository.Version)
+	configFile := fmt.Sprintf("/arangosh/arangosh/%s/%s/usr/bin/etc/relative/arangosh.conf", repository.Name, repository.Version)
 
 	cmd := exec.Command(arangoSHBin, "--config", configFile, "--server.endpoint", repository.Url, "--quiet")
 

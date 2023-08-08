@@ -230,7 +230,7 @@ def getHugoMetrics(content):
 
 
 def processFile(page, content, filepath):
-    flags = {"frontMatter": False, "endFrontMatter": False, "description": False, "redirect": False, "title": False, "inDetails": False, "inCodeblock": False, "hint": {"active": False, "type": ""}, "capture": False, "inDocublock": False, "assign-ver": {"active": False, "isValid": False}}
+    flags = {"frontMatter": False, "endFrontMatter": False, "description": False, "redirect": False, "toc": False, "title": False, "inDetails": False, "inCodeblock": False, "hint": {"active": False, "type": ""}, "capture": False, "inDocublock": False, "assign-ver": {"active": False, "isValid": False}}
 
     buffer = []
     try:
@@ -244,6 +244,7 @@ def processFile(page, content, filepath):
 
             if flags["inDocublock"]:
                 buffer.append(line)
+
 
                 
             ## Trap and skip inline docublocks extra line
@@ -275,10 +276,13 @@ def processFile(page, content, filepath):
             
 
             ## Front Matter
-            if re.search(r"={3,}|-{3,}", line):
-                if flags["inDocublock"] or flags["inCodeblock"]:
-                    page.content = page.content + line
+            if re.search(r"^={3,}|^-{3,}", line):
+                if flags["inDocublock"]:
                     continue
+
+                # if flags["inCodeblock"]:
+                #     page.content += line
+                #     continue
 
                 if flags["endFrontMatter"] and "|" in line:
                     page.content = page.content + line
@@ -416,6 +420,7 @@ def processFile(page, content, filepath):
                 newCodeblock = inline_docublocks.migrateInlineDocuBlocks("".join(buffer))
                 newCodeblock = re.sub(r".*@END_EXAMPLE.*\n|.*@endDocuBlock.*\n", "", newCodeblock, 0, re.MULTILINE)
                 page.content = page.content + newCodeblock
+                print(newCodeblock)
                 buffer = []
                 continue
 
@@ -495,6 +500,12 @@ def processFile(page, content, filepath):
                 page.content = page.content + line
                 continue
 
+            if "{% include youtube-playlist.html" in line:
+                line = line.replace("{% include youtube-playlist.html", "{{< youtube-playlist")
+                line = line.replace("%}", ">}}")
+                page.content = page.content + line
+                continue
+
             if "{% raw %}" in line or "{% endraw %}" in line:
                 continue
 
@@ -521,15 +532,25 @@ def processFrontMatterLine(page, line, flags, filepath):
         page.frontMatter.title = line.replace("title:", "")
         return
 
+    if line.startswith("page-toc"):
+        flags["toc"] = True
+        flags["description"] = False
+        flags["redirect"] = False
+        page.frontMatter.toc = to_lower_camel_case(line)
+        return
+
     if line.startswith("description:"):
         flags["description"] = True
         flags["redirect"] = False
+        flags["toc"] = False
+
         page.frontMatter.description = line.replace("description: ", "")
         return
 
     if line.startswith("redirect_from"):
         flags["redirect"] = True
         flags["description"] = False
+        flags["toc"] = False
         return
 
     if re.search(r"^[a-zA-Z]", line, re.MULTILINE):
@@ -539,9 +560,10 @@ def processFrontMatterLine(page, line, flags, filepath):
         if flags["redirect"]:
             flags["redirect"] = False
 
+        if flags["toc"]:
+            flags["toc"] = False
+
         return
-
-
 
     if line.startswith(" "):
         if flags["description"]:
@@ -556,6 +578,10 @@ def processFrontMatterLine(page, line, flags, filepath):
             urlMap[version][line] = filepath
             return
 
+        if flags["toc"]:
+            page.frontMatter.toc = page.frontMatter.toc + "\n" + to_lower_camel_case(line)
+            return
+
 
 def cleanLine(line):
     line = line.replace("#", "sharp")
@@ -565,6 +591,14 @@ def cleanLine(line):
 
 def is_index(filename):
     return filename.endswith("_index.md")
+
+
+def to_camel_case(snake_str):
+    return "".join(x.capitalize() for x in snake_str.lower().split("-"))
+
+def to_lower_camel_case(snake_str):
+    camel_string = to_camel_case(snake_str)
+    return snake_str[0].lower() + camel_string[1:]
 
 
 class Page():
@@ -587,6 +621,7 @@ class FrontMatter():
         self.description = ""
         self.menuTitle = ""
         self.weight = 0
+        self.toc = ""
 
     @staticmethod
     def clean(str):
@@ -596,4 +631,4 @@ class FrontMatter():
         self.title = self.title.replace("site.data.versions[page.version.name]", "pageVersion")
         description = yaml.dump(self.description, sort_keys=False, default_flow_style=False)
         description = description.replace(">-", "").replace("|-", ">-")
-        return f"---\ntitle: {self.clean(self.title)}\nmenuTitle: {self.menuTitle}\nweight: {self.weight}\ndescription: {description}\narchetype: {self.layout}\n---\n"
+        return f"---\ntitle: {self.clean(self.title)}\nmenuTitle: {self.menuTitle}\nweight: {self.weight}\ndescription: {description}\n{self.toc}\narchetype: {self.layout}\n---\n"

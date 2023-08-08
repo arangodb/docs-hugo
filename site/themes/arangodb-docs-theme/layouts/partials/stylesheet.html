@@ -3,26 +3,9 @@
 <link href="//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css" rel="stylesheet">
 <link href="{{"css/fontawesome-all.min.css" | relURL}}" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="{{"css/fontawesome-all.min.css" | relURL}}" rel="stylesheet"></noscript>
 <link href="{{"css/featherlight.min.css" | relURL}}" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="{{"css/featherlight.min.css" | relURL}}" rel="stylesheet"></noscript>
-<link href="{{"css/auto-complete.css" | relURL}}" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="{{"css/auto-complete.css" | relURL}}" rel="stylesheet"></noscript>
-<link href="{{"css/annotations.css" | relURL}}" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="{{"css/annotations.css" | relURL}}" rel="stylesheet"></noscript>
-<link href="{{"css/feature-cards.css" | relURL}}" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="{{"css/feature-cards.css" | relURL}}" rel="stylesheet"></noscript>
-<link href="{{"/css/buttons.css" | relURL}}" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="{{"/css/buttons.css" | relURL}}" rel="stylesheet"></noscript>
-<link href="{{"/css/image.css" | relURL}}" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="{{"/css/image.css" | relURL}}" rel="stylesheet"></noscript>
-<link href="{{"/css/toc.css" | relURL}}" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="{{"/css/toc.css" | relURL}}" rel="stylesheet"></noscript>
-<link href="{{"css/perfect-scrollbar.min.css" | relURL}}" rel="stylesheet">
 <link href="{{"css/nucleus.css" | relURL}}" rel="stylesheet">
 <link href="{{"css/fonts.css" | relURL}}" rel="stylesheet" media="print" onload="this.media='all';this.onload=null;"><noscript><link href="{{"css/fonts.css" | relURL}}" rel="stylesheet"></noscript>
-
-
 <link href="{{"css/theme.css" | relURL}}" rel="stylesheet">
-<link href="{{"css/menu.css" | relURL}}" rel="stylesheet">
-<link href="{{"css/openapi.css" | relURL}}" rel="stylesheet">
-<link href="{{"css/tabs.css" | relURL}}" rel="stylesheet">
-<link href="{{"css/tables.css" | relURL}}" rel="stylesheet">
-<link href="{{"css/cards.css" | relURL}}" rel="stylesheet">
-
-
-
 {{- $themevariants := slice | append (.Site.Params.themeVariant | default "relearn-light" ) }}
 {{- with index $themevariants 0 }}
 <link href="{{(printf "css/theme-%s.css" .) | relURL}}" rel="stylesheet" id="variant-style">
@@ -37,7 +20,6 @@
 <script>
   {{ "// hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic:" | safeJS }}
   {{ "// https://github.com/gohugoio/hugo/blob/145b3fcce35fbac25c7033c91c1b7ae6d1179da8/transform/urlreplacers/absurlreplacer.go#L72" | safeJS }}
-  var index_url={{ "index.json" | relLangURL }};
   var root_url="/";
   var baseUri=root_url.replace(/\/$/, '');
   {{ "// translations" | safeJS }}

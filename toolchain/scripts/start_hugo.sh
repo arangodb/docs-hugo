@@ -11,19 +11,18 @@ function checkIPIsReachable() {
    fi
 }
 
-if ! command -v hugo &> /dev/null
-then
-    curl -L  https://github.com/gohugoio/hugo/releases/download/v0.110.0/hugo_0.110.0_linux-"$ARCH".deb -o hugo.deb
-    apt install -y ./hugo.deb
-fi
-
 echo "Waiting for arangoproxy to be ready"
-checkIPIsReachable "http://192.168.129.129:8080/health"
+
+if [ "$HUGO_ENV" = "frontend" ]; then
+  checkIPIsReachable "http://192.168.130.129:8080/health"
+else
+  checkIPIsReachable "http://192.168.129.129:8080/health"
+fi
 
 cd /home/site
 
 hugoOptions="--verbose --templateMetrics"
-if [ "$HUGO_ENV" = "development" ] || [ "$HUGO_ENV" = "frontend" ]; then
+if [ "$ENV" = "local" ]; then
     hugoOptions="serve --buildDrafts --watch --bind=0.0.0.0 --ignoreCache --noHTTPCache"
 fi
 

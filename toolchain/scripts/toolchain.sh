@@ -10,6 +10,24 @@
 ### SETUP
 #### Check/set env vars, install requirements
 
+TRAP=0
+
+function stop_all_containers() {
+  echo "[stop_all_containers] A stop signal has been captured. Stopping all containers"
+  TRAP=1
+  sleep 2
+  docker container stop arangoproxy
+  docker container stop site
+  docker ps --filter name=stable_* -q | xargs docker stop | xargs docker rm
+  echo "[stop_all_containers] Done"
+  exit 1
+}
+
+trap "stop_all_containers" EXIT HUP INT QUIT PIPE TERM KILL
+
+cd /home/toolchain/scripts
+
+
 PYTHON_EXECUTABLE="python"
 DOCKER_COMPOSE_ARGS=""
 LOG_TARGET=""
@@ -29,16 +47,6 @@ echo "[INIT] Environment variables:"
 if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
   GENERATORS="examples metrics error-codes options optimizer oasisctl"
 fi
-
-## at least one arangodb src folder must be provided
-if [[ -z "${ARANGODB_SRC_3_10}" ]] && [[ -z "${ARANGODB_SRC_3_11}" ]] && [[ -z "${ARANGODB_SRC_3_12}" ]]; then
-  echo "[INIT] ERROR: No ARANGODB_SRC variable set, please set it."
-  exit 1
-fi
-
-echo "  DOCKER_ENV=$DOCKER_ENV"
-
-
 
 ## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
 if [ "$ARANGODB_BRANCH_3_10" != "" ] ; then
@@ -80,6 +88,8 @@ echo ""
 echo "[TOOLCHAIN] Clean arangoproxy config file"
 yq '.repositories = []' -i ../arangoproxy/cmd/configs/local.yaml 
 
+
+
 echo "[INIT] Setup Finished"
 
 
@@ -92,23 +102,33 @@ function main() {
   echo "<h2>Generators</h2>" >> /home/summary.md
   echo "$GENERATORS" >> /home/summary.md
 
+  clean_docker_environment
+
   mapfile servers < <(yq e -o=j -I=0 '.servers[]' ../docker/config.yaml )
 
   ## Generate content and start server
   for server in "${servers[@]}"; do
-    arangodb_src=$(echo "$server" | yq e '.src' -)
-    if [ "$arangodb_src" == "" ] ; then
+    image=$(echo "$server" | yq e '.image' -)
+    version=$(echo "$server" | yq e '.version' -)
+
+    if [ "$image" == "" ]; then
       continue
+    fi
+
+    if [ $HUGO_ENV == "release" ]; then
+      rm -r ../../site/data/$version/*
+      echo "{}" > ../../site/data/$version/cache.json
     fi
 
     process_server "$server"
   done
 
+  run_arangoproxy_and_site
+
   ## Start arangoproxy and site containers to build examples and site
   if [[ $GENERATORS == *"examples"* ]] ; then
     echo "<h2>Examples</h2>" >> /home/summary.md
-
-    run_arangoproxy_and_site
+  fi
 
     ## redirect logs of arangoproxy and site containers to files
     docker logs --details --follow arangoproxy > arangoproxy-log.log &
@@ -116,7 +136,6 @@ function main() {
 
     ## Run the container exit signal interceptor in background
     trap_container_exit &
-    #trap clean_terminate_toolchain SIGINT SIGTERM SIGKILL
 
     ## tail to stdout the log files
     tail -f arangoproxy-log.log site-log.log
@@ -124,7 +143,6 @@ function main() {
     ## If a container exits, the tail gets interrupted and the script will arrive here
     echo "[TERMINATE] Site container exited"
     echo "[TERMINATE] Terminating toolchain"
-  fi
 }
 
 
@@ -200,10 +218,19 @@ function clean_docker_environment() {
   log "[clean_docker_environment] setup docs_net docker network"
   docker network inspect docs_net >/dev/null 2>&1 || docker network create --driver=bridge --subnet=192.168.129.0/24 docs_net
 
+  log "[clean_docker_environment] setup arangosh docker volume"
+  docker volume create arangosh
+
   ## Stop and remove old containers of this ArangoDB docker image
+  log "[clean_docker_environment] Cleanup arangoproxy and site containers"
+  docker container stop arangoproxy site &> /dev/null || true
+  docker container rm  arangoproxy site &> /dev/null  || true
+}
+
+function clean_docker_arangodb_containers() {
   log "[clean_docker_environment] Cleanup old containers"
-  docker container stop "$container_name" "$container_name"_cluster arangoproxy site &> /dev/null || true
-  docker container rm "$container_name" "$container_name"_cluster arangoproxy site &> /dev/null  || true
+  docker container stop "$container_name" "$container_name"_cluster  &> /dev/null || true
+  docker container rm "$container_name" "$container_name"_cluster &> /dev/null  || true
 }
 
 
@@ -217,30 +244,48 @@ function run_arangoproxy_and_site() {
 
 
   log "[run_arangoproxy_and_site] Pull arangoproxy and site images"
-  docker pull arangodb/docs-hugo:arangoproxy
-  docker pull arangodb/docs-hugo:site
-  docker tag arangodb/docs-hugo:arangoproxy arangoproxy
-  docker tag arangodb/docs-hugo:site site
+  arch=$(uname -m)
+  if [ "$arch" == "x86_64" ]; then
+    arch="amd64"
+  fi
+
+  if [ "$arch" == "aarch64" ]; then
+    arch="arm64"
+  fi
+
+  docker pull arangodb/docs-hugo:arangoproxy-"$arch"
+  docker pull arangodb/docs-hugo:site-"$arch"
+  docker tag arangodb/docs-hugo:arangoproxy-"$arch" arangoproxy
+  docker tag arangodb/docs-hugo:site-"$arch" site
 
   set +e
   
   cd ../../
   echo "[run_arangoproxy_and_site]  Run arangoproxy and site containers"
+  if [ $TRAP == 0 ]; then
+    HUGO_NUMWORKERMULTIPLIER=8
+    if [ "$HUGO_ENV" = "release" ]; then
+      HUGO_NUMWORKERMULTIPLIER=1
+    fi
+    docker run -d --name site --network=docs_net --ip=192.168.129.130 \
+      -e ENV="$ENV" \
+      -e HUGO_URL="$HUGO_URL" \
+      -e HUGO_ENV="$HUGO_ENV" \
+      -e HUGO_NUMWORKERMULTIPLIER="$HUGO_NUMWORKERMULTIPLIER" \
+      -p 1313:1313 \
+      --volumes-from toolchain \
+      --log-opt tag="{{.Name}}" \
+      site
 
-  docker run -d --name site --network=docs_net --ip=192.168.129.130 \
-    -e HUGO_URL="$HUGO_URL" \
-    -e HUGO_ENV="$HUGO_ENV" \
-    -p 1313:1313 \
-    --volumes-from toolchain \
-    --log-opt tag="{{.Name}}" \
-    site
-
-  docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 \
-    -e HUGO_URL="$HUGO_URL" \
-    -e HUGO_ENV="$HUGO_ENV" \
-    --volumes-from toolchain \
-    --log-opt tag="{{.Name}}" \
-     arangoproxy
+    docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 \
+      -e ENV="$ENV" \
+      -e HUGO_URL="$HUGO_URL" \
+      -e HUGO_ENV="$HUGO_ENV" \
+      -v arangosh:/arangosh \
+      --volumes-from toolchain \
+      --log-opt tag="{{.Name}}" \
+      arangoproxy
+  fi
 }
 
 function setup_arangoproxy() {
@@ -261,22 +306,18 @@ function setup_arangoproxy_arangosh() {
   name=$1
   image=$2
   version=$3
-
   container_name="$name"_"$version"
-
   log "[setup_arangoproxy_arangosh] Setup dedicated arangosh in arangoproxy"
-
   ## Create directory where arangosh executable will be stored
-  mkdir -p ../arangoproxy/arangosh/"$name"/"$version"/usr ../arangoproxy/arangosh/"$name"/"$version"/usr/bin ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/etc/relative
-
+  docker exec  $container_name sh -c "mkdir -p /tmp/arangosh/$name/$version/usr /tmp/arangosh/$name/$version/usr/bin /tmp/arangosh/$name/$version/usr/bin/etc/relative"
   ## Copy arangosh executables from ArangoDB docker container to arangoproxy container
-  docker cp "$container_name":/usr/bin/arangosh ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/arangosh
-  docker cp "$container_name":/usr/bin/icudtl.dat ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/icudtl.dat
+  docker exec  $container_name sh -c "cp -r /usr/bin/arangosh /tmp/arangosh/$name/$version/usr/bin/arangosh"
 
-  docker cp "$container_name":/usr/share/ ../arangoproxy/arangosh/"$name"/"$version"/usr/
-  docker cp "$container_name":/etc/arangodb3/arangosh.conf ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/etc/relative/arangosh.conf
+  #docker cp "$container_name":/usr/bin/icudtl.dat ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/icudtl.dat
+  docker exec  $container_name sh -c "cp -r /usr/share/ /tmp/arangosh/$name/$version/usr/"
+  docker exec  $container_name sh -c "cp -r /usr/bin/icudtl.dat /tmp/arangosh/$name/$version/usr/share/arangodb3/"
 
-  sed -i -e 's~startup-directory.*~startup-directory = /home/toolchain/arangoproxy/arangosh/'"$name"'/'"$version"'/usr/share/arangodb3/js~' ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/etc/relative/arangosh.conf
+  docker exec  $container_name sh -c "cp -r /etc/arangodb3/arangosh.conf /tmp/arangosh/$name/$version/usr/bin/etc/relative/arangosh.conf"
   echo ""
 }
 
@@ -315,7 +356,6 @@ function process_server() {
   name=$(echo "$server" | yq e '.name' -)
   image=$(echo "$server" | yq e '.image' -)
   version=$(echo "$server" | yq e '.version' -)
-  arangodb_src=$(echo "$server" | yq e '.src' -)
 
   echo "<li><strong>$version</strong>: $image</li>" >> /home/summary.md
 
@@ -330,7 +370,7 @@ function process_server() {
     container_name="$name"_"$version"
     image_name=$(echo ${image##*/})
 
-    clean_docker_environment "$container_name"
+    clean_docker_arangodb_containers "$container_name"
 
     image_id=$(get_docker_imageid $image $image_name $version)
     if [ "$image_id" == "" ]; then
@@ -384,13 +424,15 @@ function run_arangodb_container() {
   container_name="$1"
   image_id="$2"
 
-  log "[run_arangodb_container] Run single server"
-  docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name" -d "$image_id" --server.endpoint http+tcp://0.0.0.0:8529
+  if [ $TRAP == 0 ]; then
+    log "[run_arangodb_container] Run single server"
+    docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name" -v arangosh:/tmp -d "$image_id" --server.endpoint http+tcp://0.0.0.0:8529
 
-  log "[run_arangodb_container] Run cluster server"
-  docker run -d --net=docs_net -e ARANGO_NO_AUTH=1 --name="$container_name"_cluster \
-    "$image_id" \
-    arangodb --starter.local --starter.data-dir=./localdata
+    log "[run_arangodb_container] Run cluster server"
+    docker run -d --net=docs_net -e ARANGO_NO_AUTH=1 --name="$container_name"_cluster \
+      "$image_id" \
+      arangodb --starter.local --starter.data-dir=./localdata
+  fi
 }
 
 
@@ -407,11 +449,11 @@ export IFS=""
 
 function generators_from_source() {
   if [[ $GENERATORS == *"error-codes"* ]]; then
-    generate_error_codes "$arangodb_src" "$version"
+    generate_error_codes "$version"
   fi
 
   if [[ $GENERATORS == *"metrics"* ]]; then
-    generate_metrics "$arangodb_src" "$version"
+    generate_metrics "$version"
   fi
 
   if [[ $GENERATORS == *"oasisctl"* ]]; then
@@ -478,13 +520,17 @@ function generate_optimizer_rules() {
 function generate_error_codes() {
   echo "<h2>Error Codes</h2>" >> /home/summary.md
 
-  errors_dat_file=$1
-  version=$2
+  version=$1
+
+  if [ $version == "" ]; then
+    log "[generate_error_codes] ArangoDB Source code not found. Aborting"
+    exit 1
+  fi
   touch ../../site/data/$version/errors.yaml
 
   log "[generate_error_codes] Launching generate error-codes script"
-  log "[generate_error_codes] $PYTHON_EXECUTABLE generators/generateErrorCodes.py --src "$1"/lib/Basics/errors.dat --dst ../../site/data/$version/errors.yaml"
-  res=$(("$PYTHON_EXECUTABLE" generators/generateErrorCodes.py --src "$1"/lib/Basics/errors.dat --dst ../../site/data/$version/errors.yaml) 2>&1)
+  log "[generate_error_codes] $PYTHON_EXECUTABLE generators/generateErrorCodes.py --src /tmp/"$1"/lib/Basics/errors.dat --dst ../../site/data/$version/errors.yaml"
+  res=$(("$PYTHON_EXECUTABLE" generators/generateErrorCodes.py --src /tmp/"$1"/lib/Basics/errors.dat --dst ../../site/data/$version/errors.yaml) 2>&1)
 
   if [ $? -ne 0 ]; then
     log "[generate_error_codes] [ERROR] $res"
@@ -499,12 +545,16 @@ function generate_error_codes() {
 function generate_metrics() {
   echo "<h2>Metrics</h2>" >> /home/summary.md
 
-  src=$1
-  version=$2
+  version=$1
+
+  if [ $version == "" ]; then
+    log "[generate_error_codes] ArangoDB Source code not found. Aborting"
+    exit 1
+  fi
 
   log "[generate_metrics] Generate Metrics requested"
-  log "[generate_metrics] $PYTHON_EXECUTABLE generators/generateMetrics.py --main $src --dst ../../site/data/$version"
-  res=$(("$PYTHON_EXECUTABLE" generators/generateMetrics.py --main "$src" --dst ../../site/data/$version) 2>&1)
+  log "[generate_metrics] $PYTHON_EXECUTABLE generators/generateMetrics.py --main /tmp/"$version" --dst ../../site/data/$version"
+  res=$(("$PYTHON_EXECUTABLE" generators/generateMetrics.py --main /tmp/"$version" --dst ../../site/data/$version) 2>&1)
 
   if [ $? -ne 0 ]; then
     log "[generate_metrics] [ERROR] $res"
@@ -563,35 +613,23 @@ function trap_container_exit() {
   terminate=false
   while [ "$terminate" = false ] ;
   do
-    siteContainerStatus=$(docker ps -a -q --filter "name=site" --filter "status=exited")
-    if [ "$siteContainerStatus" != "" ] ; then
+    siteContainerStatus=$(docker ps | grep site)
+    if [ "$siteContainerStatus" == "" ] ; then
       echo "[TERMINATE] Site exited, shutting down all containers" >> arangoproxy-log.log
 
       terminate=true
     fi
-    arangoproxyContainerStatus=$(docker ps -a -q --filter "name=arangoproxy" --filter "status=exited")
-    if [ "$arangoproxyContainerStatus" != "" ] ; then
+    arangoproxyContainerStatus=$(docker ps | grep arangoproxy)
+    if [ "$arangoproxyContainerStatus" == "" ] ; then
       echo "[TERMINATE] Arangoproxy exited, shutting down all containers" >> site-log.log
       terminate=true
     fi
   done
 
-  echo "[TERMINATE] Before docker compose stop all" >> arangoproxy-log.log
-  docker container ps -a
-  #docker container stop $(docker ps -aq)
-  echo "[TERMINATE] After docker container stop all" >> arangoproxy-log.log
-  echo "[TERMINATE] After docker container stop all"
-
-  docker container stop toolchain
+  docker stop toolchain
 }
 
 
-function clean_terminate_toolchain() {
-  echo "[TOOLCHAIN] Terminate signal trapped"
-  echo "[TOOLCHAIN] Shutting down running containers"
-  trap - SIGINT SIGTERM # clear the trap
-  docker container stop $(docker ps -aq)
-}
 
 ## --------------------------
 

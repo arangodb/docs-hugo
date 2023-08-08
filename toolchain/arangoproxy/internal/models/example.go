@@ -46,6 +46,7 @@ type ExampleOptions struct {
 	Explain     bool                   `yaml:"explain,omitempty" json:"explain,omitempty"`         // AQL @EXPLAIN flag
 	BindVars    map[string]interface{} `yaml:"bindVars,omitempty" json:"bindVars,omitempty"`
 	Dataset     string                 `yaml:"dataset,omitempty" json:"dataset,omitempty"`
+	SaveCache   string                 `yaml:"-" json:"-"`
 	Filename    string                 `yaml:"-" json:"-"`
 	Position    string                 `yaml:"-" json:"-"`
 }
@@ -78,6 +79,7 @@ func ParseExample(request io.Reader, headers http.Header) (Example, error) {
 
 	optionsYaml.Filename = headers.Get("Page")
 	optionsYaml.Position = headers.Get("Codeblock-Start")
+	optionsYaml.SaveCache = headers.Get("Cache")
 
 	code := strings.Replace(string(decodedRequest), string(options), "", -1)
 
@@ -134,8 +136,12 @@ func (r ExampleResponse) String() string {
 }
 
 func FormatResponse(response *ExampleResponse) {
-	codeComments := regexp.MustCompile(`(?m)~.*`) // Cut the ~... strings from the displayed input
+	codeComments := regexp.MustCompile(`(?m) *~.*\n*`) // Cut the ~... strings from the displayed input
 	response.Input = codeComments.ReplaceAllString(response.Input, "")
+	newLines := regexp.MustCompile(`(?m)^ *\n^ *\n`)
+	response.Input = newLines.ReplaceAllString(response.Input, "")
+	xpError := regexp.MustCompile(`(?m)\/\/ xpError.*`)
+	response.Input = xpError.ReplaceAllString(response.Input, "")
 
 	response.Input = strings.TrimLeft(response.Input, "\r\n")
 	response.Input = strings.TrimLeft(response.Input, "\n")

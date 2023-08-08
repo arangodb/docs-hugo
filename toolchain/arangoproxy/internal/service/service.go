@@ -32,6 +32,10 @@ func (service CommonService) arangosh(name, code string, repository models.Repos
 }
 
 func (service CommonService) saveCache(request string, response models.ExampleResponse, cacheChannel chan map[string]interface{}) {
+	if response.Options.SaveCache == "false" {
+		return
+	}
+
 	cacheRequest := make(map[string]interface{})
 	cacheRequest["request"] = request
 	cacheRequest["response"] = response

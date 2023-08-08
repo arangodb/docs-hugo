@@ -41,7 +41,7 @@ func init() {
 
 func main() {
 	models.Logger.Printf("Available endpoints:\n - /js\n - /aql\n - /curl\n - /openapi\n")
-	models.Logger.Printf("Starting Server at %s\n", models.Conf.WebServer)
+	models.Logger.Printf("Starting Server at :8080\n")
 
 	if useServers {
 		internal.InitRepositories()
@@ -51,7 +51,7 @@ func main() {
 		models.Logger.Printf("[INIT] Datasets Loaded")
 	}
 
-	internal.StartController(models.Conf.WebServer)
+	internal.StartController(":8080")
 }
 
 var startupBanner = `

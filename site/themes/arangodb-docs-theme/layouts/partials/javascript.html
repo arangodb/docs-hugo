@@ -1,19 +1,24 @@
 <script src="{{"js/jquery.min.js"| relURL}}"></script>
 <script src="{{"js/clipboard.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
-<script src="{{"js/perfect-scrollbar.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 <script src="{{"js/featherlight.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
-<script src="{{"js/menu.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
-<script src="{{"js/load_page.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
-<script src="{{"js/toc.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 
-<script src="{{"js/version.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
-<script src="{{"js/openapi.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
+{{ $versions := index site.Data "versions" }}
+{{ range $i, $version := $versions }}
+    {{ if eq "stable" $version.alias }}
+        <script>
+            var stableVersion = {{ $version.name }};
+        </script>
+    {{ end }}
+    {{ if eq "devel" $version.alias }}
+        <script>
+            var develVersion = {{ $version.name }};
+        </script>
+    {{ end }}
+{{ end }}
+
+
 <script src="{{"js/codeblocks.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 <script src="{{"js/theme.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
-
-<script>
-    var index_url={{ "index.json" | relLangURL }};
-</script>
 
 <script src="{{"js/lunr.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 <script src="{{"js/lunr.stemmer.support.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>

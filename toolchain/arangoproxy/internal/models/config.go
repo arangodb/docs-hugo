@@ -7,7 +7,6 @@ import (
 )
 
 type Config struct {
-	WebServer    string       `yaml:"webserver"`    // Arangoproxy url+port
 	Repositories []Repository `yaml:"repositories"` // ArangoDB instances
 	Cache        string       `yaml:"cache"`        // Cache configuration
 	Datasets     string       `yaml:"datasetsFile"` // Logfile
