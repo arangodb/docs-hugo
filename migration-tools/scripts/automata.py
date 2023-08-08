@@ -500,6 +500,12 @@ def processFile(page, content, filepath):
                 page.content = page.content + line
                 continue
 
+            if "{% include youtube-playlist.html" in line:
+                line = line.replace("{% include youtube-playlist.html", "{{< youtube-playlist")
+                line = line.replace("%}", ">}}")
+                page.content = page.content + line
+                continue
+
             if "{% raw %}" in line or "{% endraw %}" in line:
                 continue
 
