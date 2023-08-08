@@ -12,7 +12,7 @@ user input and query the database.
 
 A video guide is also available:
 
-{% include youtube-playlist.html id="PL0tn-TSss6NV45d1HnLA57VJFH6h1SeH7" %}
+{{< youtube-playlist id="PL0tn-TSss6NV45d1HnLA57VJFH6h1SeH7" >}}
 
 ## Manifest
 

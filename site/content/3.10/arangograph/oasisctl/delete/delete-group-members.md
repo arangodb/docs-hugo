@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl delete group members command
 title: Oasisctl Delete Group Members
 menuTitle: Delete Group Members
-weight: 70
+weight: 65
+description: >-
+  Description of the oasisctl delete group members command
+archetype: default
 ---
+Delete members from group
+
 ## Synopsis
+
 Delete members from group
 
 ```
@@ -13,6 +17,7 @@ oasisctl delete group members [flags]
 ```
 
 ## Options
+
 ```
   -g, --group-id string          Identifier of the group to delete members from
   -h, --help                     help for members
@@ -20,7 +25,8 @@ oasisctl delete group members [flags]
   -u, --user-emails strings      A comma separated list of user email addresses
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -28,5 +34,6 @@ oasisctl delete group members [flags]
 ```
 
 ## See also
+
 * [oasisctl delete group](delete-group.md)	 - Delete a group the authenticated user has access to
 
