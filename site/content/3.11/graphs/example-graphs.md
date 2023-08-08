@@ -249,6 +249,26 @@ type: single
   examples.dropGraph("routeplanner");
 ```
 
+**Testing New Toolchain Flow With New Example**
+```js
+---
+name: graph_create_cities_sample_copy
+description: ''
+render: input/output
+version: '3.11'
+server_name: stable
+type: single
+---
+  var examples = require("@arangodb/graph-examples/example-graph");
+  var g = examples.loadGraph("routeplanner");
+  db.frenchCity.toArray();
+  db.germanCity.toArray();
+  db.germanHighway.toArray();
+  db.frenchHighway.toArray();
+  db.internationalHighway.toArray();
+  examples.dropGraph("routeplanner");
+```
+
 ## Connected Components Graph
 
 A small example graph comprised of `components` (vertices) and `connections`
