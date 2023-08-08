@@ -39,6 +39,7 @@ function menuEntryClickListener() {
 function renderVersion() {
     var version = localStorage.getItem('docs-version');
     var menuEntry = document.getElementsByClassName('version-menu');
+    console.log(menuEntry)
     for ( let entry of menuEntry ) {
         if (entry.classList.contains(version)) {
             entry.style.display = 'block';
@@ -129,6 +130,7 @@ function styleImages() {
 
 function loadPage(target) {
   var href = target;
+  console.log(target)
   renderVersion();
   loadMenu(href);
   $.get({
@@ -234,12 +236,11 @@ $(window).scroll(function(){
 
 */
 
-var stableVersion;
 
 function getCurrentVersion() {
     var url = window.location.href;
     var urlRe = url.match("\/[0-9.]+\/")
-    var urlVersion = stableVersion;
+    var urlVersion = "stable";
 
     if (urlRe) {
         urlVersion = urlRe[0].replaceAll("\/", "");

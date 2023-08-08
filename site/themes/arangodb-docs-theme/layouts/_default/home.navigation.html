@@ -49,8 +49,22 @@
                   <a href="{{.RelPermalink}}" class="toggle menu-section-entry menu-link"  ><div class="menu-title">{{ .Params.menuTitle | markdownify }}</div></a>
                 {{ end }}
               {{ end }}
-  
-            <ul class='{{if or (eq .Params.menuTitle "3.10") (eq .Params.menuTitle "3.11") (eq .Params.menuTitle "3.12")}} version-menu {{ .Params.menuTitle }} {{ else }} submenu {{ end }}'>
+              
+              {{ $ulClass := "submenu" }}
+              {{if or (eq .Params.menuTitle "3.10") (eq .Params.menuTitle "3.11") (eq .Params.menuTitle "3.12")}}
+                {{ $versions := index site.Data "versions" }}
+                {{ range $i, $version := $versions }}
+                  {{ if eq $version.name $currentNode.Params.menuTitle }}
+                    {{ with $version.alias }}
+                      {{ $ulClass = . }}
+                    {{ else }}
+                      {{ $ulClass = $version.name }}
+                    {{ end }}
+                  {{ end }}
+                {{ end }}
+              {{ end }}
+              
+            <ul class='version-menu {{ $ulClass }}'>
                   {{- range $pages.ByWeight }}
                     {{- template "section-tree-nav" dict "sect" . "currentnode" $currentNode }}
                   {{- end }}
