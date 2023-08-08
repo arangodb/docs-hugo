@@ -854,7 +854,7 @@ header .logo {
     width: 1vw;
     transition: width 0.3s ease-in-out;
     background-color: var(--SIDEBAR-BACKGROUND-COLOR);
-    box-shadow: -3px 0 5px 0 #555;
+    box-shadow: 5px 0px 1px -5px #555;
 }
 
 @media screen and (max-height: 900px) {
