@@ -30,13 +30,7 @@
         </button>
         <input data-search-input class="search-by" id="search-bar" type="search" placeholder="Search...">
       </div>
-      <div class="version-selector">
-        <select id="arangodb-version" onchange="changeVersion();">
-          <option value="3.12">3.12</option>
-          <option value="3.11">3.11</option>
-          <option value="3.10">3.10</option>
-        </select>
-      </div>
+      {{ partial "version-selector.html" . }}
     </div>
 
   </header>

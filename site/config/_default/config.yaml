@@ -15,12 +15,14 @@ module:
       target: "assets/images"
 
 
-menu:
-  shortcuts:
-    - name: "<i class='fab fa-fw fa-github'></i> GitHub repo"
-      identifier: "ds"
-      url: "https://github.com/ArangoDB/ArangoDB/issues"
-      weight: 10
+permalinks:
+  page:
+    "3.11": /stable/:sections[1:]/:filename
+    "3.12": /devel/:sections[1:]/:filename
+  section:
+    "3.11": /stable/:sections[1:]
+    "3.12": /devel/:sections[1:]
+
 
 markup:
   highlight:
@@ -42,10 +44,10 @@ outputFormats:
     baseName: index_310
     mediaType: application/json
   index_311:
-    baseName: index_311
+    baseName: index_stable
     mediaType: application/json
   index_312:
-    baseName: index_312
+    baseName: index_devel
     mediaType: application/json
 
 outputs:
