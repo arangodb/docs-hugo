@@ -14,16 +14,6 @@ module:
     - source: "content/images"
       target: "assets/images"
 
-
-permalinks:
-  page:
-    "3.11": /stable/:sections[1:]/:filename
-    "3.12": /devel/:sections[1:]/:filename
-  section:
-    "3.11": /stable/:sections[1:]
-    "3.12": /devel/:sections[1:]
-
-
 markup:
   highlight:
     noClasses: false
@@ -44,10 +34,10 @@ outputFormats:
     baseName: index_310
     mediaType: application/json
   index_311:
-    baseName: index_stable
+    baseName: index_311
     mediaType: application/json
   index_312:
-    baseName: index_devel
+    baseName: index_312
     mediaType: application/json
 
 outputs:
