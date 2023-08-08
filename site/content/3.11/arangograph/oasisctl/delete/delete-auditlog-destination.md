@@ -1,15 +1,11 @@
 ---
+layout: default
+description: Description of the oasisctl delete auditlog destination command
 title: Oasisctl Delete Auditlog Destination
 menuTitle: Delete Audit Log Destination
-weight: 25
-description: >-
-  Description of the oasisctl delete auditlog destination command
-archetype: default
+weight: 30
 ---
-Delete a destination from an auditlog
-
 ## Synopsis
-
 Delete a destination from an auditlog
 
 ```
@@ -17,7 +13,6 @@ oasisctl delete auditlog destination [flags]
 ```
 
 ## Options
-
 ```
   -i, --auditlog-id string       Identifier of the auditlog to delete.
   -h, --help                     help for destination
@@ -27,8 +22,7 @@ oasisctl delete auditlog destination [flags]
       --url string               An optional URL which will be used to delete a single destination instead of all.
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -36,6 +30,5 @@ oasisctl delete auditlog destination [flags]
 ```
 
 ## See also
-
 * [oasisctl delete auditlog](delete-auditlog.md)	 - Delete an auditlog
 
