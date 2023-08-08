@@ -1,15 +1,11 @@
 ---
+layout: default
+description: Description of the oasisctl list projects command
 title: Oasisctl List Projects
 menuTitle: List Projects
-weight: 170
-description: >-
-  Description of the oasisctl list projects command
-archetype: default
+weight: 175
 ---
-List all projects of the given organization
-
 ## Synopsis
-
 List all projects of the given organization
 
 ```
@@ -17,14 +13,12 @@ oasisctl list projects [flags]
 ```
 
 ## Options
-
 ```
   -h, --help                     help for projects
   -o, --organization-id string   Identifier of the organization
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -32,6 +26,5 @@ oasisctl list projects [flags]
 ```
 
 ## See also
-
 * [oasisctl list](_index.md)	 - List resources
 
