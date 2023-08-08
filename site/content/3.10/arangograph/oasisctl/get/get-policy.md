@@ -1,15 +1,11 @@
 ---
+layout: default
+description: Description of the oasisctl get policy command
 title: Oasisctl Get Policy
 menuTitle: Get Policy
-weight: 110
-description: >-
-  Description of the oasisctl get policy command
-archetype: default
+weight: 115
 ---
-Get a policy the authenticated user has access to
-
 ## Synopsis
-
 Get a policy the authenticated user has access to
 
 ```
@@ -17,14 +13,12 @@ oasisctl get policy [flags]
 ```
 
 ## Options
-
 ```
   -h, --help         help for policy
   -u, --url string   URL of the resource to inspect the policy for
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -32,6 +26,5 @@ oasisctl get policy [flags]
 ```
 
 ## See also
-
 * [oasisctl get](_index.md)	 - Get information
 
