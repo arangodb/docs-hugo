@@ -8,8 +8,5 @@
       {{- partial "in-development.html" . }}
       <h1 class="page-title">{{ .Title | markdownify }}</h1>
       {{ $content | safeHTML }}
-      <nav class="pagination">
-        {{- partial "content-footer.html" . }}
-      </nav>
     </article>
 {{- end }}
