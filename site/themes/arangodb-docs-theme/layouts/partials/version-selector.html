@@ -2,7 +2,7 @@
     <select id="arangodb-version" onchange="changeVersion();">
     {{ $versions := index site.Data "versions" }}
     {{ range $i, $version := $versions }}
-        <option value="{{ with $version.alias }}{{ . }}{{ else }}{{ $version.name }}{{ end }}">{{ with $version.alias }}{{ . }}{{ else }}{{ $version.name }}{{ end }}</option>
+        <option value="{{ $version.name }}">{{ $version.name }}</option>
     {{ end }}
     </select>
 </div>
