@@ -156,6 +156,7 @@ jobs:
            cd docs-hugo/
            git fetch --all
            git pull --all
+           git merge -X theirs frontend-preview 
            cd ../
 
       
@@ -171,29 +172,14 @@ jobs:
             if [ "<< parameters.arangodb-3_10 >>" != "" ] ; then
               pull-branch-image << parameters.arangodb-3_10 >> "3.10"
               generate_setup-environment-var-branch << parameters.arangodb-3_10 >> "3_10"
-              cd docs-hugo/
-              set +e
-              yes | git checkout --patch frontend-preview site/data/3.10/cache.json
-              set -e
-              cd ../
             fi
             if [ "<< parameters.arangodb-3_11 >>" != "" ] ; then
               pull-branch-image << parameters.arangodb-3_11 >> "3.11"
               generate_setup-environment-var-branch << parameters.arangodb-3_11 >> "3_11"
-              cd docs-hugo/
-              set +e
-              yes | git checkout --patch frontend-preview site/data/3.11/cache.json
-              set -e
-              cd ../
             fi
             if [ "<< parameters.arangodb-3_12 >>" != "" ] ; then
               pull-branch-image << parameters.arangodb-3_12 >> "3.12"
               generate_setup-environment-var-branch << parameters.arangodb-3_12 >> "3_12"
-              cd docs-hugo
-              set +e
-              yes | git checkout --patch frontend-preview site/data/3.12/cache.json  
-              set -e
-              cd ../
             fi
 
             cd docs-hugo/toolchain/docker/amd64
