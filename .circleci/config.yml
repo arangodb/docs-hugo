@@ -164,17 +164,17 @@ jobs:
             if [ "<< parameters.arangodb-3_10 >>" != "" ] ; then
               pull-branch-image << parameters.arangodb-3_10 >> "3.10"
               generate_setup-environment-var-branch << parameters.arangodb-3_10 >> "3_10"
-              curl "https://raw.githubusercontent.com/arangodb/docs-hugo/frontend-preview/site/data/3.10/cache.json" > docs-hugo/site/data/3.10/cache.json
+              yes | git checkout --patch frontend-preview site/data/3.10/cache.json  
             fi
             if [ "<< parameters.arangodb-3_11 >>" != "" ] ; then
               pull-branch-image << parameters.arangodb-3_11 >> "3.11"
               generate_setup-environment-var-branch << parameters.arangodb-3_11 >> "3_11"
-              curl "https://raw.githubusercontent.com/arangodb/docs-hugo/frontend-preview/site/data/3.11/cache.json" > docs-hugo/site/data/3.11/cache.json
+              yes | git checkout --patch frontend-preview site/data/3.11/cache.json  
             fi
             if [ "<< parameters.arangodb-3_12 >>" != "" ] ; then
               pull-branch-image << parameters.arangodb-3_12 >> "3.12"
               generate_setup-environment-var-branch << parameters.arangodb-3_12 >> "3_12"
-              curl "https://raw.githubusercontent.com/arangodb/docs-hugo/frontend-preview/site/data/3.12/cache.json" > docs-hugo/site/data/3.12/cache.json
+              yes | git checkout --patch frontend-preview site/data/3.12/cache.json  
             fi
 
             cd docs-hugo/toolchain/docker/amd64
