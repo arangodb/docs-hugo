@@ -152,7 +152,7 @@ jobs:
       - run:
           name: Clone docs
           command: |
-           git clone git@github.com:arangodb/docs-hugo.git
+           git clone git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
            cd docs-hugo/
            git fetch --all
            git pull --all
