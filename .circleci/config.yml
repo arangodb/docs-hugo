@@ -149,7 +149,14 @@ jobs:
           at: .
       
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
-      - run: git clone git@github.com:arangodb/docs-hugo.git && git fetch --all && git pull --all
+      - run:
+          name: Clone docs
+          command: |
+           git clone git@github.com:arangodb/docs-hugo.git
+           cd docs-hugo/
+           git fetch --all
+           git pull --all
+           cd ../
 
       
       - run:
