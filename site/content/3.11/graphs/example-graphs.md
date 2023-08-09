@@ -211,9 +211,6 @@ type: single
 ---
   var examples = require("@arangodb/graph-examples/example-graph");
   var graph = examples.loadGraph("social");
-  db.female.toArray()
-  db.male.toArray()
-  db.relation.toArray()
   examples.dropGraph("social");
 ```
 
@@ -241,11 +238,6 @@ type: single
 ---
   var examples = require("@arangodb/graph-examples/example-graph");
   var g = examples.loadGraph("routeplanner");
-  db.frenchCity.toArray();
-  db.germanCity.toArray();
-  db.germanHighway.toArray();
-  db.frenchHighway.toArray();
-  db.internationalHighway.toArray();
   examples.dropGraph("routeplanner");
 ```
 
