@@ -3,7 +3,7 @@
     <meta itemprop="itemListOrder" content="Descending" />
 
       {{ range .Ancestors.Reverse }}
-        {{ if and (ne .CurrentSection .FirstSection) }}
+        {{ if not .IsHome }}
         <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
           <meta itemprop="position" content="{{ .Params.menuTitle }}" />
           <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
