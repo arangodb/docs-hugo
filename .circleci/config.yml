@@ -156,7 +156,7 @@ jobs:
            cd docs-hugo/
            git fetch --all
            git pull --all
-           git merge -X theirs frontend-preview 
+           git merge -X theirs origin/frontend-preview 
            cd ../
 
       
