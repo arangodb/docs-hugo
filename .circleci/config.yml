@@ -164,7 +164,7 @@ jobs:
             cd /home/circleci/project/docs-hugo
             cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
           when: always
-          
+
       - persist_to_workspace:
           root: .
           paths:
@@ -232,10 +232,13 @@ jobs:
 
             cd docs-hugo/toolchain/docker/amd64
             docker compose up
-
+      - run:
+          name: Upload summary on GitHub
+          command: |
             cd /home/circleci/project/docs-hugo
             cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
-
+          when: always
+      
       - run:
           name: Create archive of generated files
           command: |
