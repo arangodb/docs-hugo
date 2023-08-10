@@ -40,45 +40,42 @@ paths:
         guarantee consistency. Note that the backup at first resides on the
         same machine and hard drive as the original data. Make sure to upload
         it to a remote site for an actual backup.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                label:
-                  description: |
-                    The label for this backup. The label is used together with a
-                    timestamp string create a unique backup identifier, `<timestamp>_<label>`.
-                    If no label is specified, the empty string is assumed and a default
-                    UUID is created for this part of the ID.
-                  type: string
-                timeout:
-                  description: |
-                    The time in seconds that the operation tries to get a consistent
-                    snapshot. The default is 120 seconds.
-                  type: number
-                allowInconsistent:
-                  description: |
-                    If this flag is set to `true` and no global transaction lock can be
-                    acquired within the given timeout, a possibly inconsistent backup
-                    is taken. The default for this flag is `false` and in this case
-                    a timeout results in an HTTP 408 error.
-                  type: boolean
-                force:
-                  description: |
-                    If this flag is set to `true` and no global transaction lock can be acquired
-                    within the given timeout, all running transactions are forcefully aborted to
-                    ensure that a consistent backup can be created. This does not include
-                    JavaScript transactions. It waits for the transactions to be aborted at most
-                    `timeout` seconds. Thus using `force` the request timeout is doubled.
-                    To abort transactions is almost certainly not what you want for your application.
-                    In the presence of intermediate commits it can even destroy the atomicity of your
-                    transactions. Use at your own risk, and only if you need a consistent backup at
-                    all costs. The default and recommended value is `false`. If both
-                    `allowInconsistent` and `force` are set to `true`, then the latter takes
-                    precedence and transactions are aborted. This is only available in the cluster.
-                  type: boolean
+      schema:
+        type: object
+        properties:
+          label:
+            description: |
+              The label for this backup. The label is used together with a
+              timestamp string create a unique backup identifier, `<timestamp>_<label>`.
+              If no label is specified, the empty string is assumed and a default
+              UUID is created for this part of the ID.
+            type: string
+          timeout:
+            description: |
+              The time in seconds that the operation tries to get a consistent
+              snapshot. The default is 120 seconds.
+            type: number
+          allowInconsistent:
+            description: |
+              If this flag is set to `true` and no global transaction lock can be
+              acquired within the given timeout, a possibly inconsistent backup
+              is taken. The default for this flag is `false` and in this case
+              a timeout results in an HTTP 408 error.
+            type: boolean
+          force:
+            description: |
+              If this flag is set to `true` and no global transaction lock can be acquired
+              within the given timeout, all running transactions are forcefully aborted to
+              ensure that a consistent backup can be created. This does not include
+              JavaScript transactions. It waits for the transactions to be aborted at most
+              `timeout` seconds. Thus using `force` the request timeout is doubled.
+              To abort transactions is almost certainly not what you want for your application.
+              In the presence of intermediate commits it can even destroy the atomicity of your
+              transactions. Use at your own risk, and only if you need a consistent backup at
+              all costs. The default and recommended value is `false`. If both
+              `allowInconsistent` and `force` are set to `true`, then the latter takes
+              precedence and transactions are aborted. This is only available in the cluster.
+            type: boolean
       responses:
         '201':
           description: |
