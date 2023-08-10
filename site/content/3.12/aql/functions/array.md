@@ -27,7 +27,7 @@ Apart from that, AQL also offers several language constructs:
 
 ## APPEND()
 
-`APPEND(anyArray, values, unique) → newArray`
+`APPEND(anyArray, values, unique, foo) → newArray`
 
 Add all elements of an array to another array. All values are added at the end of the
 array (right side).
@@ -41,6 +41,7 @@ it in an array (unless it is an array itself). You may also use [PUSH()](#push) 
   removed from the resulting array. If `values` is an empty array or if either
   `anyArray` or `values` is `null`, then the other input array is returned
   unmodified. The default is `false`.
+- **foo**: something new
 - returns **newArray** (array): the modified array
 
 **Examples**
