@@ -249,7 +249,6 @@ def processExample_new(docublock):
     for i, line in enumerate(lines):
         if "@EXAMPLE_" in line:
             inExample = True
-            exampleBlock["options"]["render"] = "input/output"
 
             exampleName = re.search(r"(?<={).*(?=})", line).group(0)
             exampleBlock["options"]["name"] = exampleName
