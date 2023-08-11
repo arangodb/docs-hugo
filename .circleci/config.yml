@@ -356,11 +356,15 @@ jobs:
 
             rm -r /root/project/*
             clone-branch << parameters.arangodb-branch >> << parameters.version >>
-            tar -cvf /tmp/<< parameters.version >>.tar /root/project
       - persist_to_workspace:
           root: /tmp
           paths:
-            - << parameters.version >>.tar
+            - << parameters.version >>/*
+          when:
+                matches:
+                  pattern: "metrics|error-codes|oasisctl"
+                  value: << pipeline.parameters.generators >>
+
       - run:
           name: Check Branch Image already exists
           command: |

@@ -29,6 +29,9 @@ function clone-branch() {
 
     git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name /root/project
     clone-arangodb-enterprise $branch_name
+
+    mkdir -p /tmp/$VER
+    cp -r /root/project/. /tmp/$VER
 }
 
 function create-docker-image() {
@@ -85,8 +88,6 @@ function generate_setup-environment-var-branch() {
     BRANCH="$1"
     version="$(echo "$2" | tr _ .)"
     export ARANGODB_BRANCH_"$2"=$BRANCH
-    mkdir -p /home/circleci/project/$version
-    tar -xf /home/circleci/project/$version.tar -C /home/circleci/project/$version
     export ARANGODB_SRC_"$2"=/home/circleci/project/$version
 }
 
