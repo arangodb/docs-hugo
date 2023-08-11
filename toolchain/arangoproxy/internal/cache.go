@@ -16,7 +16,7 @@ func SaveCachedExampleResponse(chnl chan map[string]interface{}) error {
 			requestHash := cacheRequest["request"].(string)
 			exampleResponse := cacheRequest["response"].(models.ExampleResponse)
 
-			entryName := fmt.Sprintf("%s_%s_%s", exampleResponse.Options.Name, exampleResponse.Options.ServerName, exampleResponse.Options.Type)
+			entryName := fmt.Sprintf("%s_%s", exampleResponse.Options.Name, exampleResponse.Options.Type)
 			responseHash, err := utils.EncodeToBase64(exampleResponse)
 
 			newCacheEntry := make(map[string]map[string]string)

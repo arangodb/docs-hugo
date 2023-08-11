@@ -242,7 +242,7 @@ def processExample_new(docublock):
     blockExamples = []
 
     inExample = False
-    exampleBlock = {'options': {"description": "", "version": version}, 'code': ""}
+    exampleBlock = {'options': {"description": ""}, 'code': ""}
 
     lines = examples[0].split("\n")
 
@@ -253,17 +253,14 @@ def processExample_new(docublock):
 
             exampleName = re.search(r"(?<={).*(?=})", line).group(0)
             exampleBlock["options"]["name"] = exampleName
-            exampleBlock["options"]["server_name"] = "stable"
-            exampleBlock["options"]["type"] = "single"
             if "_cluster" in exampleBlock["options"]["name"]:
                 exampleBlock["options"]["type"] = "cluster"
                 exampleBlock["options"]["name"] = exampleBlock["options"]["name"].replace("_cluster", "")
-                exampleBlock["options"]["version"] = version
             continue
 
         if "@END_EXAMPLE_" in line:
             blockExamples.append(exampleBlock)
-            exampleBlock = {'options': {"description": "", "version": version}, 'code': ""}
+            exampleBlock = {'options': {"description": ""}, 'code': ""}
             inExample = False
             continue
 

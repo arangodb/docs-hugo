@@ -5,20 +5,14 @@
 {{ $metadata := findRE `(?ms)^---.*?^---` $content }}
 {{ $test := index $metadata 0 | transform.Unmarshal }}
 {{ $name := $test.name }}
-{{ $version := $test.version }}
-{{ $serverName := $test.server_name }}
 {{ $description := $test.description }}
-{{ $type := $test.type }}
-{{ $cacheEntry := printf "%s_%s_%s" $name $serverName $type }}
+{{ $type := $test.type | default "single" }}
+{{ $cacheEntry := printf "%s_%s" $name $type }}
 {{ $pageVersion := $context.Page.Store.Get "versionShort" }}
 
 {{ $dataFolderByVersion := index site.Data $pageVersion }}
 {{ $cache := index $dataFolderByVersion "cache"}}
 {{ $cacheFound :=  index $cache $cacheEntry }}
-
-
-
-
 
 
 {{ if site.Params.useArangoproxy }}
@@ -47,6 +41,7 @@
                 "name" $name
                 "description" $description
                 "cache" false
+                "version" $pageVersion
                 ) }}
                 {{ $context.Page.Store.Set $name "true" }}
             {{ end }}
@@ -59,6 +54,7 @@
             "name" $name
             "description" $description
             "cache" $saveCache
+            "version" $pageVersion
             ) }}
             {{ $context.Page.Store.Set $name "true" }}
         {{ end }}
@@ -70,6 +66,7 @@
         "name" $name
         "description" $description
         "cache" $saveCache
+        "version" $pageVersion
         ) }}
         {{ $context.Page.Store.Set $name "true" }}
     {{ end }}

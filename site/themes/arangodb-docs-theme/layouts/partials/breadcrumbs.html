@@ -3,7 +3,7 @@
     <meta itemprop="itemListOrder" content="Descending" />
 
       {{ range .Ancestors.Reverse }}
-        {{ if ne .CurrentSection .FirstSection}}
+        {{ if not .IsHome }}
         <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
           <meta itemprop="position" content="{{ .Params.menuTitle }}" />
           <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
@@ -12,12 +12,14 @@
         </li>
         {{ end }}
       {{- end }}   
+      {{ if not .IsHome }}
       <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
         <meta itemprop="position" content="{{ .Params.menuTitle }}" />
         <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
           <span itemprop="name" class="breadcrumb-entry">{{ .Params.menuTitle | markdownify }}</span>
         </a>
       </li>
+      {{ end }}
     </ol>
     <a class="edit-page" aria-label="" href="https://github.com/arangodb/docs/edit/main/site/content/{{ with .File }}{{ .Path }}{{ end }}" target="_blank"><i class="fab fa-fw fa-github edit-page-icon"></i></a>
 </nav>
