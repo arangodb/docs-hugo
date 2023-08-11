@@ -270,8 +270,6 @@ def processExample_new(docublock):
 
             line = re.sub(r"^ *\|", "", line, 0, re.MULTILINE)
             exampleBlock["code"] = exampleBlock["code"] + "\n" + line
-            if "logJsonResponse" in line:
-                exampleBlock["options"]["render"] = "input/output"
 
         if not inExample:
             exampleBlock["options"]["description"] = exampleBlock["options"]["description"] + "\n" + line
