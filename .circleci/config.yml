@@ -108,7 +108,9 @@ commands:
     steps:
       - when:
           condition: 
-            matches: { pattern: "metrics|error-codes|oasisctl", value: << parameters.generators >> }
+              or:
+                - equal: [ generate-oasisctl, << pipeline.parameters.workflow >> ]
+                - equal: [ generate-scheduled, << pipeline.parameters.workflow >> ]
 
           steps:
             - persist_to_workspace:
