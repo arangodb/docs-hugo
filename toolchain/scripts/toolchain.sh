@@ -16,9 +16,7 @@ function stop_all_containers() {
   echo "[stop_all_containers] A stop signal has been captured. Stopping all containers"
   TRAP=1
   sleep 2
-  docker container stop arangoproxy
-  docker container stop site
-  docker ps --filter name=stable_* -q | xargs docker stop | xargs docker rm
+  docker ps -a --filter name=docs_* -q | xargs docker stop | xargs docker rm
   echo "[stop_all_containers] Done"
   exit 1
 }
@@ -50,19 +48,16 @@ fi
 
 ## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
 if [ "$ARANGODB_BRANCH_3_10" != "" ] ; then
-      export ARANGODB_BRANCH_3_10_NAME="stable"
       export ARANGODB_BRANCH_3_10_IMAGE="$ARANGODB_BRANCH_3_10"
       export ARANGODB_BRANCH_3_10_VERSION="3.10"
 fi
 
 if [ "$ARANGODB_BRANCH_3_11" != "" ] ; then
-      export ARANGODB_BRANCH_3_11_NAME="stable"
       export ARANGODB_BRANCH_3_11_IMAGE="$ARANGODB_BRANCH_3_11"
       export ARANGODB_BRANCH_3_11_VERSION="3.11"
 fi
 
 if [ "$ARANGODB_BRANCH_3_12" != "" ] ; then
-      export ARANGODB_BRANCH_3_12_NAME="stable"
       export ARANGODB_BRANCH_3_12_IMAGE="$ARANGODB_BRANCH_3_12"
       export ARANGODB_BRANCH_3_12_VERSION="3.12"
 fi
@@ -131,8 +126,8 @@ function main() {
   fi
 
     ## redirect logs of arangoproxy and site containers to files
-    docker logs --details --follow arangoproxy > arangoproxy-log.log &
-    docker logs --details --follow site > site-log.log &
+    docker logs --details --follow docs_arangoproxy > arangoproxy-log.log &
+    docker logs --details --follow docs_site > site-log.log &
 
     ## Run the container exit signal interceptor in background
     trap_container_exit &
@@ -222,15 +217,9 @@ function clean_docker_environment() {
   docker volume create arangosh
 
   ## Stop and remove old containers of this ArangoDB docker image
-  log "[clean_docker_environment] Cleanup arangoproxy and site containers"
-  docker container stop arangoproxy site &> /dev/null || true
-  docker container rm  arangoproxy site &> /dev/null  || true
-}
+  log "[clean_docker_environment] Cleanup orphan containers"
+  docker ps -a --filter name=docs_* -q | xargs docker stop | xargs docker rm
 
-function clean_docker_arangodb_containers() {
-  log "[clean_docker_environment] Cleanup old containers"
-  docker container stop "$container_name" "$container_name"_cluster  &> /dev/null || true
-  docker container rm "$container_name" "$container_name"_cluster &> /dev/null  || true
 }
 
 
@@ -267,7 +256,7 @@ function run_arangoproxy_and_site() {
     if [ "$HUGO_ENV" = "release" ]; then
       HUGO_NUMWORKERMULTIPLIER=1
     fi
-    docker run -d --name site --network=docs_net --ip=192.168.129.130 \
+    docker run -d --name docs_site --network=docs_net --ip=192.168.129.130 \
       -e ENV="$ENV" \
       -e HUGO_URL="$HUGO_URL" \
       -e HUGO_ENV="$HUGO_ENV" \
@@ -277,7 +266,7 @@ function run_arangoproxy_and_site() {
       --log-opt tag="{{.Name}}" \
       site
 
-    docker run -d --name arangoproxy --network=docs_net --ip=192.168.129.129 \
+    docker run -d --name docs_arangoproxy --network=docs_net --ip=192.168.129.129 \
       -e ENV="$ENV" \
       -e HUGO_URL="$HUGO_URL" \
       -e HUGO_ENV="$HUGO_ENV" \
@@ -289,42 +278,39 @@ function run_arangoproxy_and_site() {
 }
 
 function setup_arangoproxy() {
-  name=$1
-  image=$2
-  version=$3
+  image=$1
+  version=$2
 
-  container_name="$name"_"$version"
+  container_name=docs_server_"$version"
 
-  setup_arangoproxy_arangosh "$name" "$image" "$version"
+  setup_arangoproxy_arangosh "$image" "$version"
 
-  setup_arangoproxy_repositories "$name" "$version" "$container_name"
+  setup_arangoproxy_repositories "$version" "$container_name"
   
   log "[setup_arangoproxy] Done"
 }
 
 function setup_arangoproxy_arangosh() {
-  name=$1
-  image=$2
-  version=$3
-  container_name="$name"_"$version"
+  image=$1
+  version=$2
+  container_name=docs_server_"$version"
   log "[setup_arangoproxy_arangosh] Setup dedicated arangosh in arangoproxy"
   ## Create directory where arangosh executable will be stored
-  docker exec  $container_name sh -c "mkdir -p /tmp/arangosh/$name/$version/usr /tmp/arangosh/$name/$version/usr/bin /tmp/arangosh/$name/$version/usr/bin/etc/relative"
+  docker exec  $container_name sh -c "mkdir -p /tmp/arangosh/$version/usr /tmp/arangosh/$version/usr/bin /tmp/arangosh/$version/usr/bin/etc/relative"
   ## Copy arangosh executables from ArangoDB docker container to arangoproxy container
-  docker exec  $container_name sh -c "cp -r /usr/bin/arangosh /tmp/arangosh/$name/$version/usr/bin/arangosh"
+  docker exec  $container_name sh -c "cp -r /usr/bin/arangosh /tmp/arangosh/$version/usr/bin/arangosh"
 
   #docker cp "$container_name":/usr/bin/icudtl.dat ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/icudtl.dat
-  docker exec  $container_name sh -c "cp -r /usr/share/ /tmp/arangosh/$name/$version/usr/"
-  docker exec  $container_name sh -c "cp -r /usr/bin/icudtl.dat /tmp/arangosh/$name/$version/usr/share/arangodb3/"
+  docker exec  $container_name sh -c "cp -r /usr/share/ /tmp/arangosh/$version/usr/"
+  docker exec  $container_name sh -c "cp -r /usr/bin/icudtl.dat /tmp/arangosh/$version/usr/share/arangodb3/"
 
-  docker exec  $container_name sh -c "cp -r /etc/arangodb3/arangosh.conf /tmp/arangosh/$name/$version/usr/bin/etc/relative/arangosh.conf"
+  docker exec  $container_name sh -c "cp -r /etc/arangodb3/arangosh.conf /tmp/arangosh/$version/usr/bin/etc/relative/arangosh.conf"
   echo ""
 }
 
 function setup_arangoproxy_repositories() {
-  name="$1"
-  version="$2"
-  container_name="$3"
+  version="$1"
+  container_name="$2"
 
   log "[setup_arangoproxy_repositories] Retrieve single server ip"
   single_server_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container_name")
@@ -333,7 +319,7 @@ function setup_arangoproxy_repositories() {
   printf -v url "http://%s:8529" $single_server_ip
 
   log "[setup_arangoproxy_repositories] Copy single server configuration in arangoproxy repositories"
-  yq e '.repositories += [{"name": "'"$name"'", "type": "single", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
+  yq e '.repositories += [{"type": "single", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
 
   log "[setup_arangoproxy_repositories] Retrieve cluster server ip"
   cluster_server_ip=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' "$container_name"_cluster)
@@ -342,7 +328,7 @@ function setup_arangoproxy_repositories() {
   printf -v url "http://%s:8529" $cluster_server_ip
 
   log "[setup_arangoproxy_repositories] Copy cluster server configuration in arangoproxy repositories"
-  yq e '.repositories += [{"name": "'"$name"'", "type": "cluster", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
+  yq e '.repositories += [{"type": "cluster", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
 }
 
 
@@ -353,13 +339,12 @@ function setup_arangoproxy_repositories() {
 function process_server() {
   server="$1"
 
-  name=$(echo "$server" | yq e '.name' -)
   image=$(echo "$server" | yq e '.image' -)
   version=$(echo "$server" | yq e '.version' -)
 
   echo "<li><strong>$version</strong>: $image</li>" >> /home/summary.md
 
-  LOG_TARGET="$name $image $version"
+  LOG_TARGET="$image $version"
 
   echo "[process_server] Processing Server $LOG_TARGET" 
 
@@ -367,10 +352,8 @@ function process_server() {
 
   ## Generators stat do need arangodb instances running
   if [[ $GENERATORS == *"optimizer"* ]] || [[ $GENERATORS == *"options"* ]] || [[ $GENERATORS == *"examples"* ]]; then
-    container_name="$name"_"$version"
+    container_name=docs_server_"$version"
     image_name=$(echo ${image##*/})
-
-    clean_docker_arangodb_containers "$container_name"
 
     image_id=$(get_docker_imageid $image $image_name $version)
     if [ "$image_id" == "" ]; then
@@ -397,29 +380,12 @@ function process_server() {
     fi
 
     if [[ $GENERATORS == *"examples"* ]] ; then
-      setup_arangoproxy "$name" "$image_name" "$version"
+      setup_arangoproxy "$image_name" "$version"
     fi
   fi
 }
 
 ### Setup and run an ArangoDB docker image
-function start_server() {
-  name=$1
-  branch_name=$2
-  version=$3
-  src=$4
-  container_name="$name"_"$version"
-  image_name=$(echo ${branch_name##*/})
-
-
-  log "[start_server] Setup server"
-  echo "$name" "$image" "$version"
-  echo ""
-
-  
-}
-
-
 function run_arangodb_container() {
   container_name="$1"
   image_id="$2"
@@ -613,13 +579,13 @@ function trap_container_exit() {
   terminate=false
   while [ "$terminate" = false ] ;
   do
-    siteContainerStatus=$(docker ps | grep site)
+    siteContainerStatus=$(docker ps | grep docs_site)
     if [ "$siteContainerStatus" == "" ] ; then
       echo "[TERMINATE] Site exited, shutting down all containers" >> arangoproxy-log.log
 
       terminate=true
     fi
-    arangoproxyContainerStatus=$(docker ps | grep arangoproxy)
+    arangoproxyContainerStatus=$(docker ps | grep docs_arangoproxy)
     if [ "$arangoproxyContainerStatus" == "" ] ; then
       echo "[TERMINATE] Arangoproxy exited, shutting down all containers" >> site-log.log
       terminate=true
