@@ -108,9 +108,8 @@ commands:
     steps:
       - when:
           condition: 
-            matches:
-              pattern: "metrics|error-codes|oasisctl"
-              value: << parameters.generators >>
+            matches: { pattern: "metrics|error-codes|oasisctl", value: << parameters.generators >> }
+
           steps:
             - persist_to_workspace:
                 root: /tmp
