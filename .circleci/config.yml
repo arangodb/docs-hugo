@@ -162,7 +162,7 @@ jobs:
           name: Upload summary on GitHub
           command: |
             cd /home/circleci/project/docs-hugo
-            cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
+            cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-check-name: plain-build-summary'  --header 'docs-branch-name: '$CIRCLE_BRANCH''
           when: always
 
       - persist_to_workspace:
@@ -236,7 +236,7 @@ jobs:
           name: Upload summary on GitHub
           command: |
             cd /home/circleci/project/docs-hugo
-            cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
+            cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-check-name: generate-summary' --header 'docs-branch-name: '$CIRCLE_BRANCH''
           when: always
       
       - run:
