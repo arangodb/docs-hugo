@@ -49,7 +49,7 @@ var JSFormatter = format.JSFormatter{}
 func (service JSService) Execute(request models.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan string) (res models.ExampleResponse) {
 	commands := JSFormatter.FormatRequestCode(request.Code)
 
-	repository, err := models.GetRepository(request.Options.ServerName, request.Options.Type, request.Options.Version)
+	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
 	if err != nil {
 		responseMsg := fmt.Sprintf("A server for version %s has not been used during generation", request.Options.Version)
 		res = *models.NewExampleResponse(request.Code, responseMsg, request.Options)
@@ -72,7 +72,7 @@ var curlFormatter = format.CurlFormatter{}
 
 func (service CurlService) Execute(request models.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan string) (res models.ExampleResponse, err error) {
 	commands := curlFormatter.FormatCommand(request.Code)
-	repository, err := models.GetRepository(request.Options.ServerName, request.Options.Type, request.Options.Version)
+	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
 	if err != nil {
 		responseMsg := fmt.Sprintf("A server for version %s has not been used during generation", request.Options.Version)
 		res = *models.NewExampleResponse(request.Code, responseMsg, request.Options)
@@ -101,7 +101,7 @@ var AQLFormatter = format.AQLFormatter{}
 
 func (service AQLService) Execute(request models.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan string) (res models.AQLResponse) {
 	commands := AQLFormatter.FormatRequestCode(request.Code, request.Options.BindVars)
-	repository, err := models.GetRepository(request.Options.ServerName, request.Options.Type, request.Options.Version)
+	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
 	if err != nil {
 		responseMsg := fmt.Sprintf("A server for version %s has not been used during generation", request.Options.Version)
 		res.ExampleResponse.Input, res.ExampleResponse.Options, res.ExampleResponse.Output = request.Code, request.Options, responseMsg

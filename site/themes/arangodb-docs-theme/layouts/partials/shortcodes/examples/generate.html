@@ -4,6 +4,7 @@
 {{ $name := .name }}
 {{ $description := .description }}
 {{ $saveCache := .cache }}
+{{ $version := .version }}
 
 {{ $endpoint := printf "%s/%s" site.Params.arangoproxyUrl $language }}
 {{ $body := $example | base64Encode}}
@@ -14,6 +15,7 @@
         "Content-Type" "application/json"
         "Codeblock-Path" $context.Position
         "Cache" $saveCache
+        "Version" $version
     )
 )
 }}

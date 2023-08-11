@@ -37,13 +37,12 @@ type Example struct {
 
 // The yaml part in the codeblock
 type ExampleOptions struct {
-	ServerName  string                 `yaml:"server_name,omitempty" json:"server_name,omitempty"` // Arango instance to be used: nightly, release ...
-	Description string                 `yaml:"description" json:"description"`                     // What appears on codeblock header
-	Name        string                 `yaml:"name" json:"name"`                                   // Example Name
-	Type        string                 `yaml:"type" json:"type"`                                   // Example Name
-	Version     string                 `yaml:"version" json:"version"`                             // Arango instance version to launch the example against
-	Render      RenderType             `yaml:"render" json:"render"`                               // Return the example code, the example output or both
-	Explain     bool                   `yaml:"explain,omitempty" json:"explain,omitempty"`         // AQL @EXPLAIN flag
+	Description string                 `yaml:"description" json:"description"`             // What appears on codeblock header
+	Name        string                 `yaml:"name" json:"name"`                           // Example Name
+	Type        string                 `yaml:"type,omitempty" json:"type,omitempty"`       // Example Name
+	Version     string                 `yaml:"-" json:"-"`                                 // Arango instance version to launch the example against
+	Render      RenderType             `yaml:"render,omitempty" json:"render,omitempty"`   // Return the example code, the example output or both
+	Explain     bool                   `yaml:"explain,omitempty" json:"explain,omitempty"` // AQL @EXPLAIN flag
 	BindVars    map[string]interface{} `yaml:"bindVars,omitempty" json:"bindVars,omitempty"`
 	Dataset     string                 `yaml:"dataset,omitempty" json:"dataset,omitempty"`
 	SaveCache   string                 `yaml:"-" json:"-"`
@@ -77,9 +76,18 @@ func ParseExample(request io.Reader, headers http.Header) (Example, error) {
 		return Example{}, fmt.Errorf("ParseExample error parsing options: %s\nBroken content: %s", err.Error(), string(options))
 	}
 
+	if optionsYaml.Type == "" {
+		optionsYaml.Type = "single"
+	}
+
+	if optionsYaml.Render == "" {
+		optionsYaml.Render = "input/output"
+	}
+
 	optionsYaml.Filename = headers.Get("Page")
 	optionsYaml.Position = headers.Get("Codeblock-Start")
 	optionsYaml.SaveCache = headers.Get("Cache")
+	optionsYaml.Version = headers.Get("Version")
 
 	code := strings.Replace(string(decodedRequest), string(options), "", -1)
 
