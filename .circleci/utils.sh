@@ -88,6 +88,8 @@ function generate_setup-environment-var-branch() {
     BRANCH="$1"
     version="$(echo "$2" | tr _ .)"
     export ARANGODB_BRANCH_"$2"=$BRANCH
+    mkdir -p /home/circleci/project/$version
+    tar -xf /home/circleci/project/$version.tar -C /home/circleci/project/$version
     export ARANGODB_SRC_"$2"=/home/circleci/project/$version
 }
 

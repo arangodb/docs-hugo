@@ -356,10 +356,11 @@ jobs:
 
             rm -r /root/project/*
             clone-branch << parameters.arangodb-branch >> << parameters.version >>
+            tar -cvf /tmp/<< parameters.version >>.tar /tmp/<< parameters.version >>
       - persist_to_workspace:
           root: /tmp
           paths:
-            - << parameters.version >>/*
+            - << parameters.version >>.tar
       - run:
           name: Check Branch Image already exists
           command: |
