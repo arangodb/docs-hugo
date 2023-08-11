@@ -1021,7 +1021,6 @@ paths:
 ---
 description: |-
   Execute a query and extract the result in a single go
-render: input/output
 name: RestCursorCreateCursorForLimitReturnSingle
 ---
 
@@ -1052,7 +1051,6 @@ name: RestCursorCreateCursorForLimitReturnSingle
 ---
 description: |-
   Execute a query and extract a part of the result
-render: input/output
 name: RestCursorCreateCursorForLimitReturn
 ---
 
@@ -1086,7 +1084,6 @@ name: RestCursorCreateCursorForLimitReturn
 ---
 description: |-
   Using the query option "fullCount"
-render: input/output
 name: RestCursorCreateCursorOption
 ---
 
@@ -1111,7 +1108,6 @@ name: RestCursorCreateCursorOption
 ---
 description: |-
   Enabling and disabling optimizer rules
-render: input/output
 name: RestCursorOptimizerRules
 ---
 
@@ -1140,7 +1136,6 @@ name: RestCursorOptimizerRules
 description: |-
   Execute instrumented query and return result together with
   execution plan and profiling information
-render: input/output
 name: RestCursorProfileQuery
 ---
 
@@ -1166,7 +1161,6 @@ name: RestCursorProfileQuery
 description: |-
   Execute a data-modification query and retrieve the number of
   modified documents
-render: input/output
 name: RestCursorDeleteQuery
 ---
 
@@ -1197,7 +1191,6 @@ name: RestCursorDeleteQuery
 ---
 description: |-
   Execute a data-modification query with option `ignoreErrors`
-render: input/output
 name: RestCursorDeleteIgnore
 ---
 
@@ -1230,7 +1223,6 @@ description: |-
   with key `test` in the collection `documents`. The normal update behavior of the
   `UPDATE` operation is to replace the array attribute completely, but using the
   `PUSH()` function allows you to append to the array:
-render: input/output
 name: RestCursorModifyArray
 ---
 
@@ -1270,7 +1262,6 @@ description: |-
   startup option `--query.memory-limit`) is used for restricting the maximum amount
   of memory the query can use. A memory limit value of `0` means that the maximum
   amount of memory for the query is not restricted.
-render: input/output
 name: RestCursorMemoryLimit
 ---
 
@@ -1289,7 +1280,6 @@ name: RestCursorMemoryLimit
 ---
 description: |-
   Bad query - Missing body
-render: input/output
 name: RestCursorCreateCursorMissingBody
 ---
 
@@ -1307,7 +1297,6 @@ name: RestCursorCreateCursorMissingBody
 ---
 description: |-
   Bad query - Unknown collection
-render: input/output
 name: RestCursorCreateCursorUnknownCollection
 ---
 
@@ -1331,7 +1320,6 @@ name: RestCursorCreateCursorUnknownCollection
 description: |-
   Bad query - Execute a data-modification query that attempts to remove a non-existing
   document
-render: input/output
 name: RestCursorDeleteQueryFail
 ---
 
@@ -1779,7 +1767,6 @@ paths:
 ---
 description: |-
   Valid request for next batch
-render: input/output
 name: RestCursorPostForLimitReturnCont
 ---
 
@@ -1814,7 +1801,6 @@ name: RestCursorPostForLimitReturnCont
 ---
 description: |-
   Missing identifier
-render: input/output
 name: RestCursorPostMissingCursorIdentifier
 ---
 
@@ -1832,7 +1818,6 @@ name: RestCursorPostMissingCursorIdentifier
 ---
 description: |-
   Unknown identifier
-render: input/output
 name: RestCursorPostInvalidCursorIdentifier
 ---
 
@@ -1919,7 +1904,6 @@ paths:
 ---
 description: |-
   Valid request for next batch
-render: input/output
 name: RestCursorForLimitReturnCont
 ---
 
@@ -1954,7 +1938,6 @@ name: RestCursorForLimitReturnCont
 ---
 description: |-
   Missing identifier
-render: input/output
 name: RestCursorMissingCursorIdentifier
 ---
 
@@ -1972,7 +1955,6 @@ name: RestCursorMissingCursorIdentifier
 ---
 description: |-
   Unknown identifier
-render: input/output
 name: RestCursorInvalidCursorIdentifier
 ---
 
@@ -2506,7 +2488,6 @@ paths:
 ---
 description: |-
   Request the second batch (again):
-render: input/output
 name: RestCursorPostBatch
 ---
 
@@ -2576,7 +2557,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestCursorDelete
 ---
 
@@ -3082,7 +3062,6 @@ paths:
 ---
 description: |-
   Valid query
-render: input/output
 name: RestExplainValid
 ---
 
@@ -3108,7 +3087,6 @@ name: RestExplainValid
 ---
 description: |-
   A plan with some optimizer rules applied
-render: input/output
 name: RestExplainOptimizerRules
 ---
 
@@ -3135,7 +3113,6 @@ name: RestExplainOptimizerRules
 ---
 description: |-
   Using some options
-render: input/output
 name: RestExplainOptions
 ---
 
@@ -3169,7 +3146,6 @@ name: RestExplainOptions
 ---
 description: |-
   Returning all plans
-render: input/output
 name: RestExplainAllPlans
 ---
 
@@ -3198,7 +3174,6 @@ name: RestExplainAllPlans
 ---
 description: |-
   A query that produces a warning
-render: input/output
 name: RestExplainWarning
 ---
 
@@ -3219,7 +3194,6 @@ name: RestExplainWarning
 ---
 description: |-
   Invalid query (missing bind parameter)
-render: input/output
 name: RestExplainInvalid
 ---
 
@@ -3249,7 +3223,6 @@ description: |-
 
   The following example shows a query with a non-sensible filter condition that
   the optimizer has removed so that there are less top-level statements.
-render: input/output
 name: RestExplainEmpty
 ---
 
@@ -3319,7 +3292,6 @@ paths:
 ---
 description: |-
   a valid query
-render: input/output
 name: RestQueryValid
 ---
 
@@ -3338,7 +3310,6 @@ name: RestQueryValid
 ---
 description: |-
   an invalid query
-render: input/output
 name: RestQueryInvalid
 ---
 
@@ -3428,7 +3399,6 @@ paths:
 ---
 description: |-
   Retrieve the list of all query optimizer rules:
-render: input/output
 name: RestQueryRules
 ---
 

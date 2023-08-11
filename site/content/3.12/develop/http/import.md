@@ -244,7 +244,6 @@ paths:
 ---
 description: |-
   Importing documents with heterogenous attributes from an array of JSON objects:
-render: input/output
 name: RestImportJsonList
 ---
 
@@ -276,7 +275,6 @@ name: RestImportJsonList
 ---
 description: |-
   Importing documents using JSON objects separated by new lines (JSONL):
-render: input/output
 name: RestImportJsonLines
 ---
 
@@ -308,7 +306,6 @@ name: RestImportJsonLines
 ---
 description: |-
   Using the `auto` type detection:
-render: input/output
 name: RestImportJsonType
 ---
 
@@ -341,7 +338,6 @@ name: RestImportJsonType
 description: |-
   Importing JSONL into an edge collection, with `_from`, `_to` and `name`
   attributes:
-render: input/output
 name: RestImportJsonEdge
 ---
 
@@ -375,7 +371,6 @@ name: RestImportJsonEdge
 description: |-
   Importing an array of JSON objects into an edge collection,
   omitting `_from` or `_to`:
-render: input/output
 name: RestImportJsonEdgeInvalid
 ---
 
@@ -403,7 +398,6 @@ name: RestImportJsonEdgeInvalid
 ---
 description: |-
   Violating a unique constraint, but allowing partial imports:
-render: input/output
 name: RestImportJsonUniqueContinue
 ---
 
@@ -432,7 +426,6 @@ name: RestImportJsonUniqueContinue
 ---
 description: |-
   Violating a unique constraint, not allowing partial imports:
-render: input/output
 name: RestImportJsonUniqueFail
 ---
 
@@ -457,7 +450,6 @@ name: RestImportJsonUniqueFail
 ---
 description: |-
   Using a non-existing collection:
-render: input/output
 name: RestImportJsonInvalidCollection
 ---
 
@@ -478,7 +470,6 @@ name: RestImportJsonInvalidCollection
 ---
 description: |-
   Using a malformed body with an array of JSON objects being expected:
-render: input/output
 name: RestImportJsonInvalidBody
 ---
 
@@ -504,7 +495,6 @@ description: |-
   Importing two documents using the JSON arrays format. The documents have a
   `_key`, `value1`, and `value2` attribute each. One line in the import data is
   empty and skipped:
-render: input/output
 name: RestImportCsvExample
 ---
 
@@ -533,7 +523,6 @@ name: RestImportCsvExample
 description: |-
   Importing JSON arrays into an edge collection, with `_from`, `_to`, and `name`
   attributes:
-render: input/output
 name: RestImportCsvEdge
 ---
 
@@ -564,7 +553,6 @@ name: RestImportCsvEdge
 ---
 description: |-
   Importing JSON arrays into an edge collection, omitting `_from` or `_to`:
-render: input/output
 name: RestImportCsvEdgeInvalid
 ---
 
@@ -590,7 +578,6 @@ name: RestImportCsvEdgeInvalid
 ---
 description: |-
   Using a malformed body with JSON arrays being expected:
-render: input/output
 name: RestImportCsvInvalidBody
 ---
 

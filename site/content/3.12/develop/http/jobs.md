@@ -61,7 +61,6 @@ paths:
 ---
 description: |-
   Not providing a job-id:
-render: input/output
 name: job_fetch_result_01
 ---
 
@@ -78,7 +77,6 @@ name: job_fetch_result_01
 ---
 description: |-
   Providing a job-id for a non-existing job:
-render: input/output
 name: job_fetch_result_02
 ---
 
@@ -95,7 +93,6 @@ name: job_fetch_result_02
 ---
 description: |-
   Fetching the result of an HTTP GET job:
-render: input/output
 name: job_fetch_result_03
 ---
 
@@ -118,7 +115,6 @@ name: job_fetch_result_03
 ---
 description: |-
   Fetching the result of an HTTP POST job that failed:
-render: input/output
 name: job_fetch_result_04
 ---
 
@@ -177,7 +173,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: job_cancel
 ---
 
@@ -266,7 +261,6 @@ paths:
 ---
 description: |-
   Deleting all jobs:
-render: input/output
 name: job_delete_01
 ---
 
@@ -288,7 +282,6 @@ name: job_delete_01
 ---
 description: |-
   Deleting expired jobs:
-render: input/output
 name: job_delete_02
 ---
 
@@ -320,7 +313,6 @@ name: job_delete_02
 ---
 description: |-
   Deleting the result of a specific job:
-render: input/output
 name: job_delete_03
 ---
 
@@ -343,7 +335,6 @@ name: job_delete_03
 ---
 description: |-
   Deleting the result of a non-existing job:
-render: input/output
 name: job_delete_04
 ---
 
@@ -416,7 +407,6 @@ paths:
 ---
 description: |-
   Querying the status of a done job:
-render: input/output
 name: job_getStatusById_01
 ---
 
@@ -440,7 +430,6 @@ name: job_getStatusById_01
 description: |-
   Querying the status of a pending job:
   (therefore we create a long running job...)
-render: input/output
 name: job_getStatusById_02
 ---
 
@@ -469,7 +458,6 @@ name: job_getStatusById_02
 ---
 description: |-
   Fetching the list of `done` jobs:
-render: input/output
 name: job_getByType_01
 ---
 
@@ -491,7 +479,6 @@ name: job_getByType_01
 ---
 description: |-
   Fetching the list of `pending` jobs:
-render: input/output
 name: job_getByType_02
 ---
 
@@ -514,7 +501,6 @@ name: job_getByType_02
 description: |-
   Fetching the list of a `pending` jobs while a long-running job is executing
   (and aborting it):
-render: input/output
 name: job_getByType_03
 ---
 

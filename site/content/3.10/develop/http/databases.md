@@ -92,7 +92,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestDatabaseGetInfo
 ---
 
@@ -131,7 +130,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestDatabaseGetUser
 ---
 
@@ -174,7 +172,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestDatabaseGet
 ---
 
@@ -303,7 +300,6 @@ paths:
 ---
 description: |-
   Creating a database named `example`.
-render: input/output
 name: RestDatabaseCreate
 ---
 
@@ -337,7 +333,6 @@ description: |-
   Creating a database named `mydb` with two users, flexible sharding and
   default replication factor of 3 for collections that will be part of
   the newly created database.
-render: input/output
 name: RestDatabaseCreateUsers
 ---
 
@@ -415,7 +410,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestDatabaseDrop
 ---
 

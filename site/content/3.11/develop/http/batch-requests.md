@@ -321,7 +321,6 @@ description: |-
   The boundary (`SomeBoundaryValue`) is passed to the server in the HTTP
   `Content-Type` HTTP header.
   *Please note the reply is not displayed all accurate.*
-render: input/output
 name: RestBatchMultipartHeader
 ---
 
@@ -367,7 +366,6 @@ name: RestBatchMultipartHeader
 description: |-
   Sending a batch request, setting the boundary implicitly (the server will
   in this case try to find the boundary at the beginning of the request body).
-render: input/output
 name: RestBatchImplicitBoundary
 ---
 

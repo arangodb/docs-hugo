@@ -169,7 +169,6 @@ paths:
 ---
 description: |-
   Use a document identifier:
-render: input/output
 name: RestDocumentHandlerReadDocument
 ---
 
@@ -193,7 +192,6 @@ name: RestDocumentHandlerReadDocument
 ---
 description: |-
   Use a document identifier and an ETag:
-render: input/output
 name: RestDocumentHandlerReadDocumentIfNoneMatch
 ---
 
@@ -216,7 +214,6 @@ name: RestDocumentHandlerReadDocumentIfNoneMatch
 ---
 description: |-
   Unknown document identifier:
-render: input/output
 name: RestDocumentHandlerReadDocumentUnknownHandle
 ---
 
@@ -320,7 +317,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestDocumentHandlerReadDocumentHead
 ---
 
@@ -558,7 +554,6 @@ description: |-
   Create a document in a collection named `products`. Note that the
   revision identifier might or might not by equal to the auto-generated
   key.
-render: input/output
 name: RestDocumentHandlerPostCreate1
 ---
 
@@ -583,7 +578,6 @@ name: RestDocumentHandlerPostCreate1
 description: |-
   Create a document in a collection named `products` with a collection-level
   `waitForSync` value of `false`.
-render: input/output
 name: RestDocumentHandlerPostAccept1
 ---
 
@@ -608,7 +602,6 @@ name: RestDocumentHandlerPostAccept1
 description: |-
   Create a document in a collection with a collection-level `waitForSync`
   value of `false`, but using the `waitForSync` query parameter.
-render: input/output
 name: RestDocumentHandlerPostWait1
 ---
 
@@ -632,7 +625,6 @@ name: RestDocumentHandlerPostWait1
 ---
 description: |-
   Unknown collection name
-render: input/output
 name: RestDocumentHandlerPostUnknownCollection1
 ---
 
@@ -653,7 +645,6 @@ name: RestDocumentHandlerPostUnknownCollection1
 ---
 description: |-
   Illegal document
-render: input/output
 name: RestDocumentHandlerPostBadJson1
 ---
 
@@ -677,7 +668,6 @@ name: RestDocumentHandlerPostBadJson1
 ---
 description: |-
   Use of returnNew:
-render: input/output
 name: RestDocumentHandlerPostReturnNew
 ---
 
@@ -700,7 +690,6 @@ name: RestDocumentHandlerPostReturnNew
 ```curl
 ---
 description: ''
-render: input/output
 name: RestDocumentHandlerPostOverwrite
 ---
 
@@ -924,7 +913,6 @@ paths:
 ---
 description: |-
   Using a document identifier
-render: input/output
 name: RestDocumentHandlerUpdateDocument
 ---
 
@@ -948,7 +936,6 @@ name: RestDocumentHandlerUpdateDocument
 ---
 description: |-
   Unknown document identifier
-render: input/output
 name: RestDocumentHandlerUpdateDocumentUnknownHandle
 ---
 
@@ -973,7 +960,6 @@ name: RestDocumentHandlerUpdateDocumentUnknownHandle
 ---
 description: |-
   Produce a revision conflict
-render: input/output
 name: RestDocumentHandlerUpdateDocumentIfMatchOther
 ---
 
@@ -1223,7 +1209,6 @@ paths:
 ---
 description: |-
   Patches an existing document with new content.
-render: input/output
 name: RestDocumentHandlerPatchDocument
 ---
 
@@ -1259,7 +1244,6 @@ name: RestDocumentHandlerPatchDocument
 ---
 description: |-
   Merging attributes of an object using `mergeObjects`:
-render: input/output
 name: RestDocumentHandlerPatchDocumentMerge
 ---
 
@@ -1420,7 +1404,6 @@ paths:
 ---
 description: |-
   Using document identifier:
-render: input/output
 name: RestDocumentHandlerDeleteDocument
 ---
 
@@ -1444,7 +1427,6 @@ name: RestDocumentHandlerDeleteDocument
 ---
 description: |-
   Unknown document identifier:
-render: input/output
 name: RestDocumentHandlerDeleteDocumentUnknownHandle
 ---
 
@@ -1469,7 +1451,6 @@ name: RestDocumentHandlerDeleteDocumentUnknownHandle
 ---
 description: |-
   Revision conflict:
-render: input/output
 name: RestDocumentHandlerDeleteDocumentIfMatchOther
 ---
 
@@ -1636,7 +1617,6 @@ paths:
 ---
 description: |-
   Reading multiple documents identifier:
-render: input/output
 name: RestDocumentHandlerReadMultiDocument
 ---
 
@@ -1880,7 +1860,6 @@ paths:
 ---
 description: |-
   Insert multiple documents:
-render: input/output
 name: RestDocumentHandlerPostMulti1
 ---
 
@@ -1904,7 +1883,6 @@ name: RestDocumentHandlerPostMulti1
 ---
 description: |-
   Use of returnNew:
-render: input/output
 name: RestDocumentHandlerPostMulti2
 ---
 
@@ -1928,7 +1906,6 @@ name: RestDocumentHandlerPostMulti2
 ---
 description: |-
   Partially illegal documents:
-render: input/output
 name: RestDocumentHandlerPostBadJsonMulti
 ---
 
@@ -2450,7 +2427,6 @@ paths:
 ---
 description: |-
   Using document keys:
-render: input/output
 name: RestDocumentHandlerDeleteDocumentKeyMulti
 ---
 
@@ -2481,7 +2457,6 @@ name: RestDocumentHandlerDeleteDocumentKeyMulti
 ---
 description: |-
   Using document identifiers:
-render: input/output
 name: RestDocumentHandlerDeleteDocumentIdentifierMulti
 ---
 
@@ -2512,7 +2487,6 @@ name: RestDocumentHandlerDeleteDocumentIdentifierMulti
 ---
 description: |-
   Using objects with document keys:
-render: input/output
 name: RestDocumentHandlerDeleteDocumentObjectMulti
 ---
 
@@ -2543,7 +2517,6 @@ name: RestDocumentHandlerDeleteDocumentObjectMulti
 ---
 description: |-
   Unknown documents:
-render: input/output
 name: RestDocumentHandlerDeleteDocumentUnknownMulti
 ---
 
@@ -2581,7 +2554,6 @@ name: RestDocumentHandlerDeleteDocumentUnknownMulti
 ---
 description: |-
   Check revisions:
-render: input/output
 name: RestDocumentHandlerDeleteDocumentRevMulti
 ---
 
@@ -2615,7 +2587,6 @@ name: RestDocumentHandlerDeleteDocumentRevMulti
 ---
 description: |-
   Revision conflict:
-render: input/output
 name: RestDocumentHandlerDeleteDocumentRevConflictMulti
 ---
 

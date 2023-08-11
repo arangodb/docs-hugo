@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl list diskperformances command
 title: Oasisctl List Diskperformances
-menuTitle: List Diskperformances
-weight: 75
+menuTitle: List Disk Performances
+weight: 70
+description: >-
+  Description of the oasisctl list diskperformances command
+archetype: default
 ---
+List disk performances
+
 ## Synopsis
+
 List disk performances
 
 ```
@@ -13,6 +17,7 @@ oasisctl list diskperformances [flags]
 ```
 
 ## Options
+
 ```
       --dbserver-disk-size int32   The disk size of DB-Servers (GB) (default 32)
   -h, --help                       help for diskperformances
@@ -22,7 +27,8 @@ oasisctl list diskperformances [flags]
   -r, --region-id string           Identifier of the region
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -30,5 +36,6 @@ oasisctl list diskperformances [flags]
 ```
 
 ## See also
+
 * [oasisctl list](_index.md)	 - List resources
 

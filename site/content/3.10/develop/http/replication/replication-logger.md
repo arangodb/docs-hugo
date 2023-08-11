@@ -88,7 +88,6 @@ paths:
 ---
 description: |-
   Returns the state of the replication logger.
-render: input/output
 name: RestReplicationLoggerStateActive
 ---
 
@@ -267,7 +266,6 @@ paths:
 ---
 description: |-
   No log events available
-render: input/output
 name: RestReplicationLoggerFollowEmpty
 ---
 
@@ -287,7 +285,6 @@ name: RestReplicationLoggerFollowEmpty
 ---
 description: |-
   A few log events *(One JSON document per line)*
-render: input/output
 name: RestReplicationLoggerFollowSome
 ---
 
@@ -317,7 +314,6 @@ name: RestReplicationLoggerFollowSome
 ---
 description: |-
   More events than would fit into the response
-render: input/output
 name: RestReplicationLoggerFollowBufferLimit
 ---
 
@@ -385,7 +381,6 @@ paths:
 ---
 description: |-
   Returning the first available tick
-render: input/output
 name: RestReplicationLoggerFirstTick
 ---
 
@@ -444,7 +439,6 @@ paths:
 ---
 description: |-
   Returns the available tick ranges.
-render: input/output
 name: RestReplicationLoggerTickRanges
 ---
 

@@ -54,7 +54,6 @@ paths:
 ---
 description: |-
   Returns the available tick ranges.
-render: input/output
 name: RestWalAccessTickRange
 ---
 
@@ -108,7 +107,6 @@ paths:
 ---
 description: |-
   Returning the first available tick
-render: input/output
 name: RestWalAccessFirstTick
 ---
 
@@ -332,7 +330,6 @@ paths:
 ---
 description: |-
   No log events available
-render: input/output
 name: RestWalAccessTailingEmpty
 ---
 
@@ -352,7 +349,6 @@ name: RestWalAccessTailingEmpty
 ---
 description: |-
   A few log events *(One JSON document per line)*
-render: input/output
 name: RestWalAccessTailingSome
 ---
 
@@ -382,7 +378,6 @@ name: RestWalAccessTailingSome
 ---
 description: |-
   More events than would fit into the response
-render: input/output
 name: RestWalAccessTailingBufferLimit
 ---
 

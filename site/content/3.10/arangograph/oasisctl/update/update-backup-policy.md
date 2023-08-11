@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl update backup policy command
 title: Oasisctl Update Backup Policy
 menuTitle: Update Backup Policy
-weight: 20
+weight: 15
+description: >-
+  Description of the oasisctl update backup policy command
+archetype: default
 ---
+Update a backup policy
+
 ## Synopsis
+
 Update a backup policy
 
 ```
@@ -13,6 +17,7 @@ oasisctl update backup policy [flags]
 ```
 
 ## Options
+
 ```
       --additional-region-ids strings   Add backup to the specified addition regions
   -d, --backup-policy-id string         Identifier of the backup policy
@@ -39,7 +44,8 @@ oasisctl update backup policy [flags]
       --wednesday                       If set, a backup will be created on Wednesdays. Set to false explicitly to clear the flag.
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -47,5 +53,6 @@ oasisctl update backup policy [flags]
 ```
 
 ## See also
+
 * [oasisctl update backup](update-backup.md)	 - Update a backup
 

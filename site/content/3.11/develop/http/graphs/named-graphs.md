@@ -179,7 +179,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialList
 ---
 
@@ -682,7 +681,6 @@ paths:
 description: |-
   Create a General Graph. This graph type does not make use of any sharding
   strategy and is useful on the single server.
-render: input/output
 name: HttpGharialCreate
 ---
 
@@ -716,7 +714,6 @@ description: |-
   Create a SmartGraph. This graph uses 9 shards and
   is sharded by the "region" attribute.
   Available in the Enterprise Edition only.
-render: input/output
 name: HttpGharialCreateSmart
 ---
 
@@ -759,7 +756,6 @@ description: |-
   Available in the Enterprise Edition only.
   Note that as you are using a disjoint version, you can only
   create edges between vertices sharing the same region.
-render: input/output
 name: HttpGharialCreateDisjointSmart
 ---
 
@@ -804,7 +800,6 @@ description: |-
   collections are split into 9 shards
   and are sharded by the "region" attribute.
   Available in the Enterprise Edition only.
-render: input/output
 name: HttpGharialCreateSmartWithSatellites
 ---
 
@@ -846,7 +841,6 @@ description: |-
   Create an EnterpriseGraph. This graph uses 9 shards,
   it does not make use of specific sharding attributes.
   Available in the Enterprise Edition only.
-render: input/output
 name: HttpGharialCreateEnterprise
 ---
 
@@ -888,7 +882,6 @@ description: |-
   Make sure to keep this graph small as it is cloned
   to every server.
   Available in the Enterprise Edition only.
-render: input/output
 name: HttpGharialCreateSatellite
 ---
 
@@ -1104,7 +1097,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialGetGraph
 ---
 
@@ -1236,7 +1228,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialDrop
 ---
 
@@ -1338,7 +1329,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialListVertex
 ---
 
@@ -1746,7 +1736,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialAddVertexCol
 ---
 
@@ -2155,7 +2144,6 @@ paths:
 ---
 description: |-
   You can remove vertex collections that are not used in any edge collection:
-render: input/output
 name: HttpGharialRemoveVertexCollection
 ---
 
@@ -2178,7 +2166,6 @@ name: HttpGharialRemoveVertexCollection
 ---
 description: |-
   You cannot remove vertex collections that are used in edge collections:
-render: input/output
 name: HttpGharialRemoveVertexCollectionFailed
 ---
 
@@ -2283,7 +2270,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialListEdge
 ---
 
@@ -2722,7 +2708,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialAddEdgeCol
 ---
 
@@ -3176,7 +3161,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialReplaceEdgeCol
 ---
 
@@ -3562,7 +3546,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialEdgeDefinitionRemove
 ---
 
@@ -3839,7 +3822,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialAddVertex
 ---
 
@@ -4096,7 +4078,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialGetVertex
 ---
 
@@ -4481,7 +4462,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialModifyVertex
 ---
 
@@ -4869,7 +4849,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialReplaceVertex
 ---
 
@@ -5145,7 +5124,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialDeleteVertex
 ---
 
@@ -5505,7 +5483,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialAddEdge
 ---
 
@@ -5777,7 +5754,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialGetEdge
 ---
 
@@ -6224,7 +6200,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialPatchEdge
 ---
 
@@ -6680,7 +6655,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialPutEdge
 ---
 
@@ -6978,7 +6952,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: HttpGharialDeleteEdge
 ---
 

@@ -75,7 +75,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestViewPostViewSearchAlias
 ---
 
@@ -133,7 +132,6 @@ paths:
 ---
 description: |-
   Using an identifier:
-render: input/output
 name: RestViewGetViewIdentifierArangoSearch
 ---
 
@@ -152,7 +150,6 @@ name: RestViewGetViewIdentifierArangoSearch
 ---
 description: |-
   Using a name:
-render: input/output
 name: RestViewGetViewNameArangoSearch
 ---
 
@@ -204,7 +201,6 @@ paths:
 ---
 description: |-
   Using an identifier:
-render: input/output
 name: RestViewGetViewPropertiesIdentifierSearchAlias
 ---
 
@@ -226,7 +222,6 @@ name: RestViewGetViewPropertiesIdentifierSearchAlias
 ---
 description: |-
   Using a name:
-render: input/output
 name: RestViewGetViewPropertiesNameSearchAlias
 ---
 
@@ -271,7 +266,6 @@ paths:
 ---
 description: |-
   Return information about all Views:
-render: input/output
 name: RestViewGetAllViews
 ---
 
@@ -389,7 +383,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestViewPutPropertiesSearchAlias
 ---
 
@@ -517,7 +510,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestViewPatchPropertiesSearchAlias
 ---
 
@@ -580,7 +572,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestViewPutRename
 ---
 
@@ -634,7 +625,6 @@ paths:
 ---
 description: |-
   Using an identifier:
-render: input/output
 name: RestViewDeleteViewIdentifierArangoSearch
 ---
 
@@ -651,7 +641,6 @@ name: RestViewDeleteViewIdentifierArangoSearch
 ---
 description: |-
   Using a name:
-render: input/output
 name: RestViewDeleteViewNameArangoSearch
 ---
 

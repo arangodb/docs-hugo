@@ -77,7 +77,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestAnalyzerPost
 ---
 
@@ -139,7 +138,6 @@ paths:
 ---
 description: |-
   Retrieve an Analyzer definition:
-render: input/output
 name: RestAnalyzerGet
 ---
 
@@ -187,7 +185,6 @@ paths:
 ---
 description: |-
   Retrieve all Analyzer definitions:
-render: input/output
 name: RestAnalyzersGet
 ---
 
@@ -258,7 +255,6 @@ paths:
 ---
 description: |-
   Removing without `force`:
-render: input/output
 name: RestAnalyzerDelete
 ---
 
@@ -281,7 +277,6 @@ console.error(JSON.stringify(response));
 ---
 description: |-
   Removing with `force`:
-render: input/output
 name: RestAnalyzerDeleteForce
 ---
 

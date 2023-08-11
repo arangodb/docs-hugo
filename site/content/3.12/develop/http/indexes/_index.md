@@ -76,7 +76,6 @@ paths:
 ---
 description: |-
   Return information about all indexes
-render: input/output
 name: RestIndexAllIndexes
 ---
 
@@ -140,7 +139,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestIndexPrimaryIndex
 ---
 
@@ -311,7 +309,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestIndexDeleteUniquePersistent
 ---
 

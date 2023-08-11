@@ -92,7 +92,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestCreateUser
 ---
 
@@ -177,7 +176,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestReplaceUser
 ---
 
@@ -263,7 +261,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestUpdateUser
 ---
 
@@ -325,7 +322,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestDeleteUser
 ---
 
@@ -384,7 +380,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestFetchUser
 ---
 
@@ -441,7 +436,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestFetchAllUser
 ---
 
@@ -521,7 +515,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestGrantDatabase
 ---
 
@@ -613,7 +606,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestGrantCollection
 ---
 
@@ -682,7 +674,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestRevokeDatabase
 ---
 
@@ -754,7 +745,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestRevokeCollection
 ---
 
@@ -835,7 +825,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestFetchUserDatabaseList
 ---
 
@@ -858,7 +847,6 @@ name: RestFetchUserDatabaseList
 ---
 description: |-
   With the full response format:
-render: input/output
 name: RestFetchUserDatabaseListFull
 ---
 
@@ -924,7 +912,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestFetchUserDatabasePermission
 ---
 
@@ -997,7 +984,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestFetchUserCollectionPermission
 ---
 

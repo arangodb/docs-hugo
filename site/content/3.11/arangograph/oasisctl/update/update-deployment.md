@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl update deployment command
 title: Oasisctl Update Deployment
 menuTitle: Update Deployment
-weight: 30
+weight: 25
+description: >-
+  Description of the oasisctl update deployment command
+archetype: default
 ---
+Update a deployment the authenticated user has access to
+
 ## Synopsis
+
 Update a deployment the authenticated user has access to
 
 ```
@@ -13,6 +17,7 @@ oasisctl update deployment [flags]
 ```
 
 ## Options
+
 ```
   -c, --cacertificate-id string              Identifier of the CA certificate to use for the deployment
       --coordinator-memory-size int32        Set memory size of Coordinators for flexible deployments (GB) (default 4)
@@ -40,7 +45,8 @@ oasisctl update deployment [flags]
       --version string                       Version of ArangoDB to use for the deployment
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -48,5 +54,6 @@ oasisctl update deployment [flags]
 ```
 
 ## See also
+
 * [oasisctl update](_index.md)	 - Update resources
 

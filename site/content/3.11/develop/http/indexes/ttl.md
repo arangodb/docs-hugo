@@ -91,7 +91,6 @@ paths:
 ---
 description: |-
   Creating a TTL index
-render: input/output
 name: RestIndexCreateNewTtlIndex
 ---
 

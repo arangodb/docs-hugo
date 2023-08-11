@@ -85,7 +85,6 @@ paths:
 ```curl
 ---
 description: Fetching all tasks
-render: input/output
 name: RestTasksListAll
 ---
 
@@ -180,7 +179,6 @@ paths:
 ```curl
 ---
 description: Fetching a single task by its id
-render: input/output
 name: RestTasksListOne
 ---
 
@@ -198,7 +196,6 @@ name: RestTasksListOne
 ```curl
 ---
 description: Trying to fetch a non-existing task
-render: input/output
 name: RestTasksListNonExisting
 ---
 
@@ -320,7 +317,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestTasksCreate
 ---
 
@@ -408,7 +404,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestTasksPutWithId
 ---
 
@@ -504,7 +499,6 @@ paths:
 ---
 description: |-
   Try to delete a non-existent task:
-render: input/output
 name: RestTasksDeleteFail
 ---
 
@@ -522,7 +516,6 @@ name: RestTasksDeleteFail
 ---
 description: |-
   Remove existing task:
-render: input/output
 name: RestTasksDelete
 ---
 

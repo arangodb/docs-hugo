@@ -149,7 +149,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestAqlfunctionCreate
 ---
 
@@ -292,7 +291,6 @@ paths:
 ---
 description: |-
   deletes a function:
-render: input/output
 name: RestAqlfunctionDelete
 ---
 
@@ -316,7 +314,6 @@ name: RestAqlfunctionDelete
 ---
 description: |-
   function not found:
-render: input/output
 name: RestAqlfunctionDeleteFails
 ---
 
@@ -435,7 +432,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestAqlfunctionsGetAll
 ---
 

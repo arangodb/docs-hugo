@@ -103,7 +103,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestBackupCreateBackup
 ---
 
@@ -173,7 +172,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestBackupRestoreBackup
 ---
 
@@ -258,7 +256,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestBackupDeleteBackup
 ---
 
@@ -325,7 +322,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestBackupListBackup
 ---
 
@@ -441,7 +437,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestBackupUploadBackup
 ---
 
@@ -477,7 +472,6 @@ name: RestBackupUploadBackup
 description: |-
   The `result` object of the body holds the `uploadId` string attribute which can
   be used to follow the upload process.
-render: input/output
 name: RestBackupUploadBackupStarted
 ---
 
@@ -601,7 +595,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestBackupDownloadBackup
 ---
 
@@ -652,7 +645,6 @@ name: RestBackupDownloadBackup
 description: |-
   The `result` object of the body holds the `downloadId` string attribute which
   can be used to follow the download process.
-render: input/output
 name: RestBackupDownloadBackupStarted
 ---
 

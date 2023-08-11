@@ -89,7 +89,6 @@ paths:
 ---
 description: |-
   Any direction
-render: input/output
 name: RestEdgesReadEdgesAny
 ---
 
@@ -121,7 +120,6 @@ name: RestEdgesReadEdgesAny
 ---
 description: |-
   In edges
-render: input/output
 name: RestEdgesReadEdgesIn
 ---
 
@@ -153,7 +151,6 @@ name: RestEdgesReadEdgesIn
 ---
 description: |-
   Out edges
-render: input/output
 name: RestEdgesReadEdgesOut
 ---
 

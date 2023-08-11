@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl create backup command
 title: Oasisctl Create Backup
 menuTitle: Create Backup
-weight: 20
+weight: 15
+description: >-
+  Description of the oasisctl create backup command
+archetype: default
 ---
+Create backup ...
+
 ## Synopsis
+
 Create backup ...
 
 ```
@@ -13,6 +17,7 @@ oasisctl create backup [flags]
 ```
 
 ## Options
+
 ```
       --auto-deleted-at int    Time (h) until auto delete of the backup
       --deployment-id string   ID of the deployment
@@ -22,7 +27,8 @@ oasisctl create backup [flags]
       --upload                 The backup should be uploaded
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -30,6 +36,7 @@ oasisctl create backup [flags]
 ```
 
 ## See also
+
 * [oasisctl create](_index.md)	 - Create resources
 * [oasisctl create backup policy](create-backup-policy.md)	 - Create a new backup policy
 

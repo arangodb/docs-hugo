@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl list group command
 title: Oasisctl List Group
 menuTitle: List Group
-weight: 105
+weight: 100
+description: >-
+  Description of the oasisctl list group command
+archetype: default
 ---
+List group resources
+
 ## Synopsis
+
 List group resources
 
 ```
@@ -13,11 +17,13 @@ oasisctl list group [flags]
 ```
 
 ## Options
+
 ```
   -h, --help   help for group
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -25,6 +31,7 @@ oasisctl list group [flags]
 ```
 
 ## See also
+
 * [oasisctl list](_index.md)	 - List resources
 * [oasisctl list group members](list-group-members.md)	 - List members of a group the authenticated user is a member of
 

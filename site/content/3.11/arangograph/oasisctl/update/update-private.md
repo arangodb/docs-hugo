@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl update private command
 title: Oasisctl Update Private
 menuTitle: Update Private
-weight: 115
+weight: 110
+description: >-
+  Description of the oasisctl update private command
+archetype: default
 ---
+Update private resources
+
 ## Synopsis
+
 Update private resources
 
 ```
@@ -13,11 +17,13 @@ oasisctl update private [flags]
 ```
 
 ## Options
+
 ```
   -h, --help   help for private
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -25,6 +31,7 @@ oasisctl update private [flags]
 ```
 
 ## See also
+
 * [oasisctl update](_index.md)	 - Update resources
 * [oasisctl update private endpoint](update-private-endpoint.md)	 - 
 

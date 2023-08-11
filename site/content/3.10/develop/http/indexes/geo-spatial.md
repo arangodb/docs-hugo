@@ -118,7 +118,6 @@ paths:
 ---
 description: |-
   Creating a geo index with a location attribute
-render: input/output
 name: RestIndexCreateGeoLocation
 ---
 
@@ -145,7 +144,6 @@ name: RestIndexCreateGeoLocation
 ---
 description: |-
   Creating a geo index with latitude and longitude attributes
-render: input/output
 name: RestIndexCreateGeoLatitudeLongitude
 ---
 

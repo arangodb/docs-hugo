@@ -153,7 +153,6 @@ paths:
 ---
 description: |-
   Executing a transaction on a single collection
-render: input/output
 name: RestTransactionSingle
 ---
 
@@ -180,7 +179,6 @@ name: RestTransactionSingle
 ---
 description: |-
   Executing a transaction using multiple collections
-render: input/output
 name: RestTransactionMulti
 ---
 
@@ -220,7 +218,6 @@ name: RestTransactionMulti
 ---
 description: |-
   Aborting a transaction due to an internal error
-render: input/output
 name: RestTransactionAbortInternal
 ---
 
@@ -253,7 +250,6 @@ name: RestTransactionAbortInternal
 ---
 description: |-
   Aborting a transaction by explicitly throwing an exception
-render: input/output
 name: RestTransactionAbort
 ---
 
@@ -281,7 +277,6 @@ name: RestTransactionAbort
 ---
 description: |-
   Referring to a non-existing collection
-render: input/output
 name: RestTransactionNonExisting
 ---
 

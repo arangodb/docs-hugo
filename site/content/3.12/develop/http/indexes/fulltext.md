@@ -92,7 +92,6 @@ paths:
 ---
 description: |-
   Creating a fulltext index
-render: input/output
 name: RestIndexCreateNewFulltext
 ---
 

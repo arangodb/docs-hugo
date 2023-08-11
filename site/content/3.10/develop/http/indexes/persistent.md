@@ -182,7 +182,6 @@ paths:
 ---
 description: |-
   Creating a persistent index
-render: input/output
 name: RestIndexCreateNewPersistent
 ---
 
@@ -210,7 +209,6 @@ name: RestIndexCreateNewPersistent
 ---
 description: |-
   Creating a sparse persistent index
-render: input/output
 name: RestIndexCreateSparsePersistent
 ---
 

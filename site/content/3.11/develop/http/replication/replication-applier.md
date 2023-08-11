@@ -140,7 +140,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestReplicationApplierGetConfig
 ---
 
@@ -361,7 +360,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestReplicationApplierSetConfig
 ---
 
@@ -447,7 +445,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestReplicationApplierStart
 ---
 
@@ -509,7 +506,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestReplicationApplierStop
 ---
 
@@ -665,7 +661,6 @@ paths:
 ---
 description: |-
   Fetching the state of an inactive applier:
-render: input/output
 name: RestReplicationApplierStateNotRunning
 ---
 
@@ -684,7 +679,6 @@ name: RestReplicationApplierStateNotRunning
 ---
 description: |-
   Fetching the state of an active applier:
-render: input/output
 name: RestReplicationApplierStateRunning
 ---
 

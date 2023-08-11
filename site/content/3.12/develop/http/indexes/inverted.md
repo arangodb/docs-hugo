@@ -612,7 +612,6 @@ paths:
 ---
 description: |-
   Creating an inverted index:
-render: input/output
 name: RestIndexCreateNewInverted
 ---
 

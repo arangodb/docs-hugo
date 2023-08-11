@@ -121,7 +121,6 @@ paths:
 description: |-
   Run the Weakly Connected Components (WCC) algorithm against a graph and store
   the results in the vertices as attribute `component`:
-render: input/output
 name: RestPregelStartConnectedComponents
 ---
 
@@ -385,7 +384,6 @@ paths:
 ---
 description: |-
   Get the execution status of a Pregel job:
-render: input/output
 name: RestPregelStatusConnectedComponents
 ---
 
@@ -636,7 +634,6 @@ paths:
 ---
 description: |-
   Get the status of all active Pregel jobs:
-render: input/output
 name: RestPregelStatusAllConnectedComponents
 ---
 
@@ -718,7 +715,6 @@ paths:
 description: |-
   Cancel a Pregel job to stop the execution or to free up the results if it was
   started with `"store": false` and is in the done state:
-render: input/output
 name: RestPregelCancelConnectedComponents
 ---
 

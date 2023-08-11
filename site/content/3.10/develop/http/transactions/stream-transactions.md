@@ -156,7 +156,6 @@ paths:
 ---
 description: |-
   Executing a transaction on a single collection
-render: input/output
 name: RestTransactionBeginSingle
 ---
 
@@ -184,7 +183,6 @@ name: RestTransactionBeginSingle
 ---
 description: |-
   Referring to a non-existing collection
-render: input/output
 name: RestTransactionBeginNonExisting
 ---
 
@@ -249,7 +247,6 @@ paths:
 ---
 description: |-
   Get transaction status
-render: input/output
 name: RestTransactionGet
 ---
 
@@ -345,7 +342,6 @@ paths:
 ---
 description: |-
   Committing a transaction:
-render: input/output
 name: RestTransactionBeginAbort
 ---
 
@@ -441,7 +437,6 @@ paths:
 ---
 description: |-
   Aborting a transaction:
-render: input/output
 name: RestTransactionBeginCommit
 ---
 
@@ -495,7 +490,6 @@ paths:
 ---
 description: |-
   Get currently running transactions
-render: input/output
 name: RestTransactionsGet
 ---
 

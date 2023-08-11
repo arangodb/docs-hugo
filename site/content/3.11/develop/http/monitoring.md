@@ -1183,7 +1183,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestAdminStatistics1
 ---
 
@@ -1326,7 +1325,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestAdminStatisticsDescription1
 ---
 
@@ -1402,7 +1400,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestAdminMetricsV2
 ---
 
@@ -1472,7 +1469,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestAdminMetrics
 ---
 

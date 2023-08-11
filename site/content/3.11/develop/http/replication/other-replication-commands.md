@@ -39,7 +39,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestReplicationServerId
 ---
 

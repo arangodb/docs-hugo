@@ -201,7 +201,6 @@ paths:
 ---
 description: |-
   Return the version information
-render: input/output
 name: RestVersion
 ---
 
@@ -217,7 +216,6 @@ name: RestVersion
 ---
 description: |-
   Return the version information with details
-render: input/output
 name: RestVersionDetails
 ---
 
@@ -264,7 +262,6 @@ paths:
 ---
 description: |-
   Return the active storage engine with the RocksDB storage engine in use:
-render: input/output
 name: RestEngine
 ---
 
@@ -538,7 +535,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestAdminStatus
 type: cluster
 ---
@@ -662,7 +658,6 @@ paths:
 ---
 description: |-
   Query support information from a single server
-render: input/output
 name: RestAdminSupportInfo
 ---
 
@@ -678,7 +673,6 @@ name: RestAdminSupportInfo
 ---
 description: |-
   Query support information from a cluster
-render: input/output
 name: RestAdminSupportInfo
 type: cluster
 ---
@@ -823,7 +817,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestAdminLicenseGet
 type: cluster
 ---
@@ -1067,7 +1060,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestAdminCompact
 ---
 
@@ -1379,7 +1371,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestEndpointGet
 ---
 

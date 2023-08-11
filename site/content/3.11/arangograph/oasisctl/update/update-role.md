@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl update role command
 title: Oasisctl Update Role
 menuTitle: Update Role
-weight: 135
+weight: 130
+description: >-
+  Description of the oasisctl update role command
+archetype: default
 ---
+Update a role the authenticated user has access to
+
 ## Synopsis
+
 Update a role the authenticated user has access to
 
 ```
@@ -13,6 +17,7 @@ oasisctl update role [flags]
 ```
 
 ## Options
+
 ```
       --add-permission strings      Permissions to add to the role
       --description string          Description of the role
@@ -23,7 +28,8 @@ oasisctl update role [flags]
   -r, --role-id string              Identifier of the role
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -31,5 +37,6 @@ oasisctl update role [flags]
 ```
 
 ## See also
+
 * [oasisctl update](_index.md)	 - Update resources
 

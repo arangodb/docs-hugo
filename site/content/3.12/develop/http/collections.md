@@ -65,7 +65,6 @@ paths:
 ---
 description: |-
   Return information about all collections:
-render: input/output
 name: RestCollectionGetAllCollections
 ---
 
@@ -370,7 +369,6 @@ paths:
 ---
 description: |-
   Using an identifier:
-render: input/output
 name: RestCollectionGetCollectionIdentifier
 ---
 
@@ -392,7 +390,6 @@ name: RestCollectionGetCollectionIdentifier
 ---
 description: |-
   Using a name:
-render: input/output
 name: RestCollectionGetCollectionName
 ---
 
@@ -453,7 +450,6 @@ paths:
 ---
 description: |-
   Requesting the number of documents:
-render: input/output
 name: RestCollectionGetCollectionCount
 ---
 
@@ -568,7 +564,6 @@ paths:
 ---
 description: |-
   Using an identifier and requesting the figures of the collection:
-render: input/output
 name: RestCollectionGetCollectionFigures
 ---
 
@@ -591,7 +586,6 @@ name: RestCollectionGetCollectionFigures
 ```curl
 ---
 description: ''
-render: input/output
 name: RestCollectionGetCollectionFiguresDetails
 ---
 
@@ -678,7 +672,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestGetResponsibleShardExample
 type: cluster
 ---
@@ -753,7 +746,6 @@ paths:
 ---
 description: |-
   Retrieves the list of shards:
-render: input/output
 name: RestGetShards
 type: cluster
 ---
@@ -774,7 +766,6 @@ type: cluster
 ---
 description: |-
   Retrieves the list of shards with the responsible servers:
-render: input/output
 name: RestGetShardsWithDetails
 type: cluster
 ---
@@ -836,7 +827,6 @@ paths:
 ---
 description: |-
   Retrieving the revision of a collection
-render: input/output
 name: RestCollectionGetCollectionRevision
 ---
 
@@ -932,7 +922,6 @@ paths:
 ---
 description: |-
   Retrieving the checksum of a collection:
-render: input/output
 name: RestCollectionGetCollectionChecksum
 ---
 
@@ -956,7 +945,6 @@ name: RestCollectionGetCollectionChecksum
 description: |-
   Retrieving the checksum of a collection including the collection data,
   but not the revisions:
-render: input/output
 name: RestCollectionGetCollectionChecksumNoRev
 ---
 
@@ -1517,7 +1505,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestCollectionCreateCollection
 ---
 
@@ -1550,7 +1537,6 @@ name: RestCollectionCreateCollection
 ```curl
 ---
 description: ''
-render: input/output
 name: RestCollectionCreateKeyopt
 ---
 
@@ -1629,7 +1615,6 @@ paths:
 ---
 description: |-
   Using an identifier:
-render: input/output
 name: RestCollectionDeleteCollectionIdentifier
 ---
 
@@ -1650,7 +1635,6 @@ name: RestCollectionDeleteCollectionIdentifier
 ---
 description: |-
   Using a name:
-render: input/output
 name: RestCollectionDeleteCollectionName
 ---
 
@@ -1672,7 +1656,6 @@ name: RestCollectionDeleteCollectionName
 ---
 description: |-
   Dropping a system collection
-render: input/output
 name: RestCollectionDeleteCollectionSystem
 ---
 
@@ -1747,7 +1730,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestCollectionIdentifierTruncate
 ---
 
@@ -1841,7 +1823,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestCollectionIdentifierLoad
 ---
 
@@ -1919,7 +1900,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestCollectionIdentifierUnload
 ---
 
@@ -2001,7 +1981,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestCollectionIdentifierLoadIndexesIntoMemory
 ---
 
@@ -2161,7 +2140,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestCollectionIdentifierPropertiesSync
 ---
 
@@ -2240,7 +2218,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestCollectionIdentifierRename
 ---
 
@@ -2333,7 +2310,6 @@ paths:
 ```curl
 ---
 description: ''
-render: input/output
 name: RestApiCollectionCompact
 ---
 

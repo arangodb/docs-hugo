@@ -92,7 +92,6 @@ paths:
 ---
 description: |-
   Creating a multi-dimensional index
-render: input/output
 name: RestIndexCreateNewZkd
 ---
 
