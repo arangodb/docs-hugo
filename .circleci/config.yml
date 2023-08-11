@@ -96,6 +96,28 @@ commands:
               fi
             fi
 
+  persist-arangodb-source:
+    description: Conditional persist workspace of arangodb source code
+    parameters:
+      generators:
+        type: string
+        default: ""
+      version:
+        type: string
+        default: ""
+    steps:
+      - when:
+          condition: 
+            matches:
+              pattern: "metrics|error-codes|oasisctl"
+              value: << parameters.generators >>
+          steps:
+            - persist_to_workspace:
+                root: /tmp
+                paths:
+                  - << parameters.version >>/*
+
+
 
 jobs:
   create-docs-images:
@@ -356,14 +378,9 @@ jobs:
 
             rm -r /root/project/*
             clone-branch << parameters.arangodb-branch >> << parameters.version >>
-      - persist_to_workspace:
-          root: /tmp
-          paths:
-            - << parameters.version >>/*
-          when:
-                matches:
-                  pattern: "metrics|error-codes|oasisctl"
-                  value: << pipeline.parameters.generators >>
+      - persist-arangodb-source:
+          generators: << pipeline.parameters.generators >>
+          version: << parameters.version >>
 
       - run:
           name: Check Branch Image already exists
