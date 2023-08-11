@@ -29,9 +29,6 @@ function clone-branch() {
 
     git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name /root/project
     clone-arangodb-enterprise $branch_name
-
-    mkdir -p /tmp/$VER
-    cp -r /root/project/. /tmp/$VER
 }
 
 function create-docker-image() {

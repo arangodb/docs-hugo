@@ -356,7 +356,7 @@ jobs:
 
             rm -r /root/project/*
             clone-branch << parameters.arangodb-branch >> << parameters.version >>
-            tar -cvf /tmp/<< parameters.version >>.tar /tmp/<< parameters.version >>
+            tar -cvf /tmp/<< parameters.version >>.tar /root/project
       - persist_to_workspace:
           root: /tmp
           paths:
