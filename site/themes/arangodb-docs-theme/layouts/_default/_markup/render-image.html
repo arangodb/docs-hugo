@@ -5,8 +5,8 @@
 {{- end -}}
 {{- with $img -}}
 <figure class="image-caption">
-    <img alt="{{ $.Text }}"  src="{{ .RelPermalink }}" />
-    <figcaption>{{ with $.Title | safeHTML }}{{ . }}{{ end }}</figcaption>
+  <img alt="{{ $.Text }}"  src="{{ .RelPermalink }}" />
+  <figcaption>{{ with $.Title | safeHTML }}{{ . }}{{ end }}</figcaption>
 </figure>
 {{- else -}}
 <img src="{{ .Destination | safeURL }}" alt="{{ $.Text }}" />{{- end -}}

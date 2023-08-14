@@ -1,13 +1,13 @@
-{{ $pagePath := .page }}
+{{ $page := .page }}
 {{ $versions := index site.Data "versions" }}
 {{ range $i, $version := $versions }}
-    {{ if strings.Contains $pagePath $version.name }}
-        {{ $pagePath.Page.Scratch.Set "version" $version.version }}
-        {{ $pagePath.Page.Store.Set "versionShort" $version.name }}
-        {{ $pagePath.Page.Scratch.Set "alias" $version.alias }}
-        {{ $pagePath.Page.Scratch.Set "deprecated" $version.deprecated }}
+    {{ if strings.Contains $page $version.name }}
+        {{ $page.Page.Scratch.Set "version" $version.version }}
+        {{ $page.Page.Store.Set "versionShort" $version.name }}
+        {{ $page.Page.Scratch.Set "alias" $version.alias }}
+        {{ $page.Page.Scratch.Set "deprecated" $version.deprecated }}
 
-        {{ template "checkVersionIsInDevelopment" dict "page" $pagePath "pageVersion" $version.name "versions" $versions }}
+        {{ template "checkVersionIsInDevelopment" dict "page" $page "pageVersion" $version.name "versions" $versions }}
     {{ end }}
 {{ end }}
 

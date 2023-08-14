@@ -2,20 +2,19 @@
 <script src="{{"js/clipboard.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 <script src="{{"js/featherlight.min.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 
-{{ $versions := index site.Data "versions" }}
-{{ range $i, $version := $versions }}
-    {{ if eq "stable" $version.alias }}
-        <script>
-            var stableVersion = {{ $version.name }};
-        </script>
-    {{ end }}
-    {{ if eq "devel" $version.alias }}
-        <script>
-            var develVersion = {{ $version.name }};
-        </script>
-    {{ end }}
-{{ end }}
-
+{{- $versions := index site.Data "versions" }}
+{{- range $i, $version := $versions }}
+  {{- if eq "stable" $version.alias }}
+  <script>
+    var stableVersion = {{ $version.name }};
+  </script>
+  {{- end }}
+  {{- if eq "devel" $version.alias }}
+  <script>
+    var develVersion = {{ $version.name }};
+  </script>
+  {{- end }}
+{{- end }}
 
 <script src="{{"js/codeblocks.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 <script src="{{"js/theme.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
