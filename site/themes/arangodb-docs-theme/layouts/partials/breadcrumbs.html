@@ -1,25 +1,21 @@
-{{- /* TODO: Append to ancestor list to DRY, what is the context here? .Page? */ -}}
 <nav class="breadcrumbs">
   <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
     <meta itemprop="itemListOrder" content="Descending" />
-    {{ range .Ancestors.Reverse }}
-    {{ if not .IsHome }}
+    {{- range .Page.Ancestors.Reverse }}
+    {{- if not .IsHome}}
     <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
       <meta itemprop="position" content="{{ .Params.menuTitle }}" />
       <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
         <span itemprop="name" class="breadcrumb-entry">{{ .Params.menuTitle | markdownify }} &gt; </span>
       </a>
     </li>
-    {{ end }}
     {{- end }}
-    {{ if not .IsHome }}
+    {{- end }}
     <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
       <meta itemprop="position" content="{{ .Params.menuTitle }}" />
       <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
         <span itemprop="name" class="breadcrumb-entry">{{ .Params.menuTitle | markdownify }}</span>
       </a>
     </li>
-    {{ end }}
   </ol>
-  <a class="edit-page" aria-label="" href="https://github.com/arangodb/docs/edit/main/site/content/{{ with .File }}{{ .Path }}{{ end }}" target="_blank"><i class="fab fa-fw fa-github edit-page-icon"></i></a>
 </nav>

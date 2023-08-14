@@ -1,10 +1,19 @@
-<nav>
-  <ul class="topics{{ if .Site.Params.collapsibleMenu }} collapsible-menu{{ end }}">
-  {{- range .Site.Sections.ByWeight }}
-    {{- template "section-tree-nav" dict "sect" . "currentnode" . }}
-  {{- end }}
-  </ul>
-</nav>
+<!DOCTYPE html>
+<html>
+  <head>
+    <base target="_top" />
+    <title>Navigation</title>
+  </head>
+  <body>
+    <nav>
+      <ul class="topics{{ if .Site.Params.collapsibleMenu }} collapsible-menu{{ end }}">
+      {{- range .Site.Sections.ByWeight }}
+        {{- template "section-tree-nav" dict "sect" . "currentnode" . }}
+      {{- end }}
+      </ul>
+    </nav>    
+  </body>
+</html>
 
 {{- define "section-tree-nav" }}
   {{- $currentNode := .currentnode }}

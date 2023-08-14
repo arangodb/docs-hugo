@@ -1,33 +1,28 @@
-{{ $page := .page }}
-{{ $versions := index site.Data "versions" }}
-{{ range $i, $version := $versions }}
-    {{ if strings.Contains $page $version.name }}
-        {{ $page.Page.Scratch.Set "version" $version.version }}
-        {{ $page.Page.Store.Set "versionShort" $version.name }}
-        {{ $page.Page.Scratch.Set "alias" $version.alias }}
-        {{ $page.Page.Scratch.Set "deprecated" $version.deprecated }}
-
-        {{ template "checkVersionIsInDevelopment" dict "page" $page "pageVersion" $version.name "versions" $versions }}
-    {{ end }}
-{{ end }}
+{{- $page := .page }}
+{{- $versions := index site.Data "versions" }}
+{{- range $i, $version := $versions }}
+  {{- if strings.Contains $page $version.name }}
+    {{- $page.Page.Scratch.Set "version" $version.version }}
+    {{- $page.Page.Store.Set "versionShort" $version.name }}
+    {{- $page.Page.Scratch.Set "alias" $version.alias }}
+    {{- $page.Page.Scratch.Set "deprecated" $version.deprecated }}
+    {{- template "checkVersionIsInDevelopment" dict "page" $page "pageVersion" $version.name "versions" $versions }}
+  {{- end }}
+{{- end }}
 
 {{- define "checkVersionIsInDevelopment" }}
-{{ $page := .page }}
-{{ $pageVersion := .pageVersion }}
-{{ $versions := index (where .versions "alias" "stable") 0 }}
-{{ $page.Page.Scratch.Set "stableVersion" $versions.name }}
-
-
-    {{ $stableVersion := split $versions.name "." }}
-    {{ $currentVersion := split $pageVersion "." }}
-
-    {{ range $j, $elem := $stableVersion }}
-        {{ $intStable := int $elem }}
-        {{ $currentVersionElement := index $currentVersion $j }}
-        {{ $intCurrent := int $currentVersionElement }}
-        {{ if gt $intCurrent $intStable }}
-            {{ $page.Page.Scratch.Set "underDevelopment" true }}
-
-        {{ end }}
-    {{ end }}
-{{ end }}
+  {{- $page := .page }}
+  {{- $pageVersion := .pageVersion }}
+  {{- $versions := index (where .versions "alias" "stable") 0 }}
+  {{- $page.Page.Scratch.Set "stableVersion" $versions.name }}
+  {{- $stableVersion := split $versions.name "." }}
+  {{- $currentVersion := split $pageVersion "." }}
+  {{- range $j, $elem := $stableVersion }}
+    {{- $intStable := int $elem }}
+    {{- $currentVersionElement := index $currentVersion $j }}
+    {{- $intCurrent := int $currentVersionElement }}
+    {{- if gt $intCurrent $intStable }}
+      {{- $page.Page.Scratch.Set "underDevelopment" true }}
+    {{- end }}
+  {{- end }}
+{{- end }}

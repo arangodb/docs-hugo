@@ -1,16 +1,14 @@
 ---
-fileID: transactions
 title: ArangoDB Documentation
-menuTitle: '3.10'
+menuTitle: Home
 weight: 0
-description: 
 ---
-
 ## Recommended Resources
+
 {{< cards >}}
 
 {{% card title="Introduction" %}}
-[Getting Started](introduction/getting-started/)
+[Getting Started]({{/* pageVersion */}}/get-started/_index.md)
 {{% /card %}}
 
 {{% card title="ArangoGraph Insights Platform" %}}

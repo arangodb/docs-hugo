@@ -1,6 +1,6 @@
 {{- $disabled := page.Params.pageToc.disabled | default false }}
 {{- if and (not $disabled) (.Page.Fragments.HeadingsMap | len) 2 }}
-{{/* TODO: Use of aside (inside main), aria role, schema.org */}}
+{{/* TODO: Use of aside (inside main), aria role, schema.org, min len 3 because of missing H1? */}}
 <aside>
   <nav class="toc">
     <div class="toc-header">On this page</div>
@@ -14,7 +14,7 @@
 {{- $headings := .headings }}
 {{- $level := .level | default 1 }}
 {{- $maxLevel := page.Params.pageToc.maxHeadlineLevel | default 5 }}
-{{- if le $level $maxLevel }}
+{{- if and (gt $level 1) (le $level $maxLevel) }}
 <ul>
   {{- range $h := $headings }}
     {{- with $h.Title }}<li><a href="#{{ $h.ID }}">{{ $h.Title | markdownify }}</a></li>{{ end }}

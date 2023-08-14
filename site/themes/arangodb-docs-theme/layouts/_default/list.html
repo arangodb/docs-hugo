@@ -1,21 +1,22 @@
 {{- define "main" }}
-{{- if .Content }}
-  {{- partial "toc.html" . }}
-  {{/* <section class="content"> */}}
-  {{- .Content }}
-  {{/* </section> */}}
-{{- else }}
-  {{ $pageVersion := .Page.Scratch.Get "version" }}
-  <nav class="cards">
-  {{- range .Page.Pages }}
-    {{- $title := replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}
-    <article>
-      {{- partial "shortcodes/card.html" (dict
-        "Inner" .Description
-        "title"  $title
-        "link" .RelPermalink
-      ) }}
-    </article>
+  {{- if .Content }}
+    {{- partial "toc.html" . }}
+    {{/* <section class="content"> */}}
+    {{- .Content }}
+    {{/* </section> */}}
+  {{- else }}
+    {{ $pageVersion := .Page.Scratch.Get "version" }}
+    <nav class="cards">
+    {{- range .Page.Pages }}
+      {{- $title := replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}
+      <article>
+        {{- partial "shortcodes/card.html" (dict
+          "Inner" .Description
+          "title"  $title
+          "link" .RelPermalink
+        ) }}
+      </article>
+    {{- end }}
+    </nav>
   {{- end }}
-  </nav>
 {{- end }}
