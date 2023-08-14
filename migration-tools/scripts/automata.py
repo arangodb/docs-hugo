@@ -17,12 +17,6 @@ def migrate(filepath):
     page.frontMatter.weight = infos[filepath]["weight"]
     page.frontMatter.menuTitle = infos[filepath]["menuTitle"]
 
-
-    if filepath.endswith("_index.md"):
-        page.frontMatter.layout = "chapter"
-    else:
-        page.frontMatter.layout = "default"
-
     temp = re.sub(r"---.*---", "", "\n".join(content), 0, re.MULTILINE | re.DOTALL)
 
     if temp == "": ## for pages derived from subtitles
@@ -230,13 +224,18 @@ def getHugoMetrics(content):
 
 
 def processFile(page, content, filepath):
-    flags = {"frontMatter": False, "endFrontMatter": False, "description": False, "redirect": False, "toc": False, "title": False, "inDetails": False, "inCodeblock": False, "hint": {"active": False, "type": ""}, "capture": False, "inDocublock": False, "assign-ver": {"active": False, "isValid": False}}
+    flags = {"frontMatter": False, "endFrontMatter": False, "description": False, "lead": False, "redirect": False, "toc": False, "title": False, "inDetails": False, "inCodeblock": False, "hint": {"active": False, "type": ""}, "capture": False, "inDocublock": False, "assign-ver": {"active": False, "isValid": False}}
 
     buffer = []
     try:
         for i, line in enumerate(content):
             if line == "\n":
                 if page.content == "":
+                    continue
+
+                # Ignore empty line after lead paragraph to avoid two blank lines
+                if flags["lead"]:
+                    flags["lead"] = False
                     continue
                 
                 page.content = page.content + "\n"
@@ -246,7 +245,7 @@ def processFile(page, content, filepath):
                 buffer.append(line)
 
 
-                
+
             ## Trap and skip inline docublocks extra line
             if re.search(r"{%.*arangoshexample|{%.*aqlexample|@END_EXAMPLE_", line, re.MULTILINE):
                 continue
@@ -302,16 +301,11 @@ def processFile(page, content, filepath):
                 continue
 
             if "{:class=\"lead\"}" in line:
-                if not buffer:
-                    continue
-
-                line = line.replace("{:class=\"lead\"}", "{.lead}")
-                page.content = page.content + line
+                flags["lead"] = True
                 continue
             
             if "{{ page.description }}" in line:
-                line = line.replace("{{ page.description }}", "{{< description >}}")
-                page.content = page.content + line
+                # set in frontmatter and to be automatically rendered below H1
                 continue
 
             ## Headers
@@ -617,7 +611,6 @@ class Page():
 class FrontMatter():
     def __init__(self):
         self.title = ""
-        self.layout = ""
         self.description = ""
         self.menuTitle = ""
         self.weight = 0
@@ -631,4 +624,4 @@ class FrontMatter():
         self.title = self.title.replace("site.data.versions[page.version.name]", "pageVersion")
         description = yaml.dump(self.description, sort_keys=False, default_flow_style=False)
         description = description.replace(">-", "").replace("|-", ">-")
-        return f"---\ntitle: {self.clean(self.title)}\nmenuTitle: {self.menuTitle}\nweight: {self.weight}\ndescription: {description}\n{self.toc}\narchetype: {self.layout}\n---\n"
+        return f"---\ntitle: {self.clean(self.title)}\nmenuTitle: {self.menuTitle}\nweight: {self.weight}\ndescription: {description}\n{self.toc}\n---\n"
