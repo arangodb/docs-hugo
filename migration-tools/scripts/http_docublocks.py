@@ -242,28 +242,24 @@ def processExample_new(docublock):
     blockExamples = []
 
     inExample = False
-    exampleBlock = {'options': {"description": "", "version": version}, 'code': ""}
+    exampleBlock = {'options': {"description": ""}, 'code': ""}
 
     lines = examples[0].split("\n")
 
     for i, line in enumerate(lines):
         if "@EXAMPLE_" in line:
             inExample = True
-            exampleBlock["options"]["render"] = "input/output"
 
             exampleName = re.search(r"(?<={).*(?=})", line).group(0)
             exampleBlock["options"]["name"] = exampleName
-            exampleBlock["options"]["server_name"] = "stable"
-            exampleBlock["options"]["type"] = "single"
             if "_cluster" in exampleBlock["options"]["name"]:
                 exampleBlock["options"]["type"] = "cluster"
                 exampleBlock["options"]["name"] = exampleBlock["options"]["name"].replace("_cluster", "")
-                exampleBlock["options"]["version"] = version
             continue
 
         if "@END_EXAMPLE_" in line:
             blockExamples.append(exampleBlock)
-            exampleBlock = {'options': {"description": "", "version": version}, 'code': ""}
+            exampleBlock = {'options': {"description": ""}, 'code': ""}
             inExample = False
             continue
 
@@ -273,8 +269,6 @@ def processExample_new(docublock):
 
             line = re.sub(r"^ *\|", "", line, 0, re.MULTILINE)
             exampleBlock["code"] = exampleBlock["code"] + "\n" + line
-            if "logJsonResponse" in line:
-                exampleBlock["options"]["render"] = "input/output"
 
         if not inExample:
             exampleBlock["options"]["description"] = exampleBlock["options"]["description"] + "\n" + line

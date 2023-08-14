@@ -10,10 +10,6 @@ def migrateInlineDocuBlocks(block):
                 "options": {
                     "name": "",
                     "description": "",
-                    "render": "input",
-                    "version": version,
-                    "server_name": "stable",
-                    "type": "single",
                     },
                 "code": "",
                 }
@@ -22,12 +18,10 @@ def migrateInlineDocuBlocks(block):
     exampleType = re.search(r"@EXAMPLE_.*",  block).group(0)
 
     if "@EXAMPLE_ARANGOSH_OUTPUT" in exampleType:
-        newBlock["options"]["render"] = "input/output"
         newBlock["options"]["name"] = re.search(r"(?<=@EXAMPLE_ARANGOSH_OUTPUT{).*(?=})", exampleType).group(0)
 
     elif "@EXAMPLE_AQL" in exampleType:
         newBlock["language"] = "aql"
-        newBlock["options"]["render"] = "input/output"
 
     if "_cluster" in newBlock["options"]["name"]:
         newBlock["options"]["type"] = "cluster"

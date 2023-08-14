@@ -42,6 +42,61 @@ parameters:
     type: boolean
     default: false
 
+commands:
+  clone-docs-and-merge:
+    description: Clone docs and merge main content before generate
+    steps:
+      - run: 
+          name: Clone docs repo
+          command: |
+           git clone git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+           cd docs-hugo/
+           git fetch --all
+           git pull --all
+           git merge --no-edit -X theirs origin/frontend-preview 
+           cd ../
+
+  commit:
+    description: Commit generated content
+    parameters:
+      commit-generated:
+        type: boolean
+        default: false
+      create-pr:
+        type: boolean
+        default: false
+      pr-branch:
+        type: string
+        default: ""
+    steps:
+      - run:
+          name: Commit generated files
+          command: |
+            if [ "<< parameters.commit-generated >>" = true ] ; then
+              if [ "<< parameters.create-pr >>" = true ]; then
+                cd docs-hugo/
+                git checkout -b << parameters.pr-branch >>-$CIRCLE_BUILD_NUM
+              fi
+
+              cd /home/circleci/project/docs-hugo/site
+              git config user.email "daniele@arangodb.com"
+              git config user.name "CircleCI Job"
+              git add data/ content/
+              git commit --allow-empty -m "[skip ci] Automatic commit of generated files from CircleCI"
+
+              if [ "<< parameters.create-pr >>" = true ]; then
+                git push -u origin << parameters.pr-branch >>-$CIRCLE_BUILD_NUM
+                curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci \
+                  --header 'docs-webhook-event: scheduled-create-pr' \
+                  --header "docs-branch-name: << parameters.pr-branch >>-$CIRCLE_BUILD_NUM" \
+                  --header "docs-pr-title: [CircleCI Generated] << pipeline.parameters.workflow >>-$CIRCLE_BUILD_NUM" \
+                  --header "docs-pr-body: Automatically generated content from CircleCI << pipeline.parameters.workflow >> workflow"
+              else
+                git push
+              fi
+            fi
+
+
 jobs:
   create-docs-images:
     parameters:
@@ -103,10 +158,13 @@ jobs:
 
             cd docs-hugo/toolchain/docker/amd64
             docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
-
+      - run:
+          name: Upload summary on GitHub
+          command: |
             cd /home/circleci/project/docs-hugo
-            cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
-          
+            cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-check-name: plain-build-summary'  --header 'docs-branch-name: '$CIRCLE_BRANCH''
+          when: always
+
       - persist_to_workspace:
           root: .
           paths:
@@ -138,7 +196,7 @@ jobs:
         default: ""
     machine:
       image: ubuntu-2004:current
-    resource_class: large
+    resource_class: xlarge
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -149,14 +207,10 @@ jobs:
           at: .
       
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
-      - run: git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
-
-      
+      - clone-docs-and-merge
       - run:
           name: Set environment variables and launch toolchain
           command: |
-            pwd
-            ls
             source docs-hugo/.circleci/utils.sh
             export ENV="circleci"
             export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
@@ -178,10 +232,13 @@ jobs:
 
             cd docs-hugo/toolchain/docker/amd64
             docker compose up
-
+      - run:
+          name: Upload summary on GitHub
+          command: |
             cd /home/circleci/project/docs-hugo
-            cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
-
+            cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-check-name: generate-summary' --header 'docs-branch-name: '$CIRCLE_BRANCH''
+          when: always
+      
       - run:
           name: Create archive of generated files
           command: |
@@ -199,38 +256,15 @@ jobs:
       - store_artifacts:
           path: /tmp/3.12-generated.tar
 
-      - run:
-          name: Commit generated files
-          command: |
-            if [ "<< parameters.commit-generated >>" = true ] ; then
-              if [ "<< parameters.create-pr >>" = true ]; then
-                cd docs-hugo/
-                git checkout -b << parameters.pr-branch >>-$CIRCLE_BUILD_NUM
-              fi
-
-              cd /home/circleci/project/docs-hugo/site
-              git config user.email "daniele@arangodb.com"
-              git config user.name "CircleCI Job"
-              git add data/ content/
-              git commit --allow-empty -m "Automatic commit of generated files from CircleCI"
-
-              if [ "<< parameters.create-pr >>" = true ]; then
-                git push -u origin << parameters.pr-branch >>-$CIRCLE_BUILD_NUM
-                curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci \
-                  --header 'docs-webhook-event: scheduled-create-pr' \
-                  --header "docs-branch-name: << parameters.pr-branch >>-$CIRCLE_BUILD_NUM" \
-                  --header "docs-pr-title: [CircleCI Generated] << pipeline.parameters.workflow >>-$CIRCLE_BUILD_NUM" \
-                  --header "docs-pr-body: Automatically generated content from CircleCI << pipeline.parameters.workflow >> workflow"
-              else
-                git push
-              fi
-            fi
+      - commit:
+          commit-generated: << parameters.commit-generated >>
+          create-pr: << parameters.create-pr >>
+          pr-branch: << parameters.pr-branch >>
       
       - persist_to_workspace:
           root: .
           paths:
             - docs-hugo/site/public
-            - docs-hugo/summary.md
 
   commit-generated:
     machine:
@@ -243,10 +277,7 @@ jobs:
             - "28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e"
             - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
-      - run: 
-          name: Clone docs repo
-          command: |
-            git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+      - clone-docs-and-merge
       - run:
           name: Launch node script to get generated content from previous run
           command: |
@@ -262,15 +293,10 @@ jobs:
             tar -xf 3.10-generated.tar -C docs-hugo/site/data/
             tar -xf 3.11-generated.tar -C docs-hugo/site/data/
             tar -xf 3.12-generated.tar -C docs-hugo/site/data/
-      - run:
-          name: commit files
-          command: |
-            cd /home/circleci/project/docs-hugo/site
-            git config user.email "daniele@arangodb.com"
-            git config user.name "CircleCI Job"
-            git add data/
-            git commit --allow-empty -m "Automatic commit of generated files from CircleCI"
-            git push
+      - commit:
+          commit-generated: true
+          create-pr: false
+          pr-branch: ""
             
 
             

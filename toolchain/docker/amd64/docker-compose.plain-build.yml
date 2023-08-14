@@ -1,7 +1,7 @@
 version: "3.5"
 services:
   site-frontend:
-    container_name: plain-build
+    container_name: docs_plain-build
     image: arangodb/docs-hugo:site-amd64
     networks:
       docs_plain_net:
@@ -17,7 +17,7 @@ services:
 
 
   arangoproxy-frontend:
-    container_name: arangoproxy-frontend
+    container_name: docs_arangoproxy-frontend
     image: arangodb/docs-hugo:arangoproxy-amd64
     networks:
       docs_plain_net:
