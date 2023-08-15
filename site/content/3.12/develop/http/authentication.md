@@ -84,22 +84,22 @@ that needs to be encoded is `user:pass`. The Base64-encoded value is
 
 ```js
 ---
-name: js_aql_from_base64
-description: Decode example credentials using the JavaScript API
+name: js_aql_to_base64
+description: Encode example credentials using the JavaScript API
 ---
 db._query(
-  `RETURN FROM_BASE64(@str)`,
-  { str: "dXNlcjpwYXNz" }
+  `RETURN TO_BASE64(@str)`,
+  { str: "user:pass" }
 );
 ```
 
 ```curl
 ---
-name: HttpAqlFromBase64
-description: Decode example credentials using the HTTP API
+name: HttpAqlToBase64
+description: Encode example credentials using the HTTP API
 ---
 var url = "/_api/cursor";
-var body = { query: `RETURN FROM_BASE64("dXNlcjpwYXNz")` };
+var body = { query: `RETURN TO_BASE64("user:pass")` };
 var response = logCurlRequest('POST', url, body);
 assert(response.code === 201);
 logJsonResponse(response);
