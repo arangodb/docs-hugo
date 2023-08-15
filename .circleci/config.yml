@@ -466,7 +466,7 @@ workflows:
           name: compile-3.10
           arangodb-branch: << pipeline.parameters.arangodb-3_10 >>
           version: "3.10"
-          openssl: "3.0.9"
+          openssl: "3.0.10"
           requires:
             - approve-workflow
       - compile-linux:
@@ -475,7 +475,7 @@ workflows:
           name: compile-3.11
           arangodb-branch: << pipeline.parameters.arangodb-3_11 >>
           version: "3.11"
-          openssl: "3.0.9"
+          openssl: "3.0.10"
           requires:
             - approve-workflow
       - compile-linux:
@@ -484,7 +484,7 @@ workflows:
           name: compile-3.12
           arangodb-branch: << pipeline.parameters.arangodb-3_12 >>
           version: "3.12"
-          openssl: "3.1.1"
+          openssl: "3.1.2"
           requires:
             - approve-workflow
       - build-with-generated:
