@@ -428,28 +428,6 @@ description: ''
   RETURN FNV64("foobar")
 ```
 
-## FROM_BASE64()
-
-`FROM_BASE64(value) → decodedString`
-
-Return a string decoded from a Base64 representation.
-
-- **value** (string): a Base64-encoded string
-- returns **decodedString** (string): the decoded value as a string
-
-**Examples**
-
-```aql
----
-name: aqlFromBase64
-description: Decode two Base64 example strings
----
-RETURN [
-  TO_BASE64("QUJDLg=="),
-  TO_BASE64("MTIzNDU2")
-]
-```
-
 ## IPV4_FROM_NUMBER()
 
 `IPV4_FROM_NUMBER(numericAddress) → stringAddress`

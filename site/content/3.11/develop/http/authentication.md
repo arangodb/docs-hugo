@@ -81,30 +81,6 @@ authorization scheme is `Basic`.
 For example, if the name is `user` and the password `pass`, the temporary string
 that needs to be encoded is `user:pass`. The Base64-encoded value is
 `dXNlcjpwYXNz` (e.g. using the `btoa()` JavaScript function in a browser).
-
-```js
----
-name: js_aql_from_base64
-description: Decode example credentials using the JavaScript API
----
-db._query(
-  `RETURN FROM_BASE64(@str)`,
-  { str: "dXNlcjpwYXNz" }
-);
-```
-
-```curl
----
-name: HttpAqlFromBase64
-description: Decode example credentials using the HTTP API
----
-var url = "/_api/cursor";
-var body = { query: `RETURN FROM_BASE64("dXNlcjpwYXNz")` };
-var response = logCurlRequest('POST', url, body);
-assert(response.code === 201);
-logJsonResponse(response);
-```
-
 The HTTP request header to authenticate is a follows:
 
 ```
