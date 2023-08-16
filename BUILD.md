@@ -67,10 +67,8 @@ The toolchain container needs to be set up via config file in docs-hugo/toolchai
 ```yaml
 generators:   # Generators to trigger - empty string defaults to all generators
 servers:      # Array to define arangodb servers to be used by the toolchain
-  - name:     # Match the name of the examples "server_name" option
-    image:    # arangodb docker image to be used, can be arangodb/enterprise-preview:... or a branch name
+  - image:    # arangodb docker image to be used, can be arangodb/enterprise-preview:... or a branch name
     version:  # docs branch to put the generated content into
-    src:      # path to an arangodb source code, needed by "metrics" and "error-codes" generators
 ```
 
 **List of available generators**
@@ -84,13 +82,12 @@ servers:      # Array to define arangodb servers to be used by the toolchain
 The generators entry is a space-separated string
 
 **Configuration Example**
+
 ```yaml
 generators: examples oasisctl options optimizer
 servers:
-  - name: "stable"
-    image: "arangodb/enterprise-preview:3.11-nightly"
+  - image: arangodb/enterprise-preview:3.11-nightly
     version: "3.11"
-    src: ""
 ```
 
 **Note**
