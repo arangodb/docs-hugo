@@ -1883,7 +1883,7 @@ TO_BASE64("123456")
 name: aqlToBase64NonString
 description: Try to use a non-string as input
 ---
-RETURN TO_BASE64(123456) // number
+error RETURN TO_BASE64(123456) // number
 ```
 
 ## TO_HEX()
