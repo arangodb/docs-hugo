@@ -1,17 +1,11 @@
-<!-- pr-description -->
 ### Description
 
-*(Please describe the changes in this PR for reviewers, motivation, rationale - **mandatory**)*
+<!-- Please describe the changes in this PR for reviewers, motivation, rationale - **mandatory** -->
 
-<br>
-<br>
+#### Upstream PRs
 
-
-<!-- pr-upstreams -->
-##### Upstream PR
-The following PR deals with the following generated content for the following versions:
+<!-- Docker Hub images or GitHub pull request links from the arangodb/arangodb repository -->
 
 - 3.10:
 - 3.11:
 - 3.12:
-- devel:
