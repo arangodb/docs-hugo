@@ -1878,6 +1878,14 @@ TO_BASE64("123456")
   ]
 ```
 
+```aql
+---
+name: aqlToBase64NonString
+description: Try to use a non-string as input
+---
+RETURN TO_BASE64(123456) // number
+```
+
 ## TO_HEX()
 
 `TO_HEX(value) → hexString`
