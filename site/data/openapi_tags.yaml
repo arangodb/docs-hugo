@@ -42,5 +42,7 @@
   description: Get server information, manage licenses, shut down nodes, and more
 - name: Cluster
   description: Get information, monitor, and administrate cluster deployments
+- name: Dump
+  description: Create full-copy data backups
 - name: Hot Backups
   description: Manage incremental data backups
