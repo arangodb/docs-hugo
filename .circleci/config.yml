@@ -56,8 +56,8 @@ jobs:
       - run:
           name: Checkout
           command: |
-            (mkdir .circleci && cd .circleci && curl https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci?ref=$CIRCLE_SHA1 | jq ".[].download_url" | xargs wget)
-            (mkdir -p .circleci/jobs && cd .circleci/jobs && curl https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci/jobs?ref=$CIRCLE_SHA1 | jq ".[].download_url" | xargs wget)
+            mkdir .circleci && cd .circleci && curl https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci?ref=$CIRCLE_SHA1 | jq ".[].download_url" | xargs wget
+            mkdir -p .circleci/jobs && cd .circleci/jobs && curl https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci/jobs?ref=$CIRCLE_SHA1 | jq ".[].download_url" | xargs wget
 
       - run:
           name: Generate config # we don't always need to generate the config. Some workflows are ready to go in the base_config.yml
