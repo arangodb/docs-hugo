@@ -56,7 +56,7 @@ def generate_workflow(config, args):
 
 def workflow_plain_build(config, args):
     buildYaml = yaml.safe_load(open("jobs/plain_build.yml", "r"))
-    deployYaml = yaml.safe_load(open("jobs/plain_build.yml", "r"))
+    deployYaml = yaml.safe_load(open("jobs/common.yml", "r"))
     config["jobs"] = {
         "plain-build": buildYaml["plain-build"],
         "deploy": deployYaml["deploy"]
