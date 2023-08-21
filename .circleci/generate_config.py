@@ -95,7 +95,7 @@ def main():
     try:
         args = parse_arguments()
         print("Generating configuration")
-        config = {"version": 2.1, "jobs": {}, "workflows": {}}
+        config = {"version": 2.1, "parameters": yaml.safe_load(open("jobs/parameters.yml", "r"))["parameters"], "jobs": {}, "workflows": {}}
         config = generate_workflow(config, args)
         with open("generated_config.yml", "w", encoding="utf-8") as outstream:
             yaml.dump(config, outstream)
