@@ -94,6 +94,7 @@ def workflow_generate():
 def main():
     try:
         args = parse_arguments()
+        print("Generating configuration")
         config = {"version": 2.1, "jobs": {}, "workflows": {}}
         config = generate_workflow(config, args)
         with open("generated_config.yml", "w", encoding="utf-8") as outstream:
