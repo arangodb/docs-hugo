@@ -67,10 +67,10 @@ jobs:
               echo "Generated Configuration"
               cat  /home/circleci/project/.circleci/generated_config.yml
             else
-              cat .circleci/base_config.yml > .circleci/generated_config.yml
+              cat /home/circleci/project/.circleci/base_config.yml > /home/circleci/project/.circleci/generated_config.yml
             fi
       - continuation/continue:
-          configuration_path: ./.circleci/generated_config.yml # use newly generated config to continue
+          configuration_path: /home/circleci/project/.circleci/generated_config.yml # use newly generated config to continue
 
 workflows:
   setup:
