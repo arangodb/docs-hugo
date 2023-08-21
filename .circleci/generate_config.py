@@ -12,11 +12,14 @@ if sys.version_info[0] != 3:
     print("found unsupported python version ", sys.version_info)
     sys.exit()
 
-def generate_workflow(config, params):
-    match params:
-        case _:
-            return
 
+def generate_workflow(config, params):
+    print(f"[generate_workflow] Generating workflow with parameters:\n{params}")
+    if "generate" in params["workflow"]:
+        return workflow_generate()
+
+def workflow_generate():
+    return
 
 
 
