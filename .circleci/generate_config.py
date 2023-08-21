@@ -67,7 +67,7 @@ def workflow_plain_build(config, args):
                 "plain-build": {"deploy-url": args.deploy_url}
             },
             {
-                "deploy": {"deploy-url": args.deploy_url, "requires": ["plain-build"]}
+                "deploy": {"requires": ["plain-build"]}
             }]
         }
     }
