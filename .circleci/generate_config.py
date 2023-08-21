@@ -23,7 +23,7 @@ def parse_arguments():
         "--workflow", help="file containing the circleci base config", type=str
     )
     parser.add_argument(
-        "--deploy-url", help="file containing the circleci base config", type=str
+        "--arangodb-branches",  nargs='+', help="arangodb branches"
     )
     parser.add_argument(
         "--generators", help="file containing the test definitions", type=str

@@ -56,18 +56,19 @@ jobs:
       - run:
           name: Checkout
           command: |
-            mkdir -p .circleci/jobs && cd .circleci && curl https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci?ref=$CIRCLE_SHA1 | jq ".[].download_url" | xargs wget
+            mkdir -p .circleci && cd .circleci && curl https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci?ref=$CIRCLE_SHA1 | jq ".[].download_url" | xargs wget
 
-      - run:
-          name: Generate config # we don't always need to generate the config. Some workflows are ready to go in the base_config.yml
-          command: |
+            if [ "<< pipeline.parameters.workflow >>" == "generate" ]; then
               pip install pyyaml
 
               cd ./.circleci && python3 generate_config.py \
-                --workflow << pipeline.parameters.workflow >> \
-                --deploy-url << pipeline.parameters.deploy-url >>
+                --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >>
+
               echo "Generated Configuration"
               cat  /home/circleci/project/.circleci/generated_config.yml
+            else
+              cat .circleci/base_config.yml > .circleci/generated_config.yml
+            fi
       - continuation/continue:
           configuration_path: ./.circleci/generated_config.yml # use newly generated config to continue
 

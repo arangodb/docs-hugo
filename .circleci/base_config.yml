@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   workflow:
     type: enum
-    enum: [no-op, plain-build, generate, compile, generate-scheduled, commit-generated, generate-oasisctl, create-docs-images-amd64, create-docs-images-arm64]
+    enum: [no-op, plain-build, generate, generate-scheduled, commit-generated, generate-oasisctl, create-docs-images-amd64, create-docs-images-arm64]
     default: no-op
   
   deploy-url:
@@ -463,7 +463,7 @@ workflows:
           name: compile-3.10
           arangodb-branch: << pipeline.parameters.arangodb-3_10 >>
           version: "3.10"
-          openssl: "3.0.9"
+          openssl: ""
           requires:
             - approve-workflow
       - compile-linux:
@@ -472,7 +472,7 @@ workflows:
           name: compile-3.11
           arangodb-branch: << pipeline.parameters.arangodb-3_11 >>
           version: "3.11"
-          openssl: "3.0.9"
+          openssl: ""
           requires:
             - approve-workflow
       - compile-linux:
@@ -481,7 +481,7 @@ workflows:
           name: compile-3.12
           arangodb-branch: << pipeline.parameters.arangodb-3_12 >>
           version: "3.12"
-          openssl: "3.1.1"
+          openssl: ""
           requires:
             - approve-workflow
       - build-with-generated:
@@ -585,13 +585,3 @@ workflows:
           requires:
             - approve-workflow
       
-
-  community-pr:
-    when: { equal: [ compile, << pipeline.parameters.workflow >> ] }
-    jobs:
-      - compile-linux:
-          name: "compile"
-          arangodb-branch: << pipeline.parameters.arangodb-branch >>
-          version: << pipeline.parameters.version >>
-          context:
-            - sccache-aws-bucket
