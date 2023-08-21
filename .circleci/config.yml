@@ -58,7 +58,7 @@ jobs:
           command: |
             set +e
             mkdir -p .circleci/jobs && cd .circleci && curl https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci?ref=$CIRCLE_SHA1 | jq ".[].download_url" | xargs wget
-            cd ./.circleci/jobs &&  curl https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci/jobs?ref=$CIRCLE_SHA1 | jq ".[].download_url" | xargs wget
+            cd /home/circleci/project/.circleci/jobs &&  curl https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci/jobs?ref=$CIRCLE_SHA1 | jq ".[].download_url" | xargs wget
             set -e
 
       - run:
