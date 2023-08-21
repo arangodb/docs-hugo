@@ -46,33 +46,7 @@ def parse_arguments():
 
 
 def generate_workflow(config, args):
-    if args.workflow == "plain-build":
-        return workflow_plain_build(config, args)
-    elif "generate" in args.workflow:
-        return
-    else:
-        return
-
-
-def workflow_plain_build(config, args):
-    buildYaml = yaml.safe_load(open("jobs/plain_build.yml", "r"))
-    deployYaml = yaml.safe_load(open("jobs/common.yml", "r"))
-    config["jobs"] = {
-        "plain-build": buildYaml["plain-build"],
-        "deploy": deployYaml["deploy"]
-    }
-    config["workflows"] = {
-        "plain": {
-            "jobs": [{
-                "plain-build": {"deploy-url": args.deploy_url}
-            },
-            {
-                "deploy": {"requires": ["plain-build"]}
-            }]
-        }
-    }
     return config
-
 
 
 
@@ -95,10 +69,11 @@ def main():
     try:
         args = parse_arguments()
         print("Generating configuration")
-        config = {"version": 2.1, "parameters": yaml.safe_load(open("jobs/parameters.yml", "r"))["parameters"], "jobs": {}, "workflows": {}}
-        config = generate_workflow(config, args)
-        with open("generated_config.yml", "w", encoding="utf-8") as outstream:
-            yaml.dump(config, outstream)
+        with open("base_config.yml", "w", encoding="utf-8") as outstream:
+            config = yaml.safe_load(outstream)
+            config = generate_workflow(config, args)
+            with open("generated_config.yml", "w", encoding="utf-8") as outstream:
+                yaml.dump(config, outstream)
     except Exception as exc:
         traceback.print_exc(exc, file=sys.stderr)
         sys.exit(1)
