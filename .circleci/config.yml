@@ -69,7 +69,8 @@ jobs:
               cd ./.circleci && python3 generate_config.py \
                 --workflow << pipeline.parameters.workflow >> \
                 --deploy-url << pipeline.parameters.deploy-url >>
-
+              echo "Generated Configuration"
+              cat  /home/circleci/project/.circleci/generated_config.yml
       - continuation/continue:
           configuration_path: ./.circleci/generated_config.yml # use newly generated config to continue
 
