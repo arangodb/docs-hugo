@@ -69,7 +69,7 @@ def main():
     try:
         args = parse_arguments()
         print("Generating configuration")
-        with open("base_config.yml", "w", encoding="utf-8") as instream:
+        with open("base_config.yml", "r") as instream:
             config = yaml.safe_load(instream)
             config = generate_workflow(config, args)
             with open("generated_config.yml", "w", encoding="utf-8") as outstream:
