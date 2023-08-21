@@ -12,24 +12,90 @@ if sys.version_info[0] != 3:
     print("found unsupported python version ", sys.version_info)
     sys.exit()
 
+def parse_arguments():
+    """argv"""
+    if "--help-flags" in sys.argv:
+        print_help_flags()
+        sys.exit()
 
-def generate_workflow(config, params):
-    print(f"[generate_workflow] Generating workflow with parameters:\n{params}")
-    if "generate" in params["workflow"]:
-        return workflow_generate()
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--workflow", help="file containing the circleci base config", type=str
+    )
+    parser.add_argument(
+        "--deploy-url", help="file containing the circleci base config", type=str
+    )
+    parser.add_argument(
+        "--generators", help="file containing the test definitions", type=str
+    )
+    parser.add_argument("-o", "--output", type=str, help="filename of the output")
+
+    return parser.parse_args()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def generate_workflow(config, args):
+    if args.workflow == "plain-build":
+        return workflow_plain_build(config, args)
+    elif "generate" in args.workflow:
+        return
+    else:
+        return
+
+
+def workflow_plain_build(config, args):
+    buildYaml = yaml.safe_load(open("jobs/plain_build.yml", "r"))
+    deployYaml = yaml.safe_load(open("jobs/plain_build.yml", "r"))
+    config["jobs"] = {
+        "plain-build": buildYaml["plain-build"],
+        "deploy": deployYaml["deploy"]
+    }
+    config["workflows"] = {
+        "plain": {
+            "jobs": [{
+                "plain-build": {"deploy-url": args.deploy-url}
+            },
+            {
+                "deploy": {"deploy-url": args.deploy-url, "reqiuires": ["plain-build"]}
+            }]
+        }
+    }
+    return config
+
+
+
 
 def workflow_generate():
     return
 
 
 
+
+
+
+
+
+
+
+
+
+
 def main():
     try:
-        with open("jobs.yml", "r", encoding="utf-8") as instream:
-            config = yaml.safe_load(instream)
-            paramsFile = open('ci-params.json')
-            params = json.load(f)
-            generate_workflow(config, params)
+        args = parse_arguments()
+        config = {"version": 2.1, "jobs": {}, "workflows": {}}
+        config = generate_workflow(config, args)
         with open("generated_config.yml", "w", encoding="utf-8") as outstream:
             yaml.dump(config, outstream)
     except Exception as exc:

@@ -60,14 +60,10 @@ jobs:
       - run:
           name: Generate config # we don't always need to generate the config. Some workflows are ready to go in the base_config.yml
           command: |
-            echo "<< pipeline.parameters >>"
-
-            if [[ "<< pipeline.parameters.workflow >>" == *"generate"* ]]; then
               pip install pyyaml
-              python3 .circleci/generate_config.py
-            else
-              cat .circleci/base_config.yml > .circleci/generated_config.yml
-            fi
+              python3 .circleci/generate_config.py \
+                --workflow << pipeline.parameters.workflow >>
+                --deploy-url << pipeline.parameters.deploy-url >>
 
       - continuation/continue:
           configuration_path: ./.circleci/generated_config.yml # use newly generated config to continue
