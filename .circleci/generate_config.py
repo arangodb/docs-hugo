@@ -64,10 +64,10 @@ def workflow_plain_build(config, args):
     config["workflows"] = {
         "plain": {
             "jobs": [{
-                "plain-build": {"deploy-url": args.deploy-url}
+                "plain-build": {"deploy-url": args.deploy_url}
             },
             {
-                "deploy": {"deploy-url": args.deploy-url, "requires": ["plain-build"]}
+                "deploy": {"deploy-url": args.deploy_url, "requires": ["plain-build"]}
             }]
         }
     }
