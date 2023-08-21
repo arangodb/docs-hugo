@@ -102,3 +102,6 @@ def main():
     except Exception as exc:
         traceback.print_exc(exc, file=sys.stderr)
         sys.exit(1)
+
+if __name__ == "__main__":
+    main()

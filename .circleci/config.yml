@@ -66,7 +66,7 @@ jobs:
           command: |
               pip install pyyaml
 
-              python3 .circleci/generate_config.py \
+              cd ./.circleci && python3 generate_config.py \
                 --workflow << pipeline.parameters.workflow >> \
                 --deploy-url << pipeline.parameters.deploy-url >>
 
