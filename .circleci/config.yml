@@ -61,7 +61,7 @@ jobs:
             wget https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_BRANCH/site/data/versions.yaml
 
             if [ "<< pipeline.parameters.workflow >>" == "generate" ]; then
-              pip install pyyaml
+              pip install pyyaml requests
 
               python3 generate_config.py \
                 --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> \
