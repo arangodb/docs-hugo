@@ -1,0 +1,7 @@
+---
+title: Migrating Spring Data ArangoDB 1.x to 3.0
+menuTitle: Migrating 1.x to 3.0
+weight: 5
+description: ''
+---
+see [Migrating 2.x to 3.0](migrating-2-x-to-3-0.md)
