@@ -65,18 +65,13 @@ caches:
 
 params:
   arangoproxyUrl: "http://192.168.129.129:8080"
-  pygmentsUseClassic: false
+  pygmentsUseClassic: false # TODO: unused?
   description: "Documentation for ArangoDB"
   showVisitedLinks: true
-  alwaysopen: false
-  collapsibleMenu: true
-  disableBreadcrumb: false
-  disableNextPrev: false
-  disableLandingPageButton: true
-  titleSeparator: "::"
-  themeVariant: [ "relearn-light", "relearn-dark", "learn", "neon", "blue", "green", "red" ]
+  titleSeparator: "|"
+  themeVariant: [ "relearn-light", "relearn-dark" ]
   disableSeoHiddenPages: true
   additionalContentLanguage: [ "en" ]
-  custom_css: ["css/*"]
-  swaggerInitialize: "{ \"theme\": \"light\" }"
+  custom_css: ["css/*"] # TODO: unused?
+  swaggerInitialize: "{ \"theme\": \"light\" }" # TODO: unused?
   hidden: false
