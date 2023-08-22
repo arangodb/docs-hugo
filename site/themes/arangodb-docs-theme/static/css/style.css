@@ -1,0 +1,120 @@
+@font-face {
+    font-family: 'Inter';
+    font-style: normal;
+    font-weight: 400;
+    src: url("../fonts/Inter-Regular.ttf") format("ttf");
+    font-display: swap;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.content ul {
+    margin-left: 1rem;
+}
+
+:root {
+    --header-height: 3rem;
+    --nav-width: 20rem;
+    --text-color: #000;
+    --text-color-dim: #383B39;
+    --accent-color: #345B06;
+    --bg-color: #FAFAFA;
+    --bg-color-dark: #F5F5F5;
+    --border-color: #899191;
+    --stroke-color: rgba(38, 75, 42, 0.23);
+    scroll-padding-top: calc(var(--header-height) + 1rem);
+}
+
+body, input, button, select {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    font-size: 100%;
+    line-height: 1.25;
+}
+
+.header {
+    height: var(--header-height);
+    width: 100%;
+    padding: .5rem;
+    display: flex;
+    position: fixed;
+    top: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+.header .logo img {
+    max-height: 100%;
+}
+
+.nav {
+    background-color: var(--bg-color-dark);
+    border: 0;
+    border-right: 1px solid var(--stroke-color);
+    margin-top: var(--header-height);
+    position: fixed;
+    height: calc(100% - var(--header-height));
+    top: 0;
+    left: 0;
+    width: var(--nav-width);
+  }
+
+.main {
+    margin-top: calc(var(--header-height) + 1rem);
+    margin-left: calc(var(--nav-width) + 2rem);
+}
+
+.breadcrumbs li {
+    display: inline;
+}
+
+.box {
+    border: 1px solid #000;
+    border-radius: 4px;
+}
+
+.box.warning {
+    background-color: rgba(219, 146, 0, 0.6);
+}
+
+.box.info {
+    background-color: rgba(19, 64, 202, 0.397);
+}
+
+.aside ul {
+    list-style: none;
+    margin-left: 1rem;
+}
+
+@media (min-width: 1012px) {
+    .main {
+        display: grid;
+        grid-template-columns: minmax(500px, 720px) minmax(220px, 1fr);
+        grid-template-areas:
+            "topper aside"
+            "content aside"
+            "footer aside";
+        column-gap: 80px;
+        row-gap: 0;
+    }
+
+    .topper {
+        grid-area: "topper";
+    }
+    
+    .content {
+        grid-area: "content";
+    }
+
+    .footer {
+        grid-area: "footer";
+    }
+    
+    .aside {
+        grid-area: "aside";
+    }
+}

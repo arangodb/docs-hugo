@@ -1,0 +1,44 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body, input, button, select {
+    font-family: 'Inter', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 400;
+    font-size: 100%;
+    line-height: 1.25;
+}
+
+.hidden {
+    display: none;
+}
+
+.main-nav a {
+    display: block;
+    color: #000;
+    text-decoration: none;
+}
+
+.main-nav a:hover {
+    background-color: #ccc;
+}
+
+.main-nav .section {
+    position: relative;
+}
+
+/* placeholder for expand widget, use a chevron SVG in markup */
+.main-nav .section::before {
+    position: absolute;
+    display: block;
+    width: 1rem;
+    left: -1rem;
+    content: "> ";
+}
+
+.main-nav ul {
+    list-style: none;
+    margin-left: 1rem;
+}
