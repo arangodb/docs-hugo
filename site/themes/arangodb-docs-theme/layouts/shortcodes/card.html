@@ -2,11 +2,9 @@
 {{ $link := .Get "link" }}
 {{ $image := resources.GetMatch ( .Get "icon" ) }}
 
-    {{- partial "shortcodes/card.html" (dict
+  {{- partial "shortcodes/card.html" (dict
     "Inner" .Inner
     "title" $title
     "link" .Page.RelPermalink
     "icon" $image
-      ) }}  
-
-
+  ) }}  
