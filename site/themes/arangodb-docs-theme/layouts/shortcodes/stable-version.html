@@ -1,0 +1,3 @@
+{{- $versions := index site.Data "versions" }}
+{{- $stableVersion := (index (where $versions "alias" "stable") 0).name }}
+{{- $stableVersion }}

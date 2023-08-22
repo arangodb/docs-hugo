@@ -6,33 +6,33 @@ weight: 0
 ## Recommended Resources
 
 {{< cards >}}
-
+<!-- TODO: Make the whole card clickable, forward stable version path - introduce placeholder in link render hook? -->
 {{% card title="Introduction" %}}
-[Getting Started]({{/* pageVersion */}}/get-started/_index.md)
+[Getting Started]({{< stable-version >}}/introduction/_index.md)
 {{% /card %}}
 
 {{% card title="ArangoGraph Insights Platform" %}}
 Try our cloud
-[ArangoGraph](arangograph/)
+[ArangoGraph]({{< stable-version >}}/arangograph/_index.md)
 {{% /card %}}
 
 {{% card title="ArangoDB Query Language" %}}
-[AQL Introduction](aql/)
+[AQL Introduction]({{< stable-version >}}/aql/_index.md)
 {{% /card %}}
 
 {{% card title="Data Science" %}}
-[Data Science](data-science/)
+[Data Science]({{< stable-version >}}/data-science/_index.md)
 {{% /card %}}
 
 {{% card title="Deployment" %}}
 Explore how to deploy ArangoDB
 
-[Deployment](deploying/)
+[Deployment]({{< stable-version >}}/deploy/deployment/_index.md)
 {{% /card %}}
 
 {{% card title="Developer Topics" %}}
 Explore
-[Developer Topics](developer/)
+[Developer Topics]({{< stable-version >}}/develop/_index.md)
 {{% /card %}}
 
 {{< /cards >}}
