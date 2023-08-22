@@ -56,13 +56,17 @@ jobs:
       - run:
           name: Checkout
           command: |
-            mkdir -p .circleci && cd .circleci && curl https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci?ref=$CIRCLE_SHA1 | jq ".[].download_url" | xargs wget
+            mkdir -p .circleci && cd .circleci
+            curl https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci?ref=$CIRCLE_SHA1 | jq ".[].download_url" | xargs wget
+            wget https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_BRANCH/site/data/versions.yaml
 
             if [ "<< pipeline.parameters.workflow >>" == "generate" ]; then
               pip install pyyaml
 
-              cd ./.circleci && python3 generate_config.py \
-                --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >>
+              python3 generate_config.py \
+                --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> \
+                --commit-generated << pipeline.parameters.commit-generated >> \
+                --create-pr << pipeline.parameters.create-pr >>
 
               echo "Generated Configuration"
               cat  /home/circleci/project/.circleci/generated_config.yml
