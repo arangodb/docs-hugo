@@ -1,0 +1,37 @@
+{{- partial "shortcodes/version.html" (dict "page" .Page) }}{{/* TODO: cache per version folder? */}}
+{{- $pageVersion := .Page.Scratch.Get "version" }}
+<!DOCTYPE html>
+<html lang="{{ .Page.Language | default "en" }}">
+  {{- partial "head.html" . }}
+  <body>
+    {{- /*
+    <div id="show-page-loading">
+      <div class="logo-loading-page">
+        <img src="/images/logo_main.png" alt="ArangoDB" title="" style="position: fixed; top: 0px; left: 0; right: 0; bottom: 154px; margin: auto; width: 232px !important;"></a>
+      </div>
+      <div class="loader"></div>
+    </div>
+    */ -}}
+    {{- partial "header.html" . }}
+    <iframe src="/nav.html" class="nav" title="navigation">Your browser does not support iframes.</iframe>
+    <main class="main">{{/* TODO: check back-to-top implementation */}}
+      <section class="topper">{{/* TODO: Use another header here? */}}
+        {{- if not .Page.IsHome }}
+          {{- partial "breadcrumbs.html" . }}
+        {{- end }}
+        {{- partial "deprecated.html" . }}
+        {{- partial "in-development.html" . }}
+        <hgroup>
+          <h1>{{ replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}</h1>
+          {{- with .Page.Description }}<p>{{ . | markdownify }}</p>{{ end }}
+        </hgroup>
+      </section>
+      {{- block "main" . }}{{ end }}
+      <footer class="footer">
+        {{- partial "prev-next-page.html" . }}
+        {{- partial "edit-page.html" . }}
+        {{- partialCached "back-to-top.html" . }}
+      </footer>
+    </main>
+  </body>
+</html>
