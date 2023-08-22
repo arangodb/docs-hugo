@@ -18,6 +18,7 @@
 {{- end }}
 <script src="{{"js/variant.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
 */}}
+<link href="{{ "css/style.css" | relURL }}" rel="stylesheet">
 
 <script>
   {{ "// hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic:" | safeJS }}
