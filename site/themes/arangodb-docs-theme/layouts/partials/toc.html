@@ -1,25 +1,24 @@
-{{- $disabled := page.Params.pageToc.disabled | default false }}
-{{- if and (not $disabled) (.Page.Fragments.HeadingsMap | len) 2 }}
+{{- $disabled := .Page.Params.pageToc.disabled | default false }}
+{{- if and (not $disabled) (ge (.Page.Fragments.HeadingsMap | len) 2) }}
 {{/* TODO: Use of aside (inside main), aria role, schema.org, min len 3 because of missing H1? */}}
-<aside>
+<aside class="aside">
   <nav class="toc">
     <div class="toc-header">On this page</div>
-      {{ template "nestedHeadline" dict "headings" .Page.Fragments.Headings "level" 1 }}
-    </div>
+    {{ template "nestedHeadline" dict "headings" (index .Page.Fragments.Headings 0).Headings "maxHeadlineLevel" (.Page.Params.pageToc.maxHeadlineLevel | default 5) }}
   </nav>
 </aside>
 {{- end }}
 
 {{- define "nestedHeadline" }}
-{{- $headings := .headings }}
-{{- $level := .level | default 1 }}
-{{- $maxLevel := page.Params.pageToc.maxHeadlineLevel | default 5 }}
-{{- if and (gt $level 1) (le $level $maxLevel) }}
-<ul>
-  {{- range $h := $headings }}
-    {{- with $h.Title }}<li><a href="#{{ $h.ID }}">{{ $h.Title | markdownify }}</a></li>{{ end }}
-    {{- template "nestedHeadline" dict "headings" $h.Headings "level" (add $level 1) }}
+  {{- $headings := .headings }}
+  {{- $level := .level | default 2 }}
+  {{- $maxLevel := .maxHeadlineLevel }}
+  {{- if le $level $maxLevel }}
+  <ul>
+    {{- range $h := $headings }}
+      {{- with $h.Title }}<li><a href="#{{ $h.ID }}">{{ $h.Title | markdownify }}</a></li>{{ end }}
+      {{- template "nestedHeadline" dict "headings" $h.Headings "level" (add $level 1) "maxHeadlineLevel" $maxLevel }}
+    {{- end }}
+  </ul>
   {{- end }}
-</ul>
-{{- end }}
 {{- end }}
