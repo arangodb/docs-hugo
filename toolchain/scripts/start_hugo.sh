@@ -31,5 +31,5 @@ echo "   BaseURL:     $HUGO_URL"
 echo "   Environment: $HUGO_ENV"
 echo "   Options:     $hugoOptions"
 
-hugo $hugoOptions -e $HUGO_ENV -b $HUGO_URL --minify
+hugo $hugoOptions -e $HUGO_ENV -b $HUGO_URL #--minify (TEMP!)
 
