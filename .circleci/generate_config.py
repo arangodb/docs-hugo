@@ -33,7 +33,7 @@ parser.add_argument(
     "--arangodb-branches",  nargs='+', help="arangodb branches"
 )
 parser.add_argument(
-    "--generators", help="file containing the test definitions", type=str
+    "--generators", nargs='+', help="file containing the test definitions", type=str
 )
 parser.add_argument(
     "--commit-generated", help="file containing the test definitions", type=bool
