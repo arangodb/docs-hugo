@@ -148,7 +148,7 @@ def workflow_generate_store_artifacts_command(config):
         branchEnv = f"tar -cvf /tmp/{version}-generated.tar {version}/\n"
         shell = f"{shell}\n{branchEnv}"
         config["commands"]["store-generated-data"]["steps"].append({
-            "store-artifacts": {
+            "store_artifacts": {
                 "path": f"/tmp/{version}-generated.tar"
             }
         })
