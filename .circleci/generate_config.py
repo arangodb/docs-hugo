@@ -48,7 +48,6 @@ parser.add_argument(
 args = parser.parse_args()
 
 
-
 def generate_workflow(config):
     if "generate" in args.workflow :
         workflow_generate(config)
@@ -95,11 +94,11 @@ def workflow_generate(config):
 
     generateJob = {
         "build-with-generated": {
-            "name": "build-with-generated",
+            "name": args.workflow,
             "generators": " ".join(args.generators),
-            "commit-generated": args.commit_generated,
-            "create-pr": args.create_pr,
-            "pr-branch": args.pr_branch
+            "commit-generated": "<< pipeline.parameters.commit-generated >>",
+            "create-pr": "<< pipeline.parameters.create-pr >>",
+            "pr-branch": "<< pipeline.parameters.pr-branch >>"
         }
     }
 
@@ -108,7 +107,7 @@ def workflow_generate(config):
 
     deployJob = {
         "deploy": {
-            "requires": ["build-with-generated"]
+            "requires": [args.workflow]
         }
     }
     jobs.append(generateJob)
