@@ -127,9 +127,10 @@ def workflow_generate_launch_command(config):
                       export ARANGODB_BRANCH_{version_underscore}={branch} \
                       export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{version}"
 
-        shell += branchEnv
+        shell = f"{shell}\n{branchEnv}"
 
-    shell +="cd docs-hugo/toolchain/docker/amd64 \
+    shell = f"{shell} \
+             cd docs-hugo/toolchain/docker/amd64 \
              docker compose up"
 
     config["commands"]["launch-toolchain"]["steps"][0]["run"]["command"] = shell
