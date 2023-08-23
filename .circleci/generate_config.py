@@ -58,9 +58,8 @@ def generate_workflow(config):
 
 
 def workflow_generate(config):
-    print("add openssl")
-
     config = workflow_generate_launch_command(config)
+    config = workflow_generate_store_artifacts_command(config)
     jobs = config["workflows"]["generate"]["jobs"]
 
     generateRequires = []
@@ -136,6 +135,27 @@ docker compose up"
     config["commands"]["launch-toolchain"]["steps"][0]["run"]["command"] = shell
     return config
 
+
+def workflow_generate_store_artifacts_command(config):
+    shell = "cd docs-hugo/site/data"
+
+    for i in range(len(versions)):
+        version = versions[i]["name"]
+        branch = args.arangodb_branches[i]
+        if branch == "undefined":
+            continue
+
+        branchEnv = f"tar -cvf /tmp/{version}-generated.tar {version}/\n"
+        shell = f"{shell}\n{branchEnv}"
+        config["commands"]["store-generated-data"]["steps"].append({
+            "store-artifacts": {
+                "path": f"/tmp/{version}-generated.tar"
+            }
+        })
+
+
+    config["commands"]["store-generated-data"]["steps"][0]["run"]["command"] = shell
+    return config
 
 
 def findOpensslVersion(branch):

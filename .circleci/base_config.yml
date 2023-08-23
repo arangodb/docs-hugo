@@ -53,6 +53,13 @@ commands:
       - run:
           name: Launch toolchain
           command: ""
+
+  store-generated-data:
+    description: "Save generated data as artifacts"
+    steps:
+      - run:
+          name: Archive generated data
+          command: ""
     
   clone-docs-and-merge:
     description: Clone docs and merge main content before generate
@@ -224,24 +231,7 @@ jobs:
             cd /home/circleci/project/docs-hugo
             cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-check-name: generate-summary' --header 'docs-branch-name: '$CIRCLE_BRANCH''
           when: always
-      
-      - run:
-          name: Create archive of generated files
-          command: |
-            cd docs-hugo/site/data
-            tar -cvf /tmp/3.10-generated.tar 3.10/
-            tar -cvf /tmp/3.11-generated.tar 3.11/
-            tar -cvf /tmp/3.12-generated.tar 3.12/
-
-      - store_artifacts:
-          path: /tmp/3.10-generated.tar
-
-      - store_artifacts:
-          path: /tmp/3.11-generated.tar
-
-      - store_artifacts:
-          path: /tmp/3.12-generated.tar
-
+      - store-generated-data
       - commit:
           commit-generated: << parameters.commit-generated >>
           create-pr: << parameters.create-pr >>
