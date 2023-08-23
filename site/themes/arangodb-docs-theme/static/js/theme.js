@@ -218,7 +218,7 @@ function tocHiglighter() {
     }
   }
 
-  activeHrefs = $('#TableOfContents > .ps > .is-active')
+  activeHrefs = $('#TableOfContents > .is-active')
   if (activeHrefs.length == 0) document.querySelectorAll('.toc-content')[0].scrollIntoView();
 }
 
