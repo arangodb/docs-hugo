@@ -36,10 +36,10 @@ parser.add_argument(
     "--generators", help="file containing the test definitions", type=str
 )
 parser.add_argument(
-    "--commit-generated", help="file containing the test definitions", type=str
+    "--commit-generated", help="file containing the test definitions", type=bool
 )
 parser.add_argument(
-    "--create-pr", help="file containing the test definitions", type=str
+    "--create-pr", help="file containing the test definitions", type=bool
 )
 
 args = parser.parse_args()

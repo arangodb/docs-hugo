@@ -65,6 +65,7 @@ jobs:
 
               python3 generate_config.py \
                 --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> \
+                --generators << pipeline.parameters.generators >> \
                 --commit-generated << pipeline.parameters.commit-generated >> \
                 --create-pr << pipeline.parameters.create-pr >>
 
