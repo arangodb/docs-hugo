@@ -69,7 +69,11 @@ def workflow_generate(config):
         if branch == "undefined":
             continue
 
-        print(f"version {version} branch {branch}")
+        print(f"Creating compile job for version {version} branch {branch}")
+
+        openssl = "3.0.9"
+        if not "enterprise-preview" in branch:
+            openssl = findOpensslVersion(branch)
 
         compileJob = {
             "compile-linux": {
@@ -77,7 +81,7 @@ def workflow_generate(config):
                 "name": f"compile-{version}",
                 "arangodb-branch": branch,
                 "version": version,
-                "openssl": findOpensslVersion(branch),
+                "openssl": openssl,
                 "requires": ["approve-workflow"]
             }
         }
@@ -105,6 +109,8 @@ def workflow_generate(config):
 
 def findOpensslVersion(branch):
     r = requests.get(f'https://raw.githubusercontent.com/arangodb/arangodb/{branch}/VERSIONS')
+    print(f"Find OpenSSL Version for branch {branch}")
+    print(f"Github response: {r.content}")
     version = re.search(r"OPENSSL_LINUX.*", str(r.content))
     return version.group(0)
 
