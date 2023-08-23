@@ -64,7 +64,10 @@ jobs:
             curl https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci?ref=$CIRCLE_SHA1 | jq ".[].download_url" | xargs wget
             wget https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_BRANCH/site/data/versions.yaml
 
-            if [ "<< pipeline.parameters.workflow >>" == "generate" ]; then
+            if [ "<< pipeline.parameters.workflow >>" == "plain-build" ]; then
+              cat /home/circleci/project/.circleci/base_config.yml > /home/circleci/project/.circleci/generated_config.yml
+
+            else
               pip install pyyaml requests
 
               python3 generate_config.py \
@@ -77,8 +80,6 @@ jobs:
 
               echo "Generated Configuration"
               cat  /home/circleci/project/.circleci/generated_config.yml
-            else
-              cat /home/circleci/project/.circleci/base_config.yml > /home/circleci/project/.circleci/generated_config.yml
             fi
       - store_artifacts:
           path: /home/circleci/project/.circleci/generated_config.yml
