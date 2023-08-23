@@ -60,7 +60,21 @@ commands:
       - run:
           name: Archive generated data
           command: ""
-    
+
+  upload-summary:
+    description: "Upload summary report on github"
+    parameters:
+      name:
+        type: string
+        default: ""
+    steps:
+      - run:
+          name: Upload summary on GitHub
+          command: |
+            cd /home/circleci/project/docs-hugo
+            cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-check-name: << parameters.name >>'  --header 'docs-branch-name: '$CIRCLE_BRANCH''
+          when: always
+
   clone-docs-and-merge:
     description: Clone docs and merge main content before generate
     steps:
@@ -172,12 +186,8 @@ jobs:
 
             cd docs-hugo/toolchain/docker/amd64
             docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
-      - run:
-          name: Upload summary on GitHub
-          command: |
-            cd /home/circleci/project/docs-hugo
-            cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-check-name: plain-build-summary'  --header 'docs-branch-name: '$CIRCLE_BRANCH''
-          when: always
+      - upload-summary:
+          name: "plain-build-summary"
 
       - persist_to_workspace:
           root: .
@@ -225,12 +235,8 @@ jobs:
       - clone-docs-and-merge
       - launch-toolchain:
           generators: << parameters.generators >>
-      - run:
-          name: Upload summary on GitHub
-          command: |
-            cd /home/circleci/project/docs-hugo
-            cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-check-name: generate-summary' --header 'docs-branch-name: '$CIRCLE_BRANCH''
-          when: always
+      - upload-summary:
+          name: "generate-summary"
       - store-generated-data
       - commit:
           commit-generated: << parameters.commit-generated >>
@@ -436,82 +442,6 @@ workflows:
     jobs:
       - approve-workflow:
           type: approval
-  
-  generate-scheduled:
-    when: { equal: [ generate-scheduled, << pipeline.parameters.workflow >> ] }
-    jobs:
-      - compile-linux:
-          context:
-            - sccache-aws-bucket
-          name: compile-3.10
-          arangodb-branch: "arangodb/enterprise-preview:3.10-nightly"
-          version: "3.10"
-          openssl: "3.0.9"
-      - compile-linux:
-          context:
-            - sccache-aws-bucket
-          name: compile-3.11
-          arangodb-branch: "arangodb/enterprise-preview:3.11-nightly"
-          version: "3.11"
-          openssl: "3.0.9"
-      - compile-linux:
-          context:
-            - sccache-aws-bucket
-          name: compile-3.12
-          arangodb-branch: "arangodb/enterprise-preview:devel-nightly"
-          version: "3.12"
-          openssl: "3.1.1"
-      - build-with-generated:
-          name: build-with-generated
-          arangodb-3_10: "arangodb/enterprise-preview:3.10-nightly"
-          arangodb-3_11: "arangodb/enterprise-preview:3.11-nightly"
-          arangodb-3_12: "arangodb/enterprise-preview:devel-nightly"
-          generators: "metrics error-codes options optimizer"
-          commit-generated: true
-          create-pr: true
-          pr-branch: "scheduled-content-generate"
-          requires:
-            - compile-3.10
-            - compile-3.11
-            - compile-3.12
-
-  generate-oasisctl:
-    when: { equal: [ generate-oasisctl, << pipeline.parameters.workflow >> ] }
-    jobs:
-      - compile-linux:
-          context:
-            - sccache-aws-bucket
-          name: compile-3.10
-          arangodb-branch: "arangodb/enterprise-preview:3.10-nightly"
-          version: "3.10"
-          openssl: "3.0.9"
-      - compile-linux:
-          context:
-            - sccache-aws-bucket
-          name: compile-3.11
-          arangodb-branch: "arangodb/enterprise-preview:3.11-nightly"
-          version: "3.11"
-          openssl: "3.0.9"
-      - compile-linux:
-          context:
-            - sccache-aws-bucket
-          name: compile-3.12
-          arangodb-branch: "arangodb/enterprise-preview:devel-nightly"
-          version: "3.12"
-          openssl: "3.1.1"
-      - build-with-generated:
-          name: build-with-generated
-          arangodb-3_10: "arangodb/enterprise-preview:3.10-nightly"
-          arangodb-3_11: "arangodb/enterprise-preview:3.11-nightly"
-          arangodb-3_12: "arangodb/enterprise-preview:devel-nightly"
-          generators: "oasisctl"
-          commit-generated: true
-          create-pr: true
-          pr-branch: "scheduled-oasisctl-generate"
-          requires:
-            - compile-3.10
-            - compile-3.11
-            - compile-3.12
 
   commmit-generated:
     when: { equal: [ commit-generated, << pipeline.parameters.workflow >> ] }

@@ -41,18 +41,18 @@ parser.add_argument(
 parser.add_argument(
     "--create-pr", help="file containing the test definitions", type=bool
 )
+parser.add_argument(
+    "--pr-branch", help="file containing the test definitions", type=str
+)
 
 args = parser.parse_args()
 
 
 
-
-
-
-
-
 def generate_workflow(config):
-    workflow_generate(config)
+    if "generate" in args.workflow :
+        workflow_generate(config)
+
     return config
 
 
@@ -60,6 +60,10 @@ def generate_workflow(config):
 def workflow_generate(config):
     config = workflow_generate_launch_command(config)
     config = workflow_generate_store_artifacts_command(config)
+
+    if args.workflow != "generate": 
+        config["workflows"]["generate"]["jobs"] = []
+        
     jobs = config["workflows"]["generate"]["jobs"]
 
     generateRequires = []
@@ -95,9 +99,12 @@ def workflow_generate(config):
             "generators": " ".join(args.generators),
             "commit-generated": args.commit_generated,
             "create-pr": args.create_pr,
-            "requires": generateRequires
         }
     }
+
+    if args.workflow == "generate": 
+        generateJob["build-with-generated"]["requires"] = generateRequires
+
     deployJob = {
         "deploy": {
             "requires": ["build-with-generated"]

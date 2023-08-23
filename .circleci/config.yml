@@ -64,10 +64,12 @@ jobs:
               pip install pyyaml requests
 
               python3 generate_config.py \
+                --workflow << pipeline.parameters.workflow >> \
                 --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> \
                 --generators << pipeline.parameters.generators >> \
                 --commit-generated << pipeline.parameters.commit-generated >> \
-                --create-pr << pipeline.parameters.create-pr >>
+                --create-pr << pipeline.parameters.create-pr >> \
+                --pr-branch << pipeline.parameters.pr-branch >>
 
               echo "Generated Configuration"
               cat  /home/circleci/project/.circleci/generated_config.yml
