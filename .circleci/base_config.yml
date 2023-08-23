@@ -442,7 +442,8 @@ workflows:
             - plain-build
 
   generate:
-    when: { equal: [ generate, << pipeline.parameters.workflow >> ] }
+    when:
+      matches: { pattern: "^generate.*", value: << pipeline.parameters.workflow >> }    
     jobs:
       - approve-workflow:
           type: approval

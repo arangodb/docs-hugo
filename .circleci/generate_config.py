@@ -49,7 +49,7 @@ args = parser.parse_args()
 
 
 def generate_workflow(config):
-    if "generate" in args.workflow :
+    if args.workflow.startswith("generate") :
         workflow_generate(config)
 
     return config
@@ -95,7 +95,7 @@ def workflow_generate(config):
     generateJob = {
         "build-with-generated": {
             "name": args.workflow,
-            "generators": " ".join(args.generators),
+            "generators": "<< pipeline.parameters.generators >>",
             "commit-generated": "<< pipeline.parameters.commit-generated >>",
             "create-pr": "<< pipeline.parameters.create-pr >>",
             "pr-branch": "<< pipeline.parameters.pr-branch >>"
