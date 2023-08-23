@@ -111,10 +111,10 @@ def workflow_generate(config):
 
 def workflow_generate_launch_command(config):
     shell = "source docs-hugo/.circleci/utils.sh\n \
-            export ENV=\"circleci\"\n \
-            export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app\n \
-            export HUGO_ENV=examples\n \
-            export GENERATORS='<< parameters.generators >>'\n"
+export ENV=\"circleci\"\n \
+export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app\n \
+export HUGO_ENV=examples\n \
+export GENERATORS='<< parameters.generators >>'\n"
 
     for i in range(len(versions)):
         version = versions[i]["name"]
@@ -124,14 +124,14 @@ def workflow_generate_launch_command(config):
 
         version_underscore = version.replace(".", "_")
         branchEnv = f"pull-branch-image {branch} {version}\n \
-                      export ARANGODB_BRANCH_{version_underscore}={branch}\n \
-                      export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{version}"
+export ARANGODB_BRANCH_{version_underscore}={branch}\n \
+export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{version}"
 
         shell = f"{shell}\n{branchEnv}"
 
-    shell = f"{shell} \
-             cd docs-hugo/toolchain/docker/amd64\n \
-             docker compose up"
+    shell = f"{shell}\n\
+cd docs-hugo/toolchain/docker/amd64\n \
+docker compose up"
 
     config["commands"]["launch-toolchain"]["steps"][0]["run"]["command"] = shell
     return config

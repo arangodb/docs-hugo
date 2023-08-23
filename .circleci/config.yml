@@ -74,6 +74,8 @@ jobs:
             else
               cat /home/circleci/project/.circleci/base_config.yml > /home/circleci/project/.circleci/generated_config.yml
             fi
+      - store_artifacts:
+          path: /home/circleci/project/.circleci/generated_config.yml
       - continuation/continue:
           configuration_path: /home/circleci/project/.circleci/generated_config.yml # use newly generated config to continue
 
