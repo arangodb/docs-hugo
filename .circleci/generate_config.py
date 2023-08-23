@@ -136,7 +136,7 @@ def workflow_generate_launch_command(config):
     step = {
         "run": {
             "name": "Launch toolchain",
-            "command": step
+            "command": shell
         }
     }
 
