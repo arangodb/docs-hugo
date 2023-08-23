@@ -91,7 +91,7 @@ def workflow_generate(config):
     generateJob = {
         "build-with-generated": {
             "name": "build-with-generated",
-            "generators": args.generators,
+            "generators": " ".join(args.generators),
             "commit-generated": args.commit_generated,
             "create-pr": args.create_pr,
             "requires": generateRequires
