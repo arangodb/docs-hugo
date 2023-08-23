@@ -132,20 +132,7 @@ def workflow_generate_launch_command(config):
     shell +="cd docs-hugo/toolchain/docker/amd64 \
              docker compose up"
 
-
-    step = {
-        "run": {
-            "name": "Launch toolchain",
-            "command": shell
-        }
-    }
-
-    command = {
-        "description": "Start toolchain",
-        "steps": [step]
-    }
-
-    config["commands"]["launch-toolchain"] = command
+    config["commands"]["launch-toolchain"]["steps"][0]["command"] = shell
     return config
 
 

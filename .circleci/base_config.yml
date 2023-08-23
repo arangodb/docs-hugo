@@ -45,6 +45,14 @@ parameters:
 commands:
   launch-toolchain:
     description: "launch toolchain"
+    parameters:
+      generators:
+        type: string
+        default: ""
+    steps:
+      - run:
+          name: Launch toolchain
+          command: ""
     
   clone-docs-and-merge:
     description: Clone docs and merge main content before generate
@@ -208,7 +216,8 @@ jobs:
       
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
       - clone-docs-and-merge
-      - launch-toolchain
+      - launch-toolchain:
+          generators: << parameters.generators >>
       - run:
           name: Upload summary on GitHub
           command: |
