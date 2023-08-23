@@ -43,6 +43,9 @@ parameters:
     default: false
 
 commands:
+  launch-toolchain:
+    description: "launch toolchain"
+    
   clone-docs-and-merge:
     description: Clone docs and merge main content before generate
     steps:
@@ -205,30 +208,7 @@ jobs:
       
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
       - clone-docs-and-merge
-      - run:
-          name: Set environment variables and launch toolchain
-          command: |
-            source docs-hugo/.circleci/utils.sh
-            export ENV="circleci"
-            export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
-            export HUGO_ENV=examples
-            export GENERATORS='<< parameters.generators >>'
-            
-            if [ "<< parameters.arangodb-3_10 >>" != "" ] ; then
-              pull-branch-image << parameters.arangodb-3_10 >> "3.10"
-              generate_setup-environment-var-branch << parameters.arangodb-3_10 >> "3_10"
-            fi
-            if [ "<< parameters.arangodb-3_11 >>" != "" ] ; then
-              pull-branch-image << parameters.arangodb-3_11 >> "3.11"
-              generate_setup-environment-var-branch << parameters.arangodb-3_11 >> "3_11"
-            fi
-            if [ "<< parameters.arangodb-3_12 >>" != "" ] ; then
-              pull-branch-image << parameters.arangodb-3_12 >> "3.12"
-              generate_setup-environment-var-branch << parameters.arangodb-3_12 >> "3_12"
-            fi
-
-            cd docs-hugo/toolchain/docker/amd64
-            docker compose up
+      - launch-toolchain
       - run:
           name: Upload summary on GitHub
           command: |
