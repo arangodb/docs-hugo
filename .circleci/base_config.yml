@@ -44,7 +44,7 @@ parameters:
 
   pr-branch:
     type: string
-    default: ""
+    default: " "
 
 commands:
   launch-toolchain:

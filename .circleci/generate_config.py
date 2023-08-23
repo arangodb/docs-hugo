@@ -63,7 +63,7 @@ def workflow_generate(config):
 
     if args.workflow != "generate": 
         config["workflows"]["generate"]["jobs"] = []
-        
+
     jobs = config["workflows"]["generate"]["jobs"]
 
     generateRequires = []
@@ -99,6 +99,7 @@ def workflow_generate(config):
             "generators": " ".join(args.generators),
             "commit-generated": args.commit_generated,
             "create-pr": args.create_pr,
+            "pr-branch": args.pr_branch
         }
     }
 
