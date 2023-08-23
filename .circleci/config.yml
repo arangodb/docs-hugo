@@ -47,6 +47,10 @@ parameters:
     type: boolean
     default: false
 
+  pr-branch:
+    type: string
+    default: ""
+
 jobs:
   generate-config:
     docker:
