@@ -24,15 +24,15 @@ parameters:
 
   arangodb-3_10:
     type: string
-    default: ""
+    default: "undefined"
 
   arangodb-3_11:
     type: string
-    default: ""
+    default: "undefined"
 
   arangodb-3_12:
     type: string
-    default: ""
+    default: "undefined"
 
   commit-generated:
     type: boolean

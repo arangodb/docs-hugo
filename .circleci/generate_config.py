@@ -66,7 +66,7 @@ def workflow_generate(config):
     for i in range(len(versions)):
         version = versions[i]["name"]
         branch = args.arangodb_branches[i]
-        if branch == "":
+        if branch == "undefined":
             continue
 
         print(f"version {version} branch {branch}")
