@@ -49,7 +49,7 @@ parameters:
 
   pr-branch:
     type: string
-    default: " "
+    default: "pr"
 
 jobs:
   generate-config:
