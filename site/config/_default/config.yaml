@@ -74,7 +74,7 @@ params:
   disableNextPrev: false
   disableLandingPageButton: true
   titleSeparator: "::"
-  themeVariant: [ "relearn-light", "relearn-dark", "learn", "neon", "blue", "green", "red" ]
+  themeVariant: [ "relearn-light"]
   disableSeoHiddenPages: true
   additionalContentLanguage: [ "en" ]
   custom_css: ["css/*"]
