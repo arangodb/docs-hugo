@@ -65,6 +65,13 @@ commands:
           name: Archive generated data
           command: ""
 
+  download-generated-data:
+    description: "Download generated data of a previous generate run"
+    steps:
+      - run:
+          name: Download generated data
+          command: ""
+
   upload-summary:
     description: "Upload summary report on github"
     parameters:

@@ -72,7 +72,7 @@ jobs:
 
               python3 generate_config.py \
                 --workflow << pipeline.parameters.workflow >> \
-                --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> \
+                --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >>
 
               echo "Generated Configuration"
               cat  /home/circleci/project/.circleci/generated_config.yml

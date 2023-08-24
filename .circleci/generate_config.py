@@ -49,19 +49,20 @@ args = parser.parse_args()
 
 
 def generate_workflow(config):
-    if args.workflow.startswith("generate") :
+    if args.workflow == "generate":
         workflow_generate(config)
+    
+    if args.workflow.startswitch("generate-"):
+        workflow_generate_scheduled(config)
 
     return config
 
 
+## WORKFLOWS
 
 def workflow_generate(config):
     config = workflow_generate_launch_command(config)
     config = workflow_generate_store_artifacts_command(config)
-
-    if args.workflow != "generate": 
-        config["workflows"]["generate"]["jobs"] = []
 
     jobs = config["workflows"]["generate"]["jobs"]
 
@@ -98,12 +99,10 @@ def workflow_generate(config):
             "generators": "<< pipeline.parameters.generators >>",
             "commit-generated": "<< pipeline.parameters.commit-generated >>",
             "create-pr": "<< pipeline.parameters.create-pr >>",
-            "pr-branch": "<< pipeline.parameters.pr-branch >>"
+            "pr-branch": "<< pipeline.parameters.pr-branch >>",
+            "requires": generateRequires
         }
     }
-
-    if args.workflow == "generate": 
-        generateJob["build-with-generated"]["requires"] = generateRequires
 
     deployJob = {
         "deploy": {
@@ -114,6 +113,57 @@ def workflow_generate(config):
     jobs.append(deployJob)
 
     return config
+
+
+def workflow_generate_scheduled(config):
+    config = workflow_generate_launch_command(config)
+    config = workflow_generate_store_artifacts_command(config)
+
+    config["workflows"]["generate"]["jobs"] = []
+    jobs = config["workflows"]["generate"]["jobs"]
+
+    generateRequires = []
+
+    for i in range(len(versions)):
+        version = versions[i]["name"]
+        
+        print(f"Creating compile job for version {version} branch {branch}")
+
+        compileJob = {
+            "compile-linux": {
+                "context": ["sccache-aws-bucket"],
+                "name": f"compile-{version}",
+                "arangodb-branch": f"arangodb/enterprise-preview:{version}-nightly" if versions[i]["alias"] != "devel" else "arangodb/enterprise-preview:devel-nightly",
+                "version": version,
+                "openssl": "3.0.9",
+            }
+        }
+        generateRequires.append(f"compile-{version}")
+        jobs.append(compileJob)
+
+    generators = ""
+
+    if args.workflow == "generate-scheduled":
+        generators = "metrics error-codes options optimizer"
+    elif args.workflow == "generate-oasisctl":
+        generators = "oasisctl"
+
+    generateJob = {
+        "build-with-generated": {
+            "name": args.workflow,
+            "generators": generators,
+            "commit-generated": True,
+            "create-pr": True,
+            "pr-branch": args.workflow,
+            "requires": generateRequires
+        }
+    }
+
+    jobs.append(generateJob)
+
+
+
+## COMMANDS
 
 def workflow_generate_launch_command(config):
     shell = "source docs-hugo/.circleci/utils.sh\n \
@@ -165,6 +215,9 @@ def workflow_generate_store_artifacts_command(config):
     return config
 
 
+
+## UTILS
+
 def findOpensslVersion(branch):
     r = requests.get(f'https://raw.githubusercontent.com/arangodb/arangodb/{branch}/VERSIONS')
     print(f"Find OpenSSL Version for branch {branch}")
@@ -173,6 +226,7 @@ def findOpensslVersion(branch):
     return version.group(0)
 
 
+## MAIN
 
 def main():
     try:
