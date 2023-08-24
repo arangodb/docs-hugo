@@ -1121,7 +1121,6 @@ header .logo {
     .row-main {
         grid-template-areas:
         'breadcrumbs breadcrumbs'
-        'toc toc'
         'article article'
         'footer footer';
     }
@@ -1222,12 +1221,7 @@ header .logo {
 
 @media screen and (max-width: 768px) {
     .toc-container .toc {
-        top: 0;
-        position: relative;
-        margin: 0;
-        width: auto;
-        height: auto;
-        padding: 20px;
+        display: none;
     }
 }
 
