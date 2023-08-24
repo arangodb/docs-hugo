@@ -977,7 +977,8 @@ header .logo {
     position: absolute;
     width: 1rem;
     font-size: 13px;
-    line-height: 1.3rem;
+    line-height: 1.4rem;
+    right: 0;
 }
 
 .submenu {
@@ -1025,15 +1026,12 @@ header .logo {
     font-weight: 400;
 }
 
-#sidebar ul li a.toggle {
-    margin-left: -0.5rem;
-    padding-left: 1.5rem;
+#sidebar ul li a.toggle,
+#sidebar ul li.menu-leaf-entry a {
+    margin-right: -0.5rem;
+    padding-right: 1.5rem;
 }
 
-#sidebar ul li.menu-leaf-entry a {
-    margin-left: -0.5rem;
-    padding-left: 1.5rem;
-}
 #sidebar ul li a:hover {
     box-sizing: border-box;
     border: 0;
@@ -1047,7 +1045,7 @@ header .logo {
 
 .menu-section-entry > label.closed::before {
     font-family: "Font Awesome 5 Free";
-    content: "\f054";
+    content: "\f078";
     display: inline-block;
     /* padding-right: 3px; */
     vertical-align: middle;
@@ -1059,7 +1057,7 @@ header .logo {
 
 .menu-section-entry > label.open::before {
     font-family: "Font Awesome 5 Free";
-    content: "\f078";
+    content: "\f077";
     display: inline-block;
     /* padding-right: 3px; */
     vertical-align: middle;
@@ -1071,26 +1069,7 @@ header .logo {
 
 .menu-leaf-entry > a {
     align-items: center;
-}
-
-.menu-leaf-entry > a::before {
-    content: "";
-    -webkit-flex-basis: 4px;
-    -ms-flex-preferred-size: 4px;
-    flex-basis: 4px;
-    -webkit-flex-shrink: 0;
-    -ms-flex-negative: 0;
-    flex-shrink: 0;
-    display: block;
-    width: 4px;
-    height: 4px;
-    -webkit-border-radius: 50%;
-    -moz-border-radius: 50%;
-    border-radius: 50%;
-    background: var(--gray-300);
-    margin-right: 5px;
     position: relative;
-    right: 7px;
 }
 
 
