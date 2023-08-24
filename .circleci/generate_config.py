@@ -82,6 +82,7 @@ def workflow_generate(config):
         openssl = "3.0.9"
         if not "enterprise-preview" in branch:
             openssl = findOpensslVersion(branch)
+            print(f"found OpenSSL Version {openssl}")
 
         compileJob = {
             "compile-linux": {
@@ -239,11 +240,10 @@ tar -xf {version}-generated.tar -C docs-hugo/site/data/\n\
 def findOpensslVersion(branch):
     r = requests.get(f'https://raw.githubusercontent.com/arangodb/arangodb/{branch}/VERSIONS')
     print(f"Find OpenSSL Version for branch {branch}")
-    print(f"Github response: {r.content}")
-    lines = str(r.content).split("\n")
-    for line in lines:
+    print(f"Github response: {r.text}")
+    for line in r.text.split("\n"):
         if "OPENSSL_LINUX" in line:
-            return line.split(" ")[1]
+            return line.replace("OPENSSL_LINUX", "").replace(" ", "")
 
 
 ## MAIN
