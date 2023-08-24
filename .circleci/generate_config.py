@@ -127,8 +127,6 @@ def workflow_generate_scheduled(config):
     for i in range(len(versions)):
         version = versions[i]["name"]
         
-        print(f"Creating compile job for version {version} branch {branch}")
-
         compileJob = {
             "compile-linux": {
                 "context": ["sccache-aws-bucket"],
