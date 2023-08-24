@@ -56,7 +56,7 @@ def generate_workflow(config):
         workflow_generate_scheduled(config)
 
     if args.workflow == "commit-generated":
-        workflow_commit_generated(config)
+        workflow_commit_generated_download_data(config)
 
     return config
 
