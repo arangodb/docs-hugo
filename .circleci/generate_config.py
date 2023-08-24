@@ -55,6 +55,9 @@ def generate_workflow(config):
     if args.workflow.startswith("generate-"):
         workflow_generate_scheduled(config)
 
+    if args.workflow == "commit-generated":
+        workflow_commit_generated(config)
+
     return config
 
 
@@ -176,7 +179,7 @@ export GENERATORS='<< parameters.generators >>'\n"
 
         if args.workflow != "generate": #generate scheduled etc.
             branch = f"arangodb/enterprise-preview:{version}-nightly" if versions[i]["alias"] != "devel" else "arangodb/enterprise-preview:devel-nightly"
-            
+
         if branch == "undefined":
             continue
 
@@ -214,6 +217,19 @@ def workflow_generate_store_artifacts_command(config):
 
 
     config["commands"]["store-generated-data"]["steps"][0]["run"]["command"] = shell
+    return config
+
+def workflow_commit_generated_download_data(config):
+    cmd = config["commands"]["download-generated-data"]["steps"][0]["run"]["command"]
+
+    for i in range(len(versions)):
+        version = versions[i]["name"]
+        cmd = f"{cmd}\n\
+wget $base_url/{version}-generated.tar\n\
+tar -xf {version}-generated.tar -C docs-hugo/site/data/\n\
+"
+    config["commands"]["store-generated-data"]["steps"][0]["run"]["command"] = cmd
+
     return config
 
 

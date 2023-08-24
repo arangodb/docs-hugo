@@ -215,15 +215,6 @@ jobs:
 
   build-with-generated:
     parameters:
-      arangodb-3_10:
-        type: string
-        default: ""
-      arangodb-3_11:
-        type: string
-        default: ""
-      arangodb-3_12:
-        type: string
-        default: ""  
       generators:
         type: string
         default: examples
@@ -278,21 +269,6 @@ jobs:
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - clone-docs-and-merge
       - download-generated-data
-      - run:
-          name: Launch node script to get generated content from previous run
-          command: |
-            curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash 
-            source ~/.bashrc   
-            nvm install --lts 
-
-            artifacts_job_id=$(node docs-hugo/.circleci/commit.js $CIRCLE_BRANCH)
-            base_url=https://output.circle-artifacts.com/output/job/"$artifacts_job_id"/artifacts/0/tmp
-            wget $base_url/3.10-generated.tar
-            wget $base_url/3.11-generated.tar
-            wget $base_url/3.12-generated.tar
-            tar -xf 3.10-generated.tar -C docs-hugo/site/data/
-            tar -xf 3.11-generated.tar -C docs-hugo/site/data/
-            tar -xf 3.12-generated.tar -C docs-hugo/site/data/
       - commit:
           commit-generated: true
           create-pr: false
