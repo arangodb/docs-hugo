@@ -214,6 +214,178 @@ The documentation is written in the light-weight markup language
 [Markdown](https://daringfireball.net/projects/markdown/), using the GitHub
 flavor, and further extended by Hugo shortcodes for advanced templating needs.
 
+For an overview over the basic markup, see the [CommonMark help](https://commonmark.org/help/).
+
+The following extensions are available:
+
+#### Admonitions
+
+You can use admonitions for hints and callouts that render in a colored box with
+an icon, highlighting useful or important information.
+
+```markdown
+{{< danger >}}
+Critical information to prevent data loss or similarly impactful events.
+{{< /danger >}}
+```
+
+```markdown
+{{< warning >}}
+Be careful and mind restrictions to avoid issues.
+{{< /warning >}}
+```
+
+```markdown
+{{< security >}}
+Mind this information to keep the system and your data safe.
+{{< /security >}}
+```
+
+```markdown
+{{< info >}}
+Helpful information to have.
+{{< /info >}}
+```
+
+```markdown
+{{< tip >}}
+Follow best practices and utilize features to set yourself up for success.
+{{< /tip >}}
+```
+
+Admonitions can also be used in `description` fields inside of `` ```openapi ``
+code blocks but the syntax then needs to be like this:
+
+````yaml
+```openapi
+### Headline
+
+paths:
+  /_api/endpoint:
+    post:
+      description: |
+        {{</* warning */>}}
+        Admonition inside of REST HTTP API description.
+        {{</* /warning */>}}
+        ...
+```
+````
+
+#### Tags
+
+Tags let you display badges, usually below a headline. This is mainly used for
+pointing out if a feature is only available in the Enterprise Edition of
+ArangoDB, the ArangoGraph Insights Platform, or both.
+
+```markdown
+{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+```
+
+#### Tabs
+
+Display content with a tabbed interface, like information for different
+operating systems or code examples using different languages.
+
+```markdown
+{{< tabs groupid="os" >}}
+
+{{< tab name="Linux" >}}
+Run `./script.sh`.
+{{< /tab >}}
+
+{{< tab name="Windows" >}}
+Run `.\script.ps1`.
+{{< /tab >}}
+
+{{< /tabs >}}
+```
+
+#### Figures
+
+If you want to add an image with a caption, use this shortcode instead of the
+native Markdown syntax `![alt](/images/file.png)`:
+
+```markdown
+{{< image src="../images/file.png" alt="Description of image content, used as caption" >}}
+```
+
+Available attributes:
+
+- `src`: location of the image file
+- `class`: CSS class to apply
+- `style`: CSS inline styles to apply
+- `size`: image width, can be numeric or one of `small`, `medium`, `large`
+- `alt`: image description for accessibility
+
+#### Icons
+
+Display an image with special styling.
+
+```markdown
+{{< icon src="../images/file.png" alt="Description of image content, used by screen readers" >}}
+```
+
+Available attributes:
+
+- `src`: location of the image file
+- `class`: CSS class to apply
+- `style`: CSS inline styles to apply
+- `size`: image width, can be numeric or one of `small`, `medium`, `large`
+- `alt`: image description for accessibility
+
+#### Cards
+
+To prominently link to other content, you may use cards:
+
+```markdown
+{{< cards >}}
+
+{{% card title="Graphs" link="graphs/" icon="/images/file.png" %}}
+Learn everything about graphs.
+{{% /card %}}
+
+{{% card title="Data science" link="data-science/" icon="/images/file.png" %}}
+Read about ArangoDB's features for analytics.
+{{% /card %}}
+
+{{< /cards >}}
+```
+
+#### Comments
+
+If you want to place a remark in the source files that should not end up in the
+generated output, you can use a comment as follows:
+
+```markdown
+{{% comment %}}
+Content or reminder that should not be rendered.
+{{% /comment %}}
+```
+
+#### Special shortcodes
+
+The following shortcodes also exist but are rarely used:
+
+- ```markdown
+  {{< expand title="A short description" >}}
+  Content that is collapsed by default but can be expanded.
+  {{< /expand >}}
+  ```
+
+- `{{< youtube id="dQw4w9WgXcQ" >}}` can be used to embed a single YouTube video,
+  and `{{< youtube-playlist id="PL0tn-TSss6NV45d1HnLA57VJFH6h1SeH7" >}}`
+  for a YouTube playlist.
+
+- `{{% optimizer-rules %}}` is used once to render the list of AQL optimizer
+  rules from a JSON source file.
+
+- `{{% program-options name="arangod" %}}` renders the startup options of a
+  component like the ArangoDB server (`arangod`) or shell (`arangosh`).
+
+- `{{% error-codes %}}` renders the ArangoDB server error codes and their meaning.
+
+- `{{% metrics %}}` renders the list of ArangoDB server metrics.
+
 ### Content Guidelines
 
 - Use American English spelling, e.g. _behavior_ instead of _behaviour_.
@@ -236,7 +408,7 @@ flavor, and further extended by Hugo shortcodes for advanced templating needs.
 - Wrap text at 80 characters where possible. This helps tremendously in version
   control. Pre-wrap lines if necessary.
 
-- Put Markdown links on a single line `[link label](target.html#hash)`,
+- Put Markdown links on a single line `[link label](target.md#hash)`,
   even if it violates the guideline of 80 characters per line.
 
 - Avoid breaking lines of code blocks and where Markdown does not allow line
@@ -297,3 +469,234 @@ flavor, and further extended by Hugo shortcodes for advanced templating needs.
 
 - Do not write TODOs right into the content and avoid using
   `<!-- HTML comments -->`. Use `{{< comment >}}...{{< /comment >}}` instead.
+
+### Adding links
+
+For external links, use standard Markdown. Clicking these links automatically
+opens them in a new tab:
+
+```markdown
+[ArangoGraph Insights Platform](https://cloud.arangodb.com)
+```
+
+For internal links, use relative paths to the Markdown files. Always link to
+files, not folders (e.g. `../graphs/_index.md` instead of `../graphs/`).
+This way, links can be followed in tools like Visual Studio Code and on GitHub.
+
+```markdown
+[Graphs](../graphs/_index.md)
+```
+
+For anchor links, append `#fragment-identifier` to the path if the content is
+in a different file, or use the fragment ID only to link to a headline in the
+same file:
+
+```markdown
+See [Named Graphs](#named-graphs)
+```
+
+### Version Remarks
+
+The main page about a new feature should indicate the version the feature was
+added in, as shown below:
+
+```markdown
+---
+title: New feature
+...
+---
+<small>Introduced in: v3.12.0</small>
+
+...
+```
+
+Similarly, the remark should be added if only a section is added to an existing
+page, as shown below:
+
+```markdown
+## Existing feature
+
+...
+
+### New feature section
+
+<small>Introduced in: v3.12.0</small>
+
+...
+```
+
+The value `v3.12.0` implies that all later versions also have this feature
+(3.12.1, 3.12.2, etc., as well as 4.0.0 and later). If this is not the case,
+then also mention the other relevant versions. For example, if a feature is
+added to 3.11.5 and 3.12.2, then write the following in the 3.12 documentation:
+
+```markdown
+<small>Introduced in: v3.11.5, v3.12.2</small>
+```
+
+All later documentation versions should use a copy of the content, as thus the
+4.0 documentation would contain the same.
+
+In the 3.11 documentation, only mention versions up to this documentation version
+(excluding 3.12 and later in this example), pretending no later version exists
+to be consistent with the rest of the 3.11 documentation and to avoid additional
+maintenance burdens:
+
+```markdown
+<small>Introduced in: v3.11.5</small>
+```
+
+New options in the JavaScript and HTTP APIs are covered by the release notes,
+but if new options are added mid-release (not in the `x.x.0` release but a later
+bugfix version), then this should be pointed out as follows:
+
+```markdown
+- `existingOption` (number, _optional_): ...
+- `newOption` (string, _optional_): ... (introduced in v3.11.5, v3.12.2).
+```
+
+You may also add a remark if an existing feature or option is significantly
+extended by a new (sub-)option in a `x.x.0` release.
+
+### Edition Remarks
+
+Pages and sections about Enterprise Edition features should indicate that the
+Enterprise Edition is required using a hint box. Use the following include in
+the general case:
+
+```markdown
+{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+```
+
+This should be placed after version remarks if there are any.
+
+Most Enterprise Edition features are also available in ArangoGraph, but some
+features are not or in a different form (e.g. DC2DC, Hot Backup). If a feature
+is not available in ArangoGraph, use the following include instead:
+
+```markdown
+{{< tag "ArangoDB Enterprise" >}}
+```
+
+In the release notes, add the following at the end of a section about a new
+Enterprise Edition feature:
+
+```markdown
+This feature is only available in the Enterprise Edition.
+```
+
+API options that are only available in the Enterprise Edition should have a
+remark as follows:
+
+```markdown
+- `enterpriseOption` (boolean, _optional_): ...
+  (Enterprise Edition only).
+```
+
+If there are both a version remark and an Enterprise Edition remark, use:
+
+```markdown
+- `enterpriseOption` (boolean, _optional_): ...
+  (introduced in v3.11.5 and v3.12.2, Enterprise Edition only).
+```
+
+### Adding a Lead Paragraph
+
+A lead paragraph is the opening paragraph of a written work that summarizes its
+main ideas. Only few pages have one so far, but new content should be written
+with such a brief description. It is supposed to clarify the scope of the
+article so that the reader can quickly assess whether the following information
+is of relevance, but also acts as an introduction.
+
+```markdown
+---
+title: Feature X
+description: >-
+  You can do this and that with X, and it is ideal to solve problem Y
+---
+...
+```
+
+It should end without a period, contain no links and usually avoid other markup
+as well (bold, italic).
+
+### Adding a page
+
+Start off by finding a file name. It should be:
+
+- All lower-case
+- Use hyphen-minus `-` instead of spaces
+- Be very short but descriptive
+- Follow the patterns of existing files
+
+Note that the file name is independent of what will show in the navigation or
+what will be used as headline for that page. The file name will be used as
+part of the final URL, however. For example, `3.8/aql/examples.md` will become
+`http://www.arangodb.com/docs/3.8/aql/examples.html`.
+
+Create a new file with the file name and a `.md` file extension. Open the file
+in a text editor (Visual Studio Code is recommended). Add the following
+frontmatter:
+
+```yaml
+---
+layout: default
+description: A meaningful description of the page
+title: Short title
+---
+```
+
+Add the actual content formatted in Markdown syntax below the frontmatter.
+
+### Renaming a page
+
+The URL of a page is derived from the file name. If you rename a file, e.g.
+from `old-name.md` to `new-name.md`, make sure to add a redirect for the
+old URL by adding the following to the frontmatter:
+
+...
+
+### Disable or limit table of contents
+
+The table of contents (ToC) on the right-hand side at the top of a page lists
+the headlines if there at least three on the page. It can be disabled for
+individual pages with the following frontmatter:
+
+```yaml
+---
+page-toc:
+  disable: true
+---
+```
+
+It can also be restricted to a maximum headline level to omit the deeper nested
+headlines for less clutter:
+
+```yaml
+---
+page-toc:
+  max-headline-level: 3
+---
+```
+
+A setting of `3` means that `<h1>`, `<h2>`, and `<h3>` headlines will be listed
+in the ToC, whereas `<h4>`, `<h5>`, and `<h6>` will be ignored.
+
+### Deprecating a version
+
+When an ArangoDB version reaches [End-of-Life](https://www.arangodb.com/subscriptions/end-of-life-notice/),
+its documentation needs to be marked as such. The respective version needs to
+be added to the `_data/deprecations.yml` file for that:
+
+```diff
+ - "3.5"
+ - "3.6"
++- "3.7"
+```
+
+It makes a warning show at the top of every page for that version.
+
+### Adding a new version
+
+...
+
