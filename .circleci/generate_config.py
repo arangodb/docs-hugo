@@ -243,7 +243,7 @@ def findOpensslVersion(branch):
     print(f"Github response: {r.text}")
     for line in r.text.split("\n"):
         if "OPENSSL_LINUX" in line:
-            return line.replace("OPENSSL_LINUX", "").replace(" ", "")
+            return line.replace("OPENSSL_LINUX", "").replace(" ", "").replace("\"", "")
 
 
 ## MAIN
