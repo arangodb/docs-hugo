@@ -305,15 +305,8 @@ tr {
 
 /* Cards */
 .cards {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: horizontal;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: row;
-    flex-direction: row;
-    -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
+    display: grid;
+   grid-template-columns: 1fr 1fr;
 }
 
 .card {
@@ -458,7 +451,7 @@ body .page-container {
     height: 4rem;
     padding: 16px 10px 10px 10px;
     display: flex;
-    color: #577138;
+    color: var(--green-700);
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
@@ -470,7 +463,7 @@ body .page-container {
     grid-column-end: header;
     transition: top 0.2s ease-in-out;
     width: 100%;
-    box-shadow: 0 0 10px rgb(0 0 0 / 20%);
+    border-bottom: 1px solid var(--gray-300);
     z-index: 1001;
     position: fixed;
     min-height: 0;
