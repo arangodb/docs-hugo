@@ -198,6 +198,8 @@ $(window).on('popstate', function (e) {
 
 
 function tocHiglighter() {
+  // only do this is screen width > 768px
+  if (window.innerWidth <= 768) return;
   var anchors = document.querySelector("article").querySelectorAll("h2,h3,h4,h5,h6")
 
   var scrollTop = $(document).scrollTop();
