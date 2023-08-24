@@ -1334,13 +1334,13 @@ header .logo {
 
 #TableOfContents .level-3 > a {
     padding-left: 1em;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 400;
 }
 
 #TableOfContents .level-4 > a {
     padding-left: 2em;
-    font-size: 10px;
+    font-size: 16px;
     font-weight: 400;
 }
 
