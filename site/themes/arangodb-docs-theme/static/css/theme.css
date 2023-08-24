@@ -890,13 +890,12 @@ header .logo {
     align-items: stretch;
     position: fixed;
     z-index: 9999;
-    top: 4.2em;
-    height: calc(100vh - 60px);
+    top: 64px;
+    height: calc(100vh - 64px);
     left: 0;
     width: 1vw;
-    transition: width 0.3s ease-in-out;
+    transition: width 0.3s ease-in;
     background-color: var(--gray-950);
-    box-shadow: 5px 0px 1px -5px #555;
 }
 
 #sidebar .sidenav-navigation {
@@ -943,20 +942,8 @@ header .logo {
 }
 
 .sidenav-navigation {
-    overflow-x: hidden;
-    overflow-y: auto;
-    scrollbar-width: thin;
-}
-.sidenav-navigation::-webkit-scrollbar {
-    width: 6px;
-}
-.sidenav-navigation::-webkit-scrollbar-track {
-    background: #fafafa;
-}
-.sidenav-navigation::-webkit-scrollbar-thumb {
-    background-color: #b6acac;
-    border-radius: 20px;
-    border: 1px solid #b6acac;
+    overflow: auto;
+    margin: 10px 10px 10px 0;
 }
 
 #content-wrapper {
@@ -2042,4 +2029,22 @@ nav.pagination .next {
     width: 1rem;
     height: 1rem;
     color: #130909;
+}
+
+#sidebar ::-webkit-scrollbar {
+    width: 10px;
+}
+
+#sidebar ::-webkit-scrollbar-thumb {
+    background: var(--gray-500);
+    width: 6px;
+    border-radius: 20px;
+}
+
+#sidebar ::-webkit-scrollbar-thumb:hover {
+    background: var(--gray-200);
+}
+
+#sidebar ::-webkit-scrollbar-track {
+    background: var(--gray-950);
 }
