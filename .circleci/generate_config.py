@@ -52,7 +52,7 @@ def generate_workflow(config):
     if args.workflow == "generate":
         workflow_generate(config)
     
-    if args.workflow.startswitch("generate-"):
+    if args.workflow.startswith("generate-"):
         workflow_generate_scheduled(config)
 
     return config
