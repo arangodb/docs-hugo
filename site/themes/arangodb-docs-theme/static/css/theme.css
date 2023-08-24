@@ -489,7 +489,7 @@ body .page-container {
     justify-content: center;
     cursor: pointer;
     -webkit-transition: 150ms ease-in-out;
-    background-color: var(--CONTENT-BACKGROUND-COLOR);
+    background-color: var(--gray-800);
     z-index: 999;
     border: 1px solid rgb(106 170 33/0.3);
     border-radius: 24px;
@@ -503,7 +503,7 @@ body .page-container {
     font-weight: 900;
     font-size: 18px;
     padding-top: 0px;
-    color: grey;
+    color: var(--gray-100);
 }
 
 #sidebar.active > #sidebar-toggle-navigation {
@@ -877,7 +877,7 @@ header .logo {
     z-index: 2;
     top: 4rem;
     height: 101vh;
-    background-color: var(--SIDEBAR-BACKGROUND-COLOR);
+    background-color: var(--gray-950);
     left: 0;
     width: 0;
     transition:  width 0.3s ease-in-out;
@@ -895,7 +895,7 @@ header .logo {
     left: 0;
     width: 1vw;
     transition: width 0.3s ease-in-out;
-    background-color: var(--SIDEBAR-BACKGROUND-COLOR);
+    background-color: var(--gray-950);
     box-shadow: 5px 0px 1px -5px #555;
 }
 
@@ -1014,7 +1014,7 @@ header .logo {
     box-sizing: border-box;
     border-radius: 8px;
     --tw-bg-opacity: 0.5;
-    background-color: var(--green-200);
+    background-color: var(--gray-800);
 }
 
 
@@ -1039,7 +1039,7 @@ header .logo {
     padding-right: 1rem;
     text-overflow: ellipsis;
     white-space: break-spaces;
-    color: rgba(56, 59, 57, 1);
+    color: var(--gray-100);
     margin-bottom: 13px;
     font-weight: 400;
 }
@@ -1057,7 +1057,7 @@ header .logo {
     box-sizing: border-box;
     border: 0;
     border-radius: 8px;
-    background-color: var(--gray-100);
+    background-color: var(--gray-900);
 }
 
 #sidebar ul.topics > li a::first-line {
@@ -1073,7 +1073,7 @@ header .logo {
     font-weight: 900;
     font-size: 10px;
     padding-top: 0px;
-    color: grey;
+    color: var(--gray-300);
 }
 
 .menu-section-entry > label.open::before {
@@ -1085,7 +1085,7 @@ header .logo {
     font-weight: 900;
     font-size: 10px;
     padding-top: 0px;
-    color: grey;
+    color: var(--gray-300);
 }
 
 .menu-leaf-entry > a {
@@ -1106,7 +1106,7 @@ header .logo {
     -webkit-border-radius: 50%;
     -moz-border-radius: 50%;
     border-radius: 50%;
-    background: #666;
+    background: var(--gray-300);
     margin-right: 5px;
     position: relative;
     right: 7px;
@@ -1370,12 +1370,12 @@ header .logo {
 
 #TableOfContents .is-active {
     font-weight: bold;
-    background-color: var(--COLOR-LIGHT-GREEN);
+    background-color: var(--gray-200);
     border-radius: 0.75em;
 }
 
 #TableOfContents .is-active:hover {
-    background-color: var(--COLOR-LIGHT-GREEN);
+    background-color: var(--gray-200);
 }
 #TableOfContents a {
     width: 100%;
