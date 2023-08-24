@@ -489,7 +489,7 @@ body .page-container {
     justify-content: center;
     cursor: pointer;
     -webkit-transition: 150ms ease-in-out;
-    background-color: var(--gray-800);
+    background-color: var(--gray-950);
     z-index: 999;
     border: 1px solid rgb(106 170 33/0.3);
     border-radius: 24px;
@@ -507,7 +507,7 @@ body .page-container {
 }
 
 #sidebar.active > #sidebar-toggle-navigation {
-    left: 19vw;
+    left: 288px;
 }
 
 
@@ -905,15 +905,9 @@ header .logo {
     opacity: 1;
 }
 
-@media screen and (max-height: 900px) {
-    #sidebar {
-        height: 93vh;
-    }
-}
-
 .menu-iframe.active,
 #sidebar.active {
-    width: 20vw;
+    width: 300px;
 }
 
 @media screen and (max-width: 768px) {
@@ -1124,7 +1118,7 @@ header .logo {
     max-width: 100%;
     grid-area: contents;
     background-color: var(--CONTENT-BACKGROUND-COLOR);
-    margin-left: 20vw;
+    margin-left: 300px;
 }
 
 @media screen and (max-width: 768px) {
