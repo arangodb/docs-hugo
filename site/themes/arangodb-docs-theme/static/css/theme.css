@@ -1171,7 +1171,7 @@ header .logo {
 }
 
 #breadcrumbs > ol {
-    margin: 5px 0px 0px 10vw;
+    margin: 5px 0px 0px 80px;
 }
 
 @media screen and (max-width: 480px)
@@ -1253,8 +1253,8 @@ header .logo {
     overflow: auto;
     position: fixed;
     top: 15vh;
-    scrollbar-width: thin;
-
+    right: 0;
+    max-width: 20vw;
 }
 .toc::-webkit-scrollbar {
     width: 6px;
@@ -1266,6 +1266,11 @@ header .logo {
     background-color: #b6acac;
     border-radius: 20px;
     border: 1px solid #b6acac;
+}
+
+.toc a, .toc a > * {
+    white-space: normal;
+    word-break: break-all;
 }
 
 .toc-header {
@@ -1366,9 +1371,10 @@ header .logo {
 /* Article */
 
 article.default {
-    margin: 0 3vw 0 10vw;
+    margin: 0 20px 0 80px;
     min-height: 600px;
     grid-area: article;
+    width: calc(80vw - 400px);
 }
 
 @media screen and (max-width: 1200px) {
@@ -1399,9 +1405,10 @@ article.home {
 }
 
 article.chapter {
-    margin: 0 3vw 0 10vw;
+    margin: 0 20px 0 80px;
     min-height: 600px;
     grid-area: article;
+    width: calc(80vw - 300px);
 }
 
 @media screen and (max-width: 1200px) {
@@ -1447,6 +1454,7 @@ article > h3 > code,
 article > h4 > code,
 article > h5 > code {
     padding-top: 0px;
+    white-space: normal;
 }
 
 article ul li {
