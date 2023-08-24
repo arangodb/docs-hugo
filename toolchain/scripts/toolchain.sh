@@ -154,7 +154,6 @@ function pull_image() {
   log "[pull_image] Invoke"
   branch_name="$1"
   version="$2"
-  src="$3"
 
   # Check the image is an official dockerhub image
   log "[pull_image] Try from Offical ArangoDB Dockerhub - Image: $branch_name"
@@ -166,7 +165,7 @@ function pull_image() {
     return
   fi
 
-  pull_from_docs_repo $branch_name $version $src
+  pull_from_docs_repo $branch_name $version
 }
 
 
@@ -174,10 +173,9 @@ function pull_image() {
 function pull_from_docs_repo() {
   branch_name="$1"
   version="$2"
-  src="$3"
 
   image_name=$(echo ${branch_name##*/})
-  main_hash=$(awk 'END{print}' $src/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)  ## Get hash of latest commit of git branch of arangodb/arangodb repo
+  main_hash=$(awk 'END{print}' /tmp/$version/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)  ## Get hash of latest commit of git branch of arangodb/arangodb repo
 
   docker_tag="arangodb/docs-hugo:$image_name-$version-$main_hash"
 
@@ -304,7 +302,7 @@ function setup_arangoproxy_arangosh() {
   docker exec  $container_name sh -c "cp -r /usr/share/ /tmp/arangosh/$version/usr/"
   docker exec  $container_name sh -c "cp -r /usr/bin/icudtl.dat /tmp/arangosh/$version/usr/share/arangodb3/"
 
-  docker exec  $container_name sh -c "cp -r /etc/arangodb3/arangosh.conf /tmp/arangosh/$version/usr/bin/etc/relative/arangosh.conf"
+  docker exec  $container_name sh -c "sed 's~startup-directory.*$~startup-directory = /arangosh/arangosh/$version/usr/share/arangodb3/js~' /etc/arangodb3/arangosh.conf > /tmp/arangosh/$version/usr/bin/etc/relative/arangosh.conf"
   echo ""
 }
 
@@ -358,7 +356,7 @@ function process_server() {
     image_id=$(get_docker_imageid $image $image_name $version)
     if [ "$image_id" == "" ]; then
       if [ "$ENV" == "local" ]; then
-        pull_image "$image" "$version" "$src"
+        pull_image "$image" "$version"
         image_id=$(docker images --filter=reference=$image_name-$version | awk 'NR==2' | awk '{print $3}')
       else
         echo "[START_SERVER] No Image ID find to run"
