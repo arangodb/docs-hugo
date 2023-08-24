@@ -899,6 +899,13 @@ header .logo {
     box-shadow: 5px 0px 1px -5px #555;
 }
 
+#sidebar .sidenav-navigation {
+    opacity: 0;
+}
+#sidebar.active .sidenav-navigation {
+    opacity: 1;
+}
+
 @media screen and (max-height: 900px) {
     #sidebar {
         height: 93vh;
