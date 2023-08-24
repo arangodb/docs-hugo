@@ -418,10 +418,10 @@ window.onload = () => {
     showSearchListener();
 
 
-    var isMobile = ( ( window.innerWidth <= 800 ) && ( window.innerHeight <= 900 ) );
+    var isMobile = window.innerWidth <= 768;
     if (isMobile) {
-        $('#sidebar').addClass("mobile")
-        $('#sidebar.mobile').removeClass("active")
+        $('#sidebar').addClass("mobile");
+        $('#sidebar.mobile').removeClass("active");
     }
 
     $('#show-page-loading').hide();
