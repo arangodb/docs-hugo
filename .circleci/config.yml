@@ -85,4 +85,163 @@ jobs:
 workflows:
   setup:
     jobs:
-      - generate-config
+      - create-docs-images:
+          architecture: "amd64"
+          executor: "medium"
+  create-docs-images-arm64:
+    when: { equal: [ create-docs-images-arm64, << pipeline.parameters.workflow >> ] }
+    jobs:
+      - create-docs-images:
+          architecture: "arm64"
+          executor: "arm.medium"
+  plain:
+    when: { equal: [ plain-build, << pipeline.parameters.workflow >> ] }
+    jobs:
+      - plain-build
+      - deploy:
+          requires:
+            - plain-build
+
+  generate:
+    when: { equal: [ generate, << pipeline.parameters.workflow >> ] }
+    jobs:
+      - approve-workflow:
+          type: approval
+      - compile-linux:
+          context:
+            - sccache-aws-bucket
+          name: compile-3.10
+          arangodb-branch: << pipeline.parameters.arangodb-3_10 >>
+          version: "3.10"
+          openssl: "3.0.9"
+          requires:
+            - approve-workflow
+      - compile-linux:
+          context:
+            - sccache-aws-bucket
+          name: compile-3.11
+          arangodb-branch: << pipeline.parameters.arangodb-3_11 >>
+          version: "3.11"
+          openssl: "3.0.9"
+          requires:
+            - approve-workflow
+      - compile-linux:
+          context:
+            - sccache-aws-bucket
+          name: compile-3.12
+          arangodb-branch: << pipeline.parameters.arangodb-3_12 >>
+          version: "3.12"
+          openssl: "3.1.2"
+          requires:
+            - approve-workflow
+      - build-with-generated:
+          name: build-with-generated
+          arangodb-3_10: << pipeline.parameters.arangodb-3_10 >>
+          arangodb-3_11: << pipeline.parameters.arangodb-3_11 >>
+          arangodb-3_12: << pipeline.parameters.arangodb-3_12 >>
+          generators: << pipeline.parameters.generators >>
+          commit-generated: << pipeline.parameters.commit-generated >>
+          create-pr: false
+          requires:
+            - compile-3.10
+            - compile-3.11
+            - compile-3.12
+      - deploy:
+          requires:
+            - build-with-generated
+  
+  generate-scheduled:
+    when: { equal: [ generate-scheduled, << pipeline.parameters.workflow >> ] }
+    jobs:
+      - compile-linux:
+          context:
+            - sccache-aws-bucket
+          name: compile-3.10
+          arangodb-branch: "arangodb/enterprise-preview:3.10-nightly"
+          version: "3.10"
+          openssl: "3.0.9"
+      - compile-linux:
+          context:
+            - sccache-aws-bucket
+          name: compile-3.11
+          arangodb-branch: "arangodb/enterprise-preview:3.11-nightly"
+          version: "3.11"
+          openssl: "3.0.9"
+      - compile-linux:
+          context:
+            - sccache-aws-bucket
+          name: compile-3.12
+          arangodb-branch: "arangodb/enterprise-preview:devel-nightly"
+          version: "3.12"
+          openssl: "3.1.1"
+      - build-with-generated:
+          name: build-with-generated
+          arangodb-3_10: "arangodb/enterprise-preview:3.10-nightly"
+          arangodb-3_11: "arangodb/enterprise-preview:3.11-nightly"
+          arangodb-3_12: "arangodb/enterprise-preview:devel-nightly"
+          generators: "metrics error-codes options optimizer"
+          commit-generated: true
+          create-pr: true
+          pr-branch: "scheduled-content-generate"
+          requires:
+            - compile-3.10
+            - compile-3.11
+            - compile-3.12
+
+  generate-oasisctl:
+    when: { equal: [ generate-oasisctl, << pipeline.parameters.workflow >> ] }
+    jobs:
+      - compile-linux:
+          context:
+            - sccache-aws-bucket
+          name: compile-3.10
+          arangodb-branch: "arangodb/enterprise-preview:3.10-nightly"
+          version: "3.10"
+          openssl: "3.0.9"
+      - compile-linux:
+          context:
+            - sccache-aws-bucket
+          name: compile-3.11
+          arangodb-branch: "arangodb/enterprise-preview:3.11-nightly"
+          version: "3.11"
+          openssl: "3.0.9"
+      - compile-linux:
+          context:
+            - sccache-aws-bucket
+          name: compile-3.12
+          arangodb-branch: "arangodb/enterprise-preview:devel-nightly"
+          version: "3.12"
+          openssl: "3.1.1"
+      - build-with-generated:
+          name: build-with-generated
+          arangodb-3_10: "arangodb/enterprise-preview:3.10-nightly"
+          arangodb-3_11: "arangodb/enterprise-preview:3.11-nightly"
+          arangodb-3_12: "arangodb/enterprise-preview:devel-nightly"
+          generators: "oasisctl"
+          commit-generated: true
+          create-pr: true
+          pr-branch: "scheduled-oasisctl-generate"
+          requires:
+            - compile-3.10
+            - compile-3.11
+            - compile-3.12
+
+  commmit-generated:
+    when: { equal: [ commit-generated, << pipeline.parameters.workflow >> ] }
+    jobs:
+      - approve-workflow:
+          type: approval
+      - commit-generated:
+          requires:
+            - approve-workflow
+      
+
+  community-pr:
+    when: { equal: [ compile, << pipeline.parameters.workflow >> ] }
+    jobs:
+      - compile-linux:
+          name: "compile"
+          arangodb-branch: << pipeline.parameters.arangodb-branch >>
+          version: << pipeline.parameters.version >>
+          context:
+            - sccache-aws-bucket

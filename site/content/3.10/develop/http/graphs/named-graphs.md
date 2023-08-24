@@ -754,7 +754,7 @@ description: |-
   Create a disjoint SmartGraph. This graph uses 9 shards and
   is sharded by the "region" attribute.
   Available in the Enterprise Edition only.
-  Note that as you are using a disjoint version, you can only
+  Note here: as we are using a disjoint version, we can only
   create edges between vertices sharing the same region.
 name: HttpGharialCreateDisjointSmart
 ---
@@ -796,7 +796,7 @@ graph._drop("disjointSmartGraph", true);
 description: |-
   Create a SmartGraph with a satellite vertex collection.
   It uses the collection "endVertices" as a satellite collection.
-  This collection is cloned to all servers, all other vertex
+  So this collection is cloned to all servers, all other vertex
   collections are split into 9 shards
   and are sharded by the "region" attribute.
   Available in the Enterprise Edition only.
