@@ -1254,7 +1254,7 @@ header .logo {
     position: fixed;
     top: 15vh;
     right: 0;
-    max-width: 20vw;
+    width: 20vw;
 }
 .toc::-webkit-scrollbar {
     width: 6px;
