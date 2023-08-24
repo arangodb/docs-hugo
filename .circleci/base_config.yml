@@ -44,7 +44,7 @@ parameters:
 
   pr-branch:
     type: string
-    default: "pr"
+    default: ""
 
 commands:
   launch-toolchain:
@@ -70,7 +70,13 @@ commands:
     steps:
       - run:
           name: Download generated data
-          command: ""
+          command: |
+            curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh | bash 
+            source ~/.bashrc   
+            nvm install --lts 
+
+            artifacts_job_id=$(node docs-hugo/.circleci/commit.js $CIRCLE_BRANCH)
+            base_url=https://output.circle-artifacts.com/output/job/"$artifacts_job_id"/artifacts/0/tmp
 
   upload-summary:
     description: "Upload summary report on github"
@@ -271,6 +277,7 @@ jobs:
             - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - clone-docs-and-merge
+      - download-generated-data
       - run:
           name: Launch node script to get generated content from previous run
           command: |
