@@ -23,7 +23,7 @@ cd /home/site
 
 hugoOptions="--verbose --templateMetrics"
 if [ "$ENV" = "local" ]; then
-    hugoOptions="serve --buildDrafts --watch --bind=0.0.0.0 --ignoreCache --noHTTPCache"
+    hugoOptions="serve --buildDrafts --watch --bind=0.0.0.0 --ignoreCache --noHTTPCache --disableLiveReload"
 fi
 
 echo "Hugo Settings:"
