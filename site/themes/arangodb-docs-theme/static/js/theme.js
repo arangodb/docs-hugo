@@ -191,31 +191,43 @@ $(window).on('popstate', function (e) {
 */
 
 
+function getAllAnchors() {
+    return document.querySelector("article").querySelectorAll("h2,h3,h4,h5,h6")
+}
+function removeActiveFromAllAnchors() {
+  var anchors = getAllAnchors();
+  anchors.forEach(anchor => {
+      var heading = anchor.getAttribute('id')
+      let oldHRef = document.querySelector('#TableOfContents a[href="#' + heading + '"]');
+      oldHRef.parentElement.classList.remove('is-active');
+  });
+}
 function tocHiglighter() {
   // only do this is screen width > 768px
   if (window.innerWidth <= 768) return;
-  var anchors = document.querySelector("article").querySelectorAll("h2,h3,h4,h5,h6")
+  var anchors = getAllAnchors();
 
   var scrollTop = $(document).scrollTop();
-  for (var i = 0; i < anchors.length; i++){
-    var heading = anchors[i].getAttribute('id')
-    let oldHRef = $('#TableOfContents a[href="#' + heading + '"]');
-    oldHRef.parent().removeClass('is-active');
-  }
 
-  for (var i = anchors.length-1; i >= 0; i--){
-    if (scrollTop > $(anchors[i]).offset().top - 180) {
+  anchors.forEach(anchor => {
+    const rect = anchor.getBoundingClientRect();
+    const top = rect.top;
+    const id = anchor.id;
+    console.log(id, top, rect)
+    const currentHighlighted = document.querySelector('#TableOfContents .is-active a');
+    const currentHighlightedHref = currentHighlighted ? currentHighlighted.getAttribute('href') : null;
+    console.log({currentHighlightedHref, id});
+    if (top < 240 && currentHighlightedHref !== '#' + id) {
+      removeActiveFromAllAnchors();
+      const highlightedHref = document.querySelector('#TableOfContents a[href="#' + id + '"]');
+      highlightedHref.parentElement.classList.add('is-active');
+      // var topOfElement =  highlightedHref.parentElement.offsetTop - 200;
+      // window.scroll({ top: topOfElement, behavior: "smooth" });
 
-      var heading = anchors[i].getAttribute('id')
-        highlightedHref = $('#TableOfContents a[href="#' + heading + '"]')
-        highlightedHref.parent()[0].scrollIntoView({behavior: "smooth"});
-        highlightedHref.parent().addClass('is-active');
-        break;
+      highlightedHref.parentElement.scrollIntoView({behavior: "smooth", block: "nearest", });
+      console.log({highlightedHref});
     }
-  }
-
-  activeHrefs = $('#TableOfContents > .is-active')
-  if (activeHrefs.length == 0) document.querySelectorAll('.toc-content')[0].scrollIntoView();
+  });
 }
 
 $(window).scroll(function(){

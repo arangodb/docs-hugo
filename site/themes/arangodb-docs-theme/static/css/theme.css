@@ -961,6 +961,12 @@ header .logo {
     font-size: var(--TYPOGRAPHY-H4-SIZE);
 }
 
+
+/* */
+
+
+/* Table of contents */
+
 .edit-page {
     text-transform: uppercase;
     display: block;
@@ -970,12 +976,11 @@ header .logo {
     color: #ccc;
     text-transform: uppercase;
     line-height: 50px;
-    -webkit-box-shadow: none!important;
     box-shadow: none!important;
-    position: absolute;
     font-size: 14px;
     transition: 0.5s;
-    right: 17vw;
+    position: sticky;
+    top: 100px;
 }
 
 .edit-page:hover {
@@ -1000,9 +1005,7 @@ header .logo {
         content: "";
     }
 }
-/* */
 
-/* Table of contents */
 .toc-container {
     grid-area: toc;
     font-size: 15px;
@@ -1016,13 +1019,18 @@ header .logo {
         width: auto;
         height: auto;
         padding: 20px;
+        max-width: 100%;
+    }
+    .edit-page {
+        position: relative;
+        top: 0;
     }
 }
 
 .toc {
     height: 78vh;
     overflow: auto;
-    top: 15vh;
+    top: 160px;
     right: 0;
     width: 20vw;
     max-width: 300px;

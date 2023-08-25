@@ -1,7 +1,6 @@
 <nav id="breadcrumbs">
     <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
     <meta itemprop="itemListOrder" content="Descending" />
-
       {{ range .Ancestors.Reverse }}
         {{ if not .IsHome }}
         <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
@@ -21,5 +20,4 @@
       </li>
       {{ end }}
     </ol>
-    <a class="edit-page" aria-label="" href="https://github.com/arangodb/docs/edit/main/site/content/{{ with .File }}{{ .Path }}{{ end }}" target="_blank"><i class="fab fa-fw fa-github edit-page-icon"></i></a>
 </nav>
