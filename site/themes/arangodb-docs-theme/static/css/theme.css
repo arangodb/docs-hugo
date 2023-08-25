@@ -1253,7 +1253,7 @@ header .logo {
 
 .toc a, .toc a > * {
     white-space: normal;
-    word-break: break-all;
+    word-break: break-word;
 }
 
 .toc-header {
