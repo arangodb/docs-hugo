@@ -19,7 +19,7 @@ into `main` from `branch-name`"). Then locate and edit the next file.
 Commit the changes directly to your PR branch.
 
 For general suggestions, feel free to
-[create an issue](https://github.com/arangodb/docs/issues/new).
+[create an issue](https://github.com/arangodb/docs-hugo/issues/new).
 
 ### Automatic Previews
 
@@ -163,10 +163,14 @@ The following build workflows exist:
 
 #### Plain build
 
-Run the `docker compose` services using the `docker-compose.pain-build.yml` file
+Go to the `toolchain/docker/<architecture>` folder, with `<architecture>` being
+either `amd64` for x86-64 CPUs and `arm64` for 64-bit ARM CPUs (including
+Apple silicon like M1).
+
+Run the `docker compose` services using the `docker-compose.pain-build.yml` file.
 
 ```shell
-docs/toolchain/docker> docker compose -f docker-compose.plain-build.yml up
+docs-hugo/toolchain/docker/amd64> docker compose -f docker-compose.plain-build.yml up
 ```
 
 The site will be available at `http://localhost:1313`.
@@ -224,14 +228,18 @@ servers:
 
 **Run the toolchain**
 
+Go to the `toolchain/docker/<architecture>` folder, with `<architecture>` being
+either `amd64` for x86-64 CPUs and `arm64` for 64-bit ARM CPUs (including
+Apple silicon like M1).
+
 Run the `docker compose` services without specifying a file:
 
 ```shell
-docs/toolchain/docker> docker compose up
+docs-hugo/toolchain/docker/arm64> docker compose up
 ```
 
 
-The site will be available at `http://0.0.0.0:1313`
+The site will be available at `http://localhost:1313`
 
 <!--
 #### Run without Docker
