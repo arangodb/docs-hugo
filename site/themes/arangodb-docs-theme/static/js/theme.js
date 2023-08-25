@@ -213,19 +213,13 @@ function tocHiglighter() {
     const rect = anchor.getBoundingClientRect();
     const top = rect.top;
     const id = anchor.id;
-    console.log(id, top, rect)
     const currentHighlighted = document.querySelector('#TableOfContents .is-active a');
     const currentHighlightedHref = currentHighlighted ? currentHighlighted.getAttribute('href') : null;
-    console.log({currentHighlightedHref, id});
     if (top < 240 && currentHighlightedHref !== '#' + id) {
       removeActiveFromAllAnchors();
       const highlightedHref = document.querySelector('#TableOfContents a[href="#' + id + '"]');
-      highlightedHref.parentElement.classList.add('is-active');
-      // var topOfElement =  highlightedHref.parentElement.offsetTop - 200;
-      // window.scroll({ top: topOfElement, behavior: "smooth" });
-
-      highlightedHref.parentElement.scrollIntoView({behavior: "smooth", block: "nearest", });
-      console.log({highlightedHref});
+      highlightedHref.parentElement.classList.add('is-active');x  
+      highlightedHref.parentElement.scrollIntoView({behavior: "smooth", block: "nearest" });
     }
   });
 }
