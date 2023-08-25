@@ -449,11 +449,7 @@ def processFile(page, content, filepath):
                 if '-arangograph.md' in line:
                     tags.append("ArangoGraph")
 
-                tagShortcode = '{{< tag '
-                for t in tags:
-                    tagShortcode = tagShortcode + f'"{t}"'
-
-                tagShortcode = tagShortcode + ' >}}' 
+                tagShortcode = "{{< tag " + " ".join(map(lambda t: t.join('""'), tags)) + " >}}\n"
                 originalSpaces = len(line) - len(line.lstrip())  
                 page.content = page.content + " "*originalSpaces + tagShortcode
                 continue
