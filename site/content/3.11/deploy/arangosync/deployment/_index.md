@@ -7,6 +7,7 @@ description: >-
 archetype: chapter
 ---
 {{< tag "ArangoDB Enterprise" >}}
+
 This chapter describes how to deploy all the components needed for
 _Datacenter-to-Datacenter Replication (DC2DC)_.
 

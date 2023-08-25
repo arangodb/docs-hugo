@@ -16,7 +16,7 @@ To backup data in ArangoGraph for an ArangoDB installation, navigate to the
 There are two ways to create backups. Create periodic backups using a
 **Backup policy**, or create a backup manually.
 Both ways allow you to create [backups in multiple regions](#multi-region-backups)
-as well, if your organization belongs to the Enterprise tier.
+as well.
 
 ### Periodic backups
 
@@ -35,8 +35,7 @@ These backups are not automatically uploaded. To enable this, use the
 **Upload backup to storage** option and choose a retention period that
 specifies how long backups are retained after creation. 
 
-If your organization belongs to the Enterprise tier and the
-**Upload backup to storage** option is enabled for a backup policy,
+If the **Upload backup to storage** option is enabled for a backup policy,
 you can then create backups in different regions than the default one.
 The regions where the default backup is copied are shown in the
 **Additional regions** column in the **Policies** section.
@@ -49,8 +48,7 @@ It's also possible to create a backup on demand. To do this, click **Back up now
 
 ![Back up Now Dialog](../../images/arangograph-back-up-now-dialog.png)
 
-If your organization belongs to the Enterprise tier and you want to manually
-copy a backup to a different region than the default
+If you want to manually copy a backup to a different region than the default
 one, first ensure that the **Upload backup to storage** option is enabled.
 Then, highlight the backup row and use the
 **Copy backup to a different region** button from the **Actions** column. 
@@ -104,13 +102,6 @@ alternatives such as having hourly backups with a retention period of a year.
 
 ## Multi-region backups
 
-{{< info >}}
-The multi-region backup feature is only available for the ArangoGraph
-Enterprise tier. To upgrade to the Enterprise tier,
-[get in touch](https://www.arangodb.com/contact/)
-with the ArangoDB team.
-{{< /info >}}
-
 Using the multi-region backup feature, you can store backups in multiple regions
 simultaneously either manually or automatically as part of a **Backup policy**.
 If a backup created in one region goes down, it is still available in other
@@ -146,8 +137,7 @@ During restore, the deployment is temporarily not available.
 {{< info >}}
 The cloned deployment will have the exact same features as the previous
 deployment including node size, model, and cloud provider. The region
-can stay the same or you can select a different one if your organization belongs
-to the Enterprise tier.
+can stay the same or you can select a different one.
 For restoring a deployment as quick as possible, it is recommended to create a
 deployment in the same region as where the backup resides to avoid cross-region
 data transfer.

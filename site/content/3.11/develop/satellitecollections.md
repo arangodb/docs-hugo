@@ -6,7 +6,8 @@ description: >-
   Collections synchronously replicated to all servers, available in the Enterprise Edition
 archetype: default
 ---
-{{< tag "ArangoDB Enterprise""ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+
 When doing joins in an ArangoDB cluster data has to be exchanged between different servers.
 
 Joins are executed on a Coordinator. It prepares an execution plan

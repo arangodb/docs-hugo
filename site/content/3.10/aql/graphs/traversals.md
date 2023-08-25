@@ -136,9 +136,11 @@ FOR vertex[, edge[, path]]
     case when a nested traversal is fed with several tens of thousands of start
     vertices, which can then be distributed randomly to worker threads for parallel
     execution.
-    {{< tag "ArangoDB Enterprise""ArangoGraph" >}}  - **maxProjections** (number, *optional*): Specifies the number of document
+    {{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+  - **maxProjections** (number, *optional*): Specifies the number of document
     attributes per FOR loop to be used as projections. The default value is `5`.
-    {{< tag "ArangoDB Enterprise""ArangoGraph" >}}  - **weightAttribute** (string, *optional*): Specifies the name of an attribute
+    {{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+  - **weightAttribute** (string, *optional*): Specifies the name of an attribute
     that is used to look up the weight of an edge. If no attribute is specified
     or if it is not present in the edge document then the `defaultWeight` is used.
     The attribute value must not be negative.
