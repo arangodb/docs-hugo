@@ -1479,6 +1479,16 @@ code, p code {
     transition: 0.4s;
     position: absolute;
     right: 16px;
+    width: 40px;
+    height: 40px;
+    background: var(--gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    right: 0;
+    border-radius: 20px;
+    cursor: pointer;
 }
 
 .copy-to-clipboard-button::before {
