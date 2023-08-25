@@ -383,16 +383,17 @@ function moveTags() {
             //tag.remove();
             continue
         }
-
+        if(!tag) continue;
         var prev = tag.previousSibling;
         var isHeader = $(prev).is(':header')
         while (!isHeader) {
+          if(!prev) break;
             prev = prev.previousSibling;
             isHeader = $(prev).is(':header')
         }
-
+        
         newTag = tag.outerHTML
-        prev.insertAdjacentHTML('afterEnd', newTag);
+        prev && prev.insertAdjacentHTML('afterEnd', newTag);
         tag.remove();
     }
 }
