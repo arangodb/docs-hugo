@@ -10,7 +10,7 @@ archetype: home
 
 {{< cards >}}
 
-{{% card title="Getting started" link="{{ stableVersion }}/get-started/overview/" icon="icon-internet-of-things.png" %}}
+{{% card title="Getting started" link="{{ stableVersion }}/get-started/overview/" %}}
 Learn about ArangoDB's core concepts, how to interact with the database system,
 and get a server instance up and running.
 {{% /card %}}
