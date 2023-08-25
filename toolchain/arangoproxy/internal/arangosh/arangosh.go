@@ -3,7 +3,6 @@ package arangosh
 import (
 	"bufio"
 	"fmt"
-	"os"
 	"regexp"
 	"strings"
 
@@ -24,7 +23,7 @@ func ExecRoutine(example chan map[string]interface{}, outChannel chan string) {
 			models.Logger.Printf("[%s] [CODE] %s", name, code)
 			out := Exec(name, code, repository)
 
-			checkAssertionFailed(name, code, out, repository)
+			out = checkAssertionFailed(name, code, out, repository)
 			out = checkArangoError(name, code, out, repository)
 
 			outChannel <- out
@@ -66,14 +65,15 @@ func Exec(exampleName string, code string, repository models.Repository) (output
 	return
 }
 
-func checkAssertionFailed(name, code, out string, repository models.Repository) {
+func checkAssertionFailed(name, code, out string, repository models.Repository) string {
 	if strings.Contains(out, "EXITD") {
 		models.Logger.Printf("[%s] [ERROR]: Assertion Failed", name)
 		models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, out)
-		models.Logger.Summary("<li><strong>%s</strong>  - %s <strong> ERROR </strong></li><br>", repository.Version, name)
+		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR </strong></error></li><br>", repository.Version, name)
 
-		os.Exit(1)
+		return "ERRORD"
 	}
+	return out
 }
 
 func checkArangoError(name, code, out string, repository models.Repository) string {
@@ -87,9 +87,9 @@ func checkArangoError(name, code, out string, repository models.Repository) stri
 		} else {
 			models.Logger.Printf("[%s] [ERROR]: Found ArangoError without xpError", name)
 			models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, out)
-			models.Logger.Summary("<li><strong>%s</strong>  - %s <strong> ERROR </strong></li><br>", repository.Version, name)
+			models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR </strong></error></li><br>", repository.Version, name)
 
-			os.Exit(1)
+			return "ERRORD"
 		}
 	}
 
@@ -102,9 +102,9 @@ func handleCollectionNotFound(name, code, out string, repository models.Reposito
 	if strings.Contains(output, "ArangoError") && !strings.Contains(code, "xpError") {
 		models.Logger.Printf("[%s] [ERROR]: Found ArangoError without xpError", name)
 		models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, output)
-		models.Logger.Summary("<li><strong>%s</strong>  - %s <strong> ERROR </strong></li><br>", repository.Version, name)
+		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR </strong></error></li><br>", repository.Version, name)
 
-		os.Exit(1)
+		return "ERRORD"
 	}
 
 	return output
