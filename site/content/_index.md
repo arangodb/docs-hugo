@@ -10,7 +10,7 @@ archetype: home
 {{< cards >}}
 
 {{% card title="What is ArangoDB?" link="{{ stableVersion }}/introduction/about-arangodb/" %}}
-Get to know graphs, ArangoDB's use cases and features.
+Get to know **graphs**, ArangoDB's **use cases** and **features**.
 {{% /card %}}
 
 {{% card title="Getting started" link="{{ stableVersion }}/get-started/overview/" %}}
