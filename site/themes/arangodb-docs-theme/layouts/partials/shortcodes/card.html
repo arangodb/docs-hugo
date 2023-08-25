@@ -1,14 +1,17 @@
-{{- $title := .title }}
-{{- $image := .icon }}
-{{- $link := .link }}
-{{- $content := .Inner }}
+{{- $title := .title }} {{- $image := .icon }} {{- $link := .link }} {{-
+$content := .Inner }}
 <a href="{{ $link }}" class="link-internal">
   <div class="card">
     <div class="card-head">
-      {{ with $image }}<img class="card-icon" src="{{ . }}" aria-hidden="true">{{ end }}
+      {{ with $image }}<img
+        class="card-icon"
+        src="{{ . }}"
+        aria-hidden="true"
+      />{{ end }}
       <div class="card-title">{{ $title }}</div>
     </div>
     <div class="card-body">
       <p>{{ $content }}</p>
     </div>
-</div>
+  </div>
+</a>

@@ -332,18 +332,18 @@ tr {
     border-radius: 24px;
 }
 
-@media screen and (max-width: 1024px) {
-    .card {
-        flex: 1 1 100%;
-    }
-}
-
 .card:hover {
     box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
 }
 
 .card > a {
     border-bottom: 0;
+}
+
+@media screen and (max-width: 768px) {
+    .cards {
+        grid-template-columns: 1fr;
+    }
 }
 
 a.section-link {
@@ -508,7 +508,7 @@ body .page-container {
 }
 
 #sidebar.active > #sidebar-toggle-navigation {
-    left: 288px;
+    left: 286px;
 }
 
 
@@ -922,7 +922,7 @@ header .logo {
     float: left;
     height: auto;
     margin-bottom: 1rem;
-    top: 4em;
+    position: relative;
     text-overflow: ellipsis;
     white-space: nowrap;
     height: 2.9rem;
@@ -938,6 +938,7 @@ header .logo {
 
 #breadcrumbs > ol {
     margin: 5px 0px 0px 80px;
+    white-space: normal;
 }
 
 @media screen and (max-width: 768px)
@@ -964,7 +965,7 @@ header .logo {
     text-transform: uppercase;
     display: block;
     height: 50px;
-    padding: 0 15px;
+    padding: 0 15px 0 20px;
     border-bottom: none;
     color: #ccc;
     text-transform: uppercase;
@@ -1021,10 +1022,12 @@ header .logo {
 .toc {
     height: 78vh;
     overflow: auto;
-    position: fixed;
     top: 15vh;
     right: 0;
     width: 20vw;
+    max-width: 300px;
+    position: sticky;
+    padding-left: 20px
 }
 .toc::-webkit-scrollbar {
     width: 6px;
@@ -1138,6 +1141,10 @@ header .logo {
 }
 /* end Table of contents */
 
+.row-main {
+    max-width: 1200px;
+}
+
 /* Article */
 
 article.default, article.chapter, article.home {
@@ -1145,6 +1152,7 @@ article.default, article.chapter, article.home {
     min-height: 600px;
     grid-area: article;
     width: calc(80vw - 440px); /* 300px + 80px + 60px */
+    max-width: 800px;
 }
 
 @media screen and (max-width: 768px) {
