@@ -157,12 +157,6 @@ function codeShowMoreListener() {
   })
 }
 
-function showSearchListener() {
-  $('.searchbox').click(function(){
-    showSearchModal();
-  });
-}
-
 
 
 function initArticle(url) {
@@ -415,7 +409,6 @@ window.onload = () => {
     renderVersion();
     loadMenu(window.location.href);
     initArticle(window.location.href);
-    showSearchListener();
 
 
     var isMobile = window.innerWidth <= 768;
