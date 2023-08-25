@@ -10,18 +10,9 @@
 ### SETUP
 #### Check/set env vars, install requirements
 
+: > /home/toolchain.log
+
 TRAP=0
-
-function stop_all_containers() {
-  echo "[stop_all_containers] A stop signal has been captured. Stopping all containers"
-  TRAP=1
-  sleep 2
-  docker ps -a --filter name=docs_* -q | xargs docker stop | xargs docker rm
-  echo "[stop_all_containers] Done"
-  exit 1
-}
-
-trap "stop_all_containers" EXIT HUP INT QUIT PIPE TERM KILL
 
 cd /home/toolchain/scripts
 
@@ -93,7 +84,7 @@ echo "[INIT] Setup Finished"
 function main() {
   echo "[TOOLCHAIN] Starting toolchain"
   echo "[TOOLCHAIN] Generators: $GENERATORS"
-
+  : > /home/summary.md
   echo "<h2>Generators</h2>" >> /home/summary.md
   echo "$GENERATORS" >> /home/summary.md
 
@@ -126,14 +117,14 @@ function main() {
   fi
 
     ## redirect logs of arangoproxy and site containers to files
-    docker logs --details --follow docs_arangoproxy > arangoproxy-log.log &
-    docker logs --details --follow docs_site > site-log.log &
+    docker logs --details --follow docs_arangoproxy >> toolchain.log &
+    docker logs --details --follow docs_site >> toolchain.log &
 
     ## Run the container exit signal interceptor in background
-    trap_container_exit &
 
-    ## tail to stdout the log files
-    tail -f arangoproxy-log.log site-log.log
+    tail -f /home/toolchain.log &
+    trap_container_exit
+
 
     ## If a container exits, the tail gets interrupted and the script will arrive here
     echo "[TERMINATE] Site container exited"
@@ -579,18 +570,43 @@ function trap_container_exit() {
   do
     siteContainerStatus=$(docker ps | grep docs_site)
     if [ "$siteContainerStatus" == "" ] ; then
-      echo "[TERMINATE] Site exited, shutting down all containers" >> arangoproxy-log.log
+      docker stop docs_arangoproxy docs_site
+      log "[TERMINATE] Site exited, shutting down all containers" >> toolchain.log
+
+      terminate=true
+    fi
+    toolchainContainerStatus=$(docker ps | grep toolchain)
+    if [ "$toolchainContainerStatus" == "" ] ; then
+      docker stop docs_arangoproxy docs_site
+      log "[TERMINATE] Toolchain exited, shutting down all containers" >> toolchain.log
 
       terminate=true
     fi
     arangoproxyContainerStatus=$(docker ps | grep docs_arangoproxy)
     if [ "$arangoproxyContainerStatus" == "" ] ; then
-      echo "[TERMINATE] Arangoproxy exited, shutting down all containers" >> site-log.log
+      docker stop docs_arangoproxy docs_site
+      log "[TERMINATE] Arangoproxy exited, shutting down all containers" >> toolchain.log
       terminate=true
+    fi
+    if [ "$ENV" == "local" ]; then
+      exitStatus=$(cat summary.md  | grep -o '<error code=.' | cut -d '=' -f2)
+      if [ "$exitStatus" != "" ] ; then
+        docker stop docs_arangoproxy docs_site
+        log "[TERMINATE] Error during content generation, shutting down all containers" >> toolchain.log
+        terminate=true
+      fi
     fi
   done
 
-  docker stop toolchain
+  log "[stop_all_containers] A stop signal has been captured. Stopping all containers" >> toolchain.log
+  TRAP=1
+  docker stop docs_arangoproxy docs_site
+  docker ps -a --filter name=docs_* -q | xargs docker stop | xargs docker rm
+  log "[stop_all_containers] Done" >> /home/toolchain.log
+  exitStatus=$(cat summary.md  | grep -o '<error code=.' | cut -d '=' -f2)
+  log "[stop_all_containers] Toolchain Exit Status ""$exitStatus" >> /home/toolchain.log
+
+  exit $exitStatus
 }
 
 
