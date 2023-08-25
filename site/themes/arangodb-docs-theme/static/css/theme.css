@@ -164,7 +164,7 @@ a, a:hover {
 }
 
 a:hover {
-    border-bottom: 1px solid;
+    text-decoration: underline;
 }
 
 .hidden {
@@ -306,19 +306,23 @@ tr {
 /* Cards */
 .cards {
     display: grid;
-   grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.cards a:hover {
+    text-decoration: none;
 }
 
 .card {
-    flex: 1 1 40%;
     padding: 18px;
     display: flex;
     min-height: 10px;
     flex-direction: column;
     position: relative;
     color: #202951;
-    margin: 0 1rem 1rem 0;
-
+    height: 100%;
+    color: var(--gray-950);
     transition: 150ms ease-in-out;
     transition-property: border,box-shadow;
     border: 1px solid #E8EDEB;
@@ -379,17 +383,15 @@ a.section-link {
 
 .card-title {
     font-weight: 600;
-    color: #0b1117;
     text-overflow: ellipsis;
     overflow: hidden;
-    font-size: 16px;
+    font-size: 20px;
     line-height: 28px;
 }
 
 .card-body {
-    font-size: 14px;
+    font-size: 16px;
     line-height: 22px;
-    color: #25323d;
     word-wrap: break-word;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -403,7 +405,6 @@ a.section-link {
 .card-body > p {
     margin: unset;
     color: #001E2B;
-    font-size: 16px;
     line-height: 28px;
     color: #001E2B;
     font-weight: 400;
@@ -820,6 +821,7 @@ header .logo {
 #sidebar ul li a:hover {
     box-sizing: border-box;
     border: 0;
+    text-decoration: none;
     background-color: var(--gray-900);
 }
 
