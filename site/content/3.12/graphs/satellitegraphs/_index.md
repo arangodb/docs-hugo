@@ -6,7 +6,8 @@ description: >-
   Graphs synchronously replicated to all servers, available in the Enterprise Edition
 archetype: chapter
 ---
-{{< tag "ArangoDB Enterprise""ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+
 ## What is a SatelliteGraph?
 
 _SatelliteGraphs_ are a specialized _named graph_ type available for cluster

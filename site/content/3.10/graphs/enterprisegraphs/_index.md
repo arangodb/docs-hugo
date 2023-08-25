@@ -8,7 +8,8 @@ archetype: chapter
 ---
 {{< description >}}
 
-{{< tag "ArangoDB Enterprise""ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+
 This chapter describes the `enterprise-graph` module, a specialized version of
 [SmartGraphs](../smartgraphs/_index.md).
 It will give a vast performance benefit for all graphs sharded

@@ -373,27 +373,21 @@ function toggleExpandShortcode(event) {
 }
 
 function moveTags() {
-    var tags = document.querySelectorAll(".labels")
+    var tags = document.querySelectorAll(".labels");
     for (let tag of tags) {
-        console.log(tag)
         if ($(tag).parent().is("li")) {
-            var x = $(tag).parent();
-            console.log(x)
             $(tag).parent().children()[0].after(tag);
-            //tag.remove();
-            continue
+            continue;
         }
-        if(!tag) continue;
         var prev = tag.previousSibling;
-        var isHeader = $(prev).is(':header')
-        while (!isHeader) {
-          if(!prev) break;
+        var isHeader = $(prev).is(':header, hgroup');
+        while (prev && !isHeader) {
             prev = prev.previousSibling;
-            isHeader = $(prev).is(':header')
+            isHeader = $(prev).is(':header, hgroup');
         }
-        
-        newTag = tag.outerHTML
-        prev && prev.insertAdjacentHTML('afterEnd', newTag);
+        if (!prev) continue;
+        newTag = tag.outerHTML;
+        prev.insertAdjacentHTML('afterEnd', newTag);
         tag.remove();
     }
 }

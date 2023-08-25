@@ -7,6 +7,7 @@ description: >-
 archetype: default
 ---
 {{< tag "ArangoDB Enterprise" >}}
+
 The _Datacenter-to-Datacenter Replication_ is a distributed system with a lot
 different components. As with any such system, it requires some, but not a lot,
 of operational support.

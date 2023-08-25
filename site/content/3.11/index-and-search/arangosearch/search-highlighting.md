@@ -9,7 +9,8 @@ archetype: default
 ---
 {{< description >}}
 
-{{< tag "ArangoDB Enterprise""ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+
 ArangoSearch lets you search for terms and phrases in full-text, and more.
 It only returns matching documents, however. With search highlighting, you can
 get the exact locations of the matches.
