@@ -3,6 +3,9 @@
 This repository contains the source files of the ArangoDB documentation as
 published on [docs.arangodb.com](https://docs.arangodb.com/).
 
+The ArangoDB documentation is licensed under Apache-2.0.
+See [LICENSE](LICENSE) for details.
+
 ## Contribute
 
 To suggest a concrete change to the documentation, you may
@@ -22,8 +25,12 @@ For general suggestions, feel free to
 
 In every pull request, the _arangodb-docs-automation_ bot comments with a deploy
 preview link. Whenever you push a change to the PR branch, a preview is built.
-If it succeeded, then you can view the preview hosted on Netlify by following
+If it succeeds, then you can view the preview hosted on Netlify by following
 the link.
+
+Note that the automatic previews run [plain builds](#plain-build), which means
+that [generated content](#generated-content) is not updated. The ArangoDB
+documentation team takes of regenerating this content if necessary.
 
 ### Contributor License Agreement
 
@@ -33,157 +40,223 @@ which can be found here: <https://www.arangodb.com/documents/cla.pdf>
 You can scan and email the CLA PDF file to <cla@arangodb.com> or send it via
 fax to +49-221-2722999-88.
 
-## Build the Documentation
+## Build the documentation
 
 The following section describes how you can build the documentation locally.
 This is not strictly necessary when contributing. You can also rely on
-[automatic previews](#automatic-previews).
+[automatic previews](#automatic-previews) for basic changes.
 
 ### The toolchain
 
-The documentation toolchain is containerized and uses Docker Compose to
-orchestrate builds.
-
 At the core, docs are generated with the static site generator
 [Hugo](https://gohugo.io/). The `hugo` build command generates static HTML
-content from the Markdown files.
+content from the Markdown, data, and theme files.
 
-- `docs_arangoproxy` - arangoproxy, arangosh
-- `docs_site` - hugo, (start_hugo.sh)
-- `toolchain` - toolchain.sh (generators)
-- `docs_server_<version>` - ArangoDB single server
-- `docs_server_<version>_cluster` - ArangoDB cluster
+The documentation toolchain is containerized and uses Docker Compose to
+orchestrate builds. The following containers are created:
+
+- `toolchain` - contains the code for controlling the toolchain and the
+  generated content, spawning the other containers
+- `docs_arangoproxy` - contains the arangoproxy web server written in Go that
+  handles generated content using arangosh to run examples against a server and
+  assemble the OpenAPI descriptions
+- `docs_site` - contains Hugo and the logic to start it
+- `docs_server_<version>` - an ArangoDB single server
+- `docs_server_<version>_cluster` - an ArangoDB cluster
 
 ### Render hooks
 
-For headlines, links, images, and fenced
-code blocks in Markdown, Hugo can run template files that are called
-_Render Hooks_ to trigger special processing. This is used to extract and
-execute examples against actual ArangoDB servers and place the output into the
-rendered documentation, for example.
+For headlines, links, images, and fenced code blocks in Markdown, Hugo can run
+template files that are called _Render Hooks_ to trigger special processing.
+This is used to extract and execute examples against actual ArangoDB servers and
+place the output into the rendered documentation, for example.
 
-#### Link render hook
+- **Heading render hook**
 
-Defined in `layouts/_default/_markup/render-link.html`.
+  Defined in `site/themes/arangodb-docs-theme/layouts/_default/_markup/render-heading.html`
 
-Scans all the hrefs in a file and tries to retrieve the page from that link.
-If the page is not found, the build fails because of a broken link.
+  Checks that there is no level 1 `# Headline` in the content, as this is
+  reserved for the `title` defined in the front matter. Also injects the widget
+  to copy anchor links to the clipboard.
 
-#### Image render hook
+- **Link render hook**
 
-Defined in `layouts/_default/_markup/render-image.html`.
+  Defined in `site/themes/arangodb-docs-theme/layouts/_default/_markup/render-link.html`
 
-Transforms the style attributes defined in the image link as
-`{path.png?{attribute1=value1&attribute2=value2&..}}` in a style attribute
-inside the `img` HTML tag.
+  Scans all the hrefs in a file and tries to retrieve the page from that link.
+  If the page is not found, the build fails because of a broken link.
 
-#### Codeblock render hook
+- **Image render hook**
 
-Defined in `layouts/_default/_markup/render-codeblock-*.html`.
+  Defined in `site/themes/arangodb-docs-theme/layouts/_default/_markup/render-image.html`
 
-Triggers a remote call to the _arangoproxy_ web server for examples generation
-if the code starts with a front matter block surrounded by `---`.
+  Transforms the style attributes defined in the image link as
+  `{path.png?{attribute1=value1&attribute2=value2&..}}` in a style attribute
+  inside the `img` HTML tag.
 
-The following codeblocks are supported:
+- **Codeblock render hook**
 
-- `` ```js ``
-- `` ```aql ``
-- `` ```openapi ``
-- `` ```curl ``
+  Defined in `site/themes/arangodb-docs-theme/layouts/_default/_markup/render-codeblock-*.html`
 
-## Examples generation
+  Triggers a remote call to the _arangoproxy_ web server for assembling the
+  OpenAPI descriptions as well as to run the example generation if the code
+  starts with a front matter block surrounded by `---`, like this:
 
-### JS/AQL/HTTP Examples
+  ````markdown
+  ```aql
+  ---
+  name: the_answer
+  description: AQL block with front matter
+  ---
+  RETURN 42
+  ```
+  ````
 
-Triggered by the `render-codeblock-js.html`, `render-codeblock-aql.html` and
-`render-codeblock-curl.html` hooks.
+  The following codeblocks are supported:
 
-The content inside the codeblock is comprised of two parts:
+  - `` ```js `` for arangosh / JavaScript API examples
+  - `` ```aql `` for AQL query examples
+  - `` ```openapi `` for REST HTTP API descriptions
+  - `` ```curl `` for REST HTTP API examples
 
-- YAML front matter to set options
-- The example code
-
-The YAML front matter defines all the metadata regarding the example, like the
-example name, version, bind variables, datasets, and more.
-
-Example:
-
-````yaml
-```js
----
-name: analyzerByName
-version: 3.10
-render: input/output
----
-var analyzers = require("@arangodb/analyzers");
-analyzers.analyzer("text_en");
-```
-````
-
-#### Flow
-
-The hook triggers a `POST` call to the dedicated _arangoproxy_ endpoint
-(`/js`, `/aql`, `/curl`) with the entire codeblock as request body.
+The hooks trigger a `POST` call to the dedicated _arangoproxy_ endpoint
+(`/js`, `/aql`, `/curl`, `openapi`) with the entire codeblock as request body.
 
 The _arangoproxy_ endpoint parses the request, checks if the examples is cached,
-otherwise executes the code against the ArangoDB instance with the version
-defined in the YAML front matter and saves the example output in the cache.
+otherwise executes the code against the ArangoDB instance with the version as
+determined from the version folder name and saves the example output in the cache.
 
 The input/output (as defined in the YAML render option) is returned as JSON to
 Hugo in the render hook, which generates HTML replacing the codeblock in the
 file with the input/output of the example.
 
-### OpenAPI
+### Build workflows
 
-Used to describe an HTTP REST API endpoint using the
-[OpenAPI Specification](https://spec.openapis.org/oas/latest.html) standard in
-version 3.x.
+The following build workflows exist:
 
-Triggered by the `render-codeblock-openapi.html` hook.
+- **Plain build workflow**
 
-The content inside the codeblock is a standard OpenAPI endpoint description in
-YAML format.
+  Build docs without re-generating examples (using a committed cache file).
 
-Example:
+  Includes the assembly of the REST HTTP API descriptions (OpenAPI) with
+  validation at each run. `` ```curl `` examples require a different workflow.
 
-````yaml
-```openapi
-paths:
-  /_api/foxx/readme:
-    get:
-      description: |
-        Fetches the service's README or README.md file's contents if any.
-      parameters:
-        - name: mount
-          schema:
-            type: string
-          required: true
-          description: |
-            Mount path of the installed service.
-          in: query
-      responses:
-        '200':
-          description: Returned if the request was successful.
-        '204':
-          description: Returned if no README file was found.
-      tags:
-        - Foxx
+  You may need to specify upstream branches.
+
+- **Scheduled workflow**
+
+  The following generated content is re-generated periodically using CircleCI:
+  - Metrics
+  - Error codes and meanings
+  - AQL optimizer rules
+  - Startup options
+  - oasisctl documentation
+
+- **Example generation workflow**
+
+  Build docs including re-generating examples for AQL, arangosh (JavaScript API),
+  and cURL (HTTP API).
+
+  Specifying upstream branches is required for all versions in which you modified
+  example code and thus require a re-generation. These can be a Docker Hub images
+  or GitHub pull request links.
+
+#### Plain build
+
+Run the `docker compose` services using the `docker-compose.pain-build.yml` file
+
+```shell
+docs/toolchain/docker> docker compose -f docker-compose.plain-build.yml up
 ```
-````
 
-#### Flow
+The site will be available at `http://localhost:1313`.
 
-The hook triggers a `POST` call to the `/openapi` _arangoproxy_ endpoint with
-the entire codeblock as request body.
+#### Scheduled and example generation build
 
-The _arangoproxy_ endpoint parses the request and converts the YAML text to JSON.
+**Configuration**
 
-The output JSON is written to _arangoproxy_'s `api-docs.json` file. This file is
-needed by the web interface team for _Swagger UI_. The JSON is also returned to
-Hugo in the render hook, which generates a _rapi-doc_ HTML element with the
-specification inside. This becomes an interactive widget in a browser.
+The toolchain container needs to be set up via config file in `toolchain/docker/config.yaml`:
 
-## Documentation structure
+```yaml
+generators:   # Generators to trigger - empty string defaults to all generators
+servers:      # Array to define arangodb servers to be used by the toolchain
+  - image:    # arangodb docker image to be used, can be arangodb/enterprise-preview:... or a branch name
+    version:  # docs branch to put the generated content into
+  - ...       # Additional images and versions as needed
+```
+
+**Available generators**
+
+- `examples`
+- `metrics`
+- `error-codes`
+- `optimizer`
+- `options`
+- `oasisctl`
+
+The generators entry is a space-separated string.
+
+If `metrics` or `error-codes` is in the `generators` string, the following
+environment variable has to be exported:
+
+```shell
+export ARANGODB_SRC_{VERSION}=path/to/arangodb/source
+```
+
+Substitute `{VERSION}` with a version number like `3_11`.
+
+On Windows using PowerShell, use a Unix-like path:
+
+```powershell
+$Env:ARANGODB_SRC_3_11 = "/Drive/path/to/arangodb"
+```
+
+**Configuration example**
+
+```yaml
+generators: examples oasisctl options optimizer
+servers:
+  - image: arangodb/enterprise-preview:3.11-nightly
+    version: "3.11"
+  - image: arangodb/enterprise-preview:devel-nightly
+    version: "3.12"
+```
+
+**Run the toolchain**
+
+Run the `docker compose` services without specifying a file:
+
+```shell
+docs/toolchain/docker> docker compose up
+```
+
+
+The site will be available at `http://0.0.0.0:1313`
+
+<!--
+#### Run without Docker
+
+- Build and start the _arangoproxy_ web server
+
+  ```shell
+  toolchain/arangoproxy/cmd> go build -o arangoproxy
+  toolchain/arangoproxy/cmd> ./arangoproxy {flags}
+  ```
+- Launch the hugo build command
+
+  ```shell
+  docs-hugo/site> hugo
+  ```
+
+The static HTML is placed under `site/public/`.
+
+For development purpose, it is suggested to use the `hugo serve` command for
+hot-reload on changes. The runtime server is available at `http://localhost:1313/`.
+-->
+
+## Work with the documentation content
+
+### Documentation structure
 
 In the `site/content` directory, the directories `3.10`, `3.11` etc. represent
 the individual ArangoDB versions and their documentation. There is only one
@@ -194,25 +267,29 @@ Having a folder per version has the advantage that all versions can be built at
 once, but the drawback of Git cherry-picking not being available and therefore
 requiring to manually apply changes to different versions as necessary.
 
-- `site` - Folder with all files that Hugo needs to generate the site
-  - `config` - Folder with all files that Hugo needs to generate the site
-  - `content` - The Markdown source files in version folders as well as a shared folder for images
-  - `data` - Contains JSON and YAML files for the documentation versions, startup options, etc.
-  - `public` - Default output directory for the generated site (not committed)
-  - `resources` - ?
-  - `themes` - Folder for Hugo themes
-- `toolchain` - Folder for the docs tools and scripts
-  - `arangoproxy`
-  - `docker`
-  - `scripts`
-
-## Working with the documentation content
+- `site/` - Folder with all files that Hugo needs to generate the site
+  - `config/` - The base Hugo configuration in `_default/` as well as additional
+    configurations for different build workflows
+  - `content/` - The Markdown source files in version folders as well as a
+    shared folder for images
+  - `data/` - Contains JSON and YAML files for the documentation versions,
+    the OpenAPI tag list, the example cache, etc.
+  - `public/` - Default output directory for the generated site (not committed)
+  - `resources/` - Holds the various cached resources that are generated by Hugo
+    when using `hugo serve`
+  - `themes/` - Folder for Hugo themes, containing the customized ArangoDB docs theme
+- `toolchain/` - Folder for the docs toolchain tools and scripts
+  - `arangoproxy/` - Source code of the arangoproxy web server
+  - `docker/` - The Docker container and compose files, with two sets of
+    configurations for the `amd64` and `arm64` architectures that are needed for
+    the scheduled and example generation build workflows
+  - `scripts/` - The toolchain scripts
 
 ### Markup overview
 
 The documentation is written in the light-weight markup language
 [Markdown](https://daringfireball.net/projects/markdown/), using the GitHub
-flavor, and further extended by Hugo shortcodes for advanced templating needs.
+flavor, and further extended by Hugo _shortcodes_ for advanced templating needs.
 
 For an overview over the basic markup, see the [CommonMark help](https://commonmark.org/help/).
 
@@ -431,11 +508,11 @@ The following shortcodes also exist but are rarely used:
   a single `<h1>` headline, and this is automatically generated from the
   `title` front matter parameter.
 
-- Use `##` for level 2 headlines for new content over `---` underlines.
+- Use `##` for level 2 headlines, not `---` underlines.
 
 - There should be a blank line above and below fenced code blocks and headlines
   (except if it is at the top of the document, right after the end of the
-  frontmatter `---`).
+  front matter `---`).
 
 - Use all lowercase languages in fenced code blocks without whitespace before
   or after the language, and use the following languages in favor of the ones in
@@ -470,7 +547,7 @@ The following shortcodes also exist but are rarely used:
 - Do not write TODOs right into the content and avoid using
   `<!-- HTML comments -->`. Use `{{< comment >}}...{{< /comment >}}` instead.
 
-### Adding links
+### Add links
 
 For external links, use standard Markdown. Clicking these links automatically
 opens them in a new tab:
@@ -600,7 +677,7 @@ If there are both a version remark and an Enterprise Edition remark, use:
   (introduced in v3.11.5 and v3.12.2, Enterprise Edition only).
 ```
 
-### Adding a Lead Paragraph
+### Add lead paragraphs
 
 A lead paragraph is the opening paragraph of a written work that summarizes its
 main ideas. Only few pages have one so far, but new content should be written
@@ -614,13 +691,15 @@ title: Feature X
 description: >-
   You can do this and that with X, and it is ideal to solve problem Y
 ---
+{{< description >}}
+
 ...
 ```
 
-It should end without a period, contain no links and usually avoid other markup
-as well (bold, italic).
+The lead paragraph text should end without a period, contain no links and usually
+avoid other markup as well but bold, italic, and inline code are acceptable.
 
-### Adding a page
+### Add a page
 
 Start off by finding a file name. It should be:
 
@@ -631,41 +710,45 @@ Start off by finding a file name. It should be:
 
 Note that the file name is independent of what will show in the navigation or
 what will be used as headline for that page. The file name will be used as
-part of the final URL, however. For example, `3.8/aql/examples.md` will become
-`http://www.arangodb.com/docs/3.8/aql/examples.html`.
+part of the final URL, however. For example, `3.12/aql/examples.md` will become
+`http://docs.arangodb.com/3.12/aql/examples/`.
 
 Create a new file with the file name and a `.md` file extension. Open the file
 in a text editor (Visual Studio Code is recommended). Add the following
-frontmatter:
+front matter:
 
 ```yaml
 ---
-layout: default
-description: A meaningful description of the page
-title: Short title
+archetype: default # or 'chapter' if it is a _index.md section file
+title: The level 1 headline
+description: >-
+  A meaningful description of the page
+menuTitle: Short navigation menu title
+weight: 42 # controls navigation position within the current section
 ---
 ```
 
-Add the actual content formatted in Markdown syntax below the frontmatter.
+Add the actual content formatted in Markdown syntax below the front matter.
 
-### Renaming a page
+### Rename a page
 
 The URL of a page is derived from the file name. If you rename a file, e.g.
 from `old-name.md` to `new-name.md`, make sure to add a redirect for the
-old URL by adding the following to the frontmatter:
+old URL by adding the following to the front matter:
 
 ...
 
-### Disable or limit table of contents
+### Disable or limit the table of contents
 
-The table of contents (ToC) on the right-hand side at the top of a page lists
-the headlines if there at least three on the page. It can be disabled for
-individual pages with the following frontmatter:
+The table of contents (ToC) or "On this page" on the right-hand side at the top
+of a page lists the headlines if there at least three on the page. It can be
+disabled for individual pages with the following front matter:
 
 ```yaml
 ---
-page-toc:
-  disable: true
+...
+pageToc:
+  disabled: true
 ---
 ```
 
@@ -674,29 +757,313 @@ headlines for less clutter:
 
 ```yaml
 ---
-page-toc:
-  max-headline-level: 3
+...
+pageToc:
+  maxHeadlineLevel: 3
 ---
 ```
 
 A setting of `3` means that `<h1>`, `<h2>`, and `<h3>` headlines will be listed
 in the ToC, whereas `<h4>`, `<h5>`, and `<h6>` will be ignored.
 
-### Deprecating a version
+### Deprecate a version
 
 When an ArangoDB version reaches [End-of-Life](https://www.arangodb.com/subscriptions/end-of-life-notice/),
-its documentation needs to be marked as such. The respective version needs to
-be added to the `_data/deprecations.yml` file for that:
+its documentation needs to be marked as such. For the respective version, set
+the `deprecated` attribute to `true` in the `site/data/versions.yaml` file:
 
 ```diff
- - "3.5"
- - "3.6"
-+- "3.7"
+ - name: '3.10'
+   version: '3.10.9'
+   alias: ""
+-  deprecated: false
++  deprecated: true
 ```
 
 It makes a warning show at the top of every page for that version.
 
-### Adding a new version
+<!--
+### Add a new version
 
+TODO: Pending CircleCI dynamic config
+-->
+
+### Add a new arangosh example
+
+A complete example:
+
+````markdown
+```js
+---
+name: ensureUniquePersistentSingle
+description: Create a unique persistent index on a single document attribute
+---
+~ db._create("ids");
+  db.ids.ensureIndex({ type: "persistent", fields: [ "myId" ], unique: true });
+  db.ids.save({ "myId": 123 });
+  db.ids.save({ 
+    "myId": 123
+  }); // xpError(ERROR_ARANGO_UNIQUE_CONSTRAINT_VIOLATED)
+~ db._drop("ids");
+```
+````
+
+Groups of examples should have the same name prefix.
+
+If an example needs to be run against an ArangoDB cluster instead of a
+single server (default), then add the following front matter option:
+
+```yaml
+type: cluster
+```
+
+To not render the transcript comprised of input and output but only the input
+or output, set the `render` front matter option:
+
+```yaml
+render: input # or 'output', default 'input/output'
+```
+
+After the front matter, you can write the JavaScript code for arangosh:
+
+```js
+db._create("collection");
+db.collection.save({ _key: "foo", value: 123 });
+db._query(`FOR doc IN collection RETURN doc.value`).toArray();
+db._drop("collection");
+```
+
+Statements can span multiple lines:
+
+```js
+db.collection.save([
+  { multiple: true },
+  { lines: true }
+]);
+```
+
+The statements as well as the results will be visible in the example transcript.
+To hide certain statements from the output, e.g. for setup/teardown that is not
+relevant for the example, you can use a leading tilde `~` to suppress individual
+lines:
+
+```js
+~ db._create("collection");
+  db.collection.save({ _key: "foo" });
+~ db._drop("collection");
+```
+
+Examples need to remove the collections and Views they create. Not dropping them
+will raise an error unless they are specifically exempt:
+
+```js
+~ db._create("collection");
+~ db._createView("view", "arangosearch", {...});
+  db.collection.save({...});
+~ addIgnoreView("view");
+~ addIgnoreCollection("collection");
+```
+
+This is helpful for creating collections and Views once, using them in multiple
+examples, and finally dropping them instead of having to create and drop them
+in each example.
+
+<!-- TODO: Does Hugo guarantee to invoke the render hooks one after another,
+top to bottom of a page, and do this serially?
+
+You need to choose the names for the examples so that they are alphabetically
+sortable to have them execute in the correct order.
+-->
+
+The last example of the series should undo the ignore to catch unintended leftovers:
+
+```js
+~ removeIgnoreCollection("collection");
+~ removeIgnoreView("view");
+~ db._dropView("view");
+~ db._drop("collection");
+```
+
+Note that a series of examples needs to be contained within a single file.
+
+If a statement is expected to fail (e.g. to demonstrate the error case), then
+this has to be indicated with a special JavaScript comment:
+
+```js
+db._document("collection/does_not_exist"); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND)
+```
+
+This will make the example generation continue despite the error. See
+[Error codes and meanings](https://docs.arangodb.com/3.12/develop/error-codes-and-meanings/)
+for a list of all error codes and their names. If a unexpected error is raised,
+then the example generation will abort with an error.
+
+Every backslash in a query needs to be escaped with another backslash, i.e.
+JSON escape sequences require two backslashes, and literal backslashes four:
+
+```js
+db._query(`RETURN REGEX_SPLIT("foo\\t bar\\r baz\\n foob", "\\\\s+|(?:b\\\\b)")`).toArray();
+```
+
+This does not apply to backslashes in bind variables:
+
+```js
+db._query(`RETURN REGEX_SPLIT(@t, @r)`, {t: "foo\t bar\r baz\n foob", r: "\\s+|(?:b\\b)"}).toArray();
+```
+
+### Add a new AQL example
+
+Complete example:
+
+````markdown
+```aql
+---
+name: joinTuples
+description:
+bindVars: {
+  friend: "friend"
+}
+dataset: joinSampleDataset
+explain: true
+---
+FOR u IN users
+  FILTER u.active == true
+  LIMIT 0, 4
+  FOR f IN relations
+    FILTER f.type == @friend && f.friendOf == u.userId
+    RETURN {
+      "user" : u.name,
+      "friendId" : f.thisUser
+    }
+```
+````
+
+An example can optionally specify a `dataset` in the front matter that will be
+loaded before the query is run:
+
+```yaml
+dataset: {name_of_dataset}
+```
+
+See [datasets.json](toolchain/arangoproxy/internal/utils/)
+for the available datasets.
+
+To get the query explain output including the execution plan instead of the
+actual query result, you can optionally specify the `explain` option in the
+front matter:
+
+```yaml
+explain: true
+```
+
+Then the actual AQL query follows, e.g.
+
+```
+FOR i IN 1..3
+  RETURN i
+```
+
+The query can optionally use bind parameters that can be set via the `bindVars`
+option in the front matter:
+
+```yaml
+---
 ...
+bindVars:
+  '@coll': products
+  attr:
+    - title
+    - de
+# or using JSON notation:
+#bindVars: { "@coll": "products", "attr": ["title", "de"] }
+---
+FOR doc IN @@coll
+  RETURN doc.@attr
+```
 
+### Add a new OpenAPI endpoint description
+
+Used to describe an HTTP REST API endpoint using the
+[OpenAPI Specification](https://spec.openapis.org/oas/latest.html) standard in
+version 3.1.0.
+
+The content inside the codeblock is a standard OpenAPI endpoint description in
+YAML format for a single ArangoDB endpoint, with a small twist: it starts with
+what looks like a YAML comment but is actually the headline, which is also used
+as the endpoint summary automatically:
+
+````yaml
+```openapi
+### Get the service README
+
+paths:
+  /_api/foxx/readme:
+    get:
+      operationId: getFoxxReadme
+      description: |
+        Fetches the service's README or README.md file's contents if any.
+      parameters:
+        - name: mount
+          in: query
+          required: true
+          description: |
+            Mount path of the installed service.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Returned if the request was successful.
+        '204':
+          description: |
+            Returned if no README file was found.
+      tags:
+        - Foxx
+```
+````
+
+Only define a single tag in `tags` as this is used to categorize the endpoints.
+See the [`openapi_tags.yaml`](site/data/openapi_tags.yaml) file for the available
+categories, or add new ones if necessary.
+
+The REST HTTP API endpoint descriptions are rendered in the documentation, but
+_arangoproxy_ also converts the YAML to JSON and assembles a single `api-docs.json`
+file. This file is needed by the web interface for _Swagger UI_.
+
+### Add a new cURL example
+
+Complete example:
+
+```curl
+---
+name: HttpAqlToBase64
+description: Encode example credentials using the HTTP API
+---
+var url = "/_api/cursor";
+var body = { query: `RETURN TO_BASE64("user:pass")` };
+var response = logCurlRequest('POST', url, body);
+assert(response.code === 201);
+logJsonResponse(response);
+```
+
+Unlike arangosh examples (`` ```js ``), requests and responses
+need to be output explicitly by calling one of the following functions:
+
+- `logCurlRequest(method, url, body) → response`: make and output an HTTP request
+- `logCurlRequestRaw(method, url, body) → response`: make and output an HTTP
+  request without code highlighting
+- `logCurlRequestPlain(method, url, body) → response`: make and output an HTTP
+  request, with the payload decoded (new lines instead of `\r\n` etc.). Useful
+  for formatting complex requests.
+- `logJsonResponse(response)`: output a JSON server reply (fails on invalid JSON)
+- `logJsonLResponse(response)`: output a JSONL server reply (fails on invalid JSON)
+- `logRawResponse(response)`: output plaintext response (do not use for JSON replies)
+- `logPlainResponse(response)`: output decoded response (new lines instead of
+  `\r\n` etc.). Useful for formatting complex responses, like from batch requests.
+- `logHtmlResponse(response)`: output HTML
+- `logErrorResponse(response)`: dump reply to error log for testing
+  (makes example generation fail)
+
+To test whether requests and replies are as expected, you can add
+`assert(expression)` calls. Expressions that evaluate to false will make the
+example generation fail. You can inspect the CircleCI logs for details.
