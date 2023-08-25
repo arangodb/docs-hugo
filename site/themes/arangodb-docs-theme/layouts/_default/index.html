@@ -1,29 +1,57 @@
-{{- partial "shortcodes/version.html" (dict
-  "page" .Page
-) }}
+{{- partial "shortcodes/version.html" (dict "page" .Page ) }}
 
 <!DOCTYPE html>
-<html lang="{{ .Page.Language | default "en" }}">
-
+<html lang='{{ .Page.Language | default "en" }}'>
   {{- partial "head.html" . }}
 
-<body>
+  <body>
     <div id="show-page-loading">
-        <div class="logo-loading-page">
-            <img src="/images/logo_main.png" alt="ArangoDB" title="" style="position: fixed; top: 0px; left: 0; right: 0; bottom: 154px; margin: auto; width: 232px !important;"></a>
-        </div>
-        <div class="loader"></div>
+      <div class="logo-loading-page">
+        <img
+          src="/images/logo_main.png"
+          alt="ArangoDB"
+          title=""
+          style="
+            position: fixed;
+            top: 0px;
+            left: 0;
+            right: 0;
+            bottom: 154px;
+            margin: auto;
+            width: 232px !important;
+          "
+        />
+      </div>
+      <div class="loader"></div>
     </div>
-    <div id="page-wrapper" class="page_content_splash" style="height: auto;opacity: 0;">
-        <section id="page-main">
-            <section class="page-container" id="page-container">
-                {{ partial "header.html" . }}
-                <iframe src="/nav.html" title="description" id="menu-iframe" class="menu-iframe active" style="opacity: 0;"></iframe>
+    <div
+      id="page-wrapper"
+      class="page_content_splash"
+      style="height: auto; opacity: 0"
+    >
+      <section id="page-main">
+        <section class="page-container" id="page-container">
+          {{ partial "header.html" . }}
+          <iframe
+            src="/nav.html"
+            title="description"
+            id="menu-iframe"
+            class="menu-iframe active"
+            style="opacity: 0"
+          ></iframe>
 
-            
-                <div class="container-main">
-                  <div class="row-main" id="row-main">
-                    {{ partial "breadcrumbs.html" . }}
-                    {{- partial "output-partial.hugo" (dict "base" "body" "page" . "parameter" (dict "page" . "content" (partial "output-partial.hugo" (dict "base" "content" "page" . "parameter" .)))) }}
-                    {{ partial "toc.html" . }}
+          <div class="container-main">
+            <div class="row-main" id="row-main">
+              {{ partial "breadcrumbs.html" . }} {{- partial
+              "output-partial.hugo" (dict "base" "body" "page" . "parameter"
+              (dict "page" . "content" (partial "output-partial.hugo" (dict
+              "base" "content" "page" . "parameter" .)))) }} {{ partial
+              "toc.html" . }}
+            </div>
+          </div>
+        </section>
+      </section>
+    </div>
+    {{ partial "search.html" . }}
+  </body>
 </html>

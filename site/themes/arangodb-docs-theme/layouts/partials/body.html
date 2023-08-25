@@ -1,17 +1,2 @@
 {{- $page := .page }} {{- $content := .content }} {{- partial
 "single-article.hugo" (dict "page" $page "content" $content) }}
-
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3" />
-
-<script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
-
-<script type="text/javascript">
-  docsearch({
-    appId: "OK3ZBQ5982",
-    apiKey: "1cd85a82baa4efdb5a6bc4e5a69de355",
-    indexName: "arangodbdocs",
-    insights: true, // Optional, automatically send insights when user interacts with search results
-    container: "#searchbox",
-    debug: false, // Set debug to true if you want to inspect the modal
-  });
-</script>
