@@ -1,5 +1,4 @@
 ---
-fileID: transactions
 title: ArangoDB Documentation
 menuTitle: '3.10'
 weight: 0
@@ -10,7 +9,11 @@ archetype: home
 
 {{< cards >}}
 
-{{% card title="Getting started" link="{{ stableVersion }}/get-started/overview/" icon="icon-internet-of-things.png" %}}
+{{% card title="What is ArangoDB?" link="{{ stableVersion }}/introduction/about-arangodb/" %}}
+Get to know graphs, ArangoDB's use cases and features.
+{{% /card %}}
+
+{{% card title="Getting started" link="{{ stableVersion }}/get-started/overview/" %}}
 Learn about ArangoDB's core concepts, how to interact with the database system,
 and get a server instance up and running.
 {{% /card %}}
