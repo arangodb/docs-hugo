@@ -32,7 +32,7 @@ func (service CommonService) arangosh(name, code string, repository models.Repos
 }
 
 func (service CommonService) saveCache(request string, response models.ExampleResponse, cacheChannel chan map[string]interface{}) {
-	if response.Options.SaveCache == "false" {
+	if response.Options.SaveCache == "false" || strings.Contains(response.Output, "ERRORD") {
 		return
 	}
 
@@ -225,14 +225,11 @@ func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) e
 
 	if err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
-			models.Logger.Summary("%s - <strong>Error %d</strong>:", version, exitError.ExitCode())
-			models.Logger.Summary("%s", er.String())
-
-			time.Sleep(time.Second * 2)
-			os.Exit(exitError.ExitCode())
+			models.Logger.Summary("<error code=2>%s - <strong>Error %d</strong>:", version, exitError.ExitCode())
+			models.Logger.Summary("%s</error>", er.String())
 		}
+	} else {
+		models.Logger.Summary("%s &#x2713;", version)
 	}
-
-	models.Logger.Summary("%s &#x2713;", version)
 	return nil
 }
