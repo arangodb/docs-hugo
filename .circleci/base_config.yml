@@ -447,6 +447,12 @@ workflows:
           requires:
             - plain-build
 
+  release:
+    when: { equal: [ release, << pipeline.parameters.workflow >> ] }
+    jobs:
+      - approve-workflow:
+          type: approval
+
   generate:
     when:
       matches: { pattern: "^generate.*", value: << pipeline.parameters.workflow >> }    
