@@ -33,7 +33,7 @@ func (service CommonService) arangosh(name, code string, repository models.Repos
 
 func (service CommonService) checkArangoshError(exampleFilepath string, arangoshResult map[string]interface{}) {
 	if arangoshResult["err"] != nil {
-		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR </strong></error></li><br>", arangoshResult["version"], arangoshResult["name"])
+		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error></li><br>", arangoshResult["version"], arangoshResult["name"], exampleFilepath)
 		models.Logger.Summary(arangoshResult["err"].(error).Error())
 	}
 }
