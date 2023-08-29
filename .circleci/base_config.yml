@@ -92,6 +92,22 @@ commands:
             cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-check-name: << parameters.summary-name >>'  --header 'docs-branch-name: '$CIRCLE_BRANCH''
           when: always
 
+  update-arangodb-release-version:
+    description: "Update arangodb release version in docs versions.yaml"
+    parameters:
+      docs-version:
+        type: string
+        default: ""
+      arangodb-version:
+        type: string
+        default: ""
+    steps:
+      - run:
+          name: Update ArangoDB Release Version
+          command: |
+            sed -i 's/version.*'<< parameters.docs-version >>'.*/version: "'<< parameters.arangodb-version >>'"/g' docs-hugo/site/data/versions.yaml
+
+
   clone-docs-and-merge:
     description: Clone docs and merge main content before generate
     steps:
