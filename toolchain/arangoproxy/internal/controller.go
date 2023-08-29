@@ -22,7 +22,7 @@ var (
 	OpenapiGlobalChannel = make(chan map[string]interface{})
 
 	ExampleChannel = make(chan map[string]interface{})
-	OutputChannel  = make(chan map[string]interface{})
+	OutputChannel  = make(chan string)
 
 	Versions = models.LoadVersions()
 )
