@@ -232,6 +232,9 @@ jobs:
 
             cd docs-hugo/toolchain/docker/amd64
             docker compose up
+            if [ "$?" != "0" ]; then
+              exit "$?"
+            fi
       - run:
           name: Upload summary on GitHub
           command: |
