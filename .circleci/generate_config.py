@@ -8,6 +8,8 @@ import yaml
 import json
 import requests
 import re
+from datetime import datetime
+
 
 # check python 3
 if sys.version_info[0] != 3:
@@ -33,6 +35,9 @@ parser.add_argument(
     "--arangodb-branches",  nargs='+', help="arangodb branches"
 )
 parser.add_argument(
+    "--arangodb-branch",  nargs='+', help="arangodb branches"
+)
+parser.add_argument(
     "--generators", nargs='+', help="file containing the test definitions", type=str
 )
 parser.add_argument(
@@ -44,11 +49,23 @@ parser.add_argument(
 parser.add_argument(
     "--pr-branch", help="file containing the test definitions", type=str
 )
+parser.add_argument(
+    "--release-type", help="file containing the test definitions", type=str
+)
+parser.add_argument(
+    "--docs-version", help="file containing the test definitions", type=str
+)
+parser.add_argument(
+    "--arangodb-version", help="file containing the test definitions", type=str
+)
 
 args = parser.parse_args()
 
 
 def generate_workflow(config):
+    if args.workflow == "plain-build":
+        return config
+
     if args.workflow == "generate":
         workflow_generate(config)
     
@@ -57,6 +74,10 @@ def generate_workflow(config):
 
     if args.workflow == "commit-generated":
         workflow_commit_generated_download_data(config)
+
+    if args.workflow == "release":
+        if args.release_type == "arangodb":
+            workflow_release_arangodb(config)
 
     return config
 
@@ -164,6 +185,48 @@ def workflow_generate_scheduled(config):
     jobs.append(generateJob)
 
 
+def workflow_release_arangodb(config):
+    config = workflow_release_launch_command(config)
+
+    jobs = config["workflows"]["release"]["jobs"]
+
+    generateRequires = []
+
+    print(f"Creating compile job for version {args.docs_version} branch {args.arangodb_branch}")
+
+    openssl = findOpensslVersion(args.arangodb_branch)
+
+    compileJob = {
+        "compile-linux": {
+            "context": ["sccache-aws-bucket"],
+            "name": f"compile-{args.docs_version}",
+            "arangodb-branch": args.arangodb_branch,
+            "version": args.docs_version,
+            "openssl": openssl,
+            "requires": ["approve-workflow"]
+        }
+    }
+    generateRequires.append(f"compile-{args.docs_version}")
+    jobs.append(compileJob)
+
+    generateJob = {
+        "build-with-generated": {
+            "name": args.workflow,
+            "generators": "",
+            "commit-generated": True,
+            "create-pr": True,
+            "pr-branch": f"RELEASE_{args.arangodb_version}",
+            "requires": generateRequires
+        }
+    }
+
+    jobs.append(generateJob)
+
+    return config
+
+def workflow_release_deploy(config):
+    return
+
 
 ## COMMANDS
 
@@ -233,6 +296,27 @@ tar -xf {version}-generated.tar -C docs-hugo/site/data/\n\
 
     return config
 
+
+def workflow_release_launch_command(config):
+    shell = "source docs-hugo/.circleci/utils.sh\n \
+export ENV=\"circleci\"\n \
+export HUGO_URL=https://docs.arangodb.com\n \
+export HUGO_ENV=release\n \
+export GENERATORS=''\n"
+
+    version_underscore = args.docs_version.replace(".", "_")
+    branchEnv = f"pull-branch-image << pipeline.parameters.arangodb-branch >> {version}\n \
+export ARANGODB_BRANCH_{version_underscore}={branch}\n \
+export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{version}"
+
+    shell = f"{shell}\n{branchEnv}"
+
+    shell = f"{shell}\n\
+cd docs-hugo/toolchain/docker/amd64\n \
+docker compose up"
+
+    config["commands"]["launch-toolchain"]["steps"][0]["run"]["command"] = shell
+    return config
 
 
 ## UTILS
