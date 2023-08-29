@@ -46,6 +46,19 @@ parameters:
     type: string
     default: ""
 
+  release-type:
+    type: enum
+    enum: [no-op, arangodb, docs]
+    default: no-op
+
+  arangodb-version:
+    type: string
+    default: ""
+  
+  docs-version:
+    type: string
+    default: ""
+
 commands:
   launch-toolchain:
     description: "launch toolchain"
