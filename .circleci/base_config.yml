@@ -102,7 +102,6 @@ commands:
            cd docs-hugo/
            git fetch --all
            git pull --all
-           git merge --no-edit -X theirs origin/frontend-preview 
            cd ../
 
   commit:
