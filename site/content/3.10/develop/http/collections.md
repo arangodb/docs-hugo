@@ -2145,6 +2145,7 @@ name: RestCollectionIdentifierPropertiesSync
 
     var cn = "sttttttt";
     db._drop(cn);
+    wrongwrongwrong
     var coll = db._create(cn, { waitForSync: true });
     var url = "/_api/collection/"+ asfasf.name() + "/properties";
 asvasv
