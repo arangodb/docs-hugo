@@ -2143,12 +2143,11 @@ description: ''
 name: RestCollectionIdentifierPropertiesSync
 ---
 
-    var cn = "sttttttt";
+    var cn = "products";
     db._drop(cn);
-    wrongwrongwrong
     var coll = db._create(cn, { waitForSync: true });
-    var url = "/_api/collection/"+ asfasf.name() + "/properties";
-asvasv
+    var url = "/_api/collection/"+ coll.name() + "/properties";
+
     var response = logCurlRequest('PUT', url, {"waitForSync" : true });
 
     assert(response.code === 200);

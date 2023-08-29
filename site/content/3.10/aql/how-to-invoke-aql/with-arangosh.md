@@ -685,10 +685,9 @@ make the server return that by setting the `profile` attribute to
 name: 06_workWithAQL_statements11
 description: ''
 ---
- stmt = db.fsfasfa( {
-   "query": "FORcccscscsccs i IN [ 1, 2, 3, 4 ] RETURN i",
+ stmt = db._createStatement( {
+   "query": "FOR i IN [ 1, 2, 3, 4 ] RETURN i",
 options: {"profile": true}} );
-asfasfasf
 ```
 
 After executing this query, you can use the `getExtra()` method of the cursor to get the 
