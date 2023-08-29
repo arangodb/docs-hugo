@@ -79,19 +79,19 @@ paths:
 description: ''
 name: RestAnalyzerPost
 ---
-
+  wrongwrongworng
   var analyzers = require("@arangodb/analyzers");
   var db = require("@arangodb").db;
   var analyzerName = "testAnalyzer";
 
   // creation
-  var url = "/_api/analyzer";
+  var url = "/_api/sssss";
   var body = {
     name: "testAnalyzer",
     type: "identity"
   };
-  var response = logCurlRequest('POST', url, body);
-  assert(response.code === 201);
+  var response = logCurlRequest('WHAT', url, body);
+  assert(response.code === 204);
 
   logJsonResponse(response);
 
