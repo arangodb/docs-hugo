@@ -1,0 +1,493 @@
+commands:
+  clone-docs-and-merge:
+    description: Clone docs and merge main content before generate
+    steps:
+    - run:
+        command: "git clone git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH\n\
+          cd docs-hugo/\ngit fetch --all\ngit pull --all\ngit merge --no-edit -X theirs\
+          \ origin/frontend-preview \ncd ../\n"
+        name: Clone docs repo
+  commit:
+    description: Commit generated content
+    parameters:
+      commit-generated:
+        default: false
+        type: boolean
+      create-pr:
+        default: false
+        type: boolean
+      pr-branch:
+        default: ''
+        type: string
+    steps:
+    - run:
+        command: "if [ \"<< parameters.commit-generated >>\" = true ] ; then\n  if\
+          \ [ \"<< parameters.create-pr >>\" = true ]; then\n    cd docs-hugo/\n \
+          \   git checkout -b << parameters.pr-branch >>-$CIRCLE_BUILD_NUM\n  fi\n\
+          \n  cd /home/circleci/project/docs-hugo/site\n  git config user.email \"\
+          daniele@arangodb.com\"\n  git config user.name \"CircleCI Job\"\n  git add\
+          \ data/ content/\n  git commit --allow-empty -m \"[skip ci] Automatic commit\
+          \ of generated files from CircleCI\"\n\n  if [ \"<< parameters.create-pr\
+          \ >>\" = true ]; then\n    git push -u origin << parameters.pr-branch >>-$CIRCLE_BUILD_NUM\n\
+          \    curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci\
+          \ \\\n      --header 'docs-webhook-event: scheduled-create-pr' \\\n    \
+          \  --header \"docs-branch-name: << parameters.pr-branch >>-$CIRCLE_BUILD_NUM\"\
+          \ \\\n      --header \"docs-pr-title: [CircleCI Generated] << pipeline.parameters.workflow\
+          \ >>-$CIRCLE_BUILD_NUM\" \\\n      --header \"docs-pr-body: Automatically\
+          \ generated content from CircleCI << pipeline.parameters.workflow >> workflow\"\
+          \n  else\n    git push\n  fi\nfi\n"
+        name: Commit generated files
+  download-generated-data:
+    description: Download generated data of a previous generate run
+    steps:
+    - run:
+        command: "curl https://raw.githubusercontent.com/creationix/nvm/master/install.sh\
+          \ | bash \nsource ~/.bashrc   \nnvm install --lts \n\nartifacts_job_id=$(node\
+          \ docs-hugo/.circleci/commit.js $CIRCLE_BRANCH)\nbase_url=https://output.circle-artifacts.com/output/job/\"\
+          $artifacts_job_id\"/artifacts/0/tmp\n"
+        name: Download generated data
+  launch-toolchain:
+    description: launch toolchain
+    parameters:
+      generators:
+        default: ''
+        type: string
+    steps:
+    - run:
+        command: "source docs-hugo/.circleci/utils.sh\n export ENV=\"circleci\"\n\
+          \ export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app\n\
+          \ export HUGO_ENV=examples\n export GENERATORS='<< parameters.generators\
+          \ >>'\n\npull-branch-image build/exclude-linker-detection-on-msvc 3.10\n\
+          \ export ARANGODB_BRANCH_3_10=build/exclude-linker-detection-on-msvc\n export\
+          \ ARANGODB_SRC_3_10=/home/circleci/project/3.10\npull-branch-image  3.11\n\
+          \ export ARANGODB_BRANCH_3_11=\n export ARANGODB_SRC_3_11=/home/circleci/project/3.11\n\
+          pull-branch-image  3.12\n export ARANGODB_BRANCH_3_12=\n export ARANGODB_SRC_3_12=/home/circleci/project/3.12\n\
+          cd docs-hugo/toolchain/docker/amd64\n docker compose up"
+        name: Launch toolchain
+  store-generated-data:
+    description: Save generated data as artifacts
+    steps:
+    - run:
+        command: 'cd docs-hugo/site/data
+
+          tar -cvf /tmp/3.10-generated.tar 3.10/
+
+
+          tar -cvf /tmp/3.11-generated.tar 3.11/
+
+
+          tar -cvf /tmp/3.12-generated.tar 3.12/
+
+          '
+        name: Archive generated data
+    - store_artifacts:
+        path: /tmp/3.10-generated.tar
+    - store_artifacts:
+        path: /tmp/3.11-generated.tar
+    - store_artifacts:
+        path: /tmp/3.12-generated.tar
+  upload-summary:
+    description: Upload summary report on github
+    parameters:
+      summary-name:
+        default: ''
+        type: string
+    steps:
+    - run:
+        command: 'cd /home/circleci/project/docs-hugo
+
+          cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci
+          --header ''docs-webhook-event: create-summary'' --header ''docs-branch-sha:
+          ''$CIRCLE_SHA1'''' --header ''docs-check-name: << parameters.summary-name
+          >>''  --header ''docs-branch-name: ''$CIRCLE_BRANCH''''
+
+          '
+        name: Upload summary on GitHub
+        when: always
+jobs:
+  build-with-generated:
+    machine:
+      image: ubuntu-2004:current
+    parameters:
+      commit-generated:
+        default: false
+        type: boolean
+      create-pr:
+        default: false
+        type: boolean
+      generators:
+        default: examples
+        type: string
+      pr-branch:
+        default: ''
+        type: string
+    resource_class: xlarge
+    steps:
+    - add_ssh_keys:
+        fingerprints:
+        - 7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a
+        - 28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e
+        - bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd
+    - attach_workspace:
+        at: .
+    - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
+    - clone-docs-and-merge
+    - launch-toolchain:
+        generators: << parameters.generators >>
+    - upload-summary:
+        summary-name: generate-summary
+    - store-generated-data
+    - commit:
+        commit-generated: << parameters.commit-generated >>
+        create-pr: << parameters.create-pr >>
+        pr-branch: << parameters.pr-branch >>
+    - persist_to_workspace:
+        paths:
+        - docs-hugo/site/public
+        root: .
+  commit-generated:
+    machine:
+      image: ubuntu-2004:current
+    resource_class: large
+    steps:
+    - add_ssh_keys:
+        fingerprints:
+        - 7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a
+        - 28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e
+        - bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd
+    - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
+    - clone-docs-and-merge
+    - download-generated-data
+    - commit:
+        commit-generated: true
+        create-pr: false
+        pr-branch: ''
+  compile-linux:
+    docker:
+    - image: arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl<< parameters.openssl
+        >>
+    environment:
+      GIT_SSH_COMMAND: ssh
+      SCCACHE_ERROR_LOG: /tmp/sccache.log
+      SCCACHE_LOG: info,sccache::cache=debug,sccache::compiler::compiler=debug
+    parameters:
+      arangodb-branch:
+        default: ''
+        type: string
+      openssl:
+        default: ''
+        type: string
+      version:
+        default: ''
+        type: string
+    resource_class: xlarge
+    steps:
+    - setup_remote_docker:
+        version: 20.10.14
+    - add_ssh_keys:
+        fingerprints:
+        - 7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a
+        - 28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e
+        - bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd
+    - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
+    - run:
+        command: "if [ \"<< parameters.arangodb-branch >>\" == \"\" ]; then\n  circleci-agent\
+          \ step halt\n  exit 0\nfi\n\ncurl \"https://raw.githubusercontent.com/arangodb/docs-hugo/${CIRCLE_BRANCH}/.circleci/utils.sh\"\
+          \ > utils.sh\nsource utils.sh\n\nrm -r /root/project/*\nclone-branch <<\
+          \ parameters.arangodb-branch >> << parameters.version >>\n"
+        name: Clone ArangoDB and Enterprise
+    - persist_to_workspace:
+        paths:
+        - << parameters.version >>/*
+        root: /tmp
+    - run:
+        command: "if [[ \"<< parameters.arangodb-branch >>\" == *\"arangodb/enterprise\"\
+          * ]]; then\n  circleci-agent step halt\n  exit 0\nfi\n\napk add skopeo\n\
+          \nimage_name=$(echo << parameters.arangodb-branch >> | cut -d/ -f2)\nlatestRemoteHash=$(git\
+          \ ls-remote https://github.com/arangodb/arangodb.git << parameters.arangodb-branch\
+          \ >> | awk '{print $1}' | cut -c1-9)\n\nset +e\nskopeo inspect docker://\"\
+          arangodb/docs-hugo:$image_name-<< parameters.version >>-$latestRemoteHash\"\
+          \ \nif [ \"$?\" != \"0\" ]; then\n  exit 0\nfi \ncircleci-agent step halt\n"
+        name: Check Branch Image already exists
+    - run:
+        command: sccache -s
+        name: Print SCCache Settings
+    - run:
+        command: "set +e\ncmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++\
+          \ -DCMAKE_EXE_LINKER_FLAGS=\"-fuse-ld=lld\" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib\n\
+          if [ \"$?\" != \"0\" ]; then\n  echo \"<strong>ArangoDB Compile Error</strong><br><br>\
+          \ Please check CircleCI Logs\" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci\
+          \ --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha:\
+          \ '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''\n  exit\
+          \ 1\nfi \nset -e\n"
+        name: Configure
+    - run:
+        command: "set +e\ncmake --build --preset enterprise-pr --parallel 8 --target\
+          \ arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore\
+          \ arangobench fuertetest\n\nif [ \"$?\" != \"0\" ]; then\n  echo \"**ArangoDB\
+          \ Compile Error**<br><br> Please check CircleCI Logs\" | curl -X POST -d@-\
+          \ https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci\
+          \ --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha:\
+          \ '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''\n  exit\
+          \ 1\nfi \nset -e\n"
+        name: Build
+    - run:
+        command: 'ls -Ssha build/bin/*.a
+
+          '
+        name: Size leaderboard
+    - run:
+        command: 'find build/ -iname *.a -delete || true
+
+          find build/ -iname *.o -delete || true
+
+          '
+        name: Cleanup build directory
+    - run:
+        command: sccache -s
+        name: SCCache Statistics
+    - run:
+        command: 'wget -O build/bin/arangodb https://github.com/arangodb-helper/arangodb/releases/download/0.15.8/arangodb-linux-amd64
+
+          chmod +x build/bin/arangodb
+
+          tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/ enterprise/
+
+          '
+        name: Create archive of compiled instance
+    - run:
+        command: 'curl "https://raw.githubusercontent.com/arangodb/docs-hugo/${CIRCLE_BRANCH}/.circleci/utils.sh"
+          > utils.sh
+
+          source utils.sh
+
+          create-docker-image << parameters.arangodb-branch >> << parameters.version
+          >> $CIRCLE_BRANCH
+
+          '
+        name: Create docker image
+  create-docs-images:
+    machine:
+      docker_layer_caching: true
+      image: ubuntu-2004:current
+      resource_class: << parameters.executor >>
+    parameters:
+      architecture:
+        default: amd64
+        type: string
+      executor:
+        default: medium
+        type: string
+    steps:
+    - run:
+        command: 'git clone --depth 1 https://github.com/arangodb/docs-hugo.git --branch
+          $CIRCLE_BRANCH
+
+          '
+        name: Clone docs repo
+    - run:
+        command: 'cd docs-hugo/toolchain/docker
+
+          export DOCKER_BUILDKIT=1
+
+          docker build -t arangodb/docs-hugo:site-<< parameters.architecture >> --target
+          hugo .
+
+          docker build -t arangodb/docs-hugo:arangoproxy-<< parameters.architecture
+          >> --target arangoproxy .
+
+          docker build -t arangodb/docs-hugo:toolchain-<< parameters.architecture
+          >> --target toolchain .
+
+          '
+        name: Create docker images
+    - run:
+        command: 'cd docs-hugo/toolchain/docker
+
+          echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
+
+
+          docker push arangodb/docs-hugo:site-<< parameters.architecture >>
+
+          docker push arangodb/docs-hugo:arangoproxy-<< parameters.architecture >>
+
+          docker push arangodb/docs-hugo:toolchain-<< parameters.architecture >>
+
+          '
+        name: Push docker images
+  deploy:
+    docker:
+    - image: williamjackson/netlify-cli
+    resource_class: small
+    steps:
+    - attach_workspace:
+        at: .
+    - run:
+        command: /home/node/docker-netlify-cli/node_modules/.bin/netlify deploy --dir=docs-hugo/site/public
+          --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias << pipeline.parameters.deploy-url
+          >>
+        name: Deploy to netlify
+        no_output_timeout: 1h
+  plain-build:
+    machine:
+      image: ubuntu-2004:current
+    resource_class: large
+    steps:
+    - run:
+        command: 'git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch
+          $CIRCLE_BRANCH
+
+          '
+        name: Clone docs repo
+    - run:
+        command: 'export ENV="circleci"
+
+          export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
+
+          export HUGO_ENV=frontend
+
+
+          cd docs-hugo/toolchain/docker/amd64
+
+          docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
+
+          '
+        name: Build site
+    - upload-summary:
+        summary-name: plain-build-summary
+    - persist_to_workspace:
+        paths:
+        - docs-hugo/site/public
+        root: .
+parameters:
+  arangodb-3_10:
+    default: undefined
+    type: string
+  arangodb-3_11:
+    default: undefined
+    type: string
+  arangodb-3_12:
+    default: undefined
+    type: string
+  arangodb-branch:
+    default: ''
+    type: string
+  commit-generated:
+    default: false
+    type: boolean
+  create-pr:
+    default: false
+    type: boolean
+  deploy-url:
+    default: $CIRCLE_BRANCH
+    type: string
+  generators:
+    default: ''
+    type: string
+  pr-branch:
+    default: ''
+    type: string
+  version:
+    default: ''
+    type: string
+  workflow:
+    default: no-op
+    enum:
+    - no-op
+    - plain-build
+    - generate
+    - generate-scheduled
+    - commit-generated
+    - generate-oasisctl
+    - create-docs-images-amd64
+    - create-docs-images-arm64
+    type: enum
+version: 2.1
+workflows:
+  commmit-generated:
+    jobs:
+    - approve-workflow:
+        type: approval
+    - commit-generated:
+        requires:
+        - approve-workflow
+    when:
+      equal:
+      - commit-generated
+      - << pipeline.parameters.workflow >>
+  create-docs-images-amd64:
+    jobs:
+    - create-docs-images:
+        architecture: amd64
+        executor: medium
+    when:
+      equal:
+      - create-docs-images-amd64
+      - << pipeline.parameters.workflow >>
+  create-docs-images-arm64:
+    jobs:
+    - create-docs-images:
+        architecture: arm64
+        executor: arm.medium
+    when:
+      equal:
+      - create-docs-images-arm64
+      - << pipeline.parameters.workflow >>
+  generate:
+    jobs:
+    - approve-workflow:
+        type: approval
+    - compile-linux:
+        arangodb-branch: build/exclude-linker-detection-on-msvc
+        context:
+        - sccache-aws-bucket
+        name: compile-3.10
+        openssl: '"3.1.2"'
+        requires:
+        - approve-workflow
+        version: '3.10'
+    - compile-linux:
+        arangodb-branch: ''
+        context:
+        - sccache-aws-bucket
+        name: compile-3.11
+        openssl: null
+        requires:
+        - approve-workflow
+        version: '3.11'
+    - compile-linux:
+        arangodb-branch: ''
+        context:
+        - sccache-aws-bucket
+        name: compile-3.12
+        openssl: null
+        requires:
+        - approve-workflow
+        version: '3.12'
+    - build-with-generated:
+        commit-generated: << pipeline.parameters.commit-generated >>
+        create-pr: << pipeline.parameters.create-pr >>
+        generators: << pipeline.parameters.generators >>
+        name: generate
+        pr-branch: << pipeline.parameters.pr-branch >>
+        requires:
+        - compile-3.10
+        - compile-3.11
+        - compile-3.12
+    - deploy:
+        requires:
+        - generate
+    when:
+      matches:
+        pattern: ^generate.*
+        value: << pipeline.parameters.workflow >>
+  plain:
+    jobs:
+    - plain-build
+    - deploy:
+        requires:
+        - plain-build
+    when:
+      equal:
+      - plain-build
+      - << pipeline.parameters.workflow >>
