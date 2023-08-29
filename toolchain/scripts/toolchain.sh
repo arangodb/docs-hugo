@@ -609,7 +609,7 @@ function trap_container_exit() {
   docker stop docs_arangoproxy docs_site
   docker ps -a --filter name=docs_* -q | xargs docker stop | xargs docker rm
   log "[stop_all_containers] Done" >> /home/toolchain.log
-  exitStatus=$(cat summary.md  | grep -o '<error code=.' | cut -d '=' -f2)
+  exitStatus=$(cat summary.md  | grep -o '<error code=.' | cut -d '=' -f2 | head -n 1)
   log "[stop_all_containers] Toolchain Exit Status ""$exitStatus" >> /home/toolchain.log
 
   exit $exitStatus
