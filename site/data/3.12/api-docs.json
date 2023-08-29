@@ -1517,21 +1517,6 @@
     ]
    }
   },
-  "/_admin/database/target-version": {
-   "get": {
-    "description": "Returns the database version that this server requires.\nThe version is returned in the `version` attribute of the result.\n",
-    "operationId": "getDatabaseVersion",
-    "responses": {
-     "200": {
-      "description": "Is returned in all cases.\n"
-     }
-    },
-    "summary": "Get the required database version",
-    "tags": [
-     "Administration"
-    ]
-   }
-  },
   "/_admin/echo": {
    "post": {
     "description": "The call returns an object with the servers request information\n",
@@ -2539,7 +2524,7 @@
   },
   "/_admin/server/availability": {
    "get": {
-    "description": "Return availability information about a server.\n\nThis is a public API so it does *not* require authentication. It is meant to be\nused only in the context of server monitoring.\n",
+    "description": "Return availability information about a server.\n\nThe response is a JSON object with an attribute \"mode\". The \"mode\" can either\nbe \"readonly\", if the server is in read-only mode, or \"default\", if it is not.\nPlease note that the JSON object with \"mode\" is only returned in case the server\ndoes not respond with HTTP response code 503.\n\nThis is a public API so it does *not* require authentication. It is meant to be\nused only in the context of server monitoring.\n",
     "operationId": "getServerAvailability",
     "responses": {
      "200": {
@@ -4659,7 +4644,7 @@
           "type": "string"
          },
          "shardingStrategy": {
-          "description": "This attribute specifies the name of the sharding strategy to use for\nthe collection. Since ArangoDB 3.4 there are different sharding strategies\nto select from when creating a new collection. The selected `shardingStrategy`\nvalue remains fixed for the collection and cannot be changed afterwards.\nThis is important to make the collection keep its sharding settings and\nalways find documents already distributed to shards using the same\ninitial sharding algorithm.\n\nThe available sharding strategies are:\n- `community-compat`: default sharding used by ArangoDB\n  Community Edition before version 3.4\n- `enterprise-compat`: default sharding used by ArangoDB\n  Enterprise Edition before version 3.4\n- `enterprise-smart-edge-compat`: default sharding used by smart edge\n  collections in ArangoDB Enterprise Edition before version 3.4\n- `hash`: default sharding used for new collections starting from version 3.4\n  (excluding smart edge collections)\n- `enterprise-hash-smart-edge`: default sharding used for new\n  smart edge collections starting from version 3.4\n- `enterprise-hex-smart-vertex`: sharding used for vertex collections of\n  EnterpriseGraphs\n\nIf no sharding strategy is specified, the default is `hash` for\nall normal collections, `enterprise-hash-smart-edge` for all smart edge\ncollections, and `enterprise-hex-smart-vertex` for EnterpriseGraph\nvertex collections (the latter two require the *Enterprise Edition* of ArangoDB).\nManually overriding the sharding strategy does not yet provide a\nbenefit, but it may later in case other sharding strategies are added.\n",
+          "description": "This attribute specifies the name of the sharding strategy to use for\nthe collection. There are different sharding strategies\nto select from when creating a new collection. The selected `shardingStrategy`\nvalue remains fixed for the collection and cannot be changed afterwards.\nThis is important to make the collection keep its sharding settings and\nalways find documents already distributed to shards using the same\ninitial sharding algorithm.\n\nThe available sharding strategies are:\n- `community-compat`: default sharding used by ArangoDB\n  Community Edition before version 3.4\n- `enterprise-compat`: default sharding used by ArangoDB\n  Enterprise Edition before version 3.4\n- `enterprise-smart-edge-compat`: default sharding used by smart edge\n  collections in ArangoDB Enterprise Edition before version 3.4\n- `hash`: default sharding used for new collections starting from version 3.4\n  (excluding smart edge collections)\n- `enterprise-hash-smart-edge`: default sharding used for new\n  smart edge collections starting from version 3.4\n- `enterprise-hex-smart-vertex`: sharding used for vertex collections of\n  EnterpriseGraphs\n\nIf no sharding strategy is specified, the default is `hash` for\nall normal collections, `enterprise-hash-smart-edge` for all smart edge\ncollections, and `enterprise-hex-smart-vertex` for EnterpriseGraph\nvertex collections (the latter two require the *Enterprise Edition* of ArangoDB).\nManually overriding the sharding strategy does not yet provide a\nbenefit, but it may later in case other sharding strategies are added.\n",
           "type": "string"
          },
          "smartGraphAttribute": {
@@ -5885,7 +5870,7 @@
             "type": "number"
            },
            "state": {
-            "description": "The state of the execution. The following values can be returned:\n- `\"none\"`: The Pregel run did not yet start.\n- `\"loading\"`: The graph is loaded from the database into memory before the execution of the algorithm.\n- `\"running\"`: The algorithm is executing normally.\n- `\"storing\"`: The algorithm finished, but the results are still being written\n  back into the collections. Occurs only if the store parameter is set to true.\n- `\"done\"`: The execution is done. In version 3.7.1 and later, this means that\n  storing is also done. In earlier versions, the results may not be written back\n  into the collections yet. This event is announced in the server log (requires\n  at least info log level for the `pregel` log topic).\n- `\"canceled\"`: The execution was permanently canceled, either by the user or by\n  an error.\n- `\"fatal error\"`: The execution has failed and cannot recover.\n- `\"in error\"`: The execution is in an error state. This can be\n  caused by DB-Servers being not reachable or being non responsive. The execution\n  might recover later, or switch to `\"canceled\"` if it was not able to recover\n  successfully.\n- `\"recovering\"` (currently unused): The execution is actively recovering and\n  switches back to `running` if the recovery is successful.\n",
+            "description": "The state of the execution. The following values can be returned:\n- `\"none\"`: The Pregel run has not started yet.\n- `\"loading\"`: The graph is being loaded from the database into memory before\n  executing the algorithm.\n- `\"running\"`: The algorithm is executing normally.\n- `\"storing\"`: The algorithm finished, but the results are still being written\n  back into the collections. Only occurs if the `store` parameter is set to `true`.\n- `\"done\"`: The execution is done. This means that storing is also done.\n  This event is announced in the server log (requires at least the `info`\n  log level for the `pregel` log topic).\n- `\"canceled\"`: The execution was permanently canceled, either by the user or by\n  an error.\n- `\"in error\"`: The execution is in an error state. This can be caused by\n  primary DB-Servers being unreachable or unresponsive. The execution\n  might recover later, or switch to `\"canceled\"` if it is not able to recover\n  successfully.\n- `\"recovering\"`: The execution is actively recovering and\n  switches back to `running` if the recovery is successful.\n- `\"fatal error\"`: The execution has failed and cannot recover.\n",
             "type": "string"
            },
            "storageTime": {
@@ -6147,7 +6132,7 @@
             "type": "number"
            },
            "state": {
-            "description": "The state of the execution. The following values can be returned:\n- `\"none\"`: The Pregel run did not yet start.\n- `\"loading\"`: The graph is loaded from the database into memory before the execution of the algorithm.\n- `\"running\"`: The algorithm is executing normally.\n- `\"storing\"`: The algorithm finished, but the results are still being written\n  back into the collections. Occurs only if the store parameter is set to true.\n- `\"done\"`: The execution is done. In version 3.7.1 and later, this means that\n  storing is also done. In earlier versions, the results may not be written back\n  into the collections yet. This event is announced in the server log (requires\n  at least info log level for the `pregel` log topic).\n- `\"canceled\"`: The execution was permanently canceled, either by the user or by\n  an error.\n- `\"fatal error\"`: The execution has failed and cannot recover.\n- `\"in error\"`: The execution is in an error state. This can be\n  caused by DB-Servers being not reachable or being non responsive. The execution\n  might recover later, or switch to `\"canceled\"` if it was not able to recover\n  successfully.\n- `\"recovering\"` (currently unused): The execution is actively recovering and\n  switches back to `running` if the recovery is successful.\n",
+            "description": "The state of the execution. The following values can be returned:\n- `\"none\"`: The Pregel run has not started yet.\n- `\"loading\"`: The graph is being loaded from the database into memory before\n  executing the algorithm.\n- `\"running\"`: The algorithm is executing normally.\n- `\"storing\"`: The algorithm finished, but the results are still being written\n  back into the collections. Only occurs if the `store` parameter is set to `true`.\n- `\"done\"`: The execution is done. This means that storing is also done.\n  This event is announced in the server log (requires at least the `info`\n  log level for the `pregel` log topic).\n- `\"canceled\"`: The execution was permanently canceled, either by the user or by\n  an error.\n- `\"in error\"`: The execution is in an error state. This can be caused by\n  primary DB-Servers being unreachable or unresponsive. The execution\n  might recover later, or switch to `\"canceled\"` if it is not able to recover\n  successfully.\n- `\"recovering\"`: The execution is actively recovering and\n  switches back to `running` if the recovery is successful.\n- `\"fatal error\"`: The execution has failed and cannot recover.\n",
             "type": "string"
            },
            "storageTime": {
@@ -6371,7 +6356,7 @@
            "type": "number"
           },
           "state": {
-           "description": "The state of the execution. The following values can be returned:\n- `\"none\"`: The Pregel run did not yet start.\n- `\"loading\"`: The graph is loaded from the database into memory before the execution of the algorithm.\n- `\"running\"`: The algorithm is executing normally.\n- `\"storing\"`: The algorithm finished, but the results are still being written\n  back into the collections. Occurs only if the store parameter is set to true.\n- `\"done\"`: The execution is done. In version 3.7.1 and later, this means that\n  storing is also done. In earlier versions, the results may not be written back\n  into the collections yet. This event is announced in the server log (requires\n  at least info log level for the `pregel` log topic).\n- `\"canceled\"`: The execution was permanently canceled, either by the user or by\n  an error.\n- `\"fatal error\"`: The execution has failed and cannot recover.\n- `\"in error\"`: The execution is in an error state. This can be\n  caused by DB-Servers being not reachable or being non responsive. The execution\n  might recover later, or switch to `\"canceled\"` if it was not able to recover\n  successfully.\n- `\"recovering\"` (currently unused): The execution is actively recovering and\n  switches back to `running` if the recovery is successful.\n",
+           "description": "The state of the execution. The following values can be returned:\n- `\"none\"`: The Pregel run has not started yet.\n- `\"loading\"`: The graph is being loaded from the database into memory before\n  executing the algorithm.\n- `\"running\"`: The algorithm is executing normally.\n- `\"storing\"`: The algorithm finished, but the results are still being written\n  back into the collections. Only occurs if the `store` parameter is set to `true`.\n- `\"done\"`: The execution is done. This means that storing is also done.\n  This event is announced in the server log (requires at least the `info`\n  log level for the `pregel` log topic).\n- `\"canceled\"`: The execution was permanently canceled, either by the user or by\n  an error.\n- `\"in error\"`: The execution is in an error state. This can be caused by\n  primary DB-Servers being unreachable or unresponsive. The execution\n  might recover later, or switch to `\"canceled\"` if it is not able to recover\n  successfully.\n- `\"recovering\"`: The execution is actively recovering and\n  switches back to `running` if the recovery is successful.\n- `\"fatal error\"`: The execution has failed and cannot recover.\n",
            "type": "string"
           },
           "storageTime": {
@@ -6596,7 +6581,7 @@
            "type": "number"
           },
           "state": {
-           "description": "The state of the execution. The following values can be returned:\n- `\"none\"`: The Pregel run did not yet start.\n- `\"loading\"`: The graph is loaded from the database into memory before the execution of the algorithm.\n- `\"running\"`: The algorithm is executing normally.\n- `\"storing\"`: The algorithm finished, but the results are still being written\n  back into the collections. Occurs only if the store parameter is set to true.\n- `\"done\"`: The execution is done. In version 3.7.1 and later, this means that\n  storing is also done. In earlier versions, the results may not be written back\n  into the collections yet. This event is announced in the server log (requires\n  at least info log level for the `pregel` log topic).\n- `\"canceled\"`: The execution was permanently canceled, either by the user or by\n  an error.\n- `\"fatal error\"`: The execution has failed and cannot recover.\n- `\"in error\"`: The execution is in an error state. This can be\n  caused by DB-Servers being not reachable or being non responsive. The execution\n  might recover later, or switch to `\"canceled\"` if it was not able to recover\n  successfully.\n- `\"recovering\"` (currently unused): The execution is actively recovering and\n  switches back to `running` if the recovery is successful.\n",
+           "description": "The state of the execution. The following values can be returned:\n- `\"none\"`: The Pregel run has not started yet.\n- `\"loading\"`: The graph is being loaded from the database into memory before\n  executing the algorithm.\n- `\"running\"`: The algorithm is executing normally.\n- `\"storing\"`: The algorithm finished, but the results are still being written\n  back into the collections. Only occurs if the `store` parameter is set to `true`.\n- `\"done\"`: The execution is done. This means that storing is also done.\n  This event is announced in the server log (requires at least the `info`\n  log level for the `pregel` log topic).\n- `\"canceled\"`: The execution was permanently canceled, either by the user or by\n  an error.\n- `\"in error\"`: The execution is in an error state. This can be caused by\n  primary DB-Servers being unreachable or unresponsive. The execution\n  might recover later, or switch to `\"canceled\"` if it is not able to recover\n  successfully.\n- `\"recovering\"`: The execution is actively recovering and\n  switches back to `running` if the recovery is successful.\n- `\"fatal error\"`: The execution has failed and cannot recover.\n",
            "type": "string"
           },
           "storageTime": {
@@ -6794,7 +6779,7 @@
           "type": "string"
          },
          "ttl": {
-          "description": "The time-to-live for the cursor (in seconds). If the result set is small enough\n(less than or equal to `batchSize`) then results are returned right away.\nOtherwise they are stored in memory and will be accessible via the cursor with\nrespect to the `ttl`. The cursor will be removed on the server automatically\nafter the specified amount of time. This is useful to ensure garbage collection\nof cursors that are not fully fetched by clients. If not set, a server-defined\nvalue will be used (default: 30 seconds).\n",
+          "description": "The time-to-live for the cursor (in seconds). If the result set is small enough\n(less than or equal to `batchSize`) then results are returned right away.\nOtherwise they are stored in memory and will be accessible via the cursor with\nrespect to the `ttl`. The cursor will be removed on the server automatically\nafter the specified amount of time. This is useful to ensure garbage collection\nof cursors that are not fully fetched by clients. If not set, a server-defined\nvalue will be used (default: 30 seconds).\nThe time-to-live is renewed upon every access to the cursor.\n",
           "type": "integer"
          }
         },
@@ -7202,7 +7187,7 @@
     ]
    },
    "post": {
-    "description": "If the cursor is still alive, returns an object with the next query result batch.\n",
+    "description": "If the cursor is still alive, returns an object with the next query result batch.\n\nIf the cursor is not fully consumed, the time-to-live for the cursor\nis renewed by this API call.\n",
     "operationId": "getNextAqlQueryCursorBatch",
     "parameters": [
      {
@@ -7586,7 +7571,7 @@
     ]
    },
    "put": {
-    "description": "\u003e **WARNING:**\nThis endpoint is deprecated in favor its functionally equivalent POST counterpart.\n\n\nIf the cursor is still alive, returns an object with the following\nattributes:\n\n- `id`: a `cursor-identifier`\n- `result`: a list of documents for the current batch\n- `hasMore`: `false` if this was the last batch\n- `count`: if present the total number of elements\n- `code`: an HTTP status code\n- `error`: a boolean flag to indicate whether an error occurred\n- `errorNum`: a server error number (if `error` is `true`)\n- `errorMessage`: a descriptive error message (if `error` is `true`)\n- `extra`: an object with additional information about the query result, with\n  the nested objects `stats` and `warnings`. Only delivered as part of the last\n  batch in case of a cursor with the `stream` option enabled.\n\nNote that even if `hasMore` returns `true`, the next call might\nstill return no documents. If, however, `hasMore` is `false`, then\nthe cursor is exhausted.  Once the `hasMore` attribute has a value of\n`false`, the client can stop.\n",
+    "description": "\u003e **WARNING:**\nThis endpoint is deprecated in favor its functionally equivalent POST counterpart.\n\n\nIf the cursor is still alive, returns an object with the following\nattributes:\n\n- `id`: a `cursor-identifier`\n- `result`: a list of documents for the current batch\n- `hasMore`: `false` if this was the last batch\n- `count`: if present the total number of elements\n- `code`: an HTTP status code\n- `error`: a boolean flag to indicate whether an error occurred\n- `errorNum`: a server error number (if `error` is `true`)\n- `errorMessage`: a descriptive error message (if `error` is `true`)\n- `extra`: an object with additional information about the query result, with\n  the nested objects `stats` and `warnings`. Only delivered as part of the last\n  batch in case of a cursor with the `stream` option enabled.\n\nNote that even if `hasMore` returns `true`, the next call might\nstill return no documents. If, however, `hasMore` is `false`, then\nthe cursor is exhausted.  Once the `hasMore` attribute has a value of\n`false`, the client can stop.\n\nIf the cursor is not fully consumed, the time-to-live for the cursor\nis renewed by this API call.\n",
     "operationId": "getNextAqlQueryCursorBatchPut",
     "parameters": [
      {
@@ -7624,7 +7609,7 @@
   },
   "/_api/cursor/{cursor-identifier}/{batch-identifier}": {
    "post": {
-    "description": "You can use this endpoint to retry fetching the latest batch from a cursor.\nThe endpoint requires the `allowRetry` query option to be enabled for the cursor.\n\nCalling this endpoint with the last returned batch identifier returns the\nquery results for that same batch again. This does not advance the cursor.\nClient applications can use this to re-transfer a batch once more in case of\ntransfer errors.\n\nYou can also call this endpoint with the next batch identifier, i.e. the value\nreturned in the `nextBatchId` attribute of a previous request. This advances the\ncursor and returns the results of the next batch.\n\nFrom v3.11.1 onward, you may use this endpoint even if the `allowRetry`\nattribute is `false` to fetch the next batch, but you cannot request a batch\nagain unless you set it to `true`.\n\nNote that it is only supported to query the last returned batch identifier or\nthe directly following batch identifier. The latter is only supported if there\nare more results in the cursor (i.e. `hasMore` is `true` in the latest batch).\n\nNote that when the last batch has been consumed successfully by a client\napplication, it should explicitly delete the cursor to inform the server that it\nsuccessfully received and processed the batch so that the server can free up\nresources.\n",
+    "description": "You can use this endpoint to retry fetching the latest batch from a cursor.\nThe endpoint requires the `allowRetry` query option to be enabled for the cursor.\n\nCalling this endpoint with the last returned batch identifier returns the\nquery results for that same batch again. This does not advance the cursor.\nClient applications can use this to re-transfer a batch once more in case of\ntransfer errors.\n\nYou can also call this endpoint with the next batch identifier, i.e. the value\nreturned in the `nextBatchId` attribute of a previous request. This advances the\ncursor and returns the results of the next batch.\n\nFrom v3.11.1 onward, you may use this endpoint even if the `allowRetry`\nattribute is `false` to fetch the next batch, but you cannot request a batch\nagain unless you set it to `true`.\n\nNote that it is only supported to query the last returned batch identifier or\nthe directly following batch identifier. The latter is only supported if there\nare more results in the cursor (i.e. `hasMore` is `true` in the latest batch).\n\nNote that when the last batch has been consumed successfully by a client\napplication, it should explicitly delete the cursor to inform the server that it\nsuccessfully received and processed the batch so that the server can free up\nresources.\n\nThe time-to-live for the cursor is renewed by this API call.\n",
     "operationId": "getPreviousAqlQueryCursorBatch",
     "parameters": [
      {
@@ -8510,15 +8495,6 @@
       }
      },
      {
-      "description": "The name of the collection. This query parameter is only for backward compatibility.\nIn ArangoDB versions \u003c 3.0, the URL path was `/_api/document` and\nthis query parameter was required. This combination still works, but\nthe recommended way is to specify the collection in the URL path.\n",
-      "in": "query",
-      "name": "collection",
-      "required": false,
-      "schema": {
-       "type": "string"
-      }
-     },
-     {
       "description": "Wait until document has been synced to disk.\n",
       "in": "query",
       "name": "waitForSync",
@@ -8854,15 +8830,6 @@
       "in": "path",
       "name": "collection",
       "required": true,
-      "schema": {
-       "type": "string"
-      }
-     },
-     {
-      "description": "The name of the collection. This is only for backward compatibility.\nIn ArangoDB versions \u003c 3.0, the URL path was `/_api/document` and\nthis query parameter was required. This combination still works, but\nthe recommended way is to specify the collection in the URL path.\n",
-      "in": "query",
-      "name": "collection",
-      "required": false,
       "schema": {
        "type": "string"
       }
@@ -17535,6 +17502,13 @@
           "description": "An easy-to-remember name for the index to look it up or refer to it in index hints.\nIndex names are subject to the same character restrictions as collection names.\nIf omitted, a name is auto-generated so that it is unique with respect to the\ncollection, e.g. `idx_832910498`.\n",
           "type": "string"
          },
+         "optimizeTopK": {
+          "description": "This option only applies if you use the inverted index in a `search-alias` Views.\n\nAn array of strings defining sort expressions that you want to optimize.\nThis is also known as _WAND optimization_ (introduced in v3.12.0).\n\nIf you query a View with the `SEARCH` operation in combination with a\n`SORT` and `LIMIT` operation, search results can be retrieved faster if the\n`SORT` expression matches one of the optimized expressions.\n\nOnly sorting by highest rank is supported, that is, sorting by the result\nof a scoring function in descending order (`DESC`). Use `@doc` in the expression\nwhere you would normally pass the document variable emitted by the `SEARCH`\noperation to the scoring function.\n\nYou can define up to 64 expressions per View.\n\nExample: `[\"BM25(@doc) DESC\", \"TFIDF(@doc, true) DESC\"]`\n\nDefault: `[]`\n\nThis property is available in the Enterprise Edition only.\n",
+          "items": {
+           "type": "string"
+          },
+          "type": "array"
+         },
          "parallelism": {
           "description": "The number of threads to use for indexing the fields. Default: `2`\n",
           "type": "integer"
@@ -21143,6 +21117,13 @@
           "description": "The name of the View.\n",
           "type": "string"
          },
+         "optimizeTopK": {
+          "description": "An array of strings defining sort expressions that you want to optimize.\nThis is also known as _WAND optimization_ (introduced in v3.12.0).\n\nIf you query a View with the `SEARCH` operation in combination with a\n`SORT` and `LIMIT` operation, search results can be retrieved faster if the\n`SORT` expression matches one of the optimized expressions.\n\nOnly sorting by highest rank is supported, that is, sorting by the result\nof a scoring function in descending order (`DESC`). Use `@doc` in the expression\nwhere you would normally pass the document variable emitted by the `SEARCH`\noperation to the scoring function.\n\nYou can define up to 64 expressions per View.\n\nExample: `[\"BM25(@doc) DESC\", \"TFIDF(@doc, true) DESC\"]`\n\nDefault: `[]`\n\nThis property is available in the Enterprise Edition only.\n",
+          "items": {
+           "type": "string"
+          },
+          "type": "array"
+         },
          "primaryKeyCache": {
           "description": "If you enable this option, then the primary key columns are always cached in\nmemory (introduced in v3.9.6, Enterprise Edition only). This can improve the\nperformance of queries that return many documents. Otherwise, these values are\nmemory-mapped and it is up to the operating system to load them from disk into\nmemory and to evict them from memory.\n\nThis option is immutable.\n\nSee the `--arangosearch.columns-cache-limit` startup option to control the\nmemory consumption of this cache. You can reduce the memory usage of the column\ncache in cluster deployments by only using the cache for leader shards, see the\n`--arangosearch.columns-cache-only-leader` startup option (introduced in v3.10.6).\n",
           "type": "boolean"
@@ -21159,11 +21140,11 @@
           "type": "boolean"
          },
          "primarySortCompression": {
-          "description": "Defines how to compress the primary sort data (introduced in v3.7.1).\nArangoDB v3.5 and v3.6 always compress the index using LZ4.\n\nThis option is immutable.\n\n- `\"lz4\"` (default): use LZ4 fast compression.\n- `\"none\"`: disable compression to trade space for speed.\n",
+          "description": "Defines how to compress the primary sort data.\n\nThis option is immutable.\n\n- `\"lz4\"` (default): use LZ4 fast compression.\n- `\"none\"`: disable compression to trade space for speed.\n",
           "type": "string"
          },
          "storedValues": {
-          "description": "An array of objects to describe which document attributes to store in the View\nindex (introduced in v3.7.1). It can then cover search queries, which means the\ndata can be taken from the index directly and accessing the storage engine can\nbe avoided.\n\nThis option is immutable.\n\nEach object is expected in the following form:\n\n`{ \"fields\": [ \"attr1\", \"attr2\", ... \"attrN\" ], \"compression\": \"none\", \"cache\": false }`\n\n- The required `fields` attribute is an array of strings with one or more\n  document attribute paths. The specified attributes are placed into a single\n  column of the index. A column with all fields that are involved in common\n  search queries is ideal for performance. The column should not include too\n  many unneeded fields, however.\n\n- The optional `compression` attribute defines the compression type used for\n  the internal column-store, which can be `\"lz4\"` (LZ4 fast compression, default)\n  or `\"none\"` (no compression).\n\n- The optional `cache` attribute allows you to always cache stored values in\n  memory (introduced in v3.9.5, Enterprise Edition only). This can improve\n  the query performance if stored values are involved. Otherwise, these values\n  are memory-mapped and it is up to the operating system to load them from disk\n  into memory and to evict them from memory.\n\n  See the `--arangosearch.columns-cache-limit` startup option\n  to control the memory consumption of this cache. You can reduce the memory\n  usage of the column cache in cluster deployments by only using the cache for\n  leader shards, see the `--arangosearch.columns-cache-only-leader` startup\n  option (introduced in v3.10.6).\n\n  You may use the following shorthand notations on View creation instead of\n  an array of objects as described above. The default compression and cache\n  settings are used in this case:\n\n  - An array of strings, like `[\"attr1\", \"attr2\"]`, to place each attribute into\n    a separate column of the index (introduced in v3.10.3).\n\n  - An array of arrays of strings, like `[[\"attr1\", \"attr2\"]]`, to place the\n    attributes into a single column of the index, or `[[\"attr1\"], [\"attr2\"]]`\n    to place each attribute into a separate column. You can also mix it with the\n    full form:\n\n  ```json\n  [\n    [\"attr1\"],\n    [\"attr2\", \"attr3\"],\n    { \"fields\": [\"attr4\", \"attr5\"], \"cache\": true }\n  ]\n  ```\n\nThe `storedValues` option is not to be confused with the `storeValues` option,\nwhich allows to store meta data about attribute values in the View index.\n",
+          "description": "An array of objects to describe which document attributes to store in the View\nindex. It can then cover search queries, which means the\ndata can be taken from the index directly and accessing the storage engine can\nbe avoided.\n\nThis option is immutable.\n\nEach object is expected in the following form:\n\n`{ \"fields\": [ \"attr1\", \"attr2\", ... \"attrN\" ], \"compression\": \"none\", \"cache\": false }`\n\n- The required `fields` attribute is an array of strings with one or more\n  document attribute paths. The specified attributes are placed into a single\n  column of the index. A column with all fields that are involved in common\n  search queries is ideal for performance. The column should not include too\n  many unneeded fields, however.\n\n- The optional `compression` attribute defines the compression type used for\n  the internal column-store, which can be `\"lz4\"` (LZ4 fast compression, default)\n  or `\"none\"` (no compression).\n\n- The optional `cache` attribute allows you to always cache stored values in\n  memory (introduced in v3.9.5, Enterprise Edition only). This can improve\n  the query performance if stored values are involved. Otherwise, these values\n  are memory-mapped and it is up to the operating system to load them from disk\n  into memory and to evict them from memory.\n\n  See the `--arangosearch.columns-cache-limit` startup option\n  to control the memory consumption of this cache. You can reduce the memory\n  usage of the column cache in cluster deployments by only using the cache for\n  leader shards, see the `--arangosearch.columns-cache-only-leader` startup\n  option (introduced in v3.10.6).\n\n  You may use the following shorthand notations on View creation instead of\n  an array of objects as described above. The default compression and cache\n  settings are used in this case:\n\n  - An array of strings, like `[\"attr1\", \"attr2\"]`, to place each attribute into\n    a separate column of the index (introduced in v3.10.3).\n\n  - An array of arrays of strings, like `[[\"attr1\", \"attr2\"]]`, to place the\n    attributes into a single column of the index, or `[[\"attr1\"], [\"attr2\"]]`\n    to place each attribute into a separate column. You can also mix it with the\n    full form:\n\n  ```json\n  [\n    [\"attr1\"],\n    [\"attr2\", \"attr3\"],\n    { \"fields\": [\"attr4\", \"attr5\"], \"cache\": true }\n  ]\n  ```\n\nThe `storedValues` option is not to be confused with the `storeValues` option,\nwhich allows to store meta data about attribute values in the View index.\n",
           "items": {
            "type": "object"
           },
