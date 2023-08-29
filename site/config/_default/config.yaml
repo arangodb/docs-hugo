@@ -43,6 +43,8 @@ outputFormats:
 outputs:
   home: ["HTML", "navigation", "index_310", "index_311", "index_312"]
 
+enableRobotsTXT: true
+
 caches:
   assets:
     dir: :resourceDir/_gen
