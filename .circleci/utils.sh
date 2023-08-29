@@ -81,13 +81,3 @@ function pull-branch-image(){
         docker tag arangodb/docs-hugo:$image_name-$version-$main_hash $image_name-$version
     fi
 }
-
-
-
-function generate_setup-environment-var-branch() {
-    BRANCH="$1"
-    version="$(echo "$2" | tr _ .)"
-    export ARANGODB_BRANCH_"$2"=$BRANCH
-    export ARANGODB_SRC_"$2"=/home/circleci/project/$version
-}
-
