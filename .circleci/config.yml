@@ -8,7 +8,7 @@ orbs:
 parameters:
   workflow:
     type: enum
-    enum: [no-op, plain-build, generate, compile, generate-scheduled, commit-generated, generate-oasisctl, create-docs-images-amd64, create-docs-images-arm64]
+    enum: [no-op, plain-build, generate, release, compile, generate-scheduled, commit-generated, generate-oasisctl, create-docs-images-amd64, create-docs-images-arm64]
     default: no-op
   
   deploy-url:
@@ -51,6 +51,19 @@ parameters:
     type: string
     default: ""
 
+  release-type:
+    type: enum
+    enum: [no-op, arangodb, docs]
+    default: no-op
+
+  arangodb-version:
+    type: string
+    default: ""
+  
+  docs-version:
+    type: string
+    default: ""
+
 jobs:
   generate-config:
     docker:
@@ -64,19 +77,17 @@ jobs:
             curl https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci?ref=$CIRCLE_SHA1 | jq ".[].download_url" | xargs wget
             wget https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_BRANCH/site/data/versions.yaml
 
-            if [ "<< pipeline.parameters.workflow >>" == "plain-build" ]; then
-              cat /home/circleci/project/.circleci/base_config.yml > /home/circleci/project/.circleci/generated_config.yml
+            pip install pyyaml requests
 
-            else
-              pip install pyyaml requests
+            python3 generate_config.py \
+              --workflow << pipeline.parameters.workflow >> \
+              --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> \
+              --arangodb-branch << pipeline.parameters.arangodb-branch >> \
+              --release-type << pipeline.parameters.release-type >> \
+              --docs-version << pipeline.parameters.docs-version >> \
+              --arangodb-version << pipeline.parameters.arangodb-version >>
 
-              python3 generate_config.py \
-                --workflow << pipeline.parameters.workflow >> \
-                --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >>
-
-              echo "Generated Configuration"
-              cat  /home/circleci/project/.circleci/generated_config.yml
-            fi
+            echo "Generated Configuration"
       - store_artifacts:
           path: /home/circleci/project/.circleci/generated_config.yml
       - continuation/continue:
