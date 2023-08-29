@@ -231,8 +231,8 @@ jobs:
             fi
 
             cd docs-hugo/toolchain/docker/amd64
-            set -e
-            docker compose up --abort-on-container-exit
+            docker compose up --exit-code-from toolchain
+            exit $?
       - run:
           name: Upload summary on GitHub
           command: |
