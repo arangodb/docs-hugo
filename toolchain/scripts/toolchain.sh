@@ -589,14 +589,20 @@ function trap_container_exit() {
       terminate=true
     fi
     if [ "$ENV" == "local" ]; then
-      exitStatus=$(cat summary.md  | grep -o '<error code=.' | cut -d '=' -f2)
-      if [ "$exitStatus" != "" ] ; then
+      errors=$(cat summary.md  | grep '<error')
+      if [ "$errors" != "" ] ; then
         docker stop docs_arangoproxy docs_site
-        log "[TERMINATE] Error during content generation, shutting down all containers" >> toolchain.log
         terminate=true
       fi
     fi
   done
+
+  errors=$(cat summary.md  | grep '<error')
+  if [ "$errors" != "" ] ; then
+    docker stop docs_arangoproxy docs_site
+    log "[TERMINATE] Error during content generation:" >> toolchain.log
+    log "[TERMINATE] ""$errors" >> toolchain.log
+  fi
 
   log "[stop_all_containers] A stop signal has been captured. Stopping all containers" >> toolchain.log
   TRAP=1

@@ -2,6 +2,7 @@ package arangosh
 
 import (
 	"bufio"
+	"errors"
 	"fmt"
 	"regexp"
 	"strings"
@@ -12,7 +13,7 @@ import (
 	"github.com/dlclark/regexp2"
 )
 
-func ExecRoutine(example chan map[string]interface{}, outChannel chan string) {
+func ExecRoutine(example chan map[string]interface{}, outChannel chan map[string]interface{}) {
 	for {
 		select {
 		case exampleData := <-example:
@@ -20,13 +21,19 @@ func ExecRoutine(example chan map[string]interface{}, outChannel chan string) {
 			code := exampleData["code"].(string)
 			repository := exampleData["repository"].(models.Repository)
 
-			models.Logger.Printf("[%s] [CODE] %s", name, code)
 			out := Exec(name, code, repository)
 
-			out = checkAssertionFailed(name, code, out, repository)
-			out = checkArangoError(name, code, out, repository)
+			var err error
 
-			outChannel <- out
+			out, err = checkAssertionFailed(name, code, out, repository)
+			if err != nil {
+				outChannel <- map[string]interface{}{"output": out, "err": err, "name": name, "version": repository.Version}
+				return
+			}
+
+			out, err = checkArangoError(name, code, out, repository)
+
+			outChannel <- map[string]interface{}{"output": out, "err": err, "name": name, "version": repository.Version}
 		}
 	}
 }
@@ -41,7 +48,6 @@ func Exec(exampleName string, code string, repository models.Repository) (output
 	}
 
 	scanner := bufio.NewScanner(repository.StdoutPipe)
-	models.Logger.Printf("START SCAN %s", exampleName)
 	buf := false
 	for {
 		if buf {
@@ -50,64 +56,57 @@ func Exec(exampleName string, code string, repository models.Repository) (output
 
 		for scanner.Scan() {
 			if strings.Contains(scanner.Text(), "EOFD") {
-				models.Logger.Printf("[%s] %s", exampleName, scanner.Text())
 				buf = true
 				break
 			}
 
-			models.Logger.Printf("[%s] %s", exampleName, scanner.Text())
 			output = output + scanner.Text() + "\n"
 		}
 	}
 
-	models.Logger.Printf("EXEC DONE")
-
 	return
 }
 
-func checkAssertionFailed(name, code, out string, repository models.Repository) string {
+func checkAssertionFailed(name, code, out string, repository models.Repository) (string, error) {
 	if strings.Contains(out, "EXITD") {
 		models.Logger.Printf("[%s] [ERROR]: Assertion Failed", name)
 		models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, out)
-		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR </strong></error></li><br>", repository.Version, name)
 
-		return "ERRORD"
+		return out, errors.New(out)
 	}
-	return out
+	return out, nil
 }
 
-func checkArangoError(name, code, out string, repository models.Repository) string {
+func checkArangoError(name, code, out string, repository models.Repository) (string, error) {
 	if strings.Contains(out, "ArangoError") && !strings.Contains(code, "xpError") {
 		if strings.Contains(out, "ArangoError 1203") || strings.Contains(out, "ArangoError 1932") {
 			return handleCollectionNotFound(name, code, out, repository)
 		} else if strings.Contains(out, "ArangoError 1207") {
 			var re = regexp.MustCompile(`(?m)JavaScript.*\n(.+\n)*`)
 			out = re.ReplaceAllString(out, "")
-			return out
+			return out, nil
 		} else {
 			models.Logger.Printf("[%s] [ERROR]: Found ArangoError without xpError", name)
 			models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, out)
-			models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR </strong></error></li><br>", repository.Version, name)
 
-			return "ERRORD"
+			return out, errors.New(out)
 		}
 	}
 
-	return out
+	return out, nil
 }
 
-func handleCollectionNotFound(name, code, out string, repository models.Repository) string {
+func handleCollectionNotFound(name, code, out string, repository models.Repository) (string, error) {
 	code = notFoundFallbackCode(code, out)
 	output := Exec(name, code, repository)
 	if strings.Contains(output, "ArangoError") && !strings.Contains(code, "xpError") {
 		models.Logger.Printf("[%s] [ERROR]: Found ArangoError without xpError", name)
 		models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, output)
-		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR </strong></error></li><br>", repository.Version, name)
 
-		return "ERRORD"
+		return output, errors.New(output)
 	}
 
-	return output
+	return output, nil
 }
 
 func notFoundFallbackCode(code, output string) string {

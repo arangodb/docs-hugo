@@ -22,7 +22,7 @@ var (
 	OpenapiGlobalChannel = make(chan map[string]interface{})
 
 	ExampleChannel = make(chan map[string]interface{})
-	OutputChannel  = make(chan string)
+	OutputChannel  = make(chan map[string]interface{})
 
 	Versions = models.LoadVersions()
 )
@@ -82,10 +82,6 @@ func CurlExampleHandler(w http.ResponseWriter, r *http.Request) {
 	models.Logger.Printf("[curl/CONTROLLER] Processing Example %s\n", request.Options.Name)
 
 	resp, err := CurlService.Execute(request, CacheChannel, ExampleChannel, OutputChannel)
-	if err != nil {
-		models.Logger.Printf("[HTTP] Error caused by request\n%s", request.Code)
-	}
-
 	response, err := json.Marshal(resp)
 	if err != nil {
 		models.Logger.Printf("[curl/CONTROLLER] Error marshalling response: %s\n", err.Error())
