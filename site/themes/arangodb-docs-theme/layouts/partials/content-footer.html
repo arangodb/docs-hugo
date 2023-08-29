@@ -61,10 +61,14 @@
 
 <span class="prev">
   {{ with $prev }}
-          
-          <a class="nav nav-prev link-internal" href="{{.RelPermalink}}" title="{{.Params.menuTitle}}">
-            <i class="fas fa-chevron-left fa-fw"></i><p>{{.Params.menuTitle | markdownify}}</p></a>
-          {{- end}}
+    {{- if eq (len .Ancestors) 1 }}
+      <a class="nav nav-prev link-internal" href="" title="">
+      </a>
+    {{ else }}
+        <a class="nav nav-prev link-internal" href="{{.RelPermalink}}" title="{{.Params.menuTitle}}">
+          <i class="fas fa-chevron-left fa-fw"></i><p>{{.Params.menuTitle | markdownify}}</p></a>
+        {{- end}}
+  {{ end }}
   
 </span>
 

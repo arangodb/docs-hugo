@@ -6,7 +6,8 @@ description: >-
   SmartGraphs enable you to manage graphs at scale.
 archetype: chapter
 ---
-{{< tag "ArangoDB Enterprise""ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+
 SmartGraphs are specifically targeted at graphs that need scalability and
 high performance. The way SmartGraphs use the ArangoDB cluster sharding makes it
 extremely useful for distributing data across multiple servers with minimal

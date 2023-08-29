@@ -557,7 +557,8 @@ Also see [Faceted Search with ArangoSearch](faceted-search.md).
 
 <small>Introduced in: v3.9.5, v3.10.2</small>
 
-{{< tag "ArangoDB Enterprise""ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+
 Normalization values are computed for fields which are processed with Analyzers
 that have the [`"norm"` feature](../analyzers.md#analyzer-features) enabled.
 These values are used to score fairer if the same tokens occur repeatedly, to

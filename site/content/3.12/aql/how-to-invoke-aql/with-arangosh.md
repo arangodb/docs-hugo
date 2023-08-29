@@ -489,7 +489,8 @@ deployment, then the Coordinator is allowed to read from any shard replica and
 not only from the leader. See [Read from followers](../../develop/http/documents.md#read-from-followers)
 for details.
 
-{{< tag "ArangoDB Enterprise""ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+
 #### `skipInaccessibleCollections`
 
 Let AQL queries (especially graph traversals) treat collection to which a
@@ -499,14 +500,16 @@ This is intended to help with certain use-cases: A graph contains several collec
 and different users execute AQL queries on that graph. You can naturally limit the 
 accessible results by changing the access rights of users on collections.
 
-{{< tag "ArangoDB Enterprise""ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+
 #### `satelliteSyncWait`
 
 Configure how long a DB-Server has time to bring the SatelliteCollections
 involved in the query into sync. The default value is `60.0` seconds.
 When the maximal time is reached, the query is stopped.
 
-{{< tag "ArangoDB Enterprise""ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+
 ## With `db._createStatement()` (ArangoStatement)
 
 The `_query()` method is a shorthand for creating an `ArangoStatement` object,

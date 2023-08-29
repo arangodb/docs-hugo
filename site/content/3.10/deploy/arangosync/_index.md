@@ -9,6 +9,7 @@ archetype: chapter
 {{< description >}}
 
 {{< tag "ArangoDB Enterprise" >}}
+
 This chapter introduces ArangoDB's _Datacenter-to-Datacenter Replication_ (DC2DC).
 
 At some point in the grows of a database, there comes a need for replicating it

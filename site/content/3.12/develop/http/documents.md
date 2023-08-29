@@ -385,16 +385,6 @@ paths:
             Name of the `collection` in which the document is to be created.
           schema:
             type: string
-        - name: collection
-          in: query
-          required: false
-          description: |
-            The name of the collection. This query parameter is only for backward compatibility.
-            In ArangoDB versions < 3.0, the URL path was `/_api/document` and
-            this query parameter was required. This combination still works, but
-            the recommended way is to specify the collection in the URL path.
-          schema:
-            type: string
         - name: waitForSync
           in: query
           required: false
@@ -1697,16 +1687,6 @@ paths:
             Name of the `collection` in which the documents are to be created.
           schema:
             type: string
-        - name: collection
-          in: query
-          required: false
-          description: |
-            The name of the collection. This is only for backward compatibility.
-            In ArangoDB versions < 3.0, the URL path was `/_api/document` and
-            this query parameter was required. This combination still works, but
-            the recommended way is to specify the collection in the URL path.
-          schema:
-            type: string
         - name: waitForSync
           in: query
           required: false
@@ -2621,7 +2601,8 @@ name: RestDocumentHandlerDeleteDocumentRevConflictMulti
 
 <small>Introduced in: v3.10.0</small>
 
-{{< tag "ArangoDB Enterprise""ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+
 In an ArangoDB cluster, all reads and writes are performed via
 the shard leaders. Shard replicas replicate all operations, but are
 only on hot standby to take over in case of a failure. This is to ensure
