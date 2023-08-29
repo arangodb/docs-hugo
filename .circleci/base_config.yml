@@ -3,7 +3,7 @@ version: 2.1
 parameters:
   workflow:
     type: enum
-    enum: [no-op, plain-build, generate, generate-scheduled, commit-generated, generate-oasisctl, create-docs-images-amd64, create-docs-images-arm64]
+    enum: [no-op, plain-build, generate, generate-scheduled, release, commit-generated, generate-oasisctl, create-docs-images-amd64, create-docs-images-arm64]
     default: no-op
   
   deploy-url:
