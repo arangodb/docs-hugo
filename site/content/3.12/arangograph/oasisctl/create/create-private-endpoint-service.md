@@ -1,15 +1,11 @@
 ---
+layout: default
+description: Description of the oasisctl create private endpoint service command
 title: Oasisctl Create Private Endpoint Service
 menuTitle: Create Private Endpoint Service
-weight: 90
-description: >-
-  Description of the oasisctl create private endpoint service command
-archetype: default
+weight: 95
 ---
-Create a Private Endpoint Service attached to an existing deployment
-
 ## Synopsis
-
 Create a Private Endpoint Service attached to an existing deployment
 
 ```
@@ -17,7 +13,6 @@ oasisctl create private endpoint service [flags]
 ```
 
 ## Options
-
 ```
       --alternate-dns-name strings             DNS names used for the deployment in the private network
       --aws-principal strings                  List of AWS Principals from which a Private Endpoint can be created (Format: <AccountID>[/Role/<RoleName>|/User/<UserName>])
@@ -31,8 +26,7 @@ oasisctl create private endpoint service [flags]
   -p, --project-id string                      Identifier of the project
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -40,6 +34,5 @@ oasisctl create private endpoint service [flags]
 ```
 
 ## See also
-
 * [oasisctl create private endpoint](create-private-endpoint.md)	 - 
 
