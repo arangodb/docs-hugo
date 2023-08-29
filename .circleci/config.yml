@@ -232,7 +232,7 @@ jobs:
 
             cd docs-hugo/toolchain/docker/amd64
             set -e
-            docker compose up
+            docker compose up --abort-on-container-exit
       - run:
           name: Upload summary on GitHub
           command: |
