@@ -436,8 +436,7 @@ function generate_startup_options() {
       
       if [ $? -ne 0 ]; then
         log "[generate_startup_options] [ERROR] $res"
-        echo "<li><strong>${HELPPROGRAM}</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary.md
-        exit 1
+        echo "<li><error code=4><strong>${HELPPROGRAM}</strong>: <strong> ERROR: $res</strong></error></li>" >> /home/summary.md
       fi
 
       echo $res > ../../site/data/$version/"$HELPPROGRAM".json
@@ -461,8 +460,7 @@ function generate_optimizer_rules() {
 
   if [ $? -ne 0 ]; then
     log "[generate_optimizer_rules] [ERROR] $res"
-    echo "<li><strong>$version</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary.md
-    exit 1
+    echo "<li><error code=5><strong>$version</strong>: <strong> ERROR: $res</strong></error></li>" >> /home/summary.md
   fi
 
   echo $res > ../../site/data/$version/optimizer-rules.json
@@ -489,8 +487,7 @@ function generate_error_codes() {
 
   if [ $? -ne 0 ]; then
     log "[generate_error_codes] [ERROR] $res"
-    echo "<li><strong>$version</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary.md
-    exit 1
+    echo "<li><error code=6><strong>$version</strong>: <strong> ERROR: $res</strong></error></li>" >> /home/summary.md
   fi
 
   echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary.md
@@ -504,7 +501,7 @@ function generate_metrics() {
 
   if [ $version == "" ]; then
     log "[generate_error_codes] ArangoDB Source code not found. Aborting"
-    exit 1
+    echo "<li><error code=7><strong>$version</strong>: <strong> ERROR: ArangoDB Source Not Found</strong><error></li>" >> /home/summary.md
   fi
 
   log "[generate_metrics] Generate Metrics requested"
@@ -513,8 +510,7 @@ function generate_metrics() {
 
   if [ $? -ne 0 ]; then
     log "[generate_metrics] [ERROR] $res"
-    echo "<li><strong>$version</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary.md
-    exit 1
+    echo "<li><error code=7><strong>$version</strong>: <strong> ERROR: $res</strong><error></li>" >> /home/summary.md
   fi
 
   echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary.md
@@ -540,16 +536,14 @@ function generate_oasisctl() {
   res=$(oasisctl generate-docs --link-file-ext .html --replace-underscore-with - --output-dir /tmp/oasisctl)
   if [ $? -ne 0 ]; then
     log "[generate_oasisctl] [ERROR] Error from oasisctl generate-docs: $res"
-    echo "<li><strong>$version</strong>: <strong> ERROR: Error from oasisctl generate-docs: </strong>$res</li>" >> /home/summary.md
-    exit 1
+    echo "<li><error code=8><strong>$version</strong>: <strong> ERROR: Error from oasisctl generate-docs: </strong>$res</error></li>" >> /home/summary.md
   fi
 
   log "[generate_oasisctl] "$PYTHON_EXECUTABLE" generators/oasisctl.py --src /tmp/oasisctl --dst ../../site/content/$version/arangograph/oasisctl/"
   res=$(("$PYTHON_EXECUTABLE" generators/oasisctl.py --src /tmp/oasisctl --dst ../../site/content/$version/arangograph/oasisctl/) 2>&1 )
   if [ $? -ne 0 ]; then
     log "[generate_oasisctl] [ERROR] Error from oasisctl.py: $res"
-    echo "<li><strong>$version</strong>: <strong> ERROR: Error from oasisctl.py: </strong>$res</li>" >> /home/summary.md
-    exit 1
+    echo "<li><error code=8><strong>$version</strong>: <strong> ERROR: Error from oasisctl.py: </strong>$res</error></li>" >> /home/summary.md
   fi
 
   cp /tmp/preserve/oasisctl.md ../../site/content/$version/arangograph/oasisctl/_index.md
@@ -609,7 +603,7 @@ function trap_container_exit() {
   docker stop docs_arangoproxy docs_site
   docker ps -a --filter name=docs_* -q | xargs docker stop | xargs docker rm
   log "[stop_all_containers] Done" >> /home/toolchain.log
-  exitStatus=$(cat summary.md  | grep -o '<error code=.' | cut -d '=' -f2)
+  exitStatus=$(cat summary.md  | grep -o '<error code=.' | cut -d '=' -f2 | head -n 1)
   log "[stop_all_containers] Toolchain Exit Status ""$exitStatus" >> /home/toolchain.log
 
   exit $exitStatus

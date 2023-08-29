@@ -2,7 +2,6 @@ package arangosh
 
 import (
 	"bufio"
-	"errors"
 	"fmt"
 	"regexp"
 	"strings"
@@ -13,27 +12,21 @@ import (
 	"github.com/dlclark/regexp2"
 )
 
-func ExecRoutine(example chan map[string]interface{}, outChannel chan map[string]interface{}) {
+func ExecRoutine(example chan map[string]interface{}, outChannel chan string) {
 	for {
 		select {
 		case exampleData := <-example:
 			name := exampleData["name"].(string)
 			code := exampleData["code"].(string)
+			filepath := exampleData["filepath"].(string)
 			repository := exampleData["repository"].(models.Repository)
 
 			out := Exec(name, code, repository)
 
-			var err error
+			out = checkAssertionFailed(name, code, out, filepath, repository)
+			out = checkArangoError(name, code, out, filepath, repository)
 
-			out, err = checkAssertionFailed(name, code, out, repository)
-			if err != nil {
-				outChannel <- map[string]interface{}{"output": out, "err": err, "name": name, "version": repository.Version}
-				return
-			}
-
-			out, err = checkArangoError(name, code, out, repository)
-
-			outChannel <- map[string]interface{}{"output": out, "err": err, "name": name, "version": repository.Version}
+			outChannel <- out
 		}
 	}
 }
@@ -67,46 +60,56 @@ func Exec(exampleName string, code string, repository models.Repository) (output
 	return
 }
 
-func checkAssertionFailed(name, code, out string, repository models.Repository) (string, error) {
+func checkAssertionFailed(name, code, out, filepath string, repository models.Repository) string {
 	if strings.Contains(out, "EXITD") {
 		models.Logger.Printf("[%s] [ERROR]: Assertion Failed", name)
 		models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, out)
 
-		return out, errors.New(out)
+		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error></li><br>", repository.Version, name, filepath)
+		models.Logger.Summary(out)
+		return "ERRORD"
 	}
-	return out, nil
+	return out
 }
 
-func checkArangoError(name, code, out string, repository models.Repository) (string, error) {
+func checkArangoError(name, code, out, filepath string, repository models.Repository) string {
+	if strings.Contains(out, "ERRORD") {
+		return out
+	}
+
 	if strings.Contains(out, "ArangoError") && !strings.Contains(code, "xpError") {
 		if strings.Contains(out, "ArangoError 1203") || strings.Contains(out, "ArangoError 1932") {
-			return handleCollectionNotFound(name, code, out, repository)
+			return handleCollectionNotFound(name, code, out, filepath, repository)
 		} else if strings.Contains(out, "ArangoError 1207") {
 			var re = regexp.MustCompile(`(?m)JavaScript.*\n(.+\n)*`)
 			out = re.ReplaceAllString(out, "")
-			return out, nil
+			return out
 		} else {
 			models.Logger.Printf("[%s] [ERROR]: Found ArangoError without xpError", name)
 			models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, out)
 
-			return out, errors.New(out)
+			models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error></li><br>", repository.Version, name, filepath)
+			models.Logger.Summary(out)
+			return "ERRORD"
 		}
 	}
 
-	return out, nil
+	return out
 }
 
-func handleCollectionNotFound(name, code, out string, repository models.Repository) (string, error) {
+func handleCollectionNotFound(name, code, out, filepath string, repository models.Repository) string {
 	code = notFoundFallbackCode(code, out)
 	output := Exec(name, code, repository)
 	if strings.Contains(output, "ArangoError") && !strings.Contains(code, "xpError") {
 		models.Logger.Printf("[%s] [ERROR]: Found ArangoError without xpError", name)
 		models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, output)
 
-		return output, errors.New(output)
+		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error></li><br>", repository.Version, name, filepath)
+		models.Logger.Summary(out)
+		return "ERRORD"
 	}
 
-	return output, nil
+	return output
 }
 
 func notFoundFallbackCode(code, output string) string {

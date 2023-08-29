@@ -22,24 +22,18 @@ type CommonService struct{}
 
 var commonService = CommonService{}
 
-func (service CommonService) arangosh(name, code string, repository models.Repository, exampleChannel chan map[string]interface{}) {
+func (service CommonService) arangosh(name, code, filepath string, repository models.Repository, exampleChannel chan map[string]interface{}) {
 	exampleData := map[string]interface{}{
 		"name":       name,
 		"code":       code,
+		"filepath":   filepath,
 		"repository": repository,
 	}
 	exampleChannel <- exampleData
 }
 
-func (service CommonService) checkArangoshError(exampleFilepath string, arangoshResult map[string]interface{}) {
-	if arangoshResult["err"] != nil {
-		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error></li><br>", arangoshResult["version"], arangoshResult["name"], exampleFilepath)
-		models.Logger.Summary(arangoshResult["err"].(error).Error())
-	}
-}
-
-func (service CommonService) saveCache(request string, response models.ExampleResponse, cacheChannel chan map[string]interface{}, hasError interface{}) {
-	if response.Options.SaveCache == "false" || hasError != nil {
+func (service CommonService) saveCache(request string, response models.ExampleResponse, cacheChannel chan map[string]interface{}) {
+	if response.Options.SaveCache == "false" || strings.Contains(response.Output, "ERRORD") {
 		return
 	}
 
@@ -53,7 +47,7 @@ type JSService struct{}
 
 var JSFormatter = format.JSFormatter{}
 
-func (service JSService) Execute(request models.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan map[string]interface{}) (res models.ExampleResponse) {
+func (service JSService) Execute(request models.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan string) (res models.ExampleResponse) {
 	commands := JSFormatter.FormatRequestCode(request.Code)
 
 	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
@@ -63,13 +57,12 @@ func (service JSService) Execute(request models.Example, cacheChannel chan map[s
 		return
 	}
 
-	commonService.arangosh(request.Options.Name, commands, repository, exampleChannel)
+	commonService.arangosh(request.Options.Name, commands, request.Options.Position, repository, exampleChannel)
 
 	arangoshResult := <-outputChannel
-	commonService.checkArangoshError(request.Options.Position, arangoshResult)
-	res = *models.NewExampleResponse(request.Code, arangoshResult["output"].(string), request.Options)
+	res = *models.NewExampleResponse(request.Code, arangoshResult, request.Options)
 
-	commonService.saveCache(request.Base64Request, res, cacheChannel, arangoshResult["err"])
+	commonService.saveCache(request.Base64Request, res, cacheChannel)
 
 	return
 }
@@ -78,7 +71,7 @@ type CurlService struct{}
 
 var curlFormatter = format.CurlFormatter{}
 
-func (service CurlService) Execute(request models.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan map[string]interface{}) (res models.ExampleResponse, err error) {
+func (service CurlService) Execute(request models.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan string) (res models.ExampleResponse, err error) {
 	commands := curlFormatter.FormatCommand(request.Code)
 	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
 	if err != nil {
@@ -87,19 +80,18 @@ func (service CurlService) Execute(request models.Example, cacheChannel chan map
 		return
 	}
 
-	commonService.arangosh(request.Options.Name, commands, repository, exampleChannel)
+	commonService.arangosh(request.Options.Name, commands, request.Options.Position, repository, exampleChannel)
 
 	arangoshResult := <-outputChannel
-	commonService.checkArangoshError(request.Options.Position, arangoshResult)
 
-	curlRequest, curlOutput, err := curlFormatter.FormatCurlOutput(arangoshResult["output"].(string), string(request.Options.Render))
+	curlRequest, curlOutput, err := curlFormatter.FormatCurlOutput(arangoshResult, string(request.Options.Render))
 	if err != nil {
 		return
 	}
 
 	res = *models.NewExampleResponse(curlRequest, curlOutput, request.Options)
 
-	commonService.saveCache(request.Base64Request, res, cacheChannel, arangoshResult["err"])
+	commonService.saveCache(request.Base64Request, res, cacheChannel)
 
 	return
 }
@@ -108,7 +100,7 @@ type AQLService struct{}
 
 var AQLFormatter = format.AQLFormatter{}
 
-func (service AQLService) Execute(request models.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan map[string]interface{}) (res models.AQLResponse) {
+func (service AQLService) Execute(request models.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan string) (res models.AQLResponse) {
 	commands := AQLFormatter.FormatRequestCode(request.Code, request.Options.BindVars)
 	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
 	if err != nil {
@@ -123,21 +115,20 @@ func (service AQLService) Execute(request models.Example, cacheChannel chan map[
 		commands = removeDSCmd + "\n" + createDSCmd + "\n" + commands + "\n" + removeDSCmd
 	}
 
-	commonService.arangosh(request.Options.Name, commands, repository, exampleChannel)
+	commonService.arangosh(request.Options.Name, commands, request.Options.Position, repository, exampleChannel)
 
 	arangoshResult := <-outputChannel
-	commonService.checkArangoshError(request.Options.Position, arangoshResult)
 
 	res.ExampleResponse.Input, res.ExampleResponse.Options = request.Code, request.Options
 
 	if strings.Contains(string(request.Options.Render), "output") {
-		res.ExampleResponse.Output = fmt.Sprintf("%s\n%s", res.Output, arangoshResult["output"].(string))
+		res.ExampleResponse.Output = fmt.Sprintf("%s\n%s", res.Output, arangoshResult)
 	}
 
 	models.FormatResponse(&res.ExampleResponse)
 	res.BindVars = request.Options.BindVars
 
-	commonService.saveCache(request.Base64Request, res.ExampleResponse, cacheChannel, arangoshResult["err"])
+	commonService.saveCache(request.Base64Request, res.ExampleResponse, cacheChannel)
 
 	return
 }
