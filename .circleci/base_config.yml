@@ -248,7 +248,7 @@ commands:
                 curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci \
                   --header 'docs-webhook-event: scheduled-create-pr' \
                   --header "docs-branch-name: << parameters.pr-branch >>-$CIRCLE_BUILD_NUM" \
-                  --header "docs-pr-title: [CircleCI Generated] << pipeline.parameters.workflow >>-$CIRCLE_BUILD_NUM" \
+                  --header "docs-pr-title: [CircleCI Generated] << parameters.pr-branch >>-$CIRCLE_BUILD_NUM" \
                   --header "docs-pr-body: Automatically generated content from CircleCI << pipeline.parameters.workflow >> workflow"
               else
                 git push
