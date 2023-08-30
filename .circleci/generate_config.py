@@ -355,7 +355,7 @@ def pullImageCmd(branch):
 
     if not "enterprise-preview" in branch:
         pullImage = f"BRANCH=$1\n\
-version=$2"
+version=$2\n"
         pullImage += "\
 image_name=$(echo ${BRANCH##*/})\n\
 main_hash=$(awk 'END{print}' $version/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)\n\
