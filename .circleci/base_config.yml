@@ -456,7 +456,6 @@ jobs:
       - clone-docs-and-merge
       - download-generated-data
       - commit:
-          commit-generated: true
           create-pr: false
           pr-branch: ""
             
