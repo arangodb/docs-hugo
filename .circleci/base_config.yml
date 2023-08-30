@@ -73,7 +73,6 @@ commands:
       - run:
           name: Clone ArangoDB and Enterprise
           command: |
-            rm -r /root/project/*
             branch_name=<< parameters.branch >>
 
             echo "[SETUP] Setup server << parameters.branch >>"
