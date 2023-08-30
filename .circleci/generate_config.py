@@ -380,6 +380,9 @@ def main():
         print(f"Generating configuration with args: {args}")
         with open("base_config.yml", "r") as instream:
             config = yaml.safe_load(instream)
+            with open("config.yml", "r") as startConfig:
+                config["parameters"] = yaml.safe_load(startConfig)["parameters"]
+
             config = generate_workflow(config)
             with open("generated_config.yml", "w", encoding="utf-8") as outstream:
                 yaml.dump(config, outstream)
