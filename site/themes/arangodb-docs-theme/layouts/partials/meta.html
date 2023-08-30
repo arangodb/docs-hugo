@@ -20,6 +20,14 @@
     {{- with $versionShort }}
     <meta name="docsearch:version" content="{{ . }}">
     {{- end }}
+    {{- if .Page.IsHome }}
+      {{- $shortVersions := slice }}
+      {{- $versions := index site.Data "versions" }}
+      {{- range $version := $versions }}
+        {{- $shortVersions = $shortVersions | append $version.name }}
+      {{- end }}
+      <meta name="docsearch:version" content="{{ delimit $shortVersions "," }}">
+    {{- end }}
     {{- if eq (len .Page.Ancestors) 1 }}
         <script>
             window.location.href = "{{ .Permalink }}/introduction"
