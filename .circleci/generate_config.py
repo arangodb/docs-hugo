@@ -221,7 +221,7 @@ def workflow_release_arangodb(config):
     }
 
     jobs.insert(1, generateJob)
-    jobs[2]["requires"] = ["release-generate"]
+    jobs[2]["approve-workflow"]["requires"] = ["release-generate"]
 
     return config
 
