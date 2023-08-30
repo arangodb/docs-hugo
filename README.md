@@ -707,7 +707,7 @@ description: >-
 The lead paragraph text should end without a period, contain no links and usually
 avoid other markup as well but bold, italic, and inline code are acceptable.
 
-### Add a page
+### Add a page or section
 
 Start off by finding a file name. It should be:
 
@@ -732,19 +732,66 @@ title: The level 1 headline
 description: >-
   A meaningful description of the page
 menuTitle: Short navigation menu title
-weight: 42 # controls navigation position within the current section
+weight: 42 # controls navigation position within the current section (low to high)
 ---
 ```
 
 Add the actual content formatted in Markdown syntax below the front matter.
 
-### Rename a page
+### Rename a page or section
 
-The URL of a page is derived from the file name. If you rename a file, e.g.
-from `old-name.md` to `new-name.md`, make sure to add a redirect for the
-old URL by adding the following to the front matter:
+The following steps are necessary for moving content:
+1. Rename file or folder
+2. Set up `aliases` via the front matter as needed
+3. Adjust `weight` of pages in the front matter if necessary
+4. Update cross-references in all of the content to use the new file path
 
-...
+The URL of a page is derived from the file name and the parent folders, with
+special handling for sections (folders with a `_index.md` file).
+For example, `3.12/aql/operators.md` becomes the URL path `/3.12/aql/operators/`,
+and `3.12/aql/functions/_index.md` becomes `/3.12/aql/functions/`.
+
+If you rename a file, from `section/old-name.md` to `section/new-name.md` for
+instance, make sure to add a redirect for the old URL by adding the following to
+the front matter of `section/new-name.md`:
+
+```yaml
+aliases:
+  - old-name
+```
+
+Don't forget to update any references to the old file in the content to the new
+path.
+
+If you move a file from one folder to another, from `old/file.md` to `new/file.md`
+for instance, use a relative path as shown below:
+
+```yaml
+aliases:
+  - ../old/file
+```
+
+If you rename a folder, from `old/` to `new/` for instance, add the following
+front matter to `new/_index.md`:
+
+```yaml
+aliases:
+  - old
+```
+
+Note that you need to set up aliases for all files in `new/` so that every URL
+which includes the old folder name redirects to the corresponding new URL.
+For example, for a file `new/other.md` (previously `old/other.md`), add the
+following:
+
+```yaml
+aliases:
+  - ../old/other
+```
+
+Aliases create HTML files with client-side redirects before any content is
+rendered to HTML, which means that aliases can get overwritten by content files.
+If this is not a mistake, the affected aliases should be removed.
 
 ### Disable or limit the table of contents
 
