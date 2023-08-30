@@ -417,19 +417,25 @@ jobs:
       
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
       - clone-docs-and-merge
-      - when: { equal: [ release, << pipeline.parameters.workflow >> ] }
-        - update-arangodb-release-version:
-            docs-version: << pipeline.parameters.docs-version >>
-            arangodb-version: << pipeline.parameters.arangodb-version >>
+      - when:
+          condition:
+            equal: [ "release", << pipeline.paramaters.workflow >> ]
+          steps:
+            - update-arangodb-release-version:
+                docs-version: << pipeline.parameters.docs-version >>
+                arangodb-version: << pipeline.parameters.arangodb-version >>
       - launch-toolchain:
           generators: << parameters.generators >>
       - upload-summary:
           summary-name: "generate-summary"
       - store-generated-data
-      - when: { equal: [ true, << parameters.commit-generated >> ] }
-        - commit:
-            create-pr: << parameters.create-pr >>
-            pr-branch: << parameters.pr-branch >>
+      - when:
+          condition:
+            equal: [ true, << parameters.commit-generated >> ]
+          steps:
+            - commit:
+                create-pr: << parameters.create-pr >>
+                pr-branch: << parameters.pr-branch >>
       
       - persist_to_workspace:
           root: .
