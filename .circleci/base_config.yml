@@ -60,6 +60,125 @@ parameters:
     default: ""
 
 commands:
+  clone-arangodb:
+    description: "Clone ArangoDB Branch and Enterprise Branch"
+    parameters:
+      branch:
+        type: string
+        default: ""
+      version:
+        type: string
+        default: ""
+    steps:
+      - run:
+          name: Clone ArangoDB and Enterprise
+          command: |
+            curl "https://raw.githubusercontent.com/arangodb/docs-hugo/${CIRCLE_BRANCH}/.circleci/utils.sh" > utils.sh
+            source utils.sh
+
+            rm -r /root/project/*
+            branch_name=<< parameters.branch >>
+
+            echo "[SETUP] Setup server << parameters.branch >>"
+
+            if [[ "<< parameters.branch >>" == *"arangodb/enterprise"* ]]; then
+                echo "[SETUP] An official ArangoDB Enterprise image has been chosen"
+                branch_name=$(echo << parameters.branch >> | cut -d: -f2 | cut -d- -f1)
+            fi
+
+            echo "[SETUP] Git clone $branch_name"
+
+            git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name /root/project
+            clone-arangodb-enterprise $branch_name
+
+            mkdir -p /tmp/<< parameters.version >>
+            cp -r /root/project/. /tmp/<< parameters.version >>
+
+  check-arangodb-image-exists:
+    description: "Check ArangoDB branch docker image exists"
+    parameters:
+      branch:
+        type: string
+        default: ""
+      version:
+        type: string
+        default: ""
+    steps:
+      - run:
+          name: Check Branch Image already exists
+          command: |
+            apk add skopeo
+
+            image_name=$(echo << parameters.branch >> | cut -d/ -f2)
+            latestRemoteHash=$(git ls-remote https://github.com/arangodb/arangodb.git << parameters.branch >> | awk '{print $1}' | cut -c1-9)
+
+            set +e
+            skopeo inspect docker://"arangodb/docs-hugo:$image_name-<< parameters.version >>-$latestRemoteHash" 
+            if [ "$?" != "0" ]; then
+              exit 0
+            fi 
+            circleci-agent step halt
+            
+  compile-and-dockerize-arangodb:
+    description: "Compile and create docker image of ArangoDB Branch"
+    parameters:
+      branch:
+        type: string
+        default: ""
+      version:
+        type: string
+        default: ""
+    steps:
+      - run:
+          name: Print SCCache Settings
+          command: sccache -s
+      - run:
+          name: Configure
+          command: |
+            set +e
+            cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
+            if [ "$?" != "0" ]; then
+              echo "<strong>ArangoDB Compile Error</strong><br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
+              exit 1
+            fi 
+            set -e
+      - run:
+          name: Build
+          command: |
+            set +e
+            cmake --build --preset enterprise-pr --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest
+
+            if [ "$?" != "0" ]; then
+              echo "**ArangoDB Compile Error**<br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
+              exit 1
+            fi 
+            set -e
+      - run:
+          name: Size leaderboard
+          command: |
+            ls -Ssha build/bin/*.a
+      - run:
+          name: Cleanup build directory
+          command: |
+            find build/ -iname *.a -delete || true
+            find build/ -iname *.o -delete || true
+      - run:
+          name: SCCache Statistics
+          command: sccache -s
+      - run:
+          name: Create archive of compiled instance
+          command: |
+            wget -O build/bin/arangodb https://github.com/arangodb-helper/arangodb/releases/download/0.15.8/arangodb-linux-amd64
+            chmod +x build/bin/arangodb
+            tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/ enterprise/
+      - run:
+          name: Create docker image
+          command: |
+            curl "https://raw.githubusercontent.com/arangodb/docs-hugo/${CIRCLE_BRANCH}/.circleci/utils.sh" > utils.sh
+            source utils.sh
+            create-docker-image << parameters.branch >> << parameters.version >> $CIRCLE_BRANCH
+
+
   launch-toolchain:
     description: "launch toolchain"
     parameters:
@@ -76,7 +195,7 @@ commands:
     steps:
       - run:
           name: Archive generated data
-          command: ""
+          command: exit 0
 
   download-generated-data:
     description: "Download generated data of a previous generate run"
@@ -359,92 +478,15 @@ jobs:
             - "28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e"
             - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
-      - run:
-          name: Clone ArangoDB and Enterprise
-          command: |
-            if [ "<< parameters.arangodb-branch >>" == "" ]; then
-              circleci-agent step halt
-              exit 0
-            fi
-
-            curl "https://raw.githubusercontent.com/arangodb/docs-hugo/${CIRCLE_BRANCH}/.circleci/utils.sh" > utils.sh
-            source utils.sh
-
-            rm -r /root/project/*
-            clone-branch << parameters.arangodb-branch >> << parameters.version >>
+      - clone-arangodb:
+          branch: << parameters.arangodb-branch >>
+          version: << parameters.version >>
       - persist_to_workspace:
           root: /tmp
           paths:
             - << parameters.version >>/*
-      - run:
-          name: Check Branch Image already exists
-          command: |
-            if [[ "<< parameters.arangodb-branch >>" == *"arangodb/enterprise"* ]]; then
-              circleci-agent step halt
-              exit 0
-            fi
 
-            apk add skopeo
 
-            image_name=$(echo << parameters.arangodb-branch >> | cut -d/ -f2)
-            latestRemoteHash=$(git ls-remote https://github.com/arangodb/arangodb.git << parameters.arangodb-branch >> | awk '{print $1}' | cut -c1-9)
-
-            set +e
-            skopeo inspect docker://"arangodb/docs-hugo:$image_name-<< parameters.version >>-$latestRemoteHash" 
-            if [ "$?" != "0" ]; then
-              exit 0
-            fi 
-            circleci-agent step halt
-
-      - run:
-          name: Print SCCache Settings
-          command: sccache -s
-      - run:
-          name: Configure
-          command: |
-            set +e
-            cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
-            if [ "$?" != "0" ]; then
-              echo "<strong>ArangoDB Compile Error</strong><br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
-              exit 1
-            fi 
-            set -e
-
-      - run:
-          name: Build
-          command: |
-            set +e
-            cmake --build --preset enterprise-pr --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest
-
-            if [ "$?" != "0" ]; then
-              echo "**ArangoDB Compile Error**<br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
-              exit 1
-            fi 
-            set -e
-      - run:
-          name: Size leaderboard
-          command: |
-            ls -Ssha build/bin/*.a
-      - run:
-          name: Cleanup build directory
-          command: |
-            find build/ -iname *.a -delete || true
-            find build/ -iname *.o -delete || true
-      - run:
-          name: SCCache Statistics
-          command: sccache -s
-      - run:
-          name: Create archive of compiled instance
-          command: |
-            wget -O build/bin/arangodb https://github.com/arangodb-helper/arangodb/releases/download/0.15.8/arangodb-linux-amd64
-            chmod +x build/bin/arangodb
-            tar -czf install.tar.gz build/ scripts/ js/ etc/ utils/ enterprise/
-      - run:
-          name: Create docker image
-          command: |
-            curl "https://raw.githubusercontent.com/arangodb/docs-hugo/${CIRCLE_BRANCH}/.circleci/utils.sh" > utils.sh
-            source utils.sh
-            create-docker-image << parameters.arangodb-branch >> << parameters.version >> $CIRCLE_BRANCH
 
       
 

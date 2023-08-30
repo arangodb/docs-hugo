@@ -91,6 +91,7 @@ def workflow_generate(config):
     jobs = config["workflows"]["generate"]["jobs"]
 
     generateRequires = []
+    extendedCompileJob = False
 
     for i in range(len(versions)):
         version = versions[i]["name"]
@@ -100,21 +101,34 @@ def workflow_generate(config):
 
         print(f"Creating compile job for version {version} branch {branch}")
 
-        openssl = "3.0.9"
-        if not "enterprise-preview" in branch:
-            openssl = findOpensslVersion(branch)
-            print(f"found OpenSSL Version {openssl}")
-
         compileJob = {
             "compile-linux": {
                 "context": ["sccache-aws-bucket"],
                 "name": f"compile-{version}",
                 "arangodb-branch": branch,
                 "version": version,
-                "openssl": openssl,
                 "requires": ["approve-workflow"]
             }
         }
+
+        openssl = "3.0.9"
+        if not "enterprise-preview" in branch:
+            compileJob["openssl"] = findOpensslVersion(branch)
+            print(f"found OpenSSL Version {openssl}")
+            if not extendedCompileJob:
+                config["jobs"]["compile-linux"]["steps"].append({
+                    "check-arangodb-image-exists": {
+                        "branch": branch,
+                        "version": version
+                    }
+                })
+                config["jobs"]["compile-linux"]["steps"].append({
+                    "compile-and-dockerize-arangodb": {
+                        "branch": branch,
+                        "version": version
+                    }
+                })
+
         generateRequires.append(f"compile-{version}")
         jobs.append(compileJob)
 
@@ -206,6 +220,18 @@ def workflow_release_arangodb(config):
             "openssl": openssl,
         }
     }
+    config["jobs"]["compile-linux"]["steps"].append({
+        "check-arangodb-image-exists": {
+            "branch": branch,
+            "version": version
+        }
+    })
+    config["jobs"]["compile-linux"]["steps"].append({
+        "compile-and-dockerize-arangodb": {
+            "branch": branch,
+            "version": version
+        }
+    })
     generateRequires.append(f"compile-{args.docs_version}")
     jobs.insert(0, compileJob)
 
