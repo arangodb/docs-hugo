@@ -36,17 +36,9 @@
             {{- safeHTML .Params.head }}
             {{- if $pages }}
               {{ if and (ne .Params.menuTitle "3.10") (ne .Params.menuTitle "3.11") (ne .Params.menuTitle "3.12")}}
-                {{ if eq .Layout "label" }}
-                <li data-nav-id="{{.RelPermalink}}" class="dd-item{{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><label for="section-" class="closed {{.RelPermalink}}" onclick="event.preventDefault();menuToggleClick(event)" >
-                </label>
-                  <a>
-                    <div>{{ .Params.menuTitle | markdownify }}</div>
-                    </a> 
-                {{ else }}
                 <li data-nav-id="{{.RelPermalink}}" class="dd-item menu-section-entry {{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><label for="section-" class="closed {{.RelPermalink}}" onclick="event.preventDefault();menuToggleClick(event)" >
                 </label>
-                  <a href="{{.RelPermalink}}" class="toggle menu-section-entry menu-link"  ><div class="menu-title">{{ .Params.menuTitle | markdownify }}</div></a>
-                {{ end }}
+                  <a href="{{.RelPermalink}}" class="toggle menu-section-entry menu-link"><div class="menu-title">{{ .Params.menuTitle | markdownify }}</div></a>
               {{ end }}
   
             <ul class='{{if or (eq .Params.menuTitle "3.10") (eq .Params.menuTitle "3.11") (eq .Params.menuTitle "3.12")}} version-menu {{ .Params.menuTitle }} {{ else }} submenu {{ end }}'>
