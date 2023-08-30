@@ -255,7 +255,7 @@ def workflow_release_arangodb(config):
 ## COMMANDS
 
 def workflow_generate_launch_command(config):
-    shell = "source docs-hugo/.circleci/utils.sh\n \
+    shell = "\
 export ENV=\"circleci\"\n \
 export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app\n \
 export HUGO_ENV=examples\n \
@@ -325,14 +325,16 @@ tar -xf {version}-generated.tar -C docs-hugo/site/data/\n\
 
 
 def workflow_release_launch_command(config):
-    shell = "source docs-hugo/.circleci/utils.sh\n \
+    shell = "\
 export ENV=\"circleci\"\n \
 export HUGO_URL=https://docs.arangodb.com\n \
 export HUGO_ENV=release\n \
 export GENERATORS=''\n"
 
+    pullImage = pullImageCmd(branch)
+
     version_underscore = args.docs_version.replace(".", "_")
-    branchEnv = f"pull-branch-image << pipeline.parameters.arangodb-branch >> {args.docs_version}\n \
+    branchEnv = f"{pullImage}\n \
 export ARANGODB_BRANCH_{version_underscore}={args.arangodb_branch}\n \
 export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{args.docs_version}"
 
