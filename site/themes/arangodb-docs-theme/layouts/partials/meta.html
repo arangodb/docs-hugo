@@ -29,7 +29,11 @@
       <meta name="docsearch:version" content="{{ delimit $shortVersions "," }}">
     {{- end }}
     {{- if eq (len .Page.Ancestors) 1 }}
-        <script>
-            window.location.href = "{{ .Permalink }}/introduction"
-        </script>
+      {{- $redirectPath := .Permalink }}
+      {{- if eq .Type "hooks" }}
+        {{- $redirectPath = printf "/%s" (index (where (index site.Data "versions") "alias" "stable") 0).name }}
+      {{- end }}
+      <script>
+        window.location.href = "{{ $redirectPath }}/introduction/";
+      </script>
     {{ end }}
