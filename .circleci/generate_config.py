@@ -271,7 +271,7 @@ export GENERATORS='<< parameters.generators >>'\n"
         if branch == "undefined":
             continue
 
-        pullImage = pullImageCmd(branch)
+        pullImage = pullImageCmd(branch, version)
 
         version_underscore = version.replace(".", "_")
         branchEnv = f"{pullImage}\n \
@@ -331,7 +331,7 @@ export HUGO_URL=https://docs.arangodb.com\n \
 export HUGO_ENV=release\n \
 export GENERATORS=''\n"
 
-    pullImage = pullImageCmd(args.arangodb_branch)
+    pullImage = pullImageCmd(args.arangodb_branch, args.docs_version)
 
     version_underscore = args.docs_version.replace(".", "_")
     branchEnv = f"{pullImage}\n \
@@ -350,12 +350,12 @@ docker compose up"
 
 ## UTILS
 
-def pullImageCmd(branch):
+def pullImageCmd(branch, version):
     pullImage = f"docker pull {branch}"
 
     if not "enterprise-preview" in branch:
-        pullImage = f"BRANCH=$1\n\
-version=$2\n"
+        pullImage = f"BRANCH={branch}\n\
+version={version}\n"
         pullImage += "\
 image_name=$(echo ${BRANCH##*/})\n\
 main_hash=$(awk 'END{print}' $version/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)\n\
