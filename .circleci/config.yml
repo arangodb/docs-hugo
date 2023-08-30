@@ -25,7 +25,7 @@ parameters:
 
   arangodb-branch:
     type: string
-    default: ""
+    default: "undefined"
 
   arangodb-3_10:
     type: string
