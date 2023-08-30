@@ -10,18 +10,9 @@
 ### SETUP
 #### Check/set env vars, install requirements
 
+: > /home/toolchain.log
+
 TRAP=0
-
-function stop_all_containers() {
-  echo "[stop_all_containers] A stop signal has been captured. Stopping all containers"
-  TRAP=1
-  sleep 2
-  docker ps -a --filter name=docs_* -q | xargs docker stop | xargs docker rm
-  echo "[stop_all_containers] Done"
-  exit 1
-}
-
-trap "stop_all_containers" EXIT HUP INT QUIT PIPE TERM KILL
 
 cd /home/toolchain/scripts
 
@@ -93,7 +84,7 @@ echo "[INIT] Setup Finished"
 function main() {
   echo "[TOOLCHAIN] Starting toolchain"
   echo "[TOOLCHAIN] Generators: $GENERATORS"
-
+  : > /home/summary.md
   echo "<h2>Generators</h2>" >> /home/summary.md
   echo "$GENERATORS" >> /home/summary.md
 
@@ -126,14 +117,14 @@ function main() {
   fi
 
     ## redirect logs of arangoproxy and site containers to files
-    docker logs --details --follow docs_arangoproxy > arangoproxy-log.log &
-    docker logs --details --follow docs_site > site-log.log &
+    docker logs --details --follow docs_arangoproxy >> toolchain.log &
+    docker logs --details --follow docs_site >> toolchain.log &
 
     ## Run the container exit signal interceptor in background
-    trap_container_exit &
 
-    ## tail to stdout the log files
-    tail -f arangoproxy-log.log site-log.log
+    tail -f /home/toolchain.log &
+    trap_container_exit
+
 
     ## If a container exits, the tail gets interrupted and the script will arrive here
     echo "[TERMINATE] Site container exited"
@@ -445,8 +436,7 @@ function generate_startup_options() {
       
       if [ $? -ne 0 ]; then
         log "[generate_startup_options] [ERROR] $res"
-        echo "<li><strong>${HELPPROGRAM}</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary.md
-        exit 1
+        echo "<li><error code=4><strong>${HELPPROGRAM}</strong>: <strong> ERROR: $res</strong></error></li>" >> /home/summary.md
       fi
 
       echo $res > ../../site/data/$version/"$HELPPROGRAM".json
@@ -470,8 +460,7 @@ function generate_optimizer_rules() {
 
   if [ $? -ne 0 ]; then
     log "[generate_optimizer_rules] [ERROR] $res"
-    echo "<li><strong>$version</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary.md
-    exit 1
+    echo "<li><error code=5><strong>$version</strong>: <strong> ERROR: $res</strong></error></li>" >> /home/summary.md
   fi
 
   echo $res > ../../site/data/$version/optimizer-rules.json
@@ -498,8 +487,7 @@ function generate_error_codes() {
 
   if [ $? -ne 0 ]; then
     log "[generate_error_codes] [ERROR] $res"
-    echo "<li><strong>$version</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary.md
-    exit 1
+    echo "<li><error code=6><strong>$version</strong>: <strong> ERROR: $res</strong></error></li>" >> /home/summary.md
   fi
 
   echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary.md
@@ -513,7 +501,7 @@ function generate_metrics() {
 
   if [ $version == "" ]; then
     log "[generate_error_codes] ArangoDB Source code not found. Aborting"
-    exit 1
+    echo "<li><error code=7><strong>$version</strong>: <strong> ERROR: ArangoDB Source Not Found</strong><error></li>" >> /home/summary.md
   fi
 
   log "[generate_metrics] Generate Metrics requested"
@@ -522,8 +510,7 @@ function generate_metrics() {
 
   if [ $? -ne 0 ]; then
     log "[generate_metrics] [ERROR] $res"
-    echo "<li><strong>$version</strong>: <strong> ERROR: $res</strong></li>" >> /home/summary.md
-    exit 1
+    echo "<li><error code=7><strong>$version</strong>: <strong> ERROR: $res</strong><error></li>" >> /home/summary.md
   fi
 
   echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary.md
@@ -549,16 +536,14 @@ function generate_oasisctl() {
   res=$(oasisctl generate-docs --link-file-ext .html --replace-underscore-with - --output-dir /tmp/oasisctl)
   if [ $? -ne 0 ]; then
     log "[generate_oasisctl] [ERROR] Error from oasisctl generate-docs: $res"
-    echo "<li><strong>$version</strong>: <strong> ERROR: Error from oasisctl generate-docs: </strong>$res</li>" >> /home/summary.md
-    exit 1
+    echo "<li><error code=8><strong>$version</strong>: <strong> ERROR: Error from oasisctl generate-docs: </strong>$res</error></li>" >> /home/summary.md
   fi
 
   log "[generate_oasisctl] "$PYTHON_EXECUTABLE" generators/oasisctl.py --src /tmp/oasisctl --dst ../../site/content/$version/arangograph/oasisctl/"
   res=$(("$PYTHON_EXECUTABLE" generators/oasisctl.py --src /tmp/oasisctl --dst ../../site/content/$version/arangograph/oasisctl/) 2>&1 )
   if [ $? -ne 0 ]; then
     log "[generate_oasisctl] [ERROR] Error from oasisctl.py: $res"
-    echo "<li><strong>$version</strong>: <strong> ERROR: Error from oasisctl.py: </strong>$res</li>" >> /home/summary.md
-    exit 1
+    echo "<li><error code=8><strong>$version</strong>: <strong> ERROR: Error from oasisctl.py: </strong>$res</error></li>" >> /home/summary.md
   fi
 
   cp /tmp/preserve/oasisctl.md ../../site/content/$version/arangograph/oasisctl/_index.md
@@ -579,18 +564,49 @@ function trap_container_exit() {
   do
     siteContainerStatus=$(docker ps | grep docs_site)
     if [ "$siteContainerStatus" == "" ] ; then
-      echo "[TERMINATE] Site exited, shutting down all containers" >> arangoproxy-log.log
+      docker stop docs_arangoproxy docs_site
+      log "[TERMINATE] Site exited, shutting down all containers" >> toolchain.log
+
+      terminate=true
+    fi
+    toolchainContainerStatus=$(docker ps | grep toolchain)
+    if [ "$toolchainContainerStatus" == "" ] ; then
+      docker stop docs_arangoproxy docs_site
+      log "[TERMINATE] Toolchain exited, shutting down all containers" >> toolchain.log
 
       terminate=true
     fi
     arangoproxyContainerStatus=$(docker ps | grep docs_arangoproxy)
     if [ "$arangoproxyContainerStatus" == "" ] ; then
-      echo "[TERMINATE] Arangoproxy exited, shutting down all containers" >> site-log.log
+      docker stop docs_arangoproxy docs_site
+      log "[TERMINATE] Arangoproxy exited, shutting down all containers" >> toolchain.log
       terminate=true
+    fi
+    if [ "$ENV" == "local" ]; then
+      errors=$(cat summary.md  | grep '<error')
+      if [ "$errors" != "" ] ; then
+        docker stop docs_arangoproxy docs_site
+        terminate=true
+      fi
     fi
   done
 
-  docker stop toolchain
+  errors=$(cat summary.md  | grep '<error')
+  if [ "$errors" != "" ] ; then
+    docker stop docs_arangoproxy docs_site
+    log "[TERMINATE] Error during content generation:" >> toolchain.log
+    log "[TERMINATE] ""$errors" >> toolchain.log
+  fi
+
+  log "[stop_all_containers] A stop signal has been captured. Stopping all containers" >> toolchain.log
+  TRAP=1
+  docker stop docs_arangoproxy docs_site
+  docker ps -a --filter name=docs_* -q | xargs docker stop | xargs docker rm
+  log "[stop_all_containers] Done" >> /home/toolchain.log
+  exitStatus=$(cat summary.md  | grep -o '<error code=.' | cut -d '=' -f2 | head -n 1)
+  log "[stop_all_containers] Toolchain Exit Status ""$exitStatus" >> /home/toolchain.log
+
+  exit $exitStatus
 }
 
 
