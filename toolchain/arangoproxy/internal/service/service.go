@@ -22,17 +22,18 @@ type CommonService struct{}
 
 var commonService = CommonService{}
 
-func (service CommonService) arangosh(name, code string, repository models.Repository, exampleChannel chan map[string]interface{}) {
+func (service CommonService) arangosh(name, code, filepath string, repository models.Repository, exampleChannel chan map[string]interface{}) {
 	exampleData := map[string]interface{}{
 		"name":       name,
 		"code":       code,
+		"filepath":   filepath,
 		"repository": repository,
 	}
 	exampleChannel <- exampleData
 }
 
 func (service CommonService) saveCache(request string, response models.ExampleResponse, cacheChannel chan map[string]interface{}) {
-	if response.Options.SaveCache == "false" {
+	if response.Options.SaveCache == "false" || strings.Contains(response.Output, "ERRORD") {
 		return
 	}
 
@@ -56,10 +57,10 @@ func (service JSService) Execute(request models.Example, cacheChannel chan map[s
 		return
 	}
 
-	commonService.arangosh(request.Options.Name, commands, repository, exampleChannel)
+	commonService.arangosh(request.Options.Name, commands, request.Options.Position, repository, exampleChannel)
 
-	cmdOutput := <-outputChannel
-	res = *models.NewExampleResponse(request.Code, cmdOutput, request.Options)
+	arangoshResult := <-outputChannel
+	res = *models.NewExampleResponse(request.Code, arangoshResult, request.Options)
 
 	commonService.saveCache(request.Base64Request, res, cacheChannel)
 
@@ -79,11 +80,11 @@ func (service CurlService) Execute(request models.Example, cacheChannel chan map
 		return
 	}
 
-	commonService.arangosh(request.Options.Name, commands, repository, exampleChannel)
+	commonService.arangosh(request.Options.Name, commands, request.Options.Position, repository, exampleChannel)
 
-	cmdOutput := <-outputChannel
+	arangoshResult := <-outputChannel
 
-	curlRequest, curlOutput, err := curlFormatter.FormatCurlOutput(cmdOutput, string(request.Options.Render))
+	curlRequest, curlOutput, err := curlFormatter.FormatCurlOutput(arangoshResult, string(request.Options.Render))
 	if err != nil {
 		return
 	}
@@ -114,14 +115,14 @@ func (service AQLService) Execute(request models.Example, cacheChannel chan map[
 		commands = removeDSCmd + "\n" + createDSCmd + "\n" + commands + "\n" + removeDSCmd
 	}
 
-	commonService.arangosh(request.Options.Name, commands, repository, exampleChannel)
+	commonService.arangosh(request.Options.Name, commands, request.Options.Position, repository, exampleChannel)
 
-	cmdOutput := <-outputChannel
+	arangoshResult := <-outputChannel
 
 	res.ExampleResponse.Input, res.ExampleResponse.Options = request.Code, request.Options
 
 	if strings.Contains(string(request.Options.Render), "output") {
-		res.ExampleResponse.Output = fmt.Sprintf("%s\n%s", res.Output, cmdOutput)
+		res.ExampleResponse.Output = fmt.Sprintf("%s\n%s", res.Output, arangoshResult)
 	}
 
 	models.FormatResponse(&res.ExampleResponse)
@@ -225,14 +226,11 @@ func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) e
 
 	if err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
-			models.Logger.Summary("%s - <strong>Error %d</strong>:", version, exitError.ExitCode())
-			models.Logger.Summary("%s", er.String())
-
-			time.Sleep(time.Second * 2)
-			os.Exit(exitError.ExitCode())
+			models.Logger.Summary("<error code=2>%s - <strong>Error %d</strong>:", version, exitError.ExitCode())
+			models.Logger.Summary("%s</error>", er.String())
 		}
+	} else {
+		models.Logger.Summary("%s &#x2713;", version)
 	}
-
-	models.Logger.Summary("%s &#x2713;", version)
 	return nil
 }

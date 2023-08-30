@@ -85,7 +85,7 @@ func ParseExample(request io.Reader, headers http.Header) (Example, error) {
 	}
 
 	optionsYaml.Filename = headers.Get("Page")
-	optionsYaml.Position = headers.Get("Codeblock-Start")
+	optionsYaml.Position = headers.Get("Codeblock-Path")
 	optionsYaml.SaveCache = headers.Get("Cache")
 	optionsYaml.Version = headers.Get("Version")
 
