@@ -111,10 +111,10 @@ def workflow_generate(config):
             }
         }
 
-        compileJob["openssl"] = "3.0.9"
+        compileJob["compile-linux"]["openssl"] = "3.0.9"
         if not "enterprise-preview" in branch:
-            compileJob["openssl"] = findOpensslVersion(branch)
-            
+            compileJob["compile-linux"]["openssl"] = findOpensslVersion(branch)
+
             if not extendedCompileJob:
                 extendedCompileJob = True
                 config["jobs"]["compile-linux"]["steps"].append({
