@@ -1239,7 +1239,7 @@
       "agent",
       "single"
     ],
-    "default" : 17872713728,
+    "default" : 7739682816,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -2154,7 +2154,7 @@
       "agent",
       "single"
     ],
-    "default" : "/var/lib/arangodb3",
+    "default" : "",
     "deprecatedIn" : null,
     "description" : "The path to the database directory.",
     "dynamic" : false,
@@ -3234,7 +3234,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "/var/lib/arangodb3-apps",
+    "default" : "./js/apps",
     "deprecatedIn" : null,
     "description" : "The directory for Foxx applications.",
     "dynamic" : false,
@@ -3532,6 +3532,7 @@
       "single"
     ],
     "default" : [
+      "./enterprise/js"
     ],
     "deprecatedIn" : null,
     "description" : "Additional paths containing JavaScript modules.",
@@ -3610,7 +3611,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "/usr/share/arangodb3/js",
+    "default" : "./js",
     "deprecatedIn" : null,
     "description" : "A path to the directory containing the JavaScript startup scripts.",
     "dynamic" : false,
@@ -6000,7 +6001,7 @@
       "agent",
       "single"
     ],
-    "default" : "-",
+    "default" : "",
     "deprecatedIn" : null,
     "description" : "shortcut for '--log.output file://<filename>'",
     "dynamic" : false,
@@ -6989,7 +6990,7 @@
       "coordinator",
       "single"
     ],
-    "default" : 36,
+    "default" : 8,
     "deprecatedIn" : null,
     "description" : "The maximum parallelism usable in a Pregel job.",
     "dynamic" : true,
@@ -7053,7 +7054,7 @@
       "coordinator",
       "single"
     ],
-    "default" : 9,
+    "default" : 2,
     "deprecatedIn" : null,
     "description" : "The default parallelism to use in a Pregel job if none is specified.",
     "dynamic" : true,
@@ -7290,7 +7291,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 73638338560,
+    "base" : 33106214912,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7298,7 +7299,7 @@
       "agent",
       "single"
     ],
-    "default" : 59647054233,
+    "default" : 26816034078,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7588,7 +7589,7 @@
     "type" : "double"
   },
   "query.memory-limit" : {
-    "base" : 73638338560,
+    "base" : 33106214912,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7596,7 +7597,7 @@
       "agent",
       "single"
     ],
-    "default" : 44183003136,
+    "default" : 19863728947,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -8924,7 +8925,7 @@
       "agent",
       "single"
     ],
-    "default" : 21447256473,
+    "default" : 9287619379,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -9873,7 +9874,7 @@
       "agent",
       "single"
     ],
-    "default" : 36,
+    "default" : 8,
     "deprecatedIn" : null,
     "description" : "The maximum number of concurrent background jobs (compactions and flushes).",
     "dynamic" : true,
@@ -9963,7 +9964,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 4,
+    "default" : 1,
     "deprecatedIn" : null,
     "description" : "The maximum number of index fill tasks that can run concurrently on server startup.",
     "dynamic" : true,
@@ -11505,7 +11506,7 @@
       "agent",
       "single"
     ],
-    "default" : 28596341964,
+    "default" : 12383492505,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
@@ -11536,7 +11537,7 @@
       "agent",
       "single"
     ],
-    "default" : 36,
+    "default" : 16,
     "deprecatedIn" : null,
     "description" : "The number of lock stripes to use for transaction locks.",
     "dynamic" : true,
@@ -12302,6 +12303,33 @@
     "section" : "server",
     "type" : "boolean"
   },
+  "server.failure-point" : {
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : [
+    ],
+    "deprecatedIn" : null,
+    "description" : "The failure point to set during server startup (requires compilation with failure points support).",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : null,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "server",
+    "type" : "string..."
+  },
   "server.gid" : {
     "category" : "option",
     "component" : [
@@ -12366,7 +12394,7 @@
       "agent",
       "single"
     ],
-    "default" : 9,
+    "default" : 2,
     "deprecatedIn" : null,
     "description" : "The number of threads used to handle I/O.",
     "dynamic" : true,
@@ -12561,7 +12589,7 @@
     "component" : [
       "dbserver"
     ],
-    "default" : 5,
+    "default" : 1,
     "deprecatedIn" : null,
     "description" : "The maximum number of threads available for slow maintenance actions (long SynchronizeShard and long EnsureIndex).",
     "dynamic" : true,
@@ -12591,7 +12619,7 @@
     "component" : [
       "dbserver"
     ],
-    "default" : 10,
+    "default" : 3,
     "deprecatedIn" : null,
     "description" : "The maximum number of threads available for maintenance actions.",
     "dynamic" : true,
@@ -12656,7 +12684,7 @@
     ],
     "default" : 0,
     "deprecatedIn" : null,
-    "description" : "The maximum number of request handling threads to run (0 = use system-specific default of 72)",
+    "description" : "The maximum number of request handling threads to run (0 = use system-specific default of 32)",
     "dynamic" : true,
     "enterpriseOnly" : false,
     "experimental" : false,

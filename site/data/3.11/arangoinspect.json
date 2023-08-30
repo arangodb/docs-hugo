@@ -18,6 +18,27 @@
     "section" : "",
     "type" : "boolean"
   },
+  "client.failure-points" : {
+    "category" : "option",
+    "default" : [
+    ],
+    "deprecatedIn" : null,
+    "description" : "The failure point to set during shell startup (requires compilation with failure points support).",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : null,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "client",
+    "type" : "string..."
+  },
   "config" : {
     "category" : "option",
     "default" : "",
@@ -814,7 +835,7 @@
   },
   "javascript.startup-directory" : {
     "category" : "option",
-    "default" : "/usr/share/arangodb3/js",
+    "default" : "./js",
     "deprecatedIn" : null,
     "description" : "The startup paths containing the JavaScript files.",
     "dynamic" : false,
@@ -1759,7 +1780,7 @@
   "server.endpoint" : {
     "category" : "option",
     "default" : [
-      "tcp://127.0.0.1:8529"
+      "http+tcp://127.0.0.1:8529"
     ],
     "deprecatedIn" : null,
     "description" : "The endpoint to connect to. Use 'none' to start without a server. Use http+ssl:// as schema to connect to an SSL-secured server endpoint, otherwise http+tcp:// or unix://",
