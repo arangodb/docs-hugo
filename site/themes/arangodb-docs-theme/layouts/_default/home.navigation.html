@@ -20,7 +20,6 @@
 
       {{- define "section-tree-nav" }}
         {{- $currentNode := .currentnode }}
-        {{ $pageVersion := $currentNode.Page.Scratch.Get "version"  }}
         {{- $currentFileRelPermalink := .currentnode.RelPermalink }}
   
         {{- with .sect }}
@@ -38,13 +37,13 @@
             {{- if $pages }}
               {{ if and (ne .Params.menuTitle "3.10") (ne .Params.menuTitle "3.11") (ne .Params.menuTitle "3.12")}}
                 {{ if eq .Layout "label" }}
-                <li data-nav-id="{{.RelPermalink}}" title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><label for="section-" class="closed {{.RelPermalink}}" onclick="event.preventDefault();menuToggleClick(event)" >
+                <li data-nav-id="{{.RelPermalink}}" class="dd-item{{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><label for="section-" class="closed {{.RelPermalink}}" onclick="event.preventDefault();menuToggleClick(event)" >
                 </label>
                   <a>
                     <div>{{ .Params.menuTitle | markdownify }}</div>
                     </a> 
                 {{ else }}
-                <li data-nav-id="{{.RelPermalink}}" title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item menu-section-entry {{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><label for="section-" class="closed {{.RelPermalink}}" onclick="event.preventDefault();menuToggleClick(event)" >
+                <li data-nav-id="{{.RelPermalink}}" class="dd-item menu-section-entry {{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><label for="section-" class="closed {{.RelPermalink}}" onclick="event.preventDefault();menuToggleClick(event)" >
                 </label>
                   <a href="{{.RelPermalink}}" class="toggle menu-section-entry menu-link"  ><div class="menu-title">{{ .Params.menuTitle | markdownify }}</div></a>
                 {{ end }}
@@ -57,12 +56,12 @@
                 </ul>
               {{- else }}
             {{ if ne .RelPermalink "/hooks/" }}
-            <li data-nav-id="{{.RelPermalink}}" test1 title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}}"><a href="{{.RelPermalink}}" class="menu-link"><div class="menu-title">{{ .Params.menuTitle  | markdownify }}</div></a></li>
+            <li data-nav-id="{{.RelPermalink}}" test1 class="dd-item{{if $isActive }} active{{end}}"><a href="{{.RelPermalink}}" class="menu-link"><div class="menu-title">{{ .Params.menuTitle  | markdownify }}</div></a></li>
             {{ end }}  
             {{- end }}
           {{- else }}
   
-              <li data-nav-id="{{.RelPermalink}}" test2 title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}} menu-leaf-entry"><a href="{{.RelPermalink}}" class="menu-link"><div class="menu-title">{{ .Params.menuTitle  | markdownify }}</div></a></li>
+              <li data-nav-id="{{.RelPermalink}}" test2 class="dd-item{{if $isActive }} active{{end}} menu-leaf-entry"><a href="{{.RelPermalink}}" class="menu-link"><div class="menu-title">{{ .Params.menuTitle  | markdownify }}</div></a></li>
           {{- end }}
         {{- end }}
       {{- end }}
