@@ -331,7 +331,7 @@ export HUGO_URL=https://docs.arangodb.com\n \
 export HUGO_ENV=release\n \
 export GENERATORS=''\n"
 
-    pullImage = pullImageCmd(branch)
+    pullImage = pullImageCmd(args.arangodb_branch)
 
     version_underscore = args.docs_version.replace(".", "_")
     branchEnv = f"{pullImage}\n \
