@@ -337,6 +337,7 @@ paths:
                     after the specified amount of time. This is useful to ensure garbage collection
                     of cursors that are not fully fetched by clients. If not set, a server-defined
                     value will be used (default: 30 seconds).
+                    The time-to-live is renewed upon every access to the cursor.
                   type: integer
                 cache:
                   description: |
@@ -1349,6 +1350,9 @@ paths:
       operationId: getNextAqlQueryCursorBatch
       description: |
         If the cursor is still alive, returns an object with the next query result batch.
+
+        If the cursor is not fully consumed, the time-to-live for the cursor
+        is renewed by this API call.
       parameters:
         - name: cursor-identifier
           in: path
@@ -1856,6 +1860,9 @@ paths:
         still return no documents. If, however, `hasMore` is `false`, then
         the cursor is exhausted.  Once the `hasMore` attribute has a value of
         `false`, the client can stop.
+
+        If the cursor is not fully consumed, the time-to-live for the cursor
+        is renewed by this API call.
       parameters:
         - name: cursor-identifier
           in: path
@@ -1991,6 +1998,8 @@ paths:
         application, it should explicitly delete the cursor to inform the server that it
         successfully received and processed the batch so that the server can free up
         resources.
+
+        The time-to-live for the cursor is renewed by this API call.
       parameters:
         - name: cursor-identifier
           in: path

@@ -8,7 +8,8 @@ archetype: chapter
 ---
 <small>Introduced in: v3.7.0</small>
 
-{{< tag "ArangoDB Enterprise""ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+
 ## What is a SatelliteGraph?
 
 _SatelliteGraphs_ are a specialized _named graph_ type available for cluster

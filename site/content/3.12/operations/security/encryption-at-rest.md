@@ -6,7 +6,8 @@ description: >-
   Securing physical storage media, available in the Enterprise Edition
 archetype: default
 ---
-{{< tag "ArangoDB Enterprise""ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+
 When you store sensitive data in your ArangoDB database, you want to protect
 that data under all circumstances. At runtime you will protect it with SSL
 transport encryption and strong authentication, but when the data is already

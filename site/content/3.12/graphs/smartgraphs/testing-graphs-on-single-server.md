@@ -9,7 +9,8 @@ archetype: default
 ---
 {{< description >}}
 
-{{< tag "ArangoDB Enterprise""ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+
 ## General idea
 
 You can create SmartGraphs and SatelliteGraphs in a single server instance and

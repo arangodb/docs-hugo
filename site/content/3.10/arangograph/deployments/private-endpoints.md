@@ -12,11 +12,6 @@ securely deploy to various cloud providers such as Google Cloud Platform (GCP),
 Microsoft Azure, and Amazon Web Services (AWS). Follow the steps outlined below
 to get started.
 
-{{< info >}}
-The private endpoint feature is only available on the
-[Enterprise tier](../organizations/_index.md#arangograph-tiers) of ArangoGraph.
-{{< /info >}}
-
 {{< tip >}}
 Private endpoints on Microsoft Azure can be cross region; in AWS they should be
 located in the same region.
@@ -53,9 +48,7 @@ service attachment that you need during the creation of your private endpoint(s)
 
 1. Open the deployment you want to change.
 2. On the **Overview** tab, click the **Edit** button with an ellipsis (`…`)
-   icon. If you see a pencil icon and no menu opens, then you are on the
-   Free-to-try or Professional tier. The private endpoint service is only available
-   if your organization belongs to the Enterprise tier. 
+   icon. 
 3. Click **Change to private endpoint** in the menu.
    ![ArangoGraph Deployment Private Endpoint Menu](../../../images/arangograph-gcp-change.png)
 4. In the configuration wizard, click **Next** to enter your configuration details.
@@ -99,9 +92,7 @@ please contact support via **Request help** in the help menu.
 
 1. Open the deployment you want to change.
 2. On the **Overview** tab, click the **Edit** button with an ellipsis (`…`)
-   icon. If you see a pencil icon and no menu opens, then you are on the
-   Free-to-try or Professional tier. The private endpoint service is only available
-   if your organization belongs to the Enterprise tier.
+   icon.
 3. Click **Change to private endpoint** in the menu.
    ![ArangoGraph Deployment Private Endpoint Menu](../../../images/arangograph-deployment-private-endpoint-menu.png)
 4. In the configuration wizard, click **Next** to enter your configuration details.
@@ -156,9 +147,7 @@ that automatically connects to private endpoints that are created in those princ
 
 1. Open the deployment you want to change.
 2. In the **Overview** tab, click the **Edit** button with an ellipsis (`…`)
-   icon. If you see a pencil icon and no menu opens, then you are on the
-   Free-to-try or Professional tier. The private endpoint service is only available
-   if your organization belongs to the Enterprise tier.
+   icon.
 3. Click **Change to private endpoint** in the menu.
    ![ArangoGraph Deployment AWS Change to Private Endpoint](../../../images/arangograph-aws-change-to-private-endpoint.png)
 4. In the configuration wizard, click **Next** to enter your configuration details.

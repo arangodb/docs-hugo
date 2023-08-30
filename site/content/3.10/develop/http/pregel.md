@@ -126,7 +126,6 @@ name: RestPregelStartConnectedComponents
 
 
   var examples = require("@arangodb/graph-examples/example-graph.js");
-  print("1. Creating Pregel graph");
   var graph = examples.loadGraph("connectedComponentsGraph");
 
   var url = "/_api/control_pregel";
@@ -152,7 +151,7 @@ name: RestPregelStartConnectedComponents
       assert(status.state == "done");
       break;
     } else {
-      print(`1. Waiting for Pregel job ${id} (${status.state})...`);
+      print(`Waiting for Pregel job ${id} (${status.state})...`);
       internal.sleep(0.5);
     }
   }
@@ -389,7 +388,6 @@ name: RestPregelStatusConnectedComponents
 
 
   var examples = require("@arangodb/graph-examples/example-graph.js");
-  print("3. Creating Pregel graph");
   var graph = examples.loadGraph("connectedComponentsGraph");
 
   var url = "/_api/control_pregel";
@@ -409,7 +407,7 @@ name: RestPregelStatusConnectedComponents
       assert(status.state == "done");
       break;
     } else {
-      print(`3. Waiting for Pregel job ${id} (${status.state})...`);
+      print(`Waiting for Pregel job ${id} (${status.state})...`);
       internal.sleep(0.5);
     }
   }
@@ -640,7 +638,6 @@ name: RestPregelStatusAllConnectedComponents
 
   var assertInstanceOf = require("jsunity").jsUnity.assertions.assertInstanceOf;
   var examples = require("@arangodb/graph-examples/example-graph.js");
-  print("2. Creating Pregel graph");
   var graph = examples.loadGraph("connectedComponentsGraph");
 
   var url = "/_api/control_pregel";
@@ -720,7 +717,6 @@ name: RestPregelCancelConnectedComponents
 
 
   var examples = require("@arangodb/graph-examples/example-graph.js");
-  print("4. Creating Pregel graph");
   var graph = examples.loadGraph("connectedComponentsGraph");
 
   var url = "/_api/control_pregel";
@@ -734,8 +730,8 @@ name: RestPregelCancelConnectedComponents
   };
   var id = internal.arango.POST(url, body);
 
-  var statusUrl = "/_api/control_pregel/" + id;
-  var response = logCurlRequest("DELETE", statusUrl);
+  var url = "/_api/control_pregel/" + id;
+  var response = logCurlRequest("DELETE", url);
 
   assert(response.code === 200);
 

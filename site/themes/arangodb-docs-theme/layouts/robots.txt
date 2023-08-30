@@ -1,0 +1,8 @@
+User-agent: *
+{{- if (findRE `^https://docs(-dev)?\.arangodb\.com(?:/|:\d{1,5}/?)?$` .Site.BaseURL 1) }}
+Disallow: /nav.html
+Disallow: /hooks
+{{- else }}
+{{- /* Don't let search engines index deploy previews on Netlify */}}
+Disallow: /
+{{- end }}

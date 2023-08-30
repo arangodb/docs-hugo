@@ -7,6 +7,7 @@ description: >-
 archetype: default
 ---
 {{< tag "ArangoDB Enterprise" >}}
+
 This section includes information related to the monitoring of the
 _Datacenter-to-Datacenter Replication_.
 

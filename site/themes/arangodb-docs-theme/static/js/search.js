@@ -360,18 +360,3 @@ function x() {
     var selector = $('#search-by').get(0);
 };
 
-function showSearchModal() {
-    var body = $('body');
-    
-    var searchContainer = $('<div class="search-container"></div>')
-    var searchModal = $('<div class="search-modal"></div>')
-
-    var searchBar = $('<header class="search-header">   <input data-search-input  id="search-by" type="search" placeholder="Search...">  </header>')
-    var searchResults = $('<div class="search-results-container"><div class="search-results"></div></div>')
-
-    searchModal.append(searchBar).append(searchResults)
-
-    searchContainer.append(searchModal)
-    body.append(searchContainer);
-    x();
-}
