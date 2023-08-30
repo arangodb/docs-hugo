@@ -36,12 +36,12 @@
             {{- safeHTML .Params.head }}
             {{- if $pages }}
               {{ if and (ne .Params.menuTitle "3.10") (ne .Params.menuTitle "3.11") (ne .Params.menuTitle "3.12")}}
-                <li data-nav-id="{{.RelPermalink}}" class="dd-item menu-section-entry {{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><label class="closed" onclick="event.preventDefault();menuToggleClick(event)" >
+                <li data-nav-id="{{.RelPermalink}}" class="dd-item sect{{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><label class="closed">
                 </label>
-                  <a href="{{.RelPermalink}}" class="toggle menu-section-entry menu-link"><div class="menu-title">{{ .Params.menuTitle | markdownify }}</div></a>
+                  <a href="{{.RelPermalink}}" class="toggle sect menu-link"><div class="menu-title">{{ .Params.menuTitle | markdownify }}</div></a>
               {{ end }}
   
-            <ul class='{{if or (eq .Params.menuTitle "3.10") (eq .Params.menuTitle "3.11") (eq .Params.menuTitle "3.12")}} version-menu {{ .Params.menuTitle }} {{ else }} submenu {{ end }}'>
+            <ul class="{{if or (eq .Params.menuTitle "3.10") (eq .Params.menuTitle "3.11") (eq .Params.menuTitle "3.12")}}version-menu {{ .Params.menuTitle }}{{ else }}submenu{{ end }}">
                   {{- range $pages.ByWeight }}
                     {{- template "section-tree-nav" dict "sect" . "currentnode" $currentNode }}
                   {{- end }}
@@ -53,7 +53,7 @@
             {{- end }}
           {{- else }}
   
-              <li data-nav-id="{{.RelPermalink}}" test2 class="dd-item{{if $isActive }} active{{end}} menu-leaf-entry"><a href="{{.RelPermalink}}" class="menu-link"><div class="menu-title">{{ .Params.menuTitle  | markdownify }}</div></a></li>
+              <li data-nav-id="{{.RelPermalink}}" test2 class="dd-item{{if $isActive }} active{{end}} leaf"><a href="{{.RelPermalink}}" class="menu-link"><div class="menu-title">{{ .Params.menuTitle | markdownify }}</div></a></li>
           {{- end }}
         {{- end }}
       {{- end }}

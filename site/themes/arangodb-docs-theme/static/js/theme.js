@@ -9,7 +9,7 @@ var theme = true;
 
 function toggleMenuItem(event) {
     const listItem = event.target.parentNode;
-    if (listItem.classList.contains("menu-leaf-entry")) 
+    if (listItem.classList.contains("leaf")) 
         return
 
     listItem.childNodes[0].classList.toggle("open");
@@ -18,6 +18,8 @@ function toggleMenuItem(event) {
 }
 
 function menuToggleClick(event) {
+    if (event.target.tagName !== "LABEL") return;
+    event.preventDefault();
     toggleMenuItem(event);
 }
 
@@ -410,7 +412,7 @@ window.onload = () => {
     renderVersion();
     loadMenu(window.location.href);
     initArticle(window.location.href);
-
+    content.addEventListener("click", menuToggleClick);
 
     var isMobile = window.innerWidth <= 768;
     if (isMobile) {
