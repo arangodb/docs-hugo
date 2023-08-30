@@ -213,7 +213,14 @@ jobs:
             docker push arangodb/docs-hugo:toolchain-<< parameters.architecture >>
 
 
-  plain-build: 
+  plain-build:
+    parameters:
+      branch:
+        type: string
+        default: $CIRCLE_BRANCH
+      url:
+        type: string
+        default: "https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app"
     machine:
       image: ubuntu-2004:current
     resource_class: large
@@ -227,7 +234,7 @@ jobs:
           name: Build site
           command: |
             export ENV="circleci"
-            export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app
+            export HUGO_URL=<< parameters.url >>
             export HUGO_ENV=frontend
 
             cd docs-hugo/toolchain/docker/amd64
@@ -309,6 +316,10 @@ jobs:
 
 
   deploy:
+    parameters:
+      deploy-args:
+        type: string
+        default: "--alias << pipeline.parameters.deploy-url >>"
     docker:
       - image: williamjackson/netlify-cli
     resource_class: small
@@ -317,7 +328,7 @@ jobs:
           at: .
       - run:
           name: Deploy to netlify
-          command:  /home/node/docker-netlify-cli/node_modules/.bin/netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN --alias << pipeline.parameters.deploy-url >>
+          command:  /home/node/docker-netlify-cli/node_modules/.bin/netlify deploy --dir=docs-hugo/site/public --site $NETLIFY_SITE_ID --auth $NETLIFY_ACCESS_TOKEN << parameters.deploy-args >>
           no_output_timeout: 1h
 
 

@@ -133,7 +133,8 @@ def workflow_generate(config):
 
     deployJob = {
         "deploy": {
-            "requires": [args.workflow]
+            "requires": [args.workflow],
+            "deploy-args": "--alias << pipeline.parameters.deploy-url >>"
         }
     }
     jobs.append(generateJob)
