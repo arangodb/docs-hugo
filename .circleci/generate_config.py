@@ -47,16 +47,16 @@ parser.add_argument(
     "--create-pr", help="file containing the test definitions", type=bool
 )
 parser.add_argument(
-    "--pr-branch", help="file containing the test definitions", type=str
+    "--pr-branch", nargs="?", help="file containing the test definitions", type=str
 )
 parser.add_argument(
-    "--release-type", help="file containing the test definitions", type=str
+    "--release-type", nargs="?", help="file containing the test definitions", type=str
 )
 parser.add_argument(
-    "--docs-version", help="file containing the test definitions", type=str
+    "--docs-version", nargs="?", help="file containing the test definitions", type=str
 )
 parser.add_argument(
-    "--arangodb-version", help="file containing the test definitions", type=str
+    "--arangodb-version", nargs="?", help="file containing the test definitions", type=str
 )
 
 args = parser.parse_args()
@@ -226,10 +226,8 @@ def workflow_release_arangodb(config):
     jobs.append(generateJob)
 
     jobs.append({"approve-workflow": {"type": "approval", "requires": ["release-generate"]}})
-
-    
-
     return config
+
 
 def workflow_release_deploy(config):
     return
