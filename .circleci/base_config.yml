@@ -419,7 +419,7 @@ jobs:
       - clone-docs-and-merge
       - when:
           condition:
-            equal: [ "release", << pipeline.paramaters.workflow >> ]
+            equal: [ "release", << pipeline.parameters.workflow >> ]
           steps:
             - update-arangodb-release-version:
                 docs-version: << pipeline.parameters.docs-version >>
