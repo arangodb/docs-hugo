@@ -222,14 +222,14 @@ def workflow_release_arangodb(config):
     }
     config["jobs"]["compile-linux"]["steps"].append({
         "check-arangodb-image-exists": {
-            "branch": branch,
-            "version": version
+            "branch": args.arangodb_branch,
+            "version": args.docs_version
         }
     })
     config["jobs"]["compile-linux"]["steps"].append({
         "compile-and-dockerize-arangodb": {
-            "branch": branch,
-            "version": version
+            "branch": args.arangodb_branch,
+            "version": args.docs_version
         }
     })
     generateRequires.append(f"compile-{args.docs_version}")
