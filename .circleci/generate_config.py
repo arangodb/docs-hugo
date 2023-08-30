@@ -111,11 +111,12 @@ def workflow_generate(config):
             }
         }
 
-        openssl = "3.0.9"
+        compileJob["openssl"] = "3.0.9"
         if not "enterprise-preview" in branch:
             compileJob["openssl"] = findOpensslVersion(branch)
-            print(f"found OpenSSL Version {openssl}")
+            
             if not extendedCompileJob:
+                extendedCompileJob = True
                 config["jobs"]["compile-linux"]["steps"].append({
                     "check-arangodb-image-exists": {
                         "branch": branch,
@@ -220,12 +221,6 @@ def workflow_release_arangodb(config):
             "openssl": openssl,
         }
     }
-    config["jobs"]["compile-linux"]["steps"].append({
-        "check-arangodb-image-exists": {
-            "branch": args.arangodb_branch,
-            "version": args.docs_version
-        }
-    })
     config["jobs"]["compile-linux"]["steps"].append({
         "compile-and-dockerize-arangodb": {
             "branch": args.arangodb_branch,
