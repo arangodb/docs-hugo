@@ -246,6 +246,10 @@ def workflow_release_arangodb(config):
         }
     }
 
+    for step in jobs["build-with-generated"]["steps"]:
+        if "upload-summary" in step:
+            step["upload-summary"]["branch"] = "<< pipeline.parameters.pr-branch >>-$CIRCLE_BUILD_NUM"
+
     jobs.insert(1, generateJob)
     jobs[2]["approve-workflow"]["requires"] = ["release-generate"]
 
