@@ -78,8 +78,6 @@ def generate_workflow(config):
     if args.workflow == "release":
         if args.release_type == "arangodb":
             workflow_release_arangodb(config)
-        else:
-            workflow_release_deploy(config)
 
     return config
 
@@ -206,11 +204,10 @@ def workflow_release_arangodb(config):
             "arangodb-branch": args.arangodb_branch,
             "version": args.docs_version,
             "openssl": openssl,
-            "requires": ["approve-workflow"]
         }
     }
     generateRequires.append(f"compile-{args.docs_version}")
-    jobs.append(compileJob)
+    jobs.insert(0, compileJob)
 
     generateJob = {
         "build-with-generated": {
@@ -223,14 +220,11 @@ def workflow_release_arangodb(config):
         }
     }
 
-    jobs.append(generateJob)
+    jobs.insert(1, generateJob)
+    jobs[2]["requires"] = ["release-generate"]
 
-    jobs.append({"approve-workflow": {"type": "approval", "requires": ["release-generate"]}})
     return config
 
-
-def workflow_release_deploy(config):
-    return
 
 
 ## COMMANDS
@@ -261,7 +255,8 @@ export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{version}"
 
     shell = f"{shell}\n\
 cd docs-hugo/toolchain/docker/amd64\n \
-docker compose up"
+docker compose up --exit-code-from toolchain\n \
+exit $?"
 
     config["commands"]["launch-toolchain"]["steps"][0]["run"]["command"] = shell
     return config
