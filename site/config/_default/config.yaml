@@ -43,6 +43,8 @@ outputFormats:
 outputs:
   home: ["HTML", "navigation", "index_310", "index_311", "index_312"]
 
+enableRobotsTXT: true
+
 caches:
   assets:
     dir: :resourceDir/_gen
@@ -74,7 +76,7 @@ params:
   disableNextPrev: false
   disableLandingPageButton: true
   titleSeparator: "::"
-  themeVariant: [ "relearn-light", "relearn-dark", "learn", "neon", "blue", "green", "red" ]
+  themeVariant: [ "relearn-light"]
   disableSeoHiddenPages: true
   additionalContentLanguage: [ "en" ]
   custom_css: ["css/*"]

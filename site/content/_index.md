@@ -1,41 +1,43 @@
 ---
-fileID: transactions
 title: ArangoDB Documentation
 menuTitle: '3.10'
 weight: 0
 description: 
 archetype: home
 ---
-
 ## Recommended Resources
+
 {{< cards >}}
 
-{{% card title="Introduction" %}}
-[Getting Started](introduction/getting-started/)
+{{% card title="What is ArangoDB?" link="{{ stableVersion }}/introduction/about-arangodb/" %}}
+Get to know **graphs**, ArangoDB's **use cases** and **features**.
 {{% /card %}}
 
-{{% card title="ArangoGraph Insights Platform" %}}
-Try our cloud
-[ArangoGraph](arangograph/)
+{{% card title="Getting started" link="{{ stableVersion }}/get-started/overview/" %}}
+Learn about ArangoDB's core concepts, how to interact with the database system,
+and get a server instance up and running.
 {{% /card %}}
 
-{{% card title="ArangoDB Query Language" %}}
-[AQL Introduction](aql/)
+{{% card title="ArangoGraph Insights Platform" link="{{ stableVersion }}/arangograph/" %}}
+Try out ArangoDB's cloud offering.
 {{% /card %}}
 
-{{% card title="Data Science" %}}
-[Data Science](data-science/)
+{{% card title="AQL" link="{{ stableVersion }}/aql/" %}}
+ArangoDB's Query Language AQL lets you use graphs, JSON documents, and search
+via a single, composable query language.
 {{% /card %}}
 
-{{% card title="Deployment" %}}
-Explore how to deploy ArangoDB
-
-[Deployment](deploying/)
+{{% card title="Data Science" link="{{ stableVersion }}/data-science/" %}}
+Discover the graph analytics and machine learning features of ArangoDB.
 {{% /card %}}
 
-{{% card title="Developer Topics" %}}
-Explore
-[Developer Topics](developer/)
+{{% card title="Deployment" link="{{ stableVersion }}/deploy/deployment/" %}}
+Find the right deployment type and set up your ArangoDB instance.
+{{% /card %}}
+
+{{% card title="Develop topics" link="{{ stableVersion }}/develop/" %}}
+The the in-depth feature and API documentation to start developing application
+with ArangoDB as your backend.
 {{% /card %}}
 
 {{< /cards >}}
