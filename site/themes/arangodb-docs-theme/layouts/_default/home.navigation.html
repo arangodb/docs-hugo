@@ -36,7 +36,7 @@
             {{- safeHTML .Params.head }}
             {{- if $pages }}
               {{ if and (ne .Params.menuTitle "3.10") (ne .Params.menuTitle "3.11") (ne .Params.menuTitle "3.12")}}
-                <li data-nav-id="{{.RelPermalink}}" class="dd-item sect{{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><label class="closed">
+                <li class="dd-item sect{{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><label class="closed">
                 </label>
                   <a href="{{.RelPermalink}}" class="toggle sect menu-link"><div class="menu-title">{{ .Params.menuTitle | markdownify }}</div></a>
               {{ end }}
@@ -48,12 +48,12 @@
                 </ul>
               {{- else }}
             {{ if ne .RelPermalink "/hooks/" }}
-            <li data-nav-id="{{.RelPermalink}}" test1 class="dd-item{{if $isActive }} active{{end}}"><a href="{{.RelPermalink}}" class="menu-link"><div class="menu-title">{{ .Params.menuTitle  | markdownify }}</div></a></li>
+            <li class="dd-item{{if $isActive }} active{{end}}"><a href="{{.RelPermalink}}" class="menu-link"><div class="menu-title">{{ .Params.menuTitle | markdownify }}</div></a></li>
             {{ end }}  
             {{- end }}
           {{- else }}
   
-              <li data-nav-id="{{.RelPermalink}}" test2 class="dd-item{{if $isActive }} active{{end}} leaf"><a href="{{.RelPermalink}}" class="menu-link"><div class="menu-title">{{ .Params.menuTitle | markdownify }}</div></a></li>
+              <li class="dd-item{{if $isActive }} active{{end}} leaf"><a href="{{.RelPermalink}}" class="menu-link"><div class="menu-title">{{ .Params.menuTitle | markdownify }}</div></a></li>
           {{- end }}
         {{- end }}
       {{- end }}
