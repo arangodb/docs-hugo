@@ -272,8 +272,10 @@ export GENERATORS='<< parameters.generators >>'\n"
         if branch == "undefined":
             continue
 
+        pullImage = pullImageCmd(branch)
+
         version_underscore = version.replace(".", "_")
-        branchEnv = f"pull-branch-image {branch} {version}\n \
+        branchEnv = f"{pullImage}\n \
 export ARANGODB_BRANCH_{version_underscore}={branch}\n \
 export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{version}"
 
@@ -346,6 +348,20 @@ docker compose up"
 
 
 ## UTILS
+
+def pullImageCmd(branch):
+    pullImage = f"docker pull {branch}"
+
+    if not "enterprise-preview" in branch:
+        pullImage = f"BRANCH=$1\n\
+version=$2"
+        pullImage += "\
+image_name=$(echo ${BRANCH##*/})\n\
+main_hash=$(awk 'END{print}' $version/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)\n\
+docker pull arangodb/docs-hugo:$image_name-$version-$main_hash\n\
+docker tag arangodb/docs-hugo:$image_name-$version-$main_hash $image_name-$version"
+
+    return pullImage
 
 def findOpensslVersion(branch):
     r = requests.get(f'https://raw.githubusercontent.com/arangodb/arangodb/{branch}/VERSIONS')

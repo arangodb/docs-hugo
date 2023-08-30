@@ -73,9 +73,6 @@ commands:
       - run:
           name: Clone ArangoDB and Enterprise
           command: |
-            curl "https://raw.githubusercontent.com/arangodb/docs-hugo/${CIRCLE_BRANCH}/.circleci/utils.sh" > utils.sh
-            source utils.sh
-
             rm -r /root/project/*
             branch_name=<< parameters.branch >>
 
@@ -89,7 +86,16 @@ commands:
             echo "[SETUP] Git clone $branch_name"
 
             git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name /root/project
-            clone-arangodb-enterprise $branch_name
+
+            ENTERPRISE_BRANCH="devel"
+            set +e
+            git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git $branch_name
+            if [ "$?" == "0" ] ; then
+                ENTERPRISE_BRANCH=$branch_name
+            fi
+            set -e
+            echo "Using enterprise branch $ENTERPRISE_BRANCH"
+            git clone --depth 1 git@github.com:arangodb/enterprise.git --branch "$ENTERPRISE_BRANCH" /root/project/enterprise
 
             mkdir -p /tmp/<< parameters.version >>
             cp -r /root/project/. /tmp/<< parameters.version >>
@@ -174,10 +180,27 @@ commands:
       - run:
           name: Create docker image
           command: |
-            curl "https://raw.githubusercontent.com/arangodb/docs-hugo/${CIRCLE_BRANCH}/.circleci/utils.sh" > utils.sh
-            source utils.sh
-            create-docker-image << parameters.branch >> << parameters.version >> $CIRCLE_BRANCH
+            mkdir -p create-docker/
 
+            curl "https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_BRANCH/toolchain/scripts/compile/tar-to-docker.Dockerfile" > create-docker/tar-to-docker.Dockerfile
+            curl "https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_BRANCH/toolchain/scripts/compile/setup-tar-to-docker.sh" > create-docker/setup-tar-to-docker.sh
+            curl "https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_BRANCH/toolchain/scripts/compile/docker-entrypoint.sh" > create-docker/docker-entrypoint.sh
+
+            mv install.tar.gz create-docker/
+
+            main_hash=$(awk 'END{print}' .git/logs/HEAD | awk '{print $2}' | cut -c1-9)
+            image_name=$(echo << parameters.branch >> | cut -d/ -f2)
+
+            cd create-docker
+            chmod +x setup-tar-to-docker.sh
+            chmod +x docker-entrypoint.sh
+
+            apk add docker-cli
+            
+            docker build -t arangodb/docs-hugo:$image_name-<< parameters.version >>-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
+
+            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
+            docker push arangodb/docs-hugo:$image_name-<< parameters.version >>-$main_hash
 
   launch-toolchain:
     description: "launch toolchain"
@@ -216,12 +239,15 @@ commands:
       summary-name:
         type: string
         default: ""
+      branch:
+        type: string
+        default: $CIRCLE_BRANCH
     steps:
       - run:
           name: Upload summary on GitHub
           command: |
             cd /home/circleci/project/docs-hugo
-            cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-check-name: << parameters.summary-name >>'  --header 'docs-branch-name: '$CIRCLE_BRANCH''
+            cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-check-name: << parameters.summary-name >>'  --header 'docs-branch-name: '<< parameters.branch >>''
           when: always
 
   update-arangodb-release-version:
@@ -256,9 +282,6 @@ commands:
   commit:
     description: Commit generated content
     parameters:
-      commit-generated:
-        type: boolean
-        default: false
       create-pr:
         type: boolean
         default: false
@@ -269,7 +292,6 @@ commands:
       - run:
           name: Commit generated files
           command: |
-            if [ "<< parameters.commit-generated >>" = true ] ; then
               if [ "<< parameters.create-pr >>" = true ]; then
                 cd docs-hugo/
                 git checkout -b << parameters.pr-branch >>-$CIRCLE_BUILD_NUM
@@ -291,7 +313,6 @@ commands:
               else
                 git push
               fi
-            fi
 
 
 jobs:
@@ -396,15 +417,19 @@ jobs:
       
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
       - clone-docs-and-merge
+      - when: { equal: [ release, << pipeline.parameters.workflow >> ] }
+        - update-arangodb-release-version:
+            docs-version: << pipeline.parameters.docs-version >>
+            arangodb-version: << pipeline.parameters.arangodb-version >>
       - launch-toolchain:
           generators: << parameters.generators >>
       - upload-summary:
           summary-name: "generate-summary"
       - store-generated-data
-      - commit:
-          commit-generated: << parameters.commit-generated >>
-          create-pr: << parameters.create-pr >>
-          pr-branch: << parameters.pr-branch >>
+      - when: { equal: [ true, << parameters.commit-generated >> ] }
+        - commit:
+            create-pr: << parameters.create-pr >>
+            pr-branch: << parameters.pr-branch >>
       
       - persist_to_workspace:
           root: .
