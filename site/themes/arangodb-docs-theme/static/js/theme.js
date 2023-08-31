@@ -9,12 +9,10 @@ var theme = true;
 
 function toggleMenuItem(event) {
     const listItem = event.target.parentNode;
-    if (listItem.classList.contains("leaf")) 
-        return
+    if (listItem.classList.contains("leaf")) return;
 
-    listItem.childNodes[0].classList.toggle("open");
-    jQuery(listItem.childNodes[2]).slideToggle();
-    console.log(listItem)
+    listItem.querySelector("label").classList.toggle("open");
+    $(listItem.querySelector(".submenu")).slideToggle();
 }
 
 function menuToggleClick(event) {
@@ -402,8 +400,8 @@ function moveTags() {
 
 window.onload = () => {
     var iframe =  document.getElementById('menu-iframe');
-    var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
-    content= iFrameBody.getElementById('sidebar');
+    var iFrameBody = iframe.contentDocument || iframe.contentWindow.document;
+    content = iFrameBody.getElementById('sidebar');
 
     $("#menu-iframe").replaceWith(content);
 
