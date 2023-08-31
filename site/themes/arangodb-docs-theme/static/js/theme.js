@@ -65,8 +65,8 @@ function loadMenu(url) {
     while (current.length > 0 && current.prop("class") != "topics collapsible-menu") {
         if (current.prop("tagName") == "LI") {
             current.addClass("parent");
-            jQuery(current.children()[0]).addClass("open") //Open label arrow
-            jQuery(current.children()[2]).show()
+            current.children("label:first").addClass("open");
+            current.children(".submenu:first").show();
         }
         
         current = current.parent();
