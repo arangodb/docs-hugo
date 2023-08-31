@@ -7,7 +7,7 @@
     {{ $gen | safeHTML }}
     {{- if not (and .Title (or (ne (.Scratch.Get "relearnIsHiddenStem") true) (ne .Site.Params.disableSeoHiddenPages true) ) ) }}
     <meta itemprop="description" name="description" content="ArangoDB is a scalable graph database system with native support for other data models and a built-in search engine, for the cloud and on-premises">
-    <meta property="og:url" content="https://www.arangodb.com/docs/stable/">
+    <meta property="og:url" content="https://docs.arangodb.com/">
     <meta property="og:title" content="Introduction to ArangoDB's Technical Documentation and Ecosystem | ArangoDB Documentation">
     <meta property="og:type" content="website">
     <meta property="og:description" content="ArangoDB is a scalable graph database system with native support for other data models and a built-in search engine, for the cloud and on-premises">
@@ -16,8 +16,24 @@
     {{- with .Site.Params.author }}
     <meta name="author" content="{{ . }}">
     {{- end }}
+    {{- $versionShort := .Page.Store.Get "versionShort" }}
+    {{- with $versionShort }}
+    <meta name="docsearch:version" content="{{ . }}">
+    {{- end }}
+    {{- if .Page.IsHome }}
+      {{- $shortVersions := slice }}
+      {{- $versions := index site.Data "versions" }}
+      {{- range $version := $versions }}
+        {{- $shortVersions = $shortVersions | append $version.name }}
+      {{- end }}
+      <meta name="docsearch:version" content="{{ delimit $shortVersions "," }}">
+    {{- end }}
     {{- if eq (len .Page.Ancestors) 1 }}
-        <script>
-            window.location.href = "{{ .Permalink }}/introduction"
-        </script>
+      {{- $redirectPath := .Permalink }}
+      {{- if eq .Type "hooks" }}
+        {{- $redirectPath = printf "/%s" (index (where (index site.Data "versions") "alias" "stable") 0).name }}
+      {{- end }}
+      <script>
+        window.location.href = "{{ $redirectPath }}/introduction/";
+      </script>
     {{ end }}
