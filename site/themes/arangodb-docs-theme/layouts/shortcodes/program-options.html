@@ -21,7 +21,7 @@
 
 {{ with $option.introducedIn }}
 <small>
-    Introduced in: v{{ . }}
+    Introduced in: {{ delimit . ", " }}
 </small>
 {{ end }}
 
