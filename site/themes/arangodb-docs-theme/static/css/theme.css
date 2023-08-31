@@ -60,6 +60,7 @@ html {
     margin: 0 !important;
     scroll-padding-top: 8rem;
     background-color: var(--CONTENT-BACKGROUND-COLOR);
+    -webkit-font-smoothing: antialiased;
  }
 
 body {
@@ -781,7 +782,7 @@ header .logo {
     box-sizing: border-box;
     border-radius: 8px;
     --tw-bg-opacity: 0.5;
-    background-color: var(--gray-800);
+    background-color: rgba(255, 255, 255, 0.05);
 }
 
 
@@ -796,7 +797,7 @@ header .logo {
     padding-left: 1rem;
     padding-right: 1rem;
     display: flex;
-    padding: 0.5rem 0;
+    padding: 6px 0;
     transition: 0.5s;
 }
 
@@ -866,7 +867,8 @@ header .logo {
 #sidebar ul.topics li.parent > a > .menu-title,
 #sidebar ul.topics li.active > a > .menu-title,
 #sidebar ul.topics li.alwaysopen > a > .menu-title {
-    font-weight: 500;
+    font-weight: 400;
+    color: var(--green-500);
 }
 
 #sidebar ul li li {
