@@ -13,7 +13,7 @@
     container: "#searchbox",
     debug: false, // Set debug to true if you want to inspect the modal,
     algoliaOptions: {
-      facetFilters: [version],
+      facetFilters: [`version:${version}`],
     },
   });
 </script>
