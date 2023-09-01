@@ -20,9 +20,8 @@ var user_examples = require("@arangodb/examples/example-users.js");
 
 
 var assert = function(condition) {
-  if (!condition) {
-    print('EXITD');
-    throw new Error('assertion failed');
+  if (!eval(condition)) {
+    print('ASSERTD ' + arguments[0]);
   }
 };
 

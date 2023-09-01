@@ -24,6 +24,13 @@ func AdjustCodeForArangosh(code string) string {
 	code = strings.ReplaceAll(code, "\r\n", "\n")
 	re = regexp.MustCompile(`(?m)}\n *catch`)
 	code = re.ReplaceAllString(code, "} catch")
+
+	assertRE := regexp2.MustCompile(`(?m)(?<=assert\().*(?=\))`, 0) // Replace all asserts args with String args because we want to eval() assert args
+	assertsArgs := utils.Regexp2FindAllString(assertRE, code)
+	for _, assert := range assertsArgs {
+		code = strings.ReplaceAll(code, fmt.Sprintf("assert(%s)", assert), fmt.Sprintf("assert('%s')", assert))
+	}
+
 	return code
 }
 

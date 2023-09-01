@@ -33,6 +33,7 @@ func ExecRoutine(example chan map[string]interface{}, outChannel chan string) {
 
 func Exec(exampleName string, code string, repository models.Repository) (output string) {
 	code = format.AdjustCodeForArangosh(code)
+	models.Logger.Printf(code)
 
 	cmd := []byte(code)
 	_, err := repository.StdinPipe.Write(cmd)
@@ -61,14 +62,15 @@ func Exec(exampleName string, code string, repository models.Repository) (output
 }
 
 func checkAssertionFailed(name, code, out, filepath string, repository models.Repository) string {
-	if strings.Contains(out, "EXITD") {
+	if strings.Contains(out, "ASSERTD") {
 		models.Logger.Printf("[%s] [ERROR]: Assertion Failed", name)
 		models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, out)
 
-		re := regexp.MustCompile(`(?m)JavaScript exception.*|ArangoError.*`)
+		re := regexp.MustCompile(`(?m)ASSERTD.*`)
 		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error></li><br>", repository.Version, name, filepath)
 		for _, match := range re.FindAllString(out, -1) {
-			models.Logger.Summary(match)
+			assertCondition := strings.ReplaceAll(match, "ASSERTD ", "")
+			models.Logger.Summary("Assertion Failed for condition %s", assertCondition)
 		}
 		return "ERRORD"
 	}
