@@ -470,26 +470,28 @@ class CustomizedDumper(yaml.Dumper):
 
 def render_yaml(block, title):
     blockYaml = yaml.dump(block, sort_keys=False, default_flow_style=False, Dumper=CustomizedDumper)
-    res = f'\
+    res = f'\n\
 ```openapi\n\
 {title}\n\
 \n\
 {blockYaml}\
-```'
+```\n\
+'
     res = res.replace("@endDocuBlock", "")
     #res = re.sub(r"^ *$\n", '', res, 0, re.MULTILINE | re.DOTALL)
     res = re.sub(r"\|.*", '|', res, 0, re.MULTILINE)
     return res
 
 def parse_examples(blockExamples):
-    res = '\n**Examples**\n\n'
+    res = '**Examples**\n'
     for example in blockExamples:
         exampleOptions = yaml.dump(example["options"], sort_keys=False, default_flow_style=False)
-        code = example["code"]
-        indentationToRemove = len(code.split("\n")[0]) - len(code.split("\n")[0].lstrip(' '))
-        code = re.sub("^ {"+str(indentationToRemove)+"}", '', code, 0, re.MULTILINE)
+        code = example["code"].lstrip("\n")
+        firstLine = code.partition("\n")[0]
+        indentationToRemove = len(firstLine) - len(firstLine.lstrip(' '))
+        code = re.sub("^ {0,"+str(indentationToRemove)+"}", '', code, 0, re.MULTILINE)
         
-        codeBlock = f'\n\
+        codeBlock = f'\
 ```curl\n\
 ---\n\
 {exampleOptions}\
