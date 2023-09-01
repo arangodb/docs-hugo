@@ -254,6 +254,20 @@ commands:
                 git push
               fi
 
+  commit-api-docs:
+    description: Commit api-docs files to api-docs repository
+    parameters:
+      version:
+        type: string
+        default: ""
+      tag:
+        type: string
+        default: ""
+    steps:
+      - run:
+          name: Commit api-docs
+          command: exit 0
+
 
 jobs:
   create-docs-images:
