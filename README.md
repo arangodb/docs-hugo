@@ -641,6 +641,9 @@ bugfix version), then this should be pointed out as follows:
 You may also add a remark if an existing feature or option is significantly
 extended by a new (sub-)option in a `x.x.0` release.
 
+While version remarks are mostly `Introduced in: ...`, you can also mark
+deprecated features in the same manner with `Deprecated in: ...`.
+
 ### Edition Remarks
 
 Pages and sections about Enterprise Edition features should indicate that the
