@@ -260,7 +260,7 @@ def commit_api_docs_command(config):
 
     if args.workflow == "release":
         steps.append(
-            {"run": {"name": f"Commit api-docs {version}", "command": commit_api_docs(args.docs_version, args.arangodb_version)}}
+            {"run": {"name": f"Commit api-docs {args.arangodb_version}", "command": commit_api_docs(args.docs_version, args.arangodb_version)}}
         )
     
     return config
