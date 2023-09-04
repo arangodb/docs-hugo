@@ -157,12 +157,6 @@ function codeShowMoreListener() {
   })
 }
 
-function showSearchListener() {
-  $('.searchbox').click(function(){
-    showSearchModal();
-  });
-}
-
 
 
 function initArticle(url) {
@@ -197,29 +191,37 @@ $(window).on('popstate', function (e) {
 */
 
 
+function getAllAnchors() {
+    return document.querySelector("article").querySelectorAll("h2,h3,h4,h5,h6")
+}
+function removeActiveFromAllAnchors() {
+  var anchors = getAllAnchors();
+  anchors.forEach(anchor => {
+      var heading = anchor.getAttribute('id')
+      let oldHRef = document.querySelector('#TableOfContents a[href="#' + heading + '"]');
+      oldHRef.parentElement.classList.remove('is-active');
+  });
+}
 function tocHiglighter() {
-  var anchors = document.querySelector("article").querySelectorAll("h2,h3,h4,h5,h6")
+  // only do this is screen width > 768px
+  if (window.innerWidth <= 768) return;
+  var anchors = getAllAnchors();
 
   var scrollTop = $(document).scrollTop();
-  for (var i = 0; i < anchors.length; i++){
-    var heading = anchors[i].getAttribute('id')
-    let oldHRef = $('#TableOfContents a[href="#' + heading + '"]');
-    oldHRef.parent().removeClass('is-active');
-  }
 
-  for (var i = anchors.length-1; i >= 0; i--){
-    if (scrollTop > $(anchors[i]).offset().top - 180) {
-
-      var heading = anchors[i].getAttribute('id')
-        highlightedHref = $('#TableOfContents a[href="#' + heading + '"]')
-        highlightedHref.parent()[0].scrollIntoView({behavior: "smooth"});
-        highlightedHref.parent().addClass('is-active');
-        break;
+  anchors.forEach(anchor => {
+    const rect = anchor.getBoundingClientRect();
+    const top = rect.top;
+    const id = anchor.id;
+    const currentHighlighted = document.querySelector('#TableOfContents .is-active a');
+    const currentHighlightedHref = currentHighlighted ? currentHighlighted.getAttribute('href') : null;
+    if (top < 240 && currentHighlightedHref !== '#' + id) {
+      removeActiveFromAllAnchors();
+      const highlightedHref = document.querySelector('#TableOfContents a[href="#' + id + '"]');
+      highlightedHref.parentElement.classList.add('is-active');x  
+      highlightedHref.parentElement.scrollIntoView({behavior: "smooth", block: "nearest" });
     }
-  }
-
-  activeHrefs = $('#TableOfContents > .ps > .is-active')
-  if (activeHrefs.length == 0) document.querySelectorAll('.toc-content')[0].scrollIntoView();
+  });
 }
 
 $(window).scroll(function(){
@@ -377,25 +379,20 @@ function toggleExpandShortcode(event) {
 }
 
 function moveTags() {
-    var tags = document.querySelectorAll(".labels")
+    var tags = document.querySelectorAll(".labels");
     for (let tag of tags) {
-        console.log(tag)
         if ($(tag).parent().is("li")) {
-            var x = $(tag).parent();
-            console.log(x)
             $(tag).parent().children()[0].after(tag);
-            //tag.remove();
-            continue
+            continue;
         }
-
         var prev = tag.previousSibling;
-        var isHeader = $(prev).is(':header')
-        while (!isHeader) {
+        var isHeader = $(prev).is(':header, hgroup');
+        while (prev && !isHeader) {
             prev = prev.previousSibling;
-            isHeader = $(prev).is(':header')
+            isHeader = $(prev).is(':header, hgroup');
         }
-
-        newTag = tag.outerHTML
+        if (!prev) continue;
+        newTag = tag.outerHTML;
         prev.insertAdjacentHTML('afterEnd', newTag);
         tag.remove();
     }
@@ -413,13 +410,12 @@ window.onload = () => {
     renderVersion();
     loadMenu(window.location.href);
     initArticle(window.location.href);
-    showSearchListener();
 
 
-    var isMobile = ( ( window.innerWidth <= 800 ) && ( window.innerHeight <= 900 ) );
+    var isMobile = window.innerWidth <= 768;
     if (isMobile) {
-        $('#sidebar').addClass("mobile")
-        $('#sidebar.mobile').removeClass("active")
+        $('#sidebar').addClass("mobile");
+        $('#sidebar.mobile').removeClass("active");
     }
 
     $('#show-page-loading').hide();
