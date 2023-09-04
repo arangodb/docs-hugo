@@ -143,7 +143,7 @@ commands:
             docker push arangodb/docs-hugo:$image_name-<< parameters.version >>-$main_hash
 
   launch-toolchain:
-    description: "launch toolchain"
+    description: "launch toolchain (extended by dynamic config)"
     parameters:
       generators:
         type: string
@@ -255,18 +255,13 @@ commands:
               fi
 
   commit-api-docs:
-    description: Commit api-docs files to api-docs repository
-    parameters:
-      version:
-        type: string
-        default: ""
-      tag:
-        type: string
-        default: ""
+    description: Commit api-docs files to api-docs repository (extended by dynamic config)
     steps:
       - run:
-          name: Commit api-docs
-          command: exit 0
+          name: Clone api-docs repo
+          command: |
+            git clone git@github.com:arangodb/api-docs.git
+
 
 
 jobs:
@@ -390,6 +385,8 @@ jobs:
             - commit:
                 create-pr: << parameters.create-pr >>
                 pr-branch: << parameters.pr-branch >>
+            - commit-api-docs
+
       
       - persist_to_workspace:
           root: .
@@ -431,6 +428,7 @@ jobs:
 
 
   compile-linux:
+    description: "Compile Linux Job (extended by dynamic config)"
     parameters:
       arangodb-branch:
         type: string

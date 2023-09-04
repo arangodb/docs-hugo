@@ -159,6 +159,7 @@ def workflow_generate(config):
 def workflow_generate_scheduled(config):
     config = workflow_generate_launch_command(config)
     config = workflow_generate_store_artifacts_command(config)
+    config = commit_api_docs_command(config)
 
     config["workflows"]["generate"]["jobs"] = []
     jobs = config["workflows"]["generate"]["jobs"]
@@ -203,6 +204,7 @@ def workflow_generate_scheduled(config):
 
 def workflow_release_arangodb(config):
     config = workflow_release_launch_command(config)
+    config = commit_api_docs_command(config)
 
     jobs = config["workflows"]["release"]["jobs"]
 
@@ -253,6 +255,16 @@ def workflow_release_arangodb(config):
 
 
 ## COMMANDS
+
+def commit_api_docs_command(config):
+    steps = config["commands"]["commit-api-docs"]["steps"]
+
+    if args.workflow == "release":
+        steps.append(
+            {"run": {"name": f"Commit api-docs {version}", "command": commit_api_docs(args.docs_version, args.arangodb_version)}}
+        )
+    
+    return config
 
 def workflow_generate_launch_command(config):
     shell = "\
@@ -349,6 +361,14 @@ docker compose up"
 
 
 ## UTILS
+
+def commit_api_docs(version, tag):
+    step = f"cd /home/circleci/project/api-docs\n\
+cp /home/circleci/project/docs-hugo/site/data/{version}/api-docs.json /home/circleci/project/api-docs/\n\
+git add .\n\
+git commit -m 'Commit api-docs {tag}\n\
+git tag {tag}\n\
+git push origin {tag}"
 
 def pullImageCmd(branch, version):
     pullImage = f"docker pull {branch}"
