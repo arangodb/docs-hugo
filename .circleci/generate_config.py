@@ -369,6 +369,8 @@ git commit -m 'Commit api-docs {tag}\n\
 git tag {tag}\n\
 git push origin {tag}"
 
+    return step
+
 def pullImageCmd(branch, version):
     pullImage = f"docker pull {branch}"
 
