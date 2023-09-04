@@ -17,9 +17,9 @@ toolchain/scripts/arangoproxy/arangosh
 toolchain/arangoproxy/arangosh
 toolchain/docker/config.yaml
 toolchain/arangoproxy/cmd/configs/local.yaml
+summary.md
 
 site/resources
-.vagrant/
 
 # Local Netlify folder
 .netlify
