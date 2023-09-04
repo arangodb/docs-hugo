@@ -166,7 +166,6 @@ function initArticle(url) {
   styleImages();
   internalLinkListener();
   codeShowMoreListener();
-  moveTags();
 }
 
 
@@ -378,25 +377,6 @@ function toggleExpandShortcode(event) {
     t.parent().toggleClass('expand-expanded');
 }
 
-function moveTags() {
-    var tags = document.querySelectorAll(".labels");
-    for (let tag of tags) {
-        if ($(tag).parent().is("li")) {
-            $(tag).parent().children()[0].after(tag);
-            continue;
-        }
-        var prev = tag.previousSibling;
-        var isHeader = $(prev).is(':header, hgroup');
-        while (prev && !isHeader) {
-            prev = prev.previousSibling;
-            isHeader = $(prev).is(':header, hgroup');
-        }
-        if (!prev) continue;
-        newTag = tag.outerHTML;
-        prev.insertAdjacentHTML('afterEnd', newTag);
-        tag.remove();
-    }
-}
 
 window.onload = () => {
     var iframe =  document.getElementById('menu-iframe');
