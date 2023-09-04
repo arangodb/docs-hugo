@@ -29,7 +29,7 @@
   {{ $title := replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}
 
     {{- partial "shortcodes/card.html" (dict
-    "Inner" .Description
+    "Inner" (.Description | markdownify)
     "title"  $title
     "link" .RelPermalink
       ) }}  
