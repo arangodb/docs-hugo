@@ -1,4 +1,5 @@
 {{ $program := .Get "name" }}
+{{ $context := . }}
 
 {{ $pageVersion := .Page.Store.Get "versionShort" }}
 
@@ -18,10 +19,9 @@
 
 
 
-
 {{ with $option.introducedIn }}
 <small>
-    Introduced in: v{{ . }}
+    Introduced in: {{ delimit . ", " }}
 </small>
 {{ end }}
 
@@ -78,7 +78,12 @@ Effective on {{ $option.component }} only.
 {{ end }}
 
 {{ with $option.longDescription }}
-{{ partial "shortcodes/expand.html" dict "title" "Show details" "content" $option.longDescription }}
+{{- partial "shortcodes/expand.html" (dict
+"context" $context
+"content" $option.longDescription
+"open"    "open"
+"title"   "show details"
+) }}
 {{ end }}
 
 ---
