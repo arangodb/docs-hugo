@@ -813,7 +813,7 @@ header .logo {
 }
 
 #sidebar ul li a.toggle,
-#sidebar ul li.menu-leaf-entry a {
+#sidebar ul li.leaf a {
     margin-right: -0.5rem;
     padding-right: 1.5rem;
     border-radius: 8px;
@@ -830,7 +830,7 @@ header .logo {
     line-height: 1rem;
 }
 
-.menu-section-entry > label.closed::before {
+.sect > label.closed::before {
     font-family: "Font Awesome 5 Free";
     content: "\f078";
     display: inline-block;
@@ -842,7 +842,7 @@ header .logo {
     color: var(--gray-300);
 }
 
-.menu-section-entry > label.open::before {
+.sect > label.open::before {
     font-family: "Font Awesome 5 Free";
     content: "\f077";
     display: inline-block;
@@ -854,7 +854,7 @@ header .logo {
     color: var(--gray-300);
 }
 
-.menu-leaf-entry > a {
+.leaf > a {
     align-items: center;
     position: relative;
 }

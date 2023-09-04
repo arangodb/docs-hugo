@@ -9,15 +9,15 @@ var theme = true;
 
 function toggleMenuItem(event) {
     const listItem = event.target.parentNode;
-    if (listItem.classList.contains("menu-leaf-entry")) 
-        return
+    if (listItem.classList.contains("leaf")) return;
 
-    listItem.childNodes[0].classList.toggle("open");
-    jQuery(listItem.childNodes[2]).slideToggle();
-    console.log(listItem)
+    listItem.querySelector("label").classList.toggle("open");
+    $(listItem.querySelector(".submenu")).slideToggle();
 }
 
 function menuToggleClick(event) {
+    if (event.target.tagName !== "LABEL") return;
+    event.preventDefault();
     toggleMenuItem(event);
 }
 
@@ -65,8 +65,8 @@ function loadMenu(url) {
     while (current.length > 0 && current.prop("class") != "topics collapsible-menu") {
         if (current.prop("tagName") == "LI") {
             current.addClass("parent");
-            jQuery(current.children()[0]).addClass("open") //Open label arrow
-            jQuery(current.children()[2]).show()
+            current.children("label:first").addClass("open");
+            current.children(".submenu:first").show();
         }
         
         current = current.parent();
@@ -400,8 +400,8 @@ function moveTags() {
 
 window.onload = () => {
     var iframe =  document.getElementById('menu-iframe');
-    var iFrameBody= iframe.contentDocument || iframe.contentWindow.document;
-    content= iFrameBody.getElementById('sidebar');
+    var iFrameBody = iframe.contentDocument || iframe.contentWindow.document;
+    content = iFrameBody.getElementById('sidebar');
 
     $("#menu-iframe").replaceWith(content);
 
@@ -410,7 +410,7 @@ window.onload = () => {
     renderVersion();
     loadMenu(window.location.href);
     initArticle(window.location.href);
-
+    content.addEventListener("click", menuToggleClick);
 
     var isMobile = window.innerWidth <= 768;
     if (isMobile) {
