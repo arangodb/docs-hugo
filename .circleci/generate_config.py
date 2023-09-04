@@ -159,7 +159,6 @@ def workflow_generate(config):
 def workflow_generate_scheduled(config):
     config = workflow_generate_launch_command(config)
     config = workflow_generate_store_artifacts_command(config)
-    config = commit_api_docs_command(config)
 
     config["workflows"]["generate"]["jobs"] = []
     jobs = config["workflows"]["generate"]["jobs"]
