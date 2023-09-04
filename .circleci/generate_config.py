@@ -365,7 +365,7 @@ def commit_api_docs(version, tag):
     step = f"cd /home/circleci/project/api-docs\n\
 cp /home/circleci/project/docs-hugo/site/data/{version}/api-docs.json /home/circleci/project/api-docs/\n\
 git add .\n\
-git commit -m 'Commit api-docs {tag}\n\
+git commit -m 'Commit api-docs {tag}'\n\
 git tag {tag}\n\
 git push origin {tag}"
 
