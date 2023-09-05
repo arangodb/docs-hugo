@@ -1,12 +1,14 @@
 #!/bin/bash
 
+: > /tmp/hugo-summary.md
+
 function checkIPIsReachable() {
    res=$(curl -s -I $1 | grep HTTP/ | awk {'print $2'})
    if [ "$res" = "200" ]; then
      echo "Connection success"
    else
      echo "Connection failed for $1"
-    sleep 2s
+    sleep 3s
     checkIPIsReachable $1
    fi
 }
@@ -21,16 +23,24 @@ fi
 
 cd /home/site
 
-hugoOptions="--verbose"
+hugoOptions=""
 if [ "$ENV" = "local" ]; then
     hugoOptions="serve --buildDrafts --watch --bind=0.0.0.0 --ignoreCache --noHTTPCache"
 fi
 
 
-echo "Hugo Settings:"
-echo "   BaseURL:     $HUGO_URL"
-echo "   Environment: $HUGO_ENV"
-echo "   Options:     $hugoOptions"
 
-hugo $hugoOptions -e $HUGO_ENV -b $HUGO_URL --minify 2>&1 | tee /home/summary.md
+
+set -o pipefail
+hugo $hugoOptions -e $HUGO_ENV -b $HUGO_URL --minify 2>&1 | tee -a /tmp/hugo-summary.md
+exit=$?
+
+echo "<h2>Hugo</h2>" >> /home/summary.md
+echo "<strong>BaseURL</strong>: $HUGO_URL<br>" >> /home/summary.md
+echo "<strong>Environment</strong>: $HUGO_ENV<br>" >> /home/summary.md
+echo "<strong>Options</strong>: $hugoOptions<br>" >> /home/summary.md
+
+sed 's/$/<br>/g' /tmp/hugo-summary.md >> /home/summary.md
+
+exit $exit
 
