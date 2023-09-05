@@ -445,7 +445,7 @@ def processFile(page, content, filepath):
             ## Hint-ee
             if "{% include hint-ee" in line:
                 feature = re.search(r"(?<=feature=).*\"", line).group(0)
-                tags = ["ArangoDB Enterprise"]
+                tags = ["ArangoDB Enterprise Edition"]
                 if '-arangograph.md' in line:
                     tags.append("ArangoGraph")
 
