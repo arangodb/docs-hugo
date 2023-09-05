@@ -485,7 +485,6 @@ workflows:
       - approve-workflow:
           type: approval
       - plain-build:
-          branch: frontend-preview
           url: https://docs.arangodb.com
           requires:
             - approve-workflow
