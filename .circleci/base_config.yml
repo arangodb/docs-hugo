@@ -187,6 +187,7 @@ commands:
           name: Upload summary on GitHub
           command: |
             cd /home/circleci/project/docs-hugo
+            
             cat summary.md | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-check-name: << parameters.summary-name >>'  --header 'docs-branch-name: '<< parameters.branch >>''
           when: always
 
@@ -496,11 +497,11 @@ workflows:
       - approve-workflow:
           type: approval
       - plain-build:
-          branch: frontend-preview
           url: https://docs.arangodb.com
           requires:
             - approve-workflow
       - deploy:
+          deploy-args: "--prod"
           requires:
             - plain-build
 
