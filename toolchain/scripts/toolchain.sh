@@ -423,8 +423,7 @@ function generate_startup_options() {
   container_name="$1"
   version="$2"
   log "[generate_startup_options] Starting options dump for container " "$container_name"
-  
-  declare -a ALLPROGRAMS=("arangobench" "arangod" "arangodump" "arangoexport" "arangoimport" "arangoinspect" "arangorestore" "arangosh")
+  declare -a ALLPROGRAMS=("arangobackup" "arangobench" "arangod" "arangodump" "arangoexport" "arangoimport" "arangoinspect" "arangorestore" "arangosh" "arangovpack")
 
   echo "<li><strong>$version</strong>:<ul>" >> /home/summary.md
 
