@@ -66,7 +66,7 @@ func checkAssertionFailed(name, code, out, filepath string, repository models.Re
 		models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, out)
 
 		re := regexp.MustCompile(`(?m)ASSERTD.*`)
-		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error></li><br>", repository.Version, name, filepath)
+		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error></li>", repository.Version, name, filepath)
 		for _, match := range re.FindAllString(out, -1) {
 			assertCondition := strings.ReplaceAll(match, "ASSERTD ", "")
 			models.Logger.Summary("Assertion Failed for condition %s", assertCondition)
