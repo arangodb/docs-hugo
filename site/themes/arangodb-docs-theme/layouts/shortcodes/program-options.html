@@ -94,12 +94,11 @@ Effective on {{ delimit . ", " " and " }} only.
 {{ end }}
 
 {{ with $option.longDescription }}
-{{- partial "shortcodes/expand.html" (dict
-"context" $context
-"content" $option.longDescription
-"open"    "open"
-"title"   "show details"
-) }}
+  {{- partial "shortcodes/expand.html" (dict
+    "content" .
+    "open"    "open"
+    "title"   "Show details"
+  ) }}
 {{ end }}
 
 ---
