@@ -471,9 +471,9 @@ class CustomizedDumper(yaml.Dumper):
 def render_yaml(block, title):
     blockYaml = yaml.dump(block, sort_keys=False, default_flow_style=False, Dumper=CustomizedDumper)
     res = f'\n\
-```openapi\n\
 {title}\n\
 \n\
+```openapi\n\
 {blockYaml}\
 ```\n\
 '
