@@ -10,7 +10,7 @@ archetype: default
 ---
 {{< description >}}
 
-{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 By default, `arangosearch` Views index arrays as if the parent attribute had
 multiple values at once. This is also supported for `search-alias` Views by enabling

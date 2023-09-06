@@ -6,7 +6,7 @@ description: >-
   LDAP authentication options in the ArangoDB server
 archetype: default
 ---
-{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 ## Basics Concepts
 

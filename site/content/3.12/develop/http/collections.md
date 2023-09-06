@@ -1179,7 +1179,7 @@ paths:
                 shardingStrategy:
                   description: |
                     This attribute specifies the name of the sharding strategy to use for
-                    the collection. There are different sharding strategies
+                    the collection. Since ArangoDB 3.4 there are different sharding strategies
                     to select from when creating a new collection. The selected `shardingStrategy`
                     value remains fixed for the collection and cannot be changed afterwards.
                     This is important to make the collection keep its sharding settings and

@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl list example installations command
 title: Oasisctl List Example Installations
 menuTitle: List Example Installations
-weight: 95
+weight: 90
+description: >-
+  Description of the oasisctl list example installations command
+archetype: default
 ---
+List all example dataset installations for a deployment
+
 ## Synopsis
+
 List all example dataset installations for a deployment
 
 ```
@@ -13,6 +17,7 @@ oasisctl list example installations [flags]
 ```
 
 ## Options
+
 ```
   -d, --deployment-id string     Identifier of the deployment to list installations for
   -h, --help                     help for installations
@@ -20,7 +25,8 @@ oasisctl list example installations [flags]
   -p, --project-id string        Identifier of the project
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -28,5 +34,6 @@ oasisctl list example installations [flags]
 ```
 
 ## See also
+
 * [oasisctl list example](list-example.md)	 - List example ...
 

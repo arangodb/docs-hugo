@@ -491,8 +491,8 @@ paths:
           in: query
           required: false
           description: |
-            Whether to add a new entry to the in-memory edge cache if an edge document
-            is inserted.
+            Whether to add new entries to in-memory index caches if document insertions
+            affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
       requestBody:
@@ -521,16 +521,25 @@ paths:
             is returned if the body does not contain a valid JSON representation
             of one document. The response body contains
             an error document in this case.
+        '403':
+          description: |
+            with the error code `1004` is returned if the specified write concern for the
+            collection cannot be fulfilled. This can happen if less than the number of
+            specified replicas for a shard are currently in-sync with the leader. For example,
+            if the write concern is `2` and the replication factor is `3`, then the
+            write concern is not fulfilled if two replicas are not in-sync.
         '404':
           description: |
             is returned if the collection specified by `collection` is unknown.
             The response body contains an error document in this case.
         '409':
           description: |
-            is returned in the single document case if a document with the
-            same qualifiers in an indexed attribute conflicts with an already
-            existing document and thus violates that unique constraint. The
-            response body contains an error document in this case.
+            There are two possible reasons for this error in the single document case
+        '503':
+          description: |
+            is returned if the system is temporarily not available. This can be a system
+            overload or temporary failure. In this case it makes sense to retry the request
+            later.
       tags:
         - Documents
 ```
@@ -843,8 +852,8 @@ paths:
           in: query
           required: false
           description: |
-            Whether to update an existing entry in the in-memory edge cache if an
-            edge document is replaced.
+            Whether to update existing entries in in-memory index caches if documents
+            replacements affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
         - name: If-Match
@@ -869,18 +878,29 @@ paths:
             is returned if the body does not contain a valid JSON representation
             of a document. The response body contains
             an error document in this case.
+        '403':
+          description: |
+            with the error code `1004` is returned if the specified write concern for the
+            collection cannot be fulfilled. This can happen if less than the number of
+            specified replicas for a shard are currently in-sync with the leader. For example,
+            if the write concern is `2` and the replication factor is `3`, then the
+            write concern is not fulfilled if two replicas are not in-sync.
         '404':
           description: |
             is returned if the collection or the document was not found.
         '409':
           description: |
-            is returned if the replace causes a unique constraint violation in
-            a secondary index.
+            There are two possible reasons for this error
         '412':
           description: |
             is returned if the precondition is violated. The response also contains
             the found documents' current revisions in the `_rev` attributes.
             Additionally, the attributes `_id` and `_key` are returned.
+        '503':
+          description: |
+            is returned if the system is temporarily not available. This can be a system
+            overload or temporary failure. In this case it makes sense to retry the request
+            later.
       tags:
         - Documents
 ```
@@ -1128,8 +1148,8 @@ paths:
           in: query
           required: false
           description: |
-            Whether to update an existing entry in the in-memory edge cache if an
-            edge document is updated.
+            Whether to update existing entries in in-memory index caches if document updates
+            affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
         - name: If-Match
@@ -1154,18 +1174,29 @@ paths:
             is returned if the body does not contain a valid JSON representation
             of a document. The response body contains
             an error document in this case.
+        '403':
+          description: |
+            with the error code `1004` is returned if the specified write concern for the
+            collection cannot be fulfilled. This can happen if less than the number of
+            specified replicas for a shard are currently in-sync with the leader. For example,
+            if the write concern is `2` and the replication factor is `3`, then the
+            write concern is not fulfilled if two replicas are not in-sync.
         '404':
           description: |
             is returned if the collection or the document was not found.
         '409':
           description: |
-            is returned if the update causes a unique constraint violation in
-            a secondary index.
+            There are two possible reasons for this error
         '412':
           description: |
             is returned if the precondition was violated. The response also contains
             the found documents' current revisions in the `_rev` attributes.
             Additionally, the attributes `_id` and `_key` are returned.
+        '503':
+          description: |
+            is returned if the system is temporarily not available. This can be a system
+            overload or temporary failure. In this case it makes sense to retry the request
+            later.
       tags:
         - Documents
 ```
@@ -1311,8 +1342,8 @@ paths:
           in: query
           required: false
           description: |
-            Whether to delete an existing entry from the in-memory edge cache and refill it
-            with another edge if an edge document is removed.
+            Whether to delete existing entries from in-memory index caches and refill them
+            if document removals affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
         - name: If-Match
@@ -1332,16 +1363,35 @@ paths:
           description: |
             is returned if the document was removed successfully and
             `waitForSync` was `false`.
+        '403':
+          description: |
+            with the error code `1004` is returned if the specified write concern for the
+            collection cannot be fulfilled. This can happen if less than the number of
+            specified replicas for a shard are currently in-sync with the leader. For example,
+            if the write concern is `2` and the replication factor is `3`, then the
+            write concern is not fulfilled if two replicas are not in-sync.
         '404':
           description: |
             is returned if the collection or the document was not found.
             The response body contains an error document in this case.
+        '409':
+          description: |
+            is returned if locking the document key failed due to another
+            concurrent operation that operates on the same document.
+            This is also referred to as a _write-write conflict_.
+            The response body contains an error document with the
+            `errorNum` set to `1200` (`ERROR_ARANGO_CONFLICT`) in this case.
         '412':
           description: |
             is returned if a "If-Match" header or `rev` is given and the found
             document has a different version. The response also contain the found
             document's current revision in the `_rev` attribute. Additionally, the
             attributes `_id` and `_key` are returned.
+        '503':
+          description: |
+            is returned if the system is temporarily not available. This can be a system
+            overload or temporary failure. In this case it makes sense to retry the request
+            later.
       tags:
         - Documents
 ```
@@ -1754,8 +1804,8 @@ paths:
           in: query
           required: false
           description: |
-            Whether to add new entries to the in-memory edge cache if edge documents are
-            inserted.
+            Whether to add new entries to in-memory index caches if document insertions
+            affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
       requestBody:
@@ -1782,10 +1832,22 @@ paths:
             is returned if the body does not contain a valid JSON representation
             of an array of documents. The response body contains
             an error document in this case.
+        '403':
+          description: |
+            with the error code `1004` is returned if the specified write concern for the
+            collection cannot be fulfilled. This can happen if less than the number of
+            specified replicas for a shard are currently in-sync with the leader. For example,
+            if the write concern is `2` and the replication factor is `3`, then the
+            write concern is not fulfilled if two replicas are not in-sync.
         '404':
           description: |
             is returned if the collection specified by `collection` is unknown.
             The response body contains an error document in this case.
+        '503':
+          description: |
+            is returned if the system is temporarily not available. This can be a system
+            overload or temporary failure. In this case it makes sense to retry the request
+            later.
       tags:
         - Documents
 ```
@@ -1993,8 +2055,8 @@ paths:
           in: query
           required: false
           description: |
-            Whether to update existing entries in the in-memory edge cache if
-            edge documents are replaced.
+            Whether to update existing entries in in-memory index caches if documents
+            replacements affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
       responses:
@@ -2009,9 +2071,21 @@ paths:
             is returned if the body does not contain a valid JSON representation
             of an array of documents. The response body contains
             an error document in this case.
+        '403':
+          description: |
+            with the error code `1004` is returned if the specified write concern for the
+            collection cannot be fulfilled. This can happen if less than the number of
+            specified replicas for a shard are currently in-sync with the leader. For example,
+            if the write concern is `2` and the replication factor is `3`, then the
+            write concern is not fulfilled if two replicas are not in-sync.
         '404':
           description: |
             is returned if the collection was not found.
+        '503':
+          description: |
+            is returned if the system is temporarily not available. This can be a system
+            overload or temporary failure. In this case it makes sense to retry the request
+            later.
       tags:
         - Documents
 ```
@@ -2176,8 +2250,8 @@ paths:
           in: query
           required: false
           description: |
-            Whether to update existing entries in the in-memory edge cache if
-            edge documents are updated.
+            Whether to update existing entries in in-memory index caches if document updates
+            affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
       responses:
@@ -2192,9 +2266,21 @@ paths:
             is returned if the body does not contain a valid JSON representation
             of an array of documents. The response body contains
             an error document in this case.
+        '403':
+          description: |
+            with the error code `1004` is returned if the specified write concern for the
+            collection cannot be fulfilled. This can happen if less than the number of
+            specified replicas for a shard are currently in-sync with the leader. For example,
+            if the write concern is `2` and the replication factor is `3`, then the
+            write concern is not fulfilled if two replicas are not in-sync.
         '404':
           description: |
             is returned if the collection was not found.
+        '503':
+          description: |
+            is returned if the system is temporarily not available. This can be a system
+            overload or temporary failure. In this case it makes sense to retry the request
+            later.
       tags:
         - Documents
 ```
@@ -2302,8 +2388,8 @@ paths:
           in: query
           required: false
           description: |
-            Whether to delete existing entries from the in-memory edge cache and refill it
-            with other edges if edge documents are removed.
+            Whether to delete existing entries from in-memory index caches and refill them
+            if document removals affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
       responses:
@@ -2313,10 +2399,22 @@ paths:
         '202':
           description: |
             is returned if `waitForSync` was `false`.
+        '403':
+          description: |
+            with the error code `1004` is returned if the specified write concern for the
+            collection cannot be fulfilled. This can happen if less than the number of
+            specified replicas for a shard are currently in-sync with the leader. For example,
+            if the write concern is `2` and the replication factor is `3`, then the
+            write concern is not fulfilled if two replicas are not in-sync.
         '404':
           description: |
             is returned if the collection was not found.
             The response body contains an error document in this case.
+        '503':
+          description: |
+            is returned if the system is temporarily not available. This can be a system
+            overload or temporary failure. In this case it makes sense to retry the request
+            later.
       tags:
         - Documents
 ```
@@ -2523,7 +2621,7 @@ name: RestDocumentHandlerDeleteDocumentRevConflictMulti
 
 <small>Introduced in: v3.10.0</small>
 
-{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 In an ArangoDB cluster, all reads and writes are performed via
 the shard leaders. Shard replicas replicate all operations, but are

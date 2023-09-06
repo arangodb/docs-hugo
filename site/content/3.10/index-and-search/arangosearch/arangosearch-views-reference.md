@@ -200,7 +200,7 @@ During view modification the following directives apply:
   [`--arangosearch.columns-cache-only-leader` startup option](../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
   (introduced in v3.10.6).
 
-  {{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 ### View Properties
 
@@ -245,7 +245,7 @@ cache-related options and thus recreate inverted indexes and Views. See
   [`--arangosearch.columns-cache-only-leader` startup option](../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
   (introduced in v3.10.6).
 
-  {{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
   
 - **primaryKeyCache** (_optional_; type: `boolean`; default: `false`; _immutable_)
 
@@ -263,7 +263,7 @@ cache-related options and thus recreate inverted indexes and Views. See
   [`--arangosearch.columns-cache-only-leader` startup option](../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
   (introduced in v3.10.6).
 
-  {{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 - **storedValues** (_optional_; type: `array`; default: `[]`; _immutable_)
 

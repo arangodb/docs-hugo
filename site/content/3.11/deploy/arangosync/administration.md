@@ -6,7 +6,7 @@ description: >-
   How to administrate Datacenter-to-Datacenter Replication
 archetype: default
 ---
-{{< tag "ArangoDB Enterprise" >}}
+{{< tag "ArangoDB Enterprise Edition" >}}
 
 This section includes information related to the synchronization process
 of the _Datacenter-to-Datacenter Replication_.

@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl list nodesizes command
 title: Oasisctl List Nodesizes
-menuTitle: List Nodesizes
-weight: 135
+menuTitle: List Node Sizes
+weight: 130
+description: >-
+  Description of the oasisctl list nodesizes command
+archetype: default
 ---
+List node sizes
+
 ## Synopsis
+
 List node sizes
 
 ```
@@ -13,6 +17,7 @@ oasisctl list nodesizes [flags]
 ```
 
 ## Options
+
 ```
   -h, --help                     help for nodesizes
       --model string             Identifier of the model (default "oneshard")
@@ -22,7 +27,8 @@ oasisctl list nodesizes [flags]
   -r, --region-id string         Identifier of the region
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -30,5 +36,6 @@ oasisctl list nodesizes [flags]
 ```
 
 ## See also
+
 * [oasisctl list](_index.md)	 - List resources
 

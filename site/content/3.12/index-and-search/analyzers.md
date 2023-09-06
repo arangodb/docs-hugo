@@ -1054,7 +1054,7 @@ description: ''
 
 <small>Introduced in: v3.10.0</small>
 
-{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 An Analyzer that computes so called MinHash signatures using a
 locality-sensitive hash function. It applies an Analyzer of your choice before
@@ -1097,7 +1097,7 @@ description: ''
 
 <small>Introduced in: v3.10.0</small>
 
-{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 {{< warning >}}
 This feature is experimental and under active development.
@@ -1157,7 +1157,7 @@ db._query(`LET str = "Which baking dish is best to bake a banana bread ?"
 
 <small>Introduced in: v3.10.0</small>
 
-{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 {{< warning >}}
 This feature is experimental and under active development.
@@ -1337,7 +1337,7 @@ description: ''
 
 <small>Introduced in: v3.10.5</small>
 
-{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 An Analyzer capable of breaking up a GeoJSON object or coordinate array in
 `[longitude, latitude]` order into a set of indexable tokens for further usage

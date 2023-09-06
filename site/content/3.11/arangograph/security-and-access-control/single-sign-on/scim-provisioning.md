@@ -6,6 +6,10 @@ description: >-
   How to enable SCIM provisioning
 archetype: default
 ---
+{{< info >}}
+This feature is only available in ArangoGraph Enterprise.
+{{< /info >}}
+
 ArangoGraph provides support to control and manage members access in
 ArangoGraph organizations with the
 **System for Cross-domain Identity Management** (SCIM) provisioning. 

@@ -6,7 +6,7 @@ description: >-
   SmartJoins allow to execute co-located join operations among identically sharded collections.
 archetype: default
 ---
-{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 SmartJoins allow to execute co-located join operations among identically
 sharded collections.

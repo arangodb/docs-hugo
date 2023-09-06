@@ -6,7 +6,7 @@ description: >-
   Securing Datacenter-to-Datacenter Replication
 archetype: default
 ---
-{{< tag "ArangoDB Enterprise" >}}
+{{< tag "ArangoDB Enterprise Edition" >}}
 
 This section includes information related to the _Datacenter-to-Datacenter Replication_
 security.

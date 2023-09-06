@@ -1273,7 +1273,7 @@ FOR doc IN viewName
 
 ## Search Highlighting Functions
 
-{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 ### OFFSET_INFO()
 

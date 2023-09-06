@@ -738,6 +738,10 @@ paths:
                             description: |
                               The sum of shards, counting leader and follower shards.
                             type: integer
+                          totalShardsFromSystemCollections:
+                            description: |
+                              The sum of system collection shards, counting leader shards only.
+                            type: integer
                           imbalance:
                             description: |
                               The measure of the total imbalance. A high value indicates a high imbalance.
@@ -748,6 +752,7 @@ paths:
                           - numberShards
                           - totalUsed
                           - totalShards
+                          - totalShardsFromSystemCollections
                           - imbalance
                     required:
                       - leader
@@ -805,6 +810,10 @@ paths:
                 moveFollowers:
                   description: |
                     Allow moving followers. (Default: `false`)
+                  type: boolean
+                excludeSystemCollections:
+                  description: |
+                    Ignore system collections in the rebalance plan. (Default: `false`)
                   type: boolean
                 piFactor:
                   description: |
@@ -935,6 +944,10 @@ paths:
                                 description: |
                                   The sum of shards, counting leader and follower shards.
                                 type: integer
+                              totalShardsFromSystemCollections:
+                                description: |
+                                  The sum of system collection shards, counting leader shards only.
+                                type: integer
                               imbalance:
                                 description: |
                                   The measure of the total imbalance. A high value indicates a high imbalance.
@@ -945,6 +958,7 @@ paths:
                               - numberShards
                               - totalUsed
                               - totalShards
+                              - totalShardsFromSystemCollections
                               - imbalance
                         required:
                           - leader
@@ -1037,6 +1051,10 @@ paths:
                                 description: |
                                   The sum of shards, counting leader and follower shards.
                                 type: integer
+                              totalShardsFromSystemCollections:
+                                description: |
+                                  The sum of system collection shards, counting leader shards only.
+                                type: integer
                               imbalance:
                                 description: |
                                   The measure of the total imbalance. A high value indicates a high imbalance.
@@ -1047,6 +1065,7 @@ paths:
                               - numberShards
                               - totalUsed
                               - totalShards
+                              - totalShardsFromSystemCollections
                               - imbalance
                         required:
                           - leader
@@ -1200,6 +1219,10 @@ paths:
                   description: |
                     Allow moving followers. (Default: `false`)
                   type: boolean
+                excludeSystemCollections:
+                  description: |
+                    Ignore system collections in the rebalance plan. (Default: `false`)
+                  type: boolean
                 piFactor:
                   description: |
                     A weighting factor that should remain untouched. (Default: `256e6`)
@@ -1329,6 +1352,10 @@ paths:
                                 description: |
                                   The sum of shards, counting leader and follower shards.
                                 type: integer
+                              totalShardsFromSystemCollections:
+                                description: |
+                                  The sum of system collection shards, counting leader shards only.
+                                type: integer
                               imbalance:
                                 description: |
                                   The measure of the total imbalance. A high value indicates a high imbalance.
@@ -1339,6 +1366,7 @@ paths:
                               - numberShards
                               - totalUsed
                               - totalShards
+                              - totalShardsFromSystemCollections
                               - imbalance
                         required:
                           - leader
@@ -1431,6 +1459,10 @@ paths:
                                 description: |
                                   The sum of shards, counting leader and follower shards.
                                 type: integer
+                              totalShardsFromSystemCollections:
+                                description: |
+                                  The sum of system collection shards, counting leader shards only.
+                                type: integer
                               imbalance:
                                 description: |
                                   The measure of the total imbalance. A high value indicates a high imbalance.
@@ -1441,6 +1473,7 @@ paths:
                               - numberShards
                               - totalUsed
                               - totalShards
+                              - totalShardsFromSystemCollections
                               - imbalance
                         required:
                           - leader

@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl rebalance command
 title: Oasisctl Rebalance
 menuTitle: Rebalance
-weight: 5
+weight: 100
+description: >-
+  Description of the oasisctl rebalance command
+archetype: chapter
 ---
+Rebalance resources
+
 ## Synopsis
+
 Rebalance resources
 
 ```
@@ -13,11 +17,13 @@ oasisctl rebalance [flags]
 ```
 
 ## Options
+
 ```
   -h, --help   help for rebalance
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -25,6 +31,7 @@ oasisctl rebalance [flags]
 ```
 
 ## See also
+
 * [oasisctl](../options.md)	 - ArangoGraph Insights Platform
 * [oasisctl rebalance deployment](rebalance-deployment.md)	 - Rebalance deployment resources
 

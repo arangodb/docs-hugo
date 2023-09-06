@@ -6,7 +6,7 @@ description: >-
   ArangoDeploymentReplication Custom Resource
 archetype: default
 ---
-{{< tag "ArangoDB Enterprise" >}}
+{{< tag "ArangoDB Enterprise Edition" >}}
 
 The ArangoDB Replication Operator creates and maintains ArangoDB
 `arangosync` configurations in a Kubernetes cluster, given a replication specification.

@@ -237,7 +237,7 @@ During view modification the following directives apply:
   [`--arangosearch.columns-cache-only-leader` startup option](../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
   (introduced in v3.10.6).
 
-  {{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 ### View Properties
 
@@ -273,7 +273,7 @@ During view modification the following directives apply:
   [`--arangosearch.columns-cache-only-leader` startup option](../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
   (introduced in v3.10.6).
 
-  {{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 - **primaryKeyCache** (_optional_; type: `boolean`; default: `false`; _immutable_)
 
@@ -291,7 +291,7 @@ During view modification the following directives apply:
   [`--arangosearch.columns-cache-only-leader` startup option](../../components/arangodb-server/options.md#--arangosearchcolumns-cache-only-leader)
   (introduced in v3.10.6).
 
-  {{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 - **storedValues** (_optional_; type: `array`; default: `[]`; _immutable_)
 
@@ -359,7 +359,7 @@ During view modification the following directives apply:
 
   Example: `["BM25(@doc) DESC", "TFIDF(@doc, true) DESC"]`
 
-  {{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 An inverted index is the heart of `arangosearch` Views.
 The index consists of several independent segments and the index **segment**

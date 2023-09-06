@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl create deployment command
 title: Oasisctl Create Deployment
 menuTitle: Create Deployment
-weight: 35
+weight: 30
+description: >-
+  Description of the oasisctl create deployment command
+archetype: default
 ---
+Create a new deployment
+
 ## Synopsis
+
 Create a new deployment
 
 ```
@@ -13,6 +17,7 @@ oasisctl create deployment [flags]
 ```
 
 ## Options
+
 ```
       --accept                               Accept the current terms and conditions.
   -c, --cacertificate-id string              Identifier of the CA certificate to use for the deployment
@@ -42,7 +47,8 @@ oasisctl create deployment [flags]
       --version string                       Version of ArangoDB to use for the deployment
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -50,5 +56,6 @@ oasisctl create deployment [flags]
 ```
 
 ## See also
+
 * [oasisctl create](_index.md)	 - Create resources
 

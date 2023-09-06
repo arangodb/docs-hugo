@@ -2621,7 +2621,7 @@ name: RestDocumentHandlerDeleteDocumentRevConflictMulti
 
 <small>Introduced in: v3.10.0</small>
 
-{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 In an ArangoDB cluster, all reads and writes are performed via
 the shard leaders. Shard replicas replicate all operations, but are
