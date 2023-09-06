@@ -344,7 +344,7 @@ jobs:
           summary-name: "plain-build-summary"
       - when:
           condition:
-            equal: [ "plain-build", << pipeline.parameters.workflow >> ]
+            equal: [ "api-docs", << pipeline.parameters.workflow >> ]
           steps:
             - commit-api-docs:
                 version: << pipeline.parameters.version >>
@@ -404,7 +404,6 @@ jobs:
             - commit:
                 create-pr: << parameters.create-pr >>
                 pr-branch: << parameters.pr-branch >>
-            - commit-api-docs
 
       
       - persist_to_workspace:
