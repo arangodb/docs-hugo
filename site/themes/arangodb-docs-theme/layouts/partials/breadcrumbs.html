@@ -5,7 +5,7 @@
         {{ if not .IsHome }}
         <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
           <meta itemprop="position" content="{{ .Params.menuTitle }}" />
-          <a itemprop="item" class="link-internal" href="    {{- if ne (len .Page.Ancestors) 1 }} {{ .RelPermalink }} {{ else }} {{ .RelPermalink }}introduction/ {{ end }}">
+          <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
             <span itemprop="name" class="breadcrumb-entry">{{ .Params.menuTitle | markdownify }} > </span>
           </a>
         </li>

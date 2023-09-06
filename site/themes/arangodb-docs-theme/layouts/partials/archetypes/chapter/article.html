@@ -27,12 +27,22 @@
 <div class="cards">
   {{ range $section.Pages }}
   {{ $title := replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}
+  {{ $section.RelPermalink }}
+  {{ .RelPermalink }}
+
+
+
+  {{ $destinationPage := .Site.GetPage .Permalink -}}
+  A {{ $destinationPage }}
 
     {{- partial "shortcodes/card.html" (dict
     "Inner" (.Description | markdownify)
     "title"  $title
     "link" .RelPermalink
+    "context" $section
       ) }}  
+
+
   
   {{ end }}
 </div>

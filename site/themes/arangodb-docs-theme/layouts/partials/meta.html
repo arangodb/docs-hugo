@@ -33,7 +33,4 @@
       {{- if eq .Type "hooks" }}
         {{- $redirectPath = printf "/%s" (index (where (index site.Data "versions") "alias" "stable") 0).name }}
       {{- end }}
-      <script>
-        window.location.href = "{{ $redirectPath }}/introduction/";
-      </script>
     {{ end }}
