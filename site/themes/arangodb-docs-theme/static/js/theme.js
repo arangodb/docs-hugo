@@ -354,8 +354,8 @@ const goToTop = () => {
 
 function goToHomepage(event){
     event.preventDefault();
-    var origin = window.location.origin;
-    updateHistory("", origin);
+    var homepage = window.location.origin + "/" + localStorage.getItem('docs-version');
+    updateHistory("", homepage);
 }
 
 function copyURI(evt) {
