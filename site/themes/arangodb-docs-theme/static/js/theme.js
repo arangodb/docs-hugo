@@ -354,7 +354,7 @@ const goToTop = () => {
 
 function goToHomepage(event){
     event.preventDefault();
-    var homepage = window.location.origin + "/" + localStorage.getItem('docs-version');
+    var homepage = window.location.origin + "/" + localStorage.getItem('docs-version') + "/";
     updateHistory("", homepage);
 }
 
