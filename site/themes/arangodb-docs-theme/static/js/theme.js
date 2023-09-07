@@ -191,7 +191,12 @@ $(window).on('popstate', function (e) {
 
 
 function getAllAnchors() {
-    return document.querySelector("article").querySelectorAll("h2,h3,h4,h5,h6")
+    let tocIds = [];
+    let headlineIds = [];
+    // Exclude headline anchors that are not in the ToC
+    document.querySelectorAll("#TableOfContents a").forEach(e => { tocIds.push(e.getAttribute("href").slice(1)) });
+    document.querySelector("article").querySelectorAll("h2,h3,h4,h5,h6").forEach(a => { if (tocIds.indexOf(a.id) !== -1) { headlineIds.push(a); } });
+    return headlineIds;
 }
 function removeActiveFromAllAnchors() {
   var anchors = getAllAnchors();
