@@ -325,6 +325,8 @@ jobs:
     machine:
       image: ubuntu-2004:current
     resource_class: large
+    environment:
+      GIT_SSH_COMMAND: "ssh -o IdentitiesOnly=yes"
     steps:
       - add_ssh_keys:
           fingerprints:
@@ -380,8 +382,6 @@ jobs:
     machine:
       image: ubuntu-2004:current
     resource_class: xlarge
-    environment:
-      GIT_SSH_COMMAND: "ssh -i $HOME/github-circleci -o IdentitiesOnly=yes"
     steps:
       - add_ssh_keys:
           fingerprints:
