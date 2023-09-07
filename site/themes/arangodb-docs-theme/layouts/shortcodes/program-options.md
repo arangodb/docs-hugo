@@ -2,6 +2,7 @@
 {{- $pageVersion := .Page.Store.Get "versionShort" }}
 {{- $dataFolderByVersion := index site.Data $pageVersion }}
 {{- $options := index $dataFolderByVersion $program }}
+{{- if not $options }}{{ errorf "Could not find %q in %q data folder" $program $pageVersion }}{{ end }}
 {{- $osMap := dict "linux" "Linux" "macos" "macOS" "windows" "Windows" }}
 {{- $componentMap := dict "single" "Single Servers" "dbserver" "DB-Servers" "coordinator" "Coordinators" "agent" "Agents" }}
 {{- with $options }}
@@ -13,11 +14,11 @@
     {{- $section := index $optionsMap ($option.section | default "General") }}
     {{- $oses := slice }}
     {{- range $os := $option.os }}
-      {{- $oses = $oses | append (index $osMap $os) }}
+      {{- $oses = $oses | append (index $osMap $os | default $os) }}
     {{- end }}
     {{- $components := slice }}
     {{- range $comp := $option.component }}
-      {{- $components = $components | append (index $componentMap $comp) }}
+      {{- $components = $components | append (index $componentMap $comp | default $comp) }}
     {{- end }}
     {{- $section = $section | append (merge $option (dict "Name" $name "os" $oses "component" $components)) }}
     {{- $optionsMap = merge $optionsMap (dict ($option.section | default "General") $section) }}
@@ -69,7 +70,7 @@ This is a command, no value needs to be specified. The process terminates after 
   {{ if ne $option.category "command"}}
     {{ if $option.dynamic }}
 Default: _dynamic_ (e.g. `{{ . }}`)
-    {{ else }}{{/* if $option.type is a vector, don't print e.g. [info info] as that is not how would be set by users */}}
+    {{ else }}{{/* if $option.type is a vector, don't print e.g. [info info] as that is not how it would be set by users */}}
 Default: `{{ index (slice | append .) 0 }}`
     {{ end }}
   {{ end }}
