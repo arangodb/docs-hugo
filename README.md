@@ -808,18 +808,10 @@ If this is not a mistake, the affected aliases should be removed.
 ### Disable or limit the table of contents
 
 The table of contents (ToC) or "On this page" on the right-hand side at the top
-of a page lists the headlines if there at least three on the page. It can be
-disabled for individual pages with the following front matter:
+of a page lists the headlines if there are at least two headlines on the page
+(excluding the title).
 
-```yaml
----
-...
-pageToc:
-  disabled: true
----
-```
-
-It can also be restricted to a maximum headline level to omit the deeper nested
+The ToC can be restricted to a maximum headline level to omit the deeper nested
 headlines for less clutter:
 
 ```yaml
