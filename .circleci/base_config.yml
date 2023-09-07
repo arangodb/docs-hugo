@@ -330,6 +330,8 @@ jobs:
           fingerprints:
             - "1e:e3:7e:8c:55:be:3d:56:bc:4c:1c:d7:d6:26:f2:e5"
             - "20:72:b8:99:35:4c:7c:23:60:da:f2:5e:43:34:ba:79"
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
+
       - run: 
           name: Clone docs repo
           command: |
