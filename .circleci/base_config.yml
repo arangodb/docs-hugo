@@ -272,7 +272,7 @@ commands:
             cd /home/circleci/project/api-docs
             cp /home/circleci/project/docs-hugo/site/data/<< parameters.version >>/api-docs.json /home/circleci/project/api-docs/
             git commit --allow-empty -m 'Commit api-docs << parameters.tag >>' api-docs.json
-            git tag << parameters.tag >>
+            git tag -f << parameters.tag >>
             git push origin << parameters.tag >>
             git push
 
