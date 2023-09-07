@@ -1294,7 +1294,7 @@
       "agent",
       "single"
     ],
-    "default" : 17872713728,
+    "default" : 7739684864,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -6937,7 +6937,7 @@
       "coordinator",
       "single"
     ],
-    "default" : 36,
+    "default" : 8,
     "deprecatedIn" : null,
     "description" : "The maximum parallelism usable in a Pregel job.",
     "dynamic" : true,
@@ -7001,7 +7001,7 @@
       "coordinator",
       "single"
     ],
-    "default" : 9,
+    "default" : 2,
     "deprecatedIn" : null,
     "description" : "The default parallelism to use in a Pregel job if none is specified.",
     "dynamic" : true,
@@ -7238,7 +7238,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 73638338560,
+    "base" : 33106223104,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7246,7 +7246,7 @@
       "agent",
       "single"
     ],
-    "default" : 59647054233,
+    "default" : 26816040714,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7531,7 +7531,7 @@
     "type" : "double"
   },
   "query.memory-limit" : {
-    "base" : 73638338560,
+    "base" : 33106223104,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7539,7 +7539,7 @@
       "agent",
       "single"
     ],
-    "default" : 44183003136,
+    "default" : 19863733863,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -8058,99 +8058,6 @@
     "requiresValue" : true,
     "section" : "rclone",
     "type" : "string"
-  },
-  "replicated-log.threshold-log-compaction" : {
-    "base" : 1,
-    "category" : "option",
-    "component" : [
-      "coordinator",
-      "dbserver",
-      "agent",
-      "single"
-    ],
-    "default" : 1000,
-    "deprecatedIn" : null,
-    "description" : "threshold for log compaction. Number of log entries to wait for before compacting.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "maxInclusive" : true,
-    "maxValue" : 18446744073709551615,
-    "minInclusive" : true,
-    "minValue" : 0,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "replicated-log",
-    "type" : "uint64"
-  },
-  "replicated-log.threshold-network-batch-size" : {
-    "base" : 1,
-    "category" : "option",
-    "component" : [
-      "coordinator",
-      "dbserver",
-      "agent",
-      "single"
-    ],
-    "default" : 1048576,
-    "deprecatedIn" : null,
-    "description" : "send a batch of log updates early when threshold (in bytes) is exceeded",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "maxInclusive" : true,
-    "maxValue" : 18446744073709551615,
-    "minInclusive" : true,
-    "minValue" : 1048576,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "replicated-log",
-    "type" : "uint64"
-  },
-  "replicated-log.threshold-rocksdb-write-batch-size" : {
-    "base" : 1,
-    "category" : "option",
-    "component" : [
-      "coordinator",
-      "dbserver",
-      "agent",
-      "single"
-    ],
-    "default" : 1048576,
-    "deprecatedIn" : null,
-    "description" : "write a batch of log updates to RocksDB early when threshold (in bytes) is exceeded",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "maxInclusive" : true,
-    "maxValue" : 18446744073709551615,
-    "minInclusive" : true,
-    "minValue" : 1048576,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "replicated-log",
-    "type" : "uint64"
   },
   "replication.active-failover" : {
     "category" : "option",
@@ -8841,7 +8748,7 @@
       "agent",
       "single"
     ],
-    "default" : 21447256473,
+    "default" : 9287621836,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -9774,7 +9681,7 @@
       "agent",
       "single"
     ],
-    "default" : 36,
+    "default" : 8,
     "deprecatedIn" : null,
     "description" : "The maximum number of concurrent background jobs (compactions and flushes).",
     "dynamic" : true,
@@ -9864,7 +9771,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 4,
+    "default" : 1,
     "deprecatedIn" : null,
     "description" : "The maximum number of index fill tasks that can run concurrently on server startup.",
     "dynamic" : true,
@@ -11395,7 +11302,7 @@
       "agent",
       "single"
     ],
-    "default" : 28596341964,
+    "default" : 12383495782,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
@@ -11426,7 +11333,7 @@
       "agent",
       "single"
     ],
-    "default" : 36,
+    "default" : 16,
     "deprecatedIn" : null,
     "description" : "The number of lock stripes to use for transaction locks.",
     "dynamic" : true,
@@ -11963,7 +11870,7 @@
       "agent",
       "single"
     ],
-    "default" : 10,
+    "default" : 0,
     "deprecatedIn" : null,
     "description" : "Cluster metrics polling timeout (in seconds).",
     "dynamic" : false,
@@ -12034,7 +11941,9 @@
     "enterpriseOnly" : false,
     "experimental" : false,
     "hidden" : false,
-    "introducedIn" : null,
+    "introducedIn" : [
+      "v3.12.0"
+    ],
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
     "minInclusive" : true,
@@ -12252,7 +12161,7 @@
       "agent",
       "single"
     ],
-    "default" : 9,
+    "default" : 2,
     "deprecatedIn" : null,
     "description" : "The number of threads used to handle I/O.",
     "dynamic" : true,
@@ -12445,7 +12354,7 @@
     "component" : [
       "dbserver"
     ],
-    "default" : 5,
+    "default" : 1,
     "deprecatedIn" : null,
     "description" : "The maximum number of threads available for slow maintenance actions (long SynchronizeShard and long EnsureIndex).",
     "dynamic" : true,
@@ -12475,7 +12384,7 @@
     "component" : [
       "dbserver"
     ],
-    "default" : 10,
+    "default" : 3,
     "deprecatedIn" : null,
     "description" : "The maximum number of threads available for maintenance actions.",
     "dynamic" : true,
@@ -12540,7 +12449,7 @@
     ],
     "default" : 0,
     "deprecatedIn" : null,
-    "description" : "The maximum number of request handling threads to run (0 = use system-specific default of 72)",
+    "description" : "The maximum number of request handling threads to run (0 = use system-specific default of 32)",
     "dynamic" : true,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -12927,7 +12836,7 @@
       "dbserver",
       "single"
     ],
-    "default" : false,
+    "default" : true,
     "deprecatedIn" : null,
     "description" : "Whether to enable the telemetrics API.",
     "dynamic" : false,
@@ -13709,6 +13618,37 @@
     "requiresValue" : true,
     "section" : "transaction",
     "type" : "double"
+  },
+  "transaction.streaming-max-transaction-size" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "single"
+    ],
+    "default" : 134217728,
+    "deprecatedIn" : null,
+    "description" : "The maximum transaction size (in bytes) for Stream Transactions.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.12.0"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "transaction",
+    "type" : "uint64"
   },
   "ttl.frequency" : {
     "base" : 1,

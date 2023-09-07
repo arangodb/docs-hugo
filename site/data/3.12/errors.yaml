@@ -353,7 +353,7 @@
   desc: "Will be raised when an invalid key generator description is used."
   code: 1232
 - name: ERROR_ARANGO_INVALID_EDGE_ATTRIBUTE
-  text: "edge attribute missing or invalid"
+  text: "expecting both `_from` and `_to` attributes to be defined in the edge document and have the format `<collectionName>/<vertexKey>` "
   desc: "will be raised when the _from or _to values of an edge are undefined or contain an invalid value."
   code: 1233
 - name: ERROR_ARANGO_INDEX_CREATION_FAILED
@@ -376,6 +376,10 @@
   text: "incomplete read"
   desc: "Will be raised by the storage engine when a read cannot be completed."
   code: 1240
+- name: ERROR_ARANGO_OLD_ROCKSDB_FORMAT
+  text: "not supported by old legacy data format"
+  desc: "Will be raised by the storage engine when an operation cannot be performed because the old, deprecated, little endian key encoding format is still used and an operation is tried which is not supported by this format."
+  code: 1241
 - group: Checked ArangoDB storage errors
 - name: ERROR_ARANGO_EMPTY_DATADIR
   text: "server database directory is empty"

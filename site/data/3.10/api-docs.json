@@ -589,6 +589,10 @@
                "description": "The sum of shards, counting leader and follower shards.\n",
                "type": "integer"
               },
+              "totalShardsFromSystemCollections": {
+               "description": "The sum of system collection shards, counting leader shards only.\n",
+               "type": "integer"
+              },
               "totalUsed": {
                "description": "The sum of the sizes.\n",
                "type": "integer"
@@ -600,6 +604,7 @@
               "numberShards",
               "totalUsed",
               "totalShards",
+              "totalShardsFromSystemCollections",
               "imbalance"
              ],
              "type": "object"
@@ -650,6 +655,10 @@
            "type": "string"
           },
           "type": "array"
+         },
+         "excludeSystemCollections": {
+          "description": "Ignore system collections in the rebalance plan. (Default: `false`)\n",
+          "type": "boolean"
          },
          "leaderChanges": {
           "description": "Allow leader changes without moving data. (Default: `true`)\n",
@@ -792,6 +801,10 @@
                  "description": "The sum of shards, counting leader and follower shards.\n",
                  "type": "integer"
                 },
+                "totalShardsFromSystemCollections": {
+                 "description": "The sum of system collection shards, counting leader shards only.\n",
+                 "type": "integer"
+                },
                 "totalUsed": {
                  "description": "The sum of the sizes.\n",
                  "type": "integer"
@@ -803,6 +816,7 @@
                 "numberShards",
                 "totalUsed",
                 "totalShards",
+                "totalShardsFromSystemCollections",
                 "imbalance"
                ],
                "type": "object"
@@ -904,6 +918,10 @@
                  "description": "The sum of shards, counting leader and follower shards.\n",
                  "type": "integer"
                 },
+                "totalShardsFromSystemCollections": {
+                 "description": "The sum of system collection shards, counting leader shards only.\n",
+                 "type": "integer"
+                },
                 "totalUsed": {
                  "description": "The sum of the sizes.\n",
                  "type": "integer"
@@ -915,6 +933,7 @@
                 "numberShards",
                 "totalUsed",
                 "totalShards",
+                "totalShardsFromSystemCollections",
                 "imbalance"
                ],
                "type": "object"
@@ -1003,6 +1022,10 @@
            "type": "string"
           },
           "type": "array"
+         },
+         "excludeSystemCollections": {
+          "description": "Ignore system collections in the rebalance plan. (Default: `false`)\n",
+          "type": "boolean"
          },
          "leaderChanges": {
           "description": "Allow leader changes without moving data. (Default: `true`)\n",
@@ -1145,6 +1168,10 @@
                  "description": "The sum of shards, counting leader and follower shards.\n",
                  "type": "integer"
                 },
+                "totalShardsFromSystemCollections": {
+                 "description": "The sum of system collection shards, counting leader shards only.\n",
+                 "type": "integer"
+                },
                 "totalUsed": {
                  "description": "The sum of the sizes.\n",
                  "type": "integer"
@@ -1156,6 +1183,7 @@
                 "numberShards",
                 "totalUsed",
                 "totalShards",
+                "totalShardsFromSystemCollections",
                 "imbalance"
                ],
                "type": "object"
@@ -1257,6 +1285,10 @@
                  "description": "The sum of shards, counting leader and follower shards.\n",
                  "type": "integer"
                 },
+                "totalShardsFromSystemCollections": {
+                 "description": "The sum of system collection shards, counting leader shards only.\n",
+                 "type": "integer"
+                },
                 "totalUsed": {
                  "description": "The sum of the sizes.\n",
                  "type": "integer"
@@ -1268,6 +1300,7 @@
                 "numberShards",
                 "totalUsed",
                 "totalShards",
+                "totalShardsFromSystemCollections",
                 "imbalance"
                ],
                "type": "object"
@@ -6243,6 +6276,10 @@
             "description": "If you set this option to `true` and execute the query against a cluster\ndeployment, then the Coordinator is allowed to read from any shard replica and\nnot only from the leader.\n\nYou may observe data inconsistencies (dirty reads) when reading from followers,\nnamely obsolete revisions of documents because changes have not yet been\nreplicated to the follower, as well as changes to documents before they are\nofficially committed on the leader.\n\nThis feature is only available in the Enterprise Edition.\n",
             "type": "boolean"
            },
+           "allowRetry": {
+            "description": "Set this option to `true` to make it possible to retry\nfetching the latest batch from a cursor. The default is `false`.\n\nIf retrieving a result batch fails because of a connection issue, you can ask\nfor that batch again using the `POST /_api/cursor/\u003ccursor-id\u003e/\u003cbatch-id\u003e`\nendpoint. The first batch has an ID of `1` and the value is incremented by 1\nwith every batch. Every result response except the last one also includes a\n`nextBatchId` attribute, indicating the ID of the batch after the current.\nYou can remember and use this batch ID should retrieving the next batch fail.\n\nYou can only request the latest batch again (or the next batch).\nEarlier batches are not kept on the server-side.\nRequesting a batch again does not advance the cursor.\n\nYou can also call this endpoint with the next batch identifier, i.e. the value\nreturned in the `nextBatchId` attribute of a previous request. This advances the\ncursor and returns the results of the next batch. This is only supported if there\nare more results in the cursor (i.e. `hasMore` is `true` in the latest batch).\n\nFrom v3.11.1 onward, you may use the `POST /_api/cursor/\u003ccursor-id\u003e/\u003cbatch-id\u003e`\nendpoint even if the `allowRetry` attribute is `false` to fetch the next batch,\nbut you cannot request a batch again unless you set it to `true`.\n\nTo allow refetching of the very last batch of the query, the server cannot\nautomatically delete the cursor. After the first attempt of fetching the last\nbatch, the server would normally delete the cursor to free up resources. As you\nmight need to reattempt the fetch, it needs to keep the final batch when the\n`allowRetry` option is enabled. Once you successfully received the last batch,\nyou should call the `DELETE /_api/cursor/\u003ccursor-id\u003e` endpoint so that the\nserver doesn't unnecessarily keep the batch until the cursor times out\n(`ttl` query option).\n",
+            "type": "boolean"
+           },
            "failOnWarning": {
             "description": "When set to `true`, the query will throw an exception and abort instead of producing\na warning. This option should be used during development to catch potential issues\nearly. When the attribute is set to `false`, warnings will not be propagated to\nexceptions and will be returned with the query result.\nThere is also a server configuration option `--query.fail-on-warning` for setting the\ndefault value for `failOnWarning` so it does not need to be set on a per-query level.\n",
             "type": "boolean"
@@ -6261,6 +6298,10 @@
            },
            "intermediateCommitSize": {
             "description": "The maximum total size of operations after which an intermediate commit is performed\nautomatically.\n",
+            "type": "integer"
+           },
+           "maxDNFConditionMembers": {
+            "description": "A threshold for the maximum number of `OR` sub-nodes in the internal\nrepresentation of an AQL `FILTER` condition.\n\nYon can use this option to limit the computation time and memory usage when\nconverting complex AQL `FILTER` conditions into the internal DNF\n(disjunctive normal form) format. `FILTER` conditions with a lot of logical\nbranches (`AND`, `OR`, `NOT`) can take a large amount of processing time and\nmemory. This query option limits the computation time and memory usage for\nsuch conditions.\n\nOnce the threshold value is reached during the DNF conversion of a `FILTER`\ncondition, the conversion is aborted, and the query continues with a simplified\ninternal representation of the condition, which **cannot be used for index lookups**.\n\nYou can set the threshold globally instead of per query with the\n`--query.max-dnf-condition-members` startup option.\n",
             "type": "integer"
            },
            "maxNodesPerCallstack": {
@@ -6363,7 +6404,7 @@
            "type": "boolean"
           },
           "extra": {
-           "description": "An optional JSON object with extra information about the query result.\n",
+           "description": "An optional JSON object with extra information about the query result.\n\nOnly delivered as part of the first batch, or the last batch in case of a cursor\nwith the `stream` option enabled.\n",
            "properties": {
             "plan": {
              "description": "The execution plan.\n",
@@ -6449,6 +6490,10 @@
                "description": "",
                "type": "number"
               },
+              "instantiating executors": {
+               "description": "",
+               "type": "number"
+              },
               "instantiating plan": {
                "description": "",
                "type": "number"
@@ -6477,6 +6522,7 @@
               "loading collections",
               "instantiating plan",
               "optimizing plan",
+              "instantiating executors",
               "executing",
               "finalizing"
              ],
@@ -6515,6 +6561,10 @@
               },
               "httpRequests": {
                "description": "The total number of cluster-internal HTTP requests performed.\n",
+               "type": "integer"
+              },
+              "intermediateCommits": {
+               "description": "The number of intermediate commits performed by the query. This is only non-zero\nfor write queries, and only for queries that reached either the `intermediateCommitSize`\nor `intermediateCommitCount` thresholds. Note: in a cluster, intermediate commits can happen\non each participating DB-Server.\n",
                "type": "integer"
               },
               "nodes": {
@@ -6614,15 +6664,19 @@
            "type": "object"
           },
           "hasMore": {
-           "description": "A boolean indicator whether there are more results\navailable for the cursor on the server.\n",
+           "description": "A boolean indicator whether there are more results\navailable for the cursor on the server.\n\nNote that even if `hasMore` returns `true`, the next call might still return no\ndocuments. Once `hasMore` is `false`, the cursor is exhausted and the client\ncan stop asking for more results.\n",
            "type": "boolean"
           },
           "id": {
-           "description": "The ID of a temporary cursor created on the server for fetching more result batches.\n",
+           "description": "The ID of the cursor for fetching more result batches.\n",
+           "type": "string"
+          },
+          "nextBatchId": {
+           "description": "Only set if the `allowRetry` query option is enabled in v3.11.0.\nFrom v3.11.1 onward, this attribute is always set, except in the last batch.\n\nThe ID of the batch after the current one. The first batch has an ID of `1` and\nthe value is incremented by 1 with every batch. You can remember and use this\nbatch ID should retrieving the next batch fail. Use the\n`POST /_api/cursor/\u003ccursor-id\u003e/\u003cbatch-id\u003e` endpoint to ask for the batch again.\nYou can also request the next batch.\n",
            "type": "string"
           },
           "result": {
-           "description": "An array of result documents (might be empty if query has no results).\n",
+           "description": "An array of result documents for the current batch\n(might be empty if the query has no results).\n",
            "items": {
             "type": ""
            },
@@ -6673,7 +6727,7 @@
         }
        }
       },
-      "description": "is returned if the JSON representation is malformed or the query specification is\nmissing from the request.\n"
+      "description": "is returned if the JSON representation is malformed, the query specification is\nmissing from the request, or if the query is invalid.\n"
      },
      "404": {
       "description": "The server will respond with *HTTP 404* in case a non-existing collection is\naccessed in the query.\n"
@@ -6723,7 +6777,7 @@
     ]
    },
    "post": {
-    "description": "If the cursor is still alive, returns an object with the following\nattributes:\n\n- `id`: a `cursor-identifier`\n- `result`: a list of documents for the current batch\n- `hasMore`: `false` if this was the last batch\n- `count`: if present the total number of elements\n- `code`: an HTTP status code\n- `error`: a boolean flag to indicate whether an error occurred\n- `errorNum`: a server error number (if `error` is `true`)\n- `errorMessage`: a descriptive error message (if `error` is `true`)\n- `extra`: an object with additional information about the query result, with\n  the nested objects `stats` and `warnings`. Only delivered as part of the last\n  batch in case of a cursor with the `stream` option enabled.\n\nNote that even if `hasMore` returns `true`, the next call might\nstill return no documents. If, however, `hasMore` is `false`, then\nthe cursor is exhausted.  Once the `hasMore` attribute has a value of\n`false`, the client can stop.\n",
+    "description": "If the cursor is still alive, returns an object with the next query result batch.\n",
     "operationId": "getNextAqlQueryCursorBatch",
     "parameters": [
      {
@@ -6738,6 +6792,354 @@
     ],
     "responses": {
      "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "properties": {
+          "cached": {
+           "description": "A boolean flag indicating whether the query result was served\nfrom the query cache or not. If the query result is served from the query\ncache, the `extra` return attribute will not contain any `stats` sub-attribute\nand no `profile` sub-attribute.\n",
+           "type": "boolean"
+          },
+          "code": {
+           "description": "The HTTP status code.\n",
+           "type": "integer"
+          },
+          "count": {
+           "description": "The total number of result documents available (only\navailable if the query was executed with the `count` attribute set).\n",
+           "type": "integer"
+          },
+          "error": {
+           "description": "A flag to indicate that an error occurred (`false` in this case).\n",
+           "type": "boolean"
+          },
+          "extra": {
+           "description": "An optional JSON object with extra information about the query result.\n\nOnly delivered as part of the first batch, or the last batch in case of a cursor\nwith the `stream` option enabled.\n",
+           "properties": {
+            "plan": {
+             "description": "The execution plan.\n",
+             "properties": {
+              "collections": {
+               "description": "A list of the collections involved in the query. The list only includes the\ncollections that can statically be determined at query compile time.\n",
+               "items": {
+                "properties": {
+                 "name": {
+                  "description": "The collection name.\n",
+                  "type": "string"
+                 },
+                 "type": {
+                  "description": "How the collection is used. Can be `\"read\"`, `\"write\"`, or `\"exclusive\"`.\n",
+                  "type": "string"
+                 }
+                },
+                "required": [
+                 "name",
+                 "type",
+                 "name",
+                 "type"
+                ],
+                "type": "object"
+               },
+               "type": "array"
+              },
+              "estimatedCost": {
+               "description": "The estimated cost of the query.\n",
+               "type": "integer"
+              },
+              "estimatedNrItems": {
+               "description": "The estimated number of results.\n",
+               "type": "integer"
+              },
+              "isModificationQuery": {
+               "description": "Whether the query contains write operations.\n",
+               "type": "boolean"
+              },
+              "nodes": {
+               "description": "A nested list of the execution plan nodes.\n",
+               "items": {
+                "type": "object"
+               },
+               "type": "array"
+              },
+              "rules": {
+               "description": "A list with the names of the applied optimizer rules.\n",
+               "items": {
+                "type": "string"
+               },
+               "type": "array"
+              },
+              "variables": {
+               "description": "All of the query variables, including user-created and internal ones.\n",
+               "items": {
+                "type": "object"
+               },
+               "type": "array"
+              }
+             },
+             "required": [
+              "nodes",
+              "rules",
+              "collections",
+              "variables",
+              "estimatedCost",
+              "estimatedNrItems",
+              "isModificationQuery",
+              "nodes",
+              "rules",
+              "collections",
+              "variables",
+              "estimatedCost",
+              "estimatedNrItems",
+              "isModificationQuery"
+             ],
+             "type": "object"
+            },
+            "profile": {
+             "description": "The duration of the different query execution phases in seconds.\n",
+             "properties": {
+              "executing": {
+               "description": "",
+               "type": "number"
+              },
+              "finalizing": {
+               "description": "",
+               "type": "number"
+              },
+              "initializing": {
+               "description": "",
+               "type": "number"
+              },
+              "instantiating executors": {
+               "description": "",
+               "type": "number"
+              },
+              "instantiating plan": {
+               "description": "",
+               "type": "number"
+              },
+              "loading collections": {
+               "description": "",
+               "type": "number"
+              },
+              "optimizing ast": {
+               "description": "",
+               "type": "number"
+              },
+              "optimizing plan": {
+               "description": "",
+               "type": "number"
+              },
+              "parsing": {
+               "description": "",
+               "type": "number"
+              }
+             },
+             "required": [
+              "initializing",
+              "parsing",
+              "optimizing ast",
+              "loading collections",
+              "instantiating plan",
+              "optimizing plan",
+              "instantiating executors",
+              "executing",
+              "finalizing",
+              "initializing",
+              "parsing",
+              "optimizing ast",
+              "loading collections",
+              "instantiating plan",
+              "optimizing plan",
+              "instantiating executors",
+              "executing",
+              "finalizing"
+             ],
+             "type": "object"
+            },
+            "stats": {
+             "description": "An object with query statistics.\n",
+             "properties": {
+              "cacheHits": {
+               "description": "The total number of index entries read from in-memory caches for indexes\nof type edge or persistent. This value is only non-zero when reading from indexes\nthat have an in-memory cache enabled, and when the query allows using the in-memory\ncache (i.e. using equality lookups on all index attributes).\n",
+               "type": "integer"
+              },
+              "cacheMisses": {
+               "description": "The total number of cache read attempts for index entries that could not\nbe served from in-memory caches for indexes of type edge or persistent. This value\nis only non-zero when reading from indexes that have an in-memory cache enabled, the\nquery allows using the in-memory cache (i.e. using equality lookups on all index attributes)\nand the looked up values are not present in the cache.\n",
+               "type": "integer"
+              },
+              "cursorsCreated": {
+               "description": "The total number of cursor objects created during query execution. Cursor\nobjects are created for index lookups.\n",
+               "type": "integer"
+              },
+              "cursorsRearmed": {
+               "description": "The total number of times an existing cursor object was repurposed.\nRepurposing an existing cursor object is normally more efficient compared to destroying an\nexisting cursor object and creating a new one from scratch.\n",
+               "type": "integer"
+              },
+              "executionTime": {
+               "description": "The query execution time (wall-clock time) in seconds.\n",
+               "type": "number"
+              },
+              "filtered": {
+               "description": "The total number of documents removed after executing a filter condition\nin a `FilterNode` or another node that post-filters data. Note that nodes of the\n`IndexNode` type can also filter documents by selecting only the required index range\nfrom a collection, and the `filtered` value only indicates how much filtering was done by a\npost filter in the `IndexNode` itself or following `FilterNode` nodes.\nNodes of the `EnumerateCollectionNode` and `TraversalNode` types can also apply\nfilter conditions and can report the number of filtered documents.\n",
+               "type": "integer"
+              },
+              "fullCount": {
+               "description": "The total number of documents that matched the search condition if the query's\nfinal top-level `LIMIT` operation were not present.\nThis attribute may only be returned if the `fullCount` option was set when starting the\nquery and only contains a sensible value if the query contains a `LIMIT` operation on\nthe top level.\n",
+               "type": "integer"
+              },
+              "httpRequests": {
+               "description": "The total number of cluster-internal HTTP requests performed.\n",
+               "type": "integer"
+              },
+              "intermediateCommits": {
+               "description": "The number of intermediate commits performed by the query. This is only non-zero\nfor write queries, and only for queries that reached either the `intermediateCommitSize`\nor `intermediateCommitCount` thresholds. Note: in a cluster, intermediate commits can happen\non each participating DB-Server.\n",
+               "type": "integer"
+              },
+              "nodes": {
+               "description": "When the query is executed with the `profile` option set to at least `2`,\nthen this attribute contains runtime statistics per query execution node.\nFor a human readable output, you can execute\n`db._profileQuery(\u003cquery\u003e, \u003cbind-vars\u003e)` in arangosh.\n",
+               "items": {
+                "properties": {
+                 "calls": {
+                  "description": "The number of calls to this node.\n",
+                  "type": "integer"
+                 },
+                 "id": {
+                  "description": "The execution node ID to correlate the statistics with the `plan` returned in\nthe `extra` attribute.\n",
+                  "type": "integer"
+                 },
+                 "items": {
+                  "description": "The number of items returned by this node. Items are the temporary results\nreturned at this stage.\n",
+                  "type": "integer"
+                 },
+                 "runtime": {
+                  "description": "The execution time of this node in seconds.\n",
+                  "type": "number"
+                 }
+                },
+                "required": [
+                 "id",
+                 "calls",
+                 "items",
+                 "runtime",
+                 "id",
+                 "calls",
+                 "items",
+                 "runtime"
+                ],
+                "type": "object"
+               },
+               "type": "array"
+              },
+              "peakMemoryUsage": {
+               "description": "The maximum memory usage of the query while it was running. In a cluster,\nthe memory accounting is done per shard, and the memory usage reported is the peak\nmemory usage value from the individual shards.\nNote that to keep things lightweight, the per-query memory usage is tracked on a relatively\nhigh level, not including any memory allocator overhead nor any memory used for temporary\nresults calculations (e.g. memory allocated/deallocated inside AQL expressions and function\ncalls).\n",
+               "type": "integer"
+              },
+              "scannedFull": {
+               "description": "The total number of documents iterated over when scanning a collection\nwithout an index. Documents scanned by subqueries are included in the result, but\noperations triggered by built-in or user-defined AQL functions are not.\n",
+               "type": "integer"
+              },
+              "scannedIndex": {
+               "description": "The total number of documents iterated over when scanning a collection using\nan index. Documents scanned by subqueries are included in the result, but operations\ntriggered by built-in or user-defined AQL functions are not.\n",
+               "type": "integer"
+              },
+              "writesExecuted": {
+               "description": "The total number of data-modification operations successfully executed.\n",
+               "type": "integer"
+              },
+              "writesIgnored": {
+               "description": "The total number of data-modification operations that were unsuccessful,\nbut have been ignored because of the `ignoreErrors` query option.\n",
+               "type": "integer"
+              }
+             },
+             "required": [
+              "writesExecuted",
+              "writesIgnored",
+              "scannedFull",
+              "scannedIndex",
+              "cursorsCreated",
+              "cursorsRearmed",
+              "cacheHits",
+              "cacheMisses",
+              "filtered",
+              "httpRequests",
+              "executionTime",
+              "peakMemoryUsage",
+              "writesExecuted",
+              "writesIgnored",
+              "scannedFull",
+              "scannedIndex",
+              "cursorsCreated",
+              "cursorsRearmed",
+              "cacheHits",
+              "cacheMisses",
+              "filtered",
+              "httpRequests",
+              "executionTime",
+              "peakMemoryUsage"
+             ],
+             "type": "object"
+            },
+            "warnings": {
+             "description": "A list of query warnings.\n",
+             "items": {
+              "properties": {
+               "code": {
+                "description": "An error code.\n",
+                "type": "integer"
+               },
+               "message": {
+                "description": "A description of the problem.\n",
+                "type": "string"
+               }
+              },
+              "required": [
+               "code",
+               "message",
+               "code",
+               "message"
+              ],
+              "type": "object"
+             },
+             "type": "array"
+            }
+           },
+           "required": [
+            "warnings",
+            "stats",
+            "warnings",
+            "stats"
+           ],
+           "type": "object"
+          },
+          "hasMore": {
+           "description": "A boolean indicator whether there are more results\navailable for the cursor on the server.\n\nNote that even if `hasMore` returns `true`, the next call might still return no\ndocuments. Once `hasMore` is `false`, the cursor is exhausted and the client\ncan stop asking for more results.\n",
+           "type": "boolean"
+          },
+          "id": {
+           "description": "The ID of the cursor for fetching more result batches.\n",
+           "type": "string"
+          },
+          "nextBatchId": {
+           "description": "Only set if the `allowRetry` query option is enabled in v3.11.0.\nFrom v3.11.1 onward, this attribute is always set, except in the last batch.\n\nThe ID of the batch after the current one. The first batch has an ID of `1` and\nthe value is incremented by 1 with every batch. You can remember and use this\nbatch ID should retrieving the next batch fail. Use the\n`POST /_api/cursor/\u003ccursor-id\u003e/\u003cbatch-id\u003e` endpoint to ask for the batch again.\nYou can also request the next batch.\n",
+           "type": "string"
+          },
+          "result": {
+           "description": "An array of result documents for the current batch\n(might be empty if the query has no results).\n",
+           "items": {
+            "type": ""
+           },
+           "type": "array"
+          }
+         },
+         "required": [
+          "error",
+          "code",
+          "hasMore",
+          "cached"
+         ],
+         "type": "object"
+        }
+       }
+      },
       "description": "The server will respond with *HTTP 200* in case of success.\n"
      },
      "400": {
@@ -7027,7 +7429,7 @@
       }
      },
      {
-      "description": "Whether to delete existing entries from the in-memory edge cache and refill it\nwith other edges if edge documents are removed.\n",
+      "description": "Whether to delete existing entries from in-memory index caches and refill them\nif document removals affect the edge index or cache-enabled persistent indexes.\n",
       "in": "query",
       "name": "refillIndexCaches",
       "required": false,
@@ -7061,8 +7463,14 @@
      "202": {
       "description": "is returned if `waitForSync` was `false`.\n"
      },
+     "403": {
+      "description": "with the error code `1004` is returned if the specified write concern for the\ncollection cannot be fulfilled. This can happen if less than the number of\nspecified replicas for a shard are currently in-sync with the leader. For example,\nif the write concern is `2` and the replication factor is `3`, then the\nwrite concern is not fulfilled if two replicas are not in-sync.\n"
+     },
      "404": {
       "description": "is returned if the collection was not found.\nThe response body contains an error document in this case.\n"
+     },
+     "503": {
+      "description": "is returned if the system is temporarily not available. This can be a system\noverload or temporary failure. In this case it makes sense to retry the request\nlater.\n"
      }
     },
     "summary": "Remove multiple documents",
@@ -7147,7 +7555,7 @@
       }
      },
      {
-      "description": "Whether to update existing entries in the in-memory edge cache if\nedge documents are updated.\n",
+      "description": "Whether to update existing entries in in-memory index caches if document updates\naffect the edge index or cache-enabled persistent indexes.\n",
       "in": "query",
       "name": "refillIndexCaches",
       "required": false,
@@ -7184,8 +7592,14 @@
      "400": {
       "description": "is returned if the body does not contain a valid JSON representation\nof an array of documents. The response body contains\nan error document in this case.\n"
      },
+     "403": {
+      "description": "with the error code `1004` is returned if the specified write concern for the\ncollection cannot be fulfilled. This can happen if less than the number of\nspecified replicas for a shard are currently in-sync with the leader. For example,\nif the write concern is `2` and the replication factor is `3`, then the\nwrite concern is not fulfilled if two replicas are not in-sync.\n"
+     },
      "404": {
       "description": "is returned if the collection was not found.\n"
+     },
+     "503": {
+      "description": "is returned if the system is temporarily not available. This can be a system\noverload or temporary failure. In this case it makes sense to retry the request\nlater.\n"
      }
     },
     "summary": "Update multiple documents",
@@ -7288,7 +7702,7 @@
       }
      },
      {
-      "description": "Whether to add a new entry to the in-memory edge cache if an edge document\nis inserted.\n",
+      "description": "Whether to add new entries to in-memory index caches if document insertions\naffect the edge index or cache-enabled persistent indexes.\n",
       "in": "query",
       "name": "refillIndexCaches",
       "required": false,
@@ -7325,11 +7739,17 @@
      "400": {
       "description": "is returned if the body does not contain a valid JSON representation\nof one document. The response body contains\nan error document in this case.\n"
      },
+     "403": {
+      "description": "with the error code `1004` is returned if the specified write concern for the\ncollection cannot be fulfilled. This can happen if less than the number of\nspecified replicas for a shard are currently in-sync with the leader. For example,\nif the write concern is `2` and the replication factor is `3`, then the\nwrite concern is not fulfilled if two replicas are not in-sync.\n"
+     },
      "404": {
       "description": "is returned if the collection specified by `collection` is unknown.\nThe response body contains an error document in this case.\n"
      },
      "409": {
-      "description": "is returned in the single document case if a document with the\nsame qualifiers in an indexed attribute conflicts with an already\nexisting document and thus violates that unique constraint. The\nresponse body contains an error document in this case.\n"
+      "description": "There are two possible reasons for this error in the single document case\n"
+     },
+     "503": {
+      "description": "is returned if the system is temporarily not available. This can be a system\noverload or temporary failure. In this case it makes sense to retry the request\nlater.\n"
      }
     },
     "summary": "Create a document",
@@ -7396,7 +7816,7 @@
       }
      },
      {
-      "description": "Whether to update existing entries in the in-memory edge cache if\nedge documents are replaced.\n",
+      "description": "Whether to update existing entries in in-memory index caches if documents\nreplacements affect the edge index or cache-enabled persistent indexes.\n",
       "in": "query",
       "name": "refillIndexCaches",
       "required": false,
@@ -7433,8 +7853,14 @@
      "400": {
       "description": "is returned if the body does not contain a valid JSON representation\nof an array of documents. The response body contains\nan error document in this case.\n"
      },
+     "403": {
+      "description": "with the error code `1004` is returned if the specified write concern for the\ncollection cannot be fulfilled. This can happen if less than the number of\nspecified replicas for a shard are currently in-sync with the leader. For example,\nif the write concern is `2` and the replication factor is `3`, then the\nwrite concern is not fulfilled if two replicas are not in-sync.\n"
+     },
      "404": {
       "description": "is returned if the collection was not found.\n"
+     },
+     "503": {
+      "description": "is returned if the system is temporarily not available. This can be a system\noverload or temporary failure. In this case it makes sense to retry the request\nlater.\n"
      }
     },
     "summary": "Replace multiple documents",
@@ -7625,7 +8051,7 @@
       }
      },
      {
-      "description": "Whether to add new entries to the in-memory edge cache if edge documents are\ninserted.\n",
+      "description": "Whether to add new entries to in-memory index caches if document insertions\naffect the edge index or cache-enabled persistent indexes.\n",
       "in": "query",
       "name": "refillIndexCaches",
       "required": false,
@@ -7662,8 +8088,14 @@
      "400": {
       "description": "is returned if the body does not contain a valid JSON representation\nof an array of documents. The response body contains\nan error document in this case.\n"
      },
+     "403": {
+      "description": "with the error code `1004` is returned if the specified write concern for the\ncollection cannot be fulfilled. This can happen if less than the number of\nspecified replicas for a shard are currently in-sync with the leader. For example,\nif the write concern is `2` and the replication factor is `3`, then the\nwrite concern is not fulfilled if two replicas are not in-sync.\n"
+     },
      "404": {
       "description": "is returned if the collection specified by `collection` is unknown.\nThe response body contains an error document in this case.\n"
+     },
+     "503": {
+      "description": "is returned if the system is temporarily not available. This can be a system\noverload or temporary failure. In this case it makes sense to retry the request\nlater.\n"
      }
     },
     "summary": "Create multiple documents",
@@ -7723,7 +8155,7 @@
       }
      },
      {
-      "description": "Whether to delete an existing entry from the in-memory edge cache and refill it\nwith another edge if an edge document is removed.\n",
+      "description": "Whether to delete existing entries from in-memory index caches and refill them\nif document removals affect the edge index or cache-enabled persistent indexes.\n",
       "in": "query",
       "name": "refillIndexCaches",
       "required": false,
@@ -7748,11 +8180,20 @@
      "202": {
       "description": "is returned if the document was removed successfully and\n`waitForSync` was `false`.\n"
      },
+     "403": {
+      "description": "with the error code `1004` is returned if the specified write concern for the\ncollection cannot be fulfilled. This can happen if less than the number of\nspecified replicas for a shard are currently in-sync with the leader. For example,\nif the write concern is `2` and the replication factor is `3`, then the\nwrite concern is not fulfilled if two replicas are not in-sync.\n"
+     },
      "404": {
       "description": "is returned if the collection or the document was not found.\nThe response body contains an error document in this case.\n"
      },
+     "409": {
+      "description": "is returned if locking the document key failed due to another\nconcurrent operation that operates on the same document.\nThis is also referred to as a _write-write conflict_.\nThe response body contains an error document with the\n`errorNum` set to `1200` (`ERROR_ARANGO_CONFLICT`) in this case.\n"
+     },
      "412": {
       "description": "is returned if a \"If-Match\" header or `rev` is given and the found\ndocument has a different version. The response also contain the found\ndocument's current revision in the `_rev` attribute. Additionally, the\nattributes `_id` and `_key` are returned.\n"
+     },
+     "503": {
+      "description": "is returned if the system is temporarily not available. This can be a system\noverload or temporary failure. In this case it makes sense to retry the request\nlater.\n"
      }
     },
     "summary": "Remove a document",
@@ -8002,7 +8443,7 @@
       }
      },
      {
-      "description": "Whether to update an existing entry in the in-memory edge cache if an\nedge document is updated.\n",
+      "description": "Whether to update existing entries in in-memory index caches if document updates\naffect the edge index or cache-enabled persistent indexes.\n",
       "in": "query",
       "name": "refillIndexCaches",
       "required": false,
@@ -8048,14 +8489,20 @@
      "400": {
       "description": "is returned if the body does not contain a valid JSON representation\nof a document. The response body contains\nan error document in this case.\n"
      },
+     "403": {
+      "description": "with the error code `1004` is returned if the specified write concern for the\ncollection cannot be fulfilled. This can happen if less than the number of\nspecified replicas for a shard are currently in-sync with the leader. For example,\nif the write concern is `2` and the replication factor is `3`, then the\nwrite concern is not fulfilled if two replicas are not in-sync.\n"
+     },
      "404": {
       "description": "is returned if the collection or the document was not found.\n"
      },
      "409": {
-      "description": "is returned if the update causes a unique constraint violation in\na secondary index.\n"
+      "description": "There are two possible reasons for this error\n"
      },
      "412": {
       "description": "is returned if the precondition was violated. The response also contains\nthe found documents' current revisions in the `_rev` attributes.\nAdditionally, the attributes `_id` and `_key` are returned.\n"
+     },
+     "503": {
+      "description": "is returned if the system is temporarily not available. This can be a system\noverload or temporary failure. In this case it makes sense to retry the request\nlater.\n"
      }
     },
     "summary": "Update a document",
@@ -8131,7 +8578,7 @@
       }
      },
      {
-      "description": "Whether to update an existing entry in the in-memory edge cache if an\nedge document is replaced.\n",
+      "description": "Whether to update existing entries in in-memory index caches if documents\nreplacements affect the edge index or cache-enabled persistent indexes.\n",
       "in": "query",
       "name": "refillIndexCaches",
       "required": false,
@@ -8177,14 +8624,20 @@
      "400": {
       "description": "is returned if the body does not contain a valid JSON representation\nof a document. The response body contains\nan error document in this case.\n"
      },
+     "403": {
+      "description": "with the error code `1004` is returned if the specified write concern for the\ncollection cannot be fulfilled. This can happen if less than the number of\nspecified replicas for a shard are currently in-sync with the leader. For example,\nif the write concern is `2` and the replication factor is `3`, then the\nwrite concern is not fulfilled if two replicas are not in-sync.\n"
+     },
      "404": {
       "description": "is returned if the collection or the document was not found.\n"
      },
      "409": {
-      "description": "is returned if the replace causes a unique constraint violation in\na secondary index.\n"
+      "description": "There are two possible reasons for this error\n"
      },
      "412": {
       "description": "is returned if the precondition is violated. The response also contains\nthe found documents' current revisions in the `_rev` attributes.\nAdditionally, the attributes `_id` and `_key` are returned.\n"
+     },
+     "503": {
+      "description": "is returned if the system is temporarily not available. This can be a system\noverload or temporary failure. In this case it makes sense to retry the request\nlater.\n"
      }
     },
     "summary": "Replace a document",
@@ -16136,7 +16589,7 @@
                 "type": "boolean"
                },
                "features": {
-                "description": "A list of Analyzer features to use for this field. You can set this option to\noverwrite what features are enabled for the `analyzer`. Possible features:\n- `\"frequency\"`\n- `\"norm\"`\n- `\"position\"`\n- `\"offset\"`\n\nDefault: the features as defined by the Analyzer itself, or inherited from the\nthe parent field's or top-level `features` option if no `analyzer` option is set\nat a deeper level, closer to this option.\n",
+                "description": "A list of Analyzer features to use for this field. You can set this option to\noverwrite what features are enabled for the `analyzer`. Possible features:\n- `\"frequency\"`\n- `\"norm\"`\n- `\"position\"`\n- `\"offset\"`\n\nDefault: the features as defined by the Analyzer itself, or inherited from the\nparent field's or top-level `features` option if no `analyzer` option is set\nat a deeper level, closer to this option.\n",
                 "items": {
                  "type": "string"
                 },
@@ -16244,7 +16697,7 @@
           "type": "boolean"
          },
          "storedValues": {
-          "description": "The optional `storedValues` attribute can contain an array of objects with paths\nto additional attributes to store in the index. These additional attributes\ncannot be used for index lookups or for sorting, but they can be used for\nprojections. This allows an index to fully cover more queries and avoid extra\ndocument lookups.\n\nYou may use the following shorthand notations on index creation instead of\nan array of objects. The default compression and cache settings are used in\nthis case:\n\n- An array of strings, like `[\"attr1\", \"attr2\"]`, to place each attribute into\n  a separate column of the index (introduced in v3.10.3).\n\n- An array of arrays of strings, like `[[\"attr1\", \"attr2\"]]`, to place the\n  attributes into a single column of the index, or `[[\"attr1\"], [\"attr2\"]]`\n  to place each attribute into a separate column. You can also mix it with the\n  the full form:\n\n  ```json\n  [\n    [\"attr1\"],\n    [\"attr2\", \"attr3\"],\n    { \"fields\": [\"attr4\", \"attr5\"], \"cache\": true }\n  ]\n  ```\n",
+          "description": "The optional `storedValues` attribute can contain an array of objects with paths\nto additional attributes to store in the index. These additional attributes\ncannot be used for index lookups or for sorting, but they can be used for\nprojections. This allows an index to fully cover more queries and avoid extra\ndocument lookups.\n\nYou may use the following shorthand notations on index creation instead of\nan array of objects. The default compression and cache settings are used in\nthis case:\n\n- An array of strings, like `[\"attr1\", \"attr2\"]`, to place each attribute into\n  a separate column of the index (introduced in v3.10.3).\n\n- An array of arrays of strings, like `[[\"attr1\", \"attr2\"]]`, to place the\n  attributes into a single column of the index, or `[[\"attr1\"], [\"attr2\"]]`\n  to place each attribute into a separate column. You can also mix it with the\n  full form:\n\n  ```json\n  [\n    [\"attr1\"],\n    [\"attr2\", \"attr3\"],\n    { \"fields\": [\"attr4\", \"attr5\"], \"cache\": true }\n  ]\n  ```\n",
           "items": {
            "properties": {
             "cache": {
@@ -16905,7 +17358,7 @@
   },
   "/_api/query/current": {
    "get": {
-    "description": "Returns an array containing the AQL queries currently running in the selected\ndatabase. Each query is a JSON object with the following attributes:\n\n- `id`: the query's id\n\n- `database`: the name of the database the query runs in\n\n- `user`: the name of the user that started the query\n\n- `query`: the query string (potentially truncated)\n\n- `bindVars`: the bind parameter values used by the query\n\n- `started`: the date and time when the query was started\n\n- `runTime`: the query's run time up to the point the list of queries was\n  queried\n\n- `state`: the query's current execution state (as a string). One of:\n  - `\"initializing\"`\n  - `\"parsing\"`\n  - `\"optimizing ast\"`\n  - `\"loading collections\"`\n  - `\"instantiating plan\"`\n  - `\"optimizing plan\"`\n  - `\"executing\"`\n  - `\"finalizing\"`\n  - `\"finished\"`\n  - `\"killed\"`\n  - `\"invalid\"`\n\n- `stream`: whether or not the query uses a streaming cursor\n",
+    "description": "Returns an array containing the AQL queries currently running in the selected\ndatabase. Each query is a JSON object with the following attributes:\n\n- `id`: the query's id\n\n- `database`: the name of the database the query runs in\n\n- `user`: the name of the user that started the query\n\n- `query`: the query string (potentially truncated)\n\n- `bindVars`: the bind parameter values used by the query\n\n- `started`: the date and time when the query was started\n\n- `runTime`: the query's run time up to the point the list of queries was\n  queried\n\n- `peakMemoryUsage`: the query's peak memory usage in bytes (in increments of 32KB)\n\n- `state`: the query's current execution state (as a string). One of:\n  - `\"initializing\"`\n  - `\"parsing\"`\n  - `\"optimizing ast\"`\n  - `\"loading collections\"`\n  - `\"instantiating plan\"`\n  - `\"optimizing plan\"`\n  - `\"instantiating executors\"`\n  - `\"executing\"`\n  - `\"finalizing\"`\n  - `\"finished\"`\n  - `\"killed\"`\n  - `\"invalid\"`\n\n- `stream`: whether or not the query uses a streaming cursor\n",
     "operationId": "listAqlQueries",
     "parameters": [
      {
@@ -17115,7 +17568,7 @@
     ]
    },
    "get": {
-    "description": "Returns an array containing the last AQL queries that are finished and\nhave exceeded the slow query threshold in the selected database.\nThe maximum amount of queries in the list can be controlled by setting\nthe query tracking property `maxSlowQueries`. The threshold for treating\na query as *slow* can be adjusted by setting the query tracking property\n`slowQueryThreshold`.\n\nEach query is a JSON object with the following attributes:\n\n- `id`: the query's id\n\n- `database`: the name of the database the query runs in\n\n- `user`: the name of the user that started the query\n\n- `query`: the query string (potentially truncated)\n\n- `bindVars`: the bind parameter values used by the query\n\n- `started`: the date and time when the query was started\n\n- `runTime`: the query's total run time\n\n- `state`: the query's current execution state (will always be \"finished\"\n  for the list of slow queries)\n\n- `stream`: whether or not the query uses a streaming cursor\n",
+    "description": "Returns an array containing the last AQL queries that are finished and\nhave exceeded the slow query threshold in the selected database.\nThe maximum amount of queries in the list can be controlled by setting\nthe query tracking property `maxSlowQueries`. The threshold for treating\na query as *slow* can be adjusted by setting the query tracking property\n`slowQueryThreshold`.\n\nEach query is a JSON object with the following attributes:\n\n- `id`: the query's id\n\n- `database`: the name of the database the query runs in\n\n- `user`: the name of the user that started the query\n\n- `query`: the query string (potentially truncated)\n\n- `bindVars`: the bind parameter values used by the query\n\n- `started`: the date and time when the query was started\n\n- `runTime`: the query's total run time\n\n- `peakMemoryUsage`: the query's peak memory usage in bytes (in increments of 32KB)\n\n- `state`: the query's current execution state (will always be \"finished\"\n  for the list of slow queries)\n\n- `stream`: whether or not the query uses a streaming cursor\n",
     "operationId": "listSlowAqlQueries",
     "parameters": [
      {
@@ -19610,10 +20063,6 @@
              "description": "has this been compiled with the asan address sanitizer turned on? (should be false)\n",
              "type": "string"
             },
-            "asm-crc32": {
-             "description": "do we have assembler implemented CRC functions?\n",
-             "type": "string"
-            },
             "assertions": {
              "description": "do we have assertions compiled in (=\u003e developer version)\n",
              "type": "string"
@@ -19825,7 +20274,7 @@
           "type": "string"
          },
          "storedValues": {
-          "description": "An array of objects to describe which document attributes to store in the View\nindex (introduced in v3.7.1). It can then cover search queries, which means the\ndata can be taken from the index directly and accessing the storage engine can\nbe avoided.\n\nThis option is immutable.\n\nEach object is expected in the following form:\n\n`{ \"fields\": [ \"attr1\", \"attr2\", ... \"attrN\" ], \"compression\": \"none\", \"cache\": false }`\n\n- The required `fields` attribute is an array of strings with one or more\n  document attribute paths. The specified attributes are placed into a single\n  column of the index. A column with all fields that are involved in common\n  search queries is ideal for performance. The column should not include too\n  many unneeded fields, however.\n\n- The optional `compression` attribute defines the compression type used for\n  the internal column-store, which can be `\"lz4\"` (LZ4 fast compression, default)\n  or `\"none\"` (no compression).\n\n- The optional `cache` attribute allows you to always cache stored values in\n  memory (introduced in v3.9.5, Enterprise Edition only). This can improve\n  the query performance if stored values are involved. Otherwise, these values\n  are memory-mapped and it is up to the operating system to load them from disk\n  into memory and to evict them from memory.\n\n  See the `--arangosearch.columns-cache-limit` startup option\n  to control the memory consumption of this cache. You can reduce the memory\n  usage of the column cache in cluster deployments by only using the cache for\n  leader shards, see the `--arangosearch.columns-cache-only-leader` startup\n  option (introduced in v3.10.6).\n\n  You may use the following shorthand notations on View creation instead of\n  an array of objects as described above. The default compression and cache\n  settings are used in this case:\n\n  - An array of strings, like `[\"attr1\", \"attr2\"]`, to place each attribute into\n    a separate column of the index (introduced in v3.10.3).\n\n  - An array of arrays of strings, like `[[\"attr1\", \"attr2\"]]`, to place the\n    attributes into a single column of the index, or `[[\"attr1\"], [\"attr2\"]]`\n    to place each attribute into a separate column. You can also mix it with the\n  the full form:\n\n  ```json\n  [\n    [\"attr1\"],\n    [\"attr2\", \"attr3\"],\n    { \"fields\": [\"attr4\", \"attr5\"], \"cache\": true }\n  ]\n  ```\n\nThe `storedValues` option is not to be confused with the `storeValues` option,\nwhich allows to store meta data about attribute values in the View index.\n",
+          "description": "An array of objects to describe which document attributes to store in the View\nindex (introduced in v3.7.1). It can then cover search queries, which means the\ndata can be taken from the index directly and accessing the storage engine can\nbe avoided.\n\nThis option is immutable.\n\nEach object is expected in the following form:\n\n`{ \"fields\": [ \"attr1\", \"attr2\", ... \"attrN\" ], \"compression\": \"none\", \"cache\": false }`\n\n- The required `fields` attribute is an array of strings with one or more\n  document attribute paths. The specified attributes are placed into a single\n  column of the index. A column with all fields that are involved in common\n  search queries is ideal for performance. The column should not include too\n  many unneeded fields, however.\n\n- The optional `compression` attribute defines the compression type used for\n  the internal column-store, which can be `\"lz4\"` (LZ4 fast compression, default)\n  or `\"none\"` (no compression).\n\n- The optional `cache` attribute allows you to always cache stored values in\n  memory (introduced in v3.9.5, Enterprise Edition only). This can improve\n  the query performance if stored values are involved. Otherwise, these values\n  are memory-mapped and it is up to the operating system to load them from disk\n  into memory and to evict them from memory.\n\n  See the `--arangosearch.columns-cache-limit` startup option\n  to control the memory consumption of this cache. You can reduce the memory\n  usage of the column cache in cluster deployments by only using the cache for\n  leader shards, see the `--arangosearch.columns-cache-only-leader` startup\n  option (introduced in v3.10.6).\n\n  You may use the following shorthand notations on View creation instead of\n  an array of objects as described above. The default compression and cache\n  settings are used in this case:\n\n  - An array of strings, like `[\"attr1\", \"attr2\"]`, to place each attribute into\n    a separate column of the index (introduced in v3.10.3).\n\n  - An array of arrays of strings, like `[[\"attr1\", \"attr2\"]]`, to place the\n    attributes into a single column of the index, or `[[\"attr1\"], [\"attr2\"]]`\n    to place each attribute into a separate column. You can also mix it with the\n    full form:\n\n  ```json\n  [\n    [\"attr1\"],\n    [\"attr2\", \"attr3\"],\n    { \"fields\": [\"attr4\", \"attr5\"], \"cache\": true }\n  ]\n  ```\n\nThe `storedValues` option is not to be confused with the `storeValues` option,\nwhich allows to store meta data about attribute values in the View index.\n",
           "items": {
            "type": "object"
           },

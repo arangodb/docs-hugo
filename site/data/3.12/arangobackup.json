@@ -1,4 +1,44 @@
 {
+  "abort" : {
+    "category" : "command",
+    "deprecatedIn" : null,
+    "description" : "Abort the transfer with the given status-id (upload/download operation).",
+    "dynamic" : false,
+    "enterpriseOnly" : true,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : null,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : false,
+    "section" : "",
+    "type" : "boolean"
+  },
+  "allow-inconsistent" : {
+    "category" : "option",
+    "default" : false,
+    "deprecatedIn" : null,
+    "description" : "Whether to attempt to continue in face of errors; may result in inconsistent backup state (create operation).",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : null,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "",
+    "type" : "boolean"
+  },
   "check-configuration" : {
     "category" : "command",
     "deprecatedIn" : null,
@@ -57,217 +97,6 @@
     "requiresValue" : true,
     "section" : "",
     "type" : "string"
-  },
-  "console.audit-file" : {
-    "category" : "option",
-    "default" : "",
-    "deprecatedIn" : null,
-    "description" : "The audit log file to save commands and results to.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "console",
-    "type" : "string"
-  },
-  "console.auto-complete" : {
-    "category" : "option",
-    "default" : true,
-    "deprecatedIn" : null,
-    "description" : "Enable auto-completion.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "required" : false,
-    "requiresValue" : false,
-    "section" : "console",
-    "type" : "boolean"
-  },
-  "console.colors" : {
-    "category" : "option",
-    "default" : false,
-    "deprecatedIn" : null,
-    "description" : "Enable color support.",
-    "dynamic" : true,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "required" : false,
-    "requiresValue" : false,
-    "section" : "console",
-    "type" : "boolean"
-  },
-  "console.history" : {
-    "category" : "option",
-    "default" : true,
-    "deprecatedIn" : null,
-    "description" : "Whether to load and persist command-line history.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "required" : false,
-    "requiresValue" : false,
-    "section" : "console",
-    "type" : "boolean"
-  },
-  "console.pager" : {
-    "category" : "option",
-    "default" : false,
-    "deprecatedIn" : null,
-    "description" : "Enable paging.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "required" : false,
-    "requiresValue" : false,
-    "section" : "console",
-    "type" : "boolean"
-  },
-  "console.pager-command" : {
-    "category" : "option",
-    "default" : "less -X -R -F -L",
-    "deprecatedIn" : null,
-    "description" : "The pager command.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : true,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "console",
-    "type" : "string"
-  },
-  "console.pretty-print" : {
-    "category" : "option",
-    "default" : true,
-    "deprecatedIn" : null,
-    "description" : "Enable pretty-printing.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "required" : false,
-    "requiresValue" : false,
-    "section" : "console",
-    "type" : "boolean"
-  },
-  "console.prompt" : {
-    "category" : "option",
-    "default" : "%E@%d> ",
-    "deprecatedIn" : null,
-    "description" : "The prompt used in REPL (placeholders: %t = the current time as timestamp, %p = the duration of last command in seconds, %d = the name of the current database, %e = the current endpoint, %E = the current endpoint without the protocol, %u = the current user",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "console",
-    "type" : "string"
-  },
-  "default-language" : {
-    "category" : "option",
-    "default" : "",
-    "deprecatedIn" : [
-      "v3.10.0"
-    ],
-    "description" : "An ISO-639 language code. You can only set this option once, when initializing the database.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : true,
-    "introducedIn" : null,
-    "longDescription" : "The default language is used for sorting and\ncomparing strings. The language value is a two-letter language code (ISO-639) or\nit is composed by a two-letter language code followed by a two letter country\ncode (ISO-3166). For example: `de`, `en`, `en_US`, `en_UK`.\n\nThe default is the system locale of the platform.",
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "",
-    "type" : "string"
-  },
-  "default-language-check" : {
-    "category" : "option",
-    "default" : true,
-    "deprecatedIn" : null,
-    "description" : "Check if `--icu-language` / `--default-language` matches the stored language.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : true,
-    "introducedIn" : [
-      "v3.8.0"
-    ],
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "required" : false,
-    "requiresValue" : false,
-    "section" : "",
-    "type" : "boolean"
   },
   "define" : {
     "category" : "option",
@@ -328,61 +157,37 @@
     "section" : "",
     "type" : "boolean"
   },
-  "encryption.key-generator" : {
+  "force" : {
     "category" : "option",
-    "default" : "",
+    "default" : false,
     "deprecatedIn" : null,
-    "description" : "A program providing the encryption key on stdout. If set, encryption at rest is enabled.",
+    "description" : "Abort transactions if needed to ensure a consistent snapshot. This option can destroy the atomicity of your transactions in the presence of intermediate commits! Use it with great care and only if you really need a consistent backup at all costs (create operation).",
     "dynamic" : false,
     "enterpriseOnly" : true,
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "The program must output 32 bytes of data on the\nstandard output and exit.",
     "obsolete" : false,
     "os" : [
       "linux",
       "macos",
       "windows"
     ],
-    "requiresValue" : true,
-    "section" : "encryption",
-    "type" : "string"
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "",
+    "type" : "boolean"
   },
-  "encryption.keyfile" : {
+  "identifier" : {
     "category" : "option",
     "default" : "",
     "deprecatedIn" : null,
-    "description" : "The path to the file that contains the encryption key. Must contain 32 bytes of data. If set, encryption at rest is enabled.",
-    "dynamic" : false,
-    "enterpriseOnly" : true,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "longDescription" : "You must secure the encryption key file so that\nonly `arangodump`, `arangorestore`, and `arangod` can access it. You should also\nensure that the file is not readable if someone steals your hardware, for\nexample, by encrypting `/mytmpfs` or creating an in-memory file-system under\n`/mytmpfs`.",
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "encryption",
-    "type" : "string"
-  },
-  "icu-language" : {
-    "category" : "option",
-    "default" : "",
-    "deprecatedIn" : null,
-    "description" : "An ICU locale ID to set a language and optionally additional properties that affect string comparisons and sorting. You can only set this option once, when initializing the database.",
+    "description" : "a unique identifier for a backup (restore/upload/download operation)",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
-    "hidden" : true,
-    "introducedIn" : [
-      "v3.9.1"
-    ],
-    "longDescription" : "With this option, you can get the sorting and\ncomparing order exactly as it is defined in the ICU standard. The language value\ncan be a two-letter language code (ISO-639), a two-letter language code followed\nby a two letter country code (ISO-3166), or any other valid ICU locale\ndefinition. For example: `de`, `en`, `en_US`, `en_UK`,\n`de_AT@collation=phonebook`.\n\nFor the Swedish language (`sv`), for instance, the correct ICU-based sorting\norder for letters is `'a','A','b','B','z','Z','å','Ä','ö','Ö'`. To get this\norder, use `--icu-language sv`. If you use `--default-language sv` instead, the\nsorting order will be `\"A\", \"a\", \"B\", \"b\", \"Z\", \"z\", \"å\", \"Ä\", \"Ö\", \"ö\"`.\n\n**Note**: You can use only one of the language options, either `--icu-language`\nor `--default-language`. Setting both of them results in an error.",
+    "hidden" : false,
+    "introducedIn" : null,
     "obsolete" : false,
     "os" : [
       "linux",
@@ -393,54 +198,11 @@
     "section" : "",
     "type" : "string"
   },
-  "javascript.allow-external-process-control" : {
+  "ignore-version" : {
     "category" : "option",
     "default" : false,
     "deprecatedIn" : null,
-    "description" : "Allow the execution and control of external processes from within JavaScript actions.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : true,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "required" : false,
-    "requiresValue" : false,
-    "section" : "javascript",
-    "type" : "boolean"
-  },
-  "javascript.allow-port-testing" : {
-    "category" : "option",
-    "default" : false,
-    "deprecatedIn" : null,
-    "description" : "Allow the testing of ports from within JavaScript actions.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : true,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "required" : false,
-    "requiresValue" : false,
-    "section" : "javascript",
-    "type" : "boolean"
-  },
-  "javascript.check-syntax" : {
-    "category" : "option",
-    "default" : [
-    ],
-    "deprecatedIn" : null,
-    "description" : "Check the syntax of the JavaScript code from the specified file.",
+    "description" : "Ignore stored version of a backup. Restore may not work if versions mismatch (restore operation).",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -452,35 +214,16 @@
       "macos",
       "windows"
     ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "string..."
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "",
+    "type" : "boolean"
   },
-  "javascript.client-module" : {
-    "category" : "option",
-    "default" : "inspector.js",
-    "deprecatedIn" : null,
-    "description" : "The client module to use at startup.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : true,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "string"
-  },
-  "javascript.copy-directory" : {
+  "label" : {
     "category" : "option",
     "default" : "",
     "deprecatedIn" : null,
-    "description" : "The target directory to copy files from `--javascript.startup-directory` to (only used if `--javascript.copy-installation` is enabled).",
+    "description" : "An additional label to add to the backup identifier (create operation)-",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -493,414 +236,8 @@
       "windows"
     ],
     "requiresValue" : true,
-    "section" : "javascript",
+    "section" : "",
     "type" : "string"
-  },
-  "javascript.copy-installation" : {
-    "category" : "option",
-    "default" : false,
-    "deprecatedIn" : null,
-    "description" : "Copy the contents of `--javascript.startup-directory`.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "required" : false,
-    "requiresValue" : false,
-    "section" : "javascript",
-    "type" : "boolean"
-  },
-  "javascript.current-module-directory" : {
-    "category" : "option",
-    "default" : true,
-    "deprecatedIn" : null,
-    "description" : "Add the current directory to the module path.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "required" : false,
-    "requiresValue" : false,
-    "section" : "javascript",
-    "type" : "boolean"
-  },
-  "javascript.endpoints-allowlist" : {
-    "category" : "option",
-    "default" : [
-    ],
-    "deprecatedIn" : null,
-    "description" : "Endpoints that can be connected to via the `@arangodb/request` module in JavaScript actions.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "string..."
-  },
-  "javascript.endpoints-denylist" : {
-    "category" : "option",
-    "default" : [
-    ],
-    "deprecatedIn" : null,
-    "description" : "Endpoints that cannot be connected to via the `@arangodb/request` module in JavaScript actions (if not in the allowlist).",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "string..."
-  },
-  "javascript.environment-variables-allowlist" : {
-    "category" : "option",
-    "default" : [
-    ],
-    "deprecatedIn" : null,
-    "description" : "Environment variables that are accessible in JavaScript.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "string..."
-  },
-  "javascript.environment-variables-denylist" : {
-    "category" : "option",
-    "default" : [
-    ],
-    "deprecatedIn" : null,
-    "description" : "Environment variables that are inaccessible in JavaScript (if not in the allowlist).",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "string..."
-  },
-  "javascript.execute" : {
-    "category" : "option",
-    "default" : [
-    ],
-    "deprecatedIn" : null,
-    "description" : "Execute the JavaScript code from the specified file.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "string..."
-  },
-  "javascript.execute-string" : {
-    "category" : "option",
-    "default" : [
-    ],
-    "deprecatedIn" : null,
-    "description" : "Execute the JavaScript code from the specified string.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "string..."
-  },
-  "javascript.files-allowlist" : {
-    "category" : "option",
-    "default" : [
-    ],
-    "deprecatedIn" : null,
-    "description" : "Filesystem paths that are accessible from within JavaScript actions.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "string..."
-  },
-  "javascript.gc-interval" : {
-    "base" : 1,
-    "category" : "option",
-    "default" : 50,
-    "deprecatedIn" : null,
-    "description" : "Request-based garbage collection interval (each n-th command).",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "maxInclusive" : true,
-    "maxValue" : 18446744073709551615,
-    "minInclusive" : true,
-    "minValue" : 0,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "uint64"
-  },
-  "javascript.harden" : {
-    "category" : "option",
-    "default" : false,
-    "deprecatedIn" : null,
-    "description" : "Disable access to JavaScript functions in the internal module: getPid() and logLevel().",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "required" : false,
-    "requiresValue" : false,
-    "section" : "javascript",
-    "type" : "boolean"
-  },
-  "javascript.module-directory" : {
-    "category" : "option",
-    "default" : [
-    ],
-    "deprecatedIn" : null,
-    "description" : "Additional paths containing JavaScript modules.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : true,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "string..."
-  },
-  "javascript.startup-directory" : {
-    "category" : "option",
-    "default" : "/usr/share/arangodb3/js",
-    "deprecatedIn" : null,
-    "description" : "The startup paths containing the JavaScript files.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : true,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "string"
-  },
-  "javascript.startup-options-allowlist" : {
-    "category" : "option",
-    "default" : [
-    ],
-    "deprecatedIn" : null,
-    "description" : "Startup options whose names match this regular expression are allowed and exposed to JavaScript.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "string..."
-  },
-  "javascript.startup-options-denylist" : {
-    "category" : "option",
-    "default" : [
-    ],
-    "deprecatedIn" : null,
-    "description" : "Startup options whose names match this regular expression are not exposed (if not in the allowlist) to JavaScript actions.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "string..."
-  },
-  "javascript.unit-test-filter" : {
-    "category" : "option",
-    "default" : "",
-    "deprecatedIn" : null,
-    "description" : "Filter the test cases in the test suite.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "string"
-  },
-  "javascript.unit-tests" : {
-    "category" : "option",
-    "default" : [
-    ],
-    "deprecatedIn" : null,
-    "description" : "Do not start as a shell, run unit tests instead.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "string..."
-  },
-  "javascript.v8-max-heap" : {
-    "base" : 1,
-    "category" : "option",
-    "default" : 3072,
-    "deprecatedIn" : null,
-    "description" : "The maximal heap size (in MiB).",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "maxInclusive" : true,
-    "maxValue" : 18446744073709551615,
-    "minInclusive" : true,
-    "minValue" : 0,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "uint64"
-  },
-  "javascript.v8-options" : {
-    "category" : "option",
-    "default" : [
-    ],
-    "deprecatedIn" : null,
-    "description" : "Options to pass to V8.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : true,
-    "introducedIn" : null,
-    "longDescription" : "You can optionally pass arguments to the V8\nJavaScript engine. The V8 engine runs with the default settings unless you\nexplicitly specify them. The options are forwarded to the V8 engine, which\nparses them on its own. Passing invalid options may result in an error being\nprinted on stderr and the option being ignored.\n\nYou need to pass the options as one string, with V8 option names being prefixed\nwith two hyphens. Multiple options need to be separated by whitespace. To get\na list of all available V8 options, you can use the value `\"--help\"` as follows:\n\n```\n--javascript.v8-options=\"--help\"\n```\n\nAnother example of specific V8 options being set at startup:\n\n```\n--javascript.v8-options=\"--log --no-logfile-per-isolate --logfile=v8.log\"\n```\n\nNames and features or usable options depend on the version of V8 being used, and\nmight change in the future if a different version of V8 is being used in\nArangoDB. Not all options offered by V8 might be sensible to use in the context\nof ArangoDB. Use the specific options only if you are sure that they are not\nharmful for the regular database operation.",
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "string..."
   },
   "log" : {
     "category" : "option",
@@ -1526,15 +863,65 @@
     "section" : "log",
     "type" : "boolean"
   },
-  "quiet" : {
+  "max-wait-for-lock" : {
+    "base" : 1,
     "category" : "option",
-    "default" : false,
+    "default" : 60,
     "deprecatedIn" : null,
-    "description" : "Silent startup.",
+    "description" : "The maximum time to wait (in seconds) to acquire a lock on all necessary resources (create operation).",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
     "hidden" : false,
+    "introducedIn" : null,
+    "maxInclusive" : true,
+    "maxValue" : 1.7976931348623157e+308,
+    "minInclusive" : true,
+    "minValue" : 2.2250738585072014e-308,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "",
+    "type" : "double"
+  },
+  "max-wait-for-restart" : {
+    "base" : 1,
+    "category" : "option",
+    "default" : 0,
+    "deprecatedIn" : null,
+    "description" : "The maximum time to wait (in seconds) for the server to restart after a restore operation before reporting an error; if zero, arangobackup does not wait to check that the server restarts and simply returns the result of the restore request (restore operation).",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : null,
+    "maxInclusive" : true,
+    "maxValue" : 1.7976931348623157e+308,
+    "minInclusive" : true,
+    "minValue" : 2.2250738585072014e-308,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "",
+    "type" : "double"
+  },
+  "operation" : {
+    "category" : "option",
+    "default" : "list",
+    "deprecatedIn" : null,
+    "description" : "The operation to perform (may be specified as positional argument without '--operation').",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
@@ -1542,10 +929,10 @@
       "macos",
       "windows"
     ],
-    "required" : false,
-    "requiresValue" : false,
+    "requiresValue" : true,
     "section" : "",
-    "type" : "boolean"
+    "type" : "string",
+    "values" : "Possible values: \"create\", \"delete\", \"download\", \"list\", \"restore\", \"upload\""
   },
   "random.generator" : {
     "base" : 1,
@@ -1574,15 +961,15 @@
     "type" : "uint32",
     "values" : "Possible values: 1, 2, 3, 4"
   },
-  "server.ask-jwt-secret" : {
+  "rclone-config-file" : {
     "category" : "option",
-    "default" : true,
+    "default" : "",
     "deprecatedIn" : null,
-    "description" : "If enabled, you are prompted for a JWT secret. This option is not compatible with --server.username and --server.password. If specified, it is used for all connections - even if a new connection to another server is created.",
+    "description" : "A path to the rclone configuration file to use forfile transfer (upload/download operation).",
     "dynamic" : false,
-    "enterpriseOnly" : false,
+    "enterpriseOnly" : true,
     "experimental" : false,
-    "hidden" : true,
+    "hidden" : false,
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
@@ -1590,14 +977,33 @@
       "macos",
       "windows"
     ],
-    "required" : false,
-    "requiresValue" : false,
-    "section" : "server",
-    "type" : "boolean"
+    "requiresValue" : true,
+    "section" : "",
+    "type" : "string"
+  },
+  "remote-path" : {
+    "category" : "option",
+    "default" : "",
+    "deprecatedIn" : null,
+    "description" : "The remote rclone path of a directory to use to store or receive backups (upload/download operation).",
+    "dynamic" : false,
+    "enterpriseOnly" : true,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : null,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "",
+    "type" : "string"
   },
   "server.authentication" : {
     "category" : "option",
-    "default" : false,
+    "default" : true,
     "deprecatedIn" : null,
     "description" : "Require authentication credentials when connecting (does not affect the server-side authentication settings).",
     "dynamic" : false,
@@ -1682,26 +1088,6 @@
     "requiresValue" : true,
     "section" : "server",
     "type" : "string..."
-  },
-  "server.jwt-secret-keyfile" : {
-    "category" : "option",
-    "default" : "",
-    "deprecatedIn" : null,
-    "description" : "If enabled, the JWT secret is loaded from the given file. This option is not compatible with --server.ask-jwt-secret, --server.username and --server.password. If specified, it is used for all connections - even if a new connection to another server is created.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : true,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "server",
-    "type" : "string"
   },
   "server.max-packet-size" : {
     "base" : 1,
@@ -1819,17 +1205,15 @@
     "type" : "uint64",
     "values" : "Possible values: 1, 2, 3, 4, 5, 6, 9"
   },
-  "temp.path" : {
-    "category" : "option",
-    "default" : "",
+  "status-id" : {
+    "category" : "command",
     "deprecatedIn" : null,
-    "description" : "The path for temporary files.",
+    "description" : "Return the status of a transfer process (upload/download operation).",
     "dynamic" : false,
-    "enterpriseOnly" : false,
+    "enterpriseOnly" : true,
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "ArangoDB uses the path for storing temporary\nfiles, for extracting data from uploaded zip files (e.g. for Foxx services),\nand other things.\n\nIdeally, the temporary path is set to an instance-specific subdirectory of the\noperating system's temporary directory. To avoid data loss, the temporary path\nshould not overlap with any directories that contain important data, for\nexample, the instance's database directory.\n\nIf you set the temporary path to the same directory as the instance's database\ndirectory, a startup error is logged and the startup is aborted.",
     "obsolete" : false,
     "os" : [
       "linux",
@@ -1837,7 +1221,7 @@
       "windows"
     ],
     "requiresValue" : true,
-    "section" : "temp",
+    "section" : "",
     "type" : "string"
   },
   "use-splice-syscall" : {
