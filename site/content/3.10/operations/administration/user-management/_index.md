@@ -329,7 +329,7 @@ database. All changes to the access levels must be done using the
 
 ### LDAP Users
 
-{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 ArangoDB supports LDAP as an external authentication system. For detailed
 information please have look into the

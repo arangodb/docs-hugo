@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl update command
 title: Oasisctl Update
 menuTitle: Update
-weight: 5
+weight: 140
+description: >-
+  Description of the oasisctl update command
+archetype: chapter
 ---
+Update resources
+
 ## Synopsis
+
 Update resources
 
 ```
@@ -13,11 +17,13 @@ oasisctl update [flags]
 ```
 
 ## Options
+
 ```
   -h, --help   help for update
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -25,6 +31,7 @@ oasisctl update [flags]
 ```
 
 ## See also
+
 * [oasisctl](../options.md)	 - ArangoGraph Insights Platform
 * [oasisctl update auditlog](update-auditlog.md)	 - Update an auditlog
 * [oasisctl update backup](update-backup.md)	 - Update a backup

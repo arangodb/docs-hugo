@@ -70,10 +70,6 @@ paths:
                         description: |
                           has this been compiled with the asan address sanitizer turned on? (should be false)
                         type: string
-                      asm-crc32:
-                        description: |
-                          do we have assembler implemented CRC functions?
-                        type: string
                       assertions:
                         description: |
                           do we have assertions compiled in (=> developer version)

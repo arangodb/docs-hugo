@@ -6,6 +6,10 @@ description: >-
   Single Sign-On (SSO) using SAML 2.0
 archetype: chapter
 ---
+{{< info >}}
+This feature is only available in ArangoGraph Enterprise.
+{{< /info >}}
+
 ArangoGraph provides support to enable **Single Sign-On** (SSO) authentication
 using **Security Assertion Markup language 2.0** (SAML 2.0).
 

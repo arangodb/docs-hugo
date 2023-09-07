@@ -6,7 +6,7 @@ description: >-
   Graphs synchronously replicated to all servers, available in the Enterprise Edition
 archetype: chapter
 ---
-{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 ## What is a SatelliteGraph?
 

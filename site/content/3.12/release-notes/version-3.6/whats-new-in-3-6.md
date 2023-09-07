@@ -562,7 +562,7 @@ operand can be a collection or another View.
 
 ## OneShard
 
-{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 Not all use cases require horizontal scalability. In such cases, a OneShard
 deployment offers a practicable solution that enables significant performance

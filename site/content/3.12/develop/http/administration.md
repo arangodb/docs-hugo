@@ -556,11 +556,6 @@ paths:
       description: |
         Return availability information about a server.
 
-        The response is a JSON object with an attribute "mode". The "mode" can either
-        be "readonly", if the server is in read-only mode, or "default", if it is not.
-        Please note that the JSON object with "mode" is only returned in case the server
-        does not respond with HTTP response code 503.
-
         This is a public API so it does *not* require authentication. It is meant to be
         used only in the context of server monitoring.
       responses:
@@ -573,6 +568,23 @@ paths:
           description: |
             HTTP 503 will be returned in case the server is during startup or during shutdown,
             is set to read-only mode or is currently a follower in an Active Failover deployment setup.
+      tags:
+        - Administration
+```
+```openapi
+### Get the required database version
+
+paths:
+  /_admin/database/target-version:
+    get:
+      operationId: getDatabaseVersion
+      description: |
+        Returns the database version that this server requires.
+        The version is returned in the `version` attribute of the result.
+      responses:
+        '200':
+          description: |
+            Is returned in all cases.
       tags:
         - Administration
 ```

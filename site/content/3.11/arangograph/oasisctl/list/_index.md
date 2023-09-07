@@ -1,11 +1,15 @@
 ---
-layout: default
-description: Description of the oasisctl list command
 title: Oasisctl List
 menuTitle: List
-weight: 5
+weight: 75
+description: >-
+  Description of the oasisctl list command
+archetype: chapter
 ---
+List resources
+
 ## Synopsis
+
 List resources
 
 ```
@@ -13,11 +17,13 @@ oasisctl list [flags]
 ```
 
 ## Options
+
 ```
   -h, --help   help for list
 ```
 
-## Options Inherited From Parent Commands
+## Options inherited from parent commands
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -25,6 +31,7 @@ oasisctl list [flags]
 ```
 
 ## See also
+
 * [oasisctl](../options.md)	 - ArangoGraph Insights Platform
 * [oasisctl list apikeys](list-apikeys.md)	 - List all API keys created for the current user
 * [oasisctl list arangodb](list-arangodb.md)	 - List ArangoDB information

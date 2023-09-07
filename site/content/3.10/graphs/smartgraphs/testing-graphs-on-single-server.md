@@ -9,7 +9,7 @@ archetype: default
 ---
 {{< description >}}
 
-{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 ## General idea
 

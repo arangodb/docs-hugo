@@ -12,7 +12,7 @@ Use [_arangodump_](../arangodump/_index.md) and
 [_arangorestore_](../arangorestore/_index.md) for
 [logical backups](../../../operations/backup-and-restore.md#logical-backups) in the Community Edition.
 {{< /info >}}
-{{< tag "ArangoDB Enterprise" >}}
+{{< tag "ArangoDB Enterprise Edition" >}}
 
 _Arangobackup_ is a command-line client tool for instantaneous and
 consistent [hot backups](../../../operations/backup-and-restore.md#hot-backups) of the data and

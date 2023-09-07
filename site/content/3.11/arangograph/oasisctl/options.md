@@ -1,14 +1,15 @@
 ---
-layout: default
-description: Command-line client tool for managing ArangoGraph
-title: ArangoGraph Shell oasisctl
+title: Oasisctl
 menuTitle: Options
 weight: 5
+description: >-
+  Command-line client tool for managing ArangoGraph
+archetype: default
 ---
-## Oasisctl
 ArangoGraph Insights Platform
 
 ## Synopsis
+
 ArangoGraph Insights Platform (formerly called Oasis): The Managed Cloud for ArangoDB
 
 ```
@@ -16,6 +17,7 @@ oasisctl [flags]
 ```
 
 ## Options
+
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -24,6 +26,7 @@ oasisctl [flags]
 ```
 
 ## See also
+
 * [oasisctl accept](accept/_index.md)	 - Accept invites
 * [oasisctl add](add/_index.md)	 - Add resources
 * [oasisctl auditlog](auditlog/_index.md)	 - AuditLog resources

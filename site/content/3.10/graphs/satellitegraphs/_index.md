@@ -8,7 +8,7 @@ archetype: chapter
 ---
 <small>Introduced in: v3.7.0</small>
 
-{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 ## What is a SatelliteGraph?
 

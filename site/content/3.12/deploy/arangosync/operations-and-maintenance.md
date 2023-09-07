@@ -8,7 +8,7 @@ archetype: default
 ---
 ## Operations & Maintenance
 
-{{< tag "ArangoDB Enterprise" >}}
+{{< tag "ArangoDB Enterprise Edition" >}}
 
 ArangoSync is a distributed system with a lot different components.
 As with any such system, it requires some, but not a lot of operational
