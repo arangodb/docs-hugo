@@ -247,9 +247,6 @@ function getCurrentVersion() {
     }
     localStorage.setItem('docs-version', urlVersion);
     
-    searchIndexFile = window.location.origin + "/index_" + urlVersion.replace(".", "") + ".json"
-    initLunr(searchIndexFile)
-
     var versionSelector = document.getElementById("arangodb-version");
     for(let option of versionSelector.options) {
       if (option.value == urlVersion) {
@@ -271,9 +268,6 @@ function changeVersion() {
     } catch(exception) {
         changeVersion();
     }
-
-    searchIndexFile = window.location.origin + "/index_" + newVersion.replace(".", "") + ".json"
-    initLunr(searchIndexFile)
 
     var newUrl = window.location.href.replace(oldVersion, newVersion)
     updateHistory("", newUrl);
