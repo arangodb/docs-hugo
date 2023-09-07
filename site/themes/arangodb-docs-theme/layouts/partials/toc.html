@@ -7,7 +7,7 @@
   target="_blank">
     <i class="fab fa-fw fa-github edit-page-icon"></i>
   </a>
-  {{ if gt (.Page.Fragments.HeadingsMap | len) 2 }}
+  {{ if ge (.Page.Fragments.HeadingsMap | len) 2 }}
     <div class="toc">
         <div class="toc-content">
         <div class="toc-header"><p>On this page</p></div>
