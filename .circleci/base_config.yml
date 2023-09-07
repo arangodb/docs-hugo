@@ -272,7 +272,7 @@ commands:
             cd /home/circleci/project/api-docs
             cp /home/circleci/project/docs-hugo/site/data/<< parameters.version >>/api-docs.json /home/circleci/project/api-docs/
             git add .
-            git commit -m 'Commit api-docs << parameters.tag >>'
+            git commit -am 'Commit api-docs << parameters.tag >>'
             git tag << parameters.tag >>
             git push origin << parameters.tag >>
 
