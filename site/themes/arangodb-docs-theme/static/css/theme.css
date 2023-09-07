@@ -304,6 +304,27 @@ tr {
 
 /* end Tables */
 
+/* Content-specific utility classes */
+
+table.fixed {
+    table-layout: fixed;
+}
+
+table.fixed code {
+    white-space: pre-wrap;
+}
+
+.columns-3 {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    -ms-column-count: 3;
+    -o-column-count: 3;
+    column-count: 3;
+    columns: 3;
+}
+
+/* end Content-specific utility classes */
+
 /* Cards */
 .cards {
     display: grid;
