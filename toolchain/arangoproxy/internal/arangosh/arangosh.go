@@ -42,6 +42,14 @@ func Exec(exampleName string, code string, repository models.Repository) (output
 
 	scanner := bufio.NewScanner(repository.StdoutPipe)
 	buf := false
+	inArangoError := false
+	xpError := false
+	hide := false
+
+	if strings.Contains(code, "xpError") {
+		xpError = true
+
+	}
 	for {
 		if buf {
 			break
@@ -51,6 +59,37 @@ func Exec(exampleName string, code string, repository models.Repository) (output
 			if strings.Contains(scanner.Text(), "EOFD") {
 				buf = true
 				break
+			}
+
+			if scanner.Text() == "\n" {
+				inArangoError = false
+			}
+
+			if strings.Contains(scanner.Text(), "HIDED-START") {
+				hide = true
+				continue
+			}
+
+			if strings.Contains(scanner.Text(), "HIDED-END") {
+				hide = false
+				continue
+			}
+
+			if hide {
+				continue
+			}
+
+			if inArangoError {
+				continue
+			}
+
+			if xpError {
+				if strings.Contains(scanner.Text(), "ArangoError") && !inArangoError {
+					inArangoError = true
+					re := regexp.MustCompile(`(?m)ArangoError.*`)
+					output = output + "[" + re.FindString(scanner.Text()) + "]"
+					continue
+				}
 			}
 
 			output = output + scanner.Text() + "\n"
