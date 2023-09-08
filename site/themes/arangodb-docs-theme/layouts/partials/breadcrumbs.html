@@ -1,23 +1,24 @@
 <nav id="breadcrumbs">
-    <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
-    <meta itemprop="itemListOrder" content="Descending" />
-      {{ range .Ancestors.Reverse }}
-        {{ if not .IsHome }}
-        <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
-          <meta itemprop="position" content="{{ .Params.menuTitle }}" />
-          <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
-            <span itemprop="name" class="breadcrumb-entry">{{ .Params.menuTitle | markdownify }} > </span>
-          </a>
-        </li>
-        {{ end }}
-      {{- end }}   
-      {{ if not .IsHome }}
-      <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
-        <meta itemprop="position" content="{{ .Params.menuTitle }}" />
-        <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
-          <span itemprop="name" class="breadcrumb-entry">{{ .Params.menuTitle | markdownify }}</span>
-        </a>
-      </li>
-      {{ end }}
-    </ol>
+  <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
+  <meta itemprop="itemListOrder" content="Descending" />
+  {{ range .Ancestors.Reverse }}
+    {{ if not .IsHome }}
+    <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
+      <meta itemprop="position" content="{{ .Params.menuTitle }}" />
+      <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
+        <span itemprop="name" class="breadcrumb-entry">{{ .Params.menuTitle | markdownify }}</span>
+      </a>
+      <i class="fas fa-chevron-right fa-fw"></i>
+    </li>
+    {{ end }}
+  {{- end }}   
+  {{ if not .IsHome }}
+  <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
+    <meta itemprop="position" content="{{ .Params.menuTitle }}" />
+    <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
+      <span itemprop="name" class="breadcrumb-entry">{{ .Params.menuTitle | markdownify }}</span>
+    </a>
+  </li>
+  {{ end }}
+  </ol>
 </nav>
