@@ -29,11 +29,11 @@ func AdjustCodeForArangosh(code string) string {
 		re := regexp.MustCompile(`(?m)let |const `)
 		line = re.ReplaceAllString(line, "var ")
 
-		if strings.Contains(line, "~") {
-			if !strings.Contains(line, "var ") {
-				line = fmt.Sprintf("var hidden = %s", line)
-			}
-			line = strings.ReplaceAll(line, "~", "")
+		tildeRE := regexp.MustCompile(`(?m)^(\s*)~`)
+
+		if tildeRE.MatchString(line) {
+			line = tildeRE.ReplaceAllString(line, "")
+			line = fmt.Sprintf("print('HIDED-START')\n%s\nprint('HIDED-END');\n", line)
 		}
 
 		re = regexp.MustCompile(`(?m)}\n *catch`)
