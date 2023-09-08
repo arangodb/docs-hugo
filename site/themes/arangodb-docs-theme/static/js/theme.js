@@ -228,7 +228,7 @@ function tocHiglighter() {
     if (top < 240 && currentHighlightedHref !== '#' + id) {
       removeActiveFromAllAnchors();
       const highlightedHref = document.querySelector('#TableOfContents a[href="#' + id + '"]');
-      highlightedHref.parentElement.classList.add('is-active');x  
+      highlightedHref.parentElement.classList.add('is-active');
       highlightedHref.parentElement.scrollIntoView({behavior: "smooth", block: "nearest" });
     }
   });
