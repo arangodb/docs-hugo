@@ -915,7 +915,7 @@ header .logo {
     }
 }
 
-/* Badcrumbs row */
+/* Breadcrumbs row */
 #breadcrumbs {
     grid-area: breadcrumbs;
     display: flex;
@@ -953,7 +953,7 @@ header .logo {
 
 
 #breadcrumbs > ol > li {
-    padding: 0px 5px 0px 0px;
+    padding: 0;
     display: inline;
 }
 
@@ -963,8 +963,13 @@ header .logo {
     font-size: var(--TYPOGRAPHY-H4-SIZE);
 }
 
+#breadcrumbs > ol > li > i {
+    margin: 0 5px;
+    color: var(--green-700);
+    font-size: 14px;
+}
 
-/* */
+/* end Breadcrumbs row */
 
 
 /* Table of contents */
