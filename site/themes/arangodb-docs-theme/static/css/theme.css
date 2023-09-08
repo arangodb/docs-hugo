@@ -304,6 +304,27 @@ tr {
 
 /* end Tables */
 
+/* Content-specific utility classes */
+
+table.fixed {
+    table-layout: fixed;
+}
+
+table.fixed code {
+    white-space: pre-wrap;
+}
+
+.columns-3 {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    -ms-column-count: 3;
+    -o-column-count: 3;
+    column-count: 3;
+    columns: 3;
+}
+
+/* end Content-specific utility classes */
+
 /* Cards */
 .cards {
     display: grid;
@@ -960,7 +981,7 @@ header .logo {
 #breadcrumbs > ol > li > a {
     font-weight: 700;
     color: var(--green-700);
-    font-size: var(--TYPOGRAPHY-H4-SIZE);
+    font-size: var(--TYPOGRAPHY-BODY-TEXT);
 }
 
 #breadcrumbs > ol > li > i {
@@ -1178,19 +1199,21 @@ article.default, article.chapter, article.home {
     }
 }
 
-hgroup > h1, article > h2, article > h3, article > h4, article > h5  {
+hgroup > h1, article > h2, article > h3, article > h4, article > h5, article > h6 {
     color: var(--HEADERS-COLOR);
     font-weight: var(--TYPOGRAPHY-BOLD-TEXT);
 }
 
-hgroup > h1 {
+hgroup > h1,
+hgroup > h1 > code {
     font-size: var(--TYPOGRAPHY-H1-SIZE);
     margin: 40px 0 40px 0;
     line-height: var(--TYPOGRAPHY-H1-HEIGHT);
 }
 
 @media screen and (max-width: 768px) {
-    hgroup > h1 {
+    hgroup > h1,
+    hgroup > h1 > code {
         font-size: var(--TYPOGRAPHY-H1-SIZE-SMALL);
         margin: 0 0 20px 0;
         line-height: var(--TYPOGRAPHY-H1-HEIGHT);
@@ -1227,7 +1250,7 @@ article > h3 > code {
 article > h4,
 article > h4 > code {
     font-size: var(--TYPOGRAPHY-H4-SIZE);
-    padding-top: 16px;
+    padding-top: 20px;
     line-height: var(--TYPOGRAPHY-H4-HEIGHT);
 }
 
@@ -1238,10 +1261,39 @@ article > h4 > code {
     }
 }
 
+article > h5,
+article > h5 > code {
+    font-size: var(--TYPOGRAPHY-H5-SIZE);
+    padding-top: 18px;
+    line-height: var(--TYPOGRAPHY-H5-HEIGHT);
+}
+
+@media screen and (max-width: 768px) {
+    article > h5,
+    article > h5 > code {
+        font-size: var(--TYPOGRAPHY-H5-SIZE-SMALL);
+    }
+}
+
+article > h6,
+article > h6 > code {
+    font-size: var(--TYPOGRAPHY-H6-SIZE);
+    padding-top: 16px;
+    line-height: var(--TYPOGRAPHY-H6-HEIGHT);
+}
+
+@media screen and (max-width: 768px) {
+    article > h6,
+    article > h6 > code {
+        font-size: var(--TYPOGRAPHY-H6-SIZE-SMALL);
+    }
+}
+
 article > h2 > code,
 article > h3 > code,
 article > h4 > code,
-article > h5 > code {
+article > h5 > code,
+article > h6 > code {
     padding-top: 0px;
     white-space: normal;
 }
