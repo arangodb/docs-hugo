@@ -143,7 +143,7 @@ commands:
             docker push arangodb/docs-hugo:$image_name-<< parameters.version >>-$main_hash
 
   launch-toolchain:
-    description: "launch toolchain"
+    description: "launch toolchain (extended by dynamic config)"
     parameters:
       generators:
         type: string
@@ -217,7 +217,7 @@ commands:
            cd docs-hugo/
            git fetch --all
            git pull --all
-           git merge --no-edit -X theirs origin/frontend-preview 
+           git merge --no-edit -X theirs origin/main
            cd ../
 
   commit:
@@ -255,6 +255,26 @@ commands:
                 git push
               fi
 
+  commit-api-docs:
+    description: Commit api-docs files to api-docs repository
+    parameters:
+      version:
+        type: string
+        default: ""
+      tag:
+        type: string
+        default: ""
+    steps:
+      - run:
+          name: Clone api-docs repo
+          command: |
+            git clone git@github.com:arangodb/api-docs.git
+            cd /home/circleci/project/api-docs
+            cp /home/circleci/project/docs-hugo/site/data/<< parameters.version >>/api-docs.json /home/circleci/project/api-docs/
+            git commit --allow-empty -m 'Commit api-docs << parameters.tag >>' api-docs.json
+            git tag -f << parameters.tag >>
+            git push -f origin << parameters.tag >>
+            git push -f
 
 jobs:
   create-docs-images:
@@ -305,7 +325,15 @@ jobs:
     machine:
       image: ubuntu-2004:current
     resource_class: large
+    environment:
+      GIT_SSH_COMMAND: "ssh -o IdentitiesOnly=yes"
     steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "1e:e3:7e:8c:55:be:3d:56:bc:4c:1c:d7:d6:26:f2:e5"
+            - "20:72:b8:99:35:4c:7c:23:60:da:f2:5e:43:34:ba:79"
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
+
       - run: 
           name: Clone docs repo
           command: |
@@ -322,6 +350,13 @@ jobs:
             docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
       - upload-summary:
           summary-name: "plain-build-summary"
+      - when:
+          condition:
+            equal: [ "api-docs", << pipeline.parameters.workflow >> ]
+          steps:
+            - commit-api-docs:
+                version: << pipeline.parameters.version >>
+                tag: << pipeline.parameters.tag >>
 
       - persist_to_workspace:
           root: .
@@ -377,6 +412,7 @@ jobs:
             - commit:
                 create-pr: << parameters.create-pr >>
                 pr-branch: << parameters.pr-branch >>
+
       
       - persist_to_workspace:
           root: .
@@ -418,6 +454,7 @@ jobs:
 
 
   compile-linux:
+    description: "Compile Linux Job (extended by dynamic config)"
     parameters:
       arangodb-branch:
         type: string
@@ -478,6 +515,11 @@ workflows:
       - deploy:
           requires:
             - plain-build
+
+  api-docs:
+    when: { equal: [ api-docs, << pipeline.parameters.workflow >> ] }
+    jobs:
+      - plain-build
 
   release:
     when: { equal: [ release, << pipeline.parameters.workflow >> ] }
