@@ -18,7 +18,7 @@ def migrateInlineDocuBlocks(block):
     exampleType = re.search(r"@EXAMPLE_.*",  block).group(0)
 
     if "@EXAMPLE_ARANGOSH_OUTPUT" in exampleType:
-        newBlock["options"]["name"] = re.search(r"(?<=@EXAMPLE_ARANGOSH_OUTPUT{).*(?=})", exampleType).group(0)
+        newBlock["options"]["name"] = re.search(r"(?<=@EXAMPLE_ARANGOSH_OUTPUT\{).*(?=\})", exampleType).group(0)
 
     elif "@EXAMPLE_AQL" in exampleType:
         newBlock["language"] = "aql"
@@ -31,28 +31,28 @@ def migrateInlineDocuBlocks(block):
     if brief:
         newBlock["options"]["description"] = brief.group(0)
 
-    block = re.sub(r"@EXAMPLE_.*", '', block, 0)
+    block = re.sub(r" *@EXAMPLE_.*\n", '', block)
+
     datasetRe = re.search(r"@DATASET.*", block)
     if datasetRe:
         newBlock["options"]["dataset"] = datasetRe.group(0).replace("@DATASET{", "").replace("}", "")
-        block = re.sub(r"@DATASET.*\n", '', block, 0)
+        block = re.sub(r" *@DATASET.*\n", '', block)
 
-    explainRe = re.search(r"@EXPLAIN{TRUE}.*", block)
+    explainRe = re.search(r"@EXPLAIN\{TRUE\}.*", block)
     if explainRe:
         newBlock["options"]["explain"] = True
-        block = block.replace("@EXPLAIN{TRUE}\n", "")
+        block = re.sub(r" *@EXPLAIN\{TRUE\}.*\n", "", block)
 
-    bindVarsRe = re.search(r"@BV {.*}", block, re.MULTILINE | re.DOTALL)
+    # The greedy matching could erroneously select the closing bracket of an
+    # AQL object literal, but in the current content, @BV always comes after the query
+    bindVarsRe = re.search(r"( *)@BV (\{.*\})\n", block, re.MULTILINE | re.DOTALL)
     if bindVarsRe:
-        newBlock["options"]["bindVars"] = bindVarsRe.group(0).replace("@BV ", "")
-        block = re.sub(r"@BV {.*}\n", "", block, 0, re.MULTILINE | re.DOTALL)
+        indentationToRemove = len(bindVarsRe.group(1))
+        newBlock["options"]["bindVars"] = re.sub("^ {0,"+str(indentationToRemove)+"}", "", bindVarsRe.group(2), 0, re.MULTILINE)
+        block = re.sub(r" *@BV \{.*\}\n", "", block, 0, re.MULTILINE | re.DOTALL)
 
-
-    newBlock["code"] = "\n".join(block.split("\n")[1:]).lstrip(" ").replace("    ", "")
-    if "USER_04_documentUser" in newBlock["options"]["name"]:
-        newBlock["code"] = "\n~ require('@arangodb/users').save('my-user', 'my-secret-password');\n" + newBlock["code"]
+    newBlock["code"] = block.partition("\n")[2] # Example name on first line
     codeblock = render_codeblock(newBlock)
-    codeblock = re.sub(r"^ *\|", "", codeblock, 0, re.MULTILINE)
 
     ## static fixes
     codeblock = codeblock.replace("bindVars:  -", "bindVars: ")
@@ -65,14 +65,16 @@ def render_codeblock(block):
     exampleOptions = yaml.dump(block["options"], sort_keys=False, default_flow_style=False)
     exampleOptions = exampleOptions.replace("bindVars: |-", "bindVars: ")
     code = block["code"]
-    indentationToRemove = len(code.split("\n")[0]) - len(code.split("\n")[0].lstrip(' '))
-    code = re.sub("^ {"+str(indentationToRemove)+"}", '', code, 0, re.MULTILINE)
+    code = re.sub(r"^( *)\|", "\\1 ", code, 0, re.MULTILINE)
+    firstLine = code.partition("\n")[0]
+    indentationToRemove = len(firstLine) - len(firstLine.lstrip(' '))
+    code = re.sub("^ {0,"+str(indentationToRemove)+"}", '', code, 0, re.MULTILINE)
 
     res = f'\
 ```{block["language"]}\n\
 ---\n\
 {exampleOptions}\
----\
+---\n\
 {code}\
 ```\n\
 '
