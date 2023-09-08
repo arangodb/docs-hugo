@@ -73,7 +73,7 @@ func Exec(exampleName string, code string, repository models.Repository) (output
 					inArangoError = true
 					models.Logger.Printf("ARANGOERR %s", scanner.Text())
 					re := regexp.MustCompile(`(?m)ArangoError.*`)
-					output = output + re.FindString(scanner.Text())
+					output = output + "[" + re.FindString(scanner.Text()) + "]"
 					continue
 				}
 			}
