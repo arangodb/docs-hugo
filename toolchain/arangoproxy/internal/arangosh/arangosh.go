@@ -64,9 +64,14 @@ func Exec(exampleName string, code string, repository models.Repository) (output
 				inArangoError = false
 			}
 
+			if inArangoError {
+				continue
+			}
+
 			if xpError {
 				if strings.Contains(scanner.Text(), "ArangoError") && !inArangoError {
 					inArangoError = true
+					models.Logger.Printf("ARANGOERR %s", scanner.Text())
 					re := regexp.MustCompile(`(?m)ArangoError.*`)
 					output = output + re.FindString(scanner.Text())
 					continue
