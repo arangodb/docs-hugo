@@ -29,7 +29,7 @@ func AdjustCodeForArangosh(code string) string {
 		re := regexp.MustCompile(`(?m)let |const `)
 		line = re.ReplaceAllString(line, "var ")
 
-		tildeRE := regexp.MustCompile(`(?m)^(\s*)~`)
+		tildeRE := regexp.MustCompile(`(?m)^\s*~`)
 
 		if tildeRE.MatchString(line) {
 			line = tildeRE.ReplaceAllString(line, "")
