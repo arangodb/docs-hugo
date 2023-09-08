@@ -73,7 +73,7 @@ params:
   disableBreadcrumb: false
   disableNextPrev: false
   disableLandingPageButton: true
-  titleSeparator: "::"
+  titleSeparator: "|"
   themeVariant: [ "relearn-light", "relearn-dark", "learn", "neon", "blue", "green", "red" ]
   disableSeoHiddenPages: true
   additionalContentLanguage: [ "en" ]

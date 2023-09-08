@@ -358,13 +358,11 @@ paths:
 
 #### Tags
 
-Tags let you display badges, usually below a headline. This is mainly used for
-pointing out if a feature is only available in the Enterprise Edition of
-ArangoDB, the ArangoGraph Insights Platform, or both.
+Tags let you display badges, usually below a headline.
 
-```markdown
-{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
-```
+This is mainly used for pointing out if a feature is only available in the
+Enterprise Edition of ArangoDB, the ArangoGraph Insights Platform, or both.
+See [Edition remarks](#edition-remarks) for details.
 
 #### Tabs
 
@@ -643,6 +641,9 @@ bugfix version), then this should be pointed out as follows:
 You may also add a remark if an existing feature or option is significantly
 extended by a new (sub-)option in a `x.x.0` release.
 
+While version remarks are mostly `Introduced in: ...`, you can also mark
+deprecated features in the same manner with `Deprecated in: ...`.
+
 ### Edition Remarks
 
 Pages and sections about Enterprise Edition features should indicate that the
@@ -650,17 +651,28 @@ Enterprise Edition is required using a hint box. Use the following include in
 the general case:
 
 ```markdown
-{{< tag "ArangoDB Enterprise" "ArangoGraph" >}}
+{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 ```
 
-This should be placed after version remarks if there are any.
+This shortcode should be placed immediately after a headline, before any version
+remarks (`<small>Introduced in: ...</small>`).
+
+To tag options in lists, place the shortcode as follows:
+
+```markdown
+- **optionName** (data type):
+
+  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
+
+  Version remarks and description of the option
+```
 
 Most Enterprise Edition features are also available in ArangoGraph, but some
 features are not or in a different form (e.g. DC2DC, Hot Backup). If a feature
 is not available in ArangoGraph, use the following include instead:
 
 ```markdown
-{{< tag "ArangoDB Enterprise" >}}
+{{< tag "ArangoDB Enterprise Enterprise" >}}
 ```
 
 In the release notes, add the following at the end of a section about a new
@@ -670,8 +682,8 @@ Enterprise Edition feature:
 This feature is only available in the Enterprise Edition.
 ```
 
-API options that are only available in the Enterprise Edition should have a
-remark as follows:
+HTTP API options, that is options described in an `` ```openapi `` code block,
+should have a remark as follows if they are only available in the Enterprise Edition:
 
 ```markdown
 - `enterpriseOption` (boolean, _optional_): ...

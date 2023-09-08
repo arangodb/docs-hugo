@@ -86,14 +86,20 @@ function showSidebarHandler() {
 
 var isMobile=false;
 
+function decodeHtmlEntities(text) {
+  var ta = document.createElement("textarea");
+  ta.innerHTML = text;
+  return ta.value;
+}
+
 function replaceArticle(href, newDoc) {
-  var re = new RegExp(/<title>(.*)<\/title>/, 'mg');
+  var re = new RegExp(/<title>(.*?)<\/title>/, "m");
   var match = re.exec(newDoc);
-  if (match) {
-    title = match[1];
-  }
 
   $(".container-main").replaceWith($(".container-main", newDoc));
+  if (match) {
+    document.title = decodeHtmlEntities(match[1]);
+  }
 
   if (matches = href.match(/.*?(#.*)$/)) {
     location.hash = matches[1];

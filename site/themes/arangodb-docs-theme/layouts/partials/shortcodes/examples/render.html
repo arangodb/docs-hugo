@@ -15,9 +15,8 @@
 {{ $output := transform.Highlight $content.output $language }}
 {{ $block := printf "%s" $output | markdownify}}
     {{- partial "shortcodes/expand.html" (dict
-    "context" .
     "content" $block
     "open"    "open"
-    "title"   "show output"
+    "title"   "Show output"
 ) }}
 <br>

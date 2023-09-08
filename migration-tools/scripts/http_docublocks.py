@@ -93,9 +93,9 @@ def explodeNestedStructs(data, target, k):
             if "type" in value:
                 structName = value["$ref"]
                 delFromDict(components, f"{k}/{key}/$ref")
-                setInDict(components, f"{k}/{key}/properties", components["schemas"][structName]["properties"])
                 if "required" in components["schemas"][structName]:
                     setInDict(components, f"{k}/{key}/required", components["schemas"][structName]["required"])
+                setInDict(components, f"{k}/{key}/properties", components["schemas"][structName]["properties"])
             else:
                 setInDict(components, k + "/" + key, components["schemas"][value[target]])
     
@@ -359,12 +359,14 @@ def processRequestBody(docuBlock, newBlock):
         return
     else:
         if not "properties" in newBlock["requestBody"]["content"]["application/json"]["schema"]:
-            newBlock["requestBody"]["content"]["application/json"]["schema"] = {"type": "object", "properties": {}}
-        newBlock["requestBody"]["content"]["application/json"]["schema"]["properties"][name] = paramBlock
+            newBlock["requestBody"]["content"]["application/json"]["schema"] = {"type": "object"}
         if required == "required":
             if not "required" in newBlock["requestBody"]["content"]["application/json"]["schema"]:
                 newBlock["requestBody"]["content"]["application/json"]["schema"]["required"] = []
             newBlock["requestBody"]["content"]["application/json"]["schema"]["required"].append(name)
+        if not "properties" in newBlock["requestBody"]["content"]["application/json"]["schema"]:
+            newBlock["requestBody"]["content"]["application/json"]["schema"]["properties"] = {}
+        newBlock["requestBody"]["content"]["application/json"]["schema"]["properties"][name] = paramBlock
     return
 
 def processResponse(docuBlock, newBlock):
@@ -415,12 +417,14 @@ def processResponseBody(docuBlock, newBlock, statusCode):
         return
     else:
         if not "properties" in newBlock[statusCode]["content"]["application/json"]["schema"]:
-            newBlock[statusCode]["content"]["application/json"]["schema"] = {"type": "object", "properties": {}}
-        newBlock[statusCode]["content"]["application/json"]["schema"]["properties"][name] = paramBlock
+            newBlock[statusCode]["content"]["application/json"]["schema"] = {"type": "object"}
         if required == "required":
             if not "required" in newBlock[statusCode]["content"]["application/json"]["schema"]:
                 newBlock[statusCode]["content"]["application/json"]["schema"]["required"] = []
             newBlock[statusCode]["content"]["application/json"]["schema"]["required"].append(name)
+        if not "properties" in newBlock[statusCode]["content"]["application/json"]["schema"]:
+            newBlock[statusCode]["content"]["application/json"]["schema"]["properties"] = {}
+        newBlock[statusCode]["content"]["application/json"]["schema"]["properties"][name] = paramBlock
 
     return
 
@@ -447,18 +451,15 @@ def processComponents(block):
         if paramRequired == "required":
             if not "required" in components["schemas"][structName]:
                 components["schemas"][structName]["required"] = []
-
             components["schemas"][structName]["required"].append(paramName)
 
         components["schemas"][structName]["properties"][paramName] = structProperty
         return
 
-    components["schemas"][structName] = {
-        "type": "object",
-        "properties": {paramName: structProperty},
-    }
+    components["schemas"][structName] = {"type": "object"}
     if paramRequired == "required":
         components["schemas"][structName]["required"] = [paramName]
+    components["schemas"][structName]["properties"] = {paramName: structProperty}
     return
 
 ####    YAML WRITERS
@@ -470,26 +471,28 @@ class CustomizedDumper(yaml.Dumper):
 
 def render_yaml(block, title):
     blockYaml = yaml.dump(block, sort_keys=False, default_flow_style=False, Dumper=CustomizedDumper)
-    res = f'\
-```openapi\n\
+    res = f'\n\
 {title}\n\
 \n\
+```openapi\n\
 {blockYaml}\
-```'
+```\n\
+'
     res = res.replace("@endDocuBlock", "")
     #res = re.sub(r"^ *$\n", '', res, 0, re.MULTILINE | re.DOTALL)
     res = re.sub(r"\|.*", '|', res, 0, re.MULTILINE)
     return res
 
 def parse_examples(blockExamples):
-    res = '\n**Examples**\n\n'
+    res = '**Examples**\n'
     for example in blockExamples:
         exampleOptions = yaml.dump(example["options"], sort_keys=False, default_flow_style=False)
-        code = example["code"]
-        indentationToRemove = len(code.split("\n")[0]) - len(code.split("\n")[0].lstrip(' '))
-        code = re.sub("^ {"+str(indentationToRemove)+"}", '', code, 0, re.MULTILINE)
+        code = example["code"].lstrip("\n")
+        firstLine = code.partition("\n")[0]
+        indentationToRemove = len(firstLine) - len(firstLine.lstrip(' '))
+        code = re.sub("^ {0,"+str(indentationToRemove)+"}", '', code, 0, re.MULTILINE)
         
-        codeBlock = f'\n\
+        codeBlock = f'\
 ```curl\n\
 ---\n\
 {exampleOptions}\
