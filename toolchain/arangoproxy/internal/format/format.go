@@ -15,16 +15,34 @@ import (
 */
 
 func AdjustCodeForArangosh(code string) string {
-	code = strings.Replace(code, "~", "", -1)
+	out := ""
+
 	if !(strings.Contains(code, "EOFD")) {
 		code = fmt.Sprintf("%s\nprint('EOFD');\n\n\n\n", code)
 	}
-	re := regexp.MustCompile(`(?m)let |const `)
-	code = re.ReplaceAllString(code, "var ")
+
 	code = strings.ReplaceAll(code, "\r\n", "\n")
-	re = regexp.MustCompile(`(?m)}\n *catch`)
-	code = re.ReplaceAllString(code, "} catch")
-	return code
+
+	lines := strings.Split(code, "\n")
+
+	for _, line := range lines {
+		re := regexp.MustCompile(`(?m)let |const `)
+		line = re.ReplaceAllString(line, "var ")
+
+		tildeRE := regexp.MustCompile(`(?m)^\s*~`)
+
+		if tildeRE.MatchString(line) {
+			line = tildeRE.ReplaceAllString(line, "")
+			line = fmt.Sprintf("print('HIDED-START')\n%s\nprint('HIDED-END');\n", line)
+		}
+
+		re = regexp.MustCompile(`(?m)}\n *catch`)
+		line = re.ReplaceAllString(line, "} catch")
+
+		out = fmt.Sprintf("%s\n%s", out, line)
+	}
+
+	return out
 }
 
 /*
@@ -34,14 +52,6 @@ func AdjustCodeForArangosh(code string) string {
 /*
 	JS Formatter
 */
-
-type JSFormatter struct {
-}
-
-func (formatter JSFormatter) FormatRequestCode(code string) string {
-	commands := strings.ReplaceAll(code, "~", "")
-	return commands
-}
 
 /*
 	Curl Formatter
