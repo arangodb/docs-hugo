@@ -44,6 +44,7 @@ func Exec(exampleName string, code string, repository models.Repository) (output
 	buf := false
 	inArangoError := false
 	xpError := false
+	hide := false
 
 	if strings.Contains(code, "xpError") {
 		xpError = true
@@ -64,6 +65,20 @@ func Exec(exampleName string, code string, repository models.Repository) (output
 				inArangoError = false
 			}
 
+			if strings.Contains(scanner.Text(), "HIDED-START") {
+				hide = true
+				continue
+			}
+
+			if strings.Contains(scanner.Text(), "HIDED-END") {
+				hide = false
+				continue
+			}
+
+			if hide {
+				continue
+			}
+
 			if inArangoError {
 				continue
 			}
@@ -71,7 +86,6 @@ func Exec(exampleName string, code string, repository models.Repository) (output
 			if xpError {
 				if strings.Contains(scanner.Text(), "ArangoError") && !inArangoError {
 					inArangoError = true
-					models.Logger.Printf("ARANGOERR %s", scanner.Text())
 					re := regexp.MustCompile(`(?m)ArangoError.*`)
 					output = output + "[" + re.FindString(scanner.Text()) + "]"
 					continue

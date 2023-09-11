@@ -45,11 +45,7 @@ func (service CommonService) saveCache(request string, response models.ExampleRe
 
 type JSService struct{}
 
-var JSFormatter = format.JSFormatter{}
-
 func (service JSService) Execute(request models.Example, cacheChannel chan map[string]interface{}, exampleChannel chan map[string]interface{}, outputChannel chan string) (res models.ExampleResponse) {
-	commands := JSFormatter.FormatRequestCode(request.Code)
-
 	repository, err := models.GetRepository(request.Options.Type, request.Options.Version)
 	if err != nil {
 		responseMsg := fmt.Sprintf("A server for version %s has not been used during generation", request.Options.Version)
@@ -57,7 +53,7 @@ func (service JSService) Execute(request models.Example, cacheChannel chan map[s
 		return
 	}
 
-	commonService.arangosh(request.Options.Name, commands, request.Options.Position, repository, exampleChannel)
+	commonService.arangosh(request.Options.Name, request.Code, request.Options.Position, repository, exampleChannel)
 
 	arangoshResult := <-outputChannel
 	res = *models.NewExampleResponse(request.Code, arangoshResult, request.Options)
