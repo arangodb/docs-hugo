@@ -33,7 +33,7 @@ func ExecRoutine(example chan map[string]interface{}, outChannel chan string) {
 
 func Exec(exampleName string, code, filepath string, repository models.Repository) (output string) {
 	code = format.AdjustCodeForArangosh(code)
-	models.Logger.Printf("[%s] IN %s", exampleName, code)
+
 	cmd := []byte(code)
 	_, err := repository.StdinPipe.Write(cmd)
 	if err != nil {
@@ -95,7 +95,6 @@ func Exec(exampleName string, code, filepath string, repository models.Repositor
 			output = output + scanner.Text() + "\n"
 		}
 	}
-	models.Logger.Printf("[%s] OUT %s", exampleName, output)
 	return
 }
 
@@ -105,11 +104,13 @@ func checkAssertionFailed(name, code, out, filepath string, repository models.Re
 		models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, out)
 
 		re := regexp.MustCompile(`(?m)ASSERTD-FAIL.*`)
-		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error></li>", repository.Version, name, filepath)
+		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error>", repository.Version, name, filepath)
 		for _, match := range re.FindAllString(out, -1) {
 			assertCondition := strings.ReplaceAll(match, "ASSERTD-FAIL ", "")
 			models.Logger.Summary("Assertion Failed for condition %s", assertCondition)
 		}
+		models.Logger.Summary("</li>")
+
 		return "ERRORD"
 	}
 	return out
