@@ -15,23 +15,41 @@ import (
 */
 
 func AdjustCodeForArangosh(code string) string {
-	code = strings.Replace(code, "~", "", -1)
+	out := ""
+
 	if !(strings.Contains(code, "EOFD")) {
 		code = fmt.Sprintf("%s\nprint('EOFD');\n\n\n\n", code)
 	}
-	re := regexp.MustCompile(`(?m)let |const `)
-	code = re.ReplaceAllString(code, "var ")
+
 	code = strings.ReplaceAll(code, "\r\n", "\n")
-	re = regexp.MustCompile(`(?m)}\n *catch`)
-	code = re.ReplaceAllString(code, "} catch")
 
-	assertRE := regexp2.MustCompile(`(?m)(?<=assert\().*(?=\))`, 0) // Replace all asserts args with String args because we want to eval() assert args
-	assertsArgs := utils.Regexp2FindAllString(assertRE, code)
-	for _, assert := range assertsArgs {
-		code = strings.ReplaceAll(code, fmt.Sprintf("assert(%s)", assert), fmt.Sprintf("assert('%s')", assert))
+	lines := strings.Split(code, "\n")
+
+	for _, line := range lines {
+		re := regexp.MustCompile(`(?m)let |const `)
+		line = re.ReplaceAllString(line, "var ")
+
+		tildeRE := regexp.MustCompile(`(?m)^\s*~`)
+
+		if tildeRE.MatchString(line) {
+			line = tildeRE.ReplaceAllString(line, "")
+			line = fmt.Sprintf("print('HIDED-START')\n%s\nprint('HIDED-END');\n", line)
+		}
+
+		assertRE := regexp2.MustCompile(`(?m)(?<=assert\().*(?=\))`, 0) // Replace all asserts args with String args because we want to eval() assert args
+		if assertArgs, _ := assertRE.FindStringMatch(line); assertArgs != nil {
+			args := strings.ReplaceAll(assertArgs.String(), "\"", "`")
+			args = strings.ReplaceAll(args, "'", "`")
+
+			line = fmt.Sprintf("assert('%s');\n", args)
+		}
+
+		re = regexp.MustCompile(`(?m)}\n *catch`)
+		line = re.ReplaceAllString(line, "} catch")
+
+		out = fmt.Sprintf("%s\n%s", out, line)
 	}
-
-	return code
+	return out
 }
 
 /*
@@ -41,14 +59,6 @@ func AdjustCodeForArangosh(code string) string {
 /*
 	JS Formatter
 */
-
-type JSFormatter struct {
-}
-
-func (formatter JSFormatter) FormatRequestCode(code string) string {
-	commands := strings.ReplaceAll(code, "~", "")
-	return commands
-}
 
 /*
 	Curl Formatter
