@@ -133,10 +133,12 @@ func checkArangoError(name, code, out, filepath string, repository models.Reposi
 			models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, out)
 
 			re := regexp.MustCompile(`(?m)JavaScript exception.*|ArangoError.*`)
-			models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error></li><br>", repository.Version, name, filepath)
+			models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error>", repository.Version, name, filepath)
 			for _, match := range re.FindAllString(out, -1) {
 				models.Logger.Summary(match)
 			}
+			models.Logger.Summary("</li>")
+
 			return "ERRORD"
 		}
 	}
@@ -152,10 +154,13 @@ func handleCollectionNotFound(name, code, out, filepath string, repository model
 		models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, output)
 
 		re := regexp.MustCompile(`(?m)JavaScript exception.*|ArangoError.*`)
-		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error></li><br>", repository.Version, name, filepath)
+		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error>", repository.Version, name, filepath)
 		for _, match := range re.FindAllString(out, -1) {
 			models.Logger.Summary(match)
 		}
+
+		models.Logger.Summary("</li>")
+
 		return "ERRORD"
 	}
 
