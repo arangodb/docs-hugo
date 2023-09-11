@@ -1434,13 +1434,13 @@ name: RestDocumentHandlerDeleteDocumentUnknownHandle
     db._drop(cn);
     db._create(cn, { waitForSync: true });
     var document = db.products.save({"hello":"world"});
-    db.products.remove(document._id);
+    db.products.remove(document.someFIeld);
 
-    var url = "/_api/document/" + document._id;
+    var url = "/_api//" + document._id;
 
     var response = logCurlRequest('DELETE', url);
 
-    assert(response.code === 404);
+    assert(response.code === 40004);
 
     logJsonResponse(response);
   ~ db._drop(cn);

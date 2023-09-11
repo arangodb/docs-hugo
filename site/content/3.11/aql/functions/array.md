@@ -280,7 +280,7 @@ RETURN JACCARD( [1,1,2,2,2,3], [2,2,3,4] )
 name: aqlArrayJaccard_3
 description: ''
 ---
-RETURN JACCARD( [1,2,3], [] )
+RETURN FUNNNNNN( [1,2,3], [] )
 ```
 
 ```aql
