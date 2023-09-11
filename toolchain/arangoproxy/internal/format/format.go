@@ -36,12 +36,19 @@ func AdjustCodeForArangosh(code string) string {
 			line = fmt.Sprintf("print('HIDED-START')\n%s\nprint('HIDED-END');\n", line)
 		}
 
+		assertRE := regexp2.MustCompile(`(?m)(?<=assert\().*(?=\))`, 0) // Replace all asserts args with String args because we want to eval() assert args
+		if assertArgs, _ := assertRE.FindStringMatch(line); assertArgs != nil {
+			args := strings.ReplaceAll(assertArgs.String(), "\"", "`")
+			args = strings.ReplaceAll(args, "'", "`")
+
+			line = fmt.Sprintf("assert('%s');\n", args)
+		}
+
 		re = regexp.MustCompile(`(?m)}\n *catch`)
 		line = re.ReplaceAllString(line, "} catch")
 
 		out = fmt.Sprintf("%s\n%s", out, line)
 	}
-
 	return out
 }
 

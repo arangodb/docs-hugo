@@ -21,7 +21,7 @@ func ExecRoutine(example chan map[string]interface{}, outChannel chan string) {
 			filepath := exampleData["filepath"].(string)
 			repository := exampleData["repository"].(models.Repository)
 
-			out := Exec(name, code, repository)
+			out := Exec(name, code, filepath, repository)
 
 			out = checkAssertionFailed(name, code, out, filepath, repository)
 			out = checkArangoError(name, code, out, filepath, repository)
@@ -31,9 +31,9 @@ func ExecRoutine(example chan map[string]interface{}, outChannel chan string) {
 	}
 }
 
-func Exec(exampleName string, code string, repository models.Repository) (output string) {
+func Exec(exampleName string, code, filepath string, repository models.Repository) (output string) {
 	code = format.AdjustCodeForArangosh(code)
-
+	models.Logger.Printf("[%s] IN %s", exampleName, code)
 	cmd := []byte(code)
 	_, err := repository.StdinPipe.Write(cmd)
 	if err != nil {
@@ -95,19 +95,19 @@ func Exec(exampleName string, code string, repository models.Repository) (output
 			output = output + scanner.Text() + "\n"
 		}
 	}
-
+	models.Logger.Printf("[%s] OUT %s", exampleName, output)
 	return
 }
 
 func checkAssertionFailed(name, code, out, filepath string, repository models.Repository) string {
-	if strings.Contains(out, "ASSERTD") {
+	if strings.Contains(out, "ASSERTD-FAIL") {
 		models.Logger.Printf("[%s] [ERROR]: Assertion Failed", name)
 		models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, out)
 
-		re := regexp.MustCompile(`(?m)ASSERTD.*`)
+		re := regexp.MustCompile(`(?m)ASSERTD-FAIL.*`)
 		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error></li>", repository.Version, name, filepath)
 		for _, match := range re.FindAllString(out, -1) {
-			assertCondition := strings.ReplaceAll(match, "ASSERTD ", "")
+			assertCondition := strings.ReplaceAll(match, "ASSERTD-FAIL ", "")
 			models.Logger.Summary("Assertion Failed for condition %s", assertCondition)
 		}
 		return "ERRORD"
@@ -145,7 +145,7 @@ func checkArangoError(name, code, out, filepath string, repository models.Reposi
 
 func handleCollectionNotFound(name, code, out, filepath string, repository models.Repository) string {
 	code = notFoundFallbackCode(code, out)
-	output := Exec(name, code, repository)
+	output := Exec(name, code, filepath, repository)
 	if strings.Contains(output, "ArangoError") && !strings.Contains(code, "xpError") {
 		models.Logger.Printf("[%s] [ERROR]: Found ArangoError without xpError", name)
 		models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, output)
