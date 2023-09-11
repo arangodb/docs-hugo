@@ -41,7 +41,7 @@ func AdjustCodeForArangosh(code string) string {
 			args := strings.ReplaceAll(assertArgs.String(), "\"", "`")
 			args = strings.ReplaceAll(args, "'", "`")
 
-			line = fmt.Sprintf("assert('%s');\n", args)
+			line = fmt.Sprintf("assert(%s, '%s');\n", args, args)
 		}
 
 		re = regexp.MustCompile(`(?m)}\n *catch`)
