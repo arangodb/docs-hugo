@@ -16,25 +16,22 @@ import (
 
 func AdjustCodeForArangosh(code string) string {
 	out := ""
+	hide := false
+	buffer := []string{}
 
 	if !(strings.Contains(code, "EOFD")) {
 		code = fmt.Sprintf("%s\nprint('EOFD');\n\n\n\n", code)
 	}
 
 	code = strings.ReplaceAll(code, "\r\n", "\n")
+	re := regexp.MustCompile(`(?m)}\n *catch`)
+	code = re.ReplaceAllString(code, "} catch")
 
 	lines := strings.Split(code, "\n")
 
 	for _, line := range lines {
 		re := regexp.MustCompile(`(?m)let |const `)
 		line = re.ReplaceAllString(line, "var ")
-
-		tildeRE := regexp.MustCompile(`(?m)^\s*~`)
-
-		if tildeRE.MatchString(line) {
-			line = tildeRE.ReplaceAllString(line, "")
-			line = fmt.Sprintf("print('HIDED-START')\n%s\nprint('HIDED-END');\n", line)
-		}
 
 		assertRE := regexp2.MustCompile(`(?m)(?<=assert\().*(?=\))`, 0) // Replace all asserts args with String args because we want to eval() assert args
 		if assertArgs, _ := assertRE.FindStringMatch(line); assertArgs != nil {
@@ -44,8 +41,22 @@ func AdjustCodeForArangosh(code string) string {
 			line = fmt.Sprintf("assert(%s, '%s');\n", args, args)
 		}
 
-		re = regexp.MustCompile(`(?m)}\n *catch`)
-		line = re.ReplaceAllString(line, "} catch")
+		tildeRE := regexp.MustCompile(`(?m)^\s*~`)
+
+		if hide && !tildeRE.MatchString(line) {
+			hide = false
+			hiddenCode := strings.Join(buffer, "\n")
+			out = fmt.Sprintf("%s\nprint('HIDED-START')\n%s\nprint('HIDED-END');\n%s", out, hiddenCode, line)
+			buffer = []string{}
+			continue
+		}
+
+		if tildeRE.MatchString(line) || hide {
+			hide = true
+			line = tildeRE.ReplaceAllString(line, "")
+			buffer = append(buffer, line)
+			continue
+		}
 
 		out = fmt.Sprintf("%s\n%s", out, line)
 	}
