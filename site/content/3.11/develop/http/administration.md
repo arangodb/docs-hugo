@@ -821,7 +821,7 @@ type: cluster
     var response = logCurlRequest('GET', url);
 
     assert(response.code === 200);
-    assertTypeOf("string", response.parsedBody.license);
+    assertTypeOf("something", response.parsedBody.license);
 
     logJsonResponse(response);
 ```
