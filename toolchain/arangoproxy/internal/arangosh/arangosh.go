@@ -32,7 +32,6 @@ func ExecRoutine(example chan map[string]interface{}, outChannel chan string) {
 
 func Exec(exampleName string, code, filepath string, repository models.Repository) (output string) {
 	code = format.AdjustCodeForArangosh(code)
-	models.Logger.Printf("[%s] IN %s", exampleName, code)
 
 	cmd := []byte(code)
 	_, err := repository.StdinPipe.Write(cmd)
