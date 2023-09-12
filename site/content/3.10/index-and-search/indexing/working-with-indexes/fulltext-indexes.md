@@ -89,19 +89,19 @@ details is returned.
 name: ensureFulltextIndex
 description: ''
 ---
-~ db._create("example");
-  db.example.ensureIndex({ type: "fulltext", fields: [ "text" ], minLength: 3 });
-  db.example.save([
-    { text : "the quick brown", b : { c : 1 } },
-    { text : "quick brown fox", b : { c : 2 } },
-    { text : "brown fox jumps", b : { c : 3 } },
-    { text : "fox jumps over", b : { c : 4 } },
-    { text : "jumps over the", b : { c : 5 } },
-    { text : "over the lazy", b : { c : 6 } },
-    { text : "the lazy dog", b : { c : 7 } }
-  ]);
-  db._query("FOR document IN FULLTEXT(example, 'text', 'quick') RETURN document").toArray();
-~ db._drop("example");
+~db._create("example");
+db.example.ensureIndex({ type: "fulltext", fields: [ "text" ], minLength: 3 });
+db.example.save([
+  { text : "the quick brown", b : { c : 1 } },
+  { text : "quick brown fox", b : { c : 2 } },
+  { text : "brown fox jumps", b : { c : 3 } },
+  { text : "fox jumps over", b : { c : 4 } },
+  { text : "jumps over the", b : { c : 5 } },
+  { text : "over the lazy", b : { c : 6 } },
+  { text : "the lazy dog", b : { c : 7 } }
+]);
+db._query("FOR document IN FULLTEXT(example, 'text', 'quick') RETURN document").toArray();
+~db._drop("example");
 ```
 
 ## Fulltext AQL Functions

@@ -25,7 +25,7 @@ name: 11_workWithAQL_parseQueries
 description: ''
 ---
 var stmt = db._createStatement(
- "FOR doc IN @@collection FILTER doc.foo == @bar RETURN doc");
+  "FOR doc IN @@collection FILTER doc.foo == @bar RETURN doc");
 stmt.parse();
 ~removeIgnoreCollection("mycollection")
 ~db._drop("mycollection")

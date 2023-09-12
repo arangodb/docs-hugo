@@ -143,12 +143,12 @@ Create a View with default properties:
 name: viewUsage_01
 description: ''
 ---
-~ db._create("colA");
-~ db._create("colB");
+~db._create("colA");
+~db._create("colB");
 view = db._createView("myView", "arangosearch", {});
-~ addIgnoreCollection("colA");
-~ addIgnoreCollection("colB");
-~ addIgnoreView("myView");
+~addIgnoreCollection("colA");
+~addIgnoreCollection("colB");
+~addIgnoreView("myView");
 ```
 
 ### Get a View
@@ -222,10 +222,10 @@ view.properties({links: {colA: null}});
 name: viewUsage_08
 description: ''
 ---
-~ removeIgnoreCollection("colA");
-~ removeIgnoreCollection("colB");
-~ removeIgnoreView("myView");
+~removeIgnoreCollection("colA");
+~removeIgnoreCollection("colB");
+~removeIgnoreView("myView");
 db._dropView("myView");
-~ db._drop("colA");
-~ db._drop("colB");
+~db._drop("colA");
+~db._drop("colB");
 ```

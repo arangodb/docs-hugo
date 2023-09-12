@@ -154,8 +154,15 @@ Start with the shortest path from **A** to **D** as above:
 name: GRAPHSP_02_A_to_D
 description: ''
 ---
-db._query("FOR v, e IN OUTBOUND SHORTEST_PATH 'circles/A' TO 'circles/D' GRAPH 'traversalGraph' RETURN [v._key, e._key]");
-db._query("FOR v, e IN OUTBOUND SHORTEST_PATH 'circles/A' TO 'circles/D' edges RETURN [v._key, e._key]");
+db._query(`
+  FOR v, e IN OUTBOUND SHORTEST_PATH 'circles/A' TO 'circles/D' GRAPH 'traversalGraph'
+    RETURN [v._key, e._key]
+`);
+
+db._query(`
+  FOR v, e IN OUTBOUND SHORTEST_PATH 'circles/A' TO 'circles/D' edges
+    RETURN [v._key, e._key]
+`);
 ```
 
 You can see that expectations are fulfilled. You find the vertices in the
@@ -169,8 +176,23 @@ You can also compute shortest paths based on documents found in collections:
 name: GRAPHSP_03_A_to_D
 description: ''
 ---
-db._query("FOR a IN circles FILTER a._key == 'A' FOR d IN circles FILTER d._key == 'D' FOR v, e IN OUTBOUND SHORTEST_PATH a TO d GRAPH 'traversalGraph' RETURN [v._key, e._key]");
-db._query("FOR a IN circles FILTER a._key == 'A' FOR d IN circles FILTER d._key == 'D' FOR v, e IN OUTBOUND SHORTEST_PATH a TO d edges RETURN [v._key, e._key]");
+db._query(`
+  FOR a IN circles
+    FILTER a._key == 'A'
+    FOR d IN circles
+      FILTER d._key == 'D'
+      FOR v, e IN OUTBOUND SHORTEST_PATH a TO d GRAPH 'traversalGraph'
+        RETURN [v._key, e._key]
+`);
+
+db._query(`
+  FOR a IN circles
+    FILTER a._key == 'A'
+    FOR d IN circles
+      FILTER d._key == 'D'
+      FOR v, e IN OUTBOUND SHORTEST_PATH a TO d edges
+        RETURN [v._key, e._key]
+`);
 ```
 
 And finally clean it up again:

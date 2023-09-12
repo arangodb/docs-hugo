@@ -37,7 +37,7 @@ var a = analyzers.save("custom", "text", {
   stopwords: ["a", "example"]
 }, []);
 db._query(`RETURN TOKENS("UPPER & lower, a Stemming Example.", "custom")`).toArray();
-~ analyzers.remove(a.name);
+~analyzers.remove(a.name);
 ```
 
 How Analyzers process values depends on their type and configuration.
@@ -288,7 +288,7 @@ var a = analyzers.save("delimiter_hyphen", "delimiter", {
   delimiter: "-"
 }, []);
 db._query(`RETURN TOKENS("some-delimited-words", "delimiter_hyphen")`).toArray();
-~ analyzers.remove(a.name);
+~analyzers.remove(a.name);
 ```
 
 ### `stem`
@@ -318,7 +318,7 @@ var a = analyzers.save("stem_en", "stem", {
   locale: "en"
 }, []);
 db._query(`RETURN TOKENS("databases", "stem_en")`).toArray();
-~ analyzers.remove(a.name);
+~analyzers.remove(a.name);
 ```
 
 ### `norm`
@@ -358,7 +358,7 @@ var a = analyzers.save("norm_upper", "norm", {
   case: "upper"
 }, []);
 db._query(`RETURN TOKENS("UPPER lower dïäcríticš", "norm_upper")`).toArray();
-~ analyzers.remove(a.name);
+~analyzers.remove(a.name);
 ```
 
 Convert accented characters to their base characters:
@@ -374,7 +374,7 @@ var a = analyzers.save("norm_accent", "norm", {
   accent: false
 }, []);
 db._query(`RETURN TOKENS("UPPER lower dïäcríticš", "norm_accent")`).toArray();
-~ analyzers.remove(a.name);
+~analyzers.remove(a.name);
 ```
 
 Convert input string to all lower-case characters and remove diacritics:
@@ -391,7 +391,7 @@ var a = analyzers.save("norm_accent_lower", "norm", {
   case: "lower"
 }, []);
 db._query(`RETURN TOKENS("UPPER lower dïäcríticš", "norm_accent_lower")`).toArray();
-~ analyzers.remove(a.name);
+~analyzers.remove(a.name);
 ```
 
 ### `ngram`
@@ -461,7 +461,7 @@ var a = analyzers.save("trigram", "ngram", {
   streamType: "utf8"
 }, []);
 db._query(`RETURN TOKENS("foobar", "trigram")`).toArray();
-~ analyzers.remove(a.name);
+~analyzers.remove(a.name);
 ```
 
 Create and use a bigram Analyzer with `preserveOriginal` enabled and with start
@@ -482,7 +482,7 @@ var a = analyzers.save("bigram_markers", "ngram", {
   streamType: "utf8"
 }, []);
 db._query(`RETURN TOKENS("foobar", "bigram_markers")`).toArray();
-~ analyzers.remove(a.name);
+~analyzers.remove(a.name);
 ```
 
 ### `text`
@@ -593,7 +593,7 @@ var a = analyzers.save("text_en_nostem", "text", {
   stopwords: []
 }, [])
 db._query(`RETURN TOKENS("Crazy fast NoSQL-database!", "text_en_nostem")`).toArray();
-~ analyzers.remove(a.name);
+~analyzers.remove(a.name);
 ```
 
 Custom text Analyzer with the edge _n_-grams capability and normalization enabled,
@@ -604,20 +604,20 @@ stemming disabled and `"the"` defined as stop-word to exclude it:
 name: analyzerTextEdgeNgram
 description: ''
 ---
-~ var analyzers = require("@arangodb/analyzers")
-  var a = analyzers.save("text_edge_ngrams", "text", {
-    edgeNgram: { min: 3, max: 8, preserveOriginal: true },
-    locale: "en",
-    case: "lower",
-    accent: false,
-    stemming: false,
-    stopwords: [ "the" ]
-  }, [])
-  db._query(`RETURN TOKENS(
-    "The quick brown fox jumps over the dogWithAVeryLongName",
-    "text_edge_ngrams"
-  )`).toArray();
-~ analyzers.remove(a.name);
+~var analyzers = require("@arangodb/analyzers")
+var a = analyzers.save("text_edge_ngrams", "text", {
+  edgeNgram: { min: 3, max: 8, preserveOriginal: true },
+  locale: "en",
+  case: "lower",
+  accent: false,
+  stemming: false,
+  stopwords: [ "the" ]
+}, []);
+db._query(`RETURN TOKENS(
+  "The quick brown fox jumps over the dogWithAVeryLongName",
+  "text_edge_ngrams"
+)`).toArray();
+~analyzers.remove(a.name);
 ```
 
 ### `collation`
@@ -665,13 +665,13 @@ var docs = db.test.save([
 ]);
 var view = db._createView("view", "arangosearch",
   { links: { test: { analyzers: [ "collation_en", "collation_sv" ], includeAllFields: true }}});
-~ assert(db._query(`FOR d IN view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 4);
+~assert(db._query(`FOR d IN view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 4);
 db._query("FOR doc IN view SEARCH ANALYZER(doc.text < TOKENS('c', 'collation_en')[0], 'collation_en') RETURN doc.text").toArray();
 db._query("FOR doc IN view SEARCH ANALYZER(doc.text < TOKENS('c', 'collation_sv')[0], 'collation_sv') RETURN doc.text").toArray();
-~ db._dropView(view.name());
-~ db._drop(test.name());
-~ analyzers.remove(en.name);
-~ analyzers.remove(sv.name);
+~db._dropView(view.name());
+~db._drop(test.name());
+~analyzers.remove(en.name);
+~analyzers.remove(sv.name);
 ```
 
 ### `aql`
@@ -744,7 +744,7 @@ description: ''
 var analyzers = require("@arangodb/analyzers");
 var a = analyzers.save("soundex", "aql", { queryString: "RETURN SOUNDEX(@param)" }, []);
 db._query("RETURN TOKENS('ArangoDB', 'soundex')").toArray();
-~ analyzers.remove(a.name);
+~analyzers.remove(a.name);
 ```
 
 Concatenating Analyzer for conditionally adding a custom prefix or suffix:
@@ -760,7 +760,7 @@ var a = analyzers.save("concat", "aql", { queryString:
 }, []);
 db._query("RETURN TOKENS('state', 'concat')").toArray();
 db._query("RETURN TOKENS('international', 'concat')").toArray();
-~ analyzers.remove(a.name);
+~analyzers.remove(a.name);
 ```
 
 Filtering Analyzer that ignores unwanted data based on the prefix `"ir"`,
@@ -777,7 +777,7 @@ var a = analyzers.save("filter", "aql", { keepNull: false, queryString:
 }, []);
 db._query("RETURN TOKENS('regular', 'filter')").toArray();
 db._query("RETURN TOKENS('irregular', 'filter')").toArray();
-~ analyzers.remove(a.name);
+~analyzers.remove(a.name);
 ```
 
 Filtering Analyzer that discards unwanted data based on the prefix `"ir"`,
@@ -798,11 +798,11 @@ var doc1 = db.coll.save({ value: "regular" });
 var doc2 = db.coll.save({ value: "irregular" });
 var view = db._createView("view", "arangosearch",
   { links: { coll: { fields: { value: { analyzers: ["filter"] }}}}})
-~ assert(db._query(`FOR d IN view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] > 0);
+~assert(db._query(`FOR d IN view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] > 0);
 db._query("FOR doc IN view SEARCH ANALYZER(doc.value IN ['regular', 'irregular'], 'filter') RETURN doc").toArray();
-~ db._dropView(view.name())
-~ analyzers.remove(a.name);
-~ db._drop(coll.name());
+~db._dropView(view.name())
+~analyzers.remove(a.name);
+~db._drop(coll.name());
 ```
 
 Custom tokenization with `collapsePositions` on and off:
@@ -833,15 +833,15 @@ var coll = db._create("coll");
 var doc = db.coll.save({ text: "A-B-C-D" });
 var view = db._createView("view", "arangosearch",
   { links: { coll: { analyzers: [ "collapsed", "uncollapsed" ], includeAllFields: true }}});
-~ assert(db._query(`FOR d IN view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 1);
+~assert(db._query(`FOR d IN view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 1);
 db._query("FOR d IN view SEARCH PHRASE(d.text, {TERM: 'B'}, 1, {TERM: 'D'}, 'uncollapsed') RETURN d");
 db._query("FOR d IN view SEARCH PHRASE(d.text, {TERM: 'B'}, -1, {TERM: 'D'}, 'uncollapsed') RETURN d");
 db._query("FOR d IN view SEARCH PHRASE(d.text, {TERM: 'B'}, 1, {TERM: 'D'}, 'collapsed') RETURN d");
 db._query("FOR d IN view SEARCH PHRASE(d.text, {TERM: 'B'}, -1, {TERM: 'D'}, 'collapsed') RETURN d");
-~ db._dropView(view.name());
-~ analyzers.remove(a1.name);
-~ analyzers.remove(a2.name);
-~ db._drop(coll.name());
+~db._dropView(view.name());
+~analyzers.remove(a1.name);
+~analyzers.remove(a2.name);
+~db._drop(coll.name());
 ```
 
 The position data is not directly exposed, but we can see its effects through
@@ -895,7 +895,7 @@ var a = analyzers.save("ngram_upper", "pipeline", { pipeline: [
   { type: "ngram", properties: { min: 2, max: 2, preserveOriginal: false, streamType: "utf8" } }
 ] }, []);
 db._query(`RETURN TOKENS("Quick brown foX", "ngram_upper")`).toArray();
-~ analyzers.remove(a.name);
+~analyzers.remove(a.name);
 ```
 
 Split at delimiting characters `,` and `;`, then stem the tokens:
@@ -912,7 +912,7 @@ var a = analyzers.save("delimiter_stem", "pipeline", { pipeline: [
   { type: "stem", properties: { locale: "en" } }
 ] }, []);
 db._query(`RETURN TOKENS("delimited,stemmable;words", "delimiter_stem")`).toArray();
-~ analyzers.remove(a.name);
+~analyzers.remove(a.name);
 ```
 
 ### `stopwords`
@@ -967,7 +967,7 @@ var a = analyzers.save("stop", "stopwords", {
   stopwords: ["616e64","746865"], hex: true
 }, []);
 db._query("RETURN FLATTEN(TOKENS(SPLIT('the fox and the dog and a theater', ' '), 'stop'))").toArray();
-~ analyzers.remove(a.name);
+~analyzers.remove(a.name);
 ```
 
 Create and use an Analyzer pipeline that normalizes the input (convert to
@@ -984,7 +984,7 @@ var a = analyzers.save("norm_stop", "pipeline", { "pipeline": [
   { type: "stopwords", properties: { stopwords: ["and","the"], hex: false } },
 ]}, []);
 db._query("RETURN FLATTEN(TOKENS(SPLIT('The fox AND the dog äñḏ a ţhéäter', ' '), 'norm_stop'))").toArray();
-~ analyzers.remove(a.name);
+~analyzers.remove(a.name);
 ```
 
 ### `segmentation`
@@ -1045,9 +1045,9 @@ db._query(`LET str = 'Test\twith An_EMAIL-address+123@example.org\n蝴蝶。\u20
     "graphic": TOKENS(str, 'segment_graphic'),
   }
 `).toArray();
-~ analyzers.remove(all.name);
-~ analyzers.remove(alpha.name);
-~ analyzers.remove(graphic.name);
+~analyzers.remove(all.name);
+~analyzers.remove(alpha.name);
+~analyzers.remove(graphic.name);
 ```
 
 ### `minhash`
@@ -1089,8 +1089,8 @@ db._query(`
     approx: JACCARD(TOKENS(str1, "minhash5"), TOKENS(str2, "minhash5")),
     actual: JACCARD(TOKENS(str1, "segment"), TOKENS(str2, "segment"))
   }`).toArray();
-~ analyzers.remove(analyzerMinHash.name);
-~ analyzers.remove(analyzerSegment.name);
+~analyzers.remove(analyzerMinHash.name);
+~analyzers.remove(analyzerSegment.name);
 ```
 
 ### `classification`
@@ -1323,14 +1323,14 @@ var view = db._createView("geo_view", "arangosearch", {
     }
   }
 });
-~ assert(db._query(`FOR d IN geo_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 3);
+~assert(db._query(`FOR d IN geo_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 3);
 db._query(`LET point = GEO_POINT(6.93, 50.94)
   FOR doc IN geo_view
     SEARCH ANALYZER(GEO_DISTANCE(doc.location, point) < 2000, "geo_json")
     RETURN MERGE(doc, { distance: GEO_DISTANCE(doc.location, point) })`).toArray();
-~ db._dropView("geo_view");
-~ analyzers.remove("geo_json", true);
-~ db._drop("geo");
+~db._dropView("geo_view");
+~analyzers.remove("geo_json", true);
+~db._drop("geo");
 ```
 
 ### `geo_s2`
@@ -1429,14 +1429,14 @@ var view = db._createView("geo_view", "arangosearch", {
     }
   }
 });
-~ assert(db._query(`FOR d IN geo_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 3);
+~assert(db._query(`FOR d IN geo_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 3);
 db._query(`LET point = GEO_POINT(6.93, 50.94)
   FOR doc IN geo_view
     SEARCH ANALYZER(GEO_DISTANCE(doc.location, point) < 2000, "geo_efficient")
     RETURN MERGE(doc, { distance: GEO_DISTANCE(doc.location, point) })`).toArray();
-~ db._dropView("geo_view");
-~ analyzers.remove("geo_efficient", true);
-~ db._drop("geo");
+~db._dropView("geo_view");
+~analyzers.remove("geo_efficient", true);
+~db._drop("geo");
 ```
 
 The calculated distance between the reference point and the point stored in
@@ -1527,14 +1527,14 @@ var view = db._createView("geo_view", "arangosearch", {
     }
   }
 });
-~ assert(db._query(`FOR d IN geo_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 3);
+~assert(db._query(`FOR d IN geo_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 3);
 db._query(`LET point = GEO_POINT(6.93, 50.94)
   FOR doc IN geo_view
     SEARCH ANALYZER(GEO_DISTANCE(doc.location, point) < 2000, "geo_pair")
     RETURN MERGE(doc, { distance: GEO_DISTANCE([doc.location[1], doc.location[0]], point) })`).toArray();
-~ db._dropView("geo_view");
-~ analyzers.remove("geo_pair", true);
-~ db._drop("geo");
+~db._dropView("geo_view");
+~analyzers.remove("geo_pair", true);
+~db._drop("geo");
 ```
 
 Create a collection with coordinate pairs stored in an attribute `location` as
@@ -1570,14 +1570,14 @@ var view = db._createView("geo_view", "arangosearch", {
     }
   }
 });
-~ assert(db._query(`FOR d IN geo_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 3);
+~assert(db._query(`FOR d IN geo_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 3);
 db._query(`LET point = GEO_POINT(6.93, 50.94)
   FOR doc IN geo_view
     SEARCH ANALYZER(GEO_DISTANCE(doc.location, point) < 2000, "geo_latlng")
     RETURN MERGE(doc, { distance: GEO_DISTANCE([doc.location.lng, doc.location.lat], point) })`).toArray();
-~ db._dropView("geo_view");
-~ analyzers.remove("geo_latlng", true);
-~ db._drop("geo");
+~db._dropView("geo_view");
+~analyzers.remove("geo_latlng", true);
+~db._drop("geo");
 ```
 
 ## Built-in Analyzers

@@ -41,7 +41,7 @@ type: cluster
 var satelliteGraphModule = require("@arangodb/satellite-graph");
 var graph = satelliteGraphModule._create("satelliteGraph");
 graph = satelliteGraphModule._graph("satelliteGraph");
-~ satelliteGraphModule._drop("satelliteGraph", true);
+~satelliteGraphModule._drop("satelliteGraph", true);
 ```
 
 In contrast to General Graphs and SmartGraphs, you do not need to take care of
@@ -58,11 +58,11 @@ name: satelliteGraphCreate2
 description: ''
 type: cluster
 ---
-~ var satelliteGraphModule = require("@arangodb/satellite-graph");
-  var graph = satelliteGraphModule._create("satelliteGraph");
-  graph._addVertexCollection("aVertexCollection");
-  graph = satelliteGraphModule._graph("satelliteGraph");
-~ satelliteGraphModule._drop("satelliteGraph", true);
+~var satelliteGraphModule = require("@arangodb/satellite-graph");
+var graph = satelliteGraphModule._create("satelliteGraph");
+graph._addVertexCollection("aVertexCollection");
+graph = satelliteGraphModule._graph("satelliteGraph");
+~satelliteGraphModule._drop("satelliteGraph", true);
 ```
 
 If the collection `"aVertexCollection"` doesn't exist yet, then the
@@ -83,12 +83,12 @@ name: satelliteGraphCreate3
 description: ''
 type: cluster
 ---
-~ var satelliteGraphModule = require("@arangodb/satellite-graph");
-  var graph = satelliteGraphModule._create("satelliteGraph");
-  var relation = satelliteGraphModule._relation("isFriend", ["person"], ["person"]);
-  graph._extendEdgeDefinitions(relation);
-  graph = satelliteGraphModule._graph("satelliteGraph");
-~ satelliteGraphModule._drop("satelliteGraph", true);
+~var satelliteGraphModule = require("@arangodb/satellite-graph");
+var graph = satelliteGraphModule._create("satelliteGraph");
+var relation = satelliteGraphModule._relation("isFriend", ["person"], ["person"]);
+graph._extendEdgeDefinitions(relation);
+graph = satelliteGraphModule._graph("satelliteGraph");
+~satelliteGraphModule._drop("satelliteGraph", true);
 ```
 
 Existing edge collections can be added, but they require the
@@ -122,7 +122,7 @@ type: cluster
 var satelliteGraphModule = require("@arangodb/satellite-graph");
 var graph = satelliteGraphModule._create("satelliteGraph");
 graph;
-~ satelliteGraphModule._drop("satelliteGraph", true);
+~satelliteGraphModule._drop("satelliteGraph", true);
 ```
 
 Creating an empty SatelliteGraph, then adding a document (vertex) collection.
@@ -139,7 +139,7 @@ var satelliteGraphModule = require("@arangodb/satellite-graph");
 var graph = satelliteGraphModule._create("satelliteGraph");
 graph._addVertexCollection("myPrototypeColl");
 graph = satelliteGraphModule._graph("satelliteGraph");
-~ satelliteGraphModule._drop("satelliteGraph", true);
+~satelliteGraphModule._drop("satelliteGraph", true);
 ```
 
 Creating an empty SatelliteGraph, then adding an edge definition.
@@ -159,7 +159,7 @@ var graph = satelliteGraphModule._create("satelliteGraph");
 var relation = satelliteGraphModule._relation("isFriend", ["person"], ["person"]);
 graph._extendEdgeDefinitions(relation);
 graph = satelliteGraphModule._graph("satelliteGraph");
-~ satelliteGraphModule._drop("satelliteGraph", true);
+~satelliteGraphModule._drop("satelliteGraph", true);
 ```
 
 The prototype collection can and also is automatically selected during the
@@ -180,40 +180,40 @@ and a SatelliteGraph traversal query:
 
 1. First we setup our graphs and collections.
 
-```js
----
-name: satelliteGraphGeneralGraph1
-description: ''
-type: cluster
----
-var graphModule = require("@arangodb/general-graph");
-var satelliteGraphModule = require("@arangodb/satellite-graph");
-graphModule._create("normalGraph", [ graphModule._relation("edges", "vertices", "vertices") ], [], {});
-satelliteGraphModule._create("satelliteGraph", [ satelliteGraphModule._relation("satEdges", "satVertices", "satVertices") ], [], {});
-db._create("collection", {numberOfShards: 8});
-~ db._drop("collection");
-~ satelliteGraphModule._drop("satelliteGraph", true);
-~ graphModule._drop("normalGraph", true);
-```
+   ```js
+   ---
+   name: satelliteGraphGeneralGraph1
+   description: ''
+   type: cluster
+   ---
+   var graphModule = require("@arangodb/general-graph");
+   var satelliteGraphModule = require("@arangodb/satellite-graph");
+   graphModule._create("normalGraph", [ graphModule._relation("edges", "vertices", "vertices") ], [], {});
+   satelliteGraphModule._create("satelliteGraph", [ satelliteGraphModule._relation("satEdges", "satVertices", "satVertices") ], [], {});
+   db._create("collection", {numberOfShards: 8});
+   ~db._drop("collection");
+   ~satelliteGraphModule._drop("satelliteGraph", true);
+   ~graphModule._drop("normalGraph", true);
+   ```
 
 2. Let us analyze a query involving a traversal:
 
-```js
----
-name: satelliteGraphGeneralGraph2
-description: ''
-type: cluster
----
-~ var graphModule = require("@arangodb/general-graph");
-~ var satelliteGraphModule = require("@arangodb/satellite-graph");
-~ graphModule._create("normalGraph", [ graphModule._relation("edges", "vertices", "vertices") ], [], {});
-~ satelliteGraphModule._create("satelliteGraph", [ satelliteGraphModule._relation("satEdges", "satVertices", "satVertices") ], [], {});
-~ db._create("collection", {numberOfShards: 8});
-  db._explain(`FOR doc in collection FOR v,e,p IN OUTBOUND "vertices/start" GRAPH "normalGraph" RETURN [doc,v,e,p]`, {}, {colors: false});
-~ db._drop("collection");
-~ satelliteGraphModule._drop("satelliteGraph", true);
-~ graphModule._drop("normalGraph", true);
-```
+   ```js
+   ---
+   name: satelliteGraphGeneralGraph2
+   description: ''
+   type: cluster
+   ---
+   ~var graphModule = require("@arangodb/general-graph");
+   ~var satelliteGraphModule = require("@arangodb/satellite-graph");
+   ~graphModule._create("normalGraph", [ graphModule._relation("edges", "vertices", "vertices") ], [], {});
+   ~satelliteGraphModule._create("satelliteGraph", [ satelliteGraphModule._relation("satEdges", "satVertices", "satVertices") ], [], {});
+   ~db._create("collection", {numberOfShards: 8});
+   db._explain(`FOR doc in collection FOR v,e,p IN OUTBOUND "vertices/start" GRAPH "normalGraph" RETURN [doc,v,e,p]`, {}, {colors: false});
+   ~db._drop("collection");
+   ~satelliteGraphModule._drop("satelliteGraph", true);
+   ~graphModule._drop("normalGraph", true);
+   ```
 
    You can see that the `TraversalNode` is executed on a Coordinator, and only
    the `EnumerateCollectionNode` is executed on DB-Servers. This happens for
@@ -221,22 +221,22 @@ type: cluster
 
 3. Let us now have a look at the same query using a SatelliteGraph:
 
-```js
----
-name: satelliteGraphGeneralGraph3
-description: ''
-type: cluster
----
-~ var graphModule = require("@arangodb/general-graph");
-~ var satelliteGraphModule = require("@arangodb/satellite-graph");
-~ graphModule._create("normalGraph", [ graphModule._relation("edges", "vertices", "vertices") ], [], {});
-~ satelliteGraphModule._create("satelliteGraph", [ satelliteGraphModule._relation("satEdges", "satVertices", "satVertices") ], [], {});
-~ db._create("collection", {numberOfShards: 8});
-  db._explain(`FOR doc in collection FOR v,e,p IN OUTBOUND "vertices/start" GRAPH "satelliteGraph" RETURN [doc,v,e,p]`, {}, {colors: false});
-~ db._drop("collection");
-~ satelliteGraphModule._drop("satelliteGraph", true);
-~ graphModule._drop("normalGraph", true);
-```
+   ```js
+   ---
+   name: satelliteGraphGeneralGraph3
+   description: ''
+   type: cluster
+   ---
+   ~var graphModule = require("@arangodb/general-graph");
+   ~var satelliteGraphModule = require("@arangodb/satellite-graph");
+   ~graphModule._create("normalGraph", [ graphModule._relation("edges", "vertices", "vertices") ], [], {});
+   ~satelliteGraphModule._create("satelliteGraph", [ satelliteGraphModule._relation("satEdges", "satVertices", "satVertices") ], [], {});
+   ~db._create("collection", {numberOfShards: 8});
+   db._explain(`FOR doc in collection FOR v,e,p IN OUTBOUND "vertices/start" GRAPH "satelliteGraph" RETURN [doc,v,e,p]`, {}, {colors: false});
+   ~db._drop("collection");
+   ~satelliteGraphModule._drop("satelliteGraph", true);
+   ~graphModule._drop("normalGraph", true);
+   ```
 
    Note that now the `TraversalNode` is executed on each DB-Server, leading to a
    great reduction in required network communication, and hence potential gains

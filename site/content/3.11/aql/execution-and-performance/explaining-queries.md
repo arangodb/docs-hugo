@@ -152,9 +152,9 @@ transformation can be applied:
 name: 10_workWithAQL_statementsPlansOptimizer1
 description: ''
 ---
-~ var stmt = db._createStatement("FOR user IN _users FILTER user.user == 'root' RETURN user");
-  stmt.explain({ allPlans: true }).plans.map(
-    function(plan) { return formatPlan(plan); });
+~var stmt = db._createStatement("FOR user IN _users FILTER user.user == 'root' RETURN user");
+stmt.explain({ allPlans: true }).plans.map(
+  function(plan) { return formatPlan(plan); });
 ```
 
 `explain()` also accepts the following additional options:
@@ -172,9 +172,9 @@ The following example disables all optimizer rules but `remove-redundant-calcula
 name: 10_workWithAQL_statementsPlansOptimizer2
 description: ''
 ---
-~ var stmt = db._createStatement("FOR user IN _users FILTER user.user == 'root' RETURN user");
-  stmt.explain({ optimizer: {
-    rules: [ "-all", "+remove-redundant-calculations" ] } });
+~var stmt = db._createStatement("FOR user IN _users FILTER user.user == 'root' RETURN user");
+stmt.explain({ optimizer: {
+  rules: [ "-all", "+remove-redundant-calculations" ] } });
 ```
 
 The contents of an execution plan are meant to be machine-readable. To get a human-readable

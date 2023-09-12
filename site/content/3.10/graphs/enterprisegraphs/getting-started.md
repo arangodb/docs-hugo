@@ -249,10 +249,10 @@ type: cluster
 ---
 ~var graph_module = require("@arangodb/enterprise-graph");
 ~var graph = graph_module._create("myGraph", [], [], {isSmart: true, numberOfShards: 9});
- graph._addVertexCollection("shop");
- graph._addVertexCollection("customer");
- graph._addVertexCollection("pet");
- graph = graph_module._graph("myGraph");
+graph._addVertexCollection("shop");
+graph._addVertexCollection("customer");
+graph._addVertexCollection("pet");
+graph = graph_module._graph("myGraph");
 ~graph_module._drop("myGraph", true);
 ```
 
@@ -274,9 +274,9 @@ type: cluster
 ~graph._addVertexCollection("shop");
 ~graph._addVertexCollection("customer");
 ~graph._addVertexCollection("pet");
- var rel = graph_module._relation("isCustomer", ["shop"], ["customer"]);
- graph._extendEdgeDefinitions(rel);
- graph = graph_module._graph("myGraph");
+var rel = graph_module._relation("isCustomer", ["shop"], ["customer"]);
+graph._extendEdgeDefinitions(rel);
+graph = graph_module._graph("myGraph");
 ~graph_module._drop("myGraph", true);
 ```
 

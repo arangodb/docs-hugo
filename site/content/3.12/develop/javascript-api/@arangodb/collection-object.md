@@ -69,11 +69,11 @@ Drop a collection:
 name: collectionDrop
 description: ''
 ---
-~ db._create("example");
-  var coll = db.example;
-  coll.drop();
-  coll;
-~ db._drop("example");
+~db._create("example");
+var coll = db.example;
+coll.drop();
+coll;
+~db._drop("example");
 ```
 
 Drop a system collection:
@@ -83,10 +83,10 @@ Drop a system collection:
 name: collectionDropSystem
 description: ''
 ---
-~ db._create("_example", { isSystem: true });
-  var coll = db._example;
-  coll.drop({ isSystem: true });
-~ db._drop("example", { isSystem: true });
+~db._create("_example", { isSystem: true });
+var coll = db._example;
+coll.drop({ isSystem: true });
+~db._drop("example", { isSystem: true });
 ```
 
 ### `collection.figures([details])`
@@ -117,8 +117,8 @@ Get the basic collection figures:
 name: collectionFigures
 description: ''
 ---
-~ require("internal").wal.flush(true, true);
-  db.demo.figures()
+~require("internal").wal.flush(true, true);
+db.demo.figures()
 ```
 
 Get the detailed collection figures:
@@ -128,8 +128,8 @@ Get the detailed collection figures:
 name: collectionFiguresDetails
 description: ''
 ---
-~ require("internal").wal.flush(true, true);
-  db.demo.figures(true)
+~require("internal").wal.flush(true, true);
+db.demo.figures(true)
 ```
 
 ### `collection.getResponsibleShard(document)`
@@ -174,7 +174,7 @@ description: ''
 ---
 var coll = db._create("example");
 coll.name();
-~ db._drop("example");
+~db._drop("example");
 ```
 
 ### `collection.properties([properties])`
@@ -329,9 +329,9 @@ Read all properties:
 name: collectionProperties
 description: ''
 ---
-~ db._create("example");
-  db.example.properties();
-~ db._drop("example");
+~db._create("example");
+db.example.properties();
+~db._drop("example");
 ```
 
 Change a property:
@@ -341,9 +341,9 @@ Change a property:
 name: collectionProperty
 description: ''
 ---
-~ db._create("example");
-  db.example.properties({ waitForSync : true });
-~ db._drop("example");
+~db._create("example");
+db.example.properties({ waitForSync : true });
+~db._drop("example");
 ```
 
 ### `collection.rename(name)`
@@ -369,11 +369,11 @@ The `rename()` method cannot be used in clusters.
 name: collectionRename
 description: ''
 ---
-~ db._create("example");
-  var coll = db.example;
-  coll.rename("better-example");
-  coll;
-~ db._drop("better-example");
+~db._create("example");
+var coll = db.example;
+coll.rename("better-example");
+coll;
+~db._drop("better-example");
 ```
 
 ### `collection.revision()`
@@ -421,13 +421,13 @@ Truncates a collection:
 name: collectionTruncate
 description: ''
 ---
-~ db._create("example");
-  var coll = db.example;
-  var doc = coll.save({ "Hello" : "World" });
-  coll.count();
-  coll.truncate();
-  coll.count();
-~ db._drop("example");
+~db._create("example");
+var coll = db.example;
+var doc = coll.save({ "Hello" : "World" });
+coll.count();
+coll.truncate();
+coll.count();
+~db._drop("example");
 ```
 
 ### `collection.type()`
@@ -499,16 +499,16 @@ Use `toArray()` to get all documents at once:
 name: 001_collectionAll
 description: ''
 ---
-~ db._create("five");
-  var docs = db.five.insert([
-    { name : "one" },
-    { name : "two" },
-    { name : "three" },
-    { name : "four" },
-    { name : "five" }
-  ]);
-  db.five.all().toArray();
-~ db._drop("five");
+~db._create("five");
+var docs = db.five.insert([
+  { name : "one" },
+  { name : "two" },
+  { name : "three" },
+  { name : "four" },
+  { name : "five" }
+]);
+db.five.all().toArray();
+~db._drop("five");
 ```
 
 Use `limit()` to restrict the documents:
@@ -518,16 +518,16 @@ Use `limit()` to restrict the documents:
 name: 002_collectionAllNext
 description: ''
 ---
-~ db._create("five");
-  var docs = db.five.insert([
-    { name : "one" },
-    { name : "two" },
-    { name : "three" },
-    { name : "four" },
-    { name : "five" }
-  ]);
-  db.five.all().limit(2).toArray();
-~ db._drop("five");
+~db._create("five");
+var docs = db.five.insert([
+  { name : "one" },
+  { name : "two" },
+  { name : "three" },
+  { name : "four" },
+  { name : "five" }
+]);
+db.five.all().limit(2).toArray();
+~db._drop("five");
 ```
 
 ### `collection.any()`
@@ -604,17 +604,17 @@ Use `toArray()` to get all documents at once:
 name: 003_collectionByExample
 description: ''
 ---
-~ db._create("users");
-  db.users.insert([
-    { name: "Gerhard" },
-    { name: "Helmut" },
-    { name: "Angela" }
-  ]);
-  db.users.all().toArray();
-  db.users.byExample({ "_id" : "users/20" }).toArray();
-  db.users.byExample({ "name" : "Gerhard" }).toArray();
-  db.users.byExample({ "name" : "Helmut", "_id" : "users/15" }).toArray();
-~ db._drop("users");
+~db._create("users");
+db.users.insert([
+  { name: "Gerhard" },
+  { name: "Helmut" },
+  { name: "Angela" }
+]);
+db.users.all().toArray();
+db.users.byExample({ "_id" : "users/20" }).toArray();
+db.users.byExample({ "name" : "Gerhard" }).toArray();
+db.users.byExample({ "name" : "Helmut", "_id" : "users/15" }).toArray();
+~db._drop("users");
 ```
 
 Use `next()` to loop over all documents:
@@ -624,15 +624,17 @@ Use `next()` to loop over all documents:
 name: 004_collectionByExampleNext
 description: ''
 ---
-~ db._create("users");
-  db.users.insert([
-    { name: "Gerhard" },
-    { name: "Helmut" },
-    { name: "Angela" }
-  ]);
-  var cursor = db.users.byExample( {"name" : "Angela" } );
-  while (cursor.hasNext()) print(cursor.next());
-~ db._drop("users");
+~db._create("users");
+db.users.insert([
+  { name: "Gerhard" },
+  { name: "Helmut" },
+  { name: "Angela" }
+]);
+var cursor = db.users.byExample( {"name" : "Angela" } );
+while (cursor.hasNext()) {
+  print(cursor.next());
+}
+~db._drop("users");
 ```
 
 ### `collection.count()`
@@ -646,10 +648,10 @@ Returns the number of living documents in the collection.
 name: collectionCount
 description: ''
 ---
-~ db._create("users");
-~ db.users.save([{}, {}, {}]);
-  db.users.count();
-~ db._drop("users");
+~db._create("users");
+~db.users.save([{}, {}, {}]);
+db.users.count();
+~db._drop("users");
 ```
 
 ### `collection.document(object [, options])`
@@ -713,10 +715,10 @@ Return a document using a document identifier:
 name: documentsCollectionNameValidPlain
 description: ''
 ---
-~ db._create("example");
-~ var myid = db.example.insert({_key: "2873916"});
-  db.example.document("example/2873916");
-~ db._drop("example");
+~db._create("example");
+~var myid = db.example.insert({_key: "2873916"});
+db.example.document("example/2873916");
+~db._drop("example");
 ```
 
 Return a document using a document key:
@@ -726,10 +728,10 @@ Return a document using a document key:
 name: documentsCollectionNameValidByKey
 description: ''
 ---
-~ db._create("example");
-~ var myid = db.example.insert({_key: "2873916"});
-  db.example.document("2873916");
-~ db._drop("example");
+~db._create("example");
+~var myid = db.example.insert({_key: "2873916"});
+db.example.document("2873916");
+~db._drop("example");
 ```
 
 Return a document using an object with a document identifier:
@@ -739,10 +741,10 @@ Return a document using an object with a document identifier:
 name: documentsCollectionNameValidByObject
 description: ''
 ---
-~ db._create("example");
-~ var myid = db.example.insert({_key: "2873916"});
-  db.example.document({_id: "example/2873916"});
-~ db._drop("example");
+~db._create("example");
+~var myid = db.example.insert({_key: "2873916"});
+db.example.document({_id: "example/2873916"});
+~db._drop("example");
 ```
 
 Return multiple documents using an array of document keys:
@@ -752,11 +754,11 @@ Return multiple documents using an array of document keys:
 name: documentsCollectionNameValidMulti
 description: ''
 ---
-~ db._create("example");
-~ var myid = db.example.insert({_key: "2873916"});
-~ var myid = db.example.insert({_key: "2873917"});
-  db.example.document(["2873916","2873917"]);
-~ db._drop("example");
+~db._create("example");
+~var myid = db.example.insert({_key: "2873916"});
+~var myid = db.example.insert({_key: "2873917"});
+db.example.document(["2873916","2873917"]);
+~db._drop("example");
 ```
 
 An error is raised if the document is unknown:
@@ -766,10 +768,10 @@ An error is raised if the document is unknown:
 name: documentsCollectionNameUnknown
 description: ''
 ---
-~ db._create("example");
-~ var myid = db.example.insert({_key: "2873916"});
-  db.example.document("example/4472917"); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND)
-~ db._drop("example");
+~db._create("example");
+~var myid = db.example.insert({_key: "2873916"});
+db.example.document("example/4472917"); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND)
+~db._drop("example");
 ```
 
 An error is raised if the document key or identifier is invalid:
@@ -779,9 +781,9 @@ An error is raised if the document key or identifier is invalid:
 name: documentsCollectionNameHandle
 description: ''
 ---
-~ db._create("example");
-  db.example.document(""); // xpError(ERROR_ARANGO_DOCUMENT_HANDLE_BAD)
-~ db._drop("example");
+~db._create("example");
+db.example.document(""); // xpError(ERROR_ARANGO_DOCUMENT_HANDLE_BAD)
+~db._drop("example");
 ```
 
 ### `collection.documents(keys)`
@@ -804,15 +806,15 @@ This method is deprecated in favor of the array variant of
 name: collectionLookupByKeys
 description: ''
 ---
-~ db._drop("example");
-~ db._create("example");
-  var keys = [ ];
-  for (var i = 0; i < 5; ++i) {
-    db.example.insert({ _key: "test" + i, value: i });
-    keys.push("test" + i);
-  }
-  db.example.documents(keys);
-~ db._drop("example");
+~db._drop("example");
+~db._create("example");
+var keys = [ ];
+for (var i = 0; i < 5; ++i) {
+  db.example.insert({ _key: "test" + i, value: i });
+  keys.push("test" + i);
+}
+db.example.documents(keys);
+~db._drop("example");
 ```
 
 ### `collection.documentId(documentKey)`
@@ -893,12 +895,12 @@ As alternative you can supply an array of paths and values.
 name: collectionFirstExample
 description: ''
 ---
-~ db._create("users");
-~ db.users.insert({ name: "Gerhard" });
-~ db.users.insert({ name: "Helmut" });
-~ db.users.insert({ name: "Angela" });
-  db.users.firstExample("name", "Angela");
-~ db._drop("users");
+~db._create("users");
+~db.users.insert({ name: "Gerhard" });
+~db.users.insert({ name: "Helmut" });
+~db.users.insert({ name: "Angela" });
+db.users.firstExample("name", "Angela");
+~db._drop("users");
 ```
 
 ### `collection.insert(data [, options])`
@@ -993,10 +995,10 @@ document, an error object is returned in the result array.
 name: documentsCollectionInsertSingle
 description: ''
 ---
-~ db._create("example");
-  db.example.insert({ Hello : "World" });
-  db.example.insert({ Hello : "World" }, {waitForSync: true});
-~ db._drop("example");
+~db._create("example");
+db.example.insert({ Hello : "World" });
+db.example.insert({ Hello : "World" }, {waitForSync: true});
+~db._drop("example");
 ```
 
 ```js
@@ -1004,10 +1006,10 @@ description: ''
 name: documentsCollectionInsertMulti
 description: ''
 ---
-~ db._create("example");
-  db.example.insert([{ Hello : "World" }, {Hello: "there"}])
-  db.example.insert([{ Hello : "World" }, {}], {waitForSync: true});
-~ db._drop("example");
+~db._create("example");
+db.example.insert([{ Hello : "World" }, {Hello: "there"}])
+db.example.insert([{ Hello : "World" }, {}], {waitForSync: true});
+~db._drop("example");
 ```
 
 ```js
@@ -1015,10 +1017,10 @@ description: ''
 name: documentsCollectionInsertSingleOverwrite
 description: ''
 ---
-~ db._create("example");
-  db.example.insert({ _key : "666", Hello : "World" });
-  db.example.insert({ _key : "666", Hello : "Universe" }, {overwrite: true, returnOld: true});
-~ db._drop("example");
+~db._create("example");
+db.example.insert({ _key : "666", Hello : "World" });
+db.example.insert({ _key : "666", Hello : "Universe" }, {overwrite: true, returnOld: true});
+~db._drop("example");
 ```
 
 ### `collection.iterate(iterator [, options])`
@@ -1049,16 +1051,16 @@ Pick 1 out of 4 documents of a collection but at most 5:
 name: collectionIterate
 description: ''
 ---
-~ db._create("example");
-  var arr = [];
-  for (var i = 0;  i < 10;  i++) {
-    arr.push({ i });
-  }
-  var meta = db.example.save(arr);
-  var data = [];
-  db.example.iterate( (doc, idx) => data.push({ idx, i: doc.i }), { probability: 0.25, limit: 5 });
-  data;
-~ db._drop("example");
+~db._create("example");
+var arr = [];
+for (var i = 0;  i < 10;  i++) {
+  arr.push({ i });
+}
+var meta = db.example.save(arr);
+var data = [];
+db.example.iterate( (doc, idx) => data.push({ idx, i: doc.i }), { probability: 0.25, limit: 5 });
+data;
+~db._drop("example");
 ```
 
 ### `collection.remove(object)`
@@ -1135,12 +1137,12 @@ Remove a document:
 name: documentDocumentRemoveSimple
 description: ''
 ---
-~ db._create("example");
-  a1 = db.example.insert({ a : 1 });
-  db.example.document(a1);
-  db.example.remove(a1);
-  db.example.document(a1); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND);
-~ db._drop("example");
+~db._create("example");
+a1 = db.example.insert({ a : 1 });
+db.example.document(a1);
+db.example.remove(a1);
+db.example.document(a1); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND);
+~db._drop("example");
 ```
 
 Remove a document with a conflict:
@@ -1150,13 +1152,13 @@ Remove a document with a conflict:
 name: documentDocumentRemoveConflict
 description: ''
 ---
-~ db._create("example");
-  a1 = db.example.insert({ a : 1 });
-  a2 = db.example.replace(a1, { a : 2 });
-  db.example.remove(a1);       // xpError(ERROR_ARANGO_CONFLICT);
-  db.example.remove(a1, true);
-  db.example.document(a1);     // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND);
-~ db._drop("example");
+~db._create("example");
+a1 = db.example.insert({ a : 1 });
+a2 = db.example.replace(a1, { a : 2 });
+db.example.remove(a1);       // xpError(ERROR_ARANGO_CONFLICT);
+db.example.remove(a1, true);
+db.example.document(a1);     // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND);
+~db._drop("example");
 ```
 
 ### `collection.removeByExample(example)`
@@ -1192,10 +1194,10 @@ removed.
 name: 010_documentsCollectionRemoveByExample
 description: ''
 ---
-~ db._create("example");
-~ db.example.insert({ Hello : "world" });
-  db.example.removeByExample( {Hello : "world"} );
-~ db._drop("example");
+~db._create("example");
+~db.example.insert({ Hello : "world" });
+db.example.removeByExample( {Hello : "world"} );
+~db._drop("example");
 ```
 
 ### `collection.removeByKeys(keys)`
@@ -1219,15 +1221,15 @@ This method is deprecated in favor of the array variant of `remove()`.
 name: collectionRemoveByKeys
 description: ''
 ---
-~ db._drop("example");
-~ db._create("example");
-  var keys = [ ];
-  for (var i = 0; i < 5; ++i) {
-    db.example.insert({ _key: "test" + i, value: i });
-    keys.push("test" + i);
-  }
-  db.example.removeByKeys(keys);
-~ db._drop("example");
+~db._drop("example");
+~db._create("example");
+var keys = [ ];
+for (var i = 0; i < 5; ++i) {
+  db.example.insert({ _key: "test" + i, value: i });
+  keys.push("test" + i);
+}
+db.example.removeByKeys(keys);
+~db._drop("example");
 ```
 
 ### `collection.replace(document, data [, options])`
@@ -1310,12 +1312,12 @@ Create and update a document:
 name: documentsCollectionReplace1
 description: ''
 ---
-~ db._create("example");
-  a1 = db.example.insert({ a : 1 });
-  a2 = db.example.replace(a1, { a : 2 });
-  a3 = db.example.replace(a1, { a : 3 }); // xpError(ERROR_ARANGO_CONFLICT);
-  a3 = db.example.replace(a1, { a : 3 }, { overwrite: true });
-~ db._drop("example");
+~db._create("example");
+a1 = db.example.insert({ a : 1 });
+a2 = db.example.replace(a1, { a : 2 });
+a3 = db.example.replace(a1, { a : 3 }); // xpError(ERROR_ARANGO_CONFLICT);
+a3 = db.example.replace(a1, { a : 3 }, { overwrite: true });
+~db._drop("example");
 ```
 
 Use a document identifier:
@@ -1325,11 +1327,11 @@ Use a document identifier:
 name: documentsCollectionReplaceHandle
 description: ''
 ---
-~ db._create("example");
-~ var myid = db.example.insert({_key: "3903044"});
-  a1 = db.example.insert({ a : 1 });
-  a2 = db.example.replace("example/3903044", { a : 2 });
-~ db._drop("example");
+~db._create("example");
+~var myid = db.example.insert({_key: "3903044"});
+a1 = db.example.insert({ a : 1 });
+a2 = db.example.replace("example/3903044", { a : 2 });
+~db._drop("example");
 ```
 
 ### `collection.replaceByExample(example, newValue [, waitForSync [, limit]])`
@@ -1362,10 +1364,10 @@ replaced.
 name: 011_documentsCollectionReplaceByExample
 description: ''
 ---
-~ db._create("example");
-  db.example.insert({ Hello : "world" });
-  db.example.replaceByExample({ Hello: "world" }, {Hello: "mars"}, false, 5);
-~ db._drop("example");
+~db._create("example");
+db.example.insert({ Hello : "world" });
+db.example.replaceByExample({ Hello: "world" }, {Hello: "mars"}, false, 5);
+~db._drop("example");
 ```
 
 ### `collection.save(data [, options])`
@@ -1478,15 +1480,15 @@ Create and update a document:
 name: documentsCollection_UpdateDocument
 description: ''
 ---
-~ db._create("example");
-  a1 = db.example.insert({"a" : 1});
-  a2 = db.example.update(a1, {"b" : 2, "c" : 3});
-  a3 = db.example.update(a1, {"d" : 4}); // xpError(ERROR_ARANGO_CONFLICT);
-  a4 = db.example.update(a2, {"e" : 5, "f" : 6 });
-  db.example.document(a4);
-  a5 = db.example.update(a4, {"a" : 1, c : 9, e : 42 });
-  db.example.document(a5);
-~ db._drop("example");
+~db._create("example");
+a1 = db.example.insert({"a" : 1});
+a2 = db.example.update(a1, {"b" : 2, "c" : 3});
+a3 = db.example.update(a1, {"d" : 4}); // xpError(ERROR_ARANGO_CONFLICT);
+a4 = db.example.update(a2, {"e" : 5, "f" : 6 });
+db.example.document(a4);
+a5 = db.example.update(a4, {"a" : 1, c : 9, e : 42 });
+db.example.document(a5);
+~db._drop("example");
 ```
 
 Use a document identifier:
@@ -1496,11 +1498,11 @@ Use a document identifier:
 name: documentsCollection_UpdateHandleSingle
 description: ''
 ---
-~ db._create("example");
-~ var myid = db.example.insert({_key: "18612115"});
-  a1 = db.example.insert({"a" : 1});
-  a2 = db.example.update("example/18612115", { "x" : 1, "y" : 2 });
-~ db._drop("example");
+~db._create("example");
+~var myid = db.example.insert({_key: "18612115"});
+a1 = db.example.insert({"a" : 1});
+a2 = db.example.update("example/18612115", { "x" : 1, "y" : 2 });
+~db._drop("example");
 ```
 
 Use the `keepNull` parameter to remove attributes with `null` values:
@@ -1510,16 +1512,16 @@ Use the `keepNull` parameter to remove attributes with `null` values:
 name: documentsCollection_UpdateHandleKeepNull
 description: ''
 ---
-~ db._create("example");
-~ var myid = db.example.insert({_key: "19988371"});
-  db.example.insert({"a" : 1});
-  db.example.update("example/19988371", { "b" : null, "c" : null, "d" : 3 });
-  db.example.document("example/19988371");
-  db.example.update("example/19988371", { "a" : null }, false, false);
-  db.example.document("example/19988371");
-  db.example.update("example/19988371", { "b" : null, "c": null, "d" : null }, false, false);
-  db.example.document("example/19988371");
-~ db._drop("example");
+~db._create("example");
+~var myid = db.example.insert({_key: "19988371"});
+db.example.insert({"a" : 1});
+db.example.update("example/19988371", { "b" : null, "c" : null, "d" : 3 });
+db.example.document("example/19988371");
+db.example.update("example/19988371", { "a" : null }, false, false);
+db.example.document("example/19988371");
+db.example.update("example/19988371", { "b" : null, "c": null, "d" : null }, false, false);
+db.example.document("example/19988371");
+~db._drop("example");
 ```
 
 Patching array values:
@@ -1529,23 +1531,27 @@ Patching array values:
 name: documentsCollection_UpdateHandleArray
 description: ''
 ---
-~ db._create("example");
-~ var myid = db.example.insert({_key: "20774803"});
-  db.example.insert({
-    "a" : { "one" : 1, "two" : 2, "three" : 3 },
-    "b" : { }
-  });
-  db.example.update("example/20774803", {
-    "a" : { "four" : 4 },
-    "b" : { "b1" : 1 }
-  });
-  db.example.document("example/20774803");
-  db.example.update("example/20774803", {
-    "a" : { "one" : null },
-    "b" : null
-  }, false, false);
-  db.example.document("example/20774803");
-~ db._drop("example");
+~db._create("example");
+~var myid = db.example.insert({_key: "20774803"});
+db.example.insert({
+  "a" : { "one" : 1, "two" : 2, "three" : 3 },
+  "b" : { }
+});
+
+db.example.update("example/20774803", {
+  "a" : { "four" : 4 },
+  "b" : { "b1" : 1 }
+});
+
+db.example.document("example/20774803");
+
+db.example.update("example/20774803", {
+  "a" : { "one" : null },
+  "b" : null
+}, false, false);
+
+db.example.document("example/20774803");
+~db._drop("example");
 ```
 
 ### `collection.updateByExample(example, newValue [, options])`
@@ -1598,11 +1604,11 @@ an object with the following sub-attributes:
 name: 012_documentsCollectionUpdateByExample
 description: ''
 ---
-~ db._create("example");
-  db.example.insert({ Hello : "world", foo : "bar" });
-  db.example.updateByExample({ Hello: "world" }, { Hello: "foo", World: "bar" }, false);
-  db.example.byExample({ Hello: "foo" }).toArray()
-~ db._drop("example");
+~db._create("example");
+db.example.insert({ Hello : "world", foo : "bar" });
+db.example.updateByExample({ Hello: "world" }, { Hello: "foo", World: "bar" }, false);
+db.example.byExample({ Hello: "foo" }).toArray()
+~db._drop("example");
 ```
 
 ## Edge documents
@@ -1639,8 +1645,8 @@ myGraph.v2 = db.vertex.insert({ name : "vertex 2" });
 myGraph.e1 = db.relation.insert(myGraph.v1, myGraph.v2, { label : "knows"});
 db._document(myGraph.e1);
 db.relation.edges(myGraph.e1._id);
-~ db._drop("relation");
-~ db._drop("vertex");
+~db._drop("relation");
+~db._drop("vertex");
 ```
 
 ### `edge-collection.inEdges(vertex)`
@@ -1669,8 +1675,8 @@ myGraph.e1 = db.relation.insert(myGraph.v1, myGraph.v2, { label : "knows"});
 db._document(myGraph.e1);
 db.relation.inEdges(myGraph.v1._id);
 db.relation.inEdges(myGraph.v2._id);
-~ db._drop("relation");
-~ db._drop("vertex");
+~db._drop("relation");
+~db._drop("vertex");
 ```
 
 ### `edge-collection.outEdges(vertex)`
@@ -1700,6 +1706,6 @@ myGraph.e1 = db.relation.insert(myGraph.v1, myGraph.v2, { label : "knows"});
 db._document(myGraph.e1);
 db.relation.outEdges(myGraph.v1._id);
 db.relation.outEdges(myGraph.v2._id);
-~ db._drop("relation");
-~ db._drop("vertex");
+~db._drop("relation");
+~db._drop("vertex");
 ```

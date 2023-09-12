@@ -496,7 +496,9 @@ assert(fs.write(outfile, JSON.stringify(rules, undefined, 2)));
 ```
 
 {{% /comment %}}
+
 {{% optimizer-rules %}}
+
 ### Additional optimizations applied
 
 #### Scan-Only Optimization

@@ -47,7 +47,7 @@ var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("social");
 var any = require("@arangodb").db.relation.any();
 graph._fromVertex("relation/" + any._key);
-~ examples.dropGraph("social");
+~examples.dropGraph("social");
 ```
 
 ### Get the target vertex of an edge
@@ -69,7 +69,7 @@ var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("social");
 var any = require("@arangodb").db.relation.any();
 graph._toVertex("relation/" + any._key);
-~ examples.dropGraph("social");
+~examples.dropGraph("social");
 ```
 
 ## _neighbors
@@ -108,7 +108,7 @@ description: ''
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._neighbors({isCapital : true});
-~ examples.dropGraph("routeplanner");
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, all outbound neighbors of Hamburg.
@@ -121,7 +121,7 @@ description: ''
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._neighbors('germanCity/Hamburg', {direction : 'outbound', maxDepth : 2});
-~ examples.dropGraph("routeplanner");
+~examples.dropGraph("routeplanner");
 ```
 
 ## _commonNeighbors
@@ -151,7 +151,7 @@ description: ''
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._commonNeighbors({isCapital : true}, {isCapital : true});
-~ examples.dropGraph("routeplanner");
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, all common outbound neighbors of Hamburg with any other location
@@ -169,7 +169,7 @@ graph._commonNeighbors(
   {},
   {direction : 'outbound', maxDepth : 2},
   {direction : 'outbound', maxDepth : 2});
-~ examples.dropGraph("routeplanner");
+~examples.dropGraph("routeplanner");
 ```
 
 ## _countCommonNeighbors
@@ -194,7 +194,7 @@ var graph = examples.loadGraph("routeplanner");
 var example = { isCapital: true };
 var options = { includeData: true };
 graph._countCommonNeighbors(example, example, options, options);
-~ examples.dropGraph("routeplanner");
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, all common outbound neighbors of Hamburg with any other location
@@ -209,7 +209,7 @@ var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 var options = { direction: 'outbound', maxDepth: 2, includeData: true };
 graph._countCommonNeighbors('germanCity/Hamburg', {}, options, options);
-~ examples.dropGraph("routeplanner");
+~examples.dropGraph("routeplanner");
 ```
 
 ## _commonProperties
@@ -246,7 +246,7 @@ description: ''
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._commonProperties({}, {});
-~ examples.dropGraph("routeplanner");
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, all cities which share same properties except for population.
@@ -258,8 +258,8 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-graph._commonProperties({}, {}, {ignoreProperties: 'population'});
-~ examples.dropGraph("routeplanner");
+graph._commonProperties({}, {}, { ignoreProperties: 'population' });
+~examples.dropGraph("routeplanner");
 ```
 
 ## _countCommonProperties
@@ -283,7 +283,7 @@ description: ''
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._countCommonProperties({}, {});
-~ examples.dropGraph("routeplanner");
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, all German cities which share same properties except for population.
@@ -295,9 +295,12 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-  graph._countCommonProperties({}, {}, {vertex1CollectionRestriction : 'germanCity',
-  vertex2CollectionRestriction : 'germanCity' ,ignoreProperties: 'population'});
-~ examples.dropGraph("routeplanner");
+graph._countCommonProperties({}, {}, {
+  vertex1CollectionRestriction: 'germanCity',
+  vertex2CollectionRestriction: 'germanCity',
+  ignoreProperties: 'population'
+});
+~examples.dropGraph("routeplanner");
 ```
 
 ## _paths
@@ -333,7 +336,7 @@ description: ''
 var examples = require("@arangodb/graph-examples/example-graph");
 var g = examples.loadGraph("social");
 g._paths();
-~ examples.dropGraph("social");
+~examples.dropGraph("social");
 ```
 
 Return all inbound paths of the graph "social" with a maximal
@@ -346,8 +349,8 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var g = examples.loadGraph("social");
-g._paths({direction : 'inbound', minLength : 1, maxLength :  2});
-~ examples.dropGraph("social");
+g._paths({ direction: 'inbound', minLength: 1, maxLength: 2 });
+~examples.dropGraph("social");
 ```
 
 ## _shortestPath
@@ -396,9 +399,12 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var g = examples.loadGraph("routeplanner");
-g._shortestPath({}, {}, {weight : 'distance', endVertexCollectionRestriction : 'frenchCity',
-startVertexCollectionRestriction : 'germanCity'});
-~ examples.dropGraph("routeplanner");
+g._shortestPath({}, {}, {
+  weight: 'distance',
+  endVertexCollectionRestriction: 'frenchCity',
+  startVertexCollectionRestriction: 'germanCity'
+});
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, shortest path from Hamburg and Cologne to Lyon:
@@ -410,9 +416,11 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var g = examples.loadGraph("routeplanner");
-g._shortestPath([{_id: 'germanCity/Cologne'},{_id: 'germanCity/Munich'}], 'frenchCity/Lyon',
-{weight : 'distance'});
-~ examples.dropGraph("routeplanner");
+g._shortestPath([
+  {_id: 'germanCity/Cologne'},
+  {_id: 'germanCity/Munich'}
+], 'frenchCity/Lyon', { weight: 'distance' });
+~examples.dropGraph("routeplanner");
 ```
 
 ## _distanceTo
@@ -435,9 +443,12 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var g = examples.loadGraph("routeplanner");
-g._distanceTo({}, {}, {weight : 'distance', endVertexCollectionRestriction : 'frenchCity',
-startVertexCollectionRestriction : 'germanCity'});
-~ examples.dropGraph("routeplanner");
+g._distanceTo({}, {}, {
+  weight: 'distance',
+  endVertexCollectionRestriction: 'frenchCity',
+  startVertexCollectionRestriction: 'germanCity'
+});
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, shortest distance from Hamburg and Cologne to Lyon:
@@ -449,9 +460,11 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var g = examples.loadGraph("routeplanner");
-g._distanceTo([{_id: 'germanCity/Cologne'},{_id: 'germanCity/Munich'}], 'frenchCity/Lyon',
-{weight : 'distance'});
-~ examples.dropGraph("routeplanner");
+g._distanceTo([
+  {_id: 'germanCity/Cologne'},
+  {_id: 'germanCity/Munich'}
+], 'frenchCity/Lyon', { weight: 'distance' });
+~examples.dropGraph("routeplanner");
 ```
 
 ## _absoluteEccentricity
@@ -493,7 +506,7 @@ description: ''
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._absoluteEccentricity({});
-~ examples.dropGraph("routeplanner");
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, the absolute eccentricity of all locations.
@@ -506,8 +519,8 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-graph._absoluteEccentricity({}, {weight : 'distance'});
-~ examples.dropGraph("routeplanner");
+graph._absoluteEccentricity({}, { weight: 'distance' });
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, the absolute eccentricity of all cities regarding only
@@ -520,9 +533,12 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-graph._absoluteEccentricity({}, {startVertexCollectionRestriction : 'germanCity',
-direction : 'outbound', weight : 'distance'});
-~ examples.dropGraph("routeplanner");
+graph._absoluteEccentricity({}, {
+  startVertexCollectionRestriction: 'germanCity',
+  direction: 'outbound',
+  weight: 'distance'
+});
+~examples.dropGraph("routeplanner");
 ```
 
 ## _eccentricity
@@ -547,7 +563,7 @@ description: ''
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._eccentricity();
-~ examples.dropGraph("routeplanner");
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, the weighted eccentricity.
@@ -559,8 +575,8 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-graph._eccentricity({weight : 'distance'});
-~ examples.dropGraph("routeplanner");
+graph._eccentricity({ weight: 'distance' });
+~examples.dropGraph("routeplanner");
 ```
 
 ## _absoluteCloseness
@@ -602,7 +618,7 @@ description: ''
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._absoluteCloseness({});
-~ examples.dropGraph("routeplanner");
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, the absolute closeness of all locations.
@@ -615,8 +631,8 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-graph._absoluteCloseness({}, {weight : 'distance'});
-~ examples.dropGraph("routeplanner");
+graph._absoluteCloseness({}, { weight: 'distance' });
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, the absolute closeness of all German Cities regarding only
@@ -629,9 +645,12 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-graph._absoluteCloseness({}, {startVertexCollectionRestriction : 'germanCity',
-direction : 'outbound', weight : 'distance'});
-~ examples.dropGraph("routeplanner");
+graph._absoluteCloseness({}, {
+  startVertexCollectionRestriction: 'germanCity',
+  direction: 'outbound',
+  weight: 'distance'
+});
+~examples.dropGraph("routeplanner");
 ```
 
 ## _closeness
@@ -656,7 +675,7 @@ description: ''
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._closeness();
-~ examples.dropGraph("routeplanner");
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, the closeness of all locations.
@@ -669,8 +688,8 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-graph._closeness({weight : 'distance'});
-~ examples.dropGraph("routeplanner");
+graph._closeness({ weight: 'distance' });
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, the closeness of all cities regarding only
@@ -683,8 +702,8 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-graph._closeness({direction : 'outbound', weight : 'distance'});
-~ examples.dropGraph("routeplanner");
+graph._closeness({ direction: 'outbound', weight: 'distance' });
+~examples.dropGraph("routeplanner");
 ```
 
 ## _absoluteBetweenness
@@ -717,7 +736,7 @@ description: ''
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._absoluteBetweenness({});
-~ examples.dropGraph("routeplanner");
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, the absolute betweenness of all locations.
@@ -730,8 +749,8 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-graph._absoluteBetweenness({weight : 'distance'});
-~ examples.dropGraph("routeplanner");
+graph._absoluteBetweenness({ weight: 'distance' });
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, the absolute betweenness of all cities regarding only
@@ -744,8 +763,8 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-graph._absoluteBetweenness({direction : 'outbound', weight : 'distance'});
-~ examples.dropGraph("routeplanner");
+graph._absoluteBetweenness({ direction: 'outbound', weight: 'distance' });
+~examples.dropGraph("routeplanner");
 ```
 
 ## _betweenness
@@ -770,7 +789,7 @@ description: ''
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._betweenness();
-~ examples.dropGraph("routeplanner");
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, the betweenness of all locations.
@@ -783,8 +802,8 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-graph._betweenness({weight : 'distance'});
-~ examples.dropGraph("routeplanner");
+graph._betweenness({ weight: 'distance' });
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, the betweenness of all cities regarding only
@@ -797,8 +816,8 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-graph._betweenness({direction : 'outbound', weight : 'distance'});
-~ examples.dropGraph("routeplanner");
+graph._betweenness({ direction: 'outbound', weight: 'distance' });
+~examples.dropGraph("routeplanner");
 ```
 
 ## _radius
@@ -828,7 +847,7 @@ description: ''
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._radius();
-~ examples.dropGraph("routeplanner");
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, the radius of the graph.
@@ -841,8 +860,8 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-graph._radius({weight : 'distance'});
-~ examples.dropGraph("routeplanner");
+graph._radius({ weight: 'distance' });
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, the radius of the graph regarding only
@@ -855,8 +874,8 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-graph._radius({direction : 'outbound', weight : 'distance'});
-~ examples.dropGraph("routeplanner");
+graph._radius({ direction: 'outbound', weight: 'distance' });
+~examples.dropGraph("routeplanner");
 ```
 
 ## _diameter
@@ -888,7 +907,7 @@ description: ''
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
 graph._diameter();
-~ examples.dropGraph("routeplanner");
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, the diameter of the graph.
@@ -901,8 +920,8 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-graph._diameter({weight : 'distance'});
-~ examples.dropGraph("routeplanner");
+graph._diameter({ weight: 'distance' });
+~examples.dropGraph("routeplanner");
 ```
 
 A route planner example, the diameter of the graph regarding only
@@ -915,6 +934,6 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("routeplanner");
-graph._diameter({direction : 'outbound', weight : 'distance'});
-~ examples.dropGraph("routeplanner");
+graph._diameter({ direction: 'outbound', weight: 'distance' });
+~examples.dropGraph("routeplanner");
 ```

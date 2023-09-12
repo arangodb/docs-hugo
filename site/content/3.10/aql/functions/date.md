@@ -1105,9 +1105,21 @@ name: working_with_date_time
 description: ''
 ---
 db._create("exampleTime");
-var timestamps = ["2014-05-07T14:19:09.522","2014-05-07T21:19:09.522","2014-05-08T04:19:09.522","2014-05-08T11:19:09.522","2014-05-08T18:19:09.522"];
-for (i = 0; i < 5; i++) db.exampleTime.save({value:i, ts: timestamps[i]})
-db._query("FOR d IN exampleTime FILTER d.ts > '2014-05-07T14:19:09.522' and d.ts < '2014-05-08T18:19:09.522' RETURN d").toArray()
+var timestamps = [
+  "2014-05-07T14:19:09.522",
+  "2014-05-07T21:19:09.522",
+  "2014-05-08T04:19:09.522",
+  "2014-05-08T11:19:09.522",
+  "2014-05-08T18:19:09.522"
+];
+for (i = 0; i < 5; i++) {
+  db.exampleTime.save({value:i, ts: timestamps[i]});
+}
+db._query(`
+  FOR d IN exampleTime
+    FILTER d.ts > '2014-05-07T14:19:09.522' AND d.ts < '2014-05-08T18:19:09.522'
+    RETURN d
+`).toArray()
 ~addIgnoreCollection("example")
 ~db._drop("exampleTime")
 ```

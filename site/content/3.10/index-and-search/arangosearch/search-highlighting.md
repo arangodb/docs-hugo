@@ -74,7 +74,7 @@ description: ''
 ---
 var analyzers = require("@arangodb/analyzers");
 analyzers.save("text_en_offset", "text", { locale: "en", stopwords: [] }, ["frequency", "position", "offset"]);
-~ analyzers.remove("text_en_offset");
+~analyzers.remove("text_en_offset");
 ```
 
 The `frequency`, `position`, and `offset` [Analyzer features](../analyzers.md#analyzer-features)
@@ -152,7 +152,7 @@ var docs = db.food.save([
 ]);
 var idx = db.food.ensureIndex({ name: "inv-text-offset", type: "inverted", fields: [ { name: "description.en", analyzer: "text_en", features: ["frequency", "position", "offset"] } ] });
 var view = db._createView("food_view", "search-alias", { indexes: [ { collection: "food", index: "inv-text-offset" } ] });
-~ assert(db._query(`FOR d IN food_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 4);
+~assert(db._query(`FOR d IN food_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 4);
 db._query(`FOR doc IN food_view
   SEARCH
     TOKENS("avocado tomato", "text_en") ANY == doc.description.en OR
@@ -167,8 +167,8 @@ db._query(`FOR doc IN food_view
         match: SUBSTRING_BYTES(VALUE(doc, offsetInfo.name), CURRENT[0], CURRENT[1])
       }]
     }`).toArray();
-~ db._dropView("food_view");
-~ db._drop("food");
+~db._dropView("food_view");
+~db._drop("food");
 ```
 
 _`arangosearch` View:_
@@ -188,7 +188,7 @@ var docs = db.food.save([
 var analyzers = require("@arangodb/analyzers");
 var analyzer = analyzers.save("text_en_offset", "text", { locale: "en", stopwords: [] }, ["frequency", "position", "offset"]);
 var view = db._createView("food_view", "arangosearch", { links: { food: { fields: { description: { fields: { en: { analyzers: ["text_en_offset"] } } } } } } });
-~ assert(db._query(`FOR d IN food_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 4);
+~assert(db._query(`FOR d IN food_view COLLECT WITH COUNT INTO c RETURN c`).toArray()[0] === 4);
 db._query(`FOR doc IN food_view
   SEARCH ANALYZER(
     TOKENS("avocado tomato", "text_en_offset") ANY == doc.description.en OR
@@ -204,7 +204,7 @@ db._query(`FOR doc IN food_view
         match: SUBSTRING_BYTES(VALUE(doc, offsetInfo.name), CURRENT[0], CURRENT[1])
       }]
     }`).toArray();
-~ db._dropView("food_view");
-~ db._drop("food");
-~ analyzers.remove(analyzer.name);
+~db._dropView("food_view");
+~db._drop("food");
+~analyzers.remove(analyzer.name);
 ```

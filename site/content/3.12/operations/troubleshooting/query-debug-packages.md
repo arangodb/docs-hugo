@@ -55,7 +55,7 @@ var bindVars = { country: "country-denmark" };
 var options = { examples: 10, anonymize: true }
 var explainer = require("@arangodb/aql/explainer"); 
 explainer.debugDump("/tmp/debugDumpFilename", query, bindVars, options);
-~ examples.dropGraph("worldCountry");
+~examples.dropGraph("worldCountry");
 ```
 
 See [Gathering debug information about a query](../../aql/execution-and-performance/explaining-queries.md#gathering-debug-information-about-a-query)
@@ -72,7 +72,7 @@ or use the `inspectDump()` method of the explainer module for formatting.
 name: 02_debugDumpInspect
 description: ''
 ---
-~ assert(fs.exists("/tmp/debugDumpFilename"));
-  var explainer = require("@arangodb/aql/explainer"); 
-  explainer.inspectDump("/tmp/debugDumpFilename");
+~assert(fs.exists("/tmp/debugDumpFilename"));
+var explainer = require("@arangodb/aql/explainer"); 
+explainer.inspectDump("/tmp/debugDumpFilename");
 ```

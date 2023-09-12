@@ -160,7 +160,7 @@ description: ''
 ---
 var graph_module = require("@arangodb/general-graph");
 graph = graph_module._create("myGraph");
-~ graph_module._drop("myGraph", true);
+~graph_module._drop("myGraph", true);
 ```
 
 Create a graph using an edge collection `edges` and a single
@@ -171,12 +171,12 @@ vertex collection `vertices`:
 name: generalGraphCreateGraphSingle
 description: ''
 ---
-~ db._drop("edges");
-~ db._drop("vertices");
-  var graph_module = require("@arangodb/general-graph");
-  var edgeDefinitions = [ { collection: "edges", "from": [ "vertices" ], "to" : [ "vertices" ] } ];
-  graph = graph_module._create("myGraph", edgeDefinitions);
-~ graph_module._drop("myGraph", true);
+~db._drop("edges");
+~db._drop("vertices");
+var graph_module = require("@arangodb/general-graph");
+var edgeDefinitions = [ { collection: "edges", "from": [ "vertices" ], "to" : [ "vertices" ] } ];
+graph = graph_module._create("myGraph", edgeDefinitions);
+~graph_module._drop("myGraph", true);
 ```
 
 Create a graph with edge definitions and orphan collections:
@@ -187,9 +187,10 @@ name: generalGraphCreateGraph2
 description: ''
 ---
 var graph_module = require("@arangodb/general-graph");
-graph = graph_module._create("myGraph",
-[graph_module._relation("myRelation", ["male", "female"], ["male", "female"])], ["sessions"]);
-~ graph_module._drop("myGraph", true);
+graph = graph_module._create("myGraph", [
+  graph_module._relation("myRelation", ["male", "female"], ["male", "female"])
+], ["sessions"]);
+~graph_module._drop("myGraph", true);
 ```
 
 ### Complete Example to Create a Graph
@@ -204,17 +205,17 @@ description: ''
 var graph_module = require("@arangodb/general-graph");
 var edgeDefinitions = graph_module._edgeDefinitions();
 graph_module._extendEdgeDefinitions(edgeDefinitions, graph_module._relation("friend_of", "Customer", "Customer"));
-graph_module._extendEdgeDefinitions(
-edgeDefinitions, graph_module._relation(
-"has_bought", ["Customer", "Company"], ["Groceries", "Electronics"]));
+graph_module._extendEdgeDefinitions(edgeDefinitions, graph_module._relation(
+  "has_bought", ["Customer", "Company"], ["Groceries", "Electronics"])
+);
 graph_module._create("myStore", edgeDefinitions);
-~ graph_module._drop("myStore");
-~ db._drop("Electronics");
-~ db._drop("Customer");
-~ db._drop("Groceries");
-~ db._drop("Company");
-~ db._drop("has_bought");
-~ db._drop("friend_of");
+~graph_module._drop("myStore");
+~db._drop("Electronics");
+~db._drop("Customer");
+~db._drop("Groceries");
+~db._drop("Company");
+~db._drop("has_bought");
+~db._drop("friend_of");
 ```
 
 Alternative call:
@@ -225,17 +226,18 @@ name: general_graph_create_graph_example2
 description: ''
 ---
 var graph_module = require("@arangodb/general-graph");
- var edgeDefinitions = graph_module._edgeDefinitions(
- graph_module._relation("friend_of", ["Customer"], ["Customer"]), graph_module._relation(
- "has_bought", ["Customer", "Company"], ["Groceries", "Electronics"]));
+var edgeDefinitions = graph_module._edgeDefinitions(
+  graph_module._relation("friend_of", ["Customer"], ["Customer"]),
+  graph_module._relation("has_bought", ["Customer", "Company"], ["Groceries", "Electronics"])
+);
 graph_module._create("myStore", edgeDefinitions);
-~ graph_module._drop("myStore");
-~ db._drop("Electronics");
-~ db._drop("Customer");
-~ db._drop("Groceries");
-~ db._drop("Company");
-~ db._drop("has_bought");
-~ db._drop("friend_of");
+~graph_module._drop("myStore");
+~db._drop("Electronics");
+~db._drop("Customer");
+~db._drop("Groceries");
+~db._drop("Company");
+~db._drop("has_bought");
+~db._drop("friend_of");
 ```
 
 ## List available Graphs
@@ -259,11 +261,11 @@ name: generalGraphList
 description: ''
 ---
 var graph_module = require("@arangodb/general-graph");
-~ graph_module._create("myGraph");
-~ graph_module._create("myStore");
+~graph_module._create("myGraph");
+~graph_module._create("myStore");
 graph_module._list();
-~ graph_module._drop("myGraph");
-~ graph_module._drop("myStore");
+~graph_module._drop("myGraph");
+~graph_module._drop("myStore");
 ```
 
 List the graph definitions:
@@ -274,11 +276,11 @@ name: generalGraphListObjects
 description: ''
 ---
 var graph_module = require("@arangodb/general-graph");
-~ graph_module._create("myGraph", [ { collection: "edges", "from": [ "vertices" ], "to" : [ "vertices" ] } ]);
-~ graph_module._create("myStore", [ { collection: "friend_of", from: [ "Customer" ], to: [ "Customer" ] }, { collection: "has_bought", from: [ "Customer", "Company" ], to: [ "Groceries", "Electronics" ] } ]);
+~graph_module._create("myGraph", [ { collection: "edges", "from": [ "vertices" ], "to" : [ "vertices" ] } ]);
+~graph_module._create("myStore", [ { collection: "friend_of", from: [ "Customer" ], to: [ "Customer" ] }, { collection: "has_bought", from: [ "Customer", "Company" ], to: [ "Groceries", "Electronics" ] } ]);
 graph_module._listObjects();
-~ graph_module._drop("myGraph", true);
-~ graph_module._drop("myStore", true);
+~graph_module._drop("myGraph", true);
+~graph_module._drop("myStore", true);
 ```
 
 ## Load a Graph
@@ -297,11 +299,11 @@ Get a graph by its name:
 name: generalGraphLoadGraph
 description: ''
 ---
-~ var examples = require("@arangodb/graph-examples/example-graph");
-~ var g1 = examples.loadGraph("social");
-  var graph_module = require("@arangodb/general-graph");
-  graph = graph_module._graph("social");
-~ examples.dropGraph("social");
+~var examples = require("@arangodb/graph-examples/example-graph");
+~var g1 = examples.loadGraph("social");
+var graph_module = require("@arangodb/general-graph");
+graph = graph_module._graph("social");
+~examples.dropGraph("social");
 ```
 
 ## Remove a Graph
@@ -328,18 +330,18 @@ Drop a graph and keep collections:
 name: generalGraphDropGraphKeep
 description: ''
 ---
-~ var examples = require("@arangodb/graph-examples/example-graph");
-~ var g1 = examples.loadGraph("social");
-  var graph_module = require("@arangodb/general-graph");
-  graph_module._graph("social");
-  graph_module._drop("social");
-  db._collection("female");
-  db._collection("male");
-  db._collection("relation");
-~ db._drop("female");
-~ db._drop("male");
-~ db._drop("relation");
-~ examples.dropGraph("social");
+~var examples = require("@arangodb/graph-examples/example-graph");
+~var g1 = examples.loadGraph("social");
+var graph_module = require("@arangodb/general-graph");
+graph_module._graph("social");
+graph_module._drop("social");
+db._collection("female");
+db._collection("male");
+db._collection("relation");
+~db._drop("female");
+~db._drop("male");
+~db._drop("relation");
+~examples.dropGraph("social");
 ```
 
 Drop a graph and its collections:
@@ -349,14 +351,14 @@ Drop a graph and its collections:
 name: generalGraphDropGraphDropCollections
 description: ''
 ---
-~ var examples = require("@arangodb/graph-examples/example-graph");
-~ var g1 = examples.loadGraph("social");
-  var graph_module = require("@arangodb/general-graph");
-  graph_module._graph("social");
-  graph_module._drop("social", true);
-  db._collection("female");
-  db._collection("male");
-  db._collection("relation");
+~var examples = require("@arangodb/graph-examples/example-graph");
+~var g1 = examples.loadGraph("social");
+var graph_module = require("@arangodb/general-graph");
+graph_module._graph("social");
+graph_module._drop("social", true);
+db._collection("female");
+db._collection("male");
+db._collection("relation");
 ```
 
 ## Modify a Graph definition at runtime
@@ -394,7 +396,7 @@ var ed2 = graph_module._relation("myEC2", ["myVC1"], ["myVC3"]);
 var graph = graph_module._create("myGraph", [ed1]);
 graph._extendEdgeDefinitions(ed2);
 graph = graph_module._graph("myGraph");
-~ graph_module._drop("myGraph", true);
+~graph_module._drop("myGraph", true);
 ```
 
 ### Modify an Edge Definition
@@ -430,7 +432,7 @@ var modified = graph_module._relation("myEC1", ["myVC2"], ["myVC3"]);
 var graph = graph_module._create("myGraph", [original]);
 graph._editEdgeDefinitions(modified);
 graph = graph_module._graph("myGraph");
-~ graph_module._drop("myGraph", true);
+~graph_module._drop("myGraph", true);
 ```
 
 ### Delete an Edge Definition
@@ -464,8 +466,8 @@ var graph = graph_module._create("myGraph", [ed1, ed2]);
 graph._deleteEdgeDefinition("myEC1");
 graph = graph_module._graph("myGraph");
 db._collection("myEC1");
-~ db._drop("myEC1");
-~ graph_module._drop("myGraph", true);
+~db._drop("myEC1");
+~graph_module._drop("myGraph", true);
 ```
 
 Remove an edge definition and drop the edge collection:
@@ -482,8 +484,8 @@ var graph = graph_module._create("myGraph", [ed1, ed2]);
 graph._deleteEdgeDefinition("myEC1", true);
 graph = graph_module._graph("myGraph");
 db._collection("myEC1");
-~ db._drop("myEC1");
-~ graph_module._drop("myGraph", true);
+~db._drop("myEC1");
+~graph_module._drop("myGraph", true);
 ```
 
 ### Extend Vertex Collections
@@ -523,8 +525,8 @@ var ed1 = graph_module._relation("myEC1", ["myVC1"], ["myVC2"]);
 var graph = graph_module._create("myGraph", [ed1]);
 graph._addVertexCollection("myVC3", true);
 graph = graph_module._graph("myGraph");
-~ db._drop("myVC3");
-~ graph_module._drop("myGraph", true);
+~db._drop("myVC3");
+~graph_module._drop("myGraph", true);
 ```
 
 #### Get the Orphaned Collections
@@ -548,7 +550,7 @@ var ed1 = graph_module._relation("myEC1", ["myVC1"], ["myVC2"]);
 var graph = graph_module._create("myGraph", [ed1]);
 graph._addVertexCollection("myVC3", true);
 graph._orphanCollections();
-~ graph_module._drop("myGraph", true);
+~graph_module._drop("myGraph", true);
 ```
 
 #### Remove a Vertex Collection
@@ -582,8 +584,8 @@ graph._addVertexCollection("myVC4", true);
 graph._orphanCollections();
 graph._removeVertexCollection("myVC3");
 graph._orphanCollections();
-~ db._drop("myVC3");
-~ graph_module._drop("myGraph", true);
+~db._drop("myVC3");
+~graph_module._drop("myGraph", true);
 ```
 
 ## Manipulating Vertices
@@ -609,7 +611,7 @@ description: ''
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("social");
 graph.male.save({name: "Floyd", _key: "floyd"}, { returnNew: true });
-~ examples.dropGraph("social");
+~examples.dropGraph("social");
 ```
 
 ### Replace a Vertex
@@ -636,7 +638,7 @@ var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("social");
 var doc = graph.male.save({neym: "Jon", _key: "john"});
 graph.male.replace("male/john", {name: "John"}, { returnOld: true, returnNew: true });
-~ examples.dropGraph("social");
+~examples.dropGraph("social");
 ```
 
 ### Update a Vertex
@@ -663,7 +665,7 @@ var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("social");
 var doc = graph.female.save({name: "Lynda", _key: "linda"});
 graph.female.update("female/linda", {name: "Linda", _key: "linda"}, { returnOld: true, returnNew: true });
-~ examples.dropGraph("social");
+~examples.dropGraph("social");
 ```
 
 ### Remove a Vertex
@@ -693,7 +695,7 @@ var doc = graph.male.save({name: "Kermit", _key: "kermit"});
 db._exists("male/kermit");
 var success = graph.male.remove("male/kermit");
 db._exists("male/kermit");
-~ examples.dropGraph("social");
+~examples.dropGraph("social");
 ```
 
 ## Manipulating Edges
@@ -725,7 +727,7 @@ graph.relation.save({
   _from: "male/bob",
   _to: "female/alice",
   _key: "bobAndAlice", type: "married" }, { returnNew: true });
-~ examples.dropGraph("social");
+~examples.dropGraph("social");
 ```
 
 If the collections of `from` and `to` are not defined in an edge definition
@@ -738,11 +740,11 @@ description: ''
 ---
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("social");
-  graph.relation.save(
-   "relation/aliceAndBob",
-    "female/alice",
-   {type: "married", _key: "bobAndAlice"}); // xpError(ERROR_GRAPH_INVALID_EDGE)
-~ examples.dropGraph("social");
+graph.relation.save(
+  "relation/aliceAndBob",
+   "female/alice",
+  {type: "married", _key: "bobAndAlice"}); // xpError(ERROR_GRAPH_INVALID_EDGE)
+~examples.dropGraph("social");
 ```
 
 ### Replace an Edge
@@ -769,8 +771,10 @@ description: ''
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("social");
 var doc = graph.relation.save("female/alice", "female/diana", {typo: "nose", _key: "aliceAndDiana"});
-graph.relation.replace("relation/aliceAndDiana", {type: "knows", _from: "female/alice", _to: "female/diana"}, { returnOld: true, returnNew: true });
-~ examples.dropGraph("social");
+graph.relation.replace("relation/aliceAndDiana",
+  { type: "knows", _from: "female/alice", _to: "female/diana" },
+  { returnOld: true, returnNew: true });
+~examples.dropGraph("social");
 ```
 
 ### Update an Edge
@@ -796,8 +800,10 @@ description: ''
 var examples = require("@arangodb/graph-examples/example-graph");
 var graph = examples.loadGraph("social");
 var doc = graph.relation.save("female/alice", "female/diana", {type: "knows", _key: "aliceAndDiana"});
-graph.relation.update("relation/aliceAndDiana", {type: "quarreled", _key: "aliceAndDiana"}, { returnOld: true, returnNew: true });
-~ examples.dropGraph("social");
+graph.relation.update("relation/aliceAndDiana",
+  { type: "quarreled", _key: "aliceAndDiana" },
+  { returnOld: true, returnNew: true });
+~examples.dropGraph("social");
 ```
 
 ### Remove an Edge
@@ -827,5 +833,5 @@ var doc = graph.relation.save("female/alice", "female/diana", {_key: "aliceAndDi
 db._exists("relation/aliceAndDiana")
 var success = graph.relation.remove("relation/aliceAndDiana")
 db._exists("relation/aliceAndDiana")
-~ examples.dropGraph("social");
+~examples.dropGraph("social");
 ```

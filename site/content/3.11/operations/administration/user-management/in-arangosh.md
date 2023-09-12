@@ -361,6 +361,6 @@ This method will fail if the user cannot be found in the database.
 name: USER_05_permission
 description: ''
 ---
-~ require("@arangodb/users").grantDatabase("my-user", "testdb");
+~require("@arangodb/users").grantDatabase("my-user", "testdb");
 require("@arangodb/users").permission("my-user", "testdb");
 ```

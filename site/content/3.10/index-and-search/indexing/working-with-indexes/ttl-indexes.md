@@ -196,6 +196,8 @@ description: ''
 ---
 ~db._create("test");
 db.test.ensureIndex({ type: "ttl", fields: [ "creationDate" ], expireAfter: 600 });
-for (let i = 0; i < 100; ++i) { db.test.insert({ creationDate: Date.now() / 1000 }); }
+for (let i = 0; i < 100; ++i) {
+  db.test.insert({ creationDate: Date.now() / 1000 });
+}
 ~db._drop("test");
 ```

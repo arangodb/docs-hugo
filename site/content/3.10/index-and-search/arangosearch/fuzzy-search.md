@@ -217,7 +217,7 @@ description: ''
 ---
 var analyzers = require("@arangodb/analyzers");
 analyzers.save("text_en_no_stem", "text", { locale: "en", accent: false, case: "lower", stemming: false, stopwords: [] }, ["frequency", "norm"]);
-~ analyzers.remove("text_en_no_stem");
+~analyzers.remove("text_en_no_stem");
 ```
 
 The `frequency` and `norm` [Analyzer features](../analyzers.md#analyzer-features)
@@ -322,7 +322,7 @@ description: ''
 ---
 var analyzers = require("@arangodb/analyzers");
 analyzers.save("trigram", "ngram", { min: 3, max: 3, preserveOriginal: false, streamType: "utf8" }, ["frequency", "position"]);
-~ analyzers.remove("trigram");
+~analyzers.remove("trigram");
 ```
 
 The `frequency` and `position` [Analyzer features](../analyzers.md#analyzer-features)

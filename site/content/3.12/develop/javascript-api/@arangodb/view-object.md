@@ -96,16 +96,19 @@ Modify `arangosearch` View properties:
 name: viewModifyProperties
 description: ''
 ---
-~ db._createView("example", "arangosearch");
-  var view = db._view("example");
-  view.properties();
-  // set cleanupIntervalStep to 12
-  view.properties({cleanupIntervalStep: 12});
-  // add a link
-  view.properties({links: {demo: {}}})
-  // remove a link
-  view.properties({links: {demo: null}})
-~ db._dropView("example");
+~db._createView("example", "arangosearch");
+var view = db._view("example");
+view.properties();
+
+// set cleanupIntervalStep to 12
+view.properties({cleanupIntervalStep: 12});
+
+// add a link
+view.properties({links: {demo: {}}})
+
+// remove a link
+view.properties({links: {demo: null}})
+~db._dropView("example");
 ```
 
 Add and remove inverted indexes from a `search-alias` View:
@@ -115,22 +118,23 @@ Add and remove inverted indexes from a `search-alias` View:
 name: viewModifyPropertiesSearchAlias
 description: ''
 ---
-~ db._create("coll");
-~ db.coll.ensureIndex({ name: "inv1", type: "inverted", fields: ["a"] });
-~ db.coll.ensureIndex({ name: "inv2", type: "inverted", fields: ["b[*]"] });
-~ db.coll.ensureIndex({ name: "inv3", type: "inverted", fields: ["c"] });
-~ db._createView("example", "search-alias", { indexes: [
-~  { collection: "coll", index: "inv1" },
-~  { collection: "coll", index: "inv2" }
-~ ] });
-  var view = db._view("example");
-  view.properties();
-  view.properties({ indexes: [
-    { collection: "coll", index: "inv1", operation: "del" },
-    { collection: "coll", index: "inv3" }
-  ] });
-~ db._dropView("example");
-~ db._drop("coll");
+~db._create("coll");
+~db.coll.ensureIndex({ name: "inv1", type: "inverted", fields: ["a"] });
+~db.coll.ensureIndex({ name: "inv2", type: "inverted", fields: ["b[*]"] });
+~db.coll.ensureIndex({ name: "inv3", type: "inverted", fields: ["c"] });
+~db._createView("example", "search-alias", { indexes: [
+~{ collection: "coll", index: "inv1" },
+~{ collection: "coll", index: "inv2" }
+~] });
+var view = db._view("example");
+view.properties();
+
+view.properties({ indexes: [
+  { collection: "coll", index: "inv1", operation: "del" },
+  { collection: "coll", index: "inv3" }
+] });
+~db._dropView("example");
+~db._drop("coll");
 ```
 
 ### `view.rename(new-name)`
@@ -157,7 +161,7 @@ var view = db._createView("example", "arangosearch");
 view.name();
 view.rename("exampleRenamed");
 view.name();
-~ db._dropView("exampleRenamed");
+~db._dropView("exampleRenamed");
 ```
 
 ### `view.drop()`

@@ -76,7 +76,9 @@ name: usingToArray
 description: ''
 ---
 db._create("five")
-for (i = 0; i < 5; i++) db.five.save({value:i})
+for (i = 0; i < 5; i++) {
+  db.five.save({value:i});
+}
 db.five.toArray()
 ~db._drop("five");
 ```

@@ -38,18 +38,18 @@ description: ''
 ~var queries = require("@arangodb/aql/queries");
 var theQuery = 'FOR sleepLoooong IN 1..5 LET sleepLoooonger = SLEEP(1000) RETURN sleepLoooong';
 var tasks = require("@arangodb/tasks");
- tasks.register({
-   id: "mytask-1",
-   name: "this is a sample task to spawn a slow aql query",
-   command: "require('@arangodb').db._query('" + theQuery + "');"
+tasks.register({
+  id: "mytask-1",
+  name: "this is a sample task to spawn a slow aql query",
+  command: "require('@arangodb').db._query('" + theQuery + "');"
 });
- ~ while (true) {
- ~   require("internal").wait(1);
- ~   if (queries.current().filter(function(query) {
- ~                           return query.query === theQuery;
- ~                         }).length > 0) {
- ~     break;
- ~   }
+~while (true) {
+~  require("internal").wait(1);
+~  if (queries.current().filter(function(query) {
+~    return query.query === theQuery;
+~  }).length > 0) {
+~    break;
+~  }
 ~}
 queries.current();
 ```
@@ -93,8 +93,8 @@ description: ''
 ~var queries = require("@arangodb/aql/queries");
 ~var tasks = require("@arangodb/tasks");
 ~var theQuery = 'FOR sleepLoooong IN 1..5 LET sleepLoooonger = SLEEP(1000) RETURN sleepLoooong';
- var runningQueries = queries.current().filter(function(query) {
-    return query.query === theQuery;
+var runningQueries = queries.current().filter(function(query) {
+  return query.query === theQuery;
 });
 queries.kill(runningQueries[0].id);
 ```

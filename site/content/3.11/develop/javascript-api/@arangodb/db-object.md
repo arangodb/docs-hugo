@@ -461,7 +461,7 @@ description: ''
 ---
 var coll = db._create("users");
 coll.properties();
-~ db._drop("users");
+~db._drop("users");
 ```
 
 With properties:
@@ -473,7 +473,7 @@ description: ''
 ---
 var coll = db._create("users", { waitForSync: true });
 coll.properties();
-~ db._drop("users");
+~db._drop("users");
 ```
 
 With a key generator:
@@ -487,7 +487,7 @@ var coll = db._create("users", { keyOptions: { type: "autoincrement", offset: 10
 db.users.save({ name: "user 1" });
 db.users.save({ name: "user 2" });
 db.users.save({ name: "user 3" });
-~ db._drop("users");
+~db._drop("users");
 ```
 
 With a special key option:
@@ -501,7 +501,7 @@ var coll = db._create("users", { keyOptions: { allowUserKeys: false } });
 db.users.save({ name: "user 1" });
 db.users.save({ name: "user 2", _key: "myuser" }); // xpError(ERROR_ARANGO_DOCUMENT_KEY_UNEXPECTED)
 db.users.save({ name: "user 3" });
-~ db._drop("users");
+~db._drop("users");
 ```
 
 ### `db._createDocumentCollection(collection-name [, properties])`
@@ -536,9 +536,9 @@ Each array element is a [_collection_ object](collection-object.md).
 name: collectionsDatabaseName
 description: ''
 ---
-~ db._create("example");
-  db._collections();
-~ db._drop("example");
+~db._create("example");
+db._collections();
+~db._drop("example");
 ```
 
 ### `db._collection(collection)`
@@ -614,13 +614,13 @@ Truncates a collection:
 name: collectionDatabaseTruncateByObject
 description: ''
 ---
-~ db._create("example");
-  var coll = db._collection("example");
-  var doc = coll.save({ "Hello" : "World" });
-  coll.count();
-  db._truncate(coll);
-  coll.count();
-~ db._drop("example");
+~db._create("example");
+var coll = db._collection("example");
+var doc = coll.save({ "Hello" : "World" });
+coll.count();
+db._truncate(coll);
+coll.count();
+~db._drop("example");
 ```
 
 Truncates a collection identified by name:
@@ -630,13 +630,13 @@ Truncates a collection identified by name:
 name: collectionDatabaseTruncateName
 description: ''
 ---
-~ db._create("example");
-  var coll = db._collection("example");
-  var doc = coll.save({ "Hello" : "World" });
-  coll.count();
-  db._truncate("example");
-  coll.count();
-~ db._drop("example");
+~db._create("example");
+var coll = db._collection("example");
+var doc = coll.save({ "Hello" : "World" });
+coll.count();
+db._truncate("example");
+coll.count();
+~db._drop("example");
 ```
 
 ### `db._drop(collection [, options])`
@@ -675,10 +675,10 @@ Drops a collection:
 name: collectionDatabaseDropByObject
 description: ''
 ---
-~ db._create("example");
-  var coll = db._collection("example");
-  db._drop(coll);
-~ db._drop("example");
+~db._create("example");
+var coll = db._collection("example");
+db._drop(coll);
+~db._drop("example");
 ```
 
 Drops a collection identified by name:
@@ -688,10 +688,10 @@ Drops a collection identified by name:
 name: collectionDatabaseDropName
 description: ''
 ---
-~ db._create("example");
-  coll = db._collection("example");
-  db._drop("example");
-  coll;
+~db._create("example");
+coll = db._collection("example");
+db._drop("example");
+coll;
 ```
 
 Drops a system collection
@@ -701,9 +701,9 @@ Drops a system collection
 name: collectionDatabaseDropSystem
 description: ''
 ---
-~ db._create("_example", { isSystem: true });
-  var coll = db._example;
-  db._drop("_example", { isSystem: true });
+~db._create("_example", { isSystem: true });
+var coll = db._example;
+db._drop("_example", { isSystem: true });
 ```
 
 ## Documents
@@ -805,11 +805,11 @@ Create and update a document:
 name: documentDocumentUpdate
 description: ''
 ---
-~ db._create("example");
-  a1 = db.example.insert({ a : 1 });
-  a2 = db._update(a1, { b : 2 });
-  a3 = db._update(a1, { c : 3 }); // xpError(ERROR_ARANGO_CONFLICT);
-~ db._drop("example");
+~db._create("example");
+a1 = db.example.insert({ a : 1 });
+a2 = db._update(a1, { b : 2 });
+a3 = db._update(a1, { c : 3 }); // xpError(ERROR_ARANGO_CONFLICT);
+~db._drop("example");
 ```
 
 Ignore a revision mismatch when updating the document:
@@ -819,11 +819,11 @@ Ignore a revision mismatch when updating the document:
 name: documentDocumentUpdateOverwrite
 description: ''
 ---
-~ db._create("example");
-  a1 = db.example.insert({ a : 1 });
-  a2 = db._update(a1, { b : 2 });
-  a3 = db._update(a1, { c : 3 }, { overwrite: true });
-~ db._drop("example");
+~db._create("example");
+a1 = db.example.insert({ a : 1 });
+a2 = db._update(a1, { b : 2 });
+a3 = db._update(a1, { c : 3 }, { overwrite: true });
+~db._drop("example");
 ```
 
 ### `db._replace(document, data)`
@@ -889,11 +889,11 @@ Create and replace a document:
 name: documentsDocumentReplace
 description: ''
 ---
-~ db._create("example");
-  a1 = db.example.insert({ a : 1 });
-  a2 = db._replace(a1, { a : 2 });
-  a3 = db._replace(a1, { a : 3 });  // xpError(ERROR_ARANGO_CONFLICT);
-~ db._drop("example");
+~db._create("example");
+a1 = db.example.insert({ a : 1 });
+a2 = db._replace(a1, { a : 2 });
+a3 = db._replace(a1, { a : 3 });  // xpError(ERROR_ARANGO_CONFLICT);
+~db._drop("example");
 ```
 
 Ignore a revision mismatch when replacing the document:
@@ -903,11 +903,11 @@ Ignore a revision mismatch when replacing the document:
 name: documentsDocumentReplaceOverwrite
 description: ''
 ---
-~ db._create("example");
-  a1 = db.example.insert({ a : 1 });
-  a2 = db._replace(a1, { a : 2 });
-  a3 = db._replace(a1, { a : 3 }, { overwrite: true });
-~ db._drop("example");
+~db._create("example");
+a1 = db.example.insert({ a : 1 });
+a2 = db._replace(a1, { a : 2 });
+a3 = db._replace(a1, { a : 3 }, { overwrite: true });
+~db._drop("example");
 ```
 
 ### `db._remove(document)`
@@ -969,12 +969,12 @@ Remove a document:
 name: documentsCollectionRemoveSuccess
 description: ''
 ---
-~ db._create("example");
-  a1 = db.example.insert({ a : 1 });
-  db._remove(a1);
-  db._remove(a1); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND);
-  db._remove(a1, {overwrite: true}); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND);
-~ db._drop("example");
+~db._create("example");
+a1 = db.example.insert({ a : 1 });
+db._remove(a1);
+db._remove(a1); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND);
+db._remove(a1, {overwrite: true}); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND);
+~db._drop("example");
 ```
 
 Remove the document in the revision `a1` with a conflict:
@@ -984,13 +984,13 @@ Remove the document in the revision `a1` with a conflict:
 name: documentsCollectionRemoveConflict
 description: ''
 ---
-~ db._create("example");
-  a1 = db.example.insert({ a : 1 });
-  a2 = db._replace(a1, { a : 2 });
-  db._remove(a1); // xpError(ERROR_ARANGO_CONFLICT)
-  db._remove(a1, {overwrite: true});
-  db._document(a1); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND)
-~ db._drop("example");
+~db._create("example");
+a1 = db.example.insert({ a : 1 });
+a2 = db._replace(a1, { a : 2 });
+db._remove(a1); // xpError(ERROR_ARANGO_CONFLICT)
+db._remove(a1, {overwrite: true});
+db._document(a1); // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND)
+~db._drop("example");
 ```
 
 Remove a document using a document identifier:
@@ -1000,10 +1000,10 @@ Remove a document using a document identifier:
 name: documentsCollectionRemoveIdentifier
 description: ''
 ---
-~ db._create("example");
-  db.example.insert({ _key: "123456", a: 1 } );
-  db.example.remove("example/123456");
-~ db._drop("example");
+~db._create("example");
+db.example.insert({ _key: "123456", a: 1 } );
+db.example.remove("example/123456");
+~db._drop("example");
 ```
 
 ## Views
@@ -1051,9 +1051,9 @@ List all Views:
 name: viewDatabaseList
 description: ''
 ---
-~ db._createView("exampleView", "arangosearch");
-  db._views();
-~ db._dropView("exampleView");
+~db._createView("exampleView", "arangosearch");
+db._views();
+~db._dropView("exampleView");
 ```
 
 ### `db._view(view)`
@@ -1068,11 +1068,11 @@ or `null` if no such View exists.
 name: viewDatabaseGet
 description: ''
 ---
-~ db._createView("example", "arangosearch", {});
-  var view = db._view("example");
-  // or, alternatively
-  var view = db["example"];
-~ db._dropView("example");
+~db._createView("example", "arangosearch", {});
+var view = db._view("example");
+// or, alternatively
+var view = db["example"];
+~db._dropView("example");
 ```
 
 

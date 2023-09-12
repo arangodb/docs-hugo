@@ -52,8 +52,8 @@ var idx = coll.ensureIndex({ type: "inverted", name: "inv-idx", fields: [ { name
 db._createView("products", "search-alias", { indexes: [
   { collection: "books", index: "inv-idx" }
 ] });
-~ db._dropView("products");
-~ db._drop(coll.name());
+~db._dropView("products");
+~db._drop(coll.name());
 ```
 
 ## View Definition

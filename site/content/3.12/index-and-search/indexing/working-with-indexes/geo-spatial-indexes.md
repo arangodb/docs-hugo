@@ -694,7 +694,7 @@ name: geoIndexCreateForArrayAttribute1
 description: ''
 ---
 ~db._create("geo");
- db.geo.ensureIndex({ type: "geo", fields: [ "loc" ] });
+db.geo.ensureIndex({ type: "geo", fields: [ "loc" ] });
 ~db._drop("geo");
 ```
 
@@ -717,17 +717,17 @@ Use a geo index with the AQL `SORT` operation:
 name: geoIndexSortOptimization
 description: ''
 ---
-~ db._create("geoSort");
-  var idx = db.geoSort.ensureIndex({ type: "geo", fields: [ "latitude", "longitude" ] });
-  for (i = -90;  i <= 90;  i += 10) {
-    for (j = -180; j <= 180; j += 10) {
-      db.geoSort.save({ name : "Name/" + i + "/" + j, latitude : i, longitude : j });
-    }
+~db._create("geoSort");
+var idx = db.geoSort.ensureIndex({ type: "geo", fields: [ "latitude", "longitude" ] });
+for (i = -90;  i <= 90;  i += 10) {
+  for (j = -180; j <= 180; j += 10) {
+    db.geoSort.save({ name : "Name/" + i + "/" + j, latitude : i, longitude : j });
   }
-  var query = "FOR doc in geoSort SORT DISTANCE(doc.latitude, doc.longitude, 0, 0) LIMIT 5 RETURN doc"
-  db._explain(query, {}, {colors: false});
-  db._query(query).toArray();
-~ db._drop("geoSort");
+}
+var query = "FOR doc in geoSort SORT DISTANCE(doc.latitude, doc.longitude, 0, 0) LIMIT 5 RETURN doc"
+db._explain(query, {}, {colors: false});
+db._query(query).toArray();
+~db._drop("geoSort");
 ```
 
 Use a geo index with the AQL `FILTER` operation:
@@ -737,13 +737,13 @@ Use a geo index with the AQL `FILTER` operation:
 name: geoIndexFilterOptimization
 description: ''
 ---
-~ db._create("geoFilter");
-  var idx = db.geoFilter.ensureIndex({ type: "geo", fields: [ "latitude", "longitude" ] });
-  for (i = -90;  i <= 90;  i += 10) {
-    for (j = -180; j <= 180; j += 10) {
-      db.geoFilter.save({ name : "Name/" + i + "/" + j, latitude : i, longitude : j });
-    }
+~db._create("geoFilter");
+var idx = db.geoFilter.ensureIndex({ type: "geo", fields: [ "latitude", "longitude" ] });
+for (i = -90;  i <= 90;  i += 10) {
+  for (j = -180; j <= 180; j += 10) {
+    db.geoFilter.save({ name : "Name/" + i + "/" + j, latitude : i, longitude : j });
   }
+}
 var query = "FOR doc in geoFilter FILTER DISTANCE(doc.latitude, doc.longitude, 0, 0) < 2000 RETURN doc"
 db._explain(query, {}, {colors: false});
 db._query(query).toArray();

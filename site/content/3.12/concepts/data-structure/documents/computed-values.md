@@ -167,7 +167,7 @@ var coll = db._create("users", {
 });
 var doc = db.users.save({ name: "Paula Plant" });
 db.users.toArray();
-~ db._drop("users");
+~db._drop("users");
 ```
 
 Add an attribute with the date and time of the last modification, only taking
@@ -194,7 +194,7 @@ doc = db.users.update("123", { email: "gardener@arangodb.com" });
 db.users.toArray();
 doc = db.users.update("123", { email: "greenhouse@arangodb.com", modifiedAt: { date: "2019-01-01", time: "20:30:00.000Z" } });
 db.users.toArray();
-~ db._drop("users");
+~db._drop("users");
 ```
 
 Compute an attribute from two arrays, filtering one of the lists, and calculating
@@ -217,7 +217,7 @@ var coll = db._create("users", {
 var doc = db.users.save({ name: "Paula Plant", is: [ { name: "Gardener", public: true }, { name: "female" } ], loves: ["AVOCADOS", "Databases"] });
 var idx = db.users.ensureIndex({ type: "persistent", fields: ["searchTags[*]"] });
 db._query(`FOR u IN users FILTER "avocados" IN u.searchTags RETURN u`).toArray();
-~ db._drop("users");
+~db._drop("users");
 ```
 
 Set `keepNull` to `false` and let an expression return `null` to not set or
@@ -245,7 +245,7 @@ var docs = db.users.save([
   { lastName: "Barrett", fullName: "Andy J. Barrett" }
 ]);
 db.users.toArray();
-~ db._drop("users");
+~db._drop("users");
 ```
 
 Add a computed value as a sub-attribute to documents. This is not possible
@@ -274,5 +274,5 @@ var docs = db.users.save([
   { name: { first: "Paula", last: "Plant" } }
 ]);
 db.users.toArray();
-~ db._drop("users");
+~db._drop("users");
 ```

@@ -35,8 +35,8 @@ description: ''
 ---
 var coll = db._create("books");
 db._createView("products", "arangosearch", { links: { books: { fields: { title: { analyzers: ["text_en"] } } } } });
-~ db._dropView("products");
-~ db._drop(coll.name());
+~db._dropView("products");
+~db._drop(coll.name());
 ```
 
 ## View Definition/Modification

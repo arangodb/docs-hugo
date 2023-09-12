@@ -118,22 +118,22 @@ create a new document in the same collection using a Stream Transaction:
 name: jsStreamTransaction_1
 description: ''
 ---
-~ db._create("tasks");
-~ db.tasks.save({ _key: "123", type: "sendEmail", date: "2022-07-07T15:20:00.000Z" });
-  var coll = "tasks";
-  var trx = db._createTransaction({ collections: { write: [coll] } });
-  var task = trx.query(`FOR t IN @@coll SORT t.date DESC LIMIT 1 RETURN t`, {"@coll": coll}).toArray()[0];
-  if (task) {
-    print(task);
-    trx.collection(coll).remove(task._key);
-    var newTask = trx.collection(coll).save({ _key: "124", type: task.type, date: new Date().toISOString() }, { returnNew: true }).new;
-    print(newTask);
-    trx.commit();
-  } else {
-    trx.abort();
-  }
-  trx.status();
-~ db._drop("tasks");
+~db._create("tasks");
+~db.tasks.save({ _key: "123", type: "sendEmail", date: "2022-07-07T15:20:00.000Z" });
+var coll = "tasks";
+var trx = db._createTransaction({ collections: { write: [coll] } });
+var task = trx.query(`FOR t IN @@coll SORT t.date DESC LIMIT 1 RETURN t`, {"@coll": coll}).toArray()[0];
+if (task) {
+  print(task);
+  trx.collection(coll).remove(task._key);
+  var newTask = trx.collection(coll).save({ _key: "124", type: task.type, date: new Date().toISOString() }, { returnNew: true }).new;
+  print(newTask);
+  trx.commit();
+} else {
+  trx.abort();
+}
+trx.status();
+~db._drop("tasks");
 ```
 
 ### Commit

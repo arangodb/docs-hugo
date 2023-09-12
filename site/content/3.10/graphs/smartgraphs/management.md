@@ -189,8 +189,8 @@ type: cluster
 ~var graph_module = require("@arangodb/smart-graph");
 ~var relation = graph_module._relation("edges", "vertices", "vertices");
 ~var graph = graph_module._create("myGraph", [relation], ["other"], {smartGraphAttribute: "region", numberOfShards: 9});
- graph._removeVertexCollection("other", true);
- graph = graph_module._graph("myGraph");
+graph._removeVertexCollection("other", true);
+graph = graph_module._graph("myGraph");
 ~graph_module._drop("myGraph", true);
 ```
 
@@ -205,7 +205,7 @@ type: cluster
 ~var graph_module = require("@arangodb/smart-graph");
 ~var relation = graph_module._relation("edges", "vertices", "vertices");
 ~var graph = graph_module._create("myGraph", [relation], [], {smartGraphAttribute: "region", numberOfShards: 9});
- graph._removeVertexCollection("vertices"); // xpError(ERROR_GRAPH_NOT_IN_ORPHAN_COLLECTION)
+graph._removeVertexCollection("vertices"); // xpError(ERROR_GRAPH_NOT_IN_ORPHAN_COLLECTION)
 ~graph_module._drop("myGraph", true);
 ```
 
@@ -295,8 +295,8 @@ type: cluster
 ~var graph_module = require("@arangodb/smart-graph");
 ~var relation = graph_module._relation("edges", "vertices", "vertices");
 ~var graph = graph_module._create("myGraph", [relation], [], {smartGraphAttribute: "region", numberOfShards: 9});
- graph._deleteEdgeDefinition("edges");
- graph._removeVertexCollection("vertices");
+graph._deleteEdgeDefinition("edges");
+graph._removeVertexCollection("vertices");
 ~graph_module._drop("myGraph", true);
 ~db._drop("edges");
 ~db._drop("vertices");
@@ -329,7 +329,7 @@ type: cluster
 ~var graph_module = require("@arangodb/smart-graph");
 ~var relation = graph_module._relation("edges", "vertices", "vertices");
 ~var graph = graph_module._create("myGraph", [relation], ["other"], {smartGraphAttribute: "region", numberOfShards: 9});
- graph_module._drop("myGraph", true);
+graph_module._drop("myGraph", true);
 ```
 
 Note that removing a Graph with the option to drop the collections fails if
@@ -348,8 +348,8 @@ type: cluster
 ~var graph_module = require("@arangodb/smart-graph");
 ~var relation = graph_module._relation("edges", "vertices", "vertices");
 ~var graph = graph_module._create("myGraph", [relation], ["other"], {smartGraphAttribute: "region", numberOfShards: 9});
- graph._removeVertexCollection("other");
- graph_module._drop("myGraph", true); // xpError(ERROR_CLUSTER_MUST_NOT_DROP_COLL_OTHER_DISTRIBUTESHARDSLIKE)
+graph._removeVertexCollection("other");
+graph_module._drop("myGraph", true); // xpError(ERROR_CLUSTER_MUST_NOT_DROP_COLL_OTHER_DISTRIBUTESHARDSLIKE)
 ~db._drop("other");
 ~db._drop("vertices");
 ```

@@ -107,9 +107,10 @@ It is always possible to retrieve statistics for a query with the `getExtra()` m
 name: 03_workWithAQL_getExtra
 description: ''
 ---
-db._query(`FOR i IN 1..100
-  INSERT { _key: CONCAT('test', TO_STRING(i)) } INTO mycollection`
-).getExtra();
+db._query(`
+  FOR i IN 1..100
+    INSERT { _key: CONCAT('test', TO_STRING(i)) } INTO mycollection
+`).getExtra();
 ```
 
 The meaning of the statistics values is described in
@@ -532,8 +533,8 @@ To execute the query, use the `execute()` method of the _statement_ object:
 name: 05_workWithAQL_statements2
 description: ''
 ---
-~ var stmt = db._createStatement( { "query": "FOR i IN [ 1, 2 ] RETURN i * 2" } );
-  cursor = stmt.execute();
+~var stmt = db._createStatement( { "query": "FOR i IN [ 1, 2 ] RETURN i * 2" } );
+cursor = stmt.execute();
 ```
 
 You can pass a number to the `execute()` method to specify a batch size value.
@@ -549,19 +550,20 @@ lead to the same result:
 name: executeQueryNoBatchSize
 description: ''
 ---
-~ db._create("users");
-~ db.users.save({ name: "Gerhard" });
-~ db.users.save({ name: "Helmut" });
-~ db.users.save({ name: "Angela" });
-  var result = db.users.all().toArray();
-  print(result);
-  var q = db._query("FOR x IN users RETURN x");
-  result = [ ];
-  while (q.hasNext()) {
-    result.push(q.next());
-  }
-  print(result);
-~ db._drop("users")
+~db._create("users");
+~db.users.save({ name: "Gerhard" });
+~db.users.save({ name: "Helmut" });
+~db.users.save({ name: "Angela" });
+var result = db.users.all().toArray();
+print(result);
+
+var q = db._query("FOR x IN users RETURN x");
+result = [ ];
+while (q.hasNext()) {
+  result.push(q.next());
+}
+print(result);
+~db._drop("users")
 ```
 
 The following two alternatives both use a batch size and return the same
@@ -572,24 +574,25 @@ result:
 name: executeQueryBatchSize
 description: ''
 ---
-~ db._create("users");
-~ db.users.save({ name: "Gerhard" });
-~ db.users.save({ name: "Helmut" });
-~ db.users.save({ name: "Angela" });
-  var result = [ ];
-  var q = db.users.all();
-  q.execute(1);
-  while(q.hasNext()) {
-    result.push(q.next());
-  }
-  print(result);
-  result = [ ];
-  q = db._query("FOR x IN users RETURN x", {}, { batchSize: 1 });
-  while (q.hasNext()) {
-    result.push(q.next());
-  }
-  print(result);
-~ db._drop("users")
+~db._create("users");
+~db.users.save({ name: "Gerhard" });
+~db.users.save({ name: "Helmut" });
+~db.users.save({ name: "Angela" });
+var result = [ ];
+var q = db.users.all();
+q.execute(1);
+while(q.hasNext()) {
+  result.push(q.next());
+}
+print(result);
+
+result = [ ];
+q = db._query("FOR x IN users RETURN x", {}, { batchSize: 1 });
+while (q.hasNext()) {
+  result.push(q.next());
+}
+print(result);
+~db._drop("users")
 ```
 
 ### Cursors
@@ -604,9 +607,9 @@ set without iterating over it yourself.
 name: 05_workWithAQL_statements3
 description: ''
 ---
-~ var stmt = db._createStatement( { "query": "FOR i IN [ 1, 2 ] RETURN i * 2" } );
-~ var cursor = stmt.execute();
-  cursor.toArray();
+~var stmt = db._createStatement( { "query": "FOR i IN [ 1, 2 ] RETURN i * 2" } );
+~var cursor = stmt.execute();
+cursor.toArray();
 ```
 
 Cursors can also be used to iterate over the result set document-by-document.
@@ -617,9 +620,11 @@ To do so, use the `hasNext()` and `next()` methods of the cursor:
 name: 05_workWithAQL_statements4
 description: ''
 ---
-~ var stmt = db._createStatement( { "query": "FOR i IN [ 1, 2 ] RETURN i * 2" } );
-~ var c = stmt.execute();
-  while (c.hasNext()) { require("@arangodb").print(c.next()); }
+~var stmt = db._createStatement( { "query": "FOR i IN [ 1, 2 ] RETURN i * 2" } );
+~var c = stmt.execute();
+while (c.hasNext()) {
+  require("@arangodb").print(c.next());
+}
 ```
 
 Please note that you can iterate over the results of a cursor only once, and that
@@ -652,11 +657,11 @@ The cursor results can then be dumped or iterated over as usual, e.g.:
 name: 05_workWithAQL_statements6
 description: ''
 ---
-~ var stmt = db._createStatement( { "query": "FOR i IN [ @one, @two ] RETURN i * 2" } );
-~ stmt.bind("one", 1);
-~ stmt.bind("two", 2);
-~ var cursor = stmt.execute();
-  cursor.toArray();
+~var stmt = db._createStatement( { "query": "FOR i IN [ @one, @two ] RETURN i * 2" } );
+~stmt.bind("one", 1);
+~stmt.bind("two", 2);
+~var cursor = stmt.execute();
+cursor.toArray();
 ```
 
 or
@@ -666,11 +671,13 @@ or
 name: 05_workWithAQL_statements7
 description: ''
 ---
-~ var stmt = db._createStatement( { "query": "FOR i IN [ @one, @two ] RETURN i * 2" } );
-~ stmt.bind("one", 1);
-~ stmt.bind("two", 2);
-~ var cursor = stmt.execute();
-  while (cursor.hasNext()) { require("@arangodb").print(cursor.next()); }
+~var stmt = db._createStatement( { "query": "FOR i IN [ @one, @two ] RETURN i * 2" } );
+~stmt.bind("one", 1);
+~stmt.bind("two", 2);
+~var cursor = stmt.execute();
+while (cursor.hasNext()) {
+  require("@arangodb").print(cursor.next());
+}
 ```
 
 Please note that bind parameters can also be passed into the `_createStatement()`
@@ -681,7 +688,7 @@ method directly, making it a bit more convenient:
 name: 05_workWithAQL_statements8
 description: ''
 ---
-stmt = db._createStatement( { 
+stmt = db._createStatement({ 
   "query": "FOR i IN [ @one, @two ] RETURN i * 2", 
   "bindVars": { 
     "one": 1, 
@@ -714,9 +721,9 @@ number of total results from the result set:
 name: 05_workWithAQL_statements10
 description: ''
 ---
-~ var stmt = db._createStatement( { "query": "FOR i IN [ 1, 2, 3, 4 ] RETURN i", "count": true } );
-  var cursor = stmt.execute();
-  cursor.count();
+~var stmt = db._createStatement( { "query": "FOR i IN [ 1, 2, 3, 4 ] RETURN i", "count": true } );
+var cursor = stmt.execute();
+cursor.count();
 ```
 
 Please note that the `count` method returns nothing if you did not specify the `count`
@@ -748,9 +755,9 @@ make the server return that by setting the `profile` attribute to
 name: 06_workWithAQL_statements11
 description: ''
 ---
-stmt = db._createStatement( {
-  "query": "FOR i IN [ 1, 2, 3, 4 ] RETURN i",
-  options: {"profile": true}} );
+stmt = db._createStatement({
+  query: "FOR i IN [ 1, 2, 3, 4 ] RETURN i",
+  options: {"profile": true}});
 ```
 
 After executing this query, you can use the `getExtra()` method of the cursor to get the 
@@ -761,9 +768,9 @@ produced statistics:
 name: 06_workWithAQL_statements12
 description: ''
 ---
-~ var stmt = db._createStatement( { "query": "FOR i IN [ 1, 2, 3, 4 ] RETURN i", options: {"profile": true}} );
-  var cursor = stmt.execute();
-  cursor.getExtra();
+~var stmt = db._createStatement( { "query": "FOR i IN [ 1, 2, 3, 4 ] RETURN i", options: {"profile": true}} );
+var cursor = stmt.execute();
+cursor.getExtra();
 ```
 
 ## Query validation with `db._parse()`

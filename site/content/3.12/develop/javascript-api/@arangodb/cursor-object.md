@@ -42,15 +42,17 @@ documents. In this case the next document can be accessed using the
 name: cursorHasNext
 description: ''
 ---
-~ db._create("five");
-~ db.five.save({ name : "one" });
-~ db.five.save({ name : "two" });
-~ db.five.save({ name : "three" });
-~ db.five.save({ name : "four" });
-~ db.five.save({ name : "five" });
-  var cursor = db._query("FOR x IN five RETURN x");
-  while (cursor.hasNext()) print(cursor.next());
-~ db._drop("five")
+~db._create("five");
+~db.five.save({ name : "one" });
+~db.five.save({ name : "two" });
+~db.five.save({ name : "three" });
+~db.five.save({ name : "four" });
+~db.five.save({ name : "five" });
+var cursor = db._query("FOR x IN five RETURN x");
+while (cursor.hasNext()) {
+  print(cursor.next());
+}
+~db._drop("five")
 ```
 
 ## `cursor.next()`
@@ -70,14 +72,14 @@ exhausted cursor, then `undefined` is returned.
 name: cursorNext
 description: ''
 ---
-~ db._create("five");
-~ db.five.save({ name : "one" });
-~ db.five.save({ name : "two" });
-~ db.five.save({ name : "three" });
-~ db.five.save({ name : "four" });
-~ db.five.save({ name : "five" });
-  db._query("FOR x IN five RETURN x").next();
-~ db._drop("five")
+~db._create("five");
+~db.five.save({ name : "one" });
+~db.five.save({ name : "two" });
+~db.five.save({ name : "three" });
+~db.five.save({ name : "four" });
+~db.five.save({ name : "five" });
+db._query("FOR x IN five RETURN x").next();
+~db._drop("five")
 ```
 
 ## `cursor.dispose()`

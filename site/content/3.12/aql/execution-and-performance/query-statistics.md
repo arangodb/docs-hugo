@@ -16,19 +16,19 @@ name: 06_workWithAQL_statementsExtra
 description: ''
 ---
 db._query(`
-  FOR i IN 1..@count INSERT
-    { _key: CONCAT('anothertest', TO_STRING(i)) }
-    INTO mycollection`,
+  FOR i IN 1..@count
+    INSERT { _key: CONCAT('anothertest', TO_STRING(i)) } INTO mycollection`,
  { count: 100 },
  {},
  { fullCount: true }
 ).getExtra();
+
 db._query({
-  "query": `FOR i IN 200..@count INSERT
-            { _key: CONCAT('anothertest', TO_STRING(i)) }
-            INTO mycollection`,
- "bindVars": { count: 300 },
- "options": { fullCount: true }
+  "query": `
+    FOR i IN 200..@count
+      INSERT { _key: CONCAT('anothertest', TO_STRING(i)) } INTO mycollection`,
+  "bindVars": { count: 300 },
+  "options": { fullCount: true }
 }).getExtra();
 ```
 
