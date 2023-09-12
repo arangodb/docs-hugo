@@ -227,13 +227,13 @@ and then some other user-defined key component.
 The setup thus becomes:
 
 ```js
-  arangosh> db._create("c1", {numberOfShards: 4, shardKeys: ["_key"]});
-  arangosh> db._create("c2", {shardKeys: ["_key:"], smartJoinAttribute: "parent", distributeShardsLike: "c1"});
-  arangosh> db.c2.ensureIndex({ type: "hash", fields: ["parent"] });
-  arangosh> for (i = 0; i < 100; ++i) { 
-    db.c1.insert({ _key: "test" + i }); 
-    db.c2.insert({ _key: "test" + i + ":" + "ownKey" + i, parent: "test" + i }); 
-  }
+arangosh> db._create("c1", {numberOfShards: 4, shardKeys: ["_key"]});
+arangosh> db._create("c2", {shardKeys: ["_key:"], smartJoinAttribute: "parent", distributeShardsLike: "c1"});
+arangosh> db.c2.ensureIndex({ type: "hash", fields: ["parent"] });
+arangosh> for (i = 0; i < 100; ++i) { 
+  db.c1.insert({ _key: "test" + i }); 
+  db.c2.insert({ _key: "test" + i + ":" + "ownKey" + i, parent: "test" + i }); 
+}
 ```
 
 Failure to populate the `smartJoinAttribute` with a string or not at all leads

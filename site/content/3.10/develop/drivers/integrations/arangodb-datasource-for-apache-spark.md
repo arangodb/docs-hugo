@@ -327,7 +327,7 @@ The following Spark SQL data types (subtypes of `org.apache.spark.sql.types.Filt
 To connect to SSL secured deployments using X.509 Base64 encoded CA certificate (ArangoGraph):
 
 ```scala
-  val options = Map(
+val options = Map(
   "database" -> "<dbname>",
   "user" -> "<username>",
   "password" -> "<passwd>",

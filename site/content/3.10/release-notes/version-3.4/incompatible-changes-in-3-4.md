@@ -433,7 +433,7 @@ The following APIs have been added or augmented:
   collection/attribute names used in them:
 
   ```aql
-      FOR name IN ["col1", "col2"] FOR doc IN NEAR(name, 2.5, 3) RETURN doc
+  FOR name IN ["col1", "col2"] FOR doc IN NEAR(name, 2.5, 3) RETURN doc
   ```
 
   ```aql

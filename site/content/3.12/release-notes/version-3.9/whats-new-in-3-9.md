@@ -476,9 +476,9 @@ queries that use an index for filtering, but need to fetch more document data
 from the storage engine.
 
 ```aql
- FOR doc IN coll
-   FILTER doc.attr == 42 // indexed attribute
-   RETURN doc
+FOR doc IN coll
+  FILTER doc.attr == 42 // indexed attribute
+  RETURN doc
 ```
 
 ```aql
