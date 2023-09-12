@@ -135,6 +135,7 @@ function styleImages() {
 
 function loadPage(target) {
   var href = target;
+  getCurrentVersion();
   renderVersion();
   loadMenu(href);
   $.get({
