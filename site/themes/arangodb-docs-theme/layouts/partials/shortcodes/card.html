@@ -1,16 +1,25 @@
-{{- $title := .title }}
-{{ $image := .icon }}
-{{ $link := .link }}
-{{ $content := .Inner }}
-<div class="card">
-  <a href="{{ $link }}" class="link-internal" />
-      <div class="card-head">
-        {{ with $image }}<img class="card-icon" src="/images/section_icons/secure/checklist.png" aria-hidden="true">{{ end }}
-        <div class="card-title">{{ $title }}</div>
-      </div>
-      <div class="card-body">
-        <p>{{ $content }}</p>
-      </div>
-</div>
+{{- $context := .context }} {{- $title := .title }} {{- $image := .icon }} {{- $link := .link }} {{-
+$content := .Inner }}
 
+{{ $destinationPage := "" }}
+{{ if hasPrefix $link "/" }}
+  {{ $destinationPage = site.GetPage $link -}}
+{{ else }}
+  {{ $destinationPage = $context.Page.GetPage $link -}}
+{{ end }}
 
+<a href="{{ $destinationPage.Permalink }}" class="link-internal">
+  <div class="card">
+    <div class="card-head">
+      {{ with $image }}<img
+        class="card-icon"
+        src="{{ . }}"
+        aria-hidden="true"
+      />{{ end }}
+      <div class="card-title">{{ $title }}</div>
+    </div>
+    <div class="card-body">
+      <p>{{ $content }}</p>
+    </div>
+  </div>
+</a>

@@ -57,7 +57,7 @@ def getJekyllMetrics(content):
             continue
 
 
-        if "{:style=\"clear: left;\"}" in line or "{:class=\"lead\"}" in line:
+        if "{:style=\"clear: left;\"}" in line or "{:class=\"lead\"}" in line or "{:class=\"table-scroll\"}" in line:
             continue
 
         if re.search(r"title: .+", line):
@@ -257,7 +257,14 @@ def processFile(page, content, filepath):
             if "{:style=\"clear: left;\"}" in line:
                 line = line.replace("{:style=\"clear: left;\"}", "")
 
-                
+            if "{:class=\"table-scroll\"}" in line:
+                continue
+
+            if "{:class=\"columns-3\"}" in line:
+                line = line.replace("{:class=\"columns-3\"}", "{.columns-3}")
+    
+            if "{:class=\"fixed\"}" in line:
+                line = line.replace("{:class=\"fixed\"}", "{.fixed}")
     
             ## Convert ---- header to ## header and === header to frontmatter title
             if i < len(content)-1:
@@ -449,11 +456,7 @@ def processFile(page, content, filepath):
                 if '-arangograph.md' in line:
                     tags.append("ArangoGraph")
 
-                tagShortcode = '{{< tag '
-                for t in tags:
-                    tagShortcode = tagShortcode + f'"{t}"'
-
-                tagShortcode = tagShortcode + ' >}}' 
+                tagShortcode = "{{< tag " + " ".join(map(lambda t: t.join('""'), tags)) + " >}}\n"
                 originalSpaces = len(line) - len(line.lstrip())  
                 page.content = page.content + " "*originalSpaces + tagShortcode
                 continue
