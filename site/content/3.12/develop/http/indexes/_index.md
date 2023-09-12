@@ -90,7 +90,7 @@ var response = logCurlRequest('GET', url);
 assert(response.code === 200);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ## Get an index
@@ -148,7 +148,7 @@ var response = logCurlRequest('GET', url);
 assert(response.code === 200);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ## Create an index
@@ -319,5 +319,5 @@ var response = logCurlRequest('DELETE', url);
 assert(response.code === 200);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```

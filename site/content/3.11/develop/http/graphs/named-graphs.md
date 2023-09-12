@@ -181,7 +181,7 @@ description: ''
 name: HttpGharialList
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 examples.loadGraph("social");
 examples.loadGraph("routeplanner");
 var url = "/_api/gharial";
@@ -190,8 +190,8 @@ var response = logCurlRequest('GET', url);
 assert(response.code === 200);
 
 logJsonResponse(response);
-~ examples.dropGraph("social");
-~ examples.dropGraph("routeplanner");
+examples.dropGraph("social");
+examples.dropGraph("routeplanner");
 ```
 
 ### Create a graph
@@ -1214,7 +1214,7 @@ description: ''
 name: HttpGharialDrop
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social?dropCollections=true";
 var response = logCurlRequest('DELETE', url);
@@ -1222,7 +1222,7 @@ var response = logCurlRequest('DELETE', url);
 assert(response.code === 202);
 
 logJsonResponse(response);
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 ```
 
 ### List vertex collections
@@ -1313,7 +1313,7 @@ description: ''
 name: HttpGharialListVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex";
 var response = logCurlRequest('GET', url);
@@ -1321,7 +1321,7 @@ var response = logCurlRequest('GET', url);
 assert(response.code === 200);
 
 logJsonResponse(response);
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 ```
 
 ### Add a vertex collection
@@ -1718,7 +1718,7 @@ description: ''
 name: HttpGharialAddVertexCol
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex";
 body = {
@@ -2124,7 +2124,7 @@ description: |-
 name: HttpGharialRemoveVertexCollection
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 var g = examples.loadGraph("social");
 g._addVertexCollection("otherVertices");
 var url = "/_api/gharial/social/vertex/otherVertices";
@@ -2133,8 +2133,8 @@ var response = logCurlRequest('DELETE', url);
 assert(response.code === 202);
 
 logJsonResponse(response);
-~ examples.dropGraph("social");
-~ db._drop("otherVertices");
+examples.dropGraph("social");
+db._drop("otherVertices");
 ```
 
 ```curl
@@ -2144,7 +2144,7 @@ description: |-
 name: HttpGharialRemoveVertexCollectionFailed
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 var g = examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex/male";
 var response = logCurlRequest('DELETE', url);
@@ -2155,7 +2155,7 @@ logJsonResponse(response);
 db._drop("male");
 db._drop("female");
 db._drop("relation");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 ```
 
 ### List edge definitions
@@ -2246,7 +2246,7 @@ description: ''
 name: HttpGharialListEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/edge";
 var response = logCurlRequest('GET', url);
@@ -2254,7 +2254,7 @@ var response = logCurlRequest('GET', url);
 assert(response.code === 200);
 
 logJsonResponse(response);
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 ```
 
 ### Add an edge definition
@@ -2682,7 +2682,7 @@ description: ''
 name: HttpGharialAddEdgeCol
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/edge";
 body = {
@@ -3133,7 +3133,7 @@ description: ''
 name: HttpGharialReplaceEdgeCol
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/edge/relation";
 body = {
@@ -3516,7 +3516,7 @@ description: ''
 name: HttpGharialEdgeDefinitionRemove
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/edge/relation";
 var response = logCurlRequest('DELETE', url);
@@ -3790,7 +3790,7 @@ description: ''
 name: HttpGharialAddVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex/male";
 body = {
@@ -4044,7 +4044,7 @@ description: ''
 name: HttpGharialGetVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex/female/alice";
 var response = logCurlRequest('GET', url);
@@ -4426,7 +4426,7 @@ description: ''
 name: HttpGharialModifyVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 examples.loadGraph("social");
 body = {
   age: 26
@@ -4811,7 +4811,7 @@ description: ''
 name: HttpGharialReplaceVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 examples.loadGraph("social");
 body = {
   name: "Alice Cooper",
@@ -5084,7 +5084,7 @@ description: ''
 name: HttpGharialDeleteVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex/female/alice";
 var response = logCurlRequest('DELETE', url);
@@ -5441,10 +5441,10 @@ description: ''
 name: HttpGharialAddEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
-~ require("internal").db._drop("relation");
-~ require("internal").db._drop("female");
-~ require("internal").db._drop("male");
+examples.dropGraph("social");
+require("internal").db._drop("relation");
+require("internal").db._drop("female");
+require("internal").db._drop("male");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/edge/relation";
 body = {
@@ -5710,7 +5710,7 @@ description: ''
 name: HttpGharialGetEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 examples.loadGraph("social");
 var any = require("@arangodb").db.relation.any();
 var url = "/_api/gharial/social/edge/relation/" + any._key;
@@ -6154,7 +6154,7 @@ description: ''
 name: HttpGharialPatchEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 examples.loadGraph("social");
 var any = require("@arangodb").db.relation.any();
 var url = "/_api/gharial/social/edge/relation/" + any._key;
@@ -6607,7 +6607,7 @@ description: ''
 name: HttpGharialPutEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 examples.loadGraph("social");
 var any = require("@arangodb").db.relation.any();
 var url = "/_api/gharial/social/edge/relation/" + any._key;
@@ -6902,7 +6902,7 @@ description: ''
 name: HttpGharialDeleteEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-~ examples.dropGraph("social");
+examples.dropGraph("social");
 examples.loadGraph("social");
 var any = require("@arangodb").db.relation.any();
 var url = "/_api/gharial/social/edge/relation/" + any._key;

@@ -93,7 +93,7 @@ paths:
 description: ''
 name: RestCreateUser
 ---
-~try { require("@arangodb/users").remove("admin@example"); } catch (err) {}
+try { require("@arangodb/users").remove("admin@example"); } catch (err) {}
 var url = "/_api/user";
 var data = { user: "admin@example", passwd: "secure" };
 var response = logCurlRequest('POST', url, data);
@@ -101,7 +101,7 @@ var response = logCurlRequest('POST', url, data);
 assert(response.code === 201);
 
 logJsonResponse(response);
-~require("@arangodb/users").remove("admin@example");
+require("@arangodb/users").remove("admin@example");
 ```
 
 ### Replace a user
@@ -595,9 +595,9 @@ name: RestGrantCollection
 ---
 var users = require("@arangodb/users");
 var theUser = "admin@myapp";
-~   try { users.remove(theUser); } catch (err) {}
-~   try { db_drop("reports"); } catch (err) {}
-~   db._create("reports");
+try { users.remove(theUser); } catch (err) {}
+try { db_drop("reports"); } catch (err) {}
+db._create("reports");
 users.save(theUser, "secret")
 
 var url = "/_api/user/" + theUser + "/database/_system/reports";
@@ -605,7 +605,7 @@ var data = { grant: "rw" };
 var response = logCurlRequest('PUT', url, data);
 
 assert(response.code === 200);
-~   db._drop("reports");
+db._drop("reports");
 
 logJsonResponse(response);
 users.remove(theUser);
@@ -731,8 +731,8 @@ name: RestRevokeCollection
 var users = require("@arangodb/users");
 var theUser = "admin@myapp";
 try { users.remove(theUser); } catch (err) {}
-~ try { db_drop("reports"); } catch (err) {}
-~ db._create("reports");
+try { db_drop("reports"); } catch (err) {}
+db._create("reports");
 users.save(theUser, "secret")
 users.grantCollection(theUser, "_system", "reports", "rw");
 
@@ -740,7 +740,7 @@ var url = "/_api/user/" + theUser + "/database/_system/reports";
 var response = logCurlRequest('DELETE', url);
 
 assert(response.code === 202);
-~ db._drop("reports");
+db._drop("reports");
 
 logJsonResponse(response);
 users.remove(theUser);

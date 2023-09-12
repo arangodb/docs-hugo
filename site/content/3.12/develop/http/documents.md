@@ -182,7 +182,7 @@ var response = logCurlRequest('GET', url);
 assert(response.code === 200);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -202,7 +202,7 @@ var headers = {"If-None-Match": "\"" + document._rev + "\""};
 var response = logCurlRequest('GET', url, "", headers);
 
 assert(response.code === 304);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -322,7 +322,7 @@ var url = "/_api/document/" + document._id;
 var response = logCurlRequest('HEAD', url);
 
 assert(response.code === 200);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 #### Create a document
@@ -894,7 +894,7 @@ var response = logCurlRequest('PUT', url, '{"Hello": "you"}');
 assert(response.code === 202);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -916,7 +916,7 @@ var response = logCurlRequest('PUT', url, "{}");
 assert(response.code === 404);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -939,7 +939,7 @@ var response = logCurlRequest('PUT', url, '{"other":"content"}', headers);
 assert(response.code === 412);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 #### Update a document
@@ -1196,7 +1196,7 @@ logJsonResponse(response4);
 var response5 = logCurlRequest("GET", url);
 assert(response5.code === 200);
 logJsonResponse(response5);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -1230,7 +1230,7 @@ logJsonResponse(response3);
 var response4 = logCurlRequest("GET", url);
 assert(response4.code === 200);
 logJsonResponse(response4);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 #### Remove a document
@@ -1375,7 +1375,7 @@ var response = logCurlRequest('DELETE', url);
 assert(response.code === 200);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -1397,7 +1397,7 @@ var response = logCurlRequest('DELETE', url);
 assert(response.code === 404);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -1420,7 +1420,7 @@ var response = logCurlRequest('DELETE', url, "", headers);
 assert(response.code === 412);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 #### Document ETags
@@ -1584,7 +1584,7 @@ var response = logCurlRequest('PUT', url, body);
 assert(response.code === 200);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 #### Create multiple documents
@@ -2366,7 +2366,7 @@ description: |-
   Using document keys:
 name: RestDocumentHandlerDeleteDocumentKeyMulti
 ---
-~ var assertEqual = require("jsunity").jsUnity.assertions.assertEqual;
+var assertEqual = require("jsunity").jsUnity.assertions.assertEqual;
   var cn = "products";
   db._drop(cn);
   db._create(cn, { waitForSync: true });
@@ -2385,7 +2385,7 @@ var documents = db.products.save( [
   assertEqual(response.parsedBody, documents);
 
   logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -2394,7 +2394,7 @@ description: |-
   Using document identifiers:
 name: RestDocumentHandlerDeleteDocumentIdentifierMulti
 ---
-~ var assertEqual = require("jsunity").jsUnity.assertions.assertEqual;
+var assertEqual = require("jsunity").jsUnity.assertions.assertEqual;
   var cn = "products";
   db._drop(cn);
   db._create(cn, { waitForSync: true });
@@ -2413,7 +2413,7 @@ var documents = db.products.save( [
   assertEqual(response.parsedBody, documents);
 
   logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -2422,7 +2422,7 @@ description: |-
   Using objects with document keys:
 name: RestDocumentHandlerDeleteDocumentObjectMulti
 ---
-~ var assertEqual = require("jsunity").jsUnity.assertions.assertEqual;
+var assertEqual = require("jsunity").jsUnity.assertions.assertEqual;
   var cn = "products";
   db._drop(cn);
   db._create(cn, { waitForSync: true });
@@ -2441,7 +2441,7 @@ var documents = db.products.save( [
   assertEqual(response.parsedBody, documents);
 
   logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -2475,8 +2475,8 @@ assert(doc.errorNum === 1202);
 });
 
 logJsonResponse(response);
-~ db._drop(cn);
-~ db._drop("other");
+db._drop(cn);
+db._drop("other");
 ```
 
 ```curl
@@ -2485,7 +2485,7 @@ description: |-
   Check revisions:
 name: RestDocumentHandlerDeleteDocumentRevMulti
 ---
-~ var assertEqual = require("jsunity").jsUnity.assertions.assertEqual;
+var assertEqual = require("jsunity").jsUnity.assertions.assertEqual;
   var cn = "products";
   db._drop(cn);
   db._create(cn, { waitForSync: true });
@@ -2507,7 +2507,7 @@ var body = [
   assertEqual(response.parsedBody, documents);
 
   logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -2540,7 +2540,7 @@ assert(doc.errorNum === 1200);
 });
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ### Read from followers

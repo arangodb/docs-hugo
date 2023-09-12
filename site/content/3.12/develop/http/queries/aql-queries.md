@@ -1041,7 +1041,7 @@ var response = logCurlRequest('POST', url, body);
 assert(response.code === 201);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -1072,7 +1072,7 @@ var response = logCurlRequest('POST', url, body);
 assert(response.code === 201);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -1171,7 +1171,7 @@ assert(response.parsedBody.extra.stats.writesExecuted === 2);
 assert(response.parsedBody.extra.stats.writesIgnored === 0);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -1198,7 +1198,7 @@ assert(response.parsedBody.extra.stats.writesExecuted === 0);
 assert(response.parsedBody.extra.stats.writesIgnored === 1);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -1315,7 +1315,7 @@ var response = logCurlRequest('POST', url, body);
 assert(response.code === 404);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ### Read the next batch from a cursor
@@ -1767,7 +1767,7 @@ response = logCurlRequest('POST', url + '/' + response.parsedBody.id, '');
 assert(response.code === 200);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -1898,7 +1898,7 @@ response = logCurlRequest('PUT', url + '/' + response.parsedBody.id, '');
 assert(response.code === 200);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -2543,7 +2543,7 @@ response = logCurlRequest('DELETE', url + '/' + response.parsedBody.id);
 logJsonResponse(response);
 
 assert(response.code === 202);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ## Track queries
@@ -3049,7 +3049,7 @@ var response = logCurlRequest('POST', url, body);
 assert(response.code === 200);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -3073,7 +3073,7 @@ var response = logCurlRequest('POST', url, body);
 assert(response.code === 200);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -3104,7 +3104,7 @@ var response = logCurlRequest('POST', url, body);
 assert(response.code === 200);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -3130,7 +3130,7 @@ var response = logCurlRequest('POST', url, body);
 assert(response.code === 200);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -3170,7 +3170,7 @@ var response = logCurlRequest('POST', url, body);
 assert(response.code === 400);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl
@@ -3195,7 +3195,7 @@ var response = logCurlRequest('POST', url, body);
 assert(response.code === 200);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ### Parse an AQL query

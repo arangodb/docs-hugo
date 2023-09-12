@@ -380,7 +380,7 @@ var response = logCurlRequest('GET', url);
 assert(response.code === 200);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ```curl

@@ -259,8 +259,8 @@ assert(response.code === 200);
 
 logJsonResponse(response);
 
-~ trx.abort();
-~ db._drop("products");
+trx.abort();
+db._drop("products");
 ```
 
 ## Commit a Stream Transaction
@@ -353,7 +353,7 @@ assert(response.code === 200);
 
 logJsonResponse(response);
 
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ## Abort a Stream Transaction
@@ -446,7 +446,7 @@ assert(response.code === 200);
 
 logJsonResponse(response);
 
-~ db._drop(cn);
+db._drop(cn);
 ```
 
 ## List the running Stream Transactions
@@ -496,6 +496,6 @@ assert(response.code === 200);
 
 logJsonResponse(response);
 
-~ trx.abort();
-~ db._drop("products");
+trx.abort();
+db._drop("products");
 ```

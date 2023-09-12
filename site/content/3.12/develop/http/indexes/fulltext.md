@@ -108,5 +108,5 @@ var response = logCurlRequest('POST', url, body);
 assert(response.code === 201);
 
 logJsonResponse(response);
-~ db._drop(cn);
+db._drop(cn);
 ```
