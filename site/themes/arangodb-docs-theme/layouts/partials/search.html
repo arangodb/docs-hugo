@@ -3,8 +3,6 @@
 <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
 
 <script type="text/javascript">
-  // get version from localstorage
-  var version = localStorage.getItem("docs-version");
   docsearch({
     appId: "OK3ZBQ5982",
     apiKey: "500c85ccecb335d507fe4449aed12e1d",
@@ -14,7 +12,7 @@
     debug: false, // Set debug to true if you want to inspect the modal,
     maxResultsPerGroup: 10,
     searchParameters: {
-      facetFilters: [`version:${version}`],
+      facetFilters: ["version:"+ {{ .Page.Store.Get "versionShort" }}],
     },
   });
 </script>

@@ -8,5 +8,7 @@
       {{- partial "in-development.html" . }}
       <h1 class="page-title">{{ .Title | markdownify }}</h1>
       {{ $content | safeHTML }}
+      {{ partial "search.html" . }}
+
     </article>
 {{- end }}
