@@ -341,8 +341,8 @@ export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{args.docs_versi
     shell = f"{shell}\n{branchEnv}"
 
     shell = f"{shell}\n\
-cd docs-hugo/toolchain/docker/amd64\n \
-docker compose up"
+docker compose up --exit-code-from toolchain\n \
+exit $?"
 
     config["commands"]["launch-toolchain"]["steps"][0]["run"]["command"] = shell
     return config
