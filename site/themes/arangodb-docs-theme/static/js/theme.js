@@ -180,7 +180,7 @@ function initArticle(url) {
 $(window).on('popstate', function (e) {
   var state = e.originalEvent.state;
   if (state !== null) {
-    console.log("Received popstate event " + window.location.pathname)
+    console.log("Received popstate event " + window.location.href)
     loadPage(window.location.href);
   }
 });
@@ -392,12 +392,11 @@ function toggleExpandShortcode(event) {
 
 
 window.onload = () => {
-    window.history.pushState("navchange", "ArangoDB Documentation", window.location.href);
+    window.history.pushState("popstate", "ArangoDB Documentation", window.location.href);
 
     var _hsq = window._hsq = window._hsq || [];
     _hsq.push(['setPath', window.location.href]);
     _hsq.push(['trackPageView']);
-    new PopStateEvent('popstate', { state: "navchange" });
 
     var iframe =  document.getElementById('menu-iframe');
     var iFrameBody = iframe.contentDocument || iframe.contentWindow.document;
@@ -405,7 +404,7 @@ window.onload = () => {
 
     $("#menu-iframe").replaceWith(content);
 
-    getCurrentVersion(window.location.pathname);
+    getCurrentVersion(window.location.href);
     menuEntryClickListener();
     renderVersion();
     loadMenu(window.location.href);
