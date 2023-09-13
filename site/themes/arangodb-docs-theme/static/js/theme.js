@@ -185,6 +185,14 @@ $(window).on('popstate', function (e) {
   }
 });
 
+$(window).on('hashchange', function (e) {
+  window.history.pushState("popstate", "ArangoDB Documentation", window.location.href);
+
+  var _hsq = window._hsq = window._hsq || [];
+  _hsq.push(['setPath', window.location.href]);
+  _hsq.push(['trackPageView']);
+});
+
 
 
 
