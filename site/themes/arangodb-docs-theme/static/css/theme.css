@@ -1420,8 +1420,8 @@ ol > li {
 
 div.box {
     border-radius: 7px;
-    margin-bottom: 30px;
-    margin-top: 2rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
 }
 
 div.box.info {
