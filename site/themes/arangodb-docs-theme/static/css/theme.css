@@ -1298,8 +1298,7 @@ article > h6 > code {
 }
 
 article ul li {
-    list-style: disc;
-    margin-left: 20px;
+    margin-left: .75rem;
     line-height: 25px;
 }
 
