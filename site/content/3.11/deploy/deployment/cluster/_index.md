@@ -131,7 +131,6 @@ possible as well. See [Datacenter-to-Datacenter Replication](../../arangosync/de
 (DC2DC) for further details.
 {{< /info >}}
 
-
 ## Sharding
 
 Using the roles outlined above an ArangoDB Cluster is able to distribute

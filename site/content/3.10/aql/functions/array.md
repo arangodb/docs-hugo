@@ -65,7 +65,6 @@ RETURN APPEND([ 1, 2, 3 ], [ 3, 4, 5, 2, 9 ], true)
 
 This is an alias for [POSITION()](#position).
 
-
 ## COUNT()
 
 This is an alias for [LENGTH()](#length).

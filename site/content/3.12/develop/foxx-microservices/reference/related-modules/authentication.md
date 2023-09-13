@@ -19,11 +19,11 @@ Creates an authenticator.
 
 **Arguments**
 
-* **options**: `Object` (optional)
+- **options**: `Object` (optional)
 
   An object with the following properties:
 
-  * **method**: `string` (Default: `"sha256"`)
+  - **method**: `string` (Default: `"sha256"`)
 
     The hashing algorithm to use to create password hashes.
     The authenticator is able to verify passwords against hashes using
@@ -32,13 +32,13 @@ Creates an authenticator.
 
     Supported values:
 
-    * `"md5"`
-    * `"sha1"`
-    * `"sha224"`
-    * `"sha256"`
-    * `"sha384"`
-    * `"sha512"`
-    * `"pbkdf2"`
+    - `"md5"`
+    - `"sha1"`
+    - `"sha224"`
+    - `"sha256"`
+    - `"sha384"`
+    - `"sha512"`
+    - `"pbkdf2"`
 
     **Note**: PBKDF2 is more secure but also takes considerably more resources
  to compute, which impacts ArangoDB performance, especially when
@@ -47,13 +47,13 @@ Creates an authenticator.
  or using a third-party identity provider that [supports OAuth 1.0a](oauth-1-0a.md)
  or [OAuth 2.0](oauth-2-0.md).
 
-  * **saltLength**: `number` (Default: `16`)
+  - **saltLength**: `number` (Default: `16`)
 
     Length of the salts that is generated for password hashes.
 
     Also used as the key length for PBKDF2.
 
-  * **workFactor**: `number` (Default: `1`)
+  - **workFactor**: `number` (Default: `1`)
 
     Can be used to scale the number of iterations for PBKDF2 hashes,
     lower means faster, higher means slower.
@@ -71,21 +71,21 @@ Returns an authenticator.
 Creates an authentication data object for the given password with the
 following properties:
 
-* **method**: `string`
+- **method**: `string`
 
   The method used to generate the hash.
 
-* **salt**: `string`
+- **salt**: `string`
 
   A random salt used to generate this hash.
 
-* **hash**: `string`
+- **hash**: `string`
 
   The hash string itself.
 
 **Arguments**
 
-* **password**: `string`
+- **password**: `string`
 
   A password to hash.
 
@@ -100,11 +100,11 @@ string comparison.
 
 **Arguments**
 
-* **hash**: `AuthData` (optional)
+- **hash**: `AuthData` (optional)
 
   A authentication data object generated with the `create()` method.
 
-* **password**: `string` (optional)
+- **password**: `string` (optional)
 
   A password to verify against the hash.
 

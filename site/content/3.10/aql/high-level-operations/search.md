@@ -188,7 +188,6 @@ Document attributes which are not configured to be indexed by a View are
 treated by `SEARCH` as non-existent. This affects tests against the documents
 emitted from the View only.
 
-
 For example, given a collection `myCol` with the following documents:
 
 ```js

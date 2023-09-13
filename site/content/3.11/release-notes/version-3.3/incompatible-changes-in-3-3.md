@@ -11,7 +11,7 @@ upgrading to ArangoDB 3.3, and adjust any client programs if necessary.
 
 The following incompatible changes have been made in ArangoDB 3.3:
 
-* AQL: during a traversal if a vertex is not found, arangod will not log an error and 
+- AQL: during a traversal if a vertex is not found, arangod will not log an error and 
   continue with a NULL value, but will instead register a warning at the query and 
   continue with a NULL value.
 
@@ -21,16 +21,16 @@ The following incompatible changes have been made in ArangoDB 3.3:
   may indicate an issue in/with the data model or the client application, the warning is
   registered in the query so client applications have access to it.
 
-* ArangoDB usernames must not start with the string `:role:`.
+- ArangoDB usernames must not start with the string `:role:`.
 
-* The startup configuration parameter `--cluster.my-id` does not have any effect in 3.3.
+- The startup configuration parameter `--cluster.my-id` does not have any effect in 3.3.
   For compatibility reasons, ArangoDB 3.3 will not fail on startup if the option is 
   still used in the configuration, but it will silently ignore this option.
 
-* The startup configuration parameter `--cluster.my-local-info` is deprecated now.
+- The startup configuration parameter `--cluster.my-local-info` is deprecated now.
   Using it will make arangod log a warning on startup.
 
-* Server startup: the recommended value for the Linux kernel setting in 
+- Server startup: the recommended value for the Linux kernel setting in 
   `/proc/sys/vm/max_map_count` was increased to a value eight times as high as in 
   3.2. arangod compares at startup if the effective value of this setting is 
   presumably too low, and it will issue a warning in this case, recommending to 
@@ -49,12 +49,12 @@ The following incompatible changes have been made in ArangoDB 3.3:
 
 ## Client tools
 
-* The option `--recycle-ids` has been removed from the arangorestore command. 
+- The option `--recycle-ids` has been removed from the arangorestore command. 
   Using this option could have led to problems on the restore, with potential 
   id conflicts between the originating server (the source dump server) and the 
   target server (the restore server). 
 
-* The option `--compat` has been removed from the arangodump command
+- The option `--compat` has been removed from the arangodump command
   and the `/_api/replication/dump` REST API endpoint.
   In order to create a dump from an ArangoDB 2.8 instance, please use an older
   version of the client tools. Older ArangoDB versions are no longer be supported by 

@@ -26,7 +26,6 @@ most of all the [requirements and limitations](../../operations/backup-and-resto
 before using the API.
 {{< /warning >}}
 
-
 ## Create a backup
 
 ```openapi

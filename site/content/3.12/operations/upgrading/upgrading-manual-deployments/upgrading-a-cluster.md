@@ -133,7 +133,6 @@ kill -15 <pid-of-arangod-process>
 
 The _pid_ associated to your _cluster_ can be checked using a command like _ps_:
 
-
 ```
 ps -C arangod -fww
 ```

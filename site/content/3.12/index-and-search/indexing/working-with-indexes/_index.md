@@ -226,7 +226,6 @@ db.test.ensureIndex({ type: "persistent", fields: [ "a", "b" ], unique: true });
 ~db._drop("test");
 ```
 
-
 ### Dropping an index via a collection object
 
 `collection.dropIndex(index)`
@@ -239,6 +238,7 @@ If the index existed and has been dropped, then `true` is returned.
 Note that you cannot drop certain indexes (e.g. the primary index of a
 collection or the edge index of an edge collection).
 
+---
 
 `collection.dropIndex(index-identifier)`
 
@@ -330,6 +330,7 @@ Delete the specified index using an index object.
 If the index does not exist or cannot be dropped, an error is raised.
 If the index existed and has been dropped, then `true` is returned.
 
+---
 
 `db._dropIndex(index-identifier)`
 

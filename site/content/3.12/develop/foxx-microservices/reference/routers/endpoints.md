@@ -27,15 +27,14 @@ The definitions is also shown in the route details in the API documentation.
 If the endpoint is a child router, all routes of that router use this
 header definition unless overridden.
 
-
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Name of the header. This should be considered case insensitive as all header
   names will be converted to lowercase.
 
-* **schema**: `Schema` (optional)
+- **schema**: `Schema` (optional)
 
   A schema describing the format of the header value. This can be a joi schema
   or anything that has a compatible `validate` method.
@@ -44,7 +43,7 @@ header definition unless overridden.
   validation result. A validation failure results in an automatic 400
   (Bad Request) error response.
 
-* **description**: `string` (optional)
+- **description**: `string` (optional)
 
   A human-readable string that is shown in the API documentation.
 
@@ -72,11 +71,11 @@ parameter definition unless overridden.
 
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Name of the parameter.
 
-* **schema**: `Schema` (optional)
+- **schema**: `Schema` (optional)
 
   A schema describing the format of the parameter. This can be a joi schema
   or anything that has a compatible `validate` method.
@@ -86,7 +85,7 @@ parameter definition unless overridden.
   match and being ignored (resulting in a 404 (Not Found) error response if no
   other routes match).
 
-* **description**: `string` (optional)
+- **description**: `string` (optional)
 
   A human readable string that is shown in the API documentation.
 
@@ -113,11 +112,11 @@ parameter definition unless overridden.
 
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Name of the parameter.
 
-* **schema**: `Schema` (optional)
+- **schema**: `Schema` (optional)
 
   A schema describing the format of the parameter. This can be a joi schema or
   anything that has a compatible `validate` method.
@@ -126,7 +125,7 @@ parameter definition unless overridden.
   validation result. A validation failure results in an automatic 400
   (Bad Request) error response.
 
-* **description**: `string` (optional)
+- **description**: `string` (optional)
 
   A human-readable string that is shown in the API documentation.
 
@@ -157,7 +156,7 @@ request is ignored but the body is still validated again).
 
 **Arguments**
 
-* **model**: `Model | Schema | null` (optional)
+- **model**: `Model | Schema | null` (optional)
 
   A model or joi schema describing the request body. A validation failure
   results in an automatic 400 (Bad Request) error response.
@@ -178,7 +177,7 @@ request is ignored but the body is still validated again).
   If the value is an array containing exactly one model or schema, the request
   body is treated as an array of items matching that model or schema.
 
-* **mimes**: `Array<string>` (optional)
+- **mimes**: `Array<string>` (optional)
 
   An array of MIME types the route supports.
 
@@ -195,7 +194,7 @@ request is ignored but the body is still validated again).
   Failure to parse the request body results in an automatic 400
   (Bad Request) error response.
 
-* **description**: `string` (optional)
+- **description**: `string` (optional)
 
   A human-readable string that is shown in the API documentation.
 
@@ -232,13 +231,13 @@ this method has no effect.
 
 **Arguments**
 
-* **status**: `number | string` (Default: `200` or `204`)
+- **status**: `number | string` (Default: `200` or `204`)
 
   HTTP status code the response applies to. If a string is provided instead of
   a numeric status code, it is used to look up a numeric status code using
   the [statuses](https://github.com/jshttp/statuses) module.
 
-* **model**: `Model | Schema | null` (optional)
+- **model**: `Model | Schema | null` (optional)
 
   A model or joi schema describing the response body.
 
@@ -259,7 +258,7 @@ this method has no effect.
   If the value is an array containing exactly one model or schema, the response
   body is an array of items matching that model or schema.
 
-* **mimes**: `Array<string>` (optional)
+- **mimes**: `Array<string>` (optional)
 
   An array of MIME types the route might respond with for this status code.
 
@@ -269,7 +268,7 @@ this method has no effect.
   When using the `response.send()` method, the response body is converted to
   the appropriate MIME type if possible.
 
-* **description**: `string` (optional)
+- **description**: `string` (optional)
 
   A human-readable string that briefly describes the response and is shown
   in the endpoint's detailed documentation.
@@ -334,13 +333,13 @@ effect within the service itself.
 
 **Arguments**
 
-* **status**: `number | string`
+- **status**: `number | string`
 
   HTTP status code for the error (e.g. `400` for "bad request"). If a string is
   provided instead of a numeric status code it is used to look up a numeric
   status code using the [statuses](https://github.com/jshttp/statuses) module.
 
-* **description**: `string` (optional)
+- **description**: `string` (optional)
 
   A human-readable string that briefly describes the error condition and is
   shown in the endpoint's detailed documentation.
@@ -371,7 +370,7 @@ effect within the service itself.
 
 **Arguments**
 
-* **summary**: `string`
+- **summary**: `string`
 
   A human-readable string that briefly describes the endpoint and appears
   next to the endpoint's path in the documentation.
@@ -400,7 +399,7 @@ other effect within the service itself.
 
 **Arguments**
 
-* **description**: `string`
+- **description**: `string`
 
   A human-readable string that describes the endpoint in detail and
   will be shown in the endpoint's detailed documentation.
@@ -435,7 +434,7 @@ effect within the service itself.
 
 **Arguments**
 
-* **deprecated**: `boolean` (Default: `true`)
+- **deprecated**: `boolean` (Default: `true`)
 
   Whether the endpoint should be marked as deprecated. If set to `false`, the
   endpoint is explicitly marked as *not* deprecated.
@@ -448,7 +447,6 @@ Returns the endpoint.
 router.get(/* ... */)
 .deprecated();
 ```
-
 
 ## tag
 
@@ -465,7 +463,7 @@ effect within the service itself.
 
 **Arguments**
 
-* **tags**: `string`
+- **tags**: `string`
 
   One or more strings that are used to group the endpoint's routes.
 
@@ -489,16 +487,16 @@ effect within the service itself.
 
 **Arguments**
 
-* **type**: `string`
+- **type**: `string`
 
   Type of the security scheme.
   Must be one of `"basic"`, `"apiKey"` or `"oauth2"`.
 
-* **options**: `object`
+- **options**: `object`
 
   An object with the following property:
 
-  * **id**: `string` (optional)
+  - **id**: `string` (optional)
 
     Unique identifier that can be used to opt in to or out of this scheme or
     to specify OAuth 2 scopes required by this endpoint.
@@ -508,11 +506,11 @@ effect within the service itself.
   If **type** is set to `"apiKey"`, the following additional properties are
   required:
 
-  * **name**: `string`
+  - **name**: `string`
 
     The name of the header or query parameter that contains the API key.
 
-  * **in**: `string`
+  - **in**: `string`
 
     The location of the API key.
     Must be one of `"header"` or `"query"`.
@@ -520,13 +518,13 @@ effect within the service itself.
   If **type** is set to `"oauth2"`, the following additional properties are
   required:
 
-  * **flow**: `string`
+  - **flow**: `string`
 
     The OAuth 2 flow used by this security scheme.
     Must be one of `"implicit"`, `"password"`, `"application"` or
     `"accessCode"`.
 
-  * **scopes**: `object`
+  - **scopes**: `object`
 
     The available scopes for this OAuth 2 security scheme as a mapping of
     scope names to descriptions.
@@ -534,18 +532,18 @@ effect within the service itself.
   If **flow** is set to `"implicit"` or `"accessCode"`, the following
   additional property is required:
 
-  * **authorizationUrl**: `string`
+  - **authorizationUrl**: `string`
 
     The authorization URL to be used for this OAuth 2 flow.
 
   If **flow** is set to `"password"`, `"application"` or `"accessCode"`, the
   following additional property is required:
 
-  * **tokenUrl**: `string`
+  - **tokenUrl**: `string`
 
     The token URL to be used for this OAuth 2 flow.
 
-* **description**: `string` (optional)
+- **description**: `string` (optional)
 
   A human-readable string that describes the security scheme.
 
@@ -567,11 +565,11 @@ router.get(/* ... */)
 
 Opts this endpoint in to or out of the security scheme with the given ID.
 
-* **id**: `string`
+- **id**: `string`
 
   Unique identifier of the security scheme. See `endpoint.securityScheme`.
 
-* **enabled**: `boolean`
+- **enabled**: `boolean`
 
   Whether the security scheme should be enabled or disabled for this endpoint.
   Security schemes are enabled for all child routes by default.
@@ -594,11 +592,11 @@ router.get(/* ... */)
 Defines OAuth 2 scopes required by this endpoint for security scheme with the
 given ID.
 
-* **id**: `string`
+- **id**: `string`
 
   Unique identifier of the security scheme. See `endpoint.securityScheme`.
 
-* **scopes**: `Array<string>`
+- **scopes**: `Array<string>`
 
   Names of OAuth 2 scopes required by this endpoint.
 

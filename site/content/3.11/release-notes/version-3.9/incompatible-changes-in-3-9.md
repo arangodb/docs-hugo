@@ -307,4 +307,3 @@ the input and output types:
 The former `--print-non-json` option was replaced with the new
 `--fail-on-non-json` option, which makes arangovpack fail when trying to emit non-JSON
 types to JSON output.
-

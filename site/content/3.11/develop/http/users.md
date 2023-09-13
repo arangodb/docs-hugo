@@ -24,7 +24,6 @@ User management operations are not included in ArangoDB's replication.
 
 ## Manage users
 
-
 ### Create a user
 
 ```openapi
@@ -436,7 +435,6 @@ logJsonResponse(response);
 ```
 
 ## Manage permissions
-
 
 ### Set a user's database access level
 

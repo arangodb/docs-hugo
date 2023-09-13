@@ -18,7 +18,6 @@ using either explicit paths of each individual file or patterns that can
 match multiple files (even if multiple patterns match the same file,
 it will only be executed once):
 
-
 ```json
 {
   "tests": [

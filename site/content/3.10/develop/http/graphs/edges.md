@@ -26,7 +26,6 @@ Edges are a special variation of documents and you can access them like any
 document. See [Addresses of documents](../documents.md#addresses-of-documents)
 for details.
 
-
 ## Get inbound and outbound edges
 
 ```openapi

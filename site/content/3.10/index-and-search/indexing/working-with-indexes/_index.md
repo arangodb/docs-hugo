@@ -226,7 +226,6 @@ db.test.ensureIndex({ type: "persistent", fields: [ "a", "b" ], unique: true });
 ~db._drop("test");
 ```
 
-
 ### Dropping an index via a collection object
 
 `collection.dropIndex(index)`

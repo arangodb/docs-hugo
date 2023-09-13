@@ -215,6 +215,7 @@ If a collection or View with this name exists already, or if the name format is 
 error is thrown. For information about the naming constraints for collections, see
 [Collection names](../../../concepts/data-structure/collections.md#collection-names).
 
+---
 
 `db._create(collection-name, properties)`
 
@@ -425,6 +426,7 @@ error is thrown. For information about the naming constraints for collections, s
   A further restriction is that whenever documents are stored or updated in the 
   collection, the value stored in the `smartJoinAttribute` must be a string.
 
+---
 
 `db._create(collection-name, properties, type)`
 
@@ -432,6 +434,7 @@ Specifies the optional `type` of the collection, it can either be `document`
 or `edge`. On default it is document. Instead of giving a type you can also use 
 `db._createEdgeCollection()` or `db._createDocumentCollection()`.
 
+---
 
 `db._create(collection-name, properties [, type], options)`
 
@@ -517,6 +520,7 @@ and returns a [_collection_ object](collection-object.md).
 
 If a collection or View with this name exists already, an error is thrown.
 
+---
 
 `db._createEdgeCollection(collection-name, properties)`
 
@@ -548,6 +552,7 @@ db._collections();
 Returns the collection with the specified name as a [_collection_ object](collection-object.md),
 or `null` if no such collection exists.
 
+---
 
 `db._collection(collection-identifier)`
 
@@ -593,12 +598,14 @@ db._collection("unknown");
 Truncates a `collection`, removing all documents but keeping all its
 index definitions and other settings.
 
+---
 
 `db._truncate(collection-name)`
 
 Truncates a collection named `collection-name`. No error is thrown if
 there is no such collection.
 
+---
 
 `db._truncate(collection-identifier)`
 
@@ -648,12 +655,14 @@ Drops a `collection` and all its indexes and data.
 Drops a collection named `collection-name` and all its indexes. No error
 is thrown if there is no such collection.
 
+---
 
 `db._drop(collection-identifier)`
 
 Drops a collection identified by `collection-identifier` with all its
 indexes and data. No error is thrown if there is no such collection.
 
+---
 
 `db._drop(collection-name, options)`
 
@@ -726,6 +735,7 @@ This method throws an error if used improperly, e.g. if called
 with a string that isn't a document identifier, or an object with an invalid or
 missing `_id` attribute.
 
+---
 
 `db._exists(document-identifier)`
 
@@ -751,6 +761,7 @@ If the object contains a `_rev` attribute, the method first checks
 that the specified revision is the current revision of that document.
 If not, there is a conflict, and an error is thrown.
 
+---
 
 `db._update(object, data, options)`
 
@@ -786,6 +797,7 @@ Updates an existing document with additional boolean `options` passed via an obj
     existing document's value. If set to `true`, objects will be merged.
     The default is `true`.
 
+---
 
 `db._update(document-identifier, data)`
 
@@ -846,6 +858,7 @@ If the object contains a `_rev` attribute, the method first checks
 that the specified revision is the current revision of that document.
 If not, there is a conflict, and an error is thrown.
 
+---
 
 `collection.replace(object, data, options)`
 
@@ -870,6 +883,7 @@ Replaces an existing document, with additional boolean `options` passed via an o
     attribute `old`.
   - `silent`: If this flag is set to `true`, no output is returned.
 
+---
 
 `db._replace(document-identifier, data)`
 
@@ -928,6 +942,7 @@ If the object contains a `_rev` attribute, the method first checks
 that the specified revision is the current revision of that document.
 If not, there is a conflict, and an error is thrown.
 
+---
 
 `db._remove(object, options)`
 
@@ -950,6 +965,7 @@ Removes a document, with additional boolean `options` passed via an object:
     attribute `old`.
   - `silent`: If this flag is set to `true`, no output is returned.
 
+---
 
 `db._remove(document-identifier)`
 
@@ -1075,6 +1091,7 @@ var view = db["example"];
 ~db._dropView("example");
 ```
 
+---
 
 `db._view(view-identifier)`
 
@@ -1116,6 +1133,7 @@ Drops a view named `name` and all its data.
 
 No error is thrown if there is no such View.
 
+---
 
 `db._dropView(view-identifier)`
 

@@ -131,6 +131,7 @@ in AQL queries, which support a `refillIndexCache` option, too.
 
 In 3.9 and 3.10, `refillIndexCaches` was experimental and limited to edge caches.
 
+---
 
 <small>Introduced in: v3.11.1</small>
 
@@ -165,6 +166,7 @@ the result array for the respective documents, along with the successful ones:
 {"_key":"valid","_id":"coll/valid","_rev":"_gG9JHsW---"}
 ```
 
+---
 
 <small>Introduced in: v3.11.1</small>
 
@@ -195,6 +197,7 @@ including a warning. This warning alerts you about potentially incomplete result
 from a partially indexed collection. The error code associated with this
 warning is `1240` (`ERROR_ARANGO_INCOMPLETE_READ`).
 
+---
 
 <small>Introduced in: v3.9.11, v3.10.7</small>
 
@@ -428,6 +431,7 @@ The [`GET /_api/query/current`](../../develop/http/queries/aql-queries.md#list-t
 and [`GET /_api/query/slow`](../../develop/http/queries/aql-queries.md#list-the-slow-aql-queries)
 endpoints include a new numeric `peakMemoryUsage` attribute.
 
+---
 
 The `GET /_api/query/current` endpoint can return a new value
 `"instantiating executors"` as `state` in the query list.
@@ -511,6 +515,7 @@ The following metric has been added in version 3.11:
 |:------|:------------|
 | `arangodb_search_num_primary_docs` | Number of primary documents for current snapshot. |
 
+---
 
 <small>Introduced in: v3.10.7, v3.11.1</small>
 
@@ -520,6 +525,7 @@ This new metric reports the number of RocksDB `.sst` files:
 |:------|:------------|
 | `rocksdb_total_sst_files` | Total number of RocksDB sst files, aggregated over all levels. |
 
+---
 
 <small>Introduced in: v3.10.7</small>
 
@@ -528,6 +534,7 @@ The metrics endpoints include the following new file descriptors metrics:
 - `arangodb_file_descriptors_current`
 - `arangodb_file_descriptors_limit`
 
+---
 
 <small>Introduced in: v3.8.9, v3.9.6, v3.10.2</small>
 
@@ -537,6 +544,7 @@ The metrics endpoints include the following new traffic accounting metrics:
 - `arangodb_client_user_connection_statistics_bytes_sent`
 - `arangodb_http1_connections_total`
 
+---
 
 <small>Introduced in: v3.9.6, v3.10.2</small>
 
@@ -546,6 +554,7 @@ The metrics endpoints include the following new edge cache (re-)filling metrics:
 - `rocksdb_cache_auto_refill_dropped_total`
 - `rocksdb_cache_full_index_refills_total`
 
+---
 
 <small>Introduced in: v3.9.10, v3.10.5</small>
 
@@ -558,6 +567,7 @@ The following metrics for write-ahead log (WAL) file tracking have been added:
 | `rocksdb_wal_released_tick_replication` | Lower bound sequence number from which WAL files need to be kept because of replication. |
 | `arangodb_flush_subscriptions` | Number of currently active flush subscriptions. |
 
+---
 
 <small>Introduced in: v3.10.5</small>
 
@@ -568,6 +578,7 @@ been added:
 |:------|:------------|
 | `arangodb_replication_clients` | Number of currently connected/active replication clients. |
 
+---
 
 <small>Introduced in: v3.9.11, v3.10.6</small>
 
@@ -581,6 +592,7 @@ have been added:
 | `arangodb_network_send_duration` | Internal request send duration in seconds. |
 | `arangodb_network_unfinished_sends_total` | Number of internal requests for which sending has not finished. |
 
+---
 
 <small>Introduced in: v3.10.7</small>
 
@@ -652,6 +664,7 @@ complete due to the ongoing indexing process of the View.
 The error code associated with this warning is `1240`
 (`ERROR_ARANGO_INCOMPLETE_READ`).
 
+---
 
 <small>Introduced in: v3.9.11, v3.10.7</small>
 

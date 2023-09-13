@@ -225,7 +225,6 @@ From time to time there will be bigger structural changes in ArangoDB, which may
 render the old Makefiles invalid. Should this be the case and `make` complains
 about missing files etc., the following commands should fix it:
 
-
     unix> rm -rf build/* 
     unix> cd build && cmake .. <cmake options go here>
     unix> (cd build && make)

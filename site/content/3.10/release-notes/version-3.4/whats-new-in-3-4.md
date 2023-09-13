@@ -184,7 +184,6 @@ db._executeTransaction({
 Note that using exclusive access for RocksDB collections will serialize write operations
 to RocksDB collections, so it should be used with extreme care.
 
-
 ### RocksDB library upgrade
 
 The version of the bundled RocksDB library was upgraded from 5.6 to 5.16.
@@ -272,8 +271,8 @@ single-document functionality provided at endpoint `/_api/document`.
 The old/new revisions can be accessed by passing the URL parameters `returnOld` and
 `returnNew` to the following endpoints:
 
-* `/_api/gharial/<graph>/vertex/<collection>`
-* `/_api/gharial/<graph>/edge/<collection>`
+- `/_api/gharial/<graph>/vertex/<collection>`
+- `/_api/gharial/<graph>/edge/<collection>`
 
 The exception from this is that the HTTP DELETE verb for these APIs does not
 support `returnOld` because that would make the existing API incompatible.
@@ -284,13 +283,13 @@ In addition to the existing key generators `traditional` (which is still the
 default key generator) and `autoincrement`, ArangoDB 3.4 adds the following key
 generators:
 
-* `padded`:
+- `padded`:
   The `padded` key generator generates keys of a fixed length (16 bytes) in
   ascending lexicographical sort order. This is ideal for usage with the RocksDB
   engine, which will slightly benefit keys that are inserted in lexicographically
   ascending order. The key generator can be used in a single-server or cluster.
 
-* `uuid`: the `uuid` key generator generates universally unique 128 bit keys, which
+- `uuid`: the `uuid` key generator generates universally unique 128 bit keys, which
   are stored in hexadecimal human-readable format. This key generator can be used
   in a single-server or cluster to generate "seemingly random" keys. The keys
   produced by this key generator are not lexicographically sorted.
@@ -356,10 +355,10 @@ of ArangoDB.
 In particular, the following ArangoDB APIs were extended to work well with load
 balancing:
 
-* the cursor API at endpoint `/_api/cursor`
-* the jobs API at endpoint `/_api/job`
-* the tasks API at endpoint `/_api/tasks`
-* Pregel APIs at endpoint `/_api/pregel`
+- the cursor API at endpoint `/_api/cursor`
+- the jobs API at endpoint `/_api/job`
+- the tasks API at endpoint `/_api/tasks`
+- Pregel APIs at endpoint `/_api/pregel`
 
 Some of these APIs build up Coordinator-local state in memory when being first
 accessed, and allow accessing further data using follow-up requests. This caused
@@ -449,10 +448,10 @@ AQL queries can now be executed with optional profiling, using ArangoDB 3.4's ne
 This new function is a hybrid of the already existing `db._query()` and `db._explain()`
 functions:
 
-* `db._query()` will execute an AQL query, but not show the execution plan nor
+- `db._query()` will execute an AQL query, but not show the execution plan nor
   runtime profile information
-* `db._explain()` will show the query's execution plan, but not execute the query
-* `db._queryProfile()` will run the query, collect the runtime costs of each component
+- `db._explain()` will show the query's execution plan, but not execute the query
+- `db._queryProfile()` will run the query, collect the runtime costs of each component
   of the query, and finally show the query's execution plan with actual runtime information.
   This is very useful for debugging AQL query performance and optimizing queries.
 
@@ -488,36 +487,36 @@ access a single document by its primary key (see below).
 
 The following AQL functions have been added in ArangoDB 3.4:
 
-* `TO_BASE64`: creates the base64-encoded representation of a value
-* `TO_HEX`: creates a hex-encoded string representation of a value
-* `ENCODE_URI_COMPONENT`: URI-encodes a string value, for later usage in URLs
-* `SOUNDEX`: calculates the soundex fingerprint of a string value
-* `ASSERT`: aborts a query if a condition is not met
-* `WARN`: makes a query produce a warning if a condition is not met
-* `IS_KEY`: this function checks if the value passed to it can be used as a document
+- `TO_BASE64`: creates the base64-encoded representation of a value
+- `TO_HEX`: creates a hex-encoded string representation of a value
+- `ENCODE_URI_COMPONENT`: URI-encodes a string value, for later usage in URLs
+- `SOUNDEX`: calculates the soundex fingerprint of a string value
+- `ASSERT`: aborts a query if a condition is not met
+- `WARN`: makes a query produce a warning if a condition is not met
+- `IS_KEY`: this function checks if the value passed to it can be used as a document
   key, i.e. as the value of the `_key` attribute for a document
-* `SORTED`: will return a sorted version of the input array using AQL's internal
+- `SORTED`: will return a sorted version of the input array using AQL's internal
   comparison order
-* `SORTED_UNIQUE`: same as `SORTED`, but additionally removes duplicates
-* `COUNT_DISTINCT`: counts the number of distinct / unique items in an array
-* `LEVENSHTEIN_DISTANCE`: calculates the Levenshtein distance between two string values
-* `REGEX_MATCHES`: finds matches in a string using a regular expression
-* `REGEX_SPLIT`: splits a string using a regular expression
-* `UUID`: generates a universally unique identifier value
-* `TOKENS`: splits a string into tokens using a language-specific text Analyzer
-* `VERSION`: returns the server version as a string
+- `SORTED_UNIQUE`: same as `SORTED`, but additionally removes duplicates
+- `COUNT_DISTINCT`: counts the number of distinct / unique items in an array
+- `LEVENSHTEIN_DISTANCE`: calculates the Levenshtein distance between two string values
+- `REGEX_MATCHES`: finds matches in a string using a regular expression
+- `REGEX_SPLIT`: splits a string using a regular expression
+- `UUID`: generates a universally unique identifier value
+- `TOKENS`: splits a string into tokens using a language-specific text Analyzer
+- `VERSION`: returns the server version as a string
  
 The following AQL functions have been added to make working with geographical 
 data easier:
 
-* `GEO_POINT`
-* `GEO_MULTIPOINT`
-* `GEO_POLYGON`
-* `GEO_LINESTRING`
-* `GEO_MULTILINESTRING`
-* `GEO_CONTAINS`
-* `GEO_INTERSECTS`
-* `GEO_EQUALS`.
+- `GEO_POINT`
+- `GEO_MULTIPOINT`
+- `GEO_POLYGON`
+- `GEO_LINESTRING`
+- `GEO_MULTILINESTRING`
+- `GEO_CONTAINS`
+- `GEO_INTERSECTS`
+- `GEO_EQUALS`.
 
 The first five functions will produce GeoJSON objects from coordinate data. The
 latter three functions can be used for querying and comparing GeoJSON objects.
@@ -525,14 +524,14 @@ latter three functions can be used for querying and comparing GeoJSON objects.
 The following AQL functions can now be used as aggregation functions in a
 COLLECT statement:
 
-* `UNIQUE`
-* `SORTED_UNIQUE`
-* `COUNT_DISTINCT`
+- `UNIQUE`
+- `SORTED_UNIQUE`
+- `COUNT_DISTINCT`
 
 The following function aliases have been created for existing AQL functions:
 
-* `CONTAINS_ARRAY` is an alias for `POSITION`
-* `KEYS` is an alias for `ATTRIBUTES`
+- `CONTAINS_ARRAY` is an alias for `POSITION`
+- `KEYS` is an alias for `ATTRIBUTES`
 
 ### Distributed COLLECT
 
@@ -552,19 +551,19 @@ the DB-Servers.
 In ArangoDB 3.3, the following aggregation functions could make use of a distributed
 COLLECT in addition to `COLLECT WITH COUNT INTO` and `RETURN DISTINCT`:
 
-* `COUNT`
-* `SUM`
-* `MIN`
-* `MAX`
+- `COUNT`
+- `SUM`
+- `MIN`
+- `MAX`
 
 ArangoDB 3.4 additionally enables distributed COLLECT queries that use the following
 aggregation functions:
 
-* `AVERAGE`
-* `VARIANCE`
-* `VARIANCE_SAMPLE`
-* `STDDEV`
-* `STDDEV_SAMPLE`
+- `AVERAGE`
+- `VARIANCE`
+- `VARIANCE_SAMPLE`
+- `STDDEV`
+- `STDDEV_SAMPLE`
 
 ### Native AQL function implementations
 
@@ -582,42 +581,42 @@ conversions have to be performed to invoke any of the built-in AQL functions.
 This will considerably speed up the following AQL functions and any AQL expression
 that uses any of these functions:
 
-* `APPLY`
-* `CALL`
-* `CURRENT_USER`
-* `DATE_ADD`
-* `DATE_COMPARE`
-* `DATE_DAYOFWEEK`
-* `DATE_DAYOFYEAR`
-* `DATE_DAYS_IN_MONTH`
-* `DATE_DAY`
-* `DATE_DIFF`
-* `DATE_FORMAT`
-* `DATE_HOUR`
-* `DATE_ISO8601`
-* `DATE_ISOWEEK`
-* `DATE_LEAPYEAR`
-* `DATE_MILLISECOND`
-* `DATE_MINUTE`
-* `DATE_MONTH`
-* `DATE_NOW`
-* `DATE_QUARTER`
-* `DATE_SECOND`
-* `DATE_SUBTRACT`
-* `DATE_TIMESTAMP`
-* `DATE_YEAR`
-* `IS_DATESTRING`
-* `IS_IN_POLYGON`
-* `LTRIM`
-* `RTRIM`
-* `FIND_FIRST`
-* `FIND_LAST`
-* `REVERSE`
-* `SPLIT`
-* `SUBSTITUTE`
-* `SHA512`
-* `TRANSLATE`
-* `WITHIN_RECTANGLE`
+- `APPLY`
+- `CALL`
+- `CURRENT_USER`
+- `DATE_ADD`
+- `DATE_COMPARE`
+- `DATE_DAYOFWEEK`
+- `DATE_DAYOFYEAR`
+- `DATE_DAYS_IN_MONTH`
+- `DATE_DAY`
+- `DATE_DIFF`
+- `DATE_FORMAT`
+- `DATE_HOUR`
+- `DATE_ISO8601`
+- `DATE_ISOWEEK`
+- `DATE_LEAPYEAR`
+- `DATE_MILLISECOND`
+- `DATE_MINUTE`
+- `DATE_MONTH`
+- `DATE_NOW`
+- `DATE_QUARTER`
+- `DATE_SECOND`
+- `DATE_SUBTRACT`
+- `DATE_TIMESTAMP`
+- `DATE_YEAR`
+- `IS_DATESTRING`
+- `IS_IN_POLYGON`
+- `LTRIM`
+- `RTRIM`
+- `FIND_FIRST`
+- `FIND_LAST`
+- `REVERSE`
+- `SPLIT`
+- `SUBSTITUTE`
+- `SHA512`
+- `TRANSLATE`
+- `WITHIN_RECTANGLE`
 
 Additionally, the AQL functions `FULLTEXT`, `NEAR` and `WITHIN` now use the native
 implementations even when executed in a cluster. In previous versions of ArangoDB,
@@ -703,7 +702,7 @@ they perform less work.
 
 The new optimizer rule `optimize-subqueries` will fire in the following situations:
 
-* in case only a few results are used from a non-modifying subquery, the rule will
+- in case only a few results are used from a non-modifying subquery, the rule will
   automatically add a LIMIT statement into the subquery.
 
   For example, the unbounded subquery
@@ -729,7 +728,7 @@ The new optimizer rule `optimize-subqueries` will fire in the following situatio
   RETURN docs[0]
   ```
 
-* in case the result returned by a subquery is not used later but only the number
+- in case the result returned by a subquery is not used later but only the number
   of subquery results, the optimizer will modify the result value of the subquery
   so that it will return constant values instead of potentially more expensive
   data structures.
@@ -968,8 +967,8 @@ in the request to the cursor API at endpoint `/_api/cursor`.
 
 However, streaming cursors are enabled automatically for the following parts of ArangoDB in 3.4:
 
-* when exporting data from collections using the arangoexport binary
-* when using `db.<collection>.toArray()` from the Arango shell
+- when exporting data from collections using the arangoexport binary
+- when using `db.<collection>.toArray()` from the Arango shell
 
 Please note that AQL queries consumed in a streaming fashion have their own, adjustable
 "slow query" threshold. That means the "slow query" threshold can be configured separately for 
@@ -980,16 +979,16 @@ regular queries and streaming queries.
 The following internal and user-facing functionality has been ported from 
 JavaScript-based implementations to C++-based implementations in ArangoDB 3.4:
 
-* the statistics gathering background thread
-* the REST APIs for
+- the statistics gathering background thread
+- the REST APIs for
   - managing user defined AQL functions
   - graph management  at `/_api/gharial` that also does:
     - vertex management
     - edge management
-* the implementations of all built-in AQL functions
-* all other parts of AQL except user-defined functions
-* database creation and setup
-* all the DB-Server internal maintenance tasks for shard creation, index
+- the implementations of all built-in AQL functions
+- all other parts of AQL except user-defined functions
+- database creation and setup
+- all the DB-Server internal maintenance tasks for shard creation, index
   creation and the like in the cluster
 
 By making the listed functionality not use and not depend on the V8 JavaScript 
@@ -1120,10 +1119,10 @@ If set to `true` (which is the default value), then the logging will work as in
 previous versions of ArangoDB, and the following characters in the log output are
 escaped:
 
-* the carriage return character (hex 0d)
-* the newline character (hex 0a)
-* the tabstop character (hex 09)
-* any other characters with an ordinal value less than hex 20
+- the carriage return character (hex 0d)
+- the newline character (hex 0a)
+- the tabstop character (hex 09)
+- any other characters with an ordinal value less than hex 20
 
 If the `--log.escape` option is set to `false` however, no characters are escaped
 when logging them. Characters with an ordinal value less than hex 20 (including

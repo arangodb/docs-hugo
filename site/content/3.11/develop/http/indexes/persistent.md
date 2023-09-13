@@ -11,7 +11,6 @@ type and should no longer be used to create new indexes. The aliases will be
 removed in a future version.
 {{< /info >}}
 
-
 ## Create a persistent index
 
 ```openapi

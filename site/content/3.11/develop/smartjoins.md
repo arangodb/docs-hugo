@@ -53,7 +53,6 @@ shards. It works in case `c1` and `c2` have a different amount of shards, or use
 different shard keys or strategies. However, it comes with the additional cost of 
 having to do 4 x 4 requests to perform the join.
 
-
 ## Sharding two collections identically using distributeShardsLike
 
 In the specific case that the two collections have the same number of shards, the 

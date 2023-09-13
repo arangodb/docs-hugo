@@ -9,7 +9,6 @@ archetype: default
 ---
 {{< description >}}
 
-
 ## Create an arangosearch View
 
 ```openapi

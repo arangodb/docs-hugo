@@ -18,27 +18,27 @@ Creates a [Storage](_index.md) that can be used in the sessions middleware.
 
 **Arguments**
 
-* **options**: `Object`
+- **options**: `Object`
 
   An object with the following properties:
 
-  * **collection**: `ArangoCollection`
+  - **collection**: `ArangoCollection`
 
     The collection that should be used to persist the sessions.
     If a string is passed instead of a collection it is assumed to be the fully
     qualified name of a collection in the current database.
 
-  * **ttl**: `number` (Default: `60 * 60`)
+  - **ttl**: `number` (Default: `60 * 60`)
 
     The time in seconds since the last update until a session is
     considered expired.
 
-  * **pruneExpired**: `boolean` (Default: `false`)
+  - **pruneExpired**: `boolean` (Default: `false`)
 
     Whether expired sessions should be removed from the collection when they
     are accessed instead of simply being ignored.
 
-  * **autoUpdate**: `boolean` (Default: `true`)
+  - **autoUpdate**: `boolean` (Default: `true`)
 
     Whether sessions should be updated in the collection every time they
     are accessed to keep them from expiring. Disabling this option
@@ -68,7 +68,7 @@ did not have one.
 
 **Arguments**
 
-* **session**: `Session`
+- **session**: `Session`
 
  A session object.
 
@@ -83,7 +83,7 @@ already removed or has not yet been saved to the collection (i.e. has no `_key`)
 
 **Arguments**
 
-* **session**: `Session`
+- **session**: `Session`
 
  A session object.
 

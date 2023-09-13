@@ -19,7 +19,6 @@ All user functions managed through this interface are stored in the
 `_aqlfunctions` system collection. You should not modify the documents in this
 collection directly, but only via the dedicated interfaces.
 
-
 ## Create a user-defined AQL function
 
 ```openapi

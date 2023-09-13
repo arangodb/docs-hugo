@@ -22,7 +22,7 @@ a transport returns a session identifier.
 
 **Arguments**
 
-* **request**: `Request`
+- **request**: `Request`
 
   [Request object](../../routers/request.md) to extract a session identifier from.
 
@@ -48,11 +48,11 @@ regardless of whether the session was modified or not.
 
 **Arguments**
 
-* **response**: `Response`
+- **response**: `Response`
 
   [Response object](../../routers/response.md) to attach a session identifier to.
 
-* **sid**: `string`
+- **sid**: `string`
 
   Session identifier to attach to the response.
 
@@ -79,7 +79,7 @@ If present this method will automatically be invoked instead of `set` when the
 
 **Arguments**
 
-* **response**: `Response`
+- **response**: `Response`
 
   Response object to remove the session identifier from.
 

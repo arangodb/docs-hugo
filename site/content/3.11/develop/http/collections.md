@@ -28,7 +28,6 @@ http://localhost:8529/_api/collection/demo
 
 ## Get information about collections
 
-
 ### List all collections
 
 ```openapi
@@ -122,7 +121,6 @@ paths:
       tags:
         - Collections
 ```
-
 
 ### Get the properties of a collection
 
@@ -942,7 +940,6 @@ db._drop(cn);
 
 ## Create and delete collections
 
-
 ### Create a collection
 
 ```openapi
@@ -1714,7 +1711,6 @@ db._drop(cn);
 
 ## Modify collections
 
-
 ### Load a collection
 
 ```openapi
@@ -2224,7 +2220,6 @@ paths:
       tags:
         - Collections
 ```
-
 
 ### Compact a collection
 

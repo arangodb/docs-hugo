@@ -13,7 +13,6 @@ overview of which collections are present in the database. They can use this inf
 to either start a full or a partial synchronization of data, e.g. to initiate a backup
 or the incremental data synchronization.
 
-
 ### Get a replication inventory
 
 ```openapi
@@ -142,12 +141,10 @@ paths:
         - Replication
 ```
 
-
 ## Batch
 
 The *batch* method will create a snapshot of the current state that then can be
 dumped. A batchId is required when using the dump API with RocksDB.
-
 
 ### Create a new dump batch
 
@@ -212,7 +209,6 @@ paths:
         - Replication
 ```
 
-
 ### Delete an existing dump batch
 
 ```openapi
@@ -252,7 +248,6 @@ paths:
       tags:
         - Replication
 ```
-
 
 ### Extend the TTL of a dump batch
 
@@ -309,7 +304,6 @@ paths:
         - Replication
 ```
 
-
 ## Dump
 
 The *dump* method can be used to fetch data from a specific collection. As the
@@ -326,7 +320,6 @@ in a dump, the write-ahead log must be flushed first.
 To get to an identical state of data, replication clients should apply the individual
 parts of the dump results in the same order as they are provided.
 
-
 ### Get a replication dump
 
 ```openapi
@@ -336,7 +329,6 @@ paths:
       operationId: getReplicationDump
       description: |
         Returns the data from a collection for the requested range.
-
 
         The `chunkSize` query parameter can be used to control the size of the result.
         It must be specified in bytes. The `chunkSize` value will only be honored
@@ -417,7 +409,6 @@ paths:
       tags:
         - Replication
 ```
-
 
 ### Get the replication revision tree
 
@@ -502,7 +493,6 @@ paths:
         - Replication
 ```
 
-
 ### Rebuild the replication revision tree
 
 ```openapi
@@ -549,7 +539,6 @@ paths:
       tags:
         - Replication
 ```
-
 
 ### List document revision IDs within requested ranges
 
@@ -657,7 +646,6 @@ paths:
         - Replication
 ```
 
-
 ### Get documents by revision
 
 ```openapi
@@ -738,7 +726,6 @@ paths:
       tags:
         - Replication
 ```
-
 
 ### Start replication from a remote endpoint
 
@@ -859,7 +846,6 @@ paths:
       tags:
         - Replication
 ```
-
 
 ### Get the cluster collections and indexes
 

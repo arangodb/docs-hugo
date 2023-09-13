@@ -9,7 +9,6 @@ archetype: default
 ---
 {{< description >}}
 
-
 ## Get the results of an async job
 
 ```openapi

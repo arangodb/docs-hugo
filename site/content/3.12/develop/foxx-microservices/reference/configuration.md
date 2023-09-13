@@ -11,47 +11,47 @@ Foxx services can define configuration parameters
 
 The `configuration` object maps names to configuration parameters:
 
-* The key is the name under which the parameter will be available on the
+- The key is the name under which the parameter will be available on the
   [service context's](service-context.md) `configuration` property.
 
-* The value is a parameter definition.
+- The value is a parameter definition.
 
 The key should be a valid identifier following the case-insensitive format
 `/^[_$a-z][-_$a-z0-9]*$/`.
 
 The parameter definition can have the following properties:
 
-* **description**: `string`
+- **description**: `string`
 
   Human readable description of the parameter.
 
-* **type**: `string` (Default: `"string"`)
+- **type**: `string` (Default: `"string"`)
 
   Type of the configuration parameter. Supported values are:
 
-  * `"integer"` or `"int"`:
+  - `"integer"` or `"int"`:
     any finite integer number.
 
-  * `"boolean"` or `"bool"`:
+  - `"boolean"` or `"bool"`:
     the values `true` or `false`.
 
-  * `"number"`:
+  - `"number"`:
     any finite decimal or integer number.
 
-  * `"string"`:
+  - `"string"`:
     any string value.
 
-  * `"json"`:
+  - `"json"`:
     any well-formed JSON value.
 
-  * `"password"`:
+  - `"password"`:
     like *string* but will be displayed as a masked input field in the web web interface.
 
-* **default**: `any`
+- **default**: `any`
 
   Default value of the configuration parameter.
 
-* **required**: (Default: `true`)
+- **required**: (Default: `true`)
 
   Whether the parameter is required.
 

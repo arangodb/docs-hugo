@@ -667,6 +667,7 @@ locations supported by a geo index.
 In case that the index was successfully created, an object with the index
 details, including the index-identifier, is returned.
 
+---
 
 To create a geo index on an array attribute that contains longitude first, set
 the `geoJson` attribute to `true`. This corresponds to the format described in
@@ -674,6 +675,7 @@ the `geoJson` attribute to `true`. This corresponds to the format described in
 
 `collection.ensureIndex({ type: "geo", fields: [ "location" ], geoJson: true })`
 
+---
 
 To create a geo-spatial index on all documents using `latitude` and `longitude`
 as separate attribute paths, two paths need to be specified in the `fields`

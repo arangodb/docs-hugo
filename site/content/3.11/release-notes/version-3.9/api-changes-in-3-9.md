@@ -359,6 +359,7 @@ I/O heartbeat metrics have been added:
 | `arangodb_ioheartbeat_duration` | Histogram of execution times in microseconds. |
 | `arangodb_ioheartbeat_failures_total` | Total number of failures. |
 
+---
 
 <small>Introduced in: v3.9.5</small>
 
@@ -366,6 +367,7 @@ The `GET /_admin/metrics/v2` and `GET /_admin/metrics` endpoints includes a new
 metrics `arangodb_search_columns_cache_size` which reports the ArangoSearch
 column cache size.
 
+---
 
 <small>Introduced in: v3.8.9, v3.9.6</small>
 
@@ -375,6 +377,7 @@ The metrics endpoints include the following new traffic accounting metrics:
 - `arangodb_client_user_connection_statistics_bytes_sent`
 - `arangodb_http1_connections_total`
 
+---
 
 <small>Introduced in: v3.9.6</small>
 
@@ -384,6 +387,7 @@ The metrics endpoints include the following new edge cache (re-)filling metrics:
 - `rocksdb_cache_auto_refill_dropped_total`
 - `rocksdb_cache_full_index_refills_total`
 
+---
 
 <small>Introduced in: v3.9.10</small>
 
@@ -396,6 +400,7 @@ The following metrics for write-ahead log (WAL) file tracking have been added:
 | `rocksdb_wal_released_tick_replication` | Lower bound sequence number from which WAL files need to be kept because of replication. |
 | `arangodb_flush_subscriptions` | Number of currently active flush subscriptions. |
 
+---
 
 The following metrics for diagnosing delays in cluster-internal network requests
 have been added:

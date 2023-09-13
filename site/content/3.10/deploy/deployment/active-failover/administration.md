@@ -16,7 +16,6 @@ The _Active Failover_ setup requires almost no manual administration.
 You may still need to replace, upgrade or remove individual nodes
 in an _Active Failover_ setup.
 
-
 ## Determining the current _Leader_
 
 It is possible to determine the _leader_ by asking any of the involved single-server

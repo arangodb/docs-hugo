@@ -16,7 +16,6 @@ The connector is usable from all the Spark supported client languages: Scala, Py
 
 This library works with all the non-EOLed [ArangoDB versions](https://www.arangodb.com/subscriptions/end-of-life-notice/).
 
-
 ## Supported versions
 
 There are several variants of this library, each one compatible with different Spark and Scala versions:
@@ -32,7 +31,6 @@ There are several variants of this library, each one compatible with different S
 - `com.arangodb:arangodb-spark-datasource-3.4_2.13` (Spark 3.4, Scala 2.13)
 
 In the following sections the `${sparkVersion}` and `${scalaVersion}` placeholders refer to the Spark and Scala versions.
-
 
 ## Setup
 
@@ -53,7 +51,6 @@ To use in an external Spark cluster, submit your application with the following 
 ```sh
 --packages="com.arangodb:arangodb-spark-datasource-${sparkVersion}_${scalaVersion}:x.y.z"
 ```
-
 
 ## General Configuration
 
@@ -81,7 +78,6 @@ To use TLS secured connections to ArangoDB, set `ssl.enabled` to `true` and eith
 ### Supported deployment topologies
 
 The connector can work with a single server, a cluster and active failover deployments of ArangoDB.
-
 
 ## Batch Read
 
@@ -184,7 +180,6 @@ Predicate and projection pushdowns are only performed while reading an ArangoDB 
 ### Read Resiliency
 
 The data of each partition is read using an AQL cursor. If any error occurs, the read task of the related partition will fail. Depending on the Spark configuration, the task could be retried.
-
 
 ## Batch Write
 
@@ -321,7 +316,6 @@ The following Spark SQL data types (subtypes of `org.apache.spark.sql.types.Filt
   - `MapType` (only with key type `StringType`)
   - `StructType`
 
-
 ## Connect to the ArangoGraph Insights Platform
 
 To connect to SSL secured deployments using X.509 Base64 encoded CA certificate (ArangoGraph):
@@ -352,18 +346,22 @@ df.write
           .save()
 ```
 
-
 ## Current limitations
 
-- For `contentType=vpack`, implicit deserialization casts don't work well, i.e. reading a document having a field with a numeric value whereas the related read schema requires a string value for such a field.
+- For `contentType=vpack`, implicit deserialization casts don't work well, i.e.
+  reading a document having a field with a numeric value whereas the related
+  read schema requires a string value for such a field.
 - Dates and timestamps fields are interpreted to be in a UTC time zone.
-- In Spark 2.4, for corrupted records in batch reading, partial results are not supported. All fields other than the field configured by `columnNameOfCorruptRecord` are set to `null` (SPARK-26303).
-- In read jobs using `stream=true` (default), possible AQL warnings are only logged at the end of each read task (BTS-671).
+- In Spark 2.4, for corrupted records in batch reading, partial results are not
+  supported. All fields other than the field configured by
+  `columnNameOfCorruptRecord` are set to `null` (SPARK-26303).
+- In read jobs using `stream=true` (default), possible AQL warnings are only
+  logged at the end of each read task (BTS-671).
 - Spark SQL `DecimalType` fields are not supported in write jobs when using `contentType=json`.
 - Spark SQL `DecimalType` values are written to the database as strings.
 - `byteBatchSize` is only considered for `contentType=json` (DE-226)
 
 ## Demo
 
-Check out our [demo](https://github.com/arangodb/arangodb-spark-datasource/tree/main/demo) to learn more about ArangoDB Datasource for Apache Spark.
-
+Check out our [demo](https://github.com/arangodb/arangodb-spark-datasource/tree/main/demo)
+to learn more about ArangoDB Datasource for Apache Spark.

@@ -12,15 +12,15 @@ methods and can optionally implement the `new` method.
 
 The built-in session storages generally provide the following attributes:
 
-* **uid**: `string` (Default: `null`)
+- **uid**: `string` (Default: `null`)
 
   A unique identifier indicating the active user.
 
-* **created**: `number` (Default: `Date.now()`)
+- **created**: `number` (Default: `Date.now()`)
 
   The numeric timestamp of when the session was created.
 
-* **data**: `any` (Default: `null`)
+- **data**: `any` (Default: `null`)
 
   Arbitrary data to persisted in the session.
 
@@ -54,7 +54,7 @@ Resolves or deserializes a session identifier to a session object.
 
 **Arguments**
 
-* **sid**: `string`
+- **sid**: `string`
 
   Session identifier to resolve or deserialize.
 
@@ -80,7 +80,7 @@ Derives a session identifier from the given session object.
 
 **Arguments**
 
-* **session**: `Session`
+- **session**: `Session`
 
   Session to derive a session identifier from.
 

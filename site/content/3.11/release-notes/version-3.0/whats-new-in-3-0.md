@@ -424,37 +424,37 @@ to false.
 The Foxx framework has been completely rewritten for 3.0 with a new, simpler and 
 more familiar API. The most notable changes are:
 
-* Legacy mode for 2.8 services
+- Legacy mode for 2.8 services
 
   Stuck with old code? You can continue using your 2.8-compatible Foxx services with 
   3.0 by adding `"engines": {"arangodb": "^2.8.0"}` (or similar version ranges that 
   exclude 3.0 and up) to the service manifest.
 
-* No more global variables and magical comments
+- No more global variables and magical comments
 
   The `applicationContext` is now `module.context`. Instead of magical comments just 
   use the `summary` and `description` methods to document your routes.
 
-* Repository and Model have been removed
+- Repository and Model have been removed
 
   Instead of repositories just use ArangoDB collections directly. For validation simply 
   use the joi schemas (but wrapped in `joi.object()`) that previously lived inside the 
   model. Collections and queries return plain JavaScript objects.
 
-* Controllers have been replaced with nestable routers
+- Controllers have been replaced with nestable routers
 
   Create routers with `require('@arangodb/foxx/router')()`, attach them to your service 
   with `module.context.use(router)`. Because routers are no longer mounted automagically, 
   you can export and import them like any other object. Use `router.use('/path', subRouter)` 
   to nest routers as deeply as you want.
 
-* Routes can be named and reversed
+- Routes can be named and reversed
 
   No more memorizing URLs: add a name to your route like
   `router.get('/hello/:name', function () {...}, 'hello')` and redirect to the full URL 
   with `res.redirect(req.resolve('hello', {name: 'world'}))`.
 
-* Simpler express-like middleware
+- Simpler express-like middleware
 
   If you already know express, this should be familiar. Here's a request logger in 
   three lines of code:
@@ -467,7 +467,7 @@ more familiar API. The most notable changes are:
   });
   ```
 
-* Sessions and auth without dependencies
+- Sessions and auth without dependencies
 
   To make it easier to get started, the functionality previously provided by the 
   `simple-auth`, `oauth2`, `sessions-local` and `sessions-jwt` services have been moved 

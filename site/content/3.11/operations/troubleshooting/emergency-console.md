@@ -46,4 +46,3 @@ communication.
 
 However, it is very likely that you will never need the emergency console
 unless you are an ArangoDB developer.
-

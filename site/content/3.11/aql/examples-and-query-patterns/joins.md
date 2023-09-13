@@ -31,7 +31,6 @@ we'll use all *relations* that have a value of *friend* in their *type* attribut
 Relationships are established by using the *friendOf* and *thisUser* attributes in the
 *relations* collection, which point to the *userId* values in the *users* collection.
 
-
 ## One-To-Many
 
 You have a collection called users. Users live in city and a city is identified

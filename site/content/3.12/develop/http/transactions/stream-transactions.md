@@ -36,7 +36,6 @@ Supported transactional API operations include:
 - Handle [vertices](../graphs/named-graphs.md#vertices) and [edges](../graphs/named-graphs.md#edges)
   of managed graphs (_General Graph_ / _Gharial_ API)
 
-
 ## Begin a Stream Transaction
 
 ```openapi

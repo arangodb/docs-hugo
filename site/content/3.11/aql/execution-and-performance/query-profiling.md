@@ -228,4 +228,3 @@ FOR v,e,p IN 2..2 OUTBOUND 'product/playstation' purchased
   FILTER v.type == 'legwarmer' // <-- last vertex of the path
   RETURN p.vertices[1] // <-- the user
 ```
-

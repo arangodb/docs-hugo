@@ -44,7 +44,6 @@ collection.ensureIndex({ type: "persistent", fields: ["value1", "value2"], store
 To enable in-memory caching of index entries, which can be used when doing point
 lookups on the index, you can set the `cacheEnabled` option:
 
-
 ```js
 collection.ensureIndex({ type: "persistent", fields: [ "value1", "value2" ], cacheEnabled: true });
 ```
@@ -166,6 +165,7 @@ All documents in the collection must differ in terms of the indexed
 attributes. Creating a new document or updating an existing document will
 will fail if the attribute uniqueness is violated. 
 
+---
 
 To create a sparse unique index, set the `sparse` attribute to `true`:
 
@@ -213,6 +213,7 @@ db.ids.save({ "name" : { "first" : "hans", "last": "hansen" }});  // xpError(ERR
 ~db._drop("ids");
 ```
 
+---
 
 Ensures that a non-unique persistent index exists:
 

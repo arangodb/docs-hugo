@@ -100,25 +100,25 @@ Creates an OAuth1.0a client.
 
 **Arguments**
 
-* **options**: `Object`
+- **options**: `Object`
 
   An object with the following properties:
 
-  * **requestTokenEndpoint**: `string`
+  - **requestTokenEndpoint**: `string`
 
     The fully-qualified URL of the provider's
     [Temporary Credentials Request endpoint](https://tools.ietf.org/html/rfc5849#section-2.1).
     This URL is used to fetch the unauthenticated temporary credentials that
     will be used to generate the authorization redirect for the user.
 
-  * **authEndpoint**: `string`
+  - **authEndpoint**: `string`
 
     The fully-qualified URL of the provider's
     [Resource Owner Authorization endpoint](https://tools.ietf.org/html/rfc5849#section-2.2).
     This is the URL the user is redirected to in order to authorize the
     OAuth consumer (i.e. your service).
 
-  * **accessTokenEndpoint**: `string`
+  - **accessTokenEndpoint**: `string`
 
     The fully-qualified URL of the provider's
     [Token Request endpoint](https://tools.ietf.org/html/rfc5849#section-2.3).
@@ -126,20 +126,20 @@ Creates an OAuth1.0a client.
     received from the authorization redirect for the actual token credentials
     that can be used to make requests to the API server.
 
-  * **activeUserEndpoint**: `string` (optional)
+  - **activeUserEndpoint**: `string` (optional)
 
     The fully-qualified URL of the provider's endpoint for fetching details
     about the current user.
 
-  * **clientId**: `string`
+  - **clientId**: `string`
 
     The application's *Client ID* (or `Consumer Key`) for the provider.
 
-  * **clientSecret**: `string`
+  - **clientSecret**: `string`
 
     The application's *Client Secret* (or `Consumer Secret`) for the provider.
 
-  * **signatureMethod**: `string` (Default: `"HMAC-SHA1"`)
+  - **signatureMethod**: `string` (Default: `"HMAC-SHA1"`)
 
     The cryptographic method that is used to sign OAuth 1.0a requests.
     Only `"HMAC-SHA1-"` and `"PLAINTEXT"` are supported at this time.
@@ -235,11 +235,11 @@ Throws an exception if the remote server responds with an empty response body.
 
 **Arguments**
 
-* **oauth_callback**: `string`
+- **oauth_callback**: `string`
 
   The fully-qualified URL of your application's OAuth 1.0a callback.
 
-* **opts**: `Object` (optional)
+- **opts**: `Object` (optional)
 
   An object with additional query parameters to include in the request.
 
@@ -255,11 +255,11 @@ Generates the authorization URL for the authorization endpoint.
 
 **Arguments**
 
-* **oauth_token**: `string`
+- **oauth_token**: `string`
 
   The `oauth_token` previously returned by `fetchRequestToken`.
 
-* **opts**: (optional)
+- **opts**: (optional)
 
   An object with additional query parameters to add to the URL.
 
@@ -293,15 +293,15 @@ Throws an exception if the remote server responds with an empty response body.
 
 **Arguments**
 
-* **oauth_token**: `string`
+- **oauth_token**: `string`
 
   The `oauth_token` passed to the callback URL by the provider.
 
-* **oauth_verifier**: `string`
+- **oauth_verifier**: `string`
 
   The `oauth_verifier` passed to the callback URL by the provider.
 
-* **opts**: `Object` (optional)
+- **opts**: `Object` (optional)
 
   An object with additional query parameters to include in the request.
 
@@ -323,15 +323,15 @@ Returns `null` if the `activeUserEndpoint` is not configured.
 
 **Arguments**
 
-* **oauth_token**: `string`
+- **oauth_token**: `string`
 
   An OAuth 1.0a access token as returned by `exchangeRequestToken`.
 
-* **oauth_token_secret**: `string`
+- **oauth_token_secret**: `string`
 
   An OAuth 1.0a access token secret as returned by `exchangeRequestToken`.
 
-* **opts**: `Object` (optional)
+- **opts**: `Object` (optional)
 
   An object with additional query parameters to include in the request.
 
@@ -355,40 +355,40 @@ provider with the provided token credentials.
 
 **Arguments**
 
-* **method**: `string`
+- **method**: `string`
 
   HTTP method to use for the request, e.g. `"POST"`.
 
-* **url**: `string`
+- **url**: `string`
 
   The fully-qualified URL of the provider the request is performed against.
 
   The URL may optionally contain any number of query parameters.
 
-* **parameters**: `string | Object | null`
+- **parameters**: `string | Object | null`
 
   An additional object or query string containing query parameters or body
   parameters to be part of the signed request.
 
-* **oauth_token**: `string`
+- **oauth_token**: `string`
 
   An OAuth 1.0a access token as returned by `exchangeRequestToken`.
 
-* **oauth_token_secret**: `string`
+- **oauth_token_secret**: `string`
 
   An OAuth 1.0a access token secret as returned by `exchangeRequestToken`.
 
 Returns an object with three properties:
 
- * **url**: The normalized URL without any query parameters.
+ - **url**: The normalized URL without any query parameters.
 
- * **qs**: A normalized query string containing all `parameters` and query parameters.
+ - **qs**: A normalized query string containing all `parameters` and query parameters.
 
- * **headers**: An object containing the following properties:
+ - **headers**: An object containing the following properties:
 
-   * **accept**: The string `"application/json"`.
+   - **accept**: The string `"application/json"`.
 
-   * **authorization**: An OAuth authorization header containing all OAuth
+   - **authorization**: An OAuth authorization header containing all OAuth
      parameters and the request signature.
 
 **Examples**

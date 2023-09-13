@@ -8,21 +8,21 @@ archetype: default
 ---
 The response object specifies the following properties:
 
-* **body**: `Buffer | string`
+- **body**: `Buffer | string`
 
   Response body as a string or buffer. Can be set directly or using some
   of the response methods.
 
-* **context**: `Context`
+- **context**: `Context`
 
   The [service context](../service-context.md) in which the router is mounted
   (rather than the context in which the route is defined).
 
-* **headers**: `object`
+- **headers**: `object`
 
   The raw headers object.
 
-* **statusCode**: `number`
+- **statusCode**: `number`
 
   Status code of the response. Defaults to `200` (body set and not an empty
   string or buffer) or `204` (otherwise) if not changed from `undefined`.
@@ -40,7 +40,7 @@ file system. To send a file from the file system see the `download` or
 
 **Arguments**
 
-* **filename**: `string` (optional)
+- **filename**: `string` (optional)
 
   Name of the downloadable file in the response body.
 
@@ -57,27 +57,27 @@ Sets a cookie with the given name.
 
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Name of the cookie.
 
-* **value**: `string`
+- **value**: `string`
 
   Value of the cookie.
 
-* **options**: `object` (optional)
+- **options**: `object` (optional)
 
   An object with any of the following properties:
 
-  * **ttl**: `number` (optional)
+  - **ttl**: `number` (optional)
 
     Time to live of the cookie in seconds.
 
-  * **algorithm**: `string` (Default: `"sha256"`)
+  - **algorithm**: `string` (Default: `"sha256"`)
 
     Algorithm that is used to sign the cookie.
 
-  * **secret**: `string` (optional)
+  - **secret**: `string` (optional)
 
     Secret that is used to sign the cookie.
 
@@ -85,19 +85,19 @@ Sets a cookie with the given name.
     cookie with the same options, the same name, and the suffix `.sig`.
     Otherwise no signature is added.
 
-  * **path**: `string` (optional)
+  - **path**: `string` (optional)
 
     Path for which the cookie should be issued.
 
-  * **domain**: `string` (optional)
+  - **domain**: `string` (optional)
 
     Domain for which the cookie should be issued.
 
-  * **secure**: `boolean` (Default: `false`)
+  - **secure**: `boolean` (Default: `false`)
 
     Whether the cookie should be marked as secure (i.e. HTTPS/SSL-only).
 
-  * **httpOnly**: `boolean` (Default: `false`)
+  - **httpOnly**: `boolean` (Default: `false`)
 
     Whether the cookie should be marked as HTTP-only (rather than also exposing
     it to client-side code).
@@ -118,11 +118,11 @@ The equivalent of calling `res.attachment(filename).sendFile(path)`.
 
 **Arguments**
 
-* **path**: `string`
+- **path**: `string`
 
   Path to the file on the local filesystem to be sent as the response body.
 
-* **filename**: `string` (optional)
+- **filename**: `string` (optional)
 
   Filename to indicate in the `content-disposition` header.
 
@@ -138,7 +138,7 @@ Gets the value of the header with the given name.
 
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Name of the header to get.
 
@@ -152,7 +152,7 @@ Sets the response body to the JSON string value of the given data.
 
 **Arguments**
 
-* **data**: `any`
+- **data**: `any`
 
   The data to be used as the response body.
 
@@ -166,7 +166,7 @@ Redirects the response by setting the response `location` header and status code
 
 **Arguments**
 
-* **status**: `number | string` (optional)
+- **status**: `number | string` (optional)
 
   Response status code to set.
 
@@ -179,7 +179,7 @@ Redirects the response by setting the response `location` header and status code
   If the status code is omitted but the response status has not already been
   set, the response status is set to `302`.
 
-* **path**: `string`
+- **path**: `string`
 
   URL to set the `location` header to.
 
@@ -193,7 +193,7 @@ Removes the header with the given name from the response.
 
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Name of the header to remove.
 
@@ -208,7 +208,7 @@ definition for the response's current status code.
 
 **Arguments**
 
-* **data**: `any`
+- **data**: `any`
 
   The data to be used as the response body. It is converted according to the
   [response definition](endpoints.md#response) for the response's current
@@ -224,7 +224,7 @@ definition for the response's current status code.
   Finally, the data is processed by the response type handler to convert
   the response body to a string or buffer.
 
-* **type**: `string` (Default: `"auto"`)
+- **type**: `string` (Default: `"auto"`)
 
   Content-type of the response body.
 
@@ -254,18 +254,18 @@ Sends a file from the local filesystem as the response body.
 
 **Arguments**
 
-* **path**: `string`
+- **path**: `string`
 
   Path to the file on the local filesystem to be sent as the response body.
 
   If no `content-type` header has been set yet, the extension of the filename
   is used to set the value of that header.
 
-* **options**: `object` (optional)
+- **options**: `object` (optional)
 
   An object with any of the following properties:
 
-  * **lastModified**: `boolean` (optional)
+  - **lastModified**: `boolean` (optional)
 
     If set to `true` or if no `last-modified` header has been set yet and the
     value is not set to `false`, the `last-modified` header is set to the
@@ -290,7 +290,7 @@ is set to the status message corresponding to that status code.
 
 **Arguments**
 
-* **status**: `number | string`
+- **status**: `number | string`
 
   Response status code to set.
 
@@ -311,15 +311,15 @@ Sets the value of the header with the given name.
 
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Name of the header to set.
 
-* **value**: `string`
+- **value**: `string`
 
   Value to set the header to.
 
-* **headers**: `object`
+- **headers**: `object`
 
   Header object mapping header names to values.
 
@@ -333,7 +333,7 @@ Sets the response status to the given status code.
 
 **Arguments**
 
-* **status**: `number | string`
+- **status**: `number | string`
 
   Response status code to set.
 
@@ -351,7 +351,7 @@ to serve the appropriate JSON error response.
 
 **Arguments**
 
-* **status**: `number | string`
+- **status**: `number | string`
 
   Response status code to set.
 
@@ -365,23 +365,23 @@ to serve the appropriate JSON error response.
   warning if the status code is in the 400-range (400-499) or as a regular
   message otherwise.
 
-* **reason**: `string` (optional)
+- **reason**: `string` (optional)
 
   Message for the exception.
 
   If omitted, the status message corresponding to the status code is
   used instead.
 
-* **options**: `object` (optional)
+- **options**: `object` (optional)
 
   An object with any of the following properties:
 
-  * **cause**: `Error` (optional)
+  - **cause**: `Error` (optional)
 
     Cause of the exception that is logged as part of the error's stacktrace
     (recursively, if the exception also has a `cause` property and so on).
 
-  * **extra**: `object` (optional)
+  - **extra**: `object` (optional)
 
     Additional properties that are added to the error response body
     generated by Foxx.
@@ -405,7 +405,7 @@ previously set content-type.
 
 **Arguments**
 
-* **type**: `string` (optional)
+- **type**: `string` (optional)
 
   Content-type of the response body.
 
@@ -452,7 +452,7 @@ Appends the given data to the response body.
 
 **Arguments**
 
-* **data**: `string | Buffer`
+- **data**: `string | Buffer`
 
   Data to append.
 

@@ -104,4 +104,3 @@ docker run -it --name=adb --rm -p 8528:8528 \
     --starter.address=$IP \
     --starter.mode=single
 ```
-

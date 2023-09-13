@@ -26,7 +26,6 @@ URL of that index is as follows:
 http://localhost:8529/_api/index/demo/63563528
 ```
 
-
 ## List all indexes of a collection
 
 ```openapi
@@ -270,7 +269,6 @@ paths:
       tags:
         - Indexes
 ```
-
 
 ## Delete an index
 

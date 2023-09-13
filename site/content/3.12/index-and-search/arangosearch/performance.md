@@ -673,7 +673,6 @@ db.articles.ensureIndex({
   primaryKeyCache: true
 });
 
-
 db._createView("articlesView", "search-alias", { indexes: [
   { collection: "articles", index: "inv-idx" }
 ] });

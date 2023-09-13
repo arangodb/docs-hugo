@@ -96,6 +96,7 @@ Counts the number of documents in the result set and
 returns that number. The `count()` method ignores any limits and returns
 the total number of documents found.
 
+---
 
 `cursor.count(true)`
 

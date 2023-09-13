@@ -246,6 +246,7 @@ Lists all graph names stored in this database:
 
 `graph_module._list()`
 
+---
 
 Lists all graph definitions stored in this database:
 

@@ -12,7 +12,6 @@ API, it is only supported to access these REST endpoints on a single-server
 instance. While these APIs are also available on DB-Server instances, accessing them
 as a user is not supported. This API replaces some of the APIs in `/_api/replication`.
 
-
 ## Get the tick ranges available in the WAL
 
 ```openapi
@@ -405,6 +404,7 @@ The following operation types are used in ArangoDB:
 
 Create a database. Contains the field _db_ with the database name and the field _data_, 
 contains the database definition.
+
 ```json
 {
   "tick": "2103",
@@ -421,6 +421,7 @@ contains the database definition.
 ### Drop Database (1101)
 
 Drop a database. Contains the field _db_ with the database name.
+
 ```json
 {
   "tick": "3453",

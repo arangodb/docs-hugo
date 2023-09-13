@@ -94,6 +94,7 @@ behavior manually.
 
 See [Legacy Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons) for details.
 
+---
 
 <small>Introduced in: v3.10.5</small>
 

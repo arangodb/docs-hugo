@@ -265,7 +265,6 @@ refers to the document revisions after the replace.
 Both `OLD` and `NEW` contain all document attributes, even those not specified
 in the replace expression.
 
-
 ```aql
 REPLACE document IN collection options RETURN OLD
 REPLACE document IN collection options RETURN NEW

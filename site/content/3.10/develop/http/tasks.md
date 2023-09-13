@@ -9,7 +9,6 @@ archetype: default
 ---
 {{< description >}}
 
-
 ## List all tasks
 
 ```openapi

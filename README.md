@@ -356,6 +356,18 @@ paths:
 ```
 ````
 
+Admonitions inside of other shortcodes need to use the special syntax, too:
+
+```markdown
+{{< expand title="Outer shortcode" >}}
+
+{{</* tip */>}}
+Inner shortcode
+{{</* /tip */>}}
+
+{{< /expand >}}
+```
+
 #### Tags
 
 Tags let you display badges, usually below a headline.

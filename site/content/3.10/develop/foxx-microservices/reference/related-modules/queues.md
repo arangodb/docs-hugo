@@ -38,11 +38,11 @@ The queue is created in the current database.
 
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Name of the queue to create.
 
-* **maxWorkers**: `number` (Default: `1`)
+- **maxWorkers**: `number` (Default: `1`)
 
   The maximum number of workers.
 
@@ -70,7 +70,7 @@ The queue is looked up in the current database.
 
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Name of the queue to fetch.
 
@@ -106,7 +106,7 @@ Deleting a queue does not delete any jobs on that queue.
 
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Name of the queue to delete.
 
@@ -130,19 +130,19 @@ Returns the job id.
 
 **Arguments**
 
-* **script**: `object`
+- **script**: `object`
 
   A job type definition, consisting of an object with the following properties:
 
-  * **name**: `string`
+  - **name**: `string`
 
     Name of the script to invoke.
 
-  * **mount**: `string`
+  - **mount**: `string`
 
     Mount path of the service that defines the script.
 
-  * **backOff**: `Function | number` (Default: `1000`)
+  - **backOff**: `Function | number` (Default: `1000`)
 
     Either a function that takes the number of times the job has failed before
     as input and returns the number of milliseconds to wait before trying the
@@ -150,63 +150,63 @@ Returns the job id.
     [exponential back-off](https://en.wikipedia.org/wiki/Exponential_backoff),
     or `0` for no delay.
 
-  * **maxFailures**: `number | Infinity` (Default: `0`):
+  - **maxFailures**: `number | Infinity` (Default: `0`):
 
     Number of times a single run of a job will be re-tried before it is marked
     as `"failed"`. A negative value or `Infinity` means that the job is
     re-tried on failure indefinitely.
 
-  * **schema**: `Schema` (optional)
+  - **schema**: `Schema` (optional)
 
     Schema to validate a job's data against before enqueuing the job.
 
-  * **preprocess**: `Function` (optional)
+  - **preprocess**: `Function` (optional)
 
     Function to pre-process a job's (validated) data before serializing it in the queue.
 
-* **data**: `any`
+- **data**: `any`
 
   Job data of the job; must be serializable to JSON.
 
-* **opts**: `object` (optional)
+- **opts**: `object` (optional)
 
   Object with any of the following properties:
 
-  * **success**: `Function` (optional)
+  - **success**: `Function` (optional)
 
     Function to be called after the job has been completed successfully.
 
-  * **failure**: `Function` (optional)
+  - **failure**: `Function` (optional)
 
     Function to be called after the job has failed too many times.
 
-  * **delayUntil**: `number | Date` (Default: `Date.now()`)
+  - **delayUntil**: `number | Date` (Default: `Date.now()`)
 
     Timestamp in milliseconds (or `Date` instance) until which the execution of
     the job should be delayed.
 
-  * **backOff**: `Function | number` (Default: `1000`)
+  - **backOff**: `Function | number` (Default: `1000`)
 
     See `script.backOff`.
 
-  * **maxFailures**: `number | Infinity` (Default: `0`):
+  - **maxFailures**: `number | Infinity` (Default: `0`):
 
     See `script.maxFailures`.
 
-  * **repeatTimes**: `number` (Default: `0`)
+  - **repeatTimes**: `number` (Default: `0`)
 
     If set to a positive number, the job is repeated this many times
     (not counting recovery when using `maxFailures`).
     If set to a negative number or `Infinity`, the job is repeated
     indefinitely. If set to `0`, the job is not repeated.
 
-  * **repeatUntil**: `number | Date` (optional)
+  - **repeatUntil**: `number | Date` (optional)
 
     If the job is set to automatically repeat, this can be set to a timestamp
     in milliseconds (or `Date` instance) after which the job no longer repeats.
     Setting this value to zero, a negative value or `Infinity` has no effect.
 
-  * **repeatDelay**: `number` (Default: `0`)
+  - **repeatDelay**: `number` (Default: `0`)
 
     If the job is set to automatically repeat, this can be set to a non-negative
     value to set the number of milliseconds for which the job is delayed
@@ -226,15 +226,15 @@ again. Recovery attempts by `maxFailures` do not count towards `repeatTimes`.
 
 The `success` and `failure` callbacks receive the following arguments:
 
-* **result**: `any`
+- **result**: `any`
 
   The return value of the script for the current run of the job.
 
-* **jobData**: `any`
+- **jobData**: `any`
 
   The data passed to this method.
 
-* **job**: `object`
+- **job**: `object`
 
   ArangoDB document representing the job's current state.
 
@@ -300,11 +300,12 @@ fetched whenever they are referenced and cannot be modified.
 
 **Arguments**
 
-* **jobId**: `string`
+- **jobId**: `string`
 
   The id of the job to create a proxy object for.
 
 **Examples**
+
 ```js
 const jobId = queue.push({mount: '/logger', name: 'log'}, 'Hello World!');
 const job = queue.get(jobId);
@@ -320,7 +321,7 @@ The job is looked up and deleted in the specified queue in the current database.
 
 **Arguments**
 
-* **jobId**: `string`
+- **jobId**: `string`
 
   The id of the job to delete.
 
@@ -337,15 +338,15 @@ The jobs will be looked up in the specified queue in the current database.
 
 **Arguments**
 
-* **script**: `object` (optional)
+- **script**: `object` (optional)
 
   An object with the following properties:
 
- * **name**: `string`
+ - **name**: `string`
 
   Name of the script.
 
- * **mount**: `string`
+ - **mount**: `string`
 
   Mount path of the service defining the script.
 
@@ -373,15 +374,15 @@ The jobs are looked up in the specified queue in the current database.
 
 **Arguments**
 
-* **script**: `object` (optional)
+- **script**: `object` (optional)
 
   An object with the following properties:
 
- * **name**: `string`
+ - **name**: `string`
 
   Name of the script.
 
- * **mount**: `string`
+ - **mount**: `string`
 
   Mount path of the service defining the script.
 
@@ -395,15 +396,15 @@ The jobs are looked up in the specified queue in the current database.
 
 **Arguments**
 
-* **script**: `object` (optional)
+- **script**: `object` (optional)
 
   An object with the following properties:
 
- * **name**: `string`
+ - **name**: `string`
 
   Name of the script.
 
- * **mount**: `string`
+ - **mount**: `string`
 
   Mount path of the service defining the script.
 
@@ -417,15 +418,15 @@ The jobs are looked up in the specified queue in the current database.
 
 **Arguments**
 
-* **script**: `object` (optional)
+- **script**: `object` (optional)
 
   An object with the following properties:
 
- * **name**: `string`
+ - **name**: `string`
 
   Name of the script.
 
- * **mount**: `string`
+ - **mount**: `string`
 
   Mount path of the service defining the script.
 
@@ -439,15 +440,15 @@ The jobs are looked up in the specified queue in the current database.
 
 **Arguments**
 
-* **script**: `object` (optional)
+- **script**: `object` (optional)
 
   An object with the following properties:
 
- * **name**: `string`
+ - **name**: `string`
 
   Name of the script.
 
- * **mount**: `string`
+ - **mount**: `string`
 
   Mount path of the service defining the script.
 

@@ -70,10 +70,10 @@ dealing with RDF graphs.
 
 The following is an example of how this RDF graph could be modeled in ArangoDB.
 This approach: 
-* Maps the `subject` and `object` as vertices
-* Maps the `predicate` as the connecting edge
-* [Hashes](../../../aql/functions/miscellaneous.md#hash-functions) the [referent](https://www.w3.org/TR/rdf11-concepts/#referents) to the `_key` value
-* Preserves the full referent as a text property 
+- Maps the `subject` and `object` as vertices
+- Maps the `predicate` as the connecting edge
+- [Hashes](../../../aql/functions/miscellaneous.md#hash-functions) the [referent](https://www.w3.org/TR/rdf11-concepts/#referents) to the `_key` value
+- Preserves the full referent as a text property 
 
 There can be issues that arise with this simple approach, and we discuss them throughout the guide, but this is a good place to start as it shows the 
 potential for mapping the data. 

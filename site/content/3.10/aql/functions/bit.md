@@ -37,6 +37,7 @@ input number value is 2<sup>32</sup> - 1. Input number values outside the allowe
 range will make the function return `null` and produce a warning. Any `null`
 values in the input array are ignored.
 
+---
 
 `BIT_AND(value1, value2) → result`
 
@@ -159,6 +160,7 @@ input number value is 2<sup>32</sup> - 1. Input number values outside the
 allowed range will make the function return `null` and produce a warning.
 Any `null` values in the input array are ignored.
 
+---
 
 `BIT_OR(value1, value2) → result`
 
@@ -303,6 +305,7 @@ input number value is 2<sup>32</sup> - 1. Input number values outside the
 allowed range will make the function return `null` and produce a warning.
 Any `null` values in the input array are ignored.
 
+---
 
 `BIT_XOR(value1, value2) → result`
 

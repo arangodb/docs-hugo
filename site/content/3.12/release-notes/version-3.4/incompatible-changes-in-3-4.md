@@ -11,7 +11,6 @@ upgrading to ArangoDB 3.4, and adjust any client programs if necessary.
 
 The following incompatible changes have been made in ArangoDB 3.4:
 
-
 ## Release packages
 
 The official ArangoDB release packages for Linux are now built as static executables
@@ -26,7 +25,6 @@ versions.
 
 Release packages are provided for Windows and macOS as well.
 
-
 ## Supported architectures
 
 The minimum supported architecture for the official release packages of ArangoDB is
@@ -36,11 +34,11 @@ All release packages are built with compiler optimizations that require at least
 this architecture. The following CPU features are required for running an official
 release package (note: these are all included in the Westmere architecture and upwards):
 
-* SSE2
-* SSE3
-* SSE4.1
-* SSE4.2
-* PCLMUL
+- SSE2
+- SSE3
+- SSE4.1
+- SSE4.2
+- PCLMUL
 
 In case the target platform does not conform to these requirements, ArangoDB may
 not work correctly.
@@ -88,14 +86,14 @@ engine will now use the RocksDB engine instead of MMFiles engine.
 In the following scenarios, the effectively selected storage engine for new
 installations will be RocksDB:
 
-* `--server.storage-engine rocksdb`
-* `--server.storage-engine auto`
-* `--server.storage-engine` option not specified
+- `--server.storage-engine rocksdb`
+- `--server.storage-engine auto`
+- `--server.storage-engine` option not specified
 
 The MMFiles storage engine will be selected for new installations only when 
 explicitly selected:
 
-* `--server.storage-engine mmfiles`
+- `--server.storage-engine mmfiles`
 
 To make users aware of that the RocksDB storage engine was chosen automatically
 due to an explicit other storage engine selection, 3.4 will come up with the following
@@ -365,8 +363,8 @@ The following APIs have been added or augmented:
   The old/new revisions can be accessed by passing the URL parameters `returnOld` and
   `returnNew` to the following endpoints:
 
-  * `/_api/gharial/<graph>/vertex/<collection>`
-  * `/_api/gharial/<graph>/edge/<collection>`
+  - `/_api/gharial/<graph>/vertex/<collection>`
+  - `/_api/gharial/<graph>/edge/<collection>`
 
   The exception from this is that the HTTP DELETE verb for these APIs does not
   support `returnOld` because that would make the existing API incompatible.
@@ -640,17 +638,17 @@ The behavior of permissions for databases and collections changed:
 The new fallback rule for databases for which no access level is explicitly 
 specified is now:
 
-* Choose the higher access level of:
-  * A wildcard database grant
-  * A database grant on the `_system` database
+- Choose the higher access level of:
+  - A wildcard database grant
+  - A database grant on the `_system` database
 
 The new fallback rule for collections for which no access level is explicitly 
 specified is now:
 
-* Choose the higher access level of:
-  * Any wildcard access grant in the same database, or on `"*"`
-  * The access level for the current database
-  * The access level for the `_system` database
+- Choose the higher access level of:
+  - Any wildcard access grant in the same database, or on `"*"`
+  - The access level for the current database
+  - The access level for the `_system` database
 
 ## SSLv2
 
@@ -740,11 +738,10 @@ to "MMFilesCompactor".
 This change will be visible only on systems which allow assigning names to
 threads.
 
-
 The following features and APIs are deprecated in ArangoDB 3.4, and will be 
 removed in future versions of ArangoDB:
 
-* the JavaScript-based traversal REST API at `/_api/traversal` and the
+- the JavaScript-based traversal REST API at `/_api/traversal` and the
   underlying traversal module `@arangodb/graph/traversal`:
 
   This API has several limitations (including low result set sizes) and has 
@@ -753,7 +750,7 @@ removed in future versions of ArangoDB:
   It is recommended to migrate client applications that use the REST API at
   `/_api/traversal` to use AQL-based traversal queries instead.
 
-* the REST API for simple queries at `/_api/simple`:
+- the REST API for simple queries at `/_api/simple`:
 
   The simple queries provided by the `/_api/simple` endpoint are limited in
   functionality and will internally resort to AQL queries anyway. It is advised
@@ -761,13 +758,13 @@ removed in future versions of ArangoDB:
   using the simple query API, because that is more flexible and allows greater 
   control of how the queries are executed.
 
-* the REST API for querying endpoints at `/_api/endpoint`:
+- the REST API for querying endpoints at `/_api/endpoint`:
 
   The API `/_api/endpoint` is deprecated since ArangoDB version 3.1. 
   For cluster mode there is `/_api/cluster/endpoints` to find all current 
   Coordinator endpoints.
 
-* accessing collections via their numeric IDs instead of their names. This mostly
+- accessing collections via their numeric IDs instead of their names. This mostly
   affects the REST APIs at
 
   - `/_api/collection/<collection-id>`
@@ -778,7 +775,7 @@ removed in future versions of ArangoDB:
   their numeric ID, but the preferred way to access a collections is by its
   user-defined name.
 
-* the REST API for WAL tailing at `/_api/replication/logger-follow`:
+- the REST API for WAL tailing at `/_api/replication/logger-follow`:
 
   The `logger-follow` WAL tailing API has several limitations. A better API
   was introduced at endpoint `/_api/wal/tail` in ArangoDB 3.3.
@@ -786,13 +783,13 @@ removed in future versions of ArangoDB:
   Client applications using the old tailing API at `/_api/replication/logger-follow`
   should switch to the new API eventually.
 
-* the result attributes `mode` and `writeOpsEnabled` in the REST API for querying
+- the result attributes `mode` and `writeOpsEnabled` in the REST API for querying
   a server's status at `/_admin/status`:
 
   `GET /_admin/status` returns the additional attributes `operationMode` and 
   `readOnly` now, which should be used in favor of the old attributes.
   
-* creating geo indexes via any APIs with one of the types `geo1` or `geo2`:
+- creating geo indexes via any APIs with one of the types `geo1` or `geo2`:
 
   The two previously known geo index types (`geo1`and `geo2`) are deprecated now.
   Instead, when creating geo indexes, the type `geo` should be used.
@@ -800,15 +797,15 @@ removed in future versions of ArangoDB:
   The types `geo1` and `geo2` will still work in ArangoDB 3.4, but may be removed
   in future versions.
 
-* the persistent index type is marked for removal in 4.0.0 and is thus deprecated.
+- the persistent index type is marked for removal in 4.0.0 and is thus deprecated.
 
   This index type was added when there was only the MMFiles storage engine as
   kind of a stop gap. We recommend to switch to RocksDB engine, which persists
   all index types with no difference between skiplist and persistent indexes.
 
-* the legacy mode for Foxx applications from ArangoDB 2.8 or earlier.
+- the legacy mode for Foxx applications from ArangoDB 2.8 or earlier.
 
-* the AQL geo functions `NEAR`, `WITHIN`, `WITHIN_RECTANGLE` and `IS_IN_POLYGON`:
+- the AQL geo functions `NEAR`, `WITHIN`, `WITHIN_RECTANGLE` and `IS_IN_POLYGON`:
 
   The special purpose `NEAR` AQL function can be substituted with the
   following AQL (provided there is a geo index present on the `doc.latitude`
@@ -838,13 +835,13 @@ removed in future versions of ArangoDB:
   to the above forms. However, AQL queries using the deprecated AQL functions
   should eventually be adjusted.
 
-* using the `arangoimp` binary instead of `arangoimport` 
+- using the `arangoimp` binary instead of `arangoimport` 
 
   `arangoimp` has been renamed to `arangoimport` for consistency in ArangoDB
   3.4, and `arangoimp` is just a symbolic link to `arangoimport` now.
   `arangoimp` is there for compatibility only, but client scripts should 
   eventually be migrated to use `arangoimport` instead.
 
-* the `foxx-manager` executable is deprecated and will be removed in ArangoDB 4.
+- the `foxx-manager` executable is deprecated and will be removed in ArangoDB 4.
   
   Please use [Foxx CLI](../../components/tools/foxx-cli/_index.md) instead.

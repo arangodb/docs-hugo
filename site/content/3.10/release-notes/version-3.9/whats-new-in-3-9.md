@@ -95,6 +95,7 @@ Views of the type `arangosearch` support new caching options.
   View property to always cache stored values in memory. This can improve the
   query performance if stored values are involved.
 
+---
 
 <small>Introduced in: v3.9.6</small>
 
@@ -846,6 +847,7 @@ failed, an `AddFollower` job is created anyway eventually, as governed by the
   tasks that can run concurrently on server startup. Default: the number of
   cores divided by 8, but at least `1`.
 
+---
 
 <small>Introduced in: v3.9.10</small>
 
@@ -1214,6 +1216,7 @@ arangorestore \
 This does not compromise the use of the other client tools that preserve
 the behavior of having one Coordinator and one endpoint.
 
+---
 
 <small>Introduced in: v3.8.7, v3.9.2</small>
 

@@ -242,6 +242,7 @@ LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN KEEP(doc, "foo", "baz")
 ```
 
+---
 
 `KEEP(document, attributeNameArray) → doc`
 
@@ -352,6 +353,7 @@ LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN KEEP_RECURSIVE(doc, "foo", "bar", "baz")
 ```
 
+---
 
 `KEEP_RECURSIVE(document, attributeNameArray) → doc`
 
@@ -518,6 +520,7 @@ RETURN MERGE(
 )
 ```
 
+---
 
 `MERGE(docArray) → mergedDocument`
 
@@ -787,6 +790,7 @@ LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN UNSET(doc, "foo", "baz")
 ```
 
+---
 
 `UNSET(document, attributeNameArray) → doc`
 
@@ -808,7 +812,6 @@ description: ''
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN UNSET(doc, ["foo", "bar"])
 ```
-
 
 ## UNSET_RECURSIVE()
 
@@ -895,6 +898,7 @@ LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN UNSET_RECURSIVE(doc, "foo", "bar", "baz")
 ```
 
+---
 
 `UNSET_RECURSIVE(document, attributeNameArray) → doc`
 

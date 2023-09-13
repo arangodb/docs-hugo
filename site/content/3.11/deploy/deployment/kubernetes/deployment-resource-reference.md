@@ -382,7 +382,6 @@ cloud-provider does not support the feature.
 
 More info: https://kubernetes.io/docs/tasks/access-application-cluster/configure-cloud-provider-firewall/
 
-
 ### `spec.sync.externalAccess.masterEndpoint: []string`
 
 This setting specifies the master endpoint(s) advertised by the ArangoSync SyncMasters.

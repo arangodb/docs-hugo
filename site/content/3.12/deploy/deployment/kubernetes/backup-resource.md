@@ -32,7 +32,6 @@ Create Backup on ArangoDeployment named `my-deployment`
 
 ### Create and upload Backup
 
-
 ```yaml
 apiVersion: "backup.arangodb.com/v1"
 kind: "ArangoBackup"
@@ -51,9 +50,7 @@ Action:
 
 Create Backup on ArangoDeployment named `my-deployment` and upload it to `S3://test/kube-test`.
 
-
 ### Download Backup
-
 
 ```yaml
 apiVersion: "backup.arangodb.com/v1"
@@ -481,7 +478,6 @@ ArangoDeployment job progress.
 Required: true
 
 Default: "0%"
-
 
 ### `status.backup: object`
 

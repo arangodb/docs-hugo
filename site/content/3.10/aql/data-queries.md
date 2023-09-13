@@ -537,7 +537,6 @@ and have the documents from that array removed using a single `REMOVE` operation
 Data modification operations can optionally be followed by `LET` operations to 
 perform further calculations and a `RETURN` operation to return data.
 
-
 ### Transactional Execution
   
 On a single server, data modification operations are executed transactionally.

@@ -256,7 +256,6 @@ when the query is executed.
 `LIKE` is now a keyword in AQL. Using `LIKE` in either case as an attribute or collection 
 name in AQL queries now requires quoting.
 
-
 `SHORTEST_PATH` is now a keyword in AQL. Using `SHORTEST_PATH` in either case as an attribute or collection 
 name in AQL queries now requires quoting.
 
@@ -514,7 +513,6 @@ The undocumented functions `BY_EXAMPLE_HASH()` and `BY_EXAMPLE_SKIPLIST()`,
 `BY_CONDITION_SKIPLIST`, `CPP_NEIGHBORS` and `CPP_SHORTEST_PATH` have been removed.
 These functions were always hidden and not intended to be part of
 the public JavaScript API for collections.
-
 
 ## HTTP API changes
 

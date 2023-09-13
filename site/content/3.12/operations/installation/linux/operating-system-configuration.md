@@ -184,7 +184,6 @@ should provide enough headroom so that arangod doesn't run out of file descripto
 The maximum number of file descriptors can be adjusted using `ulimit`, `cgroups`
 and `systemd`.
 
-
 ## 32-bit
 
 While it might be possible to compile ArangoDB on 32-bit systems, this is not

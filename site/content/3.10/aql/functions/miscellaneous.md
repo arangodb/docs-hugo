@@ -304,6 +304,7 @@ bindVars:
 RETURN DOCUMENT( @@coll, @keys )
 ```
 
+---
 
 `DOCUMENT(id) → doc`
 

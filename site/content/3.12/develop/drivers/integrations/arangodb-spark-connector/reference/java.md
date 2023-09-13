@@ -73,7 +73,6 @@ Save data from rdd into ArangoDB
     - `WriteOptions.UPDATE$.MODULE$`
     - `WriteOptions.REPLACE$.MODULE$`
 
-
 **Examples**
 
 ```java
@@ -90,7 +89,6 @@ To prevent errors on very large datasets (over one million objects) use "reparti
 ```java
 ArangoSpark.save(allEdges.toJSON.repartition(20000), collection = "mio_edges", options = writeOptions)
 ```
-
 
 ## ArangoSpark.saveDF
 

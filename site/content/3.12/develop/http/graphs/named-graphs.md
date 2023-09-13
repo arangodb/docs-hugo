@@ -27,7 +27,6 @@ The examples use the following example graphs:
 
 ## Management
 
-
 ### List all graphs
 
 ```openapi
@@ -3530,7 +3529,6 @@ examples.dropGraph("social");
 
 ## Vertices
 
-
 ### Create a vertex
 
 ```openapi
@@ -3972,9 +3970,9 @@ paths:
         '404':
           description: |
             Returned in the following cases
-            * No graph with this name could be found.
-            * This collection is not part of the graph.
-            * The vertex does not exist.
+            - No graph with this name could be found.
+            - This collection is not part of the graph.
+            - The vertex does not exist.
           content:
             application/json:
               schema:
@@ -4354,9 +4352,9 @@ paths:
         '404':
           description: |
             Returned in the following cases
-            * No graph with this name could be found.
-            * This collection is not part of the graph.
-            * The vertex to update does not exist.
+            - No graph with this name could be found.
+            - This collection is not part of the graph.
+            - The vertex to update does not exist.
           content:
             application/json:
               schema:
@@ -4739,9 +4737,9 @@ paths:
         '404':
           description: |
             Returned in the following cases
-            * No graph with this name could be found.
-            * This collection is not part of the graph.
-            * The vertex to replace does not exist.
+            - No graph with this name could be found.
+            - This collection is not part of the graph.
+            - The vertex to replace does not exist.
           content:
             application/json:
               schema:
@@ -5012,9 +5010,9 @@ paths:
         '404':
           description: |
             Returned in the following cases
-            * No graph with this name could be found.
-            * This collection is not part of the graph.
-            * The vertex to remove does not exist.
+            - No graph with this name could be found.
+            - This collection is not part of the graph.
+            - The vertex to remove does not exist.
           content:
             application/json:
               schema:
@@ -5096,7 +5094,6 @@ examples.dropGraph("social");
 ```
 
 ## Edges
-
 
 ### Create an edge
 
@@ -5397,11 +5394,11 @@ paths:
         '404':
           description: |
             Returned in any of the following cases
-            * no graph with this name could be found.
-            * the edge collection is not part of the graph.
-            * the vertex collection referenced in the `_from` or `_to` attribute is not part of the graph.
-            * the vertex collection is part of the graph, but does not exist.
-            * `_from` or `_to` vertex does not exist.
+            - no graph with this name could be found.
+            - the edge collection is not part of the graph.
+            - the vertex collection referenced in the `_from` or `_to` attribute is not part of the graph.
+            - the vertex collection is part of the graph, but does not exist.
+            - `_from` or `_to` vertex does not exist.
           content:
             application/json:
               schema:
@@ -5638,9 +5635,9 @@ paths:
         '404':
           description: |
             Returned in the following cases
-            * No graph with this name could be found.
-            * This collection is not part of the graph.
-            * The edge does not exist.
+            - No graph with this name could be found.
+            - This collection is not part of the graph.
+            - The edge does not exist.
           content:
             application/json:
               schema:
@@ -6081,10 +6078,10 @@ paths:
         '404':
           description: |
             Returned in the following cases
-            * No graph with this name could be found.
-            * This collection is not part of the graph.
-            * The edge to update does not exist.
-            * either `_from` or `_to` vertex does not exist (if updated).
+            - No graph with this name could be found.
+            - This collection is not part of the graph.
+            - The edge to update does not exist.
+            - either `_from` or `_to` vertex does not exist (if updated).
           content:
             application/json:
               schema:
@@ -6534,10 +6531,10 @@ paths:
         '404':
           description: |
             Returned in the following cases
-            * No graph with this name could be found.
-            * This collection is not part of the graph.
-            * The edge to replace does not exist.
-            * either `_from` or `_to` vertex does not exist.
+            - No graph with this name could be found.
+            - This collection is not part of the graph.
+            - The edge to replace does not exist.
+            - either `_from` or `_to` vertex does not exist.
           content:
             application/json:
               schema:
@@ -6830,9 +6827,9 @@ paths:
         '404':
           description: |
             Returned in the following cases
-            * No graph with this name could be found.
-            * This collection is not part of the graph.
-            * The edge to remove does not exist.
+            - No graph with this name could be found.
+            - This collection is not part of the graph.
+            - The edge to remove does not exist.
           content:
             application/json:
               schema:

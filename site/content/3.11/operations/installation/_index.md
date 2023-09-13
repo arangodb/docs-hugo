@@ -79,3 +79,4 @@ ArangoDB is available for the following architectures:
 - **x86-64**: The processor(s) must support the **x86-64** architecture with the
   **SSE 4.2** and **AVX** instruction set extensions (Intel Sandy Bridge or better,
   AMD Bulldozer or better, etc.).
+  

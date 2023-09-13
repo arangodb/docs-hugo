@@ -208,6 +208,7 @@ The object returned by the `pregel.history()` method looks like this:
 }
 ```
 
+---
 
 In case you want to read the persisted execution statistics of all currently
 active and past Pregel jobs, call the `pregel.history()` method without a
@@ -248,6 +249,7 @@ const execution = pregel.start("sssp", "demograph", { source: "vertices/V" });
 pregel.removeHistory(execution);
 ```
 
+---
 
 In case you want to remove the persisted execution statistics of all Pregel jobs
 at once, call `pregel.removeHistory()` without a parameter.

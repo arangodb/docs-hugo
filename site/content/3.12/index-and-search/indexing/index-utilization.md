@@ -35,7 +35,6 @@ Sparse indexes may or may not be picked by the optimizer in a query. As sparse i
 correct results, regardless of whether or which index is used to satisfy `FILTER` conditions. If it is 
 unsure about whether using an index will violate the policy, it will not make use of the index.
 
-
 ## Troubleshooting
 
 When in doubt about whether and which indexes will be used for executing a given AQL query,

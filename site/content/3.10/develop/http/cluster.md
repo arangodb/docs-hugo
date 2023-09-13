@@ -12,7 +12,6 @@ archetype: default
 
 ## Monitoring
 
-
 ### Get the statistics of a DB-Server
 
 ```openapi
@@ -43,7 +42,6 @@ paths:
       tags:
         - Cluster
 ```
-
 
 ### Get the cluster health
 
@@ -92,9 +90,7 @@ paths:
         - Cluster
 ```
 
-
 ## Endpoints
-
 
 ### List all Coordinator endpoints
 
@@ -151,9 +147,7 @@ paths:
         - Cluster
 ```
 
-
 ## Cluster node information
-
 
 ### Get the server ID
 
@@ -175,7 +169,6 @@ paths:
       tags:
         - Cluster
 ```
-
 
 ### Get the server role
 
@@ -228,9 +221,7 @@ paths:
         - Cluster
 ```
 
-
 ## Maintenance
-
 
 ### Set the cluster maintenance mode
 
@@ -274,7 +265,6 @@ paths:
       tags:
         - Cluster
 ```
-
 
 ### Get the maintenance status of a DB-Server
 
@@ -343,7 +333,6 @@ paths:
       tags:
         - Cluster
 ```
-
 
 ### Set the maintenance status of a DB-Server
 
@@ -419,7 +408,6 @@ paths:
       tags:
         - Cluster
 ```
-
 
 ## Rebalance
 
@@ -639,7 +627,6 @@ be necessary and are intended only for expert use.
 Note that both these API calls only ever schedules up to 1000 move shard jobs.
 For large data sets, you might want to repeat the call after completion.
 
-
 ### Get the current cluster imbalance
 
 ```openapi
@@ -786,7 +773,6 @@ paths:
       tags:
         - Cluster
 ```
-
 
 ### Compute a set of move shard operations to improve balance
 
@@ -1115,7 +1101,6 @@ paths:
         - Cluster
 ```
 
-
 ### Execute a set of move shard operations
 
 ```openapi
@@ -1183,7 +1168,6 @@ paths:
       tags:
         - Cluster
 ```
-
 
 ### Compute and execute a set of move shard operations to improve balance
 
@@ -1512,4 +1496,3 @@ paths:
       tags:
         - Cluster
 ```
-

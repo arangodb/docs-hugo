@@ -74,7 +74,6 @@ endpoints to request and delete multiple documents in one request.
 
 ### Single document operations
 
-
 #### Get a document
 
 ```openapi
@@ -1423,7 +1422,6 @@ error codes that occurred together with their multiplicities, like
 Generally, the bulk operations expect an input array and the result body
 contains a JSON array of the same length.
 
-
 #### Get multiple documents
 
 ```openapi
@@ -1971,7 +1969,6 @@ paths:
         - Documents
 ```
 
-
 #### Update multiple documents
 
 ```openapi
@@ -2155,7 +2152,6 @@ paths:
       tags:
         - Documents
 ```
-
 
 #### Remove multiple documents
 

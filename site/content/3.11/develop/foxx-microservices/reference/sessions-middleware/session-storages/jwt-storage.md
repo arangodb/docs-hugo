@@ -36,39 +36,39 @@ you specifically need it.
 
 **Arguments**
 
-* **options**: `Object`
+- **options**: `Object`
 
   An object with the following properties:
 
-  * **algorithm**: `string` (Default: `"HS512"`)
+  - **algorithm**: `string` (Default: `"HS512"`)
 
     The algorithm to use for signing the token.
 
     Supported values:
 
-    * `"HS256"` (HMAC-SHA256)
-    * `"HS384"` (HMAC-SHA384)
-    * `"HS512"` (HMAC-SHA512)
-    * `"none"` (no signature)
+    - `"HS256"` (HMAC-SHA256)
+    - `"HS384"` (HMAC-SHA384)
+    - `"HS512"` (HMAC-SHA512)
+    - `"none"` (no signature)
 
-  * **secret**: `string`
+  - **secret**: `string`
 
     The secret to use for signing the token.
 
     This field is forbidden when using the "none" algorithm but required otherwise.
 
-  * **ttl**: `number` (Default: `3600`)
+  - **ttl**: `number` (Default: `3600`)
 
     The maximum lifetime of the token in seconds. You may want to keep this
     short as a new token is generated on every request allowing clients to
     refresh tokens automatically.
 
-  * **verify**: `boolean` (Default: `true`)
+  - **verify**: `boolean` (Default: `true`)
 
     If set to `false`, the signature is not verified but still generated
     (unless using the "none" algorithm).
 
-  * **maxExp**: `number` (Default: `Infinity`)
+  - **maxExp**: `number` (Default: `Infinity`)
 
     Largest value that is accepted in an incoming JWT `exp` (expiration) field.
 

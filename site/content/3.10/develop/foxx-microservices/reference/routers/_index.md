@@ -44,26 +44,26 @@ other methods define routes that only match the HTTP verb with the same name.
 
 **Arguments**
 
-* **path**: `string` (Default: `"/"`)
+- **path**: `string` (Default: `"/"`)
 
   The path of the request handler relative to the base path the Router is mounted at.
   If omitted, the request handler handles requests to the base path of the Router.
   For information on defining dynamic routes see the section on
   [path parameters in the chapter on router endpoints](endpoints.md#pathparam).
 
-* **middleware**: `Function` (optional)
+- **middleware**: `Function` (optional)
 
   Zero or more middleware functions that take the following arguments:
 
-  * **req**: `Request`
+  - **req**: `Request`
 
     An incoming server request object.
 
-  * **res**: `Response`
+  - **res**: `Response`
 
     An outgoing server response object.
 
-  * **next**: `Function`
+  - **next**: `Function`
 
     A callback that passes control over to the next middleware function
     and returns when that function has completed.
@@ -73,19 +73,19 @@ other methods define routes that only match the HTTP verb with the same name.
     If there is no next middleware function, the `handler` is
     invoked instead (see below).
 
-* **handler**: `Function`
+- **handler**: `Function`
 
   A function that takes the following arguments:
 
-  * **req**: `Request`
+  - **req**: `Request`
 
     An incoming server request object.
 
-  * **res**: `Response`
+  - **res**: `Response`
 
     An outgoing server response.
 
-* **name**: `string` (optional)
+- **name**: `string` (optional)
 
   A name that can be used to generate URLs for the endpoint.
   For more information see the `reverse` method of the [request object](request.md).
@@ -139,18 +139,18 @@ The `use` method lets you mount a child router or middleware at a given path.
 
 **Arguments**
 
-* **path**: `string` (optional)
+- **path**: `string` (optional)
 
   The path of the middleware relative to the base path the Router is mounted at.
   If omitted, the middleware handles requests to the base path of the Router.
   For information on defining dynamic routes see the section on
   [path parameters in the chapter on router endpoints](endpoints.md#pathparam).
 
-* **middleware**: `Router | Middleware`
+- **middleware**: `Router | Middleware`
 
   An unmounted router object or a [middleware](middleware.md).
 
-* **name**: `string` (optional)
+- **name**: `string` (optional)
 
   A name that can be used to generate URLs for endpoints of this router.
   For more information see the `reverse` method of the [request object](request.md).

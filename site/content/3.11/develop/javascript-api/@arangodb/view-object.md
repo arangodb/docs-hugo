@@ -72,6 +72,7 @@ var view = db._view("demoView");
 view.properties();
 ```
 
+---
 
 `view.properties(new-properties, partialUpdate)`
 

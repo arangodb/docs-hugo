@@ -8,7 +8,6 @@ archetype: default
 ---
 {{< description >}}
 
-
 ## Import JSON data as documents
 
 ```openapi

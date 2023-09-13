@@ -177,6 +177,7 @@ db._collection("demo")
 
 If no collection with such a name exists, then `null` is returned.
 
+---
 
 There is a short-cut that you can use:
 

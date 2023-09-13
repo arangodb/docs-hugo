@@ -11,7 +11,6 @@ archetype: default
 
 ## Information
 
-
 ### Get the server version
 
 ```openapi
@@ -305,7 +304,6 @@ paths:
         - Administration
 ```
 
-
 ### Get server status information
 
 ```openapi
@@ -572,7 +570,6 @@ paths:
         - Administration
 ```
 
-
 ### Get information about the deployment
 
 ```openapi
@@ -661,7 +658,6 @@ logJsonResponse(response);
 
 ## Server mode
 
-
 ### Return whether or not a server is in read-only mode
 
 ```openapi
@@ -683,7 +679,6 @@ paths:
       tags:
         - Administration
 ```
-
 
 ### Set the server mode to read-only or default
 
@@ -724,12 +719,10 @@ paths:
         - Administration
 ```
 
-
 ## License
 
 The endpoints for license management allow you to view the current license
 status and update the license of your ArangoDB Enterprise Edition deployment.
-
 
 ### Get information about the current license
 
@@ -849,9 +842,7 @@ paths:
         - Administration
 ```
 
-
 ## Shutdown
-
 
 ### Start the shutdown sequence
 
@@ -901,7 +892,6 @@ paths:
       tags:
         - Administration
 ```
-
 
 ### Query the soft shutdown progress
 
@@ -988,9 +978,7 @@ paths:
         - Administration
 ```
 
-
 ## Miscellaneous actions
-
 
 ### Compact all databases
 
@@ -1068,7 +1056,6 @@ paths:
       tags:
         - Administration
 ```
-
 
 ### Echo a request
 
@@ -1245,7 +1232,6 @@ paths:
         - Administration
 ```
 
-
 ### Execute a script
 
 ```openapi
@@ -1296,7 +1282,6 @@ paths:
         - Administration
 ```
 
-
 ## Endpoints
 
 {{< warning >}}
@@ -1314,7 +1299,6 @@ port 8529 over the HTTP protocol).
 
 Note that all endpoint management operations can only be accessed via
 the default `_system` database and none of the other databases.
-
 
 ### List the endpoints of a single server (deprecated)
 

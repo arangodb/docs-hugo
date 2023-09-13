@@ -48,48 +48,48 @@ module.context.use(router1);
 
 The service context specifies the following properties:
 
-* **argv**: `any`
+- **argv**: `any`
 
   Any arguments passed in if the current file was executed as a
   [script or queued job](../guides/scripts-and-scheduling.md).
 
-* **basePath**: `string`
+- **basePath**: `string`
 
   The file system path of the service, i.e. the folder in which the service
   was installed to by ArangoDB.
 
-* **baseUrl**: `string`
+- **baseUrl**: `string`
 
   The base URL of the service, relative to the ArangoDB server,
   e.g. `/_db/_system/my-foxx`.
 
-* **collectionPrefix**: `string`
+- **collectionPrefix**: `string`
 
   The prefix that is used by `collection` and `collectionName` to derive
   the names of service-specific collections. This is derived from the
   service's mount point, e.g. `/my-foxx` becomes `my_foxx`.
 
-* **configuration**: `Object`
+- **configuration**: `Object`
 
   [Configuration options](configuration.md) for the service.
 
-* **dependencies**: `Object`
+- **dependencies**: `Object`
 
   Configured [dependencies](../guides/linking-services-together.md) for the service.
 
-* **isDevelopment**: `boolean`
+- **isDevelopment**: `boolean`
 
   Indicates whether the service is running in [development mode](../_index.md).
 
-* **isProduction**: `boolean`
+- **isProduction**: `boolean`
 
   The inverse of `isDevelopment`.
 
-* **manifest**: `Object`
+- **manifest**: `Object`
 
   The parsed [manifest file](service-manifest.md) of the service.
 
-* **mount**: `string`
+- **mount**: `string`
 
   The mount point of the service, e.g. `/my-foxx`.
 
@@ -130,24 +130,24 @@ Creates a router that serves the API documentation.
 
 **Arguments**
 
-* **options**: `Object` (optional)
+- **options**: `Object` (optional)
 
   An object with any of the following properties:
 
-  * **mount**: `string` (Default: `module.context.mount`)
+  - **mount**: `string` (Default: `module.context.mount`)
 
     The mount path of the service to serve the documentation of.
 
-  * **indexFile**: `string` (Default: `"index.html"`)
+  - **indexFile**: `string` (Default: `"index.html"`)
 
     File name of the HTML file serving the API documentation.
 
-  * **swaggerRoot**: `string` (optional)
+  - **swaggerRoot**: `string` (optional)
 
     Full path of the folder containing the Swagger assets and the `indexFile`.
     Defaults to the Swagger assets used by the web interface.
 
-  * **before**: `Function` (optional)
+  - **before**: `Function` (optional)
 
     A function that is executed before a request is handled.
 
@@ -196,7 +196,7 @@ the prefixed name.
 
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Unprefixed name of the service-specific collection.
 
@@ -210,7 +210,7 @@ Prefixes the given name with the `collectionPrefix` for this service.
 
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Unprefixed name of the service-specific collection.
 
@@ -231,11 +231,11 @@ Passes the given name to `fileName`, then loads the file with the resulting name
 
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Name of the file to load, relative to the current service.
 
-* **encoding**: `string` (optional)
+- **encoding**: `string` (optional)
 
   Encoding of the file, e.g. `utf-8`. If omitted, the file is loaded as a
   raw buffer instead of a string.
@@ -250,7 +250,7 @@ Resolves the given file name relative to the current service.
 
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Name of the file, relative to the current service.
 
@@ -264,11 +264,11 @@ TODO
 
 **Arguments**
 
-* **type**: `string`
+- **type**: `string`
 
   TODO
 
-* **def**: `Object`
+- **def**: `Object`
 
   TODO
 
@@ -285,11 +285,11 @@ service's mount point.
 
 **Arguments**
 
-* **path**: `string` (Default: `"/"`)
+- **path**: `string` (Default: `"/"`)
 
   Path to mount the router at, relative to the service's mount point.
 
-* **router**: `Router | Middleware`
+- **router**: `Router | Middleware`
 
   A router or middleware to mount.
 

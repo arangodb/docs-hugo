@@ -194,4 +194,3 @@ This following startup options of arangodump are obsolete from ArangoDB 3.12 on:
 - `--tick-end`: setting this option allowed to restrict the dumped data to some 
   time range with the MMFiles storage engine. It had no effect for the RocksDB 
   storage engine and so it is removed now.
-

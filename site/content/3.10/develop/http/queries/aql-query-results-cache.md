@@ -8,7 +8,6 @@ archetype: default
 ---
 {{< description >}}
 
-
 ## List the entries of the AQL query results cache
 
 ```openapi
@@ -43,7 +42,6 @@ paths:
         - Queries
 ```
 
-
 ## Clear the AQL query results cache
 
 ```openapi
@@ -64,7 +62,6 @@ paths:
       tags:
         - Queries
 ```
-
 
 ## Get the AQL query results cache configuration
 
@@ -101,7 +98,6 @@ paths:
       tags:
         - Queries
 ```
-
 
 ## Set the AQL query results cache configuration
 
@@ -157,4 +153,3 @@ paths:
       tags:
         - Queries
 ```
-

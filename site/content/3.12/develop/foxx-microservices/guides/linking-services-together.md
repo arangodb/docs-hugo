@@ -30,7 +30,6 @@ term _dependencies_ can also refer to
 [bundled node modules](using-node-modules.md), which are an unrelated concept.
 {{< /info >}}
 
-
 ## Declaring dependencies
 
 Foxx dependencies can be declared in the

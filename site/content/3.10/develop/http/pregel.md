@@ -11,7 +11,6 @@ archetype: default
 See [Distributed Iterative Graph Processing (Pregel)](../../data-science/pregel/_index.md)
 for details.
 
-
 ## Start a Pregel job execution
 
 ```openapi

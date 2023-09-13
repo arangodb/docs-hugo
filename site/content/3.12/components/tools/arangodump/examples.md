@@ -174,7 +174,6 @@ For security reasons, it is best to create these keys offline (away from your
 database servers) and directly store them in your secret management
 tool.
 
-
 In order to create an encrypted backup, add the `--encryption.keyfile`
 option when invoking _arangodump_, in addition to any other option you
 are already using. The following example assumes that your secret key

@@ -326,6 +326,7 @@ enumeration node, if using just scoring for a sort operation.
   View property to always cache stored values in memory. This can improve the
   query performance if stored values are involved.
 
+---
 
 <small>Introduced in: v3.9.6, v3.10.2</small>
 
@@ -337,6 +338,7 @@ enumeration node, if using just scoring for a sort operation.
   primary key column in memory. This can improve the performance of queries
   that return many documents.
 
+---
 
 [Inverted indexes](../../develop/http/indexes/inverted.md) also support similar new caching
 options.
@@ -356,6 +358,7 @@ options.
 - A new `primaryKeyCache` property for inverted indexes to always cache the
   primary key column in memory.
 
+---
 
 The cache size can be controlled with the new `--arangosearch.columns-cache-limit`
 startup option and monitored via the new `arangodb_search_columns_cache_size`
@@ -1253,6 +1256,7 @@ failed, an `AddFollower` job is created anyway eventually, as governed by the
   tasks that can run concurrently on server startup. Default: the number of
   cores divided by 8, but at least `1`.
 
+---
 
 <small>Introduced in: v3.9.10, v3.10.5</small>
 

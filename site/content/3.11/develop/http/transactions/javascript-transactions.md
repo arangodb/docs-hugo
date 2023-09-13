@@ -25,7 +25,6 @@ rolled back.
 For a more detailed description of how transactions work in ArangoDB please
 refer to [Transactions](../../transactions/_index.md). 
 
-
 ## Execute a JavaScript Transaction
 
 ```openapi

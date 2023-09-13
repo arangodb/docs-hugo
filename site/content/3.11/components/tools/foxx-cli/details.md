@@ -105,35 +105,35 @@ If you want to exclude files from the service bundle that will uploaded to
 ArangoDB you can create a file called `.foxxignore` in the root directory of
 your service. Each line should specify one pattern you wish to ignore:
 
-* Patterns starting with `!` will be treated as an explicit allowlist. Paths
+- Patterns starting with `!` will be treated as an explicit allowlist. Paths
   matching these patterns will not be ignored even if they would match any of
   the other patterns.
 
   **Example**: `!index.js` will override any pattern matching a file called
   `index.js`.
 
-* Patterns starting with `/` will only match paths relative to the service's
+- Patterns starting with `/` will only match paths relative to the service's
   root directory.
 
   **Example**: `/package.json` will not match `node_modules/joi/package.json`.
 
-* Patterns ending with `/` will match a directory and any files inside of it.
+- Patterns ending with `/` will match a directory and any files inside of it.
 
   **Example**: `node_modules/` will exclude all `node_modules` directories and
   all of their contents.
 
-* A single `*` (glob) will match zero or more characters (even dots) in a file
+- A single `*` (glob) will match zero or more characters (even dots) in a file
   or directory name.
 
   **Example**: `.*` will match any files and directories with a name starting
   with a dot.
 
-* A double `**` (globstar) will match zero or more levels of nesting.
+- A double `**` (globstar) will match zero or more levels of nesting.
 
   **Example**: `hello/**/world` will match `hello/world`, `hello/foo/world`,
   `hello/foo/bar/world`, and so on.
 
-* Patterns starting with `#` are considered comments and will be ignored.
+- Patterns starting with `#` are considered comments and will be ignored.
 
 For more details on the pattern matching behavior, see the documentation of the
 [minimatch](https://www.npmjs.com/package/minimatch) module (with the `dot` flag
@@ -170,11 +170,11 @@ If you define servers using the `server` commands, a `.foxxrc` file will be
 created in your `$HOME` directory, which is typically one of the following
 paths:
 
-* `/home/$USER` on Linux
+- `/home/$USER` on Linux
 
-* `/Users/$USER` on macOS
+- `/Users/$USER` on macOS
 
-* `C:\Users\$USER` on Windows
+- `C:\Users\$USER` on Windows
 
 This file contains sections for each server which may contain server credentials
 should you decide to save them.

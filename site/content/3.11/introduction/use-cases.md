@@ -30,7 +30,6 @@ complex fraudulent behavior such as fraud rings.
 
 ### Recommendation Engine
 
-
 {{< icon src="../../images/icon-recommendation-engine.png" alt="Recommendation Engine icon" style="float: right; padding: 0 20px; margin-bottom: 20px;">}}
 
 Suggest products, services, and information to users based on data relationships.
@@ -40,7 +39,6 @@ by analyzing the movies users watched and then predicting links between the two
 with a graph neural network (GNN).
 
 ### Network Management
-
 
 {{< icon src="../../images/icon-network-management.png" alt="Network Management icon" style="float: right; padding: 0 20px; margin-bottom: 20px;">}}
 
@@ -52,7 +50,6 @@ bandwidth into account when path-finding.
 
 ### Customer 360
 
-
 {{< icon src="../../images/icon-customer-360.png" alt="Customer 360 icon" style="float: right; padding: 0 20px; margin-bottom: 20px;">}}
 
 Gain a complete understanding of your customers by integrating multiple data
@@ -61,7 +58,6 @@ information in any shape, with the added ability to link related records and to
 track data origins using graph features.
 
 ### Identity and Access Management
-
 
 {{< icon src="../../images/icon-identity-management.png" alt="Identity Management icon" style="float: right; padding: 0 20px; margin-bottom: 20px;">}}
 
@@ -73,7 +69,6 @@ inheritance.
 
 ### Supply Chain
 
-
 {{< icon src="../../images/icon-supply-chain.png" alt="Supply Chain icon" style="float: right; padding: 0 20px; margin-bottom: 20px;">}}
 
 Speed shipments by monitoring and optimizing the flow of goods through a
@@ -83,14 +78,12 @@ disruptions are.
 
 ## ArangoDB as a Document Database
 
-
 ArangoDB can be used as the backend for heterogeneous content management,
 e-commerce systems, Internet of Things applications, and more generally as a
 persistence layer for a broad range of services that benefit from an agile
 and scalable data store.
 
 ### Content Management
-
 
 {{< icon src="../../images/icon-content-management.png" alt="Content management icon" style="float: right; padding: 0 20px; margin-bottom: 20px;">}}
 
@@ -101,7 +94,6 @@ content management system on top of ArangoDB.
 
 ### E-Commerce Systems
 
-
 {{< icon src="../../images/icon-e-commerce.png" alt="E-commerce icon" style="float: right; padding: 0 20px; margin-bottom: 20px;">}}
 
 ArangoDB combines data modeling freedom with strong consistency and resilience
@@ -111,7 +103,6 @@ checkouts with the necessary transactional guarantees.
 
 ### Internet of Things
 
-
 {{< icon src="../../images/icon-internet-of-things.png" alt="Internet of things icon" style="float: right; padding: 0 20px; margin-bottom: 20px;">}}
 
 Collect sensor readings and other IoT data in ArangoDB for a single view of
@@ -119,7 +110,6 @@ everything. Store all data points in the same system that also lets you run
 aggregation queries using sliding windows for efficient data analysis.
 
 ## ArangoDB as a Key-Value Database
-
 
 {{< icon src="../../images/icon-key-value.png" alt="Key value icon" style="float: right; padding: 0 20px; margin-bottom: 20px;">}}
 
@@ -145,7 +135,6 @@ For more information about how ArangoDB persists data, see
 
 ## ArangoDB as a Search Engine
 
-
 {{< icon src="../../images/icon-search-engine.png" alt="Search engine icon" style="float: right; padding: 0 20px; margin-bottom: 20px;">}}
 
 ArangoDB has a natively integrated search engine for a broad range of
@@ -163,7 +152,6 @@ and can classify or find similar terms using word embedding models.
 For more information about the search engine, see [ArangoSearch](../index-and-search/arangosearch/_index.md).
 
 ## ArangoDB for Machine Learning
-
 
 You can use ArangoDB as the foundation for machine learning based on graphs
 at enterprise scale. You can use it as a metadata store for model training

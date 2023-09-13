@@ -87,44 +87,44 @@ This returns a new router object with POST and GET routes for serving GraphQL re
 
 **Arguments**
 
-* **options**: `object`
+- **options**: `object`
 
   An object with any of the following properties:
 
-  * **schema**: `GraphQLSchema`
+  - **schema**: `GraphQLSchema`
 
     A GraphQL Schema object from `graphql-sync`.
 
-  * **context**: `any` (optional)
+  - **context**: `any` (optional)
 
     The GraphQL context that is passed to the `graphql()` function from
     `graphql-sync` to handle GraphQL queries.
 
-  * **rootValue**: `object` (optional)
+  - **rootValue**: `object` (optional)
 
     The GraphQL root value that is passed to the `graphql()` function
     from `graphql-sync` to handle GraphQL queries.
 
-  * **pretty**: `boolean` (Default: `false`)
+  - **pretty**: `boolean` (Default: `false`)
 
     If `true`, JSON responses are pretty-printed.
 
-  * **formatError**: `Function` (optional)
+  - **formatError**: `Function` (optional)
 
     A function that is used to format errors produced by `graphql-sync`.
     If omitted, the `formatError` function from `graphql-sync` is used instead.
 
-  * **validationRules**: `Array<any>` (optional)
+  - **validationRules**: `Array<any>` (optional)
 
     Additional validation rules queries must satisfy in addition to those
     defined in the GraphQL spec.
 
-  * **graphiql**: `boolean` (Default: `false`)
+  - **graphiql**: `boolean` (Default: `false`)
 
     If `true`, the [GraphiQL](https://github.com/graphql/graphiql) explorer
     will be served when loaded directly from a browser.
 
-  * **graphql**: `object` (optional)
+  - **graphql**: `object` (optional)
 
     If you need to use your own copy of the `graphql-sync` module instead of
     the one bundled with ArangoDB, here you can pass it in directly.
@@ -138,21 +138,21 @@ The router handles GET and POST requests to its root path and accepts the
 following parameters, which can be provided either as query parameters or
 as the POST request body:
 
-* **query**: `string`
+- **query**: `string`
 
   A GraphQL query to execute.
 
-* **variables**: `object | string` (optional)
+- **variables**: `object | string` (optional)
 
   An object or a string containing a JSON object with runtime values to use
   for any GraphQL query variables.
 
-* **operationName**: `string` (optional)
+- **operationName**: `string` (optional)
 
   If the provided `query` contains multiple named operations, this specifies
   which operation should be executed.
 
-* **raw**: `boolean` (Default: `false`)
+- **raw**: `boolean` (Default: `false`)
 
   Forces a JSON response even if `graphiql` is enabled and the request was
   made using a browser.

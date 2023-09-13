@@ -19,7 +19,6 @@ See [Audit logging](../../operations/security/audit-logging.md#configuration).
 
 ## Encryption in transit
 
-
 ### Get the TLS data
 
 ```openapi
@@ -60,7 +59,6 @@ paths:
         - Security
 ```
 
-
 ### Reload the TLS data
 
 ```openapi
@@ -86,9 +84,7 @@ paths:
         - Security
 ```
 
-
 ## Encryption at rest
-
 
 ### Rotate the encryption at rest key
 
@@ -152,4 +148,3 @@ paths:
       tags:
         - Security
 ```
-

@@ -36,7 +36,7 @@ archetype: default
 
 ### July 2023
 
-- Improved resource scheduling so that co-ordinators and db servers on larger
+- Improved resource scheduling so that Coordinators and DB-Servers on larger
   deployments (A8+) more effectively utilize the CPU resources available to them
 - Updated the "Developer (beta)" deployment type to "Single Server" to better
   reflect the intended use case, and to clarify its supported status
@@ -51,7 +51,6 @@ removed as a selectable version
 - Adds [ArangoDB 3.11.1](https://raw.githubusercontent.com/arangodb/arangodb/3.11.1/CHANGELOG)
 as an available version for deployments in ArangoGraph; 3.11.0 has been
 removed as a selectable version
-
 
 ### June 2023
 

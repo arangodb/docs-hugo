@@ -20,7 +20,6 @@ For example you can install the operator in a namespace other than
 The ArangoDB Kubernetes Operator is contained in `helm` chart `kube-arangodb` which contains the operator for the
 `ArangoDeployment`, `ArangoLocalStorage` and `ArangoDeploymentReplication` resource types.
 
-
 ## Configurable values for ArangoDB Kubernetes Operator
 
 The following values can be configured when installing the

@@ -166,7 +166,6 @@ To deactivate the type mapping process, you can return `null` from the `typeKey(
 | @LastModifiedBy         | field                     | Declares a field as the one representing the principal that recently modified the entity containing the field.                                      |
 | @LastModifiedDate       | field                     | Declares a field as the one representing the date the entity containing the field was recently modified.                                            |
 
-
 ## Invoking conversion manually
 
 In order to invoke entity serialization and deserialization to and from `VPackSlice` manually, you can inject an

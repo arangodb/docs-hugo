@@ -105,35 +105,35 @@ Creates an OAuth 2.0 client.
 
 **Arguments**
 
-* **options**: `Object`
+- **options**: `Object`
 
   An object with the following properties:
 
-  * **authEndpoint**: `string`
+  - **authEndpoint**: `string`
 
     The fully-qualified URL of the provider's
     [authorization endpoint](http://tools.ietf.org/html/rfc6749#section-3.1).
 
-  * **tokenEndpoint**: `string`
+  - **tokenEndpoint**: `string`
 
     The fully-qualified URL of the provider's
     [token endpoint](http://tools.ietf.org/html/rfc6749#section-3.2).
 
-  * **refreshEndpoint**: `string` (optional)
+  - **refreshEndpoint**: `string` (optional)
 
     The fully-qualified URL of the provider's
     [refresh token endpoint](http://tools.ietf.org/html/rfc6749#section-6).
 
-  * **activeUserEndpoint**: `string` (optional)
+  - **activeUserEndpoint**: `string` (optional)
 
     The fully-qualified URL of the provider's endpoint for fetching
     details about the current user.
 
-  * **clientId**: `string`
+  - **clientId**: `string`
 
     The application's *Client ID* (or *App ID*) for the provider.
 
-  * **clientSecret**: `string`
+  - **clientSecret**: `string`
 
     The application's *Client Secret* (or *App Secret*) for the provider.
 
@@ -218,15 +218,15 @@ Generates the authorization URL for the authorization endpoint.
 
 **Arguments**
 
-* **redirect_uri**: `string`
+- **redirect_uri**: `string`
 
   The fully-qualified URL of your application's OAuth 2.0 callback.
 
-* **args**: (optional)
+- **args**: (optional)
 
   An object with any of the following properties:
 
-  * **response_type**: `string` (Default: `"code"`)
+  - **response_type**: `string` (Default: `"code"`)
 
   See [RFC 6749](http://tools.ietf.org/html/rfc6749).
 
@@ -246,19 +246,19 @@ Throws an exception if the remote server responds with an empty response body.
 
 **Arguments**
 
-* **code**: `string`
+- **code**: `string`
 
   A grant code returned by the provider's authorization endpoint.
 
-* **redirect_uri**: `string`
+- **redirect_uri**: `string`
 
   The original callback URL with which the code was requested.
 
-* **args**: `Object` (optional)
+- **args**: `Object` (optional)
 
   An object with any of the following properties:
 
-  * **grant_type**: `string` (Default: `"authorization_code"`)
+  - **grant_type**: `string` (Default: `"authorization_code"`)
 
     See [RFC 6749](http://tools.ietf.org/html/rfc6749).
 
@@ -278,7 +278,7 @@ Returns `null` if the `activeUserEndpoint` is not configured.
 
 **Arguments**
 
-* **access_token**: `string`
+- **access_token**: `string`
 
   An OAuth 2.0 access token as returned by `exchangeGrantToken`.
 

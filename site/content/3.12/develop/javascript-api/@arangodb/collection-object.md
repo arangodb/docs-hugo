@@ -280,6 +280,7 @@ In a cluster setup, the result also contains the following attributes:
   of the collection that must contain the shard key value of the referred-to
   SmartJoin collection.
 
+---
 
 `collection.properties(properties)`
 
@@ -681,6 +682,7 @@ If you pass `options` as the second argument, it must be an object.
   the leader shard. See [Read from followers](../../http/documents.md#read-from-followers)
   for details.
 
+---
 
 `collection.document(document-identifier [, options])`
 
@@ -689,6 +691,7 @@ as an object.
 
 No revision can be specified in this case.
 
+---
 
 `collection.document(document-key [, options])`
 
@@ -697,6 +700,7 @@ as an object.
 
 No revision can be specified in this case.
 
+---
 
 `collection.document(array [, options])`
 
@@ -851,6 +855,7 @@ Coordinator is allowed to read from any shard replica and not only from
 the leader shard. See [Read from followers](../../http/documents.md#read-from-followers)
 for details.
 
+---
 
 `collection.exists(document-identifier [, options])`
 
@@ -859,6 +864,7 @@ with options passed as an object.
 
 No revision can be specified in this case.
 
+---
 
 `collection.exists(document-key [, options])`
 
@@ -867,6 +873,7 @@ with options passed as an object.
 
 No revision can be specified in this case.
 
+---
 
 `collection.exists(array [, options])`
 
@@ -883,6 +890,7 @@ example. If no such document exists, `null` will be returned.
 The example has to be specified as paths and values.
 See `byExample` for details.
 
+---
 
 `collection.firstExample(path1, value1, ...)`
 
@@ -916,6 +924,7 @@ The method returns a document with the attributes `_id`, `_key` and
 created document, the attribute `_key` the document key and the
 attribute `_rev` contains the document revision.
 
+---
 
 `collection.insert(data, options)`
 
@@ -979,6 +988,7 @@ used to specify the following options:
   The default is `true`.
   This option controls the update-insert behavior only.
 
+---
 
 `collection.insert(array [, options])`
 
@@ -1079,6 +1089,7 @@ If the object contains a `_rev` attribute, the method first checks
 that the specified revision is the current revision of that document.
 If not, there is a conflict, and an error is thrown.
 
+---
 
 `collection.remove(object, options)`
 
@@ -1101,6 +1112,7 @@ Removes a document, with additional boolean `options` passed as an object:
   attribute `old`.
 - `silent`: If this flag is set to `true`, no output is returned.
 
+---
 
 `collection.remove(document-identifier [, options])`
 
@@ -1109,6 +1121,7 @@ additional options passed as an object.
 
 No revision check is performed.
 
+---
 
 `collection.remove(document-key [, options])`
 
@@ -1117,6 +1130,7 @@ additional options passed as an object.
 
 No revision check is performed.
 
+---
 
 `collection.remove(array [, options])`
 
@@ -1165,6 +1179,7 @@ db.example.document(a1);     // xpError(ERROR_ARANGO_DOCUMENT_NOT_FOUND);
 
 Removes all documents matching an example.
 
+---
 
 `collection.removeByExample(document, waitForSync)`
 
@@ -1179,6 +1194,7 @@ applied. The `waitForSync` parameter cannot be used to disable
 synchronization for collections that have a default `waitForSync` value
 of `true`.
 
+---
 
 `collection.removeByExample(document, waitForSync, limit)`
 
@@ -1252,6 +1268,7 @@ If the object contains a `_rev` attribute, the method first checks
 that the specified revision is the current revision of that document.
 If not, there is a conflict, and an error is thrown.
 
+---
 
 `collection.replace(object, data, options)`
 
@@ -1276,6 +1293,7 @@ Replaces an existing document, with additional options passed as an object:
   attribute `old`.
 - `silent`: If this flag is set to `true`, no output is returned.
 
+---
 
 `collection.replace(document-identifier, data [, options])`
 
@@ -1284,6 +1302,7 @@ with additional options passed as an object.
 
 No revision check is performed.
 
+---
 
 `collection.replace(document-key, data [, options])`
 
@@ -1292,6 +1311,7 @@ with additional options passed as an object.
 
 No revision check is performed.
 
+---
 
 `collection.replace(document-array, data-array [, options])`
 
@@ -1408,6 +1428,7 @@ If the object contains a `_rev` attribute, the method first checks
 that the specified revision is the current revision of that document.
 If not, there is a conflict, and an error is raised.
 
+---
 
 `collection.update(object, data, options)`
 
@@ -1444,6 +1465,7 @@ an object:
   existing document's value. If set to `true`, objects will be merged.
   The default is `true`.
 
+---
 
 `collection.update(document-identifier, data [, options])`
 
@@ -1452,6 +1474,7 @@ additional options passed as an object.
 
 No revision check is performed.
 
+---
 
 `collection.update(document-key, data [, options])`
 
@@ -1460,6 +1483,7 @@ additional options passed as an object.
 
 No revision check is performed.
 
+---
 
 `collection.update(document-array, data-array [, options])`
 
@@ -1586,6 +1610,7 @@ updates to the specified value. If `limit` is specified but less than
 the number of documents in the collection, it is undefined which documents are
 updated.
 
+---
 
 `collection.updateByExample(document, newValue, options)`
 
@@ -1613,7 +1638,6 @@ db.example.byExample({ Hello: "foo" }).toArray()
 
 ## Edge documents
 
-
 ### `edge-collection.edges(vertex)`
 
 Edges are normal documents that always contain a `_from` and a `_to`
@@ -1625,6 +1649,7 @@ edges. The following methods, however, are specific to edges.
 The `edges()` operator finds all edges starting from (outbound) or ending
 in (inbound) `vertex`.
 
+---
 
 `edge-collection.edges(vertices)`
 
@@ -1653,6 +1678,7 @@ db.relation.edges(myGraph.e1._id);
 
 The `inEdges()` operator finds all edges ending in (inbound) `vertex`.
 
+---
 
 `edge-collection.inEdges(vertices)`
 
@@ -1684,6 +1710,7 @@ db.relation.inEdges(myGraph.v2._id);
 The `outEdges()` operator finds all edges starting from (outbound)
 `vertices`.
 
+---
 
 `edge-collection.outEdges(vertices)`
 

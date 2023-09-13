@@ -14,7 +14,6 @@ a `CustomResourceDefinition` created by the operator.
 
 ### Create schedule for all deployments
 
-
 ```yaml
 apiVersion: "backup.arangodb.com/v1"
 kind: "ArangoBackupPolicy"
@@ -29,7 +28,6 @@ Action:
 Create an ArangoBackup Custom Resource for each ArangoBackup every 15 minutes
 
 ### Create schedule for selected deployments
-
 
 ```yaml
 apiVersion: "backup.arangodb.com/v1"
@@ -48,7 +46,6 @@ Action:
 Create an ArangoBackup Custom Resource for selected ArangoBackup every 15 minutes
 
 ### Create schedule for all deployments and upload
-
 
 ```yaml
 apiVersion: "backup.arangodb.com/v1"

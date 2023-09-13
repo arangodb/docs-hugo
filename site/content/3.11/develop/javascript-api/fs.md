@@ -24,50 +24,40 @@ You should either base your directories with `getTempPath()`, or as a Foxx servi
 
 ### exists
 
-
 checks if a file of any type or directory exists
 `fs.exists(path)`
 
 Returns true if a file (of any type) or a directory exists at a given
 path. If the file is a broken symbolic link, returns false.
 
-
 ### isFile
-
 
 tests if path is a file
 `fs.isFile(path)`
 
 Returns true if the *path* points to a file.
 
-
 ### isDirectory
-
 
 tests if path is a directory
 `fs.isDirectory(path)`
 
 Returns true if the *path* points to a directory.
 
-
 ### size
-
 
 gets the size of a file
 `fs.size(path)`
 
 Returns the size of the file specified by *path*.
 
-
 ### mtime
-
 
 gets the last modification time of a file
 `fs.mtime(filename)`
 
 Returns the last modification date of the specified file. The date is
 returned as a Unix timestamp (number of seconds elapsed since January 1 1970).
-
 
 ### pathSeparator
 `fs.pathSeparator`
@@ -82,7 +72,6 @@ The function returns the combination of the path and filename, e.g.
 
 ### getTempFile
 
-
 returns the name for a (new) temporary file
 `fs.getTempFile(directory, createFile)`
 
@@ -92,19 +81,14 @@ process can create a file of the same name.
 
 **Note**: The directory *directory* must exist.
 
-
 ### getTempPath
-
 
 returns the temporary directory
 `fs.getTempPath()`
 
 Returns the absolute path of the temporary directory
 
-
-
 ### makeAbsolute
-
 
 makes a given path absolute
 `fs.makeAbsolute(path)`
@@ -112,9 +96,7 @@ makes a given path absolute
 Returns the given string if it is an absolute path, otherwise an
 absolute path to the same location is returned.
 
-
 ### chmod
-
 
 sets file permissions of specified files (non windows only)
 `fs.chmod(path, mode)`
@@ -124,9 +106,7 @@ in *nix `man chmod`.
 
 Returns true on success.
 
-
 ### list
-
 
 returns the directory listing
 `fs.list(path)`
@@ -138,9 +118,7 @@ traversed (or path is not a directory).
 **Note**: this means that list("x") of a directory containing "a" and "b" would
 return ["a", "b"], not ["x/a", "x/b"].
 
-
 ### listTree
-
 
 returns the directory tree
 `fs.listTree(path)`
@@ -151,27 +129,21 @@ of every directory in any visited directory, reporting but not traversing
 symbolic links to directories. The first path is always `""`, the path
 relative to itself.
 
-
 ### makeDirectory
-
 
 creates a directory
 `fs.makeDirectory(path)`
 
 Creates the directory specified by *path*.
 
-
 ### makeDirectoryRecursive
-
 
 creates a directory
 `fs.makeDirectoryRecursive(path)`
 
 Creates the directory hierarchy specified by *path*.
 
-
 ### remove
-
 
 removes a file
 `fs.remove(filename)`
@@ -180,9 +152,7 @@ Removes the file *filename* at the given path. Throws an exception if the
 path corresponds to anything that is not a file or a symbolic link. If
 "path" refers to a symbolic link, removes the symbolic link.
 
-
 ### removeDirectory
-
 
 removes an empty directory
 `fs.removeDirectory(path)`
@@ -190,10 +160,7 @@ removes an empty directory
 Removes a directory if it is empty. Throws an exception if the path is not
 an empty directory.
 
-
-
 ### removeDirectoryRecursive
-
 
 removes a directory
 `fs.removeDirectoryRecursive(path)`
@@ -201,11 +168,9 @@ removes a directory
 Removes a directory with all subelements. Throws an exception if the path
 is not a directory.
 
-
 ## File IO
 
 ### read
-
 
 reads in a file
 `fs.read(filename)`
@@ -213,9 +178,7 @@ reads in a file
 Reads in a file and returns the content as string. Please note that the
 file content must be encoded in UTF-8.
 
-
 ### read64
-
 
 reads in a file as base64
 `fs.read64(filename)`
@@ -223,17 +186,15 @@ reads in a file as base64
 Reads in a file and returns the content as string. The file content is
 Base64 encoded.
 
-
 ### readBuffer
-
 
 reads in a file
 `fs.readBuffer(filename)`
 
 Reads in a file and returns its content in a Buffer object.
 
-
 ### readFileSync
+
 `fs.readFileSync(filename, encoding)`
 
 Reads the contents of the file specified in `filename`. If `encoding` is specified,
@@ -255,11 +216,13 @@ Writes the content into a file. Content can be a string or a Buffer
 object. If the file already exists, it is truncated.
 
 ### writeFileSync
+
 `fs.writeFileSync(filename, content)`
 
 This is an alias for `fs.write(filename, content)`.
 
 ### append
+
 `fs.append(filename, content)`
 
 Writes the content into a file. Content can be a string or a Buffer
@@ -270,7 +233,6 @@ end.
 
 ### copyRecursive
 
-
 copies a directory structure
 `fs.copyRecursive(source, destination)`
 
@@ -280,18 +242,14 @@ Exceptions will be thrown on:
  - specifying a directory for destination when source is a file
  - specifying a directory as source and destination
 
-
 ### CopyFile
-
 
 copies a file into a target file
 `fs.copyFile(source, destination)`
 
 Copies *source* to destination. If Destination is a directory, a file
 of the same name will be created in that directory, else the copy will get
-the
-specified filename.
-
+the specified filename.
 
 ### linkFile
 
@@ -302,7 +260,6 @@ In `linkpath` a symbolic link to `target` will be created.
 
 ### move
 
-
 renames a file
 `fs.move(source, destination)`
 
@@ -311,11 +268,9 @@ specifying a directory for destination when source is a file will throw an
 exception. Likewise, specifying a directory as source and destination will
 fail.
 
-
 ## ZIP
 
 ### unzipFile
-
 
 unzips a file
 `fs.unzipFile(filename, outpath, skipPaths, overwrite, password)`
@@ -326,9 +281,7 @@ to *true*.
 
 Returns *true* if the file was unzipped successfully.
 
-
 ### zipFile
-
 
 zips a file
 `fs.zipFile(filename, chdir, files, password)`
@@ -341,5 +294,3 @@ zip file, so when it is unzipped filenames will be relative.
 Specifying a password is optional.
 
 Returns *true* if the file was zipped successfully.
-
-

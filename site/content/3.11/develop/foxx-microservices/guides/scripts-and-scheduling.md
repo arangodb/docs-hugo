@@ -43,10 +43,10 @@ return value. Please note that this data will be converted to JSON.
 Any errors raised by the script will be handled depending on how
 the script was invoked:
 
-* if the script was invoked manually (e.g. using the Foxx CLI), it will return
+- if the script was invoked manually (e.g. using the Foxx CLI), it will return
   an error response using the exception's `statusCode` property or `500`.
 
-* if the script was invoked from a Foxx job queue, the job's failure counter
+- if the script was invoked from a Foxx job queue, the job's failure counter
   will be incremented and the job will be rescheduled or
   marked as failed if no attempts remain.
 
@@ -66,13 +66,13 @@ module.exports = `Hello ${argv[0]}!`;
 Scripts named `setup` or `teardown` are considered lifecycle scripts and
 will (by default) be invoked automatically by Foxx:
 
-* when a service is installed, upgraded or replaced, the new service's
+- when a service is installed, upgraded or replaced, the new service's
   `setup` script will be executed before it is mounted
 
-* when a service is removed or replaced, the old service's `teardown`
+- when a service is removed or replaced, the old service's `teardown`
   script will be executed before it is unmounted
 
-* when a service is upgraded, the old service's `teardown` script *can*
+- when a service is upgraded, the old service's `teardown` script *can*
   optionally be executed before it is unmounted
 
 However it's possible to override this behavior as needed.

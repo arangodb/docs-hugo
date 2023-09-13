@@ -55,7 +55,6 @@ Critical issues (ArangoDB Technical & Security Alerts) are also found at
 | **Date Added:** 2019-10-09 <br> **Component:** arangobackup <br> **Deployment Mode:** All <br> **Description:** The startup option `--operation` works as positional argument only, e.g. `arangobackup list`. The alternative syntax `arangobackup --operation list` is not accepted. <br> **Affected Versions:** 3.5.x, 3.6.x, 3.7.x <br> **Fixed in Versions:** - <br> **Reference:** N/A |
 | **Date Added:** 2021-08-06 <br> **Component:** Coordinator <br> **Deployment Mode:** Cluster <br> **Description:** Restoring a hot backup to another deployment that has databases with the same names as in the backup can cause these databases to become inaccessible on Coordinators. They can be listed with `db._databases()` in arangosh, but not accessed using `db._useDatabase()`. <br> **Affected Versions:** 3.6.x, 3.7.x, 3.8.x <br> **Fixed in Versions:** 3.7.14, 3.8.1 <br> **Reference:** [BTS-527](https://arangodb.atlassian.net/browse/BTS-527) (internal) |
 
-
 ## Schema Validation
 
 | Issue      |

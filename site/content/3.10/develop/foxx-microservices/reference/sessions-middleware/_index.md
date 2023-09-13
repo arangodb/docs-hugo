@@ -47,11 +47,11 @@ Creates a session middleware.
 
 **Arguments**
 
-* **options**: `Object`
+- **options**: `Object`
 
   An object with the following properties:
 
-  * **storage**: `Storage`
+  - **storage**: `Storage`
 
     Storage that is used to persist the sessions.
 
@@ -61,7 +61,7 @@ Creates a session middleware.
     If a string or collection is passed instead of a Storage, it is used
     to create a [Collection Storage](session-storages/collection-storage.md).
 
-  * **transport**: `Transport | Array<Transport>`
+  - **transport**: `Transport | Array<Transport>`
 
     Transport or array of transports that is used to extract the session
     identifiers from incoming requests and inject them into outgoing responses.
@@ -79,7 +79,7 @@ Creates a session middleware.
     [Header Transport](session-transports/header-transport.md) are used with the default
     settings instead.
 
-  * **autoCreate**: `boolean` (Default: `true`)
+  - **autoCreate**: `boolean` (Default: `true`)
 
     If enabled the session storage's `new` method is invoked to create an
     empty session whenever the transport failed to return a session for the

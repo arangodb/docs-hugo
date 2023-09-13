@@ -58,7 +58,6 @@ actual list of roles of a user is derived from the LDAP server.
 See [Roles search](#roles-search) below for details about method (b)
 and for the associated configuration options.
 
-
 ## Fundamental options
 
 The fundamental options for specifying how to access the LDAP server are

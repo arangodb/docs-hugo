@@ -216,6 +216,7 @@ db._query(`
 ```
 
 Result:
+
 ```json
 [
   [

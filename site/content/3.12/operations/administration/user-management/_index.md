@@ -326,7 +326,6 @@ no user has access to the *\_users* collection in the *\_system*
 database. All changes to the access levels must be done using the
 *@arangodb/users* module, the `/_users/` API or the web interface.
 
-
 ### LDAP Users
 
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}

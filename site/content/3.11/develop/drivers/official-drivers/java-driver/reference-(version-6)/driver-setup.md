@@ -252,7 +252,6 @@ Connection TTL can be disabled setting it to `null`:
 
 The default TTL is `null` (no automatic connection closure).
 
-
 ## VST Keep-Alive
 
 Since version 6.8 the driver supports setting keep-alive interval (in seconds)

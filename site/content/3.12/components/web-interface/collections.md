@@ -72,4 +72,3 @@ II. JSON documents in a list
   { "_key": "key2", ... }
 ]
 ```
-

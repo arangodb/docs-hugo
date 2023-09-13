@@ -654,4 +654,3 @@ threads in parallel. The number of parallel index creation threads is currently
 set to 2, but future versions of ArangoDB may increase this value.
 Parallel index creation is only triggered for collections with at least 120,000
 documents.
-

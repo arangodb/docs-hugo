@@ -8,7 +8,7 @@ archetype: default
 ---
 The request object specifies the following properties:
 
-* **arangoUser**: `string | null`
+- **arangoUser**: `string | null`
 
   The authenticated ArangoDB username used to make the request.
   This value is only set if authentication is enabled in ArangoDB and the
@@ -18,13 +18,13 @@ The request object specifies the following properties:
   but this property can be useful if you need to integrate with ArangoDB's
   own authentication mechanisms.
 
-* **arangoVersion**: `number`
+- **arangoVersion**: `number`
 
   The numeric value of the `x-arango-version` header or the numeric version
   of the ArangoDB server (e.g. `30807` for version 3.8.7) if no valid header
   was provided.
 
-* **auth**: `object | null`
+- **auth**: `object | null`
 
   The credentials supplied in the `authorization` header if any.
 
@@ -36,12 +36,12 @@ The request object specifies the following properties:
   If the request uses bearer authentication, the value is an object like
   `{bearer: string}`.
 
-* **baseUrl**: `string`
+- **baseUrl**: `string`
 
   Root-relative base URL of the service, i.e. the prefix `"/_db/"` followed
   by the value of `database`.
 
-* **body**: `any`
+- **body**: `any`
 
   The processed and validated request body for the current route.
   If no body has been defined for the current route, the value is
@@ -50,43 +50,43 @@ The request object specifies the following properties:
   For details on how request bodies can be processed and validated by Foxx
   see the [body method of the endpoint object](endpoints.md#body).
 
-* **context**: `Context`
+- **context**: `Context`
 
   The [service context](../service-context.md) in which the router was mounted
   (rather than the context in which the route was defined).
 
-* **database**: `string`
+- **database**: `string`
 
   The name of the database in which the request is being handled, e.g. `"_system"`.
 
-* **headers**: `object`
+- **headers**: `object`
 
   The raw headers object.
 
   For details on how request headers can be validated by Foxx see the
   [header method of the endpoint object](endpoints.md#header).
 
-* **hostname**: `string`
+- **hostname**: `string`
 
   The hostname (domain name) indicated in the request headers.
 
   Defaults to the hostname portion (i.e. excluding the port) of the `Host`
   header and falls back to the listening address of the server.
 
-* **method**: `string`
+- **method**: `string`
 
   The HTTP verb used to make the request, e.g. `"GET"`.
 
-* **originalUrl**: `string`
+- **originalUrl**: `string`
 
   Root-relative URL of the request, i.e. `path` followed by the raw query
   parameters, if any.
 
-* **path**: `string`
+- **path**: `string`
 
   Database-relative path of the request URL (not including the query parameters).
 
-* **pathParams**: `object`
+- **pathParams**: `object`
 
   An object mapping the names of path parameters of the current route to
   their validated values.
@@ -94,7 +94,7 @@ The request object specifies the following properties:
   For details on how path parameters can be validated by Foxx see the
   [pathParam method of the endpoint object](endpoints.md#pathparam).
 
-* **port**: `number`
+- **port**: `number`
 
   The port indicated in the request headers.
 
@@ -107,7 +107,7 @@ The request object specifies the following properties:
   this is set to the port portion of the `X-Forwarded-Host` header
   (or appropriate default port) if present.
 
-* **protocol**: `string`
+- **protocol**: `string`
 
   The protocol used for the request.
 
@@ -117,7 +117,7 @@ The request object specifies the following properties:
   If the request was made using a trusted proxy (see `trustProxy`),
   this is set to the value of the `X-Forwarded-Proto` header if present.
 
-* **queryParams**: `object`
+- **queryParams**: `object`
 
   An object mapping the names of query parameters of the current route to
   their validated values.
@@ -125,18 +125,18 @@ The request object specifies the following properties:
   For details on how query parameters can be validated by Foxx see the
   [queryParam method of the endpoint object](endpoints.md#queryparam).
 
-* **rawBody**: `Buffer`
+- **rawBody**: `Buffer`
 
   The raw, unparsed, unvalidated request body as a buffer.
 
-* **remoteAddress**: `string`
+- **remoteAddress**: `string`
 
   The IP of the client that made the request.
 
   If the request was made using a trusted proxy (see `trustProxy`),
   this is set to the first IP listed in the `X-Forwarded-For` header if present.
 
-* **remoteAddresses**: `Array<string>`
+- **remoteAddresses**: `Array<string>`
 
   A list containing the IP addresses used to make the request.
 
@@ -145,21 +145,21 @@ The request object specifies the following properties:
   If the request was made using a trusted proxy (see `trustProxy`),
   this is set to the list of IPs specified in the `X-Forwarded-For` header if present.
 
-* **remotePort**: `number`
+- **remotePort**: `number`
 
   The listening port of the client that made the request.
 
   If the request was made using a trusted proxy (see `trustProxy`),
   this is set to the port specified in the `X-Forwarded-Port` header if present.
 
-* **secure**: `boolean`
+- **secure**: `boolean`
 
   Whether the request was made over a secure connection (i.e. HTTPS).
 
   This is set to `false` when `protocol` is `"http"` and `true` when
   `protocol` is `"https"`.
 
-* **suffix**: `string`
+- **suffix**: `string`
 
   The trailing path relative to the current route if the current route ends
   in a wildcard (e.g. `/something/*`).
@@ -169,18 +169,18 @@ The request object specifies the following properties:
   Also note that the suffix may contain path segments like `..` which may have
   special meaning if the suffix is used to build filesystem paths.
 
-* **trustProxy**: `boolean`
+- **trustProxy**: `boolean`
 
   Indicates whether the request was made using a trusted proxy.
   If the origin server's address was specified in the ArangoDB configuration
   using `--web interface.trusted-proxy` or the service's `trustProxy` setting is
   enabled, this is `true`, otherwise it is `false`.
 
-* **url**: `string`
+- **url**: `string`
 
   The URL of the request.
 
-* **xhr**: `boolean`
+- **xhr**: `boolean`
 
   Whether the request indicates it was made within a browser using AJAX.
 
@@ -232,15 +232,15 @@ Gets the value of a cookie by name.
 
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Name of the cookie.
 
-* **options**: `object` (optional)
+- **options**: `object` (optional)
 
   An object with any of the following properties:
 
-  * **secret**: `string` (optional)
+  - **secret**: `string` (optional)
 
     Secret that was used to sign the cookie.
 
@@ -248,7 +248,7 @@ Gets the value of a cookie by name.
     in a second cookie with the same name and the suffix `.sig`.
     Otherwise, the signature (if present) is ignored.
 
-  * **algorithm**: `string` (Default: `"sha256"`)
+  - **algorithm**: `string` (Default: `"sha256"`)
 
     Algorithm that was used to sign the cookie.
 
@@ -269,7 +269,7 @@ Gets the value of a header by name. You can validate request headers using the
 
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Name of the header.
 
@@ -320,11 +320,11 @@ to a full URL.
 
 **Arguments**
 
-* **path**: `string`
+- **path**: `string`
 
   The path to resolve.
 
-* **query**: `string | object`
+- **query**: `string | object`
 
   A string or object with query parameters to add to the URL.
 
@@ -341,7 +341,7 @@ Looks up a parameter by name, preferring `pathParams` over `queryParams`.
 It's probably better style to use the `req.pathParams` or `req.queryParams`
 objects directly.
 
-* **name**: `string`
+- **name**: `string`
 
   Name of the parameter.
 
@@ -356,7 +356,7 @@ This method wraps the range header parsing method of the
 
 **Arguments**
 
-* **size**: `number` (Default: `Infinity`)
+- **size**: `number` (Default: `Infinity`)
 
   Length of the satisfiable range (e.g. number of bytes in the full response).
   If present, ranges exceeding the size are considered unsatisfiable.
@@ -386,11 +386,11 @@ Looks up the URL of a named route for the given parameters.
 
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Name of the route to look up.
 
-* **params**: `object` (optional)
+- **params**: `object` (optional)
 
   An object containing values for the (path or query) parameters of the route.
 

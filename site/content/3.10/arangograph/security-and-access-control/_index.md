@@ -29,7 +29,6 @@ The hierarchial structure of the resources (organization-project-deployment) is 
 If you lock a backup policy of a deployment or an IP allowlist, CA certificate, and IAM provider of a project, it is still possible to delete
 the corresponding parent resource without unlocking those properties first.
 {{< /info >}}
-
  
 ## Policy
 
@@ -526,13 +525,14 @@ all the permissions of this role are inherited in lower levels -
 permissions are inherited downwards from an organization to its projects and
 from a project to its deployments.
 
-For more general permissions, which you want to be propagated to other levels, add a role for a user/group 
-at the organization level.
+For more general permissions, which you want to be propagated to other levels,
+add a role for a user/group at the organization level.
 For example, if you bind the `deployment-viewer` role to user `John` in the
-organization policy, `John` will have the role permissions in all projects of that organization and all deployments of the projects.
+organization policy, `John` will have the role permissions in all projects of
+that organization and all deployments of the projects.
 
-For more restrictive permissions, which you don't necessarily want to be propagated to other levels, add a role at the project
-or even deployment level.
+For more restrictive permissions, which you don't necessarily want to be
+propagated to other levels, add a role at the project or even deployment level.
 For example, if you bind the `deployment-viewer` role to user `John`
 in a project, `John` will have the role permissions in
 this project as well as in all the deployments of it, but not
@@ -577,19 +577,30 @@ Note that users who do not meet the restrictions will not be granted permissions
 the organization. These users can still be members of the organization.
 {{< /info >}}
 
-Using the first option, you can limit which **authentication providers** are accepted for users trying to access an organization in ArangoGraph. The following commands are available to configure this option:
+Using the first option, you can limit which **authentication providers** are
+accepted for users trying to access an organization in ArangoGraph.
+The following commands are available to configure this option:
 
-- `oasisctl get organization authentication providers` - allows you to see which authentication providers are enabled for accessing a specific organization
-- `oasisctl update organization authentication providers` - allows you to update a list of authentication providers for an organization to which the authenticated user has access
+- `oasisctl get organization authentication providers` - allows you to see which
+  authentication providers are enabled for accessing a specific organization
+- `oasisctl update organization authentication providers` - allows you to update
+  a list of authentication providers for an organization to which the
+  authenticated user has access
   - `--enable-github` - if set, allow access from user accounts authenticated via Github
   - `--enable-google` - if set, allow access from user accounts authenticated via Google
-  - `--enable-username-password` - if set, allow access from user accounts authenticated via a username/password
+  - `--enable-username-password` - if set, allow access from user accounts
+    authenticated via a username/password
 
-Using the second option, you can configure a **list of domains**, and only users with email addresses from the specified domains will be able to access an organization. The following commands are available to configure this option:
+Using the second option, you can configure a **list of domains**, and only users
+with email addresses from the specified domains will be able to access an
+organization. The following commands are available to configure this option:
 
-- `oasisctl get organization email domain restrictions -o <your_organization_id>` - allows you to see which domains are in the allowed list for a specific organization
-- `oasisctl update organization email domain restrictions -o <your_organization_id> --allowed-domain=<domain_name1> --allowed-domain=<domain_name2>` - allows you to update a list of the allowed domains for a specific organization
-- `oasisctl update organization email domain restrictions -o <your_organization_id> --allowed-domain=` - allows you to reset a list and accept any domains for accessing a specific organization
+- `oasisctl get organization email domain restrictions -o <your_organization_id>` -
+  allows you to see which domains are in the allowed list for a specific organization
+- `oasisctl update organization email domain restrictions -o <your_organization_id> --allowed-domain=<domain_name1> --allowed-domain=<domain_name2>` -
+  allows you to update a list of the allowed domains for a specific organization
+- `oasisctl update organization email domain restrictions -o <your_organization_id> --allowed-domain=` -
+  allows you to reset a list and accept any domains for accessing a specific organization
 
 ## Using an audit log
 
@@ -606,13 +617,18 @@ projects belonging to that organization.
    
    - **Name** - enter a name for your audit log.
    - **Description** - enter an optional description for your audit log.
-   - **Destinations** - specify one or several destinations to which you want to upload the audit log. If you choose **Upload to cloud**, the log will be available on the **Audit logs** tab of your organization. To send the log entries to your custom destination, specify a destination URL with authentication parameters (the **HTTP destination** option).
+   - **Destinations** - specify one or several destinations to which you want to
+     upload the audit log. If you choose **Upload to cloud**, the log will be
+     available on the **Audit logs** tab of your organization. To send the log
+     entries to your custom destination, specify a destination URL with
+     authentication parameters (the **HTTP destination** option).
 
      {{< info >}}
      The **Upload to cloud** option is not available for the free-to-try tier.
      {{< /info >}}
 
-   - **Excluded topics** - select topics that will not be included in the log. Please note, that some are excluded by default (for example, `audit-document`).
+   - **Excluded topics** - select topics that will not be included in the log.
+     Please note, that some are excluded by default (for example, `audit-document`).
 
      {{< warning >}}
      Enabling the audit log for all events will have a negative impact on performance.
@@ -622,4 +638,5 @@ projects belonging to that organization.
 
    ![ArangoGraph audit log](../../../images/arangograph-audit-log.png)
 
-4. Click **Create** to add the audit log. You can now use it in the projects belonging to your organization.
+4. Click **Create** to add the audit log. You can now use it in the projects
+   belonging to your organization.

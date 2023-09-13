@@ -29,11 +29,11 @@ Creates a [Transport](_index.md) that can be used in the sessions middleware.
 
 **Arguments**
 
-* **options**: `Object` (optional)
+- **options**: `Object` (optional)
 
   An object with the following properties:
 
-  * **name**: `string` (Default: `X-Session-Id`)
+  - **name**: `string` (Default: `X-Session-Id`)
 
     Name of the header that contains the session identifier (not case sensitive).
 

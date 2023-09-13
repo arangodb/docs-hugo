@@ -183,7 +183,6 @@ FOR doc IN collection
 … the projection can be satisfied by a single-attribute index on attribute `b`,
 but now also by a combined index on attributes `a` and `b` (or `b` and `a`).
 
-
 ### AQL optimizer improvements
 
 The "move-calculations-up" optimizer rule was improved so that it can move
@@ -965,55 +964,186 @@ and bandwidth:
 {"_key":"test","_rev":..., ...}
 ```
 
+Also see [_arangodump_ Dump Output Format](programs-arangodump-examples.html#dump-output-format).
 
+Using the new non-enveloped dump format also allows _arangorestore_ to
+parallelize restore operations for individual collections. This is not possible
+with the old, enveloped format.
 
+### _arangorestore_ parallelization for single collections
 
+_arangorestore_ can now parallelize restore operations even for single
+collections, which can lead to increased restore performance.
+This requires that a dump in the new non-enveloped dump format is used, and that
+there are enough _arangorestore_ threads to employ.
 
+The dump format can be configured by specifying the `--envelope false` option
+when invoking arangodump, and the number of restore threads can be adjusted by
+setting _arangorestore_'s `--threads` option.
 
+### _arangodump_ dumping of individual shards
 
+_arangodump_ can now optionally dump individual shards only, by specifying the
+`--shard` option one or multiple times. This option can be used to split the
+dump of a large collection with multiple shards into multiple separate dump
+processes, which could be run against different Coordinators etc.
 
+### _arangodump_ and _arangorestore_ with JWT secret
 
+_arangodump_ and _arangorestore_ can now also be invoked by providing the cluster's
+JWT secret instead of the username/password combination. Both tools now provide
+the options `--server.jwt-secret-keyfile` (to read the JWT secret from a file)
+and `--server.ask-jwt-secret` (to enter it manually).
 
+### _arangobench_ with custom queries
 
+In addition to executing the predefined benchmarks, the _arangobench_ client tool
+now offers a new test case named `custom-query` for running arbitrary AQL
+queries against an ArangoDB installation.
 
+To run a custom AQL query, the query needs to be specified in either the
+`--custom-query` option or the `--custom-query-file` option. In the former case
+the query string can be passed on the command-line, in the latter case the
+query string will be read from a file.
 
+### Continuing _arangorestore_ operations
 
+_arangorestore_ now provides a `--continue` option. Setting it will make
+_arangorestore_ keep track of the restore progress, so if the restore process
+gets aborted it can later be continued from the point it left off.
 
+### Controlling the number of documents per batch for _arangoexport_
 
+_arangoexport_ now has a `--documents-per-batch` option that can be used to limit
+the number of documents to be returned in each batch from the server. This is
+useful if a query is run on overly large documents, which would lead to the
+response sizes getting out of hand with the default number of documents per
+batch (1000).
 
+### Controlling the maximum query runtime of _arangoexport_
 
+_arangoexport_ now has a `--query-max-runtime` option to limit the runtime of
+queries it executes.
 
+### _arangorestore_ option to enable revision trees
 
+<small>Introduced in: v3.8.7, v3.9.2</small>
 
+A new `--enable-revision-trees` option has been added to _arangorestore_, which
+adds the `syncByRevision` and `usesRevisionsAsDocumentIds` attributes to the
+collection structure if they are missing. As a consequence, these collections
+created by arangorestore are able to use revision trees and a faster
+getting-in-sync procedure after a restart.
 
+The option defaults to `true`, meaning that the attributes are added if they are
+missing. If you set the option to `false`, the attributes are not added to the
+collection structure. If the attributes are already present in the dump data, they
+are not modified by arangorestore, irrespective of the setting of this option.
 
-## Miscellaneous
+Miscellaneous
+-------------
 
+### Cluster support for two APIs
 
+- Added cluster support for the JavaScript API method `collection.checksum()`
+  and the REST HTTP API endpoint `GET /_api/collection/{collection-name}/checksum`,
+  which calculate CRC checksums for collections.
 
+- Added cluster support for the JavaScript API method `db._engineStats()`
+  and the REST HTTP API endpoint `GET /_api/engine/stats`, which provide
+  runtime information about the storage engine state.
 
+### I/O heartbeat
 
+<small>Introduced in: v3.8.7, v3.9.2</small>
 
+An I/O heartbeat has been added which checks that the underlying volume is
+writable with reasonable performance. The test is done every 15 seconds and can
+be switched off.
 
+Use the accompanying new metrics to check for test failures:
 
+| Label | Description |
+|:------|:------------|
+| `arangodb_ioheartbeat_delays_total` | Total number of delayed I/O heartbeats. |
+| `arangodb_ioheartbeat_duration` | Histogram of execution times in microseconds. |
+| `arangodb_ioheartbeat_failures_total` | Total number of failures. |
 
+These metrics are only populated if the new `--database.io-heartbeat` startup
+option is set to `true` (which is the default).
 
-## Internal changes
+Internal changes
+----------------
 
+### Library version upgrades
 
+The bundled version of the Snappy compression/decompression library has been
+upgraded to 1.1.8.
 
+The bundled version of libunwind has been upgraded to 1.5.
 
+For ArangoDB 3.8, the bundled version of rclone is 1.51.0.
 
+### Spliced subqueries
 
+The AQL optimizer rule "splice-subqueries" is now mandatory, in the sense that
+it cannot be disabled anymore. As a side effect of this change, there will no
+query execution plans created by 3.8 that contain execution nodes of type
+`SubqueryNode`. `SubqueryNode`s will only be used during query planning and
+optimization, but at the end of the query optimization phase will all have
+been replaced with nodes of types `SubqueryStartNode` and `SubqueryEndNode`.
 
+The code to execute non-spliced subqueries remains in place so that 3.8 can
+still execute queries planned on a 3.7 instance with the "splice-subqueries"
+optimizer rule intentionally turned off. The code for executing non-spliced
+subqueries can be removed in 3.9.
 
+### Query register usage
 
+There is an AQL query execution plan register usage optimization that may
+positively affect some AQL queries that use a lot of variables that are only
+needed in certain parts of the query. The positive effect will come from saving
+registers, which directly translates to saving columns in *AqlItemBlocks*.
 
+Previously, the number of registers that were planned for each depth level of
+the query never decreased when going from one level to the next. Even though
+unused registers were recycled since 3.7, this did not lead to unused registers
+being completely dismantled.
 
+Now there is an extra step at the end of the register planning that keeps track
+of the actually used registers on each depth, and that will shrink the number
+of registers for the depth to the id of the maximum register. This is done for
+each depth separately. Unneeded registers on the right hand side of the maximum
+used register are now discarded. Unused registers on the left-hand side of the
+maximum used register id are not discarded, because we still need to guarantee
+that registers from depths above stay in the same slot when starting a new
+depth.
 
+### Better protection against overwhelm
 
+The cluster now protects itself better against being overwhelmed by too
+many concurrent requests.
 
+This is mostly achieved by limiting the total amount of requests from
+the low priority queue which are ongoing concurrently. There is a new option
+`--server.ongoing-low-priority-multiplier` (default is 4), which
+essentially says that only 4 times as many requests may be ongoing
+concurrently as there are worker threads. The default is chosen such
+that it is sensible for most workloads, but in special situations it
+can help to adjust the value.
 
+See [ArangoDB Server _Server_ Options](programs-arangod-options.html#--serverongoing-low-priority-multiplier)
+for details and hints for configuration.
 
+There have been further improvements, in particular to ensure that
+certain APIs to diagnose the situation in the cluster still work, even
+when a lot of normal requests are piling up. For example, the cluster
+health API will still be available in such a case.
 
+Furthermore, followers will now be dropped much later and only if they
+are actually failed, which leads to a lot fewer shard re-synchronizations
+in case of very high load.
 
+Overall, these measures should all be below the surface and not be
+visible to the user at all (apart from preventing problems under high
+load).

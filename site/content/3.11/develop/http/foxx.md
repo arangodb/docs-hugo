@@ -16,7 +16,6 @@ For more information on Foxx and its JavaScript APIs see the
 
 ## Management
 
-
 ### List the installed services
 
 ```openapi
@@ -53,7 +52,6 @@ paths:
       tags:
         - Foxx
 ```
-
 
 ### Get the service description
 
@@ -95,7 +93,6 @@ paths:
       tags:
         - Foxx
 ```
-
 
 ### Install a new service
 
@@ -171,7 +168,6 @@ paths:
         - Foxx
 ```
 
-
 ### Uninstall a service
 
 ```openapi
@@ -205,7 +201,6 @@ paths:
       tags:
         - Foxx
 ```
-
 
 ### Replace a service
 
@@ -293,7 +288,6 @@ paths:
         - Foxx
 ```
 
-
 ### Upgrade a service
 
 ```openapi
@@ -380,9 +374,7 @@ paths:
         - Foxx
 ```
 
-
 ## Configuration
-
 
 ### Get the configuration options
 
@@ -411,7 +403,6 @@ paths:
       tags:
         - Foxx
 ```
-
 
 ### Update the configuration options
 
@@ -453,7 +444,6 @@ paths:
         - Foxx
 ```
 
-
 ### Replace the configuration options
 
 ```openapi
@@ -494,7 +484,6 @@ paths:
         - Foxx
 ```
 
-
 ### Get the dependency options
 
 ```openapi
@@ -522,7 +511,6 @@ paths:
       tags:
         - Foxx
 ```
-
 
 ### Update the dependency options
 
@@ -564,7 +552,6 @@ paths:
         - Foxx
 ```
 
-
 ### Replace the dependency options
 
 ```openapi
@@ -605,9 +592,7 @@ paths:
         - Foxx
 ```
 
-
 ## Miscellaneous
-
 
 ### List the service scripts
 
@@ -635,7 +620,6 @@ paths:
       tags:
         - Foxx
 ```
-
 
 ### Run a service script
 
@@ -681,7 +665,6 @@ paths:
       tags:
         - Foxx
 ```
-
 
 ### Run the service tests
 
@@ -751,7 +734,6 @@ paths:
         - Foxx
 ```
 
-
 ### Enable the development mode
 
 ```openapi
@@ -786,7 +768,6 @@ paths:
         - Foxx
 ```
 
-
 ### Disable the development mode
 
 ```openapi
@@ -816,7 +797,6 @@ paths:
         - Foxx
 ```
 
-
 ### Get the service README
 
 ```openapi
@@ -845,7 +825,6 @@ paths:
         - Foxx
 ```
 
-
 ### Get the Swagger description
 
 ```openapi
@@ -872,7 +851,6 @@ paths:
       tags:
         - Foxx
 ```
-
 
 ### Download a service bundle
 
@@ -907,7 +885,6 @@ paths:
         - Foxx
 ```
 
-
 ### Commit the local service state
 
 ```openapi
@@ -934,4 +911,3 @@ paths:
       tags:
         - Foxx
 ```
-

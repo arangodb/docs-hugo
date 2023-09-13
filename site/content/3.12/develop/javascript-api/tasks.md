@@ -65,7 +65,6 @@ The following server-side commands register a task. The command to be
 executed is a JavaScript string snippet which prints a message to the
 server's logfile:
 
-
 ```js
 const tasks = require("@arangodb/tasks");
 
@@ -76,7 +75,6 @@ tasks.register({
   command: "require('console').log('hello from snippet task');"
 });
 ```
-
 
 The above has register a task with id *mytask-1*, which will be executed
 every 15 seconds on the server. The task will write a log message whenever
@@ -155,7 +153,6 @@ tasks.unregister("mytask-1");
 ```
 
 Note that unregistering a non-existing task will throw an exception.
-
 
 ## List all tasks
 

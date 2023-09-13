@@ -93,8 +93,8 @@ path length, and are thereby upper-bounded.
 
 The k Paths traversal can be used as foundation for several other algorithms:
 
-* **Transportation** of any kind (e.g. road traffic, network package routing)
-* **Flow problems**: We need to transfer items from A to B, which alternatives
+- **Transportation** of any kind (e.g. road traffic, network package routing)
+- **Flow problems**: We need to transfer items from A to B, which alternatives
   do we have? What is their capacity?
 
 ## Syntax

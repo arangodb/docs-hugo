@@ -36,43 +36,43 @@ Creates a [Transport](_index.md) that can be used in the sessions middleware.
 
 **Arguments**
 
-* **options**: `Object` (optional)
+- **options**: `Object` (optional)
 
   An object with the following properties:
 
-  * **name**: `string` (Default: `"sid"`)
+  - **name**: `string` (Default: `"sid"`)
 
     The name of the cookie.
 
-  * **ttl**: `number` (optional)
+  - **ttl**: `number` (optional)
 
     Cookie lifetime in seconds. Note that this does not affect the storage TTL
     (i.e. how long the session itself is considered valid), just how long the
     cookie should be stored by the client.
 
-  * **algorithm**: `string` (optional)
+  - **algorithm**: `string` (optional)
 
     The algorithm used to sign and verify the cookie. If no algorithm is
     specified, the cookie is not signed or verified.
     See the [cookie method on the response object](../../routers/response.md).
 
-  * **secret**: `string` (optional)
+  - **secret**: `string` (optional)
 
     Secret to use for the signed cookie. Ignored if no algorithm is provided.
 
-  * **path**: `string` (optional)
+  - **path**: `string` (optional)
 
     Path for which the cookie should be issued.
 
-  * **domain**: `string` (optional)
+  - **domain**: `string` (optional)
 
     Domain for which the cookie should be issued.
 
-  * **secure**: `boolean` (Default: `false`)
+  - **secure**: `boolean` (Default: `false`)
 
     Whether the cookie should be marked as secure (i.e. HTTPS/SSL-only).
 
-  * **httpOnly**: `boolean` (Default: `false`)
+  - **httpOnly**: `boolean` (Default: `false`)
 
     Whether the cookie should be marked as HTTP-only (rather than also
     exposing it to client-side code).

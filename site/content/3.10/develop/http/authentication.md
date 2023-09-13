@@ -172,7 +172,6 @@ Please note that all JWT tokens must contain the `iss` field with string value
 }
 ```
 
-
 #### Create a JWT session token
 
 ```openapi
@@ -234,7 +233,6 @@ paths:
         - Authentication
 ```
 
-
 ### JWT superuser tokens
 
 To access specific internal APIs as well as Agency and DB-Server instances a
@@ -283,7 +281,6 @@ curl -v -H "Authorization: bearer $(jwtgen -s <my-secret> -e 3600 -a "HS256" -c 
 To reload the JWT secrets of a local arangod process without a restart, you
 may use the following RESTful API. A `POST` request reloads the secret, a
 `GET` request may be used to load information about the currently used secrets.
-
 
 ### Get information about the loaded JWT secrets
 
@@ -345,7 +342,6 @@ paths:
       tags:
         - Authentication
 ```
-
 
 ### Hot-reload the JWT secret(s) from disk
 
@@ -411,7 +407,6 @@ paths:
       tags:
         - Authentication
 ```
-
 
 Example result:
 

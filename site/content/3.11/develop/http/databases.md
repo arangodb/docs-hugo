@@ -52,7 +52,6 @@ Non-NFC-normalized names are rejected by the server.
 
 ## Manage databases
 
-
 ### Get information about the current database
 
 ```openapi

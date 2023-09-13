@@ -20,19 +20,17 @@ The AQL query results cache is only available for single servers, i.e. servers t
 are not part of a cluster setup.
 {{< /info >}}
 
-
 ## Modes
 
 The cache can be operated in the following modes:
 
-* `off`: the cache is disabled. No query results will be stored
-* `on`: the cache will store the results of all AQL queries unless their `cache`
+- `off`: the cache is disabled. No query results will be stored
+- `on`: the cache will store the results of all AQL queries unless their `cache`
   attribute flag is set to `false`
-* `demand`: the cache will store the results of AQL queries that have their
+- `demand`: the cache will store the results of AQL queries that have their
   `cache` attribute set to `true`, but will ignore all others
 
 The mode can be set at server startup and later changed at runtime.
-
 
 ## Query eligibility
 
@@ -59,15 +57,15 @@ executions of the same query.
 
 A query is eligible for caching only if all of the following conditions are met:
 
-* the server the query executes on is a single server (i.e. not part of a cluster)
-* the query string is at least 8 characters long 
-* the query is a read-only query and does not modify data in any collection
-* no warnings were produced while executing the query
-* the query is deterministic and only uses deterministic functions whose results
+- the server the query executes on is a single server (i.e. not part of a cluster)
+- the query string is at least 8 characters long 
+- the query is a read-only query and does not modify data in any collection
+- no warnings were produced while executing the query
+- the query is deterministic and only uses deterministic functions whose results
   are marked as cacheable
-* the size of the query result does not exceed the cache's configured maximal
+- the size of the query result does not exceed the cache's configured maximal
   size for individual cache results or cumulated results
-* the query is not executed using a streaming cursor
+- the query is not executed using a streaming cursor
 
 The usage of non-deterministic functions leads to a query not being cacheable.
 This is intentional to avoid caching of function results which should rather
@@ -75,7 +73,6 @@ be calculated on each invocation of the query (e.g. `RAND()` or `DATE_NOW()`).
 
 The query results cache considers all user-defined AQL functions to be non-deterministic
 as it has no insight into these functions.
-
 
 ## Cache invalidation
 
@@ -104,7 +101,6 @@ FOR user IN users
 Modifying data in other collections than the named two will not lead to this
 query result being removed from the cache.
 
-
 ## Performance considerations
 
 The query results cache is organized as a hash table, so looking up whether a query result
@@ -131,7 +127,6 @@ small result sets that take long to calculate. If query results are very big and
 most of the query time is spent on copying the result from the cache to the client,
 then the cache will not provide much benefit.
 
-
 ## Global configuration
 
 The query results cache can be configured at server start using the configuration parameter
@@ -147,10 +142,10 @@ require("@arangodb/aql/cache").properties({ mode: "on" });
 The maximum number of cached results in the cache for each database can be configured
 at server start using the following configuration parameters:
 
-* `--query.cache-entries`: maximum number of results in query result cache per database
-* `--query.cache-entries-max-size`: maximum cumulated size of results in query result cache per database
-* `--query.cache-entry-max-size`: maximum size of an individual result entry in query result cache
-* `--query.cache-include-system-collections`: whether or not to include system collection queries in the query result cache
+- `--query.cache-entries`: maximum number of results in query result cache per database
+- `--query.cache-entries-max-size`: maximum cumulated size of results in query result cache per database
+- `--query.cache-entry-max-size`: maximum size of an individual result entry in query result cache
+- `--query.cache-include-system-collections`: whether or not to include system collection queries in the query result cache
 
 These parameters can be used to put an upper bound on the number and size of query 
 results in each database's query cache and thus restrict the cache's memory consumption.
@@ -170,7 +165,6 @@ The above will limit the number of cached results in the query results cache to 
 results per database, and to 8 MB cumulated query result size per database. The maximum
 size of each query cache entry is restricted to 8MB. Queries that involve system
 collections are excluded from caching.
-
 
 ## Per-query configuration
 
@@ -207,7 +201,6 @@ Each query result returned will contain a `cached` attribute. This will be set t
 if the result was retrieved from the query cache, and `false` otherwise. Clients can use
 this attribute to check if a specific query was served from the cache or not.
 
-
 ## Query results cache inspection
 
 The contents of the query results cache can be checked at runtime using the cache's
@@ -227,11 +220,9 @@ cache's `clear` function:
 require("@arangodb/aql/cache").clear();
 ```
 
-
 ## Restrictions
 
 Query results that are returned from the query results cache may contain execution statistics
 stemming from the initial, uncached query execution. This means for a cached query results,
 the *extra.stats* attribute may contain stale data, especially in terms of the *executionTime*
 and *profile* attribute values.
-

@@ -36,7 +36,7 @@ Checks if the nonce is valid and marks it as used.
 
 **Arguments**
 
-* **nonce**: `string`
+- **nonce**: `string`
 
   The nonce to check and mark.
 
@@ -63,7 +63,7 @@ Generates a string of random alphabetical characters and digits.
 
 **Arguments**
 
-* **length**: `number`
+- **length**: `number`
 
   The length of the string to generate.
 
@@ -77,7 +77,7 @@ Generates a string of random digits.
 
 **Arguments**
 
-* **length**: `number`
+- **length**: `number`
 
   The length of the string to generate.
 
@@ -91,7 +91,7 @@ Generates a string of random (printable) ASCII characters.
 
 **Arguments**
 
-* **length**: `number`
+- **length**: `number`
 
   The length of the string to generate.
 
@@ -105,7 +105,7 @@ Generates a buffer of random bytes.
 
 **Arguments**
 
-* **length**: `number`
+- **length**: `number`
 
   The length of the buffer to generate.
 
@@ -131,18 +131,18 @@ Generates a JSON Web Token for the given message.
 
 **Arguments**
 
-* **key**: `string | null`
+- **key**: `string | null`
 
   The secret cryptographic key to be used to sign the message using the given algorithm.
   Note that this function will raise an error if the key is omitted but the algorithm expects a key,
   and also if the algorithm does not expect a key but a key is provided (e.g. when using `"none"`).
 
-* **message**: `string`
+- **message**: `string`
 
   Message to be encoded as JWT. Note that the message will only be base64-encoded and signed, not encrypted.
   Do not store sensitive information in tokens unless they will only be handled by trusted parties.
 
-* **algorithm**: `string`
+- **algorithm**: `string`
 
   Name of the algorithm to use for signing the message, e.g. `"HS512"`.
 
@@ -154,20 +154,20 @@ Returns the JSON Web Token.
 
 **Arguments**
 
-* **key**: `string | null`
+- **key**: `string | null`
 
   The secret cryptographic key that was used to sign the message using the algorithm indicated by the token.
   Note that this function will raise an error if the key is omitted but the algorithm expects a key.
 
   If the algorithm does not expect a key but a key is provided, the token will fail to verify.
 
-* **token**: `string`
+- **token**: `string`
 
   The token to decode.
 
   Note that the function will raise an error if the token is malformed (e.g. does not have exactly three segments).
 
-* **noVerify**: `boolean` (Default: `false`)
+- **noVerify**: `boolean` (Default: `false`)
 
   Whether verification should be skipped. If this is set to `true` the signature of the token will not be verified.
   Otherwise the function will raise an error if the signature cannot be verified using the given key.
@@ -186,7 +186,7 @@ A helper function that translates a JWT `alg` value found in a JWT header into t
 
 **Arguments**
 
-* **name**: `string`
+- **name**: `string`
 
   Algorithm name to look up.
 
@@ -202,7 +202,7 @@ Hashes the given message using the MD5 algorithm.
 
 **Arguments**
 
-* **message**: `string`
+- **message**: `string`
 
   The message to hash.
 
@@ -216,7 +216,7 @@ Hashes the given message using the SHA-1 algorithm.
 
 **Arguments**
 
-* **message**: `string`
+- **message**: `string`
 
   The message to hash.
 
@@ -230,7 +230,7 @@ Hashes the given message using the SHA-224 algorithm.
 
 **Arguments**
 
-* **message**: `string`
+- **message**: `string`
 
   The message to hash.
 
@@ -244,7 +244,7 @@ Hashes the given message using the SHA-256 algorithm.
 
 **Arguments**
 
-* **message**: `string`
+- **message**: `string`
 
   The message to hash.
 
@@ -258,7 +258,7 @@ Hashes the given message using the SHA-384 algorithm.
 
 **Arguments**
 
-* **message**: `string`
+- **message**: `string`
 
   The message to hash.
 
@@ -272,7 +272,7 @@ Hashes the given message using the SHA-512 algorithm.
 
 **Arguments**
 
-* **message**: `string`
+- **message**: `string`
 
   The message to hash.
 
@@ -290,11 +290,11 @@ and can help making certain timing attacks harder.
 
 **Arguments**
 
-* **str1**: `string`
+- **str1**: `string`
 
   The first string to compare.
 
-* **str2**: `string`
+- **str2**: `string`
 
   The second string to compare.
 
@@ -308,15 +308,15 @@ Generates a PBKDF2-HMAC-SHA1 hash of the given password.
 
 **Arguments**
 
-* **salt**: `string`
+- **salt**: `string`
 
   The cryptographic salt to hash the password with.
 
-* **password**: `string`
+- **password**: `string`
 
   The message or password to hash.
 
-* **iterations**: `number`
+- **iterations**: `number`
 
   The number of iterations.
   This should be a very high number.
@@ -325,7 +325,7 @@ Generates a PBKDF2-HMAC-SHA1 hash of the given password.
   When using PBKDF2 for password hashes it is also recommended to add a random value
   (typically between 0 and 32000) to that number that is different for each user.
 
-* **keyLength**: `number`
+- **keyLength**: `number`
 
   The key length.
 
@@ -339,15 +339,15 @@ Generates an HMAC hash of the given message.
 
 **Arguments**
 
-* **key**: `string`
+- **key**: `string`
 
   The cryptographic key to use to hash the message.
 
-* **message**: `string`
+- **message**: `string`
 
   The message to hash.
 
-* **algorithm**: `string`
+- **algorithm**: `string`
 
   The name of the algorithm to use.
 

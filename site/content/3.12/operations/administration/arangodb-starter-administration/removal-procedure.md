@@ -36,9 +36,8 @@ If you want to remove a machine that is no longer running, use the `--starter.id
 option. Set it to the ID of the ArangoDB _Starter_ on the machine that you want to remove.
 
 You can find this ID in a `setup.json` file in the data directory of one of
-the remaining ArangoDB _Starters_.
+the remaining ArangoDB _Starters_. Example:
 
-E.g.
 ```json
 {
   ...
@@ -54,6 +53,8 @@ E.g.
         "IsSecure": false
       },
       ...
+    ]
+  }
 }
 ```
 

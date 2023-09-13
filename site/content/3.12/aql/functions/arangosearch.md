@@ -796,6 +796,7 @@ that is used outside of `SEARCH` operations.
 - returns **startsWith** (bool): whether the specified attribute starts with
   the given prefix
 
+---
 
 `STARTS_WITH(path, prefixes, minMatchCount) → startsWith`
 
@@ -1301,6 +1302,7 @@ _n_-grams for search highlighting purposes.
     to account for characters encoded using multiple bytes.
     {{< /warning >}}
 
+---
 
 `OFFSET_INFO(doc, rules) → offsetInfo`
 

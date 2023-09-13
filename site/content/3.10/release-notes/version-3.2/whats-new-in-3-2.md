@@ -14,8 +14,8 @@ here.
 
 ArangoDB 3.2 offers two storage engines:
 
-* the always-existing memory-mapped files storage engine
-* a new storage engine based on [RocksDB](https://www.github.com/facebook/rocksdb/)
+- the always-existing memory-mapped files storage engine
+- a new storage engine based on [RocksDB](https://www.github.com/facebook/rocksdb/)
 
 ### Memory-mapped files storage engine (MMFiles)
 
@@ -94,20 +94,20 @@ engine.
 The existing indexes in the RocksDB engine are all persistent. The following indexes are
 supported there:
 
-* primary: this type of index is automatically created. It indexes `_id` / `_key`
+- primary: this type of index is automatically created. It indexes `_id` / `_key`
 
-* edge: this index is automatically created for edge collections. It indexes
+- edge: this index is automatically created for edge collections. It indexes
   `_from` and `_to`
 
-* hash, skiplist, persistent: these are user-defined indexes, Despite their names, they are
+- hash, skiplist, persistent: these are user-defined indexes, Despite their names, they are
   neither hash nor skiplist indexes. These index types map to the same RocksDB-based
   sorted index implementation. The same is true for the "persistent" index. The names
   "hash", "skiplist" and "persistent" are only used for compatibility with the MMFiles
   engine where these indexes existed in previous and the current version of ArangoDB.
 
-* geo: user-defined index for proximity searches
+- geo: user-defined index for proximity searches
 
-* fulltext: user-defined sorted reverted index on words occurring in documents
+- fulltext: user-defined sorted reverted index on words occurring in documents
 
 ## SatelliteCollections
 
@@ -123,7 +123,7 @@ are available in the *Enterprise Edition*.
 
 ## Memory management
 
-* make arangod start with less V8 JavaScript contexts
+- make arangod start with less V8 JavaScript contexts
 
   This speeds up the server start and makes arangod use less memory at start.
   Whenever a V8 context is needed by a Foxx action or some other JavaScript operation
@@ -152,12 +152,12 @@ are available in the *Enterprise Edition*.
   Waiting for an unused V8 context will now also abort and write a log message
   in case no V8 context can be acquired/created after 60 seconds.
 
-* the number of pending operations in arangod can now be limited to a configurable
+- the number of pending operations in arangod can now be limited to a configurable
   number. If this number is exceeded, the server will now respond with HTTP 503
   (service unavailable). The maximum size of pending operations is controlled via
   the startup option `--server.maximal-queue-size`. Setting it to 0 means "no limit".
 
-* the in-memory document revisions cache was removed entirely because it did not
+- the in-memory document revisions cache was removed entirely because it did not
   provide the expected benefits. The 3.1 implementation shadowed document data in
   RAM, which increased the server's RAM usage but did not speed up document lookups
   too much.
@@ -171,14 +171,14 @@ are available in the *Enterprise Edition*.
 
 ## Communication Layer
 
-* HTTP responses returned by arangod will now include the extra HTTP header
+- HTTP responses returned by arangod will now include the extra HTTP header
   `x-content-type-options: nosniff` to work around a cross-site scripting bug
   in MSIE
 
-* the default value for `--ssl.protocol` was changed from TLSv1 to TLSv1.2.
+- the default value for `--ssl.protocol` was changed from TLSv1 to TLSv1.2.
   When not explicitly set, arangod and all client tools will now use TLSv1.2.
 
-* the JSON data in all incoming HTTP requests in now validated for duplicate
+- the JSON data in all incoming HTTP requests in now validated for duplicate
   attribute names.
 
   Incoming JSON data with duplicate attribute names will now be rejected as
@@ -186,54 +186,53 @@ are available in the *Enterprise Edition*.
   attribute names inside incoming JSON for some API endpoints, but not
   consistently for all APIs.
 
-* Internal JavaScript REST actions will now hide their stack traces to the client
+- Internal JavaScript REST actions will now hide their stack traces to the client
   unless in HTTP responses. Instead they will always log to the logfile.
 
 ## JavaScript
 
-* updated V8 version to 5.7.0.0
+- updated V8 version to 5.7.0.0
 
-* change undocumented behavior in case of invalid revision ids in
+- change undocumented behavior in case of invalid revision ids in
   `If-Match` and `If-None-Match` headers from 400 (BAD) to 412 (PRECONDITION
   FAILED).
 
-* change default string truncation length from 80 characters to 256 characters for
+- change default string truncation length from 80 characters to 256 characters for
   `print`/`printShell` functions in ArangoShell and arangod. This will emit longer
   prefixes of string values before truncating them with `...`, which is helpful
   for debugging. This change is mostly useful when using the ArangoShell (arangosh).
 
-
-* the `@arangodb` module now provides a `time` function which returns the current time
+- the `@arangodb` module now provides a `time` function which returns the current time
   in seconds as a floating point value with microsecond precision.
 
 ## Foxx
 
-* There is now an [official HTTP API for managing services](../../develop/http/foxx.md),
+- There is now an [official HTTP API for managing services](../../develop/http/foxx.md),
   allowing services to be installed, modified, uninstalled and reconfigured without
   the administrative web interface.
 
-* It is now possible to upload a single JavaScript file instead of a zip archive
+- It is now possible to upload a single JavaScript file instead of a zip archive
   if your service requires no configuration, additional files or setup.
   A minimal manifest will be generated automatically upon installation and the
   uploaded file will be used as the service's main entry point.
 
 ## Distributed Graph Processing
 
-* We added support for executing distributed graph algorithms aka `Pregel`.
-* Users can run arbitrary algorithms on an entire graph, including in cluster mode.
-* We implemented a number of algorithms for various well-known graph measures:
-  * Connected Components
-  * PageRank
-  * Shortest Paths
-  * Centrality Measures (Centrality and Betweenness)
-  * Community Detection (via Label Propagation, Speakers-Listeners Label Propagation or DMID)
-* Users can contribute their own algorithms
+- We added support for executing distributed graph algorithms aka `Pregel`.
+- Users can run arbitrary algorithms on an entire graph, including in cluster mode.
+- We implemented a number of algorithms for various well-known graph measures:
+  - Connected Components
+  - PageRank
+  - Shortest Paths
+  - Centrality Measures (Centrality and Betweenness)
+  - Community Detection (via Label Propagation, Speakers-Listeners Label Propagation or DMID)
+- Users can contribute their own algorithms
 
 ## AQL
 
 ### Optimizer improvements
 
-* Geo indexes are now implicitly and automatically used when using appropriate SORT/FILTER
+- Geo indexes are now implicitly and automatically used when using appropriate SORT/FILTER
   statements in AQL, without the need to use the somewhat limited special-purpose geo AQL
   functions `NEAR` or `WITHIN`.
 
@@ -262,7 +261,7 @@ are available in the *Enterprise Edition*.
 
 ### Miscellaneous improvements
 
-* added `REGEX_REPLACE` AQL function
+- added `REGEX_REPLACE` AQL function
 
   `REGEX_REPLACE(text, search, replacement, caseInsensitive) → string`
 
@@ -276,7 +275,7 @@ are available in the *Enterprise Edition*.
     pattern replaced with the *replacement* string wherever the pattern exists
     in *text*
 
-* added new startup option `--query.fail-on-warning` to make AQL queries
+- added new startup option `--query.fail-on-warning` to make AQL queries
   abort instead of continuing with warnings.
 
   When set to *true*, this will make an AQL query throw an exception and
@@ -285,12 +284,12 @@ are available in the *Enterprise Edition*.
   will be returned with the query results. The startup option can also be overridden
   on a per query-level.
 
-* the slow query list now contains the values of bind variables used in the
+- the slow query list now contains the values of bind variables used in the
   slow queries. Bind variables are also provided for the currently running
   queries. This helps debugging slow or blocking queries that use dynamic
   collection names via bind parameters.
 
-* AQL breaking change in cluster:
+- AQL breaking change in cluster:
   The SHORTEST_PATH statement using edge collection names instead
   of a graph names now requires to explicitly name the vertex collection names
   within the AQL query in the cluster. It can be done by adding `WITH <name>`
@@ -314,14 +313,14 @@ are available in the *Enterprise Edition*.
 
 ## Client tools
 
-* added data export tool, arangoexport.
+- added data export tool, arangoexport.
 
   arangoexport can be used to export collections to json, jsonl or xml
   and export a graph or collections to xgmml.
 
-* added "jsonl" as input file type for arangoimp
+- added "jsonl" as input file type for arangoimp
 
-* added `--translate` option for arangoimp to translate attribute names from
+- added `--translate` option for arangoimp to translate attribute names from
   the input files to attribute names expected by ArangoDB
 
   The `--translate` option can be specified multiple times (once per translation
@@ -334,41 +333,41 @@ are available in the *Enterprise Edition*.
 
   `--translate` works for CSV and TSV inputs only.
 
-* added `--threads` option to arangoimp to specify the number of parallel import threads
+- added `--threads` option to arangoimp to specify the number of parallel import threads
 
-* changed default value for client tools option `--server.max-packet-size` from 128 MB
+- changed default value for client tools option `--server.max-packet-size` from 128 MB
   to 256 MB. this allows transferring bigger result sets from the server without the
   client tools rejecting them as invalid.
 
 ## Authentication
 
-* added [LDAP](../../components/arangodb-server/ldap.md) authentication (Enterprise Edition only)
+- added [LDAP](../../components/arangodb-server/ldap.md) authentication (Enterprise Edition only)
 
 ## Authorization
 
-* added read only mode for users
-* collection level authorization rights
+- added read only mode for users
+- collection level authorization rights
 
 Read more in the [overview](../../operations/administration/user-management/_index.md).
 
 ## Foxx and authorization
 
-* the [cookie session transport](../../develop/foxx-microservices/reference/sessions-middleware/session-transports/cookie-transport.md) now supports
+- the [cookie session transport](../../develop/foxx-microservices/reference/sessions-middleware/session-transports/cookie-transport.md) now supports
   all options supported by the [cookie method of the response object](../../develop/foxx-microservices/reference/routers/response.md#cookie).
 
-* it's now possible to provide your own version of the `graphql-sync` module when using the [GraphQL extensions for Foxx](../../develop/foxx-microservices/reference/related-modules/graphql.md) by passing a copy of the module using the new _graphql_ option.
+- it's now possible to provide your own version of the `graphql-sync` module when using the [GraphQL extensions for Foxx](../../develop/foxx-microservices/reference/related-modules/graphql.md) by passing a copy of the module using the new _graphql_ option.
 
-* custom API endpoints can now be tagged using the [tag method](../../develop/foxx-microservices/reference/routers/endpoints.md#tag) to generate a cleaner Swagger documentation.
+- custom API endpoints can now be tagged using the [tag method](../../develop/foxx-microservices/reference/routers/endpoints.md#tag) to generate a cleaner Swagger documentation.
 
 ## Miscellaneous Changes
 
-* arangod now validates several OS/environment settings on startup and warns if
+- arangod now validates several OS/environment settings on startup and warns if
   the settings are non-ideal. It additionally will print out ways to remedy the
   options.
 
   Most of the checks are executed on Linux systems only.
 
-* added "deduplicate" attribute for array indexes, which controls whether inserting
+- added "deduplicate" attribute for array indexes, which controls whether inserting
   duplicate index values from the same document into a unique array index will lead to
   an error or not:
 

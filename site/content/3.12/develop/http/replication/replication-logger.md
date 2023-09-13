@@ -21,7 +21,6 @@ interface provides the methods `logger-first-tick` and `logger-tick-ranges`.
 Replication clients can use the methods to determine if certain data (identified
 by a tick *date*) is still available on the Leader.
 
-
 ## Get the replication logger state
 
 ```openapi

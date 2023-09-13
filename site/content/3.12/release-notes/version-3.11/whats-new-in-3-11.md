@@ -36,6 +36,7 @@ to be requested from the RocksDB storage engine.
   View property to always cache stored values in memory. This can improve the
   query performance if stored values are involved.
 
+---
 
 <small>Introduced in: v3.9.6, v3.10.2</small>
 
@@ -47,6 +48,7 @@ to be requested from the RocksDB storage engine.
   primary key column in memory. This can improve the performance of queries
   that return many documents.
 
+---
 
 [Inverted indexes](../../develop/http/indexes/inverted.md) also support similar new caching
 options.
@@ -66,6 +68,7 @@ options.
 - A new `primaryKeyCache` property for inverted indexes to always cache the
   primary key column in memory.
 
+---
 
 The cache size can be controlled with the new `--arangosearch.columns-cache-limit`
 startup option and monitored via the new `arangodb_search_columns_cache_size`
@@ -412,6 +415,7 @@ RETURN DATE_ISOWEEKYEAR("2023-01-01") // { "week": 52, "year": 2022 }
 
 See [AQL Date functions](../../aql/functions/date.md#date_isoweekyear) for details.
 
+---
 
 Added the `SHA256()` function that calculates the SHA256 checksum for a string
 and returns it in a hexadecimal string representation.
@@ -806,6 +810,7 @@ There are three new startup options to configure how AQL queries are logged:
   tasks that can run concurrently on server startup. Default: the number of
   cores divided by 8, but at least `1`.
 
+---
 
 <small>Introduced in: v3.9.10, v3.10.5</small>
 

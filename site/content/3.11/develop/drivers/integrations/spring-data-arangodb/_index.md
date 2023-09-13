@@ -105,6 +105,7 @@ public ArangoDB.Builder arango() {
   return arango;
 }
 ```
+
 ## Learn more
 
 - [Demo](https://github.com/arangodb/spring-data-demo)

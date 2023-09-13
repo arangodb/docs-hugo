@@ -39,7 +39,7 @@ The `arangoml` package comes pre-loaded with every ArangoGraphML notebook enviro
 
 To start using it, simply import it:
 
-```
+```python
 import arangoml
 ```
 
@@ -51,19 +51,19 @@ is very simple.
 
 **Create a project**
 
-```
+```python
 project = arangoml.projects.create_project({"name":"ArangoGraphML_Project_Name"})
 ```
 
 **List projects**
 
-```
+```python
 arangoml.projects.list_projects(limit=limit, offset=offset)
 ```
 
 **Lookup an existing project**
 
-```
+```python
 project = arangoml.projects.get_project_by_name("ArangoGraphML_Project_Name")
 
 # or by id
@@ -72,19 +72,19 @@ project = arangoml.projects.get_project("project_id")
 
 **Update an existing project**
 
-```
+```python
 arangoml.projects.update_project(body={'id': 'project_id', 'name': 'Updated_ArangoGraphML_Project_Name'}, project_id='existing_project_id')
 ```
 
 **List models associated with project**
 
-```
+```python
 arangoml.projects.list_models(project_name=project_name, project_id=project_id, job_id=job_id)
 ```
 
 **Delete an existing project**
 
-```
+```python
 api_instance.delete_project(project_id)
 ```
 
@@ -92,112 +92,121 @@ api_instance.delete_project(project_id)
 
 The featurization specification asks that you input the following:
 - `featurization_name`: A name for the featurization task.
-- `project_name`: The associated project name. You can use `project.name` here if was created or retrieved as descried above.
+- `project_name`: The associated project name. You can use `project.name` here
+  if was created or retrieved as descried above.
 - `graph_name`: The associated graph name that exists within the database.
-- `default_config` Optional: The optional default configuration to be applied across all features. Individual collection feature settings override this option.
+- `default_config` Optional: The optional default configuration to be applied
+  across all features. Individual collection feature settings override this option.
+  - `dimensionality_reduction`: Object configuring dimensionality reduction.
+    - `disabled`: Boolean for enabling or disabling dimensionality reduction.
+    - `size`: The number of dimensions to reduce the feature length to.
+- `vertexCollections`: The list of vertex collections to be featurized. Here you
+  also need to detail the attributes to featurize and how. Supplying multiple
+  attributes from a single collection results in a single concatenated feature.
+  - `config` Optional: The configuration to apply to the feature output for this collection.
     - `dimensionality_reduction`: Object configuring dimensionality reduction.
-        - `disabled`: Boolean for enabling or disabling dimensionality reduction.
-        - `size`: The number of dimensions to reduce the feature length to.
-- `vertexCollections`: The list of vertex collections to be featurized. Here you also need to detail the attributes to featurize and how. Supplying multiple attributes from a single collection results in a single concatenated feature.
-    - `config` Optional: The configuration to apply to the feature output for this collection.
-        - `dimensionality_reduction`: Object configuring dimensionality reduction.
-            - `disabled`: Boolean for enabling or disabling dimensionality reduction.
-            - `size`: The number of dimensions to reduce the feature length to.
-        - `output_name`: Adjust the default feature name. This can be any valid ArangoDB attribute name.
-    - `features`: A single feature or multiple features can be supplied per collection and they can all be featurized in different ways. Supplying multiple features results in a single concatenated feature.
-        - `feature_type`: Provide the feature type. Currently the supported types include `text`, `category`, `numerical`.
-        - `feature_generator` Optional: Adjust advanced feature generation parameters.
-            - `feature_name`: The name of this Dict should match the attribute name of the document stored in ArangoDB. This overrides the name provided for the parent Dict.
-            - `method`: Currently no additional options, leave as default.
-            - `output_name`: Adjust the default feature name. This can be any valid ArangoDB attribute name.
-                ```
-                    "collectionName": {
-                    "features": {
-                        "attribute_name": {
-                            "feature_type": 'text' # Currently the supported types include text, category, numerical
-                            "feature_generator": { # this advanced option is optional.
-                                "method": "transformer_embeddings",
-                                "feature_name": "movie_title_embeddings",
-                            },
-                ```
+      - `disabled`: Boolean for enabling or disabling dimensionality reduction.
+      - `size`: The number of dimensions to reduce the feature length to.
+    - `output_name`: Adjust the default feature name. This can be any valid ArangoDB attribute name.
+  - `features`: A single feature or multiple features can be supplied per collection
+    and they can all be featurized in different ways. Supplying multiple features
+    results in a single concatenated feature.
+    - `feature_type`: Provide the feature type. Currently the supported types
+      include `text`, `category`, `numerical`.
+    - `feature_generator` Optional: Adjust advanced feature generation parameters.
+      - `feature_name`: The name of this Dict should match the attribute name of the
+        document stored in ArangoDB. This overrides the name provided for the parent Dict.
+      - `method`: Currently no additional options, leave as default.
+      - `output_name`: Adjust the default feature name. This can be any valid
+        ArangoDB attribute name.
+        ```python
+        "collectionName": {
+        "features": {
+          "attribute_name": {
+            "feature_type": 'text' # Currently the supported types include text, category, numerical
+            "feature_generator": { # this advanced option is optional.
+              "method": "transformer_embeddings",
+              "feature_name": "movie_title_embeddings",
+            },
+        ```
 
 - `edgeCollections`: This is the list of edge collections associated with the
   vertex collections. There are no additional options.
-  ```
+  ```python
   "edgeCollections": {
-      "edge_name_1",
-      "edge_name_2
+    "edge_name_1",
+    "edge_name_2
   },
   ```
 
 Once you have filled out the featurization specification you can pass it to
 the `featurizer` function.
 
-```
+```python
 from arangoml.featurizer import featurizer
 
-featurizer(featurizer(_db, featurization_spec)
+featurizer(featurizer(_db, featurization_spec))
 ```
 
 This is all you need to get started with featurization. The following also shows
 an example of using the featurization package with a movie dataset and some
 additional options available.
 
-```
+```python
 from arangoml.featurizer import featurizer
 
 featurization_spec = {
-    "featurization_name": "Movie_Recommendation",
-    "project_name": "movie_recommendation_project",
-    "graph_name": "fake_m_hetero_2",
-    "vertexCollections": {
-        "v0": {
-            "features": {
-                "movie_title": {
-                    "feature_type": "text",
-                    "feature_generator": {
-                        "method": "transformer_embeddings",
-                        "feature_name": "movie_title_embeddings",
-                    },
-                },
-                "genre": {
-                    "feature_type": "category",
-                    "feature_generator": {
-                        "method": "one_hot_encoding",
-                        "feature_name": "genre_embeddings",
-                    },
-                },
-            }
+  "featurization_name": "Movie_Recommendation",
+  "project_name": "movie_recommendation_project",
+  "graph_name": "fake_m_hetero_2",
+  "vertexCollections": {
+    "v0": {
+      "features": {
+        "movie_title": {
+          "feature_type": "text",
+          "feature_generator": {
+            "method": "transformer_embeddings",
+            "feature_name": "movie_title_embeddings",
+          },
         },
-        "v1": {
-            "features": {
-                "actor_summary": {
-                    "feature_type": "text",
-                    "feature_generator": {
-                        "method": "transformer_embeddings",
-                        "feature_name": "actor_summary_embeddings",
-                    },
-                },
-                "actor_country": {
-                    "feature_type": "category",
-                    "feature_generator": {
-                        "method": "one_hot_encoding",
-                        "feature_name": "actor_country_embedding",
-                    },
-                },
-            }
+        "genre": {
+          "feature_type": "category",
+          "feature_generator": {
+            "method": "one_hot_encoding",
+            "feature_name": "genre_embeddings",
+          },
         },
-        "v2": {
-            "features": {
-                "director_summary": {
-                    "feature_type": "text",
-                },
-            }
-        },
+      }
     },
-    "edgeCollections": {
-        "e0"
+    "v1": {
+      "features": {
+        "actor_summary": {
+          "feature_type": "text",
+          "feature_generator": {
+            "method": "transformer_embeddings",
+            "feature_name": "actor_summary_embeddings",
+          },
+        },
+        "actor_country": {
+          "feature_type": "category",
+          "feature_generator": {
+            "method": "one_hot_encoding",
+            "feature_name": "actor_country_embedding",
+          },
+        },
+      }
     },
+    "v2": {
+      "features": {
+        "director_summary": {
+          "feature_type": "text",
+        },
+      }
+    },
+  },
+  "edgeCollections": {
+    "e0"
+  },
 }
 
 output = featurizer(_db, featurization_spec, batch_size=32)
@@ -210,7 +219,7 @@ import arangomlFeatureStore
 from arangomlFeatureStore.defaults import DEFAULT_FEATURE_STORE_DB
 fs_db = client.db(DEFAULT_FEATURE_STORE_DB, username="root", password="")  # nosec
 admin = arangomlFeatureStore.FeatureStoreAdmin(
-    database_connection=fs_db,
+  database_connection=fs_db,
 )
 feature_store = admin.get_feature_store()
 output = featurizer(db, featurization_spec, feature_store=feature_store, batch_size=32)
@@ -234,36 +243,40 @@ See below the different components of the training specification.
 
 - `database_name`: The database name the source data is in.
 - `project_name`: The top-level project to which all the experiments will link back. 
-- `metagraph`: This is the largest component that details the experiment objective and the associated data points.
-  - `mlSpec`: Describes the desired machine learning task, input features, and the attribute label to be predicted.
+- `metagraph`: This is the largest component that details the experiment
+  objective and the associated data points.
+  - `mlSpec`: Describes the desired machine learning task, input features, and
+    the attribute label to be predicted.
   - `graph`: The ArangoDB graph name.
-  - `vertexCollections`: Here, you can describe all the vertex collections and the features you would
-    like to include in training. You must provide an `x` for features, and the desired prediction label is supplied as `y`.
-  - `edgeCollections`: Here, you describe the relevant edge collections and any relevant attributes or features that should be considered when training.
-  
+  - `vertexCollections`: Here, you can describe all the vertex collections and
+    the features you would like to include in training. You must provide an `x`
+    for features, and the desired prediction label is supplied as `y`.
+  - `edgeCollections`: Here, you describe the relevant edge collections and any
+    relevant attributes or features that should be considered when training.
+
 A training specification allows for concisely defining your training task in a
 single object and then passing that object to the training service using the
 Python API client, as shown below.
 
 **Create a training job**
 
-```
+```python
 job = arangoml.training.train(training_spec)
 print(job)
 job_id = job.job_id
 ```
 
-```
+```python
 {'job_id': 'f09bd4a0-d2f3-5dd6-80b1-a84602732d61'}
 ```
 
 **Get status of a training job**
 
-```
+```python
 arangoml.training.get_job(job_id)
 ```
 
-```
+```python
 {'database_name': 'db_name',
  'job_id': 'efac147a-3654-4866-88fe-03866d0d40a5',
  'job_state': None,
@@ -284,11 +297,11 @@ arangoml.training.get_job(job_id)
 
 **Cancel a running training job**
 
-```
+```python
 arangoml.training.cancel_job(job_id)
 ```
 
-```
+```python
 'OK'
 ```
 
@@ -303,7 +316,7 @@ the one you prefer for the next step.
 The following examples uses the model with the highest validation accuracy,
 but there may be other factors that motivate you to choose another model.
 
-```
+```python
 models = arangoml.projects.list_models(project_name=project_name, project_id=project_id, job_id=job_id)
 
 # Tip: Sort by accuracy
@@ -314,7 +327,7 @@ print(model)
 
 ```
 
-```
+```python
 {'job_id': 'f09bd4a0-d2f3-5dd6-80b1-a84602732d61',
  'model_display_name': 'Node Classification Model',
  'model_id': '123',
@@ -350,11 +363,11 @@ print(model)
 After selecting a model, it is time to persist the results to a collection
 using the `predict` function.
 
-```
+```python
 prediction_spec = {
-    "project_name": project.name,
-    "database_name": db.name,
-    "model_id": model.model_id
+  "project_name": project.name,
+  "database_name": db.name,
+  "model_id": model.model_id
 }
 
 prediction_job = arangoml.prediction.predict(prediction_spec)
@@ -368,11 +381,11 @@ You may choose to specify instead a `collection`.
 
 ### Get prediction job status
 
-```
+```python
 prediction_status = arangoml.prediction.get_job(prediction_job.job_id)
 ```
 
-```
+```python
 {'database_name': 'db_name',
  'job_id': '123-ee43-4106-99e7-123',
  'job_state_information': {'outputAttribute': 'label_field_predicted',
@@ -393,7 +406,7 @@ You can now directly access your predictions in your application.
 If you left the default option you can access them via the dynamically created
 collection with a query such as the following:
 
-```
+```python
 ## Query to return results
 
 query = f"""

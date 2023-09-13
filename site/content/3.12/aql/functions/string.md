@@ -93,6 +93,7 @@ description: ''
 RETURN CONCAT([5, 6], {foo: "bar"})
 ```
 
+---
 
 `CONCAT(anyArray) → str`
 
@@ -182,6 +183,7 @@ description: ''
 RETURN CONCAT_SEPARATOR(", ", [5, 6], {foo: "bar"})
 ```
 
+---
 
 `CONCAT_SEPARATOR(separator, anyArray) → joinedString`
 
@@ -1496,6 +1498,7 @@ description: ''
 RETURN STARTS_WITH("foobar", "baz")
 ```
 
+---
 
 `STARTS_WITH(text, prefixes, minMatchCount) → startsWith`
 
@@ -1591,6 +1594,7 @@ description: ''
 RETURN SUBSTITUTE( "the quick brown foxx", [ "quick", "foxx" ], "xx" )
 ```
 
+---
 
 `SUBSTITUTE(value, mapping, limit) → substitutedString`
 
@@ -1927,6 +1931,7 @@ however.
   - `1` – start of the string only
   - `2` – end of the string only
 
+---
 
 `TRIM(value, chars) → strippedString`
 

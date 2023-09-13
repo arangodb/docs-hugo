@@ -267,7 +267,6 @@ the cursor, even before you requested the last batch.
 
 ## Execute AQL queries
 
-
 ### Create a cursor
 
 ```openapi
@@ -2552,7 +2551,6 @@ You can track AQL queries by enabling query tracking. This allows you to list
 all currently executing queries. You can also list slow queries and clear this
 list.
 
-
 ### Get the AQL query tracking configuration
 
 ```openapi
@@ -2598,7 +2596,6 @@ paths:
       tags:
         - Queries
 ```
-
 
 ### Update the AQL query tracking configuration
 
@@ -2674,7 +2671,6 @@ paths:
         - Queries
 ```
 
-
 ### List the running AQL queries
 
 ```openapi
@@ -2744,7 +2740,6 @@ paths:
         - Queries
 ```
 
-
 ### List the slow AQL queries
 
 ```openapi
@@ -2808,7 +2803,6 @@ paths:
         - Queries
 ```
 
-
 ### Clear the list of slow AQL queries
 
 ```openapi
@@ -2841,14 +2835,12 @@ paths:
         - Queries
 ```
 
-
 ## Kill queries
 
 Running AQL queries can be killed on the server. To kill a running query, its ID
 (as returned for the query in the list of currently running queries) must be
 specified. The kill flag of the query is then set, and the query is aborted as
 soon as it reaches a cancelation point.
-
 
 ### Kill a running AQL query
 
@@ -2898,7 +2890,6 @@ paths:
         - Queries
 ```
 
-
 ## Explain and parse AQL queries
 
 You can retrieve the execution plan for any valid AQL query, as well as
@@ -2906,7 +2897,6 @@ syntactically validate AQL queries. Both functionalities don't actually execute
 the supplied AQL query, but only inspect it and return meta information about it.
 
 You can also retrieve a list of all query optimizer rules and their properties.
-
 
 ### Explain an AQL query
 

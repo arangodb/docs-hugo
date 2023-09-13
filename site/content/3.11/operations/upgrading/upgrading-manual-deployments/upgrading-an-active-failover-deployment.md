@@ -57,7 +57,6 @@ $ dpkg -i arangodb3-3.7.13-1_amd64.deb
 after you have downloaded the corresponding file from
 [download.arangodb.com](https://download.arangodb.com/).
 
-
 #### Stop the Standalone Instance
 
 As the package will automatically start the standalone instance, you might want to
@@ -107,7 +106,6 @@ It will be reactivated automatically in 60 minutes unless this call is repeated 
 ```
 **Note:** In case the manual upgrade takes longer than 60 minutes, the API call has to be resent.
 
-
 ### Deactivate Maintenance mode
 
 The _cluster_ supervision resumes automatically 60 minutes after disabling it.
@@ -136,7 +134,6 @@ kill -15 <pid-of-arangod-process>
 ```
 
 The _pid_ associated to your _Active Failover setup_ can be checked using a command like _ps_:
-
 
 ```
 ps -C arangod -fww
@@ -174,7 +171,6 @@ curl http://<single-server>:7002/_api/cluster/endpoints
 ```
 This will yield a list of endpoints, the _first_ of which is always the leader node.
 
-
 ### Stopping, upgrading and restarting an instance
 
 To stop an instance, the currently running process has to be identified using the `ps`
@@ -199,7 +195,6 @@ but with the additional option:
 After the upgrade procedure has finishing successfully, the instance will remain stopped.
 So it has to be restarted using the command from the `ps` output before
 (this time without the `--database.auto-upgrade` option).
-
 
 Once an _Agent_ was upgraded and restarted successfully, repeat the procedure for the
 other _Agent_ instances in the setup and then repeat the procedure for the _Active Failover_

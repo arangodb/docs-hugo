@@ -362,6 +362,7 @@ require("@arangodb/aql/functions").unregisterGroup("MYFUNCTIONS");
 Returns all previously registered AQL user functions, with their fully
 qualified names and function code.
 
+---
 
 `aqlfunctions.toArray(prefix)`
 

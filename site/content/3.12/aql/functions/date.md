@@ -142,6 +142,7 @@ The date time string will always use UTC / Zulu time, indicated by the *Z* at it
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
 - returns **dateString**: date and time expressed according to ISO 8601, in Zulu time
 
+---
 
 `DATE_ISO8601(year, month, day, hour, minute, second, millisecond) → dateString`
 
@@ -167,6 +168,7 @@ To convert the return value to seconds, divide it by 1000.
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
 - returns **timestamp** (number): numeric timestamp
 
+---
 
 `DATE_TIMESTAMP(year, month, day, hour, minute, second, millisecond) → timestamp`
 
@@ -767,6 +769,7 @@ DATE_ADD(DATE_TIMESTAMP(DATE_YEAR(DATE_NOW()), 12, 24), -4, "years") // Christma
 DATE_ADD(DATE_ADD("2016-02", "month", 1), -1, "day") // last day of February (29th, because 2016 is a leap year!)
 ```
 
+---
 
 `DATE_ADD(date, isoDuration) → isoDate`
 
@@ -796,8 +799,8 @@ DATE_ADD(DATE_NOW(), "P1Y") // add 1 year
 DATE_ADD(DATE_NOW(), "P3M2W") // add 3 months and 2 weeks
 DATE_ADD(DATE_NOW(), "P5DT26H") // add 5 days and 26 hours (=6 days and 2 hours)
 DATE_ADD("2000-01-01", "PT4H") // add 4 hours
-DATE_ADD("2000-01-01", "PT30M44.4S" // add 30 minutes, 44 seconds and 400 ms
-DATE_ADD("2000-01-01", "P1Y2M3W4DT5H6M7.89S" // add a bit of everything
+DATE_ADD("2000-01-01", "PT30M44.4S") // add 30 minutes, 44 seconds and 400 ms
+DATE_ADD("2000-01-01", "P1Y2M3W4DT5H6M7.89S") // add a bit of everything
 ```
 
 ### DATE_SUBTRACT()
@@ -827,6 +830,7 @@ durations are not supported (i.e. starting with `-P`, like `-P1Y`).
   - f, millisecond, milliseconds
 - returns **isoDate** (string): the calculated ISO 8601 date time string
 
+---
 
 `DATE_SUBTRACT(date, isoDuration) → isoDate`
 

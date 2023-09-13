@@ -121,7 +121,6 @@ If you want a specific version, download the precompiled executable via the
 - [_Starter_ using processes](cluster/deployment/using-the-arangodb-starter.md)
 - [_Starter_ using Docker containers](cluster/deployment/using-the-arangodb-starter.md#using-the-arangodb-starter-in-docker)
 
-
 ### In the _Cloud_
 
 - [AWS and Azure](in-the-cloud.md)

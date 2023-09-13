@@ -9,7 +9,6 @@ archetype: default
 ---
 {{< description >}}
 
-
 ## Create a search-alias View
 
 ```openapi

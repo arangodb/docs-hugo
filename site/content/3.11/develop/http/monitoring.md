@@ -13,7 +13,6 @@ archetype: default
 
 ## Logs
 
-
 ### Get the global server logs
 
 ```openapi
@@ -115,7 +114,6 @@ paths:
       tags:
         - Monitoring
 ```
-
 
 ### Get the global server logs (deprecated)
 
@@ -264,7 +262,6 @@ paths:
         - Monitoring
 ```
 
-
 ### Get the server log levels
 
 ```openapi
@@ -299,7 +296,6 @@ paths:
       tags:
         - Monitoring
 ```
-
 
 ### Set the server log levels
 
@@ -598,7 +594,6 @@ paths:
         - Monitoring
 ```
 
-
 ### Get the structured log settings
 
 ```openapi
@@ -630,7 +625,6 @@ paths:
       tags:
         - Monitoring
 ```
-
 
 ### Set the structured log settings
 
@@ -685,9 +679,7 @@ paths:
         - Monitoring
 ```
 
-
 ## Statistics
-
 
 ### Get the statistics
 
@@ -1360,7 +1352,6 @@ future.
 
 ### Metrics API v2
 
-
 #### Get the metrics
 
 ```openapi
@@ -1420,7 +1411,6 @@ logPlainResponse(response);
 {{% metrics %}}
 
 ### Metrics API
-
 
 #### Get the metrics (deprecated)
 

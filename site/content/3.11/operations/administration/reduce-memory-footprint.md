@@ -47,7 +47,6 @@ environments, it is recommended to use less restrictive settings, to
 [benchmark](https://www.arangodb.com/performance/) your setup and
 fine-tune the settings for maximal performance.
 
-
 ## Limiting the overall RAM usage
 
 A first simple approach could be to simply tell the `arangod` process
@@ -67,7 +66,6 @@ tuning of the various subsystems, consult the sections below.
 
 Before getting into the nitty-gritty details, check the overview over
 the different subsystems of ArangoDB that are using significant amounts of RAM.
-
 
 ## Overview over RAM usage in ArangoDB
 
@@ -184,7 +182,6 @@ option
 to some value smaller than its default of 80MB can potentially help
 to reduce RAM usage. However, the effect is rather indirect.
 
-
 ## Write Buffers
 
 RocksDB writes into
@@ -235,7 +232,6 @@ The other options to configure write buffer usage are:
 ```
 
 However, adjusting these usually not helps with RAM usage.
-
 
 ## RocksDB Block Cache
 
@@ -308,7 +304,6 @@ See also:
 - [RocksDB Server Options](../../components/arangodb-server/options.md#rocksdb)
 - [Write Buffer Manager](https://github.com/facebook/rocksdb/wiki/Write-Buffer-Manager)
 
-
 ## Transactions
 
 Before commit, RocksDB builds up transaction data in RAM. This happens
@@ -347,7 +342,6 @@ of documents touched in the transaction (default is `1000000`). The second
 configures intermediate commits based on the total size of the documents
 touched in the transaction (default is `512MB`).
 
-
 ## RocksDB compactions
 
 RocksDB compactions are necessary, but use RAM. You can control how many
@@ -371,7 +365,6 @@ Fewer concurrent compaction jobs will use less RAM, but will also lead
 to slower compaction overall, which can lead to write stalls and even
 stops, if a compaction debt builds up under a high write load.
 
-
 ## Scheduler queues
 
 If too much memory is used to queue requests in the scheduler queues,
@@ -385,7 +378,6 @@ The default is `4096`, which is quite a lot. For small requests, the
 memory usage for a full queue will not be significant, but since
 individual requests can be large, it may sometimes be necessary to
 limit the queue size a lot more to avoid RAM over usage on the queue.
-
 
 ## Index Caches
 
@@ -459,7 +451,6 @@ Finally, the amount of write operations being queued for index refill
 can be limited with `--rocksdb.auto-refill-index-caches-queue-capacity`
 to avoid over-allocation if the indexing cannot keep up with the writes.
 The default for this value is 131072.
-
 
 ## AQL Query Memory Usage
 
@@ -582,7 +573,6 @@ Note that JavaScript / V8 is automatically disabled for DB-Server and Agency
 nodes in a cluster without these limitations. They apply only to single server 
 instances and Coordinator nodes. You should not disable V8 on Coordinators
 because certain cluster operations depend on it.
-
 
 ## Concurrent operations
 
