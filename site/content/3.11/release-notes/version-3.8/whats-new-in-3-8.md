@@ -964,7 +964,7 @@ and bandwidth:
 {"_key":"test","_rev":..., ...}
 ```
 
-Also see [_arangodump_ Dump Output Format](programs-arangodump-examples.html#dump-output-format).
+Also see [_arangodump_ Dump Output Format](../../components/tools/arangodump/examples.md#dump-output-format).
 
 Using the new non-enveloped dump format also allows _arangorestore_ to
 parallelize restore operations for individual collections. This is not possible
@@ -1132,7 +1132,7 @@ concurrently as there are worker threads. The default is chosen such
 that it is sensible for most workloads, but in special situations it
 can help to adjust the value.
 
-See [ArangoDB Server _Server_ Options](programs-arangod-options.html#--serverongoing-low-priority-multiplier)
+See [ArangoDB Server _Server_ Options](../../components/arangodb-server/options.md#--serverongoing-low-priority-multiplier)
 for details and hints for configuration.
 
 There have been further improvements, in particular to ensure that

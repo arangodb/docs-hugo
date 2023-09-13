@@ -85,11 +85,11 @@ The above will probably work fine for numeric input values.
 What could an attacker do to this query? Here are a few suggestions to use for
 the `searchValue` parameter:
 
-- for returning all documents in the collection:<br>
+- for returning all documents in the collection:\
   `1 || true`
-- for removing all documents:<br>
+- for removing all documents:\
   `1 || true REMOVE doc IN collection //`
-- for inserting new documents:<br>
+- for inserting new documents:\
   `1 || true INSERT { foo: "bar" } IN collection //`
 
 It should have become obvious that this is extremely unsafe and should be
@@ -324,14 +324,14 @@ the place.
 
 There are two types of bind parameters in AQL:
 
-- Bind parameters for **values**:<br>
+- Bind parameters for **values**:\
   Those are prefixed with a single `@` in AQL queries, and are specified
   without the prefix when they get their value assigned. These bind parameters
   can contain any valid JSON value.
 
   Examples: `@what`, `@searchValue`
 
-- Bind parameters for **collections**:<br>
+- Bind parameters for **collections**:\
   These are prefixed with `@@` in AQL queries, and are replaced with the name
   of a collection. When the bind parameter value is assigned, the parameter
   itself must be specified with a single `@` prefix. Only string values are

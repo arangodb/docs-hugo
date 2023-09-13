@@ -21,15 +21,15 @@ known, SmartGraphs can make use if it.
 
 Examples for such graphs are:
 
-- **Social Networks**<br>
+- **Social Networks**\
   Typically the feature here is the region/country users live in. Every user has
   more contacts in the same region/country than in other regions/countries.
 
-- **Transport Systems**<br>
+- **Transport Systems**\
   For transport systems, the common feature is the region/country. There are
   many local connections, but only a few go across countries.
 
-- **E-Commerce**<br>
+- **E-Commerce**\
   In this case, the category of products is a good feature. Products of the same
   category are often bought together.
 

@@ -112,7 +112,7 @@ This is an alias for [AVERAGE()](#average).
 
 Return the integer closest but not less than *value*.
 
-To round downward, see [FLOOR()](#floor).<br>
+To round downward, see [FLOOR()](#floor).\
 To round to the nearest integer value, see [ROUND()](#round).
 
 - **value** (number): any number
@@ -297,7 +297,7 @@ EXP2(0) // 1
 
 Return the integer closest but not greater than *value*.
 
-To round upward, see [CEIL()](#ceil).<br>
+To round upward, see [CEIL()](#ceil).\
 To round to the nearest integer value, see [ROUND()](#round).
 
 - **value** (number): any number

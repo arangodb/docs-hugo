@@ -556,7 +556,7 @@ CALL( "SUBSTRING", "this is a test", 0, 4 )
 
 ### ASSERT() / WARN()
 
-`ASSERT(expr, message) → retVal`<br>
+`ASSERT(expr, message) → retVal`\
 `WARN(expr, message) → retVal`
 
 The two functions evaluate an expression. In case the expression evaluates to

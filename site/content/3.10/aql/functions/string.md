@@ -702,7 +702,7 @@ RETURN JSON_STRINGIFY( [1, {'2': .5}] )
 
 Return the `n` leftmost characters of the string `value`.
 
-To return the rightmost characters, see [RIGHT()](#right).<br>
+To return the rightmost characters, see [RIGHT()](#right).\
 To take a part from an arbitrary position off the string,
 see [SUBSTRING()](#substring).
 
@@ -910,7 +910,7 @@ RETURN LOWER("AVOcado")
 
 Return the string `value` with whitespace stripped from the start only.
 
-To strip from the end only, see [RTRIM()](#rtrim).<br>
+To strip from the end only, see [RTRIM()](#rtrim).\
 To strip both sides, see [TRIM()](#trim).
 
 - **value** (string): a string
@@ -1279,7 +1279,7 @@ RETURN REVERSE("电脑坏了")
 
 Return the `length` rightmost characters of the string `value`.
 
-To return the leftmost characters, see [LEFT()](#left).<br>
+To return the leftmost characters, see [LEFT()](#left).\
 To take a part from an arbitrary position off the string,
 see [SUBSTRING()](#substring).
 
@@ -1312,7 +1312,7 @@ RETURN RIGHT("foobar", 10)
 
 Return the string `value` with whitespace stripped from the end only.
 
-To strip from the start only, see [LTRIM()](#ltrim).<br>
+To strip from the start only, see [LTRIM()](#ltrim).\
 To strip both sides, see [TRIM()](#trim).
 
 - **value** (string): a string
@@ -1647,7 +1647,7 @@ RETURN SUBSTITUTE("the quick brown foxx", {
 
 Return a substring of `value`.
 
-To return the rightmost characters, see [RIGHT()](#right).<br>
+To return the rightmost characters, see [RIGHT()](#right).\
 To return the leftmost characters, see [LEFT()](#left).
 
 - **value** (string): a string

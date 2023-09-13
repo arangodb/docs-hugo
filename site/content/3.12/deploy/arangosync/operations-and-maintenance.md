@@ -22,7 +22,7 @@ Below you'll find an overview per component.
 - Sync master & workers: The `arangosync` servers running as either master
   or worker, provide:
   - A status API, see `arangosync get status`. Make sure that all statuses report `running`.
-    <br/>For even more detail the following commands are also available:
+    For even more detail the following commands are also available:
     `arangosync get tasks`, `arangosync get masters` & `arangosync get workers`.
   - A log on the standard output. Log levels can be configured using `--log.level` settings.
   - A metrics API `GET /metrics`. This API is compatible with Prometheus.
@@ -43,7 +43,8 @@ indication that something may be wrong. In case that happens, give it some time
 (incremental synchronization may take quite some time for large collections)
 and look at the status again. If the statuses do not change (or change, but not reach `running`)
 it is time to inspects the metrics & log files.
-<br/> When the metrics or logs seem to indicate a problem in a sync master or worker, it is
+
+When the metrics or logs seem to indicate a problem in a sync master or worker, it is
 safe to restart it, as long as only 1 instance is restarted at a time.
 Give restarted instances some time to "catch up".
 

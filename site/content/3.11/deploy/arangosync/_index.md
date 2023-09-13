@@ -29,7 +29,7 @@ ArangoDB's _Datacenter-to-Datacenter Replication_ is a solution that enables you
 to asynchronously replicate the entire structure and content in an ArangoDB Cluster
 in one place to a Cluster in another place. Typically it is used from one datacenter
 to another. It is possible to replicate to multiple other datacenters as well.
-<br/>It is not a solution for replicating single server instances.
+It is not a solution for replicating single server instances.
 
 ![ArangoDB DC2DC](../../../images/dc2dc_topology.png)
 
@@ -43,12 +43,12 @@ load, network & computer capacity.
 _ArangoSync_ performs replication in a **single direction** only. That means that
 you can replicate data from cluster _A_ to cluster _B_ or from cluster _B_ to
 cluster _A_, but never at the same time (one leader, one or more follower clusters).
-<br/>Data modified in the destination cluster **will be lost!**
+Data modified in the destination cluster **will be lost!**
 
 Replication is a completely **autonomous** process. Once it is configured it is
 designed to run 24/7 without frequent manual intervention.
-<br/>This does not mean that it requires no maintenance or attention at all.
-<br/>As with any distributed system some attention is needed to monitor its operation
+This does not mean that it requires no maintenance or attention at all.
+As with any distributed system some attention is needed to monitor its operation
 and keep it secure (e.g. certificate & password rotation).
 
 In the event of an outage of the leader cluster, user intervention is required
@@ -63,7 +63,7 @@ leader by a couple of seconds or minutes.
 Once configured, _ArangoSync_ will replicate both **structure and data** of an
 **entire cluster**. This means that there is no need to make additional configuration
 changes when adding/removing databases or collections.
-<br/>Also meta data such as users, Foxx application & jobs are automatically replicated.
+Also meta data such as users, Foxx application & jobs are automatically replicated.
 
 A message queue developed by ArangoDB in Go and called **DirectMQ** is used for
 replication. It is tailored for DC2DC replication with efficient native
@@ -100,7 +100,7 @@ To use _Datacenter-to-Datacenter Replication_ you need the following:
 
 {{< info >}}
 In several places you will need a (x509) certificate.
-<br/>The [Certificates](security.md#certificates) section provides more guidance for creating
+The [Certificates](security.md#certificates) section provides more guidance for creating
 and renewing these certificates.
 {{< /info >}}
 

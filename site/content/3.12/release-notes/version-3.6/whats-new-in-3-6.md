@@ -457,13 +457,13 @@ In addition, ArangoDB 3.6 provides the following new AQL functionality:
   The following optional properties can be provided for an `ngram` Analyzer
   definition:
 
-  - `startMarker` : `<string>`, default: ""<br>
+  - `startMarker` : `<string>`, default: ""\
     this value will be prepended to _n_-grams at the beginning of input sequence
 
-  - `endMarker` : `<string>`, default: ""<br>
+  - `endMarker` : `<string>`, default: ""\
     this value will be appended to _n_-grams at the beginning of input sequence
 
-  - `streamType` : `"binary"|"utf8"`, default: "binary"<br>
+  - `streamType` : `"binary"|"utf8"`, default: "binary"\
     type of the input stream (support for UTF-8 is new)
 
 - Added _edge n-gram_ support to the [`text` Analyzer type](../../index-and-search/analyzers.md#text).
@@ -590,7 +590,7 @@ for details and usage examples.
 
 The following APIs have been expanded / changed:
 
-- [Database creation API](../../develop/http/databases.md#create-a-database),<br>
+- [Database creation API](../../develop/http/databases.md#create-a-database),\
   HTTP route `POST /_api/database`
 
   The database creation API now handles the `replicationFactor`, `writeConcern`
@@ -612,26 +612,26 @@ The following APIs have been expanded / changed:
   that database via the web UI, arangosh or drivers (unless the startup option
   `--cluster.force-one-shard` is enabled).
 
-- [Database properties API](../../develop/http/databases.md#get-information-about-the-current-database),<br>
+- [Database properties API](../../develop/http/databases.md#get-information-about-the-current-database),\
   HTTP route `GET /_api/database/current`
 
   The database properties endpoint returns the new additional attributes
   `replicationFactor`, `writeConcern` and `sharding` in a cluster.
   A description of these attributes can be found above.
 
-- [Collection](../../develop/http/collections.md) / [Graph APIs](../../develop/http/graphs/named-graphs.md#management),<br>
+- [Collection](../../develop/http/collections.md) / [Graph APIs](../../develop/http/graphs/named-graphs.md#management),\
   HTTP routes `POST /_api/collection`, `GET /_api/collection/{collection-name}/properties`
   and various `/_api/gharial/*` endpoints
 
   `minReplicationFactor` has been renamed to `writeConcern` for consistency.
   The old attribute name is still accepted and returned for compatibility.
 
-- [Hot Backup API](../../develop/http/hot-backups.md#create-a-backup),<br>
+- [Hot Backup API](../../develop/http/hot-backups.md#create-a-backup),\
   HTTP route `POST /_admin/backup/create`
 
   New attribute `force`, see [Hot Backup](#hot-backup) below.
 
-- New [Metrics API](../../develop/http/monitoring.md#metrics-api),<br>
+- New [Metrics API](../../develop/http/monitoring.md#metrics-api),\
   HTTP route `GET /_admin/metrics`
 
   Returns the instance's current metrics in Prometheus format. The returned
