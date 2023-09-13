@@ -471,8 +471,8 @@ RETURN OUTERSECTION( [ 1, 2, 3 ], [ 2, 3, 4 ], [ 3, 4, 5 ] )
 
 Remove the last element of *array*.
 
-To append an element (right side), see [PUSH()](#push).<br>
-To remove the first element, see [SHIFT()](#shift).<br>
+To append an element (right side), see [PUSH()](#push).\
+To remove the first element, see [SHIFT()](#shift).\
 To remove an element at an arbitrary position, see [REMOVE_NTH()](#remove_nth).
 
 - **anyArray** (array): an array with elements of arbitrary type
@@ -565,8 +565,8 @@ existence, you may use the `IN` operator instead of calling `POSITION()`, like
 
 Append *value* to *anyArray* (right side).
 
-To remove the last element, see [POP()](#pop).<br>
-To prepend a value (left side), see [UNSHIFT()](#unshift).<br>
+To remove the last element, see [POP()](#pop).\
+To prepend a value (left side), see [UNSHIFT()](#unshift).\
 To append multiple elements, see [APPEND()](#append).
 
 - **anyArray** (array): array with elements of arbitrary type
@@ -604,7 +604,7 @@ RETURN PUSH([ 1, 2, 2, 3 ], 2, true)
 
 Remove the element at *position* from the *anyArray*.
 
-To remove the first element, see [SHIFT()](#shift).<br>
+To remove the first element, see [SHIFT()](#shift).\
 To remove the last element, see [POP()](#pop).
 
 - **anyArray** (array): array with elements of arbitrary type
@@ -784,8 +784,8 @@ RETURN REVERSE ( [2,4,6,8,10] )
 
 Remove the first element of *anyArray*.
 
-To prepend an element (left side), see [UNSHIFT()](#unshift).<br>
-To remove the last element, see [POP()](#pop).<br>
+To prepend an element (left side), see [UNSHIFT()](#unshift).\
+To remove the last element, see [POP()](#pop).\
 To remove an element at an arbitrary position, see [REMOVE_NTH()](#remove_nth).
 
 - **anyArray** (array): array with elements with arbitrary type
@@ -1012,7 +1012,7 @@ RETURN UNIQUE( [ 1,2,2,3,3,3,4,4,4,4,5,5,5,5,5 ] )
 
 Prepend *value* to *anyArray* (left side).
 
-To remove the first element, see [SHIFT()](#shift).<br>
+To remove the first element, see [SHIFT()](#shift).\
 To append a value (right side), see [PUSH()](#push).
 
 - **anyArray** (array): array with elements of arbitrary type
