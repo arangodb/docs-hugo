@@ -1312,7 +1312,11 @@ article ul li {
     transition: opacity 0.2s ease-in-out;
 }
 
-h2:hover .header-link {
+h2:hover .header-link,
+h3:hover .header-link,
+h4:hover .header-link,
+h5:hover .header-link,
+h6:hover .header-link {
   filter: alpha(opacity=70);
   opacity: 0.7;
 }
