@@ -135,7 +135,7 @@ function styleImages() {
 
 function loadPage(target) {
   var href = target;
-  getCurrentVersion();
+  getCurrentVersion(href);
   renderVersion();
   loadMenu(href);
   $.get({
@@ -180,7 +180,7 @@ function initArticle(url) {
 $(window).on('popstate', function (e) {
   var state = e.originalEvent.state;
   if (state !== null) {
-    console.log("Received popstate event")
+    console.log("Received popstate event " + window.location.pathname)
     loadPage(window.location.href);
   }
 });
@@ -249,8 +249,7 @@ $(window).scroll(function(){
 
 var stableVersion;
 
-function getCurrentVersion() {
-    var url = window.location.href;
+function getCurrentVersion(url) {
     var urlRe = url.match("\/[0-9.]+\/")
     var urlVersion = stableVersion;
 
@@ -393,13 +392,20 @@ function toggleExpandShortcode(event) {
 
 
 window.onload = () => {
+    window.history.pushState("navchange", "ArangoDB Documentation", window.location.href);
+
+    var _hsq = window._hsq = window._hsq || [];
+    _hsq.push(['setPath', window.location.href]);
+    _hsq.push(['trackPageView']);
+    new PopStateEvent('popstate', { state: "navchange" });
+
     var iframe =  document.getElementById('menu-iframe');
     var iFrameBody = iframe.contentDocument || iframe.contentWindow.document;
     content = iFrameBody.getElementById('sidebar');
 
     $("#menu-iframe").replaceWith(content);
 
-    getCurrentVersion();
+    getCurrentVersion(window.location.pathname);
     menuEntryClickListener();
     renderVersion();
     loadMenu(window.location.href);
