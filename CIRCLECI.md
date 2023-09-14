@@ -8,22 +8,27 @@ It is configured to build the docs without re-generating the examples
 (using a committed cache file.)
 
 A plain build is sufficient for the following types of changes:
-- Creating a new page or editing an existing page, as long as no code blocks with front matter (i.e. generated examples) are added or modified
-- Adding a new or editing an existing HTTP API endpoint description, as long as no accompanying `` ```curl `` examples are added or modified
 
-When making changes to the HTTP API descriptions (OpenAPI), it is sufficient
-to use the `plain-build` workflow as it includes validation at each run.
+- Creating a new page or editing an existing page, as long as no code blocks with front matter
+  (i.e. generated examples) are added or modified.
+
+- Adding a new or editing an existing HTTP API endpoint description, as long as no
+  accompanying `` ```curl `` examples are added or modified. The `plain-build` workflow
+  includes validation at each run using [swagger-cli](https://apitools.dev/swagger-cli/).
 
 The build report including OpenAPI syntax validation can be found in the
 `generate-summary` check in GitHub.
 
 Invoke Args:
-- workflow: plain-build
-- deploy-url: deploy-preview-{PR_NUMBER}
+
+| Name | Value |
+|:-----|:------|
+| `workflow` | `plain-build` |
+| `deploy-url` | `deploy-preview-{PR_NUMBER}` |
 
 ## Deploy to production a plain build
 
-To publish a plain build to the production site hosted at https://docs.arangodb.com,
+To publish a plain build to the production site hosted at <https://docs.arangodb.com>,
 follow the steps below:
 
 1. Go to CircleCI and select the `docs-hugo` project.
@@ -60,29 +65,33 @@ image in the PR description, as they are required for the compile step.
 When commenting a PR with the `/generate` command, the following
 arguments are invoked:
 
-- workflow: generate
-- arangodb-3_10: {string in PR Template at 3.10 }
-- arangodb-3_11: {string in PR Template at 3.11 }
-- arangodb-3_12: {string in PR Template at 3.12 }
-- generators: examples
-- deploy-url: deploy-preview-{PR_NUMBER}
+| Name | Value |
+|:-----|:------|
+| `workflow` | `generate` |
+| `arangodb-3_10` | `{string in PR Template at 3.10}` |
+| `arangodb-3_11` | `{string in PR Template at 3.11}` |
+| `arangodb-3_12` | `{string in PR Template at 3.12}` |
+| `generators` | `examples` |
+| `deploy-url` | `deploy-preview-{PR_NUMBER}` |
 
 ### `/commit`
 
-- workflow: commit-generated
+- `workflow`: `commit-generated`
 
 ### `/generate-commit`
 
 When commenting a PR with the `/generate-commit` command, the following
 arguments are invoked:
 
-- workflow: generate
-- arangodb-3_10: {string in PR Template at 3.10 }
-- arangodb-3_11: {string in PR Template at 3.11 }
-- arangodb-3_12: {string in PR Template at 3.12 }
-- generators: examples
-- deploy-url: deploy-preview-{PR_NUMBER}
-- commit-generated: true
+| Name | Value |
+|:-----|:------|
+| `workflow` | `generate` |
+| `arangodb-3_10` | `{string in PR Template at 3.10}` |
+| `arangodb-3_11` | `{string in PR Template at 3.11}` |
+| `arangodb-3_12` | `{string in PR Template at 3.12}` |
+| `generators` | `examples` |
+| `deploy-url` | `deploy-preview-{PR_NUMBER}` |
+| `commit-generated` | `true` |
 
 ## Release workflow (ArangoDB)
 
@@ -97,13 +106,13 @@ steps below.
 
 **Parameters used for ArangoDB release workflow**
 
-| Parameter type  | Name  | Value  |
-|-----------------|-------|--------|
-| string | workflow | release |
-| string | release-type | arangodb |
-| string | docs-version | 3.11 (the docs version folder) |
-| string | arangodb-branch | 3.11 |
-| string | arangodb-version | 3.11.4 |
+| Parameter type | Name | Value |
+|:---------------|:-----|:------|
+| string | `workflow` | `release` |
+| string | `release-type` | `arangodb` |
+| string | `docs-version` | `3.11` (the docs version folder) |
+| string | `arangodb-branch` | `3.11` |
+| string | `arangodb-version` | `3.11.4` |
 
 The ArangoDB release workflow includes the following jobs:
 - `generate` workflow (all examples are re-generated for the specified version)
@@ -126,27 +135,33 @@ This workflow uses predefined arguments and generates the data files of the foll
 - optimizer rules
 
 Invoke Args:
-- workflow: generate-scheduled
-- arangodb-3_10: arangodb/enterprise-preview:3.10-nightly
-- arangodb-3_11: arangodb/enterprise-preview:3.11-nightly
-- arangodb-3_12: arangodb/enterprise-preview:devel-nightly
-- generators: metrics error-codes optimizer options
-- commit-generated: true
-- create-pr: true
-- pr-branch: scheduled-content-generate_$CIRCLE_BUILD_NUM
+
+| Name | Value |
+|:-----|:------|
+| `workflow` | `generate-scheduled` |
+| `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
+| `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
+| `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
+| `generators` | `metrics error-codes optimizer options` |
+| `commit-generated` | `true` |
+| `create-pr` | `true` |
+| `pr-branch` | `scheduled-content-generate_$CIRCLE_BUILD_NUM` |
 
 Similarly, the `generate-oasisctl` workflow is automatically triggered
 and repeats on the 5th of every month. It generates pages about the command-line interface of the tool.
 
 Invoke Args:
-- workflow: generate-oasisctl
-- arangodb-3_10: arangodb/enterprise-preview:3.10-nightly
-- arangodb-3_11: arangodb/enterprise-preview:3.11-nightly
-- arangodb-3_12: arangodb/enterprise-preview:devel-nightly
-- generators: oasisctl
-- commit-generated: true
-- create-pr: true
-- pr-branch: scheduled-oasisctl-generate_$CIRCLE_BUILD_NUM
+
+| Name | Value |
+|:-----|:------|
+| `workflow` | `generate-oasisctl` |
+| `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
+| `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
+| `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
+| `generators` | `oasisctl` |
+| `commit-generated` | `true` |
+| `create-pr` | `true` |
+| `pr-branch` | `scheduled-oasisctl-generate_$CIRCLE_BUILD_NUM` |
 
 Both workflows can be manually triggered in the CircleCI web interface
 via **Trigger Pipeline**.
@@ -155,8 +170,12 @@ via **Trigger Pipeline**.
 
 ### Create Docs Images AMD64
 
-- workflow: create-docs-images-amd64
+| Name | Value |
+|:-----|:------|
+| `workflow` | `create-docs-images-amd64` |
 
 ### Create Docs Images ARM64
 
-- workflow: create-docs-images-arm64
+| Name | Value |
+|:-----|:------|
+| `workflow` | `create-docs-images-arm64` |
