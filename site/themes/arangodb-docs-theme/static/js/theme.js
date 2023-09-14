@@ -143,6 +143,12 @@ function loadPage(target) {
     success: function(newDoc) {
       replaceArticle(href, newDoc)
       initArticle(href);
+      console.log(location.hash)
+      fragment = location.hash
+      if (fragment) {
+        fragment 
+        document.getElementById(fragment.replace('#', '')).scrollIntoView();
+      }
       return true;
     }
   });
@@ -191,6 +197,7 @@ $(window).on('hashchange', function (e) {
   var _hsq = window._hsq = window._hsq || [];
   _hsq.push(['setPath', window.location.href]);
   _hsq.push(['trackPageView']);
+  console.log(e)
 });
 
 
