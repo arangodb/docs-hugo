@@ -189,8 +189,7 @@ li {
 }
 
 ul ul, ul ol, ol ul, ol ol {
-    margin-top: 1rem;
-    margin-bottom: 0;
+    margin-bottom: .5rem;
 }
 
 .link-internal > * {
@@ -1299,8 +1298,7 @@ article > h6 > code {
 }
 
 article ul li {
-    list-style: disc;
-    margin-left: 20px;
+    margin-left: .75rem;
     line-height: 25px;
 }
 
@@ -1426,8 +1424,8 @@ ol > li {
 
 div.box {
     border-radius: 7px;
-    margin-bottom: 30px;
-    margin-top: 2rem;
+    margin-bottom: 1rem;
+    margin-top: 1rem;
 }
 
 div.box.info {
