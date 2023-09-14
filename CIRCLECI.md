@@ -7,11 +7,9 @@ in a PR.
 It is configured to build the docs without re-generating the examples
 (using a committed cache file.)
 
-Used when:
-- Creating a new page
-- Editing an existing page
-- Adding a new HTTP API endpoint
-- Editing an existing HTTP API endpoint
+A plain build is sufficient for the following types of changes:
+- Creating a new page or editing an existing page, as long as no code blocks with front matter (i.e. generated examples) are added or modified
+- Adding a new or editing an existing HTTP API endpoint description, as long as no accompanying `` ```curl `` examples are added or modified
 
 When making changes to the HTTP API descriptions (OpenAPI), it is sufficient
 to use the `plain-build` workflow as it includes validation at each run.
@@ -44,10 +42,10 @@ Select the pipeline from the dashboard and approve the workflow.
 
 The `generate` workflow can be automatically triggered from a PR.
 
-Used when adding or editing:
-- AQL examples
-- arangosh (JavaScript API) examples
-- curl (HTTP API) examples
+Necessary when adding or editing the following content:
+- AQL examples (`` ```aql `` with front matter)
+- arangosh (JavaScript API) examples (`` ```js `` with front matter)
+- cURL HTTP API examples (`` ```curl ``)
 
 Commands you can use in GitHub comments on PRs:
 - `/generate`: to build examples for the preview
@@ -121,7 +119,7 @@ The build report can be found in the `generate-summary` check in GitHub.
 The `generate-scheduled` workflow is automatically triggered every Thursday.
 It is configured in the CircleCI web interface at **Project Settings** > **Triggers**.
 
-This workflow uses predefined arguments and generates the following:
+This workflow uses predefined arguments and generates the data files of the following:
 - metrics
 - startup options
 - error codes
@@ -138,7 +136,7 @@ Invoke Args:
 - pr-branch: scheduled-content-generate_$CIRCLE_BUILD_NUM
 
 Similarly, the `generate-oasisctl` workflow is automatically triggered
-and repeats on the 5th every month. 
+and repeats on the 5th of every month. It generates pages about the command-line interface of the tool.
 
 Invoke Args:
 - workflow: generate-oasisctl
