@@ -7,7 +7,7 @@
       {{- partial "deprecated.html" . }}
       {{- partial "in-development.html" . }}
       <hgroup>
-      <h1>{{ replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}</h1>
+      <h1>{{ .Title| markdownify }}</h1>
       </hgroup>
       {{ with $content }}
          {{ . }}
@@ -27,7 +27,7 @@
 <div class="cards">
   {{ range $section.Pages }}
 
-    {{ $title := replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}
+    {{ $title := .Title | markdownify }}
 
     {{- partial "shortcodes/card.html" (dict
     "Inner" (.Description | markdownify)

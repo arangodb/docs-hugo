@@ -8,7 +8,7 @@
       {{- partial "deprecated.html" . }}
       {{- partial "in-development.html" . }}
       <hgroup>
-      <h1>{{ replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}</h1>
+        <h1>{{ .Title| markdownify }}</h1>
       </hgroup>
       {{ $content | safeHTML }}
       <nav class="pagination">
