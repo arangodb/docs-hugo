@@ -2,12 +2,12 @@
   <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
   <meta itemprop="itemListOrder" content="Descending" />
   {{ range .Ancestors.Reverse }}
-    DEBUG {{ .Page }} {{ .Store }}
     {{ if not .IsHome }}
+    DEBUG {{ .Page }} {{ .Page.Scratch }}
     <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
       <meta itemprop="position" content="{{ .Params.menuTitle }}" />
       <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
-        <span itemprop="name" class="breadcrumb-entry">{{- if eq (len .Ancestors) 1 }}{{ .Page.Scratch.Get "version" }}{{ else }}{{ .Params.menuTitle | markdownify }}{{ end }}</span>
+        <span itemprop="name" class="breadcrumb-entry">{{ .Params.menuTitle | markdownify }}</span>
       </a>
       <i class="fas fa-chevron-right fa-fw"></i>
     </li>
@@ -17,7 +17,7 @@
   <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
     <meta itemprop="position" content="{{ .Params.menuTitle }}" />
     <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
-      <span itemprop="name" class="breadcrumb-entry">{{- if eq (len .Ancestors) 1 }}{{ .Page.Scratch.Get "version" }}{{ else }}{{ .Params.menuTitle | markdownify }}{{ end }}</span>
+      <span itemprop="name" class="breadcrumb-entry">{{ .Params.menuTitle | markdownify }}</span>
     </a>
   </li>
   {{ end }}
