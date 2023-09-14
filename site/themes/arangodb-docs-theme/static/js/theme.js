@@ -135,6 +135,7 @@ function styleImages() {
 
 function loadPage(target) {
   var href = target;
+  getCurrentVersion(href);
   renderVersion();
   loadMenu(href);
   $.get({
@@ -142,6 +143,12 @@ function loadPage(target) {
     success: function(newDoc) {
       replaceArticle(href, newDoc)
       initArticle(href);
+      console.log(location.hash)
+      fragment = location.hash
+      if (fragment) {
+        fragment 
+        document.getElementById(fragment.replace('#', '')).scrollIntoView();
+      }
       return true;
     }
   });
@@ -179,9 +186,18 @@ function initArticle(url) {
 $(window).on('popstate', function (e) {
   var state = e.originalEvent.state;
   if (state !== null) {
-    console.log("Received popstate event")
+    console.log("Received popstate event " + window.location.href)
     loadPage(window.location.href);
   }
+});
+
+$(window).on('hashchange', function (e) {
+  window.history.pushState("popstate", "ArangoDB Documentation", window.location.href);
+
+  var _hsq = window._hsq = window._hsq || [];
+  _hsq.push(['setPath', window.location.href]);
+  _hsq.push(['trackPageView']);
+  console.log(e)
 });
 
 
@@ -248,8 +264,7 @@ $(window).scroll(function(){
 
 var stableVersion;
 
-function getCurrentVersion() {
-    var url = window.location.href;
+function getCurrentVersion(url) {
     var urlRe = url.match("\/[0-9.]+\/")
     var urlVersion = stableVersion;
 
@@ -392,13 +407,19 @@ function toggleExpandShortcode(event) {
 
 
 window.onload = () => {
+    window.history.pushState("popstate", "ArangoDB Documentation", window.location.href);
+
+    var _hsq = window._hsq = window._hsq || [];
+    _hsq.push(['setPath', window.location.href]);
+    _hsq.push(['trackPageView']);
+
     var iframe =  document.getElementById('menu-iframe');
     var iFrameBody = iframe.contentDocument || iframe.contentWindow.document;
     content = iFrameBody.getElementById('sidebar');
 
     $("#menu-iframe").replaceWith(content);
 
-    getCurrentVersion();
+    getCurrentVersion(window.location.href);
     menuEntryClickListener();
     renderVersion();
     loadMenu(window.location.href);
