@@ -7,7 +7,7 @@
     <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
       <meta itemprop="position" content="{{ .Params.menuTitle }}" />
       <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
-        <span itemprop="name" class="breadcrumb-entry">{{- if eq (len .Ancestors) 1 }}{{ .Page.Store.Get "version" }}{{ else }}{{ .Params.menuTitle | markdownify }}{{ end }}</span>
+        <span itemprop="name" class="breadcrumb-entry">{{- if eq (len .Ancestors) 1 }}{{ .Page.Scratch.Get "version" }}{{ else }}{{ .Params.menuTitle | markdownify }}{{ end }}</span>
       </a>
       <i class="fas fa-chevron-right fa-fw"></i>
     </li>
@@ -17,7 +17,7 @@
   <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
     <meta itemprop="position" content="{{ .Params.menuTitle }}" />
     <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
-      <span itemprop="name" class="breadcrumb-entry">{{- if eq (len .Ancestors) 1 }}{{ .Page.Store.Get "version" }}{{ else }}{{ .Params.menuTitle | markdownify }}{{ end }}</span>
+      <span itemprop="name" class="breadcrumb-entry">{{- if eq (len .Ancestors) 1 }}{{ .Page.Scratch.Get "version" }}{{ else }}{{ .Params.menuTitle | markdownify }}{{ end }}</span>
     </a>
   </li>
   {{ end }}
