@@ -1,6 +1,6 @@
-{{- $deprecated := $.Page.Scratch.Get "deprecated" }}
+{{- $deprecated := $.Page.Store.Get "deprecated" }}
 {{ $shortVersion := $.Page.Store.Get "versionShort" }}
-{{ $stableVersion := $.Page.Scratch.Get "stableVersion" }}
+{{ $stableVersion := $.Page.Store.Get "stableVersion" }}
 
 
 {{ if $deprecated }}
