@@ -3,7 +3,7 @@ title: Install ArangoDB on-premises
 menuTitle: On-premises installation
 weight: 40
 description: >-
-    Instructions on how to download and install ArangoDB    
+  Instructions on how to download and install ArangoDB    
 archetype: default
 ---
 {{< description >}}

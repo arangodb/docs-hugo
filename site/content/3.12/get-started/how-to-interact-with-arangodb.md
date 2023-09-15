@@ -3,7 +3,7 @@ title: How to Interact With ArangoDB
 menuTitle: How to Interact with ArangoDB
 weight: 50
 description: >-
-    Learn about the different ways you can use and communicate with ArangoDB
+  Learn about the different ways you can use and communicate with ArangoDB
 archetype: default
 ---
 {{< description >}}
