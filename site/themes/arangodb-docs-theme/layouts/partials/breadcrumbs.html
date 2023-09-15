@@ -1,10 +1,10 @@
-{{- $nameToVersion := partialCached "name-to-version.hugo" .Site.Data }}
+{{- $nameToVersion := partialCached "name-to-version.hugo" .Site.Data.versions }}
 <nav id="breadcrumbs">
   <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
   <meta itemprop="itemListOrder" content="Descending" />
   {{ range .Ancestors.Reverse }}
     {{ if not .IsHome }}
-    <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
+    <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">{{- if eq (len .Ancestors) 1 }}[ version: {{ .Scratch.Get "version" }}, name: {{ .Scratch.Get "versionShort" }} ]{{ end }}
       <meta itemprop="position" content="{{ .Params.menuTitle }}" />
       <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
         <span itemprop="name" class="breadcrumb-entry">{{- if eq (len .Ancestors) 1 }}{{ index $nameToVersion .Type }}{{ else }}{{ .Params.menuTitle | markdownify }}{{ end }}</span>
