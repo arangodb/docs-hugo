@@ -1,4 +1,4 @@
-{{ $pageVersion := .Page.Store.Get "versionShort" }}
+{{ $pageVersion := .Page.Scratch.Get "versionShort" }}
 {{ $title := .Page.Scratch.Get "currentHeadline" }}
 {{ $endpoint := printf "%s/openapi" site.Params.arangoproxyUrl }}
 {{ $remote := resources.GetRemote $endpoint (dict

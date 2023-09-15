@@ -1,5 +1,5 @@
 {{- $program := .Get "name" }}
-{{- $pageVersion := .Page.Store.Get "versionShort" }}
+{{- $pageVersion := .Page.Scratch.Get "versionShort" }}
 {{- $dataFolderByVersion := index site.Data $pageVersion }}
 {{- $options := index $dataFolderByVersion $program }}
 {{- if not $options }}{{ errorf "Could not find %q in %q data folder" $program $pageVersion }}{{ end }}

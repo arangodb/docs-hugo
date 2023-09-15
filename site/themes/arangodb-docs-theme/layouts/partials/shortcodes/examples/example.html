@@ -8,7 +8,7 @@
 {{ $description := $test.description }}
 {{ $type := $test.type | default "single" }}
 {{ $cacheEntry := printf "%s_%s" $name $type }}
-{{ $pageVersion := $context.Page.Store.Get "versionShort" }}
+{{ $pageVersion := $context.Page.Scratch.Get "versionShort" }}
 
 {{ $dataFolderByVersion := index site.Data $pageVersion }}
 {{ $cache := index $dataFolderByVersion "cache"}}
@@ -24,7 +24,7 @@
         {{ $newRequest :=  printf "%s" $content | base64Encode  }}
 
         {{ if eq $oldRequest $newRequest }}
-            {{ if $context.Page.Store.Get $name }}
+            {{ if $context.Page.Scratch.Get $name }}
                 {{ $response := .response | base64Decode | transform.Unmarshal }}
                 {{- partial "shortcodes/examples/render.html" (dict
                 "context" .
@@ -43,7 +43,7 @@
                 "cache" false
                 "version" $pageVersion
                 ) }}
-                {{ $context.Page.Store.Set $name "true" }}
+                {{ $context.Page.Scratch.Set $name "true" }}
             {{ end }}
 
         {{ else }}
@@ -56,7 +56,7 @@
             "cache" $saveCache
             "version" $pageVersion
             ) }}
-            {{ $context.Page.Store.Set $name "true" }}
+            {{ $context.Page.Scratch.Set $name "true" }}
         {{ end }}
     {{ else }}
         {{- partial "shortcodes/examples/generate.html" (dict
@@ -68,7 +68,7 @@
         "cache" $saveCache
         "version" $pageVersion
         ) }}
-        {{ $context.Page.Store.Set $name "true" }}
+        {{ $context.Page.Scratch.Set $name "true" }}
     {{ end }}
 
 {{ else }}

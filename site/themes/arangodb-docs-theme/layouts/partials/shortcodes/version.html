@@ -1,12 +1,12 @@
-{{- $pagePath := .page }}
-{{- $versions := index site.Data "versions" }}
+{{- $page := .page }}
+{{- $versions := site.Data.versions }}
 {{- range $version := $versions }}
-  {{- if strings.Contains $pagePath $version.name }}
-    {{- $pagePath.Page.Store.Set "version" $version.version }}
-    {{- $pagePath.Page.Store.Set "versionShort" $version.name }}
-    {{- $pagePath.Page.Store.Set "alias" $version.alias }}
-    {{- $pagePath.Page.Store.Set "deprecated" $version.deprecated }}
-    {{- template "checkVersionIsInDevelopment" dict "page" $pagePath "pageVersion" $version.name "versions" $versions }}
+  {{- if eq $page.Type $version.name }}
+    {{- $page.Scratch.Set "version" $version.version }}
+    {{- $page.Scratch.Set "versionShort" $version.name }}
+    {{- $page.Scratch.Set "alias" $version.alias }}
+    {{- $page.Scratch.Set "deprecated" $version.deprecated }}
+    {{- template "checkVersionIsInDevelopment" dict "page" $page "pageVersion" $version.name "versions" $versions }}
   {{- end }}
 {{- end }}
 
@@ -14,7 +14,7 @@
   {{- $page := .page }}
   {{- $pageVersion := .pageVersion }}
   {{- $versions := index (where .versions "alias" "stable") 0 }}
-  {{- $page.Page.Store.Set "stableVersion" $versions.name }}
+  {{- $page.Scratch.Set "stableVersion" $versions.name }}
 
   {{- $stableVersion := split $versions.name "." }}
   {{- $currentVersion := split $pageVersion "." }}
@@ -24,7 +24,7 @@
     {{- $currentVersionElement := index $currentVersion $j }}
     {{- $intCurrent := int $currentVersionElement }}
     {{- if gt $intCurrent $intStable }}
-      {{- $page.Page.Store.Set "underDevelopment" true }}
+      {{- $page.Scratch.Set "underDevelopment" true }}
     {{- end }}
   {{- end }}
 {{- end -}}

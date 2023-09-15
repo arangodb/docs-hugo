@@ -1,6 +1,6 @@
 {{- $page := .page }}
 {{- $content := .content }}
-{{ $pageVersion := $page.Page.Store.Get "version" }}
+{{ $pageVersion := $page.Scratch.Get "version" }}
 
 {{- with $page }}
     <article class="default">
