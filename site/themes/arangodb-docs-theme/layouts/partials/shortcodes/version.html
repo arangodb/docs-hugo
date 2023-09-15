@@ -1,33 +1,30 @@
-{{ $pagePath := .page }}
-{{ $versions := index site.Data "versions" }}
-{{ range $i, $version := $versions }}
-    {{ if strings.Contains $pagePath $version.name }}
-        {{ $pagePath.Page.Store.Set "version" $version.version }}
-        {{ $pagePath.Page.Store.Set "versionShort" $version.name }}
-        {{ $pagePath.Page.Store.Set "alias" $version.alias }}
-        {{ $pagePath.Page.Store.Set "deprecated" $version.deprecated }}
-
-        {{ template "checkVersionIsInDevelopment" dict "page" $pagePath "pageVersion" $version.name "versions" $versions }}
-    {{ end }}
-{{ end }}
+{{- $pagePath := .page }}
+{{- $versions := index site.Data "versions" }}
+{{- range $version := $versions }}
+  {{- if strings.Contains $pagePath $version.name }}
+    {{- $pagePath.Page.Store.Set "version" $version.version }}
+    {{- $pagePath.Page.Store.Set "versionShort" $version.name }}
+    {{- $pagePath.Page.Store.Set "alias" $version.alias }}
+    {{- $pagePath.Page.Store.Set "deprecated" $version.deprecated }}
+    {{- template "checkVersionIsInDevelopment" dict "page" $pagePath "pageVersion" $version.name "versions" $versions }}
+  {{- end }}
+{{- end }}
 
 {{- define "checkVersionIsInDevelopment" }}
-{{ $page := .page }}
-{{ $pageVersion := .pageVersion }}
-{{ $versions := index (where .versions "alias" "stable") 0 }}
-{{ $page.Page.Store.Set "stableVersion" $versions.name }}
+  {{- $page := .page }}
+  {{- $pageVersion := .pageVersion }}
+  {{- $versions := index (where .versions "alias" "stable") 0 }}
+  {{- $page.Page.Store.Set "stableVersion" $versions.name }}
 
+  {{- $stableVersion := split $versions.name "." }}
+  {{- $currentVersion := split $pageVersion "." }}
 
-    {{ $stableVersion := split $versions.name "." }}
-    {{ $currentVersion := split $pageVersion "." }}
-
-    {{ range $j, $elem := $stableVersion }}
-        {{ $intStable := int $elem }}
-        {{ $currentVersionElement := index $currentVersion $j }}
-        {{ $intCurrent := int $currentVersionElement }}
-        {{ if gt $intCurrent $intStable }}
-            {{ $page.Page.Store.Set "underDevelopment" true }}
-
-        {{ end }}
-    {{ end }}
-{{ end }}
+  {{- range $j, $elem := $stableVersion }}
+    {{- $intStable := int $elem }}
+    {{- $currentVersionElement := index $currentVersion $j }}
+    {{- $intCurrent := int $currentVersionElement }}
+    {{- if gt $intCurrent $intStable }}
+      {{- $page.Page.Store.Set "underDevelopment" true }}
+    {{- end }}
+  {{- end }}
+{{- end -}}

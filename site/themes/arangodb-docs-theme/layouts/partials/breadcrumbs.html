@@ -1,3 +1,4 @@
+{{- $nameToVersion := partialCached "name-to-version.hugo" .Site.Data }}
 <nav id="breadcrumbs">
   <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
   <meta itemprop="itemListOrder" content="Descending" />
@@ -6,7 +7,7 @@
     <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
       <meta itemprop="position" content="{{ .Params.menuTitle }}" />
       <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
-        <span itemprop="name" class="breadcrumb-entry">{{- if eq (len .Ancestors) 1 }}{{ .Page.Store.Get "version" }}{{ else }}{{ .Params.menuTitle | markdownify }}{{ end }}</span>
+        <span itemprop="name" class="breadcrumb-entry">{{- if eq (len .Ancestors) 1 }}{{ index $nameToVersion .Type }}{{ else }}{{ .Params.menuTitle | markdownify }}{{ end }}</span>
       </a>
       <i class="fas fa-chevron-right fa-fw"></i>
     </li>

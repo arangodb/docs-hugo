@@ -1,0 +1,6 @@
+{{- $nameToVersionMap := dict }}
+{{- $versions := index . "versions" }}
+{{- range $version := $versions }}
+  {{- $nameToVersionMap = merge $nameToVersionMap (dict $version.name $version.version) }}
+{{- end }}
+{{- return $nameToVersionMap -}}

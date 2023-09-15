@@ -1,12 +1,15 @@
-{{- $context := .context }} {{- $title := .title }} {{- $image := .icon }} {{- $link := .link }} {{-
-$content := .Inner }}
+{{- $context := .context }}
+{{- $title := .title }}
+{{- $image := .icon }}
+{{- $link := .link }}
+{{- $content := .Inner }}
 
-{{ $destinationPage := "" }}
-{{ if hasPrefix $link "/" }}
-  {{ $destinationPage = site.GetPage $link -}}
-{{ else }}
-  {{ $destinationPage = $context.Page.GetPage $link -}}
-{{ end }}
+{{- $destinationPage := "" }}
+{{- if hasPrefix $link "/" }}
+  {{- $destinationPage = site.GetPage $link }}
+{{- else }}
+  {{- $destinationPage = $context.Page.GetPage $link }}
+{{- end -}}
 
 <a href="{{ $destinationPage.Permalink }}" class="link-internal">
   <div class="card">
