@@ -2,9 +2,12 @@
 title: How to Interact With ArangoDB
 menuTitle: How to Interact with ArangoDB
 weight: 50
-description: ''
+description: >-
+  Learn about the different ways you can use and communicate with ArangoDB
 archetype: default
 ---
+{{< description >}}
+
 ## How to Communicate with the Server
 
 The core component of ArangoDB is the [ArangoDB server](../components/arangodb-server/_index.md)
