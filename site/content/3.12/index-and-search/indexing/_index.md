@@ -2,9 +2,12 @@
 title: Handling Indexes
 menuTitle: Indexing
 weight: 150
-description: ''
+description: >-
+  Overview of working with indexes in ArangoDB 
 archetype: chapter
 ---
+{{< description >}}
+
 - [Index Basics](index-basics.md): Introduction to all index types
 - [Which index to use when](which-index-to-use-when.md): Index type and options adviser
 - [Index Utilization](index-utilization.md): How ArangoDB uses indexes
