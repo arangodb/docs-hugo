@@ -1,5 +1,5 @@
 ---
-title: AQL {{ pageVersion }} Documentation
+title: AQL Documentation
 menuTitle: AQL
 weight: 70
 description: >-
