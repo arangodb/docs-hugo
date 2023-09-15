@@ -2,9 +2,13 @@
 title: Getting Started
 menuTitle: Overview
 weight: 30
-description: ''
+description: >-
+  Learn about ArangoDB's core concepts such as the high-level data
+  organization and its data model
 archetype: default
 ---
+{{< description >}}
+
 This chapter introduces ArangoDB's core concepts and covers the following:
 
 - The high-level data organization
