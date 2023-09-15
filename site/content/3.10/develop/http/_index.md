@@ -1,5 +1,5 @@
 ---
-title: ArangoDB {{ pageVersion }} HTTP API Documentation
+title: ArangoDB HTTP API Documentation
 menuTitle: HTTP
 weight: 285
 description: >-
