@@ -1,9 +1,9 @@
 ---
-title: ArangoDB Java Driver (version 6)
-menuTitle: Reference (version 6)
+title: ArangoDB Java Driver version 6
+menuTitle: Reference version 6
 weight: 10
 description: >-
-  The official ArangoDB Java Driver (version 6)
+  The official ArangoDB Java Driver version 6
 archetype: chapter
 ---
 The official ArangoDB [Java Driver](https://github.com/arangodb/arangodb-java-driver).

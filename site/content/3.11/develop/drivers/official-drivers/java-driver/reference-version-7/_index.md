@@ -1,8 +1,9 @@
 ---
-title: ArangoDB Java Driver - Reference
-menuTitle: Reference (version 7)
+title: ArangoDB Java Driver version 7
+menuTitle: Reference version 7
 weight: 5
-description: ''
+description: >-
+  The official ArangoDB Java Driver version 7
 archetype: chapter
 ---
 - [Driver Setup](driver-setup.md)

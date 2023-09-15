@@ -9,7 +9,7 @@ archetype: chapter
 The official ArangoDB [Java Driver](https://github.com/arangodb/arangodb-java-driver).
 
 - [Java Driver Tutorial](https://university.arangodb.com/courses/java-driver-tutorial-v7/)
-- [Reference](reference-(version-7)/_index.md)
+- [Reference](reference-version-7/_index.md)
 
 ## Supported versions
 
@@ -18,7 +18,7 @@ Version 6 is still supported and maintained, but not actively developed anymore.
 Upgrading to version 7 is recommended.
 
 The API changes between version 6 and 7 are documented in
-[Changes in version 7.0](reference-(version-7)/changes-in-version-7.md).
+[Changes in version 7.0](reference-version-7/changes-in-version-7.md).
 
 Both versions are compatible with all supported stable versions of ArangoDB server, see
 [Product Support End-of-life Announcements](https://www.arangodb.com/eol-notice).
