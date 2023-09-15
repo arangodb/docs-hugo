@@ -4,22 +4,23 @@
 node_modules/
 *.pyc
 /.vs
-public/
-migration-tools/arangoproxy/cmd/cache/*
-migration-tools/arangoproxy/cmd/openapi/*
-migration-tools/arangoproxy/cmd/log.txt
-migration-tools/scripts/*/*.tar.gz
-migration-tools/arangodb*/
-migration-tools/migration/structure.py
-migration-tools/migration/*.txt
-migration-tools/scripts/urls.json
-toolchain/scripts/arangoproxy/arangosh
-toolchain/arangoproxy/arangosh
-toolchain/docker/config.yaml
-toolchain/arangoproxy/cmd/configs/local.yaml
-summary.md
 
-site/resources
+/site/data/*/api-docs.json
+/site/public/
+/site/resources/
+/migration-tools/arangoproxy/cmd/cache/
+/migration-tools/arangoproxy/cmd/openapi/
+/migration-tools/arangoproxy/cmd/log.txt
+/migration-tools/scripts/*/*.tar.gz
+/migration-tools/arangodb*/
+/migration-tools/migration/structure.py
+/migration-tools/migration/*.txt
+/migration-tools/scripts/urls.json
+/toolchain/scripts/arangoproxy/arangosh
+/toolchain/arangoproxy/arangosh
+/toolchain/docker/config.yaml
+/toolchain/arangoproxy/cmd/configs/local.yaml
+/summary.md
 
 # Local Netlify folder
 .netlify
