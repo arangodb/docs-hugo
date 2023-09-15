@@ -1,4 +1,6 @@
-{{- partial "shortcodes/version.html" (dict "page" .Page ) }}
+{{- partial "shortcodes/version.html" (dict
+  "page" .Page
+) }}
 
 <!DOCTYPE html>
 <html lang='{{ .Page.Language | default "en" }}'>
@@ -42,11 +44,9 @@
 
           <div class="container-main">
             <div class="row-main">
-              {{ partial "breadcrumbs.html" . }} {{- partial
-              "output-partial.hugo" (dict "base" "body" "page" . "parameter"
-              (dict "page" . "content" (partial "output-partial.hugo" (dict
-              "base" "content" "page" . "parameter" .)))) }} {{ partial
-              "toc.html" . }}
+              {{ if gt (len .Page.Ancestors) 1 }}{{ partial "breadcrumbs.html" . }}{{ end }}
+              {{- partial "output-partial.hugo" (dict "base" "body" "page" . "parameter" (dict "page" . "content" (partial "output-partial.hugo" (dict "base" "content" "page" . "parameter" .)))) }}
+              {{ partial "toc.html" . }}
             </div>
           </div>
         </section>
