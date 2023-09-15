@@ -1,123 +1,181 @@
-# CircleCI
-## Automated Triggers
+# CircleCI Workflows
 
-### Plain Build
-Whenever there is a push in a PR.
+## Plain build
 
-Invoke Args:
-- workflow: plain-build
-- deploy-url: deploy-preview-{PR_NUMBER}
+The `plain-build` workflow is automatically triggered whenever there is a push
+in a PR.
+It is configured to build the docs without re-generating the examples
+(using a committed cache file.)
 
-### Generate
-Comment a PR with 
+A plain build is sufficient for the following types of changes:
 
-    /generate
+- Creating a new page or editing an existing page, as long as no code blocks with front matter
+  (i.e. generated examples) are added or modified.
 
-Invoke Args:
-- workflow: generate
-- arangodb-3_10: {string in PR Template at 3.10: }
-- arangodb-3_11: {string in PR Template at 3.11: }
-- arangodb-3_12: {string in PR Template at 3.12: }
-- generators: examples
-- deploy-url: deploy-preview-{PR_NUMBER}
+- Adding a new or editing an existing HTTP API endpoint description, as long as no
+  accompanying `` ```curl `` examples are added or modified. The `plain-build` workflow
+  includes validation at each run using [swagger-cli](https://apitools.dev/swagger-cli/).
 
-### Commit Generated Files From Previous Generate Rum
-Comment a PR with
-
-    /commit-generated
-
-No Args
-
-### Generate and Commit at the same time
-Comment a PR with
-
-    /generate-commit
-
-Invoke Args:
-- workflow: generate
-- arangodb-3_10: {string in PR Template at 3.10: }
-- arangodb-3_11: {string in PR Template at 3.11: }
-- arangodb-3_12: {string in PR Template at 3.12: }
-- generators: examples
-- deploy-url: deploy-preview-{PR_NUMBER}
-- commit-generated: true
-
-### Scheduled Generate Content
-Every Thursday a variant of generate workflow is launched by CircleCI
+The build report including OpenAPI syntax validation can be found in the
+`generate-summary` check in GitHub.
 
 Invoke Args:
 
- - workflow: generate-scheduled
+| Name | Value |
+|:-----|:------|
+| `workflow` | `plain-build` |
+| `deploy-url` | `deploy-preview-{PR_NUMBER}` |
 
- This workflow uses a "generate" workflow with predefined args:
+## Deploy to production a plain build
 
- - arangodb-3_10: arangodb/enterprise-preview:3.10-nightly
- - arangodb-3_11: arangodb/enterprise-preview:3.11-nightly
- - arangodb-3_12: arangodb/enterprise-preview:devel-nightly
- - generators: metrics error-codes optimizer options
- - commit-generated: true
- - create-pr: true
- - pr-branch: scheduled-content-generate_$CIRCLE_BUILD_NUM
+To publish a plain build to the production site hosted at <https://docs.arangodb.com>,
+follow the steps below:
 
-### Scheduled Generate OasisCTL
-Every Thursday a variant of generate workflow is launched by CircleCI
+1. Go to CircleCI and select the `docs-hugo` project.
+2. Select the `main` branch.
+3. Click the **Trigger Pipeline** button.
+4. Add the following parameter:
+   - Parameter type: string
+   - Name: `workflow`
+   - Value: `release`
+5. Click **Trigger Pipeline**.
+
+The pipeline gets triggered, but stays on hold as it requires an approval.
+Select the pipeline from the dashboard and approve the workflow.
+
+## Example generation
+
+The `generate` workflow can be automatically triggered from a PR.
+
+Necessary when adding or editing the following content:
+- AQL examples (`` ```aql `` with front matter)
+- arangosh (JavaScript API) examples (`` ```js `` with front matter)
+- cURL HTTP API examples (`` ```curl ``)
+
+Commands you can use in GitHub comments on PRs:
+- `/generate`: to build examples for the preview
+- `/commit`: to commit the previously generated examples to the PR
+- `/generate-commit`: to build and commit the examples in one go
+
+These commands work only if you indicate the upstream PRs or a nightly
+image in the PR description, as they are required for the compile step.
+
+### `/generate`
+
+When commenting a PR with the `/generate` command, the following
+arguments are invoked:
+
+| Name | Value |
+|:-----|:------|
+| `workflow` | `generate` |
+| `arangodb-3_10` | `{string in PR Template at 3.10}` |
+| `arangodb-3_11` | `{string in PR Template at 3.11}` |
+| `arangodb-3_12` | `{string in PR Template at 3.12}` |
+| `generators` | `examples` |
+| `deploy-url` | `deploy-preview-{PR_NUMBER}` |
+
+### `/commit`
+
+- `workflow`: `commit-generated`
+
+### `/generate-commit`
+
+When commenting a PR with the `/generate-commit` command, the following
+arguments are invoked:
+
+| Name | Value |
+|:-----|:------|
+| `workflow` | `generate` |
+| `arangodb-3_10` | `{string in PR Template at 3.10}` |
+| `arangodb-3_11` | `{string in PR Template at 3.11}` |
+| `arangodb-3_12` | `{string in PR Template at 3.12}` |
+| `generators` | `examples` |
+| `deploy-url` | `deploy-preview-{PR_NUMBER}` |
+| `commit-generated` | `true` |
+
+## Release workflow (ArangoDB)
+
+To run a release job for a new ArangoDB patch release (e.g. 3.11.4), follow the
+steps below.
+
+1. Go to CircleCI and select the `docs-hugo` project.
+2. Select the `main` branch.
+3. Click the **Trigger Pipeline** button.
+4. Add the parameters described below.
+5. Click **Trigger Pipeline**.
+
+**Parameters used for ArangoDB release workflow**
+
+| Parameter type | Name | Value |
+|:---------------|:-----|:------|
+| string | `workflow` | `release` |
+| string | `release-type` | `arangodb` |
+| string | `docs-version` | `3.11` (the docs version folder) |
+| string | `arangodb-branch` | `3.11` |
+| string | `arangodb-version` | `3.11.4` |
+
+The ArangoDB release workflow includes the following jobs:
+- `generate` workflow (all examples are re-generated for the specified version)
+- a release branch is created with the generated content, which needs to be approved and merged
+- will be on hold until it is approved in CircleCI as well
+- once approved, starts deploying to production at https://docs.arangodb.com
+
+If any of the examples or generated content fails, the workflow will fail as well. 
+The build report can be found in the `generate-summary` check in GitHub.
+
+## Scheduled workflow
+
+The `generate-scheduled` workflow is automatically triggered every Thursday.
+It is configured in the CircleCI web interface at **Project Settings** > **Triggers**.
+
+This workflow uses predefined arguments and generates the data files of the following:
+- metrics
+- startup options
+- error codes
+- optimizer rules
 
 Invoke Args:
 
- - workflow: generate-oasisctl
+| Name | Value |
+|:-----|:------|
+| `workflow` | `generate-scheduled` |
+| `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
+| `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
+| `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
+| `generators` | `metrics error-codes optimizer options` |
+| `commit-generated` | `true` |
+| `create-pr` | `true` |
+| `pr-branch` | `scheduled-content-generate_$CIRCLE_BUILD_NUM` |
 
- This workflow uses a "generate" workflow with predefined args:
+Similarly, the `generate-oasisctl` workflow is automatically triggered
+and repeats on the 5th of every month. It generates pages about the command-line interface of the tool.
 
- - arangodb-3_10: arangodb/enterprise-preview:3.10-nightly
- - arangodb-3_11: arangodb/enterprise-preview:3.11-nightly
- - arangodb-3_12: arangodb/enterprise-preview:devel-nightly
- - generators: oasisctl
- - commit-generated: true
- - create-pr: true
- - pr-branch: scheduled-oasisctl-generate_$CIRCLE_BUILD_NUM
+Invoke Args:
 
+| Name | Value |
+|:-----|:------|
+| `workflow` | `generate-oasisctl` |
+| `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
+| `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
+| `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
+| `generators` | `oasisctl` |
+| `commit-generated` | `true` |
+| `create-pr` | `true` |
+| `pr-branch` | `scheduled-oasisctl-generate_$CIRCLE_BUILD_NUM` |
 
+Both workflows can be manually triggered in the CircleCI web interface
+via **Trigger Pipeline**.
 
-
-## Manual Triggers
-
-### Plain Build
-
-
- - workflow: plain-build
- - deploy-url: {string}   Netlify Url to deploy the site using the --alias option
-
- ### Generate
-
- - workflow: generate
- - arangodb-3_10: {optional} arangodb branch to generate 3.10 content
- - arangodb-3_11: {optional} arangodb branch to generate 3.11 content
- - arangodb-3_12: {optional} arangodb branch to generate 3.12 content
- - generators: {string} space-separated list of generators to use, empty=all generators
- - commit-generated: {boolean} commit generated files
- - create-pr: {boolean} create pr with generated files
- - pr-branch: if create-pr=true, name of the new branch
- - deploy-url: {string}   Netlify Url to deploy the site using the --alias option
-
-### Commit Generated Files From Last Generate Run
- - workflow: commit-generated
-
-
-### Scheduled Generate Content
- - workflow: generate-scheduled
-
-### Scheduled Generate Oasisctl
- - workflow: generate-oasisctl
-
-### Compile
-
-  - workflow: compile
-  - arangodb-branch: arangodb branch to compile
-  - openssl: openssl version to use for compiling
+## Other workflows
 
 ### Create Docs Images AMD64
- - workflow: create-docs-images-amd64
+
+| Name | Value |
+|:-----|:------|
+| `workflow` | `create-docs-images-amd64` |
 
 ### Create Docs Images ARM64
- - workflow: create-docs-images-arm64
 
+| Name | Value |
+|:-----|:------|
+| `workflow` | `create-docs-images-arm64` |

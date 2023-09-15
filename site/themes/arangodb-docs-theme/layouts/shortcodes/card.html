@@ -1,12 +1,13 @@
-{{ $title := .Get "title" }}
-{{ $link := .Get "link" }}
-{{ $image := resources.GetMatch ( .Get "icon" ) }}
-
-    {{- partial "shortcodes/card.html" (dict
-    "Inner" .Inner
-    "title" $title
-    "link" .Page.RelPermalink
-    "icon" $image
-      ) }}  
-
-
+{{- $title := .Get "title" }}
+{{- $link := .Get "link" }}
+{{- $image := resources.GetMatch (printf "images/%s" ( .Get "icon" )) }}
+{{- $versions := index .Site.Data "versions" }}
+{{- $stableVersion := (index (where $versions "alias" "stable") 0).name }}
+{{- /* TODO: Check if relative links are resolved in the context of the linking page */}}
+{{- partial "shortcodes/card.html" (dict
+  "Inner" .Inner
+  "title" $title
+  "link" $link
+  "icon" $image
+  "context" .
+) }}
