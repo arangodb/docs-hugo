@@ -108,7 +108,7 @@ func (formatter AQLFormatter) FormatRequestCode(code string, bindVars map[string
 		commands = fmt.Sprintf("%s, %s", commands, bindVarsJson)
 	}
 
-	commands = commands + ");"
+	commands = commands + ").toArray();"
 	return commands
 }
 
