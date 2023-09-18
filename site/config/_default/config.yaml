@@ -4,6 +4,10 @@ title: "ArangoDB Documentation"
 theme: "arangodb-docs-theme"
 timeout: "200000000"
 
+disableKinds: # Switch off tags and categories
+  - taxonomy
+  - term
+
 module:
   mounts:
     - source: "themes/arangodb-docs-theme/images"
