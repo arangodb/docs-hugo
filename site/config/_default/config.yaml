@@ -3,8 +3,6 @@ languageCode: "en-us"
 title: "ArangoDB Documentation"
 theme: "arangodb-docs-theme"
 timeout: "200000000"
-UglifyURLs: true
-CanonifyURLs: true
 
 module:
   mounts:
@@ -64,4 +62,3 @@ params:
   collapsibleMenu: true
   titleSeparator: "|"
   themeVariant: [ "relearn-light" ]
-  

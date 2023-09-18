@@ -8,7 +8,7 @@
     {{ $nonDeprecatedPath := replace .Page.RelPermalink $shortVersion $stableVersion }}
     {{ $stablePage := .Page.GetPage $nonDeprecatedPath }}
     {{ if $stablePage }}
-        {{ $href = $stablePage.Permalink }}
+        {{ $href = $stablePage.RelPermalink }}
     {{ end }}
     <div class="box notices cstyle warning">
         <div class="box-content-container">
