@@ -7,9 +7,9 @@ archetype: chapter
 ---
 Spring Data ArangoDB supports three kinds of queries:
 
-- [Derived queries](spring-data-reference-repositories-queries-derived-queries.html)
-- [Query methods](spring-data-reference-repositories-queries-query-methods.html)
-- [Named queries](spring-data-reference-repositories-queries-named-queries.html)
+- [Derived queries](derived-queries.md)
+- [Query methods](query-methods.md)
+- [Named queries](named-queries.md)
 
 ## Return types
 
@@ -23,8 +23,8 @@ You can set additional options for the query and the created cursor over the cla
 
 The `AqlQueryOptions` allows you to set the cursor time-to-live, batch-size,
 caching flag and several other settings. This special parameter works with both
-[query methods](spring-data-reference-repositories-queries-query-methods.html)
-and [derived queries](spring-data-reference-repositories-queries-derived-queries.html). Keep in mind that some options, like
+[query methods](query-methods.md)
+and [derived queries](derived-queries.md). Keep in mind that some options, like
 time-to-live, are only effective if the method return type is`ArangoCursor<T>`
 or `Iterable<T>`.
 
@@ -54,7 +54,7 @@ public interface MyRepository extends Repository<Customer, String> {
 
 ## Paging and sorting
 
-Spring Data ArangoDB supports Spring Data's `Pageable` and `Sort` parameters for repository query methods. If these parameters are used together with a native query, either through `@Query` annotation or [named queries](spring-data-reference-repositories-queries-named-queries.html), a placeholder must be specified:
+Spring Data ArangoDB supports Spring Data's `Pageable` and `Sort` parameters for repository query methods. If these parameters are used together with a native query, either through `@Query` annotation or [named queries](named-queries.md), a placeholder must be specified:
 
 - `#pageable` for `Pageable` parameter
 - `#sort` for `Sort` parameter

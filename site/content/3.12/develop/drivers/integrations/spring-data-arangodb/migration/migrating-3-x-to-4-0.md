@@ -5,10 +5,6 @@ weight: 10
 description: ''
 archetype: default
 ---
-
-# Migrating Spring Data ArangoDB 3.x to 4.0
-
-
 ## JDK 17, Spring Framework 6 and Spring Boot 3
 
 Spring Data ArangoDB 4.0 requires:
