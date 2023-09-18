@@ -17,7 +17,7 @@ for ArangoDB and provides mapping of Java objects to ArangoDB documents (ODM).
 ## Supported versions
 
 Spring Data ArangoDB is compatible with:
-- all the still supported Spring Boot 2.x [versions](https://spring.io/projects/spring-boot#support)
+- all the still supported Spring Boot (3.x and 2.x) [versions](https://spring.io/projects/spring-boot#support){:target="_blank"}
   and related Spring Framework versions
 - all the still supported ArangoDB [versions](https://www.arangodb.com/eol-notice)
 
@@ -60,51 +60,28 @@ public class MyConfiguration implements ArangoConfiguration {
 }
 ```
 
-The driver is configured with some default values:
-
-| property-key      | description                         | default value |
-| ----------------- | ----------------------------------- | ------------- |
-| arangodb.host     | ArangoDB host                       | 127.0.0.1     |
-| arangodb.port     | ArangoDB port                       | 8529          |
-| arangodb.timeout  | socket connect timeout(millisecond) | 0             |
-| arangodb.user     | Basic Authentication User           |
-| arangodb.password | Basic Authentication Password       |
-| arangodb.useSsl   | use SSL connection                  | false         |
-
-To customize the configuration, the parameters can be changed in the Java code.
+The driver configuration can be customized by implementing `ArangoConfiguration#arango()`:
 
 ```java
 @Override
 public ArangoDB.Builder arango() {
   ArangoDB.Builder arango = new ArangoDB.Builder()
-    .host("127.0.0.1")
-    .port(8529)
-    .user("root");
+      .host("127.0.0.1", 8529)
+      .user("root")
+      .password("xxx");
   return arango;
 }
 ```
 
-In addition you can use the _arangodb.properties_ or a custom properties file to supply credentials to the driver.
+## Using the underlying Java Driver
 
-_Properties file_
+The underlying Java driver can be obtained via `ArangoOperations.driver()`. This driver instance is configured by
+default to use `ArangoConverter` bean to serialize and deserialize user data, therefore keeping the same Spring Data
+ArangoDB serialization behavior.
 
-```
-arangodb.hosts=127.0.0.1:8529
-arangodb.user=root
-arangodb.password=
-```
+## Spring Boot
 
-_Custom properties file_
-
-```java
-@Override
-public ArangoDB.Builder arango() {
-  InputStream in = MyClass.class.getResourceAsStream("my.properties");
-  ArangoDB.Builder arango = new ArangoDB.Builder()
-    .loadProperties(in);
-  return arango;
-}
-```
+Spring Boot support is offered by [Spring Boot Starter ArangoDB](https://github.com/arangodb/spring-boot-starter).
 
 ## Learn more
 
