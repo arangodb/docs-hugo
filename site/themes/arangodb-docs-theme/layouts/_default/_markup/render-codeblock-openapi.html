@@ -157,15 +157,14 @@
   {{ if eq $category $value.in }}
     {{ $structName := "" }}
     <li class="openapi-table-row regular-font">
-      <detail>
-      <div id="{{ printf "%s_%s" $title $prop }}" class="openapi-prop collapsed">
-        <span class="openapi-property-name bold-text">{{ $prop }}{{ if $value.required }}*{{ end }}</span><span class="openapi-property-type" style="font-weight: bold;"> {{ $value.schema.type }} </span><a href="{{ printf "#%s_%s" $title $prop }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
+      <details  id="{{ printf "%s_%s" $title $prop }}">
+        <summary class="openapi-prop collapsed"><span class="openapi-property-name bold-text">{{ $prop }}{{ if $value.required }}*{{ end }}</span><span class="openapi-property-type" style="font-weight: bold;"> {{ $value.schema.type }} </span><a href="{{ printf "#%s_%s" $title $prop }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
+        </summary>
         {{ $description := $value.description | markdownify }}
-        <div class="openapi-prop-content hidden">
+        <div class="openapi-prop-content">
           <p class="regular-font">{{ $description }}</p>
         </div>
-      </div>
-      </detail>
+      </details>
     </li>
   {{ end }}
 {{ end }}
@@ -183,10 +182,12 @@
     {{ else if eq $value.type "object" }}
       {{ $type = "object" }}
     {{ end }}
-    <div id="{{ $anchor }}" class="openapi-prop collapsed">
-      <span class="openapi-property-name bold-text {{ if eq $prop "" }} no-border {{ end }} ">{{ $prop }}{{ if $required }}*{{ end }}</span>  <span class="openapi-property-type" style="font-weight: bold;"> {{ $type }} </span><a href="#{{ $anchor }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
+    <details id="{{ $anchor }}">
+      <summary class="openapi-prop collapsed">
+        <span class="openapi-property-name bold-text {{ if eq $prop "" }} no-border {{ end }} ">{{ $prop }}{{ if $required }}*{{ end }}</span>  <span class="openapi-property-type" style="font-weight: bold;"> {{ $type }} </span><a href="#{{ $anchor }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
+      </summary>
       {{ $description := $value.description | markdownify }}
-      <div class="openapi-prop-content hidden">
+      <div class="openapi-prop-content">
         <p class="regular-font">{{ $description }}</p>
         {{ if $value.properties }}
           <span class="openapi-table show-children bold-text"> Show Children</span>
@@ -205,6 +206,6 @@
           </ul>
         {{ end }}
       </div>
-    </div>
+    </details>
   </li>
 {{ end }}
