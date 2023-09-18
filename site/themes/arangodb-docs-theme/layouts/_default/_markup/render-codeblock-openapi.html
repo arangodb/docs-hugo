@@ -26,15 +26,15 @@
       </div>
 
       {{ with .parameters }}
-        {{- template "renderParameters" dict "content" .}}
+        {{- template "renderParameters" dict "title" $title "content" .}}
       {{ end }}
 
       {{ with .requestBody }}
-        {{- template "renderRequestBody" dict "content" .}}
+        {{- template "renderRequestBody" dict "title" $title "content" .}}
       {{ end }}
 
       {{ with .responses }}
-        {{- template "renderResponses" dict "content" . }}
+        {{- template "renderResponses" dict "title" $title "content" . }}
       {{ end }}
       
     {{end}}
@@ -43,13 +43,14 @@
 {{ end }}
 
 {{- define "renderParameters" }}
+  {{ $title := .title }}
   {{ $content := .content }}
   <div class="openapi-parameters regular-font">
     <div class="openapi-table-title">Path Parameters</div>
     <div>
       <ul class="openapi-table">
       {{ range $k, $v := $content }}
-        {{- template "renderParameter" dict "prop" $v.name "value" $v "category" "path" }}
+        {{- template "renderParameter" dict "title" $title "prop" $v.name "value" $v "category" "path" }}
       {{ end }}
       </ul>
     </div>
@@ -59,7 +60,7 @@
     <div>
       <ul class="openapi-table">
       {{ range $k, $v := $content }}
-        {{- template "renderParameter" dict "prop" $v.name "value" $v "category" "query" }}
+        {{- template "renderParameter" dict "title" $title "prop" $v.name "value" $v "category" "query" }}
       {{ end }}
       </ul>
     </div>
@@ -67,6 +68,7 @@
 {{ end }}
 
 {{- define "renderRequestBody" }}
+  {{ $title := .title }}
   {{ $content := .content }}
   <div class="openapi-parameters regular-font">
     <div class="openapi-table-title">
@@ -107,6 +109,7 @@
       <ul class="openapi-table">
       {{ range $status, $content := $content }}
         <li class="openapi-table-row regular-font">
+          <detail>
           <div class="openapi-prop collapsed">
             <span class="openapi-property-name bold-text">{{ $status }}</span>
             {{ $description := $content.description | markdownify }}
@@ -136,6 +139,7 @@
               {{ end }}
             </div>
           </div>
+          </detail>
         </li>       
       {{ end }}
       </ul>
@@ -144,6 +148,7 @@
 {{ end }}
 
 {{- define "renderParameter" }}
+  {{ $title := .title }}
   {{ $category := .category }}
   {{ $prop := .prop }}
   {{ $value := .value }}
@@ -151,13 +156,15 @@
   {{ if eq $category $value.in }}
     {{ $structName := "" }}
     <li class="openapi-table-row regular-font">
-      <div class="openapi-prop collapsed">
-        <span class="openapi-property-name bold-text">{{ $prop }}{{ if $value.required }}*{{ end }}</span>  <span class="openapi-property-type" style="font-weight: bold;"> {{ $value.schema.type }} </span>
+      <detail>
+      <div id="{{ printf "%s-%s" $title $prop | urlize }}" class="openapi-prop collapsed">
+        <span class="openapi-property-name bold-text">{{ $prop }}{{ if $value.required }}*{{ end }}</span><span class="openapi-property-type" style="font-weight: bold;"> {{ $value.schema.type }} </span><a href="{{ printf "#%s-%s" $title $prop | urlize }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
         {{ $description := $value.description | markdownify }}
         <div class="openapi-prop-content hidden">
           <p class="regular-font">{{ $description }}</p>
         </div>
       </div>
+      </detail>
     </li>
   {{ end }}
 {{ end }}
