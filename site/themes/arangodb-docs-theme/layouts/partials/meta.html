@@ -5,7 +5,7 @@
     {{- $gen := hugo.Generator }}
     {{- $gen = replaceRE "\\s*/>$" ">" $gen }}
     {{ $gen | safeHTML }}
-    {{- if not (and .Title (or (ne (.Scratch.Get "relearnIsHiddenStem") true) (ne .Site.Params.disableSeoHiddenPages true) ) ) }}
+    {{- if not .Title }}
     <meta itemprop="description" name="description" content="ArangoDB is a scalable graph database system with native support for other data models and a built-in search engine, for the cloud and on-premises">
     <meta property="og:url" content="https://docs.arangodb.com/">
     <meta property="og:title" content="Introduction to ArangoDB's Technical Documentation and Ecosystem | ArangoDB Documentation">
