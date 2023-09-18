@@ -20,7 +20,7 @@
 </div>
 
 {{- define "section-tree-nav" }}
-  {{- $pages := .Sections | union .Pages }}
+  {{- $pages := .Pages }}
   {{- range $page := $pages.ByWeight }}
     {{- if $page.Pages }}
       {{- /* section (with child pages) */}}
