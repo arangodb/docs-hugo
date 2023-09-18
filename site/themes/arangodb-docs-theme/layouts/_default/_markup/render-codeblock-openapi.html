@@ -83,7 +83,7 @@
       {{ range $k, $v := $content.content }}
         {{ if $v.schema.items }}
           {{ $required := false }}
-          {{- template "renderProperty" dict "prop" $k "value" $v.schema "required" $required }}
+          {{- template "renderProperty" dict "title" $title "prop" $k "value" $v.schema "required" $required }}
         {{ else }}
           {{ range $prop, $value := $v.schema.properties}}
             {{ $required := false }}
@@ -92,7 +92,7 @@
                 {{ $required = true }}
               {{ end }}
             {{ end }}
-            {{- template "renderProperty" dict "prop" $prop "value" $value "required" $required }}
+            {{- template "renderProperty" dict "title" $title "prop" $prop "value" $value "required" $required }}
           {{ end }}
         {{ end }}
       {{ end }}
@@ -102,6 +102,7 @@
 {{ end }}
 
 {{- define "renderResponses" }}
+  {{ $title := .title }}
   {{ $content := .content }}
   <div class="responses regular-font">
     <div class="openapi-table-title">Responses</div>
@@ -122,7 +123,7 @@
                     {{ if $v.schema.items }}
                       {{ $required := false }}
                       {{ $v }}
-                      {{- template "renderProperty" dict "prop" "" "value" $v.schema "required" $required }}
+                      {{- template "renderProperty" dict "title" $title "prop" "" "value" $v.schema "required" $required }}
                     {{ else }}
                       {{ range $prop, $value := $v.schema.properties}}
                         {{ $required := false }}
@@ -131,7 +132,7 @@
                             {{ $required = true }}
                           {{ end }}
                         {{ end }}
-                        {{- template "renderProperty" dict "prop" $prop "value" $value "required" $required }}
+                        {{- template "renderProperty" dict "title" $title "prop" $prop "value" $value "required" $required }}
                       {{ end }}
                     {{ end }}
                   {{ end }}
@@ -148,7 +149,7 @@
 {{ end }}
 
 {{- define "renderParameter" }}
-  {{ $title := .title }}
+  {{ $title := .title | urlize }}
   {{ $category := .category }}
   {{ $prop := .prop }}
   {{ $value := .value }}
@@ -157,8 +158,8 @@
     {{ $structName := "" }}
     <li class="openapi-table-row regular-font">
       <detail>
-      <div id="{{ printf "%s-%s" $title $prop | urlize }}" class="openapi-prop collapsed">
-        <span class="openapi-property-name bold-text">{{ $prop }}{{ if $value.required }}*{{ end }}</span><span class="openapi-property-type" style="font-weight: bold;"> {{ $value.schema.type }} </span><a href="{{ printf "#%s-%s" $title $prop | urlize }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
+      <div id="{{ printf "%s_%s" $title $prop }}" class="openapi-prop collapsed">
+        <span class="openapi-property-name bold-text">{{ $prop }}{{ if $value.required }}*{{ end }}</span><span class="openapi-property-type" style="font-weight: bold;"> {{ $value.schema.type }} </span><a href="{{ printf "#%s_%s" $title $prop }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
         {{ $description := $value.description | markdownify }}
         <div class="openapi-prop-content hidden">
           <p class="regular-font">{{ $description }}</p>
@@ -170,18 +171,20 @@
 {{ end }}
 
 {{- define "renderProperty" }}
+  {{ $title := .title | urlize }}
   {{ $prop := .prop }}
   {{ $value := .value }}
   {{ $required := .required }}
   {{ $type := $value.type }}
+  {{ $anchor := printf "%s_%s" $title $prop }}
   <li class="openapi-table-row regular-font">
     {{ if eq $value.type "array" }}
       {{ $type = printf "[%s]" $value.items.type }}
     {{ else if eq $value.type "object" }}
       {{ $type = "object" }}
     {{ end }}
-    <div class="openapi-prop collapsed">
-      <span class="openapi-property-name bold-text {{ if eq $prop "" }} no-border {{ end }} ">{{ $prop }}{{ if $required }}*{{ end }}</span>  <span class="openapi-property-type" style="font-weight: bold;"> {{ $type }} </span>
+    <div id="{{ $anchor }}" class="openapi-prop collapsed">
+      <span class="openapi-property-name bold-text {{ if eq $prop "" }} no-border {{ end }} ">{{ $prop }}{{ if $required }}*{{ end }}</span>  <span class="openapi-property-type" style="font-weight: bold;"> {{ $type }} </span><a href="#{{ $anchor }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
       {{ $description := $value.description | markdownify }}
       <div class="openapi-prop-content hidden">
         <p class="regular-font">{{ $description }}</p>
@@ -189,7 +192,7 @@
           <span class="openapi-table show-children bold-text"> Show Children</span>
           <ul class="openapi-table hidden">
           {{ range $k, $v := $value.properties }}
-            {{- template "renderProperty" dict "prop" $k "value" $v "required" $required }}
+            {{- template "renderProperty" dict "title" $anchor "prop" $k "value" $v "required" $required }}
           {{ end }}
           </ul>
         {{ end }}
@@ -197,7 +200,7 @@
           <span class="openapi-table show-children bold-text"> Show Children</span>
           <ul class="openapi-table hidden">
           {{ range $k, $v := $value.items.properties }}
-            {{- template "renderProperty" dict "prop" $k "value" $v "required" $required }}
+            {{- template "renderProperty" dict "title" $anchor "prop" $k "value" $v "required" $required }}
           {{ end }}
           </ul>
         {{ end }}
