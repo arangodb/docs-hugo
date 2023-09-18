@@ -21,34 +21,6 @@ In this section we will describe the features and conventions for mapping Java o
     - a non-parameterized constructor or
     - a parameterized constructor annotated with `@PersistenceConstructor`
 
-## Type conventions
-
-ArangoDB uses [VelocyPack](https://github.com/arangodb/velocypack) as it's internal storage format which supports a large number of data types. In addition Spring Data ArangoDB offers - with the underlying Java driver - built-in converters to add additional types to the mapping.
-
-| Java type                | VelocyPack type               |
-| ------------------------ | ----------------------------- |
-| java.lang.String         | string                        |
-| java.lang.Boolean        | bool                          |
-| java.lang.Integer        | signed int 4 bytes, smallint  |
-| java.lang.Long           | signed int 8 bytes, smallint  |
-| java.lang.Short          | signed int 2 bytes, smallint  |
-| java.lang.Double         | double                        |
-| java.lang.Float          | double                        |
-| java.math.BigInteger     | string                        |
-| java.math.BigDecimal     | string                        |
-| java.lang.Number         | double                        |
-| java.lang.Character      | string                        |
-| java.util.UUID           | string                        |
-| java.lang.byte[]         | string (Base64)               |
-| java.util.Date           | string (date-format ISO 8601) |
-| java.sql.Date            | string (date-format ISO 8601) |
-| java.sql.Timestamp       | string (date-format ISO 8601) |
-| java.time.Instant        | string (date-format ISO 8601) |
-| java.time.LocalDate      | string (date-format ISO 8601) |
-| java.time.LocalDateTime  | string (date-format ISO 8601) |
-| java.time.OffsetDateTime | string (date-format ISO 8601) |
-| java.time.ZonedDateTime  | string (date-format ISO 8601) |
-
 ## Type mapping
 
 As collections in ArangoDB can contain documents of various types, a mechanism to retrieve the correct Java class is required. The type information of properties declared in a class may not be enough to restore the original class (due to inheritance). If the declared complex type and the actual type do not match, information about the actual type is stored together with the document. This is necessary to restore the correct type when reading from the DB. Consider the following example:
@@ -144,6 +116,7 @@ To deactivate the type mapping process, you can return `null` from the `typeKey(
 | @Document               | class                     | marks this class as a candidate for mapping                                                                                                         |
 | @Edge                   | class                     | marks this class as a candidate for mapping                                                                                                         |
 | @Id                     | field                     | stores the field as the system field \_key                                                                                                          |
+| @ArangoId               | field                     | stores the field as the system field \_id                                                                                                           |
 | @Rev                    | field                     | stores the field as the system field \_rev                                                                                                          |
 | @Field("alt-name")      | field                     | stores the field with an alternative name                                                                                                           |
 | @Ref                    | field                     | stores the \_id of the referenced document and not the nested document                                                                              |
@@ -168,7 +141,7 @@ To deactivate the type mapping process, you can return `null` from the `typeKey(
 
 ## Invoking conversion manually
 
-In order to invoke entity serialization and deserialization to and from `VPackSlice` manually, you can inject an
+In order to invoke entity serialization and deserialization to and from Jackson `JsonNode` manually, you can inject an
 instance of `ArangoConverter` and respectively call the methods `write` and `read` on it, e.g.:
 
 ```java
@@ -178,11 +151,8 @@ instance of `ArangoConverter` and respectively call the methods `write` and `rea
 ArangoConverter arangoConverter;
 
   // ...
-  VPackSlice vPackSlice = converter.write(entity);
+  JsonNode jn = converter.write(entity);
 
   // ...
-  MyEntity entity = converter.read(MyEntity.class, vPackSlice);
+  MyEntity entity = converter.read(MyEntity.class, jn);
 ```
-
-This is useful for cases where you need to use the underlying Java driver directly (accessible from
-`ArangoOperations#driver()`), while keeping Spring Data ArangoDB serialization behavior.

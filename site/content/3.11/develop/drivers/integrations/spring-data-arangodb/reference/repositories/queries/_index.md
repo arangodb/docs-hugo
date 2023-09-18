@@ -7,15 +7,15 @@ archetype: chapter
 ---
 Spring Data ArangoDB supports three kinds of queries:
 
-- [Derived queries](derived-queries.md)
-- [Query methods](query-methods.md)
-- [Named queries](named-queries.md)
+- [Derived queries](spring-data-reference-repositories-queries-derived-queries.html)
+- [Query methods](spring-data-reference-repositories-queries-query-methods.html)
+- [Named queries](spring-data-reference-repositories-queries-named-queries.html)
 
 ## Return types
 
-The method return type for single results can be a primitive type, a domain class, `Map<String, Object>`, `BaseDocument`, `BaseEdgeDocument`, `Optional<Type>`, `GeoResult<Type>`.
+The method return type for single results can be a primitive type, a domain class, `JsonNode`, `ObjectNode`, `Map<String, Object>`, `BaseDocument`, `BaseEdgeDocument`, `Optional<Type>`, `GeoResult<Type>`.
 
-The method return type for multiple results can additionally be `ArangoCursor<Type>`, `Iterable<Type>`, `Collection<Type>`, `List<Type>`, `Set<Type>`, `Page<Type>`, `Slice<Type>`, `GeoPage<Type>`, `GeoResults<Type>` where Type can be everything a single result can be.
+The method return type for multiple results can be `JsonNode`, `ArrayNode`, `ArangoCursor<Type>`, `Iterable<Type>`, `Collection<Type>`, `List<Type>`, `Set<Type>`, `Page<Type>`, `Slice<Type>`, `GeoPage<Type>`, `GeoResults<Type>` where Type can be everything a single result can be.
 
 ## AQL query options
 
@@ -23,8 +23,8 @@ You can set additional options for the query and the created cursor over the cla
 
 The `AqlQueryOptions` allows you to set the cursor time-to-live, batch-size,
 caching flag and several other settings. This special parameter works with both
-[query methods](query-methods.md)
-and [derived queries](derived-queries.md). Keep in mind that some options, like
+[query methods](spring-data-reference-repositories-queries-query-methods.html)
+and [derived queries](spring-data-reference-repositories-queries-derived-queries.html). Keep in mind that some options, like
 time-to-live, are only effective if the method return type is`ArangoCursor<T>`
 or `Iterable<T>`.
 
@@ -54,7 +54,7 @@ public interface MyRepository extends Repository<Customer, String> {
 
 ## Paging and sorting
 
-Spring Data ArangoDB supports Spring Data's `Pageable` and `Sort` parameters for repository query methods. If these parameters are used together with a native query, either through `@Query` annotation or [named queries](named-queries.md), a placeholder must be specified:
+Spring Data ArangoDB supports Spring Data's `Pageable` and `Sort` parameters for repository query methods. If these parameters are used together with a native query, either through `@Query` annotation or [named queries](spring-data-reference-repositories-queries-named-queries.html), a placeholder must be specified:
 
 - `#pageable` for `Pageable` parameter
 - `#sort` for `Sort` parameter
@@ -78,19 +78,19 @@ just.`some`.`attributes.that`.`form\``.a path\`.\  is converted to
 ```java
 public interface CustomerRepository extends ArangoRepository<Customer> {
 
-  @Query("FOR c IN #collection FILTER c.name == @1 #pageable RETURN c")
-  Page<Customer> findByNameNative(Pageable pageable, String name);
+    @Query("FOR c IN #collection FILTER c.name == @1 #pageable RETURN c")
+    Page<Customer> findByNameNative(Pageable pageable, String name);
 
-  @Query("FOR c IN #collection FILTER c.name == @1 #sort RETURN c")
-  List<Customer> findByNameNative(Sort sort, String name);
+    @Query("FOR c IN #collection FILTER c.name == @1 #sort RETURN c")
+    List<Customer> findByNameNative(Sort sort, String name);
 }
 
-// don't forget to specify the var name of the document
-final Pageable page = PageRequest.of(1, 10, Sort.by("c.age"));
+    // don't forget to specify the var name of the document
+    final Pageable page = PageRequest.of(1, 10, Sort.by("c.age"));
 repository.findByNameNative(page, "Matt");
 
 final Sort sort = Sort.by(Direction.DESC, "c.age");
-repository.findByNameNative(sort, "Tony");
+        repository.findByNameNative(sort, "Tony");
 ```
 
 **Derived queries example**
@@ -98,15 +98,15 @@ repository.findByNameNative(sort, "Tony");
 ```java
 public interface CustomerRepository extends ArangoRepository<Customer> {
 
-  Page<Customer> findByName(Pageable pageable, String name);
+    Page<Customer> findByName(Pageable pageable, String name);
 
-  List<Customer> findByName(Sort sort, String name);
+    List<Customer> findByName(Sort sort, String name);
 }
 
-// no var name is necessary for derived queries
-final Pageable page = PageRequest.of(1, 10, Sort.by("age"));
+    // no var name is necessary for derived queries
+    final Pageable page = PageRequest.of(1, 10, Sort.by("age"));
 repository.findByName(page, "Matt");
 
 final Sort sort = Sort.by(Direction.DESC, "age");
-repository.findByName(sort, "Tony");
+        repository.findByName(sort, "Tony");
 ```
