@@ -295,15 +295,15 @@ function changeVersion() {
         return;
     }
 
-    // try {
+    try {
         localStorage.setItem('docs-version', newVersion);
         renderVersion();
         window.setupDocSearch(newVersion);
         console.log(newVersion);
-    // } catch(exception) {
-    //   console.log({exception})
-    //     changeVersion();
-    // }
+    } catch(exception) {
+      console.log({exception})
+        changeVersion();
+    }
 
     var newUrl = window.location.href.replace(oldVersion, newVersion)
     updateHistory("", newUrl);
