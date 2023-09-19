@@ -211,8 +211,6 @@ disabling this feature in the following situations:
 - You need to give individuals access to a database's UI without giving them
   any access to ArangoGraph. Note, however, that it's possible to only give an
   ArangoGraph user database UI access, without other ArangoGraph permissions.
-- For some reason, you require driver access via `8529` port and you are unable
-  to use the designated `18529` driver port.
 
 Before getting started, make sure you are signed into ArangoGraph as a user
 with one of the following permissions in your project:
@@ -226,8 +224,7 @@ organization. See how to create a
 [role binding](../security-and-access-control/_index.md#how-to-view-edit-or-remove-role-bindings-of-a-policy).
 
 {{< warning >}}
-This feature is available on `8529` port only. Make sure your connecting drivers
-are using the `18529` port to avoid breaking changes.
+This feature is available on `8529` and `443` ports only.
 {{< /warning >}}
 
 ## How to edit a deployment
