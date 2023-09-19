@@ -356,6 +356,18 @@ paths:
 ```
 ````
 
+Admonitions inside of other shortcodes need to use the special syntax, too:
+
+```markdown
+{{< expand title="Outer shortcode" >}}
+
+{{</* tip */>}}
+Inner shortcode
+{{</* /tip */>}}
+
+{{< /expand >}}
+```
+
 #### Tags
 
 Tags let you display badges, usually below a headline.
@@ -808,18 +820,10 @@ If this is not a mistake, the affected aliases should be removed.
 ### Disable or limit the table of contents
 
 The table of contents (ToC) or "On this page" on the right-hand side at the top
-of a page lists the headlines if there at least three on the page. It can be
-disabled for individual pages with the following front matter:
+of a page lists the headlines if there are at least two headlines on the page
+(excluding the title).
 
-```yaml
----
-...
-pageToc:
-  disabled: true
----
-```
-
-It can also be restricted to a maximum headline level to omit the deeper nested
+The ToC can be restricted to a maximum headline level to omit the deeper nested
 headlines for less clutter:
 
 ```yaml
@@ -865,13 +869,13 @@ A complete example:
 name: ensureUniquePersistentSingle
 description: Create a unique persistent index on a single document attribute
 ---
-~ db._create("ids");
-  db.ids.ensureIndex({ type: "persistent", fields: [ "myId" ], unique: true });
-  db.ids.save({ "myId": 123 });
-  db.ids.save({ 
-    "myId": 123
-  }); // xpError(ERROR_ARANGO_UNIQUE_CONSTRAINT_VIOLATED)
-~ db._drop("ids");
+~db._create("ids");
+db.ids.ensureIndex({ type: "persistent", fields: [ "myId" ], unique: true });
+db.ids.save({ "myId": 123 });
+db.ids.save({ 
+  "myId": 123
+}); // xpError(ERROR_ARANGO_UNIQUE_CONSTRAINT_VIOLATED)
+~db._drop("ids");
 ```
 ````
 
@@ -915,20 +919,20 @@ relevant for the example, you can use a leading tilde `~` to suppress individual
 lines:
 
 ```js
-~ db._create("collection");
-  db.collection.save({ _key: "foo" });
-~ db._drop("collection");
+~db._create("collection");
+db.collection.save({ _key: "foo" });
+~db._drop("collection");
 ```
 
 Examples need to remove the collections and Views they create. Not dropping them
 will raise an error unless they are specifically exempt:
 
 ```js
-~ db._create("collection");
-~ db._createView("view", "arangosearch", {...});
-  db.collection.save({...});
-~ addIgnoreView("view");
-~ addIgnoreCollection("collection");
+~db._create("collection");
+~db._createView("view", "arangosearch", {...});
+db.collection.save({...});
+~addIgnoreView("view");
+~addIgnoreCollection("collection");
 ```
 
 This is helpful for creating collections and Views once, using them in multiple
@@ -945,10 +949,10 @@ sortable to have them execute in the correct order.
 The last example of the series should undo the ignore to catch unintended leftovers:
 
 ```js
-~ removeIgnoreCollection("collection");
-~ removeIgnoreView("view");
-~ db._dropView("view");
-~ db._drop("collection");
+~removeIgnoreCollection("collection");
+~removeIgnoreView("view");
+~db._dropView("view");
+~db._drop("collection");
 ```
 
 Note that a series of examples needs to be contained within a single file.
@@ -982,7 +986,7 @@ db._query(`RETURN REGEX_SPLIT(@t, @r)`, {t: "foo\t bar\r baz\n foob", r: "\\s+|(
 
 Complete example:
 
-````markdown
+````yaml
 ```aql
 ---
 name: joinTuples
@@ -1009,7 +1013,7 @@ An example can optionally specify a `dataset` in the front matter that will be
 loaded before the query is run:
 
 ```yaml
-dataset: {name_of_dataset}
+dataset: name_of_dataset
 ```
 
 See [datasets.json](toolchain/arangoproxy/internal/utils/)
@@ -1055,14 +1059,13 @@ Used to describe an HTTP REST API endpoint using the
 version 3.1.0.
 
 The content inside the codeblock is a standard OpenAPI endpoint description in
-YAML format for a single ArangoDB endpoint, with a small twist: it starts with
-what looks like a YAML comment but is actually the headline, which is also used
-as the endpoint summary automatically:
+YAML format for a single ArangoDB endpoint. The headline above the code block is
+also used as the endpoint summary automatically:
 
 ````yaml
-```openapi
 ### Get the service README
 
+```openapi
 paths:
   /_api/foxx/readme:
     get:
@@ -1101,6 +1104,7 @@ file. This file is needed by the web interface for _Swagger UI_.
 
 Complete example:
 
+````
 ```curl
 ---
 name: HttpAqlToBase64
@@ -1112,6 +1116,7 @@ var response = logCurlRequest('POST', url, body);
 assert(response.code === 201);
 logJsonResponse(response);
 ```
+````
 
 Unlike arangosh examples (`` ```js ``), requests and responses
 need to be output explicitly by calling one of the following functions:

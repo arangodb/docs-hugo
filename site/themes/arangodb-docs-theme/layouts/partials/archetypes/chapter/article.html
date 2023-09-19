@@ -1,13 +1,13 @@
 {{- $page := .page }}
 {{- $content := .content }}
-{{ $pageVersion := $page.Page.Scratch.Get "version" }}
+{{ $pageVersion := $page.Page.Store.Get "version" }}
 
 {{- with $page }}
     <article class="default">
       {{- partial "deprecated.html" . }}
       {{- partial "in-development.html" . }}
       <hgroup>
-      <h1>{{ replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}</h1>
+      <h1>{{ .Title| markdownify }}</h1>
       </hgroup>
       {{ with $content }}
          {{ . }}
@@ -26,14 +26,16 @@
 
 <div class="cards">
   {{ range $section.Pages }}
-  {{ $title := replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}
+
+    {{ $title := .Title | markdownify }}
 
     {{- partial "shortcodes/card.html" (dict
-    "Inner" .Description
+    "Inner" (.Description | markdownify)
     "title"  $title
-    "link" .RelPermalink
+    "link" ( strings.TrimRight "/" .RelPermalink )
+    "context" $section
       ) }}  
-  
+
   {{ end }}
 </div>
 

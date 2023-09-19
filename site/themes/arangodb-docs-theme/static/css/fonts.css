@@ -1,60 +1,36 @@
+/* inter-300 - latin */
 @font-face {
-    font-family: 'Work Sans';
-    font-style: normal;
-    font-weight: 200;
-    src: url("../fonts/WorkSans-ExtraLight.woff") format("woff2"), url("../fonts/WorkSans-ExtraLight.woff") format("woff");
-    font-display: swap;
-}
-
-@font-face {
-    font-family: 'Work Sans';
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: "Inter";
     font-style: normal;
     font-weight: 300;
-    src: url("../fonts/WorkSans-Light.woff2") format("woff2"), url("../fonts/WorkSans-Light.woff") format("woff");
-    font-display: swap;
+    src: url("../fonts/inter-v12-latin-300.woff2")
+        format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
-
+/* inter-regular - latin */
 @font-face {
-    font-family: 'Work Sans';
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: "Inter";
     font-style: normal;
     font-weight: 400;
-    src: url("../fonts/WorkSans-Regular.woff2") format("woff2"), url("../fonts/WorkSans-Regular.woff") format("woff");
-    font-display: swap;
+    src: url("../fonts/inter-v12-latin-regular.woff2")
+        format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
-
+/* inter-500 - latin */
 @font-face {
-    font-family: 'Work Sans';
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: "Inter";
     font-style: normal;
     font-weight: 500;
-    src: url("../fonts/WorkSans-Medium.woff2") format("woff2"), url("../fonts/WorkSans-Medium.woff") format("woff");
-    font-display: swap;
+    src: url("../fonts/inter-v12-latin-500.woff2")
+        format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
-
+/* inter-600 - latin */
 @font-face {
-    font-family: 'Work Sans';
+    font-display: swap; /* Check https://developer.mozilla.org/en-US/docs/Web/CSS/@font-face/font-display for other options. */
+    font-family: "Inter";
     font-style: normal;
     font-weight: 600;
-    src: url("../fonts/WorkSans-Bold.woff2") format("woff2"), url("../fonts/WorkSans-Bold.woff") format("woff");
-    font-display: swap;
+    src: url("../fonts/inter-v12-latin-600.woff2")
+        format("woff2"); /* Chrome 36+, Opera 23+, Firefox 39+, Safari 12+, iOS 10+ */
 }
-
-@font-face {
-    font-family: "objektiv-mk1";
-    src:  url(../fonts/ObjektivMk1_W_Rg.eaab6bbf.woff2) format("woff2");
-    font-style: normal;
-    font-weight: normal;
-  }
-  
-  @font-face {
-    font-family: "objektiv-mk1";
-    src:  url(../fonts/ObjektivMk1_W_Bd.182e75b2.woff2) format("woff2");
-    font-style: normal;
-    font-weight: 700;
-  }
-
-  @font-face {
-    font-family: "Inter";
-    src:  url(../fonts/Inter-Medium.ttf) format("ttf");
-    font-style: normal;
-    font-weight: 400;
-  }

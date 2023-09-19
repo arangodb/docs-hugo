@@ -30,18 +30,11 @@ outputFormats:
     baseName: nav
     isHTML: true
     mediaType: text/html
-  index_310:
-    baseName: index_310
-    mediaType: application/json
-  index_311:
-    baseName: index_311
-    mediaType: application/json
-  index_312:
-    baseName: index_312
-    mediaType: application/json
 
 outputs:
-  home: ["HTML", "navigation", "index_310", "index_311", "index_312"]
+  home: ["HTML", "navigation"]
+
+enableRobotsTXT: true
 
 caches:
   assets:
@@ -74,7 +67,7 @@ params:
   disableNextPrev: false
   disableLandingPageButton: true
   titleSeparator: "|"
-  themeVariant: [ "relearn-light", "relearn-dark", "learn", "neon", "blue", "green", "red" ]
+  themeVariant: [ "relearn-light" ]
   disableSeoHiddenPages: true
   additionalContentLanguage: [ "en" ]
   custom_css: ["css/*"]

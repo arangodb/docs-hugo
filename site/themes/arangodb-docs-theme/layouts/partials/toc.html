@@ -1,25 +1,28 @@
-{{ if gt (.Page.Fragments.HeadingsMap | len) 2 }}
+
 <div class="toc-container">
+  <a
+  class="edit-page"
+  aria-label=""
+  href="https://github.com/arangodb/docs-hugo/edit/main/site/content/{{ with .File }}{{ .Path }}{{ end }}"
+  target="_blank">
+    <i class="fab fa-fw fa-github edit-page-icon"></i>
+  </a>
+  {{ if ge (.Page.Fragments.HeadingsMap | len) 2 }}
     <div class="toc">
         <div class="toc-content">
         <div class="toc-header"><p>On this page</p></div>
         <nav id="TableOfContents" >
-            <nav id="TableOfContents">
-              <nav class="ps">
-                {{ template "nestedHeadline" dict "headings" .Page.Fragments.Headings "level" 1 }}
-              </nav>
-            </nav>
+          {{ template "nestedHeadline" dict "headings" .Page.Fragments.Headings "level" 1 }}
         </nav>
         </div>
     </div>
+  {{ end }}
 </div>
-{{ end }}
 
 {{ define "nestedHeadline" }}
 {{ $headings := .headings }}
 {{ $level := .level | default 1 }}
 {{ $maxLevel := page.Params.pageToc.maxHeadlineLevel | default 5 }}
-{{ $disabled := page.Params.pageToc.disabled | default false }}
 {{ if le $level $maxLevel }}
   {{ range $h := $headings }}
     {{ with $h.Title }}<div class="level-{{ $level }}"><a href="#{{ $h.ID }}">{{ $h.Title | markdownify }}</a></div>{{ end }}

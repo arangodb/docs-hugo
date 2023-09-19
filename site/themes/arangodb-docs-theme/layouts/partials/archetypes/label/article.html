@@ -1,13 +1,13 @@
 {{- $page := .page }}
 {{- $content := .content }}
-{{ $pageVersion := $page.Page.Scratch.Get "version" }}
+{{ $pageVersion := $page.Page.Store.Get "version" }}
 
 
 {{- with $page }}
     <article class="default">
       {{- partial "deprecated.html" . }}
       {{- partial "in-development.html" . }}
-      <h1 class="page-title">{{ replace .Title "{{ pageVersion }}" $pageVersion | markdownify }}</h1>
+      <h1 class="page-title">{{ .Title | markdownify }}</h1>
       {{ $content | safeHTML }}
       <nav class="pagination">
         {{- partial "content-footer.html" . }}

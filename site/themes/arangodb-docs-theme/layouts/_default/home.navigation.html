@@ -1,68 +1,45 @@
 <div id="sidebar" class="default-animation active">
   <div class="sidenav-container-flex">
     <div class="sidenav-navigation">
-
       <div id="content-wrapper" class="highlightable">
-        
-      
         <ul class="topics{{ if .Site.Params.collapsibleMenu }} collapsible-menu{{ end }}">
           {{- range .Site.Sections.ByWeight }}
-            {{- template "section-tree-nav" dict "sect" . "currentnode" . }}
+            {{/* version folders */}}
+            {{- if ne .Type "hooks" }}
+              <ul class="version-menu {{ .Params.menuTitle }}">{{/* TODO: hide non-stable versions by default? */}}
+                {{- template "section-tree-nav" . }}
+              </ul>
+            {{- end }}
           {{- end }}
         </ul>
         <div class="footermargin footerLangSwitch footerVariantSwitch footerVisitedLinks footerFooter"></div>
-        </div>
       </div>
     </div>
-    <button id="sidebar-toggle-navigation" class="desktop-menu-toggle" onclick="showSidebarHandler();">
-    </button>
   </div>
+  <button id="sidebar-toggle-navigation" class="desktop-menu-toggle" onclick="showSidebarHandler();"></button>
+</div>
 
-      {{- define "section-tree-nav" }}
-        {{- $currentNode := .currentnode }}
-        {{ $pageVersion := $currentNode.Page.Scratch.Get "version"  }}
-        {{- $currentFileRelPermalink := .currentnode.RelPermalink }}
-  
-        {{- with .sect }}
-          {{- $isSelf := eq .RelPermalink $currentFileRelPermalink }}
-          {{- $isAncestor := and (not $isSelf) (.IsAncestor $currentNode) }}
-          {{- $isActive := $isSelf }}
-          {{- $pages := .Pages }}
-          {{- if .Page.IsHome }}
-            {{- $pages = .Sections }}
-          {{- else if .Page.Sections}}
-            {{- $pages = (.Pages | union .Sections) }}
-          {{- end }}
-          {{- if or .IsSection .IsHome }}
-            {{- safeHTML .Params.head }}
-            {{- if $pages }}
-              {{ if and (ne .Params.menuTitle "3.10") (ne .Params.menuTitle "3.11") (ne .Params.menuTitle "3.12")}}
-                {{ if eq .Layout "label" }}
-                <li data-nav-id="{{.RelPermalink}}" title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><label for="section-" class="closed {{.RelPermalink}}" onclick="event.preventDefault();menuToggleClick(event)" >
-                </label>
-                  <a>
-                    <div>{{ .Params.menuTitle | markdownify }}</div>
-                    </a> 
-                {{ else }}
-                <li data-nav-id="{{.RelPermalink}}" title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item menu-section-entry {{if $isActive }} active{{end}}{{if (or $isSelf $isAncestor) }} parent{{end}}"><label for="section-" class="closed {{.RelPermalink}}" onclick="event.preventDefault();menuToggleClick(event)" >
-                </label>
-                  <a href="{{.RelPermalink}}" class="toggle menu-section-entry menu-link"  ><div class="menu-title">{{ .Params.menuTitle | markdownify }}</div></a>
-                {{ end }}
-              {{ end }}
-  
-            <ul class='{{if or (eq .Params.menuTitle "3.10") (eq .Params.menuTitle "3.11") (eq .Params.menuTitle "3.12")}} version-menu {{ .Params.menuTitle }} {{ else }} submenu {{ end }}'>
-                  {{- range $pages.ByWeight }}
-                    {{- template "section-tree-nav" dict "sect" . "currentnode" $currentNode }}
-                  {{- end }}
-                </ul>
-              {{- else }}
-            {{ if ne .RelPermalink "/hooks/" }}
-            <li data-nav-id="{{.RelPermalink}}" test1 title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}}"><a href="{{.RelPermalink}}" class="menu-link"><div class="menu-title">{{ .Params.menuTitle  | markdownify }}</div></a></li>
-            {{ end }}  
-            {{- end }}
-          {{- else }}
-  
-              <li data-nav-id="{{.RelPermalink}}" test2 title="{{replace .Title "{{ pageVersion }}" $pageVersion  | markdownify }}" class="dd-item{{if $isActive }} active{{end}} menu-leaf-entry"><a href="{{.RelPermalink}}" class="menu-link"><div class="menu-title">{{ .Params.menuTitle  | markdownify }}</div></a></li>
-          {{- end }}
-        {{- end }}
-      {{- end }}
+{{- define "section-tree-nav" }}
+  {{- $pages := .Sections | union .Pages }}
+  {{- range $page := $pages.ByWeight }}
+    {{- if $page.Pages }}
+      {{- /* section (with child pages) */}}
+      <li class="dd-item sect">
+        <label class="closed"></label>{{- /*whitespace control */ -}}
+        <a href="{{ .RelPermalink }}" class="toggle sect menu-link">
+          <div class="menu-title">{{ .Params.menuTitle | markdownify }}</div>
+        </a>
+        <ul class="submenu">
+          {{- template "section-tree-nav" $page }}
+        </ul>
+      </li>
+    {{- else }}
+      {{- /* page (or section without children) */}}
+      <li class="dd-item leaf">
+        <a href="{{ .RelPermalink }}" class="menu-link">
+          <div class="menu-title">{{ .Params.menuTitle | markdownify }}</div>
+        </a>
+      </li>
+    {{- end }}
+  {{- end }}
+{{- end }}
