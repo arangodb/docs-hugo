@@ -5,16 +5,21 @@
 <script type="text/javascript">
   // get version from localstorage
   var version = localStorage.getItem("docs-version");
-  docsearch({
-    appId: "OK3ZBQ5982",
-    apiKey: "500c85ccecb335d507fe4449aed12e1d",
-    indexName: "arangodbdocs",
-    insights: true, // Optional, automatically send insights when user interacts with search results
-    container: "#searchbox",
-    debug: false, // Set debug to true if you want to inspect the modal,
-    maxResultsPerGroup: 10,
-    searchParameters: {
-      facetFilters: [`version:${version}`],
-    },
-  });
+  var url = new URL(window.location.href);
+  var versionFromUrl = url.pathname.split("/")[1];
+  window.setupDocSearch = function (facetVersion) {
+    docsearch({
+      appId: "OK3ZBQ5982",
+      apiKey: "500c85ccecb335d507fe4449aed12e1d",
+      indexName: "arangodbdocs",
+      insights: true, // Optional, automatically send insights when user interacts with search results
+      container: "#searchbox",
+      debug: false, // Set debug to true if you want to inspect the modal,
+      maxResultsPerGroup: 10,
+      searchParameters: {
+        facetFilters: [`version:${facetVersion}`],
+      },
+    });
+  };
+  window.setupDocSearch(versionFromUrl || version);
 </script>
