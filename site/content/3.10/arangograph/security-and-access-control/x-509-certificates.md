@@ -65,7 +65,7 @@ TLS connection.
 The default ports (`8529` and `443`) always serve the well-known certificate
 and have the [auto login to database UI](../deployments/_index.md#auto-login-to-database-ui)
 feature enabled by default.
-{{< info >}}
+{{< /info >}}
 
 ### Well-known X.509 certificates
 
