@@ -292,9 +292,11 @@ function changeVersion() {
 
     try {
         localStorage.setItem('docs-version', newVersion);
-        renderVersion()
-        console.log(newVersion)
+        renderVersion();
+        window.setupDocSearch(newVersion);
+        console.log(newVersion);
     } catch(exception) {
+      console.log({exception})
         changeVersion();
     }
 
