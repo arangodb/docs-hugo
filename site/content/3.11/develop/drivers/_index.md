@@ -79,7 +79,7 @@ low-level network communication.
 
 ### Spring Data
 
-The [**Spring Data integration**](integrations/spring-data-arangodb/_index.md) for ArangoDB lets you use
+The [**Spring Data integration**](integrations/spring-data-arangodb-4/_index.md) for ArangoDB lets you use
 ArangoDB as a database system in Spring-based Java applications.
 
 - Online course: [Spring Data Tutorial](https://university.arangodb.com/courses/spring-data-tutorial)
