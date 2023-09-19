@@ -83,6 +83,13 @@ ArangoDB serialization behavior.
 
 Spring Boot support is offered by [Spring Boot Starter ArangoDB](https://github.com/arangodb/spring-boot-starter).
 
+## Current limitations
+
+- Java Record classes and Kotlin Data classes are not supported (DE-539)
+- GraalVM Native Image is not supported (DE-677)
+- Spring Data REST is not supported (DE-43)
+- Spring Data Reactive is not supported (DE-678)
+
 ## Learn more
 
 - [Demo](https://github.com/arangodb/spring-data-demo)
