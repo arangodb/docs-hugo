@@ -1338,6 +1338,10 @@ code, p code {
     color: var(--CODE-COLOR);
 }
 
+li > code {
+    white-space: pre-wrap;
+}
+
 .copy-to-clipboard-button {
     background: none;
     transition: 0.4s;
