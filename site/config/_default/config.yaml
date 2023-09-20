@@ -1,10 +1,12 @@
-baseURL: "https://startling-truffle-6032f2.netlify.app"
+baseURL: "https://docs.arangodb.com"
 languageCode: "en-us"
 title: "ArangoDB Documentation"
 theme: "arangodb-docs-theme"
 timeout: "200000000"
-UglifyURLs: true
-CanonifyURLs: true
+
+disableKinds: # Switch off tags and categories
+  - taxonomy
+  - term
 
 module:
   mounts:
@@ -58,18 +60,9 @@ caches:
 
 params:
   arangoproxyUrl: "http://192.168.129.129:8080"
-  pygmentsUseClassic: false
-  description: "Documentation for ArangoDB"
-  showVisitedLinks: true
-  alwaysopen: false
+  description: >-
+    ArangoDB is a scalable graph database system with native support for other
+    data models and a built-in search engine, for the cloud and on-premises
   collapsibleMenu: true
-  disableBreadcrumb: false
-  disableNextPrev: false
-  disableLandingPageButton: true
   titleSeparator: "|"
   themeVariant: [ "relearn-light" ]
-  disableSeoHiddenPages: true
-  additionalContentLanguage: [ "en" ]
-  custom_css: ["css/*"]
-  swaggerInitialize: "{ \"theme\": \"light\" }"
-  hidden: false

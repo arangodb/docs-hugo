@@ -56,8 +56,6 @@ function closeAllEntries() {
 }
 
 function loadMenu(url) {
-    url = url.replace(/#.*$/, "");
-
     closeAllEntries();
     var current = $('.dd-item > a[href="' + url + '"]').parent();
     
@@ -137,7 +135,7 @@ function loadPage(target) {
   var href = target;
   getCurrentVersion(href);
   renderVersion();
-  loadMenu(href);
+  loadMenu(new URL(href).pathname);
   $.get({
     url: href,
     success: function(newDoc) {
@@ -424,7 +422,7 @@ window.onload = () => {
     getCurrentVersion(window.location.href);
     menuEntryClickListener();
     renderVersion();
-    loadMenu(window.location.href);
+    loadMenu(window.location.pathname);
     initArticle(window.location.href);
     content.addEventListener("click", menuToggleClick);
 

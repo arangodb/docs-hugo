@@ -8,7 +8,7 @@ $content := .Inner }}
   {{ $destinationPage = $context.Page.GetPage $link -}}
 {{ end }}
 
-<a href="{{ $destinationPage.Permalink }}" class="link-internal">
+<a href="{{ $destinationPage.RelPermalink }}" class="link-internal">
   <div class="card">
     <div class="card-head">
       {{ with $image }}<img
