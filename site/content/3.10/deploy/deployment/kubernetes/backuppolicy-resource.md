@@ -9,9 +9,11 @@ archetype: default
 The ArangoBackupPolicy represents schedule definition for creating ArangoBackup Custom Resources by operator.
 This deployment specification is a `CustomResource` following a `CustomResourceDefinition` created by the operator.
 
-## Examples:
+## Examples
 
 ### Create schedule for all deployments
+
+You can create an ArangoBackup Custom Resource for each ArangoBackup every 15 minutes.
 
 ```yaml
 apiVersion: "backup.arangodb.com/v1"
@@ -22,11 +24,9 @@ spec:
   schedule: "*/15 * * * *"
 ```
 
-Action:
-
-Create an ArangoBackup Custom Resource for each ArangoBackup every 15 minutes
-
 ### Create schedule for selected deployments
+
+You can create an ArangoBackup Custom Resource for selected ArangoBackups every 15 minutes.
 
 ```yaml
 apiVersion: "backup.arangodb.com/v1"
@@ -40,11 +40,10 @@ spec:
       labelName: "labelValue"
 ```
 
-Action:
-
-Create an ArangoBackup Custom Resource for selected ArangoBackup every 15 minutes
-
 ### Create schedule for all deployments and upload
+
+You can create an ArangoBackup Custom Resource for each ArangoBackup every 15
+minutes and upload it to the specified repositoryURL.
 
 ```yaml
 apiVersion: "backup.arangodb.com/v1"
@@ -59,11 +58,11 @@ spec:
       credentialsSecretName: "secret-name"
 ```
 
-Action:
-
-Create an ArangoBackup Custom Resource for each ArangoBackup every 15 minutes and upload to repositoryURL
-
 ### Create schedule for all deployments, don't allow parallel backup runs, keep limited number of backups
+
+You can create an ArangoBackup Custom Resource for each ArangoBackup every 15
+minutes. You can keep 10 backups per deployment at the same time, and delete the
+oldest ones. Don't allow to run backup if previous backup is not finished.
 
 ```yaml
 apiVersion: "backup.arangodb.com/v1"
@@ -76,12 +75,7 @@ spec:
   allowConcurrent: False
 ```
 
-Action:
-
-Create an ArangoBackup Custom Resource for each ArangoBackup every 15 minutes.
-Keep 10 backups per deployment at the same time, delete the oldest one. Don't allow to run backup if previous is not finished.
-
-## ArangoBackup Custom Resource Spec:
+## ArangoBackup Custom Resource Spec
 
 ```yaml
 apiVersion: "backup.arangodb.com/v1"
