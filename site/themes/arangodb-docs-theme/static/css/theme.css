@@ -1718,7 +1718,7 @@ blockquote p {
     color: var(--H2-COLOR);
 }
 
-.openapi-prop.collapsed::before {
+.openapi-prop::before {
     font-family: "Font Awesome 5 Free";
     content: "\f054";
     display: inline-block;
@@ -1729,7 +1729,7 @@ blockquote p {
     color: grey;
 }
 
-.openapi-prop::before {
+details[open] > .openapi-prop::before {
     font-family: "Font Awesome 5 Free";
     content: "\f078";
     display: inline-block;
