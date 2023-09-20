@@ -24,8 +24,9 @@
       {{ $class = "link-internal" }}
     {{ else -}}
       {{ if ne $currentPage "/" -}}
+        {{ $currentFile := .Page.File.Path -}}
         {{ if site.Params.failOnBrokenLinks -}}
-          {{ errorf "<error code=1> Broken link '%v' found in %s </error><br>" $link $currentPage -}}
+          {{ errorf "<error code=1> Broken link '%v' found in %s </error><br>" $link $currentFile -}}
         {{ else -}}
           {{ warnf "Broken link '%v' found in %s" $link $currentPage -}}
         {{ end -}}
