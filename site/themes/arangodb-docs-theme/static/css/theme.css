@@ -443,6 +443,17 @@ a.section-link {
     background: url(/images/loading.gif) 50% 50% no-repeat;
 }
 
+/* Tabs */
+
+.tab-panel .tab-item {
+    display: none;
+}
+
+.tab-panel .tab-item.active {
+    display: block;
+}
+
+/* Tabs end */
 
 /* Body */
 
