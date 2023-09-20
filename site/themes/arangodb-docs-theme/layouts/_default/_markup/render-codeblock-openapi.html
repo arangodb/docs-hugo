@@ -68,7 +68,7 @@
 {{ end }}
 
 {{- define "renderRequestBody" }}
-  {{ $title := .title }}
+  {{ $title := printf "%s_%s" .title "body" }}
   {{ $content := .content }}
   <div class="openapi-parameters regular-font">
     <div class="openapi-table-title">
@@ -109,7 +109,7 @@
     <div class="openapi-responses">
       <ul class="openapi-table">
       {{ range $status, $content := $content }}
-        {{ $statusId :=  printf "%s_%s" $title $status }}
+        {{ $statusId :=  printf "%s_res_%s" $title $status }}
         <li class="openapi-table-row regular-font">
           <details  id="{{ printf "%s" $statusId }}">
           <summary class="openapi-prop collapsed">
@@ -157,9 +157,10 @@
   
   {{ if eq $category $value.in }}
     {{ $structName := "" }}
+    {{ $anchor := printf "%s_%s_%s" $title $category $prop }}
     <li class="openapi-table-row regular-font">
-      <details  id="{{ printf "%s_%s" $title $prop }}">
-        <summary class="openapi-prop collapsed"><span class="openapi-property-name bold-text">{{ $prop }}{{ if $value.required }}*{{ end }}</span><span class="openapi-property-type" style="font-weight: bold;"> {{ $value.schema.type }} </span><a href="{{ printf "#%s_%s" $title $prop }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
+      <details  id="{{ $anchor }}">
+        <summary class="openapi-prop collapsed"><span class="openapi-property-name bold-text">{{ $prop }}{{ if $value.required }}*{{ end }}</span><span class="openapi-property-type" style="font-weight: bold;"> {{ $value.schema.type }} </span><a href="{{ printf "#%s" $anchor }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
         </summary>
         {{ $description := $value.description | markdownify }}
         <div class="openapi-prop-content">
