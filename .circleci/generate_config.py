@@ -250,6 +250,9 @@ def workflow_release_arangodb(config):
     approvalWorkflow = {"approve-workflow": {"type": "approval", "requires": ["release-generate"]}}
     jobs.insert(2, approvalWorkflow)
 
+    jobs[3]["plain-build"]["requires"] = ["approve-workflow"]
+
+
     return config
 
 
