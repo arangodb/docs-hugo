@@ -524,12 +524,8 @@ workflows:
   release:
     when: { equal: [ release, << pipeline.parameters.workflow >> ] }
     jobs:
-      - approve-workflow:
-          type: approval
       - plain-build:
           url: https://docs.arangodb.com
-          requires:
-            - approve-workflow
       - deploy:
           deploy-args: "--prod"
           requires:
