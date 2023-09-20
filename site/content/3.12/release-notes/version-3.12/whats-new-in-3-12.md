@@ -65,7 +65,7 @@ Swagger 2.x compatibility.
 
 ### LZ4 compression for values in the in-memory edge cache
 
-<small>Introduced in: v3.11.2, 3.12.0</small>
+<small>Introduced in: v3.11.2, v3.12.0</small>
 
 LZ4 compression of edge index cache values allows to store more data in main
 memory than without compression, so the available memory can be used more
@@ -103,7 +103,7 @@ cache, but not decreased when data gets evicted from the cache.
 
 ### Limit the number of databases in a deployment
 
-<small>Introduced in: v3.10.10, 3.11.2, 3.12.0</small>
+<small>Introduced in: v3.10.10, v3.11.2, v3.12.0</small>
 
 The `--database.max-databases` startup option allows you to limit the
 number of databases that can exist in parallel in a deployment. You can use this
@@ -118,7 +118,7 @@ unlimited, so an arbitrary amount of databases can be created.
 
 ### In-memory edge cache startup options and metrics
 
-<small>Introduced in: v3.12.0</small>
+<small>Introduced in: v3.11.4, v3.12.0</small>
 
 The following startup options have been added:
 

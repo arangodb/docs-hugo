@@ -120,15 +120,8 @@ function main() {
     docker logs --details --follow docs_arangoproxy >> toolchain.log &
     docker logs --details --follow docs_site >> toolchain.log &
 
-    ## Run the container exit signal interceptor in background
-
     tail -f /home/toolchain.log &
     trap_container_exit
-
-
-    ## If a container exits, the tail gets interrupted and the script will arrive here
-    echo "[TERMINATE] Site container exited"
-    echo "[TERMINATE] Terminating toolchain"
 }
 
 
@@ -331,7 +324,7 @@ function process_server() {
   image=$(echo "$server" | yq e '.image' -)
   version=$(echo "$server" | yq e '.version' -)
 
-  echo "<li><strong>$version</strong>: $image</li>" >> /home/summary.md
+  echo "<li><strong>$version</strong>: $image<ul>" >> /home/summary.md
 
   LOG_TARGET="$image $version"
 
@@ -372,6 +365,7 @@ function process_server() {
       setup_arangoproxy "$image_name" "$version"
     fi
   fi
+  echo "</ul></li>" >> /home/summary.md
 }
 
 ### Setup and run an ArangoDB docker image
@@ -418,14 +412,13 @@ function generators_from_source() {
 
 
 function generate_startup_options() {
-  echo "<h2>Startup Options</h2>" >> /home/summary.md
+  echo "<li><strong>Startup Options</strong><ul>" >> /home/summary.md
 
   container_name="$1"
   version="$2"
   log "[generate_startup_options] Starting options dump for container " "$container_name"
   declare -a ALLPROGRAMS=("arangobackup" "arangobench" "arangod" "arangodump" "arangoexport" "arangoimport" "arangoinspect" "arangorestore" "arangosh" "arangovpack")
 
-  echo "<li><strong>$version</strong>:<ul>" >> /home/summary.md
 
   for HELPPROGRAM in ${ALLPROGRAMS[@]}; do
       log "[generate_startup_options] Dumping program options of ${HELPPROGRAM}"
@@ -447,7 +440,7 @@ function generate_startup_options() {
 }
 
 function generate_optimizer_rules() {
-  echo "<h2>Optimizer Rules</h2>" >> /home/summary.md
+  echo "<li><strong>Optimizer Rules</strong>:" >> /home/summary.md
 
   container_name="$1"
   version="$2"
@@ -459,18 +452,20 @@ function generate_optimizer_rules() {
 
   if [ $? -ne 0 ]; then
     log "[generate_optimizer_rules] [ERROR] $res"
-    echo "<li><error code=5><strong>$version</strong>: <strong> ERROR: $res</strong></error></li>" >> /home/summary.md
+    echo "<error code=5><strong> ERROR: $res</strong></error>" >> /home/summary.md
   fi
 
   echo $res > ../../site/data/$version/optimizer-rules.json
-  echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary.md
+  echo " &#x2713;" >> /home/summary.md
+
+  echo "</li>" >> /home/summary.md
 
   log "[generate_optimizer_rules] Done"
 }
 
 
 function generate_error_codes() {
-  echo "<h2>Error Codes</h2>" >> /home/summary.md
+  echo "<li><strong>Error Codes</strong>:" >> /home/summary.md
 
   version=$1
 
@@ -486,15 +481,17 @@ function generate_error_codes() {
 
   if [ $? -ne 0 ]; then
     log "[generate_error_codes] [ERROR] $res"
-    echo "<li><error code=6><strong>$version</strong>: <strong> ERROR: $res</strong></error></li>" >> /home/summary.md
+    echo "<error code=6><strong> ERROR: $res</strong></error>" >> /home/summary.md
   fi
 
-  echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary.md
+  echo " &#x2713;" >> /home/summary.md
+  echo "</li>" >> /home/summary.md
+
   log "[generate_error_codes] Done"
 }
 
 function generate_metrics() {
-  echo "<h2>Metrics</h2>" >> /home/summary.md
+  echo "<li><strong>Metrics</strong>" >> /home/summary.md
 
   version=$1
 
@@ -509,16 +506,18 @@ function generate_metrics() {
 
   if [ $? -ne 0 ]; then
     log "[generate_metrics] [ERROR] $res"
-    echo "<li><error code=7><strong>$version</strong>: <strong> ERROR: $res</strong><error></li>" >> /home/summary.md
+    echo "<error code=7><strong> ERROR: $res</strong><error>" >> /home/summary.md
   fi
 
-  echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary.md
+  echo "&#x2713;" >> /home/summary.md
+  echo "</li>" >> /home/summary.md
+
   log "[generate_metrics] Done"
   
 }
 
 function generate_oasisctl() {
-  echo "<h2>OasisCTL</h2>" >> /home/summary.md
+  echo "<li><strong>OasisCTL</strong>" >> /home/summary.md
 
   version=$1
 
@@ -535,19 +534,21 @@ function generate_oasisctl() {
   res=$(oasisctl generate-docs --link-file-ext .html --replace-underscore-with - --output-dir /tmp/oasisctl)
   if [ $? -ne 0 ]; then
     log "[generate_oasisctl] [ERROR] Error from oasisctl generate-docs: $res"
-    echo "<li><error code=8><strong>$version</strong>: <strong> ERROR: Error from oasisctl generate-docs: </strong>$res</error></li>" >> /home/summary.md
+    echo "<error code=8><strong> ERROR: </strong>$res</error>" >> /home/summary.md
   fi
 
   log "[generate_oasisctl] "$PYTHON_EXECUTABLE" generators/oasisctl.py --src /tmp/oasisctl --dst ../../site/content/$version/arangograph/oasisctl/"
   res=$(("$PYTHON_EXECUTABLE" generators/oasisctl.py --src /tmp/oasisctl --dst ../../site/content/$version/arangograph/oasisctl/) 2>&1 )
   if [ $? -ne 0 ]; then
     log "[generate_oasisctl] [ERROR] Error from oasisctl.py: $res"
-    echo "<li><error code=8><strong>$version</strong>: <strong> ERROR: Error from oasisctl.py: </strong>$res</error></li>" >> /home/summary.md
+    echo "<error code=8><strong> ERROR: Error: </strong>$res</error></li>" >> /home/summary.md
   fi
 
   cp /tmp/preserve/oasisctl.md ../../site/content/$version/arangograph/oasisctl/_index.md
 
-  echo "<li><strong>$version</strong>: &#x2713;</li>" >> /home/summary.md
+  echo "&#x2713;" >> /home/summary.md
+  echo "</li>" >> /home/summary.md
+
   log "[generate_oasisctl] Done"
 }
 

@@ -19,10 +19,9 @@ var examples = require("@arangodb/graph-examples/example-graph.js");
 var user_examples = require("@arangodb/examples/example-users.js");
 
 
-var assert = function(condition) {
+var assert = function(condition, assertion) {
   if (!condition) {
-    print('EXITD');
-    throw new Error('assertion failed');
+    print('ASSERTD-FAIL ' + assertion);
   }
 };
 
