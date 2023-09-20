@@ -24,11 +24,11 @@ func InitRepositories() {
 		models.Repositories[fmt.Sprintf("%s_%s", repo.Type, repo.Version)] = repo
 
 		commonFunctions, _ := utils.GetCommonFunctions()
-		arangosh.Exec("Load common functions", commonFunctions, repo)
+		arangosh.Exec("Load common functions", commonFunctions, "", repo)
 		wg.Done()
 
 		cmd, _ := utils.GetSetupFunctions()
-		arangosh.Exec("Init collections", cmd, repo)
+		arangosh.Exec("Init collections", cmd, "", repo)
 		wg.Done()
 	}
 }
