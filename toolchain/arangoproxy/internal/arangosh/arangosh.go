@@ -21,8 +21,7 @@ func ExecRoutine(example chan map[string]interface{}, outChannel chan string) {
 			filepath := exampleData["filepath"].(string)
 			repository := exampleData["repository"].(models.Repository)
 
-			out := Exec(name, code, repository)
-
+			out := Exec(name, code, filepath, repository)
 			out = checkAssertionFailed(name, code, out, filepath, repository)
 			out = checkArangoError(name, code, out, filepath, repository)
 
@@ -31,7 +30,7 @@ func ExecRoutine(example chan map[string]interface{}, outChannel chan string) {
 	}
 }
 
-func Exec(exampleName string, code string, repository models.Repository) (output string) {
+func Exec(exampleName string, code, filepath string, repository models.Repository) (output string) {
 	code = format.AdjustCodeForArangosh(code)
 
 	cmd := []byte(code)
@@ -95,20 +94,22 @@ func Exec(exampleName string, code string, repository models.Repository) (output
 			output = output + scanner.Text() + "\n"
 		}
 	}
-
 	return
 }
 
 func checkAssertionFailed(name, code, out, filepath string, repository models.Repository) string {
-	if strings.Contains(out, "EXITD") {
+	if strings.Contains(out, "ASSERTD-FAIL") {
 		models.Logger.Printf("[%s] [ERROR]: Assertion Failed", name)
 		models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, out)
 
-		re := regexp.MustCompile(`(?m)JavaScript exception.*|ArangoError.*`)
-		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error></li><br>", repository.Version, name, filepath)
+		re := regexp.MustCompile(`(?m)ASSERTD-FAIL.*`)
+		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error>", repository.Version, name, filepath)
 		for _, match := range re.FindAllString(out, -1) {
-			models.Logger.Summary(match)
+			assertCondition := strings.ReplaceAll(match, "ASSERTD-FAIL ", "")
+			models.Logger.Summary("Assertion Failed for condition %s", assertCondition)
 		}
+		models.Logger.Summary("</li>")
+
 		return "ERRORD"
 	}
 	return out
@@ -119,7 +120,7 @@ func checkArangoError(name, code, out, filepath string, repository models.Reposi
 		return out
 	}
 
-	if strings.Contains(out, "ArangoError") && !strings.Contains(code, "xpError") {
+	if strings.Contains(out, "JavaScript exception") && !strings.Contains(code, "xpError") {
 		if strings.Contains(out, "ArangoError 1203") || strings.Contains(out, "ArangoError 1932") {
 			return handleCollectionNotFound(name, code, out, filepath, repository)
 		} else if strings.Contains(out, "ArangoError 1207") {
@@ -130,11 +131,17 @@ func checkArangoError(name, code, out, filepath string, repository models.Reposi
 			models.Logger.Printf("[%s] [ERROR]: Found ArangoError without xpError", name)
 			models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, out)
 
-			re := regexp.MustCompile(`(?m)JavaScript exception.*|ArangoError.*`)
-			models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error></li><br>", repository.Version, name, filepath)
+			re := regexp.MustCompile(`(?m)ArangoError.*`)
+			if !re.MatchString(out) {
+				re = regexp.MustCompile(`(?m)JavaScript exception.*`)
+			}
+
+			models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error>", repository.Version, name, filepath)
 			for _, match := range re.FindAllString(out, -1) {
 				models.Logger.Summary(match)
 			}
+			models.Logger.Summary("</li>")
+
 			return "ERRORD"
 		}
 	}
@@ -144,16 +151,19 @@ func checkArangoError(name, code, out, filepath string, repository models.Reposi
 
 func handleCollectionNotFound(name, code, out, filepath string, repository models.Repository) string {
 	code = notFoundFallbackCode(code, out)
-	output := Exec(name, code, repository)
+	output := Exec(name, code, filepath, repository)
 	if strings.Contains(output, "ArangoError") && !strings.Contains(code, "xpError") {
 		models.Logger.Printf("[%s] [ERROR]: Found ArangoError without xpError", name)
 		models.Logger.Printf("[%s] [ERROR]: Command output: %s", name, output)
 
 		re := regexp.MustCompile(`(?m)JavaScript exception.*|ArangoError.*`)
-		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error></li><br>", repository.Version, name, filepath)
+		models.Logger.Summary("<li><error code=3><strong>%s</strong>  - %s <strong> ERROR %s</strong></error>", repository.Version, name, filepath)
 		for _, match := range re.FindAllString(out, -1) {
 			models.Logger.Summary(match)
 		}
+
+		models.Logger.Summary("</li>")
+
 		return "ERRORD"
 	}
 
