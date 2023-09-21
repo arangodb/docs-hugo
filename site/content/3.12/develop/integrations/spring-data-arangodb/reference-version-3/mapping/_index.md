@@ -2,10 +2,12 @@
 title: Mapping
 menuTitle: Mapping
 weight: 20
-description: ''
+description: >-
+  The features and conventions for mapping Java objects to documents and how to
+  override those conventions with annotation based mapping metadata
 archetype: chapter
 ---
-In this section we will describe the features and conventions for mapping Java objects to documents and how to override those conventions with annotation based mapping metadata.
+{{< description >}}
 
 ## Conventions
 

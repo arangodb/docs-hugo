@@ -3,9 +3,11 @@ title: ArangoDB Spark Connector - Scala Reference
 menuTitle: Scala
 weight: 10
 description: >-
-  Save data from rdd or dataset into ArangoDB
+  The Scala interface of the Spark Connector
 archetype: default
 ---
+{{< description >}}
+
 {{< info >}}
 This library has been deprecated in favor of the new [ArangoDB Datasource for Apache Spark](../../arangodb-datasource-for-apache-spark.md).
 {{< /info >}}

@@ -7,7 +7,8 @@ archetype: default
 ---
 ## Registering a Spring Converter
 
-The `ArangoConfiguration` provides a convenient way to register Spring `Converter` by implementing the method `customConverters()`.
+The `ArangoConfiguration` provides a convenient way to register Spring
+`Converter` by implementing the method `customConverters()`.
 
 **Examples**
 
@@ -25,9 +26,15 @@ public class MyConfiguration implements ArangoConfiguration {
 
 ## Implementing a Spring Converter
 
-A `Converter` is used for reading if the source type is of type `JsonNode` or `DBDocumentEntity`.
+A `Converter` is used for reading if the source type is of type `JsonNode`
+or `DBDocumentEntity`.
 
-A `Converter` is used for writing if the target type is of type `JsonNode`, `DBDocumentEntity`, `BigInteger`, `BigDecimal`, `java.sql.Date`, `java.sql.Timestamp`, `Instant`, `LocalDate`, `LocalDateTime`, `OffsetDateTime`, `ZonedDateTime`, `Boolean`, `Short`, `Integer`, `Byte`, `Float`, `Double`, `Character`, `String`, `Date`, `Class`, `Enum`, `boolean[]`, `long[]`, `short[]`, `int[]`, `byte[]`, `float[]`, `double[]` or `char[]`.
+A `Converter` is used for writing if the target type is of type `JsonNode`,
+`DBDocumentEntity`, `BigInteger`, `BigDecimal`, `java.sql.Date`,
+`java.sql.Timestamp`, `Instant`, `LocalDate`, `LocalDateTime`, `OffsetDateTime`,
+`ZonedDateTime`, `Boolean`, `Short`, `Integer`, `Byte`, `Float`, `Double`,
+`Character`, `String`, `Date`, `Class`, `Enum`, `boolean[]`, `long[]`,
+`short[]`, `int[]`, `byte[]`, `float[]`, `double[]` or `char[]`.
 
 **Examples**
 

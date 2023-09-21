@@ -171,27 +171,51 @@ public ArangoDB.Builder arango() {
 
 ## Using the underlying Java Driver
 
-<small>Applicable to version 4 only.</small>
+{{< tabs groupid="spring-data" >}}
 
+{{< tab name="Version 4" >}}
 The underlying Java driver can be obtained via `ArangoOperations.driver()`.
 This driver instance is configured by default to use `ArangoConverter` bean to
 serialize and deserialize user data, therefore keeping the same
 Spring Data ArangoDB serialization behavior.
+{{< /tab >}}
+
+{{< tab name="Version 3" >}}
+The driver instance cannot be accessed in version 3.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Spring Boot
 
-<small>Applicable to version 4 only.</small>
+{{< tabs groupid="spring-data" >}}
 
+{{< tab name="Version 4" >}}
 Spring Boot support is offered by [Spring Boot Starter ArangoDB](https://github.com/arangodb/spring-boot-starter).
+{{< /tab >}}
 
-## Current limitations
+{{< tab name="Version 3" >}}
+Spring Data ArangoDB version 3 does not support Spring Boot.
+{{< /tab >}}
 
-<small>Applicable to version 4 only.</small>
+{{< /tabs >}}
 
+## Limitations
+
+{{< tabs groupid="spring-data" >}}
+
+{{< tab name="Version 4" >}}
 - Java Record classes and Kotlin Data classes are not supported (DE-539)
 - GraalVM Native Image is not supported (DE-677)
 - Spring Data REST is not supported (DE-43)
 - Spring Data Reactive is not supported (DE-678)
+{{< /tab >}}
+
+{{< tab name="Version 3" >}}
+Spring Data ArangoDB version 3 has no known limitations.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Learn more
 

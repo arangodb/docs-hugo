@@ -12,7 +12,8 @@ and specific aspects that apply to
 
 ## Annotation @\<IndexType\>Indexed
 
-With the `@<IndexType>Indexed` annotations user defined indexes can be created at a collection level by annotating single fields of a class.
+With the `@<IndexType>Indexed` annotations user defined indexes can be created
+at a collection level by annotating single fields of a class.
 
 Possible `@<IndexType>Indexed` annotations are:
 
@@ -21,7 +22,8 @@ Possible `@<IndexType>Indexed` annotations are:
 - `@FulltextIndexed`
 - `@TtlIndexed`
 
-The following example creates a persistent index on the field `name` and a separate persistent index on the field `age`:
+The following example creates a persistent index on the field `name` and a
+separate persistent index on the field `age`:
 
 ```java
 public class Person {
@@ -47,7 +49,8 @@ public class Person {
 
 ## Annotation @\<IndexType\>Index
 
-If the index should include multiple fields the `@<IndexType>Index` annotations can be used on the type instead.
+If the index should include multiple fields the `@<IndexType>Index` annotations
+can be used on the type instead.
 
 Possible `@<IndexType>Index` annotations are:
 
@@ -56,7 +59,9 @@ Possible `@<IndexType>Index` annotations are:
 - `@FulltextIndex`
 - `@TtlIndex`
 
-The following example creates a single persistent index on the fields `name` and `age`, note that if a field is renamed in the database with @Field, the new field name must be used in the index declaration:
+The following example creates a single persistent index on the fields `name` and
+`age`, note that if a field is renamed in the database with @Field, the new
+field name must be used in the index declaration:
 
 ```java
 @PersistentIndex(fields = {"fullname", "age"})
@@ -70,7 +75,8 @@ public class Person {
 
 The `@<IndexType>Index` annotations can also be used to create an index on a nested field.
 
-The following example creates a single persistent index on the fields `name` and `address.country`:
+The following example creates a single persistent index on the fields `name` and
+`address.country`:
 
 ```java
 @PersistentIndex(fields = {"name", "address.country"})
@@ -81,9 +87,11 @@ public class Person {
 }
 ```
 
-The `@<IndexType>Index` annotations and the `@<IndexType>Indexed` annotations can be used at the same time in one class.
+The `@<IndexType>Index` annotations and the `@<IndexType>Indexed` annotations
+can be used at the same time in one class.
 
-The following example creates a persistent index on the fields `name` and `age` and a separate persistent index on the field `age`:
+The following example creates a persistent index on the fields `name` and `age`
+and a separate persistent index on the field `age`:
 
 ```java
 @PersistentIndex(fields = {"name", "age"})
@@ -95,9 +103,11 @@ public class Person {
 }
 ```
 
-The `@<IndexType>Index` annotations can be used multiple times to create more than one index in this way.
+The `@<IndexType>Index` annotations can be used multiple times to create more
+than one index in this way.
 
-The following example creates a persistent index on the fields `name` and `age` and a separate persistent index on the fields `name` and `gender`:
+The following example creates a persistent index on the fields `name` and `age`
+and a separate persistent index on the fields `name` and `gender`:
 
 ```java
 @PersistentIndex(fields = {"name", "age"})

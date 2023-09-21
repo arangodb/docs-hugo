@@ -3,9 +3,11 @@ title: ArangoDB Spark Connector - Java Reference
 menuTitle: Java
 weight: 5
 description: >-
-  Save data from rdd into ArangoDB
+  The Java interface of the Spark Connector
 archetype: default
 ---
+{{< description >}}
+
 {{< info >}}
 This library has been deprecated in favor of the new [ArangoDB Datasource for Apache Spark](../../arangodb-datasource-for-apache-spark.md).
 {{< /info >}}

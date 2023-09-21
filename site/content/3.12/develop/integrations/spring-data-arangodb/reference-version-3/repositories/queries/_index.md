@@ -13,13 +13,23 @@ Spring Data ArangoDB supports three kinds of queries:
 
 ## Return types
 
-The method return type for single results can be a primitive type, a domain class, `Map<String, Object>`, `BaseDocument`, `BaseEdgeDocument`, `Optional<Type>`, `GeoResult<Type>`.
+The method return type for single results can be a primitive type, a domain
+class, `Map<String, Object>`, `BaseDocument`, `BaseEdgeDocument`,
+`Optional<Type>`, `GeoResult<Type>`.
 
-The method return type for multiple results can additionally be `ArangoCursor<Type>`, `Iterable<Type>`, `Collection<Type>`, `List<Type>`, `Set<Type>`, `Page<Type>`, `Slice<Type>`, `GeoPage<Type>`, `GeoResults<Type>` where Type can be everything a single result can be.
+The method return type for multiple results can additionally be
+`ArangoCursor<Type>`, `Iterable<Type>`, `Collection<Type>`, `List<Type>`,
+`Set<Type>`, `Page<Type>`, `Slice<Type>`, `GeoPage<Type>`, `GeoResults<Type>`
+where Type can be everything a single result can be.
 
 ## AQL query options
 
-You can set additional options for the query and the created cursor over the class `AqlQueryOptions` which you can simply define as a method parameter without a specific name. AqlQuery options can also be defined with the `@QueryOptions` annotation, as shown below. Aql query options from an annotation and those from an argument are merged if both exist, with those in the argument taking precedence.
+You can set additional options for the query and the created cursor over the
+class `AqlQueryOptions` which you can simply define as a method parameter
+without a specific name. AqlQuery options can also be defined with the
+`@QueryOptions` annotation, as shown below. Aql query options from an annotation
+and those from an argument are merged if both exist, with those in the argument
+taking precedence.
 
 The `AqlQueryOptions` allows you to set the cursor time-to-live, batch-size,
 caching flag and several other settings. This special parameter works with both
@@ -54,12 +64,16 @@ public interface MyRepository extends Repository<Customer, String> {
 
 ## Paging and sorting
 
-Spring Data ArangoDB supports Spring Data's `Pageable` and `Sort` parameters for repository query methods. If these parameters are used together with a native query, either through `@Query` annotation or [named queries](named-queries.md), a placeholder must be specified:
+Spring Data ArangoDB supports Spring Data's `Pageable` and `Sort` parameters for
+repository query methods. If these parameters are used together with a native
+query, either through `@Query` annotation or [named queries](named-queries.md),
+a placeholder must be specified:
 
 - `#pageable` for `Pageable` parameter
 - `#sort` for `Sort` parameter
 
-Sort properties or paths are attributes separated by dots (e.g. `customer.age`). Some rules apply for them:
+Sort properties or paths are attributes separated by dots (e.g. `customer.age`).
+Some rules apply for them:
 
 - they must not begin or end with a dot (e.g. `.customer.age`)
 - dots in attributes are supported, but the whole attribute must be enclosed by backticks (e.g. `` customer.`attr.with.dots` ``)

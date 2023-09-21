@@ -26,7 +26,7 @@ If your programming language or environment is not listed,
 
 ## Java driver
 
-The [**ArangoDB Java driver**](java-driver/_index.md) lets you work with ArangoDB in the
+The [**ArangoDB Java driver**](java/_index.md) lets you work with ArangoDB in the
 Java programming language.
 
 - Online course: [Java Driver v7 Tutorial](https://university.arangodb.com/courses/java-driver-tutorial-v7/)
@@ -35,7 +35,7 @@ Java programming language.
 
 ## Go driver
 
-The [**Go driver**](arangodb-go-driver.md) lets you work with ArangoDB in the Go programming
+The [**Go driver**](go.md) lets you work with ArangoDB in the Go programming
 language.
 
 - Tutorial: [Go Driver Tutorial](https://university.arangodb.com/courses/go-driver-tutorial/)
@@ -44,7 +44,7 @@ language.
 
 ## C#/.NET driver
 
-The [**arangodb-net-standard driver**](arangodb-csharp-dotnet-driver.md) lets you work with ArangoDB
+The [**arangodb-net-standard driver**](csharp-dotnet.md) lets you work with ArangoDB
 using the C# programming language and the .NET ecosystem.
 
 - Online course: [C#/.NET Driver Tutorial](https://university.arangodb.com/courses/csharp-dotnet-driver-tutorial/)
@@ -53,7 +53,7 @@ using the C# programming language and the .NET ecosystem.
 
 ## Node.js driver
 
-The [**ArangoJS driver**](arangojs-javascript-driver.md) lets you work with ArangoDB in Node.js, using
+The [**ArangoJS driver**](nodejs.md) lets you work with ArangoDB in Node.js, using
 the JavaScript scripting language. You can also use it in web browsers.
 
 - Repository: [github.com/arangodb/arangojs](https://github.com/arangodb/arangojs)
@@ -61,7 +61,7 @@ the JavaScript scripting language. You can also use it in web browsers.
 
 ## Python driver
 
-The [**Python-Arango**](python-arango-driver.md) driver lets you work with ArangoDB in the
+The [**Python-Arango**](python.md) driver lets you work with ArangoDB in the
 Python scripting language.
 
 - Online course: [Python Driver Tutorial](https://www.arangodb.com/tutorials/tutorial-python/)

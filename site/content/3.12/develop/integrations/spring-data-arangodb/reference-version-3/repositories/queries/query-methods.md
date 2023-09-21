@@ -10,7 +10,8 @@ can be supplied with the `@Query` annotation on methods.
 
 ## Passing collection name
 
-Instead of writing the collection name statically into the query string, the placeholder `#collection` can be specified.
+Instead of writing the collection name statically into the query string, the
+placeholder `#collection` can be specified.
 
 ```java
 public interface MyRepository extends ArangoRepository<Customer, String>{
@@ -28,7 +29,8 @@ There are three ways of passing bind parameters to the query in the query annota
 
 ### Number matching
 
-Using number matching, arguments will be substituted into the query in the order they are passed to the query method.
+Using number matching, arguments will be substituted into the query in the order
+they are passed to the query method.
 
 ```java
 public interface MyRepository extends ArangoRepository<Customer, String>{
@@ -41,7 +43,8 @@ public interface MyRepository extends ArangoRepository<Customer, String>{
 
 ### @Param
 
-With the `@Param` annotation, the argument will be placed in the query at the place corresponding to the value passed to the `@Param` annotation.
+With the `@Param` annotation, the argument will be placed in the query at the
+place corresponding to the value passed to the `@Param` annotation.
 
 ```java
 public interface MyRepository extends ArangoRepository<Customer, String>{
@@ -54,7 +57,9 @@ public interface MyRepository extends ArangoRepository<Customer, String>{
 
 ### @BindVars
 
-In addition you can use a method parameter of type `Map<String, Object>` annotated with `@BindVars` as your bind parameters. You can then fill the map with any parameter used in the query (also see [AQL Bind Parameters](../../../../../../aql/fundamentals/bind-parameters.md)).
+In addition you can use a method parameter of type `Map<String, Object>`
+annotated with `@BindVars` as your bind parameters. You can then fill the map
+with any parameter used in the query (also see [AQL Bind Parameters](../../../../../../aql/fundamentals/bind-parameters.md)).
 
 ```java
 public interface MyRepository extends ArangoRepository<Customer, String>{
@@ -65,7 +70,8 @@ public interface MyRepository extends ArangoRepository<Customer, String>{
 }
 ```
 
-A mixture of any of these methods can be used. Parameters with the same name from an `@Param` annotation will override those in the `bindVars`.
+A mixture of any of these methods can be used. Parameters with the same name
+from an `@Param` annotation will override those in the `bindVars`.
 
 ```java
 public interface MyRepository extends ArangoRepository<Customer, String>{
@@ -78,7 +84,8 @@ public interface MyRepository extends ArangoRepository<Customer, String>{
 
 ## Query options
 
-`AqlQueryOptions` can also be passed to the driver, as an argument anywhere in the method signature.
+`AqlQueryOptions` can also be passed to the driver, as an argument anywhere in
+the method signature.
 
 ```java
 public interface MyRepository extends ArangoRepository<Customer, String>{

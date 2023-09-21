@@ -5,7 +5,9 @@ weight: 35
 description: ''
 archetype: default
 ---
-Spring Data ArangoDB includes several `ApplicationEvent` events that your application can respond to by registering subclasses of `AbstractArangoEventListener` in the ApplicationContext.
+Spring Data ArangoDB includes several `ApplicationEvent` events that your
+application can respond to by registering subclasses of
+`AbstractArangoEventListener` in the ApplicationContext.
 
 The following callback methods are present in `AbstractArangoEventListener`:
 
@@ -30,7 +32,8 @@ public class BeforePersonSavedListener extends AbstractArangoEventListener<Perso
 }
 ```
 
-To register the listener add `@ComponentScan` with the package of your listener to your configuration class.
+To register the listener add `@ComponentScan` with the package of your listener
+to your configuration class.
 
 ```java
 @Configuration
