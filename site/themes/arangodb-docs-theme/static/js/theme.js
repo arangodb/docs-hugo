@@ -321,6 +321,8 @@ function hideEmptyOpenapiDiv() {
   fragment = location.hash.replace("#", "")
   if (fragment) {
     var element = document.getElementById(fragment);
+    if (!element) return;
+
     if (element.tagName == "DETAILS") {
       method = fragment.split("_").slice(0,2).join("_")
       fields = fragment.split("_").slice(2)
