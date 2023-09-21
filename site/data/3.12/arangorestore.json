@@ -415,29 +415,6 @@
     "section" : "encryption",
     "type" : "string"
   },
-  "envelope" : {
-    "category" : "option",
-    "default" : false,
-    "deprecatedIn" : null,
-    "description" : "wrap each document into a {type, data} envelope (this is required for compatibility with v3.7 and before).",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : [
-      "v3.8.0"
-    ],
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "required" : false,
-    "requiresValue" : false,
-    "section" : "",
-    "type" : "boolean"
-  },
   "force" : {
     "category" : "option",
     "default" : false,
@@ -1214,6 +1191,34 @@
     "requiresValue" : false,
     "section" : "log",
     "type" : "boolean"
+  },
+  "max-unused-buffers-capacity" : {
+    "base" : 1,
+    "category" : "option",
+    "default" : 536870912,
+    "deprecatedIn" : null,
+    "description" : "Maximum cumulated size of spare in-memory buffers to keep.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.12.0"
+    ],
+    "longDescription" : "Maximum cumulated size of in-memory buffers to keep around for \nsending batches.\nA value > 0 will increase the memory usage of arangorestore, but can help in \navoiding repeated memory allocations for building new in-memory buffers.",
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "",
+    "type" : "uint64"
   },
   "number-of-shards" : {
     "category" : "option",
