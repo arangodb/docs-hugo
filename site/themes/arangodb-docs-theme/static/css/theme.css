@@ -455,6 +455,7 @@ a.section-link {
 
 .tab-nav {
     border-bottom: 2px solid var(--gray-300);
+    margin-bottom: 1rem;
 }
 
 .tab-nav-button {
