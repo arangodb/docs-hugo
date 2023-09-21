@@ -458,7 +458,7 @@ a.section-link {
 }
 
 .tab-nav-button {
-    margin-bottom: 0;
+    margin-bottom: -2px;
     position: relative;
     max-width: 300px;
     background-color: transparent;
@@ -485,6 +485,10 @@ a.section-link {
     border-radius: 4px 4px 0px 0px;
     transition: all 150ms ease-in-out 0s;
     background-color: var(--HEADERS-COLOR)
+}
+
+.tab-nav-button > span {
+    pointer-events: none;
 }
 
 /* Tabs end */

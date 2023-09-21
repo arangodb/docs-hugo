@@ -1,38 +1,22 @@
 
-function switchTab(tabGroup, event) {
-    var tabId = event.target.innerHTML;
+function switchTab(tabGroup, tabId) {
     var tabs = jQuery(".tab-panel").has("[data-tab-group='"+tabGroup+"'][data-tab-item='"+tabId+"']");
     var allTabItems = tabs.find("[data-tab-group='"+tabGroup+"']");
     var targetTabItems = tabs.find("[data-tab-group='"+tabGroup+"'][data-tab-item='"+tabId+"']");
-    // if event is undefined then switchTab was called from restoreTabSelection
-    // so it's not a button event and we don't need to safe the selction or
-    // prevent page jump
-    var isButtonEvent = event != undefined;
-
-    if(isButtonEvent){
-      // save button position relative to viewport
-      var yposButton = event.target.getBoundingClientRect().top;
-    }
 
     allTabItems.removeClass("selected");
     targetTabItems.addClass("selected");
 
-    if(isButtonEvent){
-      // reset screen to the same position relative to clicked button to prevent page jump
-      var yposButtonDiff = event.target.getBoundingClientRect().top - yposButton;
-      window.scrollTo(window.scrollX, window.scrollY+yposButtonDiff);
-
-      // Store the selection to make it persistent
-      if(window.localStorage){
-          var selectionsJSON = window.localStorage.getItem(baseUriFull+"tab-selections");
-          if(selectionsJSON){
-            var tabSelections = JSON.parse(selectionsJSON);
-          }else{
-            var tabSelections = {};
-          }
-          tabSelections[tabGroup] = tabId;
-          window.localStorage.setItem(baseUriFull+"tab-selections", JSON.stringify(tabSelections));
-      }
+    // Store the selection to make it persistent
+    if(window.localStorage){
+        var selectionsJSON = window.localStorage.getItem(baseUriFull+"tab-selections");
+        if(selectionsJSON){
+          var tabSelections = JSON.parse(selectionsJSON);
+        }else{
+          var tabSelections = {};
+        }
+        tabSelections[tabGroup] = tabId;
+        window.localStorage.setItem(baseUriFull+"tab-selections", JSON.stringify(tabSelections));
     }
 }
 
