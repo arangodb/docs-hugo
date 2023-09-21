@@ -141,12 +141,6 @@ function loadPage(target) {
     success: function(newDoc) {
       replaceArticle(href, newDoc)
       initArticle(href);
-      console.log(location.hash)
-      fragment = location.hash
-      if (fragment) {
-        fragment 
-        document.getElementById(fragment.replace('#', '')).scrollIntoView();
-      }
       return true;
     }
   });
@@ -195,7 +189,8 @@ $(window).on('hashchange', function (e) {
   var _hsq = window._hsq = window._hsq || [];
   _hsq.push(['setPath', window.location.href]);
   _hsq.push(['trackPageView']);
-  console.log(e)
+
+  scrollToOpenApiFragment()
 });
 
 
@@ -322,6 +317,25 @@ function hideEmptyOpenapiDiv() {
     }
  }
 
+ function scrollToOpenApiFragment() {
+  fragment = location.hash.replace("#", "")
+  if (fragment) {
+    var element = document.getElementById(fragment);
+    if (element.tagName == "DETAILS") {
+      method = fragment.split("_").slice(0,2).join("_")
+      fields = fragment.split("_").slice(2)
+      console.log(fields)
+      for (var i = 0; i < fields.length; i++) {
+        field = fields.slice(0, i+1).join("_")
+        var el = document.getElementById(method+"_"+field);
+        el.setAttribute("open", "")
+        el.childNodes[0].classList.remove("collapsed")
+      }
+    }
+    element.scrollIntoView();
+  }
+ }
+
 
 
 
@@ -434,4 +448,5 @@ window.onload = () => {
 
     $('#show-page-loading').hide();
     $('#page-wrapper').css("opacity", "1")
+    scrollToOpenApiFragment();
 }
