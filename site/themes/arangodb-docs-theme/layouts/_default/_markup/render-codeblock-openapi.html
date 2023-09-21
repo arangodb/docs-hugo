@@ -11,7 +11,7 @@
     )
   )
 }}
-
+{{ $title = $title | urlize }}
 {{ $yamlBlock := .Inner | transform.Unmarshal }}
 {{ with $yamlBlock }}
   <div class="openapi">
@@ -26,15 +26,15 @@
       </div>
 
       {{ with .parameters }}
-        {{- template "renderParameters" dict "content" .}}
+        {{- template "renderParameters" dict "title" $title "content" .}}
       {{ end }}
 
       {{ with .requestBody }}
-        {{- template "renderRequestBody" dict "content" .}}
+        {{- template "renderRequestBody" dict "title" $title "content" .}}
       {{ end }}
 
       {{ with .responses }}
-        {{- template "renderResponses" dict "content" . }}
+        {{- template "renderResponses" dict "title" $title "content" . }}
       {{ end }}
       
     {{end}}
@@ -43,13 +43,14 @@
 {{ end }}
 
 {{- define "renderParameters" }}
+  {{ $title := .title }}
   {{ $content := .content }}
   <div class="openapi-parameters regular-font">
     <div class="openapi-table-title">Path Parameters</div>
     <div>
       <ul class="openapi-table">
       {{ range $k, $v := $content }}
-        {{- template "renderParameter" dict "prop" $v.name "value" $v "category" "path" }}
+        {{- template "renderParameter" dict "title" $title "prop" $v.name "value" $v "category" "path" }}
       {{ end }}
       </ul>
     </div>
@@ -59,7 +60,7 @@
     <div>
       <ul class="openapi-table">
       {{ range $k, $v := $content }}
-        {{- template "renderParameter" dict "prop" $v.name "value" $v "category" "query" }}
+        {{- template "renderParameter" dict "title" $title "prop" $v.name "value" $v "category" "query" }}
       {{ end }}
       </ul>
     </div>
@@ -67,6 +68,7 @@
 {{ end }}
 
 {{- define "renderRequestBody" }}
+  {{ $title := printf "%s_%s" .title "body" }}
   {{ $content := .content }}
   <div class="openapi-parameters regular-font">
     <div class="openapi-table-title">
@@ -81,7 +83,7 @@
       {{ range $k, $v := $content.content }}
         {{ if $v.schema.items }}
           {{ $required := false }}
-          {{- template "renderProperty" dict "prop" $k "value" $v.schema "required" $required }}
+          {{- template "renderProperty" dict "title" $title "prop" $k "value" $v.schema "required" $required }}
         {{ else }}
           {{ range $prop, $value := $v.schema.properties}}
             {{ $required := false }}
@@ -90,7 +92,7 @@
                 {{ $required = true }}
               {{ end }}
             {{ end }}
-            {{- template "renderProperty" dict "prop" $prop "value" $value "required" $required }}
+            {{- template "renderProperty" dict "title" $title "prop" $prop "value" $value "required" $required }}
           {{ end }}
         {{ end }}
       {{ end }}
@@ -100,17 +102,21 @@
 {{ end }}
 
 {{- define "renderResponses" }}
+  {{ $title := .title }}
   {{ $content := .content }}
   <div class="responses regular-font">
     <div class="openapi-table-title">Responses</div>
     <div class="openapi-responses">
       <ul class="openapi-table">
       {{ range $status, $content := $content }}
+        {{ $statusId :=  printf "%s_res_%s" $title $status }}
         <li class="openapi-table-row regular-font">
-          <div class="openapi-prop collapsed">
-            <span class="openapi-property-name bold-text">{{ $status }}</span>
+          <details  id="{{ printf "%s" $statusId }}">
+          <summary class="openapi-prop collapsed">
+            <span class="openapi-property-name bold-text">{{ $status }}</span><a href="{{ printf "#%s" $statusId }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
+          </summary>
             {{ $description := $content.description | markdownify }}
-            <div class="openapi-prop-content hidden">
+            <div class="openapi-prop-content">
               <p class="regular-font">{{ $description }}</p>
               {{ if $content.content }}
                 <ul class="openapi-table">
@@ -119,7 +125,7 @@
                     {{ if $v.schema.items }}
                       {{ $required := false }}
                       {{ $v }}
-                      {{- template "renderProperty" dict "prop" "" "value" $v.schema "required" $required }}
+                      {{- template "renderProperty" dict "title" $statusId "prop" "" "value" $v.schema "required" $required }}
                     {{ else }}
                       {{ range $prop, $value := $v.schema.properties}}
                         {{ $required := false }}
@@ -128,14 +134,14 @@
                             {{ $required = true }}
                           {{ end }}
                         {{ end }}
-                        {{- template "renderProperty" dict "prop" $prop "value" $value "required" $required }}
+                        {{- template "renderProperty" dict "title" $statusId "prop" $prop "value" $value "required" $required }}
                       {{ end }}
                     {{ end }}
                   {{ end }}
                 </ul>
               {{ end }}
             </div>
-          </div>
+          </details>
         </li>       
       {{ end }}
       </ul>
@@ -144,57 +150,62 @@
 {{ end }}
 
 {{- define "renderParameter" }}
+  {{ $title := .title }}
   {{ $category := .category }}
   {{ $prop := .prop }}
   {{ $value := .value }}
   
   {{ if eq $category $value.in }}
     {{ $structName := "" }}
+    {{ $anchor := printf "%s_%s_%s" $title $category $prop }}
     <li class="openapi-table-row regular-font">
-      <div class="openapi-prop collapsed">
-        <span class="openapi-property-name bold-text">{{ $prop }}{{ if $value.required }}*{{ end }}</span>  <span class="openapi-property-type" style="font-weight: bold;"> {{ $value.schema.type }} </span>
+      <details  id="{{ $anchor }}">
+        <summary class="openapi-prop collapsed"><span class="openapi-property-name bold-text">{{ $prop }}{{ if $value.required }}*{{ end }}</span><span class="openapi-property-type" style="font-weight: bold;"> {{ $value.schema.type }} </span><a href="{{ printf "#%s" $anchor }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
+        </summary>
         {{ $description := $value.description | markdownify }}
-        <div class="openapi-prop-content hidden">
+        <div class="openapi-prop-content">
           <p class="regular-font">{{ $description }}</p>
         </div>
-      </div>
+      </details>
     </li>
   {{ end }}
 {{ end }}
 
 {{- define "renderProperty" }}
+  {{ $title := .title }}
   {{ $prop := .prop }}
   {{ $value := .value }}
   {{ $required := .required }}
   {{ $type := $value.type }}
+  {{ $anchor := printf "%s_%s" $title $prop }}
   <li class="openapi-table-row regular-font">
     {{ if eq $value.type "array" }}
       {{ $type = printf "[%s]" $value.items.type }}
     {{ else if eq $value.type "object" }}
       {{ $type = "object" }}
     {{ end }}
-    <div class="openapi-prop collapsed">
-      <span class="openapi-property-name bold-text {{ if eq $prop "" }} no-border {{ end }} ">{{ $prop }}{{ if $required }}*{{ end }}</span>  <span class="openapi-property-type" style="font-weight: bold;"> {{ $type }} </span>
+    <details id="{{ $anchor }}">
+      <summary class="openapi-prop collapsed">
+        <span class="openapi-property-name bold-text {{ if eq $prop "" }} no-border {{ end }} ">{{ $prop }}{{ if $required }}*{{ end }}</span>  <span class="openapi-property-type" style="font-weight: bold;"> {{ $type }} </span><a href="#{{ $anchor }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
+      </summary>
       {{ $description := $value.description | markdownify }}
-      <div class="openapi-prop-content hidden">
+      <div class="openapi-prop-content">
         <p class="regular-font">{{ $description }}</p>
         {{ if $value.properties }}
-          <span class="openapi-table show-children bold-text"> Show Children</span>
-          <ul class="openapi-table hidden">
+          <ul class="openapi-table">
           {{ range $k, $v := $value.properties }}
-            {{- template "renderProperty" dict "prop" $k "value" $v "required" $required }}
+            {{- template "renderProperty" dict "title" $anchor "prop" $k "value" $v "required" $required }}
           {{ end }}
           </ul>
         {{ end }}
         {{ if $value.items.properties }}
-          <span class="openapi-table show-children bold-text"> Show Children</span>
-          <ul class="openapi-table hidden">
+          <ul class="openapi-table">
           {{ range $k, $v := $value.items.properties }}
-            {{- template "renderProperty" dict "prop" $k "value" $v "required" $required }}
+            {{- template "renderProperty" dict "title" $anchor "prop" $k "value" $v "required" $required }}
           {{ end }}
           </ul>
         {{ end }}
       </div>
-    </div>
+    </details>
   </li>
 {{ end }}

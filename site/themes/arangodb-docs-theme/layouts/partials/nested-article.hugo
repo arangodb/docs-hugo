@@ -50,11 +50,6 @@
     {{- $isAncestor := and (not $isSelf) (.IsAncestor $currentNode) }}
     {{- $isActive = or $isSelf $isActive }}
     {{- $pages := .Pages }}
-    {{- if .Page.IsHome }}
-      {{- $pages = .Sections }}
-    {{- else if .Page.Sections}}
-      {{- $pages = (.Pages | union .Sections) }}
-    {{- end }}
     {{- $relearnIsHiddenFrom := index ($currentNode.Scratch.Get "relearnIsHiddenFrom") .RelPermalink }}
     {{- $hidden := and $relearnIsHiddenFrom (not $.showhidden) (not $isSelf) (not $isAncestor) }}
     {{- if $hidden }}
