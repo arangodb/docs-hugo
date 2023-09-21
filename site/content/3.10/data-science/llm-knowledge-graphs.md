@@ -1,6 +1,6 @@
 ---
-title: Large Language Models (LLMs)
-menuTitle: Large Language Models
+title: Large Language Models (LLMs) and Knowledge Graphs
+menuTitle: Large Language Models and Knowledge Graphs
 weight: 133
 description: >-
   Integrate large language models (LLMs) with knowledge graphs using ArangoDB
@@ -28,6 +28,29 @@ ArangoDB's unique capabilities and flexible integration of knowledge graphs and
 LLMs provide a powerful and efficient solution for anyone seeking to extract
 valuable insights from diverse datasets.
 
+## Knowledge Graphs
+
+A knowledge graph can be thought of as a dynamic and interconnected network of
+real-world entities and the intricate relationships that exist between them.
+
+Key aspects of knowledge graphs:
+- **Domain specific knowledge**: You can tailor knowledge graphs to specific
+  domains and industries.
+- **Structured information**: Makes it easy to query, analyze, and extract
+  meaningful insights from your data.
+- **Accessibility**: You can build a Semantic Web knowledge graph or using
+  custom data.
+
+LLMs can help distill knowledge graphs from natural language by performing
+the following tasks:
+- Entity discovery
+- Relation extraction
+- Coreference resolution
+- End-to-end knowledge graph construction
+- (Text) Embeddings
+
+![ArangoDB Knowledge Graphs and LLMs](../../images/ArangoDB-knowledge-graphs-meets-llms.png)
+
 ## ArangoDB and LangChain
 
 [LangChain](https://www.langchain.com/) is a framework for developing applications
@@ -42,7 +65,7 @@ data seamlessly via natural language, eliminating the need for query language
 design. By using LLM chat models such as OpenAI’s ChatGPT, you can "speak" to
 your data instead of querying it.
 
-## Get started with ArangoDB QA chain
+### Get started with ArangoDB QA chain
 
 The [ArangoDB QA chain notebook](https://langchain-langchain.vercel.app/docs/use_cases/more/graph/graph_arangodb_qa.html)
 shows how to use LLMs to provide a natural language interface to an ArangoDB
