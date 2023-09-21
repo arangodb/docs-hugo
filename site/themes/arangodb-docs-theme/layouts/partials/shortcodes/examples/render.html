@@ -14,7 +14,7 @@
 {{ if $options.bindVars }}
 <strong>Bind Parameters</strong><br>
 
-{{ $bindVars := $options.bindVars | jsonify }}
+{{ $bindVars := $options.bindVars | jsonify (dict "indent" "  ") }}
 {{ transform.Highlight $bindVars "json" }}
 {{ end }}
 
