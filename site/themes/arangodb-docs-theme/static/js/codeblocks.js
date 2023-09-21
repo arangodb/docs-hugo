@@ -1,6 +1,6 @@
 
 function switchTab(tabGroup, event) {
-    var tabId = event.target.value;
+    var tabId = event.target.innerHTML;
     var tabs = jQuery(".tab-panel").has("[data-tab-group='"+tabGroup+"'][data-tab-item='"+tabId+"']");
     var allTabItems = tabs.find("[data-tab-group='"+tabGroup+"']");
     var targetTabItems = tabs.find("[data-tab-group='"+tabGroup+"'][data-tab-item='"+tabId+"']");
@@ -14,8 +14,8 @@ function switchTab(tabGroup, event) {
       var yposButton = event.target.getBoundingClientRect().top;
     }
 
-    allTabItems.removeClass("active");
-    targetTabItems.addClass("active");
+    allTabItems.removeClass("selected");
+    targetTabItems.addClass("selected");
 
     if(isButtonEvent){
       // reset screen to the same position relative to clicked button to prevent page jump
