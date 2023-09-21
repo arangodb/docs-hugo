@@ -28,7 +28,9 @@ declared as well.
 Collections that are explicitly used in a query are automatically detected by
 the AQL query parser. Any additional collections that will be involved in the
 query but cannot be detected automatically by the query parser can be manually
-specified using a `WITH` statement.
+specified using a `WITH` statement. It is recommended to declare all collections
+that the `DOCUMENT()` function or graph traversals using collection sets might
+possibly access to avoid occasional query failures.
 
 ## Syntax
 
