@@ -58,7 +58,7 @@
 
 {{ $option.description }}
 
-{{ if and (eq $option.requiresValue true ) (ne $option.category "command" )}}
+{{ if and (ne $option.requiresValue true ) (ne $option.category "command" )}}
 This option can be specified without a value to enable it.
 {{ end }}
 

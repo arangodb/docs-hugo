@@ -6,7 +6,7 @@
     <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
       <meta itemprop="position" content="{{ .Params.menuTitle }}" />
       <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
-        <span itemprop="name" class="breadcrumb-entry">{{ .Params.menuTitle | markdownify }}</span>
+        <span itemprop="name" class="breadcrumb-entry">{{- if eq (len .Ancestors) 1 }}{{ template "getVersionLong" dict "page" .Page }}{{ else }}{{ .Params.menuTitle | markdownify }}{{ end }}</span>
       </a>
       <i class="fas fa-chevron-right fa-fw"></i>
     </li>
@@ -16,9 +16,21 @@
   <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
     <meta itemprop="position" content="{{ .Params.menuTitle }}" />
     <a itemprop="item" class="link-internal" href="{{ .RelPermalink }}">
-      <span itemprop="name" class="breadcrumb-entry">{{ .Params.menuTitle | markdownify }}</span>
+      <span itemprop="name" class="breadcrumb-entry">{{- if eq (len .Ancestors) 1 }}{{ template "getVersionLong" dict "page" .Page }}{{ else }}{{ .Params.menuTitle | markdownify }}{{ end }}</span>
     </a>
   </li>
   {{ end }}
   </ol>
 </nav>
+
+{{- define "getVersionLong" }}
+
+{{ $pagePath := .page }}
+{{ $versions := index site.Data "versions" }}
+{{ range $i, $version := $versions }}
+    {{ if strings.Contains $pagePath $version.name }}
+        {{ $version.version }}
+    {{ end }}
+{{ end }}
+
+{{ end }}

@@ -7,12 +7,13 @@ description: >-
 archetype: default
 ---
 The ArangoBackupPolicy represents schedule definition for creating ArangoBackup Custom Resources by operator.
-This deployment specification is a `CustomResource` following
-a `CustomResourceDefinition` created by the operator.
+This deployment specification is a `CustomResource` following a `CustomResourceDefinition` created by the operator.
 
-## Examples:
+## Examples
 
 ### Create schedule for all deployments
+
+You can create an ArangoBackup Custom Resource for each ArangoBackup every 15 minutes.
 
 ```yaml
 apiVersion: "backup.arangodb.com/v1"
@@ -23,11 +24,9 @@ spec:
   schedule: "*/15 * * * *"
 ```
 
-Action:
-
-Create an ArangoBackup Custom Resource for each ArangoBackup every 15 minutes
-
 ### Create schedule for selected deployments
+
+You can create an ArangoBackup Custom Resource for selected ArangoBackups every 15 minutes.
 
 ```yaml
 apiVersion: "backup.arangodb.com/v1"
@@ -41,11 +40,10 @@ spec:
       labelName: "labelValue"
 ```
 
-Action:
-
-Create an ArangoBackup Custom Resource for selected ArangoBackup every 15 minutes
-
 ### Create schedule for all deployments and upload
+
+You can create an ArangoBackup Custom Resource for each ArangoBackup every 15
+minutes and upload it to the specified repositoryURL.
 
 ```yaml
 apiVersion: "backup.arangodb.com/v1"
@@ -55,14 +53,29 @@ metadata:
 spec:
   schedule: "*/15 * * * * "
   template:
-      upload:
-        repositoryURL: "s3:/..."
-        credentialsSecretName: "secret-name"
+    upload:
+      repositoryURL: "s3:/..."
+      credentialsSecretName: "secret-name"
 ```
 
-Create an ArangoBackup Custom Resource for each ArangoBackup every 15 minutes and upload to repositoryURL
+### Create schedule for all deployments, don't allow parallel backup runs, keep limited number of backups
 
-## ArangoBackup Custom Resource Spec:
+You can create an ArangoBackup Custom Resource for each ArangoBackup every 15
+minutes. You can keep 10 backups per deployment at the same time, and delete the
+oldest ones. Don't allow to run backup if previous backup is not finished.
+
+```yaml
+apiVersion: "backup.arangodb.com/v1"
+kind: "ArangoBackupPolicy"
+metadata:
+  name: "example-arangodb-backup-policy"
+spec:
+  schedule: "*/15 * * * *"
+  maxBackups: 10
+  allowConcurrent: False
+```
+
+## ArangoBackup Custom Resource Spec
 
 ```yaml
 apiVersion: "backup.arangodb.com/v1"
@@ -76,12 +89,12 @@ spec:
       labelName: "labelValue"
     matchExpressions: []
   template:
-      options:
-        timeout: 3
-        force: true
-      upload:
-        repositoryURL: "s3:/..."
-        credentialsSecretName: "secret-name"
+    options:
+      timeout: 3
+      force: true
+    upload:
+      repositoryURL: "s3:/..."
+      credentialsSecretName: "secret-name"
 status:
   scheduled: "time"
   message: "message"
@@ -102,6 +115,24 @@ Schedule definition. Parser from https://godoc.org/github.com/robfig/cron
 Required: true
 
 Default: ""
+
+### `spec.allowConcurrent: String`
+
+If false, ArangoBackup will not be created when previous backups are not finished.
+`ScheduleSkipped` event will be published in that case.
+
+Required: false
+
+Default: True
+
+### `spec.maxBackups: Integer`
+
+If > 0, then old healthy backups of that policy will be removed to ensure that only `maxBackups` are present at same time.
+`CleanedUpOldBackups` event will be published on automatic removal of old backups.
+
+Required: false
+
+Default: 0
 
 ### `spec.selector: Object`
 

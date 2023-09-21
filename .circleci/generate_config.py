@@ -246,7 +246,12 @@ def workflow_release_arangodb(config):
             step["upload-summary"]["branch"] = f"RELEASE_{args.arangodb_version}-$CIRCLE_BUILD_NUM"
 
     jobs.insert(1, generateJob)
-    jobs[2]["approve-workflow"]["requires"] = ["release-generate"]
+
+    approvalWorkflow = {"approve-workflow": {"type": "approval", "requires": ["release-generate"]}}
+    jobs.insert(2, approvalWorkflow)
+
+    jobs[3]["plain-build"]["requires"] = ["approve-workflow"]
+
 
     return config
 

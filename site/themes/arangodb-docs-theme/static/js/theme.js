@@ -56,8 +56,6 @@ function closeAllEntries() {
 }
 
 function loadMenu(url) {
-    url = url.replace(/#.*$/, "");
-
     closeAllEntries();
     var current = $('.dd-item > a[href="' + url + '"]').parent();
     
@@ -137,18 +135,12 @@ function loadPage(target) {
   var href = target;
   getCurrentVersion(href);
   renderVersion();
-  loadMenu(href);
+  loadMenu(new URL(href).pathname);
   $.get({
     url: href,
     success: function(newDoc) {
       replaceArticle(href, newDoc)
       initArticle(href);
-      console.log(location.hash)
-      fragment = location.hash
-      if (fragment) {
-        fragment 
-        document.getElementById(fragment.replace('#', '')).scrollIntoView();
-      }
       return true;
     }
   });
@@ -197,7 +189,8 @@ $(window).on('hashchange', function (e) {
   var _hsq = window._hsq = window._hsq || [];
   _hsq.push(['setPath', window.location.href]);
   _hsq.push(['trackPageView']);
-  console.log(e)
+
+  scrollToOpenApiFragment()
 });
 
 
@@ -297,9 +290,11 @@ function changeVersion() {
 
     try {
         localStorage.setItem('docs-version', newVersion);
-        renderVersion()
-        console.log(newVersion)
+        renderVersion();
+        window.setupDocSearch(newVersion);
+        console.log(newVersion);
     } catch(exception) {
+      console.log({exception})
         changeVersion();
     }
 
@@ -320,6 +315,27 @@ function hideEmptyOpenapiDiv() {
             $(list).addClass("hidden");
         }
     }
+ }
+
+ function scrollToOpenApiFragment() {
+  fragment = location.hash.replace("#", "")
+  if (fragment) {
+    var element = document.getElementById(fragment);
+    if (!element) return;
+
+    if (element.tagName == "DETAILS") {
+      method = fragment.split("_").slice(0,2).join("_")
+      fields = fragment.split("_").slice(2)
+      console.log(fields)
+      for (var i = 0; i < fields.length; i++) {
+        field = fields.slice(0, i+1).join("_")
+        var el = document.getElementById(method+"_"+field);
+        el.setAttribute("open", "")
+        el.childNodes[0].classList.remove("collapsed")
+      }
+    }
+    element.scrollIntoView();
+  }
  }
 
 
@@ -422,7 +438,7 @@ window.onload = () => {
     getCurrentVersion(window.location.href);
     menuEntryClickListener();
     renderVersion();
-    loadMenu(window.location.href);
+    loadMenu(window.location.pathname);
     initArticle(window.location.href);
     content.addEventListener("click", menuToggleClick);
 
@@ -434,4 +450,5 @@ window.onload = () => {
 
     $('#show-page-loading').hide();
     $('#page-wrapper').css("opacity", "1")
+    scrollToOpenApiFragment();
 }

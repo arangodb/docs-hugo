@@ -168,10 +168,6 @@ a:hover {
     text-decoration: underline;
 }
 
-.hidden {
-    display: none;
-}
-
 small {
     font-size: 80%;
 }
@@ -1338,6 +1334,10 @@ code, p code {
     color: var(--CODE-COLOR);
 }
 
+li > code {
+    white-space: pre-wrap;
+}
+
 .copy-to-clipboard-button {
     background: none;
     transition: 0.4s;
@@ -1718,7 +1718,7 @@ blockquote p {
     color: var(--H2-COLOR);
 }
 
-.openapi-prop.collapsed::before {
+.openapi-prop::before {
     font-family: "Font Awesome 5 Free";
     content: "\f054";
     display: inline-block;
@@ -1729,7 +1729,7 @@ blockquote p {
     color: grey;
 }
 
-.openapi-prop::before {
+details[open] > .openapi-prop::before {
     font-family: "Font Awesome 5 Free";
     content: "\f078";
     display: inline-block;
@@ -1737,6 +1737,13 @@ blockquote p {
     vertical-align: middle;
     font-weight: 900;
     font-size: 10px;
+}
+
+.openapi-prop > a > .fa-link {
+    opacity: 0;
+}
+.openapi-prop:hover > a > .fa-link {
+    opacity: 1;
 }
 
 .openapi-prop > code,

@@ -1,10 +1,9 @@
 ---
+title: Recommended Resources
 menuTitle: '3.10'
 weight: 0
 layout: default
 ---
-## Recommended Resources
-
 {{< cards >}}
 
 {{% card title="What is ArangoDB?" link="introduction/about-arangodb/" %}}

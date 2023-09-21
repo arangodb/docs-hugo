@@ -270,6 +270,33 @@
     "section" : "",
     "type" : "uint64"
   },
+  "docs-per-batch" : {
+    "base" : 1,
+    "category" : "option",
+    "default" : 10000,
+    "deprecatedIn" : null,
+    "description" : "The maximum number of documents to be returned per batch.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.0"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "",
+    "type" : "uint64"
+  },
   "dump-data" : {
     "category" : "option",
     "default" : true,
