@@ -348,6 +348,7 @@ jobs:
 
             cd docs-hugo/toolchain/docker/amd64
             docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
+            cp /home/circleci/project/docs-hugo/_redirects /home/circleci/project/docs-hugo/site/public 
       - upload-summary:
           summary-name: "plain-build-summary"
       - when:
