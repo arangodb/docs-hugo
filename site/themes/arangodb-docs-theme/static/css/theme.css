@@ -468,7 +468,7 @@ a.section-link {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition: color 150ms ease-in-out 0s;
+    transition-duration: 0s;
     color: var(--HEADERS-COLOR);
     padding: 12px 16px;
 }
@@ -483,8 +483,6 @@ a.section-link {
     right: 0px;
     bottom: 0px;
     height: 2px;
-    border-radius: 4px 4px 0px 0px;
-    transition: all 150ms ease-in-out 0s;
     background-color: var(--HEADERS-COLOR)
 }
 
