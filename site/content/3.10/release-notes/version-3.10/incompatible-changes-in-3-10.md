@@ -11,6 +11,44 @@ upgrading to ArangoDB 3.10, and adjust any client programs if necessary.
 
 The following incompatible changes have been made in ArangoDB 3.10:
 
+## Declaration of start vertex collections
+
+In cluster deployments, you need to declare collections that an AQL query
+implicitly reads from using the [`WITH` operation](../../aql/high-level-operations/with.md).
+
+From version 3.10.0 onward, it is necessary to also declare the collections of
+start vertices that are used for [graph traversals](../../aql/graphs/traversals.md)
+if you specify start vertices using strings.
+
+In previous versions, the following query would work:
+
+```aql
+WITH managers
+FOR v, e, p IN 1..2 OUTBOUND 'users/1' usersHaveManagers
+  RETURN { v, e, p }
+```
+
+Now, you need to declare the `users` collection as well because the start vertex
+`users/1` is specified as a string and the `users` collection is not otherwise
+specified explicitly in a language construct:
+
+```aql
+WITH users, managers
+FOR v, e, p IN 1..2 OUTBOUND 'users/1' usersHaveManagers
+  RETURN { v, e, p }
+```
+
+In the following case, the `users` collection is accessed explicitly to retrieve
+the start vertex. Therefore, the collection does not need to be declared using
+`WITH`:
+
+```aql
+WITH managers
+LET startVertex = (FOR u IN users FILTER u._id == "users/1" RETURN u)[0]
+FOR v, e, p IN 1..2 OUTBOUND startVertex usersHaveManagers
+  RETURN { v, e, p }
+```
+
 ## Empty Document Updates
 
 ArangoDB 3.10 adds back the optimization for empty document update operations 
