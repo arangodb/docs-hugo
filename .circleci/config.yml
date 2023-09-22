@@ -21,7 +21,7 @@ parameters:
 
   override:
     type: string
-    default: ""
+    default: " "
 
   version:
     type: string
