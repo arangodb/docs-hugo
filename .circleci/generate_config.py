@@ -264,6 +264,7 @@ def workflow_generate_launch_command(config):
 export ENV=\"circleci\"\n \
 export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app\n \
 export HUGO_ENV=examples\n \
+export OVERRIDE=<< pipeline.parameters.override >>\n \
 export GENERATORS='<< parameters.generators >>'\n"
 
     for i in range(len(versions)):
