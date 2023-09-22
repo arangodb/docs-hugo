@@ -89,6 +89,11 @@ func ParseExample(request io.Reader, headers http.Header) (Example, error) {
 	optionsYaml.SaveCache = headers.Get("Cache")
 	optionsYaml.Version = headers.Get("Version")
 
+	if strings.Contains(Conf.Override, optionsYaml.Name) {
+		Logger.Printf("OVERRIDE %s", optionsYaml.Name)
+		optionsYaml.SaveCache = "true"
+	}
+
 	code := strings.Replace(string(decodedRequest), string(options), "", -1)
 
 	return Example{Type: "", Options: optionsYaml, Code: code, Base64Request: string(req)}, nil

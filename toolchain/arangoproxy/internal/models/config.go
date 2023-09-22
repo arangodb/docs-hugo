@@ -9,7 +9,8 @@ import (
 type Config struct {
 	Repositories []Repository `yaml:"repositories"` // ArangoDB instances
 	Cache        string       `yaml:"cache"`        // Cache configuration
-	Datasets     string       `yaml:"datasetsFile"` // Logfile
+	Datasets     string       `yaml:"datasetsFile"`
+	Override     string       `yaml:"-"`
 }
 
 var Conf Config
