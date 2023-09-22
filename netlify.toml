@@ -1,0 +1,4 @@
+[[redirects]]
+  from = "/3.11/"
+  to = "/stable/"
+  status = 200
