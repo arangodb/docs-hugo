@@ -1,5 +1,4 @@
-{{ $name := .name}}
-{{ $description := .description }}
+{{ $options := .options }}
 {{ $content := .content }}
 {{ $language := .language }}
 
@@ -7,10 +6,17 @@
     {{ $language = "bash" }}
 {{ end }}
 
-<p>{{ $description }}</p>
+<p>{{ $options.description }}</p>
 
 {{ $input := transform.Highlight $content.input $language }}
 {{ $input }}
+
+{{ if $options.bindVars }}
+<strong>Bind Parameters</strong><br>
+
+{{ $bindVars := $options.bindVars | jsonify (dict "indent" "  ") }}
+{{ transform.Highlight $bindVars "json" }}
+{{ end }}
 
 {{ $output := transform.Highlight $content.output $language }}
 {{ $block := printf "%s" $output | markdownify}}

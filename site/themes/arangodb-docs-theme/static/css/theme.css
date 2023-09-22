@@ -439,6 +439,58 @@ a.section-link {
     background: url(/images/loading.gif) 50% 50% no-repeat;
 }
 
+/* Tabs */
+
+.tab-panel .tab-item {
+    display: none;
+}
+
+.tab-panel .tab-item.selected {
+    display: block;
+}
+
+.tab-panel {
+    margin: 1rem 0;
+}
+
+.tab-nav {
+    border-bottom: 2px solid var(--gray-300);
+    margin-bottom: 1rem;
+}
+
+.tab-nav-button {
+    margin-bottom: -2px;
+    position: relative;
+    max-width: 300px;
+    background-color: transparent;
+    border: 0px;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition-duration: 0s;
+    color: var(--HEADERS-COLOR);
+    padding: 12px 16px;
+}
+
+.tab-nav-button.selected {
+    font-weight: 700;
+}
+.tab-nav-button.selected::after {
+    content: "";
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    bottom: 0px;
+    height: 2px;
+    background-color: var(--HEADERS-COLOR)
+}
+
+.tab-nav-button > span {
+    pointer-events: none;
+}
+
+/* Tabs end */
 
 /* Body */
 
