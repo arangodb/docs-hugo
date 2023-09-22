@@ -1,49 +1,3 @@
-
-function switchTab(tabGroup, tabId, event) {
-    var tabs = jQuery(".tab-panel").has("[data-tab-group='"+tabGroup+"'][data-tab-item='"+tabId+"']");
-    var allTabItems = tabs.find("[data-tab-group='"+tabGroup+"']");
-    var targetTabItems = tabs.find("[data-tab-group='"+tabGroup+"'][data-tab-item='"+tabId+"']");
-    if (event) {
-        var clickedTab = event.target;
-        var topBefore = clickedTab.getBoundingClientRect().top;
-    }
-
-    allTabItems.removeClass("selected");
-    targetTabItems.addClass("selected");
-    if (event) {
-        // Keep relative offset of tab in viewport to avoid jumping content
-        var topAfter = clickedTab.getBoundingClientRect().top;
-        window.scrollTo(window.scrollX, window.scrollY + topAfter - topBefore);
-    }
-
-    // Store the selection to make it persistent
-    if(window.localStorage){
-        var selectionsJSON = window.localStorage.getItem(baseUriFull+"tab-selections");
-        if(selectionsJSON){
-          var tabSelections = JSON.parse(selectionsJSON);
-        }else{
-          var tabSelections = {};
-        }
-        tabSelections[tabGroup] = tabId;
-        window.localStorage.setItem(baseUriFull+"tab-selections", JSON.stringify(tabSelections));
-    }
-}
-
-function restoreTabSelections() {
-    if(window.localStorage){
-        var selectionsJSON = window.localStorage.getItem(baseUriFull+"tab-selections");
-        if(selectionsJSON){
-          var tabSelections = JSON.parse(selectionsJSON);
-        }else{
-          var tabSelections = {};
-        }
-        Object.keys(tabSelections).forEach(function(tabGroup) {
-          var tabItem = tabSelections[tabGroup];
-          switchTab(tabGroup, tabItem);
-        });
-    }
-}
-
 function initCopyToClipboard() {
     $('code').each(function() {
         var code = $(this);
@@ -74,7 +28,6 @@ function initCopyToClipboard() {
     }
     });
 }
-
 
 function copyCode(event) {
     var parent = $(event.target).siblings('code')[0];
