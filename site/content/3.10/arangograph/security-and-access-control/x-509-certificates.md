@@ -62,16 +62,16 @@ The distinction between these port numbers is in the certificate used for the
 TLS connection.
 
 {{< info >}}
-The default ports (`8529` and `443`) always serve the well-known certificate
-and have the [auto login to database UI](../deployments/_index.md#auto-login-to-database-ui)
-feature enabled by default.
+The default ports (`8529` and `443`) always serve the well-known certificate.
+The [auto login to database UI](../deployments/_index.md#auto-login-to-database-ui)
+feature is only available on the `443` port and is enabled by default.
 {{< /info >}}
 
 ### Well-known X.509 certificates
 
 **Well-known X.509 certificates** created by
 [Let's Encrypt](https://letsencrypt.org/) are used on the
-default ports, i.e. `8529` or `443`.
+default ports, `8529` and `443`.
 
 This type of certificate has a lifetime of 5 years and is rotated automatically.
 It is recommended to use well-known certificates, as this eases access of a

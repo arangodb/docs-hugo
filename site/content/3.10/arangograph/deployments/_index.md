@@ -224,7 +224,7 @@ organization. See how to create a
 [role binding](../security-and-access-control/_index.md#how-to-view-edit-or-remove-role-bindings-of-a-policy).
 
 {{< warning >}}
-This feature is available on `8529` and `443` ports only.
+This feature is available on `443` port only.
 {{< /warning >}}
 
 ## How to edit a deployment
