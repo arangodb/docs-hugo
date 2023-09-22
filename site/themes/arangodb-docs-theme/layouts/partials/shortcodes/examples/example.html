@@ -3,10 +3,12 @@
 {{ $language := .language }}
 
 {{ $metadata := findRE `(?ms)^---.*?^---` $content }}
-{{ $test := index $metadata 0 | transform.Unmarshal }}
-{{ $name := $test.name }}
-{{ $description := $test.description }}
-{{ $type := $test.type | default "single" }}
+{{ $options := index $metadata 0 | transform.Unmarshal }}
+{{ $name := $options.name }}
+
+
+{{ $description := $options.description }}
+{{ $type := $options.type | default "single" }}
 {{ $cacheEntry := printf "%s_%s" $name $type }}
 {{ $pageVersion := $context.Page.Store.Get "versionShort" }}
 
@@ -29,8 +31,7 @@
                 {{- partial "shortcodes/examples/render.html" (dict
                 "context" .
                 "content" $response
-                "name" $name
-                "description" $description
+                "options" $options
                 "language" $language
                 ) }}
             {{ else }}
@@ -38,8 +39,7 @@
                 "context" $context
                 "example" $content
                 "language" $language
-                "name" $name
-                "description" $description
+                "options" $options
                 "cache" false
                 "version" $pageVersion
                 ) }}
@@ -51,8 +51,7 @@
             "context" $context
             "example" $content
             "language" $language
-            "name" $name
-            "description" $description
+            "options" $options
             "cache" $saveCache
             "version" $pageVersion
             ) }}
@@ -63,8 +62,7 @@
         "context" $context
         "example" $content
         "language" $language
-        "name" $name
-        "description" $description
+        "options" $options
         "cache" $saveCache
         "version" $pageVersion
         ) }}
@@ -77,8 +75,7 @@
         {{- partial "shortcodes/examples/render.html" (dict
         "context" .
         "content" $response
-        "name" $name
-        "description" $description
+        "options" $options
         "language" $language
         ) }}
     {{ else }}
