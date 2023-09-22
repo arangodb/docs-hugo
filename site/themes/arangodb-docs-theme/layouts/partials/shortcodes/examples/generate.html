@@ -1,8 +1,7 @@
 {{ $context := .context }}
 {{ $example := .example }}
 {{ $language := .language }}
-{{ $name := .name }}
-{{ $description := .description }}
+{{ $options := .options }}
 {{ $saveCache := .cache }}
 {{ $version := .version }}
 
@@ -20,16 +19,11 @@
 )
 }}
 {{ if $remote }}
-    {{ if $remote.Err }}
-        {{ warnf "[curl] ERROR CALLING ENDPOINT %#v" .Position }}
-    {{ else }}
-        {{ $response := unmarshal $remote.Content }}
-        {{- partial "shortcodes/examples/render.html" (dict
-        "context" .
-        "content" $response
-        "name" $name
-        "description" $description
-        "language" $language
-        ) }}
-    {{ end }}
+    {{ $response := unmarshal $remote.Content }}
+    {{- partial "shortcodes/examples/render.html" (dict
+    "context" .
+    "content" $response
+    "options" $options
+    "language" $language
+    ) }}
 {{ end }}
