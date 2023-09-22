@@ -255,14 +255,19 @@ $(window).scroll(function(){
 
 */
 
-var stableVersion;
+var versions
+
+function getVersionInfo(version) {
+  for (let v of versions) {
+    if (v.name == version || v.alias == version) return v;
+  }
+}
 
 function getCurrentVersion(url) {
-    var urlRe = url.match("\/[0-9.]+\/")
-    var urlVersion = stableVersion;
+    var urlVersion = "stable";
 
-    if (urlRe) {
-        urlVersion = urlRe[0].replaceAll("\/", "");
+    if (window.location.pathname.split("/").length > 0) {
+        urlVersion = getVersionInfo(window.location.pathname.split("/")[1]).name
     }
     localStorage.setItem('docs-version', urlVersion);
     
@@ -298,7 +303,8 @@ function changeVersion() {
         changeVersion();
     }
 
-    var newUrl = window.location.href.replace(oldVersion, newVersion)
+    
+    var newUrl = window.location.href.replace(getVersionInfo(oldVersion).alias, getVersionInfo(newVersion).alias)
     updateHistory("", newUrl);
 }
 
