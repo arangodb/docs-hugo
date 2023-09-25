@@ -321,8 +321,10 @@ def workflow_commit_generated_download_data(config):
     for i in range(len(versions)):
         version = versions[i]["name"]
         cmd = f"{cmd}\n\
+set +e\n\
 wget $base_url/{version}-generated.tar\n\
 tar -xf {version}-generated.tar -C docs-hugo/site/data/\n\
+set -e\n\
 "
     config["commands"]["download-generated-data"]["steps"][0]["run"]["command"] = cmd
 
