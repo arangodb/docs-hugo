@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"os"
+	"strings"
 
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal"
 	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/models"
@@ -26,7 +27,7 @@ func init() {
 		fmt.Printf("Error loading config: %s\n, aborting...", err.Error())
 		os.Exit(1)
 	}
-	models.Conf.Override = override
+	models.Conf.Override = strings.ReplaceAll(override, ",", "|")
 
 	models.Logger.Printf(startupBanner)
 	models.Logger.Printf("./arangoproxy -help for help usage\n\n")
