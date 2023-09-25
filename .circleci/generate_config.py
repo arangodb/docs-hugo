@@ -324,7 +324,7 @@ def workflow_commit_generated_download_data(config):
 wget $base_url/{version}-generated.tar\n\
 tar -xf {version}-generated.tar -C docs-hugo/site/data/\n\
 "
-    config["commands"]["store-generated-data"]["steps"][0]["run"]["command"] = cmd
+    config["commands"]["download-generated-data"]["steps"][0]["run"]["command"] = cmd
 
     return config
 
