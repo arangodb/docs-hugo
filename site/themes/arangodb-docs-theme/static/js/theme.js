@@ -188,6 +188,12 @@ function initArticle(url) {
           return old.replace(old.split("/")[1], window.location.pathname.split("/")[1]);
     });
   });
+  $('article').find('a.header-link').each(function() {
+    $(this).attr("href", function(index, old) {
+          if (old == undefined) return old
+          return old.replace(old.split("/")[1], window.location.pathname.split("/")[1]);
+    });
+  });
 }
 
 
