@@ -26,7 +26,7 @@ its projects and deployments.
    [create a project](../projects.md#how-to-create-a-new-project) first.
 2. In the main navigation, in the __Projects__ section, click the project for
    which you want to create a new deployment.
-3. In the __Deployments__ tab, you will see an empty list or a list with
+3. In the __Deployments__ page, you will see an empty list or a list with
    your project's existing deployments.
 4. Click the __New deployment__ button.
 5. Set up your deployment. The configuration options are described below.
@@ -121,14 +121,16 @@ provider and region in the Location section.
 
 ## How to access your deployment
 
-1. In the main navigation, in the __Projects__ section, click the project for
+1. In the main navigation, click the __Dashboard__ icon and then click __Projects__.
+2. In the __Projects__ page, click the project for
    which you created a deployment earlier.
-2. Navigate to the __Deployments__ tab.
-3. For each deployment in your project, you see the status. While your new
+3. Alternatively, you can access your deployment by clicking __Deployments__ in the
+   dashboard navigation. This page shows all deployments from all projects.
+4. For each deployment in your project, you see the status. While your new
    deployment is being set up, it will display the __bootstrapping__ status.
-4. Press the __View__ button to show the deployment page.
-5. When a deployment displays a status of __OK__, you can access it.
-6. Click the __Open endpoint__ button or on the endpoint URL property to open
+5. Press the __View__ button to show the deployment page.
+6. When a deployment displays a status of __OK__, you can access it.
+7. Click the __Open web console__ button or on the endpoint URL property to open
    the dashboard of your new ArangoDB deployment.
 
 At this point your ArangoDB deployment is available for you to use — **Have fun!**
@@ -146,7 +148,7 @@ to access your deployment:
    to use them only to create other user accounts with appropriate permissions.
    {{< /security >}}
 
-2. Click the __Open endpoint__ button or on the endpoint URL property to open
+2. Click the __Open web console__ button or on the endpoint URL property to open
    the dashboard of your new ArangoDB deployment.
 3. In the __username__ field type `root`, and in the __password__ field paste the
    password that you copied earlier.
@@ -179,7 +181,7 @@ periodically to improve security.
 
 1. Navigate to the __Deployment__ for which you want to enable an automatic
    password rotation for the root user.
-2. On the __Overview__ tab, click the button with the __gear__ icon next to the
+2. In the __Quick start__ section, click the button with the __gear__ icon next to the
    __ROOT PASSWORD__.
 3. In the __Password Settings__ dialog, turn the automatic password rotation on
    and click the __Confirm__ button.
@@ -244,7 +246,7 @@ attached to your role. Read more about [roles and permissions](../security-and-a
 
 1. Go to the **Projects** section and select an existing deployment from the list. 
 2. Open the deployment you want to change. 
-3. On the **Overview** tab, click the **Edit** button. 
+3. In the **Quick start** section, click the **Edit** button. 
 4. In the **Version and Security** section, you can do the following:
    - Upgrade the ArangoDB version that is currently being used. See also
      [Upgrades and Versioning](upgrades-and-versioning.md)
@@ -276,7 +278,7 @@ between different programming languages and ArangoDB, which enable you to
 connect to and manipulate ArangoDB deployments from within compiled programs
 or using scripting languages.
 
-To get started, open a deployment and go to the **Overview** tab.
+To get started, open a deployment.
 In the **Quick start** section, click on the **Connecting drivers** button and
 select your programming language. The code snippets provide examples on how to
 connect to your instance.
@@ -298,8 +300,8 @@ This operation is **irreversible**. Please proceed with caution.
 
 1. In the main navigation, in the __Projects__ section, click the project that
    holds the deployment you wish to delete.
-2. On the __Deployments__ tab, click the deployment you wish to delete.
-3. Click the __Danger zone__ tab.
+2. In the __Deployments__ page, click the deployment you wish to delete.
+3. Click the __Delete/Lock__ entry in the navigation.
 4. Click the __Delete deployment__ button.
 5. In the modal dialog, confirm the deletion by entering `Delete!` into the
    designated text field.

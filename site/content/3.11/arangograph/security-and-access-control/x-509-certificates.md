@@ -102,7 +102,7 @@ the self-signed certificate as Subject Alternative Name (SAN).
 ## How to create a new certificate
 
 1. Click a project name in the **Projects** section of the main navigation.
-2. Click the **Security** tab.
+2. Click **Security**.
 3. In the **Certificates** section, click:
    - The **New certificate** button to create a new certificate.
    - A name or the **eye** icon in the **Actions** column to view a certificate.
@@ -152,9 +152,9 @@ unique ID that is part of your ArangoGraph deployment endpoint URL.
 [ArangoDB drivers](../../develop/drivers/_index.md), also called connectors, allow you to
 easily connect ArangoGraph deployments to your application. 
 
-1. Navigate to the **Deployments** tab and click the **View** button to show the
+1. Navigate to **Deployments** and click the **View** button to show the
    deployment page.
-2. In the Quick start section, click the **Connecting drivers** button.
+2. In the **Quick start** section, click the **Connecting drivers** button.
 3. Select your programming language, i.e. Go, Java, Python, etc.
 4. Follow the examples to connect a driver to your deployment. They include
    code examples on how to use certificates in your application.

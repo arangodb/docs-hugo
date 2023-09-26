@@ -15,7 +15,7 @@ Once metrics are collected by Prometheus, you can inspect them using tools
 such as [Grafana](https://grafana.com/oss/grafana/).
 
 To get started, select an existing deployment from within a project and
-open the **Monitoring** tab. 
+click **Monitoring** in the navigation. 
 
 ![ArangoGraph Monitoring tab](../../images/arangograph-monitoring-tab.png)
 
