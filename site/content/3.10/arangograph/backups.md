@@ -136,8 +136,11 @@ During restore, the deployment is temporarily not available.
 ## How to clone deployments using backups
 
 {{< info >}}
-**Uploaded backups are required for cloning**
+This feature is only available if the backup you wish to clone has been
+uploaded to cloud storage.
+{{< /info >}}
 
+{{< info >}}
 The cloned deployment will have the exact same features as the previous
 deployment including node size, model, and cloud provider. The region
 can stay the same or you can select a different one.
