@@ -112,6 +112,7 @@ function replaceArticle(href, newDoc) {
 
 
 function updateHistory(title, url) {
+  console.log("Update History " + url)
   if (url == window.location.href) {
     return
   } 
@@ -363,7 +364,8 @@ function changeVersion() {
     }
 
     
-    var newUrl = window.location.href.replace(getVersionInfo(oldVersion).alias, getVersionInfo(newVersion).alias)
+    var newUrl = window.location.href.replace(window.location.pathname.split("/")[1], getVersionInfo(newVersion).alias)
+    console.log("Change Version URL " + newUrl)
     updateHistory("", newUrl);
 }
 
