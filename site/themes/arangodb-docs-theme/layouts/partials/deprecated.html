@@ -1,25 +1,23 @@
-{{- $deprecated := $.Page.Store.Get "deprecated" }}
-{{ $shortVersion := $.Page.Store.Get "versionShort" }}
-{{ $stableVersion := $.Page.Store.Get "stableVersion" }}
+{{- $deprecated := .Page.Store.Get "deprecated" }}
+{{- $shortVersion := .Page.Store.Get "versionShort" }}
+{{- $stableVersion := .Page.Store.Get "stableVersion" }}
 
-
-{{ if $deprecated }}
-    {{ $href := printf "/%s" $shortVersion }}
-    {{ $nonDeprecatedPath := replace .Page.RelPermalink $shortVersion $stableVersion }}
-    {{ $stablePage := .Page.GetPage $nonDeprecatedPath }}
-    {{ if $stablePage }}
-        {{ $href = $stablePage.Permalink }}
-    {{ end }}
-    <div class="box notices cstyle warning">
-        <div class="box-content-container">
-            <div class="box-content">
-                <i class="fas fa-exclamation-triangle"></i>
-                <div class="box-text">
-                    <p>ArangoDB v{{ $shortVersion }} reached End of Life (EOL) and is no longer supported.
-
-                    This documentation is outdated. Please see the most recent version here: <a href="{{ $href }}">Latest Docs</a></p>
-                </div>
-            </div>
+{{- if $deprecated }}
+  {{- $href := printf "/%s/" $stableVersion }}
+  {{- $nonDeprecatedPath := replace .Page.File.Path $shortVersion $stableVersion }}
+  {{- $stablePage := .Page.GetPage $nonDeprecatedPath }}
+  {{- if $stablePage }}
+    {{- $href = $stablePage.RelPermalink }}
+  {{- end }}
+  <div class="box notices cstyle warning">
+    <div class="box-content-container">
+      <div class="box-content">
+        <i class="fas fa-exclamation-triangle"></i>
+        <div class="box-text">
+          <p>ArangoDB v{{ $shortVersion }} reached End of Life (EOL) and is no longer supported.</p>
+          <p>This documentation is outdated. Please see the most recent <a href="{{ $href }}">{{ $stableVersion }} version</a>.</p>
         </div>
+      </div>
     </div>
-{{ end }}
+  </div>
+{{- end }}

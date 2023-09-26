@@ -1,9 +1,4 @@
 {{- $pages := .Page.Pages }}
-{{- if .Page.IsHome }}
-  {{- $pages = .Page.Sections }}
-{{- else if .Page.Sections}}
-  {{- $pages = (.Page.Pages | union .Page.Sections) }}
-{{- end }}
 {{- $limit := .Site.Config.Services.RSS.Limit -}}
 {{- if ge $limit 0 -}}
   {{- $pages = $pages | first $limit -}}
@@ -24,7 +19,7 @@
     {{ printf "<atom:link href=%q rel=\"self\" type=%q />" .Permalink .MediaType | safeHTML }}
     {{- end -}}
     {{- range $pages }}
-	  {{- if and .Permalink .Title (or (ne (.Scratch.Get "relearnIsHiddenStem") true) (ne .Site.Params.disableSeoHiddenPages true) ) }}
+	  {{- if and .Permalink .Title }}
     <item>
       <title>{{ .Title }}</title>
       <link>{{ .Permalink }}</link>
