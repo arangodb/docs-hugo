@@ -2,7 +2,12 @@
 <!DOCTYPE html>
 <html lang="{{ .Page.Language | default "en" }}">
 
-  {{- partial "head.html" . }}
+  <head>
+    {{- partial "stylesheet.html" . }}
+    {{- partial "meta.html" . }}
+    <link href="{{ "/images/favicon.png" | relURL }}" rel="icon" type="image/png">
+    {{- partial "javascript.html" . }}
+  </head>
 
 <body>
     <div id="show-page-loading">
