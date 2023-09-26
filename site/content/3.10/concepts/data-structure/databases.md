@@ -21,15 +21,8 @@ database named `_system`. This database cannot be dropped and provides special
 operations for creating, dropping, and enumerating databases.
 
 You can create additional databases and give them unique names to access them
-later. Database management operations cannot be initiated from out of user-defined
-databases. You need to use the `_system` database as context.
-
-When ArangoDB is accessed via its HTTP REST API, the database name is read from
-the first part of the request URI path (e.g. `/_db/myDB/...`). If the request
-URI does not contain a database name, it defaults to `/_db/_system`.
-If a database name is provided in the request URI, the name must be properly URL-encoded, and,
-if it contains UTF-8 characters, these must be NFC-normalized. Any non-NFC-normalized
-database names are rejected by the server.
+later. You need to be in the `_system` database for executing database management
+operations. They cannot be initiated while in a user-defined database.
 
 ## Database names
 
