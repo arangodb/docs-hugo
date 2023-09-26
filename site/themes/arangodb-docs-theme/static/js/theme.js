@@ -54,8 +54,17 @@ function closeAllEntries() {
 
 function loadMenu(url) {
     closeAllEntries();
+    console.log(url)
+    var version = window.location.pathname.split("/")[1]
+
+    $('.version-menu.'+version).find('a').each(function() {
+      $(this).attr("href", function(index, old) {
+          return old.replace(old.split("/")[1], version)
+      });
+    });
+
     var current = $('.dd-item > a[href="' + url + '"]').parent();
-    
+    console.log(current)
     current.addClass("active");
     while (current.length > 0 && current.prop("class") != "topics collapsible-menu") {
         if (current.prop("tagName") == "LI") {
@@ -130,9 +139,12 @@ function styleImages() {
 
 function loadPage(target) {
   var href = target;
+
   getCurrentVersion(href);
   renderVersion();
   loadMenu(new URL(href).pathname);
+  var version = getVersionInfo(window.location.pathname.split("/")[1]).name
+  href = href.replace(window.location.pathname.split("/")[1], version)
   $.get({
     url: href,
     success: function(newDoc) {
@@ -169,6 +181,12 @@ function initArticle(url) {
   styleImages();
   internalLinkListener();
   codeShowMoreListener();
+  $('article').find('a.link-internal').each(function() {
+    $(this).attr("href", function(index, old) {
+          if (old == undefined) return old
+          return old.replace(old.split("/")[1], window.location.pathname.split("/")[1]);
+    });
+  });
 }
 
 
@@ -480,6 +498,8 @@ window.onload = () => {
     loadMenu(window.location.pathname);
     initArticle(window.location.href);
     content.addEventListener("click", menuToggleClick);
+
+    loadPage(window.location.href)
 
     var isMobile = window.innerWidth <= 768;
     if (isMobile) {

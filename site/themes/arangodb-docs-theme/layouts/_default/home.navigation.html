@@ -6,7 +6,7 @@
           {{- range .Site.Sections.ByWeight }}
             {{/* version folders */}}
             {{- if ne .Type "hooks" }}
-              <ul class="version-menu {{ .Params.menuTitle }}">{{/* TODO: hide non-stable versions by default? */}}
+              <ul class="version-menu {{ .Type }} {{ .Store.Get "alias" }}">{{/* TODO: hide non-stable versions by default? */}}
                 {{- template "section-tree-nav" . }}
               </ul>
             {{- end }}
