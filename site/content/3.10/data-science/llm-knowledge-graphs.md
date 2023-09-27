@@ -9,7 +9,7 @@ archetype: default
 {{< description >}}
 
 Large language models (LLMs) and knowledge graphs are two prominent and
-contrasting concepts and each possesses unique characteristics and functionalities
+contrasting concepts, each possessing unique characteristics and functionalities
 that significantly impact the methods we employ to extract valuable insights from
 constantly expanding and complex datasets.
 
@@ -70,3 +70,7 @@ your data instead of querying it.
 The [ArangoDB QA chain notebook](https://langchain-langchain.vercel.app/docs/use_cases/more/graph/graph_arangodb_qa.html)
 shows how to use LLMs to provide a natural language interface to an ArangoDB
 instance.
+
+Run the notebook directly in [Google Colab](https://colab.research.google.com/github/arangodb/interactive_tutorials/blob/master/notebooks/Langchain.ipynb).
+
+See also other [machine learning interactive tutorials](https://github.com/arangodb/interactive_tutorials#machine-learning).
