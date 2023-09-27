@@ -137,7 +137,7 @@ function styleImages() {
 
 function loadNotFoundPage(href) {
   $.get({
-    url: window.location.origin + "/404.html",
+    url: window.location.origin + "/notfound.html",
     success: function(newDoc) {
       replaceArticle(href, newDoc)
       initArticle(href);
@@ -519,11 +519,10 @@ window.onload = () => {
     getCurrentVersion(window.location.href);
     menuEntryClickListener();
     renderVersion();
-    loadMenu(window.location.pathname);
-    initArticle(window.location.href);
+    loadPage(window.location.href)
+
     content.addEventListener("click", menuToggleClick);
 
-    loadPage(window.location.href)
 
     var isMobile = window.innerWidth <= 768;
     if (isMobile) {
