@@ -1493,7 +1493,7 @@ pre > .code-show-more {
     font-weight: 500;
     opacity: 0.7;
     width: 160px;
-    color: var(--green-800);
+    color: var(--green-950);
     margin: 0 auto;
     position: absolute;
     bottom: 12px;
@@ -1551,39 +1551,34 @@ div.box {
 }
 
 div.box.info {
-    border:0px solid var(--INFO-BORDER-COLOR);
-    border-left: 0px solid var(--INFO-BORDER-COLOR);
+    border:1px solid var(--INFO-BORDER-COLOR);
     background: var(--INFO-BG-COLOR);
-    box-shadow: inset 0 0 0 2px #a9d5de, 0 0 0 0 transparent;
+    box-shadow: inset 0 0 0 2px var(--INFO-BORDER-COLOR), 0 0 0 0 transparent;
 }
 
 div.box.warning {
-    border: 0px solid var(--WARNING-BORDER-COLOR);
-    border-left: 0px solid var(--WARNING-BORDER-COLOR);
-    background: transparent;
-    box-shadow: 0 0 0 2px var(--red-100) inset,0 0 0 0 transparent
+    border: 1px solid var(--WARNING-BORDER-COLOR);
+    background: var(--WARNING-BG-COLOR);
+    box-shadow: 0 0 0 2px var(--WARNING-BORDER-COLOR) inset,0 0 0 0 transparent
 }
 
 div.box.danger {
-    border: 0px solid var(--DANGER-BORDER-COLOR);
-    border-left: 0px solid var(--DANGER-BORDER-COLOR);
-    background:transparent;
-    box-shadow: inset 0 0 0 2px #fa8151, 0 0 0 0 transparent;
+    border: 1px solid var(--DANGER-BORDER-COLOR);
+    background:var(--DANGER-BG-COLOR);
+    box-shadow: inset 0 0 0 2px var(--DANGER-BORDER-COLOR), 0 0 0 0 transparent;
 }
 
 div.box.tip {
-    border: 0px solid var(--TIP-BORDER-COLOR);
-    border-left: 0px solid var(--TIP-BORDER-COLOR);
-    background: transparent;
-    color: var(--green-600);
-    box-shadow: 0 0 0 2px var(--green-600) inset,0 0 0 0 transparent;
+    border: 1px solid var(--TIP-BORDER-COLOR);
+    background:  var(--TIP-BG-COLOR);
+    box-shadow: 0 0 0 2px  var(--TIP-BORDER-COLOR) inset,0 0 0 0 transparent;
 }
 
 div.box.security {
-    border: 0px;
+    border: 1px solid var(--SECURITY-BORDER-COLOR);
     border-left: 0px;
-    background: transparent;
-    box-shadow: 0 0 0 2px var(--orange-300) inset,0 0 0 0 transparent
+    background: var(--SECURITY-BG-COLOR);
+    box-shadow: 0 0 0 2px var(--SECURITY-BORDER-COLOR) inset,0 0 0 0 transparent
 }
 
 div.box-content {
