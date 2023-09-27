@@ -53,29 +53,29 @@
 
     /* SIZE */
     --TYPOGRAPHY-H1-SIZE: 40px;
-    --TYPOGRAPHY-H2-SIZE: 32px;
-    --TYPOGRAPHY-H3-SIZE: 24px;
-    --TYPOGRAPHY-H4-SIZE: 20px;
-    --TYPOGRAPHY-H5-SIZE: 18px;
+    --TYPOGRAPHY-H2-SIZE: 33px;
+    --TYPOGRAPHY-H3-SIZE: 27px;
+    --TYPOGRAPHY-H4-SIZE: 23px;
+    --TYPOGRAPHY-H5-SIZE: 19px;
     --TYPOGRAPHY-H6-SIZE: 16px;
 
     /* SIZE */
-    --TYPOGRAPHY-H1-SIZE-SMALL: 32px;
-    --TYPOGRAPHY-H2-SIZE-SMALL: 24px;
-    --TYPOGRAPHY-H3-SIZE-SMALL: 20px;
+    --TYPOGRAPHY-H1-SIZE-SMALL: 28px;
+    --TYPOGRAPHY-H2-SIZE-SMALL: 25px;
+    --TYPOGRAPHY-H3-SIZE-SMALL: 22px;
     --TYPOGRAPHY-H4-SIZE-SMALL: 18px;
     --TYPOGRAPHY-H5-SIZE-SMALL: 16px;
     --TYPOGRAPHY-H6-SIZE-SMALL: 14px;
 
     /* LINE HEIGHTS */
-    --TYPOGRAPHY-H1-HEIGHT: 48px;
-    --TYPOGRAPHY-H2-HEIGHT: 40px;
-    --TYPOGRAPHY-H3-HEIGHT: 30px;
-    --TYPOGRAPHY-H4-HEIGHT: 26px;
-    --TYPOGRAPHY-H5-HEIGHT: 24px;
-    --TYPOGRAPHY-H6-HEIGHT: 22px;
+    --TYPOGRAPHY-H1-HEIGHT: 1.5; /*48px;*/
+    --TYPOGRAPHY-H2-HEIGHT: 1.5; /*40px;*/
+    --TYPOGRAPHY-H3-HEIGHT: 1.5; /*30px;*/
+    --TYPOGRAPHY-H4-HEIGHT: 1.5; /*26px;*/
+    --TYPOGRAPHY-H5-HEIGHT: 1.5; /*24px;*/
+    --TYPOGRAPHY-H6-HEIGHT: 1.5; /*22px;*/
 
-    --TYPOGRAPHY-BODY-LINE-HEIGHT: 24px;
+    --TYPOGRAPHY-BODY-LINE-HEIGHT: 1.5; /*24px;*/
 
     /* WEIGHTS */
     --TYPOGRAPHY-THIN-TEXT: 250;
@@ -108,15 +108,15 @@
     --TOC-ENTRY-COLOR: #4a4a4a;
 
     /* ADMONITIONS */
-    --INFO-ICON-COLOR: var(--blue-500);
-    --INFO-BG-COLOR: var(--blue-100);
-    --INFO-BORDER-COLOR: var(--blue-500);
+    --INFO-ICON-COLOR: #276f86; /* var(--blue-500);*/
+    --INFO-BG-COLOR: transparent; /*var(--blue-100);*/
+    --INFO-BORDER-COLOR: #276f86; /*var(--blue-500);*/
 
     --WARNING-ICON-COLOR: var(--orange-400);
     --WARNING-BORDER-COLOR: var(--orange-400);
     --WARNING-BG-COLOR: var(--orange-100);
 
-    --DANGER-ICON-COLOR: var(--red-500);
+    --DANGER-ICON-COLOR: var(--red-700);
     --DANGER-BORDER-COLOR: var(--red-500);
     --DANGER-BG-COLOR: var(--red-50);
 

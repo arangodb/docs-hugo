@@ -153,11 +153,12 @@ ul, ol {
 a {
     font-weight: 500;
     transition: 0.4s;
+    color: var(--gray-950);
 }
 
 a, a:hover, a:focus {
     outline: none;
-    text-decoration: none;
+    text-decoration: none !important;
 }
 
 a, a:hover {
@@ -188,8 +189,29 @@ ul ul, ul ol, ol ul, ol ol {
     margin-bottom: .5rem;
 }
 
+.link-internal {
+    text-decoration: none;
+    opacity: 0.7;
+    border-bottom: 2px solid var(--green-600);
+}
+
+.link-internal:hover{
+    opacity: 1;
+}
+
 .link-internal > * {
+    text-decoration: none;
     pointer-events: none;
+}
+
+.link-internal > p {
+    border-bottom: 2px solid var(--green-600);
+    color: var(--gray-950);
+}
+
+.link-internal > i {
+    color: var(--gray-950);
+    text-decoration: none;
 }
 
 
@@ -326,10 +348,10 @@ table.fixed code {
     grid-template-columns: 1fr 1fr;
     gap: 16px;
 }
-
+/* 
 .cards a:hover {
     text-decoration: none;
-}
+} */
 
 .card {
     padding: 18px;
@@ -340,21 +362,18 @@ table.fixed code {
     color: #202951;
     height: 100%;
     color: var(--gray-950);
-    transition: 150ms ease-in-out;
-    transition-property: border,box-shadow;
-    border: 1px solid #E8EDEB;
-    box-shadow: 0 4px 10px -4px rgb(0 30 43 / 30%);
+    border: none;
+    box-shadow: 0 0 0 2px var(--gray-200),4px 4px 10px rgba(17,18,19,.15);
     background-color: white;
-    color: #1C2D38;
-    border-radius: 24px;
+    border-radius: 3px 3px 0 0;
 }
 
-.card:hover {
+/* .card:hover {
     box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
-}
+} */
 
-.card > a {
-    border-bottom: 0;
+.cards > a.link-internal {
+    border-bottom: 0px;
 }
 
 @media screen and (max-width: 768px) {
@@ -404,6 +423,7 @@ a.section-link {
     overflow: hidden;
     font-size: 20px;
     line-height: 28px;
+    color: var(--gray-950);
 }
 
 .card-body {
@@ -629,9 +649,6 @@ body .page-container {
 header .logo {
     width: 219px;
     height: 45px;
-    margin-top: 3px;
-    display: flex;
-    align-items: center;
 }
 
 .arangodb-logo-small {
@@ -1026,14 +1043,19 @@ header .logo {
 }
 
 #breadcrumbs > ol > li > a {
-    font-weight: 700;
-    color: var(--green-700);
-    font-size: var(--TYPOGRAPHY-BODY-TEXT);
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--gray-700);
+    border-bottom: 0;;
+}
+
+#breadcrumbs > ol > li > a:hover {
+    color: var(--gray-950);
 }
 
 #breadcrumbs > ol > li > i {
-    margin: 0 5px;
-    color: var(--green-700);
+    margin: 0 2px;
+    color: var(--gray-700);
     font-size: 14px;
 }
 
@@ -1351,8 +1373,10 @@ article ul li {
 }
 
 .lead {
-    font-size: 1.5em;
+    font-size: 1.3em;
     margin-bottom: 24px;
+    font-weight: 600;
+    color: var(--gray-800);
 }
 
 .header-link {
@@ -1371,19 +1395,24 @@ h6:hover .header-link {
 
 
 /* Codeblocks */
-pre code {
-    color: rgb(61 63 66);
+pre {
+    border-radius: 0px;
+    background: rgb(240, 240, 240);
+    box-shadow: none;
+    position: relative;
 }
 
 code, p code {
     font-size: 14px;
     overflow: auto;
     word-wrap: break-word;
-    background-color: var(--CODE-BG-COLOR);
     margin: 0;
     padding: 2px;
     word-break: break-word;
-    color: var(--CODE-COLOR);
+    border-radius: 0px;
+    background: rgb(240, 240, 240);
+    box-shadow: none;
+    color: rgb(68, 68, 68);
 }
 
 li > code {
@@ -1391,20 +1420,23 @@ li > code {
 }
 
 .copy-to-clipboard-button {
-    background: none;
-    transition: 0.4s;
     position: absolute;
     right: 16px;
-    width: 40px;
-    height: 40px;
-    background: var(--gray-200);
     display: flex;
     align-items: center;
     justify-content: center;
     position: absolute;
     right: 0;
-    border-radius: 20px;
     cursor: pointer;
+    background: #e3e3e3;
+    padding: 3px 10px;
+    margin: 7px;
+    border-radius: 1px;
+    opacity: 0.7;
+}
+
+.copy-to-clipboard-button:hover{
+    opacity: 1;
 }
 
 .copy-to-clipboard-button::before {
@@ -1421,14 +1453,26 @@ li > code {
     color: #53785c;
 }
 
+.copy-to-clipboard-button::after{
+    content: 'Copy';
+    font-family: 'Inter', sans-serif;
+    padding: 0 5px;
+    font-weight: bold;
+    color: #53785c;
+}
+.copy-to-clipboard-button.tooltipped::after{
+    content: 'Copied';
+    font-family: 'Inter', sans-serif;
+    padding: 0 5px;
+    font-weight: bold;
+    color: #53785c;
+}
+
 .copy-to-clipboard > .copy-to-clipboard-code {
     margin: 0;
     word-break: break-word;
     white-space: break-spaces;
     color: var(--CODEBLOCK-TEXT-COLOR);
-    /* padding-right: 18px; */
-    /* padding-left: 18px; */
-    /* padding-top: 1.8rem; */
     font-family: Consolas,liberation mono,Menlo,Courier,monospace;
     padding: 1.8rem;
     padding-left: 16px;
@@ -1443,14 +1487,40 @@ li > code {
 
 pre > .code-show-more {
     font-size: 1rem;
-    box-shadow: 0px 0px 0px #1c1616, 0px -2px 1px #888;
-    margin: 0;
-    border-bottom-left-radius: 24px;
-    border-bottom-right-radius: 24px;
+    background: #e3e3e3;
+    font-family: "Inter", sans-serif;
+    padding: 5px 5px;
+    font-weight: 500;
+    opacity: 0.7;
+    width: 160px;
+    color: var(--green-800);
+    margin: 0 auto;
+    position: absolute;
+    bottom: 12px;
+    right: 10px;
+    letter-spacing: 0px;
+}
+
+pre > .code-show-more:hover{
+    opacity: 1;
+}
+
+pre > .code-show-more::before{
+    content: '\f078';
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+}
+
+pre > .code-show-more.expanded::before{
+    content: '\f077';
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
 }
 
 pre > .code-show-more::after {
-    content: "Show More"
+    content: "Show More";
+    padding: 0 8px;
+
 }
 
 pre > .code-show-more.expanded::after {
@@ -1481,33 +1551,39 @@ div.box {
 }
 
 div.box.info {
-    border: 1px solid var(--INFO-BORDER-COLOR);
-    border-left: 5px solid var(--INFO-BORDER-COLOR);
+    border:0px solid var(--INFO-BORDER-COLOR);
+    border-left: 0px solid var(--INFO-BORDER-COLOR);
     background: var(--INFO-BG-COLOR);
+    box-shadow: inset 0 0 0 2px #a9d5de, 0 0 0 0 transparent;
 }
 
 div.box.warning {
-    border: 1px solid var(--WARNING-BORDER-COLOR);
-    border-left: 5px solid var(--WARNING-BORDER-COLOR);
-    background: var(--WARNING-BG-COLOR);
+    border: 0px solid var(--WARNING-BORDER-COLOR);
+    border-left: 0px solid var(--WARNING-BORDER-COLOR);
+    background: transparent;
+    box-shadow: 0 0 0 2px var(--red-100) inset,0 0 0 0 transparent
 }
 
 div.box.danger {
-    border: 1px solid var(--DANGER-BORDER-COLOR);
-    border-left: 5px solid var(--DANGER-BORDER-COLOR);
-    background: var(--DANGER-BG-COLOR);
+    border: 0px solid var(--DANGER-BORDER-COLOR);
+    border-left: 0px solid var(--DANGER-BORDER-COLOR);
+    background:transparent;
+    box-shadow: inset 0 0 0 2px #fa8151, 0 0 0 0 transparent;
 }
 
 div.box.tip {
-    border: 1px solid var(--TIP-BORDER-COLOR);
-    border-left: 5px solid var(--TIP-BORDER-COLOR);
-    background: var(--TIP-BG-COLOR);
+    border: 0px solid var(--TIP-BORDER-COLOR);
+    border-left: 0px solid var(--TIP-BORDER-COLOR);
+    background: transparent;
+    color: var(--green-600);
+    box-shadow: 0 0 0 2px var(--green-600) inset,0 0 0 0 transparent;
 }
 
 div.box.security {
-    border: 1px solid var(--SECURITY-BORDER-COLOR);
-    border-left: 5px solid var(--SECURITY-BORDER-COLOR);
-    background: var(--SECURITY-BG-COLOR);
+    border: 0px;
+    border-left: 0px;
+    background: transparent;
+    box-shadow: 0 0 0 2px var(--orange-300) inset,0 0 0 0 transparent
 }
 
 div.box-content {
@@ -1542,18 +1618,6 @@ div.box.security > .box-content-container > .box-content > i {
 
 div > .box-content-container {
     padding: 0px 0px 0px 12px;
-}
-
-div.box > .box-content-container > .box-content > .box-text > p {
-    font-size: 0.9rem;
-    line-height: 1.5rem;
-    letter-spacing: 0.3px;
-    color: inherit;
-    letter-spacing: 0.6px;
-    font-weight: 400;
-    margin-top: 1em;
-    margin-left: 1em;
-    margin-bottom: 1em;
 }
 
 .box-text {
@@ -1895,6 +1959,9 @@ nav.pagination .next {
 
 .nav-prev {
     display: inherit;
+}
+.nav-prev.link-internal, .nav-next.link-internal  {
+    border-bottom: 0;
 }
 
 .nav-prev > i {
