@@ -54,8 +54,7 @@ function closeAllEntries() {
 
 function loadMenu(url) {
     closeAllEntries();
-    console.log(url)
-    var version = window.location.pathname.split("/")[1]
+    var version = getVersionByURL()
 
     $('.version-menu.'+version).find('a').each(function() {
       $(this).attr("href", function(index, old) {
@@ -64,7 +63,6 @@ function loadMenu(url) {
     });
 
     var current = $('.dd-item > a[href="' + url + '"]').parent();
-    console.log(current)
     current.addClass("active");
     while (current.length > 0 && current.prop("class") != "topics collapsible-menu") {
         if (current.prop("tagName") == "LI") {
@@ -144,8 +142,8 @@ function loadPage(target) {
   getCurrentVersion(href);
   renderVersion();
   loadMenu(new URL(href).pathname);
-  var version = getVersionInfo(window.location.pathname.split("/")[1]).name
-  href = href.replace(window.location.pathname.split("/")[1], version)
+  var version = getVersionInfo(getVersionByURL()).name
+  href = href.replace(getVersionByURL(), version)
   $.get({
     url: href,
     success: function(newDoc) {
@@ -182,18 +180,9 @@ function initArticle(url) {
   styleImages();
   internalLinkListener();
   codeShowMoreListener();
-  $('article').find('a.link-internal').each(function() {
-    $(this).attr("href", function(index, old) {
-          if (old == undefined) return old
-          return old.replace(old.split("/")[1], window.location.pathname.split("/")[1]);
-    });
-  });
-  $('article').find('a.header-link').each(function() {
-    $(this).attr("href", function(index, old) {
-          if (old == undefined) return old
-          return old.replace(old.split("/")[1], window.location.pathname.split("/")[1]);
-    });
-  });
+  aliazeLinks('article', 'a.link-internal');
+  aliazeLinks('article', 'a.header-link');
+  aliazeLinks('#breadcrumbs', 'a')
 }
 
 
@@ -329,11 +318,24 @@ function getVersionInfo(version) {
   }
 }
 
+function getVersionByURL() {
+  return window.location.pathname.split("/")[1]
+}
+
+function aliazeLinks(parentSelector, linkSelector) {
+  $(parentSelector).find(linkSelector).each(function() {
+    $(this).attr("href", function(index, old) {
+          if (old == undefined) return old
+          return old.replace(old.split("/")[1], getVersionByURL());
+    });
+  });
+}
+
 function getCurrentVersion(url) {
     var urlVersion = "stable";
 
     if (window.location.pathname.split("/").length > 0) {
-        urlVersion = getVersionInfo(window.location.pathname.split("/")[1]).name
+        urlVersion = getVersionInfo(getVersionByURL()).name
     }
     localStorage.setItem('docs-version', urlVersion);
     
@@ -370,7 +372,7 @@ function changeVersion() {
     }
 
     
-    var newUrl = window.location.href.replace(window.location.pathname.split("/")[1], getVersionInfo(newVersion).alias)
+    var newUrl = window.location.href.replace(getVersionByURL(), getVersionInfo(newVersion).alias)
     console.log("Change Version URL " + newUrl)
     updateHistory("", newUrl);
 }
@@ -463,7 +465,7 @@ const goToTop = () => {
 
 function goToHomepage(event){
     event.preventDefault();
-    var homepage = window.location.origin + "/" + localStorage.getItem('docs-version') + "/";
+    var homepage = window.location.origin + "/" + getVersionByURL() + "/";
     updateHistory("", homepage);
 }
 
