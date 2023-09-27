@@ -1046,7 +1046,7 @@ header .logo {
     font-size: 1rem;
     font-weight: 500;
     color: var(--gray-700);
-    border-bottom: 0;;
+    border-bottom: 0;
 }
 
 #breadcrumbs > ol > li > a:hover {
@@ -1429,8 +1429,8 @@ li > code {
     right: 0;
     cursor: pointer;
     background: var(--gray-200);
-    padding: 3px 10px;
-    margin: 7px;
+    padding: 4px 12px;
+    margin: 8px;
     border-radius: 1px;
     opacity: 0.7;
 }
@@ -1443,14 +1443,14 @@ li > code {
     font-family: "Font Awesome 5 Free";
     content: "\f0c5";
     font-weight: 900;
-    color: #53785c;
+    color: var(--green-700);
 }
 
 .copy-to-clipboard-button.tooltipped::before {
     font-family: "Font Awesome 5 Free";
     content: "\f00c";
     font-weight: 900;
-    color: #53785c;
+    color: var(--green-700);
 }
 
 .copy-to-clipboard-button::after{
@@ -1458,7 +1458,7 @@ li > code {
     font-family: 'Inter', sans-serif;
     padding: 0 5px;
     font-weight: bold;
-    color: #53785c;
+    color: var(--green-700);
 }
 .copy-to-clipboard-button.tooltipped::after{
     content: 'Copied';

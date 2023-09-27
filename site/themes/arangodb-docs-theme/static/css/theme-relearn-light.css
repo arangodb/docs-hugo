@@ -124,7 +124,7 @@
     --TIP-BG-COLOR: transparent;
     --TIP-BORDER-COLOR: var(--green-600);
 
-    --SECURITY-ICON-COLOR: var(--orange-600);
+    --SECURITY-ICON-COLOR: var(--orange-400);
     --SECURITY-BG-COLOR: transparent;
-    --SECURITY-BORDER-COLOR: var(--orange-500);
+    --SECURITY-BORDER-COLOR: var(--orange-400);
 }
