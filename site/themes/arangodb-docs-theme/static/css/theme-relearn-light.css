@@ -108,12 +108,12 @@
     --TOC-ENTRY-COLOR: #4a4a4a;
 
     /* ADMONITIONS */
-    --INFO-ICON-COLOR:  var(--blue-600);
+    --INFO-ICON-COLOR:  var(--blue-500);
     --INFO-BG-COLOR: transparent;
     --INFO-BORDER-COLOR: var(--blue-500);
 
-    --WARNING-ICON-COLOR: var(--orange-600);
-    --WARNING-BORDER-COLOR: var(--orange-500);
+    --WARNING-ICON-COLOR: var(--orange-400);
+    --WARNING-BORDER-COLOR: var(--orange-400);
     --WARNING-BG-COLOR: transparent;
 
     --DANGER-ICON-COLOR: var(--red-500);
@@ -122,7 +122,7 @@
 
     --TIP-ICON-COLOR: var(--green-600);
     --TIP-BG-COLOR: transparent;
-    --TIP-BORDER-COLOR: var(--green-500);
+    --TIP-BORDER-COLOR: var(--green-600);
 
     --SECURITY-ICON-COLOR: var(--orange-600);
     --SECURITY-BG-COLOR: transparent;
