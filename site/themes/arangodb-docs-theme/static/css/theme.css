@@ -1397,7 +1397,7 @@ h6:hover .header-link {
 /* Codeblocks */
 pre {
     border-radius: 0px;
-    background: rgb(240, 240, 240);
+    background: var(--gray-100);
     box-shadow: none;
     position: relative;
 }
@@ -1410,9 +1410,9 @@ code, p code {
     padding: 2px;
     word-break: break-word;
     border-radius: 0px;
-    background: rgb(240, 240, 240);
+    background: var(--gray-100);
     box-shadow: none;
-    color: rgb(68, 68, 68);
+    color: var(--gray-600);
 }
 
 li > code {
@@ -1428,7 +1428,7 @@ li > code {
     position: absolute;
     right: 0;
     cursor: pointer;
-    background: #e3e3e3;
+    background: var(--gray-200);
     padding: 3px 10px;
     margin: 7px;
     border-radius: 1px;
@@ -1465,7 +1465,7 @@ li > code {
     font-family: 'Inter', sans-serif;
     padding: 0 5px;
     font-weight: bold;
-    color: #53785c;
+    color: var(--green-700);
 }
 
 .copy-to-clipboard > .copy-to-clipboard-code {
@@ -1487,7 +1487,7 @@ li > code {
 
 pre > .code-show-more {
     font-size: 1rem;
-    background: #e3e3e3;
+    background: var(--gray-200);
     font-family: "Inter", sans-serif;
     padding: 5px 5px;
     font-weight: 500;
