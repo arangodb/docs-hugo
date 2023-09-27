@@ -53,27 +53,27 @@
 
     /* SIZE */
     --TYPOGRAPHY-H1-SIZE: 40px;
-    --TYPOGRAPHY-H2-SIZE: 33px;
-    --TYPOGRAPHY-H3-SIZE: 27px;
-    --TYPOGRAPHY-H4-SIZE: 23px;
-    --TYPOGRAPHY-H5-SIZE: 19px;
+    --TYPOGRAPHY-H2-SIZE: 32px;
+    --TYPOGRAPHY-H3-SIZE: 28px;
+    --TYPOGRAPHY-H4-SIZE: 24px;
+    --TYPOGRAPHY-H5-SIZE: 18px;
     --TYPOGRAPHY-H6-SIZE: 16px;
 
     /* SIZE */
     --TYPOGRAPHY-H1-SIZE-SMALL: 28px;
-    --TYPOGRAPHY-H2-SIZE-SMALL: 25px;
-    --TYPOGRAPHY-H3-SIZE-SMALL: 22px;
+    --TYPOGRAPHY-H2-SIZE-SMALL: 24px;
+    --TYPOGRAPHY-H3-SIZE-SMALL: 20px;
     --TYPOGRAPHY-H4-SIZE-SMALL: 18px;
     --TYPOGRAPHY-H5-SIZE-SMALL: 16px;
     --TYPOGRAPHY-H6-SIZE-SMALL: 14px;
 
     /* LINE HEIGHTS */
-    --TYPOGRAPHY-H1-HEIGHT: 1.5; /*48px;*/
-    --TYPOGRAPHY-H2-HEIGHT: 1.5; /*40px;*/
-    --TYPOGRAPHY-H3-HEIGHT: 1.5; /*30px;*/
-    --TYPOGRAPHY-H4-HEIGHT: 1.5; /*26px;*/
-    --TYPOGRAPHY-H5-HEIGHT: 1.5; /*24px;*/
-    --TYPOGRAPHY-H6-HEIGHT: 1.5; /*22px;*/
+    --TYPOGRAPHY-H1-HEIGHT: 48px;
+    --TYPOGRAPHY-H2-HEIGHT: 40px;
+    --TYPOGRAPHY-H3-HEIGHT: 30px;
+    --TYPOGRAPHY-H4-HEIGHT: 26px;
+    --TYPOGRAPHY-H5-HEIGHT: 24px;
+    --TYPOGRAPHY-H6-HEIGHT: 22px;
 
     --TYPOGRAPHY-BODY-LINE-HEIGHT: 1.5; /*24px;*/
 
@@ -108,24 +108,23 @@
     --TOC-ENTRY-COLOR: #4a4a4a;
 
     /* ADMONITIONS */
-    --INFO-ICON-COLOR: #276f86; /* var(--blue-500);*/
-    --INFO-BG-COLOR: transparent; /*var(--blue-100);*/
-    --INFO-BORDER-COLOR: #a9d5de; /*var(--blue-500);*/
+    --INFO-ICON-COLOR:  var(--blue-600);
+    --INFO-BG-COLOR: transparent;
+    --INFO-BORDER-COLOR: var(--blue-500);
 
-    --WARNING-ICON-COLOR: var(--orange-400);
-    --WARNING-BORDER-COLOR: var(--orange-400);
+    --WARNING-ICON-COLOR: var(--orange-600);
+    --WARNING-BORDER-COLOR: var(--orange-500);
     --WARNING-BG-COLOR: transparent;
 
-    --DANGER-ICON-COLOR: #fa8151;
-    --DANGER-BORDER-COLOR: #fa8151;
+    --DANGER-ICON-COLOR: var(--red-500);
+    --DANGER-BORDER-COLOR: var(--red-500);
     --DANGER-BG-COLOR: transparent;
-
 
     --TIP-ICON-COLOR: var(--green-600);
     --TIP-BG-COLOR: transparent;
-    --TIP-BORDER-COLOR: var(--green-600);
+    --TIP-BORDER-COLOR: var(--green-500);
 
-    --SECURITY-ICON-COLOR: #FFA500;
+    --SECURITY-ICON-COLOR: var(--orange-600);
     --SECURITY-BG-COLOR: transparent;
-    --SECURITY-BORDER-COLOR: #FFA500;
+    --SECURITY-BORDER-COLOR: var(--orange-500);
 }
