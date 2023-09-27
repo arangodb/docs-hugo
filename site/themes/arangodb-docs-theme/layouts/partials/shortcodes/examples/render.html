@@ -1,28 +1,30 @@
-{{ $options := .options }}
-{{ $content := .content }}
-{{ $language := .language }}
+{{- $context := .context }}
+{{- $options := .options }}
+{{- $content := .content }}
+{{- $language := .language }}
 
-{{ if eq .language "curl" }}
-    {{ $language = "bash" }}
-{{ end }}
+{{- if eq .language "curl" }}
+  {{- $language = "bash" }}
+{{- end }}
 
-<p>{{ $options.description }}</p>
+{{- /* Ensure that a single paragraph is also wrapped in <p></p> */}}
+{{- $options.description | $context.Page.RenderString (dict "display" "block") }}
 
-{{ $input := transform.Highlight $content.input $language }}
+{{- $input := transform.Highlight $content.input $language }}
 {{ $input }}
 
-{{ if $options.bindVars }}
-<strong>Bind Parameters</strong><br>
-
-{{ $bindVars := $options.bindVars | jsonify (dict "indent" "  ") }}
+{{- if $options.bindVars }}
+<strong>Bind Parameters</strong>
+<br>
+{{- $bindVars := $options.bindVars | jsonify (dict "indent" "  ") }}
 {{ transform.Highlight $bindVars "json" }}
-{{ end }}
+{{- end }}
 
-{{ $output := transform.Highlight $content.output $language }}
-{{ $block := printf "%s" $output | markdownify}}
-    {{- partial "shortcodes/expand.html" (dict
-    "content" $block
-    "open"    "open"
-    "title"   "Show output"
+{{- $output := transform.Highlight $content.output $language }}
+{{- $block := printf "%s" $output | markdownify}}{{/* TODO: Are we expecting any Markdown here for real? */}}
+{{- partial "shortcodes/expand.html" (dict
+  "content" $block
+  "open"    "open"
+  "title"   "Show output"
 ) }}
 <br>
