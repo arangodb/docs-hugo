@@ -135,6 +135,17 @@ function styleImages() {
   }
 }
 
+function loadNotFoundPage(href) {
+  $.get({
+    url: window.location.origin + "/404.html",
+    success: function(newDoc) {
+      replaceArticle(href, newDoc)
+      initArticle(href);
+      return true;
+    },
+  });
+}
+
 
 function loadPage(target) {
   var href = target;
@@ -150,7 +161,10 @@ function loadPage(target) {
       replaceArticle(href, newDoc)
       initArticle(href);
       return true;
-    }
+    },
+    error: function(newDoc) {
+      loadNotFoundPage(href)
+    },
   });
 }
 
