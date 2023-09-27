@@ -2060,7 +2060,7 @@
     ],
     "default" : "",
     "deprecatedIn" : null,
-    "description" : "The configuration file or \"none\".",
+    "description" : "```aql\nRETURN 42\n```\n\nTest relative link: [Ref](../web-interface/_index.md).\n\nThe configuration file or \"none\".",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
