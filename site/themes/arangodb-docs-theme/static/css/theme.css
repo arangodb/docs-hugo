@@ -236,7 +236,7 @@ img {
     opacity: 1;
     transition: opacity 0.5s;
     height: auto !important;
-    width: auto !important;
+    width: auto;
     max-height: 100%;
 }
 
@@ -1998,4 +1998,14 @@ nav.pagination .next {
 
 .DocSearch svg {
     margin: 0 !important;
+}
+
+/* 404 page */
+.flex-block-wrapper {
+}
+
+.notfound-404 {
+    display: flex;
+    font-size: 17rem;
+    align-items: center;
 }
