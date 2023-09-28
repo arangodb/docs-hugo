@@ -1235,7 +1235,7 @@ header .logo {
 #TableOfContents .is-active {
     font-weight: bold;
     background-color: var(--gray-200);
-    border-radius: 0.75em;
+    border-radius: 4px;
 }
 
 #TableOfContents .is-active:hover {
@@ -1412,7 +1412,7 @@ code, p code {
     border-radius: 0px;
     background: var(--gray-100);
     box-shadow: none;
-    color: var(--gray-600);
+    color: var(--gray-950);
 }
 
 li > code {
@@ -1869,7 +1869,7 @@ details[open] > .openapi-prop::before {
     transition-property: border,box-shadow;
     border: 1px solid #E8EDEB;
     box-shadow: 0 4px 10px -7px rgb(0 30 43 / 30%);
-    border-radius: 24px;
+    border-radius: 4px;
 }
 
 .openapi-table-row.collapsed > *:nth-child(n+3){
