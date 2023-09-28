@@ -2,12 +2,12 @@
 title: Spring Boot Starter ArangoDB
 menuTitle: Spring Boot Starter
 weight: 7
-description: ''
+description: >-
+  The Spring Boot Starter for ArangoDB is a set of convenient dependency descriptors
+  that you can include in your application
 archetype: default
 ---
-
-The Spring Boot Starter for ArangoDB is a set of convenient dependency descriptors
-that you can include in your application.
+{{< description >}}
 
 ## Supported versions
 
