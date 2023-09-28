@@ -1430,7 +1430,7 @@ li > code {
     cursor: pointer;
     background: var(--gray-200);
     padding: 4px 12px;
-    margin: 8px;
+    margin: 4px;
     border-radius: 1px;
     opacity: 0.7;
 }
@@ -1474,8 +1474,7 @@ li > code {
     white-space: break-spaces;
     color: var(--CODEBLOCK-TEXT-COLOR);
     font-family: Consolas,liberation mono,Menlo,Courier,monospace;
-    padding: 1.8rem;
-    padding-left: 16px;
+    padding: 44px 16px;
     font-size: 1rem;
     max-height: calc(17 * 1.8rem);
     overflow: hidden;
