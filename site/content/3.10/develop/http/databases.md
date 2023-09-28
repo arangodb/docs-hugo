@@ -22,8 +22,12 @@ All database management operations can only be accessed via the default
 ## Addresses of databases
 
 Any operation triggered via ArangoDB's RESTful HTTP API is executed in the
-context of exactly one database. To explicitly specify the database in a request,
-the request URI must contain the database name before the actual path:
+context of exactly one database. The database name is read from the first part
+of the request URI path (e.g. `/_db/mydb/...`). If the request URI does not
+contain a database name, it defaults to `/_db/_system`.
+
+To explicitly specify the database in a request, the request URI must contain
+the database name at the beginning of the path:
 
 ```
 http://localhost:8529/_db/mydb/...
@@ -39,6 +43,11 @@ http://localhost:8529/_db/mydb/_api/document/test/12345
 http://localhost:8529/_db/mydb/myapp/get
 ```
 
+{{< info >}}
+Database management operations like listing, creating, and dropping databases
+can only be executed with the `_system` database as the context.
+{{< /info >}}
+ 
 Special characters in database names must be properly URL-encoded, e.g.
 `a + b = c` needs to be encoded as `a%20%2B%20b%20%3D%20c`:
 

@@ -37,15 +37,16 @@ Members are a list of users that can access an organization.
 
 ### How to add a new member to the organization
 
-1. In the main navigation, click __People__ in the __Organization__ section.
-2. Optionally click the __Invites__ tab.
-3. Click the __Invite new member__ button.
-4. In the form that appears, enter the email address of the person you want to
+1. In the main navigation, click the __Organization__ icon.
+2. Click __Members__ in the __People__ section.
+3. Optionally, click the __Invites__ entry.
+4. Click the __Invite new member__ button.
+5. In the form that appears, enter the email address of the person you want to
    invite.
-5. Click the __Create__ button.
-6. An email with an organization invite will now be sent to the specified
+6. Click the __Create__ button.
+7. An email with an organization invite will now be sent to the specified
    email address.
-7. After accepting the invite the person will be added to the organization
+8. After accepting the invite the person will be added to the organization
    [members](#members).
 
 ![ArangoGraph Organization Invites](../../../images/arangograph-new-invite.png)
@@ -56,9 +57,9 @@ See [My Account: How to respond to my invites](../my-account.md#how-to-respond-t
 
 ### How to remove a member from the organization
 
-1. Click the __People__ link in the main navigation.
+1. Click __Members__ in the __People__ section of the main navigation.
 2. Delete a member by pressing the __recycle bin__ icon in the __Actions__ column.
-3. Confirm the deletion in the dialog that pops up
+3. Confirm the deletion in the dialog that pops up.
 
 {{< info >}}
 You cannot delete members who are organization owners.
@@ -66,7 +67,7 @@ You cannot delete members who are organization owners.
 
 ### How to make a member an organization owner
 
-1. Click the __People__ link in the main navigation.
+1. Click __Members__ in the __People__ section of the main navigation.
 2. You can convert a member to an organization owner by pressing the __Key__ icon
    in the __Actions__ column.
 3. You can convert a member back to a normal user by pressing the __User__ icon
@@ -81,7 +82,7 @@ bindings contribute to the respective organization, project or deployment policy
 
 ### How to create a new group
 
-1. Click __People__ in the main navigation, then the __Groups__ tab.
+1. Click __Groups__ in the __People__ section of the main navigation.
 2. Press the __New group__ button.
 3. Enter a name and optionally a description for your new group.
 4. Select the members you want to be part of the group.
@@ -91,7 +92,7 @@ bindings contribute to the respective organization, project or deployment policy
 
 ### How to view, edit or remove a group
 
-1. Click __People__ in the main navigation, then the __Groups__ tab.
+1. Click __Groups__ in the __People__ section of the main navigation.
 2. Click an icon in the __Actions__ column:
    - __Eye__: View group
    - __Pencil__: Edit group
@@ -116,11 +117,10 @@ See [How to add a new member to the organization](#how-to-add-a-new-member-to-th
 
 ### How to view the status of invitations
 
-1. In the main navigation, click __People__ in the __Organization__ section.
-2. Click the __Invites__ tab.
-3. The created invites are displayed, grouped by status __Pending__,
+1. Click __Invites__ in the __People__ section of the main navigation.
+2. The created invites are displayed, grouped by status __Pending__,
    __Accepted__ and __Rejected__.
-4. You may delete pending invites by clicking the __recycle bin__ icon in the
+3. You may delete pending invites by clicking the __recycle bin__ icon in the
    __Actions__ column.
 
 ![ArangoGraph Organization Invites](../../../images/arangograph-org-invites.png)
