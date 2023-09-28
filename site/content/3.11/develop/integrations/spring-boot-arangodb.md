@@ -47,7 +47,7 @@ Data ArangoDB.
 Configure the properties files of your application with the properties of
 [ArangoProperties](https://github.com/mpv1989/spring-boot-starter/blob/master/src/main/java/com/arangodb/springframework/boot/autoconfigure/ArangoProperties.java).
 
-```
+```properties
 arangodb.spring.data.database=mydb
 arangodb.spring.data.user=root
 arangodb.spring.data.password=1234
