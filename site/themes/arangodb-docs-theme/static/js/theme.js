@@ -171,7 +171,6 @@ function loadPage(target) {
 function internalLinkListener() {
   $('.link-internal').click(function(event) {
     event.preventDefault();
-    console.log(event.target)
     updateHistory("", event.target.getAttribute('href'))
   })
 }
@@ -325,11 +324,14 @@ function restoreTabSelections() {
 */
 
 var versions
+var stableVersion
 
 function getVersionInfo(version) {
   for (let v of versions) {
     if (v.name == version || v.alias == version) return v;
   }
+
+  return stableVersion;
 }
 
 function getVersionByURL() {

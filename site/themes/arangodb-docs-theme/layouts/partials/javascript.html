@@ -6,6 +6,18 @@
 <script>
     var versions = {{ $versions }}
 </script>
+{{ range $i, $version := $versions }}
+    {{ if eq "stable" $version.alias }}
+        <script>
+            var stableVersion = {{ $version }};
+        </script>
+    {{ end }}
+    {{ if eq "devel" $version.alias }}
+        <script>
+            var develVersion = {{ $version }};
+        </script>
+    {{ end }}
+{{ end }}
 
 <script src="{{"js/codeblocks.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
 <script src="{{"js/theme.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}" defer></script>
