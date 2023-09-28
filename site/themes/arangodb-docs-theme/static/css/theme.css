@@ -196,7 +196,9 @@ ul ul, ul ol, ol ul, ol ol {
 }
 
 .link-internal:hover{
+    border-bottom: 2px solid var(--green-600);
     opacity: 1;
+    color: var(--gray-950);
 }
 
 .link-internal > * {
@@ -2060,4 +2062,41 @@ nav.pagination .next {
 
 .DocSearch svg {
     margin: 0 !important;
+}
+
+.ag-banner {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    padding: 20px 0px;
+    border-radius: 4px;
+    margin-bottom: 36px;
+    background: url("/images/bottom-cta-background.jpg") no-repeat center center;
+    background-position: center;
+    color: var(--gray-50)
+}
+
+.ag-banner .title {
+    font-size: 1rem;
+    font-weight: 600;
+    padding-bottom: 4px;
+}
+
+.ag-banner .ag-info {
+    padding-left: 24px;
+    padding-bottom: 4px;
+}
+.ag-banner a {
+    margin-left: 24px;
+    font-weight: bold;
+    color: #fff;
+    opacity: 1;
+}
+
+.ag-banner a:hover{
+    color: #fff;
+}
+.ag-banner .logo {
+    height: 50px !important;
+    width: 200px !important;
 }
