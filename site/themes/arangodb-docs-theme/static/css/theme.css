@@ -2086,11 +2086,11 @@ nav.pagination .next {
 .ag-banner a {
     margin-left: 24px;
     font-weight: bold;
-    color: #fff;
+    color: white;
 }
 
 .ag-banner a:hover{
-    color: #fff;
+    color: white;
 }
 .ag-banner .logo {
     height: 50px !important;
