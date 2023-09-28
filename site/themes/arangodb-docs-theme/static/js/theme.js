@@ -424,10 +424,15 @@ window.addEventListener("scroll", () => {
 });
 
 
-const goToTop = () => {
+const goToTop = (event) => {
+    if (event != undefined)       // Comes from the back-to-top button
+      window.scrollTo({top: 0});
+
     if (window.location.hash.length == 0)
         window.scrollTo({top: 0});
 };
+
+
 
 function goToHomepage(event){
     event.preventDefault();
