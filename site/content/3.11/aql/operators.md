@@ -9,21 +9,6 @@ archetype: default
 ---
 {{< description >}}
 
-{{< expand title="Title with **Markdown**" >}}
-Content can contain relative links! [Link](../graphs/enterprisegraphs/management.md#remove-a-graph)
-{{< /expand >}}
-
-{{< tabs groupid="test" >}}
-{{< tab name="Foo" >}}
-Relative link to different page: [Link](../graphs/enterprisegraphs/management.md#examples)
-
-Anchor link: [Anchor](#array-contraction)
-{{< /tab >}}
-{{< tab name="Bar" >}}
-_Intentionally left blank_
-{{< /tab >}}
-{{< /tabs >}}
-
 ## Comparison operators
 
 Comparison (or relational) operators compare two operands. They can be used with
