@@ -348,8 +348,8 @@ function aliazeLinks(parentSelector, linkSelector) {
 }
 
 function setVersionSelector(version) {
-  for(let option of versionSelector.options) {
-    if (option.value == urlVersion) {
+  for(let option of document.getElementById("arangodb-version").options) {
+    if (option.value == version) {
       option.selected = true;
     }
   }
@@ -378,7 +378,7 @@ function getCurrentVersion() {
   }
 
   localStorage.setItem('docs-version', urlVersion);
-  setVersionSelector(document.getElementById("arangodb-version"));
+  setVersionSelector(urlVersion);
 }
 
 
