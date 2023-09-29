@@ -164,6 +164,7 @@ function loadPage(target) {
     url: href,
     success: function(newDoc) {
       replaceArticle(href, newDoc)
+      scrollToFragment();
       initArticle(href);
       return true;
     },
@@ -220,7 +221,7 @@ $(window).on('hashchange', function (e) {
   _hsq.push(['setPath', window.location.href]);
   _hsq.push(['trackPageView']);
 
-  scrollToOpenApiFragment()
+  scrollToFragment()
 });
 
 
@@ -434,7 +435,7 @@ function hideEmptyOpenapiDiv() {
     }
  }
 
- function scrollToOpenApiFragment() {
+ function scrollToFragment() {
   fragment = location.hash.replace("#", "")
   if (fragment) {
     var element = document.getElementById(fragment);
@@ -512,9 +513,10 @@ function goToHomepage(event){
 }
 
 function copyURI(evt) {
-    navigator.clipboard.writeText(evt.target.closest("a").getAttribute('href')).then(() => {
-    }, () => {
-      console.log("clipboard copy failed")
+    navigator.clipboard.writeText(
+      window.location.origin + evt.target.closest("a").getAttribute('href')
+    ).then(() => {}, () => {
+      console.log("clipboard copy failed");
     });
 }
 
@@ -560,5 +562,4 @@ window.onload = () => {
 
     $('#show-page-loading').hide();
     $('#page-wrapper').css("opacity", "1")
-    scrollToOpenApiFragment();
 }

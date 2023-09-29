@@ -47,7 +47,7 @@ After the creation of the **Private Endpoint Service**, you should receive a
 service attachment that you need during the creation of your private endpoint(s).
 
 1. Open the deployment you want to change.
-2. On the **Overview** tab, click the **Edit** button with an ellipsis (`…`)
+2. In the **Quick start** section, click the **Edit** button with an ellipsis (`…`)
    icon. 
 3. Click **Change to private endpoint** in the menu.
    ![ArangoGraph Deployment Private Endpoint Menu](../../../images/arangograph-gcp-change.png)
@@ -59,7 +59,7 @@ service attachment that you need during the creation of your private endpoint(s)
    Continue with or without alternate DNS names entered by clicking **Next**.
    The names can be changed later.
 7. Click **Confirm Settings** to change the deployment.
-8. Back on the **Overview** tab, scroll down to the **Private Endpoint** section
+8. Back in the **Overview** page, scroll down to the **Private Endpoint** section
    that is now displayed to see the connection status and to change the
    configuration.
 9. ArangoGraph configures a **Private Endpoint Service**. As soon as the
@@ -91,7 +91,7 @@ the ArangoGraph dashboard to administrate it. To revert to a public deployment,
 please contact support via **Request help** in the help menu.
 
 1. Open the deployment you want to change.
-2. On the **Overview** tab, click the **Edit** button with an ellipsis (`…`)
+2. In the **Quick start** section, click the **Edit** button with an ellipsis (`…`)
    icon.
 3. Click **Change to private endpoint** in the menu.
    ![ArangoGraph Deployment Private Endpoint Menu](../../../images/arangograph-deployment-private-endpoint-menu.png)
@@ -104,7 +104,7 @@ please contact support via **Request help** in the help menu.
    Continue with or without Alternate DNS names entered by clicking **Next**.
    They can be changed later.
 7. Click **Confirm Settings** to change the deployment.
-8. Back on the **Overview** tab, scroll down to the **Private Endpoint** section
+8. Back in the **Overview** page, scroll down to the **Private Endpoint** section
    that is now displayed to see the connection status and to change the
    configuration.
 9. ArangoGraph configures a **Private Endpoint Service**. As soon as the **Azure alias**
@@ -146,7 +146,7 @@ to your VPC. The ArangoGraph Insights Platform configures a **Private Endpoint S
 that automatically connects to private endpoints that are created in those principals. 
 
 1. Open the deployment you want to change.
-2. In the **Overview** tab, click the **Edit** button with an ellipsis (`…`)
+2. In the **Quick start** section, click the **Edit** button with an ellipsis (`…`)
    icon.
 3. Click **Change to private endpoint** in the menu.
    ![ArangoGraph Deployment AWS Change to Private Endpoint](../../../images/arangograph-aws-change-to-private-endpoint.png)
@@ -168,7 +168,7 @@ that automatically connects to private endpoints that are created in those princ
    ![ArangoGraph AWS Private Endpoint Alternate DNS](../../../images/arangograph-aws-private-endpoint-dns.png)
 7. Confirm that you want to use a private endpoint for your deployment by
    clicking **Confirm Settings**.
-8. Back in the **Overview** tab, scroll down to the **Private Endpoint** section
+8. Back in the **Overview** page, scroll down to the **Private Endpoint** section
    that is now displayed to see the connection status and change the
    configuration, if needed.
    ![ArangoGraph AWS Private Endpoint Overview](../../../images/arangograph-aws-private-endpoint-overview.png)
