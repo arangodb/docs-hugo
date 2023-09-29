@@ -347,20 +347,38 @@ function aliazeLinks(parentSelector, linkSelector) {
   });
 }
 
-function getCurrentVersion(url) {
-    var urlVersion = "stable";
+function setVersionSelector(version) {
+  for(let option of versionSelector.options) {
+    if (option.value == urlVersion) {
+      option.selected = true;
+    }
+  }
+}
 
-    if (window.location.pathname.split("/").length > 0) {
-        urlVersion = getVersionInfo(getVersionByURL()).name
+function handleOldDocsVersion(version) {
+    var legacyUrl = "https://www.arangodb.com/docs/" + version + "/";
+    var handle = window.open(legacyUrl, "_blank");
+    if (!handle) window.location.href = legacyUrl;
+    return;
+}
+
+function getCurrentVersion() {
+  var urlVersion = stableVersion.name
+
+  if (window.location.pathname.split("/").length > 0) {
+    newVersion = getVersionByURL()
+
+    if (newVersion === "3.8" || newVersion === "3.9") {
+      handleOldDocsVersion(newVersion)
+      versionSelector.value = urlVersion;
+      return;
     }
-    localStorage.setItem('docs-version', urlVersion);
-    
-    var versionSelector = document.getElementById("arangodb-version");
-    for(let option of versionSelector.options) {
-      if (option.value == urlVersion) {
-        option.selected = true;
-      }
-    }
+
+    urlVersion = getVersionInfo(getVersionByURL()).name
+  }
+
+  localStorage.setItem('docs-version', urlVersion);
+  setVersionSelector(document.getElementById("arangodb-version"));
 }
 
 
@@ -370,9 +388,7 @@ function changeVersion() {
     var newVersion  = versionSelector.options[versionSelector.selectedIndex].value;
 
     if (newVersion === "3.8" || newVersion === "3.9") {
-        var legacyUrl = "https://www.arangodb.com/docs/" + newVersion + "/";
-        var handle = window.open(legacyUrl, "_blank");
-        if (!handle) window.location.href = legacyUrl;
+        handleOldDocsVersion(newVersion)
         versionSelector.value = oldVersion;
         return;
     }
