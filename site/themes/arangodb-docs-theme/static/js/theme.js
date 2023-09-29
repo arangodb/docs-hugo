@@ -512,9 +512,10 @@ function goToHomepage(event){
 }
 
 function copyURI(evt) {
-    navigator.clipboard.writeText(evt.target.closest("a").getAttribute('href')).then(() => {
-    }, () => {
-      console.log("clipboard copy failed")
+    navigator.clipboard.writeText(
+      window.location.origin + evt.target.closest("a").getAttribute('href')
+    ).then(() => {}, () => {
+      console.log("clipboard copy failed");
     });
 }
 
