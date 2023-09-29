@@ -264,6 +264,7 @@ def workflow_generate_launch_command(config):
 export ENV=\"circleci\"\n \
 export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app\n \
 export HUGO_ENV=examples\n \
+export OVERRIDE=<< pipeline.parameters.override >>\n \
 export GENERATORS='<< parameters.generators >>'\n"
 
     for i in range(len(versions)):
@@ -321,10 +322,12 @@ def workflow_commit_generated_download_data(config):
     for i in range(len(versions)):
         version = versions[i]["name"]
         cmd = f"{cmd}\n\
+set +e\n\
 wget $base_url/{version}-generated.tar\n\
 tar -xf {version}-generated.tar -C docs-hugo/site/data/\n\
+set -e\n\
 "
-    config["commands"]["store-generated-data"]["steps"][0]["run"]["command"] = cmd
+    config["commands"]["download-generated-data"]["steps"][0]["run"]["command"] = cmd
 
     return config
 
