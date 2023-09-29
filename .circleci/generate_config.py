@@ -184,8 +184,8 @@ def workflow_generate_scheduled(config):
 
     if args.workflow == "generate-scheduled":
         generators = "metrics error-codes options optimizer"
-    elif args.workflow == "generate-oasisctl":
-        generators = "oasisctl"
+    else:
+        generators = " ".join(args.workflow.split("-")[1:])
 
     generateJob = {
         "build-with-generated": {
