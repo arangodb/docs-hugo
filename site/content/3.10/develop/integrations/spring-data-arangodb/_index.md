@@ -22,7 +22,7 @@ Spring Data ArangoDB is compatible with:
 {{< tabs groupid="spring-data" >}}
 
 {{< tab name="Version 4" >}}
-- all the still supported Spring Boot (3.x and 2.x) [versions](https://spring.io/projects/spring-boot#support)
+- all the still supported Spring Boot 3.x [versions](https://spring.io/projects/spring-boot#support)
   and related Spring Framework versions
 - all the still supported ArangoDB [versions](https://www.arangodb.com/eol-notice)
 {{< /tab >}}

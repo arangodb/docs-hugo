@@ -13,7 +13,7 @@
     </div>
     {{- range $idx, $tab := $tabs }}
       <div data-tab-item="{{ .name }}" data-tab-group="{{ $groupid }}" class="tab-item {{ cond (eq $idx 0) "selected" ""}}">
-        {{- .content | markdownify -}}
+        {{- .content | $context.Page.RenderString -}}
       </div>
     {{- end }}
   </div>
