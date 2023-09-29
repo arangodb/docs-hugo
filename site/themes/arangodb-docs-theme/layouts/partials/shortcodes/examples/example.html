@@ -29,7 +29,7 @@
             {{ if $context.Page.Store.Get $name }}
                 {{ $response := .response | base64Decode | transform.Unmarshal }}
                 {{- partial "shortcodes/examples/render.html" (dict
-                "context" .
+                "context" $context
                 "content" $response
                 "options" $options
                 "language" $language
@@ -73,7 +73,7 @@
     {{ with $cacheFound }}
         {{ $response := .response | base64Decode | transform.Unmarshal }}
         {{- partial "shortcodes/examples/render.html" (dict
-        "context" .
+        "context" $context
         "content" $response
         "options" $options
         "language" $language

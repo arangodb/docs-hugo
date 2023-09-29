@@ -4,6 +4,9 @@ menuTitle: '3.12'
 weight: 0
 layout: default
 ---
+
+{{< cloudbanner >}}
+
 {{< cards >}}
 
 {{% card title="What is ArangoDB?" link="introduction/about-arangodb/" %}}
