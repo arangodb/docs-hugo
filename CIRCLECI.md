@@ -95,16 +95,29 @@ arguments are invoked:
 
 ### `cache override`
 
-An example cache can be overriden with the `override` CircleCI parameter in the `generate` workflow
+You can override the cache of an example with the `override` CircleCI parameter
+in the `generate` workflow.
 
 The override parameter is a comma-separated string of regexes.
 
-The comma will be replaced by `|` creating an OR of all the regexes in the `override` parameter.
+The comma will be replaced by `|` and creates an `OR` of all the regexes in the
+`override` parameter.
 
-The table example value will override all examples having `http` or starting with `aql` in the. example name
+The example below overrides all examples having `http` or starting with `aql` in
+the example name. You can also specify the name of the example to override the
+cache for, i.e. `AqlDateTimeToLocal_3`. 
+
+Note that the override is valid for all versions that are specified using the
+`arangodb` parameters. You can override the example output for a single version
+or for multiple versions.
 
 | Name | Value |
 |:-----|:------|
+| `workflow` | `generate` |
+| `arangodb-3_10` | `{string in PR Template at 3.10}` |
+| `arangodb-3_11` | `{string in PR Template at 3.11}` |
+| `generators` | `examples` |
+| `commit-generated` | `true` |
 | `override` | `http,^aql.*` |
 
 ## Release workflow (ArangoDB)
