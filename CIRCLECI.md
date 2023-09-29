@@ -93,6 +93,20 @@ arguments are invoked:
 | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
 | `commit-generated` | `true` |
 
+### `cache override`
+
+An example cache can be overriden with the `override` CircleCI parameter in the `generate` workflow
+
+The override parameter is a comma-separated string of regexes.
+
+The comma will be replaced by `|` creating an OR of all the regexes in the `override` parameter.
+
+The table example value will override all examples having `http` or starting with `aql` in the. example name
+
+| Name | Value |
+|:-----|:------|
+| `override` | `http,^aql.*` |
+
 ## Release workflow (ArangoDB)
 
 To run a release job for a new ArangoDB patch release (e.g. 3.11.4), follow the
