@@ -1657,7 +1657,11 @@ blockquote p {
 
 .expand-label {
     font-size: 1.1rem;
-
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .expand-label::before {
