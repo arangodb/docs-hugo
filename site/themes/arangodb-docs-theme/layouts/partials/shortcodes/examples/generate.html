@@ -21,7 +21,7 @@
 {{ if $remote }}
     {{ $response := unmarshal $remote.Content }}
     {{- partial "shortcodes/examples/render.html" (dict
-    "context" .
+    "context" $context
     "content" $response
     "options" $options
     "language" $language

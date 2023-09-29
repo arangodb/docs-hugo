@@ -2,8 +2,6 @@
   "page" .Page
 ) }}
 
-{{ warnf "PAGE %s" . }}
-
 
 <!DOCTYPE html>
 <html lang="{{ .Page.Language | default "en" }}">
@@ -11,12 +9,6 @@
   {{- partial "head.html" . }}
 
 <body>
-    <div id="show-page-loading">
-        <div class="logo-loading-page">
-            <img src="/images/logo_main.png" alt="ArangoDB" title="" style="position: fixed; top: 0px; left: 0; right: 0; bottom: 154px; margin: auto; width: 232px !important;"></a>
-        </div>
-        <div class="loader"></div>
-    </div>
     <div id="page-wrapper" class="page_content_splash" style="height: auto;opacity: 0;">
         <section id="page-main">
             <section class="page-container" id="page-container">

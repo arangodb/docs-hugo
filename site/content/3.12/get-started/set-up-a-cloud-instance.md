@@ -67,10 +67,10 @@ used for multiple accounts.
 ## Get a Deployment up and Running
 
 1. The first card in the ArangoGraph Dashboard has a dropdown menu to select a cloud
-   provider and region. Pick one, click __Create deployment__ and accept the
-   terms and conditions.
+   provider and region. Pick one and click __Create deployment__. You can also select
+   your intended use-case.
 
-   ![ArangoGraph Dashboard](../../images/arangograph-dashboard.png)
+   ![ArangoGraph Dashboard](../../images/arangograph-dashboard-free-tier.png)
 
    You can also [create a deployment](../arangograph/deployments/_index.md#how-to-create-a-new-deployment)
    manually, if you want fine-grained configuration options.
@@ -91,7 +91,7 @@ used for multiple accounts.
 
    ![ArangoGraph Deployment Ready](../../images/arangograph-deployment-ready.png)
 
-4. Click the __Open endpoint__ button to open the ArangoDB web interface.
+4. Click the __Open web console__ button to open the ArangoDB web interface.
 
 5. You can install example datasets and follow the accompanying guides to get
    started with ArangoDB and its query language. In the ArangoGraph dashboard, click

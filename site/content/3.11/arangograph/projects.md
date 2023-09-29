@@ -24,12 +24,13 @@ its projects and deployments.
 
 ## How to create a new project
 
-1. Click __Overview__ in the __Projects__ section of the main navigation.
-2. Click the __New project__ button.
-3. Enter a name and optionally a description for your new project.
-4. Click the __Create__ button.
-5. You will be taken to the project page.
-6. To change the name or description, click either at the top of the page.
+1. In the main navigation, click the __Dashboard__ icon.
+2. Click __Projects__ in the __Dashboard__ section.
+3. Click the __New project__ button.
+4. Enter a name and optionally a description for your new project.
+5. Click the __Create__ button.
+6. You will be taken to the project page.
+7. To change the name or description, click either at the top of the page.
 
 ![ArangoGraph New Project](../../images/arangograph-new-project.png)
 
@@ -51,16 +52,9 @@ Deleting a project will delete contained deployments, certificates & IP allowlis
 This operation is **irreversible**.
 {{< /danger >}}
 
-1. Click __Overview__ in the __Projects__ section of the main navigation.
-2. Click the __recycle bin__ icon in the __Actions__ column.
+1. Click __Projects__ in the __Dashboard__ section of the main navigation.
+2. Click the __recycle bin__ icon in the __Actions__ column of the project to be deleted.
 3. Enter `Delete!` to confirm and click __Yes__.
-
-Alternatively, you can also delete a project via the project page:
-
-1. Click a project name in the __Projects__ section of the main navigation.
-2. Click the __Danger zone__ tab.
-3. Click the __Delete project...__ button.
-4. Enter `Delete!` to confirm and click __Yes__.
 
 {{< tip >}}
 If the project has a locked deployment, you need to [unlock](security-and-access-control/_index.md#locked-resources)
@@ -75,7 +69,7 @@ It is optional, but strongly recommended to do so.
 You can create an allowlist as part of a project.
 
 1. Click a project name in the __Projects__ section of the main navigation.
-2. Click the __Security__ tab.
+2. Click the __Security__ entry.
 3. In the __IP allowlists__ section, click:
    - The __New IP allowlist__ button to create a new allowlist.
      When creating or editing a list, you can add comments

@@ -164,6 +164,7 @@ function loadPage(target) {
     url: href,
     success: function(newDoc) {
       replaceArticle(href, newDoc)
+      scrollToFragment();
       initArticle(href);
       return true;
     },
@@ -220,7 +221,7 @@ $(window).on('hashchange', function (e) {
   _hsq.push(['setPath', window.location.href]);
   _hsq.push(['trackPageView']);
 
-  scrollToOpenApiFragment()
+  scrollToFragment()
 });
 
 
@@ -434,7 +435,7 @@ function hideEmptyOpenapiDiv() {
     }
  }
 
- function scrollToOpenApiFragment() {
+ function scrollToFragment() {
   fragment = location.hash.replace("#", "")
   if (fragment) {
     var element = document.getElementById(fragment);
@@ -500,10 +501,15 @@ window.addEventListener("scroll", () => {
 });
 
 
-const goToTop = () => {
+const goToTop = (event) => {
+    if (event != undefined)       // Comes from the back-to-top button
+      window.scrollTo({top: 0});
+
     if (window.location.hash.length == 0)
         window.scrollTo({top: 0});
 };
+
+
 
 function goToHomepage(event){
     event.preventDefault();
@@ -512,21 +518,22 @@ function goToHomepage(event){
 }
 
 function copyURI(evt) {
-    navigator.clipboard.writeText(evt.target.closest("a").getAttribute('href')).then(() => {
-    }, () => {
-      console.log("clipboard copy failed")
+    navigator.clipboard.writeText(
+      window.location.origin + evt.target.closest("a").getAttribute('href')
+    ).then(() => {}, () => {
+      console.log("clipboard copy failed");
     });
 }
 
 function toggleExpandShortcode(event) {
-    var t = $(event.target)
-    if(t.parent('.expand-expanded.expand-marked').length){
-        t.next().css('display','none') 
-    }else if(t.parent('.expand-marked').length){
-        t.next().css('display','block') }
-    else{ 
-        t.next('.expand-content').slideToggle(100); 
-    } 
+    var t = $(event.target.closest("a"));
+    if (t.parent('.expand-expanded.expand-marked').length) {
+        t.next().css('display','none');
+    } else if (t.parent('.expand-marked').length) {
+        t.next().css('display','block')
+    } else {
+        t.next('.expand-content').slideToggle(100);
+    }
     t.parent().toggleClass('expand-expanded');
 }
 
@@ -558,7 +565,5 @@ window.onload = () => {
         $('#sidebar.mobile').removeClass("active");
     }
 
-    $('#show-page-loading').hide();
     $('#page-wrapper').css("opacity", "1")
-    scrollToOpenApiFragment();
 }
