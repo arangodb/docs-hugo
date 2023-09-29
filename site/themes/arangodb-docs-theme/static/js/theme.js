@@ -135,12 +135,12 @@ function styleImages() {
   }
 }
 
-function loadNotFoundPage(href) {
+function loadNotFoundPage() {
   $.get({
     url: window.location.origin + "/notfound.html",
     success: function(newDoc) {
-      replaceArticle(href, newDoc)
-      initArticle(href);
+      replaceArticle("", newDoc)
+      initArticle("");
       return true;
     },
   });
@@ -149,6 +149,11 @@ function loadNotFoundPage(href) {
 
 function loadPage(target) {
   var href = target;
+
+  if (getVersionInfo(getVersionByURL()) == undefined) {
+    loadNotFoundPage();
+    return;
+  }
 
   getCurrentVersion(href);
   renderVersion();
@@ -331,7 +336,7 @@ function getVersionInfo(version) {
     if (v.name == version || v.alias == version) return v;
   }
 
-  return stableVersion;
+  return undefined;
 }
 
 function getVersionByURL() {
@@ -368,13 +373,18 @@ function getCurrentVersion() {
   if (window.location.pathname.split("/").length > 0) {
     newVersion = getVersionByURL()
 
+    if (getVersionInfo(newVersion) == undefined) {
+      loadNotFoundPage();
+      return;
+    }
+
     if (newVersion === "3.8" || newVersion === "3.9") {
       handleOldDocsVersion(newVersion)
       versionSelector.value = urlVersion;
       return;
     }
 
-    urlVersion = getVersionInfo(getVersionByURL()).name
+    urlVersion = getVersionInfo(newVersion).name
   }
 
   localStorage.setItem('docs-version', urlVersion);
