@@ -1,3 +1,4 @@
+{{- $context := . }}
 {{- $program := .Get "name" }}
 {{- $pageVersion := .Page.Store.Get "versionShort" }}
 {{- $dataFolderByVersion := index site.Data $pageVersion }}
@@ -26,17 +27,18 @@
 
   {{- $section := index $optionsMap "General" }}
   {{- if gt ($section | len) 0 }}
-    {{- template "render-section" (dict "name" "General" "section" $section) }}
+    {{- template "render-section" (dict "name" "General" "section" $section "context" $context) }}
   {{- end }}
 
   {{- range $name, $section := $optionsMap }}
     {{- if ne $name "General" }}
-      {{- template "render-section" (dict "name" $name "section" $section) }}
+      {{- template "render-section" (dict "name" $name "section" $section "context" $context) }}
     {{- end }}
   {{- end }}
 {{- end }}
 
 {{- define "render-section" }}
+{{- $context := .context }}
 ## {{ .name }}
 
 {{ range $option := .section }}
@@ -96,6 +98,7 @@ Effective on {{ delimit . ", " " and " }} only.
 
 {{ with $option.longDescription }}
   {{- partial "shortcodes/expand.html" (dict
+    "context" $context
     "content" .
     "open"    "open"
     "title"   "Show details"

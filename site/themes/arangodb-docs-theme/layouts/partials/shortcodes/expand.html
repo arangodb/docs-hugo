@@ -1,6 +1,6 @@
-{{- $content := .content | markdownify }}
+{{- $context := .context }}
+{{- $content := .content | $context.Page.RenderString }}
 {{- $title := .title | default (T "Expand-title") }}
-{{- $description := .description }}
 {{- $expanded := .open | default false }}
 {{- if eq (printf "%T" $expanded) "string" }}
   {{- $expanded = (eq $expanded "true") }}
@@ -8,9 +8,8 @@
 {{- with $content }}
 <div class="expand{{- if $expanded }} expand-expanded{{ end }}">
 {{/* things are getting complicated when search tries to open the expand box while jquery sets the display CSS on the element */ -}}
-<a class="expand-label" onclick="toggleExpandShortcode(event)">{{ $title }}</a>
+<a class="expand-label" onclick="toggleExpandShortcode(event)">{{ $title | markdownify }}</a>
 <div class="expand-content" style="display: {{ if $expanded }}block{{ else }}none{{ end }};">
-{{ $description | markdownify }}
 {{ $content | safeHTML }}
 </div>
 </div>

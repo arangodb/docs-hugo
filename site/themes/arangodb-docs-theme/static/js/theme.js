@@ -374,14 +374,14 @@ function getCurrentVersion() {
   if (window.location.pathname.split("/").length > 0) {
     newVersion = getVersionByURL()
 
-    if (getVersionInfo(newVersion) == undefined) {
-      loadNotFoundPage();
-      return;
-    }
-
     if (newVersion === "3.8" || newVersion === "3.9") {
       handleOldDocsVersion(newVersion)
       versionSelector.value = urlVersion;
+      return;
+    }
+
+    if (getVersionInfo(newVersion) == undefined) {
+      loadNotFoundPage();
       return;
     }
 
@@ -501,10 +501,15 @@ window.addEventListener("scroll", () => {
 });
 
 
-const goToTop = () => {
+const goToTop = (event) => {
+    if (event != undefined)       // Comes from the back-to-top button
+      window.scrollTo({top: 0});
+
     if (window.location.hash.length == 0)
         window.scrollTo({top: 0});
 };
+
+
 
 function goToHomepage(event){
     event.preventDefault();
@@ -521,14 +526,14 @@ function copyURI(evt) {
 }
 
 function toggleExpandShortcode(event) {
-    var t = $(event.target)
-    if(t.parent('.expand-expanded.expand-marked').length){
-        t.next().css('display','none') 
-    }else if(t.parent('.expand-marked').length){
-        t.next().css('display','block') }
-    else{ 
-        t.next('.expand-content').slideToggle(100); 
-    } 
+    var t = $(event.target.closest("a"));
+    if (t.parent('.expand-expanded.expand-marked').length) {
+        t.next().css('display','none');
+    } else if (t.parent('.expand-marked').length) {
+        t.next().css('display','block')
+    } else {
+        t.next('.expand-content').slideToggle(100);
+    }
     t.parent().toggleClass('expand-expanded');
 }
 
@@ -560,6 +565,5 @@ window.onload = () => {
         $('#sidebar.mobile').removeClass("active");
     }
 
-    $('#show-page-loading').hide();
     $('#page-wrapper').css("opacity", "1")
 }
