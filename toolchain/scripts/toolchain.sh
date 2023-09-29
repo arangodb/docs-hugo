@@ -34,7 +34,7 @@ echo "[INIT] Environment variables:"
 
 ## if no generators set, defaults to all
 if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
-  GENERATORS="examples metrics error-codes options optimizer oasisctl"
+  GENERATORS="examples metrics error-codes options optimizer oasisctl kubectl"
 fi
 
 ## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
@@ -62,7 +62,7 @@ GENERATORS=$(yq -r '.generators' ../docker/config.yaml)
 
 
 if [ "$GENERATORS" == "" ]; then
-  GENERATORS="examples metrics error-codes options optimizer oasisctl"
+  GENERATORS="examples metrics error-codes options optimizer oasisctl kubectl"
 fi
 
 
@@ -407,6 +407,10 @@ function generators_from_source() {
   if [[ $GENERATORS == *"oasisctl"* ]]; then
     generate_oasisctl "$version"
   fi
+
+    if [[ $GENERATORS == *"kubectl"* ]]; then
+    generate_kubectl "$version"
+  fi
 }
 
 
@@ -549,6 +553,20 @@ function generate_oasisctl() {
   echo "</li>" >> /home/summary.md
 
   log "[generate_oasisctl] Done"
+}
+
+function generate_kubectl() {
+  echo "<li><strong>KubeCTL</strong>" >> /home/summary.md
+
+  version=$1
+
+  log "[generate_kubectl] Generate KubeCTL docs"
+  log "[generate_kubectl] To Be Implemented"
+
+  echo "&#x2713;" >> /home/summary.md
+  echo "</li>" >> /home/summary.md
+
+  log "[generate_kubectl] Done"
 }
 
 
