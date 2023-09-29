@@ -373,14 +373,14 @@ function getCurrentVersion() {
   if (window.location.pathname.split("/").length > 0) {
     newVersion = getVersionByURL()
 
-    if (getVersionInfo(newVersion) == undefined) {
-      loadNotFoundPage();
-      return;
-    }
-
     if (newVersion === "3.8" || newVersion === "3.9") {
       handleOldDocsVersion(newVersion)
       versionSelector.value = urlVersion;
+      return;
+    }
+
+    if (getVersionInfo(newVersion) == undefined) {
+      loadNotFoundPage();
       return;
     }
 
