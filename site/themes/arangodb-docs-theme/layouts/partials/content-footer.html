@@ -62,10 +62,10 @@
 <span class="prev">
   {{ with $prev }}
     {{- if eq (len .Ancestors) 1 }}
-      <a class="nav nav-prev link-internal" href="" title="">
+      <a class="nav nav-prev link" href="" title="">
       </a>
     {{ else }}
-        <a class="nav nav-prev link-internal" href="{{.RelPermalink}}" title="{{.Params.menuTitle}}">
+        <a class="nav nav-prev link" href="{{.RelPermalink}}" title="{{.Params.menuTitle}}">
           <i class="fas fa-chevron-left fa-fw"></i><p>{{.Params.menuTitle | markdownify}}</p></a>
         {{- end}}
   {{ end }}
@@ -74,7 +74,7 @@
 
 <span class="next">
   {{ with $next }}
-            <a class="nav nav-next link-internal" href="{{.RelPermalink}}" title="{{.Params.menuTitle}}">
+            <a class="nav nav-next link" href="{{.RelPermalink}}" title="{{.Params.menuTitle}}">
               <p>{{.Params.menuTitle | markdownify}}</p><i class="fas fa-chevron-right fa-fw"></i></a>
           {{- end }}
 </span>

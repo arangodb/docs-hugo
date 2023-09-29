@@ -144,7 +144,11 @@ function loadPage(target) {
 }
 
 function internalLinkListener() {
-  $('.link-internal').click(function(event) {
+  $('.link').click(function(event) {
+    if (event.target.getAttribute("target")) {
+      // external link
+      return;
+    }
     event.preventDefault();
     console.log(event.target)
     updateHistory("", event.target.getAttribute('href'))
