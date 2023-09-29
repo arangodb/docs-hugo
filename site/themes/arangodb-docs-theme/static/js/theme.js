@@ -482,7 +482,6 @@ window.onload = () => {
         $('#sidebar.mobile').removeClass("active");
     }
 
-    $('#show-page-loading').hide();
     $('#page-wrapper').css("opacity", "1")
     scrollToOpenApiFragment();
 }
