@@ -144,6 +144,10 @@ button, input, optgroup, select, textarea {
     margin-bottom: 15px;
 }
 
+.button {
+    background: transparent;
+}
+
 .button__wrapper {
     border-radius: 4px;
     text-align: center;
