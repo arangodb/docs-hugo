@@ -8,8 +8,11 @@ import (
 	"io/ioutil"
 	"net/http"
 	"regexp"
+	"strconv"
 	"strings"
 
+	"github.com/arangodb/docs/migration-tools/arangoproxy/internal/utils"
+	"github.com/dlclark/regexp2"
 	"gopkg.in/yaml.v3"
 )
 
@@ -88,6 +91,10 @@ func ParseExample(request io.Reader, headers http.Header) (Example, error) {
 	optionsYaml.Position = headers.Get("Codeblock-Path")
 	optionsYaml.SaveCache = headers.Get("Cache")
 	optionsYaml.Version = headers.Get("Version")
+
+	overrideRE := regexp2.MustCompile(Conf.Override, 0)
+
+	optionsYaml.SaveCache = strconv.FormatBool(utils.Regexp2StringHasMatch(overrideRE, optionsYaml.Name))
 
 	code := strings.Replace(string(decodedRequest), string(options), "", -1)
 
