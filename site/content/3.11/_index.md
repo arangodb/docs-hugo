@@ -5,6 +5,10 @@ weight: 0
 layout: default
 ---
 
+{{< button text="Sign Up" color="green" link="https://docs.arangodb.com" position="right" >}}
+Sign up
+{{< /button >}}
+
 {{< cloudbanner >}}
 {{< cards >}}
 

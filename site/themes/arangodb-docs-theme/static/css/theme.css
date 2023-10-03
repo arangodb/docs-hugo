@@ -144,6 +144,36 @@ button, input, optgroup, select, textarea {
     margin-bottom: 15px;
 }
 
+.button__wrapper {
+    border-radius: 4px;
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    width: fit-content;
+    height: 2rem;
+}
+
+.button__wrapper__green {
+    background-color: var(--HEADERS-COLOR);
+}
+
+.button__wrapper__grey {
+    background-color: var(--gray-200);
+}
+
+.button__link {
+    padding: 5px 1em 5px 1em;
+    vertical-align: middle;
+    color: var(--gray-200);
+}
+
+.button__wrapper:hover,
+.button__wrapper:active {
+    color: var(--gray-950);
+    opacity: 0.8;
+    transition: 0.5s;
+}
 
 ul, ol {
     margin-bottom: 20px;
