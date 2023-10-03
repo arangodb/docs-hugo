@@ -551,10 +551,13 @@ window.onload = () => {
 
     $("#menu-iframe").replaceWith(content);
 
+
     getCurrentVersion(window.location.href);
     menuEntryClickListener();
     renderVersion();
     loadPage(window.location.href)
+
+    window.setupDocSearch(getVersionInfo(getVersionByURL()).name);
 
     content.addEventListener("click", menuToggleClick);
 
