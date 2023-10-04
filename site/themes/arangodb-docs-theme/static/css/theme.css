@@ -179,6 +179,11 @@ button, input, optgroup, select, textarea {
     transition: 0.5s;
 }
 
+.deactivated {
+    pointer-events: none;
+    cursor: none;
+}
+
 ul, ol {
     margin-bottom: 20px;
     padding: 0;

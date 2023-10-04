@@ -7,7 +7,7 @@ layout: default
 
 Normal button
 
-{{< button text="Sign Up" color="green" link="https://docs.arangodb.com" position="right" >}}
+{{< button text="Sign Up" color="green" position="right" >}}
 Sign up
 {{< /button >}}
 
