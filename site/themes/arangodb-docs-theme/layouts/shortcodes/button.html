@@ -4,8 +4,8 @@
 
 <button class='button {{ if eq $link "" }} deactivated {{ end }}'>
 <div class="button__wrapper button__wrapper__{{ $color }}" style='{{ if eq $position "center" }} margin: auto; {{ else if eq $position "right" }} margin-left: auto; {{ else }} {{ end }}'>
-    <a href="{{ $link }}" rel="noreferrer" class='button__link {{ if eq $link "" }} deactivated {{ end }}'>
-        <span>{{- .Inner | safeHTML -}}</span>
+    <a href="{{ $link }}" target="_blank" rel="noopener noreferrer" class='button__link {{ if eq $link "" }} deactivated {{ end }}'>
+        <span class='button__text {{ if eq $link "" }} deactivated {{ end }}'>{{- .Inner | safeHTML -}}</span>
     </a>
 </div>
 </button>

@@ -169,19 +169,18 @@ button, input, optgroup, select, textarea {
 .button__link {
     padding: 5px 1em 5px 1em;
     vertical-align: middle;
-    color: var(--gray-200);
 }
 
-.button__wrapper:hover,
-.button__wrapper:active {
-    color: var(--gray-950);
-    opacity: 0.8;
-    transition: 0.5s;
+.button__text {
+    border-bottom: 2px solid var(--green-600);
+    font-weight: bold;
+    color: white;
 }
 
 .deactivated {
     pointer-events: none;
     cursor: none;
+    border-bottom: 0;
 }
 
 ul, ol {
