@@ -1013,7 +1013,7 @@ unlimited, so an arbitrary amount of databases can be created.
 
 ### Cluster-internal connectivity checks
 
-<small>Introduced in: v3.11.4</small>
+<small>Introduced in: v3.11.5</small>
 
 This feature makes Coordinators and DB-Servers in a cluster periodically send
 check requests to each other, in order to check if all servers can connect to
