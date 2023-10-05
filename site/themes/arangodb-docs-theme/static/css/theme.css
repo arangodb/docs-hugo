@@ -209,6 +209,24 @@ ul ul, ul ol, ol ul, ol ol {
     color: var(--gray-950);
 }
 
+.link-internal:has(code) {
+    border-bottom: 2px solid var(--green-600);
+    font-size: 14px;
+    overflow: auto;
+    word-wrap: break-word;
+    margin: 0;
+    padding: 4px;
+    word-break: break-word;
+    border-radius: 0px;
+    background: var(--gray-100);
+    box-shadow: none;
+    color: var(--gray-950);
+}
+.link-internal > code {
+    background-color: transparent;
+    border: none;
+}
+
 .link-internal > i {
     color: var(--gray-950);
     text-decoration: none;
@@ -1229,7 +1247,7 @@ header .logo {
     font-weight: bold;
     --tw-bg-opacity: 0.2;
     background-color: var(--gray-100);
-    border-radius: 0.75rem;
+    border-radius: 4px;
 }
 
 #TableOfContents .is-active {
@@ -1422,7 +1440,6 @@ li > code {
 .copy-to-clipboard-button {
     position: absolute;
     right: 16px;
-    display: flex;
     align-items: center;
     justify-content: center;
     position: absolute;
@@ -1433,6 +1450,7 @@ li > code {
     margin: 4px;
     border-radius: 1px;
     opacity: 0.7;
+    display: none;
 }
 
 .copy-to-clipboard-button:hover{
@@ -1474,10 +1492,14 @@ li > code {
     white-space: break-spaces;
     color: var(--CODEBLOCK-TEXT-COLOR);
     font-family: Consolas,liberation mono,Menlo,Courier,monospace;
-    padding: 44px 16px;
+    padding: 1.8rem;
     font-size: 1rem;
     max-height: calc(17 * 1.8rem);
     overflow: hidden;
+}
+
+.copy-to-clipboard:hover > .copy-to-clipboard-button {
+    display: flex;
 }
 
 .copy-to-clipboard > .copy-to-clipboard-code.expanded {
