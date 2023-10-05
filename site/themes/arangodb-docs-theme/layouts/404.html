@@ -1,39 +1,28 @@
+
 <!DOCTYPE html>
 <html lang="{{ .Page.Language | default "en" }}">
-  <head>
-    {{- partial "meta.html" . }}
-    {{- .Scratch.Add "title" "" }}
-    {{- if eq .Site.Data.titles .Title }}
-      {{- .Scratch.Set "title" (index .Site.Data.titles .Title).title }}
-    {{- else }}
-      {{- .Scratch.Set "title" .Title}}
-    {{- end }}
-    <title>{{ .Scratch.Get "title" }} {{ default "::" .Site.Params.titleSeparator }} {{ .Site.Title }}</title>
 
-    {{- partial "favicon.html" . }}
+  <head>
     {{- partial "stylesheet.html" . }}
-    <style>
-      p, li, ul {
-        text-align: center
-      }
-      ul {
-        list-style-type: none;
-      }
-    </style>
+    {{- partial "meta.html" . }}
+    <link href="{{ "/images/favicon.png" | relURL }}" rel="icon" type="image/png">
+    {{- partial "javascript.html" . }}
   </head>
-  <body class="mobile-support" data-url="/">
-    <div id="body" class="default-animation" style="margin-left:0px;">
-      <div id="sidebar-overlay"></div>
-      <main id="body-inner" class="chapter" tabindex="-1">
-        <div class="flex-block-wrapper">
-          <h1>{{ T "title-404" }}</h1>
-          <p></p>
-          <p>{{ T "message-404" }}</p>
-          <p></p>
-          <p><a href="{{ "" | relLangURL }}">{{ T "Go-to-homepage" }}</a></p>
-          <p><img src="{{ "images/gopher-404.jpg" | relURL }}" style="width:50%" alt="Page not found!"></p>
-        </div>
-      </main>
-    </div>
-  </body>
+
+<body>
+    <div id="page-wrapper" class="page_content_splash" style="height: auto;opacity: 0;">
+        <section id="page-main">
+            <section class="page-container" id="page-container">
+                {{ partial "header.html" . }}
+                <iframe src="/nav.html" title="description" id="menu-iframe" class="menu-iframe active" style="opacity: 0;"></iframe>
+
+            
+                <div class="container-main">
+                  <div class="row-main">
+                  </div>
+                </main><!-- #body-inner -->
+              </div><!-- #body -->
+          {{- partial "back-to-top.html" . }}
+          {{ partial "search.html" . }}
+            </body>
 </html>
