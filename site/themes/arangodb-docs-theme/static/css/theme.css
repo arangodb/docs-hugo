@@ -1492,7 +1492,7 @@ li > code {
     white-space: break-spaces;
     color: var(--CODEBLOCK-TEXT-COLOR);
     font-family: Consolas,liberation mono,Menlo,Courier,monospace;
-    padding: 1.8rem;
+    padding: 28px;
     font-size: 1rem;
     max-height: calc(17 * 1.8rem);
     overflow: hidden;
