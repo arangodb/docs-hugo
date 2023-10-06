@@ -276,7 +276,7 @@ img {
     opacity: 1;
     transition: opacity 0.5s;
     height: auto !important;
-    width: auto !important;
+    width: auto;
     max-height: 100%;
 }
 
@@ -1278,6 +1278,15 @@ article.default, article.chapter, article.home {
     max-width: 800px;
 }
 
+article.notfound {
+    margin: auto;
+    margin-top: 7rem;
+    min-height: 600px;
+    grid-area: article;
+    width: calc(80vw - 440px);
+    max-width: 800px;
+}
+
 @media screen and (max-width: 768px) {
     article.default, article.chapter, article.home {
         width: 100vw;
@@ -2085,6 +2094,24 @@ nav.pagination .next {
 
 .DocSearch svg {
     margin: 0 !important;
+}
+
+/* 404 page */
+.flex-block-wrapper {
+    margin-top: 9rem;
+}
+
+.notfound-404 {
+    display: flex;
+    font-size: 10rem;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 4rem;
+}
+
+#notfound-image {
+    display: block;
+    width: 9rem;
 }
 
 .ag-banner {
