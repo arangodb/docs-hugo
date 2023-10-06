@@ -301,18 +301,21 @@ def workflow_generate_store_artifacts_command(config):
     for i in range(len(versions)):
         version = versions[i]["name"]
         branch = args.arangodb_branches[i]
+        print(version)
+        print(branch)
         if branch == "undefined":
             continue
 
         branchEnv = f"tar -cvf /tmp/{version}-generated.tar {version}/\n"
         shell = f"{shell}\n{branchEnv}"
+        print(shell)
         config["commands"]["store-generated-data"]["steps"].append({
             "store_artifacts": {
                 "path": f"/tmp/{version}-generated.tar"
             }
         })
 
-
+    print(config["commands"]["store-generated-data"]["steps"])
     config["commands"]["store-generated-data"]["steps"][0]["run"]["command"] = shell
     return config
 
