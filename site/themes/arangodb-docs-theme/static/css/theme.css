@@ -215,7 +215,7 @@ ul ul, ul ol, ol ul, ol ol {
     overflow: auto;
     word-wrap: break-word;
     margin: 0;
-    padding: 4px;
+    padding: 2px;
     word-break: break-word;
     border-radius: 0px;
     background: var(--gray-100);
