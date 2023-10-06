@@ -54,8 +54,15 @@ function closeAllEntries() {
 
 function loadMenu(url) {
     closeAllEntries();
+    var version = getVersionByURL()
+
+    $('.version-menu.'+version).find('a').each(function() {
+      $(this).attr("href", function(index, old) {
+          return old.replace(old.split("/")[1], version)
+      });
+    });
+
     var current = $('.dd-item > a[href="' + url + '"]').parent();
-    
     current.addClass("active");
     while (current.length > 0 && current.prop("class") != "topics collapsible-menu") {
         if (current.prop("tagName") == "LI") {
@@ -103,6 +110,7 @@ function replaceArticle(href, newDoc) {
 
 
 function updateHistory(title, url) {
+  console.log("Update History " + url)
   if (url == window.location.href) {
     return
   } 
@@ -127,26 +135,48 @@ function styleImages() {
   }
 }
 
+function loadNotFoundPage() {
+  $.get({
+    url: window.location.origin + "/notfound.html",
+    success: function(newDoc) {
+      replaceArticle("", newDoc)
+      initArticle("");
+      return true;
+    },
+  });
+}
+
 
 function loadPage(target) {
   var href = target;
+
+  if (getVersionInfo(getVersionByURL()) == undefined) {
+    loadNotFoundPage();
+    return;
+  }
+
   getCurrentVersion(href);
   renderVersion();
   loadMenu(new URL(href).pathname);
+  var version = getVersionInfo(getVersionByURL()).name
+  href = href.replace(getVersionByURL(), version)
   $.get({
     url: href,
     success: function(newDoc) {
       replaceArticle(href, newDoc)
+      scrollToFragment();
       initArticle(href);
       return true;
-    }
+    },
+    error: function(newDoc) {
+      loadNotFoundPage(href)
+    },
   });
 }
 
 function internalLinkListener() {
   $('.link-internal').click(function(event) {
     event.preventDefault();
-    console.log(event.target)
     updateHistory("", event.target.getAttribute('href'))
   })
 }
@@ -169,6 +199,9 @@ function initArticle(url) {
   styleImages();
   internalLinkListener();
   codeShowMoreListener();
+  aliazeLinks('article', 'a.link-internal');
+  aliazeLinks('article', 'a.header-link');
+  aliazeLinks('#breadcrumbs', 'a')
 }
 
 
@@ -188,7 +221,7 @@ $(window).on('hashchange', function (e) {
   _hsq.push(['setPath', window.location.href]);
   _hsq.push(['trackPageView']);
 
-  scrollToOpenApiFragment()
+  scrollToFragment()
 });
 
 
@@ -296,23 +329,67 @@ function restoreTabSelections() {
 
 */
 
-var stableVersion;
+var versions
+var stableVersion
 
-function getCurrentVersion(url) {
-    var urlRe = url.match("\/[0-9.]+\/")
-    var urlVersion = stableVersion;
+function getVersionInfo(version) {
+  for (let v of versions) {
+    if (v.name == version || v.alias == version) return v;
+  }
 
-    if (urlRe) {
-        urlVersion = urlRe[0].replaceAll("\/", "");
+  return undefined;
+}
+
+function getVersionByURL() {
+  return window.location.pathname.split("/")[1]
+}
+
+function aliazeLinks(parentSelector, linkSelector) {
+  $(parentSelector).find(linkSelector).each(function() {
+    $(this).attr("href", function(index, old) {
+          if (old == undefined) return old
+          return old.replace(old.split("/")[1], getVersionByURL());
+    });
+  });
+}
+
+function setVersionSelector(version) {
+  for(let option of document.getElementById("arangodb-version").options) {
+    if (option.value == version) {
+      option.selected = true;
     }
-    localStorage.setItem('docs-version', urlVersion);
-    
-    var versionSelector = document.getElementById("arangodb-version");
-    for(let option of versionSelector.options) {
-      if (option.value == urlVersion) {
-        option.selected = true;
-      }
+  }
+}
+
+function handleOldDocsVersion(version) {
+    var legacyUrl = "https://www.arangodb.com/docs/" + version + "/";
+    var handle = window.open(legacyUrl, "_blank");
+    if (!handle) window.location.href = legacyUrl;
+    return;
+}
+
+function getCurrentVersion() {
+  var urlVersion = stableVersion.name
+
+  if (window.location.pathname.split("/").length > 0) {
+    newVersion = getVersionByURL()
+
+    if (newVersion === "3.8" || newVersion === "3.9") {
+      handleOldDocsVersion(newVersion)
+      versionSelector.value = urlVersion;
+      return;
     }
+
+    if (getVersionInfo(newVersion) == undefined) {
+      loadNotFoundPage();
+      return;
+    }
+
+    urlVersion = getVersionInfo(newVersion).name
+  }
+
+  localStorage.setItem('docs-version', urlVersion);
+  setVersionSelector(urlVersion);
 }
 
 
@@ -322,9 +399,7 @@ function changeVersion() {
     var newVersion  = versionSelector.options[versionSelector.selectedIndex].value;
 
     if (newVersion === "3.8" || newVersion === "3.9") {
-        var legacyUrl = "https://www.arangodb.com/docs/" + newVersion + "/";
-        var handle = window.open(legacyUrl, "_blank");
-        if (!handle) window.location.href = legacyUrl;
+        handleOldDocsVersion(newVersion)
         versionSelector.value = oldVersion;
         return;
     }
@@ -339,7 +414,9 @@ function changeVersion() {
         changeVersion();
     }
 
-    var newUrl = window.location.href.replace(oldVersion, newVersion)
+    
+    var newUrl = window.location.href.replace(getVersionByURL(), getVersionInfo(newVersion).alias)
+    console.log("Change Version URL " + newUrl)
     updateHistory("", newUrl);
 }
 
@@ -358,7 +435,7 @@ function hideEmptyOpenapiDiv() {
     }
  }
 
- function scrollToOpenApiFragment() {
+ function scrollToFragment() {
   fragment = location.hash.replace("#", "")
   if (fragment) {
     var element = document.getElementById(fragment);
@@ -436,7 +513,7 @@ const goToTop = (event) => {
 
 function goToHomepage(event){
     event.preventDefault();
-    var homepage = window.location.origin + "/" + localStorage.getItem('docs-version') + "/";
+    var homepage = window.location.origin + "/" + getVersionByURL() + "/";
     updateHistory("", homepage);
 }
 
@@ -474,12 +551,16 @@ window.onload = () => {
 
     $("#menu-iframe").replaceWith(content);
 
+
     getCurrentVersion(window.location.href);
     menuEntryClickListener();
     renderVersion();
-    loadMenu(window.location.pathname);
-    initArticle(window.location.href);
+    loadPage(window.location.href)
+
+    window.setupDocSearch(getVersionInfo(getVersionByURL()).name);
+
     content.addEventListener("click", menuToggleClick);
+
 
     var isMobile = window.innerWidth <= 768;
     if (isMobile) {
@@ -488,5 +569,4 @@ window.onload = () => {
     }
 
     $('#page-wrapper').css("opacity", "1")
-    scrollToOpenApiFragment();
 }
