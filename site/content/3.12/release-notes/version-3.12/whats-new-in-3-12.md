@@ -61,6 +61,15 @@ Swagger 2.x compatibility.
 
 
 
+## Indexing
+
+### Stored Values can now contain the `_id` attribute
+
+The usage of the `_id` attribute was previously disallowed inside the stored
+values section of persistent indexes.
+Using the `_id` attribute in stored values is now allowed in ArangoDB 3.12.
+
+
 ## Server options
 
 ### LZ4 compression for values in the in-memory edge cache
