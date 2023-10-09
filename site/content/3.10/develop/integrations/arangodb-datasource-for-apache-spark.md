@@ -20,8 +20,6 @@ This library works with all the non-EOLed [ArangoDB versions](https://www.arango
 
 There are several variants of this library, each one compatible with different Spark and Scala versions:
 
-- `com.arangodb:arangodb-spark-datasource-2.4_2.11` (Spark 2.4, Scala 2.11)
-- `com.arangodb:arangodb-spark-datasource-2.4_2.12` (Spark 2.4, Scala 2.12)
 - `com.arangodb:arangodb-spark-datasource-3.1_2.12` (Spark 3.1, Scala 2.12)
 - `com.arangodb:arangodb-spark-datasource-3.2_2.12` (Spark 3.2, Scala 2.12)
 - `com.arangodb:arangodb-spark-datasource-3.2_2.13` (Spark 3.2, Scala 2.13)
@@ -29,6 +27,11 @@ There are several variants of this library, each one compatible with different S
 - `com.arangodb:arangodb-spark-datasource-3.3_2.13` (Spark 3.3, Scala 2.13)
 - `com.arangodb:arangodb-spark-datasource-3.4_2.12` (Spark 3.4, Scala 2.12)
 - `com.arangodb:arangodb-spark-datasource-3.4_2.13` (Spark 3.4, Scala 2.13)
+
+The following variants are no longer supported:
+
+- `com.arangodb:arangodb-spark-datasource-2.4_2.11` (Spark 2.4, Scala 2.11)
+- `com.arangodb:arangodb-spark-datasource-2.4_2.12` (Spark 2.4, Scala 2.12)
 
 In the following sections the `${sparkVersion}` and `${scalaVersion}` placeholders refer to the Spark and Scala versions.
 
