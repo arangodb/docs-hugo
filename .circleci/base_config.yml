@@ -255,26 +255,6 @@ commands:
                 git push
               fi
 
-  commit-api-docs:
-    description: Commit api-docs files to api-docs repository
-    parameters:
-      version:
-        type: string
-        default: ""
-      tag:
-        type: string
-        default: ""
-    steps:
-      - run:
-          name: Clone api-docs repo
-          command: |
-            git clone git@github.com:arangodb/api-docs.git
-            cd /home/circleci/project/api-docs
-            cp /home/circleci/project/docs-hugo/site/data/<< parameters.version >>/api-docs.json /home/circleci/project/api-docs/
-            git commit --allow-empty -m 'Commit api-docs << parameters.tag >>' api-docs.json
-            git tag -f << parameters.tag >>
-            git push -f origin << parameters.tag >>
-            git push -f
 
 jobs:
   create-docs-images:
@@ -350,13 +330,6 @@ jobs:
             docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
       - upload-summary:
           summary-name: "plain-build-summary"
-      - when:
-          condition:
-            equal: [ "api-docs", << pipeline.parameters.workflow >> ]
-          steps:
-            - commit-api-docs:
-                version: << pipeline.parameters.version >>
-                tag: << pipeline.parameters.tag >>
 
       - persist_to_workspace:
           root: .
@@ -515,11 +488,6 @@ workflows:
       - deploy:
           requires:
             - plain-build
-
-  api-docs:
-    when: { equal: [ api-docs, << pipeline.parameters.workflow >> ] }
-    jobs:
-      - plain-build
 
   release:
     when: { equal: [ release, << pipeline.parameters.workflow >> ] }
