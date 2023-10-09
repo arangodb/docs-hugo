@@ -137,8 +137,6 @@ if you see any problems.
 
 ```bash
 ./arangosync-migration start \
-  --source.cacert=tls-ca.crt \
-  --source.keyfile=client-auth.keyfile \
   --source.endpoint=$COORDINATOR_ENDPOINT \
   --source.jwt-secret=/path-to/jwt-secret.file \
   --arango-graph.api-key=$ARANGO_GRAPH_API_KEY \
@@ -204,8 +202,6 @@ error code `11` (ERROR_FORBIDDEN).
 
 ```bash
 ./arangosync-migration set-server-mode \
-  --source.cacert=tls-ca.crt \
-  --source.keyfile=client-auth.keyfile \
   --source.endpoint=$COORDINATOR_ENDPOINT \
   --source.jwt-secret=/path-to/jwt-secret.file \
   --source.server-mode=readonly
