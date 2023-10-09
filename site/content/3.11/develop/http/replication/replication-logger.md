@@ -299,7 +299,7 @@ var response = logCurlRequest('GET', url);
 
 assert(response.code === 200);
 
-logJsonLResponse(response);
+logJsonResponse(response);
 ```
 
 ```curl

@@ -252,14 +252,6 @@ var curlRequest = function () {
 var logJsonResponseRaw = internal.appendJsonResponse(rawAppender, rawAppender);
 var logJsonResponse = internal.appendJsonResponse(rawAppender, jsonAppender);
 
-var logJsonLResponseRaw = internal.appendJsonLResponse(rawAppender, jsonLAppender);
-var logJsonLResponse = function (response) {
-  var r = logJsonLResponseRaw.apply(logJsonLResponseRaw, [response]);
-  print("RESP");
-  print(output);
-  print("ENDRESP");
-  output = "";
-}
 
 var logHtmlResponse = internal.appendRawResponse(rawAppender, htmlAppender);
 var logRawResponseRaw = internal.appendRawResponse(rawAppender, rawAppender);
