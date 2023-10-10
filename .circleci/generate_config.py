@@ -203,6 +203,7 @@ def workflow_generate_scheduled(config):
 
 def workflow_release_arangodb(config):
     config = workflow_release_launch_command(config)
+    config = workflow_release_store_artifacts_command(config)
 
     jobs = config["workflows"]["release"]["jobs"]
 
@@ -264,6 +265,7 @@ def workflow_generate_launch_command(config):
 export ENV=\"circleci\"\n \
 export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app\n \
 export HUGO_ENV=examples\n \
+export OVERRIDE=<< pipeline.parameters.override >>\n \
 export GENERATORS='<< parameters.generators >>'\n"
 
     for i in range(len(versions)):
@@ -315,16 +317,37 @@ def workflow_generate_store_artifacts_command(config):
     config["commands"]["store-generated-data"]["steps"][0]["run"]["command"] = shell
     return config
 
+
+def workflow_release_store_artifacts_command(config):
+    shell = "cd docs-hugo/site/data"
+
+    version = args.docs_version
+    branch = args.arangodb_branch
+
+    branchEnv = f"tar -cvf /tmp/{version}-generated.tar {version}/\n"
+    shell = f"{shell}\n{branchEnv}"
+    config["commands"]["store-generated-data"]["steps"].append({
+        "store_artifacts": {
+            "path": f"/tmp/{version}-generated.tar"
+        }
+    })
+
+
+    config["commands"]["store-generated-data"]["steps"][0]["run"]["command"] = shell
+    return config
+
 def workflow_commit_generated_download_data(config):
     cmd = config["commands"]["download-generated-data"]["steps"][0]["run"]["command"]
 
     for i in range(len(versions)):
         version = versions[i]["name"]
         cmd = f"{cmd}\n\
+set +e\n\
 wget $base_url/{version}-generated.tar\n\
 tar -xf {version}-generated.tar -C docs-hugo/site/data/\n\
+set -e\n\
 "
-    config["commands"]["store-generated-data"]["steps"][0]["run"]["command"] = cmd
+    config["commands"]["download-generated-data"]["steps"][0]["run"]["command"] = cmd
 
     return config
 
@@ -346,6 +369,7 @@ export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{args.docs_versi
     shell = f"{shell}\n{branchEnv}"
 
     shell = f"{shell}\n\
+cd docs-hugo/toolchain/docker/amd64\n \
 docker compose up --exit-code-from toolchain\n \
 exit $?"
 

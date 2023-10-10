@@ -24,7 +24,7 @@ async function commit_generated() {
         
         let jobsData = await jobs.json();
         for (let job of jobsData.items) {
-            if (job.name != "build-with-generated") continue
+            if (job.name != "generate") continue
             let artifacts = await fetch('https://circleci.com/api/v2/project/gh/arangodb/docs-hugo/'+job.job_number+'/artifacts', {
                 method: 'GET',
                 headers: {'content-type': 'application/json', 'Circle-Token': process.env.CIRCLECI_API_TOKEN},

@@ -50,3 +50,11 @@ func Regexp2FindAllString(re *regexp2.Regexp, s string) []string {
 	}
 	return matches
 }
+
+func Regexp2StringHasMatch(re *regexp2.Regexp, s string) bool {
+	m, _ := re.FindStringMatch(s)
+	if m != nil {
+		return true
+	}
+	return false
+}
