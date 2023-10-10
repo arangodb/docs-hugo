@@ -203,6 +203,7 @@ def workflow_generate_scheduled(config):
 
 def workflow_release_arangodb(config):
     config = workflow_release_launch_command(config)
+    config = workflow_release_store_artifacts_command(config)
 
     jobs = config["workflows"]["release"]["jobs"]
 
@@ -316,6 +317,25 @@ def workflow_generate_store_artifacts_command(config):
     config["commands"]["store-generated-data"]["steps"][0]["run"]["command"] = shell
     return config
 
+
+def workflow_release_store_artifacts_command(config):
+    shell = "cd docs-hugo/site/data"
+
+    version = args.docs_version
+    branch = args.arangodb_branch
+
+    branchEnv = f"tar -cvf /tmp/{version}-generated.tar {version}/\n"
+    shell = f"{shell}\n{branchEnv}"
+    config["commands"]["store-generated-data"]["steps"].append({
+        "store_artifacts": {
+            "path": f"/tmp/{version}-generated.tar"
+        }
+    })
+
+
+    config["commands"]["store-generated-data"]["steps"][0]["run"]["command"] = shell
+    return config
+
 def workflow_commit_generated_download_data(config):
     cmd = config["commands"]["download-generated-data"]["steps"][0]["run"]["command"]
 
@@ -349,6 +369,7 @@ export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{args.docs_versi
     shell = f"{shell}\n{branchEnv}"
 
     shell = f"{shell}\n\
+cd docs-hugo/toolchain/docker/amd64\n \
 docker compose up --exit-code-from toolchain\n \
 exit $?"
 

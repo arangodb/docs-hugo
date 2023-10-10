@@ -147,6 +147,10 @@
   text: "error during deserialization"
   desc: "Will be raised when a data structure cannot be deserialized, e.g. because the input is invalid."
   code: 39
+- name: ERROR_END_OF_FILE
+  text: "reached end of file"
+  desc: "Will be raised when a read operation reaches the end of the file."
+  code: 40
 - group: HTTP error status codes
 - name: ERROR_HTTP_BAD_PARAMETER
   text: "bad parameter"
@@ -526,6 +530,18 @@
   text: "replicated state type {type:} is unavailable"
   desc: "Will be raised when a specific replicated state type was used but is not (yet) available."
   code: 1431
+- name: ERROR_REPLICATION_REPLICATED_WAL_ERROR
+  text: "error in the replicated WAL subsystem"
+  desc: "Will be raised when an error occurred in the replicated WAL subsystem"
+  code: 1432
+- name: ERROR_REPLICATION_REPLICATED_WAL_INVALID_FILE
+  text: "replicated WAL {file:} has an invalid or missing file header"
+  desc: "Will be raised when a log file has an invalid or missing file header."
+  code: 1433
+- name: ERROR_REPLICATION_REPLICATED_WAL_CORRUPT
+  text: "replicated WAL {file:} is corrupt"
+  desc: "Will be raised when a log file has an invalid size or reading from a log file produced unexpected data."
+  code: 1434
 - group: ArangoDB cluster errors
 - name: ERROR_CLUSTER_NOT_FOLLOWER
   text: "not a follower"
