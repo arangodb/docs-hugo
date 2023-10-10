@@ -148,26 +148,26 @@ button, input, optgroup, select, textarea {
     background: transparent;
 }
 
-.button__wrapper {
+.button > .wrapper {
     border-radius: 4px;
     text-align: center;
     text-decoration: none;
     border: none;
     cursor: pointer;
     width: fit-content;
-    height: 2rem;
+    height: 32px;
 }
 
-.button__wrapper__green {
+.button > .wrapper.green {
     background-color: var(--HEADERS-COLOR);
 }
 
-.button__wrapper__grey {
+.button > .wrapper.grey {
     background-color: var(--gray-200);
 }
 
 .button__link {
-    padding: 5px 1em 5px 1em;
+    padding: 5px 16px 5px 16px;
     vertical-align: middle;
 }
 
