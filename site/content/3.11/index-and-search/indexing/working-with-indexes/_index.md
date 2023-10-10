@@ -137,7 +137,8 @@ Other attributes may be necessary, depending on the index type.
 
   The `.` character denotes sub-attributes in attribute paths. Attributes with
   literal `.` in their name cannot be indexed. Attributes with the name `_id`
-  cannot be indexed either, neither as a top-level attribute nor as a sub-attribute.
+  cannot be indexed either, neither as a top-level attribute nor as a sub-attribute
+  (except the inverted index type).
 
   If an attribute path contains an `[*]` extension (e.g. `friends[*].id`), it means
   that the index attribute value is treated as an array and all array members are
@@ -155,6 +156,9 @@ Other attributes may be necessary, depending on the index type.
   index is already present or needs to be created.
   In unique indexes, only the attributes in `fields` are checked for uniqueness,
   but the attributes in `storedValues` are not checked for their uniqueness.
+
+  In `persistent` indexes, you cannot store attributes with the name `_id`,
+  neither as a top-level attribute nor as a sub-attribute.
 
 - `name`: can be a string. Index names are subject to the same character
   restrictions as [collection names](../../../concepts/data-structure/collections.md#collection-names).

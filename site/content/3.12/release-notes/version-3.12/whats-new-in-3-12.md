@@ -63,12 +63,14 @@ Swagger 2.x compatibility.
 
 ## Indexing
 
-### Stored Values can now contain the `_id` attribute
+### Stored values can contain the `_id` attribute
 
-The usage of the `_id` attribute was previously disallowed inside the stored
-values section of persistent indexes.
-Using the `_id` attribute in stored values is now allowed in ArangoDB 3.12.
+The usage of the `_id` system attribute was previously disallowed for
+`persistent` indexes inside of `storedValues`. This is now allowed in v3.12.
 
+Note that it is still forbidden to use `_id` as a top-level attribute or
+sub-attribute in `fields` of persistent indexes. On the other hand, inverted
+indexes have been allowing to index and store the `_id` system attribute.
 
 ## Server options
 

@@ -43,6 +43,17 @@ unknown attributes and values are detected in the request body.
 Note that all invalid elements and combinations will be rejected in future
 versions.
 
+#### Index API
+
+##### Stored values can contain the `_id` attribute
+
+The usage of the `_id` system attribute was previously disallowed for
+`persistent` indexes inside of `storedValues`. This is now allowed in v3.12.
+
+Note that it is still forbidden to use `_id` as a top-level attribute or
+sub-attribute in `fields` of persistent indexes. On the other hand, inverted
+indexes have been allowing to index and store the `_id` system attribute.
+
 ### Privilege changes
 
 
