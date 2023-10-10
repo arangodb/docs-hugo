@@ -7,11 +7,11 @@ layout: default
 
 Normal button
 
-{{< button text="Sign Up" color="green" position="right" >}}
+{{< button color="green" >}}
 Sign up
 {{< /button >}}
 
-Some text we want button in {{< button text="Sign Up" color="green" link="https://docs.arangodb.com">}}
+Some text we want button in {{< button color="green" link="https://docs.arangodb.com">}}
 Sign up
 {{< /button >}}
 middle of it

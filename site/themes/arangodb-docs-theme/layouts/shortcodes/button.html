@@ -1,9 +1,8 @@
 {{ $link := .Get "link" | default "" }}
 {{ $color := .Get "color" | default "green" }}
-{{ $position := .Get "position" | default "left" }}
 
 <button class='button {{ if eq $link "" }} deactivated {{ end }}'>
-<div class="button__wrapper button__wrapper__{{ $color }}" style='{{ if eq $position "center" }} margin: auto; {{ else if eq $position "right" }} margin-left: auto; {{ else }} {{ end }}'>
+<div class="button__wrapper button__wrapper__{{ $color }}">
     <a href="{{ $link }}" target="_blank" rel="noopener noreferrer" class='button__link {{ if eq $link "" }} deactivated {{ end }}'>
         <span class='button__text {{ if eq $link "" }} deactivated {{ end }}'>{{- .Inner | safeHTML -}}</span>
     </a>
