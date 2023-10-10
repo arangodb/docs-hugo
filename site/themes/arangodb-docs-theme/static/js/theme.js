@@ -203,7 +203,7 @@ function initArticle(url) {
   styleImages();
   internalLinkListener();
   codeShowMoreListener();
-  aliazeLinks('article', 'a.link-internal');
+  aliazeLinks('article', 'a.link');
   aliazeLinks('article', 'a.header-link');
   aliazeLinks('#breadcrumbs', 'a')
 }
