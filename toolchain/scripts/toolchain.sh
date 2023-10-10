@@ -34,7 +34,7 @@ echo "[INIT] Environment variables:"
 
 ## if no generators set, defaults to all
 if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
-  GENERATORS="examples metrics error-codes options optimizer oasisctl"
+  GENERATORS="examples metrics error-codes options optimizer"
 fi
 
 ## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
