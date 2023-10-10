@@ -8,16 +8,16 @@ archetype: default
 ---
 {{< description >}}
 
-The `arangosync-migration` tool allows you to easily move from on-premises to 
+The `arangosync-migration` tool allows you to easily move from on-premises to
 the cloud while ensuring a smooth transition with minimal downtime.
 Start the cloud migration, let the tool do the job and, at the same time,
-keep your local cluster up and running. 
+keep your local cluster up and running.
 
 Some of the key benefits of the cloud migration tool include:
 - Safety comes first - pre-checks and potential failures are carefully handled.
 - Your data is secure and fully encrypted.
 - Ease-of-use with a live migration while your local cluster is still in use.
-- Get access to what a cloud-based fully managed service has to offer: 
+- Get access to what a cloud-based fully managed service has to offer:
   high availability and reliability, elastic scalability, and much more.
 
 ## Downloading the tool
@@ -37,21 +37,21 @@ operating systems:
 - [AMD64 (x86_64) architecture](https://download.arangodb.com/arangosync-migration/windows/amd64/arangosync-migration.exe)
 - [ARM64 (AArch64) architecture](https://download.arangodb.com/arangosync-migration/windows/arm64/arangosync-migration.exe)
 
-For macOS as well as other Unix-based operating systems, run the following 
+For macOS as well as other Unix-based operating systems, run the following
 command to make sure you can execute the binary:
 
 ```bash
 chmod 755 ./arangosync-migration
 ```
 
-## Prerequisites 
+## Prerequisites
 
 Before getting started, make sure the following prerequisites are in place:
 
 - Go to the [ArangoGraph Insights Platform](https://cloud.arangodb.com/home)
   and sign in. If you don’t have an account yet, sign-up to create one.
 
-- Generate an ArangoGraph API key and API secret. See a detailed guide on 
+- Generate an ArangoGraph API key and API secret. See a detailed guide on
   [how to create an API key](arangograph-api/getting-started-with-the-api.md#creating-an-api-key).
 
 {{< info >}}
@@ -122,7 +122,7 @@ target deployment will be lost.
 ### During the migration
 
 The following takes place during an active migration:
-- The source data cluster remains usable. 
+- The source data cluster remains usable.
 - The target deployment in ArangoGraph is switched to read-only mode.
 - Your root user password is not copied to the target deployment in ArangoGraph.
   To get your root password, select the target deployment from the ArangoGraph
@@ -137,8 +137,6 @@ if you see any problems.
 
 ```bash
 ./arangosync-migration start \
-  --source.cacert=tls-ca.crt \
-  --source.keyfile=client-auth.keyfile \
   --source.endpoint=$COORDINATOR_ENDPOINT \
   --source.jwt-secret=/path-to/jwt-secret.file \
   --arango-graph.api-key=$ARANGO_GRAPH_API_KEY \
@@ -187,7 +185,7 @@ option is specified, it defaults to the read/write mode.
   --arango-graph.deployment-id=$ARANGO_GRAPH_DEPLOYMENT_ID
 ```
 
-The additional `--abort` option is supported. If specified, the `stop` command 
+The additional `--abort` option is supported. If specified, the `stop` command
 will not check anymore if both deployments are in-sync and stops all
 migration-related processes as soon as possible.
 
@@ -199,13 +197,11 @@ for your local cluster on and off.
 
 In a read-only mode, all write operations are going to fail with an error code
 of `1004` (ERROR_READ_ONLY).
-Creating or dropping databases and collections are also going to fail with 
+Creating or dropping databases and collections are also going to fail with
 error code `11` (ERROR_FORBIDDEN).
 
 ```bash
 ./arangosync-migration set-server-mode \
-  --source.cacert=tls-ca.crt \
-  --source.keyfile=client-auth.keyfile \
   --source.endpoint=$COORDINATOR_ENDPOINT \
   --source.jwt-secret=/path-to/jwt-secret.file \
   --source.server-mode=readonly
@@ -254,9 +250,9 @@ In case you have any questions, please
    to use the endpoint of the ArangoGraph deployment, but note that it stays in
    read-only mode until the migration process is fully completed.
 4. Stop the migration using the `stop` subcommand. The following steps are executed:
-   - The source data cluster is switched into read-only mode.
-   - It waits until all shards are synchronized.
-   - The target deployment is switched into default read/write mode.
+    - The source data cluster is switched into read-only mode.
+    - It waits until all shards are synchronized.
+    - The target deployment is switched into default read/write mode.
 
    {{< info >}}
    If you switched the source data cluster into read-only mode,

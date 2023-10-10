@@ -137,6 +137,30 @@ The following metrics have been added:
 | `rocksdb_cache_edge_empty_inserts_total` | Total number of insertions into the in-memory edge cache for non-connected edges. |
 | `rocksdb_cache_edge_inserts_total` | Total number of insertions into the in-memory edge cache. |
 
+### Observability of in-memory cache subsystem
+
+<small>Introduced in: v3.10.11, v.3.11.4, v.3.12.0</small>
+
+The following metrics have been added to improve the observability of in-memory
+cache subsystem:
+- `rocksdb_cache_free_memory_tasks_total`: Total number of free memory tasks
+  that were scheduled by the in-memory edge cache subsystem. This metric will
+  be increased whenever the cache subsystem schedules a task to free up memory
+  in one of the managed in-memory caches. It is expected to see this metric
+  rising when the cache subsystem hits its global memory budget.
+- `rocksdb_cache_free_memory_tasks_duration_total`: Total amount of time spent
+  inside the free memory tasks of the in-memory cache subsystem. Free memory
+  tasks are scheduled by the cache subsystem to free up memory in existing cache
+  hash tables.
+- `rocksdb_cache_migrate_tasks_total`: Total number of migrate tasks that were
+  scheduled by the in-memory edge cache subsystem. This metric will be increased 
+  whenever the cache subsystem schedules a task to migrate an existing cache hash
+  table to a bigger or smaller size.
+- `rocksdb_cache_migrate_tasks_duration_total`: Total amount of time spent inside
+  the migrate tasks of the in-memory cache subsystem. Migrate tasks are scheduled
+  by the cache subsystem to migrate existing cache hash tables to a bigger or
+  smaller table.
+
 ### RocksDB .sst file partitioning (experimental)
 
 The following experimental startup options for RockDB .sst file partitioning
