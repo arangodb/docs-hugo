@@ -1,15 +1,11 @@
 ---
+layout: default
+description: Description of the oasisctl delete backup policy command
 title: Oasisctl Delete Backup Policy
 menuTitle: Delete Backup Policy
-weight: 35
-description: >-
-  Description of the oasisctl delete backup policy command
-archetype: default
+weight: 40
 ---
-Delete a backup policy for a given ID.
-
 ## Synopsis
-
 Delete a backup policy for a given ID.
 
 ```
@@ -17,7 +13,6 @@ oasisctl delete backup policy [flags]
 ```
 
 ## Options
-
 ```
   -h, --help                     help for policy
   -i, --id string                Identifier of the backup policy
@@ -25,8 +20,7 @@ oasisctl delete backup policy [flags]
   -p, --project-id string        Identifier of the project
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -34,6 +28,5 @@ oasisctl delete backup policy [flags]
 ```
 
 ## See also
-
 * [oasisctl delete backup](delete-backup.md)	 - Delete a backup for a given ID.
 
