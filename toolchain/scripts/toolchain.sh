@@ -252,6 +252,7 @@ function run_arangoproxy_and_site() {
       -e ENV="$ENV" \
       -e HUGO_URL="$HUGO_URL" \
       -e HUGO_ENV="$HUGO_ENV" \
+      -e OVERRIDE="$OVERRIDE" \
       -v arangosh:/arangosh \
       --volumes-from toolchain \
       --log-opt tag="{{.Name}}" \
@@ -268,7 +269,7 @@ function setup_arangoproxy() {
   setup_arangoproxy_arangosh "$image" "$version"
 
   setup_arangoproxy_repositories "$version" "$container_name"
-  
+
   log "[setup_arangoproxy] Done"
 }
 
@@ -312,8 +313,6 @@ function setup_arangoproxy_repositories() {
   log "[setup_arangoproxy_repositories] Copy cluster server configuration in arangoproxy repositories"
   yq e '.repositories += [{"type": "cluster", "version": "'"$version"'", "url": "'"$url"'"}]' -i ../arangoproxy/cmd/configs/local.yaml
 }
-
-
 
 
 ##### SERVER FUNCTIONS

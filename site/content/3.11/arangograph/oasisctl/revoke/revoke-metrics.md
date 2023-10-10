@@ -1,15 +1,11 @@
 ---
+layout: default
+description: Description of the oasisctl revoke metrics command
 title: Oasisctl Revoke Metrics
 menuTitle: Revoke Metrics
-weight: 15
-description: >-
-  Description of the oasisctl revoke metrics command
-archetype: default
+weight: 20
 ---
-Revoke keys & tokens
-
 ## Synopsis
-
 Revoke keys & tokens
 
 ```
@@ -17,13 +13,11 @@ oasisctl revoke metrics [flags]
 ```
 
 ## Options
-
 ```
   -h, --help   help for metrics
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -31,7 +25,6 @@ oasisctl revoke metrics [flags]
 ```
 
 ## See also
-
 * [oasisctl revoke](_index.md)	 - Revoke keys & tokens
 * [oasisctl revoke metrics token](revoke-metrics-token.md)	 - Revoke a metrics token for a deployment
 

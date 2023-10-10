@@ -19,6 +19,10 @@ parameters:
     type: string
     default: ""
 
+  override:
+    type: string
+    default: ""
+
   version:
     type: string
     default: ""
