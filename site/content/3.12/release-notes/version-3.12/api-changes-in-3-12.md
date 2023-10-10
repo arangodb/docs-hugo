@@ -100,6 +100,14 @@ for details.
 The `GET /_api/query/rules` endpoint now includes a `description` attribute for
 every optimizer rule that briefly explains what it does.
 
+#### Query parsing API
+
+The `POST /_api/query` endpoint for parsing AQL queries now unconditionally
+returns the `warnings` attribute, even if no warnings were produced while parsing
+the query. In that case, `warnings` contains an empty array.
+In previous versions, no `warnings` attribute was returned when parsing a query
+produced no warnings.
+
 ### Endpoints moved
 
 
