@@ -61,6 +61,17 @@ Swagger 2.x compatibility.
 
 
 
+## Indexing
+
+### Stored values can contain the `_id` attribute
+
+The usage of the `_id` system attribute was previously disallowed for
+`persistent` indexes inside of `storedValues`. This is now allowed in v3.12.
+
+Note that it is still forbidden to use `_id` as a top-level attribute or
+sub-attribute in `fields` of persistent indexes. On the other hand, inverted
+indexes have been allowing to index and store the `_id` system attribute.
+
 ## Server options
 
 ### LZ4 compression for values in the in-memory edge cache
