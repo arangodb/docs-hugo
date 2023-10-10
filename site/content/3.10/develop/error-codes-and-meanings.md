@@ -14,7 +14,7 @@ archetype: default
 ## Numbers, names, and descriptions of errors
 
 When an error occurs in an operation of an ArangoDB server, the
-[HTTP REST API](http/_index.md) responds to a request with with an
+[HTTP REST API](http/_index.md) responds to a request with an
 **HTTP status code** like `400 Bad Request`, `401 Unauthorized`,
 `503 Service Unavailable`, or similar. This code is typically also included in
 the body of the response, specifically the `code` attribute, along with the
@@ -37,11 +37,13 @@ a unique name, an error message, and a description.
 The **error message** is a brief description of the error and provided in the
 `errorMessage` attribute.
 
-The **error name** is not visible in the HTTP API response. The name for the
-error with the number `11` is `ERROR_FORBIDDEN`, for instance. Error names are
-used in code to refer to an error kind, in the server's own code as well as in
-other code like drivers. In the [JavaScript API](javascript-api/_index.md), the
-`@arangodb` module maps error names to error numbers:
+Error names are used in code to refer to an error kind, in the server's own code
+as well as in other code like drivers. For instance, the name for the error with
+the number `11` is `ERROR_FORBIDDEN`. The **error name** is not visible in the
+HTTP API response.
+
+In the [JavaScript API](javascript-api/_index.md), the `@arangodb` module maps
+error names to objects with the error number and message:
 
 ```js
 require("@arangodb").errors.ERROR_FORBIDDEN
