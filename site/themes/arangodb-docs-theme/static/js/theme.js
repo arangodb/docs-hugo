@@ -150,7 +150,6 @@ function internalLinkListener() {
       return;
     }
     event.preventDefault();
-    console.log(event.target)
     updateHistory("", event.target.getAttribute('href'))
   })
 }
