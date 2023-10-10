@@ -40,9 +40,6 @@ follow the steps below:
    - Value: `release`
 5. Click **Trigger Pipeline**.
 
-The pipeline gets triggered, but stays on hold as it requires an approval.
-Select the pipeline from the dashboard and approve the workflow.
-
 ## Example generation
 
 The `generate` workflow can be automatically triggered from a PR.
@@ -118,6 +115,7 @@ or for multiple versions.
 | `arangodb-3_11` | `{string in PR Template at 3.11}` |
 | `generators` | `examples` |
 | `commit-generated` | `true` |
+| `deploy-url` | `deploy-preview-{PR_NUMBER}` |
 | `override` | `http,^aql.*` |
 
 ## Release workflow (ArangoDB)
@@ -138,8 +136,8 @@ steps below.
 | string | `workflow` | `release` |
 | string | `release-type` | `arangodb` |
 | string | `docs-version` | `3.11` (the docs version folder) |
-| string | `arangodb-branch` | `3.11` |
-| string | `arangodb-version` | `3.11.4` |
+| string | `arangodb-branch` | `3.11` (the arangodb branch to compile |
+| string | `arangodb-version` | `3.11.4` (updates the `versions.yaml` file) |
 
 The ArangoDB release workflow includes the following jobs:
 - `generate` workflow (all examples are re-generated for the specified version)

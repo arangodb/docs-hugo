@@ -5537,6 +5537,45 @@
     the cache had no memory left). The metric is not decreased when data gets 
     evicted from the cache.
 
+- name: rocksdb_cache_free_memory_tasks_duration_total
+  introducedIn: "3.10.11"
+  help: |
+    Total amount of time spent in 'free memory' tasks of the in-memory 
+    cache subsystem.
+  unit: us
+  type: counter
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    Total amount of time spent inside 'free memory' tasks of the in-memory
+    cache subsystem. 'free memory' tasks are scheduled by the cache subsystem
+    to free up memory in existing cache hash tables.
+
+- name: rocksdb_cache_free_memory_tasks_total
+  introducedIn: "3.10.11"
+  help: |
+    Total number of 'free memory' tasks scheduled by the in-memory
+    cache subsystem.
+  unit: number
+  type: counter
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    Total number of 'free memory' tasks that were scheduled by the
+    in-memory edge cache subsystem. This metric will be increased
+    whenever the cache subsystem schedules a task to free up memory
+    in one of the managed in-memory caches. It is expected to see
+    this metric rising when the cache subsystem hits its global
+    memory budget.
+
 - name: rocksdb_cache_full_index_refills_total
   introducedIn: "3.10.2"
   help: |
@@ -5615,6 +5654,43 @@
     ArangoDB caches which sit in front of RocksDB. For example, the
     edge cache counts towards this allocation. This global limit can
     be controlled with the `--cache.size` startup option.
+
+- name: rocksdb_cache_migrate_tasks_duration_total
+  introducedIn: "3.10.11"
+  help: |
+    Total amount of time spent in 'migrate' tasks of the in-memory 
+    cache subsystem.
+  unit: us
+  type: counter
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    Total amount of time spent inside 'migrate' tasks of the in-memory
+    cache subsystem. 'migrate' tasks are scheduled by the cache subsystem
+    to migrate existing cache hash tables to a bigger or smaller table.
+
+- name: rocksdb_cache_migrate_tasks_total
+  introducedIn: "3.10.11"
+  help: |
+    Total number of 'migrate' tasks scheduled by the in-memory
+    cache subsystem.
+  unit: number
+  type: counter
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    Total number of 'migrate' tasks that were scheduled by the
+    in-memory edge cache subsystem. This metric will be increased
+    whenever the cache subsystem schedules a task to migrate an
+    existing cache hash table to a bigger or smaller size.
 
 - name: rocksdb_cache_peak_allocated
   introducedIn: "3.10.7"
