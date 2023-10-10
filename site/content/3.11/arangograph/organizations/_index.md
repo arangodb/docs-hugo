@@ -49,17 +49,17 @@ The perpetual free trial gives you access to:
 - Local backups
 - One ArangoGraph Notebook for learning and data science
 
+{{< warning >}}
 Free deployments are automatically paused if unused for 2 hours and
 automatically deleted if unused for 30 days.
+{{< /warning >}}
 
-{{< info >}}
 Note that the following features are not included in the perpetual free tier:
 - Upload backups to cloud storage
 - Private Endpoints
 - Grafana and Prometheus integration
   
 See how to upgrade your free deployment to a paid deployment.
-{{< /info >}}
 
 ### On-Demand
 
