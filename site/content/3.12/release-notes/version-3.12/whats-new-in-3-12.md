@@ -119,7 +119,7 @@ unlimited, so an arbitrary amount of databases can be created.
 <small>Introduced in: v3.11.5, v.3.12.0</small>
 
 This feature makes Coordinators and DB-Servers in a cluster periodically send
-check requests to each other, in order to check if all servers can connect to
+check requests to each other, in order to see if all nodes can connect to
 each other.
 If a cluster-internal connection to another Coordinator or DB-Server cannot
 be established within 10 seconds, a warning is now logged.
@@ -129,7 +129,7 @@ to control the frequency of the connectivity check, in seconds.
 If set to a value greater than zero, the initial connectivity check is
 performed approximately 15 seconds after the instance start, and subsequent
 connectivity checks are executed with the specified frequency.
-If set to a value of zero, connectivity checks are disabled.
+If set to `0`, connectivity checks are disabled.
 
 You can also use the following metrics to monitor and detect temporary or
 permanent connectivity issues:
