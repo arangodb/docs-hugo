@@ -109,22 +109,22 @@
 
     /* ADMONITIONS */
     --INFO-ICON-COLOR: var(--blue-500);
-    --INFO-BG-COLOR: transparent;
+    --INFO-BG-COLOR: var(--blue-50);
     --INFO-BORDER-COLOR: var(--blue-500);
 
     --WARNING-ICON-COLOR: var(--orange-400);
+    --WARNING-BG-COLOR: var(--orange-50);
     --WARNING-BORDER-COLOR: var(--orange-400);
-    --WARNING-BG-COLOR: transparent;
 
     --DANGER-ICON-COLOR: var(--red-500);
+    --DANGER-BG-COLOR: var(--red-50);
     --DANGER-BORDER-COLOR: var(--red-500);
-    --DANGER-BG-COLOR: transparent;
 
     --TIP-ICON-COLOR: var(--green-600);
-    --TIP-BG-COLOR: transparent;
+    --TIP-BG-COLOR: var(--green-50);
     --TIP-BORDER-COLOR: var(--green-600);
 
     --SECURITY-ICON-COLOR: var(--orange-400);
-    --SECURITY-BG-COLOR: transparent;
+    --SECURITY-BG-COLOR: var(--orange-50);
     --SECURITY-BORDER-COLOR: var(--orange-400);
 }
