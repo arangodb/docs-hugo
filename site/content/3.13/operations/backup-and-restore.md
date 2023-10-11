@@ -342,4 +342,4 @@ not be suited for.
 
 - **Known Issues**
 
-  See the list of [Known Issues](../release-notes/version-3.12/known-issues-in-3-12.md#hot-backup).
+  See the list of [Known Issues](../release-notes/version-3.13/known-issues-in-3-13.md#hot-backup).

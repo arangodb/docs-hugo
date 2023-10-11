@@ -246,7 +246,7 @@ i.e. range queries in SEARCH operations against Views will not follow the
 language rules as per the defined Analyzer locale (except for the
 [`collation` Analyzer](../analyzers.md#collation)) nor the server language
 (startup option `--default-language`)!
-Also see [Known Issues](../../release-notes/version-3.12/known-issues-in-3-12.md#arangosearch).
+Also see [Known Issues](../../release-notes/version-3.13/known-issues-in-3-13.md#arangosearch).
 {{< /warning >}}
 
 ### View definition

@@ -9,6 +9,18 @@ archetype: default
 ---
 {{< description >}}
 
+## Version 3.13
+
+**All Editions**
+
+- 
+
+**Enterprise Edition**
+
+- 
+
+Also see [What's New in 3.13](../../release-notes/version-3.13/whats-new-in-3-13.md).
+
 ## Version 3.12
 
 **All Editions**
