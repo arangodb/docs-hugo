@@ -172,14 +172,14 @@ def getHugoMetrics(content):
             continue
 
         ##Hints
-        if re.search(r"{{< warning|{{< info|{{< danger|{{< success|{{< tip|{{< security", line, re.MULTILINE):
+        if re.search(r"{{< warning|{{< info|{{< danger|{{< tip|{{< security", line, re.MULTILINE):
             if flags["inDocublock"]:
                 continue
 
             metrics["hints"] += 1
             continue
 
-        if re.search(r"{{< /warning|{{< /info|{{< /danger|{{< /success|{{< /tip|{{< /security", line, re.MULTILINE):
+        if re.search(r"{{< /warning|{{< /info|{{< /danger|{{< /tip|{{< /security", line, re.MULTILINE):
             continue
 
         ## Details
