@@ -172,6 +172,9 @@ The following types of named graphs exist:
 - [EnterpriseGraphs](enterprisegraphs/_index.md)
 - [SatelliteGraphs](satellitegraphs/_index.md)
 
+Selecting the optimal type of named graph in ArangoDB can help you achieve
+the best performance and scalability for your data-intensive applications.
+
 Which collections are used within a named graph is defined via 
 **edge definitions**. They describe which edge collections connect which
 vertex collections. This is defined separately for the *from* and the *to*
@@ -210,12 +213,7 @@ You can create and manage named graphs in the following ways:
   JavaScript API (see the above links of the named graph types)
 - Using the [Gharial HTTP API](../develop/http/graphs/named-graphs.md)
 
-#### Choosing the right type of graph
-
-Selecting the optimal type of named graph in ArangoDB can help you achieve
-the best performance and scalability for your data-intensive applications.
-
-##### When to use General Graphs
+#### When to use General Graphs
 
 The General Graph is the basic graph type in ArangoDB, suitable for small-scale
 graph use cases. Data in this type is randomly distributed across all configured
@@ -228,7 +226,7 @@ General graphs are the easiest way to get started, no special configuration requ
 
 ![General Graph Random Distribution](../../images/general-graph-distribution.png)
 
-##### When to use SmartGraphs
+#### When to use SmartGraphs
 
 The SmartGraphs further optimize data distribution by allowing you to define a
 property called `smartGraphAttribute`. This property leverages your application's
@@ -243,7 +241,7 @@ scenarios, use SmartGraphs. Organize your data efficiently using the
 
 ![SmartGraph Distribution](../../images/smartgraph-distribution.png)
 
-##### When to use EnterpriseGraphs
+#### When to use EnterpriseGraphs
 
 The EnterpriseGraphs are designed for large-scale graph use cases in enterprise
 environments. While data is also randomly sharded, this graph type ensures that
@@ -257,7 +255,7 @@ using EnterpriseGraphs.
 
 ![EnterpriseGraph Distribution](../../images/enterprisegraph-distribution.png)
 
-##### When to use SatelliteGraphs
+#### When to use SatelliteGraphs
 
 SatelliteGraphs replicate one or more graphs to all machines within a cluster
 so queries can be executed locally. All vertices and edges are available on
