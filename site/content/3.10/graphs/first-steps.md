@@ -243,7 +243,7 @@ scenarios, use SmartGraphs. Organize your data efficiently using the
 
 ![SmartGraph Distribution](../../images/smartgraph-distribution.png)
 
-#### When to use EnterpriseGraphs
+##### When to use EnterpriseGraphs
 
 The EnterpriseGraphs are designed for large-scale graph use cases in enterprise
 environments. While data is also randomly sharded, this graph type ensures that
