@@ -125,6 +125,25 @@ attempt to create an additional database fails with error
 if other databases are dropped first. The default value for this option is
 unlimited, so an arbitrary amount of databases can be created.
 
+### `--database.extended-names` enabled by default
+
+The `--database.extended-names` startup option is now enabled by default.
+This allows you to use Unicode characters inside database names, collection names,
+view names and index names by default, unless you explicitly turn off the
+functionality.
+
+Note that once a server in your deployment has been started with the flag set to
+`true`, it stores this setting permanently. Switching the startup option back to
+`false` raises a warning about the option change at startup, but it is not
+blockig the startup.
+
+Existing databases, collections, views and indexes with extended names can still
+be used even with the option set back to `false`, but no new database objects
+with extended names can be created with the option disabled. This state is only
+meant to facilitate downgrading or reverting the option change. When the option
+is set to `false`, all database objects with extended names that were created
+in the meantime should be removed manually.
+
 ## Miscellaneous changes
 
 ### In-memory edge cache startup options and metrics
