@@ -189,27 +189,27 @@ ul ul, ul ol, ol ul, ol ol {
     margin-bottom: .5rem;
 }
 
-.link-internal {
+.link {
     text-decoration: none;
     border-bottom: 2px solid var(--green-600);
 }
 
-.link-internal:hover{
+.link:hover{
     border-bottom: 2px solid var(--green-600);
     color: var(--gray-950);
 }
 
-.link-internal > * {
+.link > * {
     text-decoration: none;
     pointer-events: none;
 }
 
-.link-internal > p {
+.link > p {
     border-bottom: 2px solid var(--green-600);
     color: var(--gray-950);
 }
 
-.link-internal:has(code) {
+.link:has(code) {
     border-bottom: 2px solid var(--green-600);
     font-size: 14px;
     overflow: auto;
@@ -222,12 +222,12 @@ ul ul, ul ol, ol ul, ol ol {
     box-shadow: none;
     color: var(--gray-950);
 }
-.link-internal > code {
+.link > code {
     background-color: transparent;
     border: none;
 }
 
-.link-internal > i {
+.link > i {
     color: var(--gray-950);
     text-decoration: none;
 }
@@ -390,7 +390,7 @@ table.fixed code {
     box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
 } */
 
-.cards > a.link-internal {
+.cards > a.link {
     border-bottom: 0px;
 }
 
@@ -1990,7 +1990,7 @@ nav.pagination .next {
 .nav-prev {
     display: inherit;
 }
-.nav-prev.link-internal, .nav-next.link-internal  {
+.nav-prev.link, .nav-next.link  {
     border-bottom: 0;
 }
 

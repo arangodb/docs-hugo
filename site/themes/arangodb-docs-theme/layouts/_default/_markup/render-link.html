@@ -8,7 +8,6 @@
 {{- end }}
 
 {{- $permalink := "" }}
-{{- $class := "" }}
 {{- $isRemote := ne $url.Scheme "" }}
 
 {{ if $isRemote -}}
@@ -21,7 +20,6 @@
     {{ $page := .Page.GetPage $path -}}
     {{ with $page -}}
       {{ $permalink = printf "%s%s" $page.RelPermalink $fragment -}}
-      {{ $class = "link-internal" }}
     {{ else -}}
       {{ if ne $currentPage "/" -}}
         {{ $currentFile := .Page.File.Path -}}
@@ -37,7 +35,8 @@
 
 <a href="{{ $permalink | safeURL }}"
   {{- with .Title }} title="{{ . }}"{{ end }}
-  {{- if $isRemote }} target="_blank" rel="noopener noreferrer"{{ else }} class="{{ $class }}"{{ end }}>
+  {{- if $isRemote }} target="_blank" rel="noopener noreferrer"{{ end }} class="link">
   {{- .Text | safeHTML -}}
 </a>
+{{- if $isRemote }}&nbsp;<i class="fas fa-external-link-alt"></i>{{ end }}
 {{- /* whitespace control */ -}}
