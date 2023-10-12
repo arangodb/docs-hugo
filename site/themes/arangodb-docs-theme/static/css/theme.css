@@ -177,12 +177,6 @@ button, input, optgroup, select, textarea {
     color: white;
 }
 
-.deactivated {
-    pointer-events: none;
-    cursor: none;
-    border-bottom: 0;
-}
-
 ul, ol {
     margin-bottom: 20px;
     padding: 0;
