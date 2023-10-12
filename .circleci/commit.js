@@ -10,7 +10,6 @@ async function commit_generated() {
     })
     
     let data = await response.json();
-    console.log("Retrieved data: " + JSON.stringify(data))
 
     for (let workflow of data.items) {
 
