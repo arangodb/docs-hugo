@@ -27,6 +27,12 @@ func (l *ArangoproxyLogger) Printf(s string, args ...any) {
 	l.logger.Printf(s, args...)
 }
 
+func (l *ArangoproxyLogger) Debug(s string, args ...any) {
+	if Conf.Debug {
+		l.logger.Printf(s, args...)
+	}
+}
+
 func (l *ArangoproxyLogger) Summary(s string, args ...any) {
 	s = strings.ReplaceAll(s, "\n", "\n<br>")
 	l.summary.Printf(s+"<br>", args...)
