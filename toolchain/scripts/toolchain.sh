@@ -53,6 +53,11 @@ if [ "$ARANGODB_BRANCH_3_12" != "" ] ; then
       export ARANGODB_BRANCH_3_12_VERSION="3.12"
 fi
 
+if [ "$ARANGODB_BRANCH_3_13" != "" ] ; then
+      export ARANGODB_BRANCH_3_13_IMAGE="$ARANGODB_BRANCH_3_13"
+      export ARANGODB_BRANCH_3_13_VERSION="3.13"
+fi
+
 start_servers=false
 
 ## Expand environment variables in config.yaml, if present
