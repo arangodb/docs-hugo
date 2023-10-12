@@ -170,8 +170,7 @@ commands:
             source ~/.bashrc   
             nvm install --lts 
 
-            artifacts_job_id=$(node docs-hugo/.circleci/commit.js $CIRCLE_BRANCH)
-            base_url=https://output.circle-artifacts.com/output/job/"$artifacts_job_id"/artifacts/0/tmp
+            node docs-hugo/.circleci/commit.js $CIRCLE_BRANCH
 
   upload-summary:
     description: "Upload summary report on github"
