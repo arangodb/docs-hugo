@@ -50,7 +50,7 @@ it in an array (unless it is an array itself). You may also use [PUSH()](#push) 
 name: aqlArrayAppend_1
 description: ''
 ---
-RETURN APPEND([ 1, 2, 3 ], [ 5, 6, 9 ])
+RETURN APPEND([ 1, 2, 7 ], [ 5, 6, 9 ])
 ```
 
 ```aql
