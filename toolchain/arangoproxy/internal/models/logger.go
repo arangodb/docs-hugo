@@ -29,7 +29,7 @@ func (l *ArangoproxyLogger) Printf(s string, args ...any) {
 
 func (l *ArangoproxyLogger) Debug(s string, args ...any) {
 	if Conf.Debug {
-		l.logger.Printf(s, args...)
+		l.logger.Printf("[DEBUG] "+s, args...)
 	}
 }
 
