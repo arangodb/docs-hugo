@@ -10,6 +10,7 @@ type Config struct {
 	Repositories []Repository `yaml:"repositories"` // ArangoDB instances
 	Cache        string       `yaml:"cache"`        // Cache configuration
 	Datasets     string       `yaml:"datasetsFile"`
+	Debug        bool         `yaml:"debug"`
 	Override     string       `yaml:"-"`
 }
 
