@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"os"
 
 	"gopkg.in/yaml.v3"
@@ -24,4 +25,8 @@ func LoadConfig(file string) error {
 
 	err = yaml.Unmarshal(fileStream, &Conf)
 	return err
+}
+
+func (c Config) String() string {
+	return fmt.Sprintf("Cache: %s\nDatasets: %s\nDebug: %t\nOverride: %s\nRepositories: %s", c.Cache, c.Datasets, c.Debug, c.Override, c.Repositories)
 }
