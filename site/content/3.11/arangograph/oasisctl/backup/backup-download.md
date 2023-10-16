@@ -6,7 +6,7 @@ menuTitle: Backup Download
 weight: 15
 ---
 ## Synopsis
-Download a backup
+Download a backup from the cloud storage to the local deployment disks, so it can be restored.
 
 ```
 oasisctl backup download [flags]
