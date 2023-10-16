@@ -113,12 +113,12 @@
     --INFO-BORDER-COLOR: var(--blue-500);
 
     --WARNING-ICON-COLOR: var(--orange-400);
-    --WARNING-BORDER-COLOR: var(--orange-400);
     --WARNING-BG-COLOR: transparent;
+    --WARNING-BORDER-COLOR: var(--orange-400);
 
     --DANGER-ICON-COLOR: var(--red-500);
-    --DANGER-BORDER-COLOR: var(--red-500);
     --DANGER-BG-COLOR: transparent;
+    --DANGER-BORDER-COLOR: var(--red-500);
 
     --TIP-ICON-COLOR: var(--green-600);
     --TIP-BG-COLOR: transparent;

@@ -221,27 +221,27 @@ ul ul, ul ol, ol ul, ol ol {
     margin-bottom: .5rem;
 }
 
-.link-internal {
+.link {
     text-decoration: none;
     border-bottom: 2px solid var(--green-600);
 }
 
-.link-internal:hover{
+.link:hover{
     border-bottom: 2px solid var(--green-600);
     color: var(--gray-950);
 }
 
-.link-internal > * {
+.link > * {
     text-decoration: none;
     pointer-events: none;
 }
 
-.link-internal > p {
+.link > p {
     border-bottom: 2px solid var(--green-600);
     color: var(--gray-950);
 }
 
-.link-internal:has(code) {
+.link:has(code) {
     border-bottom: 2px solid var(--green-600);
     font-size: 14px;
     overflow: auto;
@@ -254,12 +254,12 @@ ul ul, ul ol, ol ul, ol ol {
     box-shadow: none;
     color: var(--gray-950);
 }
-.link-internal > code {
+.link > code {
     background-color: transparent;
     border: none;
 }
 
-.link-internal > i {
+.link > i {
     color: var(--gray-950);
     text-decoration: none;
 }
@@ -422,7 +422,7 @@ table.fixed code {
     box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
 } */
 
-.cards > a.link-internal {
+.cards > a.link {
     border-bottom: 0px;
 }
 
@@ -1202,22 +1202,20 @@ header .logo {
 }
 
 .toc-header {
-    font-size: 20px;
-    font-weight: 500;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0;
     margin-bottom: 16px;
 }
+
 .toc-header > p {
-    font-size: 15px;
     line-height: 16px;
-    font-weight: bolder;
-    letter-spacing: 0;
-    margin: 0px 0px 0px 0px;
+    margin: 0;
 }
 
 .toc-content {
     margin-bottom: 30px;
 }
-
 
 #TableOfContents {
     margin-right: 1rem;
@@ -1229,43 +1227,36 @@ header .logo {
 
 #TableOfContents ul {
     list-style: none;
-    margin: 0 0 0 0;
+    margin: 0;
 }
 
 #TableOfContents a {
     display: inline-block;
-    padding: 0.25rem 0.5rem 0.25rem 0.5rem;
+    padding: 0.25rem 0.5rem;
     text-decoration: none;
     color: var(--TOC-ENTRY-COLOR);
+    font-size: 16px;
+    font-weight: 400;
 }
 
 #TableOfContents a:hover {
     border-bottom: none;
 }
 
-
-#TableOfContents .level-1 > a {
-    font-size: 16px;
-}
-
-#TableOfContents .level-2 > a {
-    font-size: 16px;
-    font-weight: 400;
-}
-
 #TableOfContents .level-3 > a {
-    padding-left: 1em;
-    font-size: 16px;
-    font-weight: 400;
+    padding-left: 1.25rem;
 }
 
 #TableOfContents .level-4 > a {
-    padding-left: 2em;
-    font-size: 16px;
-    font-weight: 400;
+    padding-left: 2rem;
 }
 
-
+#TableOfContents .level-5 > a {
+    padding-left: 2.75rem;
+}
+#TableOfContents .level-6 > a {
+    padding-left: 3.5rem;
+}
 
 #TableOfContents .is-active > a {
     color: #222222;
@@ -1275,7 +1266,8 @@ header .logo {
 #TableOfContents .level-2:hover,
 #TableOfContents .level-3:hover,
 #TableOfContents .level-4:hover, 
-#TableOfContents .level-5:hover {
+#TableOfContents .level-5:hover,
+#TableOfContents .level-6:hover {
     font-weight: bold;
     --tw-bg-opacity: 0.2;
     background-color: var(--gray-100);
@@ -1330,6 +1322,7 @@ article.notfound {
 hgroup > h1, article > h2, article > h3, article > h4, article > h5, article > h6 {
     color: var(--HEADERS-COLOR);
     font-weight: var(--TYPOGRAPHY-BOLD-TEXT);
+    overflow-wrap: break-word;
 }
 
 hgroup > h1,
@@ -1638,7 +1631,6 @@ div.box.tip {
 
 div.box.security {
     border: 1px solid var(--SECURITY-BORDER-COLOR);
-    border-left: 0px;
     background: var(--SECURITY-BG-COLOR);
     box-shadow: 0 0 0 2px var(--SECURITY-BORDER-COLOR) inset,0 0 0 0 transparent
 }
@@ -2021,7 +2013,7 @@ nav.pagination .next {
 .nav-prev {
     display: inherit;
 }
-.nav-prev.link-internal, .nav-next.link-internal  {
+.nav-prev.link, .nav-next.link  {
     border-bottom: 0;
 }
 

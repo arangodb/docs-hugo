@@ -25,7 +25,10 @@ by ArangoDB, without the user being required to create extra indexes for them.
 are covered by an edge collection's edge index automatically.
 
 You cannot use the `_id` system attribute, nor sub-attributes with this name, in
-user-defined indexes, but indexing `_key`, `_rev`, `_from`, and `_to` is possible.
+user-defined indexes (except the inverted index type). This applies to the
+`fields` the index is defined over but not the additional attributes you can
+store in a persistent index using `storedValues`. Indexing and storing
+the `_key`, `_rev`, `_from`, and `_to` system attributes is possible.
 
 You cannot index fields that contain `.` in their attribute names because dots
 are interpreted as paths of nested attributes. For example, `fields: ["foo.bar"]`

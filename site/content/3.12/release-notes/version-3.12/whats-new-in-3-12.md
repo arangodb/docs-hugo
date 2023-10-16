@@ -61,6 +61,17 @@ Swagger 2.x compatibility.
 
 
 
+## Indexing
+
+### Stored values can contain the `_id` attribute
+
+The usage of the `_id` system attribute was previously disallowed for
+`persistent` indexes inside of `storedValues`. This is now allowed in v3.12.
+
+Note that it is still forbidden to use `_id` as a top-level attribute or
+sub-attribute in `fields` of persistent indexes. On the other hand, inverted
+indexes have been allowing to index and store the `_id` system attribute.
+
 ## Server options
 
 ### LZ4 compression for values in the in-memory edge cache
@@ -113,6 +124,30 @@ attempt to create an additional database fails with error
 `32` (`ERROR_RESOURCE_LIMIT`). Additional databases can then only be created
 if other databases are dropped first. The default value for this option is
 unlimited, so an arbitrary amount of databases can be created.
+
+### Cluster-internal connectivity checks
+
+<small>Introduced in: v3.11.5, v.3.12.0</small>
+
+This feature makes Coordinators and DB-Servers in a cluster periodically send
+check requests to each other, in order to see if all nodes can connect to
+each other.
+If a cluster-internal connection to another Coordinator or DB-Server cannot
+be established within 10 seconds, a warning is now logged.
+
+The new `--cluster.connectivity-check-interval` startup option can be used
+to control the frequency of the connectivity check, in seconds.
+If set to a value greater than zero, the initial connectivity check is
+performed approximately 15 seconds after the instance start, and subsequent
+connectivity checks are executed with the specified frequency.
+If set to `0`, connectivity checks are disabled.
+
+You can also use the following metrics to monitor and detect temporary or
+permanent connectivity issues:
+- `arangodb_network_connectivity_failures_coordinators`: Number of failed
+  connectivity check requests sent by this instance to Coordinators.
+- `arangodb_network_connectivity_failures_dbservers_total`: Number of failed
+  connectivity check requests sent to DB-Servers.
 
 ## Miscellaneous changes
 
