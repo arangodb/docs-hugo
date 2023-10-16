@@ -222,5 +222,54 @@ of outgrowing the maximum number of file descriptors the ArangoDB process
 can open. Thus, these options should only be enabled on deployments with a
 limited number of collections/shards/indexes.
 
+## Client tools
+
+### arangodump
+
+#### Improved dump performance
+
+
+
+#### Resource usage limits
+
+The following startup options that can be used to limit
+the resource usage of parallel _arangodump_ invocations have been added:
+
+- `--dump.max-memory-usage`: Maximum memory usage (in bytes) to be
+  used by the server-side parts of all ongoing _arangodump_ invocations.
+  This option can be used to limit the amount of memory for prefetching
+  and keeping results on the server side when _arangodump_ is invoked
+  with the `--parallel-dump` option. It does not have an effect for
+  _arangodump_ invocations that did not use the `--parallel-dump` option.
+  Note that the memory usage limit is not exact and that it can be
+  slightly exceeded in some situations to guarantee progress.
+- -`-dump.max-docs-per-batch`: Maximum number of documents per batch
+  that can be used in a dump. If an _arangodump_ invocation requests
+  higher values than configured here, the value is automatically
+  capped to this value. Will only be followed for _arangodump_ invocations
+  that use the `--parallel-dump` option.
+- `--dump.max-batch-size`: Maximum batch size value (in bytes) that
+  can be used in a dump. If an _arangodump_ invocation requests larger
+  batch sizes than configured here, the actual batch sizes is capped
+  to this value. Will only be followed for arangodump invocations that
+  use the -`-parallel-dump` option.
+- `--dump.max-parallelism`: Maximum parallelism (number of server-side
+  threads) that can be used in a dump. If an _arangodump_ invocation requests
+  a higher number of prefetch threads than configured here, the actual
+  number of server-side prefetch threads is capped to this value.
+  Will only be followed for _arangodump_ invocations that use the
+  `--parallel-dump` option.
+
+The following metrics have been added to observe the behavior of parallel
+_arangodump_ operations on the server:
+
+- `arangodb_dump_memory_usage`: Current memory usage of all ongoing
+  _arangodump_ operations on the server.
+- `arangodb_dump_ongoing`: Number of currently ongoing _arangodump_
+  operations on the server.
+- `arangodb_dump_threads_blocked_total`: Number of times a server-side
+  dump thread was blocked because it honored the server-side memory
+  limit for dumps.
+
 ## Internal changes
 
