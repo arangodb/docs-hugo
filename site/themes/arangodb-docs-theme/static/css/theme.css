@@ -1599,7 +1599,6 @@ div.box.tip {
 
 div.box.security {
     border: 1px solid var(--SECURITY-BORDER-COLOR);
-    border-left: 0px;
     background: var(--SECURITY-BG-COLOR);
     box-shadow: 0 0 0 2px var(--SECURITY-BORDER-COLOR) inset,0 0 0 0 transparent
 }
