@@ -799,7 +799,7 @@
       "clusterOnly": false,
       "canBeDisabled": true,
       "canCreateAdditionalPlans": false,
-      "disabledByDefault": true,
+      "disabledByDefault": false,
       "enterpriseOnly": false
     }
   },
