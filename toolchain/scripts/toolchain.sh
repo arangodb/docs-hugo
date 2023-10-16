@@ -521,7 +521,9 @@ function generate_oasisctl() {
   version=$1
 
   log "[generate_oasisctl] Generate OasisCTL docs"
+  log "[generate_oasisctl] Invoking download_oasisctl"
 
+  download_oasisctl
 
   mkdir -p /tmp/oasisctl
   mkdir -p /tmp/preserve
@@ -549,6 +551,18 @@ function generate_oasisctl() {
   echo "</li>" >> /home/summary.md
 
   log "[generate_oasisctl] Done"
+}
+
+function download_oasisctl() {
+  oasisctlVersion=$(curl -I https://github.com/arangodb-managed/oasisctl/releases/latest | awk -F '/' '/^location/ {print  substr($NF, 1, length($NF)-1)}')
+  log "[download_oasisctl] Downloading oasisctl version $oasisctlVersion"
+  cd /tmp
+  rm -r oasisctl.zip bin
+  wget https://github.com/arangodb-managed/oasisctl/releases/download/$oasisctlVersion/oasisctl.zip
+  unzip oasisctl.zip
+  mv bin/linux/arm/ bin/linux/arm64
+  mv bin/linux/amd64/oasisctl /usr/bin/oasisctl && chmod +x /usr/bin/oasisctl
+  cd /home/toolchain/scripts
 }
 
 
