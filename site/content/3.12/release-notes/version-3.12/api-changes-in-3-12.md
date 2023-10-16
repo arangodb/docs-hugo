@@ -43,6 +43,17 @@ unknown attributes and values are detected in the request body.
 Note that all invalid elements and combinations will be rejected in future
 versions.
 
+#### Index API
+
+##### Stored values can contain the `_id` attribute
+
+The usage of the `_id` system attribute was previously disallowed for
+`persistent` indexes inside of `storedValues`. This is now allowed in v3.12.
+
+Note that it is still forbidden to use `_id` as a top-level attribute or
+sub-attribute in `fields` of persistent indexes. On the other hand, inverted
+indexes have been allowing to index and store the `_id` system attribute.
+
 ### Privilege changes
 
 
@@ -88,6 +99,14 @@ for details.
 
 The `GET /_api/query/rules` endpoint now includes a `description` attribute for
 every optimizer rule that briefly explains what it does.
+
+#### Query parsing API
+
+The `POST /_api/query` endpoint for parsing AQL queries now unconditionally
+returns the `warnings` attribute, even if no warnings were produced while parsing
+the query. In that case, `warnings` contains an empty array.
+In previous versions, no `warnings` attribute was returned when parsing a query
+produced no warnings.
 
 ### Endpoints moved
 

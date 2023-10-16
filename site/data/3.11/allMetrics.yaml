@@ -2047,6 +2047,70 @@
     This metric tracks the runtime of phase2 of an Agency sync. Phase2 calculates
     what actions to execute given the difference of the local and target state.
 
+- name: arangodb_network_connectivity_failures_coordinators_total
+  introducedIn: "3.11.4"
+  help: |
+    Number of failed connectivity check requests sent to Coordinators.
+  unit: number
+  type: counter
+  category: Network
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - dbserver
+  description: |
+    Number of failed connectivity check requests sent by this instance
+    to Coordinators.
+    The metric will be increased if a cluster-internal connection to a
+    Coordinator cannot be established within 10 seconds. In this case the
+    instance will also log a warning.
+    Connectivity checks run with a configurable frequency, adjustable via
+    the `--cluster.connectivity-check-interval` startup option.
+  
+  troubleshoot: |
+    If this metric keeps increasing permanently or for longer periods, there
+    are likely network connectivity issues or misconfigurations, which can
+    prevent the instance from connecting to every Coordinator in the cluster
+    (potentially connecting to itself). In this case it is advised to check
+    the connectivity manually, and ensure that the instance can make connections
+    to all Coordinators, potentially including itself.
+  
+    If there are temporary network glitches or instance restarts, this metric
+    can also increase. But increases should stop once the network has stabilized
+    and/or instances have restarted successfully.
+
+- name: arangodb_network_connectivity_failures_dbservers_total
+  introducedIn: "3.11.4"
+  help: |
+    Number of failed connectivity check requests sent to DB-Servers.
+  unit: number
+  type: counter
+  category: Network
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - dbserver
+  description: |
+    Number of failed connectivity check requests sent by this instance
+    to DB-Server.
+    The metric will be increased if a cluster-internal connection to a
+    DB-Server cannot be established within 10 seconds. In this case the
+    instance will also log a warning.
+    Connectivity checks run with a configurable frequency, adjustable via
+    the `--cluster.connectivity-check-interval` startup option.
+  
+  troubleshoot: |
+    If this metric keeps increasing permanently or for longer periods, there
+    are likely network connectivity issues or misconfigurations, which can
+    prevent the instance from connecting to every DB-Server in the cluster
+    (potentially connecting to itself). In this case it is advised to check
+    the connectivity manually, and ensure that the instance can make connections
+    to all DB-Servers, potentially including itself.
+  
+    If there are temporary network glitches or instance restarts, this metric
+    can also increase. But increases should stop once the network has stabilized
+    and/or instances have restarted successfully.
+
 - name: arangodb_network_dequeue_duration
   introducedIn: "3.10.6"
   help: |
@@ -5537,6 +5601,45 @@
     the cache had no memory left). The metric is not decreased when data gets 
     evicted from the cache.
 
+- name: rocksdb_cache_free_memory_tasks_duration_total
+  introducedIn: "3.10.11"
+  help: |
+    Total amount of time spent in 'free memory' tasks of the in-memory 
+    cache subsystem.
+  unit: us
+  type: counter
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    Total amount of time spent inside 'free memory' tasks of the in-memory
+    cache subsystem. 'free memory' tasks are scheduled by the cache subsystem
+    to free up memory in existing cache hash tables.
+
+- name: rocksdb_cache_free_memory_tasks_total
+  introducedIn: "3.10.11"
+  help: |
+    Total number of 'free memory' tasks scheduled by the in-memory
+    cache subsystem.
+  unit: number
+  type: counter
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    Total number of 'free memory' tasks that were scheduled by the
+    in-memory edge cache subsystem. This metric will be increased
+    whenever the cache subsystem schedules a task to free up memory
+    in one of the managed in-memory caches. It is expected to see
+    this metric rising when the cache subsystem hits its global
+    memory budget.
+
 - name: rocksdb_cache_full_index_refills_total
   introducedIn: "3.10.2"
   help: |
@@ -5615,6 +5718,43 @@
     ArangoDB caches which sit in front of RocksDB. For example, the
     edge cache counts towards this allocation. This global limit can
     be controlled with the `--cache.size` startup option.
+
+- name: rocksdb_cache_migrate_tasks_duration_total
+  introducedIn: "3.10.11"
+  help: |
+    Total amount of time spent in 'migrate' tasks of the in-memory 
+    cache subsystem.
+  unit: us
+  type: counter
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    Total amount of time spent inside 'migrate' tasks of the in-memory
+    cache subsystem. 'migrate' tasks are scheduled by the cache subsystem
+    to migrate existing cache hash tables to a bigger or smaller table.
+
+- name: rocksdb_cache_migrate_tasks_total
+  introducedIn: "3.10.11"
+  help: |
+    Total number of 'migrate' tasks scheduled by the in-memory
+    cache subsystem.
+  unit: number
+  type: counter
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    Total number of 'migrate' tasks that were scheduled by the
+    in-memory edge cache subsystem. This metric will be increased
+    whenever the cache subsystem schedules a task to migrate an
+    existing cache hash table to a bigger or smaller size.
 
 - name: rocksdb_cache_peak_allocated
   introducedIn: "3.10.7"

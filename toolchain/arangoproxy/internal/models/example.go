@@ -92,9 +92,10 @@ func ParseExample(request io.Reader, headers http.Header) (Example, error) {
 	optionsYaml.SaveCache = headers.Get("Cache")
 	optionsYaml.Version = headers.Get("Version")
 
-	overrideRE := regexp2.MustCompile(Conf.Override, 0)
-
-	optionsYaml.SaveCache = strconv.FormatBool(utils.Regexp2StringHasMatch(overrideRE, optionsYaml.Name))
+	if Conf.Override != " " {
+		overrideRE := regexp2.MustCompile(Conf.Override, 0)
+		optionsYaml.SaveCache = strconv.FormatBool(utils.Regexp2StringHasMatch(overrideRE, optionsYaml.Name))
+	}
 
 	code := strings.Replace(string(decodedRequest), string(options), "", -1)
 
