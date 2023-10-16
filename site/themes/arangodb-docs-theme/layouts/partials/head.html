@@ -8,11 +8,13 @@
     <link href="{{ "/images/favicon.png" | relURL }}" rel="icon" type="image/png">
     {{- partial "javascript.html" . }}
 
-    {{- partial "shortcodes/tracking/gtag.html" . }}
-    {{- partial "shortcodes/tracking/gtm.html" . }}
-    {{- partial "shortcodes/tracking/ga.html" . }}
-    {{- partial "shortcodes/tracking/twitter.html" . }}
-    {{- partial "shortcodes/tracking/linkedin.html" . }}
-    {{- partial "shortcodes/tracking/zoominfo.html" . }}
+    {{ if eq site.BaseURL "https://docs.arangodb.com" }}
+        {{- partial "shortcodes/tracking/gtag.html" . }}
+        {{- partial "shortcodes/tracking/gtm.html" . }}
+        {{- partial "shortcodes/tracking/ga.html" . }}
+        {{- partial "shortcodes/tracking/twitter.html" . }}
+        {{- partial "shortcodes/tracking/linkedin.html" . }}
+        {{- partial "shortcodes/tracking/zoominfo.html" . }}
+    {{ end }}
 
 </head>
