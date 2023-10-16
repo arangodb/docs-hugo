@@ -46,12 +46,6 @@ ENV ARCH=${BUILDARCH}
 RUN  apk add --update --no-cache unzip curl jq docker-cli bash python3 py3-pip
 
 RUN wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_$ARCH -O /usr/bin/yq && chmod +x /usr/bin/yq
-RUN oasisctlVersion=$(curl -I https://github.com/arangodb-managed/oasisctl/releases/latest | awk -F '/' '/^location/ {print  substr($NF, 1, length($NF)-1)}') \
-    && echo "Downloading oasisctl version $oasisctlVersion" \
-    && wget https://github.com/arangodb-managed/oasisctl/releases/download/$oasisctlVersion/oasisctl.zip \
-    && unzip oasisctl.zip
-RUN mv bin/linux/arm/ bin/linux/arm64
-RUN cd bin/linux/$ARCH && mv oasisctl /usr/bin/oasisctl && chmod +x /usr/bin/oasisctl
 
 RUN pip3 install pyyaml
 
