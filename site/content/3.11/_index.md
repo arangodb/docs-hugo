@@ -5,17 +5,6 @@ weight: 0
 layout: default
 ---
 
-Normal button
-
-{{< button color="green" >}}
-Sign up
-{{< /button >}}
-
-Some text we want button in {{< button color="green" link="https://docs.arangodb.com">}}
-Sign up
-{{< /button >}}
-middle of it
-
 {{< cloudbanner >}}
 {{< cards >}}
 
