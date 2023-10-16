@@ -4,7 +4,7 @@ ARG BUILDARCH
 RUN echo ${BUILDARCH}
 ENV ARCH=${BUILDARCH}
 
-COPY --from=golang:1.19-alpine /usr/local/go/ /usr/local/go/
+COPY --from=golang:alpine /usr/local/go/ /usr/local/go/
  
 ENV PATH="/usr/local/go/bin:${PATH}"
 
@@ -26,7 +26,7 @@ ARG BUILDARCH
 RUN echo ${BUILDARCH}
 ENV ARCH=${BUILDARCH}
 
-COPY --from=golang:1.19-alpine /usr/local/go/ /usr/local/go/
+COPY --from=golang:alpine /usr/local/go/ /usr/local/go/
 ENV PATH="/usr/local/go/bin:${PATH}"
 
 RUN apk add --update --no-cache git curl bash
