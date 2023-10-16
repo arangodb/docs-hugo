@@ -175,7 +175,11 @@ function loadPage(target) {
 }
 
 function internalLinkListener() {
-  $('.link-internal').click(function(event) {
+  $('.link').click(function(event) {
+    if (event.target.getAttribute("target")) {
+      // external link
+      return;
+    }
     event.preventDefault();
     updateHistory("", event.target.getAttribute('href'))
   })
@@ -199,7 +203,7 @@ function initArticle(url) {
   styleImages();
   internalLinkListener();
   codeShowMoreListener();
-  aliazeLinks('article', 'a.link-internal');
+  aliazeLinks('article', 'a.link:not([target])');
   aliazeLinks('article', 'a.header-link');
   aliazeLinks('#breadcrumbs', 'a')
 }

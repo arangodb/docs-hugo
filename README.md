@@ -343,8 +343,6 @@ code blocks but the syntax then needs to be like this:
 
 ````yaml
 ```openapi
-### Headline
-
 paths:
   /_api/endpoint:
     post:
