@@ -116,7 +116,7 @@ function updateHistory(urlPath) {
   } 
   
   window.history.pushState("navchange", "ArangoDB Documentation", urlPath);
-  trackPageView(document.title, urlPath);
+  if (!urlPath.startsWith("#")) trackPageView(document.title, urlPath);
 
   var popStateEvent = new PopStateEvent('popstate', { state: "navchange" });
   dispatchEvent(popStateEvent);
