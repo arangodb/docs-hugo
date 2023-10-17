@@ -1,10 +1,4 @@
 {{ $link := .Get "link" | default "" }}
 {{ $color := .Get "color" | default "green" }}
 
-<button class='button'>
-<div class="wrapper {{ $color }}">
-    <a href="{{ $link }}" target="_blank" rel="noopener noreferrer" class='button__link'>
-        <span class='button__text'>{{- .Inner | safeHTML -}}</span>
-    </a>
-</div>
-</button>
+<a href="{{ $link }}" target="_blank" rel="noopener noreferrer"><button class="{{ $color }}">{{ .Inner | safeHTML }}</button></a>

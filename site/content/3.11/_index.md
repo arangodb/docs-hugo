@@ -4,6 +4,20 @@ menuTitle: '3.11'
 weight: 0
 layout: default
 ---
+
+
+Normal button
+
+{{< button color="green" >}}
+Start Free
+{{< /button >}}
+
+Some text we want button in {{< button color="green" link="https://docs.arangodb.com">}}
+ArangoGraph Sign Up
+{{< /button >}}
+middle of it
+
+
 {{< cloudbanner >}}
 
 {{< cards >}}
