@@ -229,7 +229,6 @@ $(window).on('popstate', function (e) {
 
 $(window).on('hashchange', function (e) {
   window.history.pushState("popstate", "ArangoDB Documentation", window.location.href);
-  trackPageView(document.title, url);
   scrollToFragment()
 });
 
