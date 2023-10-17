@@ -27,7 +27,7 @@ function menuEntryClickListener() {
             return
         }
         console.log(event.target)
-        updateHistory("", event.target.getAttribute('href'))
+        updateHistory(event.target.getAttribute('href'))
         $('#sidebar.mobile').removeClass("active")
 
     });
@@ -109,17 +109,15 @@ function replaceArticle(href, newDoc) {
 }
 
 
-function updateHistory(title, url) {
-  console.log("Update History " + url)
-  if (url == window.location.href) {
+function updateHistory(urlPath) {
+  console.log("Update History " + urlPath)
+  if (urlPath == window.location.pathname + window.location.hash) {
     return
   } 
   
-  window.history.pushState("navchange", "ArangoDB Documentation", url);
+  window.history.pushState("navchange", "ArangoDB Documentation", urlPath);
+  trackPageView(document.title, urlPath);
 
-  var _hsq = window._hsq = window._hsq || [];
-  _hsq.push(['setPath', url]);
-  _hsq.push(['trackPageView']);
   var popStateEvent = new PopStateEvent('popstate', { state: "navchange" });
   dispatchEvent(popStateEvent);
 }
@@ -181,7 +179,7 @@ function internalLinkListener() {
       return;
     }
     event.preventDefault();
-    updateHistory("", event.target.getAttribute('href'))
+    updateHistory(event.target.getAttribute('href'))
   })
 }
 
@@ -193,7 +191,18 @@ function codeShowMoreListener() {
   })
 }
 
+function trackPageView(title, urlPath) {
+  if (window.gtag) {
+    gtag('config', 'UA-81053435-1', {
+      'page_title': title,
+      'page_path': urlPath
+    });
+  }
 
+  var _hsq = window._hsq = window._hsq || [];
+  _hsq.push(['setPath', urlPath]);
+  _hsq.push(['trackPageView']);
+}
 
 function initArticle(url) {
   restoreTabSelections();
@@ -220,11 +229,7 @@ $(window).on('popstate', function (e) {
 
 $(window).on('hashchange', function (e) {
   window.history.pushState("popstate", "ArangoDB Documentation", window.location.href);
-
-  var _hsq = window._hsq = window._hsq || [];
-  _hsq.push(['setPath', window.location.href]);
-  _hsq.push(['trackPageView']);
-
+  trackPageView(document.title, url);
   scrollToFragment()
 });
 
@@ -419,9 +424,9 @@ function changeVersion() {
     }
 
     
-    var newUrl = window.location.href.replace(getVersionByURL(), getVersionInfo(newVersion).alias)
+    var newUrl = window.location.pathname.replace(getVersionByURL(), getVersionInfo(newVersion).alias) + window.location.hash;
     console.log("Change Version URL " + newUrl)
-    updateHistory("", newUrl);
+    updateHistory(newUrl);
 }
 
 
@@ -517,8 +522,8 @@ const goToTop = (event) => {
 
 function goToHomepage(event){
     event.preventDefault();
-    var homepage = window.location.origin + "/" + getVersionByURL() + "/";
-    updateHistory("", homepage);
+    var homepage = "/" + getVersionByURL() + "/";
+    updateHistory(homepage);
 }
 
 function copyURI(evt) {
@@ -544,10 +549,7 @@ function toggleExpandShortcode(event) {
 
 window.onload = () => {
     window.history.pushState("popstate", "ArangoDB Documentation", window.location.href);
-
-    var _hsq = window._hsq = window._hsq || [];
-    _hsq.push(['setPath', window.location.href]);
-    _hsq.push(['trackPageView']);
+    trackPageView(document.title, window.location.pathname);
 
     var iframe =  document.getElementById('menu-iframe');
     var iFrameBody = iframe.contentDocument || iframe.contentWindow.document;
