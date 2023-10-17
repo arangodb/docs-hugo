@@ -1,5 +1,5 @@
 {{ partial "shortcodes/version.html" (dict "page" .Page) -}}
-{{ $isProduction := eq site.BaseURL "https://docs.arangodb.com" -}}
+{{ $isProduction := ne site.BaseURL "https://docs.arangodb.com" -}}
 <!DOCTYPE html>
 <html lang="{{ .Page.Language | default "en" }}">
   {{ partial "head.html" . -}}

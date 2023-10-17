@@ -7,7 +7,7 @@
   <link href="{{ "/images/favicon.png" | relURL }}" rel="icon" type="image/png">
   {{ partial "javascript.html" . -}}
 
-  {{ $isProduction := eq site.BaseURL "https://docs.arangodb.com" -}}
+  {{ $isProduction := ne site.BaseURL "https://docs.arangodb.com" -}}
   {{ if $isProduction -}}
     {{- partial "tracking/gtag.html" . -}}
     {{- partial "tracking/gtm.html" . -}}
