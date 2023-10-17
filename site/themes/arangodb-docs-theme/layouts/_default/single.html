@@ -1,34 +1,27 @@
-{{- partial "shortcodes/version.html" (dict
-  "page" .Page
-) }}
-
+{{ partial "shortcodes/version.html" (dict "page" .Page) -}}
 
 <!DOCTYPE html>
 <html lang="{{ .Page.Language | default "en" }}">
-
-  {{- partial "head.html" . }}
-
+  {{ partial "head.html" . -}}
   <body>
-    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-5LQ7HC" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-    <noscript><img height="1" width="1" style="display:none;" alt="" src="https://dc.ads.linkedin.com/collect/?pid=499017&fmt=gif"></noscript>
+    {{ if eq site.BaseURL "https://docs.arangodb.com" }}{{ partial "tracking/body-start.html" . }}{{ end -}}
     <div id="page-wrapper" class="page_content_splash" style="height: auto;opacity: 0;">
-        <section id="page-main">
-            <section class="page-container" id="page-container">
-                {{ partial "header.html" . }}
-                <iframe src="/nav.html" title="description" id="menu-iframe" class="menu-iframe active" style="opacity: 0;"></iframe>
-
-            
-                <div class="container-main">
-                  <div class="row-main">
-                    {{ partial "breadcrumbs.html" . }}
-                    {{- partial "output-partial.hugo" (dict "base" "body" "page" . "parameter" (dict "page" . "content" (partial "output-partial.hugo" (dict "base" "content" "page" . "parameter" .)))) }}
-                    {{ partial "toc.html" . }}
-                  </div>
-                </main><!-- #body-inner -->
-              </div><!-- #body -->
-          {{- partial "back-to-top.html" . }}
-          {{ partial "search.html" . }}
-      <script id="hs-script-loader" async defer src="//js.hs-scripts.com/2482448.js"></script>
-      <noscript><img src="https://ws.zoominfo.com/pixel/60e5aeed1cb467001537be54" width="1" height="1" style="display: none;" alt=""></noscript>
-    </body>
+      <section id="page-main">
+        <section class="page-container" id="page-container">
+          {{ partial "header.html" . -}}
+          <iframe src="/nav.html" title="description" id="menu-iframe" class="menu-iframe active" style="opacity: 0;"></iframe>
+          <div class="container-main">
+            <div class="row-main">
+              {{ partial "breadcrumbs.html" . -}}
+              {{ partial "output-partial.hugo" (dict "base" "body" "page" . "parameter" (dict "page" . "content" (partial "output-partial.hugo" (dict "base" "content" "page" . "parameter" .)))) -}}
+              {{ partial "toc.html" . -}}
+            </div>
+          </div>
+        </section>
+      </section>
+    </div>
+    {{ partial "back-to-top.html" . -}}
+    {{ partial "search.html" . -}}
+    {{ if eq site.BaseURL "https://docs.arangodb.com" }}{{ partial "tracking/body-end.html" . }}{{ end -}}
+  </body>
 </html>

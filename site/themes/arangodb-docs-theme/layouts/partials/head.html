@@ -1,20 +1,18 @@
 <head>
-    {{- partial "stylesheet.html" . }}
+  {{ partial "stylesheet.html" . -}}
 
-    {{- partial "meta.html" . }}
-    {{- $link := "<link href=\"%s\" rel=\"%s\" type=\"%s\" title=\"%s\">" }}
-    <title>{{ if and .Title (not (eq .Title .Site.Title)) }}{{ .Title | markdownify | plainify | safeHTML }} {{ default "::" .Site.Params.titleSeparator }} {{ end }}{{ .Site.Title }}</title>
+  {{ partial "meta.html" . -}}
+  {{ $link := "<link href=\"%s\" rel=\"%s\" type=\"%s\" title=\"%s\">" -}}
+  <title>{{ if and .Title (not (eq .Title .Site.Title)) }}{{ .Title | markdownify | plainify | safeHTML }} {{ default "::" .Site.Params.titleSeparator }} {{ end }}{{ .Site.Title }}</title>
+  <link href="{{ "/images/favicon.png" | relURL }}" rel="icon" type="image/png">
+  {{ partial "javascript.html" . -}}
 
-    <link href="{{ "/images/favicon.png" | relURL }}" rel="icon" type="image/png">
-    {{- partial "javascript.html" . }}
-
-    {{ if eq site.BaseURL "https://docs.arangodb.com" }}
-        {{- partial "shortcodes/tracking/gtag.html" . }}
-        {{- partial "shortcodes/tracking/gtm.html" . }}
-        {{- partial "shortcodes/tracking/ga.html" . }}
-        {{- partial "shortcodes/tracking/twitter.html" . }}
-        {{- partial "shortcodes/tracking/linkedin.html" . }}
-        {{- partial "shortcodes/tracking/zoominfo.html" . }}
-    {{ end }}
-
+  {{ if eq site.BaseURL "https://docs.arangodb.com" -}}
+    {{- partial "shortcodes/tracking/gtag.html" . -}}
+    {{- partial "shortcodes/tracking/gtm.html" . -}}
+    {{- partial "shortcodes/tracking/ga.html" . -}}
+    {{- partial "shortcodes/tracking/twitter.html" . -}}
+    {{- partial "shortcodes/tracking/linkedin.html" . -}}
+    {{- partial "shortcodes/tracking/zoominfo.html" . -}}
+  {{ end -}}
 </head>
