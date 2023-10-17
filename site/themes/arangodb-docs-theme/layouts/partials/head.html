@@ -8,11 +8,11 @@
   {{ partial "javascript.html" . -}}
 
   {{ if eq site.BaseURL "https://docs.arangodb.com" -}}
-    {{- partial "shortcodes/tracking/gtag.html" . -}}
-    {{- partial "shortcodes/tracking/gtm.html" . -}}
-    {{- partial "shortcodes/tracking/ga.html" . -}}
-    {{- partial "shortcodes/tracking/twitter.html" . -}}
-    {{- partial "shortcodes/tracking/linkedin.html" . -}}
-    {{- partial "shortcodes/tracking/zoominfo.html" . -}}
+    {{- partial "tracking/gtag.html" . -}}
+    {{- partial "tracking/gtm.html" . -}}
+    {{- partial "tracking/ga.html" . -}}
+    {{- partial "tracking/twitter.html" . -}}
+    {{- partial "tracking/linkedin.html" . -}}
+    {{- partial "tracking/zoominfo.html" . -}}
   {{ end -}}
 </head>
