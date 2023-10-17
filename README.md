@@ -1009,9 +1009,9 @@ It makes a warning show at the top of every page for that version.
    +- 4.0: 
    ```
 
-   Stage all changes and commit them. Open a pull request on GitHub. You only
-   need to specify a Docker image or PR link for `4.0` if you plan to use the
-   `/generate` or `/generate-commit` command to re-generate the examples.
+   Stage all changes and commit them. Open a pull request (PR) on GitHub. You only
+   need to specify a Docker image or PR link for `- 4.0: ` if you plan to use
+   the `/generate` or `/generate-commit` command to re-generate the examples.
    If you follow the next step, the example generation is run manually along
    with some other generators, so using the commands shouldn't be necessary.
 
@@ -1019,8 +1019,17 @@ It makes a warning show at the top of every page for that version.
 
 9. You can use CircleCI to initially generate the data files for the new version,
    like the startup option dumps. You can also populate the example cache at the
-   same time. In CircleCI at <https://app.circleci.com/pipelines/github/arangodb/docs-hugo>,
-   select the branch of your pull request and click **Trigger Pipeline**.
+   same time.
+
+   Before you continue, make sure there are no conflicts in the PR with the
+   `main` branch. The CircleCI workflow will otherwise create a merge commit
+   favoring the `main` branch (in order to update the cache file but also
+   affecting other files), and this can cause e.g. the `versions.yaml` file to
+   get reverted in case of a conflict. The toolchain would then be unaware of
+   the newly added version.   
+   
+   In CircleCI at <https://app.circleci.com/pipelines/github/arangodb/docs-hugo>,
+   select the branch of your PR and click **Trigger Pipeline**.
    Enter the parameters similar to this example:
 
    | Type | Name | Value |
