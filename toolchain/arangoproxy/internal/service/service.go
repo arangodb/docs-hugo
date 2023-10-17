@@ -172,6 +172,9 @@ func (service OpenapiService) ProcessOpenapiSpec(spec map[string]interface{}, he
 
 	spec["version"] = version
 
+	specDebug, _ := json.Marshal(spec)
+	models.Logger.Debug("[ProcessOpenapiSpec] Processing Spec %s", specDebug)
+
 	path := reflect.ValueOf(spec["paths"].(map[string]interface{})).MapKeys()[0].String()
 	method := reflect.ValueOf(spec["paths"].(map[string]interface{})[path].(map[string]interface{})).MapKeys()[0].String()
 	spec["paths"].(map[string]interface{})[path].(map[string]interface{})[method].(map[string]interface{})["summary"] = summary
