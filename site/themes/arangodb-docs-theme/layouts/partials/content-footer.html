@@ -65,7 +65,7 @@
       <a class="nav nav-prev link" href="" title="">
       </a>
     {{ else }}
-        <a class="nav nav-prev link" href="{{.RelPermalink}}" title="{{.Params.menuTitle}}">
+        <a class="nav nav-prev link" href="{{ .RelPermalink }}">
           <i class="fas fa-chevron-left fa-fw"></i><p>{{.Params.menuTitle | markdownify}}</p></a>
         {{- end}}
   {{ end }}
@@ -74,7 +74,7 @@
 
 <span class="next">
   {{ with $next }}
-            <a class="nav nav-next link" href="{{.RelPermalink}}" title="{{.Params.menuTitle}}">
+            <a class="nav nav-next link" href="{{ .RelPermalink }}">
               <p>{{.Params.menuTitle | markdownify}}</p><i class="fas fa-chevron-right fa-fw"></i></a>
           {{- end }}
 </span>
