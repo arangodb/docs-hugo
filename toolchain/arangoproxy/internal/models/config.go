@@ -28,5 +28,5 @@ func LoadConfig(file string) error {
 }
 
 func (c Config) String() string {
-	return fmt.Sprintf("Cache: %s\nDatasets: %s\nDebug: %t\nOverride: %s\nRepositories: %s", c.Cache, c.Datasets, c.Debug, c.Override, c.Repositories)
+	return fmt.Sprintf("  Cache: %s\n  Datasets: %s\n  Debug: %t\n  Override: %s\n  Repositories: %s", c.Cache, c.Datasets, c.Debug, c.Override, c.Repositories)
 }
