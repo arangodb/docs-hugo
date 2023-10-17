@@ -144,20 +144,6 @@ button, input, optgroup, select, textarea {
     margin-bottom: 15px;
 }
 
-.button {
-    background: transparent;
-    background-color: var(--HEADERS-COLOR);
-
-}
-
-.button__link {
-    padding: 5px 16px 5px 16px;
-    vertical-align: middle;
-    color: white;
-    font-weight: bold;
-    font-size: 14px;
-}
-
 button {
     border-radius: 4px;
     font-weight: 700;
