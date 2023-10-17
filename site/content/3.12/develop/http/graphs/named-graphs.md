@@ -7,7 +7,7 @@ description: >-
   EnterpriseGraphs, and SatelliteGraphs
 archetype: default
 ---
-The HTTP API for [named graphs](../../../graphs/first-steps.md#named-graphs) is called _Gharial_.
+The HTTP API for [named graphs](../../../graphs/_index.md#named-graphs) is called _Gharial_.
 
 You can manage all types of ArangoDB's named graphs with Gharial:
 - [General Graphs](../../../graphs/general-graphs/_index.md)

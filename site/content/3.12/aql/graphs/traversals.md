@@ -9,9 +9,9 @@ archetype: default
 ## Syntax
 
 There are two slightly different syntaxes for traversals in AQL, one for
-- [named graphs](../../graphs/first-steps.md#named-graphs) and another to
+- [named graphs](../../graphs/_index.md#named-graphs) and another to
 - specify a [set of edge collections](#working-with-collection-sets)
-  ([anonymous graph](../../graphs/first-steps.md#anonymous-graphs)).
+  ([anonymous graph](../../graphs/_index.md#anonymous-graphs)).
 
 ### Working with named graphs
 

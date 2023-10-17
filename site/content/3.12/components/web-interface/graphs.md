@@ -31,7 +31,7 @@ subsets of a graph or an entire graph.
 4. Click the **Create** button to create the named graph.
 
 For more information about the different types of named graphs and how to
-create them, see [Graphs](../../graphs/first-steps.md).
+create them, see [Graphs](../../graphs/_index.md).
 
 ## View and edit the settings of a named graph
 

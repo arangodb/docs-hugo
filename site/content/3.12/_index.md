@@ -8,11 +8,11 @@ layout: default
 
 {{< cards >}}
 
-{{% card title="What is ArangoDB?" link="introduction/about-arangodb/" %}}
+{{% card title="What is ArangoDB?" link="about-arangodb/" %}}
 Get to know **graphs**, ArangoDB's **use cases** and **features**.
 {{% /card %}}
 
-{{% card title="Getting started" link="get-started/overview/" %}}
+{{% card title="Getting started" link="get-started/" %}}
 Learn about ArangoDB's core concepts, how to interact with the database system,
 and get a server instance up and running.
 {{% /card %}}

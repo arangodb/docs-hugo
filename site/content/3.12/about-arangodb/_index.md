@@ -1,11 +1,11 @@
 ---
 title: What is ArangoDB?
 menuTitle: About ArangoDB
-weight: 10
+weight: 5
 description: >-
   ArangoDB is a scalable graph database system to drive value from connected
   data, faster
-archetype: default
+archetype: chapter
 ---
 {{< description >}}
 

@@ -178,7 +178,7 @@ results in good performance.
 Grouping documents into collections by type (i.e. a session collection
 'sessions_dev', 'sessions_prod') allows you to avoid an extra index on a _type_
 field. Similarly you may consider to
-[split edge collections](../graphs/first-steps.md#multiple-edge-collections-vs-filters-on-edge-document-attributes)
+[split edge collections](../graphs/_index.md#multiple-edge-collections-vs-filters-on-edge-document-attributes)
 instead of specifying the type of the connection inside the edge document.
 
 A few things to consider:

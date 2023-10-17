@@ -762,7 +762,14 @@ Add the actual content formatted in Markdown syntax below the front matter.
 
 ### Rename a page or section
 
-The following steps are necessary for moving content:
+Netlify supports server-side redirects configured with a text file
+([documentation](https://docs.netlify.com/routing/redirects/#syntax-for-the-redirects-file)).
+This is helpful when renaming folders with many subfolders and files because
+there is support for splatting and placeholders. See
+[Redirect options](https://docs.netlify.com/routing/redirects/redirect-options/)
+for details. The configuration file is `site/content/_redirects`.
+
+Otherwise, the following steps are necessary for moving content:
 1. Rename file or folder
 2. Set up `aliases` via the front matter as needed
 3. Adjust `weight` of pages in the front matter if necessary

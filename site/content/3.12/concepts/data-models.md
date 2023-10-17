@@ -53,7 +53,7 @@ are fully-fledged documents (JSON objects).
 
 You can organize vertices and edges in sets using collections, with vertices in
 **document collections** (also referred to as **vertex collections**) and edges
-in **edge collections**. This [graph](../graphs/first-steps.md) model makes ArangoDB classify
+in **edge collections**. This [graph](../graphs/_index.md) model makes ArangoDB classify
 as a **Labeled Property Graph** store.
 
 The design with edges stored in edge collections enables true graph scalability,
@@ -71,7 +71,7 @@ direction (**any**). This means that you do not need to create an opposing edge
 for every edge that you want to be able to follow in both directions.
 
 Aside from basic graph traversal, ArangoDB offers
-[graph algorithms](../graphs/first-steps.md#supported-graph-algorithms) to find one
+[graph algorithms](../graphs/_index.md#supported-graph-algorithms) to find one
 or multiple shortest paths between two vertices, can return a specified amount
 of paths between two vertices in order of increasing length, and supports
 distributed graph processing based on the Pregel framework.

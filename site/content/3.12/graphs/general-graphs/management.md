@@ -7,7 +7,7 @@ description: >-
 archetype: default
 ---
 This chapter describes the javascript interface for creating and modifying
-[named graphs](../first-steps.md#named-graphs).
+[named graphs](../_index.md#named-graphs).
 
 ## Edge Definitions
 

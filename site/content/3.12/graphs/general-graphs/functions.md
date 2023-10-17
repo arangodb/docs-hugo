@@ -6,7 +6,7 @@ description: >-
   This chapter describes various functions on a graph
 archetype: default
 ---
-This chapter describes [various functions on a graph](../first-steps.md).
+This chapter describes [various functions on a graph](../_index.md).
 A lot of these accept a vertex (or edge) example as parameter as defined in the next section.
 
 Examples will explain the API on the the [City Graph](../example-graphs.md#city-graph):

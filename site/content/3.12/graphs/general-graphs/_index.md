@@ -6,7 +6,7 @@ description: >-
   This chapter describes the general-graph module
 archetype: chapter
 ---
-This chapter describes the [general-graph](../first-steps.md) module.
+This chapter describes the [general-graph](../_index.md) module.
 It allows you to define a graph that is spread across several edge and document
 collections.
 This allows you to structure your models in line with your domain and group
