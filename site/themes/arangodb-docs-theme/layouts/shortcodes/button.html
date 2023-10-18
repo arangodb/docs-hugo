@@ -1,0 +1,4 @@
+{{ $link := .Get "link" | default "" }}
+{{ $color := .Get "color" | default "green" }}
+
+<a href="{{ $link }}" target="_blank" rel="noopener noreferrer"><button class="{{ $color }}">{{ .Inner | safeHTML }}</button></a>
