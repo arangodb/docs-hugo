@@ -521,9 +521,9 @@ function generate_oasisctl() {
   version=$1
 
   log "[generate_oasisctl] Generate OasisCTL docs"
-  log "[generate_oasisctl] Invoking download_oasisctl"
 
   if [ ! -f /tmp/oasisctl.zip ]; then
+    log "[generate_oasisctl] /tmp/oasisctl.zip not found. Invoking download_oasisctl"
     download_oasisctl
   fi
 
