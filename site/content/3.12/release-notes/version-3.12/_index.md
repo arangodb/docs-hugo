@@ -1,7 +1,7 @@
 ---
 title: Version 3.12
 menuTitle: Version 3.12
-weight: 5
+weight: 87
 description: ''
 archetype: chapter
 ---
