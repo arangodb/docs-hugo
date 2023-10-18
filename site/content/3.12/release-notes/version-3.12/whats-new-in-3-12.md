@@ -228,7 +228,12 @@ limited number of collections/shards/indexes.
 
 #### Improved dump performance
 
-
+ArangoDB 3.12 includes extended parallelization capabilities to work not only
+at the collection level, but also at the shard level. In combination with the
+new optimized format, database dumps are now created and restored quickly and
+occupy minimal disk space. This major performance boost makes dumps five times
+faster and restores three times faster, which is extremely useful when dealing
+with large shards.
 
 #### Resource usage limits
 
