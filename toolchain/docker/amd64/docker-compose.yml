@@ -5,7 +5,7 @@ services:
     image: arangodb/docs-hugo:toolchain-amd64
     tty: true
     volumes:
-      - ${ARANGODB_SRC:-/dev/null}:/tmp/arangodb
+      - ${ARANGODB_SRC:-/dev/null}:/tmp/arangodb_src
       - /tmp/arangodb:/tmp/arangodb
       - ../../../:/home/
       - /var/run/docker.sock:/var/run/docker.sock
