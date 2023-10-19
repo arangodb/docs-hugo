@@ -144,6 +144,30 @@ meant to facilitate downgrading or reverting the option change. When the option
 is set to `false`, all database objects with extended names that were created
 in the meantime should be removed manually.
 
+### Cluster-internal connectivity checks
+
+<small>Introduced in: v3.11.5, v.3.12.0</small>
+
+This feature makes Coordinators and DB-Servers in a cluster periodically send
+check requests to each other, in order to see if all nodes can connect to
+each other.
+If a cluster-internal connection to another Coordinator or DB-Server cannot
+be established within 10 seconds, a warning is now logged.
+
+The new `--cluster.connectivity-check-interval` startup option can be used
+to control the frequency of the connectivity check, in seconds.
+If set to a value greater than zero, the initial connectivity check is
+performed approximately 15 seconds after the instance start, and subsequent
+connectivity checks are executed with the specified frequency.
+If set to `0`, connectivity checks are disabled.
+
+You can also use the following metrics to monitor and detect temporary or
+permanent connectivity issues:
+- `arangodb_network_connectivity_failures_coordinators`: Number of failed
+  connectivity check requests sent by this instance to Coordinators.
+- `arangodb_network_connectivity_failures_dbservers_total`: Number of failed
+  connectivity check requests sent to DB-Servers.
+
 ## Miscellaneous changes
 
 ### In-memory edge cache startup options and metrics
