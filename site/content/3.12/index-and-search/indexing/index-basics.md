@@ -3,13 +3,17 @@ title: Index basics
 menuTitle: Index Basics
 weight: 5
 description: >-
-  Indexes allow fast access to documents, provided the indexed attribute(s) are used in a query
+  Indexes allow fast access to documents by maintaining special data structures
+  to accelerate queries that use indexed attributes
 archetype: default
 ---
-Indexes allow fast access to documents, provided the indexed attribute(s)
-are used in a query. While ArangoDB automatically indexes some system
-attributes, users are free to create extra indexes on non-system attributes
-of documents.
+{{< description >}}
+
+ArangoDB automatically indexes some system attributes but you are free to create
+additional indexes on other attributes of documents. You generally need to strike
+a balance between creating indexes for often-used attributes to improve the
+performance of read queries and the cost that indexes incur during writes to
+maintain them.
 
 User-defined indexes can be created on collection level. Most user-defined indexes 
 can be created by specifying the names of the index attributes.

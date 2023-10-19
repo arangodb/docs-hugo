@@ -3,7 +3,8 @@ title: Information Retrieval with ArangoSearch
 menuTitle: ArangoSearch
 weight: 155
 description: >-
-  ArangoSearch is ArangoDB's built-in search engine for full-text, complex data structures and more
+  ArangoSearch is ArangoDB's built-in search engine for full-text, complex data
+  structures, and more
 archetype: chapter
 ---
 {{< description >}}
