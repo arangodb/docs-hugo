@@ -286,7 +286,7 @@ echo 'servers:' >> /home/circleci/project/docs-hugo/toolchain/docker/config.yaml
         branchEnv = f"{pullImage}\n \
 echo '  \"{version}\": \"{branch}\"' >>  /home/circleci/project/docs-hugo/toolchain/docker/config.yaml\n\
 mkdir -p /tmp/arangodb/{version}\n\
-mv /tmp/{version} /tmp/arangodb/{version}"
+mv /tmp/{version}/* /tmp/arangodb/{version}/*"
 
         shell = f"{shell}\n{branchEnv}"
 
