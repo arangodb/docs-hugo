@@ -266,7 +266,8 @@ export ENV=\"circleci\"\n \
 export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app\n \
 export HUGO_ENV=examples\n \
 export OVERRIDE=<< pipeline.parameters.override >>\n \
-echo 'generators: << parameters.generators >>' > /home/circleci/project/docs-hugo/toolchain/docker/config.yml\n\
+: > /home/circleci/project/docs-hugo/toolchain/docker/config.yml\n   \
+echo 'generators: << parameters.generators >>' >> /home/circleci/project/docs-hugo/toolchain/docker/config.yml\n\
 echo 'servers:' >> /home/circleci/project/docs-hugo/toolchain/docker/config.yml"
 
     for i in range(len(versions)):
