@@ -37,8 +37,8 @@ commands:
             echo "Using enterprise branch $ENTERPRISE_BRANCH"
             git clone --depth 1 git@github.com:arangodb/enterprise.git --branch "$ENTERPRISE_BRANCH" /root/project/enterprise
 
-            mkdir -p /tmp/<< parameters.version >>
-            cp -r /root/project/. /tmp/<< parameters.version >>
+            mkdir -p /tmp/arangodb/<< parameters.version >>
+            cp -r /root/project/. /tmp/arangodb/<< parameters.version >>
 
   check-arangodb-image-exists:
     description: "Check ArangoDB branch docker image exists"
@@ -389,7 +389,7 @@ jobs:
             - "28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e"
             - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
       - attach_workspace:
-          at: .
+          at: /tmp
       
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
       - clone-docs-and-merge
@@ -487,7 +487,7 @@ jobs:
       - persist_to_workspace:
           root: /tmp
           paths:
-            - << parameters.version >>/*
+            - arangodb/<< parameters.version >>/*
 
 
 
