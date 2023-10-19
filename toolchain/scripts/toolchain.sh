@@ -59,13 +59,13 @@ function main() {
 
   clean_docker_environment
 
-  configServers=$(yq '.servers' ../docker/config.yaml | tr -d { | tr -d } | tr -d ' ' | tr -d '"')
+  mapfile configServers < <(yq e -o=j -I=0 '.servers' ../docker/config.yaml | tr -d { | tr -d } | tr -d ' ' | tr -d '"')
   IFS=',' read -ra servers <<< "$configServers"
-
+  
   ## Generate content and start server
   for server in "${servers[@]}"; do
     IFS=':' read -r version image <<< "$server"
-
+    echo $image $version
     if [ $HUGO_ENV == "release" ]; then
       rm -r ../../site/data/$version/*
       echo "{}" > ../../site/data/$version/cache.json
@@ -87,12 +87,12 @@ function main() {
     echo "<h2>Examples</h2>" >> /home/summary.md
   fi
 
-    ## redirect logs of arangoproxy and site containers to files
-    docker logs --details --follow docs_arangoproxy >> toolchain.log &
-    docker logs --details --follow docs_site >> toolchain.log &
+  ## redirect logs of arangoproxy and site containers to files
+  docker logs --details --follow docs_arangoproxy >> toolchain.log &
+  docker logs --details --follow docs_site >> toolchain.log &
 
-    tail -f /home/toolchain.log &
-    trap_container_exit
+  tail -f /home/toolchain.log &
+  trap_container_exit
 }
 
 
