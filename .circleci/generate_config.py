@@ -29,34 +29,34 @@ if "--help-flags" in sys.argv:
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    "--workflow", help="workflow to trigger", type=str
+    "--workflow", help="The workflow to trigger", type=str
 )
 parser.add_argument(
-    "--arangodb-branches",  nargs='+', help="arangodb branches to be used for generate workflow"
+    "--arangodb-branches",  nargs='+', help="The arangodb/arangodb branches to be used for the generate workflow"
 )
 parser.add_argument(
-    "--arangodb-branch", help="arangodb branch to be used for release workflow", type=str
+    "--arangodb-branch", help="The arangodb/arangodb branch to be used for the release workflow", type=str
 )
 parser.add_argument(
-    "--generators", nargs='+', help="generators to be used by the toolchain", type=str
+    "--generators", nargs='+', help="The generators to be used by the toolchain", type=str
 )
 parser.add_argument(
-    "--commit-generated", help="flag to enable the CircleCI commit step", type=bool
+    "--commit-generated", help="Whether to use the CircleCI commit step", type=bool
 )
 parser.add_argument(
-    "--create-pr", help="if commit-generated, create a separate PR on Github with commited files", type=bool
+    "--create-pr", help="If --commit-generated is used, create a separate PR on GitHub with the committed files", type=bool
 )
 parser.add_argument(
-    "--pr-branch", nargs="?", help="if create-pr, set the PR branch name", type=str
+    "--pr-branch", nargs="?", help="If --create-pr is used, sets the PR branch name", type=str
 )
 parser.add_argument(
-    "--release-type", nargs="?", help="release type: docs/arangodb - default: docs", type=str
+    "--release-type", nargs="?", help="The kind of release, docs (default) or arangodb, for the release workflow", type=str
 )
 parser.add_argument(
-    "--docs-version", nargs="?", help="release workflow only: docs-version we are building the release for", type=str
+    "--docs-version", nargs="?", help="For --release-type arangodb, the documentation version (x.y) corresponding to the ArangoDB version of the release", type=str
 )
 parser.add_argument(
-    "--arangodb-version", nargs="?", help="release workflow only: the extended arangodb version that will be put in versions.yml", type=str
+    "--arangodb-version", nargs="?", help="For --release-type arangodb, the ArangoDB version (x.y.z) to put in versions.yaml", type=str
 )
 
 args = parser.parse_args()

@@ -137,7 +137,7 @@ steps below.
 | string | `workflow` | `release` |
 | string | `release-type` | `arangodb` |
 | string | `docs-version` | `3.11` (the docs version folder) |
-| string | `arangodb-branch` | `3.11` (the arangodb branch to compile) |
+| string | `arangodb-branch` | `3.11` (the arangodb/arangodb branch to compile) |
 | string | `arangodb-version` | `3.11.4` (updates the `versions.yaml` file) |
 
 The ArangoDB release workflow includes the following jobs:
