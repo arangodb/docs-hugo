@@ -183,7 +183,7 @@ The toolchain container needs to be set up via config file in `toolchain/docker/
 
 ```yaml
 generators:   # Generators to trigger - empty string defaults to all generators
-servers:      # Array to define arangodb servers to be used by the toolchain
+servers:      # define arangodb servers to be used by the toolchain
   "{docs-version}": "{arangodb-branch}"    # docs branch to put the generated content into: arangodb docker image to be used, can be arangodb/enterprise-preview:... or a branch name
   ...
 ```
@@ -218,7 +218,7 @@ $Env:ARANGODB_SRC = "/Drive/path/to/arangodb"
 generators: examples oasisctl options optimizer
 servers:
   "3.11": "arangodb/enterprise-preview:3.11-nightly"
-  "3,12": arangodb/enterprise-preview:devel-nightly
+  "3.12": "arangodb/enterprise-preview:devel-nightly"
 ```
 
 **Run the toolchain**
