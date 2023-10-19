@@ -285,8 +285,8 @@ echo 'servers:' >> /home/circleci/project/docs-hugo/toolchain/docker/config.yaml
         version_underscore = version.replace(".", "_")
         branchEnv = f"{pullImage}\n \
 echo '  \"{version}\": \"{branch}\"' >>  /home/circleci/project/docs-hugo/toolchain/docker/config.yaml\n\
-mkdir -p /tmp/arangodb/{version}\n\
-mv /tmp/{version}/* /tmp/arangodb/{version}/*"
+mkdir -p /tmp/arangodb\n\
+mv /tmp/{version} /tmp/arangodb/"
 
         shell = f"{shell}\n{branchEnv}"
 
@@ -393,7 +393,7 @@ def pullImageCmd(branch, version):
 version={version}\n"
         pullImage += "\
 image_name=$(echo ${BRANCH##*/})\n\
-main_hash=$(awk 'END{print}' $version/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)\n\
+main_hash=$(awk 'END{print}' /tmp/$version/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)\n\
 docker pull arangodb/docs-hugo:$image_name-$version-$main_hash\n\
 docker tag arangodb/docs-hugo:$image_name-$version-$main_hash $image_name-$version"
 
