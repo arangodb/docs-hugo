@@ -29,34 +29,34 @@ if "--help-flags" in sys.argv:
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    "--workflow", help="file containing the circleci base config", type=str
+    "--workflow", help="workflow to trigger", type=str
 )
 parser.add_argument(
-    "--arangodb-branches",  nargs='+', help="arangodb branches"
+    "--arangodb-branches",  nargs='+', help="arangodb branches to be used for generate workflow"
 )
 parser.add_argument(
-    "--arangodb-branch", help="file containing the test definitions", type=str
+    "--arangodb-branch", help="arangodb branch to be used for release workflow", type=str
 )
 parser.add_argument(
-    "--generators", nargs='+', help="file containing the test definitions", type=str
+    "--generators", nargs='+', help="generators to be used by the toolchain", type=str
 )
 parser.add_argument(
-    "--commit-generated", help="file containing the test definitions", type=bool
+    "--commit-generated", help="flag to enable the CircleCI commit step", type=bool
 )
 parser.add_argument(
-    "--create-pr", help="file containing the test definitions", type=bool
+    "--create-pr", help="if commit-generated, create a separate PR on Github with commited files", type=bool
 )
 parser.add_argument(
-    "--pr-branch", nargs="?", help="file containing the test definitions", type=str
+    "--pr-branch", nargs="?", help="if create-pr, set the PR branch name", type=str
 )
 parser.add_argument(
-    "--release-type", nargs="?", help="file containing the test definitions", type=str
+    "--release-type", nargs="?", help="release type: docs/arangodb - default: docs", type=str
 )
 parser.add_argument(
-    "--docs-version", nargs="?", help="file containing the test definitions", type=str
+    "--docs-version", nargs="?", help="release workflow only: docs-version we are building the release for", type=str
 )
 parser.add_argument(
-    "--arangodb-version", nargs="?", help="file containing the test definitions", type=str
+    "--arangodb-version", nargs="?", help="release workflow only: the extended arangodb version that will be put in versions.yml", type=str
 )
 
 args = parser.parse_args()
