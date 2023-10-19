@@ -37,22 +37,6 @@ if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
   GENERATORS="examples metrics error-codes options optimizer"
 fi
 
-## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
-if [ "$ARANGODB_BRANCH_3_10" != "" ] ; then
-      export ARANGODB_BRANCH_3_10_IMAGE="$ARANGODB_BRANCH_3_10"
-      export ARANGODB_BRANCH_3_10_VERSION="3.10"
-fi
-
-if [ "$ARANGODB_BRANCH_3_11" != "" ] ; then
-      export ARANGODB_BRANCH_3_11_IMAGE="$ARANGODB_BRANCH_3_11"
-      export ARANGODB_BRANCH_3_11_VERSION="3.11"
-fi
-
-if [ "$ARANGODB_BRANCH_3_12" != "" ] ; then
-      export ARANGODB_BRANCH_3_12_IMAGE="$ARANGODB_BRANCH_3_12"
-      export ARANGODB_BRANCH_3_12_VERSION="3.12"
-fi
-
 start_servers=false
 
 ## Expand environment variables in config.yaml, if present
