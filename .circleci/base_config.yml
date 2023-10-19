@@ -37,8 +37,8 @@ commands:
             echo "Using enterprise branch $ENTERPRISE_BRANCH"
             git clone --depth 1 git@github.com:arangodb/enterprise.git --branch "$ENTERPRISE_BRANCH" /root/project/enterprise
 
-            mkdir -p /tmp/arangodb/<< parameters.version >>
-            cp -r /root/project/. /tmp/arangodb/<< parameters.version >>
+            mkdir -p /tmp/<< parameters.version >>
+            cp -r /root/project/. /tmp/<< parameters.version >>
 
   check-arangodb-image-exists:
     description: "Check ArangoDB branch docker image exists"
