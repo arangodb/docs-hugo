@@ -7,8 +7,6 @@ description: >-
   primary sort order, stored values and other optimizations
 archetype: default
 ---
-{{< description >}}
-
 ## Primary Sort Order
 
 Inverted indexes and `arangosearch` Views can have a primary sort order.

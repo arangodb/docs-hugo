@@ -6,8 +6,6 @@ description: >-
   High-level operations are the core language constructs of the query language
 archetype: chapter
 ---
-{{< description >}}
-
 - [**FOR**](for.md):
   Iterate over a collection or View, all elements of an array or traverse a graph
 

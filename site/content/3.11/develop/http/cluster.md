@@ -8,8 +8,6 @@ description: >-
   cluster deployments
 archetype: default
 ---
-{{< description >}}
-
 ## Monitoring
 
 ### Get the statistics of a DB-Server

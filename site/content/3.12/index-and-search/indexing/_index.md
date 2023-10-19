@@ -1,5 +1,5 @@
 ---
-title: Handling Indexes
+title: About indexing and indexes
 menuTitle: Indexing
 weight: 150
 description: >-

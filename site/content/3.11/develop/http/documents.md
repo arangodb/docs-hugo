@@ -7,8 +7,6 @@ description: >-
   in collections, either one or multiple at a time
 archetype: default
 ---
-{{< description >}}
-
 The basic operations for documents are mapped to the standard HTTP methods:
 
 - Create: `POST`

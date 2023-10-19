@@ -7,8 +7,6 @@ description: >-
   handling the general View properties and View links
 archetype: default
 ---
-{{< description >}}
-
 ## Create an arangosearch View
 
 ```openapi

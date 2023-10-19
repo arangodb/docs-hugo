@@ -6,8 +6,6 @@ description: >-
   You can write UDFs in JavaScript to extend AQL or to simplify queries
 archetype: default
 ---
-{{< description >}}
-
 AQL comes with a [built-in set of functions](functions/_index.md), but it is
 not a fully-featured programming language. To add missing functionality or to
 simplify queries, you may write your own user-defined functions (**UDFs**) in

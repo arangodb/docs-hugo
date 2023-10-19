@@ -7,8 +7,6 @@ description: >-
   functionality within the ArangoGraph Insights Platform
 archetype: default
 ---
-{{< description >}}
-
 ## 2023
 
 ### August 2023 

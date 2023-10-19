@@ -6,8 +6,6 @@ description: >-
   Pregel algorithms can be used for graph exploration, path finding, analytics queries, and much more.
 archetype: default
 ---
-{{< description >}}
-
 Pregel algorithms are used in scenarios where you need to do an
 analysis of a graph stored in ArangoDB to get insights about its
 nature and structure - without having to use external processing systems.

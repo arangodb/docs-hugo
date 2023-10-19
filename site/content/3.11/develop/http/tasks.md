@@ -7,8 +7,6 @@ description: >-
   server-side JavaScript code
 archetype: default
 ---
-{{< description >}}
-
 ## List all tasks
 
 ```openapi

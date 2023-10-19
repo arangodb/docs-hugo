@@ -7,8 +7,6 @@ description: >-
   HTTP request
 archetype: default
 ---
-{{< description >}}
-
 {{< warning >}}
 The batch request API is deprecated from version 3.8.0 on.
 This endpoint should no longer be used.

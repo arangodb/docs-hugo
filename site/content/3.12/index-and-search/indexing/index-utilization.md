@@ -7,8 +7,6 @@ description: >-
   it can or cannot make use of indexes
 archetype: default
 ---
-{{< description >}}
-
 In most cases ArangoDB will use a single index per collection in a given query. AQL queries can
 use more than one index per collection when multiple `FILTER` conditions are combined with a 
 logical `OR` and these can be covered by indexes. AQL queries will use a single index per

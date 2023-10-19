@@ -7,8 +7,6 @@ description: >-
   organization and its data model
 archetype: default
 ---
-{{< description >}}
-
 This chapter introduces ArangoDB's core concepts and covers the following:
 
 - The high-level data organization

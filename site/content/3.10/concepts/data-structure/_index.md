@@ -7,8 +7,6 @@ description: >-
   collections and databases
 archetype: chapter
 ---
-{{< description >}}
-
 ## How Data is Structured in ArangoDB
 
 The hierarchy that data is organized in is **documents** (data records) in

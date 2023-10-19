@@ -7,8 +7,6 @@ description: >-
   improved performance and transactional guarantees for cluster deployments
 archetype: default
 ---
-{{< description >}}
-
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 The OneShard option for ArangoDB clusters restricts all collections of a

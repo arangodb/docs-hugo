@@ -9,8 +9,6 @@ pageToc:
   maxHeadlineLevel: 2
 archetype: default
 ---
-{{< description >}}
-
 ## ArangoDB as a Graph Database
 
 ArangoDB as a graph database is a great fit for use cases like fraud detection,

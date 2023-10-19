@@ -7,8 +7,6 @@ description: >-
   setting up and accessing your first ArangoGraph deployment
 archetype: default
 ---
-{{< description >}}
-
 For general information about the ArangoGraph Insights Platform, see
 [cloud.arangodb.com](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 

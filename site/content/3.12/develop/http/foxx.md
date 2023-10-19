@@ -7,8 +7,6 @@ description: >-
   a database
 archetype: default
 ---
-{{< description >}}
-
 <small>Introduced in: v3.2.0</small>
 
 For more information on Foxx and its JavaScript APIs see the

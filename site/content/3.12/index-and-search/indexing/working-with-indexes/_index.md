@@ -7,8 +7,6 @@ description: >-
   ArangoDB's JavaScript API
 archetype: chapter
 ---
-{{< description >}}
-
 ## Index Identifiers
 
 An index identifier uniquely identifies an index within a collection.

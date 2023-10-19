@@ -6,8 +6,6 @@ description: >-
   The HTTP API for indexes lets you create, delete, and list indexes
 archetype: chapter
 ---
-{{< description >}}
-
 ## Addresses of indexes
 
 All indexes in ArangoDB have a unique identifier. It identifies an

@@ -7,8 +7,6 @@ description: >-
   structures, and more
 archetype: chapter
 ---
-{{< description >}}
-
 ArangoSearch provides information retrieval features, natively integrated
 into ArangoDB's query language and with support for all data models. It is
 primarily a full-text search engine, a much more powerful alternative to the

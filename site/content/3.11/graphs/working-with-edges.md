@@ -7,8 +7,6 @@ description: >-
   other documents by their ID to form a graph
 archetype: default
 ---
-{{< description >}}
-
 Edges are used in [graphs](first-steps.md) to link vertices together.
 They are documents with two additional system attributes that you set, a
 `_from` and a `_to` attribute. They need to be stored in **edge collections**.

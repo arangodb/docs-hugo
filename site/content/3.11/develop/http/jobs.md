@@ -7,8 +7,6 @@ description: >-
   requests and check the status of such jobs
 archetype: default
 ---
-{{< description >}}
-
 ## Get the results of an async job
 
 ```openapi

@@ -6,8 +6,6 @@ description: >-
   This chapter describes various possibilities to deploy ArangoDB
 archetype: chapter
 ---
-{{< description >}}
-
 ArangoDB supports many resilient deployment modes to meet the exact needs of
 your project. 
 

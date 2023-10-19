@@ -9,8 +9,6 @@ pageToc:
   maxHeadlineLevel: 4
 archetype: default
 ---
-{{< description >}}
-
 ## Logs
 
 ### Get the global server logs

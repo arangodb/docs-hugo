@@ -485,7 +485,7 @@ The following shortcodes also exist but are rarely used:
 
 - Use inclusive language, e.g. _work-hours_ instead of _man-hours_.
 
-- Get to point quickly on every page. [Add a Lead Paragraph](#adding-a-lead-paragraph)
+- Get to point quickly on every page. [Add lead paragraphs](#add-lead-paragraphs)
   that summarizes what the page is about.
 
 - Target end-users and focus on the outcome. It should be about solutions, not
@@ -715,19 +715,21 @@ with such a brief description. It is supposed to clarify the scope of the
 article so that the reader can quickly assess whether the following information
 is of relevance, but also acts as an introduction.
 
+You can set the lead paragraph via the `description` parameter in the
+front matter of a page:
+
 ```markdown
 ---
 title: Feature X
 description: >-
   You can do this and that with X, and it is ideal to solve problem Y
 ---
-{{< description >}}
-
 ...
 ```
 
-The lead paragraph text should end without a period, contain no links and usually
-avoid other markup as well but bold, italic, and inline code are acceptable.
+The lead paragraph text should end without a period, contain no links, and
+usually avoid other markup as well. However, **bold**, _italic_, and
+`inline code` are acceptable.
 
 ### Add a page or section
 

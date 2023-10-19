@@ -7,8 +7,6 @@ description: >-
   the specified number and optionally skip results using an offset
 archetype: default
 ---
-{{< description >}}
-
 ## Syntax
 
 Two general forms of `LIMIT` are:

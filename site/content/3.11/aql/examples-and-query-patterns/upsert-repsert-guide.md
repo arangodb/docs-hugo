@@ -8,8 +8,6 @@ description: >-
   different features and performance characteristics
 archetype: default
 ---
-{{< description >}}
-
 A common requirement when ingesting data is to ensure that certain documents
 exist in a collection. Oftentimes when running a command it is unclear whether
 the target documents are already present in the collection or need to be

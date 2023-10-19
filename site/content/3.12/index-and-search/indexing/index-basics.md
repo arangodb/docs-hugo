@@ -7,8 +7,6 @@ description: >-
   to accelerate queries that use indexed attributes
 archetype: default
 ---
-{{< description >}}
-
 ArangoDB automatically indexes some system attributes but you are free to create
 additional indexes on other attributes of documents. You generally need to strike
 a balance between creating indexes for often-used attributes to improve the

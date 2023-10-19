@@ -7,8 +7,6 @@ description: >-
   document if it does not exist
 archetype: default
 ---
-{{< description >}}
-
 Each `UPSERT` operation is restricted to a single collection, and the 
 [collection name](../../concepts/data-structure/collections.md#collection-names) must not be dynamic.
 Only a single `UPSERT` statement per collection is allowed per AQL query, and 

@@ -6,8 +6,6 @@ description: >-
   ArangoDB lets you apply analytics and machine learning to graph data at scale
 archetype: default
 ---
-{{< description >}}
-
 ArangoDB's Graph Analytics and GraphML capabilities provide various solutions
 in data science and data analytics. Multiple data science personas within the
 engineering space can make use of ArangoDB's set of tools and technologies that

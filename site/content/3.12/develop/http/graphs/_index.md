@@ -7,7 +7,5 @@ description: >-
   to retrieve the edges of a vertex
 archetype: chapter
 ---
-{{< description >}}
-
 - [Named graphs](named-graphs.md)
 - [Edges](edges.md)

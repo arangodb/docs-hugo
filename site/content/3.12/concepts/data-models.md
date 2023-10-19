@@ -7,8 +7,6 @@ description: >-
   for key-values, documents, and graphs
 archetype: default
 ---
-{{< description >}}
-
 ## Key-Value Model
 
 The key-value data model is a subset of ArangoDB's document data model.

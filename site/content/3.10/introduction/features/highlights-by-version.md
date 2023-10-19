@@ -7,8 +7,6 @@ description: >-
   grouped by version
 archetype: default
 ---
-{{< description >}}
-
 ## Version 3.10
 
 **All Editions**

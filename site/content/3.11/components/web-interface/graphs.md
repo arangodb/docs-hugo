@@ -7,8 +7,6 @@ description: >-
   visually explore graphs with the graph viewer
 archetype: default
 ---
-{{< description >}}
-
 The **GRAPHS** section of the web interface lists the _named graphs_ stored in
 ArangoDB (EnterpriseGraphs, SmartGraphs, SatelliteGraphs, General Graphs) and
 lets you create new named graphs as well as view and edit the settings of

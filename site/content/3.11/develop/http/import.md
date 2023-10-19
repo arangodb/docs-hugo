@@ -6,8 +6,6 @@ description: >-
   The Import HTTP API allows you to load JSON data in bulk into ArangoDB
 archetype: default
 ---
-{{< description >}}
-
 ## Import JSON data as documents
 
 ```openapi

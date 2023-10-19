@@ -7,8 +7,6 @@ description: >-
   list all or get specific Analyzers with all their settings
 archetype: default
 ---
-{{< description >}}
-
 The RESTful API for managing ArangoSearch Analyzers is accessible via the
 `/_api/analyzer` endpoint.
 

@@ -8,8 +8,6 @@ description: >-
   collections
 archetype: default
 ---
-{{< description >}}
-
 ## Addresses of collections
 
 All collections in ArangoDB have a unique identifier and a unique

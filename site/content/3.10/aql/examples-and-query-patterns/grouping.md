@@ -7,8 +7,6 @@ description: >-
   with optional aggregation during grouping or using post-aggregation
 archetype: default
 ---
-{{< description >}}
-
 To group results by arbitrary criteria, AQL provides the `COLLECT` keyword.
 `COLLECT` will perform a grouping, but no aggregation. Aggregation can still be
 added in the query if required.

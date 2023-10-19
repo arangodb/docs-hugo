@@ -8,8 +8,6 @@ description: >-
   and collections
 archetype: default
 ---
-{{< description >}}
-
 The interface provides the means to manage database system users. All
 users managed through this interface are stored in the protected `_users`
 system collection.

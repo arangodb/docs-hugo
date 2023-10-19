@@ -7,8 +7,6 @@ description: >-
   directions to order results or the elements of an array
 archetype: default
 ---
-{{< description >}}
-
 ## Syntax
 
 The general syntax is:

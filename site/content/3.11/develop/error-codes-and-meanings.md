@@ -9,8 +9,6 @@ pageToc:
   maxHeadlineLevel: 3
 archetype: default
 ---
-{{< description >}}
-
 ## Numbers, names, and descriptions of errors
 
 When an error occurs in an operation of an ArangoDB server, the

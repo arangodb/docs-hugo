@@ -7,8 +7,6 @@ description: >-
   usage performance issues when using ArangoDB's query language
 archetype: default
 ---
-{{< description >}}
-
 ## Trailing semicolons in query strings
 
 Many SQL databases allow sending multiple queries at once. In this case, multiple

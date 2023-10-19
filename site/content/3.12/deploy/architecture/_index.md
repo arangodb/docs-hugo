@@ -9,8 +9,6 @@ description: >-
   replication methods that ArangoDB offers.
 archetype: chapter
 ---
-{{< description >}}
-
 ## Available deployment modes
 
 ArangoDB can be deployed in a variety of configurations, depending on your needs.

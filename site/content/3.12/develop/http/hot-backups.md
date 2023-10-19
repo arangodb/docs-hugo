@@ -7,8 +7,6 @@ description: >-
   backups
 archetype: default
 ---
-{{< description >}}
-
 {{< tag "ArangoDB Enterprise Edition" >}}
 
 Hot Backups are near instantaneous consistent snapshots of an

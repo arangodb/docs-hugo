@@ -7,8 +7,6 @@ description: >-
   JavaScript Transactions
 archetype: chapter
 ---
-{{< description >}}
-
 Transactions are executed on the server-side.
 Clients can run different types of transactions that involve different interfaces:
 

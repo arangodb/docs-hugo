@@ -9,9 +9,6 @@ archetype: default
 ---
 <small>Introduced in: v3.10.0</small>
 
-{{< description >}}
-{.lead}
-
 If you want to add default values to new documents, maintain auxiliary
 attributes for search queries, or similar, you can set these attributes manually
 in every operation that inserts or modifies documents. However, it is more

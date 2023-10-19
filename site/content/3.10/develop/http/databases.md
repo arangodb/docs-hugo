@@ -7,8 +7,6 @@ description: >-
   available databases, and get information about specific databases
 archetype: default
 ---
-{{< description >}}
-
 The HTTP interface for databases provides operations to create and drop
 individual databases. These are mapped to the standard `POST` and `DELETE`
 HTTP methods. There is also the `GET` method to retrieve an array of existing

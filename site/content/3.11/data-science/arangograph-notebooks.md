@@ -6,8 +6,6 @@ description: >-
   Colocated Jupyter Notebooks within the ArangoGraph Insights Platform
 archetype: default
 ---
-{{< description >}}
-
 {{< tip >}}
 ArangoGraph Notebooks don't include the ArangoGraphML services.
 To enable the ArangoGraphML services, 

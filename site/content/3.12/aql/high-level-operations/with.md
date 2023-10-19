@@ -7,8 +7,6 @@ description: >-
   query will implicitly read from
 archetype: default
 ---
-{{< description >}}
-
 Reading implicitly from a collections means that the collections are not
 specified explicitly in language constructs like the following:
 

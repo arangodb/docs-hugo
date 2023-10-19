@@ -8,8 +8,6 @@ description: >-
   drivers, or other tools
 archetype: chapter
 ---
-{{< description >}}
-
 ArangoDB servers expose an application programming interface (API) for managing
 the database system. It is based on the HTTP protocol that powers the
 world wide web. All interactions with a server are ultimately carried out via

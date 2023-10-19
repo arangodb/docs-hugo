@@ -7,8 +7,6 @@ description: >-
   data, faster
 archetype: chapter
 ---
-{{< description >}}
-
 ![ArangoDB Overview Diagram](../../images/arangodb-overview-diagram.png)
 
 ArangoDB combines the analytical power of native graphs with an integrated

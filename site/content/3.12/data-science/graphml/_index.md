@@ -6,8 +6,6 @@ description: >-
   Enterprise-ready, graph-powered machine learning as a cloud service
 archetype: chapter
 ---
-{{< description >}}
-
 Traditional machine learning overlooks the connections and relationships
 between data points, which is where graph machine learning excels. However,
 accessibility to GraphML has been limited to sizable enterprises equipped with

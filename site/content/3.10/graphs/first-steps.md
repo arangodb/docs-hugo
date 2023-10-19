@@ -9,8 +9,6 @@ description: >-
   analyzing this connected data
 archetype: default
 ---
-{{< description >}}
-
 Graphs are information networks comprised of **nodes** and **relations**. Nodes
 can represent objects, entities, abstract concepts, or ideas. Relations between
 nodes can represent physical and social connections, temporal and causal

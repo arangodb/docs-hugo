@@ -8,8 +8,6 @@ description: >-
   read and modify multiple documents from multiple collections
 archetype: default
 ---
-{{< description >}}
-
 JavaScript transactions are different from transactions in SQL.
 
 In SQL, transactions are started with explicit *BEGIN* or *START TRANSACTION*

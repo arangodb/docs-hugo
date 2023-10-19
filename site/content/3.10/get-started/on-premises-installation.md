@@ -1,14 +1,11 @@
 ---
-title: Install ArangoDB on-premises
+title: Install ArangoDB on-premises # TODO: distinguish between local and on-premises server deployments?
 menuTitle: On-premises installation
 weight: 40
 description: >-
   Instructions on how to download and install ArangoDB    
 archetype: default
 ---
-{{< description >}}
-<!-- TODO: title? distinguish between local and on-premises server deployments? -->
-
 ## Installation
 
 Head to [arangodb.com/download](https://www.arangodb.com/download/),

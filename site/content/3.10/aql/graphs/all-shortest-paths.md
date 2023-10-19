@@ -6,8 +6,6 @@ description: >-
   Find all paths of shortest length between a start and target vertex
 archetype: default
 ---
-{{< description >}}
-
 ## General query idea
 
 This type of query finds all paths of shortest length between two given

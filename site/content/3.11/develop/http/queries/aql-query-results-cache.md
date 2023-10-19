@@ -6,8 +6,6 @@ description: >-
   The query cache HTTP API lets you control the cache for AQL query results
 archetype: default
 ---
-{{< description >}}
-
 ## List the entries of the AQL query results cache
 
 ```openapi
