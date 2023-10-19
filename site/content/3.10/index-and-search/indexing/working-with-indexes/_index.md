@@ -6,9 +6,6 @@ description: >-
   Learn how to use different indexes efficiently by going through the ArangoDB Performance Course
 archetype: chapter
 ---
-Learn how to use different indexes efficiently by going through the
-[ArangoDB Performance Course](https://www.arangodb.com/arangodb-performance-course/).
-
 ## Index Identifiers
 
 An index identifier uniquely identifies an index within a collection.
