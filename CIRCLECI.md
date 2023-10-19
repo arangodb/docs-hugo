@@ -118,9 +118,10 @@ or for multiple versions.
 | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
 | `override` | `http,^aql.*` |
 
-## Release workflow (ArangoDB)
+## Release workflow for ArangoDB releases
 
-To run a release job for a new ArangoDB patch release (e.g. 3.11.4), follow the
+To run a release job for a new ArangoDB patch release (e.g. 3.11.4),
+minor release (e.g. 3.12.0), or major release (e.g. 4.0.0), follow the
 steps below.
 
 1. Go to CircleCI and select the `docs-hugo` project.
@@ -136,17 +137,41 @@ steps below.
 | string | `workflow` | `release` |
 | string | `release-type` | `arangodb` |
 | string | `docs-version` | `3.11` (the docs version folder) |
-| string | `arangodb-branch` | `3.11` (the arangodb branch to compile |
+| string | `arangodb-branch` | `3.11` (the arangodb branch to compile) |
 | string | `arangodb-version` | `3.11.4` (updates the `versions.yaml` file) |
 
 The ArangoDB release workflow includes the following jobs:
 - `generate` workflow (all examples are re-generated for the specified version)
-- a release branch is created with the generated content, which needs to be approved and merged
-- will be on hold until it is approved in CircleCI as well
-- once approved, starts deploying to production at https://docs.arangodb.com
+- will be on hold until the workflow run is approved in CircleCI
+- a release branch and pull request is created with the generated content, which
+  needs to be approved and merged on GitHub
+- once approved, starts deploying to production at <https://docs.arangodb.com>
 
-If any of the examples or generated content fails, the workflow will fail as well. 
-The build report can be found in the `generate-summary` check in GitHub.
+If any of the examples or generated content fails, the workflow fails as well.
+The build report can be found in the `generate-summary` check on GitHub.
+
+## Release workflow for docs-only publication
+
+To update the live documentation independently of an ArangoDB release, for
+example, because of changes to the ArangoGraph docs or to publish documentation
+improvements before the next ArangoDB release, follow the steps below.
+
+1. Go to CircleCI and select the `docs-hugo` project.
+2. Select the `main` branch.
+3. Click the **Trigger Pipeline** button.
+4. Add the parameters described below.
+5. Click **Trigger Pipeline**.
+
+**Parameters used for docs-only release workflow**
+
+| Parameter type | Name | Value |
+|:---------------|:-----|:------|
+| string | `workflow` | `release` |
+
+(The `release-type` is `docs` by default)
+
+The docs-only release workflow runs a **plain build** of the documentation and
+deploys to production at <https://docs.arangodb.com> without approval step.
 
 ## Scheduled workflow
 
