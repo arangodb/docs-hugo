@@ -266,9 +266,9 @@ export ENV=\"circleci\"\n \
 export HUGO_URL=https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app\n \
 export HUGO_ENV=examples\n \
 export OVERRIDE=<< pipeline.parameters.override >>\n \
-: > /home/circleci/project/docs-hugo/toolchain/docker/config.yml\n   \
-echo 'generators: << parameters.generators >>' >> /home/circleci/project/docs-hugo/toolchain/docker/config.yml\n\
-echo 'servers:' >> /home/circleci/project/docs-hugo/toolchain/docker/config.yml"
+: > /home/circleci/project/docs-hugo/toolchain/docker/config.yaml\n   \
+echo 'generators: << parameters.generators >>' >> /home/circleci/project/docs-hugo/toolchain/docker/config.yaml\n\
+echo 'servers:' >> /home/circleci/project/docs-hugo/toolchain/docker/config.yaml"
 
     for i in range(len(versions)):
         version = versions[i]["name"]
@@ -284,7 +284,7 @@ echo 'servers:' >> /home/circleci/project/docs-hugo/toolchain/docker/config.yml"
 
         version_underscore = version.replace(".", "_")
         branchEnv = f"{pullImage}\n \
-echo '  \"{version}\": \"{branch}\"' >>  /home/circleci/project/docs-hugo/toolchain/docker/config.yml\n"
+echo '  \"{version}\": \"{branch}\"' >>  /home/circleci/project/docs-hugo/toolchain/docker/config.yaml\n"
 
         shell = f"{shell}\n{branchEnv}"
 
