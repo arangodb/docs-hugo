@@ -368,7 +368,9 @@ echo 'servers:' >> /home/circleci/project/docs-hugo/toolchain/docker/config.yaml
 
     version_underscore = args.docs_version.replace(".", "_")
     branchEnv = f"{pullImage}\n \
-echo '  \"{args.docs_version}\": \"{args.arangodb_branch}\"' >>  /home/circleci/project/docs-hugo/toolchain/docker/config.yaml\n"
+echo '  \"{args.docs_version}\": \"{args.arangodb_branch}\"' >>  /home/circleci/project/docs-hugo/toolchain/docker/config.yaml\n\
+mkdir -p /tmp/arangodb\n\
+mv /tmp/{version} /tmp/arangodb/"
 
 
     shell = f"{shell}\n{branchEnv}"
