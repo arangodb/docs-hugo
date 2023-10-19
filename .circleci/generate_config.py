@@ -358,14 +358,16 @@ def workflow_release_launch_command(config):
 export ENV=\"circleci\"\n \
 export HUGO_URL=https://docs.arangodb.com\n \
 export HUGO_ENV=release\n \
-export GENERATORS=''\n"
+: > /home/circleci/project/docs-hugo/toolchain/docker/config.yaml\n   \
+echo 'generators: \"\"' >> /home/circleci/project/docs-hugo/toolchain/docker/config.yaml\n\
+echo 'servers:' >> /home/circleci/project/docs-hugo/toolchain/docker/config.yaml"
 
     pullImage = pullImageCmd(args.arangodb_branch, args.docs_version)
 
     version_underscore = args.docs_version.replace(".", "_")
     branchEnv = f"{pullImage}\n \
-export ARANGODB_BRANCH_{version_underscore}={args.arangodb_branch}\n \
-export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{args.docs_version}"
+echo '  \"{args.docs_version}\": \"{args.arangodb_branch}\"' >>  /home/circleci/project/docs-hugo/toolchain/docker/config.yaml\n"
+
 
     shell = f"{shell}\n{branchEnv}"
 
