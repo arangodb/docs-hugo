@@ -32,4 +32,7 @@ if [ "$HUGO_ENV" != "prod" ] && [ "$HUGO_ENV" != "frontend" ]; then
   done
 fi
 
-cd /home/toolchain/arangoproxy/cmd && go run main.go $ARANGOPROXY_ARGS
+cd /home/toolchain/arangoproxy/cmd
+go mod vendor
+go build -o arangoproxy
+./arangoproxy $ARANGOPROXY_ARGS
