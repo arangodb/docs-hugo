@@ -403,8 +403,8 @@ def findOpensslVersion(branch):
     for line in r.text.split("\n"):
         if "OPENSSL_LINUX" in line:
             version = line.replace("OPENSSL_LINUX", "").replace(" ", "").replace("\"", "")
-            branch = ".".join(line.split(".")[0:2])
-            revision = ".".join(line.split(".")[2])
+            branch = ".".join(version.split(".")[0:2])
+            revision = ".".join(version.split(".")[2])
             return branch, revision
 
 
