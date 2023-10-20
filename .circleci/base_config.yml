@@ -43,10 +43,7 @@ commands:
   update-openssl-workaround:
     description: "Update OpenSSL in compiling"
     parameters:
-      openssl-branch:
-        type: string
-        default: ""
-      openssl-revision:
+      openssl:
         type: string
         default: ""
     steps:
@@ -57,15 +54,9 @@ commands:
            set -e
 
             # Compile openssl library:
-            export OPENSSLBRANCH=<< parameters.openssl-branch >>
-            export OPENSSLREVISION=<< parameters.openssl-revision >>
-            export OPENSSLVERSION="${OPENSSLBRANCH}${OPENSSLREVISION}"
+            export OPENSSLVERSION=<< parameters.openssl >>
 
             echo $OPENSSLBRANCH
-
-            if [ "$OPENSSLBRANCH" != "1.1.1" -a "$OPENSSLBRANCH" != "3.0" ]; then
-              OLD="old/${OPENSSLBRANCH}/"
-            fi;
 
             echo "https://www.openssl.org/source/${OLD}openssl-$OPENSSLVERSION.tar.gz"
 
@@ -115,16 +106,12 @@ commands:
       version:
         type: string
         default: ""
-      openssl-branch:
-        type: string
-        default: ""
-      openssl-revision:
+      openssl:
         type: string
         default: ""
     steps:
       - update-openssl-workaround:
-          openssl-branch: << parameters.openssl-branch >>
-          openssl-revision: << parameters.openssl-revision >>
+          openssl: << parameters.openssl >>
       - run:
           name: Configure
           command: |

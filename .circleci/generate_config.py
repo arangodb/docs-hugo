@@ -112,7 +112,7 @@ def workflow_generate(config):
         }
 
         if not "enterprise-preview" in branch:
-            opensslBranch, opensslRevision = findOpensslVersion(branch)
+            openssl = findOpensslVersion(branch)
 
             if not extendedCompileJob:
                 extendedCompileJob = True
@@ -126,8 +126,7 @@ def workflow_generate(config):
                     "compile-and-dockerize-arangodb": {
                         "branch": branch,
                         "version": version,
-                        "openssl-branch": opensslBranch,
-                        "openssl-revision": opensslRevision
+                        "openssl": openssl,
                     }
                 })
 
@@ -212,7 +211,7 @@ def workflow_release_arangodb(config):
 
     print(f"Creating compile job for version {args.docs_version} branch {args.arangodb_branch}")
 
-    opensslBranch, opensslRevision = findOpensslVersion(args.arangodb_branch)
+    openssl = findOpensslVersion(args.arangodb_branch)
 
     compileJob = {
         "compile-linux": {
@@ -226,8 +225,7 @@ def workflow_release_arangodb(config):
         "compile-and-dockerize-arangodb": {
             "branch": args.arangodb_branch,
             "version": args.docs_version,
-            "openssl-branch": opensslBranch,
-            "openssl-revision": opensslRevision
+            "openssl": openssl,
         }
     })
     generateRequires.append(f"compile-{args.docs_version}")
@@ -403,9 +401,7 @@ def findOpensslVersion(branch):
     for line in r.text.split("\n"):
         if "OPENSSL_LINUX" in line:
             version = line.replace("OPENSSL_LINUX", "").replace(" ", "").replace("\"", "")
-            branch = ".".join(version.split(".")[0:2])
-            revision = ".".join(version.split(".")[2])
-            return branch, revision
+            return version
 
 
 ## MAIN
