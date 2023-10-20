@@ -77,12 +77,38 @@ commands:
     steps:
       - run:
           name: Print SCCache Settings
-          command: sccache -s
+          command: |
+           set -e
+
+            # Compile openssl library:
+            export OPENSSLBRANCH=3.0
+            export OPENSSLREVISION=.11
+            export OPENSSLVERSION="${OPENSSLBRANCH}${OPENSSLREVISION}"
+
+            echo $OPENSSLBRANCH
+
+            if [ "$OPENSSLBRANCH" != "1.1.1" -a "$OPENSSLBRANCH" != "3.0" ]; then
+              OLD="old/${OPENSSLBRANCH}/"
+            fi;
+
+            echo "https://www.openssl.org/source/${OLD}openssl-$OPENSSLVERSION.tar.gz"
+
+            test -n "$OPENSSLVERSION"
+            export OPENSSLPATH=`echo $OPENSSLVERSION | sed 's/\.[0-9]*$//g'`
+            cd /tmp
+            curl -O https://www.openssl.org/source/${OLD}openssl-$OPENSSLVERSION.tar.gz
+            tar xzvf openssl-$OPENSSLVERSION.tar.gz
+            cd openssl-$OPENSSLVERSION
+            ./config --prefix=/opt/openssl-$OPENSSLPATH no-async no-shared
+            make build_libs -j `nrpoc`
+            make install_dev -j `nrpoc`
+            cd /tmp
+            rm -rf openssl-$OPENSSLVERSION.tar.gz openssl-$OPENSSLVERSION
       - run:
           name: Configure
           command: |
             set +e
-            make -DCMAKE_BUILD_TYPE=RelWithDebInfo -DCMAKE_INSTALL_PREFIX=/ -DSTATIC_EXECUTABLES=On -DUSE_ENTERPRISE=On -DUSE_MAINTAINER_MODE=Off -DCMAKE_LIBRARY_PATH=/opt/openssl-3.0/lib -DOPENSSL_ROOT_DIR=/opt/openssl-3.0 -DUSE_STRICT_OPENSSL_VERSION=On -DBUILD_REPO_INFO=nightly -DCMAKE_EXE_LINKER_FLAGS=-Wl,--build-id  --param inline-min-speedup=5 --param inline-unit-growth=100 --param early-inlining-insns=30 -fno-stack-protector -DUSE_CATCH_TESTS=Off -DUSE_GOOGLE_TESTS=Off -DUSE_JEMALLOC=On -DCMAKE_C_FLAGS= --param inline-min-speedup=5 --param inline-unit-growth=100 --param early-inlining-insns=30 -fno-stack-protector -DCMAKE_CXX_FLAGS= --param inline-min-speedup=5 --param inline-unit-growth=100 --param early-inlining-insns=30 -fno-stack-protector -DUSE_MINIMAL_DEBUGINFO=On -DCMAKE_CXX_COMPILER=/usr/lib/ccache/bin/g++ -DCMAKE_C_COMPILER=/usr/lib/ccache/bin/gcc -DUSE_CCACHE=Off -DTARGET_ARCHITECTURE=sandy-bridge -DUSE_CATCH_TESTS=Off -DUSE_GOOGLE_TESTS=Off
+            cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
             if [ "$?" != "0" ]; then
               echo "<strong>ArangoDB Compile Error</strong><br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
               exit 1
@@ -466,7 +492,7 @@ jobs:
         type: string
         default: ""
     docker:
-      - image: arangodb/alpinebuildarangodb6-x86_64:latest
+      - image: arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.10
     resource_class: xlarge
     environment:
       GIT_SSH_COMMAND: ssh
