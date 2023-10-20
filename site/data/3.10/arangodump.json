@@ -329,9 +329,7 @@
   "envelope" : {
     "category" : "option",
     "default" : false,
-    "deprecatedIn" : [
-      "v3.10.11"
-    ],
+    "deprecatedIn" : null,
     "description" : "Wrap each document into a {type, data} envelope (this is required for compatibility with v3.7 and before).",
     "dynamic" : false,
     "enterpriseOnly" : false,
@@ -1262,7 +1260,7 @@
   },
   "server.authentication" : {
     "category" : "option",
-    "default" : true,
+    "default" : false,
     "deprecatedIn" : null,
     "description" : "Require authentication credentials when connecting (does not affect the server-side authentication settings).",
     "dynamic" : false,
@@ -1329,7 +1327,7 @@
   "server.endpoint" : {
     "category" : "option",
     "default" : [
-      "tcp://127.0.0.1:8529"
+      "http+tcp://127.0.0.1:8529"
     ],
     "deprecatedIn" : null,
     "description" : "The endpoint to connect to. Use 'none' to start without a server. Use http+ssl:// as schema to connect to an SSL-secured server endpoint, otherwise http+tcp:// or unix://",
@@ -1562,9 +1560,7 @@
     "base" : 1,
     "category" : "option",
     "default" : 0,
-    "deprecatedIn" : [
-      "v3.10.11"
-    ],
+    "deprecatedIn" : null,
     "description" : "Last tick to be included in data dump.",
     "dynamic" : false,
     "enterpriseOnly" : false,
@@ -1589,9 +1585,7 @@
     "base" : 1,
     "category" : "option",
     "default" : 0,
-    "deprecatedIn" : [
-      "v3.10.11"
-    ],
+    "deprecatedIn" : null,
     "description" : "Only include data after this tick.",
     "dynamic" : false,
     "enterpriseOnly" : false,
