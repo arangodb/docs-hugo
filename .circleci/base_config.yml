@@ -466,7 +466,7 @@ jobs:
         type: string
         default: ""
     docker:
-      - image: << parameters.build-image >>
+      - image: arangodb/alpinebuildarangodb6-x86_64:11
     resource_class: xlarge
     environment:
       GIT_SSH_COMMAND: ssh
