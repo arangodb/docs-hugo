@@ -74,7 +74,7 @@ function main() {
 
     if [ "$ARANGODB_SRC" != "" ]; then
       mkdir -p /tmp/arangodb/$version
-      cp -r /tmp/arangodb/* /tmp/arangodb/$version/
+      cp -r /tmp/arangodb_src/* /tmp/arangodb/$version/
     fi
 
     process_server "$version" "$image"
