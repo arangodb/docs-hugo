@@ -1,5 +1,5 @@
 - name: "3.12"
-  version: "3.12.0"
+  version: "3.12.9"
   alias: "devel"
   deprecated: false
 
