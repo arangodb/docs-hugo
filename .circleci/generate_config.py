@@ -111,9 +111,8 @@ def workflow_generate(config):
             }
         }
 
-        compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine:3.16-gcc11.2-openssl3.1.3-4999848556c"
         if not "enterprise-preview" in branch:
-            compileJob["compile-linux"]["build-image"] = findOpensslVersion(branch)
+            opensslBranch, opensslRevision = findOpensslVersion(branch)
 
             if not extendedCompileJob:
                 extendedCompileJob = True
@@ -126,7 +125,9 @@ def workflow_generate(config):
                 config["jobs"]["compile-linux"]["steps"].append({
                     "compile-and-dockerize-arangodb": {
                         "branch": branch,
-                        "version": version
+                        "version": version,
+                        "openssl-branch": opensslBranch,
+                        "openssl-revision": opensslRevision
                     }
                 })
 
@@ -174,7 +175,7 @@ def workflow_generate_scheduled(config):
                 "name": f"compile-{version}",
                 "arangodb-branch": f"arangodb/enterprise-preview:{version}-nightly" if versions[i]["alias"] != "devel" else "arangodb/enterprise-preview:devel-nightly",
                 "version": version,
-                "build-image": "arangodb/build-alpine:3.16-gcc11.2-openssl3.1.3-4999848556c",
+                "openssl": "3.0.9",
             }
         }
         generateRequires.append(f"compile-{version}")
@@ -211,7 +212,7 @@ def workflow_release_arangodb(config):
 
     print(f"Creating compile job for version {args.docs_version} branch {args.arangodb_branch}")
 
-    openssl = findOpensslVersion(args.arangodb_branch)
+    opensslBranch, opensslRevision = findOpensslVersion(args.arangodb_branch)
 
     compileJob = {
         "compile-linux": {
@@ -219,13 +220,14 @@ def workflow_release_arangodb(config):
             "name": f"compile-{args.docs_version}",
             "arangodb-branch": args.arangodb_branch,
             "version": args.docs_version,
-            "build-image": openssl,
         }
     }
     config["jobs"]["compile-linux"]["steps"].append({
         "compile-and-dockerize-arangodb": {
             "branch": args.arangodb_branch,
-            "version": args.docs_version
+            "version": args.docs_version,
+            "openssl-branch": opensslBranch,
+            "openssl-revision": opensslRevision
         }
     })
     generateRequires.append(f"compile-{args.docs_version}")
@@ -395,12 +397,15 @@ docker tag arangodb/docs-hugo:$image_name-$version-$main_hash $image_name-$versi
     return pullImage
 
 def findOpensslVersion(branch):
-    r = requests.get(f'https://raw.githubusercontent.com/arangodb/arangodb/{branch}/.circleci/base_config.yml')
+    r = requests.get(f'https://raw.githubusercontent.com/arangodb/arangodb/{branch}/VERSIONS')
     print(f"Find OpenSSL Version for branch {branch}")
     print(f"Github response: {r.text}")
     for line in r.text.split("\n"):
-        if "- image: arangodb/build-alpine" in line:
-            return line.replace("- image: ", "").replace(" ", "")
+        if "OPENSSL_LINUX" in line:
+            version = line.replace("OPENSSL_LINUX", "").replace(" ", "").replace("\"", "")
+            branch = ".".join(line.split(".")[0:2])
+            revision = ".".join(line.split(".")[2])
+            return branch, revision
 
 
 ## MAIN

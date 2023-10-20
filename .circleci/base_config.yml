@@ -40,6 +40,47 @@ commands:
             mkdir -p /tmp/<< parameters.version >>
             cp -r /root/project/. /tmp/<< parameters.version >>
 
+  update-openssl-workaround:
+    description: "Update OpenSSL in compiling"
+    parameters:
+      openssl-branch:
+        type: string
+        default: ""
+      openssl-revision:
+        type: string
+        default: ""
+    steps:
+      - run:
+          name: Print SCCache Settings
+          command: |
+           apk --no-cache add perl
+           set -e
+
+            # Compile openssl library:
+            export OPENSSLBRANCH=<< parameters.openssl-branch >>
+            export OPENSSLREVISION=<< parameters.openssl-revision >>
+            export OPENSSLVERSION="${OPENSSLBRANCH}${OPENSSLREVISION}"
+
+            echo $OPENSSLBRANCH
+
+            if [ "$OPENSSLBRANCH" != "1.1.1" -a "$OPENSSLBRANCH" != "3.0" ]; then
+              OLD="old/${OPENSSLBRANCH}/"
+            fi;
+
+            echo "https://www.openssl.org/source/${OLD}openssl-$OPENSSLVERSION.tar.gz"
+
+            test -n "$OPENSSLVERSION"
+            export OPENSSLPATH=`echo $OPENSSLVERSION | sed 's/\.[0-9]*$//g'`
+            cd /tmp
+            curl -O https://www.openssl.org/source/${OLD}openssl-$OPENSSLVERSION.tar.gz
+            tar xzvf openssl-$OPENSSLVERSION.tar.gz
+            cd openssl-$OPENSSLVERSION
+            ./config --prefix=/opt/openssl-$OPENSSLPATH no-async no-shared
+            make build_libs -j `nrpoc`
+            make install_dev -j `nrpoc`
+            cd /tmp
+            rm -rf openssl-$OPENSSLVERSION.tar.gz openssl-$OPENSSLVERSION
+
   check-arangodb-image-exists:
     description: "Check ArangoDB branch docker image exists"
     parameters:
@@ -74,37 +115,16 @@ commands:
       version:
         type: string
         default: ""
+      openssl-branch:
+        type: string
+        default: ""
+      openssl-revision:
+        type: string
+        default: ""
     steps:
-      - run:
-          name: Print SCCache Settings
-          command: |
-           apk --no-cache add perl
-           set -e
-
-            # Compile openssl library:
-            export OPENSSLBRANCH=3.0
-            export OPENSSLREVISION=.11
-            export OPENSSLVERSION="${OPENSSLBRANCH}${OPENSSLREVISION}"
-
-            echo $OPENSSLBRANCH
-
-            if [ "$OPENSSLBRANCH" != "1.1.1" -a "$OPENSSLBRANCH" != "3.0" ]; then
-              OLD="old/${OPENSSLBRANCH}/"
-            fi;
-
-            echo "https://www.openssl.org/source/${OLD}openssl-$OPENSSLVERSION.tar.gz"
-
-            test -n "$OPENSSLVERSION"
-            export OPENSSLPATH=`echo $OPENSSLVERSION | sed 's/\.[0-9]*$//g'`
-            cd /tmp
-            curl -O https://www.openssl.org/source/${OLD}openssl-$OPENSSLVERSION.tar.gz
-            tar xzvf openssl-$OPENSSLVERSION.tar.gz
-            cd openssl-$OPENSSLVERSION
-            ./config --prefix=/opt/openssl-$OPENSSLPATH no-async no-shared
-            make build_libs -j `nrpoc`
-            make install_dev -j `nrpoc`
-            cd /tmp
-            rm -rf openssl-$OPENSSLVERSION.tar.gz openssl-$OPENSSLVERSION
+      - update-openssl-workaround:
+          openssl-branch: << parameters.openssl-branch >>
+          openssl-revision: << parameters.openssl-revision >>
       - run:
           name: Configure
           command: |
@@ -487,9 +507,6 @@ jobs:
         type: string
         default: ""
       version:
-        type: string
-        default: ""
-      build-image:
         type: string
         default: ""
     docker:
