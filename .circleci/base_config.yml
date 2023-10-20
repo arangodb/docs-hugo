@@ -78,6 +78,7 @@ commands:
       - run:
           name: Print SCCache Settings
           command: |
+           apk --no-cache add perl
            set -e
 
             # Compile openssl library:
