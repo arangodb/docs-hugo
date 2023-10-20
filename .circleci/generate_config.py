@@ -111,9 +111,9 @@ def workflow_generate(config):
             }
         }
 
-        compileJob["compile-linux"]["openssl"] = "3.0.9"
+        compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine:3.16-gcc11.2-openssl3.1.3-4999848556c"
         if not "enterprise-preview" in branch:
-            compileJob["compile-linux"]["openssl"] = findOpensslVersion(branch)
+            compileJob["compile-linux"]["build-image"] = findOpensslVersion(branch)
 
             if not extendedCompileJob:
                 extendedCompileJob = True
@@ -174,7 +174,7 @@ def workflow_generate_scheduled(config):
                 "name": f"compile-{version}",
                 "arangodb-branch": f"arangodb/enterprise-preview:{version}-nightly" if versions[i]["alias"] != "devel" else "arangodb/enterprise-preview:devel-nightly",
                 "version": version,
-                "openssl": "3.0.9",
+                "build-image": "arangodb/build-alpine:3.16-gcc11.2-openssl3.1.3-4999848556c",
             }
         }
         generateRequires.append(f"compile-{version}")
@@ -219,7 +219,7 @@ def workflow_release_arangodb(config):
             "name": f"compile-{args.docs_version}",
             "arangodb-branch": args.arangodb_branch,
             "version": args.docs_version,
-            "openssl": openssl,
+            "build-image": openssl,
         }
     }
     config["jobs"]["compile-linux"]["steps"].append({
@@ -395,12 +395,12 @@ docker tag arangodb/docs-hugo:$image_name-$version-$main_hash $image_name-$versi
     return pullImage
 
 def findOpensslVersion(branch):
-    r = requests.get(f'https://raw.githubusercontent.com/arangodb/arangodb/{branch}/VERSIONS')
+    r = requests.get(f'https://raw.githubusercontent.com/arangodb/arangodb/{branch}/.circleci/base_config.yml')
     print(f"Find OpenSSL Version for branch {branch}")
     print(f"Github response: {r.text}")
     for line in r.text.split("\n"):
-        if "OPENSSL_LINUX" in line:
-            return line.replace("OPENSSL_LINUX", "").replace(" ", "").replace("\"", "")
+        if "- image: arangodb/build-alpine" in line:
+            return line.replace("- image: ", "").replace(" ", "")
 
 
 ## MAIN
