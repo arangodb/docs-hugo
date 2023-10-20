@@ -20,6 +20,7 @@ if sys.version_info[0] != 3:
 versions = yaml.safe_load(open("versions.yaml", "r"))
 versions = sorted(versions, key=lambda d: d['name']) 
 
+
 print(f"Loaded versions {versions}")
 
 """argv"""
@@ -130,6 +131,13 @@ def workflow_generate(config):
                     }
                 })
 
+        if openssl.startswith("3.0"):
+            compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.10"
+        if openssl.startswith("3.1"):
+            compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
+        if openssl.startswith("1.1"):
+            compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
+
         generateRequires.append(f"compile-{version}")
         jobs.append(compileJob)
 
@@ -218,9 +226,16 @@ def workflow_release_arangodb(config):
             "context": ["sccache-aws-bucket"],
             "name": f"compile-{args.docs_version}",
             "arangodb-branch": args.arangodb_branch,
-            "version": args.docs_version,
+            "version": args.docs_version
         }
     }
+    if openssl.startswith("3.0"):
+        compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.10"
+    if openssl.startswith("3.1"):
+        compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
+    if openssl.startswith("1.1"):
+        compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
+
     config["jobs"]["compile-linux"]["steps"].append({
         "compile-and-dockerize-arangodb": {
             "branch": args.arangodb_branch,

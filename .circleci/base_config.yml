@@ -67,8 +67,8 @@ commands:
             tar xzvf openssl-$OPENSSLVERSION.tar.gz
             cd openssl-$OPENSSLVERSION
             ./config --prefix=/opt/openssl-$OPENSSLPATH no-async no-shared
-            make build_libs -j `nrpoc`
-            make install_dev -j `nrpoc`
+            make build_libs -j `nproc`
+            make install_dev -j `nproc`
             cd /tmp
             rm -rf openssl-$OPENSSLVERSION.tar.gz openssl-$OPENSSLVERSION
 
@@ -496,8 +496,11 @@ jobs:
       version:
         type: string
         default: ""
+      build-image:
+        type: string
+        default: ""
     docker:
-      - image: arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.10
+      - image: << parameters.build-image >>
     resource_class: xlarge
     environment:
       GIT_SSH_COMMAND: ssh
