@@ -144,6 +144,24 @@ button, input, optgroup, select, textarea {
     margin-bottom: 15px;
 }
 
+button {
+    border-radius: 4px;
+    font-weight: 700;
+    line-height: 16px;
+    min-height: 16px;
+    font-size: 14px;
+    padding: 12px 24px;
+    color: white;
+    margin-bottom: 28px;
+}
+
+button.green {
+    background-color: var(--HEADERS-COLOR);
+}
+
+button.grey {
+    background-color: var(--gray-600);
+}
 
 ul, ol {
     margin-bottom: 20px;
