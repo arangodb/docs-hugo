@@ -1109,7 +1109,7 @@
       "agent",
       "single"
     ],
-    "default" : 7739684864,
+    "default" : 7754360832,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -1992,7 +1992,7 @@
       "agent",
       "single"
     ],
-    "default" : "/var/lib/arangodb3",
+    "default" : "",
     "deprecatedIn" : null,
     "description" : "The path to the database directory.",
     "dynamic" : false,
@@ -3100,7 +3100,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "/var/lib/arangodb3-apps",
+    "default" : "./js/apps",
     "deprecatedIn" : null,
     "description" : "The directory for Foxx applications.",
     "dynamic" : false,
@@ -3398,6 +3398,7 @@
       "single"
     ],
     "default" : [
+      "./enterprise/js"
     ],
     "deprecatedIn" : null,
     "description" : "Additional paths containing JavaScript modules.",
@@ -3476,7 +3477,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "/usr/share/arangodb3/js",
+    "default" : "./js",
     "deprecatedIn" : null,
     "description" : "A path to the directory containing the JavaScript startup scripts.",
     "dynamic" : false,
@@ -5866,7 +5867,7 @@
       "agent",
       "single"
     ],
-    "default" : "-",
+    "default" : "",
     "deprecatedIn" : null,
     "description" : "shortcut for '--log.output file://<filename>'",
     "dynamic" : false,
@@ -7239,7 +7240,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33106223104,
+    "base" : 33164926976,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7247,7 +7248,7 @@
       "agent",
       "single"
     ],
-    "default" : 26816040714,
+    "default" : 26863590851,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7505,7 +7506,7 @@
     "type" : "double"
   },
   "query.memory-limit" : {
-    "base" : 33106223104,
+    "base" : 33164926976,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7513,7 +7514,7 @@
       "agent",
       "single"
     ],
-    "default" : 19863733863,
+    "default" : 19898956185,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -8625,7 +8626,7 @@
       "agent",
       "single"
     ],
-    "default" : 9287621836,
+    "default" : 9305232998,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -9283,6 +9284,35 @@
       "v3.5.4"
     ],
     "longDescription" : "This option allows you to make all writes to the\nRocksDB storage exclusive and therefore avoid write-write conflicts.\n\nThis option was introduced to open a way to upgrade from the legacy MMFiles to\nthe RocksDB storage engine without modifying client application code.\nYou should avoid enabling this option as the use of exclusive locks on\ncollections introduce a noticeable throughput penalty.\n\n**Note**: The MMFiles engine was removed and this option is a stopgap measure\nonly. This option is thus deprecated, and will be removed in a future\nversion.",
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "rocksdb",
+    "type" : "boolean"
+  },
+  "rocksdb.force-legacy-little-endian-keys" : {
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : false,
+    "deprecatedIn" : null,
+    "description" : "Force usage of legacy little endian key encoding when creating a new RocksDB database directory. DO NOT USE IN PRODUCTION.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : true,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.12.0"
+    ],
+    "longDescription" : "If enabled and a new RocksDB database\nis generated, the legacy little endian key encoding is used.\n\nOnly use this option for testing purposes! It is bad for performance and\ndisables a few features like parallel index generation!",
     "obsolete" : false,
     "os" : [
       "linux",
@@ -10972,7 +11002,7 @@
       "agent",
       "single"
     ],
-    "default" : 12383495782,
+    "default" : 12406977331,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
@@ -11511,7 +11541,7 @@
       "agent",
       "single"
     ],
-    "default" : 0,
+    "default" : 10,
     "deprecatedIn" : null,
     "description" : "Cluster metrics polling timeout (in seconds).",
     "dynamic" : false,
@@ -11741,6 +11771,33 @@
     "requiresValue" : false,
     "section" : "server",
     "type" : "boolean"
+  },
+  "server.failure-point" : {
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : [
+    ],
+    "deprecatedIn" : null,
+    "description" : "The failure point to set during server startup (requires compilation with failure points support).",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : null,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "server",
+    "type" : "string..."
   },
   "server.gid" : {
     "category" : "option",
