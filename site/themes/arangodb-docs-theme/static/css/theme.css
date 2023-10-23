@@ -586,6 +586,13 @@ body .page-container {
     display: flex;
 }
 
+#sidebar code {
+    color: var(--gray-100);
+    background: transparent;
+    border: 0;
+    padding: 0;
+}
+
 #sidebar > #sidebar-toggle-navigation {
     position: fixed;
     bottom: 3vh;
