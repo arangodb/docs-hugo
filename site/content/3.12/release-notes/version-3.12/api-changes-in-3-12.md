@@ -14,6 +14,8 @@ integrations for ArangoDB 3.12.
 
 ### Behavior changes
 
+#### HTTP headers
+
 The following long-deprecated features have been removed from ArangoDB's HTTP
 server:
 
@@ -33,6 +35,12 @@ server:
   `--http.hide-product-header`.
   The functionality has now been removed and setting the startup option does
   nothing.
+
+#### `--database.extended-names` enabled by default
+
+The `--database.extended-names` startup option is now enabled by default.
+The names of databases, collections, Views, and indexes may contain Unicode
+characters using the default settings.
 
 #### Collection API
 
