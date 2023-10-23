@@ -27,7 +27,7 @@
 
 <div class="cards">
   {{ range $section.Pages -}}
-    {{ $title := .Title | markdownify -}}
+    {{ $title := .Params.menuTitle | markdownify -}}
     {{ partial "shortcodes/card.html" (dict
         "Inner" (.Description | markdownify)
         "title"  $title
