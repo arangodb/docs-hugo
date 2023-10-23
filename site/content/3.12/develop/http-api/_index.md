@@ -1,6 +1,6 @@
 ---
-title: ArangoDB HTTP API Documentation
-menuTitle: HTTP
+title: HTTP API Documentation
+menuTitle: HTTP API
 weight: 285
 description: >-
   All functionality of ArangoDB servers is provided via a RESTful API over the
