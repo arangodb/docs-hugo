@@ -46,9 +46,6 @@ ENV ARCH=${BUILDARCH}
 RUN  apk add --update --no-cache unzip curl jq docker-cli bash python3 py3-pip
 
 RUN wget -q https://github.com/mikefarah/yq/releases/latest/download/yq_linux_$ARCH -O /usr/bin/yq && chmod +x /usr/bin/yq
-RUN wget https://github.com/arangodb-managed/oasisctl/releases/download/v1.19.0/oasisctl.zip && unzip oasisctl.zip
-RUN mv bin/linux/arm/ bin/linux/arm64
-RUN cd bin/linux/$ARCH && mv oasisctl /usr/bin/oasisctl && chmod +x /usr/bin/oasisctl
 
 RUN pip3 install pyyaml
 
