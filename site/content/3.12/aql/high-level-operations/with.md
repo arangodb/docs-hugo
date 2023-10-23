@@ -3,8 +3,8 @@ title: WITH operation in AQL
 menuTitle: WITH
 weight: 75
 description: >-
-  An AQL query can start with a `WITH` operation, listing collections that the
-  query will implicitly read from
+  An AQL query can start with a `WITH` operation, listing collections that a
+  query implicitly reads from
 archetype: default
 ---
 Reading implicitly from a collections means that the collections are not

@@ -3,18 +3,19 @@ title: Bind parameters in AQL
 menuTitle: Bind Parameters
 weight: 15
 description: >-
-  AQL supports the usage of bind parameters, thus allowing to separate the query text from literal values used in the query
+  Bind parameters allow you to separate the query logic from literal values used
+  in the query and safely use user-provided input for these placeholders
 archetype: default
 ---
-AQL supports the usage of bind parameters, thus allowing to separate the query
-text from literal values used in the query. It is good practice to separate the
-query text from the literal values because this will prevent (malicious)
-injection of keywords and other collection names into an existing query. This
-injection would be dangerous because it may change the meaning of an existing
-query.
+It is good practice to separate the query text from the literal values because
+it prevents (malicious) injection of keywords and other collection names into an
+existing query. This injection would be dangerous because it may change the
+meaning of an existing query.
 
-Using bind parameters, the meaning of an existing query cannot be changed. Bind
-parameters can be used everywhere in a query where literals can be used.
+Using bind parameters, the meaning of an existing query cannot be changed.
+Bind parameters can be used everywhere in a query where literals can be used.
+This lets you turn literals into a sort of variables to reuse the same query
+with different parameterization.
 
 ## Syntax
 
