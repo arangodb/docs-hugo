@@ -40,6 +40,38 @@ commands:
             mkdir -p /tmp/<< parameters.version >>
             cp -r /root/project/. /tmp/<< parameters.version >>
 
+  update-openssl-workaround:
+    description: "Update OpenSSL in compiling"
+    parameters:
+      openssl:
+        type: string
+        default: ""
+    steps:
+      - run:
+          name: Print SCCache Settings
+          command: |
+           apk --no-cache add perl
+           set -e
+
+            # Compile openssl library:
+            export OPENSSLVERSION=<< parameters.openssl >>
+
+            echo $OPENSSLBRANCH
+
+            echo "https://www.openssl.org/source/${OLD}openssl-$OPENSSLVERSION.tar.gz"
+
+            test -n "$OPENSSLVERSION"
+            export OPENSSLPATH=`echo $OPENSSLVERSION | sed 's/\.[0-9]*$//g'`
+            cd /tmp
+            curl -O https://www.openssl.org/source/${OLD}openssl-$OPENSSLVERSION.tar.gz
+            tar xzvf openssl-$OPENSSLVERSION.tar.gz
+            cd openssl-$OPENSSLVERSION
+            ./config --prefix=/opt/openssl-$OPENSSLPATH no-async no-shared
+            make build_libs -j `nproc`
+            make install_dev -j `nproc`
+            cd /tmp
+            rm -rf openssl-$OPENSSLVERSION.tar.gz openssl-$OPENSSLVERSION
+
   check-arangodb-image-exists:
     description: "Check ArangoDB branch docker image exists"
     parameters:
@@ -74,10 +106,12 @@ commands:
       version:
         type: string
         default: ""
+      openssl:
+        type: string
+        default: ""
     steps:
-      - run:
-          name: Print SCCache Settings
-          command: sccache -s
+      - update-openssl-workaround:
+          openssl: << parameters.openssl >>
       - run:
           name: Configure
           command: |
@@ -462,11 +496,11 @@ jobs:
       version:
         type: string
         default: ""
-      openssl:
+      build-image:
         type: string
         default: ""
     docker:
-      - image: arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl<< parameters.openssl >>
+      - image: << parameters.build-image >>
     resource_class: xlarge
     environment:
       GIT_SSH_COMMAND: ssh
