@@ -3,8 +3,8 @@ title: Credits & Usage in ArangoGraph
 menuTitle: Credits & Usage
 weight: 15
 description: >-
-   Credits give you access to a flexible prepaid model, so you can allocate them
-   across multiple deployments as needed
+  Credits give you access to a flexible prepaid model, so you can allocate them
+  across multiple deployments as needed
 archetype: default
 ---
 {{< description >}}
@@ -55,10 +55,10 @@ There are a number of benefits that ArangoGraph credits provide:
    - Track your total credit balance.
    - See a projection of when you will run out of credits, based on the last 30 days of usage. 
    - Get a detailed consumption report in PDF format that shows:
-      - The number of credits you had at the start of the month.
-      - The number of credits consumed in the month.
-      - The number of credits remaining.
-      - The number of credits consumed for each deployment.
+     - The number of credits you had at the start of the month.
+     - The number of credits consumed in the month.
+     - The number of credits remaining.
+     - The number of credits consumed for each deployment.
 
 ![ArangoGraph Credits and Usage](../../../images/arangograph-credits-and-usage.png)
 
