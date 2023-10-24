@@ -17,6 +17,7 @@
               {{ partial "breadcrumbs.html" . -}}
               {{ partial "output-partial.hugo" (dict "base" "body" "page" . "parameter" (dict "page" . "content" (partial "output-partial.hugo" (dict "base" "content" "page" . "parameter" .)))) -}}
               {{ partial "toc.html" . -}}
+              {{ partialCached "inkeep-widget.html" . -}}
             </div>
           </div>
         </section>

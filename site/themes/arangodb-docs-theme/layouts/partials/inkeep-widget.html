@@ -1,0 +1,136 @@
+<div id="inkeep-chat-button"></div>
+<script type="module">
+  function loadAndInitializeInkeep() {
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = 'https://unpkg.com/@inkeep/widgets-embed@0.2.215/dist/embed.js';
+    script.onload = initializeInkeep;
+    document.head.appendChild(script)
+  }
+
+  function initializeInkeep() {
+    const inkeep = Inkeep({
+      integrationId: '',
+      apiKey: '',
+      organizationId: '',
+      organizationDisplayName: 'ArangoDB',
+      primaryBrandColor: '#80a54d',
+      stringReplacementRules: [
+        {
+          matchingRule: {
+            ruleType: 'Substring',
+            string: 'Arangograph',
+          },
+          replaceWith: 'ArangoGraph',
+        },
+        {
+          matchingRule: {
+            ruleType: 'Substring',
+            string: 'Aql',
+          },
+          replaceWith: 'AQL',
+        },
+        {
+          matchingRule: {
+            ruleType: 'Substring',
+            string: 'Arangodb',
+          },
+          replaceWith: 'ArangoDB',
+        },
+      ],
+      breadcrumbRules: {
+        urlToBreadcrumbMapper: [
+          {
+            matchingRule: {
+              ruleType: 'PartialUrl',
+              partialUrl: 'arangodb.com',
+              maxNChildSubpaths: 1,
+            },
+            replaceLeading: true,
+            breadcrumbName: 'Home',
+          },
+          {
+            matchingRule: {
+              ruleType: 'PartialUrl',
+              partialUrl: 'arangodb.com/blog',
+            },
+            replaceLeading: true,
+            breadcrumbName: 'Blog',
+          },
+          {
+            matchingRule: {
+              ruleType: 'PartialUrl',
+              partialUrl: 'arangodb.com/solutions/case-studies',
+            },
+            replaceLeading: true,
+            breadcrumbName: 'Case Studies',
+          },
+          {
+            matchingRule: {
+              ruleType: 'PartialUrl',
+              partialUrl: 'arangodb.com/docs',
+            },
+            replaceLeading: true,
+            breadcrumbName: 'Docs',
+          },
+        ],
+      },
+    });
+    const chatButton = inkeep.embed({
+      componentType: 'ChatButton',
+      targetElement: document.getElementById('inkeep-chat-button'),
+      properties: {
+        stylesheetUrls: ['/css/fonts.css'],
+        baseSettings: {
+          theme: {
+            tokens: {
+              fonts: {
+                body: "'Inter'",
+                heading: "'Inter'",
+              },
+              zIndex: {
+                overlay: 10000,
+                modal: 11000,
+                popover: 12000,
+                skipLink: 13000,
+                toast: 14000,
+                tooltip: 15000,
+              },
+            }
+          }
+        },
+        aiChatSettings: {
+          botAvatarSrcUrl: '/images/ArangoDB_Logo_White_small.png',
+          quickQuestions: [
+            'What can do with AQL that is not feasible with SQL?',
+            'How do I search for objects within arrays?',
+            'Where can I deploy my ArangoDB instance?',
+          ],
+          getHelpCallToActions: [
+            {
+              icon: { builtIn: 'IoPeopleOutline' },
+              name: 'Google Groups',
+              url: 'https://groups.google.com/g/arangodb',
+            },
+            {
+              icon: { builtIn: 'FaSlack' },
+              name: 'Slack',
+              url: 'https://arangodb-community.slack.com/',
+            },
+          ],
+        },
+        searchSettings: {
+          tabSettings: {
+            rootBreadcrumbsToUseAsTabs: ['Home', 'Docs', 'Blog'],
+          },
+        },
+        // todo
+        modalSettings: {
+          openShortcutKey: 'i',
+        }
+      },
+    });
+  }
+
+  loadAndInitializeInkeep();
+</script>
