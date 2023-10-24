@@ -1,0 +1,3 @@
+/3.10/develop/http/*                   /3.10/develop/http-api/:splat
+/3.11/develop/http/*                   /3.11/develop/http-api/:splat
+/3.12/develop/http/*                   /3.12/develop/http-api/:splat
