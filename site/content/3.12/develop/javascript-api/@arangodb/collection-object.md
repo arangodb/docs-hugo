@@ -679,7 +679,7 @@ If you pass `options` as the second argument, it must be an object.
 
 - If the object has the `allowDirtyReads` attribute set to `true`, then the
   Coordinator is allowed to read from any shard replica and not only from
-  the leader shard. See [Read from followers](../../http/documents.md#read-from-followers)
+  the leader shard. See [Read from followers](../../http-api/documents.md#read-from-followers)
   for details.
 
 ---
@@ -852,7 +852,7 @@ requested.
 If you pass `options` as the second argument, it must be an object. If this
 object has the `allowDirtyReads` attribute set to `true`, then the
 Coordinator is allowed to read from any shard replica and not only from
-the leader shard. See [Read from followers](../../http/documents.md#read-from-followers)
+the leader shard. See [Read from followers](../../http-api/documents.md#read-from-followers)
 for details.
 
 ---

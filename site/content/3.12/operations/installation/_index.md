@@ -25,7 +25,7 @@ see the [Docker](docker.md) section.
 {{< /tip >}}
 
 If you prefer to compile ArangoDB from source, please refer to the [Compiling](compiling/_index.md)
-_Section_.
+section.
 
 For detailed information on how to deploy ArangoDB, once it has been installed,
 please refer to the [Deployment](../../deploy/deployment/_index.md) chapter.

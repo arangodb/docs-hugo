@@ -229,7 +229,7 @@ Components (WCC).
 
 Also see:
 - [Distributed Iterative Graph Processing (Pregel)](../data-science/pregel/_index.md)
-- [Pregel HTTP API](../develop/http/pregel.md)
+- [Pregel HTTP API](../develop/http-api/pregel.md)
 
 ![Three disjoint subgraphs with 36 nodes and edges in total](../../images/connected_components.png)
 

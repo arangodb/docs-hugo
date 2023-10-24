@@ -55,7 +55,7 @@ as well as the drivers and integrations for different programming languages and
 environments. They all provide a convenient way to work with ArangoDB, but you
 may use the low-level REST API directly as needed.
 
-See the [HTTP](../develop/http/_index.md) documentation to learn more about the API, how requests
+See the [HTTP](../develop/http-api/_index.md) documentation to learn more about the API, how requests
 are handled and what endpoints are available.
 
 ## Set Up and Deploy ArangoDB

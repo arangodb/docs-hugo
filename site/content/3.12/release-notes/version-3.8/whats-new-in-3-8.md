@@ -3,7 +3,8 @@ title: Features and Improvements in ArangoDB 3.8
 menuTitle: What's New in 3.8
 weight: 5
 description: >-
-  ArangoDB v3.8 Release Notes New Features
+  Sliding window aggregation, new graph algorithms, powerful user-defined
+  Analyzers, AQL performance and usability improvements
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in
@@ -717,7 +718,7 @@ we have over 200 metrics and nearly 300 graphs in the complete
 dashboard.
 
 The complete list of metrics together with documentation can be found in the
-[Metrics HTTP API](../../develop/http/monitoring.md#metrics)
+[Metrics HTTP API](../../develop/http-api/monitoring.md#metrics)
 documentation.
 
 The list of renamed metrics can be found under

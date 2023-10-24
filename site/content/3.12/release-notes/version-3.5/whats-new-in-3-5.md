@@ -3,7 +3,8 @@ title: Features and Improvements in ArangoDB 3.5
 menuTitle: What's New in 3.5
 weight: 5
 description: >-
-  ArangoDB v3.5 Release Notes New Features
+  Customized Analyzers, multiple shortest path algorithm for graphs, fast cluster
+  joins, a new transaction API, a feature for expiring documents, and hot backups
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in
@@ -363,7 +364,7 @@ Please note that background index creation is useful only in combination with th
 storage engine. With the MMFiles storage engine, creating an index will always block any
 other operations on the collection.
 
-Also see: [Creating Indexes in Background](../../index-and-search/indexing/index-basics.md#creating-indexes-in-background)
+Also see: [Creating Indexes in Background](../../index-and-search/indexing/basics.md#creating-indexes-in-background)
 
 ## TTL (time-to-live) Indexes
 
@@ -437,7 +438,7 @@ Please note that this API is only meaningful and available on a cluster coordina
 
 See:
 - [Get responsible shard in JS API](../../develop/javascript-api/@arangodb/collection-object.md#collectiongetresponsiblesharddocument)
-- [Get responsible shard in HTTP API](../../develop/http/collections.md#get-the-responsible-shard-for-a-document)
+- [Get responsible shard in HTTP API](../../develop/http-api/collections.md#get-the-responsible-shard-for-a-document)
 
 ### Foxx API for running tests
 
@@ -471,7 +472,7 @@ applications due to programming errors or that were left over because client
 connections were interrupted. Also see
 [Known Issues](known-issues-in-3-5.md#stream-transactions)
 
-See: [Stream Transaction HTTP API](../../develop/http/transactions/stream-transactions.md)
+See: [Stream Transaction HTTP API](../../develop/http-api/transactions/stream-transactions.md)
 
 ### Minimal replication Factor
 

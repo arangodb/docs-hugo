@@ -82,4 +82,4 @@ Before upgrading, it is recommended to:
 ### Additional notes regarding rolling upgrades
 
 In addition to the paragraph above, rolling upgrades via the tool _Starter_ are supported,
-as documented in [Upgrading Starter Deployments](upgrading-starter-deployments.md).
+as documented in [Upgrading Starter Deployments](starter-deployments.md).

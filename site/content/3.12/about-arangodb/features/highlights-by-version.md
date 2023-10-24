@@ -6,6 +6,8 @@ description: >-
   The most notable features in the Community and Enterprise Edition of ArangoDB,
   grouped by version
 archetype: default
+aliases:
+  - ../../introduction/features/highlights-by-version
 ---
 ## Version 3.12
 
@@ -264,11 +266,11 @@ Also see [What's New in 3.6](../../release-notes/version-3.6/whats-new-in-3-6.md
   stop walking down certain paths early in a graph traversal to improve its
   efficiency.
 
-- [**Stream Transaction API**](../../develop/http/transactions/stream-transactions.md):
+- [**Stream Transaction API**](../../develop/http-api/transactions/stream-transactions.md):
   Perform multi-document transactions with individual begin and commit / abort
   commands using the new HTTP endpoints or via a supported driver.
 
-- [**Time-to-Live**](../../index-and-search/indexing/index-basics.md#ttl-time-to-live-index)
+- [**Time-to-Live**](../../index-and-search/indexing/basics.md#ttl-time-to-live-index)
   [**Indexes**](../../index-and-search/indexing/working-with-indexes/ttl-indexes.md):
   TTL indexes can be used to automatically remove documents in collections for
   use cases like expiring sessions or automatic purging of statistics or logs.
@@ -385,7 +387,7 @@ Also see [What's New in 3.3](../../release-notes/version-3.3/whats-new-in-3-3.md
   patterns, identify communities and perform in-depth analytics of large graph
   data sets.
 
-- [**Fault-Tolerant Foxx**](../../develop/http/foxx.md): The Foxx management
+- [**Fault-Tolerant Foxx**](../../develop/http-api/foxx.md): The Foxx management
   internals have been rewritten from the ground up to make sure
   multi-coordinator cluster setups always keep their services in sync and
   new Coordinators are fully initialized even when all existing Coordinators

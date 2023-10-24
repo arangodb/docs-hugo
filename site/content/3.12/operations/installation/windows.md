@@ -102,7 +102,7 @@ avoids the data being synced to the windows domain controller.
 
 If this checkbox is selected, the installer attempts to perform an automatic
 update. For more information, please see
-[Upgrading on Windows](../upgrading/os-specific-information/upgrading-on-windows.md).
+[Upgrading on Windows](../upgrading/os-specific-information/windows.md).
 
 #### Keep Backup
 

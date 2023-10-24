@@ -13,7 +13,7 @@ of service prototypes or diagnosing complex problems.
 
 You can toggle development mode on and off using
 the [Foxx CLI](../../../components/tools/foxx-cli/_index.md),
-the [HTTP API](../../http/foxx.md#miscellaneous) or
+the [HTTP API](../../http-api/foxx.md#miscellaneous) or
 in the service settings tab of the web interface.
 
 {{< info >}}

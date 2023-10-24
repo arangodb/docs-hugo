@@ -5,6 +5,8 @@ weight: 115
 description: >-
   ArangoDB lets you apply analytics and machine learning to graph data at scale
 archetype: chapter
+aliases:
+  - data-science/overview
 ---
 ArangoDB's Graph Analytics and GraphML capabilities provide various solutions
 in data science and data analytics. Multiple data science personas within the
@@ -77,16 +79,16 @@ is intended to help you gain analytical insights in
 your data, without having to use external processing systems.
 
 ArangoDB includes the following graph algorithms:
-- [Page Rank](pregel/pregel-algorithms.md#pagerank): used for ranking documents in a graph
+- [Page Rank](pregel/algorithms.md#pagerank): used for ranking documents in a graph
   search/traversal.
-- [Single-Source Shortest Path](pregel/pregel-algorithms.md#single-source-shortest-path): calculates
+- [Single-Source Shortest Path](pregel/algorithms.md#single-source-shortest-path): calculates
   the shortest path length between the source and all other vertices.
   For example, _How to get from a to b_?
-- [Hyperlink-Induced Topic Search (HITS)](pregel/pregel-algorithms.md#hyperlink-induced-topic-search-hits): 
+- [Hyperlink-Induced Topic Search (HITS)](pregel/algorithms.md#hyperlink-induced-topic-search-hits): 
   a link analysis algorithm that rates web pages.
-- [Vertex Centrality](pregel/pregel-algorithms.md#vertex-centrality): identifies the most important
+- [Vertex Centrality](pregel/algorithms.md#vertex-centrality): identifies the most important
   nodes in a graph. For example, _Who are the influencers in a social network?_
-- [Community Detection](pregel/pregel-algorithms.md#community-detection): identifies distinct subgroups
+- [Community Detection](pregel/algorithms.md#community-detection): identifies distinct subgroups
   within a community structure.
 
 ### GraphML

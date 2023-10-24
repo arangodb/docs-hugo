@@ -23,7 +23,7 @@ Deployments of ArangoDB servers can be managed with the following tools:
   the web interface, especially for simple CRUD. It is not to be confused with
   general command lines like Bash or PowerShell.
 
-- **RESTful API**: _arangod_ has an [HTTP interface](../../develop/http/_index.md) through
+- **RESTful API**: _arangod_ has an [HTTP interface](../../develop/http-api/_index.md) through
   which it can be fully managed. The official client tools including _arangosh_ and
   the Web interface talk to this bare metal interface. It is also relevant for
   [driver](../../develop/drivers/_index.md) developers.
@@ -38,7 +38,7 @@ For a full list of tools, please refer to the [Programs & Tools](../../component
 - [Active Failover](../../deploy/deployment/active-failover/administration.md)
 - [Cluster](../../deploy/deployment/cluster/administration.md)
 - [Datacenter-to-Datacenter Replication](../../deploy/arangosync/administration.md)
-- [ArangoDB Starter Administration](arangodb-starter-administration/_index.md)
+- [ArangoDB Starter Administration](arangodb-starter/_index.md)
 
 ## Other Topics
 

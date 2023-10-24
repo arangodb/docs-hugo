@@ -6,6 +6,8 @@ description: >-
   ArangoDB is a graph database with a powerful set of features for data management and analytics,
   supported by a rich ecosystem of integrations and drivers
 archetype: chapter
+aliases:
+  - ../introduction/features
 ---
 ## Editions
 

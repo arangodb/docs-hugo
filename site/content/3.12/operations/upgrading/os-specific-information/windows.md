@@ -5,6 +5,8 @@ weight: 15
 description: >-
   As there are different ways to install ArangoDB on Windows, the upgrade method depends on the installation method that was used
 archetype: default
+aliases:
+  - upgrading-on-windows
 ---
 As there are different ways to install ArangoDB on Windows, the upgrade
 method depends on the installation method that was used.

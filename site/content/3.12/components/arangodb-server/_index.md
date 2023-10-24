@@ -11,6 +11,9 @@ The ArangoDB server is the core component of ArangoDB. The executable file to
 run it is named `arangod`. The `d` stands for daemon. A daemon is a long-running
 background process that answers requests for services.
 
+The server process serves the various client connections to the server via the
+TCP/HTTP protocol. It also provides a [web interface](../web-interface/_index.md).
+
 _arangod_ can run in different modes for a variety of setups like single server
 and clusters. It differs between the [Community Edition](../../about-arangodb/features/community-edition.md)
 and [Enterprise Edition](../../about-arangodb/features/enterprise-edition.md).

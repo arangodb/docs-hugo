@@ -8,6 +8,8 @@ description: >-
   supply chains, and other information webs, and to extract valuable insights by
   analyzing this connected data
 archetype: chapter
+aliases:
+  - graphs/first-steps
 ---
 Graphs are information networks comprised of **nodes** and **relations**. Nodes
 can represent objects, entities, abstract concepts, or ideas. Relations between
@@ -209,7 +211,7 @@ You can create and manage named graphs in the following ways:
   in the **GRAPHS** section
 - In _arangosh_ using the respective graph-related modules of the
   JavaScript API (see the above links of the named graph types)
-- Using the [Gharial HTTP API](../develop/http/graphs/named-graphs.md)
+- Using the [Gharial HTTP API](../develop/http-api/graphs/named-graphs.md)
 
 #### When to use General Graphs
 

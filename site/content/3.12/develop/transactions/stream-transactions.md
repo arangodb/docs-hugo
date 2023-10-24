@@ -34,7 +34,7 @@ For a more detailed description of how transactions work in ArangoDB, please
 refer to [Transactions](_index.md).
 
 You can use Stream Transactions via the [JavaScript API](#javascript-api) and
-the [HTTP API](../http/transactions/stream-transactions.md).
+the [HTTP API](../http-api/transactions/stream-transactions.md).
 
 ## Limitations
 
@@ -71,7 +71,7 @@ errors with code `28` (locked).
 
 ### Batch requests
 
-The [Batch API](../http/batch-requests.md) cannot be used in combination with
+The [Batch API](../http-api/batch-requests.md) cannot be used in combination with
 Stream Transactions for submitting batched requests, because the required
 `x-arango-trx-id` header is not forwarded.
 
@@ -210,5 +210,5 @@ The object has the following attributes:
 
 ## HTTP API
 
-See the [HTTP Interface for Stream Transactions](../http/transactions/stream-transactions.md)
+See the [HTTP Interface for Stream Transactions](../http-api/transactions/stream-transactions.md)
 documentation.

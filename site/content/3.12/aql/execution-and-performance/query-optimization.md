@@ -3,7 +3,8 @@ title: The AQL query optimizer
 menuTitle: Query Optimization
 weight: 25
 description: >-
-  AQL queries are sent through an optimizer before execution
+  AQL queries are sent through an optimizer before execution which creates an
+  initial execution plan, looks for optimization opportunities, and applies them
 pageToc:
   maxHeadlineLevel: 3
 archetype: default

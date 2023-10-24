@@ -1,7 +1,7 @@
 ---
 title: Error codes and meanings
 menuTitle: Error codes and meanings
-weight: 275
+weight: 290
 description: >-
   An error reply from ArangoDB servers contain a code, error number, and message
   and you can look up additional information for a specific kind of error
@@ -12,7 +12,7 @@ archetype: default
 ## Numbers, names, and descriptions of errors
 
 When an error occurs in an operation of an ArangoDB server, the
-[HTTP REST API](http/_index.md) responds to a request with an
+[HTTP REST API](http-api/_index.md) responds to a request with an
 **HTTP status code** like `400 Bad Request`, `401 Unauthorized`,
 `503 Service Unavailable`, or similar. This code is typically also included in
 the body of the response, specifically the `code` attribute, along with the

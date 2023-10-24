@@ -7,6 +7,8 @@ description: >-
   security features for larger or more sensitive datasets, as well as additional
   query capabilities
 archetype: default
+aliases:
+  - ../../introduction/features/enterprise-edition
 ---
 The Enterprise Edition has all the features of the
 [Community Edition](community-edition.md) and, on top of that, the
@@ -117,6 +119,6 @@ features outlined below. For additional information, see
   / PII when creating backups.
 
 - **Advanced Encryption and Security Configuration**:
-  Key rotation for [JWT secrets](../../develop/http/authentication.md#hot-reload-jwt-secrets)
-  and [on-disk encryption](../../develop/http/security.md#encryption-at-rest),
+  Key rotation for [JWT secrets](../../develop/http-api/authentication.md#hot-reload-jwt-secrets)
+  and [on-disk encryption](../../develop/http-api/security.md#encryption-at-rest),
   as well as [Server Name Indication (SNI)](../../components/arangodb-server/options.md#--sslserver-name-indication).

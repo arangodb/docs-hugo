@@ -3,12 +3,16 @@ title: ArangoDB Starter Recovery Procedure
 menuTitle: Recovery Procedure
 weight: 10
 description: >-
-  This procedure is intended to recover a cluster (that was started with the ArangoDB Starter) when a machine of that cluster is broken without the possibility to recover it (e
+  You can replace a failed machine and recover a cluster that has been created
+  with ArangoDB Starter using a new machine with the old or a new IP address
 archetype: default
+aliases:
+  - ../arangodb-starter-administration/recovery-procedure
 ---
-This procedure is intended to recover a cluster (that was started with the ArangoDB
-_Starter_) when a machine of that cluster is broken without the possibility to recover
-it (e.g. complete HD failure). In the procedure is does not matter if a replacement
+This procedure is intended to recover a cluster that was started with the
+[ArangoDB Starter](../../../components/tools/arangodb-starter/_index.md) when a
+machine of that cluster is broken without the possibility to recover
+it (e.g. complete hard drive failure). In the procedure is does not matter if a replacement
 machine uses the old or a new IP address.
 
 To recover from this scenario, you must:
@@ -19,7 +23,7 @@ To recover from this scenario, you must:
   This file must contain the IP address and port of the _Starter_ that has been
   broken (and will be replaced with this new machine).
 
-E.g.
+Example:
 
 ```bash
 echo "192.168.1.25:8528" > $DATADIR/RECOVERY

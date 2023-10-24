@@ -3,14 +3,17 @@ title: Manually Upgrading a _Cluster_ Deployment
 menuTitle: Upgrading a Cluster
 weight: 10
 description: >-
-  This page will guide you through the process of a manual upgrade of a clustersetup
+  The server binaries need to be upgraded, requiring a restart of the `arangod`
+  processes and using the supervision maintenance mode
 archetype: default
+aliases:
+  - ../upgrading-manual-deployments/upgrading-a-cluster
 ---
-This page will guide you through the process of a manual upgrade of a [_cluster_](../../../deploy/deployment/cluster/_index.md)
-setup. The different nodes in a _cluster_ can be upgraded one at a time without
+To manually upgrade a [_cluster_](../../../deploy/deployment/cluster/_index.md)
+setup, the different nodes of a _cluster_ can be upgraded one at a time without
 incurring downtime of the _cluster_ and very short downtimes of the single nodes.
 
-The manual upgrade procedure described in this _Section_ can be used to upgrade
+The manual upgrade procedure described in this section can be used to upgrade
 to a new hotfix, or to perform an upgrade to a new minor version of ArangoDB.
 Please refer to the [Upgrade paths](../_index.md#upgrade-paths) section
 for detailed information.

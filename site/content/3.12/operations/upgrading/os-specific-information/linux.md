@@ -5,6 +5,8 @@ weight: 5
 description: >-
   By installing the new ArangoDB package the standalone instance is automatically upgraded
 archetype: default
+aliases:
+  - upgrading-on-linux
 ---
 By installing the new ArangoDB package the standalone instance is automatically
 upgraded. In addition to the ArangoDB daemon (_arangod_), also the ArangoDB

@@ -3,12 +3,15 @@ title: Manually Upgrading an _Active Failover_ Deployment
 menuTitle: Upgrading an Active Failover deployment
 weight: 5
 description: >-
-  This page will guide you through the process of a manual upgrade of an Active Failover setup
+  The server binaries need to be upgraded, requiring a restart of the `arangod`
+  processes and optionally using the supervision maintenance mode
 archetype: default
+aliases:
+  - ../upgrading-manual-deployments/upgrading-an-active-failover-deployment
 ---
-This page will guide you through the process of a manual upgrade of an [_Active Failover_](../../../deploy/deployment/active-failover/_index.md)
-setup. The different nodes can be upgraded one at a time without
-incurring a _prolonged_ downtime of the entire system. The downtimes of the individual nodes
+To manually upgrade an [_Active Failover_](../../../deploy/deployment/active-failover/_index.md)
+setup, the different nodes can be upgraded one at a time without incurring a
+prolonged downtime of the entire system. The downtimes of the individual nodes
 should also stay fairly low.
 
 The manual upgrade procedure described in this section can be used to upgrade
@@ -26,7 +29,7 @@ and the service will be (re)started.
 You have to make sure that your _Active Failover_ deployment is independent of this
 standalone instance. Specifically, make sure that the database directory as
 well as the socket used by the standalone instance provided by the package are
-separate from the ones in your _Active Failover_ configuration. Also, that you haven't
+separate from the ones in your _Active Failover_ configuration. Also, check that you haven't
 modified the init script or systemd unit file for the standalone instance in a way
 that it would start or stop your  _Active Failover_ instance instead.
 

@@ -3,7 +3,8 @@ title: Features and Improvements in ArangoDB 3.4
 menuTitle: What's New in 3.4
 weight: 5
 description: >-
-  The following list shows in detail which features have been added or improved inArangoDB 3
+  An integrated search engine for full-text and beyond, overhauled geo-spatial
+  indexing, storage engine changes, query result streaming
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in

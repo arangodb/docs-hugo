@@ -14,6 +14,6 @@ It is the successor of `foxx-manager`, which is deprecated and will be
 removed eventually. Also see [Foxx Deployment](../../../develop/foxx-microservices/deployment.md)
 for additional deployment options.
 
-_foxx-cli_ relies on the [Foxx HTTP API](../../../develop/http/foxx.md).
+_foxx-cli_ relies on the [Foxx HTTP API](../../../develop/http-api/foxx.md).
 
 Repository: <https://github.com/arangodb/foxx-cli/>

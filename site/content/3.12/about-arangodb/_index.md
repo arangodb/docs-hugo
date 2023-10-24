@@ -6,6 +6,9 @@ description: >-
   ArangoDB is a scalable graph database system to drive value from connected
   data, faster
 archetype: chapter
+aliases:
+  - introduction
+  - introduction/about-arangodb
 ---
 ![ArangoDB Overview Diagram](../../images/arangodb-overview-diagram.png)
 

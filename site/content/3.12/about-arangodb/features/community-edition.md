@@ -7,6 +7,8 @@ description: >-
   Apache 2.0 license and offers an extensive feature set including cluster
   support for free
 archetype: default
+aliases:
+  - ../../introduction/features/community-edition
 ---
 The Community Edition features are outlined below. For additional information,
 see [arangodb.com/community-server/](https://www.arangodb.com/community-server/).
@@ -156,11 +158,11 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   AQL queries are executed transactionally (with exceptions), either committing
   or rolling back data modifications automatically.
 
-- [**Stream Transactions**](../../develop/http/transactions/stream-transactions.md):
+- [**Stream Transactions**](../../develop/http-api/transactions/stream-transactions.md):
   Transactions with individual begin and commit / abort commands that can span
   multiple AQL queries and API calls of supported APIs.
 
-- [**JavaScript Transactions**](../../develop/http/transactions/javascript-transactions.md):
+- [**JavaScript Transactions**](../../develop/http-api/transactions/javascript-transactions.md):
   Single-request transactions written in JavaScript that leverage ArangoDB's
   JavaScript API.
 
@@ -182,7 +184,7 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
 
 ## Performance
 
-- [**Persistent Indexes**](../../index-and-search/indexing/index-basics.md#persistent-index):
+- [**Persistent Indexes**](../../index-and-search/indexing/basics.md#persistent-index):
   Indexes are stored on disk to enable fast server restarts. You can create
   secondary indexes over one or multiple fields, optionally with a uniqueness
   constraint. A "sparse" option to only index non-null values is also available.
@@ -192,13 +194,13 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   An eventually consistent index type that can accelerate a broad range of
   queries from simple to complex, including full-text search.
 
-- [**Vertex-centric Indexes**](../../index-and-search/indexing/index-basics.md#vertex-centric-indexes):
+- [**Vertex-centric Indexes**](../../index-and-search/indexing/basics.md#vertex-centric-indexes):
   Secondary indexes for more efficient graph traversals with filter conditions.
 
-- [**Time-to-Live (TTL) Indexes**](../../index-and-search/indexing/index-basics.md#ttl-time-to-live-index):
+- [**Time-to-Live (TTL) Indexes**](../../index-and-search/indexing/basics.md#ttl-time-to-live-index):
   Time-based removal of expired documents.
 
-- [**Geo-spatial Indexes**](../../index-and-search/indexing/index-basics.md#geo-index):
+- [**Geo-spatial Indexes**](../../index-and-search/indexing/basics.md#geo-index):
   Accelerated geo-spatial queries for locations and GeoJSON objects, based on
   the S2 library. <!-- TODO: list supported queries? Centroid-limitations? -->
   Support for composable, distance-based geo-queries ("geo cursors").
@@ -209,7 +211,7 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   all appointments that intersect a time range.
 {{% /comment %}}
 
-- [**Background Indexing**](../../index-and-search/indexing/index-basics.md#creating-indexes-in-background):
+- [**Background Indexing**](../../index-and-search/indexing/basics.md#creating-indexes-in-background):
   Indexes can be created in the background to not block queries in the meantime.
 
 - [**Index cache refilling**](../../release-notes/version-3.11/whats-new-in-3-11.md#index-cache-refilling):
@@ -275,6 +277,6 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   You can import from JSON, JSONL, CSV, and TSV files, and export to JSON, JSONL,
   CSV, TSV, XML, and XGMML files.
 
-- [**Metrics**](../../develop/http/monitoring.md#metrics):
+- [**Metrics**](../../develop/http-api/monitoring.md#metrics):
   Monitor the healthiness and performance of ArangoDB servers using the metrics
   exported in the Prometheus format.

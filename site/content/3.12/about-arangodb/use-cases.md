@@ -8,6 +8,8 @@ description: >-
 pageToc:
   maxHeadlineLevel: 2
 archetype: default
+aliases:
+  - ../introduction/use-cases
 ---
 ## ArangoDB as a Graph Database
 

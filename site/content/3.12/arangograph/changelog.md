@@ -6,6 +6,8 @@ description: >-
   The ArangoGraph changelog covers notable changes in behavior or new
   functionality within the ArangoGraph Insights Platform
 archetype: default
+aliases:
+  - arangograph-changelog
 ---
 ## 2023
 

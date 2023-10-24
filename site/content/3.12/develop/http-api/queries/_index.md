@@ -7,6 +7,3 @@ description: >-
   results cache, and manage user-defined functions
 archetype: chapter
 ---
-- [AQL queries](aql-queries.md)
-- [AQL query results cache](aql-query-results-cache.md)
-- [User-defined AQL functions](user-defined-aql-functions.md)

@@ -5,12 +5,14 @@ weight: 15
 description: >-
   Procedure to perform a rolling upgrade with the arangodb binary.
 archetype: default
+aliases:
+  - upgrading-starter-deployments
 ---
 The ArangoDB [_Starter_](../../components/tools/arangodb-starter/_index.md) supports an automated procedure
 to perform upgrades, including rolling upgrades
 of a [Cluster](../../deploy/deployment/cluster/_index.md) setup.
 
-The upgrade procedure of the _Starter_ described in this _Section_ can be used to
+The upgrade procedure of the _Starter_ described in this section can be used to
 upgrade to a new hotfix, or to perform an upgrade to a new minor version of ArangoDB.
 Please refer to the [Upgrade paths](_index.md#upgrade-paths) section
 for detailed information.

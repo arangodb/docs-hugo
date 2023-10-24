@@ -5,6 +5,8 @@ weight: 60
 description: >-
   Interface to control all resources inside ArangoGraph in a scriptable manner
 archetype: chapter
+aliases:
+  - arangograph-api
 ---
 The [ArangoGraph Insights Platform](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
 comes with its own API. This API enables you to control all

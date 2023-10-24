@@ -1,13 +1,15 @@
 ---
-title: Getting Started with the ArangoGraph API and Oasisctl
-menuTitle: Getting started with Oasisctl
+title: Get started with the ArangoGraph API and Oasisctl
+menuTitle: Get started with Oasisctl
 weight: 10
 description: >-
-  Oasisctl Tutorial
+  A tutorial that guides you through the ArangoGraph API as well as the Oasisctl
+  command-line tool
 archetype: default
+aliases:
+  - ../arangograph-api/getting-started
 ---
-Oasisctl is a command line tool for accessing the ArangoGraph API. This tutorial will
-guide you through the ArangoGraph API as well as Oasisctl and show you how to:
+This tutorial shows you how to do the following:
 
 - Generate an API key and authenticate with Oasisctl
 - View information related to your organizations, projects, and deployments

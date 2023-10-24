@@ -18,4 +18,4 @@ as well as a flexible [sessions middleware](sessions-middleware/_index.md)
 with different transport and storage mechanisms.
 
 Foxx services can be installed and managed over the Web-UI or through
-ArangoDB's [HTTP API](../../http/foxx.md#management).
+ArangoDB's [HTTP API](../../http-api/foxx.md#management).

@@ -3,8 +3,11 @@ title: ArangoDB Starter Removal Procedure
 menuTitle: Removal Procedure
 weight: 5
 description: >-
-  This procedure describes how to remove a machine from a cluster that was started with ArangoDB Starter
+  You can remove a machine from a cluster that was started with ArangoDB Starter
+  as long as the machine does not run an Agent
 archetype: default
+aliases:
+  - ../arangodb-starter-administration/removal-procedure
 ---
 {{< danger >}}
 **Do not** apply this procedure to machines that have an **Agent** on it.

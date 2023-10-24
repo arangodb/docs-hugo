@@ -131,7 +131,7 @@ as well as on _arangod_ i.e. if you're using [Foxx](../../../develop/foxx-micros
 interface is persistent between the _arangosh_ and the _arangod_ implementations,
 its underpinning is not. The _arangod_ implementation are JavaScript wrappers
 around ArangoDB's native C++ implementation, whereas the _arangosh_ implementation
-wraps HTTP accesses to ArangoDB's [RESTful API](../../../develop/http/_index.md).
+wraps HTTP accesses to ArangoDB's [RESTful API](../../../develop/http-api/_index.md).
 
 So while this code may produce similar results when executed in _arangosh_ and
 _arangod_, the CPU usage and time required differs since the
