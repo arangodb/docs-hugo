@@ -1,6 +1,6 @@
 ---
 title: HTTP interface for search-alias Views
-menuTitle: <code>search-alias</code> Views
+menuTitle: '`search-alias` Views'
 weight: 5
 description: >-
   The HTTP API for Views lets you manage `search-alias` Views, including adding

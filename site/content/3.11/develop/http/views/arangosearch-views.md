@@ -1,6 +1,6 @@
 ---
 title: HTTP interface for arangosearch Views
-menuTitle: <code>arangosearch</code> Views
+menuTitle: '`arangosearch` Views'
 weight: 10
 description: >-
   The HTTP API for Views lets you manage `arangosearch` Views, including
