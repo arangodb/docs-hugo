@@ -1,6 +1,6 @@
 ---
 title: arangosearch Views Reference
-menuTitle: <code>arangosearch</code> Views Reference
+menuTitle: '`arangosearch` Views Reference'
 weight: 85
 description: ''
 archetype: default
