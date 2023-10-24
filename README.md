@@ -238,29 +238,7 @@ Run the `docker compose` services without specifying a file:
 docs-hugo/toolchain/docker/arm64> docker compose up
 ```
 
-
 The site will be available at `http://localhost:1313`
-
-<!--
-#### Run without Docker
-
-- Build and start the _arangoproxy_ web server
-
-  ```shell
-  toolchain/arangoproxy/cmd> go build -o arangoproxy
-  toolchain/arangoproxy/cmd> ./arangoproxy {flags}
-  ```
-- Launch the hugo build command
-
-  ```shell
-  docs-hugo/site> hugo
-  ```
-
-The static HTML is placed under `site/public/`.
-
-For development purpose, it is suggested to use the `hugo serve` command for
-hot-reload on changes. The runtime server is available at `http://localhost:1313/`.
--->
 
 ## Work with the documentation content
 
@@ -767,7 +745,7 @@ Add the actual content formatted in Markdown syntax below the front matter.
 Netlify supports server-side redirects configured with a text file
 ([documentation](https://docs.netlify.com/routing/redirects/#syntax-for-the-redirects-file)).
 This is helpful when renaming folders with many subfolders and files because
-there is support for splatting and placeholders. See
+there is support for splatting and placeholders (but not regular expressions). See
 [Redirect options](https://docs.netlify.com/routing/redirects/redirect-options/)
 for details. The configuration file is `site/content/_redirects`.
 
@@ -809,6 +787,12 @@ front matter to `new/_index.md`:
 aliases:
   - old
 ```
+
+For aliases in `_index.md` files, think of the folder they are in as a file.
+In the above example, the folder is `new/`. Treating it like the file that
+defines the page means that the alias `old` is relative to its parent folder
+(here: the root folder of the content, `site/content/`). Therefore, the alias
+needs to be `old`, not `../old`.
 
 Note that you need to set up aliases for all files in `new/` so that every URL
 which includes the old folder name redirects to the corresponding new URL.
