@@ -17,12 +17,12 @@
               {{ if gt (len .Page.Ancestors) 1 }}{{ partial "breadcrumbs.html" . }}{{ end -}}
               {{ partial "output-partial.hugo" (dict "base" "body" "page" . "parameter" (dict "page" . "content" (partial "output-partial.hugo" (dict "base" "content" "page" . "parameter" .)))) -}}
               {{ partial "toc.html" . -}}
-              {{ partialCached "inkeep-widget.html" . -}}
             </div>
           </div>
         </section>
       </section>
     </div>
+    {{ partial "inkeep-widget.html" . -}}
     {{ partialCached "back-to-top.html" . -}}
     {{ partial "search.html" . -}}
     {{ if $isProduction }}{{ partial "tracking/body-end.html" . }}{{ end -}}
