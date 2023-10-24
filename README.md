@@ -242,7 +242,7 @@ The site will be available at `http://localhost:1313`
 - Build and start the _arangoproxy_ web server
 
   ```shell
-  toolchain/arangoproxy/cmd> go build -o arangoproxy
+  toolchain/arangoproxy/cmd> go build -mod=vendor -o arangoproxy
   toolchain/arangoproxy/cmd> ./arangoproxy {flags}
   ```
 - Launch the hugo build command

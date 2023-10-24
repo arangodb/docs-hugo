@@ -198,11 +198,6 @@ function run_arangoproxy_and_site() {
     arch="arm64"
   fi
 
-  docker pull arangodb/docs-hugo:arangoproxy-"$arch"
-  docker pull arangodb/docs-hugo:site-"$arch"
-  docker tag arangodb/docs-hugo:arangoproxy-"$arch" arangoproxy
-  docker tag arangodb/docs-hugo:site-"$arch" site
-
   set +e
   
   cd ../../
@@ -220,7 +215,7 @@ function run_arangoproxy_and_site() {
       -p 1313:1313 \
       --volumes-from toolchain \
       --log-opt tag="{{.Name}}" \
-      site
+      arangodb/docs-hugo:site-"$arch"
 
     docker run -d --name docs_arangoproxy --network=docs_net --ip=192.168.129.129 \
       -e ENV="$ENV" \
@@ -230,7 +225,7 @@ function run_arangoproxy_and_site() {
       -v arangosh:/arangosh \
       --volumes-from toolchain \
       --log-opt tag="{{.Name}}" \
-      arangoproxy
+      arangodb/docs-hugo:arangoproxy-"$arch"
   fi
 }
 
