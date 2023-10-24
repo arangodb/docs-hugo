@@ -1,16 +1,16 @@
-<div id="inkeep-chat-button"></div>
+<div id="inkeep-chat-button" style="position: absolute;"></div>
 
 <script type="text/javascript">
   const SCRIPT_SRC = 'https://unpkg.com/@inkeep/widgets-embed@0.2.215/dist/embed.js';
 
   function loadAndInitializeInkeep() {
-    if (document.querySelector(`script[src="https://unpkg.com/@inkeep/widgets-embed@0.2.215/dist/embed.js"]`)) {
+    if (document.querySelector(`script[src="${SCRIPT_SRC}]"`)) {
       return;
     }
 
     const script = document.createElement('script');
     script.type = 'module';
-    script.src = 'https://unpkg.com/@inkeep/widgets-embed@0.2.215/dist/embed.js';
+    script.src = SCRIPT_SRC;
     script.onload = initializeInkeep;
 
     document.head.appendChild(script);
@@ -18,9 +18,9 @@
 
   function initializeInkeep() {
     const inkeep = Inkeep({
-      integrationId: '',
-      apiKey: '',
-      organizationId: '',
+      integrationId: 'clo4lx6jk0000s601cp21x2ok',
+      apiKey: '13b4e56966a76e86c6ff359cd795ee6a0412f751d75d6383',
+      organizationId: 'org_HGBkkzGAa4KeGJGh',
       organizationDisplayName: 'ArangoDB',
       primaryBrandColor: '#80a54d',
       stringReplacementRules: [
@@ -91,6 +91,9 @@
         stylesheetUrls: ['/css/fonts.css'],
         baseSettings: {
           theme: {
+            primaryColors: {
+              textColorOnPrimary: 'white',
+            },
             tokens: {
               fonts: {
                 body: "'Inter'",
@@ -132,7 +135,6 @@
             rootBreadcrumbsToUseAsTabs: ['Home', 'Docs', 'Blog'],
           },
         },
-        // todo
         modalSettings: {
           openShortcutKey: 'i',
         }
