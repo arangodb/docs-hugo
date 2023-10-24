@@ -4,7 +4,7 @@
   {{ range .Ancestors.Reverse }}
     {{ if not .IsHome }}
     <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
-      <meta itemprop="position" content="{{ .Params.menuTitle }}" />
+      <meta itemprop="position" content="{{ .Params.menuTitle | markdownify }}" />
       <a itemprop="item" class="link" href="{{ .RelPermalink }}">
         <span itemprop="name" class="breadcrumb-entry">{{- if eq (len .Ancestors) 1 }}{{ template "getVersionLong" dict "page" .Page }}{{ else }}{{ .Params.menuTitle | markdownify }}{{ end }}</span>
       </a>
@@ -14,7 +14,7 @@
   {{- end }}   
   {{ if not .IsHome }}
   <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
-    <meta itemprop="position" content="{{ .Params.menuTitle }}" />
+    <meta itemprop="position" content="{{ .Params.menuTitle | markdownify }}" />
     <a itemprop="item" class="link" href="{{ .RelPermalink }}">
       <span itemprop="name" class="breadcrumb-entry">{{- if eq (len .Ancestors) 1 }}{{ template "getVersionLong" dict "page" .Page }}{{ else }}{{ .Params.menuTitle | markdownify }}{{ end }}</span>
     </a>

@@ -1,6 +1,6 @@
 ---
 title: search-alias Views Reference
-menuTitle: <code>search-alias</code> Views Reference
+menuTitle: '`search-alias` Views Reference'
 weight: 80
 description: ''
 archetype: default
