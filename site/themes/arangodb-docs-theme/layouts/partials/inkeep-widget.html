@@ -1,11 +1,19 @@
 <div id="inkeep-chat-button"></div>
 <script type="module">
+  const SCRIPT_SRC = 'https://unpkg.com/@inkeep/widgets-embed@0.2.215/dist/embed.js';
+
   function loadAndInitializeInkeep() {
+    if (document.querySelector(`script[src="${SCRIPT_SRC}"]`)) {
+      initializeInkeep();
+      return;
+    }
+
     const script = document.createElement('script');
     script.type = 'module';
-    script.src = 'https://unpkg.com/@inkeep/widgets-embed@0.2.215/dist/embed.js';
+    script.src = SCRIPT_SRC;
     script.onload = initializeInkeep;
-    document.head.appendChild(script)
+
+    document.head.appendChild(script);
   }
 
   function initializeInkeep() {
@@ -80,14 +88,14 @@
       componentType: 'ChatButton',
       targetElement: document.getElementById('inkeep-chat-button'),
       properties: {
-        stylesheetUrls: ['/css/fonts.css'],
+        // stylesheetUrls: ['/css/fonts.css'],
         baseSettings: {
           theme: {
             tokens: {
-              fonts: {
-                body: "'Inter'",
-                heading: "'Inter'",
-              },
+              // fonts: {
+              //   body: "'Inter'",
+              //   heading: "'Inter'",
+              // },
               zIndex: {
                 overlay: 10000,
                 modal: 11000,
