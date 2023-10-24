@@ -224,11 +224,6 @@ function run_arangoproxy_and_site() {
     arch="arm64"
   fi
 
-  docker pull arangodb/docs-hugo:arangoproxy-"$arch"
-  docker pull arangodb/docs-hugo:site-"$arch"
-  docker tag arangodb/docs-hugo:arangoproxy-"$arch" arangoproxy
-  docker tag arangodb/docs-hugo:site-"$arch" site
-
   set +e
   
   cd ../../
@@ -246,7 +241,7 @@ function run_arangoproxy_and_site() {
       -p 1313:1313 \
       --volumes-from toolchain \
       --log-opt tag="{{.Name}}" \
-      site
+      arangodb/docs-hugo:site-"$arch"
 
     docker run -d --name docs_arangoproxy --network=docs_net --ip=192.168.129.129 \
       -e ENV="$ENV" \
@@ -256,7 +251,7 @@ function run_arangoproxy_and_site() {
       -v arangosh:/arangosh \
       --volumes-from toolchain \
       --log-opt tag="{{.Name}}" \
-      arangoproxy
+      arangodb/docs-hugo:arangoproxy-"$arch"
   fi
 }
 
@@ -522,6 +517,10 @@ function generate_oasisctl() {
 
   log "[generate_oasisctl] Generate OasisCTL docs"
 
+  if [ ! -f /tmp/oasisctl.zip ]; then
+    log "[generate_oasisctl] /tmp/oasisctl.zip not found. Invoking download_oasisctl"
+    download_oasisctl
+  fi
 
   mkdir -p /tmp/oasisctl
   mkdir -p /tmp/preserve
@@ -549,6 +548,17 @@ function generate_oasisctl() {
   echo "</li>" >> /home/summary.md
 
   log "[generate_oasisctl] Done"
+}
+
+function download_oasisctl() {
+  oasisctlVersion=$(curl -I https://github.com/arangodb-managed/oasisctl/releases/latest | awk -F '/' '/^location/ {print  substr($NF, 1, length($NF)-1)}')
+  log "[download_oasisctl] Downloading oasisctl version $oasisctlVersion"
+  cd /tmp
+  wget https://github.com/arangodb-managed/oasisctl/releases/download/$oasisctlVersion/oasisctl.zip
+  unzip oasisctl.zip
+  mv bin/linux/arm/ bin/linux/arm64
+  mv bin/linux/amd64/oasisctl /usr/bin/oasisctl && chmod +x /usr/bin/oasisctl
+  cd /home/toolchain/scripts
 }
 
 
