@@ -57,8 +57,8 @@ parameters:
 
   release-type:
     type: enum
-    enum: [no-op, arangodb, docs]
-    default: no-op
+    enum: [arangodb, docs]
+    default: docs
 
   arangodb-version:
     type: string
@@ -83,7 +83,7 @@ jobs:
           command: |
             mkdir -p .circleci && cd .circleci
             curl https://api.github.com/repos/arangodb/docs-hugo/contents/.circleci?ref=$CIRCLE_SHA1 | jq ".[].download_url" | xargs wget
-            wget https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_BRANCH/site/data/versions.yaml
+            wget https://raw.githubusercontent.com/arangodb/docs-hugo/$CIRCLE_SHA1/site/data/versions.yaml
 
             pip install pyyaml requests
 

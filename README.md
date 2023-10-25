@@ -247,7 +247,7 @@ The site will be available at `http://localhost:1313`
 - Build and start the _arangoproxy_ web server
 
   ```shell
-  toolchain/arangoproxy/cmd> go build -o arangoproxy
+  toolchain/arangoproxy/cmd> go build -mod=vendor -o arangoproxy
   toolchain/arangoproxy/cmd> ./arangoproxy {flags}
   ```
 - Launch the hugo build command
@@ -842,20 +842,261 @@ its documentation needs to be marked as such. For the respective version, set
 the `deprecated` attribute to `true` in the `site/data/versions.yaml` file:
 
 ```diff
- - name: '3.10'
-   version: '3.10.9'
-   alias: ""
+ - name: "3.10"
+   version: "3.10.9"
+   alias: "3.10"
 -  deprecated: false
 +  deprecated: true
 ```
 
 It makes a warning show at the top of every page for that version.
 
-<!--
 ### Add a new version
 
-TODO: Pending CircleCI dynamic config
--->
+1. In the `site/data/versions.yaml` file, add a new entry for the version you
+   want to add. Example:
+
+   ```diff
+   +- name: "4.0"
+   +  version: "4.0.0"
+   +  alias: "4.0"
+   +  deprecated: false
+   +
+    - name: "3.12"
+      version: "3.12.0"
+      alias: "devel"
+      deprecated: false
+   ```
+
+2. Near the top of the `.circleci/config.yml` file under `parameters`, find the
+   last entry with the format `arangodb-X_XX` where `X_XX` is a version number
+   like `3_12`, so `arangodb-3_12` for example. Duplicate the block and adjust
+   the version number. Example:
+
+   ```diff
+      arangodb-3_12:
+        type: string
+        default: "undefined"
+   +
+   +  arangodb-4_0:
+   +    type: string
+   +    default: "undefined"
+   ```
+
+   Near the end of the file under `jobs.generate-config.steps[0].run.command`,
+   find the line of code that calls `python3 generate_config.py`. In one of the
+   following lines, a parameter for every version is passed as argument. Add one
+   for the new version. Example:
+
+   ```diff
+                python3 generate_config.py \
+                  --workflow << pipeline.parameters.workflow >> \
+   -              --arangodb-branches << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> \
+   +              --arangodb-branches << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_0 >> \
+   ```
+
+3. In the `toolchain/docker/amd64/docker-compose.yml` file, add an entry under
+   `services.toolchain.volumes` for the new version. Simply increment the value
+   after `:-/tmp/`. Example:
+
+   ```diff
+          - ${ARANGODB_SRC_3_12:-/tmp/2}:/tmp/3.12
+   +      - ${ARANGODB_SRC_4_0:-/tmp/3}:/tmp/4.0
+   ```
+
+   Under `services.toolchain.environment`, you need to add two different entries
+   for the new version. Example:
+
+   ```diff
+          ARANGODB_SRC_3_11: ${ARANGODB_SRC_3_11}
+          ARANGODB_SRC_3_12: ${ARANGODB_SRC_3_12}
+   +      ARANGODB_SRC_4_0: ${ARANGODB_SRC_4_0}
+          ARANGODB_BRANCH_3_11: ${ARANGODB_BRANCH_3_11}
+          ARANGODB_BRANCH_3_12: ${ARANGODB_BRANCH_3_12}
+   +      ARANGODB_BRANCH_4_0: ${ARANGODB_BRANCH_4_0}
+   ```
+
+   The same changes are required in the
+   `toolchain/docker/arm64/docker-compose.yml` file.
+
+4. In the `toolchain/docker/config.yaml` file, add an entry for the new version.
+   Example:
+
+   ```diff
+      - image: ${ARANGODB_BRANCH_3_12_IMAGE}
+        version: ${ARANGODB_BRANCH_3_12_VERSION}
+   +
+   +  - image: ${ARANGODB_BRANCH_4_0_IMAGE}
+   +    version: ${ARANGODB_BRANCH_4_0_VERSION}
+   ```
+
+5. In the `toolchain/scripts/toolchain.sh` file, find the code that accesses
+   environment variables with the format `$ARANGODB_BRANCH_X_XX` where `X_XX`
+   is a version number like `3_12`, so `$ARANGODB_BRANCH_3_12` for instance.
+   Duplicate the block of an existing version and adjust all version numbers.
+   Example:
+
+   ```diff
+    if [ "$ARANGODB_BRANCH_3_12" != "" ] ; then
+          export ARANGODB_BRANCH_3_12_IMAGE="$ARANGODB_BRANCH_3_12"
+          export ARANGODB_BRANCH_3_12_VERSION="3.12"
+    fi
+    
+   +if [ "$ARANGODB_BRANCH_4_0" != "" ] ; then
+   +      export ARANGODB_BRANCH_4_0_IMAGE="$ARANGODB_BRANCH_4_0"
+   +      export ARANGODB_BRANCH_4_0_VERSION="4.0"
+   +fi
+   ```
+
+6. In the `site/data` folder, create a new folder with the short version number
+   as the name, e.g. `4.0`. In the new `site/data/4.0` folder, create a
+   `cache.json` file with the following content:
+
+   ```json
+   {}
+   ```
+
+   Add this untracked file to Git!
+
+7. Duplicate the folder of the most recent version in `site/content`, e.g.
+   the `3.12` folder, and rename the copy to the new version, e.g. `4.0`.
+
+   The `menuTitle` in the front matter of the version homepage, e.g.
+   `site/content/4.0/_index.md`, needs to adjusted to the new version,
+   like `menuTitle: '4.0'`.
+
+   In the folder for release notes, e.g. `site/content/4.0/release-notes/`,
+   duplicate the folder of the most recent version, e.g. `version-3.12`, and
+   rename it, e.g. to `version-4.0`. In this folder, rename the files to replace
+   the old with the new version number, e.g. `api-changes-in-3-12.md` to
+   `api-changes-in-4-0.md` and so on.
+   
+   In the `_index.md` file in the folder, e.g.
+   `site/content/4.0/release-notes/version-4.0/_index.md`, you need to replace
+   the version numbers in the front matter and links. You also need to adjust
+   the `weight` in the front matter. Decrement the value by one to make the new
+   version appear before the existing versions, but make sure that it is greater
+   than `0`, which may require adjusting the weights in all of the section files.
+
+   In the other files of the release notes, remove the version-specific content
+   and only leave the front matter, introductions, and headlines that are
+   commonly used across different versions in the release notes. Adjust the
+   version numbers in the front matter and content.
+
+   Search the entire version folder, e.g. `site/content/4.0/`, for links that
+   are meant to point to the release notes of the own version, but which are
+   still pointing to the version the content has been copied from. For example,
+   if you duplicated the `3.12` folder, search the `4.0` folder for
+   `version-3.12/`. You should find links to `version-3.12/known-issues-in-3-12.md`
+   that need to be updated to `version-4.0/known-issues-in-4-0.md`.
+
+   In the release notes root file, e.g. `site/content/4.0/release-notes/_index.md`,
+   add the links for the new version following the existing pattern. Do this
+   after updating the links to the known issues so that you don't accidentally
+   change the 3.12 link in the release notes root file.
+
+   In the _Highlights by Version_ page, e.g.
+   `site/content/4.0/introduction/features/highlights-by-version.md`, add a
+   section for the new version including a link to the release notes.
+
+   Add the new, untracked files to Git!
+
+8. In the `PULL_REQUEST_TEMPLATE.md` file, add a new line for the new version.
+   Example:
+
+   ```diff
+    - 3.12: 
+   +- 4.0: 
+   ```
+
+   Stage all changes and commit them. Open a pull request (PR) on GitHub. You only
+   need to specify a Docker image or PR link for `- 4.0: ` if you plan to use
+   the `/generate` or `/generate-commit` command to re-generate the examples.
+   If you follow the next step, the example generation is run manually along
+   with some other generators, so using the commands shouldn't be necessary.
+
+   Expect the plain build to fail for the time being because of missing data files.
+
+9. You can use CircleCI to initially generate the data files for the new version,
+   like the startup option dumps. You can also populate the example cache at the
+   same time.
+
+   Before you continue, make sure there are no conflicts in the PR with the
+   `main` branch. The CircleCI workflow will otherwise create a merge commit
+   favoring the `main` branch (in order to update the cache file but also
+   affecting other files), and this can cause e.g. the `versions.yaml` file to
+   get reverted in case of a conflict. The toolchain would then be unaware of
+   the newly added version.   
+   
+   In CircleCI at <https://app.circleci.com/pipelines/github/arangodb/docs-hugo>,
+   select the branch of your PR and click **Trigger Pipeline**.
+   Enter the parameters similar to this example:
+
+   | Type | Name | Value |
+   |:-----|:-----|:------|
+   | string | `workflow` | `generate` |
+   | string | `arangodb-4_0` | Docker Hub image (e.g. `arangodb/enterprise-preview:devel-nightly`) or GitHub main repo PR link (e.g. `https://github.com/arangodb/arangodb/pull/123456`) |
+   | string | `generators` | `examples metrics error-codes optimizer options` |
+   | string | `deploy-url` | `deploy-preview-{PR-number}` with the number of the docs PR |
+   | boolean | `commit-generated` | `true` |
+
+   Approve the workflow in CircleCI. After a successful run, you should see a
+   commit in the docs PR with the updated data files, as well as an updated
+   example cache file. The plain build should no longer fail and provide you
+   with a Netlify preview.
+
+### Remove a version
+
+The process is similar to [adding a version](#add-a-new-version) but you need to
+undo the changes.
+
+### Change the stable version
+
+For example, if the current stable version is 3.11 and the devel version is 3.12,
+the `site/data/versions.yaml` file may look like this:
+
+```yaml
+- name: "4.0"
+  version: "4.0.0"
+  alias: "4.0"
+  deprecated: false
+
+- name: "3.12"
+  version: "3.12.0"
+  alias: "devel"
+  deprecated: false
+
+- name: "3.11"
+  version: "3.11.4"
+  alias: "stable"
+  deprecated: false
+```
+
+To make 3.12 the new stable version, you need to set `alias` to `"stable"` for
+the 3.12 entry. As there can only be a single stable version (in the
+documentation sense), the `alias` value of the former stable version needs to be
+changed. In this example, it is the 3.11 entry where you need to change `alias`
+to the version `name`, which is `"3.11"` in this case. Finally, you need to
+re-assign the `"devel"` alias to the version that comes after the new stable
+version. In this example, you need to adjust the `alias` of the 4.0 entry.
+The final configuration would then look lik this:
+
+```yaml
+- name: "4.0"
+  version: "4.0.0"
+  alias: "devel"   # was "4.0"
+  deprecated: false
+
+- name: "3.12"
+  version: "3.12.0"
+  alias: "stable"  # was "devel"
+  deprecated: false
+
+- name: "3.11"
+  version: "3.11.4"
+  alias: "3.11"    # was "stable"
+  deprecated: false
+```
 
 ### Add a new arangosh example
 
