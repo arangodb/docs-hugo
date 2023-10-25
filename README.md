@@ -184,7 +184,7 @@ The toolchain container needs to be set up via config file in `toolchain/docker/
 ```yaml
 generators:   # Generators to trigger - empty string defaults to all generators
 servers:      # define arangodb servers to be used by the toolchain
-  "{docs-version}": "{arangodb-branch}"    # docs branch to put the generated content into: arangodb docker image to be used, can be arangodb/enterprise-preview:... or a branch name
+  "{docs-version}": "{arangodb-branch}"    # version folder of the documentation to put the generated content into: arangodb docker image to be used, can be arangodb/enterprise-preview:... or a branch name
   ...
 ```
 
