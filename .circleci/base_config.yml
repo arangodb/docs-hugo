@@ -373,7 +373,7 @@ jobs:
           command: |
             git clone git@github.com:arangodb/docs-hugo.git
             cd /home/circleci/project/docs-hugo
-            git fetch $CIRCLE_BRANCH:$CIRCLE_SHA1 && git checkout $CIRCLE_SHA1
+            git fetch origin $CIRCLE_BRANCH:$CIRCLE_SHA1 && git checkout $CIRCLE_SHA1
 
 
       - run:
