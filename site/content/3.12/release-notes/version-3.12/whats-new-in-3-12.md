@@ -230,15 +230,33 @@ limited number of collections/shards/indexes.
 
 ArangoDB 3.12 includes extended parallelization capabilities to work not only
 at the collection level, but also at the shard level. In combination with the
-new optimized format, database dumps are now created and restored quickly and
-occupy minimal disk space. This major performance boost makes dumps five times
-faster and restores three times faster, which is extremely useful when dealing
+new optimized format, database dumps are now created and restored more quickly
+and occupy minimal disk space. This major performance boost makes dumps and
+restores up to several times faster, which is extremely useful when dealing
 with large shards.
+
+The new dump variant can be enabled via `--use-parallel-dump`. The default
+value is `true`.
+
+To achieve the best dump performance and the smallest data dumps in terms of
+size, you can use the `--dump-vpack` option. The resulting dump data is stored
+in velocypack format instead of JSON. The velocypack format is more compact than
+JSON, therefore the output file size can be reduced compared to JSON, even
+when compression is enabled, and can also lead to faster dumps. Note, however,
+that this option is experimental and disabled by default.
+
+Optionally, you can make _arangodump_ write multiple output files per
+collection/shard. The file splitting allows better parallelization when
+writing the results into the output file, which in case of non-split files
+must be serialized.
+You can enable it by setting the `--split-files` option to `true`. This option
+is disabled by default considering that dumps created with this option enabled
+cannot be restored into previous versions of ArangoDB easily.
 
 #### Resource usage limits
 
-The following startup options that can be used to limit
-the resource usage of parallel _arangodump_ invocations have been added:
+The following `arangod` startup options can be used to limit
+the resource usage of parallel _arangodump_ invocations:
 
 - `--dump.max-memory-usage`: Maximum memory usage (in bytes) to be
   used by the server-side parts of all ongoing _arangodump_ invocations.
@@ -256,7 +274,7 @@ the resource usage of parallel _arangodump_ invocations have been added:
 - `--dump.max-batch-size`: Maximum batch size value (in bytes) that
   can be used in a dump. If an _arangodump_ invocation requests larger
   batch sizes than configured here, the actual batch sizes is capped
-  to this value. Will only be followed for arangodump invocations that
+  to this value. Will only be followed for _arangodump_ invocations that
   use the -`-parallel-dump` option.
 - `--dump.max-parallelism`: Maximum parallelism (number of server-side
   threads) that can be used in a dump. If an _arangodump_ invocation requests
