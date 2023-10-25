@@ -181,8 +181,7 @@ def workflow_generate_scheduled(config):
                 "context": ["sccache-aws-bucket"],
                 "name": f"compile-{version}",
                 "arangodb-branch": f"arangodb/enterprise-preview:{version}-nightly" if versions[i]["alias"] != "devel" else "arangodb/enterprise-preview:devel-nightly",
-                "version": version,
-                "openssl": "3.0.9",
+                "version": version
             }
         }
         generateRequires.append(f"compile-{version}")
