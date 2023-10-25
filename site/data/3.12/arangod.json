@@ -1326,7 +1326,7 @@
       "agent",
       "single"
     ],
-    "default" : 7739684864,
+    "default" : 7754362880,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -1426,6 +1426,38 @@
     "section" : "cluster",
     "type" : "string",
     "values" : "Possible values: \"jwt-all\", \"jwt-compat\", \"jwt-write\""
+  },
+  "cluster.connectivity-check-interval" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver"
+    ],
+    "default" : 3600,
+    "deprecatedIn" : null,
+    "description" : "The interval (in seconds) in which cluster-internal connectivity checks are performed.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.11.4"
+    ],
+    "longDescription" : "Setting this option to a value greater than\nzero makes Coordinators and DB-Servers run period connectivity checks\nwith approximately the specified frequency. The first connectivity check\nis carried out approximately 15 seconds after server start.\nNote that a random delay is added to the interval on each server, so that\ndifferent servers do not execute their connectivity checks all at the\nsame time.\nSetting this option to a value of zero disables these connectivity checks.\"",
+    "maxInclusive" : true,
+    "maxValue" : 4294967295,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "cluster",
+    "type" : "uint32"
   },
   "cluster.create-waits-for-sync-replication" : {
     "category" : "option",
@@ -2281,7 +2313,7 @@
       "agent",
       "single"
     ],
-    "default" : false,
+    "default" : true,
     "deprecatedIn" : null,
     "description" : "Allow most UTF-8 characters in the names of databases, collections, Views, and indexes. Once in use, this option cannot be turned off again.",
     "dynamic" : false,
@@ -2756,7 +2788,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 6191747891,
+    "default" : 6203490304,
     "deprecatedIn" : null,
     "description" : "Maximum memory usage (in bytes) to be used by all ongoing dumps.",
     "dynamic" : true,
@@ -7398,7 +7430,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33106223104,
+    "base" : 33164935168,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7406,7 +7438,7 @@
       "agent",
       "single"
     ],
-    "default" : 26816040714,
+    "default" : 26863597486,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7691,7 +7723,7 @@
     "type" : "double"
   },
   "query.memory-limit" : {
-    "base" : 33106223104,
+    "base" : 33164935168,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7699,7 +7731,7 @@
       "agent",
       "single"
     ],
-    "default" : 19863733863,
+    "default" : 19898961101,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -8908,7 +8940,7 @@
       "agent",
       "single"
     ],
-    "default" : 9287621836,
+    "default" : 9305235456,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -11462,7 +11494,7 @@
       "agent",
       "single"
     ],
-    "default" : 12383495782,
+    "default" : 12406980608,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
