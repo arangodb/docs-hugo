@@ -176,7 +176,6 @@ def rewrite_content(data, section, filename):
             flags["inFrontMatter"] = not flags["inFrontMatter"]
             if not flags["inFrontMatter"]:
                 flags["endFrontMatter"] = True
-                content = content + "{{< description >}}\n"
             continue
 
         if re.search(r"\[.*\]\(.*\)", line, re.MULTILINE):
@@ -186,6 +185,7 @@ def rewrite_content(data, section, filename):
 
 
         if flags["firstHeaderContent"]:
+            content = content + "{{< description >}}\n"
             continue
 
         content = content + line
