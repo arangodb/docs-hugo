@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl resume deployment command
 title: Oasisctl Resume Deployment
 menuTitle: Resume Deployment
 weight: 10
 ---
+{{< description >}}
 ## Synopsis
 Resume a paused deployment the authenticated user has access to
 

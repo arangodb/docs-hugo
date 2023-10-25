@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update policy add binding command
 title: Oasisctl Update Policy Add Binding
 menuTitle: Update Policy Add Binding
 weight: 100
 ---
+{{< description >}}
 ## Synopsis
 Add a role binding to a policy
 

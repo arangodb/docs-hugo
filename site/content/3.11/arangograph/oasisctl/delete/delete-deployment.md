@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl delete deployment command
 title: Oasisctl Delete Deployment
 menuTitle: Delete Deployment
 weight: 50
 ---
+{{< description >}}
 ## Synopsis
 Delete a deployment the authenticated user has access to
 

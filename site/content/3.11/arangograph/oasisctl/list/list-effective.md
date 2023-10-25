@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list effective command
 title: Oasisctl List Effective
 menuTitle: List Effective
 weight: 80
 ---
+{{< description >}}
 ## Synopsis
 List effective information
 

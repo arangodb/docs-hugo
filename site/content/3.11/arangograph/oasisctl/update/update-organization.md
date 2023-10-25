@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update organization command
 title: Oasisctl Update Organization
 menuTitle: Update Organization
 weight: 60
 ---
+{{< description >}}
 ## Synopsis
 Update an organization the authenticated user has access to
 

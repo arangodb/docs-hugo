@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl delete organization invite command
 title: Oasisctl Delete Organization Invite
 menuTitle: Delete Organization Invite
 weight: 100
 ---
+{{< description >}}
 ## Synopsis
 Delete an organization invite the authenticated user has access to
 

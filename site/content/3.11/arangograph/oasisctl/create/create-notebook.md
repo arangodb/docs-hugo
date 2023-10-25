@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl create notebook command
 title: Oasisctl Create Notebook
 menuTitle: Create Notebook
 weight: 70
 ---
+{{< description >}}
 ## Synopsis
 Create a new notebook
 

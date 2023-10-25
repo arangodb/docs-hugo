@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get tandc command
 title: Oasisctl Get Tandc
 menuTitle: Get Tandc
 weight: 170
 ---
+{{< description >}}
 ## Synopsis
 Get current terms and conditions or get one by ID
 

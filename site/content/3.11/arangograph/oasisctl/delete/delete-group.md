@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl delete group command
 title: Oasisctl Delete Group
 menuTitle: Delete Group
 weight: 65
 ---
+{{< description >}}
 ## Synopsis
 Delete a group the authenticated user has access to
 

@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl delete auditlog destination command
 title: Oasisctl Delete Auditlog Destination
 menuTitle: Delete Audit Log Destination
 weight: 30
 ---
+{{< description >}}
 ## Synopsis
 Delete a destination from an auditlog
 

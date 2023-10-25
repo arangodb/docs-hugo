@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl lock deployment command
 title: Oasisctl Lock Deployment
 menuTitle: Lock Deployment
 weight: 15
 ---
+{{< description >}}
 ## Synopsis
 Lock a deployment, so it cannot be deleted
 

@@ -1,15 +1,12 @@
 ---
-title: Oasisctl Lock Ipallowlist
-menuTitle: Lock IP Allowlist
-weight: 15
-description: >-
-  Description of the oasisctl lock ipallowlist command
 archetype: default
+description: Description of the oasisctl lock ipallowlist command
+title: Oasisctl Lock Ipallowlist
+menuTitle: Lock Ipallowlist
+weight: 20
 ---
-Lock an IP allowlist, so it cannot be deleted
-
+{{< description >}}
 ## Synopsis
-
 Lock an IP allowlist, so it cannot be deleted
 
 ```
@@ -17,7 +14,6 @@ oasisctl lock ipallowlist [flags]
 ```
 
 ## Options
-
 ```
   -h, --help                     help for ipallowlist
   -i, --ipallowlist-id string    Identifier of the IP allowlist
@@ -25,8 +21,7 @@ oasisctl lock ipallowlist [flags]
   -p, --project-id string        Identifier of the project
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -34,6 +29,5 @@ oasisctl lock ipallowlist [flags]
 ```
 
 ## See also
-
 * [oasisctl lock](_index.md)	 - Lock resources
 

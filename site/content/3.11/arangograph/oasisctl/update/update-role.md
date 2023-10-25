@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update role command
 title: Oasisctl Update Role
 menuTitle: Update Role
 weight: 135
 ---
+{{< description >}}
 ## Synopsis
 Update a role the authenticated user has access to
 

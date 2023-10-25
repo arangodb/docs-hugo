@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl create project command
 title: Oasisctl Create Project
 menuTitle: Create Project
 weight: 100
 ---
+{{< description >}}
 ## Synopsis
 Create a new project
 

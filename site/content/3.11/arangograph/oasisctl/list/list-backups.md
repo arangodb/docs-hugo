@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list backups command
 title: Oasisctl List Backups
 menuTitle: List Backups
 weight: 55
 ---
+{{< description >}}
 ## Synopsis
 List backups
 

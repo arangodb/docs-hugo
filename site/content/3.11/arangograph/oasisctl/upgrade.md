@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl upgrade command
 title: Oasisctl Upgrade
 menuTitle: Upgrade
 weight: 40
 ---
+{{< description >}}
 ## Synopsis
 Check the latest, compatible version and upgrade this tool to that.
 

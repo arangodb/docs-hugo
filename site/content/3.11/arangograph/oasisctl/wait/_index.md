@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl wait command
 title: Oasisctl Wait
 menuTitle: Wait
 weight: 5
 ---
+{{< description >}}
 ## Synopsis
 Wait for a status change
 

@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl add group command
 title: Oasisctl Add Group
 menuTitle: Add Group
 weight: 20
 ---
+{{< description >}}
 ## Synopsis
 Add group resources
 

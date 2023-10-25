@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update project command
 title: Oasisctl Update Project
 menuTitle: Update Project
 weight: 130
 ---
+{{< description >}}
 ## Synopsis
 Update a project the authenticated user has access to
 

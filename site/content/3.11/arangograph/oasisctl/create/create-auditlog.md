@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl create auditlog command
 title: Oasisctl Create Auditlog
 menuTitle: Create Auditlog
 weight: 15
 ---
+{{< description >}}
 ## Synopsis
 Create an auditlog
 

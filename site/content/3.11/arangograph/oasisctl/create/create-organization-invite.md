@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl create organization invite command
 title: Oasisctl Create Organization Invite
 menuTitle: Create Organization Invite
 weight: 80
 ---
+{{< description >}}
 ## Synopsis
 Create a new invite to an organization
 

@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get notebook command
 title: Oasisctl Get Notebook
 menuTitle: Get Notebook
 weight: 75
 ---
+{{< description >}}
 ## Synopsis
 Get a notebook
 

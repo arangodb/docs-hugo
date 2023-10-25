@@ -1,15 +1,12 @@
 ---
-title: Oasisctl Create Auditlog
-menuTitle: Create Audit Log
-weight: 10
-description: >-
-  Description of the oasisctl create auditlog command
 archetype: default
+description: Description of the oasisctl create auditlog command
+title: Oasisctl Create Auditlog
+menuTitle: Create Auditlog
+weight: 15
 ---
-Create an auditlog
-
+{{< description >}}
 ## Synopsis
-
 Create an auditlog
 
 ```
@@ -17,7 +14,6 @@ oasisctl create auditlog [flags]
 ```
 
 ## Options
-
 ```
       --default                  If set, this AuditLog is the default for the organization.
       --description string       Description of the audit log.
@@ -26,8 +22,7 @@ oasisctl create auditlog [flags]
   -o, --organization-id string   Identifier of the organization
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -35,6 +30,5 @@ oasisctl create auditlog [flags]
 ```
 
 ## See also
-
 * [oasisctl create](_index.md)	 - Create resources
 

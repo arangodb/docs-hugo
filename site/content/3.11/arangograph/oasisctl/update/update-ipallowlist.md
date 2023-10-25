@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update ipallowlist command
 title: Oasisctl Update Ipallowlist
 menuTitle: Update Ipallowlist
 weight: 40
 ---
+{{< description >}}
 ## Synopsis
 Update an IP allowlist the authenticated user has access to
 

@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update backup policy command
 title: Oasisctl Update Backup Policy
 menuTitle: Update Backup Policy
 weight: 20
 ---
+{{< description >}}
 ## Synopsis
 Update a backup policy
 

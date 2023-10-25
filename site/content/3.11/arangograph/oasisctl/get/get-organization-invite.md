@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get organization invite command
 title: Oasisctl Get Organization Invite
 menuTitle: Get Organization Invite
 weight: 110
 ---
+{{< description >}}
 ## Synopsis
 Get an organization invite the authenticated user has access to
 

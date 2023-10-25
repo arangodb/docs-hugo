@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl delete apikey command
 title: Oasisctl Delete Apikey
 menuTitle: Delete Apikey
 weight: 10
 ---
+{{< description >}}
 ## Synopsis
 Delete an API key with given identifier
 

@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl create metrics command
 title: Oasisctl Create Metrics
 menuTitle: Create Metrics
 weight: 60
 ---
+{{< description >}}
 ## Synopsis
 Create metrics resources
 

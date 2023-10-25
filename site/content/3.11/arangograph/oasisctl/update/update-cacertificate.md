@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update cacertificate command
 title: Oasisctl Update Cacertificate
 menuTitle: Update Cacertificate
 weight: 25
 ---
+{{< description >}}
 ## Synopsis
 Update a CA certificate the authenticated user has access to
 

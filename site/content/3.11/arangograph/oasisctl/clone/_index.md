@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl clone command
 title: Oasisctl Clone
 menuTitle: Clone
 weight: 5
 ---
+{{< description >}}
 ## Synopsis
 Clone resources
 

@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update auditlog command
 title: Oasisctl Update Auditlog
 menuTitle: Update Auditlog
 weight: 10
 ---
+{{< description >}}
 ## Synopsis
 Update an auditlog
 

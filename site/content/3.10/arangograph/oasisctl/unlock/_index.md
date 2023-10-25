@@ -1,15 +1,12 @@
 ---
+archetype: default
+description: Description of the oasisctl unlock command
 title: Oasisctl Unlock
 menuTitle: Unlock
-weight: 135
-description: >-
-  Description of the oasisctl unlock command
-archetype: chapter
+weight: 5
 ---
-Unlock resources
-
+{{< description >}}
 ## Synopsis
-
 Unlock resources
 
 ```
@@ -17,13 +14,11 @@ oasisctl unlock [flags]
 ```
 
 ## Options
-
 ```
   -h, --help   help for unlock
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -31,7 +26,6 @@ oasisctl unlock [flags]
 ```
 
 ## See also
-
 * [oasisctl](../options.md)	 - ArangoGraph Insights Platform
 * [oasisctl unlock cacertificate](unlock-cacertificate.md)	 - Unlock a CA certificate, so it can be deleted
 * [oasisctl unlock deployment](unlock-deployment.md)	 - Unlock a deployment, so it can be deleted

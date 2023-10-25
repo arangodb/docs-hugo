@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list group members command
 title: Oasisctl List Group Members
 menuTitle: List Group Members
 weight: 110
 ---
+{{< description >}}
 ## Synopsis
 List members of a group the authenticated user is a member of
 

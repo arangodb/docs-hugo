@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list backup policies command
 title: Oasisctl List Backup Policies
 menuTitle: List Backup Policies
 weight: 50
 ---
+{{< description >}}
 ## Synopsis
 List backup policies
 

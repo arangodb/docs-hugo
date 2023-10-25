@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl create private endpoint service command
 title: Oasisctl Create Private Endpoint Service
 menuTitle: Create Private Endpoint Service
 weight: 95
 ---
+{{< description >}}
 ## Synopsis
 Create a Private Endpoint Service attached to an existing deployment
 

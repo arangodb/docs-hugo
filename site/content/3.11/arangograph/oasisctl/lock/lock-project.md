@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl lock project command
 title: Oasisctl Lock Project
 menuTitle: Lock Project
 weight: 35
 ---
+{{< description >}}
 ## Synopsis
 Lock a project, so it cannot be deleted
 

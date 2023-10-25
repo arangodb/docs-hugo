@@ -1,15 +1,12 @@
 ---
+archetype: default
+description: Description of the oasisctl get backup policy command
 title: Oasisctl Get Backup Policy
 menuTitle: Get Backup Policy
-weight: 25
-description: >-
-  Description of the oasisctl get backup policy command
-archetype: default
+weight: 30
 ---
-Get an existing backup policy
-
+{{< description >}}
 ## Synopsis
-
 Get an existing backup policy
 
 ```
@@ -17,14 +14,12 @@ oasisctl get backup policy [flags]
 ```
 
 ## Options
-
 ```
   -h, --help        help for policy
   -i, --id string   Identifier of the backup policy (Id|Name|Url)
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -32,6 +27,5 @@ oasisctl get backup policy [flags]
 ```
 
 ## See also
-
 * [oasisctl get backup](get-backup.md)	 - Get a backup
 

@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl delete metrics token command
 title: Oasisctl Delete Metrics Token
 menuTitle: Delete Metrics Token
 weight: 85
 ---
+{{< description >}}
 ## Synopsis
 Delete a metrics token for a deployment
 

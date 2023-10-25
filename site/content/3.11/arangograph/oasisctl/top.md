@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl top command
 title: Oasisctl Top
 menuTitle: Top
 weight: 35
 ---
+{{< description >}}
 ## Synopsis
 Show the most important server metrics
 

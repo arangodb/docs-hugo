@@ -1,15 +1,12 @@
 ---
+archetype: default
+description: Description of the oasisctl rotate deployment server command
 title: Oasisctl Rotate Deployment Server
 menuTitle: Rotate Deployment Server
-weight: 10
-description: >-
-  Description of the oasisctl rotate deployment server command
-archetype: default
+weight: 15
 ---
-Rotate a single server of a deployment
-
+{{< description >}}
 ## Synopsis
-
 Rotate a single server of a deployment
 
 ```
@@ -17,7 +14,6 @@ oasisctl rotate deployment server [flags]
 ```
 
 ## Options
-
 ```
   -d, --deployment-id string     Identifier of the deployment
   -h, --help                     help for server
@@ -26,8 +22,7 @@ oasisctl rotate deployment server [flags]
   -s, --server-id strings        Identifier of the deployment server
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -35,6 +30,5 @@ oasisctl rotate deployment server [flags]
 ```
 
 ## See also
-
 * [oasisctl rotate deployment](rotate-deployment.md)	 - Rotate deployment resources
 

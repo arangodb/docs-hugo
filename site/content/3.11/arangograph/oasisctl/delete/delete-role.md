@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl delete role command
 title: Oasisctl Delete Role
 menuTitle: Delete Role
 weight: 115
 ---
+{{< description >}}
 ## Synopsis
 Delete a role the authenticated user has access to
 

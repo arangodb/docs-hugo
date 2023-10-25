@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get backup policy command
 title: Oasisctl Get Backup Policy
 menuTitle: Get Backup Policy
 weight: 30
 ---
+{{< description >}}
 ## Synopsis
 Get an existing backup policy
 

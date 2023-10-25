@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get deployment command
 title: Oasisctl Get Deployment
 menuTitle: Get Deployment
 weight: 40
 ---
+{{< description >}}
 ## Synopsis
 Get a deployment the authenticated user has access to
 

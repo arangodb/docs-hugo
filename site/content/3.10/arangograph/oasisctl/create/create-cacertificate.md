@@ -1,15 +1,12 @@
 ---
-title: Oasisctl Create Cacertificate
-menuTitle: Create CA Certificate
-weight: 25
-description: >-
-  Description of the oasisctl create cacertificate command
 archetype: default
+description: Description of the oasisctl create cacertificate command
+title: Oasisctl Create Cacertificate
+menuTitle: Create Cacertificate
+weight: 30
 ---
-Create a new CA certificate
-
+{{< description >}}
 ## Synopsis
-
 Create a new CA certificate
 
 ```
@@ -17,7 +14,6 @@ oasisctl create cacertificate [flags]
 ```
 
 ## Options
-
 ```
       --description string       Description of the CA certificate
   -h, --help                     help for cacertificate
@@ -27,8 +23,7 @@ oasisctl create cacertificate [flags]
   -p, --project-id string        Identifier of the project to create the CA certificate in
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -36,6 +31,5 @@ oasisctl create cacertificate [flags]
 ```
 
 ## See also
-
 * [oasisctl create](_index.md)	 - Create resources
 

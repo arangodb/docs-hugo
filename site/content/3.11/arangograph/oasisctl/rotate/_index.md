@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl rotate command
 title: Oasisctl Rotate
 menuTitle: Rotate
 weight: 5
 ---
+{{< description >}}
 ## Synopsis
 Rotate resources
 

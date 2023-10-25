@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl create ipallowlist command
 title: Oasisctl Create Ipallowlist
 menuTitle: Create Ipallowlist
 weight: 55
 ---
+{{< description >}}
 ## Synopsis
 Create a new IP allowlist
 

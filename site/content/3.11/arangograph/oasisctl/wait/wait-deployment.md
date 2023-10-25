@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl wait deployment command
 title: Oasisctl Wait Deployment
 menuTitle: Wait Deployment
 weight: 10
 ---
+{{< description >}}
 ## Synopsis
 Wait for a deployment to reach the ready status
 

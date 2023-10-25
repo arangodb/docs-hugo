@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl clone deployment backup command
 title: Oasisctl Clone Deployment Backup
 menuTitle: Clone Deployment Backup
 weight: 15
 ---
+{{< description >}}
 ## Synopsis
 Clone a deployment from a backup.
 

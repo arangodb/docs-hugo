@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl reject organization command
 title: Oasisctl Reject Organization
 menuTitle: Reject Organization
 weight: 10
 ---
+{{< description >}}
 ## Synopsis
 Reject organization related invites
 

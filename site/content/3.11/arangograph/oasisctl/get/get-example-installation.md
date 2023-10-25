@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get example installation command
 title: Oasisctl Get Example Installation
 menuTitle: Get Example Installation
 weight: 50
 ---
+{{< description >}}
 ## Synopsis
 Get a single example dataset installation
 

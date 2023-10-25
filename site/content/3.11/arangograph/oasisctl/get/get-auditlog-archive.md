@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get auditlog archive command
 title: Oasisctl Get Auditlog Archive
 menuTitle: Get Audit Log Archive
 weight: 15
 ---
+{{< description >}}
 ## Synopsis
 Get auditlog archive
 

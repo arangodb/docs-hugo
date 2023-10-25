@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl delete backup policy command
 title: Oasisctl Delete Backup Policy
 menuTitle: Delete Backup Policy
 weight: 40
 ---
+{{< description >}}
 ## Synopsis
 Delete a backup policy for a given ID.
 

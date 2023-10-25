@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl create metrics token command
 title: Oasisctl Create Metrics Token
 menuTitle: Create Metrics Token
 weight: 65
 ---
+{{< description >}}
 ## Synopsis
 Create a new metrics access token
 

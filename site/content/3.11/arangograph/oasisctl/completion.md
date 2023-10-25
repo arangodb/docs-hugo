@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl completion command
 title: Oasisctl Completion
 menuTitle: Completion
 weight: 10
 ---
+{{< description >}}
 ## Synopsis
 To load completion run
 

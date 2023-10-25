@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl create apikey command
 title: Oasisctl Create Apikey
 menuTitle: Create Apikey
 weight: 10
 ---
+{{< description >}}
 ## Synopsis
 Create a new API key
 

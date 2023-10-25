@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl backup copy command
 title: Oasisctl Backup Copy
 menuTitle: Backup Copy
 weight: 10
 ---
+{{< description >}}
 ## Synopsis
 Copy a backup from source backup to given region
 

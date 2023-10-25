@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get organization email domain command
 title: Oasisctl Get Organization Email Domain
 menuTitle: Get Organization Email Domain
 weight: 100
 ---
+{{< description >}}
 ## Synopsis
 Get email domain specific information for an organization
 

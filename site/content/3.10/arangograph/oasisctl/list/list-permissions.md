@@ -1,15 +1,12 @@
 ---
+archetype: default
+description: Description of the oasisctl list permissions command
 title: Oasisctl List Permissions
 menuTitle: List Permissions
-weight: 165
-description: >-
-  Description of the oasisctl list permissions command
-archetype: default
+weight: 170
 ---
-List the known permissions
-
+{{< description >}}
 ## Synopsis
-
 List the known permissions
 
 ```
@@ -17,13 +14,11 @@ oasisctl list permissions [flags]
 ```
 
 ## Options
-
 ```
   -h, --help   help for permissions
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -31,6 +26,5 @@ oasisctl list permissions [flags]
 ```
 
 ## See also
-
 * [oasisctl list](_index.md)	 - List resources
 

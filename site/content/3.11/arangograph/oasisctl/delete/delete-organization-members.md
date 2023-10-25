@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl delete organization members command
 title: Oasisctl Delete Organization Members
 menuTitle: Delete Organization Members
 weight: 105
 ---
+{{< description >}}
 ## Synopsis
 Delete members from organization
 

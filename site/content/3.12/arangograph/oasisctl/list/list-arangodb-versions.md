@@ -1,15 +1,12 @@
 ---
+archetype: default
+description: Description of the oasisctl list arangodb versions command
 title: Oasisctl List Arangodb Versions
 menuTitle: List ArangoDB Versions
-weight: 15
-description: >-
-  Description of the oasisctl list arangodb versions command
-archetype: default
+weight: 20
 ---
-List all supported ArangoDB versions
-
+{{< description >}}
 ## Synopsis
-
 List all supported ArangoDB versions
 
 ```
@@ -17,14 +14,12 @@ oasisctl list arangodb versions [flags]
 ```
 
 ## Options
-
 ```
   -h, --help                     help for versions
   -o, --organization-id string   Optional Identifier of the organization
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -32,6 +27,5 @@ oasisctl list arangodb versions [flags]
 ```
 
 ## See also
-
 * [oasisctl list arangodb](list-arangodb.md)	 - List ArangoDB information
 

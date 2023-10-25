@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl accept command
 title: Oasisctl Accept
 menuTitle: Accept
 weight: 5
 ---
+{{< description >}}
 ## Synopsis
 Accept invites
 

@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl auditlog get attached project command
 title: Oasisctl Auditlog Get Attached Project
 menuTitle: Audit Log Get Attached Project
 weight: 30
 ---
+{{< description >}}
 ## Synopsis
 Get an attached log to a project
 

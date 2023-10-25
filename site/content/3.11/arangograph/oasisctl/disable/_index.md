@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl disable command
 title: Oasisctl Disable
 menuTitle: Disable
 weight: 5
 ---
+{{< description >}}
 ## Synopsis
 Disable some settings related to deployment
 

@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list groups command
 title: Oasisctl List Groups
 menuTitle: List Groups
 weight: 115
 ---
+{{< description >}}
 ## Synopsis
 List all groups of the given organization
 

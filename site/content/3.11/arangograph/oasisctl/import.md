@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl import command
 title: Oasisctl Import
 menuTitle: Import
 weight: 20
 ---
+{{< description >}}
 ## Synopsis
 Import data from a local database or from another remote database into an Oasis deployment.
 

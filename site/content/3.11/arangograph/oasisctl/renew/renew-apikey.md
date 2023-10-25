@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl renew apikey command
 title: Oasisctl Renew Apikey
 menuTitle: Renew Apikey
 weight: 10
 ---
+{{< description >}}
 ## Synopsis
 Renew API keys & tokens
 

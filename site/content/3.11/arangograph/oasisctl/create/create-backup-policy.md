@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl create backup policy command
 title: Oasisctl Create Backup Policy
 menuTitle: Create Backup Policy
 weight: 25
 ---
+{{< description >}}
 ## Synopsis
 Create a new backup policy
 

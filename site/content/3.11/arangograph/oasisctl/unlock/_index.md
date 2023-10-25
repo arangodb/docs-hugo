@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl unlock command
 title: Oasisctl Unlock
 menuTitle: Unlock
 weight: 5
 ---
+{{< description >}}
 ## Synopsis
 Unlock resources
 

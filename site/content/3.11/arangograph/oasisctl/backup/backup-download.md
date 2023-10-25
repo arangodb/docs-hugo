@@ -1,12 +1,13 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl backup download command
 title: Oasisctl Backup Download
 menuTitle: Backup Download
 weight: 15
 ---
+{{< description >}}
 ## Synopsis
-Download a backup
+Download a backup from the cloud storage to the local deployment disks, so it can be restored.
 
 ```
 oasisctl backup download [flags]

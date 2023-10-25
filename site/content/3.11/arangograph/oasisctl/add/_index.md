@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl add command
 title: Oasisctl Add
 menuTitle: Add
 weight: 5
 ---
+{{< description >}}
 ## Synopsis
 Add resources
 

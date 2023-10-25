@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list auditlogs command
 title: Oasisctl List Auditlogs
 menuTitle: List Auditlogs
 weight: 40
 ---
+{{< description >}}
 ## Synopsis
 List auditlogs
 

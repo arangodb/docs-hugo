@@ -1,15 +1,12 @@
 ---
+archetype: default
+description: Description of the oasisctl get auditlog events command
 title: Oasisctl Get Auditlog Events
 menuTitle: Get Audit Log Events
-weight: 15
-description: >-
-  Description of the oasisctl get auditlog events command
-archetype: default
+weight: 20
 ---
-Get auditlog events
-
+{{< description >}}
 ## Synopsis
-
 Get auditlog events
 
 ```
@@ -17,7 +14,6 @@ oasisctl get auditlog events [flags]
 ```
 
 ## Options
-
 ```
       --auditlog-archive-id string   If set, include only events from this AuditLogArchive
   -i, --auditlog-id string           Identifier of the auditlog
@@ -29,8 +25,7 @@ oasisctl get auditlog events [flags]
       --to string                    Request events created before this timestamp
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -38,6 +33,5 @@ oasisctl get auditlog events [flags]
 ```
 
 ## See also
-
 * [oasisctl get auditlog](get-auditlog.md)	 - Get auditlog archive
 

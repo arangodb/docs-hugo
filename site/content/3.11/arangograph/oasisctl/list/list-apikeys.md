@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list apikeys command
 title: Oasisctl List Apikeys
 menuTitle: List Apikeys
 weight: 10
 ---
+{{< description >}}
 ## Synopsis
 List all API keys created for the current user
 

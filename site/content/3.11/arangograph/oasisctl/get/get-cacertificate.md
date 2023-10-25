@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get cacertificate command
 title: Oasisctl Get Cacertificate
 menuTitle: Get Cacertificate
 weight: 35
 ---
+{{< description >}}
 ## Synopsis
 Get a CA certificate the authenticated user has access to
 

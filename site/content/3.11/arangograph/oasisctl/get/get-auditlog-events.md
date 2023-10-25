@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get auditlog events command
 title: Oasisctl Get Auditlog Events
 menuTitle: Get Audit Log Events
 weight: 20
 ---
+{{< description >}}
 ## Synopsis
 Get auditlog events
 

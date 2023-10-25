@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update policy command
 title: Oasisctl Update Policy
 menuTitle: Update Policy
 weight: 90
 ---
+{{< description >}}
 ## Synopsis
 Update a policy
 

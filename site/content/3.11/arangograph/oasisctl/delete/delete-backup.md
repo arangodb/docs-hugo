@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl delete backup command
 title: Oasisctl Delete Backup
 menuTitle: Delete Backup
 weight: 35
 ---
+{{< description >}}
 ## Synopsis
 Delete a backup for a given ID.
 

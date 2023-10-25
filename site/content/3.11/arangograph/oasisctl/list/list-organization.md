@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list organization command
 title: Oasisctl List Organization
 menuTitle: List Organization
 weight: 150
 ---
+{{< description >}}
 ## Synopsis
 List organization resources
 

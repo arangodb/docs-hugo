@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get policy command
 title: Oasisctl Get Policy
 menuTitle: Get Policy
 weight: 115
 ---
+{{< description >}}
 ## Synopsis
 Get a policy the authenticated user has access to
 

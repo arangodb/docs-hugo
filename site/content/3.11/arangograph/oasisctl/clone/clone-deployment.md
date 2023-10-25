@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl clone deployment command
 title: Oasisctl Clone Deployment
 menuTitle: Clone Deployment
 weight: 10
 ---
+{{< description >}}
 ## Synopsis
 Clone deployment resources
 

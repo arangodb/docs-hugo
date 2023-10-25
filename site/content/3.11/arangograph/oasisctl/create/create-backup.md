@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl create backup command
 title: Oasisctl Create Backup
 menuTitle: Create Backup
 weight: 20
 ---
+{{< description >}}
 ## Synopsis
 Create backup ...
 

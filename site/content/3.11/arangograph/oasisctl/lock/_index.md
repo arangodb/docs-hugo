@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl lock command
 title: Oasisctl Lock
 menuTitle: Lock
 weight: 5
 ---
+{{< description >}}
 ## Synopsis
 Lock resources
 

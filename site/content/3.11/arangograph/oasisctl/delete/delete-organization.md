@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl delete organization command
 title: Oasisctl Delete Organization
 menuTitle: Delete Organization
 weight: 95
 ---
+{{< description >}}
 ## Synopsis
 Delete an organization the authenticated user has access to
 

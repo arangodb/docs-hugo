@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get role command
 title: Oasisctl Get Role
 menuTitle: Get Role
 weight: 150
 ---
+{{< description >}}
 ## Synopsis
 Get a role the authenticated user has access to
 

@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl create example command
 title: Oasisctl Create Example
 menuTitle: Create Example
 weight: 40
 ---
+{{< description >}}
 ## Synopsis
 Create example ...
 

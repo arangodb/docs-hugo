@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list notebookmodels command
 title: Oasisctl List Notebookmodels
 menuTitle: List Notebookmodels
 weight: 140
 ---
+{{< description >}}
 ## Synopsis
 List notebook models
 

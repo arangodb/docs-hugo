@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl create organization command
 title: Oasisctl Create Organization
 menuTitle: Create Organization
 weight: 75
 ---
+{{< description >}}
 ## Synopsis
 Create a new organization
 

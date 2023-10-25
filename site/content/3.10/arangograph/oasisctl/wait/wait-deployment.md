@@ -1,15 +1,12 @@
 ---
+archetype: default
+description: Description of the oasisctl wait deployment command
 title: Oasisctl Wait Deployment
 menuTitle: Wait Deployment
-weight: 5
-description: >-
-  Description of the oasisctl wait deployment command
-archetype: default
+weight: 10
 ---
-Wait for a deployment to reach the ready status
-
+{{< description >}}
 ## Synopsis
-
 Wait for a deployment to reach the ready status
 
 ```
@@ -17,7 +14,6 @@ oasisctl wait deployment [flags]
 ```
 
 ## Options
-
 ```
   -d, --deployment-id string     Identifier of the deployment
   -h, --help                     help for deployment
@@ -26,8 +22,7 @@ oasisctl wait deployment [flags]
   -t, --timeout duration         How long to wait for the deployment to reach the ready status (default 20m0s)
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -35,6 +30,5 @@ oasisctl wait deployment [flags]
 ```
 
 ## See also
-
 * [oasisctl wait](_index.md)	 - Wait for a status change
 

@@ -1,10 +1,11 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list examples command
 title: Oasisctl List Examples
 menuTitle: List Examples
 weight: 100
 ---
+{{< description >}}
 ## Synopsis
 List all example datasets
 

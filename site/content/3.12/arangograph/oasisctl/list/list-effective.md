@@ -1,15 +1,12 @@
 ---
+archetype: default
+description: Description of the oasisctl list effective command
 title: Oasisctl List Effective
 menuTitle: List Effective
-weight: 75
-description: >-
-  Description of the oasisctl list effective command
-archetype: default
+weight: 80
 ---
-List effective information
-
+{{< description >}}
 ## Synopsis
-
 List effective information
 
 ```
@@ -17,13 +14,11 @@ oasisctl list effective [flags]
 ```
 
 ## Options
-
 ```
   -h, --help   help for effective
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -31,7 +26,6 @@ oasisctl list effective [flags]
 ```
 
 ## See also
-
 * [oasisctl list](_index.md)	 - List resources
 * [oasisctl list effective permissions](list-effective-permissions.md)	 - List the effective permissions, the authenticated user has for a given URL
 
