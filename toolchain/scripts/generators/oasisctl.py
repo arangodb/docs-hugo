@@ -121,6 +121,10 @@ def rewrite_content(data, section, filename):
             content = content + "description: Command-line client tool for managing ArangoGraph\n"
             continue
 
+        if "layout: "in line:
+            content = content + line.replace("layout: ", "archetype: ")
+            continue
+
 
         if "title: " in line:
             if "/options.md" in filename:
@@ -172,6 +176,7 @@ def rewrite_content(data, section, filename):
             flags["inFrontMatter"] = not flags["inFrontMatter"]
             if not flags["inFrontMatter"]:
                 flags["endFrontMatter"] = True
+                content = content + "{{< description >}}\n"
             continue
 
         if re.search(r"\[.*\]\(.*\)", line, re.MULTILINE):
