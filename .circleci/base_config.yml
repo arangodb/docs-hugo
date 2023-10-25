@@ -372,7 +372,7 @@ jobs:
           name: Clone docs repo
           command: |
             git clone git@github.com:arangodb/docs-hugo.git
-            cd docs-hugo
+            cd /home/circleci/project/docs-hugo
             git fetch && git checkout $CIRCLE_SHA1
 
 
@@ -383,7 +383,7 @@ jobs:
             export HUGO_URL=<< parameters.url >>
             export HUGO_ENV=frontend
 
-            cd toolchain/docker/amd64
+            cd /home/circleci/project/docs-hugo/toolchain/docker/amd64
             docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
       - upload-summary:
           summary-name: "plain-build-summary"
