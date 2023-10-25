@@ -498,7 +498,7 @@ jobs:
         default: ""
       build-image:
         type: string
-        default: ""
+        default: "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
     docker:
       - image: << parameters.build-image >>
     resource_class: xlarge

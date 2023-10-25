@@ -154,8 +154,9 @@ The ArangoDB release workflow includes the following jobs:
 - `generate` workflow (all examples are re-generated for the specified version)
 - will be on hold until the workflow run is approved in CircleCI
 - a release branch and pull request is created with the generated content, which
-  needs to be approved and merged on GitHub
-- once approved, starts deploying to production at <https://docs.arangodb.com>
+  needs to be reviewed and merged on GitHub
+- once merged, the workflow in CircleCI needs to be approved again to start
+  deploying to production at <https://docs.arangodb.com>
 
 If any of the examples or generated content fails, the workflow fails as well.
 The build report can be found in the `generate-summary` check on GitHub.
