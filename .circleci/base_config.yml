@@ -350,9 +350,6 @@ jobs:
 
   plain-build:
     parameters:
-      branch:
-        type: string
-        default: $CIRCLE_BRANCH
       url:
         type: string
         default: "https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app"
@@ -371,7 +368,8 @@ jobs:
       - run: 
           name: Clone docs repo
           command: |
-            git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+            git clone --depth 1 git@github.com:arangodb/docs-hugo.git
+            git checkout $CIRCLE_SHA1
 
       - run:
           name: Build site
