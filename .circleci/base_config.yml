@@ -350,6 +350,9 @@ jobs:
 
   plain-build:
     parameters:
+      branch:
+        type: string
+        default: $CIRCLE_BRANCH
       url:
         type: string
         default: "https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app"
@@ -368,9 +371,7 @@ jobs:
       - run: 
           name: Clone docs repo
           command: |
-            git clone --depth 1 git@github.com:arangodb/docs-hugo.git
-            cd /home/circleci/project/docs-hugo
-            git checkout $CIRCLE_SHA1
+            git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
 
       - run:
           name: Build site
@@ -379,7 +380,7 @@ jobs:
             export HUGO_URL=<< parameters.url >>
             export HUGO_ENV=frontend
 
-            cd /home/circleci/project/docs-hugo/toolchain/docker/amd64
+            cd docs-hugo/toolchain/docker/amd64
             docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
       - upload-summary:
           summary-name: "plain-build-summary"
