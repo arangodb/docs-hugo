@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list permissions command
 title: Oasisctl List Permissions
 menuTitle: List Permissions

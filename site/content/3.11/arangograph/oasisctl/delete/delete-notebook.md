@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl delete notebook command
 title: Oasisctl Delete Notebook
 menuTitle: Delete Notebook

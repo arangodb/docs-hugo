@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get role command
 title: Oasisctl Get Role
 menuTitle: Get Role

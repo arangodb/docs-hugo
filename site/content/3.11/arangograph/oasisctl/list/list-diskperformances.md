@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list diskperformances command
 title: Oasisctl List Diskperformances
 menuTitle: List Diskperformances
@@ -14,7 +14,7 @@ oasisctl list diskperformances [flags]
 
 ## Options
 ```
-      --dbserver-disk-size int32   The disk size of DB-Servers (GB) (default 32)
+      --dbserver-disk-size int32   The disk size of DB-Servers (GiB) (default 32)
   -h, --help                       help for diskperformances
       --node-size-id string        Identifier of the node size
   -o, --organization-id string     Identifier of the organization

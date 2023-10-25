@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl create command
 title: Oasisctl Create
 menuTitle: Create

@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get server status command
 title: Oasisctl Get Server Status
 menuTitle: Get Server Status
