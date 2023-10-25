@@ -10,6 +10,13 @@ The following list shows in detail which features have been added or improved in
 ArangoDB 3.12. ArangoDB 3.12 also contains several bug fixes that are not listed
 here.
 
+## arangodump
+
+The backup tool [arangodump](../components/tools/arangodump/_index.md) now supports
+a new flag called `--ignore-collection`. Collections can now be excluded from the dump
+by using this flag. It can be specified multiple times to exclude multiple collections.
+
+
 ## ArangoSearch
 
 ### WAND optimization (Enterprise Edition)
