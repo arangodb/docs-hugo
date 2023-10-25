@@ -105,6 +105,13 @@ It can be specified multiple times if required:
 arangodump --collection myusers --collection myvalues --output-directory "dump"
 ```
 
+To exclude specific collections from the dump, use the `--filter-collection` option.
+It can be specified multiple times if required:
+
+```
+arangodump --ignore-collection myusers --ignore-collection myvalues --output-directory "dump"
+```
+
 Structural information for a collection is saved in files with name pattern
 `<collection-name>.structure.json`. Each structure file contains a JSON object
 with these attributes:
