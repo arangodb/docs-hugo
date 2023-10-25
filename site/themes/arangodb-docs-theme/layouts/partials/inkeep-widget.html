@@ -1,5 +1,3 @@
-<div id="inkeep-chat-button" style="position: absolute;"></div>
-
 <script type="text/javascript">
   const SCRIPT_SRC = 'https://unpkg.com/@inkeep/widgets-embed@0.2.215/dist/embed.js';
 
@@ -46,43 +44,6 @@
           replaceWith: 'ArangoDB',
         },
       ],
-      breadcrumbRules: {
-        urlToBreadcrumbMapper: [
-          {
-            matchingRule: {
-              ruleType: 'PartialUrl',
-              partialUrl: 'arangodb.com',
-              maxNChildSubpaths: 1,
-            },
-            replaceLeading: true,
-            breadcrumbName: 'Home',
-          },
-          {
-            matchingRule: {
-              ruleType: 'PartialUrl',
-              partialUrl: 'arangodb.com/blog',
-            },
-            replaceLeading: true,
-            breadcrumbName: 'Blog',
-          },
-          {
-            matchingRule: {
-              ruleType: 'PartialUrl',
-              partialUrl: 'arangodb.com/solutions/case-studies',
-            },
-            replaceLeading: true,
-            breadcrumbName: 'Case Studies',
-          },
-          {
-            matchingRule: {
-              ruleType: 'PartialUrl',
-              partialUrl: 'arangodb.com/docs',
-            },
-            replaceLeading: true,
-            breadcrumbName: 'Docs',
-          },
-        ],
-      },
     });
     const chatButton = inkeep.embed({
       componentType: 'ChatButton',
@@ -111,7 +72,7 @@
           }
         },
         aiChatSettings: {
-          botAvatarSrcUrl: '/images/ArangoDB_Logo_White_small.png',
+          botAvatarSrcUrl: '/img/ArangoDB_LogoMark_Dark.svg',
           quickQuestions: [
             'What can do with AQL that is not feasible with SQL?',
             'How do I search for objects within arrays?',
@@ -131,12 +92,12 @@
           ],
         },
         searchSettings: {
-          tabSettings: {
-            rootBreadcrumbsToUseAsTabs: ['Home', 'Docs', 'Blog'],
-          },
+          // not implemented for now
         },
         modalSettings: {
-          openShortcutKey: 'i',
+          defaultView: 'AI_CHAT',
+          isModeSwitchingEnabled: false,
+          openShortcutKey: 'l',
         }
       },
     });
