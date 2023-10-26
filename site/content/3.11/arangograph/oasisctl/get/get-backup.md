@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get backup command
 title: Oasisctl Get Backup
 menuTitle: Get Backup

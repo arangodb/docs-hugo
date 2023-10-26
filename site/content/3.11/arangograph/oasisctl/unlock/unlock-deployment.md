@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl unlock deployment command
 title: Oasisctl Unlock Deployment
 menuTitle: Unlock Deployment
