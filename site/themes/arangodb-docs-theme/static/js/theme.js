@@ -26,7 +26,6 @@ function menuEntryClickListener() {
             toggleMenuItem(event)
             return
         }
-        console.log(event.target)
         updateHistory(event.target.getAttribute('href'))
         $('#sidebar.mobile').removeClass("active")
 
@@ -110,7 +109,6 @@ function replaceArticle(href, newDoc) {
 
 
 function updateHistory(urlPath) {
-  console.log("Update History " + urlPath)
   if (urlPath == window.location.pathname + window.location.hash) {
     return
   } 
@@ -161,6 +159,12 @@ function loadPage(target) {
   $.get({
     url: href,
     success: function(newDoc) {
+      if (!newDoc.includes("<body>")) {
+        var match = new RegExp(/(?<=url=).*(?=")/, "gm").exec(newDoc)[0];
+        window.location.href = match.replace(version, getVersionByURL())
+        loadPage(match)
+        return;
+      }
       replaceArticle(href, newDoc)
       scrollToFragment();
       initArticle(href);
@@ -222,7 +226,6 @@ function initArticle(url) {
 $(window).on('popstate', function (e) {
   var state = e.originalEvent.state;
   if (state !== null) {
-    console.log("Received popstate event " + window.location.href)
     loadPage(window.location.href);
   }
 });
@@ -416,7 +419,6 @@ function changeVersion() {
         localStorage.setItem('docs-version', newVersion);
         renderVersion();
         window.setupDocSearch(newVersion);
-        console.log(newVersion);
     } catch(exception) {
       console.log({exception})
         changeVersion();
@@ -424,7 +426,6 @@ function changeVersion() {
 
     
     var newUrl = window.location.pathname.replace(getVersionByURL(), getVersionInfo(newVersion).alias) + window.location.hash;
-    console.log("Change Version URL " + newUrl)
     updateHistory(newUrl);
 }
 
@@ -452,7 +453,6 @@ function hideEmptyOpenapiDiv() {
     if (element.tagName == "DETAILS") {
       method = fragment.split("_").slice(0,2).join("_")
       fields = fragment.split("_").slice(2)
-      console.log(fields)
       for (var i = 0; i < fields.length; i++) {
         field = fields.slice(0, i+1).join("_")
         var el = document.getElementById(method+"_"+field);
@@ -470,7 +470,6 @@ function initClickHandlers() {
     $(".openapi-prop").click(function(event) {
         if (this === event.target) {
             $(event.target).toggleClass("collapsed");
-            console.log($(event.target).find('.openapi-prop-content').first())
             $(event.target).find('.openapi-prop-content').first().toggleClass("hidden");
         }
     });
