@@ -20,7 +20,7 @@ path you will get a result in form of a set with two items:
 Let's take a look at a simple example to explain how it works.
 This is the graph that you are going to find a shortest path on:
 
-![traversal graph](../../../../../images/traversal_graph.png)
+![traversal graph](../../../images/traversal_graph.png)
 
 You can use the following parameters for the query:
 
@@ -132,7 +132,7 @@ collections you expect to be involved.
 ## Examples
 Creating a simple symmetric traversal demonstration graph:
 
-![traversal graph](../../../../../images/traversal_graph.png)
+![traversal graph](../../../images/traversal_graph.png)
 
 ```js
 ---
