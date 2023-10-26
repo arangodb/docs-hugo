@@ -161,8 +161,7 @@ function loadPage(target) {
     success: function(newDoc) {
       if (!newDoc.includes("<body>")) {
         var match = new RegExp(/(?<=url=).*(?=")/, "gm").exec(newDoc)[0];
-        window.location.href = match.replace(version, getVersionByURL())
-        loadPage(match)
+        updateHistory(match.replace(version, getVersionByURL()))
         return;
       }
       replaceArticle(href, newDoc)
