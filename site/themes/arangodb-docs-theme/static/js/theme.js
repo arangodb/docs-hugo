@@ -561,7 +561,12 @@ window.onload = () => {
     renderVersion();
     loadPage(window.location.href)
 
-    window.setupDocSearch(getVersionInfo(getVersionByURL()).name);
+    if (getVersionInfo(getVersionByURL()) != undefined) {
+      window.setupDocSearch(getVersionInfo(getVersionByURL()).name);
+    } else {
+      window.setupDocSearch(stableVersion);
+
+    }
 
     content.addEventListener("click", menuToggleClick);
 
