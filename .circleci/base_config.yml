@@ -332,6 +332,23 @@ jobs:
             rm -r vendor go.sum
             go mod tidy
             go mod vendor
+      - run: 
+          name: Create PR with new vendor folder
+          command: |
+            cd docs-hugo/toolchain/arangoproxy
+            git checkout -b update-vendor-$CIRCLE_BUILD_NUM
+
+            git config user.email "daniele@arangodb.com"
+            git config user.name "CircleCI Job"
+            git add vendor/
+            git commit --allow-empty -m "[skip ci] Update ArangoProxy vendor/ folder"
+
+            git push -u origin update-vendor-$CIRCLE_BUILD_NUM
+            curl -X POST https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci \
+              --header 'docs-webhook-event: scheduled-create-pr' \
+              --header "docs-branch-name: update-vendor-$CIRCLE_BUILD_NUM" \
+              --header "docs-pr-title: [CircleCI Generated] update-vendor-$CIRCLE_BUILD_NUM" \
+              --header "docs-pr-body: Automatically updated ArangoProxy vendor folder CircleCI << pipeline.parameters.workflow >> workflow"
       - persist_to_workspace:
           root: .
           paths:
