@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl auditlog get command
 title: Oasisctl Auditlog Get
 menuTitle: Audit Log Get

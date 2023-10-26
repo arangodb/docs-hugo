@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list effective command
 title: Oasisctl List Effective
 menuTitle: List Effective

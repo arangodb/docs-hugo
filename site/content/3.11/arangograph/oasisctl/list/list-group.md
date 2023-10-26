@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list group command
 title: Oasisctl List Group
 menuTitle: List Group

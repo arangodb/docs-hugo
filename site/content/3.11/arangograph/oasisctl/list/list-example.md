@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list example command
 title: Oasisctl List Example
 menuTitle: List Example

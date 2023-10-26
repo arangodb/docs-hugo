@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update organization command
 title: Oasisctl Update Organization
 menuTitle: Update Organization
