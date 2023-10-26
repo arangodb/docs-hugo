@@ -311,6 +311,32 @@ commands:
             git push -f
 
 jobs:
+  update-vendor:
+    docker:
+      - image: cimg/go:1.21.3
+    steps:
+      - add_ssh_keys:
+          fingerprints:
+            - "7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a"
+            - "28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e"
+            - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
+      - run: 
+          name: Clone docs repo
+          command: |
+            git clone --depth 1 https://github.com/arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+      - run: 
+          name: Update vendor dependencies folder
+          command: |
+            cd docs-hugo/toolchain/arangoproxy
+            rm -r vendor go.mod go.sum
+            go mod tidy
+            go mod vendor
+      - persist_to_workspace:
+          root: .
+          paths:
+            - docs-hugo
+
   create-docs-images:
     parameters:
       architecture:
@@ -324,10 +350,8 @@ jobs:
       image: ubuntu-2004:current
       resource_class: << parameters.executor >>
     steps:
-      - run: 
-          name: Clone docs repo
-          command: |
-            git clone --depth 1 https://github.com/arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+      - attach_workspace:
+          at: .
       - run: 
           name: Create docker images
           command: |
@@ -341,11 +365,11 @@ jobs:
           name: Push docker images
           command: |
             cd docs-hugo/toolchain/docker
-            echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
+            # echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
 
-            docker push arangodb/docs-hugo:site-<< parameters.architecture >>
-            docker push arangodb/docs-hugo:arangoproxy-<< parameters.architecture >>
-            docker push arangodb/docs-hugo:toolchain-<< parameters.architecture >>
+            # docker push arangodb/docs-hugo:site-<< parameters.architecture >>
+            # docker push arangodb/docs-hugo:arangoproxy-<< parameters.architecture >>
+            # docker push arangodb/docs-hugo:toolchain-<< parameters.architecture >>
 
 
   plain-build:
@@ -533,15 +557,21 @@ workflows:
   create-docs-images-amd64:
     when: { equal: [ create-docs-images-amd64, << pipeline.parameters.workflow >> ] }
     jobs:
+      - update-vendor
       - create-docs-images:
           architecture: "amd64"
           executor: "medium"
+          requires:
+           - update-vendor
   create-docs-images-arm64:
     when: { equal: [ create-docs-images-arm64, << pipeline.parameters.workflow >> ] }
     jobs:
+      - update-vendor
       - create-docs-images:
           architecture: "arm64"
           executor: "arm.medium"
+          requires:
+            - update-vendor
   plain:
     when: { equal: [ plain-build, << pipeline.parameters.workflow >> ] }
     jobs:
