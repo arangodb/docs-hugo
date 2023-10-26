@@ -74,7 +74,6 @@ function main() {
 
     if [ "$ARANGODB_SRC" != "" ]; then
       mkdir -p /tmp/arangodb/$version
-      cp -r /tmp/arangodb_src /tmp/arangodb/$version
     fi
 
     process_server "$version" "$image"
@@ -94,6 +93,7 @@ function main() {
   tail -f /home/toolchain.log &
   trap_container_exit
 }
+
 
 
 
@@ -439,6 +439,12 @@ function generate_error_codes() {
     log "[generate_error_codes] ArangoDB Source code not found. Aborting"
     exit 1
   fi
+
+  if [ "$ARANGODB_SRC" != "" ]; then
+    mkdir -p /tmp/arangodb/$version/lib/Basics
+    cp /tmp/arangodb_src/lib/Basics/errors.dat /tmp/arangodb/$version/lib/Basics/errors.dat
+  fi
+
   touch ../../site/data/$version/errors.yaml
 
   log "[generate_error_codes] Launching generate error-codes script"
@@ -453,6 +459,10 @@ function generate_error_codes() {
   echo " &#x2713;" >> /home/summary.md
   echo "</li>" >> /home/summary.md
 
+  if [ "$ARANGODB_SRC" != "" ]; then
+    rm -r /tmp/arangodb/$version/*
+  fi
+
   log "[generate_error_codes] Done"
 }
 
@@ -466,6 +476,14 @@ function generate_metrics() {
     echo "<li><error code=7><strong>$version</strong>: <strong> ERROR: ArangoDB Source Not Found</strong><error></li>" >> /home/summary.md
   fi
 
+  if [ "$ARANGODB_SRC" != "" ]; then
+    mkdir -p /tmp/arangodb/$version/Documentation/Metrics
+    cp -r /tmp/arangodb_src/lib /tmp/arangodb/$version/
+    cp -r /tmp/arangodb_src/arangod /tmp/arangodb/$version/
+    cp -r /tmp/arangodb_src/enterprise /tmp/arangodb/$version/
+    cp -r /tmp/arangodb_src/Documentation/Metrics /tmp/arangodb/$version/Documentation/
+  fi
+
   log "[generate_metrics] Generate Metrics requested"
   log "[generate_metrics] $PYTHON_EXECUTABLE generators/generateMetrics.py --main /tmp/arangodb/"$version" --dst ../../site/data/$version"
   res=$(("$PYTHON_EXECUTABLE" generators/generateMetrics.py --main /tmp/arangodb/"$version" --dst ../../site/data/$version) 2>&1)
@@ -477,6 +495,10 @@ function generate_metrics() {
 
   echo "&#x2713;" >> /home/summary.md
   echo "</li>" >> /home/summary.md
+
+  if [ "$ARANGODB_SRC" != "" ]; then
+    rm -r /tmp/arangodb/$version/*
+  fi
 
   log "[generate_metrics] Done"
   
