@@ -720,18 +720,6 @@
     }
   },
   {
-    "name": "async-prefetch",
-    "description": "Allow query execution nodes to asynchronously prefetch the\nnext batch while processing the current batch, allowing parts of the query to\nrun in parallel. This is an experimental option as not all operations are\nthread-safe.",
-    "flags": {
-      "hidden": true,
-      "clusterOnly": false,
-      "canBeDisabled": true,
-      "canCreateAdditionalPlans": false,
-      "disabledByDefault": true,
-      "enterpriseOnly": false
-    }
-  },
-  {
     "name": "decay-unnecessary-sorted-gather",
     "description": "Avoid merge-sorting results on a Coordinator if they are all\nfrom a single shard and fully sorted by a DB-Server already.",
     "flags": {
@@ -806,6 +794,18 @@
   {
     "name": "join-index-nodes",
     "description": "Join adjacent index nodes and replace them with a join node\nin case the indexes qualify for it.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
+    "name": "async-prefetch",
+    "description": "Allow query execution nodes to asynchronously prefetch the\nnext batch while processing the current batch, allowing parts of the query to\nrun in parallel. This is only possible for certain operations in a query.",
     "flags": {
       "hidden": false,
       "clusterOnly": false,
