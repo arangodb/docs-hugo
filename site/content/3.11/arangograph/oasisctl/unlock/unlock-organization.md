@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl unlock organization command
 title: Oasisctl Unlock Organization
 menuTitle: Unlock Organization

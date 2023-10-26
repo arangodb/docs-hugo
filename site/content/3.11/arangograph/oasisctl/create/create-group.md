@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl create group command
 title: Oasisctl Create Group
 menuTitle: Create Group

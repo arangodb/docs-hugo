@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl revoke apikey command
 title: Oasisctl Revoke Apikey
 menuTitle: Revoke Apikey

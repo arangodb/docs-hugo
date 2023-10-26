@@ -1,15 +1,11 @@
 ---
+archetype: default
+description: Description of the oasisctl update policy delete binding command
 title: Oasisctl Update Policy Delete Binding
 menuTitle: Update Policy Delete Binding
-weight: 105
-description: >-
-  Description of the oasisctl update policy delete binding command
-archetype: default
+weight: 110
 ---
-Delete a role binding from a policy
-
 ## Synopsis
-
 Delete a role binding from a policy
 
 ```
@@ -17,7 +13,6 @@ oasisctl update policy delete binding [flags]
 ```
 
 ## Options
-
 ```
       --group-id strings   Identifiers of the groups to delete bindings for
   -h, --help               help for binding
@@ -26,8 +21,7 @@ oasisctl update policy delete binding [flags]
       --user-id strings    Identifiers of the users to delete bindings for
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -35,6 +29,5 @@ oasisctl update policy delete binding [flags]
 ```
 
 ## See also
-
 * [oasisctl update policy delete](update-policy-delete.md)	 - Delete from a policy
 

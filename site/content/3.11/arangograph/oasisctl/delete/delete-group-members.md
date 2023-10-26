@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl delete group members command
 title: Oasisctl Delete Group Members
 menuTitle: Delete Group Members
