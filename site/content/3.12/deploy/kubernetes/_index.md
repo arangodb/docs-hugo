@@ -3,11 +3,11 @@ title: ArangoDB Kubernetes Operator
 menuTitle: Kubernetes
 weight: 30
 description: >-
-  ArangoDB Kubernetes Operator
+  The ArangoDB Kubernetes Operator (`kube-arangodb`) is a set of operators that
+  you can deploy in your Kubernetes cluster
 archetype: chapter
 ---
-The ArangoDB Kubernetes Operator (`kube-arangodb`) is a set of operators
-that you deploy in your Kubernetes cluster to:
+The Kubernetes operator lets you do the following:
 
 - Manage deployments of the ArangoDB database
 - Provide `PersistentVolumes` on local storage of your nodes for optimal storage performance.

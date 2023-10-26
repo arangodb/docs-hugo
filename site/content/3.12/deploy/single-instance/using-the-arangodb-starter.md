@@ -3,14 +3,14 @@ title: Using the ArangoDB Starter
 menuTitle: Using the ArangoDB Starter
 weight: 10
 description: >-
-  This section describes how to start an ArangoDB stand-alone instance using the tool Starter (the arangodb binary program)
+  How to start an ArangoDB stand-alone instance using the ArangoDB Starter
 archetype: default
 ---
-This section describes how to start an ArangoDB stand-alone instance using the tool
-[_Starter_](../../../components/tools/arangodb-starter/_index.md) (the _arangodb_ binary program).
+The [_Starter_](../../components/tools/arangodb-starter/_index.md) tool
+(the _arangodb_ executable) supports starting a single server.
 
-As a precondition you should create a _secret_ to activate authentication. The _Starter_ provides a handy
-functionality to generate such a file:
+As a precondition you should create a _secret_ to activate authentication.
+The _Starter_ provides a handy functionality to generate such a file:
 
 ```bash
 arangodb create jwt-secret --secret=arangodb.secret

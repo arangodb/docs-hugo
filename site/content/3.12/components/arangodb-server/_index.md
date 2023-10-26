@@ -19,4 +19,4 @@ and clusters. It differs between the [Community Edition](../../about-arangodb/fe
 and [Enterprise Edition](../../about-arangodb/features/enterprise-edition.md).
 
 See [Administration](../../operations/administration/_index.md) for server configuration
-and [Deployment](../../deploy/deployment/_index.md) for operation mode details.
+and [Deploy](../../deploy/_index.md) for operation mode details.

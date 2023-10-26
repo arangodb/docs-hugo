@@ -69,7 +69,7 @@ In addition to the Starter, there are also other ways that you can use to deploy
 ArangoDB:
 - Run the `arangod` executable directly
 - [Docker containers](../operations/installation/docker.md)
-- [Kubernetes](../deploy/deployment/kubernetes/_index.md)
+- [Kubernetes](../deploy/kubernetes/_index.md)
 - Use installation packages
 
 ## How to Get Data In and Out of ArangoDB

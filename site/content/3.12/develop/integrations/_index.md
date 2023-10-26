@@ -1,7 +1,7 @@
 ---
 title: Integrations
 menuTitle: Integrations
-weight: 281
+weight: 290
 description: >-
   Integrations for third-party tools and frameworks let you use ArangoDB as the
   database backend for these products

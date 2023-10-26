@@ -49,7 +49,7 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   or modified, using an AQL expression.
 
 - [**Multiple Environments**](../../operations/installation/_index.md#supported-platforms-and-architectures):
-  Use ArangoDB as a [managed service](https://cloud.arangodb.com),
+  Use ArangoDB as a [managed service](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
   in your own cloud, or on-premises.
   Develop and test with ArangoDB on Linux, macOS, and Windows, and run it in
   production on Linux. ArangoDB is available for 64-bit ARM chips on macOS and
@@ -61,17 +61,17 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   Spread bigger datasets across multiple servers using consistent hashing on
   the default or custom shard keys.
 
-- [**Synchronous Replication**](../../deploy/deployment/cluster/_index.md#synchronous-replication):
+- [**Synchronous Replication**](../../deploy/cluster/_index.md#synchronous-replication):
   Data changes are propagated to other cluster nodes immediately as part of an
   operation, and only considered successful when the configured number of writes
   is reached. Synchronous replication works on a per-shard basis. For each
   collection, you can configure how many copies of each shard are kept in the cluster.
 
-- [**Active Failover**](../../deploy/deployment/active-failover/_index.md):
+- [**Active Failover**](../../deploy/active-failover/_index.md):
   Run a single server with asynchronous replication to one or more passive
   single servers for automatic failover.
 
-- [**Automatic Failover Cluster**](../../deploy/deployment/cluster/_index.md#automatic-failover):
+- [**Automatic Failover Cluster**](../../deploy/cluster/_index.md#automatic-failover):
   If a nodes goes down, another node takes over to avoid any downtime. <!-- TODO: Can we say that? -->
 
 {{% comment %}}

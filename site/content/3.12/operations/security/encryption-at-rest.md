@@ -110,7 +110,7 @@ output and exit.
 
 If you use _kube-arangodb_ then use the `spec.rocksdb.encryption.keySecretName`
 setting to specify the name of the Kubernetes secret to be used for encryption.
-See [Kubernetes Deployment Resource](../../deploy/deployment/kubernetes/deployment-resource-reference.md#specrocksdbencryptionkeysecretname).
+See [Kubernetes Deployment Resource](../../deploy/kubernetes/deployment-resource-reference.md#specrocksdbencryptionkeysecretname).
 
 ## Creating keys
 

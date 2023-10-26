@@ -3,12 +3,10 @@ title: Starting Manually
 menuTitle: Manual Start
 weight: 5
 description: >-
-  This section describes how to start an ArangoDB stand-alone instance by manually starting the needed process
+  How to start an ArangoDB stand-alone instance by manually starting the needed
+  _arangod_ process
 archetype: default
 ---
-This section describes how to start an ArangoDB stand-alone instance by manually
-starting the needed process.
-
 ## Local Start
 
 We will assume that your IP is 127.0.0.1 and that the port 8529 is free:

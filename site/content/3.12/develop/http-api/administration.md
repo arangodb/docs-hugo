@@ -602,7 +602,7 @@ paths:
                     type: string
                   deployment:
                     description: |
-                      An object with at least a `type` attribute, indicating the deployment type.
+                      An object with at least a `type` attribute, indicating the deployment mode.
 
                       In case of a `"single"` server, additional information is provided in the
                       top-level `host` attribute.

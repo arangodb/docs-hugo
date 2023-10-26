@@ -88,14 +88,14 @@ risk that the cluster is currently not as resilient as expected.
 One possibility to verify these two things is via the ArangoDB web interface.
 Node health can be monitored in the _Overview_ tab under _NODES_:
 
-![Cluster Health Screen](../../../../images/HealthyCluster.png)
+![Cluster Health Screen](../../../images/HealthyCluster.png)
 
 **Check that all nodes are green** and that there is **no node error** in the
 top right corner.
 
 As to the shards being in sync, see the _Shards_ tab under _NODES_:
 
-![Shard Screen](../../../../images/ShardsInSync.png)
+![Shard Screen](../../../images/ShardsInSync.png)
 
 **Check that all collections have a green check mark** on the right side.
 If any collection does not have such a check mark, you can click on the
@@ -103,7 +103,7 @@ collection and see the details about shards. Please keep in
 mind that this has to be done **for each database** separately!
 
 Obviously, this might be tedious and calls for automation. Therefore, there
-are APIs for this. The first one is [Cluster Health](../../../develop/http-api/cluster.md#get-the-cluster-health):
+are APIs for this. The first one is [Cluster Health](../../develop/http-api/cluster.md#get-the-cluster-health):
 
 ```
 POST /_admin/cluster/health
@@ -169,7 +169,7 @@ curl -k https://arangodb.9hoeffer.de:8529/_admin/cluster/health --user root: | j
 ```
 
 For the shards being in sync there is the
-[Cluster Inventory](../../../develop/http-api/replication/replication-dump.md#get-the-cluster-collections-and-indexes)
+[Cluster Inventory](../../develop/http-api/replication/replication-dump.md#get-the-cluster-collections-and-indexes)
 API call:
 
 ```

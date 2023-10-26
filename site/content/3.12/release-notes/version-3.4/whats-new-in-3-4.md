@@ -1144,4 +1144,4 @@ this use-case are served by the follower you need to add a
 `X-Arango-Allow-Dirty-Read: true` header to HTTP requests.
 
 For more information see
-[Active Failover Architecture](../../deploy/deployment/active-failover/_index.md).
+[Active Failover Architecture](../../deploy/active-failover/_index.md).

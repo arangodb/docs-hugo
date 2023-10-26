@@ -23,7 +23,7 @@ queries.
 
 {{< info >}}
 For graphs larger than what fits on a single DB-Server node, you can use the
-[**SmartGraphs**](../../graphs/smartgraphs/_index.md) feature to efficiently limit the
+[**SmartGraphs**](../graphs/smartgraphs/_index.md) feature to efficiently limit the
 network hops between Coordinator and DB-Servers.
 {{< /info >}}
 
@@ -44,7 +44,7 @@ because they need to send and receive data on several connections, build up
 results for collection accesses from the received parts followed by further
 processing.
 
-![OneShard vs. Sharded Cluster Setup](../../../images/cluster-sharded-oneshard.png)
+![OneShard vs. Sharded Cluster Setup](../../images/cluster-sharded-oneshard.png)
 
 If the database involved in a query is a OneShard database,
 then the OneShard optimization can be applied to run the query on the 
@@ -60,7 +60,7 @@ optimizer rule `cluster-one-shard` is applied automatically.
 There are two ways to achieve this:
 
 - If you want your entire cluster to be a OneShard deployment, use the
-  [startup option](../../components/arangodb-server/options.md#cluster)
+  [startup option](../components/arangodb-server/options.md#cluster)
   `--cluster.force-one-shard`. It sets the immutable `sharding` database
   property to `"single"` for all newly created databases, which in turn
   enforces the OneShard conditions for collections that are created in it.
@@ -268,7 +268,7 @@ whereas it is 10 in the OneShard case.
 ArangoDB's transactional guarantees are tunable. For transactions to be ACID
 on the leader shards in a cluster, a few things need to be considered:
 
-- The AQL query or [Stream Transaction](../../develop/http-api/transactions/stream-transactions.md)
+- The AQL query or [Stream Transaction](../develop/http-api/transactions/stream-transactions.md)
   must be eligible for the OneShard optimization, so that it is executed on a
   single DB-Server node.
 - To ensure durability, enable `waitForSync` on query level to wait until data

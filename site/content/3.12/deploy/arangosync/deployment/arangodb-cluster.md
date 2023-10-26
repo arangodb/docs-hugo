@@ -10,7 +10,7 @@ There are several ways to start an ArangoDB cluster. This section focuses
 on the recommended way to start ArangoDB: the ArangoDB _Starter_.
 
 For other possibilities to deploy an ArangoDB cluster see
-[Cluster Deployment](../../deployment/cluster/deployment/_index.md).
+[Cluster Deployment](../../cluster/deployment/_index.md).
 
 The _Starter_ simplifies things for the operator and coordinates a distributed
 cluster startup across several machines and assign cluster roles automatically.

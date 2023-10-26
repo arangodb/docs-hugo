@@ -9,7 +9,7 @@ archetype: default
 aliases:
   - ../upgrading-manual-deployments/upgrading-an-active-failover-deployment
 ---
-To manually upgrade an [_Active Failover_](../../../deploy/deployment/active-failover/_index.md)
+To manually upgrade an [_Active Failover_](../../../deploy/active-failover/_index.md)
 setup, the different nodes can be upgraded one at a time without incurring a
 prolonged downtime of the entire system. The downtimes of the individual nodes
 should also stay fairly low.

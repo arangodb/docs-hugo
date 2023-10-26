@@ -23,7 +23,7 @@ to grant it write permissions to `C:\Program Files`.
 For more in-depth information on how to install ArangoDB, as well as available
 startup parameters, installation in a cluster and so on, see
 [Installation](../operations/installation/_index.md) and
-[Deployment](../deploy/deployment/_index.md).
+[Deploy](../deploy/_index.md).
 
 <!--
 The web interface will become available shortly after you started `arangod`.

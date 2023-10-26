@@ -9,7 +9,7 @@ archetype: default
 aliases:
   - ../upgrading-manual-deployments/upgrading-a-cluster
 ---
-To manually upgrade a [_cluster_](../../../deploy/deployment/cluster/_index.md)
+To manually upgrade a [_cluster_](../../../deploy/cluster/_index.md)
 setup, the different nodes of a _cluster_ can be upgraded one at a time without
 incurring downtime of the _cluster_ and very short downtimes of the single nodes.
 
@@ -33,7 +33,7 @@ modified the init script or systemd unit file for the standalone instance in way
 that it would start or stop your _cluster_ instance instead.
 
 You can read about the details on how to deploy your _cluster_ independently of the
-standalone instance in the [_cluster_ deployment preliminary](../../../deploy/deployment/cluster/deployment/_index.md).
+standalone instance in the [_cluster_ deployment preliminary](../../../deploy/cluster/deployment/_index.md).
 
 In the following, we assume that you don't use the standalone instance from the
 package but only a manually started _cluster_ instance, and we will move the

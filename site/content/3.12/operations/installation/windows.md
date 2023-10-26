@@ -37,7 +37,7 @@ You can choose one of the following:
   maintained and directly published by ArangoDB on a regular basis.
 
 See the documentation on [Docker Hub](https://hub.docker.com/_/arangodb),
-as well as the [Deployments](../../deploy/deployment/_index.md) section about
+as well as the [Deploy](../../deploy/_index.md) section about
 different deployment modes and methods including Docker containers.
 
 ## Installing using the Installer
@@ -252,4 +252,4 @@ After installation, you may start ArangoDB in several ways. The exact start-up c
 depends on the type of ArangoDB deployment you are interested in
 (_Single Instance_, _Active Failover_ or _Cluster_).
 
-Please refer to the [_Deployment_](../../deploy/deployment/_index.md) chapter for details.
+Please refer to the [Deploy](../../deploy/_index.md) chapter for details.

@@ -74,10 +74,10 @@ See all [Enterprise Edition Features](enterprise-edition.md).
 
 You can install ArangoDB on your local machine or run it in a Docker container
 for development purposes. You can deploy it on-premises as a
-[single server](../../deploy/deployment/single-instance/_index.md), optionally
+[single server](../../deploy/single-instance/_index.md), optionally
 as a resilient pair with asynchronous replication and automatic failover
-([Active Failover](../../deploy/deployment/active-failover/_index.md)),
-or as a [cluster](../../deploy/deployment/cluster/_index.md)
+([Active Failover](../../deploy/active-failover/_index.md)),
+or as a [cluster](../../deploy/cluster/_index.md)
 comprised of multiple nodes with synchronous replication and automatic failover
 for high availability and resilience. For the highest level of data safety,
 you can additionally set up off-site replication for your entire cluster
@@ -87,4 +87,4 @@ If you do not want to operate your own ArangoDB instances on-premises, then
 you may use our fully managed multi-cloud **ArangoGraph Insights Platform**.
 It runs the Enterprise Edition of ArangoDB, lets you deploy clusters with a
 few clicks, and is operated by a dedicated team of ArangoDB engineers day and
-night. To learn more, go to [cloud.arangodb.com](https://cloud.arangodb.com/).
+night. To learn more, go to [cloud.arangodb.com](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
