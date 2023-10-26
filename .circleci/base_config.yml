@@ -314,17 +314,18 @@ jobs:
   update-vendor:
     docker:
       - image: cimg/go:1.21.3
+    environment:
+      GIT_SSH_COMMAND: "ssh -o IdentitiesOnly=yes"
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a"
-            - "28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e"
-            - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
-      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
+            - "1e:e3:7e:8c:55:be:3d:56:bc:4c:1c:d7:d6:26:f2:e5"
+            - "20:72:b8:99:35:4c:7c:23:60:da:f2:5e:43:34:ba:79"
+      - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
       - run: 
           name: Clone docs repo
           command: |
-            git clone --depth 1 https://github.com/arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+            git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
       - run: 
           name: Update vendor dependencies folder
           command: |
@@ -340,7 +341,7 @@ jobs:
 
             git config user.email "daniele@arangodb.com"
             git config user.name "CircleCI Job"
-            git add vendor/
+            git add vendor/ go.mod go.sum
             git commit --allow-empty -m "[skip ci] Update ArangoProxy vendor/ folder"
 
             git push -u origin update-vendor-$CIRCLE_BUILD_NUM
