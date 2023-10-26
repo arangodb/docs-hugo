@@ -239,7 +239,7 @@ Also see [What's New in 3.7](../../release-notes/version-3.7/whats-new-in-3-7.md
 
 **Enterprise Edition**
 
-- [**OneShard**](../../deploy/deployment/oneshard.md)
+- [**OneShard**](../../deploy/oneshard.md)
   deployments offer a practicable solution that enables significant performance
   improvements by massively reducing cluster-internal communication. A database
   created with OneShard enabled is limited to a single DB-Server node but still
@@ -439,7 +439,7 @@ Also see [What's New in 3.1](../../release-notes/version-3.1/whats-new-in-3-1.md
 
 ## Version 3.0
 
-- [**self-organizing cluster**](../../deploy/deployment/cluster/_index.md) with
+- [**self-organizing cluster**](../../deploy/cluster/_index.md) with
   synchronous replication, master/master setup, shared nothing
   architecture, cluster management Agency.
 

@@ -35,8 +35,8 @@ For a full list of tools, please refer to the [Programs & Tools](../../component
 
 ## Deployment Administration
 
-- [Active Failover](../../deploy/deployment/active-failover/administration.md)
-- [Cluster](../../deploy/deployment/cluster/administration.md)
+- [Active Failover](../../deploy/active-failover/administration.md)
+- [Cluster](../../deploy/cluster/administration.md)
 - [Datacenter-to-Datacenter Replication](../../deploy/arangosync/administration.md)
 - [ArangoDB Starter Administration](arangodb-starter/_index.md)
 

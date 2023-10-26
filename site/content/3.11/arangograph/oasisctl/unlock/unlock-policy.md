@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl unlock policy command
 title: Oasisctl Unlock Policy
 menuTitle: Unlock Policy

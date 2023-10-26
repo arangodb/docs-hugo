@@ -11,7 +11,7 @@ one version to the next.
 
 {{< warning >}}
 It is highly recommended to take a backup of your data before upgrading ArangoDB
-using [_arangodump_](../../../components/tools/arangodump/_index.md).
+using [_arangodump_](../../components/tools/arangodump/_index.md).
 {{< /warning >}}
 
 ## Upgrade an ArangoDB deployment

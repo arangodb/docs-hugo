@@ -120,7 +120,7 @@ Computed value expressions have the following properties:
   the order of the computed value definitions in the `computedValues` property.
 
 - You can use AQL functions in the expression but only those that can be
-  executed on DB-Servers, regardless of your deployment type. The following
+  executed on DB-Servers, regardless of your deployment mode. The following
   functions cannot be used in the expression:
   - `CALL()`
   - `APPLY()`

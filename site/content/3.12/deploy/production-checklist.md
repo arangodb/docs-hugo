@@ -1,7 +1,7 @@
 ---
 title: ArangoDB Production Checklist
 menuTitle: Production Checklist
-weight: 40
+weight: 45
 description: >-
   Important steps to perform before you go live.
 archetype: default
@@ -12,9 +12,9 @@ have been performed on your production system before you go live.
 ## Operating System
 
 - Executed the OS optimization scripts if you run ArangoDB on Linux.
-  See [Installing ArangoDB on Linux](../../operations/installation/linux/_index.md) and its sub pages
-  [Linux Operating System Configuration](../../operations/installation/linux/operating-system-configuration.md) and
-  [Linux OS Tuning Script Examples](../../operations/installation/linux/linux-os-tuning-script-examples.md) for details.
+  See [Installing ArangoDB on Linux](../operations/installation/linux/_index.md) and its sub pages
+  [Linux Operating System Configuration](../operations/installation/linux/operating-system-configuration.md) and
+  [Linux OS Tuning Script Examples](../operations/installation/linux/linux-os-tuning-script-examples.md) for details.
 
 - OS monitoring is in place
   (most common metrics, e.g. disk, CPU, RAM utilization).
@@ -32,10 +32,10 @@ have been performed on your production system before you go live.
   
 - *Memory considerations*
   - If you run multiple processes (e.g. DB-Server and Coordinator) on a single
-    machine, adjust the [`ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY`](../../components/arangodb-server/environment-variables.md)
+    machine, adjust the [`ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY`](../components/arangodb-server/environment-variables.md)
     environment variable accordingly.
   - For versions prior to 3.8, make sure to change the
-    [`--query.memory-limit`](../../components/arangodb-server/options.md#--querymemory-limit)
+    [`--query.memory-limit`](../components/arangodb-server/options.md#--querymemory-limit)
     query option according to the node size and workload.
   - Disable swap space to avoid slowdown which can result in servers being incorrectly 
     detected as failed.
@@ -62,7 +62,7 @@ have been performed on your production system before you go live.
   _minimal_replication_factor_ of your collections
   are set to a value equal or higher than 2, otherwise you run the risk of
   losing data in case of a node failure. See
-  [cluster startup options](../../components/arangodb-server/options.md#cluster).
+  [cluster startup options](../components/arangodb-server/options.md#cluster).
 
 - *Disk Performance considerations*
   - Verify that your **storage performance** is at least 100 IOPS for each
@@ -84,7 +84,7 @@ have been performed on your production system before you go live.
 
 - Verify your **Backup** and restore procedures are working.
 
-- Consider enabling [Encryption at Rest](../../operations/security/encryption-at-rest.md)
+- Consider enabling [Encryption at Rest](../operations/security/encryption-at-rest.md)
   (Enterprise Edition only). Make sure to safely store any secret keys you
   create for this.
 

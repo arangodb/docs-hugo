@@ -32,7 +32,7 @@ Rule of thumb is, the closer the UDF is to your final `RETURN` statement
 (or maybe even inside it), the better. 
 
 When used in clusters, UDFs are always executed on a
-[Coordinator](../deploy/deployment/cluster/_index.md).
+[Coordinator](../deploy/cluster/_index.md).
 It is not possible to execute UDFs on DB-Servers, as no JavaScript execution
 engine is available on DB-Servers. Queries that would push UDF execution to
 DB-Servers are aborted with a parse error. This includes using UDFs in traversal

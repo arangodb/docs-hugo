@@ -443,7 +443,7 @@ FOR v,e,p IN 2..3 OUTBOUND "places/London" GRAPH "kShortestPathsGraph"
 
 {{< warning >}}
 You can use AQL functions in prune expressions but only those that can be
-executed on DB-Servers, regardless of your deployment type. The following
+executed on DB-Servers, regardless of your deployment mode. The following
 functions cannot be used in the expression:
 - `CALL()`
 - `APPLY()`

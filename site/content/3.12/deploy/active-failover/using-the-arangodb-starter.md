@@ -6,7 +6,7 @@ description: >-
   This section describes how to start an Active Failover setup the tool Starter (the arangodb binary program)
 archetype: default
 ---
-This section describes how to start an Active Failover setup the tool [_Starter_](../../../components/tools/arangodb-starter/_index.md)
+This section describes how to start an Active Failover setup the tool [_Starter_](../../components/tools/arangodb-starter/_index.md)
 (the _arangodb_ binary program).
 
 As a precondition you should create a _secret_ to activate authentication. The _Starter_ provides a handy
@@ -63,7 +63,7 @@ Once all the processes started by the _Starter_ are up and running, and joined t
 Active Failover setup (this may take a while depending on your system), the _Starter_ will inform
 you where to connect the Active Failover from a Browser, shell or your program.
 
-For a full list of options of the _Starter_ please refer to [this](../../../components/tools/arangodb-starter/options.md)
+For a full list of options of the _Starter_ please refer to [this](../../components/tools/arangodb-starter/options.md)
 section.
 
 ## Using the ArangoDB Starter in Docker

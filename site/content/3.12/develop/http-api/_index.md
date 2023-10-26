@@ -1,7 +1,7 @@
 ---
 title: HTTP API Documentation
 menuTitle: HTTP API
-weight: 285
+weight: 275
 description: >-
   All functionality of ArangoDB servers is provided via a RESTful API over the
   HTTP protocol, and you can call the API endpoints directly, via database

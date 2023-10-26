@@ -6,7 +6,7 @@ description: >-
   This section describes how to start a cluster using the Starter tool (the arangodb executable)
 archetype: default
 ---
-This section describes how to start a Cluster using the [_Starter_](../../../../components/tools/arangodb-starter/_index.md)
+This section describes how to start a Cluster using the [_Starter_](../../../components/tools/arangodb-starter/_index.md)
 tool (the `arangodb` executable).
 
 As a precondition you should create a _secret_ to activate authentication.
@@ -22,7 +22,7 @@ Set appropriate privilege on the generated _secret_ file, e.g. on Linux:
 chmod 400 arangodb.secret
 ```
 
-Also see [Security](../../../../components/tools/arangodb-starter/security.md) for instructions of how to
+Also see [Security](../../../components/tools/arangodb-starter/security.md) for instructions of how to
 create certificates and tokens needed to secure an ArangoDB deployment.
 
 ## Local test cluster
@@ -97,7 +97,7 @@ The Starter uses the next few ports above the Starter port for the cluster nodes
 That is, if you use port 8528 for the Starter, the Coordinator uses 8529
 (=8528+1), the DB-Server 8530 (=8528+2), and the Agent 8531 (=8528+3).
 You can change the default Starter port with the
-[`--starter.port` option](../../../../components/tools/arangodb-starter/options.md).
+[`--starter.port` option](../../../components/tools/arangodb-starter/options.md).
 
 If two or more of the `arangodb` instances run on the same machine,
 you have to use the `--starter.data-dir` option to let each use a different
@@ -108,7 +108,7 @@ other installation files automatically. If this fails, use the
 `--server.arangod` and `--server.js-dir` options to manually point it to them.
 
 For a full list of options of the _Starter_, see the
-[Starter options](../../../../components/tools/arangodb-starter/options.md).
+[Starter options](../../../components/tools/arangodb-starter/options.md).
 
 ## Using multiple join arguments
 

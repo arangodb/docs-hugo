@@ -1,9 +1,10 @@
 ---
-title: Cluster Architecture
+title: Cluster Deployments
 menuTitle: Cluster
 weight: 15
 description: >-
-  The Cluster architecture of ArangoDB is a CP master/master model with no single point of failure
+  ArangoDB clusters are comprised of DB-Servers, Coordinators, and Agents, with
+  synchronous data replication between DB-Servers and automatic failover
 archetype: chapter
 ---
 The Cluster architecture of ArangoDB is a _CP_ master/master model with no
@@ -39,7 +40,7 @@ roles:
 - _Coordinators_
 - _DB-Servers_.
 
-![ArangoDB Cluster](../../../../images/cluster-topology.png)
+![ArangoDB Cluster](../../../images/cluster-topology.png)
 
 ### Agents
 
@@ -113,7 +114,7 @@ from the _DB-Server_ layer.
 It is a best practice and a recommended approach to run _Agent_ instances
 on different machines than _DB-Server_ instances.
 
-When deploying using the tool [_Starter_](../../../components/tools/arangodb-starter/_index.md)
+When deploying using the tool [_Starter_](../../components/tools/arangodb-starter/_index.md)
 this can be achieved by using the options `--cluster.start-dbserver=false` and
 `--cluster.start-coordinator=false` on the first three machines where the _Starter_
 is started, if the desired _Agency_ _size_ is 3, or on the first 5 machines
@@ -127,7 +128,7 @@ all the machines participating to the Cluster.
 
 Multi-datacenter Clusters, where the entire structure and content of a Cluster located
 in a specific DC is replicated to others Clusters located in different DCs, are
-possible as well. See [Datacenter-to-Datacenter Replication](../../arangosync/deployment/_index.md)
+possible as well. See [Datacenter-to-Datacenter Replication](../arangosync/deployment/_index.md)
 (DC2DC) for further details.
 {{< /info >}}
 
@@ -142,7 +143,7 @@ automatically to the different servers. In many situations one can
 also reap a benefit in data throughput, again because the load can
 be distributed to multiple machines.
 
-![Cluster Sharding](../../../../images/cluster_sharding.jpg)
+![Cluster Sharding](../../../images/cluster_sharding.jpg)
 
 From the outside this process is fully transparent:
 An application may talk to any _Coordinator_  and
@@ -156,7 +157,7 @@ be stored ArangoDB performs a hash across the values. By default this
 hash is being created from the document __key_.
 
 For further information, please refer to the
-[_Cluster Sharding_](../../architecture/data-sharding.md) section.
+[_Cluster Sharding_](../architecture/data-sharding.md) section.
 
 ## OneShard
 
@@ -188,7 +189,7 @@ You need to set a _replication factor_ equal to or higher than `2`
 **explicitly** when creating a collection, or you can adjust it later if you
 forgot to set it at creation time. You can also enforce a
 minimum replication factor for all collections by setting the
-[`--cluster.min-replication-factor` startup option](../../../components/arangodb-server/options.md#--clustermin-replication-factor).
+[`--cluster.min-replication-factor` startup option](../../components/arangodb-server/options.md#--clustermin-replication-factor).
 
 When using a Cluster, please make sure all the collections that are important
 (and should not be lost in any case) have a _replication factor_ equal or higher
@@ -214,7 +215,7 @@ The data is always stored on the _DB-Servers_.
 The following example gives you an idea of how synchronous operation
 has been implemented in ArangoDB Cluster:
 
-1. Connect to a _Coordinator_ via [_arangosh_](../../../components/tools/arangodb-shell/_index.md)
+1. Connect to a _Coordinator_ via [_arangosh_](../../components/tools/arangodb-shell/_index.md)
 2. Create a collection: `db._create("test", {"replicationFactor": 2});`
 3. The _Coordinator_ figures out a *leader* and one *follower* and creates
    one *shard* (as this is the default)
@@ -360,7 +361,7 @@ the ArangoDB Cluster.
 
 The design and capabilities of ArangoDB are geared towards usage in
 modern microservice architectures of applications. With the
-[Foxx services](../../../develop/foxx-microservices/_index.md) it is very easy to deploy a data
+[Foxx services](../../develop/foxx-microservices/_index.md) it is very easy to deploy a data
 centric microservice within an ArangoDB Cluster.
 
 In addition, one can deploy multiple instances of ArangoDB within the
@@ -379,7 +380,7 @@ itself in case of temporary failures.
 
 An ArangoDB Cluster can be deployed in several ways, e.g. by manually
 starting all the needed instances, by using the tool
-[_Starter_](../../../components/tools/arangodb-starter/_index.md), in Docker and in Kubernetes.
+[_Starter_](../../components/tools/arangodb-starter/_index.md), in Docker and in Kubernetes.
 
 See the [Cluster Deployment](deployment/_index.md)
 chapter for instructions.

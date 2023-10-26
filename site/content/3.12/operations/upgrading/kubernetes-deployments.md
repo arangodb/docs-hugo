@@ -7,5 +7,5 @@ archetype: default
 aliases:
   - upgrading-kubernetes-deployments
 ---
-Please refer to the [Upgrading Kubernetes](../../deploy/deployment/kubernetes/upgrading.md)
+Please refer to the [Upgrading Kubernetes](../../deploy/kubernetes/upgrading.md)
 page in the Deployment section.

@@ -546,6 +546,7 @@ The following shortcodes also exist but are rarely used:
   - _Datacenter-to-Datacenter Replication_ (note the hyphens), _DC2DC_
   - _ArangoGraph Insights Platform_ and _ArangoGraph_ for short, but not
     ~~Oasis~~, ~~ArangoDB Oasis~~, or ~~ArangoDB Cloud~~
+  - _Deployment mode_ (single server, cluster, etc.), not ~~deployment type~~
 
 - Never capitalize the names of executables or code values, e.g. write
   _arangosh_ instead of _Arangosh_.

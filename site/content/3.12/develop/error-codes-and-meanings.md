@@ -1,7 +1,7 @@
 ---
 title: Error codes and meanings
 menuTitle: Error codes and meanings
-weight: 290
+weight: 280
 description: >-
   An error reply from ArangoDB servers contain a code, error number, and message
   and you can look up additional information for a specific kind of error

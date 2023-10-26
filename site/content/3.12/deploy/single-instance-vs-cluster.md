@@ -1,7 +1,7 @@
 ---
 title: Single Instance vs. Cluster
 menuTitle: Single Instance vs. Cluster
-weight: 25
+weight: 40
 description: >-
   Similarities and differences in behavior between single servers and clusters
 archetype: default
@@ -15,8 +15,8 @@ between these two configurations. A summary of potential differences follows.
 
 To migrate from a _Single Instance_ to a _Cluster_ you will need
 to take a backup from the _Single Instance_ and restore it into
-the _Cluster_ with the tools [_arangodump_](../../components/tools/arangodump/_index.md)
-and [_arangorestore_](../../components/tools/arangorestore/_index.md).
+the _Cluster_ with the tools [_arangodump_](../components/tools/arangodump/_index.md)
+and [_arangorestore_](../components/tools/arangorestore/_index.md).
 
 {{< warning >}}
 If you have developed your application using a _Single Instance_
@@ -79,7 +79,7 @@ The `WITH` keyword in AQL must be used to declare which collections
 are used in the AQL. For most AQL requires the required collections
 can be deduced from the query itself. However, with traversals this is
 not possible, if edge collections are used directly. See
-[AQL WITH operation](../../aql/high-level-operations/with.md)
+[AQL WITH operation](../aql/high-level-operations/with.md)
 for details. The `WITH` statement is not necessary when using named graphs
 for the traversals.
 
@@ -128,7 +128,7 @@ queries are guaranteed to be fully ACID. This is more than many other
 NoSQL database systems support. In cluster mode, single-document
 operations are also fully ACID. Multi-document / multi-collection
 queries in a cluster are not ACID, which is equally the case for
-competing database systems. See [Transactions](../../develop/transactions/_index.md)
+competing database systems. See [Transactions](../develop/transactions/_index.md)
 for details.
 
 Batch operations for multiple documents in the same collection are only
@@ -165,5 +165,5 @@ across multiple shards or even multiple collections. In a single server,
 `arangodump` produces a consistent snapshot.
 
 In the Enterprise Edition, there is an additional utility
-`arangobackup` and an HTTP API for [Hot Backups](../../operations/backup-and-restore.md#hot-backups)
+`arangobackup` and an HTTP API for [Hot Backups](../operations/backup-and-restore.md#hot-backups)
 to create consistent cluster snapshots.

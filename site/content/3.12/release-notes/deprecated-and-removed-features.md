@@ -21,7 +21,7 @@ detailed information about breaking changes before upgrading.
 {{< /info >}}
 
 - **Standalone Agency and Agency HTTP API**:
-  The Standalone Agency deployment type and the corresponding Agency HTTP API
+  The Standalone Agency deployment mode and the corresponding Agency HTTP API
   are no longer available starting with v3.12. 
 
 - **Little-endian on-disk key format for the RocksDB storage engine**:
@@ -51,7 +51,7 @@ detailed information about breaking changes before upgrading.
     backing storage for large datasets has been removed.
 
 - **Leader/Follower Deployment Mode**:
-  The Leader/Follower deployment type is deprecated and already removed from
+  The Leader/Follower deployment mode is deprecated and already removed from
   documentation. Active Failover and OneShard databases in clusters are better
   alternatives.
 

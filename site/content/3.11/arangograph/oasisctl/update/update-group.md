@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update group command
 title: Oasisctl Update Group
 menuTitle: Update Group

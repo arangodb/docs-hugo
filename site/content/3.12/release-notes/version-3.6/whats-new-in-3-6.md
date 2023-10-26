@@ -4,7 +4,7 @@ menuTitle: What's New in 3.6
 weight: 5
 description: >-
   Multiple performance improvements to AQL queries, dynamic search expressions,
-  extended text Analyzer, and a new cluster deployment type
+  extended text Analyzer, and a new cluster deployment mode
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in
@@ -584,7 +584,7 @@ only the final result. This can drastically reduce resource consumption and
 communication effort for the Coordinator.
 
 An entire cluster, selected databases or selected collections can be made
-eligible for the OneShard optimization. See [OneShard cluster architecture](../../deploy/deployment/oneshard.md)
+eligible for the OneShard optimization. See [OneShard cluster architecture](../../deploy/oneshard.md)
 for details and usage examples.
 
 ## HTTP API

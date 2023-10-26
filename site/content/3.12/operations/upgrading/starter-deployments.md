@@ -10,7 +10,7 @@ aliases:
 ---
 The ArangoDB [_Starter_](../../components/tools/arangodb-starter/_index.md) supports an automated procedure
 to perform upgrades, including rolling upgrades
-of a [Cluster](../../deploy/deployment/cluster/_index.md) setup.
+of a [Cluster](../../deploy/cluster/_index.md) setup.
 
 The upgrade procedure of the _Starter_ described in this section can be used to
 upgrade to a new hotfix, or to perform an upgrade to a new minor version of ArangoDB.

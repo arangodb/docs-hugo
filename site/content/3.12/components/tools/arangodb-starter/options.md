@@ -38,7 +38,7 @@ These are valid arguments, for example:
 ```
 
 You can also supply multiple addresses.
-See [Using multiple join arguments](../../../deploy/deployment/cluster/deployment/using-the-arangodb-starter.md#using-multiple-join-arguments)
+See [Using multiple join arguments](../../../deploy/cluster/deployment/using-the-arangodb-starter.md#using-multiple-join-arguments)
 for details.
 
 - `--starter.local`

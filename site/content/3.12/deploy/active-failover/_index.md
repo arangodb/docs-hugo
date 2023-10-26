@@ -3,7 +3,8 @@ title: Active Failover
 menuTitle: Active Failover
 weight: 10
 description: >-
-  This chapter introduces ArangoDB's Active Failover environment
+  You can set up multiple single server instances to have one leader and multiple
+  asynchronously replicated followers with automatic failover
 archetype: chapter
 ---
 An _Active Failover_ is defined as:
@@ -14,9 +15,10 @@ An _Active Failover_ is defined as:
 - At least one _Agency_ acting as a "witness" to determine which server becomes the _leader_
   in a _failure_ situation
 
-An _Active Failover_ behaves differently from an [ArangoDB Cluster](../cluster/_index.md), please see the [limitations section](#limitations) for more details.
+An _Active Failover_ behaves differently from an [ArangoDB Cluster](../cluster/_index.md),
+please see the [limitations section](#limitations) for more details.
 
-![ArangoDB Active Failover](../../../../images/leader-follower.png)
+![ArangoDB Active Failover](../../../images/leader-follower.png)
 
 The advantage of the _Active Failover_ setup is that there is an active third party, the _Agency_,
 which observes and supervises all involved server processes.
@@ -30,8 +32,8 @@ ArangoDB drivers can automatically determine the correct _leader_ server and
 redirect requests appropriately. Furthermore, Foxx Services do also automatically
 perform a failover: should the _leader_ instance fail (which is also the _Foxxmaster_)
 the newly elected _leader_ will reinstall all Foxx services and resume executing
-queued [Foxx tasks](../../../develop/foxx-microservices/guides/scripts-and-scheduling.md).
-[Database users](../../../operations/administration/user-management/_index.md)
+queued [Foxx tasks](../../develop/foxx-microservices/guides/scripts-and-scheduling.md).
+[Database users](../../operations/administration/user-management/_index.md)
 which were created on the _leader_ will also be valid on the newly elected _leader_
 (always depending on the condition that they were synced already).
 
@@ -58,7 +60,7 @@ connection between all the machines participating in the Active Failover setup.
 Multi-datacenter Active Failover setups are currently not supported.
 
 A multi-datacenter solution currently supported is the _Datacenter-to-Datacenter Replication_
-(DC2DC) among ArangoDB Clusters. See [DC2DC](../../arangosync/deployment/_index.md) chapter for details.
+(DC2DC) among ArangoDB Clusters. See [DC2DC](../arangosync/deployment/_index.md) chapter for details.
 {{< /info >}}
 
 ## Operative Behavior
@@ -116,6 +118,6 @@ The _Active Failover_ setup in ArangoDB has a few limitations.
   - Active Failover has no global state, and hence a failover to a bad follower (see the example above) overrides all other followers with that state (including the previous leader, which might have more up-to-date data). In a Cluster setup, a global state is provided by the agency and hence ArangoDB is aware of the latest state.
 - Should you add more than one _follower_, be aware that during a _failover_ situation
   the failover attempts to pick the most up-to-date follower as the new leader on a **best-effort** basis. 
-- Should you be using the [ArangoDB Starter](../../../components/tools/arangodb-starter/_index.md) 
+- Should you be using the [ArangoDB Starter](../../components/tools/arangodb-starter/_index.md) 
   or the [Kubernetes Operator](../kubernetes/_index.md) to manage your Active-Failover
   deployment, be aware that upgrading might trigger an unintentional failover between machines.

@@ -22,7 +22,7 @@ Every such path will be returned as a JSON object with two components:
 Let us take a look at a simple example to explain how it works.
 This is the graph that we are going to find some paths on:
 
-![Train Connection Map](../../../../../images/train_map.png)
+![Train Connection Map](../../../images/train_map.png)
 
 Each ellipse stands for a train station with the name of the city written inside
 of it. They are the vertices of the graph. Arrows represent train connections
@@ -181,7 +181,7 @@ direction for each collection in your path search.
 We load an example graph to get a named graph that reflects some possible
 train connections in Europe and North America.
 
-![Train Connection Map](../../../../../images/train_map.png)
+![Train Connection Map](../../../images/train_map.png)
 
 ```js
 ---

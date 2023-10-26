@@ -28,7 +28,7 @@ If you prefer to compile ArangoDB from source, please refer to the [Compiling](c
 section.
 
 For detailed information on how to deploy ArangoDB, once it has been installed,
-please refer to the [Deployment](../../deploy/deployment/_index.md) chapter.
+please refer to the [Deploy](../../deploy/_index.md) chapter.
 
 ## Supported platforms and architectures
 
@@ -39,7 +39,7 @@ ArangoDB requires systems with Little Endian byte order.
 {{< /info >}}
 
 {{< tip >}}
-[ArangoGraph Insights Platform](https://cloud.arangodb.com/)
+[ArangoGraph Insights Platform](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
 is a fully-managed service and requires no installation. It's the easiest way
 to run ArangoDB in the cloud.
 {{< /tip >}}

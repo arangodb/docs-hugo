@@ -792,6 +792,18 @@
     }
   },
   {
+    "name": "remove-unnecessary-projections",
+    "description": "Remove projections that are no longer used.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
     "name": "join-index-nodes",
     "description": "Join adjacent index nodes and replace them with a join node\nin case the indexes qualify for it.",
     "flags": {

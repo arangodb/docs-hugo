@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list roles command
 title: Oasisctl List Roles
 menuTitle: List Roles

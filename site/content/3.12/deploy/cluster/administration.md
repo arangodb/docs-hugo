@@ -49,14 +49,14 @@ db._create("test", { "replicationFactor": 3 })
 The `replicationFactor` value can be between the minimum and maximum
 replication factor (inclusive) as defined by the following startup options:
 
-- [`--cluster.min-replication-factor`](../../../components/arangodb-server/options.md#--clustermin-replication-factor)
-- [`--cluster.max-replication-factor`](../../../components/arangodb-server/options.md#--clustermax-replication-factor)
+- [`--cluster.min-replication-factor`](../../components/arangodb-server/options.md#--clustermin-replication-factor)
+- [`--cluster.max-replication-factor`](../../components/arangodb-server/options.md#--clustermax-replication-factor)
 
 The default replication factor for regular and for system collections is defined
 by the following startup options:
 
-- [`--cluster.default-replication-factor`](../../../components/arangodb-server/options.md#--clusterdefault-replication-factor)
-- [`--cluster.system-replication-factor`](../../../components/arangodb-server/options.md#--clustersystem-replication-factor)
+- [`--cluster.default-replication-factor`](../../components/arangodb-server/options.md#--clusterdefault-replication-factor)
+- [`--cluster.system-replication-factor`](../../components/arangodb-server/options.md#--clustersystem-replication-factor)
 
 ## Preparing growth
 
@@ -83,7 +83,7 @@ _DB-Server_ instance.
 ## Sharding
 
 For an introduction about _Sharding_ in Cluster, please refer to the
-[_Cluster Sharding_](../../architecture/data-sharding.md) section.
+[_Cluster Sharding_](../architecture/data-sharding.md) section.
 
 Number of _shards_ can be configured at _collection_ creation time, e.g. the UI,
 or the _ArangoDB Shell_:
@@ -207,7 +207,7 @@ Rebalancing might occur, amongst other scenarios, when:
 - There are changes in the number or size of data collections.
 
 A _shard_ can be moved from a _DB-Server_ to another, and the entire shard distribution
-can be rebalanced using the corresponding buttons in the web [UI](../../../components/web-interface/cluster.md).
+can be rebalanced using the corresponding buttons in the web [UI](../../components/web-interface/cluster.md).
 
 You can also do any of the following by using the API:
 - Calculate the current cluster imbalance.
@@ -215,7 +215,7 @@ You can also do any of the following by using the API:
 - Execute the given set of move shard operations.
 - Compute a set of move shard operations to improve balance and immediately execute them.
 
-For more information, see the [Cluster](../../../develop/http-api/cluster.md#get-the-current-cluster-imbalance) 
+For more information, see the [Cluster](../../develop/http-api/cluster.md#get-the-current-cluster-imbalance) 
 section of the HTTP API documentation.
 
 ## Replacing/Removing a _Coordinator_
@@ -312,7 +312,7 @@ do {
 } while (count > 0);
 ```
 
-This script has to be executed in [`arangosh`](../../../components/tools/arangodb-shell/_index.md)
+This script has to be executed in [`arangosh`](../../components/tools/arangodb-shell/_index.md)
 by issuing the following command:
 
 ```bash
