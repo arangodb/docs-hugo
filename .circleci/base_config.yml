@@ -329,7 +329,7 @@ jobs:
           name: Update vendor dependencies folder
           command: |
             cd docs-hugo/toolchain/arangoproxy
-            rm -r vendor go.mod go.sum
+            rm -r vendor go.sum
             go mod tidy
             go mod vendor
       - persist_to_workspace:
