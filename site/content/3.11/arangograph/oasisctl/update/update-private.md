@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update private command
 title: Oasisctl Update Private
 menuTitle: Update Private

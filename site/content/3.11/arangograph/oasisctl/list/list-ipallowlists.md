@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list ipallowlists command
 title: Oasisctl List Ipallowlists
 menuTitle: List Ipallowlists

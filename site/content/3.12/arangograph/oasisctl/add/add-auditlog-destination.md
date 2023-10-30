@@ -1,15 +1,11 @@
 ---
+archetype: default
+description: Description of the oasisctl add auditlog destination command
 title: Oasisctl Add Auditlog Destination
 menuTitle: Add Audit Log Destination
-weight: 10
-description: >-
-  Description of the oasisctl add auditlog destination command
-archetype: default
+weight: 15
 ---
-Add a destination to an auditlog.
-
 ## Synopsis
-
 Add a destination to an auditlog.
 
 ```
@@ -17,7 +13,6 @@ oasisctl add auditlog destination [flags]
 ```
 
 ## Options
-
 ```
   -i, --auditlog-id string                                Identifier of the auditlog
       --destination-excluded-topics strings               Do not send audit events with these topics to this destination.
@@ -31,8 +26,7 @@ oasisctl add auditlog destination [flags]
   -o, --organization-id string                            Identifier of the organization
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -40,6 +34,5 @@ oasisctl add auditlog destination [flags]
 ```
 
 ## See also
-
 * [oasisctl add auditlog](add-auditlog.md)	 - Add auditlog resources
 

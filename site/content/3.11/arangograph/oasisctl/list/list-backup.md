@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list backup command
 title: Oasisctl List Backup
 menuTitle: List Backup

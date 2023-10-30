@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl resume notebook command
 title: Oasisctl Resume Notebook
 menuTitle: Resume Notebook

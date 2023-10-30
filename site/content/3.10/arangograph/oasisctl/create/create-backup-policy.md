@@ -1,15 +1,11 @@
 ---
+archetype: default
+description: Description of the oasisctl create backup policy command
 title: Oasisctl Create Backup Policy
 menuTitle: Create Backup Policy
-weight: 20
-description: >-
-  Description of the oasisctl create backup policy command
-archetype: default
+weight: 25
 ---
-Create a new backup policy
-
 ## Synopsis
-
 Create a new backup policy
 
 ```
@@ -17,7 +13,6 @@ oasisctl create backup policy [flags]
 ```
 
 ## Options
-
 ```
       --additional-region-ids strings   Add backup to the specified addition regions
       --day-of-the-month int32          Run the backup on the specified day of the month (1-31) (default 1)
@@ -44,8 +39,7 @@ oasisctl create backup policy [flags]
       --wednesday                       If set, a backup will be created on Wednesdays
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -53,6 +47,5 @@ oasisctl create backup policy [flags]
 ```
 
 ## See also
-
 * [oasisctl create backup](create-backup.md)	 - Create backup ...
 

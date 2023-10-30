@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl unlock project command
 title: Oasisctl Unlock Project
 menuTitle: Unlock Project
