@@ -254,8 +254,8 @@ and occupy less disk space. This major performance boost makes dumps and
 restores up to several times faster, which is extremely useful when dealing
 with large shards.
 
-The new dump variant can be enabled via `--use-parallel-dump`. The default
-value is `true`.
+Whether the new parallel dump variant is used is controlled by the newly added
+`--use-parallel-dump` startup option. The default value is `true`.
 
 To achieve the best dump performance and the smallest data dumps in terms of
 size, you can additionally use the `--dump-vpack` option. The resulting dump data is stored
