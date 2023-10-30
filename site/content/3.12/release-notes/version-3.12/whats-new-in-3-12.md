@@ -245,12 +245,12 @@ limited number of collections/shards/indexes.
 
 ### arangodump
 
-#### Improved dump performance
+#### Improved dump performance and size
 
 ArangoDB 3.12 includes extended parallelization capabilities to work not only
 at the collection level, but also at the shard level. In combination with the
-new optimized format, database dumps are now created and restored more quickly
-and occupy minimal disk space. This major performance boost makes dumps and
+new VelocyPack format, database dumps are now created and restored more quickly
+and occupy less disk space. This major performance boost makes dumps and
 restores up to several times faster, which is extremely useful when dealing
 with large shards.
 
@@ -258,11 +258,12 @@ The new dump variant can be enabled via `--use-parallel-dump`. The default
 value is `true`.
 
 To achieve the best dump performance and the smallest data dumps in terms of
-size, you can use the `--dump-vpack` option. The resulting dump data is stored
-in velocypack format instead of JSON. The velocypack format is more compact than
+size, you can additionally use the `--dump-vpack` option. The resulting dump data is stored
+in VelocyPack format instead of JSON. The VelocyPack format is more compact than
 JSON, therefore the output file size can be reduced compared to JSON, even
-when compression is enabled, and can also lead to faster dumps. Note, however,
-that this option is experimental and disabled by default.
+when compression is enabled. It can also lead to faster dumps because there is less data to
+transfer and no conversion from the server-internal format (VelocyPack) to JSON is needed.
+Note, however, that this option is experimental and disabled by default.
 
 Optionally, you can make _arangodump_ write multiple output files per
 collection/shard. The file splitting allows better parallelization when
@@ -270,7 +271,7 @@ writing the results into the output file, which in case of non-split files
 must be serialized.
 You can enable it by setting the `--split-files` option to `true`. This option
 is disabled by default considering that dumps created with this option enabled
-cannot be restored into previous versions of ArangoDB easily.
+cannot be restored into previous versions of ArangoDB.
 
 #### Resource usage limits
 
