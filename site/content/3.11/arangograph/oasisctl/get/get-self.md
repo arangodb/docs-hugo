@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get self command
 title: Oasisctl Get Self
 menuTitle: Get Self

@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list metrics command
 title: Oasisctl List Metrics
 menuTitle: List Metrics

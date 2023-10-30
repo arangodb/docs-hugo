@@ -1,15 +1,11 @@
 ---
+archetype: default
+description: Description of the oasisctl import command
 title: Oasisctl Import
 menuTitle: Import
-weight: 70
-description: >-
-  Description of the oasisctl import command
-archetype: default
+weight: 20
 ---
-Import data from a local database or from another remote database into an Oasis deployment.
-
 ## Synopsis
-
 Import data from a local database or from another remote database into an Oasis deployment.
 
 ```
@@ -17,7 +13,6 @@ oasisctl import [flags]
 ```
 
 ## Options
-
 ```
   -b, --batch-size int                     The number of documents to write at once. (default 4096)
   -d, --destination-deployment-id string   Destination deployment id to import data into. It can be provided instead of address, username and password.
@@ -40,8 +35,7 @@ oasisctl import [flags]
       --source-username string             Source database username if required.
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -49,6 +43,5 @@ oasisctl import [flags]
 ```
 
 ## See also
-
 * [oasisctl](options.md)	 - ArangoGraph Insights Platform
 

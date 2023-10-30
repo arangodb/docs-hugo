@@ -1,15 +1,11 @@
 ---
+archetype: default
+description: Description of the oasisctl update metrics token command
 title: Oasisctl Update Metrics Token
 menuTitle: Update Metrics Token
-weight: 45
-description: >-
-  Description of the oasisctl update metrics token command
-archetype: default
+weight: 50
 ---
-Update a metrics token
-
 ## Synopsis
-
 Update a metrics token
 
 ```
@@ -17,7 +13,6 @@ oasisctl update metrics token [flags]
 ```
 
 ## Options
-
 ```
   -d, --deployment-id string     Identifier of the deployment
       --description string       Description of the CA certificate
@@ -28,8 +23,7 @@ oasisctl update metrics token [flags]
   -t, --token-id string          Identifier of the metrics token
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -37,6 +31,5 @@ oasisctl update metrics token [flags]
 ```
 
 ## See also
-
 * [oasisctl update metrics](update-metrics.md)	 - Update metrics resources
 

@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list projects command
 title: Oasisctl List Projects
 menuTitle: List Projects

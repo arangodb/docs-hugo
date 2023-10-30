@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl unlock ipallowlist command
 title: Oasisctl Unlock Ipallowlist
 menuTitle: Unlock Ipallowlist

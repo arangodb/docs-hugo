@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list cacertificates command
 title: Oasisctl List Cacertificates
 menuTitle: List Cacertificates

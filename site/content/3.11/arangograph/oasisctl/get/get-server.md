@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get server command
 title: Oasisctl Get Server
 menuTitle: Get Server

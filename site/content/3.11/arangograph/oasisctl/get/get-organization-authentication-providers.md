@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get organization authentication providers command
 title: Oasisctl Get Organization Authentication Providers
 menuTitle: Get Organization Authentication Providers

@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update cacertificate command
 title: Oasisctl Update Cacertificate
 menuTitle: Update Cacertificate

@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl auditlog get attached command
 title: Oasisctl Auditlog Get Attached
 menuTitle: Audit Log Get Attached

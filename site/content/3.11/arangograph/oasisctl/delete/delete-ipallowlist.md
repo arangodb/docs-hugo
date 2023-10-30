@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl delete ipallowlist command
 title: Oasisctl Delete Ipallowlist
 menuTitle: Delete Ipallowlist
