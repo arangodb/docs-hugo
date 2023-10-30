@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list backup policies command
 title: Oasisctl List Backup Policies
 menuTitle: List Backup Policies

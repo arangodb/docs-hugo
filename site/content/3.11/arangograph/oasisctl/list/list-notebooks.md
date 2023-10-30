@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list notebooks command
 title: Oasisctl List Notebooks
 menuTitle: List Notebooks

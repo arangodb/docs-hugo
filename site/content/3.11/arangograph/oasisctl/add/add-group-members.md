@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl add group members command
 title: Oasisctl Add Group Members
 menuTitle: Add Group Members

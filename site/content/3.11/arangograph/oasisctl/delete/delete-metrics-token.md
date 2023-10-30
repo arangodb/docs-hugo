@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl delete metrics token command
 title: Oasisctl Delete Metrics Token
 menuTitle: Delete Metrics Token
