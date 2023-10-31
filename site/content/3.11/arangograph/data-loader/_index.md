@@ -35,10 +35,10 @@ Drag and drop your data files in CSV format.
 {{< /tab >}}
 
 {{< tab name="4. Design your graph" >}}
-Model your graph by adding notes and connecting them via edges.
+Model your graph by adding nodes and connecting them via edges.
 Once you are ready, save and start the import. The resulting graph is an
-[EnterpriseGraph](../../graphs/enterprisegraphs/_index.md) that is available
-in your ArangoDB database.
+[EnterpriseGraph](../../graphs/enterprisegraphs/_index.md) with its
+corresponding collections, available in your ArangoDB database.
 {{< /tab >}}
 
 {{< /tabs >}}

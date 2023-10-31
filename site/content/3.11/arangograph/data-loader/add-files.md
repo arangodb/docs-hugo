@@ -9,8 +9,8 @@ archetype: default
 {{< description >}}
 
 The Data Loader allows you to upload your data files in CSV format into
-ArangoGraph and then use these data sources to design a graph using the graph
-modeller.
+ArangoGraph and then use these data sources to design a graph using the
+built-in graph designer.
 
 ## Upload your files
 
@@ -19,7 +19,7 @@ You can upload your CSV files in the following ways:
 - Drag and drop your files in the designated area.
 - Click the **Browse files** button and select the files you want to add.
 
-![Arangograph Data Loader Upload Files](../../../images/arangograph-data-loader-upload-files.png)
+![ArangoGraph Data Loader Upload Files](../../../images/arangograph-data-loader-upload-files.png)
 
 You have the option to either upload several files collectively as a batch or
 add them individually. Furthermore, you can supplement additional files later on.
@@ -28,6 +28,8 @@ the first row of data within the file.
 
 In case you upload CSV files without fields, they will not be available for
 manipulation.
+
+Once the files are uploaded, you can start [designing your graph](../data-loader/design-graph.md).
 
 ### File formatting limitations
 
@@ -50,3 +52,8 @@ Note that there is a cumulative file upload limit of 1GB. This means that the
 combined size of all files you upload should not exceed 1GB. If the total size
 of the uploaded files surpasses this limit, the upload may not be successful.
 
+## Delete files
+
+You can remove uploaded files by clicking the **Delete file** button in the
+**Your files** panel. Please keep in mind that in order to delete a file,
+you must first remove all graph associations associated with it.
