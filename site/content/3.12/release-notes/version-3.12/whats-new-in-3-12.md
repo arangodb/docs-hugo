@@ -10,13 +10,6 @@ The following list shows in detail which features have been added or improved in
 ArangoDB 3.12. ArangoDB 3.12 also contains several bug fixes that are not listed
 here.
 
-## arangodump
-
-The backup tool [arangodump](../components/tools/arangodump/_index.md) now supports
-a new flag called `--ignore-collection`. Collections can now be excluded from the dump
-by using this flag. It can be specified multiple times to exclude multiple collections.
-
-
 ## ArangoSearch
 
 ### WAND optimization (Enterprise Edition)
@@ -174,6 +167,16 @@ permanent connectivity issues:
   connectivity check requests sent by this instance to Coordinators.
 - `arangodb_network_connectivity_failures_dbservers_total`: Number of failed
   connectivity check requests sent to DB-Servers.
+
+## Client tools
+
+### arangodump
+
+_arangodump_ now supports a `--ignore-collection` startup option that you can
+specify multiple times to exclude the specified collections from a dump.
+
+It cannot be used together with the existing `--collection` option for specifying
+collections to include.
 
 ## Miscellaneous changes
 

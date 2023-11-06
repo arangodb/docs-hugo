@@ -99,14 +99,14 @@ arangodump --dump-data false --include-system-collections true --output-director
 ```
 
 To restrict the dump to just specific collections, use the `--collection` option.
-It can be specified multiple times if required:
+You can specify it multiple times if required:
 
 ```
 arangodump --collection myusers --collection myvalues --output-directory "dump"
 ```
 
-To exclude specific collections from the dump, use the `--filter-collection` option.
-It can be specified multiple times if required:
+To exclude specific collections from the dump, use the `--ignore-collection`
+option instead:
 
 ```
 arangodump --ignore-collection myusers --ignore-collection myvalues --output-directory "dump"
