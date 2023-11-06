@@ -12,7 +12,6 @@ import (
 
 func InitRepositories() {
 	models.Repositories = make(map[string]models.Repository)
-	fmt.Printf("Repositories found in config file %s\n", models.Conf.Repositories)
 	var wg sync.WaitGroup
 
 	for _, repo := range models.Conf.Repositories {
@@ -55,5 +54,5 @@ func openRepoStream(repository *models.Repository) {
 
 	repository.StdinPipe = stdin
 	repository.StdoutPipe = stdout
-	models.Logger.Printf("[openRepoStream] Done - Streams: \n%s\n%s", repository.StdinPipe, repository.StdoutPipe)
+	models.Logger.Printf("[openRepoStream] Opened Stream for %s succesfully", repository.Version)
 }

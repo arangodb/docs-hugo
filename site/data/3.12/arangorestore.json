@@ -1704,5 +1704,28 @@
     "requiresValue" : true,
     "section" : "",
     "type" : "string..."
+  },
+  "write-concern" : {
+    "category" : "option",
+    "default" : [
+    ],
+    "deprecatedIn" : null,
+    "description" : "Override the `writeConcern` value (can be specified multiple times, e.g. --write-concern 2 --write-concern myCollection=3).",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.0"
+    ],
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "",
+    "type" : "string..."
   }
 }

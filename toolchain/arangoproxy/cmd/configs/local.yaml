@@ -1,13 +1,4 @@
-webserver: ':8080'
-logFile: log.txt
 datasetsFile: '../internal/utils/datasets.json'
 cache: '/home/site/data/'
-repositories:
-  - name: stable
-    type: single
-    version: "3.12"
-    url: http://192.168.129.2:8529
-  - name: stable
-    type: cluster
-    version: "3.12"
-    url: http://192.168.129.3:8529
+debug: false
+repositories: []
