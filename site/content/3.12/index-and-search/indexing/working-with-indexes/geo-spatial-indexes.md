@@ -3,11 +3,11 @@ title: Geo-Spatial Indexes
 menuTitle: Geo-spatial Indexes
 weight: 30
 description: >-
-  ArangoDB features a Google S2-based geospatial index
+  Indexing GeoJSON geometry and latitude/longitude pairs can accelerate
+  geo-spatial queries
 archetype: default
 ---
-ArangoDB features a [Google S2](http://s2geometry.io/)-based
-geo-spatial index.
+The geo-spatial index type in ArangoDB is based on [Google S2](http://s2geometry.io/).
 Indexing is supported for a subset of the [**GeoJSON**](#geojson) geometry types
 as well as simple latitude/longitude pairs.
 

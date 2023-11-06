@@ -3,7 +3,7 @@ title: Upgrading _Starter_ Deployments
 menuTitle: Upgrading Starter Deployments
 weight: 15
 description: >-
-  Procedure to perform a rolling upgrade with the arangodb binary.
+  Procedure to perform a rolling upgrade with the `arangodb` executable
 archetype: default
 aliases:
   - upgrading-starter-deployments

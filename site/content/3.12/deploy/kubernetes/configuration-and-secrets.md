@@ -2,8 +2,7 @@
 title: Configuration & secrets
 menuTitle: Configuration & Secrets
 weight: 60
-description: >-
-  An ArangoDB cluster has lots of configuration options
+description: ''
 archetype: default
 ---
 An ArangoDB cluster has lots of configuration options.

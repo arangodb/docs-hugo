@@ -3,7 +3,8 @@ title: k Paths in AQL
 menuTitle: k Paths
 weight: 30
 description: >-
-  This type of query finds all paths between two given documents, a start and a target vertex in your graph
+  Determine all paths between a start and end vertex limited specified path
+  lengths
 archetype: default
 ---
 ## General query idea

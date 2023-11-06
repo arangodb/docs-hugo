@@ -3,7 +3,7 @@ title: _arangoinspect_ Examples
 menuTitle: Examples
 weight: 5
 description: >-
-  If you are asked by ArangoDB support to provide an inspector output, run the arangoinspect binary to generate a file in the current working folder
+  How to use the `arangoinspect` tool to collection information for troubleshooting
 archetype: default
 ---
 If you are asked by ArangoDB support to provide an inspector output, run

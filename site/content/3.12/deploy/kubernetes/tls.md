@@ -2,8 +2,7 @@
 title: Secure connections (TLS)
 menuTitle: TLS
 weight: 90
-description: >-
-  The ArangoDB Kubernetes Operator will by default create ArangoDB deployments that use secure TLS connections
+description: ''
 archetype: default
 ---
 The ArangoDB Kubernetes Operator will by default create ArangoDB deployments

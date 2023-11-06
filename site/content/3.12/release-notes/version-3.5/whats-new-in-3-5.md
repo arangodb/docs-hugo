@@ -4,7 +4,7 @@ menuTitle: What's New in 3.5
 weight: 5
 description: >-
   Customized Analyzers, multiple shortest path algorithm for graphs, fast cluster
-  joins, a new transaction API, a feature for expiring documents, and hot backups
+  joins, a new transaction API, hot backups, a feature for expiring documents
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in

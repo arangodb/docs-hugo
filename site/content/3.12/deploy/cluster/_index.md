@@ -1,5 +1,5 @@
 ---
-title: Cluster Deployments
+title: Cluster deployments
 menuTitle: Cluster
 weight: 15
 description: >-

@@ -2,8 +2,7 @@
 title: ArangoBackup Custom Resource
 menuTitle: Backup Resource
 weight: 20
-description: >-
-  ArangoBackup Custom Resource
+description: ''
 archetype: default
 ---
 The ArangoBackup Operator creates and maintains ArangoBackups

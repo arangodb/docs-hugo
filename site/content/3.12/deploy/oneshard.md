@@ -1,5 +1,5 @@
 ---
-title: OneShard
+title: OneShard cluster deployments
 menuTitle: OneShard
 weight: 20
 description: >-

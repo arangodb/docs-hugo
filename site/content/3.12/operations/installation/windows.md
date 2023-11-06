@@ -3,7 +3,7 @@ title: Installing ArangoDB on Windows
 menuTitle: Windows
 weight: 20
 description: >-
-  This is a walkthrough to install ArangoDB on Windows. You can find different methods to do so, automatically or manually.
+  You can use ArangoDB on Windows via Docker images, or use an installer or zip archives
 archetype: default
 ---
 You can use ArangoDB on Windows (64-bit) in different ways:

@@ -3,14 +3,10 @@ title: ArangoDB Starter Options
 menuTitle: Options
 weight: 5
 description: >-
-  The ArangoDB Starter provides a lot of options to control various aspects of the cluster or database you want to run
+  The Starter provides a lot of options to control various aspects of the cluster
+  or other deployment you want to run
 archetype: default
 ---
-The ArangoDB Starter provides a lot of options to control various aspects
-of the cluster or database you want to run.
-
-Below you find a list of all options and their meanings.
-
 ## Common options
 
 - `--starter.data-dir=path`

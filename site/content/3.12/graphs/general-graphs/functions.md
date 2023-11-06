@@ -3,7 +3,7 @@ title: Graph Functions
 menuTitle: Functions
 weight: 10
 description: >-
-  This chapter describes various functions on a graph
+  Utility functions available for named graphs
 archetype: default
 ---
 This chapter describes [various functions on a graph](../_index.md).

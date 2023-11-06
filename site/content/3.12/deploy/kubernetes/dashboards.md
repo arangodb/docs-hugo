@@ -2,8 +2,7 @@
 title: Operator Dashboards
 menuTitle: Dashboards
 weight: 10
-description: >-
-  The ArangoDB Kubernetes Operator can create a dashboard for each type of resource it supports
+description: ''
 archetype: default
 ---
 The ArangoDB Kubernetes Operator can create a dashboard for each type of

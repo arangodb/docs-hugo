@@ -1,9 +1,8 @@
 ---
-title: ArangoSync Workers
+title: Set up the ArangoSync Workers for Datacenter-to-Datacenter Replication
 menuTitle: ArangoSync Workers
 weight: 15
-description: >-
-  The ArangoSync Worker is responsible for executing synchronization tasks
+description: ''
 archetype: default
 ---
 The _ArangoSync Worker_ is responsible for executing synchronization tasks.

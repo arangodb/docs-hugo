@@ -4,7 +4,7 @@ menuTitle: What's New in 3.4
 weight: 5
 description: >-
   An integrated search engine for full-text and beyond, overhauled geo-spatial
-  indexing, storage engine changes, query result streaming
+  indexing, query result streaming, storage engine changes
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in

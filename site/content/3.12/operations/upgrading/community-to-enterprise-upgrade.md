@@ -2,8 +2,7 @@
 title: Community to Enterprise Upgrade Procedure
 menuTitle: Community to Enterprise Upgrade
 weight: 5
-description: >-
-  While migrating from the Community to the Enterprise Edition is supported, installing directly the Enterprise package over the Community package is not supported
+description: ''
 archetype: default
 ---
 {{< warning >}}

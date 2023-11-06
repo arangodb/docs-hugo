@@ -3,21 +3,20 @@ title: AQL functions
 menuTitle: Functions
 weight: 30
 description: >-
-  AQL supports functions to allow more complex computations. Functions can be called at any query position where an expression is allowed.
+  AQL supports functions to allow more complex computations and they can be
+  called at any query position where an expression is allowed
 archetype: chapter
 ---
-AQL supports functions to allow more complex computations. Functions can be
-called at any query position where an expression is allowed. The general
-function call syntax is:
+The general function call syntax is the following:
 
 ```aql
 FUNCTIONNAME(arguments)
 ```
 
-where `FUNCTIONNAME` is the name of the function to be called, and `arguments`
+`FUNCTIONNAME` is the name of the function to be called, and `arguments`
 is a comma-separated list of function arguments. If a function does not need any
 arguments, the argument list can be left empty. However, even if the argument
-list is empty the parentheses around it are still mandatory to make function
+list is empty, the parentheses around it are still mandatory to make function
 calls distinguishable from variable names.
 
 Some example function calls:

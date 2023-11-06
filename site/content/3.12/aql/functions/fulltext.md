@@ -3,11 +3,11 @@ title: Fulltext functions in AQL
 menuTitle: Fulltext
 weight: 30
 description: >-
-  AQL offers the following functions to filter data based on fulltext indexes
+  AQL offers functions to filter data using fulltext indexes
 archetype: default
 ---
-AQL offers the following functions to filter data based on
-[fulltext indexes](../../index-and-search/indexing/working-with-indexes/fulltext-indexes.md).
+See [fulltext indexes](../../index-and-search/indexing/working-with-indexes/fulltext-indexes.md)
+for details.
 
 {{< warning >}}
 The fulltext index type is deprecated from version 3.10 onwards.

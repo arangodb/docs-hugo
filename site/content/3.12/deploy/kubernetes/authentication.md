@@ -2,8 +2,7 @@
 title: Authentication
 menuTitle: Authentication
 weight: 40
-description: >-
-  The ArangoDB Kubernetes Operator will by default create ArangoDB deployments that require authentication to access the database
+description: ''
 archetype: default
 ---
 The ArangoDB Kubernetes Operator will by default create ArangoDB deployments

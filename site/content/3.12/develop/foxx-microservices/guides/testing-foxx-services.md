@@ -2,8 +2,7 @@
 title: Testing Foxx services
 menuTitle: Testing Foxx services
 weight: 25
-description: >-
-  Foxx provides out of the box support for running tests against an installed service using an API similar to the Mocha test runner
+description: ''
 archetype: default
 ---
 Foxx provides out of the box support for running tests against an

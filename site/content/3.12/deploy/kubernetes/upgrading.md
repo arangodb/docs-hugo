@@ -2,8 +2,7 @@
 title: Upgrading
 menuTitle: Upgrading
 weight: 55
-description: >-
-  The ArangoDB Kubernetes Operator supports upgrading an ArangoDB from one version to the next
+description: ''
 archetype: default
 ---
 The ArangoDB Kubernetes Operator supports upgrading an ArangoDB from

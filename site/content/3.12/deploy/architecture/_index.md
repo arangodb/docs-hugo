@@ -1,5 +1,5 @@
 ---
-title: Architecture
+title: ArangoDB Architecture
 menuTitle: Architecture
 weight: 100
 description: >-

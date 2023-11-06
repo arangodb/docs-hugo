@@ -2,8 +2,7 @@
 title: ArangoDB Starter Architecture
 menuTitle: Architecture
 weight: 15
-description: >-
-  The ArangoDB Starter is a program used to create ArangoDB database deployments on bare-metal (or virtual machines) with ease
+description: ''
 archetype: default
 ---
 ## What does the Starter do

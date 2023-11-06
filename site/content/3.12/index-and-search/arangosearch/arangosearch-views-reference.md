@@ -1,5 +1,5 @@
 ---
-title: arangosearch Views Reference
+title: '`arangosearch` Views Reference'
 menuTitle: '`arangosearch` Views Reference'
 weight: 85
 description: ''

@@ -3,7 +3,7 @@ title: Upgrading on macOS
 menuTitle: Upgrading on macOS
 weight: 10
 description: >-
-  How to upgrade an ArangoDB single-server installation installed via a DMG package
+  How to upgrade an ArangoDB single server installation installed via a DMG package
 archetype: default
 aliases:
   - upgrading-on-macos

@@ -2,8 +2,7 @@
 title: Cluster Deployment
 menuTitle: Deployment
 weight: 5
-description: >-
-  This chapter describes how to deploy an ArangoDB Cluster
+description: ''
 archetype: chapter
 ---
 This chapter describes how to deploy an _ArangoDB Cluster_.

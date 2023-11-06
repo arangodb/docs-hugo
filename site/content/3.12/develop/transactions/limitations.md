@@ -1,9 +1,8 @@
 ---
-title: Limitations
+title: Limitations of transactions
 menuTitle: Limitations
 weight: 25
-description: >-
-  Transactions in ArangoDB have been designed with particular use cases in mind
+description: ''
 archetype: default
 ---
 <!-- TODO: Update for RocksDB -->

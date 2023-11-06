@@ -1,5 +1,5 @@
 ---
-title: Deploy
+title: Deploy ArangoDB
 menuTitle: Deploy
 weight: 185
 description: >-

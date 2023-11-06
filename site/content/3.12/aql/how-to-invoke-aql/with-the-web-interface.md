@@ -3,18 +3,16 @@ title: Executing AQL queries in the ArangoDB web interface
 menuTitle: with the Web Interface
 weight: 10
 description: >-
-  In the ArangoDB Web Interface the AQL Editor tab allows to execute ad-hoc AQLqueries
+  You can run ad-hoc AQL queries using the query editor in the web interface
 archetype: default
 ---
-In the ArangoDB Web Interface the AQL Editor tab allows to execute ad-hoc AQL
-queries.
+In the **QUERIES** section of the web interface, type in a query in the main box
+and execute it by clicking the **Execute** button. The query result is displayed
+below the editor.
 
-Type in a query in the main box and execute it by pressing the *Execute* button.
-The query result will be shown in another tab. The editor provides a few example
-queries that can be used as templates.
-
+The editor provides a few example queries that you can use as templates.
 It also provides a feature to explain a query and inspect its execution plan
-(with the *Explain* button). 
+by clicking the **Explain** button.
 
 Bind parameters can be defined in the right-hand side pane. The format is the
 same as used for bind parameters in the HTTP REST API and in (JavaScript)
@@ -48,6 +46,6 @@ How bind parameters work can be found in [AQL Fundamentals](../fundamentals/bind
 
 Queries can also be saved in the AQL editor along with their bind parameter values
 for later reuse. This data is stored in the user profile in the current database
-(in the *_users* system table). 
+(in the _users_ system collection). 
 
 Also see the detailed description of the [Web Interface](../../components/web-interface/_index.md).

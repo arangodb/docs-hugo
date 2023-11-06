@@ -3,7 +3,8 @@ title: Graph traversals in AQL
 menuTitle: Traversals
 weight: 10
 description: >-
-  There are two syntaxes for graph traversals in ArangoDB Query Language (AQL), the named graph and the anonymous graph.
+  You can traverse named graphs and anonymous graphs with a native AQL
+  language construct
 archetype: default
 ---
 ## Syntax

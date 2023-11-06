@@ -1,9 +1,8 @@
 ---
-title: Cluster Administration
+title: Administrate ArangoDB cluster deployments
 menuTitle: Administration
 weight: 10
-description: >-
-  ArangoDB Cluster Administration
+description: ''
 archetype: default
 ---
 This section includes information related to the administration of an ArangoDB Cluster.

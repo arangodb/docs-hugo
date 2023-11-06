@@ -3,7 +3,8 @@ title: General Graphs
 menuTitle: General Graphs
 weight: 85
 description: >-
-  This chapter describes the general-graph module
+  The basic type of a named graph is called a General Graph and there is a
+  JavaScript module for working with these graphs
 archetype: chapter
 ---
 This chapter describes the [general-graph](../_index.md) module.

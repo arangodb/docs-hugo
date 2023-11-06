@@ -2,8 +2,7 @@
 title: Administration
 menuTitle: Administration
 weight: 225
-description: >-
-  Deployments of ArangoDB servers can be managed with the following tools
+description: ''
 archetype: chapter
 ---
 ## Tools

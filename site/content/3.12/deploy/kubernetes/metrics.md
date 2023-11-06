@@ -2,8 +2,7 @@
 title: Metrics
 menuTitle: Metrics
 weight: 65
-description: >-
-  Metrics
+description: ''
 archetype: default
 ---
 The ArangoDB Kubernetes Operator (`kube-arangodb`) exposes metrics of

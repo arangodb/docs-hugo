@@ -4,7 +4,7 @@ menuTitle: What's New in 3.7
 weight: 5
 description: >-
   Extended search features and index utilization, document schema validation,
-  replicated and disjoint managed graphs, various security features, and more 
+  replicated and disjoint managed graphs, security features 
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in

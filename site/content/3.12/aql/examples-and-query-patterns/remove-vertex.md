@@ -3,7 +3,8 @@ title: Remove vertices with AQL
 menuTitle: Remove vertex
 weight: 45
 description: >-
-  Deleting vertices with associated edges is currently not handled via AQL while the graph management interface and the REST API for the graph module offer a vertex deletion functionality
+  Removing connected edges along with vertex documents directly in AQL is
+  possible in a limited way
 archetype: default
 ---
 Deleting vertices with associated edges is currently not handled via AQL while 

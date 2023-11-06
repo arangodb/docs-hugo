@@ -3,7 +3,7 @@ title: Upgrading on Linux
 menuTitle: Upgrading on Linux
 weight: 5
 description: >-
-  By installing the new ArangoDB package the standalone instance is automatically upgraded
+  How to upgrade a single server installation installed using package managers
 archetype: default
 aliases:
   - upgrading-on-linux

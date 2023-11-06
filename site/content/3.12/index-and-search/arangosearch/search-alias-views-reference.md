@@ -1,5 +1,5 @@
 ---
-title: search-alias Views Reference
+title: '`search-alias` Views Reference'
 menuTitle: '`search-alias` Views Reference'
 weight: 80
 description: ''

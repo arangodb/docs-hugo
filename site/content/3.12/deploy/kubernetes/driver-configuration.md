@@ -2,8 +2,7 @@
 title: Configuring your driver for ArangoDB access
 menuTitle: Driver Configuration
 weight: 30
-description: >-
-  In this chapter you'll learn how to configure a driver for accessing an ArangoDB deployment in Kubernetes
+description: ''
 archetype: default
 ---
 In this chapter you'll learn how to configure a driver for accessing

@@ -2,8 +2,7 @@
 title: Foxx service context
 menuTitle: Service context
 weight: 10
-description: >-
-  Foxx service context
+description: ''
 archetype: default
 ---
 The service context provides access to methods and attributes that are specific

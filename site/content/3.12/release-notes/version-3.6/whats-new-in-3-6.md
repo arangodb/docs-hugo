@@ -4,7 +4,7 @@ menuTitle: What's New in 3.6
 weight: 5
 description: >-
   Multiple performance improvements to AQL queries, dynamic search expressions,
-  extended text Analyzer, and a new cluster deployment mode
+  a new cluster deployment mode
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in

@@ -2,8 +2,7 @@
 title: Scaling
 menuTitle: Scaling
 weight: 45
-description: >-
-  The ArangoDB Kubernetes Operator supports up and down scaling of the number of DB-Servers & Coordinators
+description: ''
 archetype: default
 ---
 The ArangoDB Kubernetes Operator supports up and down scaling of

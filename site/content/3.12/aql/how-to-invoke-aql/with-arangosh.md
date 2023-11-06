@@ -3,8 +3,8 @@ title: Executing AQL queries from _arangosh_
 menuTitle: with arangosh
 weight: 5
 description: >-
-  In the ArangoDB shell, you can use the db._query() and db._createStatement()
-  methods to execute AQL queries.
+  How to run queries, set bind parameters, and obtain the resulting and
+  additional information using the JavaScript API
 archetype: default
 ---
 In the ArangoDB shell, you can use the `db._query()` and `db._createStatement()`

@@ -3,7 +3,7 @@ title: Upgrading on Windows
 menuTitle: Upgrading on Windows
 weight: 15
 description: >-
-  As there are different ways to install ArangoDB on Windows, the upgrade method depends on the installation method that was used
+  How to upgrade a single server installation using an installer or zip archive
 archetype: default
 aliases:
   - upgrading-on-windows

@@ -2,8 +2,7 @@
 title: ArangoDeploymentReplication Custom Resource
 menuTitle: Deployment Replication Resource Reference
 weight: 75
-description: >-
-  ArangoDeploymentReplication Custom Resource
+description: ''
 archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" >}}

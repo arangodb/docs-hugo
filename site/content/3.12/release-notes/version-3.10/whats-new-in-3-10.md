@@ -4,7 +4,7 @@ menuTitle: What's New in 3.10
 weight: 5
 description: >-
   Support for ARM, computed values, a new managed graph type with automated
-  sharding, various search features, AQL optimizations, and more
+  sharding, various search features, AQL optimizations
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in

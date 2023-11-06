@@ -2,8 +2,7 @@
 title: Services and load balancer
 menuTitle: Services & Load balancer
 weight: 70
-description: >-
-  The ArangoDB Kubernetes Operator will create services that can be used to reach the ArangoDB servers from inside the Kubernetes cluster
+description: ''
 archetype: default
 ---
 The ArangoDB Kubernetes Operator will create services that can be used to

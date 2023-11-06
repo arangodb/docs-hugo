@@ -2,8 +2,7 @@
 title: Storage
 menuTitle: Storage
 weight: 80
-description: >-
-  Storage
+description: ''
 archetype: default
 ---
 An ArangoDB cluster relies heavily on fast persistent storage.

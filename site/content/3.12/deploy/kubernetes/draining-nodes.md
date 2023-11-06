@@ -2,8 +2,7 @@
 title: Draining Kubernetes nodes
 menuTitle: Draining Nodes
 weight: 50
-description: >-
-  If Kubernetes nodes with ArangoDB pods on them are drained without care data loss can occur! The recommended procedure is described below
+description: ''
 archetype: default
 ---
 {{< danger >}}

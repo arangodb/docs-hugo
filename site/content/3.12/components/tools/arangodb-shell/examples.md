@@ -2,8 +2,7 @@
 title: _arangosh_ Examples
 menuTitle: Examples
 weight: 5
-description: >-
-  By default, arangosh tries to connect to an ArangoDB server running on server localhost on port 8529
+description: ''
 archetype: default
 ---
 ## Connecting to a server

@@ -2,8 +2,7 @@
 title: ArangoDeployment Custom Resource
 menuTitle: Deployment Resource Reference
 weight: 15
-description: >-
-  ArangoDeployment Custom Resource
+description: ''
 archetype: default
 ---
 The ArangoDB Deployment Operator creates and maintains ArangoDB deployments

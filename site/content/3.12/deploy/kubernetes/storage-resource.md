@@ -2,8 +2,7 @@
 title: ArangoLocalStorage Custom Resource
 menuTitle: Storage Resource
 weight: 85
-description: >-
-  ArangoLocalStorage Custom Resource
+description: ''
 archetype: default
 ---
 The ArangoDB Storage Operator creates and maintains ArangoDB

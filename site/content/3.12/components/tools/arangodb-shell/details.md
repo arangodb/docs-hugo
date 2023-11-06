@@ -2,8 +2,7 @@
 title: _arangosh_ Details
 menuTitle: Details
 weight: 10
-description: >-
-  You can paste multiple lines into arangosh, given the first line ends with an opening brace
+description: ''
 archetype: default
 ---
 ## Interaction

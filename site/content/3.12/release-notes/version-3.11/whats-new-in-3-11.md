@@ -4,7 +4,7 @@ menuTitle: What's New in 3.11
 weight: 5
 description: >-
   Improved performance and reporting for AQL queries, new caching features for
-  indexed data, improvements to the web interface, and various new metrics
+  indexed data, improvements to the web interface
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in

@@ -2,8 +2,7 @@
 title: Foxx reference
 menuTitle: Reference
 weight: 20
-description: >-
-  Each Foxx service is defined by a JSON manifest specifying the entry point, any scripts defined by the service, possible configuration options and Foxx dependencies, as well as other metadata
+description: ''
 archetype: chapter
 ---
 Each Foxx service is defined by a [JSON manifest](service-manifest.md)

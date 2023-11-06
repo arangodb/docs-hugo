@@ -1,5 +1,5 @@
 ---
-title: Single instance 
+title: Single instance deployments
 menuTitle: Single instance
 weight: 5
 description: >-

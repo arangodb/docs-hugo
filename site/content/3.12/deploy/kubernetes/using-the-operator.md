@@ -2,8 +2,7 @@
 title: Using the ArangoDB Kubernetes Operator
 menuTitle: Using the Operator
 weight: 5
-description: >-
-  The ArangoDB Kubernetes Operator needs to be installed in your Kubernetes cluster first
+description: ''
 archetype: default
 ---
 ## Installation

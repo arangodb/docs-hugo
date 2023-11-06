@@ -1,8 +1,10 @@
 ---
-title: The _collection_ object
+title: The _collection_ object of the JavaScript API
 menuTitle: collection object
 weight: 10
-description: ''
+description: >-
+  Collection objects represent document collections and provide access to
+  information and methods for executing collection-related operations
 archetype: default
 ---
 The JavaScript API returns _collection_ objects when you use the following methods

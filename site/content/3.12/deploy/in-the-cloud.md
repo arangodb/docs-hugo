@@ -1,5 +1,5 @@
 ---
-title: Deploying Options in the _Cloud_
+title: Deploying ArangoDB in the cloud
 menuTitle: In the Cloud
 weight: 35
 description: ''

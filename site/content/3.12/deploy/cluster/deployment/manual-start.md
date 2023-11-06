@@ -1,9 +1,8 @@
 ---
-title: Starting Manually
+title: Start an ArangoDB cluster manually
 menuTitle: Manual Start
 weight: 5
-description: >-
-  An ArangoDB Cluster consists of several running tasks or processes which form the Cluster
+description: ''
 archetype: default
 ---
 An ArangoDB Cluster consists of several running _tasks_ or _processes_ which

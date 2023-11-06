@@ -1,9 +1,8 @@
 ---
-title: Using the ArangoDB Starter
+title: Create an ArangoDB cluster Using the ArangoDB Starter
 menuTitle: Using the ArangoDB Starter
 weight: 10
-description: >-
-  This section describes how to start a cluster using the Starter tool (the arangodb executable)
+description: ''
 archetype: default
 ---
 This section describes how to start a Cluster using the [_Starter_](../../../components/tools/arangodb-starter/_index.md)

@@ -3,7 +3,8 @@ title: Type check and cast functions in AQL
 menuTitle: Type check & cast
 weight: 55
 description: >-
-  Some operators expect their operands to have a certain data type
+  AQL provides functions for checking data types and converting between
+  different types
 archetype: default
 ---
 Some operators expect their operands to have a certain data type. For example,

@@ -1,9 +1,10 @@
 ---
-title: Scripts and scheduling
+title: Scripts and scheduling in Foxx services
 menuTitle: Scripts and scheduling
 weight: 35
 description: >-
-  You can define scripts that need to be invoked directly and can be used to implement one-off tasks or scheduled and recurring jobs using queues
+  You can define scripts that need to be invoked directly and can be used to
+  implement one-off tasks or scheduled and recurring jobs using queues
 archetype: default
 ---
 In addition to the main entry point which defines your service's

@@ -2,8 +2,7 @@
 title: ArangoBackupPolicy Custom Resource
 menuTitle: BackupPolicy Resource
 weight: 25
-description: >-
-  ArangoBackupPolicy Custom Resource
+description: ''
 archetype: default
 ---
 The ArangoBackupPolicy represents schedule definition for creating ArangoBackup Custom Resources by operator.

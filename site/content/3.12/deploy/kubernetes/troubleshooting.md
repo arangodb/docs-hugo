@@ -2,8 +2,7 @@
 title: Troubleshooting
 menuTitle: Troubleshooting
 weight: 95
-description: >-
-  While Kubernetes and the ArangoDB Kubernetes operator automatically resolve a lot of issues, there are always cases where human attention is needed
+description: ''
 archetype: default
 ---
 While Kubernetes and the ArangoDB Kubernetes operator automatically

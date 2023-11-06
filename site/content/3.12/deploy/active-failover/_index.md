@@ -1,5 +1,5 @@
 ---
-title: Active Failover
+title: Active Failover deployments
 menuTitle: Active Failover
 weight: 10
 description: >-

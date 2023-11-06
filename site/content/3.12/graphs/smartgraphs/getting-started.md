@@ -3,7 +3,7 @@ title: Getting started with SmartGraphs
 menuTitle: Getting Started
 weight: 5
 description: >-
-  SmartGraphs enable you to manage graphs at scale
+  How to create and use SmartGraphs
 archetype: default
 ---
 SmartGraphs **cannot use existing collections**. When switching to SmartGraph

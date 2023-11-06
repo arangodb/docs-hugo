@@ -1,9 +1,8 @@
 ---
-title: Cluster Limitations
+title: Limitations of ArangoDB cluster deployments
 menuTitle: Limitations
 weight: 15
-description: >-
-  ArangoDB has no built-in limitations to horizontal scalability
+description: ''
 archetype: default
 ---
 ArangoDB has no built-in limitations to horizontal scalability. The

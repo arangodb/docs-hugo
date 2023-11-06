@@ -3,7 +3,8 @@ title: Installation
 menuTitle: Installation
 weight: 210
 description: >-
-  To install ArangoDB, as first step, please download the package for your OperatingSystem from the official Download page of the ArangoDB web site
+  You can install ArangoDB by downloading and running the official packages,
+  as well as run ArangoDB using Docker images
 archetype: chapter
 ---
 To install ArangoDB, as first step, please download a package for your operating

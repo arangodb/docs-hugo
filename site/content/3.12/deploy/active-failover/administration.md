@@ -1,14 +1,10 @@
 ---
-title: Active Failover Administration
+title: Administrate an Active Failover deployment
 menuTitle: Administration
 weight: 15
-description: >-
-  This section includes information related to the administration of an Active Failover setup
+description: ''
 archetype: default
 ---
-This section includes information related to the administration of an _Active Failover_
-setup.
-
 ## Introduction
 
 The _Active Failover_ setup requires almost no manual administration.

@@ -1,6 +1,6 @@
 ---
-title: Single Instance vs. Cluster
-menuTitle: Single Instance vs. Cluster
+title: Single instance vs. Cluster deployments
+menuTitle: Single instance vs. Cluster
 weight: 40
 description: >-
   Similarities and differences in behavior between single servers and clusters

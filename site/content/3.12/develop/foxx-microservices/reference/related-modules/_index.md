@@ -1,9 +1,8 @@
 ---
-title: Related modules
+title: Related modules for Foxx
 menuTitle: Related modules
 weight: 30
-description: >-
-  These are some of the modules outside of Foxx you will find useful when writing Foxx services
+description: ''
 archetype: chapter
 ---
 These are some of the modules outside of Foxx you will find useful when

@@ -1,9 +1,8 @@
 ---
-title: Development mode
+title: Development mode for Foxx services
 menuTitle: Development mode
 weight: 20
-description: >-
-  Development mode allows developers to make changes to deployed services in-place directly on the database server's file system without downloading and re-uploading the service bundle
+description: ''
 archetype: default
 ---
 Development mode allows developers to make changes to deployed services

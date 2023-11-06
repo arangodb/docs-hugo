@@ -1,9 +1,8 @@
 ---
-title: ArangoDB cluster
+title: Set up ArangoDB clusters for Datacenter-to-Datacenter Replication
 menuTitle: ArangoDB Cluster
 weight: 5
-description: >-
-  There are several ways to start an ArangoDB cluster
+description: ''
 archetype: default
 ---
 There are several ways to start an ArangoDB cluster. This section focuses

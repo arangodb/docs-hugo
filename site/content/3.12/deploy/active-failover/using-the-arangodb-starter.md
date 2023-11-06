@@ -1,9 +1,8 @@
 ---
-title: Using the ArangoDB Starter
+title: Create an Active Failover deployment using the ArangoDB Starter
 menuTitle: Using the ArangoDB Starter
 weight: 10
-description: >-
-  This section describes how to start an Active Failover setup the tool Starter (the arangodb binary program)
+description: ''
 archetype: default
 ---
 This section describes how to start an Active Failover setup the tool [_Starter_](../../components/tools/arangodb-starter/_index.md)
