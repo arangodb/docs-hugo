@@ -3,7 +3,8 @@ title: Install ArangoDB on-premises # TODO: distinguish between local and on-pre
 menuTitle: On-premises installation
 weight: 40
 description: >-
-  Instructions on how to download and install ArangoDB    
+  How to download and install ArangoDB for using it locally or self-hosting it
+  on your own hardware
 archetype: default
 ---
 ## Installation

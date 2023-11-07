@@ -3,11 +3,12 @@ title: AQL functions
 menuTitle: Functions
 weight: 30
 description: >-
-  AQL supports functions to allow more complex computations and they can be
-  called at any query position where an expression is allowed
+  AQL offers an extensive set of functions to allow for complex computations
+  and it supports user-defined functions
 archetype: chapter
 ---
-The general function call syntax is the following:
+Functions can be called at any query position where an expression is allowed.
+The general function call syntax is:
 
 ```aql
 FUNCTIONNAME(arguments)

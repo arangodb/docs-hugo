@@ -3,7 +3,8 @@ title: Pregel Algorithms
 menuTitle: Pregel Algorithms
 weight: 5
 description: >-
-  Pregel algorithms can be used for graph exploration, path finding, analytics queries, and much more.
+  You can use Pregel algorithms for graph exploration, path finding, analytics
+  queries, and much more
 archetype: default
 aliases:
   - pregel-algorithms
