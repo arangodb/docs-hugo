@@ -933,7 +933,7 @@ aliases and deprecated ones.
 
 ## Client tools
 
-### _arangodump_ concurrency / shard-parallelism
+### arangodump concurrency / shard-parallelism
 
 Since v3.4.0, _arangodump_ can use multiple threads for dumping database data in
 parallel. _arangodump_ versions prior to v3.8.0 distribute dump jobs for
@@ -947,7 +947,7 @@ to dump but only few collections.
 
 Also see [_arangodump_ Threads](../../components/tools/arangodump/examples.md#threads).
 
-### _arangodump_ output format
+### arangodump output format
 
 Since its inception, _arangodump_ wrapped each dumped document into an extra
 JSON envelope, such as follows:
@@ -969,7 +969,7 @@ Using the new non-enveloped dump format also allows _arangorestore_ to
 parallelize restore operations for individual collections. This is not possible
 with the old, enveloped format.
 
-### _arangorestore_ parallelization for single collections
+### arangorestore parallelization for single collections
 
 _arangorestore_ can now parallelize restore operations even for single
 collections, which can lead to increased restore performance.
@@ -980,21 +980,21 @@ The dump format can be configured by specifying the `--envelope false` option
 when invoking arangodump, and the number of restore threads can be adjusted by
 setting _arangorestore_'s `--threads` option.
 
-### _arangodump_ dumping of individual shards
+### arangodump dumping of individual shards
 
 _arangodump_ can now optionally dump individual shards only, by specifying the
 `--shard` option one or multiple times. This option can be used to split the
 dump of a large collection with multiple shards into multiple separate dump
 processes, which could be run against different Coordinators etc.
 
-### _arangodump_ and _arangorestore_ with JWT secret
+### arangodump and arangorestore with JWT secret
 
 _arangodump_ and _arangorestore_ can now also be invoked by providing the cluster's
 JWT secret instead of the username/password combination. Both tools now provide
 the options `--server.jwt-secret-keyfile` (to read the JWT secret from a file)
 and `--server.ask-jwt-secret` (to enter it manually).
 
-### _arangobench_ with custom queries
+### arangobench with custom queries
 
 In addition to executing the predefined benchmarks, the _arangobench_ client tool
 now offers a new test case named `custom-query` for running arbitrary AQL
@@ -1005,13 +1005,13 @@ To run a custom AQL query, the query needs to be specified in either the
 the query string can be passed on the command-line, in the latter case the
 query string will be read from a file.
 
-### Continuing _arangorestore_ operations
+### Continuing arangorestore operations
 
 _arangorestore_ now provides a `--continue` option. Setting it will make
 _arangorestore_ keep track of the restore progress, so if the restore process
 gets aborted it can later be continued from the point it left off.
 
-### Controlling the number of documents per batch for _arangoexport_
+### Controlling the number of documents per batch for arangoexport
 
 _arangoexport_ now has a `--documents-per-batch` option that can be used to limit
 the number of documents to be returned in each batch from the server. This is
@@ -1019,12 +1019,12 @@ useful if a query is run on overly large documents, which would lead to the
 response sizes getting out of hand with the default number of documents per
 batch (1000).
 
-### Controlling the maximum query runtime of _arangoexport_
+### Controlling the maximum query runtime of arangoexport
 
 _arangoexport_ now has a `--query-max-runtime` option to limit the runtime of
 queries it executes.
 
-### _arangorestore_ option to enable revision trees
+### arangorestore option to enable revision trees
 
 <small>Introduced in: v3.8.7, v3.9.2</small>
 

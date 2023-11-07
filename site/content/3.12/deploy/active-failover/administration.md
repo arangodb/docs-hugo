@@ -12,7 +12,7 @@ The _Active Failover_ setup requires almost no manual administration.
 You may still need to replace, upgrade or remove individual nodes
 in an _Active Failover_ setup.
 
-## Determining the current _Leader_
+## Determining the current *Leader*
 
 It is possible to determine the _leader_ by asking any of the involved single-server
 instances. Just send a request to the `/_api/cluster/endpoints` REST API.
@@ -45,7 +45,7 @@ contain the `X-Arango-Potential-Dirty-Read` header so that clients can reject ac
 
 Depending on the driver support for your specific programming language, you should be able to enable this option.
 
-## Upgrading / Replacing / Removing a _Leader_
+## Upgrading / Replacing / Removing a *Leader*
 
 A _Leader_ is the active server which can receive all read and write operations
 in an _Active-Failover_ setup.
@@ -66,7 +66,7 @@ Once you upgraded the local server via the `--database.auto-upgrade` option,
 you can add it again to the _Active Failover_ setup. The server will resync automatically
 with the new _Leader_ and become a _Follower_.
 
-## Upgrading / Replacing / Removing a _Follower_
+## Upgrading / Replacing / Removing a *Follower*
 
 A _Follower_ is the passive server which tries to mirror all the data stored in
 the _Leader_.

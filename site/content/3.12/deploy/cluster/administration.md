@@ -188,7 +188,7 @@ benefit, but it may later in case other sharding strategies are added.
 The [OneShard](../oneshard.md)
 feature does not have its own sharding strategy, it uses `hash` instead.
 
-## Moving/Rebalancing _shards_
+## Moving/Rebalancing *shards*
 
 Rebalancing redistributes resources in the cluster to optimize resource
 allocation - shards and location of leaders/followers.
@@ -217,7 +217,7 @@ You can also do any of the following by using the API:
 For more information, see the [Cluster](../../develop/http-api/cluster.md#get-the-current-cluster-imbalance) 
 section of the HTTP API documentation.
 
-## Replacing/Removing a _Coordinator_
+## Replacing/Removing a *Coordinator*
 
 _Coordinators_ are effectively stateless and can be replaced, added and
 removed without more consideration than meeting the necessities of the
@@ -237,7 +237,7 @@ integrated as a new _Coordinator_ into the cluster. You may also just
 restart the _Coordinator_ as before and it reintegrates itself into
 the cluster.
 
-## Replacing/Removing a _DB-Server_
+## Replacing/Removing a *DB-Server*
 
 _DB-Servers_ are where the data of an ArangoDB cluster is stored. They
 do not publish a web interface and are not meant to be accessed by any other

@@ -60,7 +60,7 @@ General Graphs. To get started, follow the steps outlined below.
 
 ![Create General Graph](../../../images/Create-GeneralGraph.png)   
 
-### Create a General Graph using _arangosh_
+### Create a General Graph using *arangosh*
 
 **Create a graph**
 

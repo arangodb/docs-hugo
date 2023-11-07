@@ -1053,7 +1053,7 @@ versions on the same machine (e.g. for testing).
 
 ## Client tools
 
-### _arangosh_
+### arangosh
 
 Starting with ArangoDB version 3.4.5, the ArangoShell (_arangosh_) provides the option 
 `--console.history` for controlling whether the shell's command-line history 
@@ -1065,7 +1065,7 @@ file, and not store the current session's history when the shell is
 exited. The command-line history will then only be available in the
 current shell session.
 
-### _arangodump_
+### arangodump
 
 _arangodump_ can now dump multiple collections in parallel. This can significantly
 reduce the time required to take a backup.
@@ -1074,7 +1074,7 @@ By default, _arangodump_ will use 2 threads for dumping collections. The number 
 threads used by _arangodump_ can be adjusted by using the `--threads` option when
 invoking it.
 
-### _arangorestore_
+### arangorestore
 
 _arangorestore_ can now restore multiple collections in parallel. This can significantly
 reduce the time required to recover data from a backup.
@@ -1083,7 +1083,7 @@ By default, _arangorestore_ will use 2 threads for restoring collections. The nu
 threads used by _arangorestore_ can be adjusted by using the `--threads` option when
 invoking it.
 
-### _arangoimport_
+### arangoimport
 
 _arangoimp_ was renamed to _arangoimport_ for consistency.
 The 3.4 release packages will still install `arangoimp` as a symlink so user scripts

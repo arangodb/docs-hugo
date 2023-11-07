@@ -123,7 +123,7 @@ curl -u "root:" http://localhost:7002/_admin/cluster/maintenance -XPUT -d'"off"'
 {"error":false,"warning":"Cluster supervision reactivated."}
 ```
 
-## Upgrade the _Active Failover_ processes
+## Upgrade the *Active Failover* processes
 
 Now all the _Active Failover_ (_Agents_, _Single-Server_) processes (_arangod_) have to be
 upgraded on each node.

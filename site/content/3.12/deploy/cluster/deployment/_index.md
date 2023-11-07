@@ -71,7 +71,7 @@ endpoint = tcp://127.1.2.3:45678
 ```
 .
 
-### Use a different _init_ script for the Cluster instance
+### Use a different *init* script for the Cluster instance
 
 This section applies to SystemV-compatible init systems (e.g. sysvinit, OpenRC,
 upstart). The steps are different for systemd.

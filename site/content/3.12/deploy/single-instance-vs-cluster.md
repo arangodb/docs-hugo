@@ -11,7 +11,7 @@ of ArangoDB behave very similarly. However, there are differences due to
 the different nature of these setups. This can lead to a discrepancy in behavior
 between these two configurations. A summary of potential differences follows.
 
-## Migrating from a _Single Instance_ to a _Cluster_
+## Migrating from a *Single Instance* to a *Cluster*
 
 To migrate from a _Single Instance_ to a _Cluster_ you will need
 to take a backup from the _Single Instance_ and restore it into

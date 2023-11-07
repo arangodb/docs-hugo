@@ -637,7 +637,7 @@ Example with two polygons, the second one with a hole:
 }
 ```
 
-## _arangosh_ Examples
+## *arangosh* Examples
 
 Ensures that a geo index exists:
 

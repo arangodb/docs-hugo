@@ -121,7 +121,7 @@ curl http://localhost:7002/_admin/cluster/maintenance -XPUT -d'"off"'
 {"error":false,"warning":"Cluster supervision reactivated."}
 ```
 
-## Upgrade the _cluster_ processes
+## Upgrade the *cluster* processes
 
 Now all the _cluster_ (_Agents_, _DB-Servers_ and _Coordinators_) processes (_arangod_) have to be
 upgraded on each node.
@@ -161,19 +161,19 @@ max      29938 16224  2 13:56 pts/3    00:02:13 arangod --server.authentication=
 
 ```
 
-### Upgrade a _cluster_ node
+### Upgrade a *cluster* node
 
 The following procedure is upgrading _Agent_, _DB-Server_ and _Coordinator_ on one node.
 
 **Note:** The starting commands of _Agent_, _DB-Server_ and _Coordinator_ have to be reused.
 
-#### Stop the _Agent_
+#### Stop the *Agent*
 
 ```
 kill -15 <pid-of-agent>
 ```
 
-#### Upgrade the _Agent_
+#### Upgrade the *Agent*
 
 The _arangod_ process of the _Agent_ has to be upgraded using the same command that has
 been used before with the additional option:
@@ -184,18 +184,18 @@ been used before with the additional option:
 
 The _Agent_ will stop automatically after the upgrade.
 
-#### Restart the _Agent_
+#### Restart the *Agent*
 
 The _arangod_ process of the _Agent_ has to be restarted using the same command that has
 been used before (without the additional option).
 
-#### Stop the _DB-Server_
+#### Stop the *DB-Server*
 
 ```
 kill -15 <pid-of-dbserver>
 ```
 
-#### Upgrade the _DB-Server_
+#### Upgrade the *DB-Server*
 
 The _arangod_ process of the _DB-Server_ has to be upgraded using the same command that has
 been used before with the additional option:
@@ -206,18 +206,18 @@ been used before with the additional option:
 
 The _DB-Server_ will stop automatically after the upgrade.
 
-#### Restart the _DB-Server_
+#### Restart the *DB-Server*
 
 The _arangod_ process of the _DB-Server_ has to be restarted using the same command that has
 been used before (without the additional option).
 
-#### Stop the _Coordinator_
+#### Stop the *Coordinator*
 
 ```
 kill -15 <pid-of-coordinator>
 ```
 
-#### Upgrade the _Coordinator_
+#### Upgrade the *Coordinator*
 
 The _arangod_ process of the _Coordinator_ has to be upgraded using the same command that has
 been used before with the additional option:
@@ -228,7 +228,7 @@ been used before with the additional option:
 
 The _Coordinator_ will stop automatically after the upgrade.
 
-#### Restart the _Coordinator_
+#### Restart the *Coordinator*
 
 The _arangod_ process of the _Coordinator_ has to be restarted using the same command that has
 been used before (without the additional option).

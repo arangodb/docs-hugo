@@ -505,8 +505,12 @@ The following shortcodes also exist but are rarely used:
   `../drivers/js/_index.md` instead of `/3.12/drivers/js/_index.md` or
   `https://docs.arangodb.com/3.12/drivers/js/`.
 
-- Avoid `**bold**` and `_italic_` markup in headlines. Inline `` `code` `` is
-  acceptable for code values, nonetheless.
+- Avoid **bold** and *italic* markup in headlines. If you have to use it, then
+  prefer `**bold**` and `*italic*`  over `__bold__` and `_italic_` because the
+  underscores are preserved in anchor links but asterisks are removed!
+
+- Inline `` `code` `` in headlines is acceptable for code values, and required
+  for startup options because `--` otherwise gets turned into an n-dash.
 
 - `-` is preferred for bullet points in unordered lists over `*`
 

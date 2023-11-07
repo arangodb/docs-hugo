@@ -96,7 +96,7 @@ and Ubuntu systems using a SystemV-compatible _init_, you can use:
 update-rc.d -f arangodb3 remove
 ```
 
-### Stop the _Starter_ without stopping the ArangoDB Server processes
+### Stop the *Starter* without stopping the ArangoDB Server processes
 
 Now all the _Starter_ (_arangodb_) processes have to be stopped.
 Please note that **no** _arangod_ processes should be stopped!
@@ -151,7 +151,7 @@ arangodb(29419)─┬─arangod(30201)
                 └─arangod(30217)
 ```
 
-### Restart the _Starter_
+### Restart the *Starter*
 
 When using a supervisor like _SystemD_, this will happen automatically. In case
 the _Starter_ was initiated manually, the _arangodb_ processes have to be restarted
@@ -190,7 +190,7 @@ the following situation:
 - The ArangoDB Server processes are up and running, and they are still on the
   old version
 
-### Start the upgrade process of all _arangod_ & _arangosync_ servers
+### Start the upgrade process of all *arangod* & *arangosync* servers
 
 Once you have carried out the above steps on all servers of the clusters, the
 actual upgrade procedure can be started.
