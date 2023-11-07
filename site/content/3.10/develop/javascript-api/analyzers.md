@@ -1,9 +1,10 @@
 ---
-title: Analyzer Management
+title: The `@arangodb/analyzers` module of the JavaScript API
 menuTitle: '@arangodb/analyzers'
 weight: 15
 description: >-
-  JavaScript API to manage ArangoSearch Analyzers with arangosh and Foxx
+  The analyzers module provides a JavaScript interface for managing ArangoSearch
+  Analyzers
 archetype: default
 ---
 The JavaScript API can be accessed via the `@arangodb/analyzers` module from

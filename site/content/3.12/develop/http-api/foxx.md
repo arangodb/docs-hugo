@@ -7,8 +7,6 @@ description: >-
   a database
 archetype: default
 ---
-<small>Introduced in: v3.2.0</small>
-
 For more information on Foxx and its JavaScript APIs see the
 [Foxx documentation](../foxx-microservices/_index.md).
 

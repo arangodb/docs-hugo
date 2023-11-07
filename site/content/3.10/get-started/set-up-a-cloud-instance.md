@@ -152,7 +152,7 @@ your billing details and at least one payment method. See:
 ## Managed Cloud Service vs. On-premises Comparison: Key Differences
 
 The ArangoGraph Insights Platform aims to make all features of the ArangoDB
-[Enterprise Edition](../introduction/features/enterprise-edition.md) available to you, but
+[Enterprise Edition](../about-arangodb/features/enterprise-edition.md) available to you, but
 there are a few key differences:
 
 - Encryption (both at rest & network traffic) is always on and cannot be

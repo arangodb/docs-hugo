@@ -151,7 +151,7 @@ For more information, see the [Configuration](../administration/configuration.md
 `arangod` checks the following environment variables, which can be used to
 restrict how much memory and how many CPU cores it should use.
 
-- `ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY` *(introduced in v3.6.3)*
+- `ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY`
 
   This variable can be used to override the automatic detection of the total
   amount of RAM present in the system. You can specify a decimal number

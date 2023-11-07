@@ -3,7 +3,8 @@ title: Known limitations for AQL queries
 menuTitle: Limitations
 weight: 45
 description: >-
-  Known limitations that apply in AQL queries
+  AQL has restrictions with regards to the complexity of queries and the data
+  they operate on, as well as design limitations to be aware of
 archetype: default
 ---
 The following hard-coded limitations exist for AQL queries:
@@ -27,7 +28,7 @@ The following hard-coded limitations exist for AQL queries:
 - When reading any data from JSON or VelocyPack input or when serializing
   any data to JSON or VelocyPack, there is a maximum recursion depth for 
   nested arrays and objects, which is slightly below 200. Arrays or objects
-  with higher nesting than this will cause `Too deep nesting in Array/Object`
+  with higher nesting than this cause `Too deep nesting in Array/Object`
   exceptions.
 
 Please note that even queries that are still below these limits may not

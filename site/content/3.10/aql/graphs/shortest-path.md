@@ -3,7 +3,8 @@ title: Shortest Path in AQL
 menuTitle: Shortest Path
 weight: 15
 description: >-
-  This type of query is supposed to find the shortest path between two given documents(startVertex and targetVertex) in your graph
+  With the shortest path algorithm, you can find one shortest path between
+  two vertices using AQL
 archetype: default
 ---
 ## General query idea

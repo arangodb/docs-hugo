@@ -3,7 +3,7 @@ title: _arangoinspect_ Examples
 menuTitle: Examples
 weight: 5
 description: >-
-  If you are asked by ArangoDB support to provide an inspector output, run the arangoinspect binary to generate a file in the current working folder
+  How to use the `arangoinspect` tool to collection information for troubleshooting
 archetype: default
 ---
 If you are asked by ArangoDB support to provide an inspector output, run
@@ -19,7 +19,7 @@ not allowed/willing to share and obfuscate it before sharing (user names,
 files paths etc.).
 {{< /warning >}}
 
-## Invoking _arangoinspect_
+## Invoking *arangoinspect*
 
 Point the tool to an ArangoDB endpoint. In case of a single server, there
 is only one. You can connect to any node in case of a cluster (_DB-Server_,

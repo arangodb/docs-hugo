@@ -140,8 +140,6 @@ functions.
 
 ### GEO_AREA()
 
-<small>Introduced in: v3.5.1</small>
-
 `GEO_AREA(geoJson, ellipsoid) → area`
 
 Return the area for a polygon or multi-polygon on a sphere with the

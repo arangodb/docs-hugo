@@ -3,7 +3,8 @@ title: Deployment
 menuTitle: Deployment
 weight: 15
 description: >-
-  Foxx services can be deployed in multiple ways
+  You can deploy Foxx services with Foxx CLI, the ArangoDB HTTP API, or its
+  web interface
 archetype: default
 ---
 Foxx services can be deployed in multiple ways:
@@ -11,7 +12,7 @@ Foxx services can be deployed in multiple ways:
 - [Foxx CLI](../../components/tools/foxx-cli/_index.md), a command line tool which
   requires Node.js
 
-- [HTTP API](../http/foxx.md) using HTTP requests,
+- [HTTP API](../http-api/foxx.md) using HTTP requests,
   e.g. with curl
 
 - [web interface](../../components/web-interface/services.md) under *SERVICES*

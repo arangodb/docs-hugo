@@ -3,13 +3,11 @@ title: Securing Datacenter-to-Datacenter Replication
 menuTitle: Security
 weight: 20
 description: >-
-  Securing Datacenter-to-Datacenter Replication
+  Firewalls must not block specific ports and you can secure DC2DC setups using
+  certificates for encryption and authentication
 archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" >}}
-
-This section includes information related to the _Datacenter-to-Datacenter Replication_
-security.
 
 ## Firewall settings
 

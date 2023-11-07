@@ -3,7 +3,8 @@ title: Vertex-Centric Indexes
 menuTitle: Vertex-Centric Indexes
 weight: 35
 description: >-
-  In ArangoDB there are special indexes designed to speed up graph operations, especially if the graph contains supernodes (vertices that have an exceptionally high amount of connected edges)
+  You can create persistent indexes over the `_from` or `_to` attribute and one
+  or more additional edge attributes to improve certain graph traversals
 archetype: default
 ---
 ## Introduction to Vertex-Centric Indexes

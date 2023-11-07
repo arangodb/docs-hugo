@@ -4,7 +4,7 @@ menuTitle: REPLACE
 weight: 60
 description: >-
   You can use `REPLACE` operations to replace documents in a collection by
-  replacing their attributes
+  replacing all their attributes except the document keys, IDs, and revisions
 archetype: default
 ---
 Each `REPLACE` operation is restricted to a single collection, and the

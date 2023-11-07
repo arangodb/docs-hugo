@@ -34,8 +34,6 @@ Before upgrading, it is recommended to:
   [list of incompatible changes](../../release-notes/_index.md#incompatible-changes)
   for API or other changes in the new version of ArangoDB, and make sure your applications
   can deal with them.
-- Check if any [technical alert](https://www.arangodb.com/alerts/)
-  discourages the upgrade to the version you want to upgrade to.
 - As an extra precaution, and as a requirement if you want to [downgrade](downgrading.md),
   you might want to:
   - **Take a backup** of the old ArangoDB database using [_arangodump_](../../components/tools/arangodump/_index.md),
@@ -82,4 +80,4 @@ Before upgrading, it is recommended to:
 ### Additional notes regarding rolling upgrades
 
 In addition to the paragraph above, rolling upgrades via the tool _Starter_ are supported,
-as documented in [Upgrading Starter Deployments](upgrading-starter-deployments.md).
+as documented in [Upgrading Starter Deployments](starter-deployments.md).

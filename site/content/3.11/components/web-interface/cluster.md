@@ -13,6 +13,8 @@ Furthermore, the **REPLICATION** and **LOGS** section are not available.
 You can access the logs of individual Coordinators and DB-Servers via the
 **NODES** section.
 
+The cluster section displays statistics about the general cluster performance.
+
 ![Cluster](../../../images/clusterView.png)
 
 Statistics:

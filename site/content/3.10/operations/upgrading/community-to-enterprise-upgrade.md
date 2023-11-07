@@ -2,8 +2,7 @@
 title: Community to Enterprise Upgrade Procedure
 menuTitle: Community to Enterprise Upgrade
 weight: 5
-description: >-
-  While migrating from the Community to the Enterprise Edition is supported, installing directly the Enterprise package over the Community package is not supported
+description: ''
 archetype: default
 ---
 {{< warning >}}
@@ -32,7 +31,7 @@ procedure.
 The Enterprise Edition of ArangoDB requires a license to run the Enterprise Edition and activate its features.
 For more information about setting a license key, see [License Management](../administration/license-management.md).
 
-## Procedure for a _Logical_ Upgrade
+## Procedure for a *Logical* Upgrade
 
 1. Use the tool [_arangodump_](../../components/tools/arangodump/_index.md) to **take a backup**
    of your data stored by your Community Edition installation
@@ -41,7 +40,7 @@ For more information about setting a license key, see [License Management](../ad
    (and start your _Single Instance_, _Active Failover_ or _Cluster_)
 4. Restore the backup using the tool [_arangorestore_](../../components/tools/arangorestore/_index.md).
 
-## Procedure for an _In-Place_ Upgrade
+## Procedure for an *In-Place* Upgrade
 
 1. Shutdown ArangoDB and make a copy of your data directory (e.g., in Linux, by
    using the _cp_ command). If you are using a setup that involves several _arangod_ processes

@@ -3,7 +3,8 @@ title: Geo-spatial functions in AQL
 menuTitle: Geo
 weight: 35
 description: >-
-  The following helper functions can use geo indexes, but do not have to in all cases
+  AQL supports functions for geo-spatial queries and a subset of calls can be
+  accelerated by geo-spatial indexes
 archetype: default
 ---
 ## Geo utility functions

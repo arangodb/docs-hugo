@@ -46,7 +46,7 @@ You can control which server becomes the _Leader_ by starting it earlier than
 other server instances in the beginning.
 
 The _Follower_ automatically starts replication from the _Leader_ for all
-available databases, using the server-level replication introduced in v. 3.3.
+available databases, using the server-level replication introduced in version 3.3.
 
 When the _Leader_ goes down, this is automatically detected by the _Agency_
 instance, which is also started in this mode. This instance will make the

@@ -2,8 +2,7 @@
 title: Collections
 menuTitle: Collections
 weight: 15
-description: >-
-  The collections section displays all available collections
+description: ''
 archetype: default
 ---
 The collections section displays all available collections. From here you can
