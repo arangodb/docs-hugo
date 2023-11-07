@@ -3,7 +3,8 @@ title: Changes in version 7.0
 menuTitle: Changes in version 7
 weight: 15
 description: >-
-  Changes in ArangoDB Java Driver version 7.0
+  Various detailed have changed, like the setup, transport, configuration,
+  serialization, and some of the APIs
 archetype: default
 ---
 ## Maven Setup

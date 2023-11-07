@@ -3,18 +3,20 @@ title: _arangodump_ Data Maskings
 menuTitle: Maskings
 weight: 15
 description: >-
-  This feature allows you to define how sensitive data shall be dumped.
+  `arangodump` supports obfuscating and redacting information when dumping, to
+  allow you sharing dumps without sensitive data with third parties
 archetype: default
 ---
-`--maskings path-of-config`
-
-This feature allows you to define how sensitive data shall be dumped.
+The masking feature allows you to define how sensitive data shall be dumped.
 It is possible to exclude collections entirely, limit the dump to the
 structural information of a collection (name, indexes, sharding etc.)
-or to obfuscate certain fields for a dump. A JSON configuration file is
-used to define which collections and fields to mask and how.
+or to obfuscate certain fields for a dump.
 
-The general structure of the configuration file looks like this:
+You can make use of the feature by specifying a configuration file using the
+`--maskings` startup option when invoking `arangodump`.
+
+A JSON configuration file is used to define which collections and fields to mask
+and how. The general structure of the configuration file looks like this:
 
 ```js
 {

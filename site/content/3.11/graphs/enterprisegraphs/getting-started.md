@@ -214,7 +214,7 @@ EnterpriseGraphs. To get started, follow the steps outlined below.
 
 ![Create EnterpriseGraph](../../../images/graphs-create-enterprise-graph-dialog.png)
    
-## Create an EnterpriseGraph using _arangosh_
+## Create an EnterpriseGraph using *arangosh*
 
 Compared to SmartGraphs, the option `isSmart: true` is required but the
 `smartGraphAttribute` is forbidden. 

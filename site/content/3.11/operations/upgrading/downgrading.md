@@ -26,7 +26,7 @@ In order to downgrade, the following options are available:
   before the upgrade.
 - Start the old package on the data directory backup you took before the upgrade.
 
-### Restore an _arangodump_ backup
+### Restore an *arangodump* backup
 
 This procedure assumes that you have taken an _arangodump_ backup using the old
 ArangoDB version, before you upgraded it. 

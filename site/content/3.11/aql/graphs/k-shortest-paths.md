@@ -3,7 +3,8 @@ title: k Shortest Paths in AQL
 menuTitle: k Shortest Paths
 weight: 25
 description: >-
-  This type of query finds the first k paths in order of length (or weight) between two given documents, a start and a target vertex in your graph
+  Determine a specified number of shortest paths in increasing path length or
+  weight order
 archetype: default
 ---
 ## General query idea

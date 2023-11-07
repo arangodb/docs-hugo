@@ -46,6 +46,6 @@ How bind parameters work can be found in [AQL Fundamentals](../fundamentals/bind
 
 Queries can also be saved in the AQL editor along with their bind parameter values
 for later reuse. This data is stored in the user profile in the current database
-(in the _users_ system collection). 
+(in the `_users` system collection). 
 
 Also see the detailed description of the [Web Interface](../../components/web-interface/_index.md).

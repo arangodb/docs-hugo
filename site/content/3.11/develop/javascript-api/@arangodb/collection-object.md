@@ -1,8 +1,10 @@
 ---
-title: The _collection_ object
+title: The _collection_ object of the JavaScript API
 menuTitle: collection object
 weight: 10
-description: ''
+description: >-
+  Collection objects represent document collections and provide access to
+  information and methods for executing collection-related operations
 archetype: default
 ---
 The JavaScript API returns _collection_ objects when you use the following methods
@@ -679,7 +681,7 @@ If you pass `options` as the second argument, it must be an object.
 
 - If the object has the `allowDirtyReads` attribute set to `true`, then the
   Coordinator is allowed to read from any shard replica and not only from
-  the leader shard. See [Read from followers](../../http/documents.md#read-from-followers)
+  the leader shard. See [Read from followers](../../http-api/documents.md#read-from-followers)
   for details.
 
 ---
@@ -852,7 +854,7 @@ requested.
 If you pass `options` as the second argument, it must be an object. If this
 object has the `allowDirtyReads` attribute set to `true`, then the
 Coordinator is allowed to read from any shard replica and not only from
-the leader shard. See [Read from followers](../../http/documents.md#read-from-followers)
+the leader shard. See [Read from followers](../../http-api/documents.md#read-from-followers)
 for details.
 
 ---

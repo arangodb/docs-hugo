@@ -46,12 +46,12 @@ system, license type, and available RAM and CPU resources.
 - The ArangoDB license type (Community Edition or Enterprise Edition)
 
 **Runtime information**: This includes statistics related to your deployment
-type and startup mode, RAM and CPU usage, and shard configuration (number of
+and startup mode, RAM and CPU usage, and shard configuration (number of
 shards, followers, leaders, Coordinators, databases, and servers participating
 in sharding).
 
 - The date and time of fetching the deployment information
-- The deployment type (cluster, Active Failover, etc.)
+- The deployment mode (cluster, Active Failover, etc.)
 - The persisted deployment ID
 - The startup mode (ArangoDB Starter, Kubernetes operator, etc.)
 - The number of Agents

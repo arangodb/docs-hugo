@@ -2,14 +2,16 @@
 title: ArangoDB Java driver
 menuTitle: Java driver
 weight: 10
-description: >-
-  The official ArangoDB Java Driver
+description: ''
 archetype: chapter
 ---
 The official ArangoDB [Java Driver](https://github.com/arangodb/arangodb-java-driver).
 
-- [Java Driver Tutorial](https://university.arangodb.com/courses/java-driver-tutorial-v7/)
+- [Tutorial](https://university.arangodb.com/courses/java-driver-tutorial-v7/)
+- [Code examples](https://github.com/arangodb/arangodb-java-driver/tree/main/driver/src/test/java/com/arangodb/example)
 - [Reference](reference-version-7/_index.md)
+- [JavaDoc](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/index.html)
+- [ChangeLog](https://github.com/arangodb/arangodb-java-driver/blob/main/ChangeLog.md)
 
 ## Supported versions
 
@@ -138,10 +140,3 @@ removed from version 7.0. This has been done because the asynchronous API needs
 a substantial refactoring, i.e. supporting the HTTP protocol, fixing the async
 client to not block when consuming a cursor, and a better alignment with the
 synchronous API. It will be reworked and re-added in a future version 7.x.
-
-## See Also
-
-- [JavaDoc](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/index.html)
-- [ChangeLog](https://github.com/arangodb/arangodb-java-driver/blob/main/ChangeLog.md)
-- [Code examples](https://github.com/arangodb/arangodb-java-driver/tree/main/driver/src/test/java/com/arangodb/example)
-- [Tutorial](https://university.arangodb.com/courses/java-driver-tutorial-v7/)

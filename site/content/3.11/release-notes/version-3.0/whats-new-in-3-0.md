@@ -3,7 +3,8 @@ title: Features and Improvements in ArangoDB 3.0
 menuTitle: What's New in 3.0
 weight: 5
 description: >-
-  The following list shows in detail which features have been added or improved inArangoDB 3
+  Redesigned cluster core architecture, graph traversals using the AQL query
+  language, persistent indexes, overhauled Foxx microservices and web interface
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in

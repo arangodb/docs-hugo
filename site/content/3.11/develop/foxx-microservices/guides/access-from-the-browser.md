@@ -2,8 +2,7 @@
 title: Exposing Foxx to the browser
 menuTitle: Access from the browser
 weight: 70
-description: >-
-  There are three ways to use Foxx in a web application
+description: ''
 archetype: default
 ---
 There are three ways to use Foxx in a web application:
@@ -132,7 +131,7 @@ want a web app running on a different port or domain to access it,
 you will need to enable CORS in ArangoDB.
 
 First you need to
-[configure ArangoDB for CORS](../../http/general-request-handling.md#cross-origin-resource-sharing-cors-requests).
+[configure ArangoDB for CORS](../../http-api/general-request-handling.md#cross-origin-resource-sharing-cors-requests).
 As of 3.2, Foxx will then automatically allow all response headers as they are used.
 
 If you want more control over what is exposed or are using an older version of
@@ -145,7 +144,7 @@ ArangoDB, you can set the following response headers in your request handler:
 - `access-control-allow-credentials`: can be set to `"false"` to forbid
   exposing cookies. The default value depends on whether ArangoDB
   trusts the origin. See the
-  [notes on `http.trusted-origin`](../../http/general-request-handling.md#cookies-and-authentication).
+  [notes on `http.trusted-origin`](../../http-api/general-request-handling.md#cookies-and-authentication).
 
 Note that it is not possible to override these headers for the CORS preflight
 response. It is therefore not possible to accept credentials or cookies only

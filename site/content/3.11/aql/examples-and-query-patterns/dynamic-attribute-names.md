@@ -3,7 +3,8 @@ title: Dynamic Attribute Names in AQL
 menuTitle: Dynamic Attribute Names
 weight: 15
 description: >-
-  Expressions as attribute names or using subqueries and ZIP()
+  You can use expressions as attribute names or use subqueries and `ZIP()` to
+  create objects with varying attribute names
 archetype: default
 ---
 You might want an AQL query to return results with attribute names assembled

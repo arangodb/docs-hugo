@@ -3,8 +3,8 @@ title: ArangoDB Starter Options
 menuTitle: Options
 weight: 5
 description: >-
-  The Starter provides a lot of options to control various aspects of the cluster
-  or other deployment you want to run
+  The Starter provides options to control various aspects of a cluster or other
+  deployment you want to run
 archetype: default
 ---
 ## Common options
