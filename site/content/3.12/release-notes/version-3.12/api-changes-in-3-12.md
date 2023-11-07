@@ -62,6 +62,16 @@ Note that it is still forbidden to use `_id` as a top-level attribute or
 sub-attribute in `fields` of persistent indexes. On the other hand, inverted
 indexes have been allowing to index and store the `_id` system attribute.
 
+#### Optimizer rule changes
+
+The `remove-unnecessary-projections` AQL optimizer rule has been renamed to
+`optimize-projections` and now includes an additional optimization.
+
+Moreover, a `remove-unnecessary-calculations-4` rule has been added.
+
+The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
+`GET /_api/query/rules`.
+
 ### Privilege changes
 
 
