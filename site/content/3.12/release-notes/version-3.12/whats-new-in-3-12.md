@@ -168,6 +168,16 @@ permanent connectivity issues:
 - `arangodb_network_connectivity_failures_dbservers_total`: Number of failed
   connectivity check requests sent to DB-Servers.
 
+## Client tools
+
+### arangodump
+
+_arangodump_ now supports a `--ignore-collection` startup option that you can
+specify multiple times to exclude the specified collections from a dump.
+
+It cannot be used together with the existing `--collection` option for specifying
+collections to include.
+
 ## Miscellaneous changes
 
 ### In-memory edge cache startup options and metrics
