@@ -113,7 +113,7 @@ with these attributes:
 
 Document data for a collection is saved in files with name pattern
 `<collection-name>.data.json`. Each line in a data file is a document insertion/update or
-deletion marker, alongside with some meta data.
+deletion marker.
 
 ## Cluster Backup
 
@@ -213,12 +213,14 @@ RocksDB encryption-at-rest feature.
 
 ## Compression
 
-`--compress-output`
+The size of dumps can be reduced using compression, for storing but also for the
+data transfer.
 
-Data can optionally be dumped in a compressed format to save space on disk.
-The `--compress-output` option cannot be used together with [Encryption](#encryption).
+You can optionally store data in a compressed format to save space on disk with
+the `--compress-output` startup option. It cannot be used together with
+[Encryption](#encryption).
 
-If compression is enabled, no `.data.json` files are written. Instead, the
+If output compression is enabled, no `.data.json` files are written. Instead, the
 collection data gets compressed using the Gzip algorithm and for each collection
 a `.data.json.gz` file is written. Metadata files such as `.structure.json` and
 `.view.json` do not get compressed.
@@ -234,13 +236,39 @@ detects whether the data is compressed or not based on the file extension.
 arangorestore --input-directory "dump"
 ```
 
+You can optionally let the server compress the data for the network transfer
+with the `--compress-transfer` startup option. This can reduce the traffic and
+thus save time and money.
+
+The data is automatically decompressed on the client side. You can use the option
+independent of the `--compress-output` option, which controls whether to store
+the dump compressed or not but without affecting the transfer size.
+
+```
+arangodump --output-directory "dump" --compress-transfer --compress-output false
+```
+
+{{< comment >}} Experimental feature in 3.12
+## Storage format
+
+The default output format for dumps is JSON.
+
+To achieve the best dump performance and the smallest data dumps in terms of
+size, you can enable the `--dump-vpack` startup option. The resulting dump data
+is then stored in the more compact but binary [VelocyPack](http://github.com/arangodb/velocypack)
+format instead of the text-based JSON format. The output file size can be less
+even compared to compressed JSON. It can also lead to faster dumps because there
+is less data to transfer and no conversion from the server-internal VelocyPack
+format to JSON is needed.
+{{< /comment >}}
+
 ## Threads
 
 _arangodump_ can use multiple threads for dumping database data in 
 parallel. To speed up the dump of a database with multiple collections, it is
 often beneficial to increase the number of _arangodump_ threads.
 The number of threads can be controlled via the `--threads` option. The default
-value was changed from `2` to the maximum of `2` and the number of available CPU cores.
+value is the maximum of `2` and the number of available CPU cores.
 
 The `--threads` option works dynamically, its value depends on the number of
 available CPU cores. If the amount of available CPU cores is less than `3`, a
@@ -267,3 +295,10 @@ file should be expected. Also note that when dumping the data of multiple shards
 from the same collection, each thread's results are written to the result 
 file in a non-deterministic order. This should not be a problem when restoring
 such dump, as _arangorestore_ does not assume any order of input.
+
+From v3.12.0 onward, you can make _arangodump_ write multiple output files per
+collection/shard. The file splitting allows for better parallelization when
+writing the results to disk, which in case of non-split files must be serialized.
+You can enable it with the `--split-files` startup option. It is disabled by
+default because dumps created with this option enabled cannot be restored into
+previous versions of ArangoDB.
