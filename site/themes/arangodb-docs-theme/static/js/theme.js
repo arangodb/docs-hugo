@@ -193,7 +193,7 @@ function codeShowMoreListener() {
 
 function trackPageView(title, urlPath) {
   if (window.gtag) {
-    gtag('config', 'UA-81053435-1', {
+    gtag('config', 'G-6PSX8LKTTJ', {
       'page_title': title,
       'page_path': urlPath
     });
