@@ -91,6 +91,7 @@ Here are examples to integrate configuration properties from different sources:
 - `loadBalancingStrategy(LoadBalancingStrategy)`: load balancing strategy, possible values are: `NONE`, `ROUND_ROBIN`, `ONE_RANDOM`, (default: `NONE`)
 - `responseQueueTimeSamples(Integer)`:            amount of samples kept for queue time metrics, (default: `10`)
 - `serde(ArangoSerde)`:                           serde to serialize and deserialize user-data
+- `asyncExecutor(Executor)`:                      downstream `java.util.concurrent.Executor` that will be used to consume the responses of the async API
 
 ### Config File Properties
 

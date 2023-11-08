@@ -780,8 +780,8 @@
     }
   },
   {
-    "name": "remove-unnecessary-projections",
-    "description": "Remove projections that are no longer used.",
+    "name": "optimize-projections",
+    "description": "Remove projections that are no longer used and store projection\nresults in separate output registers.",
     "flags": {
       "hidden": false,
       "clusterOnly": false,
@@ -794,6 +794,18 @@
   {
     "name": "join-index-nodes",
     "description": "Join adjacent index nodes and replace them with a join node\nin case the indexes qualify for it.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
+    "name": "remove-unnecessary-calculations-4",
+    "description": "Fourth pass of removing all calculations whose result is not\nreferenced in the query. This can be a consequence of applying other\noptimizations",
     "flags": {
       "hidden": false,
       "clusterOnly": false,

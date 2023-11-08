@@ -6,4 +6,3 @@ description: >-
   The official ArangoDB Java Driver version 7
 archetype: chapter
 ---
-

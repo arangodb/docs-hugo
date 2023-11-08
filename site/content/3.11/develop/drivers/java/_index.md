@@ -20,7 +20,7 @@ Version 6 is still supported and maintained, but not actively developed anymore.
 Upgrading to version 7 is recommended.
 
 The API changes between version 6 and 7 are documented in
-[Changes in version 7.0](reference-version-7/changes-in-version-7.md).
+[Changes in version 7](reference-version-7/changes-in-version-7.md).
 
 Both versions are compatible with all supported stable versions of ArangoDB server, see
 [Product Support End-of-life Announcements](https://www.arangodb.com/eol-notice).
@@ -133,10 +133,51 @@ function `com.arangodb.util.UnicodeUtils.isNormalized(String): boolean`:
 boolean isNormalized = UnicodeUtils.isNormalized("𝔸𝕣𝕒𝕟𝕘𝕠𝔻𝔹");
 ```
 
-### Async API
+## Async API
 
-The asynchronous API (formerly under the package `com.arangodb.async`) has been
-removed from version 7.0. This has been done because the asynchronous API needs
-a substantial refactoring, i.e. supporting the HTTP protocol, fixing the async
-client to not block when consuming a cursor, and a better alignment with the
-synchronous API. It will be reworked and re-added in a future version 7.x.
+From version 7.2 onward, the driver provides a new asynchronous API.
+Unlike in version 6, the asynchronous API is based on the same underlying driver
+instance and therefore supports all the communication protocols and configurations
+of the synchronous API. The asynchronous API is accessible via `ArangoDB#async()`,
+for example:
+
+```java
+ArangoDB adb = new ArangoDB.Builder()
+    // ...
+    .build();
+ArangoDBAsync adbAsync = adb.async();
+CompletableFuture<ArangoDBVersion> version = adbAsync.getVersion();
+// ...
+```
+
+Under the hood, both synchronous and asynchronous API use the same internal
+communication layer, which has been reworked and re-implemented in an
+asynchronous way. The synchronous API blocks and waits for the result, while the
+asynchronous one returns a `CompletableFuture<>` representing the pending 
+operation being performed.
+Each asynchronous API method is equivalent to the corresponding synchronous
+variant, except for the Cursor API.
+
+### Async Cursor API
+
+The Cursor API (`ArangoCursor` and `ArangoCursorAsync`) is intrinsically different,
+because the synchronous Cursor API is based on Java's `java.util.Iterator`, which 
+is an interface only suitable for synchronous scenarios.
+On the other side, the asynchronous Cursor API provides a method 
+`com.arangodb.ArangoCursorAsync#nextBatch()`, which returns a 
+`CompletableFuture<ArangoCursorAsync<T>>` and can be used to consume the next 
+batch of the cursor, for example:
+
+```java
+CompletableFuture<ArangoCursorAsync<Integer>> future1 = adbAsync.db()
+        .query("FOR i IN i..10000", Integer.class);
+CompletableFuture<ArangoCursorAsync<Integer>> future2 = future1
+        .thenCompose(c -> {
+            List<Integer> batch = c.getResult();
+            // ...
+            // consume batch
+            // ...
+            return c.nextBatch();
+        });
+// ...
+```
