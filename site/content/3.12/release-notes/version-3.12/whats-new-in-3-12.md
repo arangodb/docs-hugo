@@ -232,7 +232,7 @@ can be mixed and written into the same .sst files.
 
 When these options are enabled, the RocksDB compaction is more efficient since
 a lot of different collections/shards/indexes are written to in parallel.
-The disavantage of enabling these options is that there can be more .sst
+The disadvantage of enabling these options is that there can be more .sst
 files than when the option is turned off, and the disk space used by
 these .sst files can be higher.
 In particular, on deployments with many collections/shards/indexes
@@ -247,33 +247,39 @@ limited number of collections/shards/indexes.
 
 #### Improved dump performance and size
 
-ArangoDB 3.12 includes extended parallelization capabilities to work not only
-at the collection level, but also at the shard level. In combination with the
-new VelocyPack format, database dumps are now created and restored more quickly
-and occupy less disk space. This major performance boost makes dumps and
+From version 3.12 onward, _arangodump_ has extended parallelization capabilities
+to work not only at the collection level, but also at the shard level.
+In combination with the newly added support for the VelocyPack format that
+ArangoDB uses internally, database dumps can now be created and restored more
+quickly and occupy less disk space. This major performance boost makes dumps and
 restores up to several times faster, which is extremely useful when dealing
 with large shards.
 
-Whether the new parallel dump variant is used is controlled by the newly added
-`--use-parallel-dump` startup option. The default value is `true`.
+- Whether the new parallel dump variant is used is controlled by the newly added
+  `--use-parallel-dump` startup option. The default value is `true`.
 
-To achieve the best dump performance and the smallest data dumps in terms of
-size, you can additionally use the `--dump-vpack` option. The resulting dump data is stored
-in VelocyPack format instead of JSON. The VelocyPack format is more compact than
-JSON, therefore the output file size can be reduced compared to JSON, even
-when compression is enabled. It can also lead to faster dumps because there is less data to
-transfer and no conversion from the server-internal format (VelocyPack) to JSON is needed.
-Note, however, that this option is experimental and disabled by default.
+- To achieve the best dump performance and the smallest data dumps in terms of
+  size, you can additionally use the `--dump-vpack` option. The resulting dump data
+  is then stored in the more compact but binary VelocyPack format instead of the
+  text-based JSON format. The output file size can be less even compared to
+  compressed JSON. It can also lead to faster dumps because there is less data to
+  transfer and no conversion from the server-internal format (VelocyPack) to JSON
+  is needed. Note, however, that this option is **experimental** and disabled by
+  default.
 
-Optionally, you can make _arangodump_ write multiple output files per
-collection/shard. The file splitting allows better parallelization when
-writing the results into the output file, which in case of non-split files
-must be serialized.
-You can enable it by setting the `--split-files` option to `true`. This option
-is disabled by default considering that dumps created with this option enabled
-cannot be restored into previous versions of ArangoDB.
+- Optionally, you can make _arangodump_ write multiple output files per
+  collection/shard. The file splitting allows for better parallelization when
+  writing the results to disk, which in case of non-split files must be serialized.
+  You can enable it by setting the `--split-files` option to `true`. This option
+  is disabled by default because dumps created with this option enabled cannot
+  be restored into previous versions of ArangoDB.
 
-#### Resource usage limits
+- You can enable the new `--compress-transfer` startup option for compressing the
+  dump data on the server for a faster transfer. This is helpful especially if
+  the network is slow or its capacity is maxed out. The data is decompressed on
+  the client side and recompressed if you enable the  `--compress-output` option.
+
+#### Resource usage limits and metrics
 
 The following `arangod` startup options can be used to limit
 the resource usage of parallel _arangodump_ invocations:
