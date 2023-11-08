@@ -133,7 +133,7 @@ boolean isNormalized = UnicodeUtils.isNormalized("𝔸𝕣𝕒𝕟𝕘𝕠𝔻�
 
 ## Async API
 
-From version 7.2, the driver provides a new asynchronous API.
+From version 7.2 onward, the driver provides a new asynchronous API.
 Unlike in version 6, the asynchronous API is based on the same underlying driver
 instance and therefore supports all the communication protocols and configurations
 of the synchronous API. The asynchronous API is accessible via `ArangoDB#async()`,
@@ -158,8 +158,8 @@ variant, except for the Cursor API.
 
 ### Async Cursor API
 
-Cursor API (`ArangoCursor` and `ArangoCursorAsync`) are intrinsically different,
-because the synchronous Cursor API is based on Java `java.util.Iterator`, which 
+The Cursor API (`ArangoCursor` and `ArangoCursorAsync`) is intrinsically different,
+because the synchronous Cursor API is based on Java's `java.util.Iterator`, which 
 is an interface only suitable for synchronous scenarios.
 On the other side, the asynchronous Cursor API provides a method 
 `com.arangodb.ArangoCursorAsync#nextBatch()`, which returns a 
