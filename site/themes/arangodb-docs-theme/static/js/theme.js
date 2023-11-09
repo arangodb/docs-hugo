@@ -94,7 +94,7 @@ function decodeHtmlEntities(text) {
 }
 
 function replaceArticle(href, newDoc) {
-  var re = new RegExp(/<title>(.*?)<\/title>/, "m");
+  var re = /<title>(.*?)<\/title>/;
   var match = re.exec(newDoc);
 
   $(".container-main").replaceWith($(".container-main", newDoc));
@@ -154,13 +154,20 @@ function loadPage(target) {
   getCurrentVersion(href);
   renderVersion();
   loadMenu(new URL(href).pathname);
-  var version = getVersionInfo(getVersionByURL()).name
-  href = href.replace(getVersionByURL(), version)
+  var version = getVersionInfo(getVersionByURL()).name;
+  href = href.replace(getVersionByURL(), version);
+  var xhr = new XMLHttpRequest();
   $.get({
+    xhr: function() { return xhr; },
     url: href,
     success: function(newDoc) {
+      if (xhr.responseURL && href !== xhr.responseURL) {
+        updateHistory(xhr.responseURL.replace(version, getVersionByURL()));
+        return;
+      }
       if (!newDoc.includes("<body>")) {
-        var match = new RegExp(/(?<=url=).*(?=")/, "gm").exec(newDoc)[0];
+        // https://github.com/gohugoio/hugo/blob/master/tpl/tplimpl/embedded/templates/alias.html
+        var match = /<title>(.*?)<\/title>/.exec(newDoc)[1];
         updateHistory(match.replace(version, getVersionByURL()))
         return;
       }
