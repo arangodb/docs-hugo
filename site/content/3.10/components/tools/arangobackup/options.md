@@ -1,5 +1,5 @@
 ---
-title: Arangobackup Options
+title: _arangobackup_ Options
 menuTitle: Options
 weight: 10
 description: >-
