@@ -116,6 +116,14 @@ the query. In that case, `warnings` contains an empty array.
 In previous versions, no `warnings` attribute was returned when parsing a query
 produced no warnings.
 
+#### Metrics API
+
+The metrics endpoint includes the following new metric:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_aql_cursors_active` | Current number of active AQL query cursors. |
+
 ### Endpoints moved
 
 
