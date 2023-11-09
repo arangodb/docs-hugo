@@ -3,13 +3,10 @@ title: API Changes in ArangoDB 3.12
 menuTitle: API changes in 3.12
 weight: 20
 description: >-
-  ArangoDB v3.12 Release Notes API Changes
+  A summary of the changes to the HTTP API and other interfaces that are relevant
+  for developers, like maintainers of drivers and integrations for ArangoDB
 archetype: default
 ---
-This document summarizes the HTTP API changes and other API changes in ArangoDB 3.12.
-The target audience for this document are developers who maintain drivers and
-integrations for ArangoDB 3.12.
-
 ## HTTP RESTful API
 
 ### Behavior changes
@@ -98,7 +95,7 @@ Indexes of type `inverted` accept a new `optimizeTopK` property for the
 ArangoSearch WAND optimization. It is an array of strings, optional, and
 defaults to `[]`.
 
-See the [inverted index `optimizeTopK` property](../../develop/http/indexes/inverted.md)
+See the [inverted index `optimizeTopK` property](../../develop/http-api/indexes/inverted.md)
 for details.
 
 #### Optimizer rule descriptions

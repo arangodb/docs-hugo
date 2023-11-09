@@ -7,8 +7,6 @@ description: >-
   applications
 archetype: default
 ---
-{{< description >}}
-
 ArangoDB can handle multiple databases in the same server instance. Databases
 can be used to logically group and separate data. An ArangoDB database consists
 of collections and dedicated database-specific worker processes. A database

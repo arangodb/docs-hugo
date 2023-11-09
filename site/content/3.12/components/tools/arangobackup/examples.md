@@ -3,7 +3,7 @@ title: Hot Backup Examples
 menuTitle: Examples
 weight: 5
 description: >-
-  How to create a consistent snapshot with the arangobackup tool.
+  How to create a consistent snapshot with the `arangobackup` tool
 archetype: default
 ---
 ## Create

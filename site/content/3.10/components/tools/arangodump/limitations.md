@@ -2,9 +2,7 @@
 title: _arangodump_ Limitations
 menuTitle: Limitations
 weight: 20
-description: >-
-  In a cluster, arangodump does not guarantee to dump a consistent snapshot if
-  write operations happen while the dump is in progress
+description: ''
 archetype: default
 ---
 _arangodump_ has the following limitations:

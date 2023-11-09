@@ -3,12 +3,12 @@ title: Type and value order in AQL
 menuTitle: Type and value order
 weight: 20
 description: >-
-  AQL uses a deterministic algorithm that takes both the data types and the actual values into account
+  AQL uses a set of rules for equality checks and comparisons that takes both
+  the data types and the actual values into account
 archetype: default
 ---
-When checking for equality or inequality or when determining the sort order of
-values, AQL uses a deterministic algorithm that takes both the data types and
-the actual values into account.
+When checking for equality or inequality, or when determining the sort order of
+values, AQL uses a deterministic algorithm for the comparison.
 
 The compared operands are first compared by their data types, and only by their
 data values if the operands have the same data types.
@@ -16,17 +16,17 @@ data values if the operands have the same data types.
 The following type order is used when comparing data types:
 
 ```
-null  <  bool  <  number  <  string  <  array/list  <  object/document
+null  <  bool  <  number  <  string  <  array (or list)  <  object (or document)
 ```
 
-This means *null* is the smallest type in AQL and *document* is the type with
+This means `null` is the smallest type in AQL and *object* is the type with
 the highest order. If the compared operands have a different type, then the
 comparison result is determined and the comparison is finished.
 
-For example, the boolean *true* value will always be less than any numeric or
-string value, any array (even an empty array) or any object / document. Additionally, any
-string value (even an empty string) will always be greater than any numeric
-value, a boolean value, *true* or *false*.
+For example, the boolean `true` value is always less than any numeric or
+string value, any array (even an empty array), and any object. Additionally, any
+string value (even an empty string) is always greater than any numeric
+value and a boolean value (`true` and `false`).
 
 ```aql
 null  <  false
@@ -76,28 +76,28 @@ If the two compared operands have the same data types, then the operands values
 are compared. For the primitive types (null, boolean, number, and string), the
 result is defined as follows:
 
-- null: *null* is equal to *null*
-- boolean: *false* is less than *true*
-- number: numeric values are ordered by their cardinal value
-- string: string values are ordered using a localized comparison, using the configured
+- **null**: `null` is equal to `null`
+- **boolean**: `false` is less than `true`
+- **number**: numeric values are ordered by their cardinal value
+- **string**: string values are ordered using a localized comparison, using the configured
   [server language](../../components/arangodb-server/options.md#--default-language)
   for sorting according to the alphabetical order rules of that language
 
-Note: unlike in SQL, *null* can be compared to any value, including *null*
-itself, without the result being converted into *null* automatically.
+Note: unlike in SQL, `null` can be compared to any value, including `null`
+itself, without the result being converted into `null` automatically.
 
-For compound, types the following special rules are applied:
+For compound types (array and object), the following special rules are applied:
 
-Two array values are compared by comparing their individual elements position by
+Two **array** values are compared by comparing their individual elements position by
 position, starting at the first element. For each position, the element types
 are compared first. If the types are not equal, the comparison result is
 determined, and the comparison is finished. If the types are equal, then the
-values of the two elements are compared.  If one of the arrays is finished and
-the other array still has an element at a compared position, then *null* will be
+values of the two elements are compared. If one of the arrays is finished and
+the other array still has an element at a compared position, then `null` is
 used as the element value of the fully traversed array.
 
-If an array element is itself a compound value (an array or an object / document), then the
-comparison algorithm will check the element's sub values recursively. The element's
+If an array element is itself a compound value (an array or an object), then the
+comparison algorithm checks the element's sub-values recursively. The element's
 sub-elements are compared recursively.
 
 ```aql
@@ -109,21 +109,21 @@ sub-elements are compared recursively.
 [ false, 1 ]  <  [ false, '' ]
 ```
 
-Two object / documents operands are compared by checking attribute names and value. The
+Two **object** operands are compared by checking attribute names and value. The
 attribute names are compared first. Before attribute names are compared, a
 combined array of all attribute names from both operands is created and sorted
-lexicographically.  This means that the order in which attributes are declared
-in an object / document is not relevant when comparing two objects / documents.
+lexicographically. This means that the order in which attributes are declared
+in an object is not relevant when comparing two objects.
 
 The combined and sorted array of attribute names is then traversed, and the
 respective attributes from the two compared operands are then looked up. If one
-of the objects / documents does not have an attribute with the sought name, its attribute
-value is considered to be *null*.  Finally, the attribute value of both
-objects / documents is compared using the before mentioned data type and value comparison.
-The comparisons are performed for all object / document attributes until there is an
+of the objects does not have an attribute with the sought name, its attribute
+value is considered to be `null`. Finally, the attribute value of both
+objects is compared using the aforementioned data type and value comparison.
+The comparisons are performed for all object attributes until there is an
 unambiguous comparison result. If an unambiguous comparison result is found, the
 comparison is finished. If there is no unambiguous comparison result, the two
-compared objects / documents are considered equal.
+compared objects are considered equal.
 
 ```aql
 { }  ==  { "a" : null }

@@ -1,9 +1,8 @@
 ---
-title: Working with collections
+title: Working with collections in Foxx services
 menuTitle: Working with collections
 weight: 10
-description: >-
-  Working with collections
+description: ''
 archetype: default
 ---
 Foxx provides the [`module.context.collection`](../reference/service-context.md) method

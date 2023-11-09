@@ -3,13 +3,10 @@ title: API Changes in ArangoDB 3.11
 menuTitle: API changes in 3.11
 weight: 20
 description: >-
-  ArangoDB v3.11 Release Notes API Changes
+  A summary of the changes to the HTTP API and other interfaces that are relevant
+  for developers, like maintainers of drivers and integrations for ArangoDB
 archetype: default
 ---
-This document summarizes the HTTP API changes and other API changes in ArangoDB 3.11.
-The target audience for this document are developers who maintain drivers and
-integrations for ArangoDB 3.11.
-
 ## HTTP RESTful API
 
 ### Behavior changes
@@ -339,7 +336,7 @@ to extend the timeout.
 
 The maintenance mode ends automatically after the defined timeout.
 
-Also see the [HTTP interface for cluster maintenance](../../develop/http/cluster.md#get-the-maintenance-status-of-a-db-server).
+Also see the [HTTP interface for cluster maintenance](../../develop/http-api/cluster.md#get-the-maintenance-status-of-a-db-server).
 
 ### Endpoints augmented
 
@@ -427,8 +424,8 @@ Enterprise Edition:
 
 #### Query API
 
-The [`GET /_api/query/current`](../../develop/http/queries/aql-queries.md#list-the-running-aql-queries)
-and [`GET /_api/query/slow`](../../develop/http/queries/aql-queries.md#list-the-slow-aql-queries)
+The [`GET /_api/query/current`](../../develop/http-api/queries/aql-queries.md#list-the-running-aql-queries)
+and [`GET /_api/query/slow`](../../develop/http-api/queries/aql-queries.md#list-the-slow-aql-queries)
 endpoints include a new numeric `peakMemoryUsage` attribute.
 
 ---
@@ -481,7 +478,7 @@ persisted execution statistics for Pregel jobs:
 - `DELETE /_api/control_pregel/history` to delete the persisted execution
   statistics of all Pregel jobs
 
-See [Pregel HTTP API](../../develop/http/pregel.md) for details.
+See [Pregel HTTP API](../../develop/http-api/pregel.md) for details.
 
 #### Cluster rebalance API
 

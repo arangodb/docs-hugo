@@ -1,9 +1,8 @@
 ---
-title: Making requests
+title: Making requests in Foxx
 menuTitle: Making requests
 weight: 65
-description: >-
-  Making requests
+description: ''
 archetype: default
 ---
 ArangoDB is primarily a database, so Foxx doesn't offer the same level of

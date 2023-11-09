@@ -7,8 +7,6 @@ description: >-
   provided by Spring Data repositories
 archetype: chapter
 ---
-{{< description >}}
-
 Spring Data Commons provides a composable repository infrastructure which
 Spring Data ArangoDB is built on. These allow for interface-based composition of
 repositories consisting of provided default implementations for certain

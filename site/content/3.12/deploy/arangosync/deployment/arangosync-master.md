@@ -1,9 +1,8 @@
 ---
-title: ArangoSync Master
+title: Set up the ArangoSync Master for Datacenter-to-Datacenter Replication
 menuTitle: ArangoSync Master
 weight: 10
-description: >-
-  The ArangoSync Master is responsible for managing all synchronization, creating tasks and assigning those to the ArangoSync Workers
+description: ''
 archetype: default
 ---
 The _ArangoSync Master_ is responsible for managing all synchronization, creating

@@ -3,7 +3,7 @@ title: SmartGraph Management
 menuTitle: Management
 weight: 10
 description: >-
-  This chapter describes the JavaScript interface for creating and modifying SmartGraphs
+  How to manage named graphs of the type SmartGraph
 archetype: default
 ---
 This chapter describes the JavaScript interface for creating and modifying

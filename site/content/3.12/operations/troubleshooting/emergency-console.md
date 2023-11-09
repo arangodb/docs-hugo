@@ -3,7 +3,7 @@ title: Emergency Console
 menuTitle: Emergency Console
 weight: 15
 description: >-
-  The ArangoDB database server has two modes of operation
+  You can start an `arangod` process in an emergency mode with a console
 archetype: default
 ---
 The ArangoDB database server has two modes of operation: As a server, where it

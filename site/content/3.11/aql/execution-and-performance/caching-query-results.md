@@ -3,11 +3,9 @@ title: The AQL query results cache
 menuTitle: Caching query results
 weight: 30
 description: >-
-  AQL provides an optional query results cache
+  AQL provides an optional query results cache in single server deployments
 archetype: default
 ---
-AQL provides an optional query results cache.
-
 The purpose of the query results cache is to avoid repeated calculation of the same
 query results. It is useful if data-reading queries repeat a lot and there are
 not many write queries.

@@ -3,14 +3,16 @@ title: Array functions in AQL
 menuTitle: Array
 weight: 10
 description: >-
-  Array functions
+  AQL provides functions for higher-level array manipulation in addition to
+  language constructs that can also be used for arrays
 archetype: default
 ---
-AQL provides functions for higher-level array manipulation. Also see the
-[numeric functions](numeric.md) for functions that work on number arrays.
+You can use the AQL functions listed below to work with lists of items. Also
+see the [numeric functions](numeric.md) for functions that work on number arrays.
+
 If you want to concatenate the elements of an array equivalent to `join()`
-in JavaScript, see [CONCAT()](string.md#concat) and
-[CONCAT_SEPARATOR()](string.md#concat_separator) in the string functions chapter.
+in JavaScript, see [`CONCAT()`](string.md#concat) and
+[`CONCAT_SEPARATOR()`](string.md#concat_separator) in the string functions chapter.
 
 Apart from that, AQL also offers several language constructs:
 

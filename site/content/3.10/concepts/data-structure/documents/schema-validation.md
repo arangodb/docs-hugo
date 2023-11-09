@@ -3,13 +3,14 @@ title: Schema Validation
 menuTitle: Schema Validation
 weight: 5
 description: >-
-  How to enforce attributes and data types for documents using JSON Schema on collection level.
+  How to enforce attributes and their data types for documents of individual
+  collections using JSON Schema
 archetype: default
 ---
 <small>Introduced in: v3.7.1</small>
 
 While ArangoDB is schema-less, it allows to enforce certain document structures
-on collection level. The desired structure can be described in the popular
+on the collection level. The desired structure can be described in the popular
 [JSON Schema](https://json-schema.org/) format (draft-4,
 without remote schema support). The level of validation and a custom error
 message can be configured. The system attributes `_key`, `_id`, `_rev`, `_from`

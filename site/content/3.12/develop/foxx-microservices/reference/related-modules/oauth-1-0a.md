@@ -1,9 +1,8 @@
 ---
-title: OAuth 1.0a
+title: Foxx OAuth 1.0a
 menuTitle: OAuth 1.0a
 weight: 10
-description: >-
-  OAuth 1.0a
+description: ''
 archetype: default
 ---
 `const createOAuth1Client = require('@arangodb/foxx/oauth1');`

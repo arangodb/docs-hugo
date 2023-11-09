@@ -9,9 +9,6 @@ archetype: default
 ---
 <small>Introduced in: v3.10.0</small>
 
-{{< description >}}
-{.lead}
-
 If you want to add default values to new documents, maintain auxiliary
 attributes for search queries, or similar, you can set these attributes manually
 in every operation that inserts or modifies documents. However, it is more
@@ -81,9 +78,9 @@ Each object represents a computed value and can have the following attributes:
 ## HTTP API
 
 See the `computedValues` collection property in the HTTP API documentation:
-- [Create a collection](../../../develop/http/collections.md#create-a-collection),
-- [Read properties of a collection](../../../develop/http/collections.md#get-the-properties-of-a-collection),
-- [Change properties of a collection](../../../develop/http/collections.md#change-the-properties-of-a-collection).
+- [Create a collection](../../../develop/http-api/collections.md#create-a-collection),
+- [Read properties of a collection](../../../develop/http-api/collections.md#get-the-properties-of-a-collection),
+- [Change properties of a collection](../../../develop/http-api/collections.md#change-the-properties-of-a-collection).
 
 ## Computed Value Expressions
 
@@ -123,7 +120,7 @@ Computed value expressions have the following properties:
   the order of the computed value definitions in the `computedValues` property.
 
 - You can use AQL functions in the expression but only those that can be
-  executed on DB-Servers, regardless of your deployment type. The following
+  executed on DB-Servers, regardless of your deployment mode. The following
   functions cannot be used in the expression:
   - `CALL()`
   - `APPLY()`

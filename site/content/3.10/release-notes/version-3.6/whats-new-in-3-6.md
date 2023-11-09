@@ -3,7 +3,8 @@ title: Features and Improvements in ArangoDB 3.6
 menuTitle: What's New in 3.6
 weight: 5
 description: >-
-  ArangoDB v3.6 Release Notes New Features
+  Multiple performance improvements to AQL queries, dynamic search expressions,
+  a new cluster deployment mode
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in
@@ -441,7 +442,7 @@ In addition, ArangoDB 3.6 provides the following new AQL functionality:
 
 - a [`maxRuntime` query option](../../aql/how-to-invoke-aql/with-arangosh.md#maxruntime)
   to restrict the execution to a given time in seconds (also added to v3.5.4).
-  Also see [HTTP interfaces for AQL queries](../../develop/http/queries/aql-queries.md#create-a-cursor).
+  Also see [HTTP interfaces for AQL queries](../../develop/http-api/queries/aql-queries.md#create-a-cursor).
 
 - a startup option `--query.optimizer-rules` to turn certain AQL query optimizer
   rules off (or on) by default. This can be used to turn off certain optimizations
@@ -583,14 +584,14 @@ only the final result. This can drastically reduce resource consumption and
 communication effort for the Coordinator.
 
 An entire cluster, selected databases or selected collections can be made
-eligible for the OneShard optimization. See [OneShard cluster architecture](../../deploy/deployment/oneshard.md)
+eligible for the OneShard optimization. See [OneShard cluster architecture](../../deploy/oneshard.md)
 for details and usage examples.
 
 ## HTTP API
 
 The following APIs have been expanded / changed:
 
-- [Database creation API](../../develop/http/databases.md#create-a-database),\
+- [Database creation API](../../develop/http-api/databases.md#create-a-database),\
   HTTP route `POST /_api/database`
 
   The database creation API now handles the `replicationFactor`, `writeConcern`
@@ -612,26 +613,26 @@ The following APIs have been expanded / changed:
   that database via the web UI, arangosh or drivers (unless the startup option
   `--cluster.force-one-shard` is enabled).
 
-- [Database properties API](../../develop/http/databases.md#get-information-about-the-current-database),\
+- [Database properties API](../../develop/http-api/databases.md#get-information-about-the-current-database),\
   HTTP route `GET /_api/database/current`
 
   The database properties endpoint returns the new additional attributes
   `replicationFactor`, `writeConcern` and `sharding` in a cluster.
   A description of these attributes can be found above.
 
-- [Collection](../../develop/http/collections.md) / [Graph APIs](../../develop/http/graphs/named-graphs.md#management),\
+- [Collection](../../develop/http-api/collections.md) / [Graph APIs](../../develop/http-api/graphs/named-graphs.md#management),\
   HTTP routes `POST /_api/collection`, `GET /_api/collection/{collection-name}/properties`
   and various `/_api/gharial/*` endpoints
 
   `minReplicationFactor` has been renamed to `writeConcern` for consistency.
   The old attribute name is still accepted and returned for compatibility.
 
-- [Hot Backup API](../../develop/http/hot-backups.md#create-a-backup),\
+- [Hot Backup API](../../develop/http-api/hot-backups.md#create-a-backup),\
   HTTP route `POST /_admin/backup/create`
 
   New attribute `force`, see [Hot Backup](#hot-backup) below.
 
-- New [Metrics API](../../develop/http/monitoring.md#metrics-api),\
+- New [Metrics API](../../develop/http-api/monitoring.md#metrics-api),\
   HTTP route `GET /_admin/metrics`
 
   Returns the instance's current metrics in Prometheus format. The returned
@@ -779,8 +780,8 @@ may be shipped in a disabled-by-default state.
   for creating the backup. Most likely this is _not_ what you want to do
   because it will abort valid ongoing write operations, but it makes sure that
   backups can be acquired more quickly. The force flag currently only aborts
-  [Stream Transactions](../../develop/http/transactions/stream-transactions.md) but no
-  [JavaScript Transactions](../../develop/http/transactions/javascript-transactions.md).
+  [Stream Transactions](../../develop/http-api/transactions/stream-transactions.md) but no
+  [JavaScript Transactions](../../develop/http-api/transactions/javascript-transactions.md).
 
 - View Data
 

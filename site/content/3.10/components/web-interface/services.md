@@ -2,8 +2,7 @@
 title: Services
 menuTitle: Services
 weight: 35
-description: >-
-  The services section displays all installed Foxx applications
+description: ''
 archetype: default
 ---
 The services section displays all installed Foxx applications. You can create new services

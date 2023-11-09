@@ -2,8 +2,7 @@
 title: _arangoexport_ Examples
 menuTitle: Examples
 weight: 5
-description: >-
-  arangoexport can be invoked by executing the following command in a command line
+description: ''
 archetype: default
 ---
 _arangoexport_ can be invoked by executing the following command in a command line:
@@ -13,8 +12,9 @@ arangoexport --collection test --output-directory "dump"
 ```
 
 This exports the `test` collection into the `dump` directory as one big JSON array. Every entry
-in this array is one document from the collection without a specific order. To export more than
-one collection at a time specify multiple `--collection` options.
+in this array is one document from the collection without a specific order.
+
+To export more than one collection at a time specify multiple `--collection` options.
 
 The default output directory is `export`.
 

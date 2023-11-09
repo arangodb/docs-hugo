@@ -3,7 +3,7 @@ title: _arangobench_ Startup Options
 menuTitle: Options
 weight: 5
 description: >-
-  arangobench Startup Options
+  The startup options of the `arangobench` executable
 pageToc:
   maxHeadlineLevel: 2
 archetype: default

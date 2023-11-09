@@ -3,13 +3,10 @@ title: API Changes in ArangoDB 3.10
 menuTitle: API changes in 3.10
 weight: 20
 description: >-
-  ArangoDB v3.10 Release Notes API Changes
+  A summary of the changes to the HTTP API and other interfaces that are relevant
+  for developers, like maintainers of drivers and integrations for ArangoDB
 archetype: default
 ---
-This document summarizes the HTTP API changes and other API changes in ArangoDB 3.10.
-The target audience for this document are developers who maintain drivers and
-integrations for ArangoDB 3.10.
-
 ## HTTP RESTful API
 
 ### Behavior changes
@@ -33,7 +30,7 @@ The following APIs can reply early with an HTTP 200 status:
   This API returns information about the instance's status, now also including
   recovery progress and information about which server feature is currently starting.
   
-See [Respond to liveliness probes](../../develop/http/general-request-handling.md#respond-to-liveliness-probes) for more details.
+See [Respond to liveliness probes](../../develop/http-api/general-request-handling.md#respond-to-liveliness-probes) for more details.
 
 #### Validation of collections in named graphs
 
@@ -188,7 +185,7 @@ move shard operations and improve balance in the cluster.
 - `POST /_admin/cluster/rebalance_execute`
 - `PUT /_admin/cluster/rebalance`
   
-For more information, see the [Cluster](../../develop/http/cluster.md#get-the-current-cluster-imbalance) 
+For more information, see the [Cluster](../../develop/http-api/cluster.md#get-the-current-cluster-imbalance) 
 section of the HTTP API documentation. 
 
 #### Maintenance mode for DB-Servers
@@ -248,7 +245,7 @@ to extend the timeout.
 
 The maintenance mode ends automatically after the defined timeout.
 
-Also see the [HTTP interface for cluster maintenance](../../develop/http/cluster.md#get-the-maintenance-status-of-a-db-server).
+Also see the [HTTP interface for cluster maintenance](../../develop/http-api/cluster.md#get-the-maintenance-status-of-a-db-server).
 
 ### Endpoints augmented
 
@@ -408,7 +405,7 @@ Index definition returned by index endpoints:
 - `writebufferActive` (integer): default: `0`
 - `writebufferSizeMax` (integer): default: `33554432`
 
-Also see the [HTTP API documentation](../../develop/http/indexes/inverted.md).
+Also see the [HTTP API documentation](../../develop/http-api/indexes/inverted.md).
 
 #### `search-alias` Views
 
@@ -439,7 +436,7 @@ View definition returned by View endpoints:
   - `collection` (string)
   - `index` (string)
 
-Also see the [HTTP API documentation](../../develop/http/views/search-alias-views.md).
+Also see the [HTTP API documentation](../../develop/http-api/views/search-alias-views.md).
 
 #### Computed Values
 
@@ -585,14 +582,14 @@ attribute is returned inside the `serverInfo` object with the following subattri
   recovery. If the instance is already past the recovery, this attribute contains 
   the last handled recovery sequence number.
 
-See [Respond to liveliness probes](../../develop/http/general-request-handling.md#respond-to-liveliness-probes) for more information.
+See [Respond to liveliness probes](../../develop/http-api/general-request-handling.md#respond-to-liveliness-probes) for more information.
 
 #### Read from followers
 
 A number of read-only APIs now observe the `x-arango-allow-dirty-read`
 header, which was previously only used in Active Failover deployments.
 This header allows reading from followers or "dirty reads". See
-[Read from followers](../../develop/http/documents.md#read-from-followers)
+[Read from followers](../../develop/http-api/documents.md#read-from-followers)
 for details.
 
 The following APIs are affected:
@@ -840,7 +837,7 @@ Both endpoints return a new `detail` attribute with additional Pregel run detail
         - (the same attributes like under `aggregatedStatus`)
 
 For a detailed description of the attributes, see
-[Pregel HTTP API](../../develop/http/pregel.md#get-a-pregel-job-execution-status).
+[Pregel HTTP API](../../develop/http-api/pregel.md#get-a-pregel-job-execution-status).
 
 #### Log level API
 
@@ -884,7 +881,7 @@ for details.
 The `db._query()` and `db._createStatement()` methods accepts new query
 options (`options` object) to set per-query thresholds for the
 [query spillover feature](whats-new-in-3-10.md#query-result-spillover-to-decrease-memory-usage)
-and to [Read from followers](../../develop/http/documents.md#read-from-followers):
+and to [Read from followers](../../develop/http-api/documents.md#read-from-followers):
 
 - `allowDirtyReads` (boolean, _optional_): default: `false`
 - `spillOverThresholdMemoryUsage` (integer, _optional_): in bytes, default: `134217728` (128MB)

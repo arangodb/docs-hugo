@@ -7,8 +7,6 @@ description: >-
   logical backup
 archetype: default
 ---
-{{< description >}}
-
 A direct, in-place downgrade of ArangoDB is **not** supported. If you have upgraded
 your ArangoDB package, and then also upgraded your current data directory, it is
 not supported to downgrade the package and start an older ArangoDB version on a
@@ -28,7 +26,7 @@ In order to downgrade, the following options are available:
   before the upgrade.
 - Start the old package on the data directory backup you took before the upgrade.
 
-### Restore an _arangodump_ backup
+### Restore an *arangodump* backup
 
 This procedure assumes that you have taken an _arangodump_ backup using the old
 ArangoDB version, before you upgraded it. 

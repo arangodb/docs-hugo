@@ -3,7 +3,8 @@ title: Features and Improvements in ArangoDB 3.1
 menuTitle: What's New in 3.1
 weight: 5
 description: >-
-  The following list shows in detail which features have been added or improved inArangoDB 3
+  Vertex-centric indexes, a new managed graph type with smart sharding,
+  audit logging
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in

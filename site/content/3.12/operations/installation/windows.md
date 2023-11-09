@@ -3,7 +3,7 @@ title: Installing ArangoDB on Windows
 menuTitle: Windows
 weight: 20
 description: >-
-  This is a walkthrough to install ArangoDB on Windows. You can find different methods to do so, automatically or manually.
+  You can use ArangoDB on Windows via Docker images, or use an installer or zip archives
 archetype: default
 ---
 You can use ArangoDB on Windows (64-bit) in different ways:
@@ -37,7 +37,7 @@ You can choose one of the following:
   maintained and directly published by ArangoDB on a regular basis.
 
 See the documentation on [Docker Hub](https://hub.docker.com/_/arangodb),
-as well as the [Deployments](../../deploy/deployment/_index.md) section about
+as well as the [Deploy](../../deploy/_index.md) section about
 different deployment modes and methods including Docker containers.
 
 ## Installing using the Installer
@@ -102,7 +102,7 @@ avoids the data being synced to the windows domain controller.
 
 If this checkbox is selected, the installer attempts to perform an automatic
 update. For more information, please see
-[Upgrading on Windows](../upgrading/os-specific-information/upgrading-on-windows.md).
+[Upgrading on Windows](../upgrading/os-specific-information/windows.md).
 
 #### Keep Backup
 
@@ -252,4 +252,4 @@ After installation, you may start ArangoDB in several ways. The exact start-up c
 depends on the type of ArangoDB deployment you are interested in
 (_Single Instance_, _Active Failover_ or _Cluster_).
 
-Please refer to the [_Deployment_](../../deploy/deployment/_index.md) chapter for details.
+Please refer to the [Deploy](../../deploy/_index.md) chapter for details.

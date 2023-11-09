@@ -3,12 +3,12 @@ title: AQL query statistics
 menuTitle: Query statistics
 weight: 5
 description: >-
-  Query statistics
+  All queries that have successfully run to completion return statistics about
+  the execution
 archetype: default
 ---
-A query that has been executed will always return execution statistics. Execution statistics
-can be retrieved by calling `getExtra()` on the cursor. The statistics are returned in the
-return value's `stats` attribute:
+Execution statistics can be retrieved by calling `getExtra()` on the cursor.
+The statistics are returned in the return value's `stats` attribute:
 
 ```js
 ---

@@ -3,15 +3,14 @@ title: The AQL query optimizer
 menuTitle: Query Optimization
 weight: 25
 description: >-
-  AQL queries are sent through an optimizer before execution
+  AQL queries are sent through an optimizer before execution that creates an
+  initial execution plan, looks for optimization opportunities, and applies them
 pageToc:
   maxHeadlineLevel: 3
 archetype: default
 ---
-AQL queries are sent through an optimizer before execution. The task of the optimizer is
-to create an initial execution plan for the query, look for optimization opportunities and
-apply them. As a result, the optimizer might produce multiple execution plans for a
-single query. It then calculates the costs for all plans and picks the plan with the
+AQL queries are parsed and planned. The optimizer might produce multiple execution plans
+for a single query. It then calculates the costs for all plans and picks the plan with the
 lowest total cost. This resulting plan is considered to be the *optimal plan*, which is
 then executed.
 

@@ -170,10 +170,22 @@ Apple silicon like M1).
 Run the `docker compose` services using the `docker-compose.pain-build.yml` file.
 
 ```shell
-docs-hugo/toolchain/docker/amd64> docker compose -f docker-compose.plain-build.yml up
+docs-hugo/toolchain/docker/amd64> docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
 ```
 
 The site will be available at `http://localhost:1313`.
+
+To make the documentation tooling not start a live server in watch mode but
+rather create a static build and exit, set the environment variable `ENV` to
+any value other than `local` before calling `docker compose ...`:
+
+```shell
+export ENV=static  # Bash
+set -xg ENV static # Fish
+$Env:ENV='static'  # PowerShell
+```
+
+The output files will be written to `site/public/`.
 
 #### Scheduled and example generation build
 
@@ -235,32 +247,10 @@ Apple silicon like M1).
 Run the `docker compose` services without specifying a file:
 
 ```shell
-docs-hugo/toolchain/docker/arm64> docker compose up
+docs-hugo/toolchain/docker/arm64> docker compose up --abort-on-container-exit
 ```
 
-
 The site will be available at `http://localhost:1313`
-
-<!--
-#### Run without Docker
-
-- Build and start the _arangoproxy_ web server
-
-  ```shell
-  toolchain/arangoproxy/cmd> go build -mod=vendor -o arangoproxy
-  toolchain/arangoproxy/cmd> ./arangoproxy {flags}
-  ```
-- Launch the hugo build command
-
-  ```shell
-  docs-hugo/site> hugo
-  ```
-
-The static HTML is placed under `site/public/`.
-
-For development purpose, it is suggested to use the `hugo serve` command for
-hot-reload on changes. The runtime server is available at `http://localhost:1313/`.
--->
 
 ## Work with the documentation content
 
@@ -485,7 +475,7 @@ The following shortcodes also exist but are rarely used:
 
 - Use inclusive language, e.g. _work-hours_ instead of _man-hours_.
 
-- Get to point quickly on every page. [Add a Lead Paragraph](#adding-a-lead-paragraph)
+- Get to point quickly on every page. [Add lead paragraphs](#add-lead-paragraphs)
   that summarizes what the page is about.
 
 - Target end-users and focus on the outcome. It should be about solutions, not
@@ -515,8 +505,12 @@ The following shortcodes also exist but are rarely used:
   `../drivers/js/_index.md` instead of `/3.12/drivers/js/_index.md` or
   `https://docs.arangodb.com/3.12/drivers/js/`.
 
-- Avoid `**bold**` and `_italic_` markup in headlines. Inline `` `code` `` is
-  acceptable for code values, nonetheless.
+- Avoid **bold** and *italic* markup in headlines. If you have to use it, then
+  prefer `**bold**` and `*italic*`  over `__bold__` and `_italic_` because the
+  underscores are preserved in anchor links but asterisks are removed!
+
+- Inline `` `code` `` in headlines is acceptable for code values, and required
+  for startup options because `--` otherwise gets turned into an n-dash.
 
 - `-` is preferred for bullet points in unordered lists over `*`
 
@@ -556,6 +550,7 @@ The following shortcodes also exist but are rarely used:
   - _Datacenter-to-Datacenter Replication_ (note the hyphens), _DC2DC_
   - _ArangoGraph Insights Platform_ and _ArangoGraph_ for short, but not
     ~~Oasis~~, ~~ArangoDB Oasis~~, or ~~ArangoDB Cloud~~
+  - _Deployment mode_ (single server, cluster, etc.), not ~~deployment type~~
 
 - Never capitalize the names of executables or code values, e.g. write
   _arangosh_ instead of _Arangosh_.
@@ -715,19 +710,21 @@ with such a brief description. It is supposed to clarify the scope of the
 article so that the reader can quickly assess whether the following information
 is of relevance, but also acts as an introduction.
 
+You can set the lead paragraph via the `description` parameter in the
+front matter of a page:
+
 ```markdown
 ---
 title: Feature X
 description: >-
   You can do this and that with X, and it is ideal to solve problem Y
 ---
-{{< description >}}
-
 ...
 ```
 
-The lead paragraph text should end without a period, contain no links and usually
-avoid other markup as well but bold, italic, and inline code are acceptable.
+The lead paragraph text should end without a period, contain no links, and
+usually avoid other markup as well. However, **bold**, _italic_, and
+`inline code` are acceptable.
 
 ### Add a page or section
 
@@ -762,7 +759,14 @@ Add the actual content formatted in Markdown syntax below the front matter.
 
 ### Rename a page or section
 
-The following steps are necessary for moving content:
+Netlify supports server-side redirects configured with a text file
+([documentation](https://docs.netlify.com/routing/redirects/#syntax-for-the-redirects-file)).
+This is helpful when renaming folders with many subfolders and files because
+there is support for splatting and placeholders (but not regular expressions). See
+[Redirect options](https://docs.netlify.com/routing/redirects/redirect-options/)
+for details. The configuration file is `site/content/_redirects`.
+
+Otherwise, the following steps are necessary for moving content:
 1. Rename file or folder
 2. Set up `aliases` via the front matter as needed
 3. Adjust `weight` of pages in the front matter if necessary
@@ -800,6 +804,12 @@ front matter to `new/_index.md`:
 aliases:
   - old
 ```
+
+For aliases in `_index.md` files, think of the folder they are in as a file.
+In the above example, the folder is `new/`. Treating it like the file that
+defines the page means that the alias `old` is relative to its parent folder
+(here: the root folder of the content, `site/content/`). Therefore, the alias
+needs to be `old`, not `../old`.
 
 Note that you need to set up aliases for all files in `new/` so that every URL
 which includes the old folder name redirects to the corresponding new URL.

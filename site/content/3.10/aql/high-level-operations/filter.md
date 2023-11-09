@@ -7,8 +7,6 @@ description: >-
   arbitrary logical conditions
 archetype: default
 ---
-{{< description >}}
-
 ## Syntax
 
 <pre><code>FILTER <em>expression</em></code></pre>
