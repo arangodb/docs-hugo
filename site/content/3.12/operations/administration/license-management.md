@@ -10,7 +10,7 @@ The Enterprise Edition of ArangoDB requires a license to activate the
 Enterprise Edition features. How to set a license key and to retrieve
 information about the current license via the JavaScript API is described below.
 There is also an [HTTP API](../../develop/http/administration.md#license).
-Also check the [ArangoDB Kubernetes Operator](../../deploy/deployment/kubernetes/using-the-operator.md)
+Also check the [ArangoDB Kubernetes Operator docs](https://arangodb.github.io/kube-arangodb/docs/how-to/set_license.html)
 for more details on how to set a license key.
 
 ## Initial Installation
