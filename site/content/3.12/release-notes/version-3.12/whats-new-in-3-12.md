@@ -251,6 +251,18 @@ of outgrowing the maximum number of file descriptors the ArangoDB process
 can open. Thus, these options should only be enabled on deployments with a
 limited number of collections/shards/indexes.
 
+### Active AQL query cursors metric
+
+The `arangodb_aql_cursors_active` metric has been added and shows the number
+of active AQL query cursors.
+
+AQL query cursors are created for queries that produce more results than
+specified in the `batchSize` query option (default value: `1000`). Such results
+can be fetched incrementally by client operations in chunks.
+As it is unclear if and when a client will fetch any remaining data from a
+cursor, every cursor has a server-side timeout value (TTL) after which it is
+considered inactive and garbage-collected.
+
 ## Client tools
 
 ### arangodump
