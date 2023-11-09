@@ -1,6 +1,6 @@
 ---
-title: Community to Enterprise Upgrade Procedure
-menuTitle: Community to Enterprise Upgrade
+title: Community Edition to Enterprise Edition Upgrade Procedure
+menuTitle: Community to Enterprise Edition
 weight: 5
 description: ''
 archetype: default

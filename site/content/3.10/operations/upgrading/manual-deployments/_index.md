@@ -1,6 +1,6 @@
 ---
 title: Upgrading Manual Deployments
-menuTitle: Upgrading Manual Deployments
+menuTitle: Manual Deployments
 weight: 20
 description: >-
   You can upgrade ArangoDB instances without the help of any deployment tools

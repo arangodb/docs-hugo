@@ -1,6 +1,6 @@
 ---
 title: Upgrading on Windows
-menuTitle: Upgrading on Windows
+menuTitle: Windows
 weight: 15
 description: >-
   How to upgrade a single server installation using an installer or zip archive

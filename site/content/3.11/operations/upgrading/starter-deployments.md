@@ -1,6 +1,6 @@
 ---
 title: Upgrading _Starter_ Deployments
-menuTitle: Upgrading Starter Deployments
+menuTitle: Starter Deployments
 weight: 15
 description: >-
   Procedure to perform a rolling upgrade with the `arangodb` executable

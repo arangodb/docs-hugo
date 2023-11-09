@@ -1,6 +1,6 @@
 ---
 title: Upgrading on Linux
-menuTitle: Upgrading on Linux
+menuTitle: Linux
 weight: 5
 description: >-
   How to upgrade a single server installation installed using package managers

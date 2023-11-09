@@ -1,6 +1,6 @@
 ---
 title: Upgrading Kubernetes Deployments
-menuTitle: Upgrading Kubernetes Deployments
+menuTitle: Kubernetes Deployments
 weight: 25
 description: ''
 archetype: default

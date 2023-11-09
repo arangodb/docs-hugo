@@ -1,6 +1,6 @@
 ---
 title: Manually Upgrading an _Active Failover_ Deployment
-menuTitle: Upgrading an Active Failover deployment
+menuTitle: Active Failover
 weight: 5
 description: >-
   The server binaries need to be upgraded, requiring a restart of the `arangod`

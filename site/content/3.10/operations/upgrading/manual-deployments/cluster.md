@@ -1,6 +1,6 @@
 ---
 title: Manually Upgrading a _Cluster_ Deployment
-menuTitle: Upgrading a Cluster
+menuTitle: Cluster
 weight: 10
 description: >-
   The server binaries need to be upgraded, requiring a restart of the `arangod`
