@@ -1,6 +1,6 @@
 ---
 title: ArangoGraph Changelog
-menuTitle: ArangoGraph Changelog
+menuTitle: Changelog
 weight: 75
 description: >-
   The ArangoGraph changelog covers notable changes in behavior or new
