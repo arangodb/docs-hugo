@@ -7,8 +7,6 @@ description: >-
   across multiple deployments as needed
 archetype: default
 ---
-{{< description >}}
-
 {{< info >}}
 Credits are only available if your organization has signed up for
 ArangoGraph's [Committed](../organizations/_index.md#committed) package.
