@@ -3,7 +3,8 @@ title: Combining queries with subqueries in AQL
 menuTitle: Subqueries
 weight: 30
 description: >-
-  Wherever an expression is allowed in AQL, a subquery can be placed
+  Subqueries let you form complex requests and allow you to process more data in
+  with a single query
 archetype: default
 ---
 ## How to use subqueries

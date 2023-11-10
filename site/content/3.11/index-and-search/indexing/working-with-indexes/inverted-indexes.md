@@ -7,8 +7,6 @@ description: >-
   from simple to complex, including full-text search
 archetype: default
 ---
-{{< description >}}
-
 Documents hold attributes, mapping attribute keys to values.
 Inverted indexes store mappings from values (of document attributes) to their
 locations in collections. You can create these indexes to accelerate queries
@@ -249,7 +247,7 @@ settings are used in this case:
 
 ### Additional configuration options
 
-See the full list of options in the [HTTP API](../../../develop/http/indexes/inverted.md)
+See the full list of options in the [HTTP API](../../../develop/http-api/indexes/inverted.md)
 documentation.
 
 ### Restrictions

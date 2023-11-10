@@ -1,6 +1,6 @@
 ---
-title: arangosearch Views Reference
-menuTitle: <code>arangosearch</code> Views Reference
+title: '`arangosearch` Views Reference'
+menuTitle: '`arangosearch` Views Reference'
 weight: 85
 description: ''
 archetype: default
@@ -15,7 +15,7 @@ attributes, unlike collections with user-defined indexes.
 
 Views of type `arangosearch` can be managed as follows:
 - in the web interface, in the **VIEWS** section
-- via the [Views HTTP API](../../develop/http/views/_index.md)
+- via the [Views HTTP API](../../develop/http-api/views/_index.md)
 - through the [JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#views)
 
 Once you set up a View, you can query it via AQL with the
@@ -174,7 +174,7 @@ During view modification the following directives apply:
   during View index creation, so that it remains basically available.
   `inBackground` is an option that can be set when adding links. It does not get
   persisted as it is not a View property, but only a one-off option. Also see:
-  [Creating Indexes in Background](../indexing/index-basics.md#creating-indexes-in-background)
+  [Creating Indexes in Background](../indexing/basics.md#creating-indexes-in-background)
 
 - **cache** (_optional_; type: `boolean`; default: `false`)
 

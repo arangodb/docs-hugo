@@ -7,8 +7,6 @@ description: >-
   elements of an array, or traverse a graph
 archetype: default
 ---
-{{< description >}}
-
 ## Syntax
 
 The general syntax for iterating over collections and arrays is:

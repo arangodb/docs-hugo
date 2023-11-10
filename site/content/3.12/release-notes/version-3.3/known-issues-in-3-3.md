@@ -3,13 +3,10 @@ title: Known Issues in ArangoDB 3.3
 menuTitle: Known Issues in 3.3
 weight: 10
 description: >-
-  Known issues of ArangoDB version 3.3.x products
+  Important issues affecting the 3.3.x versions of the ArangoDB suite of products
 archetype: default
 ---
-This page lists important issues affecting the 3.3.x versions of the ArangoDB suite of products.
-It is not a list of all open issues.
-
-Critical issues (ArangoDB Technical & Security Alerts) are also found at [arangodb.com/alerts](https://www.arangodb.com/alerts/).
+Note that this page does not list all open issues.
 
 | Issue      |
 |------------|

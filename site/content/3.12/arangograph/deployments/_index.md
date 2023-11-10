@@ -38,11 +38,11 @@ Deployments contain exactly **one policy**. Within that policy, you can define
 role bindings to regulate access control on a deployment level.
 {{< /info >}}
 
-### In the __General__ section
+### In the **General** section
 
 - Enter the name and optionally a short description for the deployment.
 
-### In the __Location__ section
+### In the **Location** section
 
 1. Select the __Provider__ and __Region__ of the provider.
    {{< warning >}}
@@ -67,7 +67,7 @@ role bindings to regulate access control on a deployment level.
 For any kind of production deployment we strongly advise to use an IP allowlist.
 {{< /security >}}
 
-### In the __Configuration__ section
+### In the **Configuration** section
 
 Choose between a **OneShard**, **Sharded** or **Single Server** deployment.
 
@@ -111,7 +111,7 @@ provider and region in the Location section.
 
 ![ArangoGraph Deployment Single Server](../../../images/arangograph-new-deployment-singleserver.png)
 
-### In the __Summary__ section
+### In the **Summary** section
 
 1. Review the configuration, and if you're ok with the setup press the
   __Create__ button.

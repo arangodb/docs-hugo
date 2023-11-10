@@ -240,9 +240,11 @@ ul ul, ul ol, ol ul, ol ol {
     box-shadow: none;
     color: var(--gray-950);
 }
-.link > code {
+.link code {
     background-color: transparent;
-    border: none;
+    border: none !important;
+    position: relative;
+    top: -1px;
 }
 
 .link > i {
@@ -408,7 +410,7 @@ table.fixed code {
     box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
 } */
 
-.cards > a.link {
+.cards > a.card-link {
     border-bottom: 0px;
 }
 
@@ -600,6 +602,13 @@ body .page-container {
 /* Header Left */
 .header-block-left {
     display: flex;
+}
+
+#sidebar code {
+    color: var(--gray-100);
+    background: transparent;
+    border: 0;
+    padding: 0;
 }
 
 #sidebar > #sidebar-toggle-navigation {
@@ -1083,6 +1092,7 @@ header .logo {
     font-weight: 500;
     color: var(--gray-700);
     border-bottom: 0;
+    background-color: transparent;
 }
 
 #breadcrumbs > ol > li > a:hover {
@@ -1999,7 +2009,13 @@ nav.pagination .next {
 .nav-prev {
     display: inherit;
 }
-.nav-prev.link, .nav-next.link  {
+
+.nav-prev.link, .nav-next.link {
+    border-bottom: 0;
+    background-color: transparent;
+    overflow: inherit;
+}
+.nav-prev.link, .nav-next.link, .nav-next.link > code, .nav-next.link > p, .nav-prev.link > code, .nav-prev.link > p {
     border-bottom: 0;
 }
 

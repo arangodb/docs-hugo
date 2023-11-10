@@ -30,23 +30,12 @@ func init() {
 	models.Conf.Override = strings.ReplaceAll(override, ",", "|")
 
 	models.Logger.Printf(startupBanner)
-	models.Logger.Printf("./arangoproxy -help for help usage\n\n")
-	models.Logger.Printf("Init Setup\n")
 
-	if help {
-		models.Logger.Printf("Usage: ...\n")
-		os.Exit(0)
-	}
-	models.Logger.Printf("Configuration:\n%v\n", models.Conf)
-
-	models.Logger.Printf("Setup Done\n---------\n")
+	models.Logger.Printf("Configuration:\n%s\n", models.Conf.String())
 
 }
 
 func main() {
-	models.Logger.Printf("Available endpoints:\n - /js\n - /aql\n - /curl\n - /openapi\n")
-	models.Logger.Printf("Starting Server at :8080\n")
-
 	if useServers {
 		internal.InitRepositories()
 		models.Logger.Printf("[INIT] Repositories Init Done")

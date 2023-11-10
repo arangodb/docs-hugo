@@ -1,14 +1,13 @@
 ---
-title: Crypto Module
+title: The `@arangodb/crypto` module of the JavaScript API
 menuTitle: '@arangodb/crypto'
 weight: 25
 description: >-
-  Crypto Module
+  The crypto module provides implementations of various hashing algorithms as
+  well as functions related to cryptography
 archetype: default
 ---
 `const crypto = require('@arangodb/crypto')`
-
-The crypto module provides implementations of various hashing algorithms as well as cryptography related functions.
 
 ## Nonces
 

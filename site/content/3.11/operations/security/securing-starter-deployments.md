@@ -3,7 +3,8 @@ title: Securing Starter Deployments
 menuTitle: Securing Starter Deployments
 weight: 25
 description: >-
-  The password that is set for the root user during the installation of the ArangoDB package has no effect in case of deployments done with the tool ArangoDB Starter, as this tool creates new database directories and configuration files that are separate from those created by the stand-alone installation
+  You should enable authentication for deployments you create with the
+  ArangoDB Starter before starting them the first time
 archetype: default
 ---
 The password that is set for the _root_ user during the installation of the ArangoDB
@@ -17,10 +18,10 @@ the _root_ user will be created with an _empty_ password.
 In order to the change the password of the _root_ user, you can:
 
 - Open the ArangoDB web interface and change the password from there. [More information](../../components/web-interface/users.md).
-- Open an ArangoSH shell and use the function _users.replace_. [More information](../administration/user-management/in-arangosh.md#replace).
+- Open _arangosh_ and use the [`users.replace()` function](../administration/user-management/in-arangosh.md#replace).
 
 In case you would like to automate the _root_ password change, you might use the 
-_--javascript.execute-string_ option of the _arangosh_ binary, e.g.:
+`--javascript.execute-string` option of the _arangosh_ binary, e.g.:
 
 ```bash
 arangosh --server.endpoint your-server-endpoint \

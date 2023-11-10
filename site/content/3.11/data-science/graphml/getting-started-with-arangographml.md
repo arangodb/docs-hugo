@@ -6,8 +6,6 @@ description: >-
   Interface to control all resources inside ArangoGraphML in a scriptable manner
 archetype: default
 ---
-{{< description >}}
-
 ArangoGraphML is a set of services that provide an easy to use and scalable
 interface for graph machine learning. Since all of the orchestration and training
 logic is managed by ArangoGraph, all that is typically required is a

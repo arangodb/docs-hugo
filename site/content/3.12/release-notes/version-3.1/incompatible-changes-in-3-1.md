@@ -3,12 +3,10 @@ title: Incompatible changes in ArangoDB 3.1
 menuTitle: Incompatible changes in 3.1
 weight: 10
 description: >-
-  It is recommended to check the following list of incompatible changes before upgrading to ArangoDB 3
+  Check the following list of potential breaking changes **before** upgrading to
+  this ArangoDB version and adjust any client applications if necessary
 archetype: default
 ---
-It is recommended to check the following list of incompatible changes **before**
-upgrading to ArangoDB 3.1, and adjust any client programs if necessary.
-
 ## Communication Layer
 
 The internal communication layer is now based on Boost ASIO. A few options

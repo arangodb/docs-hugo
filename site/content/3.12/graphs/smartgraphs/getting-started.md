@@ -3,7 +3,7 @@ title: Getting started with SmartGraphs
 menuTitle: Getting Started
 weight: 5
 description: >-
-  SmartGraphs enable you to manage graphs at scale
+  How to create and use SmartGraphs
 archetype: default
 ---
 SmartGraphs **cannot use existing collections**. When switching to SmartGraph
@@ -66,7 +66,7 @@ SmartGraphs. To get started, follow the steps outlined below.
 
 ![Create SmartGraph](../../../images/Create-SmartGraph.png)   
 
-## Create a SmartGraph using _arangosh_
+## Create a SmartGraph using *arangosh*
 
 In contrast to General Graphs we have to add more options when creating the
 SmartGraph. The two options `smartGraphAttribute` and `numberOfShards` are
@@ -84,7 +84,7 @@ graph;
 ~graph_module._drop("myGraph");
 ```
 
-## Create a Disjoint SmartGraph using _arangosh_
+## Create a Disjoint SmartGraph using *arangosh*
 
 In contrast to regular SmartGraphs we have to add one option when creating the
 graph. The boolean option `isDisjoint` is required, needs to be set to `true`

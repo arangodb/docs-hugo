@@ -7,8 +7,6 @@ description: >-
   a single record or instance of an entity
 archetype: chapter
 ---
-{{< description >}}
-
 Documents in ArangoDB are JSON objects that contain structured or semi-structured
 data. They are stored in [collections](../collections.md).
 

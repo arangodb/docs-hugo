@@ -7,8 +7,6 @@ description: >-
   such as for arithmetic, comparing values, and logically combining conditions
 archetype: default
 ---
-{{< description >}}
-
 ## Comparison operators
 
 Comparison (or relational) operators compare two operands. They can be used with

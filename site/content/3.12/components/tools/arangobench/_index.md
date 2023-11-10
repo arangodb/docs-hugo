@@ -3,19 +3,17 @@ title: arangobench
 menuTitle: arangobench
 weight: 40
 description: >-
-  arangobench is ArangoDB's benchmark and test tool
+  `arangobench` is a benchmark and test tool that can be used to issue test
+  requests to the database system for performance and server function testing
 archetype: chapter
 ---
-_arangobench_ is ArangoDB's benchmark and test tool. It can be used to issue
-test requests to the database system for performance and server function
-testing. It supports parallel querying and batch requests.
-
 _arangobench_ is a client tool which makes network connections to an ArangoDB
 server in about the same way as a client application would do via an ArangoDB
 client driver. It thus often provides good enough throughput and performance
 estimates. It provides different test cases that can be executed, that reflect
 a broader set of use cases. It is useful to pick and run the test cases that
-most closely resemble typical or expected workloads.
+most closely resemble typical or expected workloads. It supports parallel
+querying and batch requests.
 
 ## General configuration
 

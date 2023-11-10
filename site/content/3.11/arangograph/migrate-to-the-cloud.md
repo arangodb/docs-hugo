@@ -6,8 +6,6 @@ description: >-
   Migrating data from bare metal servers to the cloud with minimal downtime
 archetype: default
 ---
-{{< description >}}
-
 The `arangosync-migration` tool allows you to easily move from on-premises to
 the cloud while ensuring a smooth transition with minimal downtime.
 Start the cloud migration, let the tool do the job and, at the same time,
@@ -52,7 +50,7 @@ Before getting started, make sure the following prerequisites are in place:
   and sign in. If you don’t have an account yet, sign-up to create one.
 
 - Generate an ArangoGraph API key and API secret. See a detailed guide on
-  [how to create an API key](arangograph-api/getting-started-with-the-api.md#creating-an-api-key).
+  [how to create an API key](api/set-up-a-connection.md#creating-an-api-key).
 
 {{< info >}}
 The cloud migration tool is only available for clusters.
@@ -192,7 +190,7 @@ migration-related processes as soon as possible.
 ### Switching the local cluster to read-only mode
 
 The `arangosync-migration set-server-mode` command allows switching
-[read-only mode](../develop/http/administration.md#set-the-server-mode-to-read-only-or-default)
+[read-only mode](../develop/http-api/administration.md#set-the-server-mode-to-read-only-or-default)
 for your local cluster on and off.
 
 In a read-only mode, all write operations are going to fail with an error code

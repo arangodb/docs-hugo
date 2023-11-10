@@ -7,8 +7,6 @@ description: >-
   graphs, and other examples
 archetype: chapter
 ---
-{{< description >}}
-
 These pages contain some common query patterns with examples. For better
 understandability the query results are also included directly below each query.
 

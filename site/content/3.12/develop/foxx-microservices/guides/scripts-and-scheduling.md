@@ -1,9 +1,10 @@
 ---
-title: Scripts and scheduling
+title: Scripts and scheduling in Foxx services
 menuTitle: Scripts and scheduling
 weight: 35
 description: >-
-  You can define scripts that need to be invoked directly and can be used to implement one-off tasks or scheduled and recurring jobs using queues
+  You can define scripts that need to be invoked directly and can be used to
+  implement one-off tasks or scheduled and recurring jobs using queues
 archetype: default
 ---
 In addition to the main entry point which defines your service's
@@ -27,7 +28,7 @@ the [service manifest](../reference/service-manifest.md):
 Scripts can be invoked manually using
 the [web interface](../../../components/web-interface/services.md),
 the [Foxx CLI](../../../components/tools/foxx-cli/_index.md) or
-the [Foxx HTTP API](../../http/foxx.md#miscellaneous).
+the [Foxx HTTP API](../../http-api/foxx.md#miscellaneous).
 
 Additionally the special `setup` and `teardown` lifecycle scripts can
 be invoked automatically by Foxx as part of a service's lifecycle (see below).

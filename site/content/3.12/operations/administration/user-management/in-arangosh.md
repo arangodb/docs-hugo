@@ -3,14 +3,14 @@ title: Managing Users in the ArangoDB Shell
 menuTitle: In arangosh
 weight: 5
 description: >-
-  The module @arangodb/users exposes a JavaScript API to manage user accounts.
+  The `@arangodb/users` module exposes a JavaScript API to manage user accounts
 archetype: default
 ---
 Connect with `arangosh` to the server or a Coordinator respectively.
 The module `@arangodb/users` exposes a JavaScript API to manage user accounts.
 
 Please note, that for backward compatibility the server access levels
-follow from the database access level on the database *_system*.
+follow from the database access level on the `_system` database.
 
 Also note that the server and database access levels are represented as
 

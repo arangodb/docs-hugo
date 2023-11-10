@@ -7,8 +7,6 @@ description: >-
   indexes
 archetype: default
 ---
-{{< description >}}
-
 The `SEARCH` operation guarantees to use View indexes for an efficient
 execution plan. If you use the `FILTER` keyword for Views, no indexes are
 utilized and the filtering is performed as a post-processing step.

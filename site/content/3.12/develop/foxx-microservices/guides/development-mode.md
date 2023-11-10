@@ -1,9 +1,8 @@
 ---
-title: Development mode
+title: Development mode for Foxx services
 menuTitle: Development mode
 weight: 20
-description: >-
-  Development mode allows developers to make changes to deployed services in-place directly on the database server's file system without downloading and re-uploading the service bundle
+description: ''
 archetype: default
 ---
 Development mode allows developers to make changes to deployed services
@@ -13,7 +12,7 @@ of service prototypes or diagnosing complex problems.
 
 You can toggle development mode on and off using
 the [Foxx CLI](../../../components/tools/foxx-cli/_index.md),
-the [HTTP API](../../http/foxx.md#miscellaneous) or
+the [HTTP API](../../http-api/foxx.md#miscellaneous) or
 in the service settings tab of the web interface.
 
 {{< info >}}

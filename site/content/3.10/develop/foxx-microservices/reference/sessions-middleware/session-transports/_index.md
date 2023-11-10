@@ -1,9 +1,8 @@
 ---
-title: Session Transports
+title: Foxx Session Transports
 menuTitle: Session transports
 weight: 10
-description: >-
-  Session Transports
+description: ''
 archetype: chapter
 ---
 Session transports are used by the sessions middleware to store and retrieve

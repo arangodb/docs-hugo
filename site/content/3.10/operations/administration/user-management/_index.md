@@ -3,7 +3,8 @@ title: Managing Users
 menuTitle: User Management
 weight: 25
 description: >-
-  User management is possible in the web interface and in arangosh while logged on to the _system database.
+  User management is possible in the web interface and in _arangosh_ in the
+  contect of the `_system` database
 archetype: chapter
 ---
 Authentication needs to be enabled on the server in order to employ user
@@ -37,7 +38,7 @@ service arangodb restart
 User management is possible in the [web interface](../../../components/web-interface/users.md)
 while logged on to the *\_system* database and in
 [arangosh](in-arangosh.md), as well as via the
-[HTTP API](../../../develop/http/users.md).
+[HTTP API](../../../develop/http-api/users.md).
 
 There is a built-in user account `root` which cannot be removed. Note that it
 has an empty password by default, so make sure to set a strong password

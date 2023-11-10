@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update auditlog command
 title: Oasisctl Update Auditlog
 menuTitle: Update Auditlog

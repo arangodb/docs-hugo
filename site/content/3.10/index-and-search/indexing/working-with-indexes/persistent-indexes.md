@@ -3,7 +3,8 @@ title: Persistent indexes
 menuTitle: Persistent Indexes
 weight: 5
 description: >-
-  It is possible to define a persistent index on one or more attributes (or paths) of documents
+  The persistent index type is a generic kind of index you can define over
+  a single or multiple document attributes, as well as arrays
 archetype: default
 ---
 It is possible to define a persistent index on one or more document attributes
