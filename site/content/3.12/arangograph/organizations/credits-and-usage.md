@@ -75,8 +75,6 @@ have enough credits remaining.
 
 You can move up sizes in configuration at any point by editing your deployment
 within ArangoGraph, once every 6 hours to allow for in-place disk expansion.
-Moving down sizes in configuration is currently only possible via the **Request Help**
-button in the web interface.
 
 ### Is there a limit to how many deployments I can use my credits on?
 
@@ -106,8 +104,8 @@ first to avoid credit expiry where possible.
 
 ArangoGraph offers a variety of predefined credit packages designed to
 accommodate different needs and stages of the application lifecycle.
-If you need to purchase a specific number of credits that does not align with
-the ArangoGraph standard packages, [contact us](https://www.arangodb.com/contact/).
+For any credit purchasing needs, please [contact us](https://www.arangodb.com/contact/)
+and we are happy to help find an appropriate package for you.
 
 ### How quickly will the credits I purchase be consumed?
 
@@ -126,11 +124,15 @@ how many remain, and how they are being consumed are available in the
 
 ### I have a large sharded deployment, how do I know how many credits it will consume?
 
-Each node size has a per-hour credit price for a given machine. You can calculate
-the price of a sharded deployment by multiplying the machine price by the number
-of machines in the deployment. You can download a detail consumption report from
-the **Credits & Usage** page that shows you the number of credits consumed by any
-deployment you are creating or editing.
+If you are using credits, then you will be able to see how many credits your
+configured deployment will consume when [creating](../deployments/_index.md#how-to-create-a-new-deployment)
+or [editing a deployment](../deployments/_index.md#how-to-edit-a-deployment).
+
+You can download a detailed consumption report in the
+[**Credits & Usage** section](#how-to-view-the-credit-usage). It shows you the
+number of credits consumed by any deployment you are creating or editing.
+
+All users can see the credit price of each node size in the **Pricing** section.
 
 ### What happens if I run out of credits?
 
