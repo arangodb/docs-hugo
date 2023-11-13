@@ -576,8 +576,8 @@ body .page-container {
 /* HEADER */
 
 #header {
-    height: 4rem;
-    padding: 16px 10px 10px 10px;
+    height: 64px;
+    padding: 16px;
     display: flex;
     color: var(--green-700);
     align-items: center;
@@ -671,8 +671,19 @@ body .page-container {
 
 .mobile-menu-toggle > #sidebar-toggle-navigation {
     background: none;
+    padding: 0;
+    color: var(--gray-950); 
+    height: 64px;
+    margin: 0;
+    width: 56px;
 }
 
+
+.mobile-menu-toggle > #sidebar-toggle-navigation > svg {
+    position: relative;
+    top: -6px;
+    font-size: 1.1rem;
+}
 
 
 .version-logo-container {
@@ -680,13 +691,16 @@ body .page-container {
     flex-direction: row;
 }
 
+.version-logo-container > .arangodb-logo-small {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
 .logo-container {
     z-index: 1001;
     position: relative;
-    float: left;
-    margin-top: 0 !important;
-    height: 100%;
-    grid-area: logo;
+    height: 64px;
     align-items: center;
     padding: 6px 10px 0px 10px;
 }
@@ -694,6 +708,8 @@ body .page-container {
 header .logo {
     width: 219px;
     height: 45px;
+    top: 8px;
+    position: relative;
 }
 
 .arangodb-logo-small {
@@ -702,9 +718,6 @@ header .logo {
 
 
 @media screen and (max-width: 768px) {
-    .version-logo-container {
-        margin-top: 12px;
-    }
     .arangodb-logo-large {
         display: none;
     }
@@ -714,7 +727,6 @@ header .logo {
         margin-left: 10px;
     }
 }
-/* */
 
 .container-right {
     box-sizing: border-box;
