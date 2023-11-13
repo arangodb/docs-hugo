@@ -31,6 +31,18 @@ for examples.
 
 This feature is only available in the Enterprise Edition.
 
+### `SEARCH` parallelization
+
+In search queries against Views, you can set the new `parallelism` option for
+`SEARCH` operations to optionally process index segments in parallel using
+multiple threads. This can speed up search queries.
+
+The new `--arangosearch.execution-threads-limit` startup option controls how
+many threads can be used in total for search queries.
+
+See [`SEARCH` operation in AQL](../../aql/high-level-operations/search.md#parallelism)
+for details.
+
 ## Analyzers
 
 
