@@ -3,11 +3,9 @@ title: String functions in AQL
 menuTitle: String
 weight: 50
 description: >-
-  For string processing, AQL offers the following functions
+  AQL offers functions for string processing
 archetype: default
 ---
-For string processing, AQL offers the following functions:
-
 ## CHAR_LENGTH()
 
 `CHAR_LENGTH(str) → length`

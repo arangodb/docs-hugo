@@ -1,9 +1,8 @@
 ---
-title: Writing queries
+title: Writing queries in Foxx services
 menuTitle: Writing queries
 weight: 15
-description: >-
-  Writing queries
+description: ''
 archetype: default
 ---
 ArangoDB provides the `query` template string handler

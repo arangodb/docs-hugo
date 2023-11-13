@@ -6,8 +6,6 @@ description: >-
   Match values that are above, below or between a minimum and a maximum value
 archetype: default
 ---
-{{< description >}}
-
 The primary use case for range queries is to search **numeric** values in
 documents that are
 - greater than (exclusive),

@@ -1,9 +1,8 @@
 ---
-title: Bundled Node modules
+title: Bundled Node modules for Foxx services
 menuTitle: Using Node modules
 weight: 40
-description: >-
-  Bundled Node modules
+description: ''
 archetype: default
 ---
 You can use the `node_modules` folder to bundle Node.js modules with your Foxx

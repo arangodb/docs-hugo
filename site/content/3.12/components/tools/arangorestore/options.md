@@ -3,7 +3,7 @@ title: _arangorestore_ Options
 menuTitle: Options
 weight: 10
 description: >-
-  arangorestore Options
+  The startup options of the `arangorestore` executable
 pageToc:
   maxHeadlineLevel: 2
 archetype: default

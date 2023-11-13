@@ -7,14 +7,12 @@ description: >-
   stored in ArangoDB
 archetype: chapter
 ---
-{{< description >}}
-
 Distributed graph processing enables you to do online analytical processing
 directly on graphs stored in ArangoDB. This is intended to help you gain
 analytical insights on your data, without having to use external processing
 systems. Examples of algorithms to execute are PageRank, Vertex Centrality,
 Vertex Closeness, Connected Components, Community Detection.
-For more details, see all [available algorithms](pregel-algorithms.md)
+For more details, see all [available algorithms](algorithms.md)
 in ArangoDB.
 
 Check out the hands-on
@@ -74,7 +72,7 @@ var execution = pregel.start("<algorithm>", { vertexCollections: ["vertices"], e
 ```
 
 The `params` argument needs to be an object with the algorithm settings as
-described in [Pregel Algorithms](pregel-algorithms.md).
+described in [Pregel Algorithms](algorithms.md).
 
 ### Status of an Algorithm Execution
 

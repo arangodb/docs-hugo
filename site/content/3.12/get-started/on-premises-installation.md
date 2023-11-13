@@ -1,14 +1,12 @@
 ---
-title: Install ArangoDB on-premises
+title: Install ArangoDB on-premises # TODO: distinguish between local and on-premises server deployments?
 menuTitle: On-premises installation
 weight: 40
 description: >-
-  Instructions on how to download and install ArangoDB    
+  How to download and install ArangoDB for using it locally or self-hosting it
+  on your own hardware
 archetype: default
 ---
-{{< description >}}
-<!-- TODO: title? distinguish between local and on-premises server deployments? -->
-
 ## Installation
 
 Head to [arangodb.com/download](https://www.arangodb.com/download/),
@@ -26,7 +24,7 @@ to grant it write permissions to `C:\Program Files`.
 For more in-depth information on how to install ArangoDB, as well as available
 startup parameters, installation in a cluster and so on, see
 [Installation](../operations/installation/_index.md) and
-[Deployment](../deploy/deployment/_index.md).
+[Deploy](../deploy/_index.md).
 
 <!--
 The web interface will become available shortly after you started `arangod`.

@@ -3,7 +3,7 @@ title: Features and Improvements in ArangoDB 3.9
 menuTitle: What's New in 3.9
 weight: 5
 description: >-
-  ArangoDB v3.9 Release Notes New Features
+  Extended SmartGraphs, new AQL and index features for efficiency, new Analyzers
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in
@@ -584,7 +584,7 @@ Also see:
 - [AQL `UPDATE` operation](../../aql/high-level-operations/update.md#refillindexcaches)
 - [AQL `REPLACE` operation](../../aql/high-level-operations/replace.md#refillindexcaches)
 - [AQL `REMOVE` operation](../../aql/high-level-operations/remove.md#refillindexcaches)
-- [Document HTTP API](../../develop/http/documents.md)
+- [Document HTTP API](../../develop/http-api/documents.md)
 - [Edge cache refill options](#edge-cache-refill-options)
 
 ## Multi-dimensional Indexes (experimental)
@@ -957,7 +957,7 @@ There are two new REST API routes to do the same, `GET /_admin/license` and
 `PUT /_admin/license`.
 
 See [License Management](../../operations/administration/license-management.md) and the
-[License Management HTTP API](../../develop/http/administration.md#license).
+[License Management HTTP API](../../develop/http-api/administration.md#license).
 
 ## Miscellaneous changes
 

@@ -6,8 +6,6 @@ description: >-
   You can use the `LET` operation to assign an arbitrary value to a variable
 archetype: default
 ---
-{{< description >}}
-
 The variable is introduced in the scope the `LET` statement is placed in.
 You cannot change the value once assigned.
 

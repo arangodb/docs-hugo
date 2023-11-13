@@ -4,11 +4,9 @@ menuTitle: REPLACE
 weight: 60
 description: >-
   You can use `REPLACE` operations to replace documents in a collection by
-  replacing their attributes
+  replacing all their attributes except the document keys, IDs, and revisions
 archetype: default
 ---
-{{< description >}}
-
 Each `REPLACE` operation is restricted to a single collection, and the
 [collection name](../../concepts/data-structure/collections.md#collection-names) must not be dynamic.
 Only a single `REPLACE` statement per collection is allowed per AQL query, and

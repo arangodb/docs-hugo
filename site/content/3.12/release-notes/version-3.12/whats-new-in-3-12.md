@@ -3,7 +3,8 @@ title: Features and Improvements in ArangoDB 3.12
 menuTitle: What's New in 3.12
 weight: 5
 description: >-
-  ArangoDB v3.12 Release Notes New Features
+  A new optimization for specific ArangoSearch queries, more entries in the
+  edge cache with compression
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in
@@ -168,6 +169,16 @@ permanent connectivity issues:
 - `arangodb_network_connectivity_failures_dbservers_total`: Number of failed
   connectivity check requests sent to DB-Servers.
 
+## Client tools
+
+### arangodump
+
+_arangodump_ now supports a `--ignore-collection` startup option that you can
+specify multiple times to exclude the specified collections from a dump.
+
+It cannot be used together with the existing `--collection` option for specifying
+collections to include.
+
 ## Miscellaneous changes
 
 ### In-memory edge cache startup options and metrics
@@ -232,7 +243,7 @@ can be mixed and written into the same .sst files.
 
 When these options are enabled, the RocksDB compaction is more efficient since
 a lot of different collections/shards/indexes are written to in parallel.
-The disavantage of enabling these options is that there can be more .sst
+The disadvantage of enabling these options is that there can be more .sst
 files than when the option is turned off, and the disk space used by
 these .sst files can be higher.
 In particular, on deployments with many collections/shards/indexes
@@ -240,6 +251,118 @@ this can lead to a very high number of .sst files, with the potential
 of outgrowing the maximum number of file descriptors the ArangoDB process 
 can open. Thus, these options should only be enabled on deployments with a
 limited number of collections/shards/indexes.
+
+### Active AQL query cursors metric
+
+The `arangodb_aql_cursors_active` metric has been added and shows the number
+of active AQL query cursors.
+
+AQL query cursors are created for queries that produce more results than
+specified in the `batchSize` query option (default value: `1000`). Such results
+can be fetched incrementally by client operations in chunks.
+As it is unclear if and when a client will fetch any remaining data from a
+cursor, every cursor has a server-side timeout value (TTL) after which it is
+considered inactive and garbage-collected.
+
+### Detached scheduler threads
+
+<small>Introduced in: v3.11.5</small>
+
+A scheduler thread now has the capability to detach itself from the scheduler
+if it observes the need to perform a potentially long running task, like waiting
+for a lock. This allows a new scheduler thread to be started and prevents
+scenarios where all threads are blocked waiting for a lock, which has previously
+led to deadlock situations.
+
+Threads waiting for more than 1 second on a collection lock will detach
+themselves.
+
+The following startup option has been added:
+- `--server.max-number-detached-threads`: The maximum number of detached scheduler
+  threads.
+
+The following metric as been added:
+- `arangodb_scheduler_num_detached_threads`: The number of worker threads
+  currently started and detached from the scheduler. 
+
+## Client tools
+
+### arangodump
+
+#### Improved dump performance and size
+
+From version 3.12 onward, _arangodump_ has extended parallelization capabilities
+to work not only at the collection level, but also at the shard level.
+In combination with the newly added support for the VelocyPack format that
+ArangoDB uses internally, database dumps can now be created and restored more
+quickly and occupy less disk space. This major performance boost makes dumps and
+restores up to several times faster, which is extremely useful when dealing
+with large shards.
+
+- Whether the new parallel dump variant is used is controlled by the newly added
+  `--use-parallel-dump` startup option. The default value is `true`.
+
+- To achieve the best dump performance and the smallest data dumps in terms of
+  size, you can additionally use the `--dump-vpack` option. The resulting dump data
+  is then stored in the more compact but binary VelocyPack format instead of the
+  text-based JSON format. The output file size can be less even compared to
+  compressed JSON. It can also lead to faster dumps because there is less data to
+  transfer and no conversion from the server-internal format (VelocyPack) to JSON
+  is needed. Note, however, that this option is **experimental** and disabled by
+  default.
+
+- Optionally, you can make _arangodump_ write multiple output files per
+  collection/shard. The file splitting allows for better parallelization when
+  writing the results to disk, which in case of non-split files must be serialized.
+  You can enable it by setting the `--split-files` option to `true`. This option
+  is disabled by default because dumps created with this option enabled cannot
+  be restored into previous versions of ArangoDB.
+
+- You can enable the new `--compress-transfer` startup option for compressing the
+  dump data on the server for a faster transfer. This is helpful especially if
+  the network is slow or its capacity is maxed out. The data is decompressed on
+  the client side and recompressed if you enable the  `--compress-output` option.
+
+#### Resource usage limits and metrics
+
+The following `arangod` startup options can be used to limit
+the resource usage of parallel _arangodump_ invocations:
+
+- `--dump.max-memory-usage`: Maximum memory usage (in bytes) to be
+  used by the server-side parts of all ongoing _arangodump_ invocations.
+  This option can be used to limit the amount of memory for prefetching
+  and keeping results on the server side when _arangodump_ is invoked
+  with the `--parallel-dump` option. It does not have an effect for
+  _arangodump_ invocations that did not use the `--parallel-dump` option.
+  Note that the memory usage limit is not exact and that it can be
+  slightly exceeded in some situations to guarantee progress.
+- -`-dump.max-docs-per-batch`: Maximum number of documents per batch
+  that can be used in a dump. If an _arangodump_ invocation requests
+  higher values than configured here, the value is automatically
+  capped to this value. Will only be followed for _arangodump_ invocations
+  that use the `--parallel-dump` option.
+- `--dump.max-batch-size`: Maximum batch size value (in bytes) that
+  can be used in a dump. If an _arangodump_ invocation requests larger
+  batch sizes than configured here, the actual batch sizes is capped
+  to this value. Will only be followed for _arangodump_ invocations that
+  use the -`-parallel-dump` option.
+- `--dump.max-parallelism`: Maximum parallelism (number of server-side
+  threads) that can be used in a dump. If an _arangodump_ invocation requests
+  a higher number of prefetch threads than configured here, the actual
+  number of server-side prefetch threads is capped to this value.
+  Will only be followed for _arangodump_ invocations that use the
+  `--parallel-dump` option.
+
+The following metrics have been added to observe the behavior of parallel
+_arangodump_ operations on the server:
+
+- `arangodb_dump_memory_usage`: Current memory usage of all ongoing
+  _arangodump_ operations on the server.
+- `arangodb_dump_ongoing`: Number of currently ongoing _arangodump_
+  operations on the server.
+- `arangodb_dump_threads_blocked_total`: Number of times a server-side
+  dump thread was blocked because it honored the server-side memory
+  limit for dumps.
 
 ## Internal changes
 

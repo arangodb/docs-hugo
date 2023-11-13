@@ -3,7 +3,8 @@ title: AQL queries without collections
 menuTitle: Queries without collections
 weight: 50
 description: >-
-  Queries don't necessarily have to involve collections.
+  You can use AQL with only expressions and no document access for some
+  calculation and testing purposes
 archetype: default
 ---
 AQL queries typically access one or more collections to read from documents

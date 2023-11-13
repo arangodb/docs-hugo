@@ -3,7 +3,8 @@ title: Features and Improvements in ArangoDB 3.11
 menuTitle: What's New in 3.11
 weight: 5
 description: >-
-  ArangoDB v3.11 Release Notes New Features
+  Improved performance and reporting for AQL queries, new caching features for
+  indexed data, improvements to the web interface
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in
@@ -50,7 +51,7 @@ to be requested from the RocksDB storage engine.
 
 ---
 
-[Inverted indexes](../../develop/http/indexes/inverted.md) also support similar new caching
+[Inverted indexes](../../develop/http-api/indexes/inverted.md) also support similar new caching
 options.
 
 <small>Introduced in: v3.10.2</small>
@@ -238,7 +239,7 @@ Instead of batching the array of documents (with a default batch size of `1000`)
 a single request per DB-Server is used internally to transfer the data.
 
 The optimization brings the AQL `INSERT` performance close to the performance of
-the specialized HTTP API for [creating multiple documents](../../develop/http/documents.md#create-multiple-documents).
+the specialized HTTP API for [creating multiple documents](../../develop/http-api/documents.md#create-multiple-documents).
 
 The pattern that is recognized by the optimizer is as follows:
 
@@ -357,7 +358,7 @@ Also see:
 - [AQL `UPDATE` operation](../../aql/high-level-operations/update.md#refillindexcaches)
 - [AQL `REPLACE` operation](../../aql/high-level-operations/replace.md#refillindexcaches)
 - [AQL `REMOVE` operation](../../aql/high-level-operations/remove.md#refillindexcaches)
-- [Document HTTP API](../../develop/http/documents.md)
+- [Document HTTP API](../../develop/http-api/documents.md)
 - [Index cache refill options](#index-cache-refill-options)
 
 ### Retry request for result batch
@@ -1057,7 +1058,7 @@ To enable tracing for traversals and path searches at startup, you can set
 `--log.level graphs=trace`.
 
 To enable or disable it at runtime, you can call the
-[`PUT /_admin/log/level`](../../develop/http/monitoring.md#set-the-server-log-levels)
+[`PUT /_admin/log/level`](../../develop/http-api/monitoring.md#set-the-server-log-levels)
 endpoint of the HTTP API and set the log level using a request body like
 `{"graphs":"TRACE"}`.
 
@@ -1083,7 +1084,7 @@ for details.
 
 You can also use the newly added HTTP endpoints with the
 `/_api/control_pregel/history` route.
-See [Pregel HTTP API](../../develop/http/pregel.md) for details.
+See [Pregel HTTP API](../../develop/http-api/pregel.md) for details.
 
 You can still use the old interfaces (the `pregel.status()` method as well as
 the `GET /_api/control_pregel` and `GET /_api/control_pregel/{id}` endpoints).
@@ -1264,6 +1265,27 @@ cache subsystem:
   the migrate tasks of the in-memory cache subsystem. Migrate tasks are scheduled
   by the cache subsystem to migrate existing cache hash tables to a bigger or
   smaller table.
+
+### Detached scheduler threads
+
+<small>Introduced in: v3.11.5</small>
+
+A scheduler thread now has the capability to detach itself from the scheduler
+if it observes the need to perform a potentially long running task, like waiting
+for a lock. This allows a new scheduler thread to be started and prevents
+scenarios where all threads are blocked waiting for a lock, which has previously
+led to deadlock situations.
+
+Threads waiting for more than 1 second on a collection lock will detach
+themselves.
+
+The following startup option has been added:
+- `--server.max-number-detached-threads`: The maximum number of detached scheduler
+  threads.
+
+The following metric as been added:
+- `arangodb_scheduler_num_detached_threads`: The number of worker threads
+  currently started and detached from the scheduler. 
 
 ## Client tools
 

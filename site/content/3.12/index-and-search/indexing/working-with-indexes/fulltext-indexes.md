@@ -3,7 +3,7 @@ title: Fulltext indexes
 menuTitle: Fulltext Indexes
 weight: 20
 description: >-
-  This is an introduction to ArangoDB's fulltext indexes
+  Indexes for full-text split strings into words that you can then search for
 archetype: default
 ---
 {{< warning >}}
@@ -11,8 +11,6 @@ The fulltext index type is deprecated from version 3.10 onwards.
 It is recommended to use [Inverted indexes](inverted-indexes.md) or
 [ArangoSearch](../../arangosearch/_index.md) for advanced full-text search capabilities.
 {{< /warning >}}
-
-This is an introduction to ArangoDB's fulltext indexes.
 
 ## Introduction to Fulltext Indexes
 

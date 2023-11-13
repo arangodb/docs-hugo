@@ -3,7 +3,7 @@ title: Troubleshooting Datacenter-to-Datacenter Replication
 menuTitle: Troubleshooting
 weight: 30
 description: >-
-  Fixing issues in Datacenter-to-Datacenter Replication
+  Procedures for investigating and fixing issues with DC2DC setups
 archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" >}}

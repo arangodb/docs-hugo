@@ -3,7 +3,7 @@ title: ArangoDB Server environment variables
 menuTitle: Environment variables
 weight: 15
 description: >-
-  Environment variables used by arangod
+  Environment variables used by `arangod`
 archetype: default
 ---
 `arangod` inspects the following list of environment variables:

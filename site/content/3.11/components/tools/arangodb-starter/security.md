@@ -3,15 +3,10 @@ title: Security
 menuTitle: Security
 weight: 10
 description: >-
-  Securing an ArangoDB deployment involves encrypting its connections and authenticated access control
+  The Starter provides commands to create certificates and tokens for securing
+  ArangoDB deployments for encrypting connections and authenticated access control
 archetype: default
 ---
-Securing an ArangoDB deployment involves encrypting its connections and
-authenticated access control.
-
-The ArangoDB starter provides several command to create the certificates
-and tokens needed to do so.
-
 ## Creating certificates
 
 The starter provides commands to create all certificates needed for an ArangoDB

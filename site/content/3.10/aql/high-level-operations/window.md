@@ -7,8 +7,6 @@ description: >-
   calculate running totals, rolling averages, and other statistical properties
 archetype: default
 ---
-{{< description >}}
-
 The `WINDOW` operation can be used for aggregations over adjacent documents, or
 preceding and / or following rows in other words. It can also aggregate based
 on a value or duration range relative to a document attribute.

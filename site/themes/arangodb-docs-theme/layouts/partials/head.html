@@ -9,8 +9,6 @@
   {{ $isProduction := eq site.BaseURL "https://docs.arangodb.com" -}}
   {{ if $isProduction -}}
     {{- partial "tracking/gtag.html" . -}}
-    {{- partial "tracking/gtm.html" . -}}
-    {{- partial "tracking/ga.html" . -}}
     {{- partial "tracking/twitter.html" . -}}
     {{- partial "tracking/linkedin.html" . -}}
   {{ end -}}

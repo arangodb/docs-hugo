@@ -1,9 +1,10 @@
 ---
-title: Task Management
+title: The `@arangodb/tasks` module of the JavaScript API
 menuTitle: '@arangodb/tasks'
 weight: 35
 description: >-
-  Task Management
+  The tasks module provides an interface for managing scheduled and periodic
+  execution of JavaScript code on the server side
 archetype: default
 ---
 `const tasks = require('@arangodb/tasks')`
