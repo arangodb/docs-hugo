@@ -181,6 +181,53 @@ collections to include.
 
 ## Miscellaneous changes
 
+### Active AQL query cursors metric
+
+The `arangodb_aql_cursors_active` metric has been added and shows the number
+of active AQL query cursors.
+
+AQL query cursors are created for queries that produce more results than
+specified in the `batchSize` query option (default value: `1000`). Such results
+can be fetched incrementally by client operations in chunks.
+As it is unclear if and when a client will fetch any remaining data from a
+cursor, every cursor has a server-side timeout value (TTL) after which it is
+considered inactive and garbage-collected.
+
+### RocksDB .sst file partitioning (experimental)
+
+The following experimental startup options for RockDB .sst file partitioning
+have been added:
+
+- `--rocksdb.partition-files-for-documents`
+- `--rocksdb.partition-files-for-primary-index`
+- `--rocksdb.partition-files-for-edge-index`
+- `--rocksdb.partition-files-for-persistent-index`
+
+Enabling any of these options makes RocksDB's compaction write the 
+data for different collections/shards/indexes into different .sst files. 
+Otherwise, the document data from different collections/shards/indexes 
+can be mixed and written into the same .sst files.
+
+When these options are enabled, the RocksDB compaction is more efficient since
+a lot of different collections/shards/indexes are written to in parallel.
+The disadvantage of enabling these options is that there can be more .sst
+files than when the option is turned off, and the disk space used by
+these .sst files can be higher.
+In particular, on deployments with many collections/shards/indexes
+this can lead to a very high number of .sst files, with the potential
+of outgrowing the maximum number of file descriptors the ArangoDB process 
+can open. Thus, these options should only be enabled on deployments with a
+limited number of collections/shards/indexes.
+
+### More instant Hot Backups
+
+<small>Introduced in: v3.10.10, v3.11.3</small>
+
+Cluster deployments no longer wait for all in-progress transactions to get
+committed when a user requests a Hot Backup. The waiting could cause deadlocks
+and thus Hot Backups to fail, in particular in ArangoGraph. Now, Hot Backups are
+created immediately and commits have to wait until the backup process is done.
+
 ### In-memory edge cache startup options and metrics
 
 <small>Introduced in: v3.11.4</small>
@@ -225,44 +272,6 @@ cache subsystem:
   the migrate tasks of the in-memory cache subsystem. Migrate tasks are scheduled
   by the cache subsystem to migrate existing cache hash tables to a bigger or
   smaller table.
-
-### RocksDB .sst file partitioning (experimental)
-
-The following experimental startup options for RockDB .sst file partitioning
-have been added:
-
-- `--rocksdb.partition-files-for-documents`
-- `--rocksdb.partition-files-for-primary-index`
-- `--rocksdb.partition-files-for-edge-index`
-- `--rocksdb.partition-files-for-persistent-index`
-
-Enabling any of these options makes RocksDB's compaction write the 
-data for different collections/shards/indexes into different .sst files. 
-Otherwise, the document data from different collections/shards/indexes 
-can be mixed and written into the same .sst files.
-
-When these options are enabled, the RocksDB compaction is more efficient since
-a lot of different collections/shards/indexes are written to in parallel.
-The disadvantage of enabling these options is that there can be more .sst
-files than when the option is turned off, and the disk space used by
-these .sst files can be higher.
-In particular, on deployments with many collections/shards/indexes
-this can lead to a very high number of .sst files, with the potential
-of outgrowing the maximum number of file descriptors the ArangoDB process 
-can open. Thus, these options should only be enabled on deployments with a
-limited number of collections/shards/indexes.
-
-### Active AQL query cursors metric
-
-The `arangodb_aql_cursors_active` metric has been added and shows the number
-of active AQL query cursors.
-
-AQL query cursors are created for queries that produce more results than
-specified in the `batchSize` query option (default value: `1000`). Such results
-can be fetched incrementally by client operations in chunks.
-As it is unclear if and when a client will fetch any remaining data from a
-cursor, every cursor has a server-side timeout value (TTL) after which it is
-considered inactive and garbage-collected.
 
 ### Detached scheduler threads
 

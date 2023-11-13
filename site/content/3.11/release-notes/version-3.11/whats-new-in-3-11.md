@@ -1221,6 +1221,15 @@ The following system metrics have been added:
 | `arangodb_file_descriptors_limit` | System limit for the number of open files for the arangod process. |
 | `arangodb_file_descriptors_current` | Number of file descriptors currently opened by the arangod process. |
 
+### More instant Hot Backups
+
+<small>Introduced in: v3.10.10, v3.11.3</small>
+
+Cluster deployments no longer wait for all in-progress transactions to get
+committed when a user requests a Hot Backup. The waiting could cause deadlocks
+and thus Hot Backups to fail, in particular in ArangoGraph. Now, Hot Backups are
+created immediately and commits have to wait until the backup process is done.
+
 ### In-memory edge cache startup options and metrics
 
 <small>Introduced in: v3.11.4</small>
