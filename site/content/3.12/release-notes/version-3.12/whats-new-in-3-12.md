@@ -77,7 +77,7 @@ indexes have been allowing to index and store the `_id` system attribute.
 
 ### LZ4 compression for values in the in-memory edge cache
 
-<small>Introduced in: v3.11.2, v3.12.0</small>
+<small>Introduced in: v3.11.2</small>
 
 LZ4 compression of edge index cache values allows to store more data in main
 memory than without compression, so the available memory can be used more
@@ -115,7 +115,7 @@ cache, but not decreased when data gets evicted from the cache.
 
 ### Limit the number of databases in a deployment
 
-<small>Introduced in: v3.10.10, v3.11.2, v3.12.0</small>
+<small>Introduced in: v3.10.10, v3.11.2</small>
 
 The `--database.max-databases` startup option allows you to limit the
 number of databases that can exist in parallel in a deployment. You can use this
@@ -147,7 +147,7 @@ in the meantime should be removed manually.
 
 ### Cluster-internal connectivity checks
 
-<small>Introduced in: v3.11.5, v.3.12.0</small>
+<small>Introduced in: v3.11.5</small>
 
 This feature makes Coordinators and DB-Servers in a cluster periodically send
 check requests to each other, in order to see if all nodes can connect to
@@ -183,7 +183,7 @@ collections to include.
 
 ### In-memory edge cache startup options and metrics
 
-<small>Introduced in: v3.11.4, v3.12.0</small>
+<small>Introduced in: v3.11.4</small>
 
 The following startup options have been added:
 
@@ -204,9 +204,9 @@ The following metrics have been added:
 
 ### Observability of in-memory cache subsystem
 
-<small>Introduced in: v3.10.11, v.3.11.4, v.3.12.0</small>
+<small>Introduced in: v3.10.11, v3.11.4</small>
 
-The following metrics have been added to improve the observability of in-memory
+The following metrics have been added to improve the observability of the in-memory
 cache subsystem:
 - `rocksdb_cache_free_memory_tasks_total`: Total number of free memory tasks
   that were scheduled by the in-memory edge cache subsystem. This metric will

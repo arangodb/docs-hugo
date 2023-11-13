@@ -515,7 +515,7 @@ Query Statistics:
 
 ### New stage in query profiling output
 
-<small>Introduced in: v3.10.3, v3.11.0</small>
+<small>Introduced in: v3.10.3</small>
 
 The query profiling output has a new `instantiating executors` stage.
 The time spent in this stage is the time needed to create the query executors
