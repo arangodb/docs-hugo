@@ -889,6 +889,34 @@
     "section" : "log",
     "type" : "uint32"
   },
+  "log.max-queued-entries" : {
+    "base" : 1,
+    "category" : "option",
+    "default" : 10000,
+    "deprecatedIn" : null,
+    "description" : "Upper limit of log entries that are queued in background thread.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.11.5"
+    ],
+    "longDescription" : "If you are using the option `--log.force-direct` (default)\nlog entries are pushed on a queue for asynchronous writing. In case you\nare using a slow log output (e.g. syslog) the queue might grow and eventually overflow.\nThis option allows to configure the upper bound. If the queue is full, log entries\nwill be written synchronously, until the queue has space again.",
+    "maxInclusive" : true,
+    "maxValue" : 4294967295,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "log",
+    "type" : "uint32"
+  },
   "log.output" : {
     "category" : "option",
     "default" : [
