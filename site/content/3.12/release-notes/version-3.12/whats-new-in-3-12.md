@@ -37,6 +37,8 @@ In search queries against Views, you can set the new `parallelism` option for
 `SEARCH` operations to optionally process index segments in parallel using
 multiple threads. This can speed up search queries.
 
+The default value for the `parallelism` option is defined by the new
+`--arangosearch.default-parallelism` startup option that defaults to `1`.
 The new `--arangosearch.execution-threads-limit` startup option controls how
 many threads can be used in total for search queries.
 

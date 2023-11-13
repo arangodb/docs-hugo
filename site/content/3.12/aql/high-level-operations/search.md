@@ -343,10 +343,12 @@ A `SEARCH` operation can optionally process index segments in parallel using
 multiple threads. This can speed up search queries but increases CPU and memory
 utilization.
 
-If you omit the `parallelism` option or set it to a value of `1`, the search
-execution is not parallelized. If the value is greater than `1`, then up to that
-many worker threads can be used for concurrently processing index segments.
-The maximum number of total parallel execution threads is defined by the
+If you omit the `parallelism` option, then the default parallelism as defined by
+the [`--arangosearch.default-parallelism` startup option](../../components/arangodb-server/options.md#--arangosearchdefault-parallelism)
+is used. If you set it to a value of `1`, the search execution is not
+parallelized. If the value is greater than `1`, then up to that many worker
+threads can be used for concurrently processing index segments. The maximum
+number of total parallel execution threads is defined by the
 [`--arangosearch.execution-threads-limit` startup option](../../components/arangodb-server/options.md#--arangosearchexecution-threads-limit)
 that defaults to twice the number of CPU cores.
 
