@@ -264,6 +264,27 @@ As it is unclear if and when a client will fetch any remaining data from a
 cursor, every cursor has a server-side timeout value (TTL) after which it is
 considered inactive and garbage-collected.
 
+### Detached scheduler threads
+
+<small>Introduced in: v3.11.5</small>
+
+A scheduler thread now has the capability to detach itself from the scheduler
+if it observes the need to perform a potentially long running task, like waiting
+for a lock. This allows a new scheduler thread to be started and prevents
+scenarios where all threads are blocked waiting for a lock, which has previously
+led to deadlock situations.
+
+Threads waiting for more than 1 second on a collection lock will detach
+themselves.
+
+The following startup option has been added:
+- `--server.max-number-detached-threads`: The maximum number of detached scheduler
+  threads.
+
+The following metric as been added:
+- `arangodb_scheduler_num_detached_threads`: The number of worker threads
+  currently started and detached from the scheduler. 
+
 ## Client tools
 
 ### arangodump
