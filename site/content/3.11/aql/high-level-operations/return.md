@@ -1,5 +1,5 @@
 ---
-title: RETURN operation in AQL
+title: '`RETURN` operation in AQL'
 menuTitle: RETURN
 weight: 10
 description: >-

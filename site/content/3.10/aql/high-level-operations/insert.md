@@ -1,5 +1,5 @@
 ---
-title: INSERT operation in AQL
+title: '`INSERT` operation in AQL'
 menuTitle: INSERT
 weight: 65
 description: >-

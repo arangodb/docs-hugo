@@ -1,5 +1,5 @@
 ---
-title: SEARCH operation in AQL
+title: '`SEARCH` operation in AQL'
 menuTitle: SEARCH
 weight: 20
 description: >-

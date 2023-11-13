@@ -1,5 +1,5 @@
 ---
-title: UPDATE operation in AQL
+title: '`UPDATE` operation in AQL'
 menuTitle: UPDATE
 weight: 55
 description: >-

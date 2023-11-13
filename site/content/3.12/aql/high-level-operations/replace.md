@@ -1,5 +1,5 @@
 ---
-title: REPLACE operation in AQL
+title: '`REPLACE` operation in AQL'
 menuTitle: REPLACE
 weight: 60
 description: >-

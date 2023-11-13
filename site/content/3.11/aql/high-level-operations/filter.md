@@ -1,5 +1,5 @@
 ---
-title: FILTER operation in AQL
+title: '`FILTER` operation in AQL'
 menuTitle: FILTER
 weight: 15
 description: >-
