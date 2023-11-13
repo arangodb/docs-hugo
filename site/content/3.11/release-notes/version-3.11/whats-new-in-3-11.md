@@ -1268,7 +1268,7 @@ cache subsystem:
 
 ### Detached scheduler threads
 
-<small>Introduced in: v.3.11.5</small>
+<small>Introduced in: v3.11.5</small>
 
 A scheduler thread now has the capability to detach itself from the scheduler
 if it observes the need to perform a potentially long running task, like waiting
