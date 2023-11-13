@@ -780,8 +780,8 @@
     }
   },
   {
-    "name": "optimize-projections",
-    "description": "Remove projections that are no longer used and store projection\nresults in separate output registers.",
+    "name": "join-index-nodes",
+    "description": "Join adjacent index nodes and replace them with a join node\nin case the indexes qualify for it.",
     "flags": {
       "hidden": false,
       "clusterOnly": false,
@@ -792,8 +792,8 @@
     }
   },
   {
-    "name": "join-index-nodes",
-    "description": "Join adjacent index nodes and replace them with a join node\nin case the indexes qualify for it.",
+    "name": "optimize-projections",
+    "description": "Remove projections that are no longer used and store projection\nresults in separate output registers.",
     "flags": {
       "hidden": false,
       "clusterOnly": false,
@@ -818,6 +818,18 @@
   {
     "name": "async-prefetch",
     "description": "Allow query execution nodes to asynchronously prefetch the\nnext batch while processing the current batch, allowing parts of the query to\nrun in parallel. This is only possible for certain operations in a query.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
+    "name": "immutable-search-condition",
+    "description": "Optimize immutable search condition for nested loops, we don't need to make real search many times, if we can cache results in bitset",
     "flags": {
       "hidden": false,
       "clusterOnly": false,
