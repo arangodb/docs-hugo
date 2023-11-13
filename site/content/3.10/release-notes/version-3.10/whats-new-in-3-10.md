@@ -1384,6 +1384,20 @@ attempt to create an additional database fails with error
 if other databases are dropped first. The default value for this option is
 unlimited, so an arbitrary amount of databases can be created.
 
+### Configurable maximum for queued log entries
+
+<small>Introduced in: v3.10.12</small>
+
+The new `--log.max-queued-entries` startup option lets you configure how many
+log entries are queued in a background thread.
+
+Log entries are pushed on a queue for asynchronous writing unless you enable the
+`--log.force-direct` startup option. If you use a slow log output (e.g. syslog),
+the queue might grow and eventually overflow.
+
+You can configure the upper bound of the queue with this option. If the queue is
+full, log entries are written synchronously until the queue has space again.
+
 ## Miscellaneous changes
 
 ### Optimizer rules endpoint

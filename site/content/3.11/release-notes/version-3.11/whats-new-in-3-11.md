@@ -1036,6 +1036,20 @@ permanent connectivity issues:
 - `arangodb_network_connectivity_failures_dbservers_total`: Number of failed
   connectivity check requests sent to DB-Servers.
 
+### Configurable maximum for queued log entries
+
+<small>Introduced in: v3.10.12, v3.11.5</small>
+
+The new `--log.max-queued-entries` startup option lets you configure how many
+log entries are queued in a background thread.
+
+Log entries are pushed on a queue for asynchronous writing unless you enable the
+`--log.force-direct` startup option. If you use a slow log output (e.g. syslog),
+the queue might grow and eventually overflow.
+
+You can configure the upper bound of the queue with this option. If the queue is
+full, log entries are written synchronously until the queue has space again.
+
 ## Miscellaneous changes
 
 ### Write-write conflict improvements
