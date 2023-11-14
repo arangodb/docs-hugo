@@ -281,8 +281,9 @@ paths:
             is returned if the database was created successfully.
         '400':
           description: |
-            is returned if the request parameters are invalid or if a database with the
-            specified name already exists.
+            is returned if the request parameters are invalid, if a database with the
+            specified name already exists, or if the configured limit to the number
+            of databases has been reached.
         '403':
           description: |
             is returned if the request was not executed in the `_system` database.

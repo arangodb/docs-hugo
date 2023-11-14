@@ -1,5 +1,5 @@
 ---
-title: SORT operation in AQL
+title: '`SORT` operation in AQL'
 menuTitle: SORT
 weight: 25
 description: >-

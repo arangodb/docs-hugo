@@ -1,5 +1,5 @@
 ---
-title: LIMIT operation in AQL
+title: '`LIMIT` operation in AQL'
 menuTitle: LIMIT
 weight: 30
 description: >-

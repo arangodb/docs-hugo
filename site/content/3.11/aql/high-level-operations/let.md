@@ -1,5 +1,5 @@
 ---
-title: LET operation in AQL
+title: '`LET` operation in AQL'
 menuTitle: LET
 weight: 35
 description: >-

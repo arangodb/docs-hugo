@@ -1,5 +1,5 @@
 ---
-title: WINDOW operation in AQL
+title: '`WINDOW` operation in AQL'
 menuTitle: WINDOW
 weight: 45
 description: >-
