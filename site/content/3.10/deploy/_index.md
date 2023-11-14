@@ -142,4 +142,4 @@ If you want a specific version, download the precompiled executable via the
 
 ### Run in Kubernetes
 
-- [ArangoDB Kubernetes Operator](kubernetes/_index.md)
+- [ArangoDB Kubernetes Operator](kubernetes.md)
