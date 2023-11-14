@@ -6,6 +6,8 @@ description: >-
   The ArangoDB Kubernetes Operator (`kube-arangodb`) is a set of operators that
   you can deploy in your Kubernetes cluster
 archetype: default
+aliases:
+  - cluster/deployment/kubernetes
 ---
 The Kubernetes operator lets you do the following:
 
