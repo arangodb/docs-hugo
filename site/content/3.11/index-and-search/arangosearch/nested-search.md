@@ -8,8 +8,6 @@ description: >-
   array
 archetype: default
 ---
-{{< description >}}
-
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 By default, `arangosearch` Views index arrays as if the parent attribute had

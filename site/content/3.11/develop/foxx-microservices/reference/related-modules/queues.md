@@ -2,8 +2,7 @@
 title: Foxx queues
 menuTitle: Queues
 weight: 25
-description: >-
-  Foxx queues
+description: ''
 archetype: default
 ---
 `const queues = require('@arangodb/foxx/queues')`

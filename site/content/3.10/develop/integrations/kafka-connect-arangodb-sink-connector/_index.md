@@ -7,8 +7,6 @@ description: >-
   by writing data from one or more topics in Kafka to a collection in ArangoDB
 archetype: chapter
 ---
-{{< description >}}
-
 {{< info >}}
 Check out the [connector demo](https://github.com/arangodb/kafka-connect-arangodb/tree/main/demo)
 to learn more about the connector.

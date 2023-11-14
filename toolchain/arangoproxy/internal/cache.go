@@ -19,6 +19,8 @@ func SaveCachedExampleResponse(chnl chan map[string]interface{}) error {
 			entryName := fmt.Sprintf("%s_%s", exampleResponse.Options.Name, exampleResponse.Options.Type)
 			responseHash, err := utils.EncodeToBase64(exampleResponse)
 
+			models.Logger.Debug("[%s] Saving To Cache:\nInput Hash: %s\nOutput Hash:%s", entryName, requestHash, responseHash)
+
 			newCacheEntry := make(map[string]map[string]string)
 			newCacheEntry[entryName] = make(map[string]string)
 			newCacheEntry[entryName]["request"] = requestHash
@@ -34,7 +36,12 @@ func SaveCachedExampleResponse(chnl chan map[string]interface{}) error {
 			cache[entryName] = newCacheEntry[entryName]
 			cacheJson, _ := json.MarshalIndent(cache, "", "\t")
 			err = os.WriteFile(cacheFilepath, cacheJson, 0644)
-
+			if err != nil {
+				models.Logger.Printf("[%s] [ERROR] Error saving cache: %s", err.Error())
+				models.Logger.Summary("<li><error code=9><strong>%s</strong><strong> ERROR Saving Cache: %s</strong></error>", exampleResponse.Options.Name, err.Error())
+			} else {
+				models.Logger.Debug("[%s] Cache Saved", err)
+			}
 		}
 	}
 }

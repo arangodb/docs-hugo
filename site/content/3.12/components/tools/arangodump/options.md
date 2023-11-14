@@ -1,9 +1,9 @@
 ---
-title: 
+title: _arangodump_ Options
 menuTitle: Options
 weight: 10
 description: >-
-  arangodump Options
+  The startup options of the `arangodump` executable
 pageToc:
   maxHeadlineLevel: 2
 archetype: default

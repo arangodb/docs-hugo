@@ -3,12 +3,9 @@ title: Numeric functions in AQL
 menuTitle: Numeric
 weight: 45
 description: >-
-  AQL offers some numeric functions for calculations
+  AQL offers functions for numeric calculations
 archetype: default
 ---
-AQL offers some numeric functions for calculations. The following functions are
-supported:
-
 ## ABS()
 
 `ABS(value) → unsignedValue`

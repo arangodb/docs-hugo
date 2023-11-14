@@ -1,9 +1,9 @@
 ---
-title: Arangobackup Options
+title: _arangobackup_ Options
 menuTitle: Options
 weight: 10
 description: >-
-  Arangobackup Options
+  The startup options of the `arangobackup` executable
 pageToc:
   maxHeadlineLevel: 2
 archetype: default

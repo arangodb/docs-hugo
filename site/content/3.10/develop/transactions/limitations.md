@@ -1,9 +1,8 @@
 ---
-title: Limitations
+title: Limitations of transactions
 menuTitle: Limitations
 weight: 25
-description: >-
-  Transactions in ArangoDB have been designed with particular use cases in mind
+description: ''
 archetype: default
 ---
 <!-- TODO: Update for RocksDB -->
@@ -91,7 +90,7 @@ A transaction on *one DB-Server* is either committed completely or not at all.
 ArangoDB transactions do currently not require any form of global consensus. This makes
 them relatively fast, but also vulnerable to unexpected server outages.
 
-Should a transaction involve [Leader Shards](../../deploy/deployment/cluster/_index.md#db-servers) 
+Should a transaction involve [Leader Shards](../../deploy/cluster/_index.md#db-servers) 
 on *multiple DB-Servers*, the atomicity of the distributed transaction *during the commit operation*
 cannot be guaranteed. Should one of the involved DB-Servers fail during the commit the transaction
 is not rolled-back globally, sub-transactions may have been committed on some DB-Servers, but not on others.

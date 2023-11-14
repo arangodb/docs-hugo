@@ -1,9 +1,8 @@
 ---
-title: Collection Session Storage
+title: Foxx Collection Session Storage
 menuTitle: Collection storage
 weight: 5
-description: >-
-  Collection Session Storage
+description: ''
 archetype: default
 ---
 `const collectionStorage = require('@arangodb/foxx/sessions/storages/collection');`

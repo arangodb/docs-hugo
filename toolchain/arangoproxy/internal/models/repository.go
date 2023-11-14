@@ -17,7 +17,6 @@ type Repository struct {
 var Repositories map[string]Repository
 
 func GetRepository(typ, version string) (Repository, error) {
-	Logger.Printf("Executing on server %s %s", typ, version)
 	if repository, exists := Repositories[fmt.Sprintf("%s_%s", typ, version)]; exists {
 		return repository, nil
 	}

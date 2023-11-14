@@ -10,33 +10,33 @@
 {{- $permalink := "" }}
 {{- $isRemote := ne $url.Scheme "" }}
 
-{{ if $isRemote -}}
-  {{ $isProduction := eq site.BaseURL "https://docs.arangodb.com" }}
-  {{ if and (not $isProduction) (eq .Destination "https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic") -}}
-    {{ $permalink = "https://cloud.arangodb.com/home" -}}
-  {{ else -}}
-    {{ $permalink = .Destination -}}
-  {{ end -}}
-{{ else -}}
-  {{ $isOnlyFragment := findRE `(?m)^#` $link }}
-  {{ if $isOnlyFragment }}
-    {{ $permalink = $fragment }}
-  {{ else }}
-    {{ $page := .Page.GetPage $path -}}
-    {{ with $page -}}
-      {{ $permalink = printf "%s%s" $page.RelPermalink $fragment -}}
-    {{ else -}}
-      {{ if ne $currentPage "/" -}}
-        {{ $currentFile := .Page.File.Path -}}
-        {{ if site.Params.failOnBrokenLinks -}}
-          {{ errorf "<error code=1> Broken link '%v' found in %s </error><br>" $link $currentFile -}}
-        {{ else -}}
-          {{ warnf "Broken link '%v' found in %s" $link $currentPage -}}
-        {{ end -}}
-      {{ end -}}
-    {{ end -}}
-  {{ end }}
-{{ end }}
+{{- if $isRemote }}
+  {{- $isProduction := eq site.BaseURL "https://docs.arangodb.com" }}
+  {{- if and (not $isProduction) (eq .Destination "https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic") }}
+    {{- $permalink = "https://cloud.arangodb.com/home" }}
+  {{- else }}
+    {{- $permalink = .Destination }}
+  {{- end }}
+{{- else }}
+  {{- $isOnlyFragment := findRE `(?m)^#` $link }}
+  {{- if $isOnlyFragment }}
+    {{- $permalink = $fragment }}
+  {{- else }}
+    {{- $page := .Page.GetPage $path }}
+    {{- with $page }}
+      {{- $permalink = printf "%s%s" $page.RelPermalink $fragment }}
+    {{- else }}
+      {{- if ne $currentPage "/" }}
+        {{- $currentFile := .Page.File.Path }}
+        {{- if site.Params.failOnBrokenLinks }}
+          {{- errorf "<error code=1> Broken link '%v' found in %s </error><br>" $link $currentFile }}
+        {{- else }}
+          {{- warnf "Broken link '%v' found in %s" $link $currentPage }}
+        {{- end }}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end -}}
 
 <a href="{{ $permalink | safeURL }}"
   {{- with .Title }} title="{{ . }}"{{ end }}

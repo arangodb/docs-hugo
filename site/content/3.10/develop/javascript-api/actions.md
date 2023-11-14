@@ -1,16 +1,15 @@
 ---
-title: Module "actions"
+title: The `@arangodb/actions` module of the JavaScript API
 menuTitle: '@arangodb/actions'
 weight: 10
 description: >-
-  Module "actions"
+  The actions module provides the infrastructure for defining low-level HTTP actions
 archetype: default
 ---
 `const actions = require('@arangodb/actions')`
 
-The action module provides the infrastructure for defining low-level HTTP actions.
-
-If you want to define HTTP endpoints in ArangoDB you should probably use the [Foxx microservice framework](../foxx-microservices/_index.md) instead.
+If you want to define HTTP endpoints in ArangoDB you should probably use the
+[Foxx microservice framework](../foxx-microservices/_index.md) instead.
 
 ## Basics
 

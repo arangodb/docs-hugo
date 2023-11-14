@@ -3,14 +3,10 @@ title: Incompatible changes in ArangoDB 3.11
 menuTitle: Incompatible changes in 3.11
 weight: 15
 description: >-
-  It is recommended to check the following list of incompatible changes before upgrading to ArangoDB 3.11
+  Check the following list of potential breaking changes **before** upgrading to
+  this ArangoDB version and adjust any client applications if necessary
 archetype: default
 ---
-It is recommended to check the following list of incompatible changes **before**
-upgrading to ArangoDB 3.11, and adjust any client programs if necessary.
-
-The following incompatible changes have been made in ArangoDB 3.11:
-
 ## Extended naming constraints for collections, Views, and indexes
 
 In ArangoDB 3.9, the `--database.extended-names-databases` startup option was
@@ -100,7 +96,7 @@ preceding or trailing colon.
 
 Writes to the same document in quick succession can result in write-write
 conflicts, requiring you to retry the operations. In v3.11, single document
-operations via the [HTTP Interface for Documents](../../develop/http/documents.md) try to
+operations via the [HTTP Interface for Documents](../../develop/http-api/documents.md) try to
 avoid conflicts by locking the key of the document before performing the
 modification. This serializes the write operations on the same document.
 The behavior of AQL queries, Stream Transactions, and multi-document operations

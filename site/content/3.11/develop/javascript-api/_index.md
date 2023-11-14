@@ -7,8 +7,6 @@ description: >-
   ArangoDB's shell to interact with the server using the JavaScript language
 archetype: chapter
 ---
-{{< description >}}
-
 The JavaScript API is available on the server-side in the following contexts:
 
 - [Foxx microservices](../foxx-microservices/_index.md)
@@ -191,7 +189,7 @@ You can use the following modules as an end-user:
   - [**@arangodb/enterprise-graph**](../../graphs/enterprisegraphs/management.md)
     provides management features for EnterpriseGraphs
 
-  - [**@arangodb/graph-examples/example-graph**](../../graphs/first-steps.md#example-graphs)
+  - [**@arangodb/graph-examples/example-graph**](../../graphs/_index.md#example-graphs)
     can load example graphs (creates collections, populates them with documents
     and creates named graphs)
 

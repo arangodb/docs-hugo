@@ -2,8 +2,7 @@
 title: _arangoexport_ Examples
 menuTitle: Examples
 weight: 5
-description: >-
-  arangoexport can be invoked by executing the following command in a command line
+description: ''
 archetype: default
 ---
 _arangoexport_ can be invoked by executing the following command in a command line:

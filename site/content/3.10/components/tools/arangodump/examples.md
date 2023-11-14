@@ -2,8 +2,7 @@
 title: _arangodump_ Examples
 menuTitle: Examples
 weight: 5
-description: >-
-  arangodump can be invoked in a command line by executing the following command
+description: ''
 archetype: default
 ---
 _arangodump_ can be invoked in a command line by executing the following command:

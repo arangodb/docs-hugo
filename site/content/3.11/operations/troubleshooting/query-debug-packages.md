@@ -7,8 +7,6 @@ description: >-
   to provide all necessary information to others for investigating the issue
 archetype: default
 ---
-{{< description >}}
-
 Query debug packages, or debug dumps, facilitate the debugging of issues you
 might find after executing AQL queries. A debug package is a JSON file that
 contains information about the query and the environment to make it possible to
@@ -35,7 +33,7 @@ anything that you are not allowed or willing to share and obfuscate it.
 3. The download of a compressed debug package starts.
 4. Unzip the downloaded file if you want to inspect its content.
 
-## Create a query debug package with _arangosh_
+## Create a query debug package with *arangosh*
 
 Connect to the server with the [ArangoDB shell](../../components/tools/arangodb-shell/_index.md) and call
 the `debugDump()` method of the explainer module. You can specify the output
@@ -61,7 +59,7 @@ explainer.debugDump("/tmp/debugDumpFilename", query, bindVars, options);
 See [Gathering debug information about a query](../../aql/execution-and-performance/explaining-queries.md#gathering-debug-information-about-a-query)
 for details.
 
-## Inspect a query debug package with _arangosh_
+## Inspect a query debug package with *arangosh*
 
 The debug package JSON is compactly formatted. To get a more readable output,
 you can use a tool for pretty-printing like [`jq`](https://stedolan.github.io/jq/),

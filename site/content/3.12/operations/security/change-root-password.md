@@ -1,12 +1,13 @@
 ---
-title: How-to Reset Root Password
+title: How to reset the root password
 menuTitle: Change Root Password
 weight: 10
 description: >-
-  One can reset the root password in the following way
+  You can temporarily start ArangoDB with authentication disabled to set a new
+  password for the root user
 archetype: default
 ---
-One can reset the _root_ password in the following way:
+You can reset the _root_ password in the following way:
 
 - Stop the Server
 - Set `authentication=false` in the `arangod.conf` file

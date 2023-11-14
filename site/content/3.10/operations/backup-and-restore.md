@@ -3,7 +3,8 @@ title: Backup and Restore
 menuTitle: Backup & Restore
 weight: 215
 description: >-
-  Physical backups, logical backups with arangodump and arangorestore, hot backups with arangobackup
+  Physical backups, logical backups with _arangodump_ and _arangorestore_,
+  hot backups with _arangobackup_
 archetype: default
 ---
 ArangoDB supports three backup methods:
@@ -73,7 +74,7 @@ procedure is recommended.
 
 Hot backup and restore associated operations can be performed with the
 [_arangobackup_](../components/tools/arangobackup/_index.md) client tool and the
-[Hot Backup HTTP API](../develop/http/hot-backups.md).
+[Hot Backup HTTP API](../develop/http-api/hot-backups.md).
 
 Many operations cannot afford downtimes and thus require administrators and
 operators to create consistent freezes of the data during normal operation.

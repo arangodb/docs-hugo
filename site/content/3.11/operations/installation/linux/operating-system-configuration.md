@@ -3,7 +3,8 @@ title: Linux Operating System Configuration
 menuTitle: Operating System Configuration
 weight: 5
 description: >-
-  Recommendations regarding file systems, memory settings etc.
+  Recommendations regarding file systems, memory settings, and other options for
+  running ArangoDB on Linux
 archetype: default
 ---
 {{< tip >}}

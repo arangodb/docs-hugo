@@ -3,12 +3,11 @@ title: Data types in AQL
 menuTitle: Data types
 weight: 10
 description: >-
-  AQL supports both primitive data types consisting of exactly one value and compound data types comprised of multiple values
+  AQL supports both _primitive_ data types consisting of exactly one value and
+  _compound_ data types comprised of multiple values
 archetype: default
 ---
-AQL supports both *primitive* data types consisting of exactly one value and
-*compound* data types comprised of multiple values. The following types are
-available:
+The following types are available:
 
 | Data type   | Description |
 |------------:|-------------|

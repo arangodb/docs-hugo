@@ -7,8 +7,6 @@ description: >-
   override those conventions with annotation based mapping metadata
 archetype: chapter
 ---
-{{< description >}}
-
 ## Conventions
 
 - The Java class name is mapped to the collection name
