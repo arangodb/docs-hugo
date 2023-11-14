@@ -48,6 +48,23 @@ The updated interface now offers the following options:
 - **Move Followers**
 - **Include System Collections**
 
+### Unified list view
+
+ArangoDB 3.12 brings a significant enhancement to the display of collections,
+Views, graphs, users, services, and databases in the web interface.
+The previous tile format has been replaced with a user-friendly tabular
+layout, providing a consistent and intuitive experience that is visually
+aligned across all components. The existing tabular views have also been
+reworked to ensure a seamless transition.
+
+The new tabular format includes the following features:
+- **Dynamic filters on columns**: Each column now has a dynamic filter box,
+  allowing you to efficiently search and filter based on keywords. This makes
+  it easy to locate specific items within the list.
+- **Dynamic sorting on columns**: Sort elements easily based on column data
+  such as name, date, or size. This functionality provides a flexible way to
+  organize and view your data.
+
 ### Swagger UI
 
 The interactive tool for exploring HTTP APIs has been updated to version 5.4.1.
