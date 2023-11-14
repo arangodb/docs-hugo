@@ -6,7 +6,6 @@ description: >-
   Design your graph database schema using the integrated graph modeler in the Data Loader
 archetype: default
 ---
-{{< description >}}
 
 Based on the data you have uploaded, you can start designing your graph.
 The graph designer allows you to create a schema using nodes and edges.

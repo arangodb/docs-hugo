@@ -6,7 +6,6 @@ description: >-
   Provide your set of files in CSV format containing the data to be imported
 archetype: default
 ---
-{{< description >}}
 
 The Data Loader allows you to upload your data files in CSV format into
 ArangoGraph and then use these data sources to design a graph using the

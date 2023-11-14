@@ -7,7 +7,6 @@ description: >-
    structures, without needing to write any code or deploy any infrastructure
 archetype: chapter
 ---
-{{< description >}}
 
 The ArangoGraph Data Loader allows you to transform existing data from CSV file
 formats into data that can be analyzed by the ArangoGraph platform.
