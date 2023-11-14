@@ -4,11 +4,9 @@ menuTitle: LIMIT
 weight: 30
 description: >-
   The `LIMIT` operation allows you to reduce the number of results to at most
-  the specified number and optionally skip results using an offset
+  the specified number and optionally skip results using an offset for pagination
 archetype: default
 ---
-{{< description >}}
-
 ## Syntax
 
 Two general forms of `LIMIT` are:

@@ -26,7 +26,6 @@ function menuEntryClickListener() {
             toggleMenuItem(event)
             return
         }
-        console.log(event.target)
         updateHistory(event.target.getAttribute('href'))
         $('#sidebar.mobile').removeClass("active")
 
@@ -95,7 +94,7 @@ function decodeHtmlEntities(text) {
 }
 
 function replaceArticle(href, newDoc) {
-  var re = new RegExp(/<title>(.*?)<\/title>/, "m");
+  var re = /<title>(.*?)<\/title>/;
   var match = re.exec(newDoc);
 
   $(".container-main").replaceWith($(".container-main", newDoc));
@@ -110,7 +109,6 @@ function replaceArticle(href, newDoc) {
 
 
 function updateHistory(urlPath) {
-  console.log("Update History " + urlPath)
   if (urlPath == window.location.pathname + window.location.hash) {
     return
   } 
@@ -156,11 +154,23 @@ function loadPage(target) {
   getCurrentVersion(href);
   renderVersion();
   loadMenu(new URL(href).pathname);
-  var version = getVersionInfo(getVersionByURL()).name
-  href = href.replace(getVersionByURL(), version)
+  var version = getVersionInfo(getVersionByURL()).name;
+  href = href.replace(getVersionByURL(), version);
+  var xhr = new XMLHttpRequest();
   $.get({
+    xhr: function() { return xhr; },
     url: href,
     success: function(newDoc) {
+      if (xhr.responseURL && href !== xhr.responseURL) {
+        updateHistory(xhr.responseURL.replace(version, getVersionByURL()));
+        return;
+      }
+      if (!newDoc.includes("<body>")) {
+        // https://github.com/gohugoio/hugo/blob/master/tpl/tplimpl/embedded/templates/alias.html
+        var match = /<title>(.*?)<\/title>/.exec(newDoc)[1];
+        updateHistory(match.replace(version, getVersionByURL()))
+        return;
+      }
       replaceArticle(href, newDoc)
       scrollToFragment();
       initArticle(href);
@@ -193,7 +203,7 @@ function codeShowMoreListener() {
 
 function trackPageView(title, urlPath) {
   if (window.gtag) {
-    gtag('config', 'UA-81053435-1', {
+    gtag('config', 'G-6PSX8LKTTJ', {
       'page_title': title,
       'page_path': urlPath
     });
@@ -222,7 +232,6 @@ function initArticle(url) {
 $(window).on('popstate', function (e) {
   var state = e.originalEvent.state;
   if (state !== null) {
-    console.log("Received popstate event " + window.location.href)
     loadPage(window.location.href);
   }
 });
@@ -416,7 +425,6 @@ function changeVersion() {
         localStorage.setItem('docs-version', newVersion);
         renderVersion();
         window.setupDocSearch(newVersion);
-        console.log(newVersion);
     } catch(exception) {
       console.log({exception})
         changeVersion();
@@ -424,7 +432,6 @@ function changeVersion() {
 
     
     var newUrl = window.location.pathname.replace(getVersionByURL(), getVersionInfo(newVersion).alias) + window.location.hash;
-    console.log("Change Version URL " + newUrl)
     updateHistory(newUrl);
 }
 
@@ -452,7 +459,6 @@ function hideEmptyOpenapiDiv() {
     if (element.tagName == "DETAILS") {
       method = fragment.split("_").slice(0,2).join("_")
       fields = fragment.split("_").slice(2)
-      console.log(fields)
       for (var i = 0; i < fields.length; i++) {
         field = fields.slice(0, i+1).join("_")
         var el = document.getElementById(method+"_"+field);
@@ -470,7 +476,6 @@ function initClickHandlers() {
     $(".openapi-prop").click(function(event) {
         if (this === event.target) {
             $(event.target).toggleClass("collapsed");
-            console.log($(event.target).find('.openapi-prop-content').first())
             $(event.target).find('.openapi-prop-content').first().toggleClass("hidden");
         }
     });
@@ -562,7 +567,12 @@ window.onload = () => {
     renderVersion();
     loadPage(window.location.href)
 
-    window.setupDocSearch(getVersionInfo(getVersionByURL()).name);
+    if (getVersionInfo(getVersionByURL()) != undefined) {
+      window.setupDocSearch(getVersionInfo(getVersionByURL()).name);
+    } else {
+      window.setupDocSearch(stableVersion);
+
+    }
 
     content.addEventListener("click", menuToggleClick);
 

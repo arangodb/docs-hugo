@@ -6,8 +6,6 @@ description: >-
   How to create and manage colocated Jupyter Notebooks within ArangoGraph
 archetype: default
 ---
-{{< description >}}
-
 {{< info >}}
 This documentation describes the beta version of the Notebooks feature and is
 subject to change. The beta version is free for all.

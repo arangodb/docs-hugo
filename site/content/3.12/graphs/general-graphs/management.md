@@ -3,11 +3,11 @@ title: Graph Management
 menuTitle: Management
 weight: 5
 description: >-
-  This chapter describes the JavaScript interface for creating and modifying named graphs
+  How to manage named graphs of the type General Graph
 archetype: default
 ---
-This chapter describes the javascript interface for creating and modifying
-[named graphs](../first-steps.md#named-graphs).
+This chapter describes the JavaScript interface for creating and modifying
+[named graphs](../_index.md#named-graphs).
 
 ## Edge Definitions
 

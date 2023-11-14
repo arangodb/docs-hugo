@@ -1,14 +1,12 @@
 ---
-title: Request Module
+title: The `@arangodb/request` module of the JavaScript API
 menuTitle: '@arangodb/request'
 weight: 30
 description: >-
-  Request Module
+  The request module provides the functionality for making HTTP requests
 archetype: default
 ---
 `const request = require('@arangodb/request')`
-
-The request module provides the functionality for making HTTP requests.
 
 ## Making HTTP requests
 

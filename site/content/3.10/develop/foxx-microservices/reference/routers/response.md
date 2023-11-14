@@ -1,9 +1,8 @@
 ---
-title: Response objects
+title: Foxx response objects
 menuTitle: Response
 weight: 20
-description: >-
-  The response object specifies the following properties
+description: ''
 archetype: default
 ---
 The response object specifies the following properties:

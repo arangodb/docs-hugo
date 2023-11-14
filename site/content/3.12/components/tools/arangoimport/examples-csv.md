@@ -2,8 +2,7 @@
 title: _arangoimport_ Examples CSV / TSV
 menuTitle: Examples CSV
 weight: 10
-description: >-
-  arangoimport can import data from comma and tab delimited files
+description: ''
 archetype: default
 ---
 ## Importing CSV Data

@@ -3,7 +3,8 @@ title: Encryption at Rest
 menuTitle: Encryption at Rest
 weight: 15
 description: >-
-  Securing physical storage media, available in the Enterprise Edition
+  You can secure the physical storage media of an ArangoDB deployment by letting
+  it encrypt the database directories
 archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
@@ -109,7 +110,7 @@ output and exit.
 
 If you use _kube-arangodb_ then use the `spec.rocksdb.encryption.keySecretName`
 setting to specify the name of the Kubernetes secret to be used for encryption.
-See [Kubernetes Deployment Resource](https://arangodb.github.io/kube-arangodb/docs/api/ArangoDeployment.V1#specrocksdbencryptionkeysecretname).
+See the [kube-arangodb documentation](https://arangodb.github.io/kube-arangodb/docs/api/ArangoDeployment.V1#specrocksdbencryptionkeysecretname).
 
 ## Creating keys
 
@@ -133,7 +134,7 @@ master key can be generated from random characters if the startup option
 `--rocksdb.encryption-gen-internal-key` is set to `true`.
 
 It is possible to change the user supplied encryption at rest key via the
-[HTTP API](../../develop/http/security.md#encryption-at-rest). This API
+[HTTP API](../../develop/http-api/security.md#encryption-at-rest). This API
 is disabled by default, but can be turned on by setting the startup option
 `--rocksdb.encryption-key-rotation` to `true`.
 

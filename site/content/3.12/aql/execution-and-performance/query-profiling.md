@@ -3,12 +3,12 @@ title: Profiling and Hand-Optimizing AQL queries
 menuTitle: Query Profiling
 weight: 20
 description: >-
-  To give you more insight into your query ArangoDB allows to execute your query with special instrumentation code enabled
+  For understanding the performance of specific queries, you can profile them to
+  identify slow parts of query execution plans
 archetype: default
 ---
-To give you more insight into your query ArangoDB allows to execute your query
-with special instrumentation code enabled. This will then print a query plan
-with detailed execution statistics.
+ArangoDB allows to execute your query with special instrumentation code enabled.
+It provides you a query plan with detailed execution statistics.
 
 To use this in an interactive fashion on the shell you can use
 `db._profileQuery(..)` in _arangosh_. Alternatively, there is a button

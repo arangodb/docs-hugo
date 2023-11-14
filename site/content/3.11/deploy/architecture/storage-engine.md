@@ -3,16 +3,13 @@ title: Storage Engine
 menuTitle: Storage Engine
 weight: 15
 description: >-
-  At the very bottom of the ArangoDB database system lies the RocksDB storage engine
+  The storage engine is responsible for persisting data on disk, holding copies
+  in memory, providing indexes and caches to speed up queries
 archetype: default
 ---
-At the very bottom of the ArangoDB database system lies the storage
-engine. The storage engine is responsible for persisting the documents
-on disk, holding copies in memory, providing indexes and caches to
-speed up queries.
-
 ArangoDB's storage engine is based on Facebook's **RocksDB** and the only
-storage engine available in ArangoDB 3.7 and above.
+storage engine available in ArangoDB 3.7 and above. It is the bottom layer of
+the database system.
 
 ## RocksDB
 

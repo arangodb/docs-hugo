@@ -1,12 +1,16 @@
-{{- $img := .Page.Resources.GetMatch .Destination -}}
-{{- if and (not $img) .Page.File -}}
-{{ $path := path.Join .Page.File.Dir .Destination }}
-{{- $img = resources.Get $path -}}
-{{- end -}}
-{{- with $img -}}
-<figure class="image-caption">
-    <img alt="{{ $.Text }}"  src="{{ .RelPermalink }}" />
+{{ $img := .Page.Resources.GetMatch .Destination -}}
+{{ if and (not $img) .Page.File -}}
+  {{ $path := path.Join .Page.File.Dir .Destination -}}
+  {{ $img = resources.Get $path -}}
+  {{ if not $img -}}
+    {{ errorf "<error code=1> Broken image reference '%v' found in %s </error><br>" .Destination .Page.File -}}
+  {{ end -}}
+{{ end -}}
+{{ with $img -}}
+  <figure class="image-caption">
+    <img alt="{{ $.Text }}" src="{{ .RelPermalink }}" />
     <figcaption>{{ with $.Title | safeHTML }}{{ . }}{{ end }}</figcaption>
-</figure>
-{{- else -}}
-<img src="{{ .Destination | safeURL }}" alt="{{ $.Text }}" />{{- end -}}
+  </figure>
+{{ else -}}
+  <img src="{{ .Destination | safeURL }}" alt="{{ $.Text }}" />
+{{ end -}}

@@ -3,7 +3,8 @@ title: Features and Improvements in ArangoDB 3.12
 menuTitle: What's New in 3.12
 weight: 5
 description: >-
-  ArangoDB v3.12 Release Notes New Features
+  A new optimization for specific ArangoSearch queries, more entries in the
+  edge cache with compression
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in
@@ -250,6 +251,39 @@ this can lead to a very high number of .sst files, with the potential
 of outgrowing the maximum number of file descriptors the ArangoDB process 
 can open. Thus, these options should only be enabled on deployments with a
 limited number of collections/shards/indexes.
+
+### Active AQL query cursors metric
+
+The `arangodb_aql_cursors_active` metric has been added and shows the number
+of active AQL query cursors.
+
+AQL query cursors are created for queries that produce more results than
+specified in the `batchSize` query option (default value: `1000`). Such results
+can be fetched incrementally by client operations in chunks.
+As it is unclear if and when a client will fetch any remaining data from a
+cursor, every cursor has a server-side timeout value (TTL) after which it is
+considered inactive and garbage-collected.
+
+### Detached scheduler threads
+
+<small>Introduced in: v3.11.5</small>
+
+A scheduler thread now has the capability to detach itself from the scheduler
+if it observes the need to perform a potentially long running task, like waiting
+for a lock. This allows a new scheduler thread to be started and prevents
+scenarios where all threads are blocked waiting for a lock, which has previously
+led to deadlock situations.
+
+Threads waiting for more than 1 second on a collection lock will detach
+themselves.
+
+The following startup option has been added:
+- `--server.max-number-detached-threads`: The maximum number of detached scheduler
+  threads.
+
+The following metric as been added:
+- `arangodb_scheduler_num_detached_threads`: The number of worker threads
+  currently started and detached from the scheduler. 
 
 ## Client tools
 

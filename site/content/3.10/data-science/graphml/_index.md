@@ -6,8 +6,6 @@ description: >-
   Enterprise-ready, graph-powered machine learning as a cloud service
 archetype: chapter
 ---
-{{< description >}}
-
 Traditional machine learning overlooks the connections and relationships
 between data points, which is where graph machine learning excels. However,
 accessibility to GraphML has been limited to sizable enterprises equipped with
@@ -56,7 +54,7 @@ to the database for application use.
 
 ArangoGraphML provides enterprise-ready graph-powered machine learning as a
 cloud service via Jupyter Notebooks that run on the
-[ArangoGraph Insights Platform](https://cloud.arangodb.com/).
+[ArangoGraph Insights Platform](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 
 ArangoGraphML uses GraphML techniques that focus on solving different problems
 and, at the same time, provides actionable insights leveraging ArangoDB's graph

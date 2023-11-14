@@ -3,13 +3,10 @@ title: API Changes in ArangoDB 3.9
 menuTitle: API changes in 3.9
 weight: 20
 description: >-
-  ArangoDB v3.9 Release Notes API Changes
+  A summary of the changes to the HTTP API and other interfaces that are relevant
+  for developers, like maintainers of drivers and integrations for ArangoDB
 archetype: default
 ---
-This document summarizes the HTTP API changes and other API changes in ArangoDB 3.9.
-The target audience for this document are developers who maintain drivers and
-integrations for ArangoDB 3.9.
-
 ## HTTP RESTful API
 
 ### Behavior changes
@@ -53,7 +50,7 @@ If an EdgeDefinition contains a collection name that is also contained in the
 `satellites` option, the collection will be created as a SatelliteCollection.
 Otherwise, it will be ignored. This option only takes effect using SmartGraphs.
 
-Also see [Graph Management](../../develop/http/graphs/named-graphs.md#management).
+Also see [Graph Management](../../develop/http-api/graphs/named-graphs.md#management).
 
 #### Extended naming convention for databases
 

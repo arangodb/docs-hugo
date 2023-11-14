@@ -2,8 +2,7 @@
 title: File access in Foxx
 menuTitle: Working with files
 weight: 60
-description: >-
-  Files within the service folder should always be considered read-only
+description: ''
 archetype: default
 ---
 Files within the service folder should always be considered read-only.

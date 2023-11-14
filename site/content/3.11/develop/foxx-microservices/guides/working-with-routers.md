@@ -1,9 +1,8 @@
 ---
-title: Working with routers
+title: Working with routers in Foxx services
 menuTitle: Working with routers
 weight: 5
-description: >-
-  In Foxx routers are used to define the URLs of your API
+description: ''
 archetype: default
 ---
 In Foxx [routers](../reference/routers/_index.md) are used to define

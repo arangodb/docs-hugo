@@ -3,7 +3,8 @@ title: Graphs in the web interface
 menuTitle: Graphs
 weight: 30
 description: >-
-  The Graphs tab provides a viewer facility for graph data stored in ArangoDB
+  You can create and manage named graphs in the web interface, as well as
+  visually explore graphs with the graph viewer
 archetype: default
 ---
 The *Graphs* tab provides a viewer facility for graph data stored in ArangoDB.

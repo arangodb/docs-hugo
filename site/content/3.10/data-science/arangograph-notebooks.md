@@ -6,8 +6,6 @@ description: >-
   Colocated Jupyter Notebooks within the ArangoGraph Insights Platform
 archetype: default
 ---
-{{< description >}}
-
 {{< tip >}}
 ArangoGraph Notebooks don't include the ArangoGraphML services.
 To enable the ArangoGraphML services, 
@@ -16,7 +14,7 @@ with the ArangoDB team.
 {{< /tip >}}
 
 The ArangoGraph Notebook is a JupyterLab notebook embedded in the
-[ArangoGraph Insights Platform](https://cloud.arangodb.com/).
+[ArangoGraph Insights Platform](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 The notebook integrates seamlessly with the platform,
 automatically connecting to ArangoGraph services and ArangoDB.
 This makes it much easier to leverage these resources without having

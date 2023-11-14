@@ -2,8 +2,7 @@
 title: Import and Export
 menuTitle: Import & Export
 weight: 20
-description: >-
-  Imports and exports can be done with the tools arangoimport and arangoexport
+description: ''
 archetype: default
 ---
 Imports and exports can be done with the tools
