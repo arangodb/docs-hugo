@@ -115,11 +115,10 @@ produced no warnings.
 
 #### Metrics API
 
-The metrics endpoint includes the following new metric:
+The metrics endpoint includes the following new metrics:
 
-| Label | Description |
-|:------|:------------|
-| `arangodb_aql_cursors_active` | Current number of active AQL query cursors. |
+- `arangodb_aql_cursors_active`
+- `arangodb_search_execution_threads_demand`
 
 ### Endpoints moved
 
