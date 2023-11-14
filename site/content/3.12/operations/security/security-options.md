@@ -3,7 +3,8 @@ title: Server security options
 menuTitle: Security Options
 weight: 5
 description: >-
-  arangod provides a variety of options to make a setup more secure
+  You can harden an ArangoDB server by restricting APIs, limiting what can be 
+  accessed in JavaScript contexts, and disable unused features
 archetype: default
 ---
 _arangod_ provides a variety of options to make a setup more secure. 
@@ -335,7 +336,7 @@ extra options are available for locking down JavaScript access to server functio
   and one-off tasks.
 
 - `--javascript.transactions`: You can set this option to `false` to turn off
-  [JavaScript Transactions](../../develop/http/transactions/javascript-transactions.md). It disallows
+  [JavaScript Transactions](../../develop/http-api/transactions/javascript-transactions.md). It disallows
   the execution of user-defined JavaScript code on the server inside of
   JavaScript Transactions.
 

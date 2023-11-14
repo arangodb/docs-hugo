@@ -1,9 +1,8 @@
 ---
-title: Middleware
+title: Foxx Middleware
 menuTitle: Middleware
 weight: 10
-description: >-
-  Middleware
+description: ''
 archetype: default
 ---
 Middleware in Foxx refers to functions that can be mounted like routes and can

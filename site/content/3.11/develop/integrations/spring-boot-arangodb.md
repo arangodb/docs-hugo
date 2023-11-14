@@ -7,8 +7,6 @@ description: >-
   that you can include in your application
 archetype: default
 ---
-{{< description >}}
-
 ## Supported versions
 
 Spring Boot Starter ArangoDB is compatible with all supported versions of ArangoDB.

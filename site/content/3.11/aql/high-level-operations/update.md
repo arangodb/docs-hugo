@@ -1,5 +1,5 @@
 ---
-title: UPDATE operation in AQL
+title: '`UPDATE` operation in AQL'
 menuTitle: UPDATE
 weight: 55
 description: >-
@@ -7,8 +7,6 @@ description: >-
   by adding or updating specific attributes
 archetype: default
 ---
-{{< description >}}
-
 Each `UPDATE` operation is restricted to a single collection, and the
 [collection name](../../concepts/data-structure/collections.md#collection-names) must not be dynamic.
 Only a single `UPDATE` statement per collection is allowed per AQL query, and

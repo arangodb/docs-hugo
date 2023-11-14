@@ -1,9 +1,8 @@
 ---
-title: JWT Session Storage
+title: Foxx JWT Session Storage
 menuTitle: JWT storage
 weight: 10
-description: >-
-  JWT Session Storage
+description: ''
 archetype: default
 ---
 `const jwtStorage = require('@arangodb/foxx/sessions/storages/jwt');`

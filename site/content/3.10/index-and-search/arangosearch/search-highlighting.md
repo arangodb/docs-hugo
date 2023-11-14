@@ -7,8 +7,6 @@ description: >-
   Views with ArangoSearch, to highlight what was found in search results
 archetype: default
 ---
-{{< description >}}
-
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 ArangoSearch lets you search for terms and phrases in full-text, and more.

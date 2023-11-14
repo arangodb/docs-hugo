@@ -7,8 +7,6 @@ description: >-
   searching, either standalone or in combination with Views and inverted indexes
 archetype: default
 ---
-{{< description >}}
-
 While AQL string functions allow for basic text manipulation, true text
 processing including tokenization, language-specific word stemming, case
 conversion and removal of diacritical marks (accents) from characters only
@@ -45,7 +43,7 @@ The configuration is comprised of type-specific properties and list of features.
 The features control the additional metadata to be generated to augment View
 indexes, to be able to rank results for instance.
 
-Analyzers can be managed via an [HTTP API](../develop/http/analyzers.md) and through
+Analyzers can be managed via an [HTTP API](../develop/http-api/analyzers.md) and through
 a [JavaScript module](../develop/javascript-api/analyzers.md).
 
 {{< youtube id="tbOTYL26reg" >}}

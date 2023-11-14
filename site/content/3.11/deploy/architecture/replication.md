@@ -3,7 +3,8 @@ title: Replication
 menuTitle: Replication
 weight: 20
 description: >-
-  Replication allows you to replicate data onto another machine
+  Replication synchronizes state between different machines, like the data of
+  different cluster nodes
 archetype: default
 ---
 Replication allows you to *replicate* data onto another machine. It
@@ -18,7 +19,7 @@ Cluster.
 Asynchronous replication is used:
 
 - between the _Leader_ and the _Follower_ of an ArangoDB
-  [_Active Failover_](../deployment/active-failover/_index.md) setup
+  [_Active Failover_](../active-failover/_index.md) setup
 - between multiple ArangoDB [Data Centers](../arangosync/deployment/_index.md)
   (inside the same Data Center replication is synchronous)
 

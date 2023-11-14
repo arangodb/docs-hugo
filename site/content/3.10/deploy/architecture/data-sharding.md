@@ -3,7 +3,8 @@ title: Sharding
 menuTitle: Data Sharding
 weight: 10
 description: >-
-  Run a cluster of ArangoDB instances that constitute a single database system.
+  ArangoDB can divide collections into multiple shards to distribute the data
+  across multiple cluster nodes
 archetype: default
 ---
 ArangoDB organizes its collection data in _shards_. Sharding allows to use
@@ -42,7 +43,7 @@ high, but the combined the computing power of these machines can be arbitrarily
 large. Adding more machines on-demand is also typically easier and more
 cost-effective than pre-provisioning a single large machine. Increased
 complexity in infrastructure can be managed using modern containerization and
-cluster orchestrations tools like [Kubernetes](../deployment/kubernetes/_index.md).
+cluster orchestrations tools like [Kubernetes](../kubernetes/_index.md).
 
 ![Cluster Sharding](../../../images/cluster_sharding.jpg)
 
@@ -75,7 +76,7 @@ replicas. This in turn implies, that a complete pristine replication would
 involve 10 shards which need to catch up with their leaders.
 
 Not all use cases require horizontal scalability. In such cases, consider the
-[OneShard](../deployment/oneshard.md) feature as alternative to flexible sharding.
+[OneShard](../oneshard.md) feature as alternative to flexible sharding.
 
 ## Shard Keys
 
@@ -145,7 +146,7 @@ On which DB-Server in a Cluster a particular _shard_ is kept is undefined.
 There is no option to configure an affinity based on certain _shard_ keys.
 
 For more information on shard rebalancing and administration topics please have
-a look in the [Cluster Administration](../deployment/cluster/administration.md) section.
+a look in the [Cluster Administration](../cluster/administration.md) section.
 
 ### Indexes On Shards
 

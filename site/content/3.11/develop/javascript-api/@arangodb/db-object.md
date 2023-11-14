@@ -1,8 +1,11 @@
 ---
-title: The db object
-menuTitle: db object
+title: The `db` object of the JavaScript API
+menuTitle: '`db` object'
 weight: 5
-description: ''
+description: >-
+  The database object represents the currently selected database and provides
+  access to information and methods for executing operations in the context of
+  this database
 archetype: default
 ---
 The `db` object of the JavaScript API is available in [arangosh](../../../components/tools/arangodb-shell/_index.md)

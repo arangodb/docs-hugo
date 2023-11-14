@@ -3,13 +3,10 @@ title: API Changes in ArangoDB 3.12
 menuTitle: API changes in 3.12
 weight: 20
 description: >-
-  ArangoDB v3.12 Release Notes API Changes
+  A summary of the changes to the HTTP API and other interfaces that are relevant
+  for developers, like maintainers of drivers and integrations for ArangoDB
 archetype: default
 ---
-This document summarizes the HTTP API changes and other API changes in ArangoDB 3.12.
-The target audience for this document are developers who maintain drivers and
-integrations for ArangoDB 3.12.
-
 ## HTTP RESTful API
 
 ### Behavior changes
@@ -62,6 +59,33 @@ Note that it is still forbidden to use `_id` as a top-level attribute or
 sub-attribute in `fields` of persistent indexes. On the other hand, inverted
 indexes have been allowing to index and store the `_id` system attribute.
 
+#### Optimizer rule changes
+
+The `remove-unnecessary-projections` AQL optimizer rule has been renamed to
+`optimize-projections` and now includes an additional optimization.
+
+Moreover, a `remove-unnecessary-calculations-4` rule has been added.
+
+The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
+`GET /_api/query/rules`.
+
+#### Limit to the number of databases in a deployment
+
+<small>Introduced in: v3.10.10, v3.11.2</small>
+
+The new `--database.max-databases` startup option can cap the number of databases
+and creating databases using the `POST /_api/database` endpoint can thus now fail
+for this reason if your deployment is at or above the configured maximum. Example:
+
+```json
+{
+  "code": 400,
+  "error": true,
+  "errorMessage": "unable to create additional database because it would exceed the configured maximum number of databases (2)",
+  "errorNum": 32
+}
+```
+
 ### Privilege changes
 
 
@@ -98,7 +122,7 @@ Indexes of type `inverted` accept a new `optimizeTopK` property for the
 ArangoSearch WAND optimization. It is an array of strings, optional, and
 defaults to `[]`.
 
-See the [inverted index `optimizeTopK` property](../../develop/http/indexes/inverted.md)
+See the [inverted index `optimizeTopK` property](../../develop/http-api/indexes/inverted.md)
 for details.
 
 #### Optimizer rule descriptions
@@ -115,6 +139,62 @@ returns the `warnings` attribute, even if no warnings were produced while parsin
 the query. In that case, `warnings` contains an empty array.
 In previous versions, no `warnings` attribute was returned when parsing a query
 produced no warnings.
+
+#### Metrics API
+
+The metrics endpoint includes the following new metrics about AQL queries and
+ongoing dumps:
+
+- `arangodb_aql_cursors_active`
+- `arangodb_dump_memory_usage`
+- `arangodb_dump_ongoing`
+- `arangodb_dump_threads_blocked_total`
+
+---
+
+<small>Introduced in: v3.11.2</small>
+
+The following metrics have been added about the LZ4 compression for values in
+the in-memory edge cache:
+
+- `rocksdb_cache_edge_inserts_effective_entries_size_total`
+- `rocksdb_cache_edge_inserts_uncompressed_entries_size_total`
+- `rocksdb_cache_edge_compression_ratio`
+
+---
+
+<small>Introduced in: v3.10.11, v3.11.4</small>
+
+The following metrics have been added to improve the observability of in-memory
+cache subsystem:
+
+- `rocksdb_cache_free_memory_tasks_total`
+- `rocksdb_cache_free_memory_tasks_duration_total`
+- `rocksdb_cache_migrate_tasks_total`
+- `rocksdb_cache_migrate_tasks_duration_total`
+
+---
+
+<small>Introduced in: v3.11.4</small>
+
+The following metrics have been added to improve the observability of in-memory
+edge cache:
+
+- `rocksdb_cache_edge_compressed_inserts_total`
+- `rocksdb_cache_edge_empty_inserts_total`
+- `rocksdb_cache_edge_inserts_total`
+
+---
+
+<small>Introduced in: v3.11.5</small>
+
+The following metrics have been added to monitor and detect temporary or
+permanent connectivity issues as well as how many scheduler threads are in the
+detached state:
+
+- `arangodb_network_connectivity_failures_coordinators`
+- `arangodb_network_connectivity_failures_dbservers_total`
+- `arangodb_scheduler_num_detached_threads`
 
 ### Endpoints moved
 

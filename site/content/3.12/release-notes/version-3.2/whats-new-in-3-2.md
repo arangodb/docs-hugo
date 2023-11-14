@@ -3,7 +3,8 @@ title: Features and Improvements in ArangoDB 3.2
 menuTitle: What's New in 3.2
 weight: 5
 description: >-
-  The following list shows in detail which features have been added or improved inArangoDB 3
+  An alternative storage engine, distributed graph processing, on-disk data
+  encryption, replicated collections, LDAP support
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in
@@ -207,7 +208,7 @@ are available in the *Enterprise Edition*.
 
 ## Foxx
 
-- There is now an [official HTTP API for managing services](../../develop/http/foxx.md),
+- There is now an [official HTTP API for managing services](../../develop/http-api/foxx.md),
   allowing services to be installed, modified, uninstalled and reconfigured without
   the administrative web interface.
 

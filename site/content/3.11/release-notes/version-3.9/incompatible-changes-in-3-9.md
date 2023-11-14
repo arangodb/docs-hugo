@@ -3,14 +3,10 @@ title: Incompatible changes in ArangoDB 3.9
 menuTitle: Incompatible changes in 3.9
 weight: 15
 description: >-
-  It is recommended to check the following list of incompatible changes before upgrading to ArangoDB 3.9
+  Check the following list of potential breaking changes **before** upgrading to
+  this ArangoDB version and adjust any client applications if necessary
 archetype: default
 ---
-It is recommended to check the following list of incompatible changes **before**
-upgrading to ArangoDB 3.9, and adjust any client programs if necessary.
-
-The following incompatible changes have been made in ArangoDB 3.9:
-
 ## Architecture requirements
 
 The minimum architecture requirements have been raised from the Westmere

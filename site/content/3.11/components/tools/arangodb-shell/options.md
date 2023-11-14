@@ -3,7 +3,7 @@ title: _arangosh_ Options
 menuTitle: Options
 weight: 15
 description: >-
-  arangosh Options
+  The startup options of the `arangosh` executable
 pageToc:
   maxHeadlineLevel: 2
 archetype: default

@@ -1,13 +1,13 @@
 ---
-title: Prometheus & Grafana (optional)
+title: Set up Prometheus & Grafana for Datacenter-to-Datacenter-Replication
 menuTitle: Prometheus & Grafana
 weight: 20
-description: >-
-  ArangoSync provides metrics in a format supported by Prometheus
+description: ''
 archetype: default
 ---
-_ArangoSync_ provides metrics in a format supported by [Prometheus](https://prometheus.io).
-We also provide a standard set of dashboards for viewing those metrics in [Grafana](https://grafana.org).
+_ArangoSync_ provides metrics in a format supported by [Prometheus](https://prometheus.io)
+that you can optionally use.
+ArangoDB also provides a standard set of dashboards for viewing those metrics in [Grafana](https://grafana.org).
 
 If you want to use these tools, please refer to their websites for instructions
 on how to deploy them.

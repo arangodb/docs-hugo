@@ -8,8 +8,6 @@ pageToc:
   maxHeadlineLevel: 3
 archetype: default
 ---
-{{< description >}}
-
 You can form search expressions by composing ArangoSearch function calls,
 logical operators and comparison operators. This allows you to filter Views
 as well as to utilize inverted indexes to filter collections.

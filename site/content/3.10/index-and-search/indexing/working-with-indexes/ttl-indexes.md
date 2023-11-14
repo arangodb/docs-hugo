@@ -3,7 +3,7 @@ title: TTL Indexes
 menuTitle: TTL Indexes
 weight: 15
 description: >-
-  TTL indexes can remove expired documents from collections
+  You can use time-to-live indexes to remove expired documents from collections
 archetype: default
 ---
 ## Introduction to TTL (time-to-live) Indexes

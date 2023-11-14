@@ -1,13 +1,11 @@
 ---
-title: REMOVE operation in AQL
+title: '`REMOVE` operation in AQL'
 menuTitle: REMOVE
 weight: 50
 description: >-
   You can use the `REMOVE` operation to delete documents from a collection
 archetype: default
 ---
-{{< description >}}
-
 Each `REMOVE` operation is restricted to a single collection, and the 
 [collection name](../../concepts/data-structure/collections.md#collection-names) must not be dynamic.
 Only a single `REMOVE` statement per collection is allowed per AQL query, and 

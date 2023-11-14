@@ -6,8 +6,6 @@ description: >-
   Integrate large language models (LLMs) with knowledge graphs using ArangoDB
 archetype: default
 ---
-{{< description >}}
-
 Large language models (LLMs) and knowledge graphs are two prominent and
 contrasting concepts, each possessing unique characteristics and functionalities
 that significantly impact the methods we employ to extract valuable insights from

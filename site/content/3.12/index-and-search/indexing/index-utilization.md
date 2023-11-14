@@ -3,7 +3,8 @@ title: Index Utilization
 menuTitle: Index Utilization
 weight: 15
 description: >-
-  Index Utilization
+  How ArangoDB utilizes indexes to accelerate queries, and under what conditions
+  it can or cannot make use of indexes
 archetype: default
 ---
 In most cases ArangoDB will use a single index per collection in a given query. AQL queries can

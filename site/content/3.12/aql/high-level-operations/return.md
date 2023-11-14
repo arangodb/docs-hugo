@@ -1,13 +1,11 @@
 ---
-title: RETURN operation in AQL
+title: '`RETURN` operation in AQL'
 menuTitle: RETURN
 weight: 10
 description: >-
   You can use the `RETURN` operation to produce the result of a query
 archetype: default
 ---
-{{< description >}}
-
 A `RETURN` operation is mandatory at the end of each block in a data access query,
 otherwise the query result would be undefined. Using `RETURN` at the top level
 in data modification queries is optional.

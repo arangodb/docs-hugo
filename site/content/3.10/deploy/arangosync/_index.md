@@ -1,16 +1,13 @@
 ---
-title: ArangoSync
-menuTitle: ArangoSync
-weight: 200
+title: Datacenter-to-Datacenter Replication
+menuTitle: Datacenter-to-Datacenter Replication
+weight: 25
 description: >-
-  A detailed guide to deploying datacenter-to-datacenter replicated clusters
+  A detailed guide to Datacenter-to-Datacenter Replication (DC2DC) for clusters
+  and the _arangosync_ tool
 archetype: chapter
 ---
-{{< description >}}
-
 {{< tag "ArangoDB Enterprise Edition" >}}
-
-This chapter introduces ArangoDB's _Datacenter-to-Datacenter Replication_ (DC2DC).
 
 At some point in the grows of a database, there comes a need for replicating it
 across multiple datacenters.

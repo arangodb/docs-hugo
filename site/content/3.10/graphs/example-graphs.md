@@ -2,7 +2,8 @@
 title: Example graphs
 menuTitle: Example graphs
 weight: 110
-description: ''
+description: >-
+  How to use the example graphs built into ArangoDB
 archetype: default
 ---
 ArangoDB comes with a set of easy-to-understand graphs for demonstration
@@ -229,7 +230,7 @@ Components (WCC).
 
 Also see:
 - [Distributed Iterative Graph Processing (Pregel)](../data-science/pregel/_index.md)
-- [Pregel HTTP API](../develop/http/pregel.md)
+- [Pregel HTTP API](../develop/http-api/pregel.md)
 
 ![Three disjoint subgraphs with 36 nodes and edges in total](../../images/connected_components.png)
 

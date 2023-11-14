@@ -1,14 +1,12 @@
 ---
-title: SORT operation in AQL
+title: '`SORT` operation in AQL'
 menuTitle: SORT
 weight: 25
 description: >-
   The `SORT` operation allows you to specify one or multiple sort criteria and
-  directions to order results or the elements of an array
+  directions to control the order of query results or the elements of arrays
 archetype: default
 ---
-{{< description >}}
-
 ## Syntax
 
 The general syntax is:

@@ -3,16 +3,11 @@ title: SmartJoins
 menuTitle: SmartJoins
 weight: 255
 description: >-
-  SmartJoins allow to execute co-located join operations among identically sharded collections.
+  SmartJoins allow to execute co-located join operations among identically
+  sharded collections
 archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
-SmartJoins allow to execute co-located join operations among identically
-sharded collections.
-
-`arangosearch` Views are eligible for SmartJoins, provided that their underlying
-collections are eligible too.
 
 ## Cluster joins without being smart
 
@@ -307,3 +302,8 @@ key attribute defined for each collection.
 Finally, the SmartJoins optimization requires that the involved collections are
 joined on their shard key attributes (or `smartJoinAttribute`) using an equality
 comparison.
+
+## SmartJoins with Views
+
+Views of the `arangosearch` type are eligible for SmartJoins, provided that
+their underlying collections are eligible too.

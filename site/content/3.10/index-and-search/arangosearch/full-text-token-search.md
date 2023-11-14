@@ -6,8 +6,6 @@ description: >-
   Search for tokens in full-text that can occur in any order
 archetype: default
 ---
-{{< description >}}
-
 Full-text strings can be tokenized by `text` Analyzers so that each token
 (usually a word) gets indexed separately. Subsequently, it becomes possible to
 search for individual tokens. This is also possible with arrays of strings,

@@ -8,8 +8,6 @@ description: >-
   different features and performance characteristics
 archetype: default
 ---
-{{< description >}}
-
 A common requirement when ingesting data is to ensure that certain documents
 exist in a collection. Oftentimes when running a command it is unclear whether
 the target documents are already present in the collection or need to be
@@ -304,7 +302,7 @@ RETURN NEW
 ## Insert Operation not Using AQL
 
 There is the option to execute an insert operation with `overwriteMode` outside
-of AQL. The [`POST /_api/document/{collection}`](../../develop/http/documents.md#create-multiple-documents)
+of AQL. The [`POST /_api/document/{collection}`](../../develop/http-api/documents.md#create-multiple-documents)
 endpoint is a dedicated REST API for insert operations, which can handle one
 document, or multiple documents at once.
 

@@ -8,8 +8,6 @@ description: >-
   for reporting issues
 archetype: default
 ---
-{{< description >}}
-
 If it is unclear how a given query will perform, clients can retrieve a query's execution plan 
 from the AQL query optimizer without actually executing the query. Getting the query execution 
 plan from the optimizer is called *explaining*.
@@ -18,7 +16,7 @@ An explain throws an error if the given query is syntactically invalid. Otherwis
 returns the execution plan and some information about what optimizations could be applied to
 the query. The query is not executed.
 
-You can explain a query using the [HTTP REST API](../../develop/http/queries/aql-queries.md#explain-an-aql-query)
+You can explain a query using the [HTTP REST API](../../develop/http-api/queries/aql-queries.md#explain-an-aql-query)
 or via _arangosh_.
 
 ## Inspecting query plans
