@@ -1,5 +1,5 @@
 ---
-title: COLLECT operation in AQL
+title: '`COLLECT` operation in AQL'
 menuTitle: COLLECT
 weight: 40
 description: >-

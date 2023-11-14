@@ -1,5 +1,5 @@
 ---
-title: REMOVE operation in AQL
+title: '`REMOVE` operation in AQL'
 menuTitle: REMOVE
 weight: 50
 description: >-

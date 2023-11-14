@@ -1,5 +1,5 @@
 ---
-title: FOR operation in AQL
+title: '`FOR` operation in AQL'
 menuTitle: FOR
 weight: 5
 description: >-

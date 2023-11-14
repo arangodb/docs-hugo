@@ -68,6 +68,23 @@ The updated interface now offers the following options:
 - **Move Followers**
 - **Include System Collections**
 
+### Unified list view
+
+ArangoDB 3.12 brings a significant enhancement to the display of collections,
+Views, graphs, users, services, and databases in the web interface.
+The previous tile format has been replaced with a user-friendly tabular
+layout, providing a consistent and intuitive experience that is visually
+aligned across all components. The existing tabular views have also been
+reworked to ensure a seamless transition.
+
+The new tabular format includes the following features:
+- **Dynamic filters on columns**: Each column now has a dynamic filter box,
+  allowing you to efficiently search and filter based on keywords. This makes
+  it easy to locate specific items within the list.
+- **Dynamic sorting on columns**: Sort elements easily based on column data
+  such as name, date, or size. This functionality provides a flexible way to
+  organize and view your data.
+
 ### Swagger UI
 
 The interactive tool for exploring HTTP APIs has been updated to version 5.4.1.
@@ -97,7 +114,7 @@ indexes have been allowing to index and store the `_id` system attribute.
 
 ### LZ4 compression for values in the in-memory edge cache
 
-<small>Introduced in: v3.11.2, v3.12.0</small>
+<small>Introduced in: v3.11.2</small>
 
 LZ4 compression of edge index cache values allows to store more data in main
 memory than without compression, so the available memory can be used more
@@ -135,7 +152,7 @@ cache, but not decreased when data gets evicted from the cache.
 
 ### Limit the number of databases in a deployment
 
-<small>Introduced in: v3.10.10, v3.11.2, v3.12.0</small>
+<small>Introduced in: v3.10.10, v3.11.2</small>
 
 The `--database.max-databases` startup option allows you to limit the
 number of databases that can exist in parallel in a deployment. You can use this
@@ -167,7 +184,7 @@ in the meantime should be removed manually.
 
 ### Cluster-internal connectivity checks
 
-<small>Introduced in: v3.11.5, v.3.12.0</small>
+<small>Introduced in: v3.11.5</small>
 
 This feature makes Coordinators and DB-Servers in a cluster periodically send
 check requests to each other, in order to see if all nodes can connect to
@@ -189,6 +206,20 @@ permanent connectivity issues:
 - `arangodb_network_connectivity_failures_dbservers_total`: Number of failed
   connectivity check requests sent to DB-Servers.
 
+### Configurable maximum for queued log entries
+
+<small>Introduced in: v3.10.12, v3.11.5</small>
+
+The new `--log.max-queued-entries` startup option lets you configure how many
+log entries are queued in a background thread.
+
+Log entries are pushed on a queue for asynchronous writing unless you enable the
+`--log.force-direct` startup option. If you use a slow log output (e.g. syslog),
+the queue might grow and eventually overflow.
+
+You can configure the upper bound of the queue with this option. If the queue is
+full, log entries are written synchronously until the queue has space again.
+
 ## Client tools
 
 ### arangodump
@@ -201,50 +232,17 @@ collections to include.
 
 ## Miscellaneous changes
 
-### In-memory edge cache startup options and metrics
+### Active AQL query cursors metric
 
-<small>Introduced in: v3.11.4, v3.12.0</small>
+The `arangodb_aql_cursors_active` metric has been added and shows the number
+of active AQL query cursors.
 
-The following startup options have been added:
-
-- `--cache.max-spare-memory-usage`: the maximum memory usage for spare tables
-  in the in-memory cache.
-- `--cache.high-water-multiplier`: controls the cache's effective memory usage
-  limit. The user-defined memory limit (i.e. `--cache.size`) is multiplied with
-  this value to create the effective memory limit, from which on the cache tries
-  to free up memory by evicting the oldest entries.
-
-The following metrics have been added:
-
-| Label | Description |
-|:------|:------------|
-| `rocksdb_cache_edge_compressed_inserts_total` | Total number of compressed inserts into the in-memory edge cache. |
-| `rocksdb_cache_edge_empty_inserts_total` | Total number of insertions into the in-memory edge cache for non-connected edges. |
-| `rocksdb_cache_edge_inserts_total` | Total number of insertions into the in-memory edge cache. |
-
-### Observability of in-memory cache subsystem
-
-<small>Introduced in: v3.10.11, v.3.11.4, v.3.12.0</small>
-
-The following metrics have been added to improve the observability of in-memory
-cache subsystem:
-- `rocksdb_cache_free_memory_tasks_total`: Total number of free memory tasks
-  that were scheduled by the in-memory edge cache subsystem. This metric will
-  be increased whenever the cache subsystem schedules a task to free up memory
-  in one of the managed in-memory caches. It is expected to see this metric
-  rising when the cache subsystem hits its global memory budget.
-- `rocksdb_cache_free_memory_tasks_duration_total`: Total amount of time spent
-  inside the free memory tasks of the in-memory cache subsystem. Free memory
-  tasks are scheduled by the cache subsystem to free up memory in existing cache
-  hash tables.
-- `rocksdb_cache_migrate_tasks_total`: Total number of migrate tasks that were
-  scheduled by the in-memory edge cache subsystem. This metric will be increased 
-  whenever the cache subsystem schedules a task to migrate an existing cache hash
-  table to a bigger or smaller size.
-- `rocksdb_cache_migrate_tasks_duration_total`: Total amount of time spent inside
-  the migrate tasks of the in-memory cache subsystem. Migrate tasks are scheduled
-  by the cache subsystem to migrate existing cache hash tables to a bigger or
-  smaller table.
+AQL query cursors are created for queries that produce more results than
+specified in the `batchSize` query option (default value: `1000`). Such results
+can be fetched incrementally by client operations in chunks.
+As it is unclear if and when a client will fetch any remaining data from a
+cursor, every cursor has a server-side timeout value (TTL) after which it is
+considered inactive and garbage-collected.
 
 ### RocksDB .sst file partitioning (experimental)
 
@@ -272,17 +270,59 @@ of outgrowing the maximum number of file descriptors the ArangoDB process
 can open. Thus, these options should only be enabled on deployments with a
 limited number of collections/shards/indexes.
 
-### Active AQL query cursors metric
+### More instant Hot Backups
 
-The `arangodb_aql_cursors_active` metric has been added and shows the number
-of active AQL query cursors.
+<small>Introduced in: v3.10.10, v3.11.3</small>
 
-AQL query cursors are created for queries that produce more results than
-specified in the `batchSize` query option (default value: `1000`). Such results
-can be fetched incrementally by client operations in chunks.
-As it is unclear if and when a client will fetch any remaining data from a
-cursor, every cursor has a server-side timeout value (TTL) after which it is
-considered inactive and garbage-collected.
+Cluster deployments no longer wait for all in-progress transactions to get
+committed when a user requests a Hot Backup. The waiting could cause deadlocks
+and thus Hot Backups to fail, in particular in ArangoGraph. Now, Hot Backups are
+created immediately and commits have to wait until the backup process is done.
+
+### In-memory edge cache startup options and metrics
+
+<small>Introduced in: v3.11.4</small>
+
+The following startup options have been added:
+
+- `--cache.max-spare-memory-usage`: the maximum memory usage for spare tables
+  in the in-memory cache.
+- `--cache.high-water-multiplier`: controls the cache's effective memory usage
+  limit. The user-defined memory limit (i.e. `--cache.size`) is multiplied with
+  this value to create the effective memory limit, from which on the cache tries
+  to free up memory by evicting the oldest entries.
+
+The following metrics have been added:
+
+| Label | Description |
+|:------|:------------|
+| `rocksdb_cache_edge_compressed_inserts_total` | Total number of compressed inserts into the in-memory edge cache. |
+| `rocksdb_cache_edge_empty_inserts_total` | Total number of insertions into the in-memory edge cache for non-connected edges. |
+| `rocksdb_cache_edge_inserts_total` | Total number of insertions into the in-memory edge cache. |
+
+### Observability of in-memory cache subsystem
+
+<small>Introduced in: v3.10.11, v3.11.4</small>
+
+The following metrics have been added to improve the observability of the in-memory
+cache subsystem:
+- `rocksdb_cache_free_memory_tasks_total`: Total number of free memory tasks
+  that were scheduled by the in-memory edge cache subsystem. This metric will
+  be increased whenever the cache subsystem schedules a task to free up memory
+  in one of the managed in-memory caches. It is expected to see this metric
+  rising when the cache subsystem hits its global memory budget.
+- `rocksdb_cache_free_memory_tasks_duration_total`: Total amount of time spent
+  inside the free memory tasks of the in-memory cache subsystem. Free memory
+  tasks are scheduled by the cache subsystem to free up memory in existing cache
+  hash tables.
+- `rocksdb_cache_migrate_tasks_total`: Total number of migrate tasks that were
+  scheduled by the in-memory edge cache subsystem. This metric will be increased 
+  whenever the cache subsystem schedules a task to migrate an existing cache hash
+  table to a bigger or smaller size.
+- `rocksdb_cache_migrate_tasks_duration_total`: Total amount of time spent inside
+  the migrate tasks of the in-memory cache subsystem. Migrate tasks are scheduled
+  by the cache subsystem to migrate existing cache hash tables to a bigger or
+  smaller table.
 
 ### Detached scheduler threads
 
