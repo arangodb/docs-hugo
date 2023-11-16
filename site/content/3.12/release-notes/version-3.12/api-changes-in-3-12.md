@@ -86,6 +86,14 @@ for this reason if your deployment is at or above the configured maximum. Exampl
 }
 ```
 
+#### Adjustable Stream Transaction size
+
+The [Stream Transactions HTTP API](../../develop/http-api/transactions/stream-transactions.md)
+may now allow larger transactions or be limited to smaller transactions because
+the maximum transaction size can now be configured with the
+`--transaction.streaming-max-transaction-size` startup option.
+The default value remains 128 MiB.
+
 ### Privilege changes
 
 

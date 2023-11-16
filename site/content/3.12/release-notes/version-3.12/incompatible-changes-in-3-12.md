@@ -79,6 +79,14 @@ The second option is the recommended one, as it signals the intent more clearly,
 and makes the cache behave "as expected", i.e. use up to the configured
 memory limit and not just 56% of it.
 
+#### Adjustable Stream Transaction size
+
+[Stream Transactions](../../develop/transactions/stream-transactions.md) may
+now be limited to smaller transaction sizes because the maximum transaction size
+can now be configured with the `--transaction.streaming-max-transaction-size`
+startup option. The default value remains 128 MiB but configuring a lower limit
+can cause previously working Stream Transactions to fail.
+
 ## Client tools
 
 ### jslint feature in arangosh

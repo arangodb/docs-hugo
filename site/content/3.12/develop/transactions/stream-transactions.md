@@ -45,9 +45,12 @@ on the Coordinator to ensure that abandoned transactions cannot block the
 cluster from operating properly:
 
 - Maximum idle timeout of up to **120 seconds** between operations.
-- Maximum transaction size of **128 MB** per DB-Server.
+- Maximum transaction size with a default of **128 MiB** (per DB-Server in clusters).
 
 These limits are also enforced for Stream Transactions on single servers.
+
+The maximum size for a single Stream Transaction can be adjusted with the
+`--transaction.streaming-max-transaction-size` startup option.
 
 The default maximum idle timeout is **60 seconds** between operations in a
 single Stream Transaction. The maximum value can be bumped up to at most 120
@@ -103,7 +106,8 @@ Additionally, `options` can have the following optional attributes:
   waiting on collection locks. This option is only meaningful when using
   `exclusive` locks. If not specified, a default value is used. Setting
   `lockTimeout` to `0` makes ArangoDB not time out waiting for a lock.
-- `maxTransactionSize`: Transaction size limit in bytes.
+- `maxTransactionSize`: Transaction size limit in bytes. Can be at most the
+  value of the `--transaction.streaming-max-transaction-size` startup option.
 
 The method returns an object that lets you run supported operations as part of
 the transactions, get the status information, and commit or abort the transaction.

@@ -112,6 +112,12 @@ indexes have been allowing to index and store the `_id` system attribute.
 
 ## Server options
 
+### Adjustable Stream Transaction size
+
+The previously fixed limit of 128 MiB for [Stream Transactions](../../develop/transactions/stream-transactions.md)
+can now be configured with the new `--transaction.streaming-max-transaction-size`
+startup option. The default value remains 128 MiB.
+
 ### LZ4 compression for values in the in-memory edge cache
 
 <small>Introduced in: v3.11.2</small>
