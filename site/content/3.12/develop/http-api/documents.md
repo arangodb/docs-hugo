@@ -2048,6 +2048,10 @@ paths:
 
         The value of the `_key` attribute as well as attributes
         used as sharding keys may not be changed.
+        
+        {{< warning >}}
+        Possibly given `_id` attribute in the body are always ignored.
+        {{< /warning >}}
 
         Setting an attribute value to `null` in the patch documents causes a
         value of `null` to be saved for the attribute by default.
@@ -2109,7 +2113,8 @@ paths:
               properties:
                 documents:
                   description: |
-                    A JSON representation of an array of document updates as objects.
+                    A JSON representation of an array of document updates as objects. 
+                    Each entry has to contain a `_key` attribute.
                   type: json
       parameters:
         - name: collection
@@ -2282,7 +2287,8 @@ paths:
               properties:
                 documents:
                   description: |
-                    A JSON array of strings or documents.
+                    A JSON representation of an array of document updates as objects. 
+                    Each entry has to contain a `_key` attribute.
                   type: json
       parameters:
         - name: collection
