@@ -79,6 +79,26 @@ The second option is the recommended one, as it signals the intent more clearly,
 and makes the cache behave "as expected", i.e. use up to the configured
 memory limit and not just 56% of it.
 
+## Higher reported memory usage for AQL queries
+
+Due to the [improved memory accounting in v3.12](whats-new-in-3-12.md#improved-memory-accounting),
+certain AQL queries may now get aborted because they exceed the defined
+memory limit but didn't get killed in previous versions. This is because of the
+more accurate memory tracking that reports a higher (actual) usage now. It allows
+ArangoDB to more reliably detect and kill queries that go over the per-query and
+global query memory limit, potentially preventing out-of-memory crashes of
+_arangod_ processes.
+
+In particular, AQL queries that perform write operations now report a
+significantly higher `peakMemoryUsage` in cursors than before. This is also
+reflected in the `arangodb_aql_global_memory_usage` metric. Memory used for
+ArangoSearch `SEARCH` operations is now also accounted for in the metric.
+
+You may need to adjust affected queries to use less memory or increase the
+per-query limit with the [`memoryLimit` query option](../../aql/how-to-invoke-aql/with-arangosh.md#memorylimit)
+or its default using the `--query.memory-limit` startup option. You can adjust
+the global limit with the `--query.global-memory-limit` startup option.
+
 ## Client tools
 
 ### jslint feature in arangosh
