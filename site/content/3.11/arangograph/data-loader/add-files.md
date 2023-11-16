@@ -45,6 +45,8 @@ The following restrictions and limitations apply:
 - The CSV file should have unique header names. It is not possible to have two
   columns with the same name within the same file.
 
+For more details, see the [File validation](../data-loader/import.md#file-validation) section.
+
 ### Upload limits
 
 Note that there is a cumulative file upload limit of 1GB. This means that the
