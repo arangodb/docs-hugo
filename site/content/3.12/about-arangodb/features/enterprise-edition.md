@@ -72,6 +72,10 @@ features outlined below. For additional information, see
   Retrieve search results for the highest-ranking matches from Views faster by
   defining a list of sort expressions to optimize.
 
+- [**Read from followers in clusters**](../../develop/http-api/documents.md#read-from-followers):
+  Allow dirty reads so that Coordinators can read from any shard replica and not
+  only from the leader, for scaling reads.
+
 ## Querying
 
 - [**Pregel in Cluster**](../../data-science/pregel/_index.md#prerequisites):

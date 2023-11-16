@@ -1048,7 +1048,12 @@ that have copies of the data. Therefore, the read throughput is higher.
 
 This feature is only available in the Enterprise Edition.
 
-For more information, see [Read from followers](../../develop/http-api/documents.md#read-from-followers).
+For more information, see [Read from followers](../../develop/http-api/documents.md#read-from-followers)
+in the HTTP API documentation.
+
+The JavaScript API supports an `allowDirtyReads` option for
+[AQL queries](../../aql/how-to-invoke-aql/with-arangosh.md#allowdirtyreads) and
+[reading documents](../../develop/javascript-api/@arangodb/collection-object.md#collectiondocumentobject--options).
 
 ## Improved shard rebalancing
 
