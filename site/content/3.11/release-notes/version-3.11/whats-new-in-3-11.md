@@ -1306,7 +1306,7 @@ The following startup option has been added:
 - `--server.max-number-detached-threads`: The maximum number of detached scheduler
   threads.
 
-The following metric as been added:
+The following metric has been added:
 - `arangodb_scheduler_num_detached_threads`: The number of worker threads
   currently started and detached from the scheduler. 
 

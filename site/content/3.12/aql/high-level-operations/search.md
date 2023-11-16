@@ -237,7 +237,7 @@ You can use the special `includeAllFields`
 [`arangosearch` View property](../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
 to index all (sub-)attributes of the source documents if desired.
 
-## SEARCH with SORT
+## `SEARCH` with `SORT`
 
 The documents emitted from a View can be sorted by attribute values with the
 standard [SORT() operation](sort.md), using one or multiple
@@ -283,32 +283,19 @@ a score of `0` will be returned for all documents.
 
 ## Search Options
 
-The `SEARCH` operation accepts an options object with the following attributes:
+The `SEARCH` operation supports an optional `OPTIONS` clause to modify the
+behavior. The general syntax is as follows:
 
-- `collections` (array, _optional_): array of strings with collection names to
-  restrict the search to certain source collections
-- `conditionOptimization` (string, _optional_): controls how search criteria
-  get optimized. Possible values:
-  - `"auto"` (default): convert conditions to disjunctive normal form (DNF) and
-    apply optimizations. Removes redundant or overlapping conditions, but can
-    take quite some time even for a low number of nested conditions.
-  - `"none"`: search the index without optimizing the conditions.
-  <!-- Internal only: nodnf, noneg -->
-- `countApproximate` (string, _optional_): controls how the total count of rows
-  is calculated if the `fullCount` option is enabled for a query or when
-  a `COLLECT WITH COUNT` clause is executed
-  - `"exact"` (default): rows are actually enumerated for a precise count.
-  - `"cost"`: a cost-based approximation is used. Does not enumerate rows and
-    returns an approximate result with O(1) complexity. Gives a precise result
-    if the `SEARCH` condition is empty or if it contains a single term query
-    only (e.g. `SEARCH doc.field == "value"`), the usual eventual consistency
-    of Views aside.
+<pre><code>SEARCH <em>expression</em> OPTIONS { <em>option</em>: <em>value</em>, <em>...</em> }</code></pre>
 
-**Examples**
+### `collections`
 
-Given a View with three linked collections `coll1`, `coll2` and `coll3` it is
-possible to return documents from the first two collections only and ignore the
-third using the `collections` option:
+You can specify an array of strings with collection names to restrict the search
+to certain source collections.
+
+Given a View with three linked collections `coll1`, `coll2`, and `coll3`, you
+can return documents from the first two collections only and ignore the third
+collection by setting the `collections` option to `["coll1", "coll2"]`:
 
 ```aql
 FOR doc IN viewName
@@ -316,5 +303,63 @@ FOR doc IN viewName
   RETURN doc
 ```
 
-The search expression `true` matches all View documents. You can use any valid
-expression here while limiting the scope to the chosen source collections.
+The search expression `true` in the above example matches all View documents.
+You can use any valid expression here while limiting the scope to the chosen
+source collections.
+
+### `conditionOptimization`
+
+You can specify one of the following values for this option to control how
+search criteria get optimized:
+
+- `"auto"` (default): convert conditions to disjunctive normal form (DNF) and
+  apply optimizations. Removes redundant or overlapping conditions, but can
+  take quite some time even for a low number of nested conditions.
+- `"none"`: search the index without optimizing the conditions.
+<!-- Internal only: nodnf, noneg -->
+
+See [Optimizing View and inverted index query performance](../../index-and-search/arangosearch/performance.md#condition-optimization-options)
+for an example.
+
+### `countApproximate`
+
+This option controls how the total count of rows is calculated if the `fullCount`
+option is enabled for a query or when a `COLLECT WITH COUNT` clause is executed.
+You can set it to one of the following values:
+
+- `"exact"` (default): rows are actually enumerated for a precise count.
+- `"cost"`: a cost-based approximation is used. Does not enumerate rows and
+  returns an approximate result with O(1) complexity. Gives a precise result
+  if the `SEARCH` condition is empty or if it contains a single term query
+  only (e.g. `SEARCH doc.field == "value"`), the usual eventual consistency
+  of Views aside.
+
+See [Optimizing View and inverted index query performance](../../index-and-search/arangosearch/performance.md#count-approximation)
+for an example.
+
+### `parallelism`
+
+A `SEARCH` operation can optionally process index segments in parallel using
+multiple threads. This can speed up search queries but increases CPU and memory
+utilization.
+
+If you omit the `parallelism` option, then the default parallelism as defined by
+the [`--arangosearch.default-parallelism` startup option](../../components/arangodb-server/options.md#--arangosearchdefault-parallelism)
+is used. If you set it to a value of `1`, the search execution is not
+parallelized. If the value is greater than `1`, then up to that many worker
+threads can be used for concurrently processing index segments. The maximum
+number of total parallel execution threads is defined by the
+[`--arangosearch.execution-threads-limit` startup option](../../components/arangodb-server/options.md#--arangosearchexecution-threads-limit)
+that defaults to twice the number of CPU cores.
+
+The `parallelism` option should be considered a hint. Not all search queries are
+eligible. Queries also don't wait for the specified number of threads to be
+available. They start immediately even if only single-threaded and may acquire
+more threads later.
+
+```aql
+FOR doc IN restaurantsView
+  SEARCH ANALYZER(GEO_INTERSECTS(rect, doc.geometry), "geojson")
+  OPTIONS { parallelism: 16 }
+  RETURN doc.geometry
+```

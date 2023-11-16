@@ -675,3 +675,13 @@ db._createView("articlesView", "search-alias", { indexes: [
   { collection: "articles", index: "inv-idx" }
 ] });
 ```
+
+## Parallel index segment processing
+
+<small>Introduced in: v3.12.0</small>
+
+You can speed up `SEARCH` queries against Views using the `parallelism` option
+to process index segment using multiple threads.
+
+See [`SEARCH` operation in AQL](../../aql/high-level-operations/search.md#parallelism)
+for details.

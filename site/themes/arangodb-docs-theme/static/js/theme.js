@@ -161,7 +161,7 @@ function loadPage(target) {
     xhr: function() { return xhr; },
     url: href,
     success: function(newDoc) {
-      if (xhr.responseURL && href !== xhr.responseURL) {
+      if (xhr.responseURL && href.replace(/#.*/, "") !== xhr.responseURL) {
         updateHistory(xhr.responseURL.replace(version, getVersionByURL()));
         return;
       }
