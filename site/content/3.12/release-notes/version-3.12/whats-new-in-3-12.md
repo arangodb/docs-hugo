@@ -31,6 +31,26 @@ for examples.
 
 This feature is only available in the Enterprise Edition.
 
+### `SEARCH` parallelization
+
+In search queries against Views, you can set the new `parallelism` option for
+`SEARCH` operations to optionally process index segments in parallel using
+multiple threads. This can speed up search queries.
+
+The default value for the `parallelism` option is defined by the new
+`--arangosearch.default-parallelism` startup option that defaults to `1`.
+
+The new `--arangosearch.execution-threads-limit` startup option controls how
+many threads can be used in total for search queries. The new
+`arangodb_search_execution_threads_demand` metric reports the number of threads
+that queries request. If it is below the configured thread limit, it coincides
+with the number of active threads. If it exceeds the limit, some queries cannot
+currently get the threads as requested and may have to use a single thread until
+more become available.
+
+See [`SEARCH` operation in AQL](../../aql/high-level-operations/search.md#parallelism)
+for details.
+
 ## Analyzers
 
 
@@ -47,6 +67,23 @@ The updated interface now offers the following options:
 - **Move Leaders**
 - **Move Followers**
 - **Include System Collections**
+
+### Unified list view
+
+ArangoDB 3.12 brings a significant enhancement to the display of collections,
+Views, graphs, users, services, and databases in the web interface.
+The previous tile format has been replaced with a user-friendly tabular
+layout, providing a consistent and intuitive experience that is visually
+aligned across all components. The existing tabular views have also been
+reworked to ensure a seamless transition.
+
+The new tabular format includes the following features:
+- **Dynamic filters on columns**: Each column now has a dynamic filter box,
+  allowing you to efficiently search and filter based on keywords. This makes
+  it easy to locate specific items within the list.
+- **Dynamic sorting on columns**: Sort elements easily based on column data
+  such as name, date, or size. This functionality provides a flexible way to
+  organize and view your data.
 
 ### Swagger UI
 
