@@ -668,8 +668,8 @@
   desc: "Will be raised if one tries to create a collection which points to an unknown collection in its distributeShardsLike attribute."
   code: 1486
 - name: ERROR_CLUSTER_INSUFFICIENT_DBSERVERS
-  text: "the number of current dbservers is lower than the requested replicationFactor"
-  desc: "Will be raised if one tries to create a collection with a replicationFactor greater than the available number of DB-Servers."
+  text: "the number of current DB-Servers is lower than the requested replicationFactor/writeConcern"
+  desc: "Will be raised if one tries to create a collection with a replicationFactor or writeConcern value greater than the available number of DB-Servers."
   code: 1487
 - name: ERROR_CLUSTER_COULD_NOT_DROP_FOLLOWER
   text: "a follower could not be dropped in agency"
@@ -1355,6 +1355,10 @@
   text: "queue time violated"
   desc: "Will be returned if a request with a queue time requirement is set and it cannot be fulfilled."
   code: 21004
+- name: ERROR_TOO_MANY_DETACHED_THREADS
+  text: "too many detached scheduler threads"
+  desc: "Will be returned if a scheduler thread tries to detach itself but there are already too many detached scheduler threads."
+  code: 21005
 - group: Maintenance errors
 - name: ERROR_ACTION_UNFINISHED
   text: "maintenance action still processing"
