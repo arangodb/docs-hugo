@@ -82,8 +82,9 @@ paths:
       description: |
         Returns the document identified by the collection name and document key.
         The returned document contains three special attributes:
-        - `_id` containing the document identifier
-        - `_key` containing key which uniquely identifies a document in a given collection
+        - `_id` containing the document identifier build with the following pattern: `collection-name/_key`. 
+          It is useful for identifying documents in a result that combines data from multiple collections.
+        - `_key` containing key which uniquely identifies a document in a **given** collection
         - `_rev` containing the revision
       parameters:
         - name: collection
@@ -334,19 +335,20 @@ paths:
         is already a document with the `_key` given. If no `_key` is given, a new
         unique `_key` is generated automatically.
 
+        {{< warning >}}
         Possibly given `_id` and `_rev` attributes in the body are always ignored,
         the URL part or the query parameter collection respectively counts.
+        {{< /warning >}}
 
         If the document was created successfully, then the `Location` header
         contains the path to the newly created document. The `ETag` header field
         contains the revision of the document. Both are only set in the single
         document case.
 
-        If `silent` is not set to `true`, the body of the response contains a
-        JSON object with the following attributes:
-
-          - `_id` contains the document identifier of the newly created document
-          - `_key` contains the document key
+        If `silent` is not set to `true`, the body of the response contains a JSON object with the following attributes:
+          - `_id` contains the document identifier build with the following pattern: `collection-name/_key`. 
+            It is useful for identifying documents in a result that combines data from multiple collections.
+          - `_key` contains key which uniquely identifies a document in a **given** collection
           - `_rev` contains the document revision
 
         If the collection parameter `waitForSync` is `false`, then the call
@@ -485,7 +487,9 @@ paths:
               properties:
                 document:
                   description: |
-                    A JSON representation of a single document.
+                    A JSON representation of a single document. If the `_key` attribute is not empty, then it will be 
+                    used as the document identifier. If the `_key` attribute is empty or missing, then the server will 
+                    auto-generate a unique document identifier.
                   type: object
       responses:
         '201':
@@ -725,12 +729,12 @@ paths:
         applied. The `waitForSync` query parameter cannot be used to disable
         synchronization for collections that have a default `waitForSync` value
         of `true`.
-
-        If `silent` is not set to `true`, the body of the response contains a JSON
-        object with the information about the identifier and the revision. The attribute
-        `_id` contains the known *document ID* of the updated document, `_key`
-        contains the key which uniquely identifies a document in a given collection,
-        and the attribute `_rev` contains the new document revision.
+        
+        If `silent` is not set to `true`, the body of the response contains a JSON object with the following attributes:
+        - `_id` containing the document identifier build with the following pattern: `collection-name/_key`. 
+          It is useful for identifying documents in a result that combines data from multiple collections.
+        - `_key` containing key which uniquely identifies a document in a **given** collection
+        - `_rev` containing the revision.
 
         If the query parameter `returnOld` is `true`, then
         the complete previous revision of the document
@@ -752,7 +756,7 @@ paths:
               properties:
                 document:
                   description: |
-                    A JSON representation of a single document.
+                    A JSON representation of a single document. It has to contain a `_key` attribute.
                   type: object
       parameters:
         - name: collection
@@ -992,12 +996,12 @@ paths:
         applied. The `waitForSync` query parameter cannot be used to disable
         synchronization for collections that have a default `waitForSync` value
         of `true`.
-
-        If `silent` is not set to `true`, the body of the response contains a JSON
-        object with the information about the identifier and the revision. The attribute
-        `_id` contains the known *document ID* of the updated document, `_key`
-        contains the key which uniquely identifies a document in a given collection,
-        and the attribute `_rev` contains the new document revision.
+        
+        If `silent` is not set to `true`, the body of the response contains a JSON object with the following attributes:
+        - `_id` containing the document identifier build with the following pattern: `collection-name/_key`. 
+          It is useful for identifying documents in a result that combines data from multiple collections.
+        - `_key` containing key which uniquely identifies a document in a **given** collection
+        - `_rev` containing the revision.
 
         If the query parameter `returnOld` is `true`, then
         the complete previous revision of the document
@@ -1238,11 +1242,11 @@ paths:
     delete:
       operationId: deleteDocument
       description: |
-        If `silent` is not set to `true`, the body of the response contains a JSON
-        object with the information about the identifier and the revision. The attribute
-        `_id` contains the known *document ID* of the removed document, `_key`
-        contains the key which uniquely identifies a document in a given collection,
-        and the attribute `_rev` contains the document revision.
+        If `silent` is not set to `true`, the body of the response contains a JSON object with the following attributes:
+        - `_id` containing the document identifier build with the following pattern: `collection-name/_key`. 
+          It is useful for identifying documents in a result that combines data from multiple collections.
+        - `_key` containing key which uniquely identifies a document in a **given** collection
+        - `_rev` containing the revision.
 
         If the `waitForSync` parameter is not specified or set to `false`,
         then the collection's default `waitForSync` behavior is applied.
@@ -1481,9 +1485,11 @@ paths:
         are treated as hints to improve performance. Should the shard keys
         values be incorrect ArangoDB may answer with a *not found* error.
 
-        The returned array of documents contain three special attributes: `_id` containing the document
-        identifier, `_key` containing key which uniquely identifies a document
-        in a given collection and `_rev` containing the revision.
+        The returned array of documents contain three special attributes: 
+        - `_id` containing the document identifier build with the following pattern: `collection-name/_key`. 
+          It is useful for identifying documents in a result that combines data from multiple collections.
+        - `_key` containing key which uniquely identifies a document in a **given** collection
+        - `_rev` containing the revision.
       parameters:
         - name: collection
           in: path
@@ -1601,15 +1607,17 @@ paths:
         the entry is a document with attributes `error` set to `true` and
         errorCode set to the error code that has happened.
 
+        {{< warning >}}
         Possibly given `_id` and `_rev` attributes in the body are always ignored,
         the URL part or the query parameter collection respectively counts.
+        {{< /warning >}}
 
         If `silent` is not set to `true`, the body of the response contains an
         array of JSON objects with the following attributes:
-
-          - `_id` contains the document identifier of the newly created document
-          - `_key` contains the document key
-          - `_rev` contains the document revision
+        - `_id` containing the document identifier build with the following pattern: `collection-name/_key`. 
+          It is useful for identifying documents in a result that combines data from multiple collections.
+        - `_key` containing key which uniquely identifies a document in a **given** collection
+        - `_rev` containing the revision.
 
         If the collection parameter `waitForSync` is `false`, then the call
         returns as soon as the documents have been accepted. It does not wait
@@ -1892,11 +1900,12 @@ paths:
 
         The body of the response contains a JSON array of the same length
         as the input array with the information about the identifier and the
-        revision of the replaced documents. In each entry, the attribute
-        `_id` contains the known `document-id` of each updated document,
-        `_key` contains the key which uniquely identifies a document in a
-        given collection, and the attribute `_rev` contains the new document
-        revision. In case of an error or violated precondition, an error
+        revision of the replaced documents. In each entry there are following attributes:
+        - `_id` containing the document identifier build with the following pattern: `collection-name/_key`. 
+          It is useful for identifying documents in a result that combines data from multiple collections.
+        - `_key` containing key which uniquely identifies a document in a **given** collection
+        - `_rev` containing the revision.
+        In case of an error or violated precondition, an error
         object with the attribute `error` set to `true` and the attribute
         `errorCode` set to the error code is built.
 
@@ -2066,11 +2075,12 @@ paths:
 
         The body of the response contains a JSON array of the same length
         as the input array with the information about the identifier and the
-        revision of the updated documents. In each entry, the attribute
-        `_id` contains the known *document ID* of each updated document,
-        `_key` contains the key which uniquely identifies a document in a
-        given collection, and the attribute `_rev` contains the new document
-        revision. In case of an error or violated precondition, an error
+        revision of the updated documents. In each entry there are following attributes:
+        - `_id` containing the document identifier build with the following pattern: `collection-name/_key`. 
+          It is useful for identifying documents in a result that combines data from multiple collections.
+        - `_key` containing key which uniquely identifies a document in a **given** collection
+        - `_rev` containing the revision.
+        In case of an error or violated precondition, an error
         object with the attribute `error` set to `true` and the attribute
         `errorCode` set to the error code is built.
 
@@ -2237,11 +2247,12 @@ paths:
         The body of the response is an array of the same length as the input
         array. For each input selector, the output contains a JSON object
         with the information about the outcome of the operation. If no error
-        occurred, an object is built in which the attribute `_id` contains
-        the known *document ID* of the removed document, `_key` contains
-        the key which uniquely identifies a document in a given collection,
-        and the attribute `_rev` contains the document revision. In case of
-        an error, an object with the attribute `error` set to `true` and
+        occurred, an object is built from the following attributes:
+        - `_id` containing the removed document identifier build with the following pattern: `collection-name/_key`. 
+          It is useful for identifying documents in a result that combines data from multiple collections.
+        - `_key` containing key which uniquely identifies a document in a **given** collection
+        - `_rev` containing the revision.
+        In case of an error, an object with the attribute `error` set to `true` and
         `errorCode` set to the error code is built.
 
         If the `waitForSync` parameter is not specified or set to `false`,
