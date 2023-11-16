@@ -515,7 +515,7 @@ Query Statistics:
 
 ### New stage in query profiling output
 
-<small>Introduced in: v3.10.3, v3.11.0</small>
+<small>Introduced in: v3.10.3</small>
 
 The query profiling output has a new `instantiating executors` stage.
 The time spent in this stage is the time needed to create the query executors
@@ -1036,26 +1036,19 @@ permanent connectivity issues:
 - `arangodb_network_connectivity_failures_dbservers_total`: Number of failed
   connectivity check requests sent to DB-Servers.
 
-### Detached scheduler threads
+### Configurable maximum for queued log entries
 
-<small>Introduced in: v3.11.5</small>
+<small>Introduced in: v3.10.12, v3.11.5</small>
 
-A scheduler thread now has the capability to detach itself from the scheduler
-if it observes the need to perform a potentially long running task, like waiting
-for a lock. This allows a new scheduler thread to be started and prevents
-scenarios where all threads are blocked waiting for a lock, which has previously
-led to deadlock situations.
+The new `--log.max-queued-entries` startup option lets you configure how many
+log entries are queued in a background thread.
 
-Threads waiting for more than 1 second on a collection lock will detach
-themselves.
+Log entries are pushed on a queue for asynchronous writing unless you enable the
+`--log.force-direct` startup option. If you use a slow log output (e.g. syslog),
+the queue might grow and eventually overflow.
 
-The following startup option has been added:
-- `--server.max-number-detached-threads`: The maximum number of detached scheduler
-  threads.
-
-The following metric has been added:
-- `arangodb_scheduler_num_detached_threads`: The number of worker threads
-  currently started and detached from the scheduler.  
+You can configure the upper bound of the queue with this option. If the queue is
+full, log entries are written synchronously until the queue has space again.
 
 ## Miscellaneous changes
 
@@ -1242,6 +1235,15 @@ The following system metrics have been added:
 | `arangodb_file_descriptors_limit` | System limit for the number of open files for the arangod process. |
 | `arangodb_file_descriptors_current` | Number of file descriptors currently opened by the arangod process. |
 
+### More instant Hot Backups
+
+<small>Introduced in: v3.10.10, v3.11.3</small>
+
+Cluster deployments no longer wait for all in-progress transactions to get
+committed when a user requests a Hot Backup. The waiting could cause deadlocks
+and thus Hot Backups to fail, in particular in ArangoGraph. Now, Hot Backups are
+created immediately and commits have to wait until the backup process is done.
+
 ### In-memory edge cache startup options and metrics
 
 <small>Introduced in: v3.11.4</small>
@@ -1286,6 +1288,27 @@ cache subsystem:
   the migrate tasks of the in-memory cache subsystem. Migrate tasks are scheduled
   by the cache subsystem to migrate existing cache hash tables to a bigger or
   smaller table.
+
+### Detached scheduler threads
+
+<small>Introduced in: v3.11.5</small>
+
+A scheduler thread now has the capability to detach itself from the scheduler
+if it observes the need to perform a potentially long running task, like waiting
+for a lock. This allows a new scheduler thread to be started and prevents
+scenarios where all threads are blocked waiting for a lock, which has previously
+led to deadlock situations.
+
+Threads waiting for more than 1 second on a collection lock will detach
+themselves.
+
+The following startup option has been added:
+- `--server.max-number-detached-threads`: The maximum number of detached scheduler
+  threads.
+
+The following metric has been added:
+- `arangodb_scheduler_num_detached_threads`: The number of worker threads
+  currently started and detached from the scheduler. 
 
 ## Client tools
 
