@@ -97,7 +97,52 @@ Swagger 2.x compatibility.
 
 ## AQL
 
+### Filter conditions in `UPSERT` operations (experimental)
 
+Version 3.12 introduces an alternative syntax for `UPSERT` operations that
+allows you to use dynamic attribute names to look up documents. Previously,
+the expression used to look up a document had to be an object literal.
+
+{{< tabs groupid="UPSERT syntax" >}}
+
+{{< tab name="Exact-value matching" >}}
+```aql
+UPSERT <lookup-document>
+INSERT ...
+UPDATE|REPLACE ...
+IN <collection>
+```
+{{< /tab >}}
+
+{{< tab name="Using FILTER conditions" >}}
+```aql
+UPSERT FILTER <filter-condition>
+INSERT ...
+UPDATE|REPLACE ...
+IN <collection>
+```
+{{< /tab >}}
+
+{{< /tabs >}}
+
+The arbitrary filter condition for the lookup can make use of the pseudo-variable
+`CURRENT`, and it can access the document and apply more filters on it than just
+equality matches. Example:
+
+```aql
+UPSERT FILTER CURRENT.category == 'test && CURRENT.dateTime >= ... && CURRENT.dateTime < ... && CURRENT.status != 'inactive'
+INSERT ...
+UPDATE|REPLACE ...
+IN <collection>
+```
+
+If no document is found in the collection which fits the `FILTER` condition,
+then the `INSERT` operation is executed.
+If exactly one document is found in the collection which fits the `FILTER`
+condition, then the `UPDATE` operation is executed on that document.
+If many documents are found in the collection which fit the `FILTER`
+condition, then the first found document that satisfies the condition is
+updated/replaced.
 
 ## Indexing
 
