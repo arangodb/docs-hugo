@@ -1,10 +1,2 @@
-generators: ${GENERATORS}
-servers:
-  - image: ${ARANGODB_BRANCH_3_10_IMAGE}
-    version: ${ARANGODB_BRANCH_3_10_VERSION}
-
-  - image: ${ARANGODB_BRANCH_3_11_IMAGE}
-    version: ${ARANGODB_BRANCH_3_11_VERSION}
-
-  - image: ${ARANGODB_BRANCH_3_12_IMAGE}
-    version: ${ARANGODB_BRANCH_3_12_VERSION}
+generators: ""
+servers: ""

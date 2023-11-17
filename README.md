@@ -195,10 +195,9 @@ The toolchain container needs to be set up via config file in `toolchain/docker/
 
 ```yaml
 generators:   # Generators to trigger - empty string defaults to all generators
-servers:      # Array to define arangodb servers to be used by the toolchain
-  - image:    # arangodb docker image to be used, can be arangodb/enterprise-preview:... or a branch name
-    version:  # docs branch to put the generated content into
-  - ...       # Additional images and versions as needed
+servers:      # define arangodb servers to be used by the toolchain
+  "{docs-version}": "{arangodb-branch}"    # version folder of the documentation to put the generated content into: arangodb docker image to be used, can be arangodb/enterprise-preview:... or a branch name
+  ...
 ```
 
 **Available generators**
@@ -216,15 +215,13 @@ If `metrics` or `error-codes` is in the `generators` string, the following
 environment variable has to be exported:
 
 ```shell
-export ARANGODB_SRC_{VERSION}=path/to/arangodb/source
+export ARANGODB_SRC=path/to/arangodb/source
 ```
-
-Substitute `{VERSION}` with a version number like `3_11`.
 
 On Windows using PowerShell, use a Unix-like path:
 
 ```powershell
-$Env:ARANGODB_SRC_3_11 = "/Drive/path/to/arangodb"
+$Env:ARANGODB_SRC = "/Drive/path/to/arangodb"
 ```
 
 **Configuration example**
@@ -232,10 +229,8 @@ $Env:ARANGODB_SRC_3_11 = "/Drive/path/to/arangodb"
 ```yaml
 generators: examples oasisctl options optimizer
 servers:
-  - image: arangodb/enterprise-preview:3.11-nightly
-    version: "3.11"
-  - image: arangodb/enterprise-preview:devel-nightly
-    version: "3.12"
+  "3.11": "arangodb/enterprise-preview:3.11-nightly"
+  "3.12": "arangodb/enterprise-preview:devel-nightly"
 ```
 
 **Run the toolchain**
@@ -905,60 +900,7 @@ It makes a warning show at the top of every page for that version.
    +              --arangodb-branches << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_0 >> \
    ```
 
-3. In the `toolchain/docker/amd64/docker-compose.yml` file, add an entry under
-   `services.toolchain.volumes` for the new version. Simply increment the value
-   after `:-/tmp/`. Example:
-
-   ```diff
-          - ${ARANGODB_SRC_3_12:-/tmp/2}:/tmp/3.12
-   +      - ${ARANGODB_SRC_4_0:-/tmp/3}:/tmp/4.0
-   ```
-
-   Under `services.toolchain.environment`, you need to add two different entries
-   for the new version. Example:
-
-   ```diff
-          ARANGODB_SRC_3_11: ${ARANGODB_SRC_3_11}
-          ARANGODB_SRC_3_12: ${ARANGODB_SRC_3_12}
-   +      ARANGODB_SRC_4_0: ${ARANGODB_SRC_4_0}
-          ARANGODB_BRANCH_3_11: ${ARANGODB_BRANCH_3_11}
-          ARANGODB_BRANCH_3_12: ${ARANGODB_BRANCH_3_12}
-   +      ARANGODB_BRANCH_4_0: ${ARANGODB_BRANCH_4_0}
-   ```
-
-   The same changes are required in the
-   `toolchain/docker/arm64/docker-compose.yml` file.
-
-4. In the `toolchain/docker/config.yaml` file, add an entry for the new version.
-   Example:
-
-   ```diff
-      - image: ${ARANGODB_BRANCH_3_12_IMAGE}
-        version: ${ARANGODB_BRANCH_3_12_VERSION}
-   +
-   +  - image: ${ARANGODB_BRANCH_4_0_IMAGE}
-   +    version: ${ARANGODB_BRANCH_4_0_VERSION}
-   ```
-
-5. In the `toolchain/scripts/toolchain.sh` file, find the code that accesses
-   environment variables with the format `$ARANGODB_BRANCH_X_XX` where `X_XX`
-   is a version number like `3_12`, so `$ARANGODB_BRANCH_3_12` for instance.
-   Duplicate the block of an existing version and adjust all version numbers.
-   Example:
-
-   ```diff
-    if [ "$ARANGODB_BRANCH_3_12" != "" ] ; then
-          export ARANGODB_BRANCH_3_12_IMAGE="$ARANGODB_BRANCH_3_12"
-          export ARANGODB_BRANCH_3_12_VERSION="3.12"
-    fi
-    
-   +if [ "$ARANGODB_BRANCH_4_0" != "" ] ; then
-   +      export ARANGODB_BRANCH_4_0_IMAGE="$ARANGODB_BRANCH_4_0"
-   +      export ARANGODB_BRANCH_4_0_VERSION="4.0"
-   +fi
-   ```
-
-6. In the `site/data` folder, create a new folder with the short version number
+3. In the `site/data` folder, create a new folder with the short version number
    as the name, e.g. `4.0`. In the new `site/data/4.0` folder, create a
    `cache.json` file with the following content:
 
@@ -968,7 +910,7 @@ It makes a warning show at the top of every page for that version.
 
    Add this untracked file to Git!
 
-7. Duplicate the folder of the most recent version in `site/content`, e.g.
+4. Duplicate the folder of the most recent version in `site/content`, e.g.
    the `3.12` folder, and rename the copy to the new version, e.g. `4.0`.
 
    The `menuTitle` in the front matter of the version homepage, e.g.
@@ -1011,7 +953,7 @@ It makes a warning show at the top of every page for that version.
 
    Add the new, untracked files to Git!
 
-8. In the `PULL_REQUEST_TEMPLATE.md` file, add a new line for the new version.
+5. In the `PULL_REQUEST_TEMPLATE.md` file, add a new line for the new version.
    Example:
 
    ```diff
@@ -1027,7 +969,7 @@ It makes a warning show at the top of every page for that version.
 
    Expect the plain build to fail for the time being because of missing data files.
 
-9. You can use CircleCI to initially generate the data files for the new version,
+6. You can use CircleCI to initially generate the data files for the new version,
    like the startup option dumps. You can also populate the example cache at the
    same time.
 

@@ -16,53 +16,23 @@ TRAP=0
 
 cd /home/toolchain/scripts
 
-
 PYTHON_EXECUTABLE="python"
-DOCKER_COMPOSE_ARGS=""
 LOG_TARGET=""
-
 
 ### Check whether python or python3 is installed
 if ! command -v "$PYTHON_EXECUTABLE" &> /dev/null
   then
   PYTHON_EXECUTABLE="python3"
 fi
-
-
 echo "[INIT] Toolchain setup"
-echo "[INIT] Environment variables:"
-
-## if no generators set, defaults to all
-if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
-  GENERATORS="examples metrics error-codes options optimizer"
-fi
-
-## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
-if [ "$ARANGODB_BRANCH_3_10" != "" ] ; then
-      export ARANGODB_BRANCH_3_10_IMAGE="$ARANGODB_BRANCH_3_10"
-      export ARANGODB_BRANCH_3_10_VERSION="3.10"
-fi
-
-if [ "$ARANGODB_BRANCH_3_11" != "" ] ; then
-      export ARANGODB_BRANCH_3_11_IMAGE="$ARANGODB_BRANCH_3_11"
-      export ARANGODB_BRANCH_3_11_VERSION="3.11"
-fi
-
-if [ "$ARANGODB_BRANCH_3_12" != "" ] ; then
-      export ARANGODB_BRANCH_3_12_IMAGE="$ARANGODB_BRANCH_3_12"
-      export ARANGODB_BRANCH_3_12_VERSION="3.12"
-fi
-
-start_servers=false
 
 ## Expand environment variables in config.yaml, if present
 yq  '(.. | select(tag == "!!str")) |= envsubst' -i ../docker/config.yaml
 
 GENERATORS=$(yq -r '.generators' ../docker/config.yaml)
 
-
 if [ "$GENERATORS" == "" ]; then
-  GENERATORS="examples metrics error-codes options optimizer oasisctl"
+  GENERATORS="examples metrics error-codes options optimizer"
 fi
 
 
@@ -74,10 +44,9 @@ echo ""
 echo "[TOOLCHAIN] Clean arangoproxy config file"
 yq '.repositories = []' -i ../arangoproxy/cmd/configs/local.yaml 
 
-
-
 echo "[INIT] Setup Finished"
 
+trap 'terminate_toolchain' SIGINT SIGTERM SIGQUIT SIGKILL
 
 
 
@@ -90,23 +59,24 @@ function main() {
 
   clean_docker_environment
 
-  mapfile servers < <(yq e -o=j -I=0 '.servers[]' ../docker/config.yaml )
-
+  mapfile configServers < <(yq e -o=j -I=0 '.servers' ../docker/config.yaml | tr -d { | tr -d } | tr -d ' ' | tr -d '"')
+  IFS=',' read -ra servers <<< "$configServers"
+  
   ## Generate content and start server
   for server in "${servers[@]}"; do
-    image=$(echo "$server" | yq e '.image' -)
-    version=$(echo "$server" | yq e '.version' -)
-
-    if [ "$image" == "" ]; then
-      continue
-    fi
-
+    IFS=':' read -r version image <<< "$server"
+    echo $image $version
     if [ $HUGO_ENV == "release" ]; then
       rm -r ../../site/data/$version/*
       echo "{}" > ../../site/data/$version/cache.json
     fi
 
-    process_server "$server"
+
+    if [ "$ARANGODB_SRC" != "" ]; then
+      mkdir -p /tmp/arangodb/$version
+    fi
+
+    process_server "$version" "$image"
   done
 
   run_arangoproxy_and_site
@@ -116,13 +86,14 @@ function main() {
     echo "<h2>Examples</h2>" >> /home/summary.md
   fi
 
-    ## redirect logs of arangoproxy and site containers to files
-    docker logs --details --follow docs_arangoproxy >> toolchain.log &
-    docker logs --details --follow docs_site >> toolchain.log &
+  ## redirect logs of arangoproxy and site containers to files
+  docker logs --details --follow docs_arangoproxy >> toolchain.log &
+  docker logs --details --follow docs_site >> toolchain.log &
 
-    tail -f /home/toolchain.log &
-    trap_container_exit
+  tail -f /home/toolchain.log &
+  trap_container_exit
 }
+
 
 
 
@@ -134,6 +105,7 @@ function log(){
 
 ### DOCKER FUNCTIONS
 
+## Excecuted only in local environment
 function pull_image() {
   log "[pull_image] Invoke"
   branch_name="$1"
@@ -158,6 +130,8 @@ function pull_from_docs_repo() {
   branch_name="$1"
   version="$2"
 
+  cd /tmp/arangodb/$version
+  git checkout $image
   image_name=$(echo ${branch_name##*/})
   main_hash=$(awk 'END{print}' /tmp/$version/.git/logs/HEAD | awk '{print $2}' | cut -c1-9)  ## Get hash of latest commit of git branch of arangodb/arangodb repo
 
@@ -195,7 +169,7 @@ function clean_docker_environment() {
   log "[clean_docker_environment] setup docs_net docker network"
   docker network inspect docs_net >/dev/null 2>&1 || docker network create --driver=bridge --subnet=192.168.129.0/24 docs_net
 
-  log "[clean_docker_environment] setup arangosh docker volume"
+  log "[clean_docker_environment] setup arangosh and arangodb docker volume"
   docker volume create arangosh
 
   ## Stop and remove old containers of this ArangoDB docker image
@@ -313,10 +287,8 @@ function setup_arangoproxy_repositories() {
 ##### SERVER FUNCTIONS
 
 function process_server() {
-  server="$1"
-
-  image=$(echo "$server" | yq e '.image' -)
-  version=$(echo "$server" | yq e '.version' -)
+  version="$1"
+  image="$2"
 
   echo "<li><strong>$version</strong>: $image<ul>" >> /home/summary.md
 
@@ -467,11 +439,17 @@ function generate_error_codes() {
     log "[generate_error_codes] ArangoDB Source code not found. Aborting"
     exit 1
   fi
+
+  if [ "$ARANGODB_SRC" != "" ]; then
+    mkdir -p /tmp/arangodb/$version/lib/Basics
+    cp /tmp/arangodb_src/lib/Basics/errors.dat /tmp/arangodb/$version/lib/Basics/errors.dat
+  fi
+
   touch ../../site/data/$version/errors.yaml
 
   log "[generate_error_codes] Launching generate error-codes script"
-  log "[generate_error_codes] $PYTHON_EXECUTABLE generators/generateErrorCodes.py --src /tmp/"$1"/lib/Basics/errors.dat --dst ../../site/data/$version/errors.yaml"
-  res=$(("$PYTHON_EXECUTABLE" generators/generateErrorCodes.py --src /tmp/"$1"/lib/Basics/errors.dat --dst ../../site/data/$version/errors.yaml) 2>&1)
+  log "[generate_error_codes] $PYTHON_EXECUTABLE generators/generateErrorCodes.py --src /tmp/arangodb/"$1"/lib/Basics/errors.dat --dst ../../site/data/$version/errors.yaml"
+  res=$(("$PYTHON_EXECUTABLE" generators/generateErrorCodes.py --src /tmp/arangodb/"$1"/lib/Basics/errors.dat --dst ../../site/data/$version/errors.yaml) 2>&1)
 
   if [ $? -ne 0 ]; then
     log "[generate_error_codes] [ERROR] $res"
@@ -480,6 +458,10 @@ function generate_error_codes() {
 
   echo " &#x2713;" >> /home/summary.md
   echo "</li>" >> /home/summary.md
+
+  if [ "$ARANGODB_SRC" != "" ]; then
+    rm -r /tmp/arangodb/$version/*
+  fi
 
   log "[generate_error_codes] Done"
 }
@@ -494,9 +476,17 @@ function generate_metrics() {
     echo "<li><error code=7><strong>$version</strong>: <strong> ERROR: ArangoDB Source Not Found</strong><error></li>" >> /home/summary.md
   fi
 
+  if [ "$ARANGODB_SRC" != "" ]; then
+    mkdir -p /tmp/arangodb/$version/Documentation/Metrics
+    cp -r /tmp/arangodb_src/lib /tmp/arangodb/$version/
+    cp -r /tmp/arangodb_src/arangod /tmp/arangodb/$version/
+    cp -r /tmp/arangodb_src/enterprise /tmp/arangodb/$version/
+    cp -r /tmp/arangodb_src/Documentation/Metrics /tmp/arangodb/$version/Documentation/
+  fi
+
   log "[generate_metrics] Generate Metrics requested"
-  log "[generate_metrics] $PYTHON_EXECUTABLE generators/generateMetrics.py --main /tmp/"$version" --dst ../../site/data/$version"
-  res=$(("$PYTHON_EXECUTABLE" generators/generateMetrics.py --main /tmp/"$version" --dst ../../site/data/$version) 2>&1)
+  log "[generate_metrics] $PYTHON_EXECUTABLE generators/generateMetrics.py --main /tmp/arangodb/"$version" --dst ../../site/data/$version"
+  res=$(("$PYTHON_EXECUTABLE" generators/generateMetrics.py --main /tmp/arangodb/"$version" --dst ../../site/data/$version) 2>&1)
 
   if [ $? -ne 0 ]; then
     log "[generate_metrics] [ERROR] $res"
@@ -505,6 +495,10 @@ function generate_metrics() {
 
   echo "&#x2713;" >> /home/summary.md
   echo "</li>" >> /home/summary.md
+
+  if [ "$ARANGODB_SRC" != "" ]; then
+    rm -r /tmp/arangodb/$version/*
+  fi
 
   log "[generate_metrics] Done"
   
@@ -600,6 +594,10 @@ function trap_container_exit() {
     fi
   done
 
+  terminate_toolchain
+}
+
+function terminate_toolchain(){
   errors=$(cat summary.md  | grep '<error')
   if [ "$errors" != "" ] ; then
     docker stop docs_arangoproxy docs_site
@@ -610,7 +608,7 @@ function trap_container_exit() {
   log "[stop_all_containers] A stop signal has been captured. Stopping all containers" >> toolchain.log
   TRAP=1
   docker stop docs_arangoproxy docs_site
-  docker ps -a --filter name=docs_* -q | xargs docker stop | xargs docker rm
+  docker ps -a --filter name=docs_server_* -q | xargs docker stop | xargs docker rm
   log "[stop_all_containers] Done" >> /home/toolchain.log
   exitStatus=$(cat summary.md  | grep -o '<error code=.' | cut -d '=' -f2 | head -n 1)
   log "[stop_all_containers] Toolchain Exit Status ""$exitStatus" >> /home/toolchain.log
