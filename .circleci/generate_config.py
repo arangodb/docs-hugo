@@ -131,12 +131,12 @@ def workflow_generate(config):
                     }
                 })
 
-        if openssl.startswith("3.0"):
-            compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.10"
-        if openssl.startswith("3.1"):
-            compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
-        if openssl.startswith("1.1"):
-            compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
+            if openssl.startswith("3.0"):
+                compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.10"
+            if openssl.startswith("3.1"):
+                compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
+            if openssl.startswith("1.1"):
+                compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
 
         generateRequires.append(f"compile-{version}")
         jobs.append(compileJob)
