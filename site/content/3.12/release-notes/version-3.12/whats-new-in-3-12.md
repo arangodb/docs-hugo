@@ -281,7 +281,7 @@ limited number of collections/shards/indexes.
 The following metric has been added:
 
 - `arangodb_search_file_descriptors`:
-  Amount of memory in bytes that is used for consolidating this index.
+  Current count of opened file descriptors for this index.
 
 ### More instant Hot Backups
 

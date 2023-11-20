@@ -151,13 +151,14 @@ produced no warnings.
 #### Metrics API
 
 The metrics endpoint includes the following new metrics about AQL queries,
-ongoing dumps, and ArangoSearch parallelism:
+ongoing dumps, ArangoSearch parallelism and used file descriptors:
 
 - `arangodb_aql_cursors_active`
 - `arangodb_dump_memory_usage`
 - `arangodb_dump_ongoing`
 - `arangodb_dump_threads_blocked_total`
 - `arangodb_search_execution_threads_demand`
+- `arangodb_search_file_descriptors`
 
 ---
 
