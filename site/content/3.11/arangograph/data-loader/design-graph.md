@@ -1,7 +1,7 @@
 ---
 title: Design your graph 
 menuTitle: Design graph
-weight: 5
+weight: 10
 description: >-
   Design your graph database schema using the integrated graph modeler in the Data Loader
 archetype: default
@@ -51,8 +51,8 @@ See below the steps to add details to an edge.
    - For **Edge label**, enter a name you want to use for the edge.
    - For **Relation file**, select a file from the list to associate it with the edge.
    - To define how the relation points from one node to another, select the
-   corresponding relation file header for both the origin file (_from) and the
-   destination file (_to).
+   corresponding relation file header for both the origin file (`_from`) and the
+   destination file (`_to`).
    - For **File Headers**, select one or more attributes from the list.
 
 ![ArangoGraph Data Loader Edit Edge](../../../images/arangograph-data-loader-edit-edge.png)

@@ -22,30 +22,32 @@ You can get started in a few easy steps.
 {{< tabs groupid="data-loader-steps" >}}
 
 {{< tab name="1. Create database" >}}
-Choose an existing database or create a new one.
+Choose an existing database or create a new one and enter a name for your new graph.
 {{< /tab >}}
 
-{{< tab name="2. Name your graph" >}}
-Choose a name for your graph.
-{{< /tab >}}
-
-{{< tab name="3. Add files" >}}
+{{< tab name="2. Add files" >}}
 Drag and drop your data files in CSV format.
 {{< /tab >}}
 
-{{< tab name="4. Design your graph" >}}
-Model your graph by adding nodes and connecting them via edges.
+{{< tab name="3. Design your graph" >}}
+Model your graph schema by adding nodes and connecting them via edges.
+{{< /tab >}}
+
+{{< tab name="4. Import data" >}}
 Once you are ready, save and start the import. The resulting graph is an
 [EnterpriseGraph](../../graphs/enterprisegraphs/_index.md) with its
-corresponding collections, available in your ArangoDB database.
+corresponding collections, available in your ArangoDB web interface.
 {{< /tab >}}
 
 {{< /tabs >}}
 
+Follow this [working example](../data-loader/example.md) to see how easy it is
+to transform existing data into a graph.
+
 ## How to access the Data Loader
 
 1. If you do not have a deployment yet, [create a deployment](../deployments/_index.md#how-to-create-a-new-deployment) first.
-2. Open your deployment you want to load data into.
+2. Open the deployment you want to load data into.
 3. In the **Load Data** section, click the **Load your data** button.
 
 ![ArangoGraph Data Loader Overview](../../../images/arangograph-data-loader-overview.png)

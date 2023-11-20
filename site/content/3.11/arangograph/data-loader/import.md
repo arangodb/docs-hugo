@@ -1,7 +1,7 @@
 ---
 title: Start the import
 menuTitle: Start import
-weight: 5
+weight: 15
 description: >-
   Once the data files are provided and the graph is designed, you can start the import
 archetype: default
@@ -14,7 +14,12 @@ Before starting the actual import, make sure that:
 - You have created at least one edge;
 - Every file is related to at least one node or edge.
 
-To continue with the import, click the **Save and start import** button.
+To continue with the import, click the **Save and start import** button. The data
+importer provides an overview showing results with the collections that have been
+created with the data provided in the files.
+
+To access your newly created graph in the ArangoDB web interface, click the
+**See your new graph** button.
 
 ## File validation
 
