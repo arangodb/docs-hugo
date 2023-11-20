@@ -850,7 +850,7 @@
     "category" : "option",
     "default" : 10000,
     "deprecatedIn" : null,
-    "description" : "Upper limit of log entries that are queued in background thread.",
+    "description" : "Upper limit of log entries that are queued in a background thread.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -858,7 +858,7 @@
     "introducedIn" : [
       "v3.10.12"
     ],
-    "longDescription" : "If you are using the option `--log.force-direct` (default)\nlog entries are pushed on a queue for asynchronous writing. In case you\nare using a slow log output (e.g. syslog) the queue might grow and eventually overflow.\nThis option allows to configure the upper bound. If the queue is full, log entries\nwill be written synchronously, until the queue has space again.",
+    "longDescription" : "Log entries are pushed on a queue for asynchronous\nwriting unless you enable the `--log.force-direct` startup option. If you use a\nslow log output (e.g. syslog), the queue might grow and eventually overflow.\n\nYou can configure the upper bound of the queue with this option. If the queue is\nfull, log entries are written synchronously until the queue has space again.",
     "maxInclusive" : true,
     "maxValue" : 4294967295,
     "minInclusive" : true,

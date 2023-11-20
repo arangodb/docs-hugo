@@ -702,6 +702,39 @@
     "section" : "arangosearch",
     "type" : "uint32"
   },
+  "arangosearch.default-parallelism" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 1,
+    "deprecatedIn" : null,
+    "description" : "Default parallelism for ArangoSearch queries",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.0"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 4294967295,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "arangosearch",
+    "type" : "uint32"
+  },
   "arangosearch.execution-threads-limit" : {
     "base" : 1,
     "category" : "option",
@@ -713,12 +746,14 @@
     ],
     "default" : 0,
     "deprecatedIn" : null,
-    "description" : "Max number of threads that could be used to process ArangoSearch indexes during SEARCH operation",
+    "description" : "The maximum number of threads that can be used to process ArangoSearch indexes during a SEARCH operation of a query.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
     "hidden" : false,
-    "introducedIn" : null,
+    "introducedIn" : [
+      "v3.12.0"
+    ],
     "maxInclusive" : true,
     "maxValue" : 4294967295,
     "minInclusive" : true,
@@ -1357,7 +1392,7 @@
       "agent",
       "single"
     ],
-    "default" : 7739681792,
+    "default" : 7666280448,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -2819,7 +2854,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 6191745433,
+    "default" : 6133024358,
     "deprecatedIn" : null,
     "description" : "Maximum memory usage (in bytes) to be used by all ongoing dumps.",
     "dynamic" : true,
@@ -6549,6 +6584,42 @@
     "section" : "log",
     "type" : "uint32"
   },
+  "log.max-queued-entries" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 10000,
+    "deprecatedIn" : null,
+    "description" : "Upper limit of log entries that are queued in a background thread.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.10.12",
+      "v3.11.5",
+      "v3.12.0"
+    ],
+    "longDescription" : "Log entries are pushed on a queue for asynchronous\nwriting unless you enable the `--log.force-direct` startup option. If you use a\nslow log output (e.g. syslog), the queue might grow and eventually overflow.\n\nYou can configure the upper bound of the queue with this option. If the queue is\nfull, log entries are written synchronously until the queue has space again.",
+    "maxInclusive" : true,
+    "maxValue" : 4294967295,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "log",
+    "type" : "uint32"
+  },
   "log.output" : {
     "category" : "option",
     "component" : [
@@ -7461,7 +7532,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33106210816,
+    "base" : 32812605440,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7469,7 +7540,7 @@
       "agent",
       "single"
     ],
-    "default" : 26816030761,
+    "default" : 26578210406,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7754,7 +7825,7 @@
     "type" : "double"
   },
   "query.memory-limit" : {
-    "base" : 33106210816,
+    "base" : 32812605440,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7762,7 +7833,7 @@
       "agent",
       "single"
     ],
-    "default" : 19863726489,
+    "default" : 19687563264,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -8971,7 +9042,7 @@
       "agent",
       "single"
     ],
-    "default" : 9287618150,
+    "default" : 9199536537,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -11525,7 +11596,7 @@
       "agent",
       "single"
     ],
-    "default" : 12383490867,
+    "default" : 12266048716,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
@@ -12654,6 +12725,40 @@
     "requiresValue" : true,
     "section" : "server",
     "type" : "uint32"
+  },
+  "server.max-number-detached-threads" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 1000,
+    "deprecatedIn" : null,
+    "description" : "The maximum number of detached scheduler threads.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.12.0"
+    ],
+    "longDescription" : "If a scheduler thread performs a potentially long running operation like waiting for a lock, it can detach itself from the scheduler. This allows a new scheduler thread to be started and avoids blocking all threads with long-running operations, thereby avoiding deadlock situations. The default should normally be OK.",
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "server",
+    "type" : "uint64"
   },
   "server.maximal-queue-size" : {
     "base" : 1,
