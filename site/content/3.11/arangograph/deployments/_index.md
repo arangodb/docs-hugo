@@ -250,10 +250,10 @@ attached to your role. Read more about [roles and permissions](../security-and-a
    - Select a different CA certificate.
    - Add or remove an IP allowlist.
 5. In the **Configuration** section, you can do the following:
-   - Upgrade or scale down the memory size per node. The disk size is
+   - Scale up or down the memory size per node. The disk size is
      automatically set for you.
      {{< warning >}}
-     When upgrading or scaling down the memory size in AWS deployments, the new
+     When scaling up or down the memory size in AWS deployments, the new
      value gets locked and cannot be changed again until the cloud provider rate
      limit is reset. 
      {{< /warning >}}
@@ -261,14 +261,14 @@ attached to your role. Read more about [roles and permissions](../security-and-a
      click **Sharded**. In addition to the other configuration options, you can
      select the number of nodes for your deployment. This can also be modified later on.
      {{< warning >}}
-     Notice that you cannot switch from **Sharded** back to **OneShard**.
+     You cannot switch from **Sharded** back to **OneShard**.
      {{< /warning >}}
    - Change **Single Server** deployments into **OneShard** or **Sharded** deployments.
      {{< warning >}}
-     Notice that you cannot switch from **Sharded** or **OneShard** back to **Single Server**.
+     You cannot switch from **Sharded** or **OneShard** back to **Single Server**.
      {{< /warning >}}
 6. All changes are reflected in the **Summary** section. Review the new
-   configuration and click **Save**. 
+   configuration and click **Save**.
 
 ## How to connect a driver to your deployment
 
