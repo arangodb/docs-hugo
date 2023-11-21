@@ -98,6 +98,13 @@ collections with the `keyOptions` attribute. Using `keyOptions`, it is possible
 to disallow user-specified keys completely, or to force a specific regime for
 auto-generating the `_key` values.
 
+{{< warning >}}
+You should not use both user-specified and automatically generated document keys
+in the same collection in cluster deployments for collections with more than a
+single shard. Mixing the two can lead to conflicts because Coordinators that
+auto-generate keys in this case are not aware of all keys which are already used.
+{{< /warning >}}
+
 #### User-specified keys
 
 If you allow user-specified keys, you can pick the key values as required,
