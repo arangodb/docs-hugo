@@ -236,6 +236,13 @@ paths:
                           `false`, then the key generator is solely responsible for
                           generating keys and an error is raised if you supply own key values in the
                           `_key` attribute of documents.
+
+                          {{</* warning */>}}
+                          You should not use both user-specified and automatically generated document keys
+                          in the same collection in cluster deployments for collections with more than a
+                          single shard. Mixing the two can lead to conflicts because Coordinators that
+                          auto-generate keys in this case are not aware of all keys which are already used.
+                          {{</* /warning */>}}
                         type: boolean
                       increment:
                         description: |
@@ -1081,6 +1088,14 @@ paths:
                         `_key` attribute of documents. If set to `false`, then the key generator
                         is solely be responsible for generating keys and an error is raised if you
                         supply own key values in the `_key` attribute of documents.
+
+
+                        {{</* warning */>}}
+                        You should not use both user-specified and automatically generated document keys
+                        in the same collection in cluster deployments for collections with more than a
+                        single shard. Mixing the two can lead to conflicts because Coordinators that
+                        auto-generate keys in this case are not aware of all keys which are already used.
+                        {{</* /warning */>}}
                       type: boolean
                     increment:
                       description: |
@@ -1350,6 +1365,13 @@ paths:
                           `false`, then the key generator is solely responsible for
                           generating keys and an error is raised if you supply own key values in the
                           `_key` attribute of documents.
+
+                          {{</* warning */>}}
+                          You should not use both user-specified and automatically generated document keys
+                          in the same collection in cluster deployments for collections with more than a
+                          single shard. Mixing the two can lead to conflicts because Coordinators that
+                          auto-generate keys in this case are not aware of all keys which are already used.
+                          {{</* /warning */>}}
                         type: boolean
                       increment:
                         description: |

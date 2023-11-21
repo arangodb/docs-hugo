@@ -265,6 +265,13 @@ error is thrown. For information about the naming constraints for collections, s
     `false`, then the key generator is solely responsible for generating keys and
     an error is raised if you supply own key values in the `_key` attribute
     of documents.
+
+    {{< warning >}}
+    You should not use both user-specified and automatically generated document keys
+    in the same collection in cluster deployments for collections with more than a
+    single shard. Mixing the two can lead to conflicts because Coordinators that
+    auto-generate keys in this case are not aware of all keys which are already used.
+    {{< /warning >}}
   - `increment`: The increment value for the `autoincrement` key generator.
     Not used for other key generator types.
   - `offset`: The initial offset value for the `autoincrement` key generator.
