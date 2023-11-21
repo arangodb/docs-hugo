@@ -20,14 +20,16 @@ future edges connecting the nodes.
 
 The whole process can be broken down into these steps:
 
-1. Enter a name for the database and the graph you would like to use for the
-   data import.
-2. Upload the files to the Data Loader web interface. You can simply drag and
-   drop them.
-3. Create your graph schema by adding nodes and edges and map data from the
-   uploaded files to them. This allows creating the corresponding documents
-   and collections for your graph.
-4. Import the data and start using your newly created graph and collections.
+1. **Database and graph setup**: Begin by choosing an existing database or
+   create a new one and enter a name for your new graph.
+2. **Add files**: Upload the CSV files to the Data Loader web interface. You can
+   simply drag and drop them or upload them through the file browser window.
+3. **Design graph**: Design your graph schema by adding nodes and edges and map
+   data from the uploaded files to them. This allows creating the corresponding
+   documents and collections for your graph.
+4. **Import data**: Import the data and start using your newly created 
+   [EnterpriseGraph](../../graphs/enterprisegraphs/_index.md) and its
+   corresponding collections.
 
 ## Step 1: Create database and choose graph name
 

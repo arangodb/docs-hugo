@@ -9,10 +9,15 @@ archetype: default
 
 Before starting the actual import, make sure that:
 - You have selected a database for import or created a new one;
-- You have provided a name for your graph;
+- You have provided a valid name for your graph;
 - You have created at least one node;
 - You have created at least one edge;
-- Every file is related to at least one node or edge.
+- You have uploaded at least one file;
+- Every file is related to at least one node or edge;
+- Every node and edge is linked to a file;
+- Every node and edge has a unique label;
+- Every node has a primary identifier selected;
+- Every edge has an origin and destination file header selected.
 
 To continue with the import, click the **Save and start import** button. The data
 importer provides an overview showing results with the collections that have been
