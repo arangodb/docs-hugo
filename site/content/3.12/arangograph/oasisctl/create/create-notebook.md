@@ -1,15 +1,11 @@
 ---
+archetype: default
+description: Description of the oasisctl create notebook command
 title: Oasisctl Create Notebook
 menuTitle: Create Notebook
-weight: 65
-description: >-
-  Description of the oasisctl create notebook command
-archetype: default
+weight: 70
 ---
-Create a new notebook
-
 ## Synopsis
-
 Create a new notebook
 
 ```
@@ -17,7 +13,6 @@ oasisctl create notebook [flags]
 ```
 
 ## Options
-
 ```
   -d, --deployment-id string     Identifier of the deployment that the notebook has to run next to
       --description string       Description of the notebook
@@ -29,8 +24,7 @@ oasisctl create notebook [flags]
   -p, --project-id string        Identifier of the project to create the notebook in
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -38,6 +32,5 @@ oasisctl create notebook [flags]
 ```
 
 ## See also
-
 * [oasisctl create](_index.md)	 - Create resources
 

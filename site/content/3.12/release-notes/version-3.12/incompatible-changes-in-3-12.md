@@ -3,14 +3,10 @@ title: Incompatible changes in ArangoDB 3.12
 menuTitle: Incompatible changes in 3.12
 weight: 15
 description: >-
-  It is recommended to check the following list of incompatible changes before upgrading to ArangoDB 3.12
+  Check the following list of potential breaking changes **before** upgrading to
+  this ArangoDB version and adjust any client applications if necessary
 archetype: default
 ---
-It is recommended to check the following list of incompatible changes **before**
-upgrading to ArangoDB 3.12, and adjust any client programs if necessary.
-
-The following incompatible changes have been made in ArangoDB 3.12:
-
 ## Little-endian on-disk key format for the RocksDB storage engine
 
 ArangoDB 3.12 does not support the little-endian on-disk key for the RocksDB
@@ -83,6 +79,34 @@ The second option is the recommended one, as it signals the intent more clearly,
 and makes the cache behave "as expected", i.e. use up to the configured
 memory limit and not just 56% of it.
 
+## Higher reported memory usage for AQL queries
+
+Due to the [improved memory accounting in v3.12](whats-new-in-3-12.md#improved-memory-accounting),
+certain AQL queries may now get aborted because they exceed the defined
+memory limit but didn't get killed in previous versions. This is because of the
+more accurate memory tracking that reports a higher (actual) usage now. It allows
+ArangoDB to more reliably detect and kill queries that go over the per-query and
+global query memory limit, potentially preventing out-of-memory crashes of
+_arangod_ processes.
+
+In particular, AQL queries that perform write operations now report a
+significantly higher `peakMemoryUsage` than before. This is also
+reflected in the `arangodb_aql_global_memory_usage` metric. Memory used for
+ArangoSearch `SEARCH` operations is now also accounted for in the metric.
+
+You may need to adjust affected queries to use less memory or increase the
+per-query limit with the [`memoryLimit` query option](../../aql/how-to-invoke-aql/with-arangosh.md#memorylimit)
+or its default using the `--query.memory-limit` startup option. You can adjust
+the global limit with the `--query.global-memory-limit` startup option.
+
+## Adjustable Stream Transaction size
+
+[Stream Transactions](../../develop/transactions/stream-transactions.md) may
+now be limited to smaller transaction sizes because the maximum transaction size
+can now be configured with the `--transaction.streaming-max-transaction-size`
+startup option. The default value remains 128 MiB but configuring a lower limit
+can cause previously working Stream Transactions to fail.
+
 ## Client tools
 
 ### jslint feature in arangosh
@@ -115,7 +139,7 @@ server:
   - `x-http-method-override`
   - `x-method-override`
  
-   This functionaltiy posed a potential security risk and was thus removed.
+   This functionality posed a potential security risk and was thus removed.
    Previously, it was only enabled when explicitly starting the 
    server with the `--http.allow-method-override` startup option.
    The functionality has now been removed and setting the startup option does

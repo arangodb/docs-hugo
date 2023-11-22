@@ -2,12 +2,11 @@
 title: Managing Users in the Web Interface
 menuTitle: Users
 weight: 40
-description: >-
-  ArangoDB users are globally stored in the _system database and can only be mananged while logged on to this database
+description: ''
 archetype: default
 ---
-ArangoDB users are globally stored in the \_system database and can only be
-mananged while logged on to this database. There you can find the *Users* section:
+ArangoDB users are globally stored in the `_system` database and can only be
+managed while logged on to this database. There you can find the *Users* section:
 
 ![Users](../../../images/users.png)
 

@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get organization email command
 title: Oasisctl Get Organization Email
 menuTitle: Get Organization Email

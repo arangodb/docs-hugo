@@ -7,8 +7,6 @@ description: >-
   such as time ranges, for efficient intersection of multiple range queries
 archetype: default
 ---
-{{< description >}}
-
 The multi-dimensional index type is called **ZKD**.
 
 {{< warning >}}

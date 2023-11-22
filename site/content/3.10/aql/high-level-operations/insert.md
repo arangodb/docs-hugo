@@ -1,13 +1,11 @@
 ---
-title: INSERT operation in AQL
+title: '`INSERT` operation in AQL'
 menuTitle: INSERT
 weight: 65
 description: >-
   You can use the `INSERT` operation to create new documents in a collection
 archetype: default
 ---
-{{< description >}}
-
 Each `INSERT` operation is restricted to a single collection, and the
 [collection name](../../concepts/data-structure/collections.md#collection-names) must not be dynamic.
 Only a single `INSERT` statement per collection is allowed per AQL query, and

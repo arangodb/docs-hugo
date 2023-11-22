@@ -8,6 +8,12 @@ archetype: chapter
 ---
 The official ArangoDB [Java Driver](https://github.com/arangodb/arangodb-java-driver).
 
+- [Tutorial](https://university.arangodb.com/courses/java-driver-tutorial-v6/)
+- [Code examples](https://github.com/arangodb/arangodb-java-driver/tree/v6/src/test/java/com/arangodb/example)
+- [JavaDoc](https://arangodb.github.io/arangodb-java-driver/) (reference)
+- [ChangeLog](https://github.com/arangodb/arangodb-java-driver/blob/v6/ChangeLog.md)
+- [Java VelocyPack](https://github.com/arangodb/java-velocypack) ([JavaDoc](https://arangodb.github.io/java-velocypack))
+
 ## Supported versions
 
 Only the latest version of this driver is maintained to support the most recent
@@ -61,11 +67,3 @@ Examples can be found here:
 
 - [arango-quarkus-native-example](https://github.com/arangodb-helper/arango-quarkus-native-example)
 - [arango-helidon-native-example](https://github.com/arangodb-helper/arango-helidon-native-example)
-
-## See Also
-  
-- [JavaDoc](https://arangodb.github.io/arangodb-java-driver/) (reference)
-- [ChangeLog](https://github.com/arangodb/arangodb-java-driver/blob/v6/ChangeLog.md)
-- [Code examples](https://github.com/arangodb/arangodb-java-driver/tree/v6/src/test/java/com/arangodb/example)
-- [Java VelocyPack](https://github.com/arangodb/java-velocypack) ([JavaDoc](https://arangodb.github.io/java-velocypack))
-- [Tutorial](https://university.arangodb.com/courses/java-driver-tutorial-v6/)

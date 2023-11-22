@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list cpusizes command
 title: Oasisctl List Cpusizes
 menuTitle: List Cpusizes

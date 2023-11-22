@@ -3,11 +3,10 @@ title: Information Retrieval with ArangoSearch
 menuTitle: ArangoSearch
 weight: 155
 description: >-
-  ArangoSearch is ArangoDB's built-in search engine for full-text, complex data structures and more
+  ArangoSearch is ArangoDB's built-in search engine for full-text, complex data
+  structures, and more
 archetype: chapter
 ---
-{{< description >}}
-
 ArangoSearch provides information retrieval features, natively integrated
 into ArangoDB's query language and with support for all data models. It is
 primarily a full-text search engine, a much more powerful alternative to the
@@ -69,7 +68,7 @@ user-defined relevance boosting and dynamic score calculation.
 
 ![Conceptual model of ArangoSearch interacting with Collections and Analyzers](../../../images/arangosearch.png)
 
-Views can be managed in the web interface, via an [HTTP API](../../develop/http/views/_index.md) and
+Views can be managed in the web interface, via an [HTTP API](../../develop/http-api/views/_index.md) and
 through a [JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#views).
 
 Views can be queried with AQL using the [`SEARCH` operation](../../aql/high-level-operations/search.md).

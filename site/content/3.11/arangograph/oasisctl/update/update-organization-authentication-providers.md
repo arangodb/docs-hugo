@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update organization authentication providers command
 title: Oasisctl Update Organization Authentication Providers
 menuTitle: Update Organization Authentication Providers

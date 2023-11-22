@@ -1,9 +1,8 @@
 ---
-title: Session Storages
+title: Foxx Session Storages
 menuTitle: Session storages
 weight: 5
-description: >-
-  Session Storages
+description: ''
 archetype: chapter
 ---
 Session storages are used by the sessions middleware to persist sessions across

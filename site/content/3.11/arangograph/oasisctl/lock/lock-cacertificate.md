@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl lock cacertificate command
 title: Oasisctl Lock Cacertificate
 menuTitle: Lock Cacertificate

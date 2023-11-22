@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update policy add command
 title: Oasisctl Update Policy Add
 menuTitle: Update Policy Add

@@ -2,8 +2,7 @@
 title: Foxx reference
 menuTitle: Reference
 weight: 20
-description: >-
-  Each Foxx service is defined by a JSON manifest specifying the entry point, any scripts defined by the service, possible configuration options and Foxx dependencies, as well as other metadata
+description: ''
 archetype: chapter
 ---
 Each Foxx service is defined by a [JSON manifest](service-manifest.md)
@@ -18,4 +17,4 @@ as well as a flexible [sessions middleware](sessions-middleware/_index.md)
 with different transport and storage mechanisms.
 
 Foxx services can be installed and managed over the Web-UI or through
-ArangoDB's [HTTP API](../../http/foxx.md#management).
+ArangoDB's [HTTP API](../../http-api/foxx.md#management).

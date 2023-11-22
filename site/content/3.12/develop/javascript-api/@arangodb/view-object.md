@@ -1,8 +1,10 @@
 ---
-title: The _view_ object
+title: The _view_ object of the JavaScript API
 menuTitle: view object
 weight: 15
-description: ''
+description: >-
+  View objects represent ArangoSearch Views and provide access to information
+  and methods for executing View-related operations
 archetype: default
 ---
 The JavaScript API returns _view_ objects when you use the following methods

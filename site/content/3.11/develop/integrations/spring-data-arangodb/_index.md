@@ -11,8 +11,11 @@ accessing various types of data sources. Spring Data ArangoDB implements this
 for ArangoDB and provides mapping of Java objects to ArangoDB documents (ODM).
 
 - [Spring Data Tutorial](https://university.arangodb.com/courses/spring-data-tutorial)
+- [Demo](https://github.com/arangodb/spring-data-demo)
 - [Reference (version 4)](reference-version-4/_index.md)
 - [Reference (version 3)](reference-version-3/_index.md)
+- [JavaDoc](https://www.javadoc.io/doc/com.arangodb/arangodb-spring-data/latest)
+- [Changelog](https://github.com/arangodb/spring-data/blob/master/ChangeLog.md#changelog)
 - [Migration](migration/_index.md)
 
 ## Supported versions
@@ -198,9 +201,3 @@ Spring Boot support is offered by [Spring Boot Starter ArangoDB](https://github.
 {{< /tab >}}
 
 {{< /tabs >}}
-
-## Learn more
-
-- [Demo](https://github.com/arangodb/spring-data-demo)
-- [JavaDoc](https://www.javadoc.io/doc/com.arangodb/arangodb-spring-data/latest)
-- [Changelog](https://github.com/arangodb/spring-data/blob/master/ChangeLog.md#changelog)

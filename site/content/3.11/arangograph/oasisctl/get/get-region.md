@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl get region command
 title: Oasisctl Get Region
 menuTitle: Get Region

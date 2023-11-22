@@ -1,13 +1,28 @@
 ---
-title: Different data models and scalability
+title: The scalability of ArangoDB and its data models
 menuTitle: Scalability
 weight: 5
 description: >-
-  Scalability in the context of the different data models supported by ArangoDB
+  ArangoDB supports scaling horizontally and vertically, and each supported
+  data model has different properties when scaling to large datasets
 archetype: default
 ---
-In this section we discuss scalability in the context of the different
-data models supported by ArangoDB.
+## Horizontal and vertical scalability
+
+ArangoDB is a distributed database system supporting multiple data models,
+and can thus be scaled horizontally, that is, by using many servers,
+typically based on commodity hardware. This approach not only delivers 
+performance as well as capacity improvements, but also achieves
+resilience by means of replication and automatic fail-over. Furthermore,
+you can build systems that scale their capacity dynamically up and down 
+automatically according to demand.
+
+You can also scale ArangoDB vertically, that is, by using ever larger and more
+powerful servers. There is no built-in limitation in ArangoDB, for example, the
+server will automatically use more threads if more CPUs are present.
+However, scaling vertically has the disadvantage that the costs grow faster than
+linear with the size of the server, and none of the resilience and dynamical
+capabilities can be achieved in this way.
 
 ## Key/value pairs
 

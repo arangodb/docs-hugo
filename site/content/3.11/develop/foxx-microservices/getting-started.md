@@ -2,8 +2,7 @@
 title: Getting Started
 menuTitle: Getting started
 weight: 5
-description: >-
-  This practical introduction will take you from an empty folder to a first Foxx service querying data
+description: ''
 archetype: default
 ---
 This practical introduction will take you from an empty folder to a first

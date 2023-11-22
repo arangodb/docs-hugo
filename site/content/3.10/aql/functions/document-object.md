@@ -3,12 +3,13 @@ title: Document and object functions in AQL
 menuTitle: Document / Object
 weight: 25
 description: >-
-  AQL provides below listed functions to operate on objects / document values
+  AQL provides functions to operate on objects respectively document values
 archetype: default
 ---
-AQL provides below listed functions to operate on objects / document values.
+You can use the below listed functions with the
+[object data type](../../concepts/data-structure/documents/_index.md#data-types).
 Also see [object access](../fundamentals/data-types.md#objects--documents) for
-additional language constructs.
+additional language constructs for objects.
 
 ## ATTRIBUTES()
 

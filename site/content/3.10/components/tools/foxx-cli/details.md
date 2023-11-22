@@ -2,8 +2,7 @@
 title: Foxx CLI Details
 menuTitle: Details
 weight: 5
-description: >-
-  foxx-cli runs on Node
+description: ''
 archetype: default
 ---
 ## Install

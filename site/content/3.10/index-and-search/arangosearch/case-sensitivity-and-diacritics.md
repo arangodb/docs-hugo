@@ -6,8 +6,6 @@ description: >-
   You can normalize values for case-insensitive matching and to ignore diacritics, also in combination with other search techniques
 archetype: default
 ---
-{{< description >}}
-
 ## Normalizing a Single Token
 
 ### Dataset

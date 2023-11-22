@@ -3,7 +3,7 @@ title: AQL Example Queries on an Actors and Movies Dataset
 menuTitle: Actors & Movies Dataset Queries
 weight: 35
 description: >-
-  AQL Example Queries on an Actors and Movies Dataset
+  Example queries showing different AQL query features and combinations of them
 archetype: default
 ---
 Given a graph `[actors] – actsIn → [movies]` with two vertex collections

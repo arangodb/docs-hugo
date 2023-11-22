@@ -1,15 +1,11 @@
 ---
+archetype: default
+description: Description of the oasisctl lock command
 title: Oasisctl Lock
 menuTitle: Lock
-weight: 80
-description: >-
-  Description of the oasisctl lock command
-archetype: chapter
+weight: 5
 ---
-Lock resources
-
 ## Synopsis
-
 Lock resources
 
 ```
@@ -17,13 +13,11 @@ oasisctl lock [flags]
 ```
 
 ## Options
-
 ```
   -h, --help   help for lock
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -31,7 +25,6 @@ oasisctl lock [flags]
 ```
 
 ## See also
-
 * [oasisctl](../options.md)	 - ArangoGraph Insights Platform
 * [oasisctl lock cacertificate](lock-cacertificate.md)	 - Lock a CA certificate, so it cannot be deleted
 * [oasisctl lock deployment](lock-deployment.md)	 - Lock a deployment, so it cannot be deleted

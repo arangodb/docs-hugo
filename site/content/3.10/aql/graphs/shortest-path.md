@@ -3,7 +3,8 @@ title: Shortest Path in AQL
 menuTitle: Shortest Path
 weight: 15
 description: >-
-  This type of query is supposed to find the shortest path between two given documents(startVertex and targetVertex) in your graph
+  With the shortest path algorithm, you can find one shortest path between
+  two vertices using AQL
 archetype: default
 ---
 ## General query idea
@@ -20,7 +21,7 @@ path you will get a result in form of a set with two items:
 Let's take a look at a simple example to explain how it works.
 This is the graph that you are going to find a shortest path on:
 
-![traversal graph](../../../../../images/traversal_graph.png)
+![traversal graph](../../../images/traversal_graph.png)
 
 You can use the following parameters for the query:
 
@@ -132,7 +133,7 @@ collections you expect to be involved.
 ## Examples
 Creating a simple symmetric traversal demonstration graph:
 
-![traversal graph](../../../../../images/traversal_graph.png)
+![traversal graph](../../../images/traversal_graph.png)
 
 ```js
 ---

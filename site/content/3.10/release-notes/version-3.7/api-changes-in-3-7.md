@@ -3,13 +3,10 @@ title: API Changes in ArangoDB 3.7
 menuTitle: API changes in 3.7
 weight: 20
 description: >-
-  ArangoDB v3.7 Release Notes API Changes
+  A summary of the changes to the HTTP API and other interfaces that are relevant
+  for developers, like maintainers of drivers and integrations for ArangoDB
 archetype: default
 ---
-This document summarizes the HTTP API changes and other API changes in ArangoDB 3.7.
-The target audience for this document are developers who maintain drivers and
-integrations for ArangoDB 3.7.
-
 ## UTF-8 validation
 
 The ArangoDB server will now perform more strict UTF-8 string validation for
@@ -99,12 +96,12 @@ The following REST API endpoints have been added in 3.7:
   TLS keyfile (secret key as well as public certificates) at run time. The API
   basically makes the `arangod` server reload the keyfile from disk.
 - HTTP POST `/_admin/server/jwt`: can be used to
-  [reload the JWT secrets](../../develop/http/authentication.md#hot-reload-jwt-secrets)
+  [reload the JWT secrets](../../develop/http-api/authentication.md#hot-reload-jwt-secrets)
   of a local arangod process without having to restart it (hot-reload).
   This may be used to roll out new JWT secrets throughout an ArangoDB cluster.
   This endpoint is available only in the Enterprise Edition.
 - HTTP POST `/_admin/server/encryption` can be used to
-  [reload the user-supplied key(s)](../../develop/http/security.md#encryption-at-rest)
+  [reload the user-supplied key(s)](../../develop/http-api/security.md#encryption-at-rest)
   used for encryption at rest, after they have been changed on disk.
   This endpoint is available only in the Enterprise Edition.
 

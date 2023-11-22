@@ -3,7 +3,7 @@ title: SatelliteGraph Management
 menuTitle: Management
 weight: 5
 description: >-
-  This chapter describes the JavaScript interface for creating and modifying SatelliteGraphs
+  How to manage named graphs of the type SatelliteGraph
 archetype: default
 ---
 This chapter describes the `satellite-graph` module, the JavaScript API to

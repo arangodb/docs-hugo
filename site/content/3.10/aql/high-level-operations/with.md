@@ -1,14 +1,12 @@
 ---
-title: WITH operation in AQL
+title: '`WITH` operation in AQL'
 menuTitle: WITH
 weight: 75
 description: >-
-  An AQL query can start with a `WITH` operation, listing collections that the
-  query will implicitly read from
+  An AQL query can start with a `WITH` operation, listing collections that a
+  query implicitly reads from
 archetype: default
 ---
-{{< description >}}
-
 Reading implicitly from a collections means that the collections are not
 specified explicitly in language constructs like the following:
 
@@ -53,7 +51,7 @@ see [Requiring `WITH` statements](../../components/arangodb-server/options.md#--
 Dynamic access via the `DOCUMENT()` function does not require you to list the
 involved collections. Using named graphs in traversals (`GRAPH "graph-name"`)
 does not require it either, assuming that all vertices are in collections that
-are part of the graph, as enforced by the [Graph API](../../develop/http/graphs/named-graphs.md).
+are part of the graph, as enforced by the [Graph API](../../develop/http-api/graphs/named-graphs.md).
 That means, it is only necessary for traversals using anonymous graphs /
 [collection sets](../graphs/traversals.md#working-with-collection-sets).
 

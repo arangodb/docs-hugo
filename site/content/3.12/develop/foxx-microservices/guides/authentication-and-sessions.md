@@ -1,9 +1,8 @@
 ---
-title: Authentication
+title: Authentication in Foxx services
 menuTitle: Authentication and sessions
 weight: 50
-description: >-
-  Foxx provides the auth module to implement basic password verification and hashing but is not very secure unless using the (very slow) PBKDF2 algorithm
+description: ''
 archetype: default
 ---
 Foxx provides the [auth module](../reference/related-modules/authentication.md) to implement

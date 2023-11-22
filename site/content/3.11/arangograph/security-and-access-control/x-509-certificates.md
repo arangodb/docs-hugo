@@ -8,8 +8,6 @@ description: >-
   encrypted using the TLS protocol
 archetype: default
 ---
-{{< description >}}
-
 X.509 certificates are digital certificates that are used to verify the
 authenticity of a website, user, or organization using a public key infrastructure
 (PKI). They are used in various applications, including SSL/TLS encryption,

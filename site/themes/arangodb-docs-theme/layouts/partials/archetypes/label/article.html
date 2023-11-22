@@ -1,18 +1,18 @@
-{{- $page := .page }}
-{{- $content := .content }}
-{{ $pageVersion := $page.Page.Store.Get "version" }}
+{{ $page := .page -}}
+{{ $content := .content -}}
+{{ $pageVersion := $page.Page.Store.Get "version" -}}
 
-
-{{- with $page }}
-    <article class="default">
-      {{- partial "deprecated.html" . }}
-      {{- partial "in-development.html" . }}
-      <h1 class="page-title">{{ .Title | markdownify }}</h1>
-      {{ $content | safeHTML }}
-      <nav class="pagination">
-        {{- partial "content-footer.html" . }}
-      </nav>
-    </article>
-    
-
+{{ with $page -}}
+<article class="default">
+  {{- partial "deprecated.html" . }}
+  {{- partial "in-development.html" . }}
+  <hgroup>
+    <h1 class="page-title">{{ .Title | markdownify }}</h1>
+    {{ with .Params.Description }}<p class="lead">{{ . | markdownify }}</p>{{ end }}
+  </hgroup>
+  {{ $content | safeHTML }}
+  <nav class="pagination">
+    {{ partial "content-footer.html" . -}}
+  </nav>
+</article>
 {{- end }}

@@ -174,7 +174,7 @@
     `--agency.compaction-keep-size`.
 
 - name: arangodb_agency_node_memory_usage
-  introducedIn: "3.12"
+  introducedIn: "3.12.0"
   help: |
     Memory used by agency store/cache.
   unit: byte
@@ -187,13 +187,15 @@
     - dbserver
     - agent
   description: |
-    Amount of memory used to represent the agency data structure. This measures memory usage on agents 
-    and also on Coordinators and DB servers, because these have a cached version of the agency's
-    `Plan` and `Current` sections. On agency followers this metric normally
-    remains at a low value because the agency key/value store is only built on
-    agency leaders.
-    This metric can be non-zero even on single servers because there is a small initial memory allocation
-    made at ArangoDB instance start.
+    Amount of memory used to represent the Agency data structure. This measures
+    memory usage on Agents, and also on Coordinators and DB-Servers because these
+    have a cached version of the Agency's `Plan` and `Current` sections.
+    
+    On Agency followers, this metric normally remains at a low value because the
+    Agency key/value store is only built on Agency leaders.
+  
+    This metric can be non-zero even on single servers because there is a small
+    initial memory allocation made at ArangoDB instance start.
 
 - name: arangodb_agency_read_no_leader_total
   renamedFrom: arangodb_agency_read_no_leader
@@ -423,6 +425,39 @@
     - single
   description: |
     Current number of AQL queries executing.
+
+- name: arangodb_aql_cursors_active
+  introducedIn: "3.12.0"
+  help: |
+    Current number of active AQL query cursors.
+  unit: number
+  type: gauge
+  category: AQL
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - agent
+    - single
+  description: |
+    Current number of active AQL query cursors.
+    AQL query cursors are created for queries that produce
+    more results than specified in the `batchSize` query option
+    (default value: 1000). Such results can be fetched incrementally
+    by client operations in chunks.
+    As it is unclear if and when a client will fetch any remaining
+    data from a cursor, every cursor has a server-side timeout value
+    (TTL) after which it is garbage-collected.
+  troubleshoot: |
+    This number can grow temporary in case a lot of concurrent AQL queries
+    are executed. It should go down again however when the query results
+    are consumed.
+    If this number does not decrease a lot, it means that cursors are kept
+    on the server and wait for their expiry.
+    As active cursors can use resources (memory for query results and
+    potentially some collection locks), it is advisable to check the client
+    application code for ttl values and also check if the client application
+    code fully consumes query results or only fetches them partially.
+  
 
 - name: arangodb_aql_global_memory_limit
   introducedIn: "3.8.0"
@@ -1294,20 +1329,20 @@
   description: |
     This metric will be increased whenever a server-side dump
     thread tries to prefetch more data from the database and
-    make it ready to use for fetching, but doing so would
-    violated the configured per-server memory limit for all
+    makes it ready to use for fetching, but doing so would
+    violate the configured per-server memory limit for all
     ongoing arangodump invocations.
   troubleshoot: |
     If this metric keeps increasing drastically, it is an
     indication that the server could buffer and provide dump
     responses faster than it is allowed to. The two ways of
     fixing this problem are to increase the amount of memory
-    that dumps can use, by increasing the value of the startup
-    option `--dump.max-memory-usage`, to reduce the number
+    that dumps can use, by increasing the value of the
+    `--dump.max-memory-usage` startup option, to reduce the number
     of parallel threads used in an arangodump invocation, or
     to start less concurrent arangodumps.
     
-    This metric will have a value of 0 on coordinators. It will
+    This metric will have a value of 0 on Coordinators. It will
     also not be increased for arangodump invocations that did
     not use `--parallel-dump` option.
 
@@ -1851,7 +1886,7 @@
     client application.
 
 - name: arangodb_internal_cluster_info_memory_usage
-  introducedIn: "3.12"
+  introducedIn: "3.12.0"
   help: |
     Amount of memory spent in ClusterInfo.
   unit: byte
@@ -4611,6 +4646,25 @@
     The number of worker threads currently working on some job or spinning while
     waiting for new work (i.e., not sleeping).
 
+- name: arangodb_scheduler_num_detached_threads
+  introducedIn: "3.12.0"
+  help: |
+    Current number of detached worker threads.
+  unit: number
+  type: gauge
+  category: Scheduler
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+    - single
+  description: |
+    The number of worker threads currently started and detached from the 
+    scheduler. Worker threads which perform potentially long running
+    tasks like waiting for a lock can detach themselves from the scheduler 
+    to allow new scheduler threads to be started and avoid server blockage.
+
 - name: arangodb_scheduler_num_worker_threads
   introducedIn: "3.6.7"
   help: |
@@ -4625,8 +4679,9 @@
     - agent
     - single
   description: |
-    The number of worker threads currently started. Worker threads can be started
-    and stopped dynamically based on the server load.
+    The number of worker threads currently started. This includes detached 
+    worker threads. Worker threads can be started and stopped dynamically
+    based on the server load.
 
 - name: arangodb_scheduler_num_working_threads
   introducedIn: "3.6.10"
@@ -4869,6 +4924,29 @@
   description: |
     Amount of memory in bytes that is used for consolidating this index.
 
+- name: arangodb_search_execution_threads_demand
+  introducedIn: "3.12.0"
+  help: |
+    Number of ArangoSearch parallel execution threads requested by queries.
+  unit: number
+  type: gauge
+  category: ArangoSearch
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - single
+  description: |
+      The value of this metric represents the number of currently used execution
+      threads for `SEARCH` operations against Views.
+  troubleshoot: |
+    If this metric contains a value lower than the configured
+    `--arangosearch.execution-threads-limit` (number of cores * 2 by default)
+    then there are enough threads for running queries with parallel execution.
+  
+    If the value is greater than the limit, some queries can not get enough threads
+    to achieve the requested parallelism currently. In this state, queries are
+    less parallel up to single-threaded execution. Query performance might degrade.
+
 - name: arangodb_search_file_descriptors
   introducedIn: "3.12.0"
   help: |
@@ -4910,7 +4988,7 @@
     - single
   description: |
     Amount of memory in bytes that is mapped using memory-mapped files.
-    The metric value is very approximate and could be outdated in any moment.
+    The metric value is very approximate and can be outdated quickly.
 
 - name: arangodb_search_num_docs
   introducedIn: "3.10.0"

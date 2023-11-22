@@ -1,9 +1,8 @@
 ---
-title: Endpoints
+title: Foxx Endpoints
 menuTitle: Endpoints
 weight: 5
-description: >-
-  Endpoints
+description: ''
 archetype: default
 ---
 Endpoints are returned by the `use`, `all`

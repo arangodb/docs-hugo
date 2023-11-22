@@ -3,12 +3,10 @@ title: Working with Indexes
 menuTitle: Working with Indexes
 weight: 20
 description: >-
-  Learn how to use different indexes efficiently by going through the ArangoDB Performance Course
+  Create and manage indexes programmatically for document collections using
+  ArangoDB's JavaScript API
 archetype: chapter
 ---
-Learn how to use different indexes efficiently by going through the
-[ArangoDB Performance Course](https://www.arangodb.com/arangodb-performance-course/).
-
 ## Index Identifiers
 
 An index identifier uniquely identifies an index within a collection.

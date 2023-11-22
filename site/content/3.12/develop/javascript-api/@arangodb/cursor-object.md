@@ -1,8 +1,9 @@
 ---
-title: The _cursor_ object
+title: The _cursor_ object of the JavaScript API
 menuTitle: cursor object
 weight: 20
-description: ''
+description: >-
+  Cursor objects let you iterate over the results of executed AQL queries
 archetype: default
 ---
 The JavaScript API returns _cursor_ objects when you use the following methods

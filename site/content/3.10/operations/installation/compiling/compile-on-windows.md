@@ -3,11 +3,9 @@ title: Compiling ArangoDB under Windows
 menuTitle: Compile on Windows
 weight: 10
 description: >-
-  Guide for ArangoDB 3.4 and later
+  This guide describes how to compile ArangoDB 3.4 and onwards under Windows
 archetype: default
 ---
-This guide describes how to compile ArangoDB 3.4 and onwards under Windows.
-
 ## Install chocolatey
 
 With ArangoDB 3.0 a complete cmake environment was introduced. This also

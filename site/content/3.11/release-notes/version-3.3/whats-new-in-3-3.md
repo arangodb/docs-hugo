@@ -3,7 +3,8 @@ title: Features and Improvements in ArangoDB 3.3
 menuTitle: What's New in 3.3
 weight: 5
 description: >-
-  The following list shows in detail which features have been added or improved inArangoDB 3
+  Replication of clusters to other datacenters, encrypted backups, server-level
+  replication, asynchronous failover for single servers
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in

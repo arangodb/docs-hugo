@@ -3,7 +3,8 @@ title: Serialization
 menuTitle: Serialization
 weight: 10
 description: >-
-  Serialization
+  The Java driver uses Jackson internally for serialization and deserialization
+  but you can use a custom implementation for user data
 archetype: default
 ---
 The driver functionalities related to serialization and deserialization (serde)

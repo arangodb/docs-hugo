@@ -3,7 +3,8 @@ title: Features and Improvements in ArangoDB 3.10
 menuTitle: What's New in 3.10
 weight: 5
 description: >-
-  ArangoDB v3.10 Release Notes New Features
+  Support for ARM, computed values, a new managed graph type with automated
+  sharding, various search features, AQL optimizations
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in
@@ -340,7 +341,7 @@ enumeration node, if using just scoring for a sort operation.
 
 ---
 
-[Inverted indexes](../../develop/http/indexes/inverted.md) also support similar new caching
+[Inverted indexes](../../develop/http-api/indexes/inverted.md) also support similar new caching
 options.
 
 <small>Introduced in: v3.10.2</small>
@@ -407,7 +408,7 @@ Also see [Server security options](../../operations/security/security-options.md
 
 ### ArangoSearch metrics and figures
 
-The [Metrics HTTP API](../../develop/http/monitoring.md#metrics) has been
+The [Metrics HTTP API](../../develop/http-api/monitoring.md#metrics) has been
 extended with metrics for ArangoSearch for monitoring `arangosearch` View links
 and inverted indexes.
 
@@ -927,7 +928,7 @@ Also see:
 - [AQL `UPDATE` operation](../../aql/high-level-operations/update.md#refillindexcaches)
 - [AQL `REPLACE` operation](../../aql/high-level-operations/replace.md#refillindexcaches)
 - [AQL `REMOVE` operation](../../aql/high-level-operations/remove.md#refillindexcaches)
-- [Document HTTP API](../../develop/http/documents.md)
+- [Document HTTP API](../../develop/http-api/documents.md)
 - [Edge cache refill options](#edge-cache-refill-options)
 
 ### Extended query explain statistics
@@ -1047,7 +1048,12 @@ that have copies of the data. Therefore, the read throughput is higher.
 
 This feature is only available in the Enterprise Edition.
 
-For more information, see [Read from followers](../../develop/http/documents.md#read-from-followers).
+For more information, see [Read from followers](../../develop/http-api/documents.md#read-from-followers)
+in the HTTP API documentation.
+
+The JavaScript API supports an `allowDirtyReads` option for
+[AQL queries](../../aql/how-to-invoke-aql/with-arangosh.md#allowdirtyreads) and
+[reading documents](../../develop/javascript-api/@arangodb/collection-object.md#collectiondocumentobject--options).
 
 ## Improved shard rebalancing
 
@@ -1061,7 +1067,7 @@ You can do any of the following by using the API:
 - Execute the given set of move shard operations.
 - Compute a set of move shard operations to improve balance and execute them immediately. 
 
-For more information, see the [Cluster](../../develop/http/cluster.md#get-the-current-cluster-imbalance) 
+For more information, see the [Cluster](../../develop/http-api/cluster.md#get-the-current-cluster-imbalance) 
 section of the HTTP API documentation.
 
 ## Query result spillover to decrease memory usage
@@ -1093,7 +1099,7 @@ You can also set the thresholds per query in the JavaScript and HTTP APIs.
 For details, see:
 - [`temp` startup options](../../components/arangodb-server/options.md#--tempintermediate-results-path)
 - [Executing queries from _arangosh_](../../aql/how-to-invoke-aql/with-arangosh.md#spilloverthresholdmemoryusage)
-- [HTTP interfaces for AQL queries](../../develop/http/queries/aql-queries.md#create-a-cursor)
+- [HTTP interfaces for AQL queries](../../develop/http-api/queries/aql-queries.md#create-a-cursor)
 
 ## Server options
 
@@ -1107,7 +1113,7 @@ You can set the new `--server.early-connections` startup option to `true` to
 let the instance respond to the `/_api/version`, `/_admin/version`, and
 `/_admin/status` REST APIs early.
 
-See [Respond to liveliness probes](../../develop/http/general-request-handling.md#respond-to-liveliness-probes).
+See [Respond to liveliness probes](../../develop/http-api/general-request-handling.md#respond-to-liveliness-probes).
 
 ### Cache RocksDB index and filter blocks by default
 
@@ -1383,6 +1389,20 @@ attempt to create an additional database fails with error
 if other databases are dropped first. The default value for this option is
 unlimited, so an arbitrary amount of databases can be created.
 
+### Configurable maximum for queued log entries
+
+<small>Introduced in: v3.10.12</small>
+
+The new `--log.max-queued-entries` startup option lets you configure how many
+log entries are queued in a background thread.
+
+Log entries are pushed on a queue for asynchronous writing unless you enable the
+`--log.force-direct` startup option. If you use a slow log output (e.g. syslog),
+the queue might grow and eventually overflow.
+
+You can configure the upper bound of the queue with this option. If the queue is
+full, log entries are written synchronously until the queue has space again.
+
 ## Miscellaneous changes
 
 ### Optimizer rules endpoint
@@ -1572,6 +1592,15 @@ The following system metrics have been added:
 |:------|:------------|
 | `arangodb_file_descriptors_limit` | System limit for the number of open files for the arangod process. |
 | `arangodb_file_descriptors_current` | Number of file descriptors currently opened by the arangod process. |
+
+### More instant Hot Backups
+
+<small>Introduced in: v3.10.10, v3.11.3</small>
+
+Cluster deployments no longer wait for all in-progress transactions to get
+committed when a user requests a Hot Backup. The waiting could cause deadlocks
+and thus Hot Backups to fail, in particular in ArangoGraph. Now, Hot Backups are
+created immediately and commits have to wait until the backup process is done.
 
 ## Client tools
 
