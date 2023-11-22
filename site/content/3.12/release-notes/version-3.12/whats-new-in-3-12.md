@@ -281,7 +281,7 @@ limited number of collections/shards/indexes.
 The following metric has been added:
 
 - `arangodb_search_file_descriptors`:
-  Current count of opened file descriptors for this index.
+  Current count of opened file descriptors for an ArangoSearch index.
 
 ### More instant Hot Backups
 
