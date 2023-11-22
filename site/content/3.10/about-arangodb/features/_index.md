@@ -63,6 +63,7 @@ See all [Enterprise Edition Features](enterprise-edition.md).
 {{% /comment %}}
 | Only regular cluster deployments | **OneShard** deployment option to store all collections of a database on a single cluster node, to combine the performance of a single server and ACID semantics with a fault-tolerant cluster setup |
 | ACID transactions for multi-document / multi-collection queries on single servers, for single document operations in clusters, and for multi-document queries in clusters for collections with a single shard | In addition, ACID transactions for multi-collection queries using the OneShard feature |
+| Always read from leader shards in clusters | Optionally allow dirty reads to **read from followers** to scale reads |
 | TLS key and certificate rotation | In addition, **key rotation for JWT secrets** and **server name indication** (SNI) |
 | Built-in user management and authentication | Additional **LDAP authentication** option |
 | Only server logs | **Audit log** of server interactions |

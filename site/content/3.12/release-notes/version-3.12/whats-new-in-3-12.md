@@ -112,6 +112,12 @@ indexes have been allowing to index and store the `_id` system attribute.
 
 ## Server options
 
+### Adjustable Stream Transaction size
+
+The previously fixed limit of 128 MiB for [Stream Transactions](../../develop/transactions/stream-transactions.md)
+can now be configured with the new `--transaction.streaming-max-transaction-size`
+startup option. The default value remains 128 MiB.
+
 ### LZ4 compression for values in the in-memory edge cache
 
 <small>Introduced in: v3.11.2</small>
@@ -270,6 +276,13 @@ of outgrowing the maximum number of file descriptors the ArangoDB process
 can open. Thus, these options should only be enabled on deployments with a
 limited number of collections/shards/indexes.
 
+### ArangoSearch file descriptor metric
+
+The following metric has been added:
+
+- `arangodb_search_file_descriptors`:
+  Current count of opened file descriptors for an ArangoSearch index.
+
 ### More instant Hot Backups
 
 <small>Introduced in: v3.10.10, v3.11.3</small>
@@ -383,7 +396,7 @@ with large shards.
   the network is slow or its capacity is maxed out. The data is decompressed on
   the client side and recompressed if you enable the  `--compress-output` option.
 
-#### Resource usage limits and metrics
+#### Server-side resource usage limits and metrics
 
 The following `arangod` startup options can be used to limit
 the resource usage of parallel _arangodump_ invocations:

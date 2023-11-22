@@ -1048,7 +1048,12 @@ that have copies of the data. Therefore, the read throughput is higher.
 
 This feature is only available in the Enterprise Edition.
 
-For more information, see [Read from followers](../../develop/http-api/documents.md#read-from-followers).
+For more information, see [Read from followers](../../develop/http-api/documents.md#read-from-followers)
+in the HTTP API documentation.
+
+The JavaScript API supports an `allowDirtyReads` option for
+[AQL queries](../../aql/how-to-invoke-aql/with-arangosh.md#allowdirtyreads) and
+[reading documents](../../develop/javascript-api/@arangodb/collection-object.md#collectiondocumentobject--options).
 
 ## Improved shard rebalancing
 
@@ -1384,6 +1389,20 @@ attempt to create an additional database fails with error
 if other databases are dropped first. The default value for this option is
 unlimited, so an arbitrary amount of databases can be created.
 
+### Configurable maximum for queued log entries
+
+<small>Introduced in: v3.10.12</small>
+
+The new `--log.max-queued-entries` startup option lets you configure how many
+log entries are queued in a background thread.
+
+Log entries are pushed on a queue for asynchronous writing unless you enable the
+`--log.force-direct` startup option. If you use a slow log output (e.g. syslog),
+the queue might grow and eventually overflow.
+
+You can configure the upper bound of the queue with this option. If the queue is
+full, log entries are written synchronously until the queue has space again.
+
 ## Miscellaneous changes
 
 ### Optimizer rules endpoint
@@ -1573,6 +1592,15 @@ The following system metrics have been added:
 |:------|:------------|
 | `arangodb_file_descriptors_limit` | System limit for the number of open files for the arangod process. |
 | `arangodb_file_descriptors_current` | Number of file descriptors currently opened by the arangod process. |
+
+### More instant Hot Backups
+
+<small>Introduced in: v3.10.10, v3.11.3</small>
+
+Cluster deployments no longer wait for all in-progress transactions to get
+committed when a user requests a Hot Backup. The waiting could cause deadlocks
+and thus Hot Backups to fail, in particular in ArangoGraph. Now, Hot Backups are
+created immediately and commits have to wait until the backup process is done.
 
 ## Client tools
 
