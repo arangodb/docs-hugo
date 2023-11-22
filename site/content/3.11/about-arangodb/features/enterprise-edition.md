@@ -68,6 +68,10 @@ features outlined below. For additional information, see
   stored values, primary sort columns, and primary key columns in memory to
   improve the performance of Views and inverted indexes.
 
+- [**Read from followers in clusters**](../../develop/http-api/documents.md#read-from-followers):
+  Allow dirty reads so that Coordinators can read from any shard replica and not
+  only from the leader, for scaling reads.
+
 ## Querying
 
 - [**Pregel in Cluster**](../../data-science/pregel/_index.md#prerequisites):

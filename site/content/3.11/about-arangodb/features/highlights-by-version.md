@@ -91,6 +91,10 @@ Also see [What's New in 3.11](../../release-notes/version-3.11/whats-new-in-3-11
   Optimized data loading for AQL traversal queries if only a few document
   attributes are accessed.
 
+- [**Read from followers in clusters**](../../develop/http-api/documents.md#read-from-followers):
+  Allow dirty reads so that Coordinators can read from any shard replica and not
+  only from the leader, for scaling reads.
+  
 Also see [What's New in 3.10](../../release-notes/version-3.10/whats-new-in-3-10.md).
 
 ## Version 3.9

@@ -99,6 +99,14 @@ per-query limit with the [`memoryLimit` query option](../../aql/how-to-invoke-aq
 or its default using the `--query.memory-limit` startup option. You can adjust
 the global limit with the `--query.global-memory-limit` startup option.
 
+## Adjustable Stream Transaction size
+
+[Stream Transactions](../../develop/transactions/stream-transactions.md) may
+now be limited to smaller transaction sizes because the maximum transaction size
+can now be configured with the `--transaction.streaming-max-transaction-size`
+startup option. The default value remains 128 MiB but configuring a lower limit
+can cause previously working Stream Transactions to fail.
+
 ## Client tools
 
 ### jslint feature in arangosh
@@ -131,7 +139,7 @@ server:
   - `x-http-method-override`
   - `x-method-override`
  
-   This functionaltiy posed a potential security risk and was thus removed.
+   This functionality posed a potential security risk and was thus removed.
    Previously, it was only enabled when explicitly starting the 
    server with the `--http.allow-method-override` startup option.
    The functionality has now been removed and setting the startup option does
