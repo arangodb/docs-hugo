@@ -90,7 +90,7 @@ global query memory limit, potentially preventing out-of-memory crashes of
 _arangod_ processes.
 
 In particular, AQL queries that perform write operations now report a
-significantly higher `peakMemoryUsage` in cursors than before. This is also
+significantly higher `peakMemoryUsage` than before. This is also
 reflected in the `arangodb_aql_global_memory_usage` metric. Memory used for
 ArangoSearch `SEARCH` operations is now also accounted for in the metric.
 

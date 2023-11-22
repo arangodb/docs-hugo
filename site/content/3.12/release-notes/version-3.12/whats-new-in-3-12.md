@@ -81,10 +81,10 @@ The following new metrics have been added for memory observability:
 | `arangodb_revision_tree_buffered_memory_usage` | Total memory usage of buffered updates for all revision trees. |
 | `arangodb_scheduler_queue_memory_usage` | Number of bytes allocated for tasks in the scheduler queue. |
 | `arangodb_scheduler_stack_memory_usage` | Approximate stack memory usage of worker threads. |
-| `arangodb_search_consolidations_memory_usage` | Current count of opened file descriptors for this index. |
-| `arangodb_search_mapped_memory` | Amount of memory in bytes that is mapped. |
-| `arangodb_search_readers_memory_usage` | Amount of memory in bytes that is used for reading from this index. |
-| `arangodb_search_writers_memory_usage` | Amount of memory in bytes that is used for writing to this index. |
+| `arangodb_search_consolidations_memory_usage` | Amount of memory in bytes that is used for consolidating an ArangoSearch index. |
+| `arangodb_search_mapped_memory` | Amount of memory in bytes that is mapped for an ArangoSearch index. |
+| `arangodb_search_readers_memory_usage` | Amount of memory in bytes that is used for reading from an ArangoSearch index. |
+| `arangodb_search_writers_memory_usage` | Amount of memory in bytes that is used for writing to an ArangoSearch index. |
 | `arangodb_transactions_internal_memory_usage` | Total memory usage of internal transactions. |
 | `arangodb_transactions_rest_memory_usage` | Total memory usage of user transactions (excluding top-level AQL queries). |
 
