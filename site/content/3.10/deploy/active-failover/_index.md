@@ -119,5 +119,5 @@ The _Active Failover_ setup in ArangoDB has a few limitations.
 - Should you add more than one _follower_, be aware that during a _failover_ situation
   the failover attempts to pick the most up-to-date follower as the new leader on a **best-effort** basis. 
 - Should you be using the [ArangoDB Starter](../../components/tools/arangodb-starter/_index.md) 
-  or the [Kubernetes Operator](../kubernetes/_index.md) to manage your Active-Failover
+  or the [Kubernetes Operator](../kubernetes.md) to manage your Active-Failover
   deployment, be aware that upgrading might trigger an unintentional failover between machines.
