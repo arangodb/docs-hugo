@@ -82,9 +82,9 @@ paths:
       description: |
         Returns the document identified by the collection name and document key.
         The returned document contains three special attributes:
-        - `_id` containing the document identifier
-        - `_key` containing key which uniquely identifies a document in a given collection
-        - `_rev` containing the revision
+        - `_id`, containing the document identifier with the format `<collection-name>/<document-key>`.
+        - `_key`, containing the document key that uniquely identifies a document within the collection.
+        - `_rev`, containing the document revision.
       parameters:
         - name: collection
           in: path
@@ -331,23 +331,24 @@ paths:
       operationId: createDocument
       description: |
         Creates a new document from the document given in the body, unless there
-        is already a document with the `_key` given. If no `_key` is given, a new
-        unique `_key` is generated automatically.
+        is already a document with the `_key` given. If no `_key` is given, a
+        new unique `_key` is generated automatically. The `_id` is automatically
+        set in both cases, derived from the collection name and `_key`.
 
-        Possibly given `_id` and `_rev` attributes in the body are always ignored,
-        the URL part or the query parameter collection respectively counts.
+        {{</* info */>}}
+        An `_id` or `_rev` attribute specified in the body is ignored.
+        {{</* /info */>}}
 
         If the document was created successfully, then the `Location` header
         contains the path to the newly created document. The `ETag` header field
         contains the revision of the document. Both are only set in the single
         document case.
 
-        If `silent` is not set to `true`, the body of the response contains a
+        Unless `silent` is set to `true`, the body of the response contains a
         JSON object with the following attributes:
-
-          - `_id` contains the document identifier of the newly created document
-          - `_key` contains the document key
-          - `_rev` contains the document revision
+        - `_id`, containing the document identifier with the format `<collection-name>/<document-key>`.
+        - `_key`, containing the document key that uniquely identifies a document within the collection.
+        - `_rev`, containing the document revision.
 
         If the collection parameter `waitForSync` is `false`, then the call
         returns as soon as the document has been accepted. It does not wait
@@ -690,8 +691,8 @@ paths:
         Replaces the specified document with the one in the body, provided there is
         such a document and no precondition is violated.
 
-        The value of the `_key` attribute as well as attributes
-        used as sharding keys may not be changed.
+        The values of the `_key`, `_id`, and `_rev` system attributes as well as
+        attributes used as sharding keys cannot be changed.
 
         If the `If-Match` header is specified and the revision of the
         document in the database is unequal to the given revision, the
@@ -725,12 +726,12 @@ paths:
         applied. The `waitForSync` query parameter cannot be used to disable
         synchronization for collections that have a default `waitForSync` value
         of `true`.
-
-        If `silent` is not set to `true`, the body of the response contains a JSON
-        object with the information about the identifier and the revision. The attribute
-        `_id` contains the known *document ID* of the updated document, `_key`
-        contains the key which uniquely identifies a document in a given collection,
-        and the attribute `_rev` contains the new document revision.
+        
+        Unless `silent` is set to `true`, the body of the response contains a
+        JSON object with the following attributes:
+        - `_id`, containing the document identifier with the format `<collection-name>/<document-key>`.
+        - `_key`, containing the document key that uniquely identifies a document within the collection.
+        - `_rev`, containing the new document revision.
 
         If the query parameter `returnOld` is `true`, then
         the complete previous revision of the document
@@ -954,8 +955,8 @@ paths:
         yet exist, and overwritten in the existing document if they do exist
         there.
 
-        The value of the `_key` attribute as well as attributes
-        used as sharding keys may not be changed.
+        The values of the `_key`, `_id`, and `_rev` system attributes as well as
+        attributes used as sharding keys cannot be changed.
 
         Setting an attribute value to `null` in the patch document causes a
         value of `null` to be saved for the attribute by default.
@@ -992,12 +993,12 @@ paths:
         applied. The `waitForSync` query parameter cannot be used to disable
         synchronization for collections that have a default `waitForSync` value
         of `true`.
-
-        If `silent` is not set to `true`, the body of the response contains a JSON
-        object with the information about the identifier and the revision. The attribute
-        `_id` contains the known *document ID* of the updated document, `_key`
-        contains the key which uniquely identifies a document in a given collection,
-        and the attribute `_rev` contains the new document revision.
+        
+        Unless `silent` is set to `true`, the body of the response contains a
+        JSON object with the following attributes:
+        - `_id`, containing the document identifier with the format `<collection-name>/<document-key>`.
+        - `_key`, containing the document key that uniquely identifies a document within the collection.
+        - `_rev`, containing the new document revision.
 
         If the query parameter `returnOld` is `true`, then
         the complete previous revision of the document
@@ -1238,11 +1239,11 @@ paths:
     delete:
       operationId: deleteDocument
       description: |
-        If `silent` is not set to `true`, the body of the response contains a JSON
-        object with the information about the identifier and the revision. The attribute
-        `_id` contains the known *document ID* of the removed document, `_key`
-        contains the key which uniquely identifies a document in a given collection,
-        and the attribute `_rev` contains the document revision.
+        Unless `silent` is set to `true`, the body of the response contains a
+        JSON object with the following attributes:
+        - `_id`, containing the document identifier with the format `<collection-name>/<document-key>`.
+        - `_key`, containing the document key that uniquely identifies a document within the collection.
+        - `_rev`, containing the document revision.
 
         If the `waitForSync` parameter is not specified or set to `false`,
         then the collection's default `waitForSync` behavior is applied.
@@ -1451,11 +1452,11 @@ especially in a cluster deployment.
 ArangoDB continues to process the remaining operations should an error
 occur during the processing of one operation. Errors are returned _inline_ in
 the response body as an error document (see below for more details).
-Additionally, the `X-Arango-Error-Codes` header contains a map of the
-error codes that occurred together with their multiplicities, like
-`1205:10,1210:17` which means that in 10 cases the error 1205
-(illegal document handle) and in 17 cases the error 1210
-(unique constraint violated) has happened.
+Additionally, the `X-Arango-Error-Codes` header is set. It contains a
+map of the error codes and how often each kind of error occurred. For
+example, `1200:17,1205:10` means that in 17 cases the error 1200
+("revision conflict") has happened, and in 10 cases the error 1205
+("illegal document handle").
 
 Generally, the bulk operations expect an input array and the result body
 contains a JSON array of the same length.
@@ -1468,6 +1469,13 @@ paths:
     put:
       operationId: getDocuments
       description: |
+        {{</* warning */>}}
+        The endpoint for getting multiple documents is the same as for replacing
+        multiple documents but with an additional query parameter:
+        `PUT /_api/document/{collection}?onlyget=true`. This is because a lot of
+        software does not support payload bodies in `GET` requests.
+        {{</* /warning */>}}
+
         Returns the documents identified by their `_key` in the body objects.
         The body of the request _must_ contain a JSON array of either
         strings (the `_key` values to lookup) or search documents.
@@ -1481,9 +1489,10 @@ paths:
         are treated as hints to improve performance. Should the shard keys
         values be incorrect ArangoDB may answer with a *not found* error.
 
-        The returned array of documents contain three special attributes: `_id` containing the document
-        identifier, `_key` containing key which uniquely identifies a document
-        in a given collection and `_rev` containing the revision.
+        The returned array of documents contain three special attributes: 
+        - `_id`, containing the document identifier with the format `<collection-name>/<document-key>`.
+        - `_key`, containing the document key that uniquely identifies a document within the collection.
+        - `_rev`, containing the document revision.
       parameters:
         - name: collection
           in: path
@@ -1593,7 +1602,8 @@ paths:
       description: |
         Creates new documents from the documents given in the body, unless there
         is already a document with the `_key` given. If no `_key` is given, a new
-        unique `_key` is generated automatically.
+        unique `_key` is generated automatically. The `_id` is automatically
+        set in both cases, derived from the collection name and `_key`.
 
         The result body contains a JSON array of the
         same length as the input array, and each entry contains the result
@@ -1601,15 +1611,15 @@ paths:
         the entry is a document with attributes `error` set to `true` and
         errorCode set to the error code that has happened.
 
-        Possibly given `_id` and `_rev` attributes in the body are always ignored,
-        the URL part or the query parameter collection respectively counts.
+        {{</* info */>}}
+        Any `_id` or `_rev` attribute specified in the body is ignored.
+        {{</* /info */>}}
 
-        If `silent` is not set to `true`, the body of the response contains an
+        Unless `silent` is set to `true`, the body of the response contains an
         array of JSON objects with the following attributes:
-
-          - `_id` contains the document identifier of the newly created document
-          - `_key` contains the document key
-          - `_rev` contains the document revision
+        - `_id`, containing the document identifier with the format `<collection-name>/<document-key>`.
+        - `_key`, containing the document key that uniquely identifies a document within the collection.
+        - `_rev`, containing the document revision.
 
         If the collection parameter `waitForSync` is `false`, then the call
         returns as soon as the documents have been accepted. It does not wait
@@ -1630,12 +1640,11 @@ paths:
         generated document, the complete new document is returned under
         the `new` attribute in the result.
 
-        Should an error have occurred with some of the documents
-        the additional HTTP header `X-Arango-Error-Codes` is set, which
-        contains a map of the error codes that occurred together with their
-        multiplicities, as in: `1205:10,1210:17` which means that in 10
-        cases the error 1205 "illegal document handle" and in 17 cases the
-        error 1210 "unique constraint violated" has happened.
+        Should an error have occurred with some of the documents,
+        the `X-Arango-Error-Codes` HTTP header is set. It contains a map of the
+        error codes and how often each kind of error occurred. For example,
+        `1200:17,1205:10` means that in 17 cases the error 1200 ("revision conflict")
+        has happened, and in 10 cases the error 1205 ("illegal document handle").
       parameters:
         - name: collection
           in: path
@@ -1866,8 +1875,8 @@ paths:
         ones in the body, the replaced documents are specified by the `_key`
         attributes in the body documents.
 
-        The value of the `_key` attribute as well as attributes
-        used as sharding keys may not be changed.
+        The values of the `_key`, `_id`, and `_rev` system attributes as well as
+        attributes used as sharding keys cannot be changed.
 
         If `ignoreRevs` is `false` and there is a `_rev` attribute in a
         document in the body and its value does not match the revision of
@@ -1892,11 +1901,13 @@ paths:
 
         The body of the response contains a JSON array of the same length
         as the input array with the information about the identifier and the
-        revision of the replaced documents. In each entry, the attribute
-        `_id` contains the known `document-id` of each updated document,
-        `_key` contains the key which uniquely identifies a document in a
-        given collection, and the attribute `_rev` contains the new document
-        revision. In case of an error or violated precondition, an error
+        revision of the replaced documents. In each element has the following
+        attributes:
+        - `_id`, containing the document identifier with the format `<collection-name>/<document-key>`.
+        - `_key`, containing the document key that uniquely identifies a document within the collection.
+        - `_rev`, containing the new document revision.
+
+        In case of an error or violated precondition, an error
         object with the attribute `error` set to `true` and the attribute
         `errorCode` set to the error code is built.
 
@@ -1909,12 +1920,11 @@ paths:
         the `new` attribute in the result.
 
         Note that if any precondition is violated or an error occurred with
-        some of the documents, the return code is still 201 or 202, but
-        the additional HTTP header `X-Arango-Error-Codes` is set, which
-        contains a map of the error codes that occurred together with their
-        multiplicities, as in: `1200:17,1205:10` which means that in 17
-        cases the error 1200 "revision conflict" and in 10 cases the error
-        1205 "illegal document handle" has happened.
+        some of the documents, the return code is still 201 or 202, but the
+        `X-Arango-Error-Codes` HTTP header is set. It contains a map of the
+        error codes and how often each kind of error occurred. For example,
+        `1200:17,1205:10` means that in 17 cases the error 1200 ("revision conflict")
+        has happened, and in 10 cases the error 1205 ("illegal document handle").
       requestBody:
         content:
           application/json:
@@ -1926,6 +1936,7 @@ paths:
                 documents:
                   description: |
                     A JSON representation of an array of documents.
+                    Each element has to contain a `_key` attribute.
                   type: json
       parameters:
         - name: collection
@@ -2037,9 +2048,9 @@ paths:
         not yet exist, and overwritten in the existing documents if they do
         exist there.
 
-        The value of the `_key` attribute as well as attributes
-        used as sharding keys may not be changed.
-
+        The values of the `_key`, `_id`, and `_rev` system attributes as well as
+        attributes used as sharding keys cannot be changed.
+        
         Setting an attribute value to `null` in the patch documents causes a
         value of `null` to be saved for the attribute by default.
 
@@ -2066,11 +2077,13 @@ paths:
 
         The body of the response contains a JSON array of the same length
         as the input array with the information about the identifier and the
-        revision of the updated documents. In each entry, the attribute
-        `_id` contains the known *document ID* of each updated document,
-        `_key` contains the key which uniquely identifies a document in a
-        given collection, and the attribute `_rev` contains the new document
-        revision. In case of an error or violated precondition, an error
+        revision of the updated documents. Each element has the following
+        attributes:
+        - `_id`, containing the document identifier with the format `<collection-name>/<document-key>`.
+        - `_key`, containing the document key that uniquely identifies a document within the collection.
+        - `_rev`, containing the new document revision.
+
+        In case of an error or violated precondition, an error
         object with the attribute `error` set to `true` and the attribute
         `errorCode` set to the error code is built.
 
@@ -2083,12 +2096,11 @@ paths:
         the `new` attribute in the result.
 
         Note that if any precondition is violated or an error occurred with
-        some of the documents, the return code is still 201 or 202, but
-        the additional HTTP header `X-Arango-Error-Codes` is set, which
-        contains a map of the error codes that occurred together with their
-        multiplicities, as in: `1200:17,1205:10` which means that in 17
-        cases the error 1200 "revision conflict" and in 10 cases the error
-        1205 "illegal document handle" has happened.
+        some of the documents, the return code is still 201 or 202, but the
+        `X-Arango-Error-Codes` HTTP header is set. It contains a map of the
+        error codes and how often each kind of error occurred. For example,
+        `1200:17,1205:10` means that in 17 cases the error 1200 ("revision conflict")
+        has happened, and in 10 cases the error 1205 ("illegal document handle").
       requestBody:
         content:
           application/json:
@@ -2099,7 +2111,8 @@ paths:
               properties:
                 documents:
                   description: |
-                    A JSON representation of an array of document updates as objects.
+                    A JSON representation of an array of document updates as objects. 
+                    Each element has to contain a `_key` attribute.
                   type: json
       parameters:
         - name: collection
@@ -2237,12 +2250,12 @@ paths:
         The body of the response is an array of the same length as the input
         array. For each input selector, the output contains a JSON object
         with the information about the outcome of the operation. If no error
-        occurred, an object is built in which the attribute `_id` contains
-        the known *document ID* of the removed document, `_key` contains
-        the key which uniquely identifies a document in a given collection,
-        and the attribute `_rev` contains the document revision. In case of
-        an error, an object with the attribute `error` set to `true` and
-        `errorCode` set to the error code is built.
+        occurred, then such an object has the following attributes:
+        - `_id`, containing the document identifier with the format `<collection-name>/<document-key>`.
+        - `_key`, containing the document key that uniquely identifies a document within the collection.
+        - `_rev`, containing the document revision.
+        In case of an error, the object has the `error` attribute set to `true`
+        and `errorCode` set to the error code.
 
         If the `waitForSync` parameter is not specified or set to `false`,
         then the collection's default `waitForSync` behavior is applied.
@@ -2255,12 +2268,11 @@ paths:
         is returned under the `old` attribute in the result.
 
         Note that if any precondition is violated or an error occurred with
-        some of the documents, the return code is still 200 or 202, but
-        the additional HTTP header `X-Arango-Error-Codes` is set, which
-        contains a map of the error codes that occurred together with their
-        multiplicities, as in: `1200:17,1205:10` which means that in 17
-        cases the error 1200 "revision conflict" and in 10 cases the error
-        1205 "illegal document handle" has happened.
+        some of the documents, the return code is still 200 or 202, but the
+        `X-Arango-Error-Codes` HTTP header is set. It contains a map of the
+        error codes and how often each kind of error occurred. For example,
+        `1200:17,1205:10` means that in 17 cases the error 1200 ("revision conflict")
+        has happened, and in 10 cases the error 1205 ("illegal document handle").
       requestBody:
         content:
           application/json:
@@ -2271,7 +2283,8 @@ paths:
               properties:
                 documents:
                   description: |
-                    A JSON array of strings or documents.
+                    A JSON representation of an array of document updates as objects. 
+                    Each element has to contain a `_key` attribute.
                   type: json
       parameters:
         - name: collection
