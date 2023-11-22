@@ -126,6 +126,23 @@ if the request body was an empty array. Example:
 
 Now, a request like this succeeds and returns an empty array as response.
 
+#### Limit to the number of databases in a deployment
+
+<small>Introduced in: v3.10.10</small>
+
+The new `--database.max-databases` startup option can cap the number of databases
+and creating databases using the `POST /_api/database` endpoint can thus now fail
+for this reason if your deployment is at or above the configured maximum. Example:
+
+```json
+{
+  "code": 400,
+  "error": true,
+  "errorMessage": "unable to create additional database because it would exceed the configured maximum number of databases (2)",
+  "errorNum": 32
+}
+```
+
 ### Endpoint return value changes
 
 - Since ArangoDB 3.8, there have been two APIs for retrieving the metrics in two
@@ -806,6 +823,18 @@ The following metrics have been added:
 |:------|:------------|
 | `arangodb_file_descriptors_limit` | System limit for the number of open files for the arangod process. |
 | `arangodb_file_descriptors_current` | Number of file descriptors currently opened by the arangod process. |
+
+---
+
+<small>Introduced in: v3.10.11</small>
+
+The following metrics have been added to improve the observability of in-memory
+cache subsystem:
+
+- `rocksdb_cache_free_memory_tasks_total`
+- `rocksdb_cache_free_memory_tasks_duration_total`
+- `rocksdb_cache_migrate_tasks_total`
+- `rocksdb_cache_migrate_tasks_duration_total`
 
 #### Pregel API
 

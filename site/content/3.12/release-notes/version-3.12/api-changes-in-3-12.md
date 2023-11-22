@@ -86,6 +86,14 @@ for this reason if your deployment is at or above the configured maximum. Exampl
 }
 ```
 
+#### Adjustable Stream Transaction size
+
+The [Stream Transactions HTTP API](../../develop/http-api/transactions/stream-transactions.md)
+may now allow larger transactions or be limited to smaller transactions because
+the maximum transaction size can now be configured with the
+`--transaction.streaming-max-transaction-size` startup option.
+The default value remains 128 MiB.
+
 ### Privilege changes
 
 
@@ -143,13 +151,30 @@ produced no warnings.
 #### Metrics API
 
 The metrics endpoint includes the following new metrics about AQL queries,
-ongoing dumps, and ArangoSearch execution threads:
+ongoing dumps, ArangoSearch parallelism and used file descriptors:
 
 - `arangodb_aql_cursors_active`
 - `arangodb_dump_memory_usage`
 - `arangodb_dump_ongoing`
 - `arangodb_dump_threads_blocked_total`
 - `arangodb_search_execution_threads_demand`
+- `arangodb_search_file_descriptors`
+
+The following new metrics for improved memory observability have been added:
+
+- `arangodb_agency_node_memory_usage`
+- `arangodb_index_estimates_memory_usage`
+- `arangodb_internal_cluster_info_memory_usage`
+- `arangodb_requests_memory_usage`
+- `arangodb_revision_tree_buffered_memory_usage`
+- `arangodb_scheduler_queue_memory_usage`
+- `arangodb_scheduler_stack_memory_usage`
+- `arangodb_search_consolidations_memory_usage`
+- `arangodb_search_mapped_memory`
+- `arangodb_search_readers_memory_usage`
+- `arangodb_search_writers_memory_usage`
+- `arangodb_transactions_internal_memory_usage`
+- `arangodb_transactions_rest_memory_usage`
 
 ---
 
