@@ -273,7 +273,7 @@ commands:
               fi
 
               cd /home/circleci/project/docs-hugo/site
-              git config user.email "daniele@arangodb.com"
+              git config user.email "simran@arangodb.com"
               git config user.name "CircleCI Job"
               git add data/ content/
               git commit --allow-empty -m "[skip ci] Automatic commit of generated files from CircleCI"
@@ -340,7 +340,7 @@ jobs:
             cd docs-hugo/toolchain/arangoproxy
             git checkout -b update-vendor-$CIRCLE_BUILD_NUM
 
-            git config user.email "daniele@arangodb.com"
+            git config user.email "simran@arangodb.com"
             git config user.name "CircleCI Job"
             git add vendor/ go.mod go.sum
             git commit --allow-empty -m "[skip ci] Update ArangoProxy vendor/ folder"
