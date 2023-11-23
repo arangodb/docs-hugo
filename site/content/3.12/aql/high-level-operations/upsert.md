@@ -13,9 +13,12 @@ Only a single `UPSERT` statement per collection is allowed per AQL query, and
 it cannot be followed by read or write operations that access the same collection, by
 traversal operations, or AQL functions that can read documents.
 
-## Syntax
+## Exact-value matching syntax
 
-The syntax for upsert and repsert operations is:
+This syntax can only look up documents by exact-value matching and does not
+support arbitrary filter conditions.
+
+The exact-value matching syntax for upsert and repsert operations is:
 
 <pre><code>UPSERT <em>searchExpression</em>
 INSERT <em>insertExpression</em>
@@ -62,6 +65,49 @@ UPDATE { logins: OLD.logins + 1 } IN users
 
 Note that in the `UPDATE` case it is possible to refer to the previous version of the
 document using the `OLD` pseudo-value.
+
+## Filter matching syntax (experimental)
+
+The alternative syntax for `UPSERT` operations allows you to use dynamic
+attribute names to look up documents. This means that the expression you use to
+look up a document does not have to be an object literal.
+
+<pre><code>UPSERT FILTER<em>filter-condition</em>
+INSERT <em>insertExpression</em>
+UPDATE <em>updateExpression</em>
+IN <em>collection</em></code></pre>
+
+<pre><code>UPSERT FILTER<em>filter-condition</em>
+INSERT <em>insertExpression</em>
+REPLACE <em>updateExpression</em>
+IN <em>collection</em></code></pre>
+
+The arbitrary filter condition for the lookup can make use of the pseudo-variable
+`CURRENT` and it can access the document and apply more filters on it than just
+equality matches. Example:
+
+```aql
+UPSERT FILTER CURRENT.name == 'superuser'
+INSERT { name: 'superuser', logins: 1, dateCreated: DATE_NOW() }
+UPDATE { logins: OLD.logins + 1 } IN users
+```
+
+The `FILTER` statement can also use operators such as `&&` and `||` to make
+more complex filter conditions.
+
+```aql
+UPSERT FILTER CURRENT.name == 'superuser' && CURRENT.active == true && (LOWER(CURRENT.member) == true || CURRENT.age == 33)
+INSERT { name: 'superuser', logins: 1, dateCreated: DATE_NOW() }
+UPDATE { logins: OLD.logins + 1 } IN users
+```
+
+If no document is found in the collection which fits the `FILTER` condition,
+then the `INSERT` operation is executed.
+If exactly one document is found in the collection which fits the `FILTER`
+condition, then the `UPDATE` operation is executed on that document.
+If many documents are found in the collection which fit the `FILTER`
+condition, then the first found document that satisfies the condition is
+updated/replaced.
 
 ## Query options
 

@@ -130,52 +130,48 @@ Swagger 2.x compatibility.
 
 ## AQL
 
-### Filter conditions in `UPSERT` operations (experimental)
+### Filter matching syntax in `UPSERT` operations (experimental)
 
-Version 3.12 introduces an alternative syntax for `UPSERT` operations that
-allows you to use dynamic attribute names to look up documents. Previously,
+Version 3.12 introduces an alternative syntax for
+[`UPSERT` operations](../../aql/high-level-operations/upsert.md) that allows
+you to use dynamic attribute names to look up documents. Previously,
 the expression used to look up a document had to be an object literal.
+
+You can now use a `FILTER` statement for the `UPSERT` operation. The arbitrary
+filter condition for the lookup can make use of the pseudo-variable `CURRENT`
+and it can access the document and apply more filters on it than just
+equality matches.
 
 {{< tabs groupid="UPSERT syntax" >}}
 
 {{< tab name="Exact-value matching" >}}
 ```aql
-UPSERT <lookup-document>
-INSERT ...
-UPDATE|REPLACE ...
-IN <collection>
+UPSERT { name: 'superuser' }
+INSERT { name: 'superuser', logins: 1, dateCreated: DATE_NOW() }
+UPDATE { logins: OLD.logins + 1 } IN users
 ```
 {{< /tab >}}
 
 {{< tab name="Using FILTER conditions" >}}
 ```aql
-UPSERT FILTER <filter-condition>
-INSERT ...
-UPDATE|REPLACE ...
-IN <collection>
+UPSERT FILTER CURRENT.name == 'superuser'
+INSERT { name: 'superuser', logins: 1, dateCreated: DATE_NOW() }
+UPDATE { logins: OLD.logins + 1 } IN users
 ```
 {{< /tab >}}
 
 {{< /tabs >}}
 
-The arbitrary filter condition for the lookup can make use of the pseudo-variable
-`CURRENT`, and it can access the document and apply more filters on it than just
-equality matches. Example:
+The `FILTER` statement can also use operators such as `&&` and `||` to make
+more complex filter conditions.
 
 ```aql
-UPSERT FILTER CURRENT.category == 'test && CURRENT.dateTime >= ... && CURRENT.dateTime < ... && CURRENT.status != 'inactive'
-INSERT ...
-UPDATE|REPLACE ...
-IN <collection>
+UPSERT FILTER CURRENT.name == 'superuser' && CURRENT.active == true && (LOWER(CURRENT.member) == true || CURRENT.age == 33)
+INSERT { name: 'superuser', logins: 1, dateCreated: DATE_NOW() }
+UPDATE { logins: OLD.logins + 1 } IN users
 ```
 
-If no document is found in the collection which fits the `FILTER` condition,
-then the `INSERT` operation is executed.
-If exactly one document is found in the collection which fits the `FILTER`
-condition, then the `UPDATE` operation is executed on that document.
-If many documents are found in the collection which fit the `FILTER`
-condition, then the first found document that satisfies the condition is
-updated/replaced.
+Read more about [`UPSERT` operations](../../aql/high-level-operations/upsert.md) in AQL.
 
 ## Indexing
 
