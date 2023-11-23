@@ -205,7 +205,7 @@ RETURN { doc: NEW, type: OLD ? 'update' : 'insert' }
 
 ## Transactionality and Limitations
 
-- On a single server, upserts are generally executed transactioanlly in an
+- On a single server, upserts are generally executed transactionally in an
   all-or-nothing fashion.
 
   For sharded collections in cluster deployments, the entire query and/or upsert
@@ -225,7 +225,7 @@ RETURN { doc: NEW, type: OLD ? 'update' : 'insert' }
   This is only an issue if you write a query where your search condition would
   hit the same document multiple times, and only if you have large transactions.
   You can adjust the behavior of the RocksDB storage engine by increasing the
-  `intermediateCommit` thresholds for data and operation counts.
+  `intermediateCommit` thresholds for data size and operation counts.
 
 - The lookup and the insert/update/replace parts are executed one after
   another, so that other operations in other threads can happen in
@@ -247,14 +247,19 @@ RETURN { doc: NEW, type: OLD ? 'update' : 'insert' }
   `exclusive` option to limit write concurrency for this collection to 1, which
   helps avoiding conflicts but is bad for throughput!
 
-- `UPSERT` operations do not observe own writes correctly in cluster deployments
-  for collections with more than a single shard, and also not if you use OneShard
-  but disable the `cluster-one-shard` optimizer rule.
+- `UPSERT` operations do not observe their own writes correctly in cluster
+  deployments. They only do for OneShard databases with the `cluster-one-shard`
+  optimizer rule active.
 
   If upserts in a query create new documents and would then semantically hit the
   same documents again, the operation may incorrectly use the `INSERT` branch to
   create more documents instead of the `UPDATE`/`REPLACE` branch to update the
   previously created documents.
+
+  If upserts find existing documents for updating/replacing, you can access the
+  current document via the `OLD` pseudo-variable, but this may hold the initial
+  version of the document from before the query even if it has been modified
+  by `UPSERT` in the meantime.
 
 - The lookup attribute(s) from the search expression should be indexed in order
   to improve the `UPSERT` performance. Ideally, the search expression contains the
