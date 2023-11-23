@@ -68,9 +68,9 @@ document using the `OLD` pseudo-value.
 
 ## Filter matching syntax
 
-The alternative syntax for `UPSERT` operations allows you to use dynamic
-attribute names to look up documents. This means that the expression you use to
-look up a document does not have to be an object literal.
+The alternative syntax for `UPSERT` operations allows you to use more flexible
+filter conditions to look up documents. This means that the expression you use
+to look up a document does not have to be an object literal.
 
 <pre><code>UPSERT FILTER<em>filter-condition</em>
 INSERT <em>insertExpression</em>
@@ -92,7 +92,8 @@ INSERT { name: 'superuser', logins: 1, dateCreated: DATE_NOW() }
 UPDATE { logins: OLD.logins + 1 } IN users
 ```
 
-While there can only be one `FILTER` statement in this version of `UPSERT`, the `FILTER` statement can also use operators such as `&&` and `||` to make
+While there can only be one `FILTER` statement in this version of `UPSERT`, the
+`FILTER` statement can also use operators such as `&&` and `||` to make
 more complex filter conditions.
 
 ```aql
