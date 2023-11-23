@@ -66,7 +66,7 @@ UPDATE { logins: OLD.logins + 1 } IN users
 Note that in the `UPDATE` case it is possible to refer to the previous version of the
 document using the `OLD` pseudo-value.
 
-## Filter matching syntax (experimental)
+## Filter matching syntax
 
 The alternative syntax for `UPSERT` operations allows you to use dynamic
 attribute names to look up documents. This means that the expression you use to
@@ -82,8 +82,8 @@ INSERT <em>insertExpression</em>
 REPLACE <em>updateExpression</em>
 IN <em>collection</em></code></pre>
 
-The arbitrary filter condition for the lookup can make use of the pseudo-variable
-`CURRENT` and it can access the document and apply more filters on it than just
+The filter condition for the lookup can make use of the pseudo-variable
+`CURRENT` to access the lookup document and apply more filters on it than just
 equality matches. Example:
 
 ```aql
@@ -92,7 +92,7 @@ INSERT { name: 'superuser', logins: 1, dateCreated: DATE_NOW() }
 UPDATE { logins: OLD.logins + 1 } IN users
 ```
 
-The `FILTER` statement can also use operators such as `&&` and `||` to make
+While there can only be one `FILTER` statement in this version of `UPSERT`, the `FILTER` statement can also use operators such as `&&` and `||` to make
 more complex filter conditions.
 
 ```aql

@@ -130,16 +130,16 @@ Swagger 2.x compatibility.
 
 ## AQL
 
-### Filter matching syntax in `UPSERT` operations (experimental)
+### Filter matching syntax in `UPSERT` operations
 
 Version 3.12 introduces an alternative syntax for
 [`UPSERT` operations](../../aql/high-level-operations/upsert.md) that allows
-you to use dynamic attribute names to look up documents. Previously,
+you to use more flexible filter conditions to look up documents. Previously,
 the expression used to look up a document had to be an object literal.
 
-You can now use a `FILTER` statement for the `UPSERT` operation. The arbitrary
+You can now use a `FILTER` statement for the `UPSERT` operation. The 
 filter condition for the lookup can make use of the pseudo-variable `CURRENT`
-and it can access the document and apply more filters on it than just
+to access the lookup document and apply more filters on it than just
 equality matches.
 
 {{< tabs groupid="UPSERT syntax" >}}
