@@ -54,6 +54,39 @@ for details.
 ## Analyzers
 
 
+## Improved memory accounting and usage
+
+Version 3.12 features multiple improvements to observability of ArangoDB
+deployments. Memory usage is more accurately tracked and additional metrics have
+been added for monitoring the memory consumption.
+
+AQL queries may now report a higher memory usage and thus run into memory limits
+sooner, see [Higher reported memory usage for AQL queries](incompatible-changes-in-3-12.md#higher-reported-memory-usage-for-aql-queries).
+
+Furthermore, the memory usage of some subsystems has been optimized. When
+dropping a database, all contained collections are now marked as dropped
+immediately. Ongoing operations on these collections can be stopped earlier, and
+memory for the underlying collections and indexes can be reclaimed sooner.
+Memory used for index selectively estimates is now also released early.
+ArangoSearch has a smaller memory footprint for removal operations now.
+
+The following new metrics have been added for memory observability:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_agency_node_memory_usage` | Memory used by Agency store/cache. |
+| `arangodb_index_estimates_memory_usage` | Total memory usage of all index selectivity estimates. |
+| `arangodb_internal_cluster_info_memory_usage` | Amount of memory spent in ClusterInfo. |
+| `arangodb_requests_memory_usage` | Memory consumed by incoming, queued, and currently processed requests. |
+| `arangodb_revision_tree_buffered_memory_usage` | Total memory usage of buffered updates for all revision trees. |
+| `arangodb_scheduler_queue_memory_usage` | Number of bytes allocated for tasks in the scheduler queue. |
+| `arangodb_scheduler_stack_memory_usage` | Approximate stack memory usage of worker threads. |
+| `arangodb_search_consolidations_memory_usage` | Amount of memory in bytes that is used for consolidating an ArangoSearch index. |
+| `arangodb_search_mapped_memory` | Amount of memory in bytes that is mapped for an ArangoSearch index. |
+| `arangodb_search_readers_memory_usage` | Amount of memory in bytes that is used for reading from an ArangoSearch index. |
+| `arangodb_search_writers_memory_usage` | Amount of memory in bytes that is used for writing to an ArangoSearch index. |
+| `arangodb_transactions_internal_memory_usage` | Total memory usage of internal transactions. |
+| `arangodb_transactions_rest_memory_usage` | Total memory usage of user transactions (excluding top-level AQL queries). |
 
 ## Web interface
 

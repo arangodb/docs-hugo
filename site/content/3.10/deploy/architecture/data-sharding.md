@@ -43,7 +43,7 @@ high, but the combined the computing power of these machines can be arbitrarily
 large. Adding more machines on-demand is also typically easier and more
 cost-effective than pre-provisioning a single large machine. Increased
 complexity in infrastructure can be managed using modern containerization and
-cluster orchestrations tools like [Kubernetes](../kubernetes/_index.md).
+cluster orchestrations tools like [Kubernetes](../kubernetes.md).
 
 ![Cluster Sharding](../../../images/cluster_sharding.jpg)
 
