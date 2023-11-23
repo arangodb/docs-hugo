@@ -364,13 +364,20 @@ function process_server() {
 
 ### Check status of ArangoDB instance until it is up and running
 function wait_for_arangodb_ready() {
+  attemps=1
   res=$(docker exec -it $1 wget -q -S -O - http://localhost:8529/_api/version 2>&1 | grep -m 1 HTTP/ | awk '{print $2}')
   if [ "$res" = "200" ]; then
     log "Server is ready: $1"
   else
     log "Server not ready: $1  $res"
-    sleep 2s
-    wait_for_arangodb_ready $1
+    let attemps++
+    if [ "$attemps" -gt 30 ]; then
+      log "Giving up waiting on server."
+      exit 1
+    else
+      sleep 2s
+      wait_for_arangodb_ready $1
+    fi
   fi
 }
 
