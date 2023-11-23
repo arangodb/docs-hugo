@@ -362,19 +362,37 @@ function process_server() {
   echo "</ul></li>" >> /home/summary.md
 }
 
+### Check status of ArangoDB instance until it is up and running
+function wait_for_arangodb_ready() {
+  res=$(docker exec -it $1 wget -q -S -O - http://localhost:8529/_api/version 2>&1 | grep -m 1 HTTP/ | awk '{print $2}')
+  if [ "$res" = "200" ]; then
+    log "Server is ready: $1"
+  else
+    log "Server not ready: $1  $res"
+    sleep 2s
+    wait_for_arangodb_ready $1
+  fi
+}
+
+
 ### Setup and run an ArangoDB docker image
 function run_arangodb_container() {
   container_name="$1"
   image_id="$2"
 
   if [ $TRAP == 0 ]; then
-    log "[run_arangodb_container] Run single server"
-    docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name" -v arangosh:/tmp -d "$image_id" --server.endpoint http+tcp://0.0.0.0:8529
-
     log "[run_arangodb_container] Run cluster server"
     docker run -d --net=docs_net -e ARANGO_NO_AUTH=1 --name="$container_name"_cluster \
       "$image_id" \
       arangodb --starter.local --starter.data-dir=./localdata
+
+    log "[run_arangodb_container] Run single server"
+    docker run -d --net docs_net -e ARANGO_NO_AUTH=1 --name "$container_name" -v arangosh:/tmp \
+      "$image_id" \
+      --server.endpoint http+tcp://0.0.0.0:8529
+
+    wait_for_arangodb_ready "$container_name"
+    wait_for_arangodb_ready "$container_name"_cluster
   fi
 }
 
