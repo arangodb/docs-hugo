@@ -18,7 +18,7 @@ This connector is compatible with:
 
 - Kafka `2.x` (from version `2.6` onward) and Kafka `3.x` (all versions)
 - JDK 8 and higher versions
-- ArangoDB 3.11 or higher versions (BTS-615)
+- ArangoDB 3.11.1 and higher versions
 
 ## Installation
 
