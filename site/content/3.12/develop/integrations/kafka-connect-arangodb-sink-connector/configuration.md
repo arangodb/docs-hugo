@@ -55,6 +55,13 @@ trigger tasks reconfiguration in case of changes.
 
 Interval for acquiring the host list.
 
+### connection.rebalance.interval.ms
+
+- type: _int_
+- default: `1_800_000` (30 min)
+
+Interval for re-balancing the connections across the endpoints.
+
 ### connection.protocol
 
 - type: _string_
