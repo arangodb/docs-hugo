@@ -19,21 +19,21 @@ development effort.
 
 You can get started in a few easy steps.
 
-{{< tabs groupid="data-loader-steps" >}}
+{{< tabs "data-loader-steps" >}}
 
-{{< tab name="1. Create database" >}}
+{{< tab "1. Create database" >}}
 Choose an existing database or create a new one and enter a name for your new graph.
 {{< /tab >}}
 
-{{< tab name="2. Add files" >}}
+{{< tab "2. Add files" >}}
 Drag and drop your data files in CSV format.
 {{< /tab >}}
 
-{{< tab name="3. Design your graph" >}}
+{{< tab "3. Design your graph" >}}
 Model your graph schema by adding nodes and connecting them via edges.
 {{< /tab >}}
 
-{{< tab name="4. Import data" >}}
+{{< tab "4. Import data" >}}
 Once you are ready, save and start the import. The resulting graph is an
 [EnterpriseGraph](../../graphs/enterprisegraphs/_index.md) with its
 corresponding collections, available in your ArangoDB web interface.
