@@ -4,7 +4,7 @@ menuTitle: User Management
 weight: 30
 description: >-
   User management is possible in the web interface and in _arangosh_ in the
-  contect of the `_system` database
+  context of the `_system` database
 archetype: chapter
 ---
 Authentication needs to be enabled on the server in order to employ user
