@@ -180,6 +180,14 @@ to `update`:
 - `true`: objects are merged
 - `false`: existing document fields are overwritten
 
+### batch.size
+
+- type: _int_
+- default: `3_000`
+
+Specifies how many records to attempt to batch together for insertion or deletion
+into the destination collection.
+
 ### insert.timeout.ms
 
 - type: _int_
