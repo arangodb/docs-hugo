@@ -36,7 +36,7 @@ service arangodb restart
 ```
 
 User management is possible in the [web interface](../../../components/web-interface/users.md)
-while logged on to the *\_system* database and in
+while logged on to the `_system` database and in
 [arangosh](in-arangosh.md), as well as via the
 [HTTP API](../../../develop/http-api/users.md).
 
@@ -291,13 +291,13 @@ The access levels for databases and collections are resolved in the following wa
 
 For a database "*foo*":
 1. Check if there is a specific database grant for *foo*, if yes use the granted access level
-2. Choose the higher access level of::
+2. Choose the higher access level of:
   - A wildcard database grant ( for example `grantDatabase('user', '*', 'rw'`)
   - A database grant on the `_system` database
 
 For a collection named "*bar*":
 1. Check if there is a specific database grant for *bar*, if yes use the granted access level
-2. Choose the higher access level of::
+2. Choose the higher access level of:
   - Any wildcard access grant in the same database, or on `"*"` (in this example `grantCollection('user', 'foo', '*', 'rw')`) 
   - The access level for the current database (in this example `grantDatabase('user', 'foo', 'rw'`)
   - The access level for the `_system` database
@@ -323,7 +323,7 @@ user has *Administrate* access to the database. They have access level
 
 To modify these system collections you should always use the
 specialized APIs provided by ArangoDB. For example
-no user has access to the *\_users* collection in the *\_system*
+no user has access to the `_users` collection in the `_system`
 database. All changes to the access levels must be done using the
 *@arangodb/users* module, the `/_users/` API or the web interface.
 

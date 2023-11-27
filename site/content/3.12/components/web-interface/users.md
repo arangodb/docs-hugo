@@ -25,7 +25,7 @@ and their corresponding database access level for that user.
 ![User Permissions](../../../images/userPermissions.png)
 
 Please note that server access level follows from the access level on
-the database *\_system*. Furthermore, the default database access level
+the `_system` database. Furthermore, the default database access level
 for this user appear in the artificial row with the database name `*`.
 
 Below this table is another one for the collection category access
