@@ -9,7 +9,7 @@
       {{ if ne .name "" -}}
         <button data-tab-group="{{ $groupid }}" data-tab-item="{{ .name }}" class="tab-nav-button
           {{- cond (eq $idx 0) " selected" ""}}" onclick="switchTab('{{ $groupid }}','{{ .name }}',event)">
-          <span>{{ .name }}</span>
+          <span>{{ .name | markdownify }}</span>
         </button>
       {{ end -}}
     {{ end -}}
