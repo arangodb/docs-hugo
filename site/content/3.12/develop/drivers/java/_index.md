@@ -182,12 +182,12 @@ CompletableFuture<ArangoCursorAsync<Integer>> future2 = future1
 // ...
 ```
 
-## Data Definitions Classes
+## Data Definition Classes
 
-Classes used to exchange data definitions, in particular classes in packages 
+Classes used to exchange data definitions, in particular classes in the packages 
 `com.arangodb.entity.**` and `com.arangodb.model.**`, are meant to be serialized 
 and deserialized internally by the driver.
 
 The behavior to serialize and deserialize these classes is considered an internal 
-implementation detail and as such it might change without prior notice, while 
-keeping API compatibility with regard to public members of these classes.
+implementation detail, and as such, it might change without prior notice.
+The API with regard to the public members of these classes is kept compatible.
