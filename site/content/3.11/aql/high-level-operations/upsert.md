@@ -7,8 +7,8 @@ description: >-
   document if it does not exist
 archetype: default
 ---
-`UPSERT` looks up a single document that matches the provided example or filter
-conditions. If there is no match, an insert operation is executed to create a
+`UPSERT` looks up a single document that matches the provided example.
+If there is no match, an insert operation is executed to create a
 document. If a document is found, you can either update or replace the document.
 These subtypes are called **upsert** (update or insert) and **repsert**
 (replace or insert).
