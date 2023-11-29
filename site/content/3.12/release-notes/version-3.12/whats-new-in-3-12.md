@@ -130,19 +130,27 @@ Swagger 2.x compatibility.
 
 ## AQL
 
-### Filter matching syntax in `UPSERT` operations
+### Filter matching syntax for `UPSERT` operations
 
 Version 3.12 introduces an alternative syntax for
 [`UPSERT` operations](../../aql/high-level-operations/upsert.md) that allows
 you to use more flexible filter conditions to look up documents. Previously,
-the expression used to look up a document had to be an object literal.
+the expression used to look up a document had to be an object literal, and this
+is now called the "exact-value matching" syntax.
 
-You can now use a `FILTER` statement for the `UPSERT` operation. The 
-filter condition for the lookup can make use of the pseudo-variable `CURRENT`
-to access the lookup document and apply more filters on it than just
-equality matches.
+The new "filter matching" syntax lets you use a `FILTER` statement for the
+`UPSERT` operation. The filter condition for the lookup can make use of the
+`CURRENT` pseudo-variable to access the lookup document.
 
-{{< tabs groupid="UPSERT syntax" >}}
+{{< tabs groupid="upsert-syntax" >}}
+
+{{< tab name="Filter matching" >}}
+```aql
+UPSERT FILTER CURRENT.name == 'superuser'
+INSERT { name: 'superuser', logins: 1, dateCreated: DATE_NOW() }
+UPDATE { logins: OLD.logins + 1 } IN users
+```
+{{< /tab >}}
 
 {{< tab name="Exact-value matching" >}}
 ```aql
@@ -152,22 +160,15 @@ UPDATE { logins: OLD.logins + 1 } IN users
 ```
 {{< /tab >}}
 
-{{< tab name="Using FILTER conditions" >}}
-```aql
-UPSERT FILTER CURRENT.name == 'superuser'
-INSERT { name: 'superuser', logins: 1, dateCreated: DATE_NOW() }
-UPDATE { logins: OLD.logins + 1 } IN users
-```
-{{< /tab >}}
-
 {{< /tabs >}}
 
-The `FILTER` statement can also use operators such as `&&` and `||` to make
-more complex filter conditions.
+The `FILTER` expression can contain operators such as `AND` and `OR` to create
+complex filter conditions, and you can apply more filters on the `CURRENT`
+pseudo-variable than just equality matches.
 
 ```aql
-UPSERT FILTER CURRENT.name == 'superuser' && CURRENT.active == true && (LOWER(CURRENT.member) == true || CURRENT.age == 33)
-INSERT { name: 'superuser', logins: 1, dateCreated: DATE_NOW() }
+UPSERT FILTER CURRENT.age < 30 AND (STARTS_WITH(CURRENT.name, "Jo") OR CURRENT.gender IN ["f", "x"])
+INSERT { name: 'Jordan', age: 29, logins: 1, dateCreated: DATE_NOW() }
 UPDATE { logins: OLD.logins + 1 } IN users
 ```
 
