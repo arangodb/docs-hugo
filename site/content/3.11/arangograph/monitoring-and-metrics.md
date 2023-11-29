@@ -46,8 +46,12 @@ The **Metrics** section displays a chart-based representation depicting the
 resource utilization of DBServers and Coordinators within a specified timeframe.
 
 You can select one or more DBServers and choose **CPU**, **Memory**, or **Disk**
-to visualize their respective usage. Likewise, you can repeat the process for
-Coordinators.
+to visualize their respective usage. The search box enables you to easily find
+a server by its ID, particularly useful when having a large number of servers
+or when needing to quickly find a particular one among many.
+
+Similarly, you can repeat the process for Coordinators to see the **CPU** and
+**Memory** usage.
 
 ![Arangograph Monitoring Metrics Chart](../../images/arangograph-monitoring-metrics-chart.png)
 
