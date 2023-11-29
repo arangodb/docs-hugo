@@ -296,12 +296,12 @@ FOR u IN users
 On a single server, replace operations are executed transactionally in an
 all-or-nothing fashion.
 
-If the RocksDB engine is used and intermediate commits are enabled, a query may
-execute intermediate transaction commits in case the running transaction (AQL
-query) hits the specified size thresholds. In this case, the query's operations
-carried out so far are committed and not rolled back in case of a later
-abort/rollback. That behavior can be controlled by adjusting the intermediate
-commit settings for the RocksDB engine. 
+A query may execute intermediate transaction commits in case the running
+transaction (AQL query) hits the specified size thresholds. In this case, the
+query's operations carried out so far are committed and not rolled back in case
+of a later abort/rollback. This behavior can be controlled by adjusting the
+intermediate commit settings for the RocksDB engine. See
+[Known limitations for AQL queries](../fundamentals/limitations.md#storage-engine-properties).
 
 For sharded collections, the entire query and/or replace operation may not be
 transactional, especially if it involves different shards and/or DB-Servers.
