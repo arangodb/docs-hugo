@@ -46,7 +46,6 @@ The encryption feature has the following limitations:
   data you will need to take a backup first, then enable encryption and
   start your server on an empty data-directory, and finally restore your
   backup.
-- The Encryption feature requires the RocksDB storage engine.
 
 ## Encryption keys
 
@@ -76,16 +75,12 @@ to the server.
 Make sure to pass this option the very first time you start your database.
 You cannot encrypt a database that already exists.
 
-Note: You also have to activate the RocksDB storage engine.
-
 ### Encryption key stored in file
 
 Pass the following option to `arangod`:
 
 ```
-$ arangod \
-    --rocksdb.encryption-keyfile=/mytmpfs/mySecretKey \
-    --server.storage-engine=rocksdb
+$ arangod --rocksdb.encryption-keyfile=/mytmpfs/mySecretKey ...
 ```
 The file `/mytmpfs/mySecretKey` must contain the encryption key. This
 file must be secured, so that only `arangod` can access it. You should
@@ -98,9 +93,7 @@ creating an in-memory file-system under `/mytmpfs`.
 Pass the following option to `arangod`:
 
 ```
-$ arangod \
-    --rocksdb.encryption-key-generator=path-to-my-generator \
-    --server.storage-engine=rocksdb
+$ arangod --rocksdb.encryption-key-generator=path-to-my-generator ...
 ```
 
 The program `path-to-my-generator` output the encryption on standard
@@ -143,8 +136,7 @@ To enable smooth rollout of new keys you can use the new option
 _arangod_ will then store the master key encrypted with the provided secrets.
 
 ```
-$ arangod \
-    --rocksdb.encryption-keyfolder=/mytmpfs/mySecrets
+$ arangod --rocksdb.encryption-keyfolder=/mytmpfs/mySecrets ...
 ```
 
 To start an arangod instance only one of the secrets needs to be correct, 
