@@ -392,10 +392,10 @@ of removing unused segments after release of internal resources.
   Wait at least this many milliseconds between committing View data store
   changes and making documents visible to queries.
 
-  For the case where there are a lot of inserts/updates, a lower value, until
+  For the case where there are a lot of inserts/updates, a higher value, until
   commit, causes the index not to account for them and memory usage continues
   to grow.
-  For the case where there are a few inserts/updates, a higher value impacts
+  For the case where there are a few inserts/updates, a lower value impacts
   performance and wastes disk space for each commit call without any added
   benefits.
 
