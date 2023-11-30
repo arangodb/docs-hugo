@@ -1593,9 +1593,28 @@ The following system metrics have been added:
 | `arangodb_file_descriptors_limit` | System limit for the number of open files for the arangod process. |
 | `arangodb_file_descriptors_current` | Number of file descriptors currently opened by the arangod process. |
 
+### Memory usage of connection and request statistics
+
+<small>Introduced in: v3.10.12</small>
+
+The following metrics have been added:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_connection_statistics_memory_usage` | Total memory usage of connection statistics. |
+| `arangodb_request_statistics_memory_usage` | Total memory usage of request statistics. |
+
+If the `--server.statistics` startup option is set to `true`, then some
+connection and request statistics are built up in memory for incoming request.
+It is expected that the memory usage reported by these metrics remains
+relatively constant over time. It may grow only when there are bursts of new
+connections. Some memory is pre-allocated at startup for higher efficiency. If the
+`--server.statistics` startup option is set to `false`, then no memory will be
+allocated for connection statistics.
+
 ### More instant Hot Backups
 
-<small>Introduced in: v3.10.10, v3.11.3</small>
+<small>Introduced in: v3.10.10</small>
 
 Cluster deployments no longer wait for all in-progress transactions to get
 committed when a user requests a Hot Backup. The waiting could cause deadlocks
