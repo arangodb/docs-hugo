@@ -14,7 +14,7 @@ performance, resource utilization, and its overall status.
 The key features include:
 - **Built-in monitoring**: Get immediate access to monitoring capabilities for
   your deployments without any additional setup.
-- **Chart-based metrics representation**: Visualize the usage of the DBServers
+- **Chart-based metrics representation**: Visualize the usage of the DB-Servers
   and Coordinators over a selected timeframe.
 - **Integration with Prometheus and Grafana**: Connect your metrics to Prometheus
   and Grafana for in-depth visualization and analysis.
@@ -24,11 +24,11 @@ click **Monitoring** in the navigation.
 
 ![ArangoGraph Monitoring tab](../../images/arangograph-monitoring-tab.png)
 
-## Build-in monitoring and metrics
+## Built-in monitoring and metrics
 
 ### In the **Servers** section
 
-The **Servers** section offers an overview of the DBServers, Coordinators,
+The **Servers** section offers an overview of the DB-Servers, Coordinators,
 and Agents used in your deployment. It provides essential details such as each
 server's ID and type, the running ArangoDB version, as well as their memory,
 CPU, and disk usage.
@@ -40,7 +40,7 @@ occurs.
 
 Additionally, you can access detailed logs via the **Logs** button. This allows
 you to apply filters to obtain logs from all server types or select specific ones
-(i.e. only Coordinators or only DBServers) within a timeframe. To download the
+(i.e. only Coordinators or only DB-Servers) within a timeframe. To download the
 logs, click the **Save** button.
 
 ![ArangoGraph Monitoring Servers](../../images/arangograph-monitoring-servers.png)
@@ -48,9 +48,9 @@ logs, click the **Save** button.
 ### In the **Metrics** section
 
 The **Metrics** section displays a chart-based representation depicting the
-resource utilization of DBServers and Coordinators within a specified timeframe.
+resource utilization of DB-Servers and Coordinators within a specified timeframe.
 
-You can select one or more DBServers and choose **CPU**, **Memory**, or **Disk**
+You can select one or more DB-Servers and choose **CPU**, **Memory**, or **Disk**
 to visualize their respective usage. The search box enables you to easily find
 a server by its ID, particularly useful when having a large number of servers
 or when needing to quickly find a particular one among many.
@@ -63,7 +63,7 @@ Similarly, you can repeat the process for Coordinators to see the **CPU** and
 ## Connect with Prometheus and Grafana
 
 The ArangoGraph Insights Platform provides metrics for each deployment in a 
-[Prometheus](https://prometheus.io/) compatible format.
+[Prometheus](https://prometheus.io/)-compatible format.
 You can use these metrics to gather detailed insights into the current
 and previous states of your deployment.
 Once metrics are collected by Prometheus, you can inspect them using tools
