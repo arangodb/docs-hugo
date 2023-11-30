@@ -304,8 +304,9 @@ of the RocksDB storage engine.
 - Consider a maximum size of 50-75 kB _per document_ as a good rule of thumb.
   This allows you to maintain steady write throughput even under very high load.
 - Transactions are held in-memory before they are committed.
-  This means that transactions have to be split if they become too big, see the
-  [limitations section](transactions/limitations.md#rocksdb-storage-engine).
+  This means that certain transactions have to be split if they become too big.
+  See [Known limitations for AQL queries](../aql/fundamentals/limitations.md#storage-engine-properties)
+  for details.
 
 ### Improving Update Query Performance
 

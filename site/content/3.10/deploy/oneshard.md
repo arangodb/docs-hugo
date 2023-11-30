@@ -276,10 +276,13 @@ on the leader shards in a cluster, a few things need to be considered:
 - The collection option `writeConcern: 2` makes sure that a transaction is only
   successful if at least one follower shard is in sync with the leader shard,
   for a total of two shard replicas.
-- The RocksDB engine supports intermediate commits for larger document
-  operations, potentially breaking the atomicity of transactions. To prevent
+- The RocksDB storage engine uses intermediate commits for larger document
+  operations carried out by standalone AQL queries
+  (outside of JavaScript Transactions and Stream Transactions).
+  This potentially breaks the atomicity of transactions. To prevent
   this for individual queries you can increase `intermediateCommitSize`
   (default 512 MB) and `intermediateCommitCount` accordingly as query option.
+  Also see [Known limitations for AQL queries](../aql/fundamentals/limitations.md#storage-engine-properties).
 
 ### Limitations
 

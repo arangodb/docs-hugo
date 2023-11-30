@@ -39,30 +39,21 @@ the same time, a write conflict is raised. It is possible to exclusively lock
 collections when executing AQL. This avoids write conflicts, but also inhibits
 concurrent writes.
 
-ArangoDB uses RocksDB's transactions to implement the ArangoDB transaction
-handling. Therefore, the same restrictions apply for ArangoDB transactions when
-using the RocksDB engine.
+ArangoDB uses RocksDB transactions to implement the transaction handling for
+standalone AQL queries (outside of JavaScript Transactions and Stream Transactions).
 
-RocksDB imposes a limit on the transaction size. It is optimized to
-handle small transactions very efficiently, but is effectively limiting
-the total size of transactions. If you have an operation that modifies a lot of
-documents, it is necessary to commit data in-between. This is done automatically
-for AQL by default. Transactions that get too big (in terms of number of
-operations involved or the total size of data modified by the transaction)
+RocksDB imposes a limit on the transaction size. It is optimized to handle small
+transactions very efficiently, but is effectively limiting the total size of
+transactions. If you have an AQL query that modifies a lot of documents, it is
+necessary to commit data in-between. Transactions that get too big (in terms of
+number of operations involved or the total size of data modified by the transaction)
 are committed automatically. Effectively, this means that big user transactions
 are split into multiple smaller RocksDB transactions that are committed individually.
 The entire user transaction does not necessarily have ACID properties in this case.
 
-The threshold values for transaction sizes can be configured globally using the
-startup options
-
-- [`--rocksdb.intermediate-commit-size`](../../components/arangodb-server/options.md#--rocksdbintermediate-commit-size)
-
-- [`--rocksdb.intermediate-commit-count`](../../components/arangodb-server/options.md#--rocksdbintermediate-commit-count)
-
-- [`--rocksdb.max-transaction-size`](../../components/arangodb-server/options.md#--rocksdbmax-transaction-size)
-
-It is also possible to override these thresholds per transaction.
+The threshold values for transaction sizes can be configured globally as well as
+overridden per transaction. See
+[Known limitations for AQL queries](../../aql/fundamentals/limitations.md#storage-engine-properties).
 
 ### Write-ahead log
 

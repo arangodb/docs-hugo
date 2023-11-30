@@ -144,7 +144,7 @@ paths:
 ## Batch
 
 The *batch* method will create a snapshot of the current state that then can be
-dumped. A batchId is required when using the dump API with RocksDB.
+dumped.
 
 ### Create a new dump batch
 
