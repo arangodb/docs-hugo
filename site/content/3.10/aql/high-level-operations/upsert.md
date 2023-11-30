@@ -3,10 +3,16 @@ title: '`UPSERT` operation in AQL'
 menuTitle: UPSERT
 weight: 70
 description: >-
-  The `UPSERT` operations either modifies an existing document, or creates a new
+  An `UPSERT` operation either modifies an existing document, or creates a new
   document if it does not exist
 archetype: default
 ---
+`UPSERT` looks up a single document that matches the provided example.
+If there is no match, an insert operation is executed to create a
+document. If a document is found, you can either update or replace the document.
+These subtypes are called **upsert** (update or insert) and **repsert**
+(replace or insert).
+
 Each `UPSERT` operation is restricted to a single collection, and the 
 [collection name](../../concepts/data-structure/collections.md#collection-names) must not be dynamic.
 Only a single `UPSERT` statement per collection is allowed per AQL query, and 
@@ -15,12 +21,14 @@ traversal operations, or AQL functions that can read documents.
 
 ## Syntax
 
-The syntax for upsert and repsert operations is:
+The syntax for an upsert operation:
 
 <pre><code>UPSERT <em>searchExpression</em>
 INSERT <em>insertExpression</em>
 UPDATE <em>updateExpression</em>
 IN <em>collection</em></code></pre>
+
+The syntax for a repsert operation:
 
 <pre><code>UPSERT <em>searchExpression</em>
 INSERT <em>insertExpression</em>
@@ -29,30 +37,31 @@ IN <em>collection</em></code></pre>
 
 Both variants can optionally end with an `OPTIONS { … }` clause.
 
-When using the `UPDATE` variant of the upsert operation, the found document
-will be partially updated, meaning only the attributes specified in
-*updateExpression* will be updated or added. When using the `REPLACE` variant
-of upsert (repsert), existing documents will be replaced with the contexts of
+When using the `UPDATE` variant of the `UPSERT` operation, the found document
+is partially updated, meaning only the attributes specified in
+*updateExpression* are updated or added. When using the `REPLACE` variant
+of `UPSERT` (repsert), the found document is replaced with the content of
 *updateExpression*.
 
-Updating a document will modify the document's revision number with a server-generated value.
-The system attributes `_id`, `_key` and `_rev` cannot be updated, `_from` and `_to` can.
+Updating a document modifies the document's revision number with a server-generated value.
+The system attributes `_id`, `_key`, and `_rev` cannot be updated, but `_from` and `_to`
+can be modified.
 
-The *searchExpression* contains the document to be looked for. It must be an object 
-literal without dynamic attribute names. In case no such document can be found in
-*collection*, a new document will be inserted into the collection as specified in the
-*insertExpression*. 
+The *searchExpression* contains the document to be looked for. It must be an
+**object literal** (`UPSERT { <key>: <value>, ... } ...`) without dynamic
+attribute names. In case no such document can be found in *collection*, a new
+document is inserted into the collection as specified in the *insertExpression*.
 
-In case at least one document in *collection* matches the *searchExpression*, it will
-be updated using the *updateExpression*. When more than one document in the collection
-matches the *searchExpression*, it is undefined which of the matching documents will
-be updated. It is therefore often sensible to make sure by other means (such as unique 
+In case at least one document in *collection* matches the *searchExpression*, it is
+updated using the *updateExpression*. When more than one document in the collection
+matches the *searchExpression*, it is undefined which of the matching documents is
+updated. It is therefore often sensible to make sure by other means (such as unique
 indexes, application logic etc.) that at most one document matches *searchExpression*.
 
-The following query will look in the *users* collection for a document with a specific
-*name* attribute value. If the document exists, its *logins* attribute will be increased
-by one. If it does not exist, a new document will be inserted, consisting of the
-attributes *name*, *logins*, and *dateCreated*:
+The following query looks for a document in the `users` collection with a specific
+`name` attribute value. If the document exists, its *logins* attribute is increased
+by one. If it does not exist, a new document is inserted, consisting of the
+attributes `name`, `logins`, and `dateCreated`:
 
 ```aql
 UPSERT { name: 'superuser' } 
@@ -96,7 +105,7 @@ inside of arrays (e.g. `{ attr: [ { nested: null } ] }`).
 
 ### `mergeObjects`
 
-The option `mergeObjects` controls whether object contents will be
+The option `mergeObjects` controls whether object contents are
 merged if an object attribute is present in both the `UPDATE` query and in the 
 to-be-updated document.
 
@@ -125,9 +134,9 @@ FOR i IN 1..1000
 ```
 
 {{< info >}}
-You need to add the `_rev` value in the *updateExpression*. It will not be used
+You need to add the `_rev` value in the *updateExpression*. It is not used
 within the *searchExpression*. Even worse, if you use an outdated `_rev` in the
-*searchExpression*, `UPSERT` will trigger the `INSERT` path instead of the
+*searchExpression*, `UPSERT` triggers the `INSERT` path instead of the
 `UPDATE` path, because it has not found a document exactly matching the
 *searchExpression*.
 {{< /info >}}
@@ -153,7 +162,7 @@ FOR i IN 1..1000
 
 ### `indexHint`
 
-The `indexHint` option will be used as a hint for the document lookup
+The `indexHint` option is used as a hint for the document lookup
 performed as part of the `UPSERT` operation, and can help in cases such as
 `UPSERT` not picking the best index automatically.
 
@@ -166,6 +175,8 @@ UPSERT { a: 1234 }
 
 The index hint is passed through to an internal `FOR` loop that is used for the
 lookup. Also see [`indexHint` Option of the `FOR` Operation](for.md#indexhint).
+
+Inverted indexes cannot be used for `UPSERT` lookups.
 
 ### `forceIndexHint`
 
@@ -185,11 +196,11 @@ UPSERT { a: 1234 }
 `UPSERT` statements can optionally return data. To do so, they need to be followed
 by a `RETURN` statement (intermediate `LET` statements are allowed, too). These statements
 can optionally perform calculations and refer to the pseudo-values `OLD` and `NEW`.
-In case the upsert performed an insert operation, `OLD` will have a value of `null`.
-In case the upsert performed an update or replace operation, `OLD` will contain the
+In case the upsert performed an insert operation, `OLD` has a value of `null`.
+In case the upsert performed an update or replace operation, `OLD` contains the
 previous version of the document, before update/replace.
 
-`NEW` will always be populated. It will contain the inserted document in case the
+`NEW` is always populated. It contains the inserted document in case the
 upsert performed an insert, or the updated/replaced document in case it performed an
 update/replace.
 
