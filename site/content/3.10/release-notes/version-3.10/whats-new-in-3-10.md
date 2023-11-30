@@ -1610,7 +1610,7 @@ It is expected that the memory usage reported by these metrics remains
 relatively constant over time. It may grow only when there are bursts of new
 connections. Some memory is pre-allocated at startup for higher efficiency. If the
 `--server.statistics` startup option is set to `false`, then no memory will be
-allocated for connection statistics.
+allocated for connection and request statistics.
 
 ### More instant Hot Backups
 
