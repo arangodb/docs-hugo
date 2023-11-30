@@ -33,6 +33,11 @@ and Agents used in your deployment. It provides essential details such as each
 server's ID and type, the running ArangoDB version, as well as their memory,
 CPU, and disk usage.
 
+In case you need to perform a restart on a server, you can do so by using the
+**Gracefully restart this server** action button. This shuts down all services
+normally, allowing ongoing operations to finish gracefully before the restart
+occurs.
+
 Additionally, you can access detailed logs via the **Logs** button. This allows
 you to apply filters to obtain logs from all server types or select specific ones
 (i.e. only Coordinators or only DBServers) within a timeframe. To download the
