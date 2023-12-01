@@ -98,9 +98,7 @@ paths:
         new user key.
 
         This is a protected API and can only be executed with superuser rights.
-        This API is not available on coordinator nodes.
-
-        The API returns HTTP 404 in case encryption key rotation is disabled.
+        This API is not available on Coordinator nodes.
       responses:
         '200':
           description: |
