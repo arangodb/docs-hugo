@@ -77,8 +77,9 @@ deployment in your browser.
 
 {{< info >}}
 The well-known certificate is a wildcard certificate and cannot contain
-Subject Alternative Names (SANs). To include a SAN field, which is optionally
-for private endpoints, please use the self-signed certificate option.
+Subject Alternative Names (SANs). To include a SAN field, which is needed
+for private endpoints running on Azure, please use the self-signed certificate
+option.
 {{< /info >}}
 
 ### Self-signed X.509 certificates

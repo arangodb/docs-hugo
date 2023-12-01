@@ -55,14 +55,15 @@ service attachment that you need during the creation of your private endpoint(s)
 5. Enter one or more Google project names. You can also add them later in the summary view.
    Click **Next**.
    ![ArangoGraph Deployment Private Endpoint Setup 2](../../../images/arangograph-gcp-private-endpoint.png)
-6. Configure custom DNS names. This step is optional and disabled by default,
-   you can also add or change them later from the summary view.
+6. Configure custom DNS names. This step is optional and disabled by default.
+   Note that, once enabled, this setting is immutable and cannot be reverted.
    Click **Next** to continue.
    {{< info >}}
    By default, your private endpoint is available to all VPCs that connect to it
-   at `https://<endpoint_id>-pe.arangodb.cloud` with the well-known certificate.
+   at `https://<endpoint_id>-pe.arangodb.cloud` with the
+   [well-known certificate](../security-and-access-control/x-509-certificates.md#well-known-x509-certificates).
    If the custom DNS is enabled, you will be responsible for the DNS of your
-   private endpoints. 
+   private endpoints.
    {{< /info >}}
    ![ArangoGraph Private Endpoint Custom DNS](../../../images/arangograph-gcp-custom-dns.png)
 7. Click **Confirm Settings** to change the deployment.
@@ -111,10 +112,8 @@ please contact support via **Request help** in the help menu.
    you can also add or change them later from the summary view.
    Click **Next** to continue.
    {{< info >}}
-   By default, your private endpoint is available to all VPCs that connect to it
-   at `https://<endpoint_id>-pe.arangodb.cloud` with the well-known certificate.
-   If the custom DNS is enabled, you will be responsible for the DNS of your
-   private endpoints. 
+   When using custom DNS names on private endpoints running on Azure, you need
+   to use the [self-signed certificate](../security-and-access-control/x-509-certificates.md#self-signed-x509-certificates).
    {{< /info >}}
 7. Click **Confirm Settings** to change the deployment.
 8. Back in the **Overview** page, scroll down to the **Private Endpoint** section
