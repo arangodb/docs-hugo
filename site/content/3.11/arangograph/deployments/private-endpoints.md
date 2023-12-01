@@ -55,9 +55,16 @@ service attachment that you need during the creation of your private endpoint(s)
 5. Enter one or more Google project names. You can also add them later in the summary view.
    Click **Next**.
    ![ArangoGraph Deployment Private Endpoint Setup 2](../../../images/arangograph-gcp-private-endpoint.png)
-6. Enter one or more alternate DNS names. This step is optional.
-   Continue with or without alternate DNS names entered by clicking **Next**.
-   The names can be changed later.
+6. Configure custom DNS names. This step is optional and disabled by default,
+   you can also add or change them later from the summary view.
+   Click **Next** to continue.
+   {{< info >}}
+   By default, your private endpoint is available to all VPCs that connect to it
+   at `https://<endpoint_id>-pe.arangodb.cloud` with the well-known certificate.
+   If the custom DNS is enabled, you will be responsible for the DNS of your
+   private endpoints. 
+   {{< /info >}}
+   ![ArangoGraph Private Endpoint Custom DNS](../../../images/arangograph-gcp-custom-dns.png)
 7. Click **Confirm Settings** to change the deployment.
 8. Back in the **Overview** page, scroll down to the **Private Endpoint** section
    that is now displayed to see the connection status and to change the
@@ -100,9 +107,15 @@ please contact support via **Request help** in the help menu.
    changed anymore once a connection has been established.
    Proceed by clicking **Next**.
    ![ArangoGraph Deployment Private Endpoint Setup 2](../../../images/arangograph-deployment-private-endpoint-setup2.png)
-6. Enter one or more Alternate DNS names. This step is optional.
-   Continue with or without Alternate DNS names entered by clicking **Next**.
-   They can be changed later.
+6. Configure custom DNS names. This step is optional and disabled by default,
+   you can also add or change them later from the summary view.
+   Click **Next** to continue.
+   {{< info >}}
+   By default, your private endpoint is available to all VPCs that connect to it
+   at `https://<endpoint_id>-pe.arangodb.cloud` with the well-known certificate.
+   If the custom DNS is enabled, you will be responsible for the DNS of your
+   private endpoints. 
+   {{< /info >}}
 7. Click **Confirm Settings** to change the deployment.
 8. Back in the **Overview** page, scroll down to the **Private Endpoint** section
    that is now displayed to see the connection status and to change the
@@ -163,8 +176,15 @@ that automatically connects to private endpoints that are created in those princ
    configured in ArangoGraph. Otherwise, the service name cannot be verified.
    {{< /warning >}}
    ![ArangoGraph AWS Private Endpoint Configure Principals](../../../images/arangograph-aws-endpoint-configure-principals.png)
-6. Enter one or more alternate DNS names. This step is optional, you can 
-   add or change them later. Click **Next** to continue.
+6. Configure custom DNS names. This step is optional and disabled by default,
+   you can also add or change them later from the summary view.
+   Click **Next** to continue.
+   {{< info >}}
+   By default, your private endpoint is available to all VPCs that connect to it
+   at `https://<endpoint_id>-pe.arangodb.cloud` with the well-known certificate.
+   If the custom DNS is enabled, you will be responsible for the DNS of your
+   private endpoints. 
+   {{< /info >}}
    ![ArangoGraph AWS Private Endpoint Alternate DNS](../../../images/arangograph-aws-private-endpoint-dns.png)
 7. Confirm that you want to use a private endpoint for your deployment by
    clicking **Confirm Settings**.
