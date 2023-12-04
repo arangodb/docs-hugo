@@ -544,8 +544,8 @@ db.five.all().limit(2).toArray();
 
 Returns a random document from the collection or `null` if none exists.
 
-**Note**: this method is expensive when using the RocksDB storage engine.
-<!-- TODO: only pseudo-random and there is an optimization for a single doc -->
+**Note**: This is generally an expensive operation for the RocksDB storage engine
+but ArangoDB uses an optimization for retrieving a single pseudo-random document.
 
 ### `collection.byExample(example)`
 

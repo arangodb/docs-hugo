@@ -40,9 +40,9 @@ at the very start of the query.
 
 ## Usage
 
-With RocksDB as storage engine, the `WITH` operation is only required if you
-use a cluster deployment and only for AQL queries that dynamically read from
-vertex collections as part of graph traversals.
+The `WITH` operation is only required if you use a cluster deployment and only
+for AQL queries that dynamically read from vertex collections as part of
+graph traversals.
 
 You can enable the `--query.require-with` startup option to make single server
 instances require `WITH` declarations like cluster deployments to ease development,

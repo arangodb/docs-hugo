@@ -42,8 +42,8 @@ Creating new indexes is by default done under an exclusive collection lock. The 
 available while the index is being created. This "foreground" index creation can be undesirable, 
 if you have to perform it on a live system without a dedicated maintenance window.
 
-For potentially long running index creation operations the _RocksDB_ storage-engine also supports 
-creating indexes in "background". The collection remains (mostly) available during the index creation, 
+For potentially long running index creation operations, creating indexes in the
+"background" is supported. The collection remains (mostly) available during the index creation,
 see the section [Creating Indexes in Background](#creating-indexes-in-background) for more information.
 
 ## Primary Index
