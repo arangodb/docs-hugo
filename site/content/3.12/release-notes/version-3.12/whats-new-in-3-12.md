@@ -142,9 +142,9 @@ The new "filter matching" syntax lets you use a `FILTER` statement for the
 `UPSERT` operation. The filter condition for the lookup can make use of the
 `CURRENT` pseudo-variable to access the lookup document.
 
-{{< tabs groupid="upsert-syntax" >}}
+{{< tabs "upsert-syntax" >}}
 
-{{< tab name="Filter matching" >}}
+{{< tab "Filter matching" >}}
 ```aql
 UPSERT FILTER CURRENT.name == 'superuser'
 INSERT { name: 'superuser', logins: 1, dateCreated: DATE_NOW() }
@@ -152,7 +152,7 @@ UPDATE { logins: OLD.logins + 1 } IN users
 ```
 {{< /tab >}}
 
-{{< tab name="Exact-value matching" >}}
+{{< tab "Exact-value matching" >}}
 ```aql
 UPSERT { name: 'superuser' }
 INSERT { name: 'superuser', logins: 1, dateCreated: DATE_NOW() }
