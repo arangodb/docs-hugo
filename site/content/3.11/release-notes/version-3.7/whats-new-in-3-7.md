@@ -803,7 +803,7 @@ also been backported to ArangoDB v3.6.4.
 The amount of exported metrics for monitoring has been extended and is now 
 available in a format compatible with Prometheus. You can now easily scrape 
 on `/_admin/metrics`.
-See [Metrics HTTP API](../../develop/http-api/monitoring.md#metrics).
+See [Metrics HTTP API](../../develop/http-api/monitoring/metrics.md).
 
 The following metrics have been added in ArangoDB 3.7:
 
