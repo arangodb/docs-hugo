@@ -253,7 +253,7 @@ paths:
 ```curl
 ---
 description: |-
-  Return the active storage engine with the RocksDB storage engine in use:
+  Return the active storage engine:
 name: RestEngine
 ---
 var response = logCurlRequest('GET', '/_api/engine');

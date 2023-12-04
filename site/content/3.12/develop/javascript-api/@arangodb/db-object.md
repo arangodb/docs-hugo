@@ -243,8 +243,8 @@ error is thrown. For information about the naming constraints for collections, s
       is generated on every document insert attempt, not just for successful
       inserts.
     - The `padded` key generator generates keys of a fixed length (16 bytes) in
-      ascending lexicographical sort order. This is ideal for usage with the _RocksDB_
-      engine, which slightly benefits keys that are inserted in lexicographically
+      ascending lexicographical sort order. This is ideal for the RocksDB storage engine,
+      which slightly benefits keys that are inserted in lexicographically
       ascending order. The key generator can be used in a single-server or cluster.
       The sequence of generated keys is not guaranteed to be gap-free.
     - The `uuid` key generator generates universally unique 128 bit keys, which 

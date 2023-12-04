@@ -1267,7 +1267,7 @@ The following metrics have been added:
 
 ### Observability of in-memory cache subsystem
 
-<small>Introduced in: v3.10.11, v.3.11.4</small>
+<small>Introduced in: v3.10.11, v3.11.4</small>
 
 The following metrics have been added to improve the observability of in-memory
 cache subsystem:
@@ -1308,7 +1308,26 @@ The following startup option has been added:
 
 The following metric has been added:
 - `arangodb_scheduler_num_detached_threads`: The number of worker threads
-  currently started and detached from the scheduler. 
+  currently started and detached from the scheduler.
+
+### Memory usage of connection and request statistics
+
+<small>Introduced in: v3.10.12, v3.11.6</small>
+
+The following metrics have been added:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_connection_statistics_memory_usage` | Total memory usage of connection statistics. |
+| `arangodb_request_statistics_memory_usage` | Total memory usage of request statistics. |
+
+If the `--server.statistics` startup option is set to `true`, then some
+connection and request statistics are built up in memory for incoming request.
+It is expected that the memory usage reported by these metrics remains
+relatively constant over time. It may grow only when there are bursts of new
+connections. Some memory is pre-allocated at startup for higher efficiency. If the
+`--server.statistics` startup option is set to `false`, then no memory will be
+allocated for connection and request statistics.
 
 ## Client tools
 

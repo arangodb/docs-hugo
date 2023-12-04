@@ -168,6 +168,18 @@
     }
   },
   {
+    "name": "replace-equal-attribute-accesses",
+    "description": "Replace attribute accesses that are equal due to a filter statement\nwith the same value. This might enable other optimizations later on.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": true,
+      "enterpriseOnly": false
+    }
+  },
+  {
     "name": "remove-redundant-sorts-2",
     "description": "Second pass of trying to merge multiple `SORT` statements\ninto fewer sorts.",
     "flags": {

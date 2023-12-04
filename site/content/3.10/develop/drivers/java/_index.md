@@ -49,11 +49,11 @@ To add the driver to your project with Gradle, add the following code to your
 
 ```groovy
 repositories {
-    mavenCentral()
+  mavenCentral()
 }
 
 dependencies {
-    implementation 'com.arangodb:arangodb-java-driver:7.x.x'
+  implementation 'com.arangodb:arangodb-java-driver:7.x.x'
 }
 ```
 
@@ -143,17 +143,17 @@ for example:
 
 ```java
 ArangoDB adb = new ArangoDB.Builder()
-    // ...
-    .build();
-ArangoDBAsync adbAsync = adb.async();
-CompletableFuture<ArangoDBVersion> version = adbAsync.getVersion();
+        // ...
+        .build();
+        ArangoDBAsync adbAsync = adb.async();
+        CompletableFuture<ArangoDBVersion> version = adbAsync.getVersion();
 // ...
 ```
 
 Under the hood, both synchronous and asynchronous API use the same internal
 communication layer, which has been reworked and re-implemented in an
 asynchronous way. The synchronous API blocks and waits for the result, while the
-asynchronous one returns a `CompletableFuture<>` representing the pending 
+asynchronous one returns a `CompletableFuture<>` representing the pending
 operation being performed.
 Each asynchronous API method is equivalent to the corresponding synchronous
 variant, except for the Cursor API.
@@ -161,23 +161,33 @@ variant, except for the Cursor API.
 ### Async Cursor API
 
 The Cursor API (`ArangoCursor` and `ArangoCursorAsync`) is intrinsically different,
-because the synchronous Cursor API is based on Java's `java.util.Iterator`, which 
+because the synchronous Cursor API is based on Java's `java.util.Iterator`, which
 is an interface only suitable for synchronous scenarios.
-On the other side, the asynchronous Cursor API provides a method 
-`com.arangodb.ArangoCursorAsync#nextBatch()`, which returns a 
-`CompletableFuture<ArangoCursorAsync<T>>` and can be used to consume the next 
+On the other side, the asynchronous Cursor API provides a method
+`com.arangodb.ArangoCursorAsync#nextBatch()`, which returns a
+`CompletableFuture<ArangoCursorAsync<T>>` and can be used to consume the next
 batch of the cursor, for example:
 
 ```java
 CompletableFuture<ArangoCursorAsync<Integer>> future1 = adbAsync.db()
         .query("FOR i IN i..10000", Integer.class);
-CompletableFuture<ArangoCursorAsync<Integer>> future2 = future1
+        CompletableFuture<ArangoCursorAsync<Integer>> future2 = future1
         .thenCompose(c -> {
-            List<Integer> batch = c.getResult();
-            // ...
-            // consume batch
-            // ...
-            return c.nextBatch();
+        List<Integer> batch = c.getResult();
+        // ...
+        // consume batch
+        // ...
+        return c.nextBatch();
         });
 // ...
 ```
+
+## Data Definition Classes
+
+Classes used to exchange data definitions, in particular classes in the packages 
+`com.arangodb.entity.**` and `com.arangodb.model.**`, are meant to be serialized 
+and deserialized internally by the driver.
+
+The behavior to serialize and deserialize these classes is considered an internal 
+implementation detail, and as such, it might change without prior notice.
+The API with regard to the public members of these classes is kept compatible.
