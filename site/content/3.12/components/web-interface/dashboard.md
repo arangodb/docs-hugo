@@ -32,4 +32,4 @@ System Resources:
 
 Metrics:
 
-- Various server metrics, see [Monitoring](../../develop/http-api/monitoring.md#metrics)
+- Various server metrics, see [Monitoring](../../develop/http-api/monitoring/metrics.md)
