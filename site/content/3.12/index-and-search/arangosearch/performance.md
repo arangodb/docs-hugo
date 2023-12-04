@@ -31,8 +31,7 @@ db.coll.ensureIndex({
   fields: ["text", "date"],
   primarySort: {
     fields: [
-      { field: "date", direction: "desc" },
-      { field: "text", direction: "asc" }
+      { field: "date", direction: "desc" }
     ]
   }
 });
@@ -42,12 +41,34 @@ AQL query example:
 
 ```aql
 FOR doc IN coll OPTIONS { indexHint: "inv-idx", forceIndexHint: true }
-  SORT doc.date DESC, doc.text
+  SORT doc.date DESC
   RETURN doc
 ```
 
+Execution plan **without** a sorted index being used:
+
+```aql
+Execution plan:
+ Id   NodeType                  Est.   Comment
+  1   SingletonNode                1   * ROOT
+  2   EnumerateCollectionNode      0     - FOR doc IN coll   /* full collection scan  */
+  3   CalculationNode              0       - LET #1 = doc.`date`   /* attribute expression */   /* collections used: doc : coll */
+  4   SortNode                     0       - SORT #1 DESC   /* sorting strategy: standard */
+  5   ReturnNode                   0       - RETURN doc
+```
+
+Execution plan with a the primary sort order of the index being utilized:
+
+```aql
+Execution plan:
+ Id   NodeType        Est.   Comment
+  1   SingletonNode      1   * ROOT
+  6   IndexNode          0     - FOR doc IN coll   /* reverse inverted index scan, index scan + document lookup */
+  5   ReturnNode         0       - RETURN doc
+```
+
 You can add the inverted index to a `search-alias` View. Queries against the
-View can benefit from the primary sort order:
+View can benefit from the primary sort order, too:
 
 ```js
 db._createView("viewName", "search-alias", { indexes: [
@@ -55,9 +76,33 @@ db._createView("viewName", "search-alias", { indexes: [
 ] });
 
 db._query(`FOR doc IN viewName
-  SORT doc.date DESC, doc.text
+  SORT doc.date DESC
   RETURN doc`);
 ```
+
+To define more than one attribute to sort by, use multiple sub-objects in the
+the `primarySort` array:
+
+```js
+db.coll.ensureIndex({
+  name: "inv-idx",
+  type: "inverted",
+  fields: ["text", "date"],
+  primarySort: {
+    fields: [
+      { field: "date", direction: "desc" },
+      { field: "text", direction: "asc" }
+    ]
+  }
+});
+```
+
+{{< info >}}
+If you mix directions in the primary sort order, the inverted index cannot be
+utilized for fully optimizing out a matching `SORT` operation if you use the
+inverted index standalone.
+{{< /info >}}
+
 {{< /tab >}}
 
 {{< tab "`arangosearch` View" >}}
@@ -79,8 +124,8 @@ db._query(`FOR doc IN viewName
     },
     "primarySort": [
       {
-        "field": "text",
-        "direction": "asc"
+        "field": "date",
+        "direction": "desc"
       }
     ]
   }
@@ -94,7 +139,7 @@ AQL query example:
 
 ```aql
 FOR doc IN viewName
-  SORT doc.text
+  SORT doc.date DESC
   RETURN doc
 ```
 
@@ -105,8 +150,8 @@ Execution plan:
  Id   NodeType            Est.   Comment
   1   SingletonNode          1   * ROOT
   2   EnumerateViewNode      1     - FOR doc IN viewName   /* view query */
-  3   CalculationNode        1       - LET #1 = doc.`text`   /* attribute expression */
-  4   SortNode               1       - SORT #1 ASC   /* sorting strategy: standard */
+  3   CalculationNode        1       - LET #1 = doc.`date`   /* attribute expression */
+  4   SortNode               1       - SORT #1 DESC   /* sorting strategy: standard */
   5   ReturnNode             1       - RETURN doc
 ```
 
@@ -116,7 +161,7 @@ Execution plan with a the primary sort order of the index being utilized:
 Execution plan:
  Id   NodeType            Est.   Comment
   1   SingletonNode          1   * ROOT
-  2   EnumerateViewNode      1     - FOR doc IN viewName SORT doc.`text` ASC   /* view query */
+  2   EnumerateViewNode      1     - FOR doc IN viewName SORT doc.`date` DESC   /* view query */
   5   ReturnNode             1       - RETURN doc
 ```
 
@@ -128,8 +173,7 @@ the `primarySort` array:
   "links": {
     "coll1": {
       "fields": {
-        "text": {},
-        "date": {}
+        "text": {}
       }
     },
     "coll2": {
