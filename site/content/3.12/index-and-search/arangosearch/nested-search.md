@@ -34,9 +34,32 @@ Consider the following document:
 }
 ```
 
+{{< tabs "view-definition">}}
+
+{{< tab "`search-alias` View" >}}
+You would normally index the `dimensions.type` and `dimensions.value` fields and
+with an inverted index and then use it via a `search-alias` View, in arangosh:
+
+```js
+db.<collection>.ensureIndex({
+  name: "inv-idx",
+  type: "inverted",
+  searchField: true,
+  fields: [
+    "dimensions.type",
+    "dimensions.value"
+  ]
+});
+
+db._createView("viewName", "search-alias", { indexes: [
+  { collection: "<collection>", index: "inv-idx" }
+]});
+```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
 You would normally index the `dimensions` field and its sub-fields with an
 `arangosearch` View definition like the following:
-
 ```json
 {
   "links": {
@@ -54,24 +77,9 @@ You would normally index the `dimensions` field and its sub-fields with an
   ...
 }
 ```
+{{< /tab >}}
 
-Or using an inverted index via a `search-alias` View, in arangosh:
-
-```js
-db.<collection>.ensureIndex({
-  name: "inv-idx",
-  type: "inverted",
-  searchField: true,
-  fields: [
-    "dimensions.type",
-    "dimensions.value"
-  ]
-});
-
-db._createView("viewName", "search-alias", { indexes: [
-  { collection: "<collection>", index: "inv-idx" }
-]});
-```
+{{< /tabs >}}
 
 You might then write a query like the following to find documents where the
 height is greater than 40:
@@ -85,7 +93,7 @@ FOR doc IN viewName
 This query matches the above document despite the height only being 35. The reason is
 that each condition is true for at least one of the nested objects. There is no
 check whether both conditions are true for the same object, however. You could
-add a `FILTER` statement to remove false positive matches from the search
+add a `FILTER` statement to remove false-positive matches from the search
 results, but it is cumbersome to check the conditions again, for every sub-object:
 
 ```aql
@@ -104,32 +112,10 @@ FOR doc IN viewName
   RETURN doc
 ```
 
-The required `arangosearch` View definition for this to work is as follows:
+{{< tabs "view-definition">}}
 
-```json
-{
-  "links": {
-    "<collection>": {
-      "fields": {
-        "dimensions": {
-          "nested": {
-            "type": {},
-            "value": {}
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-Note the usage of a `nested` property instead of a `fields` property, configuring
-the View to index the objects in the `dimensions` array so that you can use the
-[Question mark operator](../../aql/operators.md#question-mark-operator)
-to query the nested objects. The default `identity` Analyzer is used for the
-fields because none is specified explicitly.
-
-Similarly, the required inverted index definition for using a `search-alias` View
+{{< tab "`search-alias` View" >}}
+The required inverted index definition for using a `search-alias` View
 to perform nested searches needs to index the parent `dimensions` field, as well
 as the nested attributes using the `nested` property under the `fields` property:
 
@@ -152,6 +138,37 @@ db._createView("viewName", "search-alias", { indexes: [
   { collection: "<collection>", index: "inv-nest" }
 ]});
 ```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
+The required `arangosearch` View definition for this to work is as follows:
+
+```json
+{
+  "links": {
+    "<collection>": {
+      "fields": {
+        "dimensions": {
+          "nested": {
+            "type": {},
+            "value": {}
+          }
+        }
+      }
+    }
+  }
+}
+```
+
+Note the usage of a `nested` property instead of a `fields` property.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+This configures the View to index the objects in the `dimensions` array so that
+you can use the [Question mark operator](../../aql/operators.md#question-mark-operator)
+to query the nested objects. The default `identity` Analyzer is used for the
+fields because none is specified explicitly.
 
 ## Defining how often the conditions need to be true
 
@@ -210,38 +227,12 @@ Consider the following document:
 }
 ```
 
+{{< tabs "view-definition">}}
+
+{{< tab "`search-alias` View" >}}
 To index the array of dimension objects and the nested array of measurement
-objects, you can use an `arangosearch` View definition like the following:
-
-```json
-{
-  "links": {
-    "<collection>": {
-      "fields": {
-        "dimensions": {
-          "nested": {
-            "measurements": {
-              "nested": {
-                "type": {},
-                "value": {}
-              }
-            },
-            "part": {},
-            "comments": {
-              "analyzers": [
-                "text_en"
-              ]
-            }
-          }
-        }
-      }
-    }
-  }
-}
-```
-
-The equivalent `search-alias` View and inverted index definition is as follows,
-using arangosh:
+objects, you can use an inverted index and `search-view` View definition like
+the following, using arangosh:
 
 ```js
 db.<collection>.ensureIndex({
@@ -272,6 +263,41 @@ db._createView("viewName", "search-alias", { indexes: [
   { collection: "<collection>", index: "inv-nest-deep" }
 ]});
 ```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
+To index the array of dimension objects and the nested array of measurement
+objects, you can use an `arangosearch` View definition like the following:
+
+```json
+{
+  "links": {
+    "<collection>": {
+      "fields": {
+        "dimensions": {
+          "nested": {
+            "measurements": {
+              "nested": {
+                "type": {},
+                "value": {}
+              }
+            },
+            "part": {},
+            "comments": {
+              "analyzers": [
+                "text_en"
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 The default `identity` Analyzer is used for the `type`, `value`, and `part`
 attributes, and the built-in `text_en` is used for the `comments`.

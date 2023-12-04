@@ -280,7 +280,7 @@ db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices
 
 {{< /tabs >}}
 
-**AQL queries**
+### AQL queries
 
 Match movies where the name is `>= Wu` and `< Y`:
 
