@@ -353,8 +353,10 @@ number of total parallel execution threads is defined by the
 that defaults to twice the number of CPU cores.
 
 {{< info >}}
-Using too high parallelization can cause errors because it may overwhelm your
-hardware.
+Using too high parallelization can overload your hardware. It is recommended to
+leave the default parallelism at `1` and set the `parallelism` option for queries
+that highly benefit from the parallelization only. Use a moderate value in
+accordance with the number of available CPU cores.
 {{< /info >}}
 
 The `parallelism` option should be considered a hint. Not all search queries are
