@@ -35,4 +35,8 @@ This command should return:
 - Restart the server
 - Test the connection 
 
-Please note that the above procedure is meant for _Single Instance_. If you are using an _ArangoDB Cluster_ or _Active Failover_ you should disable and enable authentication in the `arangod.conf` file of each node. Changes to the `arangod.conf` file under the path `etc/arangodb3/arangod.conf` in _Cluster_ and _Active Failover_ deployments will not work in this case.
+Please note that the above procedure is meant for _Single Instance_.
+If you use an _ArangoDB Cluster_, you should disable and enable authentication
+in the `arangod.conf` file of each node. Changes to the `arangod.conf` file
+under the path `etc/arangodb3/arangod.conf` in _Cluster_ deployments will not
+work in this case.

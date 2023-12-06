@@ -5,6 +5,13 @@ weight: 100
 description: >-
   Features listed in this section should no longer be used, because they are considered obsolete and may get removed in a future release
 archetype: default
+aliases:
+  - ../operations/upgrading-manual-deployments/upgrading-an-active-failover-deployment
+  - ../operations/upgrading/manual-deployments/active-failover
+  - ../deploy/active-failover/using-the-arangodb-starter
+  - ../deploy/active-failover/manual-start
+  - ../deploy/active-failover/administration
+  - ../deploy/active-failover
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -19,6 +26,12 @@ This page only lists significant obsolete features but not minor API changes.
 See the [**Release notes**](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
+
+- **Active Failover deployment mode**:
+  Running a single server with asynchronous replication to one or more passive
+  single servers for automatic failover is no longer supported from v3.12 onward.
+  You can use [cluster deployments](../deploy/cluster/_index.md) instead, which
+  offer better resilience and synchronous replication.
 
 - **Standalone Agency and Agency HTTP API**:
   The Standalone Agency deployment mode and the corresponding Agency HTTP API
@@ -52,8 +65,7 @@ detailed information about breaking changes before upgrading.
 
 - **Leader/Follower Deployment Mode**:
   The Leader/Follower deployment mode is deprecated and already removed from
-  documentation. Active Failover and OneShard databases in clusters are better
-  alternatives.
+  documentation. OneShard databases in clusters are a better alternative.
 
 - **Skiplist and hash indexes**:
   Skiplist and hash indexes have been deprecated in 3.9 and will be removed in a 

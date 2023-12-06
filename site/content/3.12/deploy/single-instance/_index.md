@@ -18,7 +18,7 @@ side-by-side, but you can get archive packages and unpack them manually.
 
 The provided ArangoDB packages run as single instances out of the box.
 
-Unlike other setups, like *Active Failover*, *Cluster*, or *OneShard*,
+Unlike other setups (*Cluster*, *OneShard*, *DC2DC*)
 which require some specific procedure to be started once the ArangoDB package
 has been installed, deploying a single instance is straightforward.
 

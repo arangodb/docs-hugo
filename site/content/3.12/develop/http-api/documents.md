@@ -2608,10 +2608,6 @@ from followers:
 x-arango-allow-dirty-read: true
 ```
 
-This is in line with the older support to read from followers in the
-[Active Failover](../../deploy/active-failover/_index.md#reading-from-followers)
-deployment mode.
-
 For single requests, you specify this header in the read request.
 For Stream Transactions, the header has to be set on the request that
 creates a read-only transaction.
