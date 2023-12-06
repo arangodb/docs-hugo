@@ -29,12 +29,6 @@ Check the resources below to get started:
 
 ## Resources
 
-Watch this
-[lunch & learn session](https://www.arangodb.com/resources/lunch-sessions/graph-beyond-lunch-break-2-11-arangordf/) to get an
-introduction on ArangoRDF - an RDF adapter developed with the community
-as a first step at bringing RDF graphs into ArangoDB.
-- Note: Since the recording of this session, ArangoRDF has been overhauled and extended. Package usage has changed, so please refer to the [Quickstart](#quickstart) section below for the latest specification.
-
 The [ArangoRDF repository](https://github.com/ArangoDB-Community/ArangoRDF)
 is available on Github. Check it out!
 
