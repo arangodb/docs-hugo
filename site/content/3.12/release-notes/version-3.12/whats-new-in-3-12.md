@@ -54,6 +54,99 @@ for details.
 ## Analyzers
 
 
+
+## AQL
+
+### Improved joins
+
+The AQL optimizer now automatically recognizes whether a better strategy for
+joining collections can be used, using the new `join-index-nodes` optimizer rule.
+
+If two or more collections are joined using nested `FOR` loops and the
+attributes you join on are indexed by the primary index or persistent indexes,
+then a merge join can be performed because they are sorted.
+
+Note that returning document attributes from the outer loop is limited to
+attributes covered by the index, or the improved join strategy cannot be used.
+
+The following example query shows an inner join between orders and users on
+user ID. Each document in the `orders` collection references a `user`, and the
+`users` collection stores the user ID in the `_key` attribute. The query returns
+the `total` attribute of every order along with the user information:
+
+```aql
+FOR o IN orders
+  FOR u IN users
+    FILTER o.user == u._key
+    RETURN { orderTotal: o.total, user: u }
+```
+
+The `_key` attribute is covered by the primary index of the `users` collection.
+If the `orders` collection has a persistent index defined over the `user`
+attribute and additionally includes the `total` attribute in
+[`storedValues`](../../index-and-search/indexing/working-with-indexes/persistent-indexes.md#storing-additional-values-in-indexes),
+then the query is eligible for a merge join.
+
+```aql
+Execution plan:
+ Id   NodeType          Par     Est.   Comment
+  1   SingletonNode                1   * ROOT
+ 10   JoinNode            ✓   500000     - JOIN
+ 10   JoinNode                500000       - FOR o IN orders   LET #8 = o.`total`   /* index scan (projections: `total`) */
+ 10   JoinNode                     1       - FOR u IN users   /* index scan + document lookup */
+  6   CalculationNode     ✓   500000     - LET #4 = { "orderTotal" : #8, "user" : u }   /* simple expression */   /* collections used: u : users */
+  7   ReturnNode              500000     - RETURN #4
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields       Stored values   Ranges
+ 10   idx_1784521139132825600   persistent   orders       false    false    false      100.00 %   [ `user` ]   [ `total` ]     *
+ 10   primary                   primary      users        true     false    false      100.00 %   [ `_key` ]   [  ]            (o.`user` == u.`_key`)
+```
+
+### Filter matching syntax for `UPSERT` operations
+
+Version 3.12 introduces an alternative syntax for
+[`UPSERT` operations](../../aql/high-level-operations/upsert.md) that allows
+you to use more flexible filter conditions to look up documents. Previously,
+the expression used to look up a document had to be an object literal, and this
+is now called the "exact-value matching" syntax.
+
+The new "filter matching" syntax lets you use a `FILTER` statement for the
+`UPSERT` operation. The filter condition for the lookup can make use of the
+`CURRENT` pseudo-variable to access the lookup document.
+
+{{< tabs groupid="upsert-syntax" >}}
+
+{{< tab name="Filter matching" >}}
+```aql
+UPSERT FILTER CURRENT.name == 'superuser'
+INSERT { name: 'superuser', logins: 1, dateCreated: DATE_NOW() }
+UPDATE { logins: OLD.logins + 1 } IN users
+```
+{{< /tab >}}
+
+{{< tab name="Exact-value matching" >}}
+```aql
+UPSERT { name: 'superuser' }
+INSERT { name: 'superuser', logins: 1, dateCreated: DATE_NOW() }
+UPDATE { logins: OLD.logins + 1 } IN users
+```
+{{< /tab >}}
+
+{{< /tabs >}}
+
+The `FILTER` expression can contain operators such as `AND` and `OR` to create
+complex filter conditions, and you can apply more filters on the `CURRENT`
+pseudo-variable than just equality matches.
+
+```aql
+UPSERT FILTER CURRENT.age < 30 AND (STARTS_WITH(CURRENT.name, "Jo") OR CURRENT.gender IN ["f", "x"])
+INSERT { name: 'Jordan', age: 29, logins: 1, dateCreated: DATE_NOW() }
+UPDATE { logins: OLD.logins + 1 } IN users
+```
+
+Read more about [`UPSERT` operations](../../aql/high-level-operations/upsert.md) in AQL.
+
 ## Improved memory accounting and usage
 
 Version 3.12 features multiple improvements to observability of ArangoDB
@@ -127,52 +220,6 @@ section, as well as in the **API** tab of Foxx services and Foxx routes that use
 
 The new version adds support for OpenAPI 3.x specifications in addition to
 Swagger 2.x compatibility.
-
-## AQL
-
-### Filter matching syntax for `UPSERT` operations
-
-Version 3.12 introduces an alternative syntax for
-[`UPSERT` operations](../../aql/high-level-operations/upsert.md) that allows
-you to use more flexible filter conditions to look up documents. Previously,
-the expression used to look up a document had to be an object literal, and this
-is now called the "exact-value matching" syntax.
-
-The new "filter matching" syntax lets you use a `FILTER` statement for the
-`UPSERT` operation. The filter condition for the lookup can make use of the
-`CURRENT` pseudo-variable to access the lookup document.
-
-{{< tabs groupid="upsert-syntax" >}}
-
-{{< tab name="Filter matching" >}}
-```aql
-UPSERT FILTER CURRENT.name == 'superuser'
-INSERT { name: 'superuser', logins: 1, dateCreated: DATE_NOW() }
-UPDATE { logins: OLD.logins + 1 } IN users
-```
-{{< /tab >}}
-
-{{< tab name="Exact-value matching" >}}
-```aql
-UPSERT { name: 'superuser' }
-INSERT { name: 'superuser', logins: 1, dateCreated: DATE_NOW() }
-UPDATE { logins: OLD.logins + 1 } IN users
-```
-{{< /tab >}}
-
-{{< /tabs >}}
-
-The `FILTER` expression can contain operators such as `AND` and `OR` to create
-complex filter conditions, and you can apply more filters on the `CURRENT`
-pseudo-variable than just equality matches.
-
-```aql
-UPSERT FILTER CURRENT.age < 30 AND (STARTS_WITH(CURRENT.name, "Jo") OR CURRENT.gender IN ["f", "x"])
-INSERT { name: 'Jordan', age: 29, logins: 1, dateCreated: DATE_NOW() }
-UPDATE { logins: OLD.logins + 1 } IN users
-```
-
-Read more about [`UPSERT` operations](../../aql/high-level-operations/upsert.md) in AQL.
 
 ## Indexing
 
