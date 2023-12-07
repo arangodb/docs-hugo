@@ -218,6 +218,9 @@ The roles below are described following this pattern:
 - `crypto.cacertificate.get`
 - `crypto.cacertificate.list`
 
+**Dataloader Administrator** (`dataloader-admin`):
+- `dataloader.deployment.import`
+
 **Deployment Administrator** (`deployment-admin`):
 - `data.cpusize.list`
 - `data.deployment.create`
@@ -225,18 +228,21 @@ The roles below are described following this pattern:
 - `data.deployment.delete`
 - `data.deployment.get`
 - `data.deployment.list`
+- `data.deployment.pause`
 - `data.deployment.rebalance-shards`
 - `data.deployment.resume`
 - `data.deployment.rotate-server`
 - `data.deployment.update`
 - `data.deployment.update-scheduled-root-password-rotation`
 - `data.deploymentfeatures.get`
+- `data.deploymentmodel.list`
 - `data.deploymentprice.calculate`
 - `data.diskperformance.list`
 - `data.limits.get`
 - `data.nodesize.list`
 - `data.presets.list`
 - `monitoring.logs.get`
+- `monitoring.metrics.get`
 - `notification.deployment-notification.list`
 - `notification.deployment-notification.mark-as-read`
 - `notification.deployment-notification.mark-as-unread`
@@ -248,26 +254,36 @@ The roles below are described following this pattern:
 - `data.deployment.list`
 - `data.deploymentcredentials.get`
 - `data.deploymentfeatures.get`
+- `data.deploymentmodel.list`
 - `data.deploymentprice.calculate`
 - `data.diskperformance.list`
 - `data.limits.get`
 - `data.nodesize.list`
 - `data.presets.list`
 - `monitoring.logs.get`
+- `monitoring.metrics.get`
 - `notification.deployment-notification.list`
 - `notification.deployment-notification.mark-as-read`
 - `notification.deployment-notification.mark-as-unread`
+
+**Deployment Full Access User** (`deployment-full-access-user`):
+- `data.deployment.full-access`
+
+**Deployment Read Only User** (`deployment-read-only-user`):
+- `data.deployment.read-only-access`
 
 **Deployment Viewer** (`deployment-viewer`):
 - `data.cpusize.list`
 - `data.deployment.get`
 - `data.deployment.list`
 - `data.deploymentfeatures.get`
+- `data.deploymentmodel.list`
 - `data.deploymentprice.calculate`
 - `data.diskperformance.list`
 - `data.limits.get`
 - `data.nodesize.list`
 - `data.presets.list`
+- `monitoring.metrics.get`
 - `notification.deployment-notification.list`
 - `notification.deployment-notification.mark-as-read`
 - `notification.deployment-notification.mark-as-unread`
@@ -332,6 +348,14 @@ The roles below are described following this pattern:
 - `metrics.token.list`
 - `metrics.token.revoke`
 - `metrics.token.update`
+
+**Migration Administrator** (`migration-admin`):
+- `replication.deploymentmigration.create`
+- `replication.deploymentmigration.delete`
+- `replication.deploymentmigration.get`
+
+**MLServices Admin** (`mlservices-admin`):
+- `ml.mlservices.get`
 
 **Notebook Administrator** (`notebook-admin`):
 - `notebook.model.list`
@@ -406,6 +430,7 @@ The roles below are described following this pattern:
 - `replication.deployment.clone-from-backup`
 - `replication.deploymentreplication.get`
 - `replication.deploymentreplication.update`
+- `replication.migration-forwarder.upgrade-connection`
 
 **Role Administrator** (`role-admin`):
 - `iam.role.create`
@@ -482,11 +507,13 @@ Note that if the tier is "internal", there is an `internal-dashboard` API that s
 | `billing`           | `paymentmethod`              | `create`, `delete`, `get`, `get-default`, `list`, `set-default`, `update`
 | `billing`           | `paymentprovider`            | `list`
 | `crypto`            | `cacertificate`              | `create`, `delete`, `get`, `list`, `set-default`, `update`
+| `dataloader`        | `deployment`                 | `import`
 | `data`              | `cpusize`                    | `list`
 | `data`              | `deploymentcredentials`      | `get`
 | `data`              | `deploymentfeatures`         | `get`
+| `data`              | `deploymentmodel`            | `list`
 | `data`              | `deploymentprice`            | `calculate`
-| `data`              | `deployment`                 | `create`, `create-test-database`, `delete`, `get`, `list`, `rebalance-shards`, `restore-backup`, `resume`, `rotate-server`, `update`, `update-scheduled-root-password-rotation`
+| `data`              | `deployment`                 | `create`, `create-test-database`, `delete`, `full-access`, `get`, `list`, `pause`, `read-only-access`, `rebalance-shards`, `restore-backup`, `resume`, `rotate-server`, `update`, `update-scheduled-root-password-rotation`
 | `data`              | `diskperformance`            | `list`
 | `data`              | `limits`                     | `get`
 | `data`              | `nodesize`                   | `list`
@@ -500,14 +527,18 @@ Note that if the tier is "internal", there is an `internal-dashboard` API that s
 | `iam`               | `user`                       | `get-personal-data`, `update`
 | `metrics`           | `endpoint`                   | `get`
 | `metrics`           | `token`                      | `create`, `delete`, `get`, `list`, `revoke`, `update`
+| `ml`                | `mlservices`                 | `get`
 | `monitoring`        | `logs`                       | `get`
+| `monitoring`        | `metrics`                    | `get`
 | `network`           | `privateendpointservice`     | `create`, `get`, `get-by-deployment-id`, `get-feature`, `update`
 | `notebook`          | `model`                      | `list`
 | `notebook`          | `notebook`                   | `create`, `delete`, `execute`, `get`, `list`, `pause`, `resume`, `update`
 | `notification`      | `deployment-notification`    | `list`, `mark-as-read`, `mark-as-unread`
 | `prepaid`           | `prepaiddeployment`          | `get`, `list`
+| `replication`       | `deploymentmigration`        | `create`, `delete`, `get`
 | `replication`       | `deploymentreplication`      | `get`, `update`
 | `replication`       | `deployment`                 | `clone-from-backup`
+| `replication`       | `migration-forwarder`        | `upgrade-connection`
 | `resourcemanager`   | `organization-invite`        | `create`, `delete`, `get`, `list`, `update`
 | `resourcemanager`   | `organization`               | `delete`, `get`, `update`
 | `resourcemanager`   | `project`                    | `create`, `delete`, `get`, `list`, `update`
