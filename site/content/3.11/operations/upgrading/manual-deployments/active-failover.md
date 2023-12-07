@@ -19,6 +19,11 @@ to a new hotfix version, or to perform an upgrade to a new minor version of Aran
 Please refer to the [Upgrade paths](../_index.md#upgrade-paths) section
 for detailed information.
 
+{{< warning >}}
+The Active Failover deployment mode is deprecated and will no longer be
+supported in the next minor version of ArangoDB, from v3.12 onward.
+{{< /warning >}}
+
 ## Preparations
 
 The ArangoDB installation packages (e.g. for Debian or Ubuntu) set up a

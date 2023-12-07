@@ -7,6 +7,18 @@ description: >-
   this ArangoDB version and adjust any client applications if necessary
 archetype: default
 ---
+## Active Failover deployment mode
+
+Running a single server with asynchronous replication to one or more passive
+single servers for automatic failover is no longer supported from v3.12 onward.
+
+You can use [cluster deployments](../../deploy/cluster/_index.md) instead, which
+offer better resilience and synchronous replication. Also see the
+[OneShard](../../deploy/oneshard.md) feature.
+
+See [Single instance vs. Cluster deployments](../../deploy/single-instance-vs-cluster.md)
+for details about how a cluster deployment differs and how to migrate to it.
+
 ## Little-endian on-disk key format for the RocksDB storage engine
 
 ArangoDB 3.12 does not support the little-endian on-disk key for the RocksDB
@@ -49,15 +61,6 @@ The migration can be performed as follows:
 It is not sufficient to take a hot backup of a little-endian deployment and
 restore it because when restoring a hot backup, the original database format is
 restored as it was at time of the backup.
-
-## Active Failover deployment mode
-
-Running a single server with asynchronous replication to one or more passive
-single servers for automatic failover is no longer supported from v3.12 onward.
-
-You can use [cluster deployments](../deploy/cluster/_index.md) instead, which
-offer better resilience and synchronous replication. Also see the
-[OneShard](../../deploy/oneshard.md) feature.
 
 ## In-memory cache subsystem
 
