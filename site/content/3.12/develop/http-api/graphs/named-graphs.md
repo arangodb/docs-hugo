@@ -1346,7 +1346,13 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - collection
               properties:
+                collection:
+                  description: |
+                    The name of the vertex collection to add to the graph definition.
+                  type: string
                 options:
                   description: |
                     A JSON object to set options for creating vertex collections.
