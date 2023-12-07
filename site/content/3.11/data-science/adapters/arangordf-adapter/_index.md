@@ -21,16 +21,13 @@ the named link between two resources, represented by the graph nodes. This graph
 view is the easiest possible mental model for RDF and is often used in
 easy-to-understand visual explanations.
 
-Check the resources below to get started:
+## Resources
 
+- [ArangoRDF repository](https://github.com/ArangoDB-Community/ArangoRDF),
+  available on GitHub
 - [RDF Primer](https://www.w3.org/TR/rdf11-concepts/)
 - [RDFLib (Python)](https://pypi.org/project/rdflib/)
 - [Example for Modeling RDF as ArangoDB Graphs](mapping-rdf-to-graphs.md)
-
-## Resources
-
-The [ArangoRDF repository](https://github.com/ArangoDB-Community/ArangoRDF)
-is available on Github. Check it out!
 
 ## Installation
 
