@@ -60,6 +60,7 @@ db._createView("viewName", "search-alias", { indexes: [
 {{< tab "`arangosearch` View" >}}
 You would normally index the `dimensions` field and its sub-fields with an
 `arangosearch` View definition like the following:
+
 ```json
 {
   "links": {

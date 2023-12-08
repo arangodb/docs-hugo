@@ -29,15 +29,16 @@ fields.
 
 ### View definition
 
-#### `search-alias` View
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 db.imdb_vertices.ensureIndex({ name: "inv-exact-runtime", type: "inverted", fields: [ "runtime" ] });
 db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices", index: "inv-exact-runtime" } ] });
 ```
+{{< /tab >}}
 
-#### `arangosearch` View
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -66,6 +67,9 @@ no Analyzer using an empty array `[]` as shown below.
   }
 }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ### AQL queries
 
@@ -249,15 +253,16 @@ Also see [Known Issues](../../release-notes/version-3.11/known-issues-in-3-11.md
 
 ### View definition
 
-#### `search-alias` View
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 db.imdb_vertices.ensureIndex({ name: "inv-exact-name", type: "inverted", fields: [ "name" ] });
 db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices", index: "inv-exact-name" } ] });
 ```
+{{< /tab >}}
 
-#### `arangosearch` View
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -271,8 +276,11 @@ db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices
   }
 }
 ```
+{{< /tab >}}
 
-**AQL queries**
+{{< /tabs >}}
+
+### AQL queries
 
 Match movies where the name is `>= Wu` and `< Y`:
 
