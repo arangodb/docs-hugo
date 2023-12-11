@@ -609,7 +609,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to create a graph, you at least need to have the following privileges:
+            In order to create a graph, you need to have at least the following privileges:
+            - `Administrate` access on the database.
+            - `Read Only` access on every collection used within this graph.
           content:
             application/json:
               schema:
@@ -642,7 +644,7 @@ paths:
           description: |
             Returned if there is a conflict storing the graph. This can occur
             either if a graph with this name is already stored, or if there is one
-            edge definition with a the same edge collection but a different signature
+            edge definition with the same edge collection but a different signature
             used in any other graph.
           content:
             application/json:
@@ -1169,7 +1171,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to drop a graph, you at least need to have the following privileges:
+            In order to drop a graph, you need to have at least the following privileges:
             - `Administrate` access on the database.
           content:
             application/json:
@@ -1693,7 +1695,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to modify a graph, you at least need to have the following privileges:
+            In order to modify a graph, you need to have at least the following privileges:
+            - `Administrate` access on the database.
+            - `Read Only` access on every collection used within this graph.
           content:
             application/json:
               schema:
@@ -2106,7 +2110,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to drop a vertex, you at least need to have the following privileges:
+            In order to drop a vertex, you need to have at least the following privileges:
             - `Administrate` access on the database.
           content:
             application/json:
@@ -2674,7 +2678,8 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to modify a graph, you at least need to have the following privileges:
+            In order to modify a graph, you need to have at least the following privileges:
+            - `Administrate` access on the database.
           content:
             application/json:
               schema:
@@ -3128,7 +3133,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to drop a vertex, you at least need to have the following privileges:
+            In order to drop a vertex, you need to have at least the following privileges:
             - `Administrate` access on the database.
           content:
             application/json:
@@ -3516,7 +3521,7 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to drop a vertex, you at least need to have the following privileges:
+            In order to drop a vertex, you need to have at least the following privileges:
             - `Administrate` access on the database.
           content:
             application/json:
@@ -3794,7 +3799,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to insert vertices into the graph,  you at least need to have the following privileges:
+            In order to insert vertices into the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Write` access on the given collection.
           content:
             application/json:
               schema:
@@ -4020,7 +4027,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to update vertices in the graph, you at least need to have the following privileges:
+            In order to update vertices in the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Read Only` access on the given collection.
           content:
             application/json:
               schema:
@@ -4051,8 +4060,8 @@ paths:
                     type: string
         '404':
           description: |
-            Returned in the following cases
-            - No graph with this name can be found.
+            Returned in the following cases:
+            - No graph with this name could be found.
             - This collection is not part of the graph.
             - The vertex does not exist.
           content:
@@ -4407,7 +4416,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to update vertices in the graph, you at least need to have the following privileges:
+            In order to update vertices in the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Write` access on the given collection.
           content:
             application/json:
               schema:
@@ -4438,7 +4449,7 @@ paths:
                     type: string
         '404':
           description: |
-            Returned in the following cases
+            Returned in the following cases:
             - No graph with this name can be found.
             - This collection is not part of the graph.
             - The vertex to update does not exist.
@@ -4797,7 +4808,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to replace vertices in the graph, you at least need to have the following privileges:
+            In order to replace vertices in the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Write` access on the given collection.
           content:
             application/json:
               schema:
@@ -4828,7 +4841,7 @@ paths:
                     type: string
         '404':
           description: |
-            Returned in the following cases
+            Returned in the following cases:
             - No graph with this name can be found.
             - This collection is not part of the graph.
             - The vertex to replace does not exist.
@@ -5075,7 +5088,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to delete vertices in the graph, you at least need to have the following privileges:
+            In order to delete vertices in the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Write` access on the given collection.
           content:
             application/json:
               schema:
@@ -5106,7 +5121,7 @@ paths:
                     type: string
         '404':
           description: |
-            Returned in the following cases
+            Returned in the following cases:
             - No graph with this name can be found.
             - This collection is not part of the graph.
             - The vertex to remove does not exist.
@@ -5465,7 +5480,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to insert edges into the graph, you at least need to have the following privileges:
+            In order to insert edges into the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Write` access on the given collection.
           content:
             application/json:
               schema:
@@ -5496,11 +5513,11 @@ paths:
                     type: string
         '404':
           description: |
-            Returned in any of the following cases
-            - no graph with this name can be found.
-            - the edge collection is not part of the graph.
-            - the vertex collection referenced in the `_from` or `_to` attribute is not part of the graph.
-            - the vertex collection is part of the graph, but does not exist.
+            Returned in any of the following cases:
+            - No graph with this name can be found.
+            - The edge collection is not part of the graph.
+            - The vertex collection referenced in the `_from` or `_to` attribute is not part of the graph.
+            - The vertex collection is part of the graph, but does not exist.
             - `_from` or `_to` vertex does not exist.
           content:
             application/json:
@@ -5710,7 +5727,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to update vertices in the graph, you at least need to have the following privileges:
+            In order to update vertices in the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Read Only` access on the given collection.
           content:
             application/json:
               schema:
@@ -5741,7 +5760,7 @@ paths:
                     type: string
         '404':
           description: |
-            Returned in the following cases
+            Returned in the following cases:
             - No graph with this name can be found.
             - This collection is not part of the graph.
             - The edge does not exist.
@@ -6158,7 +6177,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to update edges in the graph, you at least need to have the following privileges:
+            In order to update edges in the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Write` access on the given collection.
           content:
             application/json:
               schema:
@@ -6189,11 +6210,11 @@ paths:
                     type: string
         '404':
           description: |
-            Returned in the following cases
+            Returned in the following cases:
             - No graph with this name can be found.
             - This collection is not part of the graph.
             - The edge to update does not exist.
-            - either `_from` or `_to` vertex does not exist (if updated).
+            - Either `_from` or `_to` vertex does not exist (if updated).
           content:
             application/json:
               schema:
@@ -6616,7 +6637,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to replace edges in the graph, you at least need to have the following privileges:
+            In order to replace edges in the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Write` access on the given collection.
           content:
             application/json:
               schema:
@@ -6647,11 +6670,11 @@ paths:
                     type: string
         '404':
           description: |
-            Returned in the following cases
+            Returned in the following cases:
             - No graph with this name can be found.
             - This collection is not part of the graph.
             - The edge to replace does not exist.
-            - either `_from` or `_to` vertex does not exist.
+            - Either `_from` or `_to` vertex does not exist.
           content:
             application/json:
               schema:
@@ -6917,7 +6940,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to delete vertices in the graph, you at least need to have the following privileges:
+            In order to delete vertices in the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Write` access on the given collection.
           content:
             application/json:
               schema:
@@ -6948,7 +6973,7 @@ paths:
                     type: string
         '404':
           description: |
-            Returned in the following cases
+            Returned in the following cases:
             - No graph with this name can be found.
             - This collection is not part of the graph.
             - The edge to remove does not exist.

@@ -204,7 +204,7 @@ def processHTTPDocuBlock(docuBlock, tag, headerLevel):
 
     blocks = re.findall(r"(@RESTRETURNCODE\W.*?)(?=@RESTRETURNCODE|@ENDRESPONSES)",  docuBlock, re.MULTILINE | re.DOTALL)
     for block in blocks:
-        restReturnCode = re.search(r"@RESTRETURNCODE\W(.*?)(?=@|\n\n)", block, re.MULTILINE | re.DOTALL).group(0)
+        restReturnCode = re.search(r"@RESTRETURNCODE\W(.*?)(?=\n@|\Z)", block, re.MULTILINE | re.DOTALL).group(0)
         try:
             currentRetStatus = processResponse(restReturnCode, newBlock["paths"][url][verb])
         except Exception as ex:
@@ -311,7 +311,7 @@ def processParameters(docuBlock, newBlock):
 
     paramBlock["required"] = True if paramSplit[2] == "required" else False
 
-    paramBlock["description"] = "\n".join(docuBlock[1].split("\n")[1:]).replace(":", "") + "\n"
+    paramBlock["description"] = "\n".join(docuBlock[1].split("\n")[1:]) + "\n"
     paramBlock["schema"] = {"type": paramSplit[1]}
     try:
         if paramSplit[3] != "" and not paramSplit[3] in swaggerBaseTypes:
@@ -372,8 +372,8 @@ def processRequestBody(docuBlock, newBlock):
 def processResponse(docuBlock, newBlock):
     blockSplit = docuBlock.split("\n")
     statusRE = re.search(r"\d+}", docuBlock).group(0)
-    description = docuBlock.replace(statusRE, "").replace(":", "").replace("@RESTRETURNCODE{", "") + "\n"
-    status = statusRE.replace("}", "")
+    description = docuBlock.replace(statusRE, "").replace("@RESTRETURNCODE{", "") + "\n"
+    status = statusRE.rstrip("}")
 
     retBlock = {"description": description}
 

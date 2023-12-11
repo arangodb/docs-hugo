@@ -33,7 +33,9 @@ paths:
         indexed attributes, a value of `null` will be used) and will be taken into
         account for uniqueness checks if the `unique` flag is set.
 
-        **Note**: Unique indexes on non-shard keys are not supported in a cluster.
+        {{</* info */>}}
+        Unique indexes on non-shard keys are not supported in cluster deployments.
+        {{</* /info */>}}
       parameters:
         - name: collection
           in: query

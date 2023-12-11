@@ -199,7 +199,9 @@ paths:
           If there isn't any more log data to fetch, the client might decide to go
           to sleep for a while before calling the logger again.
 
-        **Note**: this method is not supported on a Coordinator in a cluster.
+        {{</* info */>}}
+        This method is not supported on Coordinators in cluster deployments.
+        {{</* /info */>}}
       parameters:
         - name: from
           in: query
@@ -251,7 +253,7 @@ paths:
             is returned if an error occurred while assembling the response.
         '501':
           description: |
-            is returned when this operation is called on a Coordinator in a cluster.
+            is returned when this operation is called on a Coordinator in a cluster deployment.
       tags:
         - Replication
 ```
@@ -347,7 +349,9 @@ paths:
         replication
         log.
 
-        **Note**: this method is not supported on a Coordinator in a cluster.
+        {{</* info */>}}
+        This method is not supported on Coordinators in cluster deployments.
+        {{</* /info */>}}
       responses:
         '200':
           description: |
@@ -360,7 +364,7 @@ paths:
             is returned if an error occurred while assembling the response.
         '501':
           description: |
-            is returned when this operation is called on a Coordinator in a cluster.
+            is returned when this operation is called on a Coordinator in a cluster deployment.
       tags:
         - Replication
 ```
@@ -416,7 +420,7 @@ paths:
             is returned if the logger state could not be determined.
         '501':
           description: |
-            is returned when this operation is called on a Coordinator in a cluster.
+            is returned when this operation is called on a Coordinator in a cluster deployment.
       tags:
         - Replication
 ```

@@ -41,7 +41,7 @@ paths:
             is returned if the server operations state could not be determined.
         '501':
           description: |
-            is returned when this operation is called on a Coordinator in a cluster.
+            is returned when this operation is called on a Coordinator in a cluster deployment.
       tags:
         - Replication
 ```
@@ -79,7 +79,9 @@ paths:
         - `time`: the server time as string in format `YYYY-MM-DDTHH:MM:SSZ`
         - `server`: An object with fields `version` and `serverId`
 
-        **Note**: this method is not supported on a Coordinator in a cluster.
+        {{</* info */>}}
+        This method is not supported on Coordinators in cluster deployments.
+        {{</* /info */>}}
       responses:
         '200':
           description: |
@@ -92,7 +94,7 @@ paths:
             is returned if an error occurred while assembling the response.
         '501':
           description: |
-            is returned when this operation is called on a Coordinator in a cluster.
+            is returned when this operation is called on a Coordinator in a cluster deployment.
       tags:
         - Replication
 ```
@@ -219,7 +221,9 @@ paths:
           If there isn't any more log data to fetch, the client might decide to go
           to sleep for a while before calling the logger again.
 
-        **Note**: this method is not supported on a Coordinator in a cluster.
+        {{</* info */>}}
+        This method is not supported on Coordinators in cluster deployments.
+        {{</* /info */>}}
       parameters:
         - name: global
           in: query
@@ -269,8 +273,10 @@ paths:
           description: |
             The ID of the client used to tail results. The server uses this to
             keep operations until the client has fetched them. Must be a positive integer.
-            **Note** `syncerId` or `serverId` is required to have a chance at fetching all
-            operations with the RocksDB storage engine.
+
+            {{</* info */>}}
+            Either `syncerId` or `serverId` is required to fetch all operations.
+            {{</* /info */>}}
           schema:
             type: number
         - name: serverId
@@ -280,8 +286,10 @@ paths:
             The ID of the client machine. If `syncerId` is unset, the server uses
             this to keep operations until the client has fetched them. Must be a positive
             integer.
-            **Note** `serverId` or `syncerId` is required to have a chance at fetching all
-            operations with the RocksDB storage engine.
+
+            {{</* info */>}}
+            Either `syncerId` or `serverId` is required to fetch all operations.
+            {{</* /info */>}}
           schema:
             type: number
         - name: clientInfo
@@ -313,7 +321,7 @@ paths:
             is returned if an error occurred while assembling the response.
         '501':
           description: |
-            is returned when this operation is called on a Coordinator in a cluster.
+            is returned when this operation is called on a Coordinator in a cluster deployment.
       tags:
         - Replication
 ```

@@ -39,7 +39,7 @@ database context, use the following URL schema:
 http://server:port/_db/<database-name>/_api/document/<document-identifier>
 ```
 
-For example, using the a database called `mydb`:
+For example, using a database called `mydb`:
 
 ```
 http://localhost:8529/_db/mydb/_api/document/demo/362549736
@@ -435,21 +435,21 @@ paths:
           in: query
           required: false
           description: |
-            This option supersedes `overwrite` and offers the following modes
-            - `"ignore"` if a document with the specified `_key` value exists already,
+            This option supersedes `overwrite` and offers the following modes:
+            - `"ignore"`: if a document with the specified `_key` value exists already,
               nothing is done and no write operation is carried out. The
               insert operation returns success in this case. This mode does not
               support returning the old document version using `RETURN OLD`. When using
               `RETURN NEW`, `null` is returned in case the document already existed.
-            - `"replace"` if a document with the specified `_key` value exists already,
+            - `"replace"`: if a document with the specified `_key` value exists already,
               it is overwritten with the specified document value. This mode is
               also used when no overwrite mode is specified but the `overwrite`
               flag is set to `true`.
-            - `"update"` if a document with the specified `_key` value exists already,
+            - `"update"`: if a document with the specified `_key` value exists already,
               it is patched (partially updated) with the specified document value.
               The overwrite mode can be further controlled via the `keepNull` and
               `mergeObjects` parameters.
-            - `"conflict"` if a document with the specified `_key` value exists already,
+            - `"conflict"`: if a document with the specified `_key` value exists already,
               return a unique constraint violation error so that the insert operation
               fails. This is also the default behavior in case the overwrite mode is
               not set, and the `overwrite` flag is `false` or not set either.
@@ -1473,7 +1473,7 @@ paths:
           in: query
           required: false
           description: |
-            Should the value be `true` (the default)
+            Should the value be `true` (the default):
             If a search document contains a value for the `_rev` field,
             then the document is only returned if it has the same revision value.
             Otherwise a precondition failed error is returned.
@@ -1673,21 +1673,21 @@ paths:
           in: query
           required: false
           description: |
-            This option supersedes `overwrite` and offers the following modes
-            - `"ignore"` if a document with the specified `_key` value exists already,
+            This option supersedes `overwrite` and offers the following modes:
+            - `"ignore"`: if a document with the specified `_key` value exists already,
               nothing is done and no write operation is carried out. The
               insert operation returns success in this case. This mode does not
               support returning the old document version using `RETURN OLD`. When using
               `RETURN NEW`, `null` is returned in case the document already existed.
-            - `"replace"` if a document with the specified `_key` value exists already,
+            - `"replace"`: if a document with the specified `_key` value exists already,
               it is overwritten with the specified document value. This mode is
               also used when no overwrite mode is specified but the `overwrite`
               flag is set to `true`.
-            - `"update"` if a document with the specified `_key` value exists already,
+            - `"update"`: if a document with the specified `_key` value exists already,
               it is patched (partially updated) with the specified document value.
               The overwrite mode can be further controlled via the `keepNull` and
               `mergeObjects` parameters.
-            - `"conflict"` if a document with the specified `_key` value exists already,
+            - `"conflict"`: if a document with the specified `_key` value exists already,
               return a unique constraint violation error so that the insert operation
               fails. This is also the default behavior in case the overwrite mode is
               not set, and the `overwrite` flag is `false` or not set either.

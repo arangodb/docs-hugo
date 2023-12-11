@@ -559,6 +559,11 @@ paths:
           description: |
             HTTP 503 will be returned in case the server is during startup or during shutdown,
             is set to read-only mode or is currently a follower in an Active Failover deployment setup.
+
+            In addition, HTTP 503 will be returned in case the fill grade of the scheduler
+            queue exceeds the configured high-water mark (adjustable via startup option
+            `--server.unavailability-queue-fill-grade`), which by default is set to 75 % of
+            the maximum queue length.
       tags:
         - Administration
 ```
@@ -876,7 +881,7 @@ paths:
           in: query
           required: false
           description: |
-            <small>Introduced in v3.7.12, v3.8.1, v3.9.0</small>
+            <small>Introduced in: v3.7.12, v3.8.1, v3.9.0</small>
 
             If set to `true`, this initiates a soft shutdown. This is only available
             on Coordinators. When issued, the Coordinator tracks a number of ongoing
@@ -891,12 +896,12 @@ paths:
             requests will be handled by the remaining Coordinators, reducing the designated
             Coordinator's load.
 
-            The following types of operations are tracked
+            The following types of operations are tracked:
 
              - AQL cursors (in particular streaming cursors)
              - Transactions (in particular stream transactions)
              - Pregel runs (conducted by this Coordinator)
-             - Ongoing asynchronous requests (using the `x-arango-async store` HTTP header)
+             - Ongoing asynchronous requests (using the `x-arango-async: store` HTTP header)
              - Finished asynchronous requests, whose result has not yet been
                collected
              - Queued low priority requests (most normal requests)
@@ -1337,9 +1342,11 @@ paths:
         the only attribute, and with the value being a string describing the
         endpoint.
 
-        **Note**: retrieving the array of all endpoints is allowed in the system database
+        {{</* info */>}}
+        Retrieving the array of all endpoints is allowed in the system database
         only. Calling this action in any other database will make the server return
         an error.
+        {{</* /info */>}}
       responses:
         '200':
           description: |
