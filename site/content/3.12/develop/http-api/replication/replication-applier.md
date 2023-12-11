@@ -802,7 +802,9 @@ paths:
         values are only meaningful when compared to each other. Higher tick values mean
         "later in time" than lower tick values.
 
-        **Note**: this endpoint is not supported on a Coordinator in a cluster.
+        {{</* info */>}}
+        This endpoint is not supported on a Coordinator in a cluster deployment.
+        {{</* /info */>}}
       requestBody:
         content:
           application/json:
@@ -957,7 +959,7 @@ paths:
             continuous replication.
         '501':
           description: |
-            is returned when this operation is called on a Coordinator in a cluster.
+            is returned when this operation is called on a Coordinator in a cluster deployment.
       tags:
         - Replication
 ```

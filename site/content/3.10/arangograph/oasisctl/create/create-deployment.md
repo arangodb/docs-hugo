@@ -40,7 +40,7 @@ oasisctl create deployment [flags]
   -o, --organization-id string               Identifier of the organization to create the deployment in
   -p, --project-id string                    Identifier of the project to create the deployment in
   -r, --region-id string                     Identifier of the region to create the deployment in
-      --version string                       Version of ArangoDB to use for the deployment
+      --version string                       Version of ArangoDB to use for the deployment (default "default")
 ```
 
 ## Options Inherited From Parent Commands

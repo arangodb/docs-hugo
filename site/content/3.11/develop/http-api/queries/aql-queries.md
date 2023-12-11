@@ -497,11 +497,12 @@ paths:
 
                         Default value: 128MB.
 
-                        **Note**:
+                        {{</* info */>}}
                         Spilling data from RAM onto disk is an experimental feature and is turned off
                         by default. The query results are still built up entirely in RAM on Coordinators
                         and single servers for non-streaming queries. To avoid the buildup of
                         the entire query result in RAM, use a streaming query (see the `stream` option).
+                        {{</* /info */>}}
                       type: integer
                     spillOverThresholdNumRows:
                       description: |
@@ -519,11 +520,12 @@ paths:
 
                         Default value: `5000000` rows.
 
-                        **Note**:
+                        {{</* info */>}}
                         Spilling data from RAM onto disk is an experimental feature and is turned off
                         by default. The query results are still built up entirely in RAM on Coordinators
                         and single servers for non-streaming queries. To avoid the buildup of
                         the entire query result in RAM, use a streaming query (see the `stream` option).
+                        {{</* /info */>}}
                       type: integer
                     optimizer:
                       description: |
@@ -959,6 +961,9 @@ paths:
           description: |
             is returned if the JSON representation is malformed, the query specification is
             missing from the request, or if the query is invalid.
+
+            The body of the response contains a JSON object with additional error
+            details. The object has the following attributes:
           content:
             application/json:
               schema:

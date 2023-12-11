@@ -4,7 +4,7 @@ menuTitle: User Management
 weight: 25
 description: >-
   User management is possible in the web interface and in _arangosh_ in the
-  contect of the `_system` database
+  context of the `_system` database
 archetype: chapter
 ---
 Authentication needs to be enabled on the server in order to employ user
@@ -36,7 +36,7 @@ service arangodb restart
 ```
 
 User management is possible in the [web interface](../../../components/web-interface/users.md)
-while logged on to the *\_system* database and in
+while logged on to the `_system` database and in
 [arangosh](in-arangosh.md), as well as via the
 [HTTP API](../../../develop/http-api/users.md).
 
@@ -115,7 +115,7 @@ access levels. The access levels are *Administrate* and
 | update a user             | Administrate |
 | update user access level  | Administrate |
 | drop a user               | Administrate |
-| shutdown server       | Administrate | 
+| shutdown server           | Administrate | 
 
 To perform actions in a specific database (like creating or dropping collections),
 a user needs at least the following access level.
@@ -179,16 +179,16 @@ from the database access level in the `_system` database, it is
 
 ### Initial Access Levels
 
-When a user creates a database the access level of the user for that database
+When a user creates a database, the access level of the user for that database
 is set to *Administrate*. The same is true for creating a collection, in this
-case the user get *Read/Write* access to the collection.
+case the user gets *Read/Write* access to the collection.
 
 ### Wildcard Database Access Level
 
 With the above definition, one must define the database access level for
 all database/user pairs in the server, which would be very tedious. In
-order to simplify this process, it is possible to define, for a user,
-a wildcard database access level. This wildcard is used if the database
+order to simplify this process, it is possible to define a wildcard
+database access level for a user. This wildcard is used if the database
 access level is *not* explicitly defined for a certain database. Each new
 created user has an initial database wildcard of *No Access*.
 
@@ -202,33 +202,52 @@ If you delete the wildcard, the default access level is defined as *No Access*.
 
 The `root` user has an initial database wildcard of *Administrate*.
 
-*Example*
+If a user has the access level *Access* or *Administrate* for the `_system`
+database but a lower wildcard database access level, then the `_system` database
+access level is granted for all databases that do not have an explicit
+access level defined.
+
+See [Permission Resolution](#permission-resolution) for details.
+
+**Example**
 
 Assume user *JohnSmith* has the following database access levels:
 
-|                  | access level |
-|------------------|--------------|
-| database `*`     | Access       |
-| database `shop1` | Administrate |
-| database `shop2` | No Access    |
+|                    | Access level |
+|--------------------|--------------|
+| database `_system` | No Access    |
+| database `shop1`   | Administrate |
+| database `shop2`   | No Access    |
+| database `*`       | Access       |
 
-This will give the user *JohnSmith* the following database level access:
+This gives the user *JohnSmith* the following database level access:
 
+- database `_system`: *No Access*
 - database `shop1`: *Administrate*
 - database `shop2`: *No Access*
 - database `something`: *Access*
 
-If the wildcard `*` is changed from *Access* to *No Access* then the
-permissions will change as follows:
+If the wildcard `*` is changed from *Access* to *No Access*, then the
+permissions change as follows:
 
+- database `_system`: *No Access*
 - database `shop1`: *Administrate*
 - database `shop2`: *No Access*
 - database `something`: *No Access*
 
+If the `_system` database access level is changed from *No Access*  to
+*Administrate*, then the permissions change again for databases with no
+explicitly defined access level:
+
+- database `_system`: *Administrate*
+- database `shop1`: *Administrate*
+- database `shop2`: *No Access*
+- database `something`: *Administrate*
+
 ### Wildcard Collection Access Level
 
-For each user and database there is a wildcard collection access level.
-This level is used for all collections pairs without an explicitly
+For each user and database, there is a wildcard collection access level.
+This level is used for all collections of a database without an explicitly
 defined collection access level. Note that this includes collections
 which will be created in the future and for which no explicit access
 levels are set for a that user! Each new created user has an initial
@@ -239,93 +258,154 @@ If you delete the wildcard, the system defaults to *No Access*.
 The `root` user has an initial collection wildcard of *Read/Write* in every database.
 
 When creating a user through
-[`db._createDatabase()`](../../../develop/javascript-api/@arangodb/db-object.md#db_createdatabasename--options--users)
-the access level of the user for this database will be set to *Administrate*
-and the wildcard for all collections within this database will be set to
-*Read/Write*.
+[`db._createDatabase()`](../../../develop/javascript-api/@arangodb/db-object.md#db_createdatabasename--options--users),
+the access level of the user for this database is set to *Administrate* and the
+wildcard for all collections within this database are set to *Read/Write*.
 
-**Example**
+If a user has the access level *Access* or *Administrate* for the `_system`
+database but a lower wildcard database access level or wildcard collection
+access level, then the `_system` database access level is granted for all
+collections that do not have an explicit access level defined.
+
+See [Permission Resolution](#permission-resolution) for details.
+
+{{< security >}}
+It is recommended to use explicitly defined access levels for all databases and
+collections instead of wildcard grants to avoid accidentally granting more
+permissions than intended.
+{{< /security >}}
+
+**Examples**
 
 Assume user *JohnSmith* has the following database access levels:
 
-|              | access level |
-|--------------|--------------|
-| database `*` | Access       |
+|                    | Access level |
+|--------------------|--------------|
+| database `_system` | No Access    |
+| database `*`       | Access       |
 
-and collection access levels:
+And the following collection access levels:
 
-|                                         | access level |
+|                                         | Access level |
 |-----------------------------------------|--------------|
 | database `*`, collection `*`            | Read/Write   |
 | database `shop1`, collection `products` | Read-Only    |
 | database `shop1`, collection `*`        | No Access    |
-| database `shop2`, collection `*`        | Read-Only    |
+| database `shop2`, collection `reviews`  | No Access    |
 
-Then the user *doe* will get the following collection access levels:
+Then the user *JohnSmith* gets the following collection access levels:
 
 - database `shop1`, collection `products`: *Read-Only*
-- database `shop1`, collection `customers`: *No Access*
-- database `shop2`, collection `reviews`: *Read-Only*
-- database `something`, collection `else`: *Read/Write*
+- database `shop1`, collection `customers`: *Read/Write*
+- database `shop2`, collection `reviews`: *No Access*
 
 Explanation:
 
 Database `shop1`, collection `products` directly matches a defined
-access level. This level is defined as *Read-Only*.
+collection access level and the database access level is higher
+than *No Access*, leading to *Read-Only* access for the collection.
 
 Database `shop1`, collection `customers` does not match a defined access
-level. However, database `shop1` matches and the wildcard in this
-database for collection level is *No Access*.
+level. There is a wildcard collection access level of *No Access*, but it cannot
+lower the access level granted by the wildcard combination of database `*`,
+collection `*`, leading to *Read/Write* access for the collection.
 
-Database `shop2`, collection `reviews` does not match a defined access
-level. However, database `shop2` matches and the wildcard in this
-database for collection level is *Read-Only*.
+Database `shop2` does not match a defined access level. However, the database
+matches the database wildcard access level of *Access*. The access level for all
+collections with no defined access level would be *Read/Write* because of the
+wildcard combination of database `*`, collection `*`, but the `reviews`
+collection has a defined access level of *No Access*, leading to no access for
+this collection.
 
-Database `something`, collection `else` does not match a defined access
-level. The database `something` also does have a direct matches.
-Therefore the wildcard is selected. The level is *Read/Write*.
+Assume user *JohnSmith* has the following database access levels:
+
+|                    | Access level |
+|--------------------|--------------|
+| database `_system` | Access       |
+| database `shop2`   | Administrate |
+| database `*`       | No Access    |
+
+And the following collection access levels:
+
+|                                          | Access level |
+|------------------------------------------|--------------|
+| database `shop1`, collection `customers` | No Access    |
+| database `shop1`, collection `*`         | No Access    |
+
+Then the user *JohnSmith* gets the following collection access levels:
+
+- database `shop1`, collection `products`: *Read-Only*
+- database `shop1`, collection `customers`: *No Access*
+- database `shop2`, collection `reviews`: *Read/Write*
+
+Explanation:
+
+Database `shop1`, collection `products` does not match a defined access
+level. There is a wildcard collection access level of *No Access*, but it cannot
+lower the access level granted via the `_system` database, leading to *Read-Only*
+access for the collection.
+
+Database `shop1`, collection `customers` directly matches a defined
+collection access level. The database access level is higher than *No Access*
+but the explicitly defined collection access level of *No Access* leads to no
+access for the collection.
+
+Database `shop2` has a defined access level of *Administrate*. No access level
+is defined for its collections, which is equal to a wildcard collection
+access level of *No Access*.  However, the *Administrate* database access level
+leads to *Read-Write* access for all collections in the database, including the
+`reviews` collection.
 
 ### Permission Resolution
 
 The access levels for databases and collections are resolved in the following way:
 
 For a database "*foo*":
-1. Check if there is a specific database grant for *foo*, if yes use the granted access level
-2. Choose the higher access level of::
-  - A wildcard database grant ( for example `grantDatabase('user', '*', 'rw'`)
-  - A database grant on the `_system` database
+1. Check if there is a specific database grant for *foo*.
+   If yes, use the granted access level.
+2. Choose the higher access level of:
+  - A wildcard database grant (like `grantDatabase('user', '*', 'rw')`).
+  - A database grant on the `_system` database.
 
-For a collection named "*bar*":
-1. Check if there is a specific database grant for *bar*, if yes use the granted access level
-2. Choose the higher access level of::
-  - Any wildcard access grant in the same database, or on `"*"` (in this example `grantCollection('user', 'foo', '*', 'rw')`) 
-  - The access level for the current database (in this example `grantDatabase('user', 'foo', 'rw'`)
-  - The access level for the `_system` database
+For a collection named "*bar*" in a database "*foo*":
+1. Check whether the effective access level for the database *foo* is higher than
+   *No Access* (see above). If not, then you cannot access the collection *bar*.
+2. Check if there is a specific collection grant for *bar*.
+   If yes, use the granted collection access level for *bar*.
+3. Choose the higher access level of:
+  - A wildcard collection grant in the same database
+    (like `grantCollection('user', 'foo', '*', 'rw')`).
+  - A wildcard database grant (like `grantDatabase('user', '*', 'rw')`).
+  - The access level for the current database (like `grantDatabase('user', 'foo', 'rw'`).
+  - The access level for the `_system` database.
 
-An exception to this are system collections, here only the access level for the database is used.
+An exception to this are system collections, where only the access level for the
+database is used.
 
 ### System Collections
 
 The access level for system collections cannot be changed. They follow
 different rules than user defined collections and may change without further
-notice. Currently the system collections follow these rules:
+notice. The system collections follow these rules:
 
-| collection            | access level |
-|-----------------------|--------------|
-| `_users` (in _system) | No Access    |
-| `_queues`             | Read-Only    |
-| `_frontend`           | Read/Write   |
-| `*`                   | *same as db* |
+| Collection                           | Access level |
+|--------------------------------------|--------------|
+| `_users` (in the `_system` database) | No Access    |
+| `_queues`                            | Read-Only    |
+| `_frontend`                          | Read/Write   |
+| `*` (default)                        | *based on the current database* |
 
 All other system collections have access level *Read/Write* if the
 user has *Administrate* access to the database. They have access level
 *Read/Only* if the user has *Access* to the database.
 
-To modify these system collections you should always use the
-specialized APIs provided by ArangoDB. For example
-no user has access to the *\_users* collection in the *\_system*
+To modify these system collections, you should always use the
+specialized APIs provided by ArangoDB. For example,
+no user has access to the `_users` collection in the `_system`
 database. All changes to the access levels must be done using the
-*@arangodb/users* module, the `/_users/` API or the web interface.
+[`@arangodb/users` module of the JavaScript API](in-arangosh.md),
+the [`/_api/user` HTTP API endpoints](../../../develop/http-api/users.md),
+or the web interface.
 
 ### LDAP Users
 

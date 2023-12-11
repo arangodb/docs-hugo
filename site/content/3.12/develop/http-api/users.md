@@ -16,6 +16,10 @@ You should never manipulate the `_users` collection directly. The specialized
 endpoints intentionally have limited functionality compared to the regular
 Document API.
 
+See [Managing Users](../../operations/administration/user-management/_index.md)
+for details and note that using wildcard database and collection access levels
+is discouraged.
+
 {{< info >}}
 User management operations are not included in ArangoDB's replication.
 {{< /info >}}

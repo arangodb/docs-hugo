@@ -1111,6 +1111,34 @@
     "section" : "log",
     "type" : "boolean"
   },
+  "max-errors" : {
+    "base" : 1,
+    "category" : "option",
+    "default" : 20,
+    "deprecatedIn" : null,
+    "description" : "The maxium number of errors after which the import will stop.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.0"
+    ],
+    "longDescription" : "The maximum number of errors after which the\nimport is stopped. \n\nNote that this is not an exact limit for the number of errors.\narangoimport will send data to the server in batches, and likely also in parallel. \nThe server will process these in-flight batches regardless of the maximum number\nof errors configured here. arangoimport will however stop processing more input\ndata once the server reported at least this many errors back.",
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "",
+    "type" : "uint64"
+  },
   "merge-attributes" : {
     "category" : "option",
     "default" : [
@@ -1645,7 +1673,7 @@
   },
   "type" : {
     "category" : "option",
-    "default" : "json",
+    "default" : "auto",
     "deprecatedIn" : null,
     "description" : "The format of import file.",
     "dynamic" : false,
