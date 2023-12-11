@@ -761,8 +761,8 @@
   desc: "Will be raised when a query contains expressions or other constructs with too many objects or that are too deeply nested."
   code: 1524
 - name: ERROR_QUERY_INVALID_OPTIONS_ATTRIBUTE
-  text: "unknown OPTIONS attribute used"
-  desc: "Will be raised when an unknown attribute is used inside an OPTIONS clause."
+  text: "unknown/invalid OPTIONS attribute used"
+  desc: "Will be raised when an unknown attribute name or an invalid attribute value is used inside an OPTIONS clause."
   code: 1539
 - name: ERROR_QUERY_FUNCTION_NAME_UNKNOWN
   text: "usage of unknown function '%s()'"

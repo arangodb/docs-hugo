@@ -153,7 +153,9 @@ paths:
       description: |
         Retrieves the list of all existing databases
 
-        **Note**: retrieving the list of databases is only possible from within the `_system` database.
+        {{</* info */>}}
+        Retrieving the list of databases is only possible from within the `_system` database.
+        {{</* /info */>}}
       responses:
         '200':
           description: |
@@ -195,7 +197,9 @@ paths:
 
         The response is a JSON object with the attribute `result` set to `true`.
 
-        **Note**: Creating a new database is only possible from within the `_system` database.
+        {{</* info */>}}
+        Creating a new database is only possible from within the `_system` database.
+        {{</* /info */>}}
       requestBody:
         content:
           application/json:
@@ -374,8 +378,10 @@ paths:
       description: |
         Drops the database along with all data stored in it.
 
-        **Note**: dropping a database is only possible from within the `_system` database.
+        {{</* info */>}}
+        Dropping a database is only possible from within the `_system` database.
         The `_system` database itself cannot be dropped.
+        {{</* /info */>}}
       parameters:
         - name: database-name
           in: path

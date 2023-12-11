@@ -24,7 +24,8 @@ To install the latest release of the ArangoDB-cuGraph Adapter,
 run the following command:
 
 ```bash
-conda install -c arangodb adbcug-adapter
+pip install --extra-index-url=https://pypi.nvidia.com cudf-cu11 cugraph-cu11
+pip install adbcug-adapter
 ```
 
 ## Quickstart
@@ -36,53 +37,109 @@ Check also the
 ```py
 import cudf
 import cugraph
-from arango import ArangoClient # Python-Arango driver
 
-from adbcug_adapter import ADBCUG_Adapter
+from arango import ArangoClient
+from adbcug_adapter import ADBCUG_Adapter, ADBCUG_Controller
 
-# Let's assume that the ArangoDB "fraud detection" dataset is imported to this endpoint
-db = ArangoClient(hosts="http://localhost:8529").db("_system", username="root", password="")
+# Connect to ArangoDB
+db = ArangoClient().db()
 
+# Instantiate the adapter
 adbcug_adapter = ADBCUG_Adapter(db)
+```
 
-# Use Case 1.1: ArangoDB to cuGraph via Graph name
-cug_fraud_graph = adbcug_adapter.arangodb_graph_to_cugraph("fraud-detection")
+### ArangoDB to cuGraph
+```py
+#######################
+# 1.1: via Graph name #
+#######################
 
-# Use Case 1.2: ArangoDB to cuGraph via Collection names
-cug_fraud_graph_2 = adbcug_adapter.arangodb_collections_to_cugraph(
+cug_g = adbcug_adapter.arangodb_graph_to_cugraph("fraud-detection")
+
+#############################
+# 1.2: via Collection names #
+#############################
+
+cug_g = adbcug_adapter.arangodb_collections_to_cugraph(
     "fraud-detection",
     {"account", "bank", "branch", "Class", "customer"},  #  Vertex collections
     {"accountHolder", "Relationship", "transaction"},  # Edge collections
 )
+```
 
-# Use Case 2: cuGraph to ArangoDB:
-## 1) Create a sample cuGraph
-cug_divisibility_graph = cugraph.MultiGraph(directed=True)
-cug_divisibility_graph.from_cudf_edgelist(
-    cudf.DataFrame(
-        [
-            (f"numbers/{j}", f"numbers/{i}", j / i)
-            for i in range(1, 101)
-            for j in range(1, 101)
-            if j % i == 0
-        ],
-        columns=["src", "dst", "weight"],
-    ),
-    source="src",
-    destination="dst",
-    edge_attr="weight",
-    renumber=False,
-)
+### cuGraph to ArangoDB
+```py
 
-## 2) Create ArangoDB Edge Definitions
+#################################
+# 2.1: with a Homogeneous Graph #
+#################################
+
+edges = [("Person/A", "Person/B", 1), ("Person/B", "Person/C", -1)]
+cug_g = cugraph.MultiGraph(directed=True)
+cug_g.from_cudf_edgelist(cudf.DataFrame(edges, columns=["src", "dst", "weight"]), source="src", destination="dst", edge_attr="weight")
+
 edge_definitions = [
     {
-        "edge_collection": "is_divisible_by",
-        "from_vertex_collections": ["numbers"],
-        "to_vertex_collections": ["numbers"],
+        "edge_collection": "knows",
+        "from_vertex_collections": ["Person"],
+        "to_vertex_collections": ["Person"],
     }
 ]
 
-## 3) Convert cuGraph to ArangoDB
-adb_graph = adbcug_adapter.cugraph_to_arangodb("DivisibilityGraph", cug_graph, edge_definitions)
+adb_g = adbcug_adapter.cugraph_to_arangodb("Knows", cug_g, edge_definitions, edge_attr="weight")
+
+##############################################################
+# 2.2: with a Homogeneous Graph & a custom ADBCUG Controller #
+##############################################################
+
+class Custom_ADBCUG_Controller(ADBCUG_Controller):
+    """ArangoDB-cuGraph controller.
+
+    Responsible for controlling how nodes & edges are handled when
+    transitioning from ArangoDB to cuGraph & vice-versa.
+    """
+
+    def _prepare_cugraph_node(self, cug_node: dict, col: str) -> None:
+        """Prepare a cuGraph node before it gets inserted into the ArangoDB
+        collection **col**.
+
+        :param cug_node: The cuGraph node object to (optionally) modify.
+        :param col: The ArangoDB collection the node belongs to.
+        """
+        cug_node["foo"] = "bar"
+
+    def _prepare_cugraph_edge(self, cug_edge: dict, col: str) -> None:
+        """Prepare a cuGraph edge before it gets inserted into the ArangoDB
+        collection **col**.
+
+        :param cug_edge: The cuGraph edge object to (optionally) modify.
+        :param col: The ArangoDB collection the edge belongs to.
+        """
+        cug_edge["bar"] = "foo"
+
+adb_g = ADBCUG_Adapter(db, Custom_ADBCUG_Controller()).cugraph_to_arangodb("Knows", cug_g, edge_definitions)
+
+###################################
+# 2.3: with a Heterogeneous Graph #
+###################################
+
+edges = [
+   ('student:101', 'lecture:101'), 
+   ('student:102', 'lecture:102'), 
+   ('student:103', 'lecture:103'), 
+   ('student:103', 'student:101'), 
+   ('student:103', 'student:102'),
+   ('teacher:101', 'lecture:101'),
+   ('teacher:102', 'lecture:102'),
+   ('teacher:103', 'lecture:103'),
+   ('teacher:101', 'teacher:102'),
+   ('teacher:102', 'teacher:103')
+]
+cug_g = cugraph.MultiGraph(directed=True)
+cug_g.from_cudf_edgelist(cudf.DataFrame(edges, columns=["src", "dst"]), source='src', destination='dst')
+
+# ...
+
+# Learn how this example is handled in Colab:
+# https://colab.research.google.com/github/arangoml/cugraph-adapter/blob/master/examples/ArangoDB_cuGraph_Adapter.ipynb#scrollTo=nuVoCZQv6oyi
 ```

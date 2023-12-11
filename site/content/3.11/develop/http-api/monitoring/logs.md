@@ -36,12 +36,12 @@ paths:
           in: query
           required: false
           description: |
-            Returns all log entries up to log level `upto`. Note that `upto` must be
+            Returns all log entries up to log level `upto`. Note that `upto` must be:
             - `fatal` or `0`
             - `error` or `1`
             - `warning` or `2`
             - `info` or `3`
-            - `debug`  or `4`
+            - `debug` or `4`
             The default value is `info`.
           schema:
             type: string
@@ -141,12 +141,12 @@ paths:
           in: query
           required: false
           description: |
-            Returns all log entries up to log level `upto`. Note that `upto` must be
+            Returns all log entries up to log level `upto`. Note that `upto` must be:
             - `fatal` or `0`
             - `error` or `1`
             - `warning` or `2`
             - `info` or `3`
-            - `debug`  or `4`
+            - `debug` or `4`
             The default value is `info`.
           schema:
             type: string

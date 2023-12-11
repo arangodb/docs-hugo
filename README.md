@@ -344,6 +344,11 @@ paths:
 ```
 ````
 
+For the OpenAPI JSON output, this is rendered as `> **WARNING:** ...`
+(a blockquote with the admonition type in bold and uppercase).
+Only a single paragraph is properly supported by the toolchain. Additional
+paragraphs will not be part of the blockquote.
+
 Admonitions inside of other shortcodes need to use the special syntax, too:
 
 ```markdown
