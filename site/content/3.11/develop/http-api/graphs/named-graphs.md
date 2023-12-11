@@ -637,7 +637,7 @@ paths:
           description: |
             Returned if there is a conflict storing the graph. This can occur
             either if a graph with this name is already stored, or if there is one
-            edge definition with a the same edge collection but a different signature
+            edge definition with the same edge collection but a different signature
             used in any other graph.
           content:
             application/json:

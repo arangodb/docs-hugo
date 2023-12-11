@@ -57,7 +57,7 @@ Execution plan:
   5   ReturnNode                   0       - RETURN doc
 ```
 
-Execution plan with a the primary sort order of the index being utilized:
+Execution plan with the primary sort order of the index being utilized:
 
 ```aql
 Execution plan:
@@ -81,7 +81,7 @@ db._query(`FOR doc IN viewName
 ```
 
 To define more than one attribute to sort by, use multiple sub-objects in the
-the `primarySort` array:
+`primarySort` array:
 
 ```js
 db.coll.ensureIndex({
@@ -155,7 +155,7 @@ Execution plan:
   5   ReturnNode             1       - RETURN doc
 ```
 
-Execution plan with a the primary sort order of the index being utilized:
+Execution plan with the primary sort order of the index being utilized:
 
 ```aql
 Execution plan:
@@ -166,7 +166,7 @@ Execution plan:
 ```
 
 To define more than one attribute to sort by, use multiple sub-objects in the
-the `primarySort` array:
+`primarySort` array:
 
 ```json
 {
