@@ -505,7 +505,7 @@ paths:
       responses:
         '200':
           description: |
-            Returns information about the collection
+            Returns information about the collection:
           content:
             application/json:
               schema:
@@ -614,8 +614,10 @@ paths:
 
         The response is a JSON object with a `shardId` attribute, which will
         contain the ID of the responsible shard.
-
-        **Note** : This method is only available in a cluster Coordinator.
+        
+        {{</* info */>}}
+        This method is only available on Coordinators in cluster deployments.
+        {{</* /info */>}}
       requestBody:
         content:
           application/json:
@@ -695,7 +697,9 @@ paths:
         shard IDs as object attribute keys, and the responsible servers for each shard mapped to them.
         In the detailed response, the leader shards will be first in the arrays.
 
-        **Note** : This method is only available in a cluster Coordinator.
+        {{</* info */>}}
+        This method is only available on Coordinators in cluster deployments.
+        {{</* /info */>}}
       parameters:
         - name: collection-name
           in: path
@@ -858,7 +862,10 @@ paths:
 
         By providing the optional query parameter `withData` with a value of `true`,
         the user-defined document attributes will be included in the calculation too.
-        **Note**: Including user-defined attributes will make the checksumming slower.
+        
+        {{</* info */>}}
+        Including user-defined attributes will make the checksumming slower.
+        {{</* /info */>}}
 
         The response is a JSON object with the following attributes:
 
@@ -1127,8 +1134,7 @@ paths:
                 numberOfShards:
                   description: |
                     (The default is `1`): in a cluster, this value determines the
-                    number of shards to create for the collection. In a single
-                    server setup, this option is meaningless.
+                    number of shards to create for the collection.
                   type: integer
                 shardKeys:
                   description: |
@@ -1137,8 +1143,10 @@ paths:
                     Documents are sent to shards based on the values of their shard key attributes.
                     The values of all shard key attributes in a document are hashed,
                     and the hash value is used to determine the target shard.
-                    **Note**: Values of shard key attributes cannot be changed once set.
-                      This option is meaningless in a single server setup.
+                    
+                    {{</* info */>}}
+                    Values of shard key attributes cannot be changed once set.
+                    {{</* /info */>}}
                   type: string
                 replicationFactor:
                   description: |
@@ -1212,11 +1220,13 @@ paths:
 
                     The default is `""`.
 
-                    **Note**: Using this parameter has consequences for the prototype
+                    {{</* info */>}}
+                    Using this parameter has consequences for the prototype
                     collection. It can no longer be dropped, before the sharding-imitating
                     collections are dropped. Equally, backups and restores of imitating
                     collections alone generate warnings (which can be overridden)
                     about a missing sharding prototype.
+                    {{</* /info */>}}
                   type: string
                 isSmart:
                   description: |
@@ -1684,7 +1694,7 @@ paths:
           required: false
           description: |
             If `true` then the data is synchronized to disk before returning from the
-            truncate operation (default `false`)
+            truncate operation (default: `false`)
           schema:
             type: boolean
         - name: compact
@@ -2164,7 +2174,9 @@ paths:
         If renaming the collection succeeds, then the collection is also renamed in
         all graph definitions inside the `_graphs` collection in the current database.
 
-        **Note**: this method is not available in a cluster.
+        {{</* info */>}}
+        Renaming collections is not supported in cluster deployments.
+        {{</* /info */>}}
       parameters:
         - name: collection-name
           in: path

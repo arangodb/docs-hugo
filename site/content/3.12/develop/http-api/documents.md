@@ -425,21 +425,21 @@ paths:
           in: query
           required: false
           description: |
-            This option supersedes `overwrite` and offers the following modes
-            - `"ignore"` if a document with the specified `_key` value exists already,
+            This option supersedes `overwrite` and offers the following modes:
+            - `"ignore"`: if a document with the specified `_key` value exists already,
               nothing is done and no write operation is carried out. The
               insert operation returns success in this case. This mode does not
               support returning the old document version using `RETURN OLD`. When using
               `RETURN NEW`, `null` is returned in case the document already existed.
-            - `"replace"` if a document with the specified `_key` value exists already,
+            - `"replace"`: if a document with the specified `_key` value exists already,
               it is overwritten with the specified document value. This mode is
               also used when no overwrite mode is specified but the `overwrite`
               flag is set to `true`.
-            - `"update"` if a document with the specified `_key` value exists already,
+            - `"update"`: if a document with the specified `_key` value exists already,
               it is patched (partially updated) with the specified document value.
               The overwrite mode can be further controlled via the `keepNull` and
               `mergeObjects` parameters.
-            - `"conflict"` if a document with the specified `_key` value exists already,
+            - `"conflict"`: if a document with the specified `_key` value exists already,
               return a unique constraint violation error so that the insert operation
               fails. This is also the default behavior in case the overwrite mode is
               not set, and the `overwrite` flag is `false` or not set either.
@@ -509,18 +509,43 @@ paths:
             specified replicas for a shard are currently in-sync with the leader. For example,
             if the write concern is `2` and the replication factor is `3`, then the
             write concern is not fulfilled if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
         '404':
           description: |
             is returned if the collection specified by `collection` is unknown.
             The response body contains an error document in this case.
         '409':
           description: |
-            There are two possible reasons for this error in the single document case
+            There are two possible reasons for this error in the single document case:
+
+            - A document with the same qualifiers in an indexed attribute conflicts with an
+              already existing document and thus violates the unique constraint.
+              The response body contains an error document with the `errorNum` set to
+              `1210` (`ERROR_ARANGO_UNIQUE_CONSTRAINT_VIOLATED`) in this case.
+            - Locking the document key or some unique index entry failed to due to another
+              concurrent operation that operates on the same document. This is also referred
+              to as a _write-write conflict_. The response body contains an error document
+              with the `errorNum` set to `1200` (`ERROR_ARANGO_CONFLICT`) in this case.
         '503':
           description: |
             is returned if the system is temporarily not available. This can be a system
             overload or temporary failure. In this case it makes sense to retry the request
             later.
+
+            If the error code is `1429`, then the write concern for the collection cannot be
+            fulfilled. This can happen if less than the number of specified replicas for
+            a shard are currently in-sync with the leader. For example, if the write concern
+            is `2` and the replication factor is `3`, then the write concern is not fulfilled
+            if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
       tags:
         - Documents
 ```
@@ -852,12 +877,25 @@ paths:
             specified replicas for a shard are currently in-sync with the leader. For example,
             if the write concern is `2` and the replication factor is `3`, then the
             write concern is not fulfilled if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
         '404':
           description: |
             is returned if the collection or the document was not found.
         '409':
           description: |
-            There are two possible reasons for this error
+            There are two possible reasons for this error:
+
+            - The replace operation causes a unique constraint violation in a secondary
+              index. The response body contains an error document with the `errorNum` set to
+              `1210` (`ERROR_ARANGO_UNIQUE_CONSTRAINT_VIOLATED`) in this case.
+            - Locking the document key or some unique index entry failed due to another
+              concurrent operation that operates on the same document. This is also referred
+              to as a _write-write conflict_. The response body contains an error document
+              with the `errorNum` set to `1200` (`ERROR_ARANGO_CONFLICT`) in this case.
         '412':
           description: |
             is returned if the precondition is violated. The response also contains
@@ -868,6 +906,17 @@ paths:
             is returned if the system is temporarily not available. This can be a system
             overload or temporary failure. In this case it makes sense to retry the request
             later.
+
+            If the error code is `1429`, then the write concern for the collection cannot be
+            fulfilled. This can happen if less than the number of specified replicas for
+            a shard are currently in-sync with the leader. For example, if the write concern
+            is `2` and the replication factor is `3`, then the write concern is not fulfilled
+            if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
       tags:
         - Documents
 ```
@@ -1142,12 +1191,25 @@ paths:
             specified replicas for a shard are currently in-sync with the leader. For example,
             if the write concern is `2` and the replication factor is `3`, then the
             write concern is not fulfilled if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
         '404':
           description: |
             is returned if the collection or the document was not found.
         '409':
           description: |
-            There are two possible reasons for this error
+            There are two possible reasons for this error:
+
+            - The update causes a unique constraint violation in a secondary index.
+              The response body contains an error document with the `errorNum` set to
+              `1210` (`ERROR_ARANGO_UNIQUE_CONSTRAINT_VIOLATED`) in this case.
+            - Locking the document key or some unique index entry failed due to another
+              concurrent operation that operates on the same document. This is also referred
+              to as a _write-write conflict_. The response body contains an error document
+              with the `errorNum` set to `1200` (`ERROR_ARANGO_CONFLICT`) in this case.
         '412':
           description: |
             is returned if the precondition was violated. The response also contains
@@ -1158,6 +1220,17 @@ paths:
             is returned if the system is temporarily not available. This can be a system
             overload or temporary failure. In this case it makes sense to retry the request
             later.
+
+            If the error code is `1429`, then the write concern for the collection cannot be
+            fulfilled. This can happen if less than the number of specified replicas for
+            a shard are currently in-sync with the leader. For example, if the write concern
+            is `2` and the replication factor is `3`, then the write concern is not fulfilled
+            if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
       tags:
         - Documents
 ```
@@ -1327,6 +1400,11 @@ paths:
             specified replicas for a shard are currently in-sync with the leader. For example,
             if the write concern is `2` and the replication factor is `3`, then the
             write concern is not fulfilled if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
         '404':
           description: |
             is returned if the collection or the document was not found.
@@ -1349,6 +1427,17 @@ paths:
             is returned if the system is temporarily not available. This can be a system
             overload or temporary failure. In this case it makes sense to retry the request
             later.
+
+            If the error code is `1429`, then the write concern for the collection cannot be
+            fulfilled. This can happen if less than the number of specified replicas for
+            a shard are currently in-sync with the leader. For example, if the write concern
+            is `2` and the replication factor is `3`, then the write concern is not fulfilled
+            if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
       tags:
         - Documents
 ```
@@ -1513,7 +1602,7 @@ paths:
           in: query
           required: false
           description: |
-            Should the value be `true` (the default)
+            Should the value be `true` (the default):
             If a search document contains a value for the `_rev` field,
             then the document is only returned if it has the same revision value.
             Otherwise a precondition failed error is returned.
@@ -1703,21 +1792,21 @@ paths:
           in: query
           required: false
           description: |
-            This option supersedes `overwrite` and offers the following modes
-            - `"ignore"` if a document with the specified `_key` value exists already,
+            This option supersedes `overwrite` and offers the following modes:
+            - `"ignore"`: if a document with the specified `_key` value exists already,
               nothing is done and no write operation is carried out. The
               insert operation returns success in this case. This mode does not
               support returning the old document version using `RETURN OLD`. When using
               `RETURN NEW`, `null` is returned in case the document already existed.
-            - `"replace"` if a document with the specified `_key` value exists already,
+            - `"replace"`: if a document with the specified `_key` value exists already,
               it is overwritten with the specified document value. This mode is
               also used when no overwrite mode is specified but the `overwrite`
               flag is set to `true`.
-            - `"update"` if a document with the specified `_key` value exists already,
+            - `"update"`: if a document with the specified `_key` value exists already,
               it is patched (partially updated) with the specified document value.
               The overwrite mode can be further controlled via the `keepNull` and
               `mergeObjects` parameters.
-            - `"conflict"` if a document with the specified `_key` value exists already,
+            - `"conflict"`: if a document with the specified `_key` value exists already,
               return a unique constraint violation error so that the insert operation
               fails. This is also the default behavior in case the overwrite mode is
               not set, and the `overwrite` flag is `false` or not set either.
@@ -1785,6 +1874,11 @@ paths:
             specified replicas for a shard are currently in-sync with the leader. For example,
             if the write concern is `2` and the replication factor is `3`, then the
             write concern is not fulfilled if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
         '404':
           description: |
             is returned if the collection specified by `collection` is unknown.
@@ -1794,6 +1888,17 @@ paths:
             is returned if the system is temporarily not available. This can be a system
             overload or temporary failure. In this case it makes sense to retry the request
             later.
+
+            If the error code is `1429`, then the write concern for the collection cannot be
+            fulfilled. This can happen if less than the number of specified replicas for
+            a shard are currently in-sync with the leader. For example, if the write concern
+            is `2` and the replication factor is `3`, then the write concern is not fulfilled
+            if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
       tags:
         - Documents
 ```
@@ -2020,6 +2125,11 @@ paths:
             specified replicas for a shard are currently in-sync with the leader. For example,
             if the write concern is `2` and the replication factor is `3`, then the
             write concern is not fulfilled if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
         '404':
           description: |
             is returned if the collection was not found.
@@ -2028,6 +2138,17 @@ paths:
             is returned if the system is temporarily not available. This can be a system
             overload or temporary failure. In this case it makes sense to retry the request
             later.
+
+            If the error code is `1429`, then the write concern for the collection cannot be
+            fulfilled. This can happen if less than the number of specified replicas for
+            a shard are currently in-sync with the leader. For example, if the write concern
+            is `2` and the replication factor is `3`, then the write concern is not fulfilled
+            if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
       tags:
         - Documents
 ```
@@ -2218,6 +2339,11 @@ paths:
             specified replicas for a shard are currently in-sync with the leader. For example,
             if the write concern is `2` and the replication factor is `3`, then the
             write concern is not fulfilled if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
         '404':
           description: |
             is returned if the collection was not found.
@@ -2226,6 +2352,17 @@ paths:
             is returned if the system is temporarily not available. This can be a system
             overload or temporary failure. In this case it makes sense to retry the request
             later.
+
+            If the error code is `1429`, then the write concern for the collection cannot be
+            fulfilled. This can happen if less than the number of specified replicas for
+            a shard are currently in-sync with the leader. For example, if the write concern
+            is `2` and the replication factor is `3`, then the write concern is not fulfilled
+            if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
       tags:
         - Documents
 ```
@@ -2352,6 +2489,11 @@ paths:
             specified replicas for a shard are currently in-sync with the leader. For example,
             if the write concern is `2` and the replication factor is `3`, then the
             write concern is not fulfilled if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
         '404':
           description: |
             is returned if the collection was not found.
@@ -2361,6 +2503,17 @@ paths:
             is returned if the system is temporarily not available. This can be a system
             overload or temporary failure. In this case it makes sense to retry the request
             later.
+
+            If the error code is `1429`, then the write concern for the collection cannot be
+            fulfilled. This can happen if less than the number of specified replicas for
+            a shard are currently in-sync with the leader. For example, if the write concern
+            is `2` and the replication factor is `3`, then the write concern is not fulfilled
+            if two replicas are not in-sync.
+
+            Note that the HTTP status code is configurable via the
+            `--cluster.failed-write-concern-status-code` startup option. It defaults to `403`
+            but can be changed to `503` to signal client applications that it is a
+            temporary error.
       tags:
         - Documents
 ```

@@ -264,9 +264,9 @@ Firing up any _DB-Server_ from a clean data directory, while specifying any
 of the available Agency endpoints, integrates the new _DB-Server_ into the
 cluster.
 
-To distribute shards onto the new _DB-Server_, click the
-`Distribute Shards` button at the bottom of the `Shards` page in every
-database.
+To distribute shards onto the new _DB-Server_, go to the **Distribution** tab
+in the **CLUSTER** page of the web interface and click the **Rebalance**
+button at the bottom of the **Shard distribution** section.
 
 The clean out process can be monitored using the following script,
 which periodically prints the amount of shards that still need to be moved.

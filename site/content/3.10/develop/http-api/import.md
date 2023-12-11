@@ -50,17 +50,17 @@ paths:
           description: |
             Determines how the body of the request is interpreted.
 
-            - `documents` JSON Lines (JSONL) format. Each line is expected to be one
+            - `documents`: JSON Lines (JSONL) format. Each line is expected to be one
               JSON object.
 
-              Example
+              Example:
 
               ```json
-              {"_key""john","name""John Smith","age"35}
-              {"_key""katie","name""Katie Foster","age"28}
+              {"_key":"john","name":"John Smith","age":35}
+              {"_key":"katie","name":"Katie Foster","age":28}
               ```
 
-            - `array` (or `list`) JSON format. The request body is expected to be a
+            - `array` (or `list`): JSON format. The request body is expected to be a
               JSON array of objects. This format requires ArangoDB to parse the complete
               array and keep it in memory for the duration of the import. This is more
               resource-intensive than the line-wise JSONL processing.
@@ -68,16 +68,16 @@ paths:
               Any whitespace outside of strings is ignored, which means the JSON data can be
               a single line or be formatted as multiple lines.
 
-              Example
+              Example:
 
               ```json
               [
-                {"_key""john","name""John Smith","age"35},
-                {"_key""katie","name""Katie Foster","age"28}
+                {"_key":"john","name":"John Smith","age":35},
+                {"_key":"katie","name":"Katie Foster","age":28}
               ]
               ```
 
-            - `auto` automatically determines the type (either `documents` or `array`).
+            - `auto`: automatically determines the type (either `documents` or `array`).
 
             - Omit the `type` parameter entirely to import JSON arrays of tabular data,
               similar to CSV.
@@ -86,7 +86,7 @@ paths:
               subsequent lines are arrays with the attribute values. The keys and values
               are matched by the order of the array elements.
 
-              Example
+              Example:
 
               ```json
               ["_key","name","age"]
@@ -134,16 +134,16 @@ paths:
           required: false
           description: |
             Controls what action is carried out in case of a unique key constraint
-            violation. Possible values are
+            violation. Possible values are:
 
-            - `error` this will not import the current document because of the unique
+            - `error`: this will not import the current document because of the unique
               key constraint violation. This is the default setting.
-            - `update` this will update an existing document in the database with the
+            - `update`: this will update an existing document in the database with the
               data specified in the request. Attributes of the existing document that
               are not present in the request will be preserved.
-            - `replace` this will replace an existing document in the database with the
+            - `replace`: this will replace an existing document in the database with the
               data specified in the request.
-            - `ignore` this will not update an existing document and simply ignore the
+            - `ignore`: this will not update an existing document and simply ignore the
               error caused by a unique key constraint violation.
 
             Note that `update`, `replace` and `ignore` will only work when the
@@ -172,6 +172,8 @@ paths:
         '201':
           description: |
             is returned if all documents could be imported successfully.
+
+            The response is a JSON object with the following attributes:
           content:
             application/json:
               schema:
