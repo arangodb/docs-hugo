@@ -1113,68 +1113,6 @@ graph._drop("myGraph", true);
 
 ### Drop a graph
 
-{{< comment >}}
-The API is supposed to return 201 if waitForSync is used and 202 otherwise,
-but it actually returns 202 in all cases. Possibly to be adjusted in 3.12/4.0.
-
-        '201':
-          description: |
-            Is returned if the graph can be dropped and `waitForSync` is enabled
-            for the `_graphs` collection, or given in the request.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - removed
-                properties:
-                 error:
-                    description: |
-                      A flag indicating that no error occurred.
-                    type: boolean
-                    example: false
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 201
-                  removed:
-                    description: |
-                      Always `true`.
-                    type: boolean
-                    example: true
-        '202':
-          description: |
-            Is returned if the graph can be dropped and `waitForSync` is disabled
-            for the `_graphs` collection and not given in the request.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - removed
-                properties:
-                 error:
-                    description: |
-                      A flag indicating that no error occurred.
-                    type: boolean
-                    example: false
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 202
-                  removed:
-                    description: |
-                      Always `true`.
-                    type: boolean
-                    example: true
-{{< /comment >}}
-
 ```openapi
 paths:
   /_api/gharial/{graph}:
