@@ -807,7 +807,7 @@ paths:
                     example: good
                   upgrading:
                     description: |
-                      Whether a license upgrade is in progress.
+                      Whether the server is performing a database upgrade.
                     type: boolean
                     example: false
       tags:
