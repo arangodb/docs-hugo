@@ -224,15 +224,16 @@ function to work.
 
 #### View definition
 
-##### `search-alias` View
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 db.imdb_vertices.ensureIndex({ name: "inv-text", type: "inverted", fields: [ { name: "description", analyzer: "text_en_no_stem" } ] });
 db._createView("imdb_alias", "search-alias", { indexes: [ { collection: "imdb_vertices", index: "inv-text" } ] });
 ```
+{{< /tab >}}
 
-##### `arangosearch` View
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -248,6 +249,9 @@ db._createView("imdb_alias", "search-alias", { indexes: [ { collection: "imdb_ve
   }
 }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 #### AQL queries
 
@@ -257,8 +261,9 @@ Levenshtein distance equal to or lower than this value is a match and the
 respective documents are included in the search result. The query finds
 the token `galaxy` as the edit distance to `galxy` is `1`.
 
-_`search-alias` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```aql
 FOR doc IN imdb_alias
   SEARCH LEVENSHTEIN_MATCH(
@@ -273,9 +278,9 @@ FOR doc IN imdb_alias
     description: doc.description
   }
 ```
+{{< /tab >}}
 
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(
@@ -293,6 +298,9 @@ FOR doc IN imdb
     description: doc.description
   }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | title | description |
 |:------|:------------|
@@ -329,15 +337,16 @@ filter function to work.
 
 #### View definition
 
-##### `search-alias` View
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 db.imdb_vertices.ensureIndex({ name: "inv-ngram", type: "inverted", fields: [ { name: "name", analyzer: "trigram" } ] });
 db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices", index: "inv-ngram" } ] });
 ```
+{{< /tab >}}
 
-##### `arangosearch` View
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -353,6 +362,9 @@ db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices
   }
 }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 #### AQL queries
 

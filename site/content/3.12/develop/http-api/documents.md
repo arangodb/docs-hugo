@@ -39,7 +39,7 @@ database context, use the following URL schema:
 http://server:port/_db/<database-name>/_api/document/<document-identifier>
 ```
 
-For example, using the a database called `mydb`:
+For example, using a database called `mydb`:
 
 ```
 http://localhost:8529/_db/mydb/_api/document/demo/362549736

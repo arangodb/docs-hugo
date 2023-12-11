@@ -22,15 +22,16 @@ the entire string is equal (not matching substrings).
 
 ### View definition
 
-#### `search-alias` View
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 db.imdb_vertices.ensureIndex({ name: "inv-exact", type: "inverted", fields: [ "title" ] });
 db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices", index: "inv-exact" } ] });
 ```
+{{< /tab >}}
 
-#### `arangosearch` View
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -46,6 +47,9 @@ db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices
   }
 }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ### AQL queries
 

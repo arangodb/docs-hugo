@@ -375,18 +375,27 @@ Display content with a tabbed interface, like information for different
 operating systems or code examples using different languages.
 
 ```markdown
-{{< tabs groupid="os" >}}
+{{< tabs "os" >}}
 
-{{< tab name="Linux" >}}
+{{< tab "Linux" >}}
 Run `./script.sh`.
 {{< /tab >}}
 
-{{< tab name="Windows" >}}
+{{< tab "Windows" >}}
 Run `.\script.ps1`.
 {{< /tab >}}
 
 {{< /tabs >}}
 ```
+
+The parameter for the `tabs` shortcode is a group identifier. If there are
+multiple tab groups in one page, changing the active tab of one of them also
+changes the active tabs of all other groups with the same identifier while
+groups with different identifiers are unaffected. The browser remembers the last
+active tab of each group.
+
+The parameter for the `tab` shortcode is the label to display for the tab in the
+tab panel. Tab groups using the same identifier should use the same tab labels.
 
 #### Figures
 

@@ -39,7 +39,7 @@ paths:
 
         - `parameters`: the collection properties
 
-        - `indexes`: an array of the indexes of a the collection. Primary indexes and edge indexes
+        - `indexes`: an array of the indexes of the collection. Primary indexes and edge indexes
            are not included in this array.
 
         The `state` attribute contains the current state of the replication logger. It

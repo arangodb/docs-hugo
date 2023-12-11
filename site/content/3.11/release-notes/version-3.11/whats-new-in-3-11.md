@@ -1170,7 +1170,7 @@ been added:
 The memory usage of in-memory edge index caches is reduced if most of the edges
 in an index refer to a single or mostly the same collection.
 
-Previously, the full edge IDs, consisting of the the referred-to collection
+Previously, the full edge IDs, consisting of the referred-to collection
 name and the referred-to key of the edge, were stored in full, i.e. the full
 values of the edges' `_from` and `_to` attributes.
 Now, the first edge inserted into an edge index' in-memory cache determines
