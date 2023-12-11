@@ -100,7 +100,7 @@ paths:
                                 properties:
                                   collection:
                                     description: |
-                                      Name of the edge collection, where the edge are stored in.
+                                      Name of the edge collection, where the edges are stored in.
                                     type: string
                                   from:
                                     description: |
@@ -239,7 +239,7 @@ paths:
                     properties:
                       collection:
                         description: |
-                          Name of the edge collection, where the edge are stored in.
+                          Name of the edge collection, where the edges are stored in.
                         type: string
                       from:
                         description: |
@@ -379,7 +379,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -506,7 +506,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -643,9 +643,9 @@ paths:
         '409':
           description: |
             Returned if there is a conflict storing the graph. This can occur
-            either if a graph with this name is already stored, or if there is one
-            edge definition with the same edge collection but a different signature
-            used in any other graph.
+            either if a graph with this name already exists, or if there is an
+            edge definition with the same edge collection but different `from`
+            and `to` vertex collections in any other graph.
           content:
             application/json:
               schema:
@@ -982,7 +982,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -1465,7 +1465,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -1592,7 +1592,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -1880,7 +1880,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -2005,7 +2005,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -2180,7 +2180,7 @@ paths:
 ```curl
 ---
 description: |-
-  You can remove vertex collections that are not used in any edge collection:
+  You can remove vertex collections that are not used in any edge definition:
 name: HttpGharialRemoveVertexCollection
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -2200,7 +2200,7 @@ db._drop("otherVertices");
 ```curl
 ---
 description: |-
-  You cannot remove vertex collections that are used in edge collections:
+  You cannot remove vertex collections that are used in edge definitions:
 name: HttpGharialRemoveVertexCollectionFailed
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -2446,7 +2446,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -2573,7 +2573,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -2644,9 +2644,10 @@ paths:
                         type: boolean
         '400':
           description: |
-            Returned if the definition can not be added.
-            This can be because it is ill-formed, or
-            if the definition is used in another graph with a different signature.
+            Returned if the edge definition can not be added.
+            This can be because it is ill-formed, or if there is an
+            edge definition with the same edge collection but different `from`
+            and `to` vertex collections in any other graph.
           content:
             application/json:
               schema:
@@ -2905,7 +2906,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -3030,7 +3031,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -3323,7 +3324,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -3449,7 +3450,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -5219,7 +5220,7 @@ paths:
       description: |
         Creates a new edge in the specified collection.
         Within the body the edge has to contain a `_from` and `_to` value referencing to valid vertices in the graph.
-        Furthermore the edge has to be valid in the definition of the used edge collection.
+        Furthermore, the edge has to be valid according to the edge definitions.
       parameters:
         - name: graph
           in: path
