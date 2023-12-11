@@ -35,7 +35,7 @@ def migrateInlineDocuBlocks(block):
 
     datasetRe = re.search(r"@DATASET.*", block)
     if datasetRe:
-        newBlock["options"]["dataset"] = datasetRe.group(0).replace("@DATASET{", "").replace("}", "")
+        newBlock["options"]["dataset"] = datasetRe.group(0).replace("@DATASET{", "").rstrip("}")
         block = re.sub(r" *@DATASET.*\n", '', block)
 
     explainRe = re.search(r"@EXPLAIN\{TRUE\}.*", block)

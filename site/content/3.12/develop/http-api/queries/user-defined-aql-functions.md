@@ -183,10 +183,10 @@ paths:
           in: query
           required: false
           description: |
-            - `true` The function name provided in `name` is treated as
+            - `true`: The function name provided in `name` is treated as
               a namespace prefix, and all functions in the specified namespace will be deleted.
               The returned number of deleted functions may become 0 if none matches the string.
-            - `false` The function name provided in `name` must be fully
+            - `false`: The function name provided in `name` must be fully
               qualified, including any namespaces. If none matches the `name`, HTTP 404 is returned.
           schema:
             type: string

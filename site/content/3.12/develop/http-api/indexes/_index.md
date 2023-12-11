@@ -183,7 +183,9 @@ paths:
         unique index. Setting it to `false` or omitting the `unique` attribute creates a
         non-unique index.
 
-        **Note**: Unique indexes on non-shard keys are not supported in a cluster.
+        {{</* info */>}}
+        Unique indexes on non-shard keys are not supported in cluster deployments.
+        {{</* /info */>}}
 
         Persistent indexes can optionally be created in a sparse
         variant. A sparse index will be created if the **sparse** attribute in

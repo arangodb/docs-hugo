@@ -206,13 +206,13 @@ paths:
           in: path
           required: true
           description: |
-            The ID of the job to delete. The ID can be
-            - `all` Deletes all jobs results. Currently executing or queued async
+            The ID of the job to delete. The ID can be:
+            - `all`: Deletes all jobs results. Currently executing or queued async
               jobs are not stopped by this call.
-            - `expired` Deletes expired results. To determine the expiration status of a
+            - `expired`: Deletes expired results. To determine the expiration status of a
               result, pass the stamp query parameter. stamp needs to be a Unix timestamp,
               and all async job results created before this time are deleted.
-            - **A numeric job ID** In this case, the call removes the result of the
+            - **A numeric job ID**: In this case, the call removes the result of the
               specified async job. If the job is currently executing or queued, it is
               not aborted.
           schema:
