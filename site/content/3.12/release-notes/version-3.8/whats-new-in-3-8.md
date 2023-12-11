@@ -718,7 +718,7 @@ we have over 200 metrics and nearly 300 graphs in the complete
 dashboard.
 
 The complete list of metrics together with documentation can be found in the
-[Metrics HTTP API](../../develop/http-api/monitoring.md#metrics)
+[Metrics HTTP API](../../develop/http-api/monitoring/metrics.md)
 documentation.
 
 The list of renamed metrics can be found under

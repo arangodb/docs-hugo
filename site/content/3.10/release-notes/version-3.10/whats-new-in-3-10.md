@@ -408,7 +408,7 @@ Also see [Server security options](../../operations/security/security-options.md
 
 ### ArangoSearch metrics and figures
 
-The [Metrics HTTP API](../../develop/http-api/monitoring.md#metrics) has been
+The [Metrics HTTP API](../../develop/http-api/monitoring/metrics.md) has been
 extended with metrics for ArangoSearch for monitoring `arangosearch` View links
 and inverted indexes.
 

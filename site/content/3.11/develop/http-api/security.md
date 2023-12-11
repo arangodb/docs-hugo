@@ -10,7 +10,7 @@ archetype: default
 ## Audit logging
 
 You can get and set the log level for the `audit-*` log topics using the regular
-endpoints for the log levels. See [Monitoring](monitoring.md#logs).
+endpoints for the log levels. See [Logs](monitoring/logs.md).
 
 The audit logging feature can otherwise only be configured using startup options.
 See [Audit logging](../../operations/security/audit-logging.md#configuration).
