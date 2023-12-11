@@ -1153,7 +1153,7 @@ paths:
                   - code
                   - removed
                 properties:
-                 error:
+                  error:
                     description: |
                       A flag indicating that no error occurred.
                     type: boolean
