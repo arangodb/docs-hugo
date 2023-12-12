@@ -13,15 +13,9 @@ offers.
 
 ArangoDB offers **synchronous** and **asynchronous** replication.
 
-Synchronous replication is used between the _DB-Servers_ of an ArangoDB
-Cluster.
-
-Asynchronous replication is used:
-
-- between the _Leader_ and the _Follower_ of an ArangoDB
-  [_Active Failover_](../active-failover/_index.md) setup
-- between multiple ArangoDB [Data Centers](../arangosync/deployment/_index.md)
-  (inside the same Data Center replication is synchronous)
+- Synchronous replication is used between the _DB-Servers_ of an ArangoDB Cluster.
+- Asynchronous replication is used between multiple ArangoDB [Data Centers](../arangosync/deployment/_index.md)
+  (inside the same Data Center, replication is synchronous).
 
 ## Synchronous replication
 
@@ -72,7 +66,7 @@ become visible on _Followers_ atomically.
 All write operations are logged to the Leader's _write-ahead log_. Therefore,
 asynchronous replication in ArangoDB cannot be used for write-scaling. The main
 purposes of this type of replication are to provide read-scalability and
-hot standby servers for _Active Failover_ deployments.
+hot standby servers.
 
 It is possible to connect multiple _Follower_ to the same _Leader_. _Followers_
 should be used as read-only instances, and no user-initiated write operations 

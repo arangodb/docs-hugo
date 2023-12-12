@@ -67,10 +67,6 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   is reached. Synchronous replication works on a per-shard basis. For each
   collection, you can configure how many copies of each shard are kept in the cluster.
 
-- [**Active Failover**](../../deploy/active-failover/_index.md):
-  Run a single server with asynchronous replication to one or more passive
-  single servers for automatic failover.
-
 - [**Automatic Failover Cluster**](../../deploy/cluster/_index.md#automatic-failover):
   If a nodes goes down, another node takes over to avoid any downtime. <!-- TODO: Can we say that? -->
 

@@ -24,13 +24,6 @@ to get started. Unlike other setups, which require some specific procedures,
 deploying a stand-alone instance is straightforward and can be started manually
 or by using the ArangoDB Starter tool.
 
-### Active Failover
-
-[Active Failover deployments](active-failover/_index.md) use ArangoDB's
-multi-node technology to provide high availability for smaller projects with
-fast asynchronous replication from the leading node to multiple replicas.
-If the leader fails, then a follower takes over seamlessly.
-
 ### Cluster
 
 [Cluster deployments](cluster/_index.md) are designed for large scale
@@ -89,11 +82,6 @@ cloud service, available on AWS, Microsoft Azure, and Google Cloud Platform.
 - [Manually created processes](single-instance/manual-start.md)
 - [Manually created Docker containers](single-instance/manual-start.md#manual-start-in-docker)
 
-**Active Failover:**
-
-- [Manually created processes](active-failover/manual-start.md)
-- [Manually created Docker containers](active-failover/manual-start.md#manual-start-in-docker)
-
 **Cluster:**
 
 - [Manually created processes](cluster/deployment/manual-start.md)
@@ -105,9 +93,8 @@ Setting up an ArangoDB cluster, for example, involves starting various nodes
 with different roles (Agents, DB-Servers, and Coordinators). The starter
 simplifies this process.
 
-The Starter supports different deployment modes (single server, Active Failover,
-cluster) and it can either use Docker containers or processes (using the
-`arangod` executable).
+The Starter supports different deployment modes (single server and cluster) and
+it can either use Docker containers or processes (using the `arangod` executable).
 
 Besides starting and maintaining ArangoDB deployments, the Starter also provides
 various commands to create TLS certificates and JWT token secrets to secure your
@@ -123,11 +110,6 @@ If you want a specific version, download the precompiled executable via the
 
 - [_Starter_ using processes](single-instance/using-the-arangodb-starter.md)
 - [_Starter_ using Docker containers](single-instance/using-the-arangodb-starter.md#using-the-arangodb-starter-in-docker)
-
-**Active Failover:**
-
-- [_Starter_ using processes](active-failover/using-the-arangodb-starter.md)
-- [_Starter_ using Docker containers](active-failover/using-the-arangodb-starter.md#using-the-arangodb-starter-in-docker)
 
 **Cluster:**
 
