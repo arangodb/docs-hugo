@@ -94,6 +94,12 @@ the maximum transaction size can now be configured with the
 `--transaction.streaming-max-transaction-size` startup option.
 The default value remains 128 MiB.
 
+#### Analyzer API
+
+The `delimiter` Analyzer now additionally accepts an array of strings in the
+`delimiter` attribute of the `properties` object, affecting the
+[`/_api/analyzer` endpoints](../../develop/http-api/analyzers.md).
+
 ### Privilege changes
 
 

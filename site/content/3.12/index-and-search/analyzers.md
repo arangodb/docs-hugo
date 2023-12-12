@@ -117,7 +117,7 @@ against other databases by specifying the prefixed name, e.g.
 The following Analyzer types are available:
 
 - [`identity`](#identity): treats value as atom (no transformation)
-- [`delimiter`](#delimiter): splits into tokens at user-defined character
+- [`delimiter`](#delimiter): splits into tokens at user-defined characters
 - [`stem`](#stem): applies stemming to the value as a whole
 - [`norm`](#norm): applies normalization to the value as a whole
 - [`ngram`](#ngram): creates _n_-grams from value with user-defined lengths
@@ -261,16 +261,15 @@ An Analyzer capable of breaking up delimited text into tokens as per
 The *properties* allowed for this Analyzer are an object with the following
 attributes:
 
-- `delimiter` (string): the delimiting character(s). The whole string is
-  considered as one delimiter.
+- `delimiter` (string\|array): the delimiting character(s). If you provide a
+  string, the whole string is considered as one delimiter. You can also provide
+  a list of strings (introduced in v3.12.0), of which each is considered as one
+  delimiter that can be one or multiple characters long.
 
 You can wrap tokens in the input string in double quote marks to quote the
 delimiter. For example, a `delimiter` Analyzer that uses `,` as delimiter and an
 input string of `foo,"bar,baz"` results in the tokens `foo` and `bar,baz`
 instead of `foo`, `bar`, and `baz`.
-
-You can chain multiple `delimiter` Analyzers with a [`pipeline` Analyzer](#pipeline)
-to split by different delimiters.
 
 **Examples**
 
@@ -286,6 +285,22 @@ var a = analyzers.save("delimiter_hyphen", "delimiter", {
   delimiter: "-"
 }, []);
 db._query(`RETURN TOKENS("some-delimited-words", "delimiter_hyphen")`).toArray();
+~analyzers.remove(a.name);
+```
+
+Split at delimiting characters `,` and `;`, as well as the character sequence
+`||` but not a single `|` character:
+
+```js
+---
+name: analyzerDelimiterMultiple
+description: ''
+---
+var analyzers = require("@arangodb/analyzers");
+var a = analyzers.save("delimiter_multiple", "delimiter", {
+  delimiter: [",", ";", "||"]
+}, []);
+db._query(`RETURN TOKENS("differently,delimited;words||one|token", "delimiter_multiple")`).toArray();
 ~analyzers.remove(a.name);
 ```
 
@@ -896,7 +911,7 @@ db._query(`RETURN TOKENS("Quick brown foX", "ngram_upper")`).toArray();
 ~analyzers.remove(a.name);
 ```
 
-Split at delimiting characters `,` and `;`, then stem the tokens:
+Split at delimiting character `,`, then stem the tokens:
 
 ```js
 ---
@@ -906,10 +921,9 @@ description: ''
 var analyzers = require("@arangodb/analyzers");
 var a = analyzers.save("delimiter_stem", "pipeline", { pipeline: [
   { type: "delimiter", properties: { delimiter: "," } },
-  { type: "delimiter", properties: { delimiter: ";" } },
   { type: "stem", properties: { locale: "en" } }
 ] }, []);
-db._query(`RETURN TOKENS("delimited,stemmable;words", "delimiter_stem")`).toArray();
+db._query(`RETURN TOKENS("delimited,stemmable,words", "delimiter_stem")`).toArray();
 ~analyzers.remove(a.name);
 ```
 
