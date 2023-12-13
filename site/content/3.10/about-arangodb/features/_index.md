@@ -9,7 +9,54 @@ archetype: chapter
 aliases:
   - ../introduction/features
 ---
-## Editions
+## On-premises versus Cloud
+
+### Fully managed cloud service
+
+The fully managed multi-cloud
+[ArangoGraph Insights Platform](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
+is the easiest and fastest way to get started. It runs the Enterprise Edition
+of ArangoDB, lets you deploy clusters with just a few clicks, and is operated
+by a dedicated team of ArangoDB engineers day and night. You can choose from a
+variety of support plans to meet your needs.
+
+- Supports many cloud deployment regions across the main cloud providers
+  (AWS, Azure, GCP)
+- High availability featuring multi-region zone clusters, managed backups,
+  and zero-downtime upgrades
+- Integrated monitoring, alerting, and log management
+- Highly secure with encryption at transit and at rest
+- Includes elastic scalability for all deployment models (OneShard and Sharded clusters)
+
+To learn more, go to the [ArangoGraph documentation](../../arangograph/_index.md). 
+
+### Self-managed in the cloud
+
+ArangoDB can be self-deployed on AWS or other cloud platforms too. However, when
+using a self-managed deployment, you take full control of procuring the resources
+needed to run it in the cloud.
+
+For more details, see [self-deploying ArangoDB in the cloud](../../deploy/in-the-cloud.md). 
+
+### On-premises
+
+You can install ArangoDB on your local machine by downloading and running the
+[official packages](https://arangodb.com/download/) or run it using
+[Docker images](../../operations/installation/docker.md).
+
+You can deploy it on-premises as a
+[single server](../../deploy/single-instance/_index.md)
+or as a [cluster](../../deploy/cluster/_index.md)
+comprised of multiple nodes with synchronous replication and automatic failover
+for high availability and resilience. For the highest level of data safety,
+you can additionally set up off-site replication for your entire cluster
+([Datacenter-to-Datacenter Replication](../../deploy/arangosync/_index.md)).
+
+ArangoDB also integrates with Kubernetes, offering a
+[Kubernetes Operator](../../deploy/kubernetes.md) that lets you deploy in your
+Kubernetes cluster.
+
+## ArangoDB Editions
 
 ### Community Edition
 
@@ -70,22 +117,3 @@ See all [Enterprise Edition Features](enterprise-edition.md).
 | No on-disk encryption | **Encryption at Rest** with hardware-accelerated on-disk encryption and key rotation |
 | Only regular backups | **Datacenter-to-Datacenter Replication** for disaster recovery |
 | Only unencrypted backups and basic data masking for backups | **Hot Backups**, **encrypted backups**, and **enhanced data masking** for backups |
-
-## On-premises versus Cloud
-
-You can install ArangoDB on your local machine or run it in a Docker container
-for development purposes. You can deploy it on-premises as a
-[single server](../../deploy/single-instance/_index.md), optionally
-as a resilient pair with asynchronous replication and automatic failover
-([Active Failover](../../deploy/active-failover/_index.md)),
-or as a [cluster](../../deploy/cluster/_index.md)
-comprised of multiple nodes with synchronous replication and automatic failover
-for high availability and resilience. For the highest level of data safety,
-you can additionally set up off-site replication for your entire cluster
-([Datacenter-to-Datacenter Replication](../../deploy/arangosync/_index.md)).
-
-If you do not want to operate your own ArangoDB instances on-premises, then
-you may use our fully managed multi-cloud **ArangoGraph Insights Platform**.
-It runs the Enterprise Edition of ArangoDB, lets you deploy clusters with a
-few clicks, and is operated by a dedicated team of ArangoDB engineers day and
-night. To learn more, go to [cloud.arangodb.com](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
