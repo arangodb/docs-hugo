@@ -174,6 +174,14 @@ UPDATE { logins: OLD.logins + 1 } IN users
 
 Read more about [`UPSERT` operations](../../aql/high-level-operations/upsert.md) in AQL.
 
+### Added AQL functions
+
+The new `PARSE_COLLECTION()` and `PARSE_KEY()` let you more extract the
+collection name respectively the document key from a document identifier with
+less overhead.
+
+See [Document and object functions in AQL](../../aql/functions/document-object.md#parse_collection).
+
 ## Indexing
 
 ### Stored values can contain the `_id` attribute
