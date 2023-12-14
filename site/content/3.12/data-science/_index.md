@@ -125,7 +125,7 @@ your running database from the **Examples** tab of your deployment.
 
 {{< tip >}}
 You can try out the ArangoGraph Insights Platform free of charge for 14 days.
-Sign up at [cloud.arangodb.com](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+Sign up at [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 {{< /tip >}}
 
 The ArangoFlix demo uses five different recommendation methods:
