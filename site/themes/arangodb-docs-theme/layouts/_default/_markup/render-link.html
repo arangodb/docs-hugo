@@ -20,6 +20,18 @@
 {{- else }}
   {{- $isOnlyFragment := findRE `(?m)^#` $link }}
   {{- if $isOnlyFragment }}
+    {{- $fragments := slice }}
+    {{- range $k, $v := .Page.Fragments.HeadingsMap }}
+      {{- $fragments = $fragments | append $k }}
+    {{- end }}
+    {{- if not (in $fragments (strings.TrimPrefix "#" $fragment)) }}
+      {{- $currentFile := .Page.File.Path }}
+      {{- if site.Params.failOnBrokenLinks }}
+        {{- errorf "<error code=1> Broken anchor link '%v' found in %s, available anchors: %v </error><br>" $fragment $currentFile (delimit $fragments ", ") }}
+      {{- else }}
+        {{- warnf "Broken anchor link '%v' found in %s, available anchors: %v" $fragment $currentPage (delimit $fragments ", ") }}
+      {{- end }}
+    {{- end }}
     {{- $permalink = $fragment }}
   {{- else }}
     {{- $page := .Page.GetPage $path }}
