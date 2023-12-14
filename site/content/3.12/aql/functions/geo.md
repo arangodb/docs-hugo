@@ -421,7 +421,7 @@ FOR doc IN coll // e.g. documents returned by a traversal
 
 `GEO_CONTAINS(geoJsonA, geoJsonB) → bool`
 
-Checks whether the [GeoJSON object](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson) `geoJsonA`
+Checks whether the [GeoJSON object](#geojson) `geoJsonA`
 fully contains `geoJsonB` (every point in B is also in A). The object `geoJsonA`
 has to be of type _Polygon_ or _MultiPolygon_. For other types containment is
 not well-defined because of numerical stability problems.
@@ -467,7 +467,7 @@ second argument. Passing it as the first argument, like
 
 Return the distance between two GeoJSON objects in meters, measured from the
 **centroid** of each shape. For a list of supported types see the
-[geo index page](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson).
+[geo index page](#geojson).
 
 - **geoJsonA** (object): first GeoJSON object, or a coordinate array in
   `[longitude, latitude]` order
@@ -520,9 +520,8 @@ functions.
 
 `GEO_AREA(geoJson, ellipsoid) → area`
 
-Return the area for a polygon or multi-polygon on a sphere with the
-average Earth radius, or an ellipsoid. For a list of supported types
-see the [geo index page](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson).
+Return the area for a [Polygon](#polygon) or [MultiPolygon](#multipolygon)
+on a sphere with the average Earth radius, or an ellipsoid.
 
 - **geoJson** (object): a GeoJSON object
 - **ellipsoid** (string, *optional*): reference ellipsoid to use.
@@ -541,8 +540,7 @@ RETURN GEO_AREA(polygon, "wgs84")
 
 `GEO_EQUALS(geoJsonA, geoJsonB) → bool`
 
-Checks whether two GeoJSON objects are equal or not. For a list of supported
-types see the [geo index page](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson).
+Checks whether two [GeoJSON objects](#geojson) are equal or not.
 
 - **geoJsonA** (object): first GeoJSON object.
 - **geoJsonB** (object): second GeoJSON object.
@@ -572,7 +570,7 @@ RETURN GEO_EQUALS(polygonA, polygonB) // false
 
 `GEO_INTERSECTS(geoJsonA, geoJsonB) → bool`
 
-Checks whether the [GeoJSON object](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson) `geoJsonA`
+Checks whether the [GeoJSON object](#geojson) `geoJsonA`
 intersects with `geoJsonB` (i.e. at least one point in B is also in A or vice-versa).
 
 - **geoJsonA** (object): first GeoJSON object
@@ -603,7 +601,7 @@ second argument. Passing it as the first argument, like
 
 `GEO_IN_RANGE(geoJsonA, geoJsonB, low, high, includeLow, includeHigh) → bool`
 
-Checks whether the distance between two [GeoJSON objects](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson)
+Checks whether the distance between two [GeoJSON objects](#geojson)
 lies within a given interval. The distance is measured from the **centroid** of
 each shape.
 
@@ -770,7 +768,7 @@ a linear ring. Each linear ring consists of an array with at least four
 longitude/latitude pairs. The first linear ring must be the outermost, while
 any subsequent linear ring will be interpreted as holes.
 
-For details about the rules, see [GeoJSON polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#polygon).
+For details about the rules, see [GeoJSON polygons](#polygon).
 
 - **points** (array): an array of (arrays of) `[longitude, latitude]` pairs
 - returns **geoJson** (object\|null): a valid GeoJSON Polygon
@@ -809,7 +807,8 @@ RETURN GEO_POLYGON([
 `GEO_MULTIPOLYGON(polygons) → geoJson`
 
 Construct a GeoJSON MultiPolygon. Needs at least two Polygons inside.
-See [GEO_POLYGON()](#geo_polygon) and [GeoJSON MultiPolygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#multipolygon) for the rules of Polygon and MultiPolygon construction.
+See [GEO_POLYGON()](#geo_polygon) and [GeoJSON MultiPolygon](#multipolygon)
+for the rules of Polygon and MultiPolygon construction.
 
 - **polygons** (array): an array of arrays of arrays of `[longitude, latitude]` pairs
 - returns **geoJson** (object\|null): a valid GeoJSON MultiPolygon

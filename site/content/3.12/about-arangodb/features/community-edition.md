@@ -137,7 +137,7 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   Flexible data field pre-processing with custom queries and the ability to
   chain built-in and custom Analyzers. Language-agnostic tokenization of text.
 
-- [**GeoJSON Support**](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson):
+- [**GeoJSON Support**](../../aql/functions/geo.md#geojson):
   Geographic data encoded in the popular GeoJSON format can be stored and used
   for geo-spatial queries.
 
