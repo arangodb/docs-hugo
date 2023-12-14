@@ -512,5 +512,20 @@ _arangodump_ operations on the server:
   dump thread was blocked because it honored the server-side memory
   limit for dumps.
 
+### arangoimport
+
+The default value for the `--type` option has been changed from `json` to
+`auto`. *arangoimport* now automatically detects the type of the import file
+based on the file extension.
+
+The following file extensions are automatically detected:
+- .json
+- .jsonl
+- .csv
+- .tsv
+
+If the file extension doesn't correspond to any of the mentioned types, the
+import defaults to `json` format.
+
 ## Internal changes
 
