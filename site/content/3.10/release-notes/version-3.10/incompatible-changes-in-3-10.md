@@ -110,7 +110,7 @@ This can mean that old polygon GeoJSON data in the database is
 suddenly interpreted in a different way. See
 [Legacy Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons) for details.
 Also see the definition of [Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#polygon)
-and [GeoJSON interpretation](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson-interpretation).
+and [GeoJSON interpretation](../../aql/functions/geo.md#geojson-interpretation).
 
 ## `geojson` Analyzers
 
