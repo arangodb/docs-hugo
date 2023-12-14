@@ -8,8 +8,8 @@ description: >-
 archetype: default
 ---
 The geo-spatial index type in ArangoDB is based on [Google S2](http://s2geometry.io/).
-Indexing is supported for a subset of the [**GeoJSON**](#geojson) geometry types
-as well as simple latitude/longitude pairs.
+Indexing is supported for a subset of the [**GeoJSON**](../../../aql/functions/geo.md#geojson)
+geometry types as well as simple latitude/longitude pairs.
 
 AQL's geospatial functions and GeoJSON constructors are described in
 [Geo functions](../../../aql/functions/geo.md).

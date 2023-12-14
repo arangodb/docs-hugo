@@ -333,7 +333,7 @@ lies South of the parallel of latitude at 54 degrees.
 {{< info >}}
 ArangoDB version before 3.10 did an inconsistent special detection of "rectangle"
 polygons that later versions from 3.10 onward no longer do, see
-[Legacy Polygons](#legacy-polygons).
+[Legacy Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons).
 {{< /info >}}
 
 Furthermore, there is an issue with the interpretation of linear rings
