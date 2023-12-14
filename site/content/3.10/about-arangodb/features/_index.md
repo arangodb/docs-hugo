@@ -14,7 +14,7 @@ aliases:
 ### Fully managed cloud service
 
 The fully managed multi-cloud
-[ArangoGraph Insights Platform](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
+[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
 is the easiest and fastest way to get started. It runs the Enterprise Edition
 of ArangoDB, lets you deploy clusters with just a few clicks, and is operated
 by a dedicated team of ArangoDB engineers day and night. You can choose from a
