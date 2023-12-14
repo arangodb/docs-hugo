@@ -382,7 +382,8 @@ ArangoDB versions before 3.10 did not follow this rule and always took the
 "smaller" connected component of the surface as the "interior" of the polygon.
 This made it impossible to specify polygons which covered more than half of the
 sphere. From version 3.10 onward, ArangoDB recognizes this correctly.
-See [Legacy Polygons](#legacy-polygons) for how to deal with this issue.
+See [Legacy Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons)
+for how to deal with this issue.
 
 ## Geo utility functions
 
