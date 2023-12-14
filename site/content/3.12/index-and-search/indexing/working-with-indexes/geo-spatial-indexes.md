@@ -187,7 +187,7 @@ not considered a duplicate, although it probably should. The desired threshold
 for detecting duplicates may vary for every project (including how to calculate
 the distance even) and needs to be implemented on the application layer as
 needed. You can write a [Foxx service](../../../develop/foxx-microservices/_index.md) for this purpose and
-make use of the AQL [geo functions](../../../aql/functions/geo.md) to find nearby
+make use of the [Geo-spatial functions in AQL](../../../aql/functions/geo.md) to find nearby
 locations supported by a geo index.
 
 In case that the index was successfully created, an object with the index
