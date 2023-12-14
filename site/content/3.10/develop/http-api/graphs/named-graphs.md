@@ -39,7 +39,7 @@ paths:
       responses:
         '200':
           description: |
-            Is returned if the module is available and the graphs could be listed.
+            Is returned if the module is available and the graphs can be listed.
           content:
             application/json:
               schema:
@@ -51,13 +51,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   graphs:
                     description: |
                       A list of all named graphs.
@@ -99,7 +100,7 @@ paths:
                                 properties:
                                   collection:
                                     description: |
-                                      Name of the edge collection, where the edge are stored in.
+                                      Name of the edge collection, where the edges are stored in.
                                     type: string
                                   from:
                                     description: |
@@ -119,7 +120,7 @@ paths:
                             orphanCollections:
                               description: |
                                 An array of additional vertex collections.
-                                Documents within these collections do not have edges within this graph.
+                                Documents in these collections do not have edges within this graph.
                               type: array
                               items:
                                 type: string
@@ -208,8 +209,8 @@ paths:
           in: query
           required: false
           description: |
-            define if the request should wait until everything is synced to disc.
-            Will change the success response code.
+            Define if the request should wait until everything is synced to disk.
+            Changes the success HTTP response status code.
           schema:
             type: boolean
       requestBody:
@@ -238,7 +239,7 @@ paths:
                     properties:
                       collection:
                         description: |
-                          Name of the edge collection, where the edge are stored in.
+                          Name of the edge collection, where the edges are stored in.
                         type: string
                       from:
                         description: |
@@ -258,7 +259,7 @@ paths:
                 orphanCollections:
                   description: |
                     An array of additional vertex collections.
-                    Documents within these collections do not have edges within this graph.
+                    Documents in these collections do not have edges within this graph.
                   type: array
                   items:
                     type: string
@@ -322,7 +323,7 @@ paths:
       responses:
         '201':
           description: |
-            Is returned if the graph could be created and waitForSync is enabled
+            Is returned if the graph can be created and `waitForSync` is enabled
             for the `_graphs` collection, or given in the request.
             The response body contains the graph configuration that has been stored.
           content:
@@ -336,13 +337,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 201
                   graph:
                     description: |
                       The information about the newly created graph.
@@ -377,7 +379,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -397,7 +399,7 @@ paths:
                       orphanCollections:
                         description: |
                           An array of additional vertex collections.
-                          Documents within these collections do not have edges within this graph.
+                          Documents in these collections do not have edges within this graph.
                         type: array
                         items:
                           type: string
@@ -448,7 +450,7 @@ paths:
                         type: boolean
         '202':
           description: |
-            Is returned if the graph could be created and waitForSync is disabled
+            Is returned if the graph can be created and `waitForSync` is disabled
             for the `_graphs` collection and not given in the request.
             The response body contains the graph configuration that has been stored.
           content:
@@ -462,13 +464,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 202
                   graph:
                     description: |
                       The information about the newly created graph.
@@ -503,7 +506,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -523,7 +526,7 @@ paths:
                       orphanCollections:
                         description: |
                           An array of additional vertex collections.
-                          Documents within these collections do not have edges within this graph.
+                          Documents in these collections do not have edges within this graph.
                         type: array
                         items:
                           type: string
@@ -587,28 +590,28 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 400
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to create a graph you at least need to have the following privileges:
-
-            1. `Administrate` access on the Database.
-            2. `Read Only` access on every collection used within this graph.
+            In order to create a graph, you need to have at least the following privileges:
+            - `Administrate` access on the database.
+            - `Read Only` access on every collection used within this graph.
           content:
             application/json:
               schema:
@@ -621,27 +624,28 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 403
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '409':
           description: |
             Returned if there is a conflict storing the graph. This can occur
-            either if a graph with this name is already stored, or if there is one
-            edge definition with the same edge collection but a different signature
-            used in any other graph.
+            either if a graph with this name already exists, or if there is an
+            edge definition with the same edge collection but different `from`
+            and `to` vertex collections in any other graph.
           content:
             application/json:
               schema:
@@ -654,20 +658,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 409
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -909,8 +914,8 @@ paths:
       operationId: getGraph
       description: |
         Selects information for a given graph.
-        Will return the edge definitions as well as the orphan collections.
-        Or returns a 404 if the graph does not exist.
+        Returns the edge definitions as well as the orphan collections,
+        or returns an error if the graph does not exist.
       parameters:
         - name: graph
           in: path
@@ -922,8 +927,8 @@ paths:
       responses:
         '200':
           description: |
-            Returns the graph if it could be found.
-            The result will have the following format:
+            Returns the graph if it can be found.
+            The result has the following format:
           content:
             application/json:
               schema:
@@ -935,13 +940,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   graph:
                     description: |
                       The information about the newly created graph
@@ -976,7 +982,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -996,7 +1002,7 @@ paths:
                       orphanCollections:
                         description: |
                           An array of additional vertex collections.
-                          Documents within these collections do not have edges within this graph.
+                          Documents in these collections do not have edges within this graph.
                         type: array
                         items:
                           type: string
@@ -1047,7 +1053,7 @@ paths:
                         type: boolean
         '404':
           description: |
-            Returned if no graph with this name could be found.
+            Returned if no graph with this name can be found.
           content:
             application/json:
               schema:
@@ -1060,20 +1066,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -1129,24 +1136,43 @@ paths:
           in: query
           required: false
           description: |
-            Drop collections of this graph as well.  Collections will only be
+            Drop the collections of this graph as well. Collections are only
             dropped if they are not used in other graphs.
           schema:
             type: boolean
       responses:
-        '201':
-          description: |
-            Is returned if the graph could be dropped and waitForSync is enabled
-            for the `_graphs` collection, or given in the request.
         '202':
           description: |
-            Is returned if the graph could be dropped and waitForSync is disabled
-            for the `_graphs` collection and not given in the request.
+            Is returned if the graph can be dropped.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - removed
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 202
+                  removed:
+                    description: |
+                      Always `true`.
+                    type: boolean
+                    example: true
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to drop a graph you at least need to have the following privileges:
-              1. `Administrate` access on the Database.
+            In order to drop a graph, you need to have at least the following privileges:
+            - `Administrate` access on the database.
           content:
             application/json:
               schema:
@@ -1159,24 +1185,25 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 403
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '404':
           description: |
-            Returned if no graph with this name could be found.
+            Returned if no graph with this name can be found.
           content:
             application/json:
               schema:
@@ -1189,20 +1216,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -1235,7 +1263,7 @@ paths:
     get:
       operationId: listVertexCollections
       description: |
-        Lists all vertex collections within this graph.
+        Lists all vertex collections within this graph, including orphan collections.
       parameters:
         - name: graph
           in: path
@@ -1247,7 +1275,7 @@ paths:
       responses:
         '200':
           description: |
-            Is returned if the collections could be listed.
+            Is returned if the collections can be listed.
           content:
             application/json:
               schema:
@@ -1259,23 +1287,25 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   collections:
                     description: |
                       The list of all vertex collections within this graph.
-                      Includes collections in edgeDefinitions as well as orphans.
+                      Includes the vertex collections used in edge definitions
+                      as well as orphan collections.
                     type: array
                     items:
                       type: string
         '404':
           description: |
-            Returned if no graph with this name could be found.
+            Returned if no graph with this name can be found.
           content:
             application/json:
               schema:
@@ -1288,20 +1318,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -1328,6 +1359,11 @@ examples.dropGraph("social");
 
 ### Add a vertex collection
 
+Adding a vertex collection on its own to a graph adds it as an orphan collection.
+If you want to use an additional vertex collection for graph relations, add it
+by [adding a new edge definition](#add-an-edge-definition) or
+[modifying an existing edge definition](#replace-an-edge-definition) instead.
+
 ```openapi
 paths:
   /_api/gharial/{graph}/vertex:
@@ -1335,7 +1371,7 @@ paths:
       operationId: addVertexCollection
       description: |
         Adds a vertex collection to the set of orphan collections of the graph.
-        If the collection does not exist, it will be created.
+        If the collection does not exist, it is created.
       parameters:
         - name: graph
           in: path
@@ -1349,7 +1385,13 @@ paths:
           application/json:
             schema:
               type: object
+              required:
+                - collection
               properties:
+                collection:
+                  description: |
+                    The name of the vertex collection to add to the graph definition.
+                  type: string
                 options:
                   description: |
                     A JSON object to set options for creating vertex collections.
@@ -1367,7 +1409,7 @@ paths:
       responses:
         '201':
           description: |
-            Is returned if the collection could be created and waitForSync is enabled
+            Is returned if the collection can be created and `waitForSync` is enabled
             for the `_graphs` collection, or given in the request.
             The response body contains the graph configuration that has been stored.
           content:
@@ -1381,13 +1423,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 201
                   graph:
                     description: |
                       The information about the modified graph.
@@ -1422,7 +1465,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -1442,7 +1485,7 @@ paths:
                       orphanCollections:
                         description: |
                           An array of additional vertex collections.
-                          Documents within these collections do not have edges within this graph.
+                          Documents in these collections do not have edges within this graph.
                         type: array
                         items:
                           type: string
@@ -1493,7 +1536,7 @@ paths:
                         type: boolean
         '202':
           description: |
-            Is returned if the collection could be created and waitForSync is disabled
+            Is returned if the collection can be created and `waitForSync` is disabled
             for the `_graphs` collection, or given in the request.
             The response body contains the graph configuration that has been stored.
           content:
@@ -1507,13 +1550,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 202
                   graph:
                     description: |
                       The information about the newly created graph
@@ -1548,7 +1592,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -1568,7 +1612,7 @@ paths:
                       orphanCollections:
                         description: |
                           An array of additional vertex collections.
-                          Documents within these collections do not have edges within this graph.
+                          Documents in these collections do not have edges within this graph.
                         type: array
                         items:
                           type: string
@@ -1632,28 +1676,28 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 400
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to modify a graph you at least need to have the following privileges:
-
-            1. `Administrate` access on the Database.
-            2. `Read Only` access on every collection used within this graph.
+            In order to modify a graph, you need to have at least the following privileges:
+            - `Administrate` access on the database.
+            - `Read Only` access on every collection used within this graph.
           content:
             application/json:
               schema:
@@ -1666,24 +1710,25 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 403
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '404':
           description: |
-            Returned if no graph with this name could be found.
+            Returned if no graph with this name can be found.
           content:
             application/json:
               schema:
@@ -1696,20 +1741,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -1745,10 +1791,14 @@ paths:
     delete:
       operationId: deleteVertexCollection
       description: |
-        Removes a vertex collection from the graph and optionally deletes the collection,
-        if it is not used in any other graph.
-        It can only remove vertex collections that are no longer part of edge definitions,
-        if they are used in edge definitions you are required to modify those first.
+        Removes a vertex collection from the list of the graph's
+        orphan collections. It can optionally delete the collection if it is
+        not used in any other graph.
+
+        You cannot remove vertex collections that are used in one of the
+        edge definitions of the graph. You need to modify or remove the
+        edge definition first in order to fully remove a vertex collection from
+        the graph.
       parameters:
         - name: graph
           in: path
@@ -1769,14 +1819,14 @@ paths:
           required: false
           description: |
             Drop the collection as well.
-            Collection will only be dropped if it is not used in other graphs.
+            The collection is only dropped if it is not used in other graphs.
           schema:
             type: boolean
       responses:
         '200':
           description: |
             Returned if the vertex collection was removed from the graph successfully
-            and waitForSync is true.
+            and `waitForSync` is `true`.
           content:
             application/json:
               schema:
@@ -1788,13 +1838,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   graph:
                     description: |
                       The information about the newly created graph
@@ -1829,7 +1880,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -1849,7 +1900,7 @@ paths:
                       orphanCollections:
                         description: |
                           An array of additional vertex collections.
-                          Documents within these collections do not have edges within this graph.
+                          Documents in these collections do not have edges within this graph.
                         type: array
                         items:
                           type: string
@@ -1900,7 +1951,7 @@ paths:
                         type: boolean
         '202':
           description: |
-            Returned if the request was successful but waitForSync is false.
+            Returned if the request was successful but `waitForSync` is `false`.
           content:
             application/json:
               schema:
@@ -1912,13 +1963,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 202
                   graph:
                     description: |
                       The information about the newly created graph
@@ -1953,7 +2005,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -1973,7 +2025,7 @@ paths:
                       orphanCollections:
                         description: |
                           An array of additional vertex collections.
-                          Documents within these collections do not have edges within this graph.
+                          Documents in these collections do not have edges within this graph.
                         type: array
                         items:
                           type: string
@@ -2039,26 +2091,27 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 400
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to drop a vertex you at least need to have the following privileges:
-              1. `Administrate` access on the Database.
+            In order to drop a vertex, you need to have at least the following privileges:
+            - `Administrate` access on the database.
           content:
             application/json:
               schema:
@@ -2071,24 +2124,25 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 403
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '404':
           description: |
-            Returned if no graph with this name could be found.
+            Returned if no graph with this name can be found.
           content:
             application/json:
               schema:
@@ -2101,20 +2155,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -2125,7 +2180,7 @@ paths:
 ```curl
 ---
 description: |-
-  You can remove vertex collections that are not used in any edge collection:
+  You can remove vertex collections that are not used in any edge definition:
 name: HttpGharialRemoveVertexCollection
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -2145,7 +2200,7 @@ db._drop("otherVertices");
 ```curl
 ---
 description: |-
-  You cannot remove vertex collections that are used in edge collections:
+  You cannot remove vertex collections that are used in edge definitions:
 name: HttpGharialRemoveVertexCollectionFailed
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
@@ -2163,13 +2218,13 @@ db._drop("relation");
 examples.dropGraph("social");
 ```
 
-### List edge definitions
+### List edge collections
 
 ```openapi
 paths:
   /_api/gharial/{graph}/edge:
     get:
-      operationId: listEdgeDefinitions
+      operationId: listEdgeCollections
       description: |
         Lists all edge collections within this graph.
       parameters:
@@ -2183,7 +2238,7 @@ paths:
       responses:
         '200':
           description: |
-            Is returned if the edge definitions could be listed.
+            Is returned if the edge definitions can be listed.
           content:
             application/json:
               schema:
@@ -2195,23 +2250,24 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   collections:
                     description: |
-                      The list of all vertex collections within this graph.
-                      Includes collections in edgeDefinitions as well as orphans.
+                      A list of all edge collections used in the edge definitions
+                      of this graph.
                     type: array
                     items:
                       type: string
         '404':
           description: |
-            Returned if no graph with this name could be found.
+            Returned if no graph with this name can be found.
           content:
             application/json:
               schema:
@@ -2224,20 +2280,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -2273,11 +2330,12 @@ paths:
         Adds an additional edge definition to the graph.
 
         This edge definition has to contain a `collection` and an array of
-        each `from` and `to` vertex collections.  An edge definition can only
+        each `from` and `to` vertex collections. An edge definition can only
         be added if this definition is either not used in any other graph, or
-        it is used with exactly the same definition. It is not possible to
-        store a definition "e" from "v1" to "v2" in the one graph, and "e"
-        from "v2" to "v1" in the other graph.
+        it is used with exactly the same definition. For example, it is not
+        possible to store a definition "e" from "v1" to "v2" in one graph, and
+        "e" from "v2" to "v1" in another graph, but both can have "e" from
+        "v1" to "v2".
 
         Additionally, collection creation options can be set.
       parameters:
@@ -2332,8 +2390,8 @@ paths:
       responses:
         '201':
           description: |
-            Returned if the definition could be added successfully and
-            waitForSync is enabled for the `_graphs` collection.
+            Returned if the definition can be added successfully and
+            `waitForSync` is enabled for the `_graphs` collection.
             The response body contains the graph configuration that has been stored.
           content:
             application/json:
@@ -2346,13 +2404,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 201
                   graph:
                     description: |
                       The information about the modified graph.
@@ -2387,7 +2446,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -2407,7 +2466,7 @@ paths:
                       orphanCollections:
                         description: |
                           An array of additional vertex collections.
-                          Documents within these collections do not have edges within this graph.
+                          Documents in these collections do not have edges within this graph.
                         type: array
                         items:
                           type: string
@@ -2458,8 +2517,8 @@ paths:
                         type: boolean
         '202':
           description: |
-            Returned if the definition could be added successfully and
-            waitForSync is disabled for the `_graphs` collection.
+            Returned if the definition can be added successfully and
+            `waitForSync` is disabled for the `_graphs` collection.
             The response body contains the graph configuration that has been stored.
           content:
             application/json:
@@ -2472,13 +2531,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 202
                   graph:
                     description: |
                       The information about the modified graph.
@@ -2513,7 +2573,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -2533,7 +2593,7 @@ paths:
                       orphanCollections:
                         description: |
                           An array of additional vertex collections.
-                          Documents within these collections do not have edges within this graph.
+                          Documents in these collections do not have edges within this graph.
                         type: array
                         items:
                           type: string
@@ -2584,9 +2644,10 @@ paths:
                         type: boolean
         '400':
           description: |
-            Returned if the definition could not be added.
-            This could be because it is ill-formed, or
-            if the definition is used in another graph with a different signature.
+            Returned if the edge definition can not be added.
+            This can be because it is ill-formed, or if there is an
+            edge definition with the same edge collection but different `from`
+            and `to` vertex collections in any other graph.
           content:
             application/json:
               schema:
@@ -2599,27 +2660,27 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 400
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to modify a graph you at least need to have the following privileges:
-
-            1. `Administrate` access on the Database.
+            In order to modify a graph, you need to have at least the following privileges:
+            - `Administrate` access on the database.
           content:
             application/json:
               schema:
@@ -2632,24 +2693,25 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 403
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '404':
           description: |
-            Returned if no graph with this name could be found.
+            Returned if no graph with this name can be found.
           content:
             application/json:
               schema:
@@ -2662,20 +2724,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -2714,7 +2777,7 @@ paths:
       operationId: replaceEdgeDefinition
       description: |
         Change one specific edge definition.
-        This will modify all occurrences of this definition in all graphs known to your database.
+        This modifies all occurrences of this definition in all graphs known to your database.
       parameters:
         - name: graph
           in: path
@@ -2742,7 +2805,7 @@ paths:
           required: false
           description: |
             Drop the collection as well.
-            Collection will only be dropped if it is not used in other graphs.
+            The collection is only dropped if it is not used in other graphs.
           schema:
             type: boolean
       requestBody:
@@ -2789,7 +2852,7 @@ paths:
       responses:
         '201':
           description: |
-            Returned if the request was successful and waitForSync is true.
+            Returned if the request was successful and `waitForSync` is `true`.
           content:
             application/json:
               schema:
@@ -2801,13 +2864,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 201
                   graph:
                     description: |
                       The information about the modified graph.
@@ -2842,7 +2906,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -2862,7 +2926,7 @@ paths:
                       orphanCollections:
                         description: |
                           An array of additional vertex collections.
-                          Documents within these collections do not have edges within this graph.
+                          Documents in these collections do not have edges within this graph.
                         type: array
                         items:
                           type: string
@@ -2913,7 +2977,7 @@ paths:
                         type: boolean
         '202':
           description: |
-            Returned if the request was successful but waitForSync is false.
+            Returned if the request was successful but `waitForSync` is `false`.
           content:
             application/json:
               schema:
@@ -2925,13 +2989,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 202
                   graph:
                     description: |
                       The information about the modified graph.
@@ -2966,7 +3031,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -2986,7 +3051,7 @@ paths:
                       orphanCollections:
                         description: |
                           An array of additional vertex collections.
-                          Documents within these collections do not have edges within this graph.
+                          Documents in these collections do not have edges within this graph.
                         type: array
                         items:
                           type: string
@@ -3050,26 +3115,27 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 400
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to drop a vertex you at least need to have the following privileges:
-              1. `Administrate` access on the Database.
+            In order to drop a vertex, you need to have at least the following privileges:
+            - `Administrate` access on the database.
           content:
             application/json:
               schema:
@@ -3082,24 +3148,25 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 403
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '404':
           description: |
-            Returned if no graph with this name could be found, or if no edge definition
+            Returned if no graph with this name can be found, or if no edge definition
             with this name is found in the graph.
           content:
             application/json:
@@ -3113,20 +3180,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -3164,9 +3232,10 @@ paths:
     delete:
       operationId: deleteEdgeDefinition
       description: |
-        Remove one edge definition from the graph. This will only remove the
-        edge collection, the vertex collections remain untouched and can still
-        be used in your queries.
+        Remove one edge definition from the graph. This only removes the
+        edge collection from the graph definition. The vertex collections of the
+        edge definition become orphan collections but otherwise remain untouched
+        and can still be used in your queries.
       parameters:
         - name: graph
           in: path
@@ -3194,14 +3263,14 @@ paths:
           required: false
           description: |
             Drop the collection as well.
-            Collection will only be dropped if it is not used in other graphs.
+            The collection is only dropped if it is not used in other graphs.
           schema:
             type: boolean
       responses:
         '201':
           description: |
-            Returned if the edge definition could be removed from the graph
-            and waitForSync is true.
+            Returned if the edge definition can be removed from the graph
+            and `waitForSync` is `true`.
           content:
             application/json:
               schema:
@@ -3213,13 +3282,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 201
                   graph:
                     description: |
                       The information about the modified graph.
@@ -3254,7 +3324,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -3274,7 +3344,7 @@ paths:
                       orphanCollections:
                         description: |
                           An array of additional vertex collections.
-                          Documents within these collections do not have edges within this graph.
+                          Documents in these collections do not have edges within this graph.
                         type: array
                         items:
                           type: string
@@ -3325,8 +3395,8 @@ paths:
                         type: boolean
         '202':
           description: |
-            Returned if the edge definition could be removed from the graph and
-            waitForSync is false.
+            Returned if the edge definition can be removed from the graph and
+            `waitForSync` is `false`.
           content:
             application/json:
               schema:
@@ -3338,13 +3408,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 202
                   graph:
                     description: |
                       The information about the modified graph.
@@ -3379,7 +3450,7 @@ paths:
                           properties:
                             collection:
                               description: |
-                                Name of the edge collection, where the edge are stored in.
+                                Name of the edge collection, where the edges are stored in.
                               type: string
                             from:
                               description: |
@@ -3399,7 +3470,7 @@ paths:
                       orphanCollections:
                         description: |
                           An array of additional vertex collections.
-                          Documents within these collections do not have edges within this graph.
+                          Documents in these collections do not have edges within this graph.
                         type: array
                         items:
                           type: string
@@ -3451,8 +3522,8 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to drop a vertex you at least need to have the following privileges:
-              1. `Administrate` access on the Database.
+            In order to drop a vertex, you need to have at least the following privileges:
+            - `Administrate` access on the database.
           content:
             application/json:
               schema:
@@ -3465,24 +3536,25 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 403
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '404':
           description: |
-            Returned if no graph with this name could be found,
+            Returned if no graph with this name can be found,
             or if no edge definition with this name is found in the graph.
           content:
             application/json:
@@ -3496,20 +3568,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -3591,7 +3664,7 @@ paths:
       responses:
         '201':
           description: |
-            Returned if the vertex could be added and waitForSync is true.
+            Returned if the vertex can be added and `waitForSync` is `true`.
           content:
             application/json:
               schema:
@@ -3603,13 +3676,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 201
                   vertex:
                     description: |
                       The internal attributes for the vertex.
@@ -3636,7 +3710,7 @@ paths:
                       The complete newly written vertex document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
-                      Will only be present if returnNew is true.
+                      Only present if `returnNew` is `true`.
                     type: object
                     required:
                       - _id
@@ -3657,7 +3731,7 @@ paths:
                         type: string
         '202':
           description: |
-            Returned if the request was successful but waitForSync is false.
+            Returned if the request was successful but `waitForSync` is `false`.
           content:
             application/json:
               schema:
@@ -3669,13 +3743,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 202
                   vertex:
                     description: |
                       The internal attributes generated while storing the vertex.
@@ -3703,7 +3778,7 @@ paths:
                       The complete newly written vertex document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
-                      Will only be present if returnNew is true.
+                      Only present if `returnNew` is `true`.
                     type: object
                     required:
                       - _id
@@ -3725,10 +3800,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to insert vertices into the graph  you at least need to have the following privileges:
-
-            1. `Read Only` access on the Database.
-            2. `Write` access on the given collection.
+            In order to insert vertices into the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Write` access on the given collection.
           content:
             application/json:
               schema:
@@ -3741,24 +3815,25 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 403
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '404':
           description: |
-            Returned if no graph with this name could be found.
+            Returned if no graph with this name can be found.
             Or if a graph is found but this collection is not part of the graph.
           content:
             application/json:
@@ -3772,20 +3847,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -3874,7 +3950,7 @@ paths:
       responses:
         '200':
           description: |
-            Returned if the vertex could be found.
+            Returned if the vertex can be found.
           content:
             application/json:
               schema:
@@ -3886,13 +3962,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   vertex:
                     description: |
                       The complete vertex.
@@ -3932,28 +4009,28 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 304
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to update vertices in the graph  you at least need to have the following privileges:
-
-            1. `Read Only` access on the Database.
-            2. `Read Only` access on the given collection.
+            In order to update vertices in the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Read Only` access on the given collection.
           content:
             application/json:
               schema:
@@ -3966,20 +4043,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 403
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '404':
           description: |
@@ -3999,20 +4077,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '412':
           description: |
@@ -4029,20 +4108,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 412
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -4156,7 +4236,7 @@ paths:
       responses:
         '200':
           description: |
-            Returned if the vertex could be updated, and waitForSync is true.
+            Returned if the vertex can be updated, and `waitForSync` is `true`.
           content:
             application/json:
               schema:
@@ -4168,13 +4248,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   vertex:
                     description: |
                       The internal attributes for the vertex.
@@ -4201,7 +4282,7 @@ paths:
                       The complete newly written vertex document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
-                      Will only be present if returnNew is true.
+                      Only present if `returnNew` is `true`.
                     type: object
                     required:
                       - _id
@@ -4224,7 +4305,7 @@ paths:
                     description: |
                       The complete overwritten vertex document.
                       Includes all attributes stored before this operation.
-                      Will only be present if returnOld is true.
+                      Only present if `returnOld` is `true`.
                     type: object
                     required:
                       - _id
@@ -4245,7 +4326,7 @@ paths:
                         type: string
         '202':
           description: |
-            Returned if the request was successful, and waitForSync is false.
+            Returned if the request was successful, and `waitForSync` is `false`.
           content:
             application/json:
               schema:
@@ -4257,13 +4338,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 202
                   vertex:
                     description: |
                       The internal attributes for the vertex.
@@ -4290,7 +4372,7 @@ paths:
                       The complete newly written vertex document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
-                      Will only be present if returnNew is true.
+                      Only present if `returnNew` is `true`.
                     type: object
                     required:
                       - _id
@@ -4313,7 +4395,7 @@ paths:
                     description: |
                       The complete overwritten vertex document.
                       Includes all attributes stored before this operation.
-                      Will only be present if returnOld is true.
+                      Only present if `returnOld` is `true`.
                     type: object
                     required:
                       - _id
@@ -4335,10 +4417,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to update vertices in the graph  you at least need to have the following privileges:
-
-            1. `Read Only` access on the Database.
-            2. `Write` access on the given collection.
+            In order to update vertices in the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Write` access on the given collection.
           content:
             application/json:
               schema:
@@ -4351,25 +4432,26 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 403
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name could be found.
+            - No graph with this name can be found.
             - This collection is not part of the graph.
             - The vertex to update does not exist.
           content:
@@ -4384,20 +4466,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '412':
           description: |
@@ -4414,20 +4497,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 412
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -4544,7 +4628,7 @@ paths:
       responses:
         '200':
           description: |
-            Returned if the vertex could be replaced, and waitForSync is true.
+            Returned if the vertex can be replaced, and `waitForSync` is `true`.
           content:
             application/json:
               schema:
@@ -4556,13 +4640,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   vertex:
                     description: |
                       The internal attributes for the vertex.
@@ -4589,7 +4674,7 @@ paths:
                       The complete newly written vertex document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
-                      Will only be present if returnNew is true.
+                      Only present if `returnNew` is `true`.
                     type: object
                     required:
                       - _id
@@ -4612,7 +4697,7 @@ paths:
                     description: |
                       The complete overwritten vertex document.
                       Includes all attributes stored before this operation.
-                      Will only be present if returnOld is true.
+                      Only present if `returnOld` is `true`.
                     type: object
                     required:
                       - _id
@@ -4633,7 +4718,7 @@ paths:
                         type: string
         '202':
           description: |
-            Returned if the vertex could be replaced, and waitForSync is false.
+            Returned if the vertex can be replaced, and `waitForSync` is `false`.
           content:
             application/json:
               schema:
@@ -4645,13 +4730,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 202
                   vertex:
                     description: |
                       The internal attributes for the vertex.
@@ -4678,7 +4764,7 @@ paths:
                       The complete newly written vertex document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
-                      Will only be present if returnNew is true.
+                      Only present if `returnNew` is `true`.
                     type: object
                     required:
                       - _id
@@ -4701,7 +4787,7 @@ paths:
                     description: |
                       The complete overwritten vertex document.
                       Includes all attributes stored before this operation.
-                      Will only be present if returnOld is true.
+                      Only present if `returnOld` is `true`.
                     type: object
                     required:
                       - _id
@@ -4723,10 +4809,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to replace vertices in the graph  you at least need to have the following privileges:
-
-            1. `Read Only` access on the Database.
-            2. `Write` access on the given collection.
+            In order to replace vertices in the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Write` access on the given collection.
           content:
             application/json:
               schema:
@@ -4739,25 +4824,26 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 403
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name could be found.
+            - No graph with this name can be found.
             - This collection is not part of the graph.
             - The vertex to replace does not exist.
           content:
@@ -4772,20 +4858,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '412':
           description: |
@@ -4802,20 +4889,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 412
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -4902,7 +4990,7 @@ paths:
       responses:
         '200':
           description: |
-            Returned if the vertex could be removed.
+            Returned if the vertex can be removed.
           content:
             application/json:
               schema:
@@ -4914,13 +5002,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   removed:
                     description: |
                       Is set to true if the remove was successful.
@@ -4929,7 +5018,7 @@ paths:
                     description: |
                       The complete deleted vertex document.
                       Includes all attributes stored before this operation.
-                      Will only be present if returnOld is true.
+                      Only present if `returnOld` is `true`.
                     type: object
                     required:
                       - _id
@@ -4950,7 +5039,7 @@ paths:
                         type: string
         '202':
           description: |
-            Returned if the request was successful but waitForSync is false.
+            Returned if the request was successful but `waitForSync` is `false`.
           content:
             application/json:
               schema:
@@ -4962,13 +5051,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 202
                   removed:
                     description: |
                       Is set to true if the remove was successful.
@@ -4977,7 +5067,7 @@ paths:
                     description: |
                       The complete deleted vertex document.
                       Includes all attributes stored before this operation.
-                      Will only be present if returnOld is true.
+                      Only present if `returnOld` is `true`.
                     type: object
                     required:
                       - _id
@@ -4999,10 +5089,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to delete vertices in the graph  you at least need to have the following privileges:
-
-            1. `Read Only` access on the Database.
-            2. `Write` access on the given collection.
+            In order to delete vertices in the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Write` access on the given collection.
           content:
             application/json:
               schema:
@@ -5015,25 +5104,26 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 403
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name could be found.
+            - No graph with this name can be found.
             - This collection is not part of the graph.
             - The vertex to remove does not exist.
           content:
@@ -5048,20 +5138,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '412':
           description: |
@@ -5078,20 +5169,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 412
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -5128,7 +5220,7 @@ paths:
       description: |
         Creates a new edge in the specified collection.
         Within the body the edge has to contain a `_from` and `_to` value referencing to valid vertices in the graph.
-        Furthermore the edge has to be valid in the definition of the used edge collection.
+        Furthermore, the edge has to be valid according to the edge definitions.
       parameters:
         - name: graph
           in: path
@@ -5181,7 +5273,7 @@ paths:
       responses:
         '201':
           description: |
-            Returned if the edge could be created and waitForSync is true.
+            Returned if the edge can be created and `waitForSync` is `true`.
           content:
             application/json:
               schema:
@@ -5193,13 +5285,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 201
                   edge:
                     description: |
                       The internal attributes for the edge.
@@ -5236,7 +5329,7 @@ paths:
                       The complete newly written edge document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
-                      Will only be present if returnNew is true.
+                      Only present if `returnNew` is `true`.
                     type: object
                     required:
                       - _id
@@ -5267,7 +5360,7 @@ paths:
                         type: string
         '202':
           description: |
-            Returned if the request was successful but waitForSync is false.
+            Returned if the request was successful but `waitForSync` is `false`.
           content:
             application/json:
               schema:
@@ -5279,13 +5372,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 202
                   edge:
                     description: |
                       The internal attributes for the edge.
@@ -5322,7 +5416,7 @@ paths:
                       The complete newly written edge document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
-                      Will only be present if returnNew is true.
+                      Only present if `returnNew` is `true`.
                     type: object
                     required:
                       - _id
@@ -5368,28 +5462,28 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 400
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to insert edges into the graph  you at least need to have the following privileges:
-
-            1. `Read Only` access on the Database.
-            2. `Write` access on the given collection.
+            In order to insert edges into the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Write` access on the given collection.
           content:
             application/json:
               schema:
@@ -5402,28 +5496,29 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 403
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '404':
           description: |
             Returned in any of the following cases:
-            - no graph with this name could be found.
-            - the edge collection is not part of the graph.
-            - the vertex collection referenced in the `_from` or `_to` attribute is not part of the graph.
-            - the vertex collection is part of the graph, but does not exist.
+            - No graph with this name can be found.
+            - The edge collection is not part of the graph.
+            - The vertex collection referenced in the `_from` or `_to` attribute is not part of the graph.
+            - The vertex collection is part of the graph, but does not exist.
             - `_from` or `_to` vertex does not exist.
           content:
             application/json:
@@ -5437,20 +5532,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -5544,7 +5640,7 @@ paths:
       responses:
         '200':
           description: |
-            Returned if the edge could be found.
+            Returned if the edge can be found.
           content:
             application/json:
               schema:
@@ -5556,13 +5652,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   edge:
                     description: |
                       The complete edge.
@@ -5612,28 +5709,28 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 304
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to update vertices in the graph  you at least need to have the following privileges:
-
-            1. `Read Only` access on the Database.
-            2. `Read Only` access on the given collection.
+            In order to update vertices in the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Read Only` access on the given collection.
           content:
             application/json:
               schema:
@@ -5646,25 +5743,26 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 403
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name could be found.
+            - No graph with this name can be found.
             - This collection is not part of the graph.
             - The edge does not exist.
           content:
@@ -5679,20 +5777,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '412':
           description: |
@@ -5709,20 +5808,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 412
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -5837,7 +5937,7 @@ paths:
       responses:
         '200':
           description: |
-            Returned if the edge could be updated, and waitForSync is false.
+            Returned if the edge can be updated, and `waitForSync` is `false`.
           content:
             application/json:
               schema:
@@ -5849,13 +5949,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   edge:
                     description: |
                       The internal attributes for the edge.
@@ -5892,7 +5993,7 @@ paths:
                       The complete newly written edge document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
-                      Will only be present if returnNew is true.
+                      Only present if `returnNew` is `true`.
                     type: object
                     required:
                       - _id
@@ -5925,7 +6026,7 @@ paths:
                     description: |
                       The complete overwritten edge document.
                       Includes all attributes stored before this operation.
-                      Will only be present if returnOld is true.
+                      Only present if `returnOld` is `true`.
                     type: object
                     required:
                       - _id
@@ -5956,7 +6057,7 @@ paths:
                         type: string
         '202':
           description: |
-            Returned if the request was successful but waitForSync is false.
+            Returned if the request was successful but `waitForSync` is `false`.
           content:
             application/json:
               schema:
@@ -5968,13 +6069,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 202
                   edge:
                     description: |
                       The internal attributes for the edge.
@@ -6011,7 +6113,7 @@ paths:
                       The complete newly written edge document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
-                      Will only be present if returnNew is true.
+                      Only present if `returnNew` is `true`.
                     type: object
                     required:
                       - _id
@@ -6044,7 +6146,7 @@ paths:
                     description: |
                       The complete overwritten edge document.
                       Includes all attributes stored before this operation.
-                      Will only be present if returnOld is true.
+                      Only present if `returnOld` is `true`.
                     type: object
                     required:
                       - _id
@@ -6076,10 +6178,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to update edges in the graph  you at least need to have the following privileges:
-
-            1. `Read Only` access on the Database.
-            2. `Write` access on the given collection.
+            In order to update edges in the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Write` access on the given collection.
           content:
             application/json:
               schema:
@@ -6092,28 +6193,29 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 403
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name could be found.
+            - No graph with this name can be found.
             - This collection is not part of the graph.
             - The edge to update does not exist.
-            - either `_from` or `_to` vertex does not exist (if updated).
+            - Either `_from` or `_to` vertex does not exist (if updated).
           content:
             application/json:
               schema:
@@ -6126,20 +6228,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '412':
           description: |
@@ -6156,20 +6259,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 412
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -6293,7 +6397,7 @@ paths:
       responses:
         '201':
           description: |
-            Returned if the request was successful but waitForSync is true.
+            Returned if the request was successful but `waitForSync` is `true`.
           content:
             application/json:
               schema:
@@ -6305,13 +6409,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 201
                   edge:
                     description: |
                       The internal attributes for the edge
@@ -6348,7 +6453,7 @@ paths:
                       The complete newly written edge document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
-                      Will only be present if returnNew is true.
+                      Only present if `returnNew` is `true`.
                     type: object
                     required:
                       - _id
@@ -6381,7 +6486,7 @@ paths:
                     description: |
                       The complete overwritten edge document.
                       Includes all attributes stored before this operation.
-                      Will only be present if returnOld is true.
+                      Only present if `returnOld` is `true`.
                     type: object
                     required:
                       - _id
@@ -6412,7 +6517,7 @@ paths:
                         type: string
         '202':
           description: |
-            Returned if the request was successful but waitForSync is false.
+            Returned if the request was successful but `waitForSync` is `false`.
           content:
             application/json:
               schema:
@@ -6424,13 +6529,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 202
                   edge:
                     description: |
                       The internal attributes for the edge
@@ -6467,7 +6573,7 @@ paths:
                       The complete newly written edge document.
                       Includes all written attributes in the request body
                       and all internal attributes generated by ArangoDB.
-                      Will only be present if returnNew is true.
+                      Only present if `returnNew` is `true`.
                     type: object
                     required:
                       - _id
@@ -6500,7 +6606,7 @@ paths:
                     description: |
                       The complete overwritten edge document.
                       Includes all attributes stored before this operation.
-                      Will only be present if returnOld is true.
+                      Only present if `returnOld` is `true`.
                     type: object
                     required:
                       - _id
@@ -6532,10 +6638,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to replace edges in the graph  you at least need to have the following privileges:
-
-              1. `Read Only` access on the Database.
-              2. `Write` access on the given collection.
+            In order to replace edges in the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Write` access on the given collection.
           content:
             application/json:
               schema:
@@ -6548,28 +6653,29 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 403
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name could be found.
+            - No graph with this name can be found.
             - This collection is not part of the graph.
             - The edge to replace does not exist.
-            - either `_from` or `_to` vertex does not exist.
+            - Either `_from` or `_to` vertex does not exist.
           content:
             application/json:
               schema:
@@ -6582,20 +6688,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '412':
           description: |
@@ -6612,20 +6719,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 412
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
@@ -6714,7 +6822,7 @@ paths:
       responses:
         '200':
           description: |
-            Returned if the edge could be removed.
+            Returned if the edge can be removed.
           content:
             application/json:
               schema:
@@ -6726,13 +6834,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 200
                   removed:
                     description: |
                       Is set to true if the remove was successful.
@@ -6741,7 +6850,7 @@ paths:
                     description: |
                       The complete deleted edge document.
                       Includes all attributes stored before this operation.
-                      Will only be present if returnOld is true.
+                      Only present if `returnOld` is `true`.
                     type: object
                     required:
                       - _id
@@ -6772,7 +6881,7 @@ paths:
                         type: string
         '202':
           description: |
-            Returned if the request was successful but waitForSync is false.
+            Returned if the request was successful but `waitForSync` is `false`.
           content:
             application/json:
               schema:
@@ -6784,13 +6893,14 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is false in this response.
+                      A flag indicating that no error occurred.
                     type: boolean
+                    example: false
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 202
                   removed:
                     description: |
                       Is set to true if the remove was successful.
@@ -6799,7 +6909,7 @@ paths:
                     description: |
                       The complete deleted edge document.
                       Includes all attributes stored before this operation.
-                      Will only be present if returnOld is true.
+                      Only present if `returnOld` is `true`.
                     type: object
                     required:
                       - _id
@@ -6831,10 +6941,9 @@ paths:
         '403':
           description: |
             Returned if your user has insufficient rights.
-            In order to delete vertices in the graph  you at least need to have the following privileges:
-
-            1. `Read Only` access on the Database.
-            2. `Write` access on the given collection.
+            In order to delete vertices in the graph, you need to have at least the following privileges:
+            - `Read Only` access on the database.
+            - `Write` access on the given collection.
           content:
             application/json:
               schema:
@@ -6847,25 +6956,26 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 403
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name could be found.
+            - No graph with this name can be found.
             - This collection is not part of the graph.
             - The edge to remove does not exist.
           content:
@@ -6880,20 +6990,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 404
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
         '412':
           description: |
@@ -6910,20 +7021,21 @@ paths:
                 properties:
                   error:
                     description: |
-                      Flag if there was an error (true) or not (false).
-                      It is true in this response.
+                      A flag indicating that an error occurred.
                     type: boolean
+                    example: true
                   code:
                     description: |
-                      The response code.
+                      The HTTP response status code.
                     type: integer
+                    example: 412
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
-                      A message created for this error.
+                      A descriptive error message.
                     type: string
       tags:
         - Graphs
