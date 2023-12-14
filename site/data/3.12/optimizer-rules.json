@@ -24,6 +24,18 @@
     }
   },
   {
+    "name": "replace-like-with-range",
+    "description": "Replace LIKE() function with range scans where possible.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": false,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
     "name": "simplify-conditions",
     "description": "Replace parts in `CalculationNode` expressions with\nsimpler expressions.",
     "flags": {
@@ -350,6 +362,18 @@
   {
     "name": "optimize-traversals",
     "description": "Try to move `FILTER` conditions into `TraversalNode` for\nearly pruning of results, apply traversal projections, and avoid calculating\nedge and path output variables that are not declared in the query for the\nAQL traversal.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
+    "name": "optimize-enumerate-path-filters",
+    "description": "Move `FILTER` conditions on the path output variable into the path search",
     "flags": {
       "hidden": false,
       "clusterOnly": false,
