@@ -37,7 +37,7 @@ If the leader fails, then a follower takes over seamlessly.
 operations and analytics, allowing you to scale elastically with your
 applications and data models. ArangoDB's synchronously-replicating cluster
 technology runs on premises, on Kubernetes, and in the cloud on
-[ArangoGraph](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic) - ArangoDB's fully managed service.
+[ArangoGraph](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic) - ArangoDB's fully managed service.
 
 Clustering ArangoDB not only delivers better performance and capacity improvements,
 but it also provides resilience through replication and automatic failover.
@@ -79,7 +79,7 @@ There are different ways to set up and operate ArangoDB.
   ArangoDB Kubernetes Operator (`kube-arangodb`).
 
 The fastest way to get ArangoDB up and running is to run it in the cloud - the
-[ArangoGraph Platform](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic) offers a fully managed
+[ArangoGraph Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic) offers a fully managed
 cloud service, available on AWS, Microsoft Azure, and Google Cloud Platform.
 
 ### Manual Deployment
@@ -137,7 +137,7 @@ If you want a specific version, download the precompiled executable via the
 ### Run in the cloud
 
 - [AWS and Azure](in-the-cloud.md)
-- [ArangoGraph Insights Platform](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
+- [ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
   fully managed, available on AWS, Azure & GCP
 
 ### Run in Kubernetes

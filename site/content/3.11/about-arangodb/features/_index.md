@@ -88,4 +88,4 @@ If you do not want to operate your own ArangoDB instances on-premises, then
 you may use our fully managed multi-cloud **ArangoGraph Insights Platform**.
 It runs the Enterprise Edition of ArangoDB, lets you deploy clusters with a
 few clicks, and is operated by a dedicated team of ArangoDB engineers day and
-night. To learn more, go to [cloud.arangodb.com](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+night. To learn more, go to [https://dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
