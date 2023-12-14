@@ -49,7 +49,7 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   or modified, using an AQL expression.
 
 - [**Multiple Environments**](../../operations/installation/_index.md#supported-platforms-and-architectures):
-  Use ArangoDB as a [managed service](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
+  Use ArangoDB as a [managed service](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
   in your own cloud, or on-premises.
   Develop and test with ArangoDB on Linux, macOS, and Windows, and run it in
   production on Linux. ArangoDB is available for 64-bit ARM chips on macOS and

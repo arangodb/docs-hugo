@@ -386,7 +386,7 @@ See the [Cluster Deployment](deployment/_index.md)
 chapter for instructions.
 
 ArangoDB is also available as a cloud service, the
-[**ArangoGraph Insights Platform**](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+[**ArangoGraph Insights Platform**](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 
 ## Cluster ID
 
