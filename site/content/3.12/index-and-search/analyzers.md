@@ -141,6 +141,7 @@ The following Analyzer types are available:
   indexing geo-spatial data (Enterprise Edition only)
 - [`geopoint`](#geopoint): breaks up JSON data describing a coordinate pair into
   a set of indexable tokens
+- [`wildcard`](#wildcard): to able run heavy wildcard queries on large string field
 
 The following table compares the Analyzers for **text processing**:
 
@@ -1577,6 +1578,23 @@ db._query(`LET point = GEO_POINT(6.93, 50.94)
 ~analyzers.remove("geo_latlng", true);
 ~db._drop("geo");
 ```
+
+### Wildcard
+
+Paramters:
+ ngramSize (required) -- unsigned integer, should be >= 2
+ analyzer (optional) -- same parameter as for minhash analyzer
+
+It's needed when user have large string field and want to run not-prefix wildcard queries on it.
+
+This analyzer have features validation:
+It's not possible to create it with offset feature (same as for elastic).
+So it's possible to valid combinations of features: [] and ["frequency", "position"].
+Second option is required more memory, but doesn't need to read stored column values for prefix/suffix/exact queries ( %something%, %something, something% , something)
+
+Also if you have ngramSize  greater than simple part in wildcard query it can be slowdown, example
+ngramSize == 4, and pattern %jo%jo%ref%, will search ref% and then made linear post-validation via icu regex engine
+https://www.elastic.co/blog/find-strings-within-strings-faster-with-the-new-elasticsearch-wildcard-field (simplified description how it works)
 
 ## Built-in Analyzers
 
