@@ -1581,7 +1581,7 @@ db._query(`LET point = GEO_POINT(6.93, 50.94)
 
 ### Wildcard
 
-Paramters:
+Parameters:
  ngramSize (required) -- unsigned integer, should be >= 2
  analyzer (optional) -- same parameter as for minhash analyzer
 
