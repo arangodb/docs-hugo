@@ -60,7 +60,7 @@ All functions that require dates as arguments accept the following input values:
   Valid range: `"0000-01-01T00:00:00.000Z"` .. `"9999-12-31T23:59:59.999Z"` (inclusive)
 
 Any date/time values outside the valid range that are passed into an AQL date
-function will make the function return `null` and trigger a warning for the query,
+function makes the function return `null` and trigger a warning for the query,
 which can optionally be escalated to an error and abort the query. This also
 applies to operations which produce an invalid value.
 
@@ -70,8 +70,8 @@ DATE_HOUR("1970-01-01T02:00:00") // 2
 ```
 
 You are free to store age determinations of specimens, incomplete or fuzzy dates and
-the like in different, more appropriate ways of course. AQL's date functions will
-most certainly not be of any help for such dates, but you can still use language
+the like in different, more appropriate ways of course. AQL's date functions are
+most certainly not of any help for such dates, but you can still use language
 constructs like [SORT](../high-level-operations/sort.md) (which also supports sorting of arrays)
 and [indexes](../../index-and-search/indexing/_index.md).
 
@@ -93,7 +93,7 @@ to a variable to use the exact same timestamp multiple times.
 
 ## Conversion
 
-*DATE_TIMESTAMP()* and *DATE_ISO8601()* can be used to convert ISO 8601 date time
+`DATE_TIMESTAMP()` and `DATE_ISO8601()` can be used to convert ISO 8601 date time
 strings to numeric timestamps and numeric timestamps to ISO 8601 date time strings.
 
 Both also support individual date components as separate function arguments,
@@ -107,12 +107,12 @@ in the following order:
 - second
 - millisecond
 
-All components following *day* are optional and can be omitted. Note that no
+All components following the *day* are optional and can be omitted. Note that no
 time offset can be specified when using separate date components, and UTC /
-Zulu time will be used.
+Zulu time is used.
 
-The following calls to *DATE_TIMESTAMP()* are equivalent and will all return
-*1399472349522*:
+The following calls to `DATE_TIMESTAMP()` are equivalent and all return
+`1399472349522`:
 
 ```aql
 DATE_TIMESTAMP("2014-05-07T14:19:09.522")
@@ -123,7 +123,7 @@ DATE_TIMESTAMP(2014, 5, 7, 14, 19, 9, 522)
 DATE_TIMESTAMP(1399472349522)
 ```
 
-The same is true for calls to *DATE_ISO8601()* that also accepts variable input
+The same is true for calls to `DATE_ISO8601()` that also accepts variable input
 formats:
 
 ```aql
@@ -133,14 +133,14 @@ DATE_ISO8601(2014, 5, 7, 14, 19, 9, 522)
 DATE_ISO8601(1399472349522)
 ```
 
-The above functions are all equivalent and will return *"2014-05-07T14:19:09.522Z"*.
+The above functions are all equivalent and return `"2014-05-07T14:19:09.522Z"`.
 
 ### DATE_ISO8601()
 
 `DATE_ISO8601(date) → dateString`
 
-Return an ISO 8601 date time string from *date*.
-The date time string will always use UTC / Zulu time, indicated by the *Z* at its end.
+Return an ISO 8601 date time string from `date`.
+The date time string always uses UTC / Zulu time, indicated by the `Z` at its end.
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
 - returns **dateString**: date and time expressed according to ISO 8601, in Zulu time
@@ -149,10 +149,10 @@ The date time string will always use UTC / Zulu time, indicated by the *Z* at it
 
 `DATE_ISO8601(year, month, day, hour, minute, second, millisecond) → dateString`
 
-Return a ISO 8601 date time string from *date*, but allows to specify the individual
-date components separately. All parameters after *day* are optional.
+Return a ISO 8601 date time string from `date`, but allows to specify the individual
+date components separately. All parameters after `day` are optional.
 
-- **year** (number): typically in the range 0..9999, e.g. *2017*
+- **year** (number): typically in the range 0..9999, e.g. `2017`
 - **month** (number): 1..12 for January through December
 - **day** (number): 1..31 (upper bound depends on number of days in month)
 - **hour** (number, *optional*): 0..23
@@ -165,7 +165,7 @@ date components separately. All parameters after *day* are optional.
 
 `DATE_TIMESTAMP(date) → timestamp`
 
-Create a timestamp value from *date*. The return value has millisecond precision.
+Create a timestamp value from `date`. The return value has millisecond precision.
 To convert the return value to seconds, divide it by 1000.
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
@@ -176,9 +176,9 @@ To convert the return value to seconds, divide it by 1000.
 `DATE_TIMESTAMP(year, month, day, hour, minute, second, millisecond) → timestamp`
 
 Create a timestamp value, but allows to specify the individual date components
-separately. All parameters after *day* are optional.
+separately. All parameters after `day` are optional.
 
-- **year** (number): typically in the range 0..9999, e.g. *2017*
+- **year** (number): typically in the range 0..9999, e.g. `2017`
 - **month** (number): 1..12 for January through December
 - **day** (number): 1..31 (upper bound depends on number of days in month)
 - **hour** (number, *optional*): 0..23
@@ -187,7 +187,7 @@ separately. All parameters after *day* are optional.
 - **milliseconds** (number, *optional*): 0..999
 - returns **timestamp** (number): numeric timestamp
 
-Negative values are not allowed, result in *null* and cause a warning.
+Negative values are not allowed, result in `null` and cause a warning.
 Values greater than the upper range bound overflow to the larger components
 (e.g. an hour of 26 is automatically turned into an additional day and two hours):
 
@@ -204,29 +204,34 @@ DATE_TIMESTAMP(1970, 1, 1, 26) // returns 93600000, which is January 2nd, 1970, 
 Check if an arbitrary string is suitable for interpretation as date time string.
 
 - **value** (string): an arbitrary string
-- returns **bool** (bool): *true* if *value* is a string that can be used
-  in a date function. This includes partial dates such as *2015* or *2015-10* and
-  strings containing invalid dates such as *2015-02-31*. The function will return
-  *false* for all non-string values, even if some of them may be usable in date
+- returns **bool** (bool): `true` if `value` is a string that can be used
+  in a date function. This includes partial dates such as `2015` or `2015-10` and
+  strings containing invalid dates such as `2015-02-31`. The function returns
+  `false` for all non-string values, even if some of them may be usable in date
   functions.
 
 ## Processing
 
 ### DATE_DAYOFWEEK()
 
-`DATE_DAYOFWEEK(date) → weekdayNumber`
+`DATE_DAYOFWEEK(date, timezone) → weekdayNumber`
 
-Return the weekday number of *date*.
+Return the weekday number of `date`.
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
+- **timezone** (string, *optional*): if set, the `date` is assumed to be in the
+  specified timezone, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
 - returns **weekdayNumber** (number): 0..6 as follows:
-  - 0 – Sunday
-  - 1 – Monday
-  - 2 – Tuesday
-  - 3 – Wednesday
-  - 4 – Thursday
-  - 5 – Friday
-  - 6 – Saturday
+  - `0` – Sunday
+  - `1` – Monday
+  - `2` – Tuesday
+  - `3` – Wednesday
+  - `4` – Thursday
+  - `5` – Friday
+  - `6` – Saturday
 
 **Examples**
 
@@ -246,14 +251,27 @@ description: ''
 RETURN DATE_DAYOFWEEK(0)
 ```
 
+```aql
+---
+name: datedyofwk3
+description: ''
+---
+RETURN DATE_DAYOFWEEK("2023-03-25T23:00:00.000Z", "Europe/Berlin")
+```
+
 ### DATE_YEAR()
 
-`DATE_YEAR(date) → year`
+`DATE_YEAR(date, timezone) → year`
 
-Return the year of *date*.
+Return the year of `date`.
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
-- returns **year** (number): the year part of *date* as a number
+- **timezone** (string, *optional*): if set, the `date` is assumed to be in the
+  specified timezone, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
+- returns **year** (number): the year part of `date` as a number
 
 **Examples**
 
@@ -273,14 +291,27 @@ description: ''
 RETURN DATE_YEAR(0)
 ```
 
+```aql
+---
+name: dateyr3
+description: ''
+---
+RETURN DATE_YEAR("2023-12-31T23:00:00.000Z", "Europe/Berlin")
+```
+
 ### DATE_MONTH()
 
-`DATE_MONTH(date) → month`
+`DATE_MONTH(date, timezone) → month`
 
-Return the month of *date*.
+Return the month of `date`.
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
-- returns **month** (number): the month part of *date* as a number
+- **timezone** (string, *optional*): if set, the `date` is assumed to be in the
+  specified timezone, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
+- returns **month** (number): the month part of `date` as a number
 
 **Examples**
 
@@ -300,14 +331,27 @@ description: ''
 RETURN DATE_MONTH(0)
 ```
 
+```aql
+---
+name: datemn3
+description: ''
+---
+ RETURN DATE_MONTH("2023-12-31T23:00:00.000Z", "Europe/Berlin")
+```
+
 ### DATE_DAY()
 
-`DATE_DAY(date) → day`
+`DATE_DAY(date, timezone) → day`
 
-Return the day of *date*.
+Return the day of `date`.
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
-- returns **day** (number): the day part of *date* as a number
+- **timezone** (string, *optional*): if set, the `date` is assumed to be in the
+  specified timezone, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
+- returns **day** (number): the day part of `date` as a number
 
 **Examples**
 
@@ -327,14 +371,27 @@ description: ''
 RETURN DATE_DAY(0)
 ```
 
+```aql
+---
+name: datedy3
+description: ''
+---
+RETURN DATE_DAY("2023-12-31T23:00:00.000Z", "Europe/Berlin")
+```
+
 ### DATE_HOUR()
 
-Return the hour of *date*.
+Return the hour of `date`.
 
-`DATE_HOUR(date) → hour`
+`DATE_HOUR(date, timezone) → hour`
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
-- returns **hour** (number): the hour part of *date* as a number
+- **timezone** (string, *optional*): if set, the `date` is assumed to be in the
+  specified timezone, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
+- returns **hour** (number): the hour part of `date` as a number
 
 **Examples**
 
@@ -346,14 +403,27 @@ description: ''
 RETURN DATE_HOUR("2020-08-29T16:30:05.123")
 ```
 
+```aql
+---
+name: datehr2
+description: ''
+---
+RETURN DATE_HOUR("2023-12-31T23:00:00.000Z", "Europe/Berlin")
+```
+
 ### DATE_MINUTE()
 
-`DATE_MINUTE(date) → minute`
+`DATE_MINUTE(date, timezone) → minute`
 
-Return the minute of *date*.
+Return the minute of `date`.
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
-- returns **minute** (number): the minute part of *date* as a number
+- **timezone** (string, *optional*): if set, the `date` is assumed to be in the
+  specified timezone, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
+- returns **minute** (number): the minute part of `date` as a number
 
 **Examples**
 
@@ -365,14 +435,22 @@ description: ''
 RETURN DATE_MINUTE("2020-08-29T16:30:05.123")
 ```
 
+```aql
+---
+name: datemin2
+description: ''
+---
+RETURN DATE_MINUTE("2023-12-31T23:00:00.000Z", "Asia/Kathmandu")
+```
+
 ### DATE_SECOND()
 
 `DATE_SECOND(date) → second`
 
-Return the second of *date*.
+Return the second of `date`.
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
-- returns **second** (number): the seconds part of *date* as a number
+- returns **second** (number): the seconds part of `date` as a number
 
 **Examples**
 
@@ -389,7 +467,7 @@ RETURN DATE_SECOND("2020-08-29T16:30:05.123")
 `DATE_MILLISECOND(date) → millisecond`
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
-- returns **millisecond** (number): the milliseconds part of *date* as a number
+- returns **millisecond** (number): the milliseconds part of `date` as a number
 
 **Examples**
 
@@ -403,12 +481,17 @@ RETURN DATE_MILLISECOND("2020-08-29T16:30:05.123")
 
 ### DATE_DAYOFYEAR()
 
-`DATE_DAYOFYEAR(date) → dayOfYear`
+`DATE_DAYOFYEAR(date, timezone) → dayOfYear`
 
-Return the day of year of *date*.
+Return the day of year of `date`.
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
-- returns **dayOfYear** (number): the day of year number of *date*.
+- **timezone** (string, *optional*): if set, the `date` is assumed to be in the
+  specified timezone, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
+- returns **dayOfYear** (number): the day of year number of `date`.
   The return values range from 1 to 365, or 366 in a leap year respectively.
 
 **Examples**
@@ -421,14 +504,22 @@ description: ''
 RETURN DATE_DAYOFYEAR("2020-08-29")
 ```
 
+```aql
+---
+name: datedyofyr2
+description: ''
+---
+RETURN DATE_DAYOFYEAR("2023-12-31T23:00:00.000Z", "Europe/Berlin")
+```
+
 ### DATE_ISOWEEK()
 
 `DATE_ISOWEEK(date) → weekDate`
 
-Return the week number in the year of *date* according to ISO 8601.
+Return the week number in the year of `date` according to ISO 8601.
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
-- returns **weekDate** (number): the ISO week number of *date*. The return values
+- returns **weekDate** (number): the ISO week number of `date`. The return values
   range from 1 to 53. Monday is considered the first day of the week. There are no
   fractional weeks, thus the last days in December may belong to the first week of
   the next year, and the first days in January may be part of the previous year's
@@ -448,12 +539,12 @@ RETURN DATE_ISOWEEK("2020-08-29")
 
 `DATE_ISOWEEKYEAR(date) → weekAndYear`
 
-Return the week number of *date* according to ISO 8601 and the year the
+Return the week number of `date` according to ISO 8601 and the year the
 week belongs to.
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
 - returns **weekAndYear** (object): an object with two attributes
-  - **week** (number): the ISO week number of *date*. The values range from 1 to 53.
+  - **week** (number): the ISO week number of `date`. The values range from 1 to 53.
     Monday is considered the first day of the week. There are no fractional weeks,
     thus the last days in December may belong to the first week of the next year,
     and the first days in January may be part of the previous year's last week.
@@ -483,12 +574,17 @@ RETURN DATE_ISOWEEKYEAR("2019-12-30")
 
 ### DATE_LEAPYEAR()
 
-`DATE_LEAPYEAR(date) → leapYear`
+`DATE_LEAPYEAR(date, timezone) → leapYear`
 
-Return whether *date* is in a leap year.
+Return whether `date` is in a leap year.
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
-- returns **leapYear** (bool): *true* if *date* is in a leap year, *false* otherwise
+- **timezone** (string, *optional*): if set, the `date` is assumed to be in the
+  specified timezone, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
+- returns **leapYear** (bool): `true` if `date` is in a leap year, `false` otherwise
 
 **Examples**
 
@@ -508,18 +604,31 @@ description: ''
 RETURN DATE_LEAPYEAR("2021-01-01")
 ```
 
+```aql
+---
+name: datelpyr3
+description: ''
+---
+RETURN DATE_LEAPYEAR("2016-12-31T23:00:00.000Z", "Europe/Berlin")
+```
+
 ### DATE_QUARTER()
 
-`DATE_QUARTER(date) → quarter`
+`DATE_QUARTER(date, timezone) → quarter`
 
-Return which quarter *date* belongs to.
+Return which quarter `date` belongs to.
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
+- **timezone** (string, *optional*): if set, the `date` is assumed to be in the
+  specified timezone, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
 - returns **quarter** (number): the quarter of the given date (1-based):
-  - 1 – January, February, March
-  - 2 – April, May, June
-  - 3 – July, August, September
-  - 4 – October, November, December
+  - `1` – January, February, March
+  - `2` – April, May, June
+  - `3` – July, August, September
+  - `4` – October, November, December
 
 **Examples**
 
@@ -531,14 +640,27 @@ description: ''
 RETURN DATE_QUARTER("2020-08-29")
 ```
 
+```aql
+---
+name: dateqtr2
+description: ''
+---
+RETURN DATE_QUARTER("2023-12-31T23:00:00.000Z", "Europe/Berlin")
+```
+
 ### DATE_DAYS_IN_MONTH()
 
-Return the number of days in the month of *date*.
+Return the number of days in the month of `date`.
 
-`DATE_DAYS_IN_MONTH(date) → daysInMonth`
+`DATE_DAYS_IN_MONTH(date, timezone) → daysInMonth`
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
-- returns **daysInMonth** (number): the number of days in *date*'s month (28..31)
+- **timezone** (string, *optional*): if set, the `date` is assumed to be in the
+  specified timezone, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
+- returns **daysInMonth** (number): the number of days in `date`'s month (28..31)
 
 **Examples**
 
@@ -574,26 +696,43 @@ description: ''
 RETURN DATE_DAYS_IN_MONTH("2021-02-01")
 ```
 
+```aql
+---
+name: datedysmn5
+description: ''
+---
+RETURN DATE_DAYS_IN_MONTH("2023-11-30T23:00:00.000Z", "Europe/Berlin")
+```
+
 ### DATE_TRUNC()
 
-`DATE_TRUNC(date, unit) → isoDate`
+`DATE_TRUNC(date, unit, timezone) → isoDate`
 
-Truncates the given date after *unit* and returns the modified date.
+Truncates the given date after `unit` and returns the modified date.
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
 - **unit** (string): either of the following to specify the time unit (case-insensitive):
-  - y, year, years
-  - m, month, months
-  - d, day, days
-  - h, hour, hours
-  - i, minute, minutes
-  - s, second, seconds
-  - f, millisecond, milliseconds
+  - `"y"`, `"year"`, `"years"`
+  - `"m"`, `"month"`, `"months"`
+  - `"d"`, `"day"`, `"days"`
+  - `"h"`, `"hour"`, `"hours"`
+  - `"i"`, `"minute"`, `"minutes"`
+  - `"s"`, `"second"`, `"seconds"`
+  - `"f"`, `"millisecond"`, `"milliseconds"`
+- **timezone** (string, *optional*): if set, the `date` is assumed to be in the
+  specified timezone, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
 - returns **isoDate** (string): the truncated ISO 8601 date time string
+
+**Examples**
 
 ```aql
 DATE_TRUNC('2017-02-03', 'month') // 2017-02-01T00:00:00.000Z
 DATE_TRUNC('2017-02-03 04:05:06', 'hours') // 2017-02-03 04:00:00.000Z
+DATE_TRUNC('2023-03-25 23:00:00', 'day') // 2023-03-25T00:00:00.000Z
+DATE_TRUNC('2023-03-25 23:00:00', 'day', 'Europe/Berlin') // 2023-03-25T23:00:00.000Z
 ```
 
 ```aql
@@ -620,40 +759,49 @@ RETURN MERGE(
 
 ### DATE_ROUND()
 
-`DATE_ROUND(date, amount, unit) → isoDate`
+`DATE_ROUND(date, amount, unit, timezone) → isoDate`
 
 Bin a date/time into a set of equal-distance buckets, to be used for
 grouping.
 
 - **date** (string\|number): a date string or timestamp
-- **amount** (number): number of *unit*s. Must be a positive integer value.
+- **amount** (number): number of `unit`s. Must be a positive integer value.
 - **unit** (string): either of the following to specify the time unit (case-insensitive):
-  - d, day, days
-  - h, hour, hours
-  - i, minute, minutes
-  - s, second, seconds
-  - f, millisecond, milliseconds
+  - `"d"`, `"day"`, `"days"`
+  - `"h"`, `"hour"`, `"hours"`
+  - `"i"`, `"minute"`, `"minutes"`
+  - `"s"`, `"second"`, `"seconds"`
+  - `"f"`, `"millisecond"`, `"milliseconds"`
+- **timezone** (string, *optional*): if set, the `date` is assumed to be in the
+  specified timezone, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
 - returns **isoDate** (string): the rounded ISO 8601 date time string
+
+**Examples**
 
 ```aql
 DATE_ROUND('2000-04-28T11:11:11.111Z', 1, 'day') // 2000-04-28T00:00:00.000Z
 DATE_ROUND('2000-04-10T11:39:29Z', 15, 'minutes') // 2000-04-10T11:30:00.000Z
+DATE_ROUND('2023-03-25T23:55:55.555Z', 1, 'day') // 2023-03-25T00:00:00.000Z
+DATE_ROUND('2023-03-25T23:55:55.555Z', 1, 'day', "Europe/Berlin") // 2023-03-25T23:00:00.000Z
 ```
 
 ```aql
 ---
 name: dateRoundAggregate
 description: ''
-bindVars: 
+bindVars:
   {
-  "sensorData": [
-    { "timestamp": "2019-12-04T21:17:52.583Z", "temp": 20.6 },
-    { "timestamp": "2019-12-04T21:19:53.516Z", "temp": 20.2 },
-    { "timestamp": "2019-12-04T21:21:53.610Z", "temp": 19.9 },
-    { "timestamp": "2019-12-04T21:23:52.522Z", "temp": 19.8 },
-    { "timestamp": "2019-12-04T21:25:52.988Z", "temp": 19.8 },
-    { "timestamp": "2019-12-04T21:27:54.005Z", "temp": 19.7 }
-  ]
+    "sensorData": [
+      { "timestamp": "2019-12-04T21:17:52.583Z", "temp": 20.6 },
+      { "timestamp": "2019-12-04T21:19:53.516Z", "temp": 20.2 },
+      { "timestamp": "2019-12-04T21:21:53.610Z", "temp": 19.9 },
+      { "timestamp": "2019-12-04T21:23:52.522Z", "temp": 19.8 },
+      { "timestamp": "2019-12-04T21:25:52.988Z", "temp": 19.8 },
+      { "timestamp": "2019-12-04T21:27:54.005Z", "temp": 19.7 }
+    ]
   }
 ---
 FOR doc IN @sensorData
@@ -669,67 +817,72 @@ FOR doc IN @sensorData
 
 ### DATE_FORMAT()
 
-`DATE_FORMAT(date, format) → str`
+`DATE_FORMAT(date, format, timezone) → str`
 
 Format a date according to the given format string.
 
 - **date** (string\|number): a date string or timestamp
 - **format** (string): a format string, see below
+- **timezone** (string, *optional*): if set, the `date` is assumed to be in the
+  specified timezone, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
 - returns **str** (string): a formatted date string
 
-*format* supports the following placeholders (case-insensitive):
+The `format` parameter supports the following placeholders (case-insensitive):
 
-- %t – timestamp, in milliseconds since midnight 1970-01-01
-- %z – ISO date (0000-00-00T00:00:00.000Z)
-- %w – day of week (0..6)
-- %y – year (0..9999)
-- %yy – year (00..99), abbreviated (last two digits)
-- %yyyy – year (0000..9999), padded to length of 4
-- %yyyyyy – year (-009999 .. +009999), with sign prefix and padded to length of 6
-- %m – month (1..12)
-- %mm – month (01..12), padded to length of 2
-- %d – day (1..31)
-- %dd – day (01..31), padded to length of 2
-- %h – hour (0..23)
-- %hh – hour (00..23), padded to length of 2
-- %i – minute (0..59)
-- %ii – minute (00..59), padded to length of 2
-- %s – second (0..59)
-- %ss – second (00..59), padded to length of 2
-- %f – millisecond (0..999)
-- %fff – millisecond (000..999), padded to length of 3
-- %x – day of year (1..366)
-- %xxx – day of year (001..366), padded to length of 3
-- %k – ISO week number of year (1..53)
-- %kk – ISO week number of year (01..53), padded to length of 2
-- %l – leap year (0 or 1)
-- %q – quarter (1..4)
-- %a – days in month (28..31)
-- %mmm – abbreviated English name of month (Jan..Dec)
-- %mmmm – English name of month (January..December)
-- %www – abbreviated English name of weekday (Sun..Sat)
-- %wwww – English name of weekday (Sunday..Saturday)
-- %& – special escape sequence for rare occasions
-- %% – literal %
-- % – ignored
+- `%t` – timestamp, in milliseconds since midnight 1970-01-01
+- `%z` – ISO date (0000-00-00T00:00:00.000Z)
+- `%w` – day of week (0..6)
+- `%y` – year (0..9999)
+- `%yy` – year (00..99), abbreviated (last two digits)
+- `%yyyy` – year (0000..9999), padded to length of 4
+- `%yyyyyy` – year (-009999 .. +009999), with sign prefix and padded to length of 6
+- `%m` – month (1..12)
+- `%mm` – month (01..12), padded to length of 2
+- `%d` – day (1..31)
+- `%dd` – day (01..31), padded to length of 2
+- `%h` – hour (0..23)
+- `%hh` – hour (00..23), padded to length of 2
+- `%i` – minute (0..59)
+- `%ii` – minute (00..59), padded to length of 2
+- `%s` – second (0..59)
+- `%ss` – second (00..59), padded to length of 2
+- `%f` – millisecond (0..999)
+- `%fff` – millisecond (000..999), padded to length of 3
+- `%x` – day of year (1..366)
+- `%xxx` – day of year (001..366), padded to length of 3
+- `%k` – ISO week number of year (1..53)
+- `%kk` – ISO week number of year (01..53), padded to length of 2
+- `%l` – leap year (0 or 1)
+- `%q` – quarter (1..4)
+- `%a` – days in month (28..31)
+- `%mmm` – abbreviated English name of month (Jan..Dec)
+- `%mmmm` – English name of month (January..December)
+- `%www` – abbreviated English name of weekday (Sun..Sat)
+- `%wwww` – English name of weekday (Sunday..Saturday)
+- `%&` – special escape sequence for rare occasions
+- `%%` – literal %
+- `%` – ignored
 
 `%yyyy` does not enforce a length of 4 for years before 0 and past 9999.
-The same format as for `%yyyyyy` will be used instead. `%yy` preserves the
+The same format as for `%yyyyyy` is used instead. `%yy` preserves the
 sign for negative years and may thus return 3 characters in total.
 
-Single `%` characters will be ignored. Use `%%` for a literal `%`. To resolve
-ambiguities like in `%mmonth` (unpadded month number + the string "month")
-between `%mm` + "onth" and `%m` + "month", use the escape sequence `%&`:
+Single `%` characters are ignored. Use `%%` for a literal `%`. To resolve
+ambiguities like in `%mmonth` (unpadded month number + the string `month`)
+between `%mm` + `onth` and `%m` + `month`, use the escape sequence `%&`:
 `%m%&month`.
 
-Note that *DATE_FORMAT()* is a rather costly operation and may not be suitable for large
+Note that `DATE_FORMAT()` is a rather costly operation and may not be suitable for large
 datasets (like over 1 million dates). If possible, avoid formatting dates on
 server-side and leave it up to the client to do so. This function should only
 be used for special date comparisons or to store the formatted dates in the
 database. For better performance, use the primitive `DATE_*()` functions
 together with `CONCAT()` if possible.
 
-Examples:
+**Examples**
 
 ```aql
 DATE_FORMAT(DATE_NOW(), "%q/%yyyy") // quarter and year (e.g. "3/2015")
@@ -739,28 +892,98 @@ DATE_FORMAT("2016", "%%l = %l") // "%l = 1" (2016 is a leap year)
 DATE_FORMAT("2016-03-01", "%xxx%") // "063", trailing % ignored
 ```
 
+```aql
+---
+name: dateFormat
+description: ''
+bindVars:
+  {
+    "formats": [
+      { "date": "2023-03-25T23:00:00.000Z", "placeholder": "%w", "equalTo": "DATE_DAYOFWEEK" },
+      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%yyyy", "equalTo": "DATE_YEAR" },
+      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%m", "equalTo": "DATE_MONTH" },
+      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%d", "equalTo": "DATE_DAY" },
+      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%h", "equalTo": "DATE_HOUR" },
+      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%i", "equalTo": "DATE_MINUTE" },
+      { "date": "2023-12-31T23:00:23.000Z", "placeholder": "%s", "equalTo": "DATE_SECOND" },
+      { "date": "2023-12-31T23:00:00.031Z", "placeholder": "%f", "equalTo": "DATE_MILLISECOND" },
+      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%x", "equalTo": "DATE_DAYOFYEAR" },
+      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%k", "equalTo": "DATE_ISOWEEK" },
+      { "date": "2016-12-31T23:00:00.000Z", "placeholder": "%l", "equalTo": "DATE_LEAPYEAR" },
+      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%q", "equalTo": "DATE_QUARTER" },
+      { "date": "2023-11-30T23:00:00.000Z", "placeholder": "%a", "equalTo": "DATE_DAYS_IN_MONTH" },
+      { "date": "2023-11-30T23:00:00.000Z", "placeholder": "%t", "equalTo": "DATE_TIMESTAMP" }
+    ]
+  }
+---
+FOR format IN @formats
+  RETURN CONCAT(
+    format.equalTo,
+    "('",
+    format.date,
+    "') = ",
+    DATE_FORMAT(format.date, format.placeholder)
+  )
+```
+
+```aql
+---
+name: dateFormatTimezoned
+description: ''
+bindVars:
+  {
+    "formats": [
+      { "date": "2023-03-25T23:00:00.000Z", "placeholder": "%w", "equalTo": "DATE_DAYOFWEEK", "timezone": "Europe/Berlin"},
+      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%yyyy", "equalTo": "DATE_YEAR", "timezone": "Europe/Berlin" },
+      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%m", "equalTo": "DATE_MONTH", "timezone": "Europe/Berlin" },
+      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%d", "equalTo": "DATE_DAY", "timezone": "Europe/Berlin" },
+      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%h", "equalTo": "DATE_HOUR", "timezone": "Europe/Berlin" },
+      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%i", "equalTo": "DATE_MINUTE", "timezone": "Asia/Kathmandu" },
+      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%x", "equalTo": "DATE_DAYOFYEAR", "timezone": "Europe/Berlin" },
+      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%k", "equalTo": "DATE_ISOWEEK", "timezone": "Europe/Berlin" },
+      { "date": "2016-12-31T23:00:00.000Z", "placeholder": "%l", "equalTo": "DATE_LEAPYEAR", "timezone": "Europe/Berlin" },
+      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%q", "equalTo": "DATE_QUARTER", "timezone": "Europe/Berlin" },
+      { "date": "2023-11-30T23:00:00.000Z", "placeholder": "%a", "equalTo": "DATE_DAYS_IN_MONTH", "timezone": "Europe/Berlin" }
+    ]
+  }
+---
+FOR format IN @formats
+  RETURN CONCAT(
+    format.equalTo,
+    "('",
+    format.date,
+    "') = ",
+    DATE_FORMAT(format.date, format.placeholder, format.timezone)
+  )
+```
+
 ## Comparison and calculation
 
 ### DATE_ADD()
 
-`DATE_ADD(date, amount, unit) → isoDate`
+`DATE_ADD(date, amount, unit, timezone) → isoDate`
 
-Add *amount* given in *unit* to *date* and return the calculated date.
+Add `amount` given in `unit` to `date` and return the calculated date.
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
-- **amount** (number\|string): number of *unit*s to add (positive value) or
+- **amount** (number\|string): number of `unit`s to add (positive value) or
   subtract (negative value). It is recommended to use positive values only,
   and use [DATE_SUBTRACT()](#date_subtract) for subtractions instead.
 - **unit** (string): either of the following to specify the time unit to add or
   subtract (case-insensitive):
-  - y, year, years
-  - m, month, months
-  - w, week, weeks
-  - d, day, days
-  - h, hour, hours
-  - i, minute, minutes
-  - s, second, seconds
-  - f, millisecond, milliseconds
+  - `"y"`, `"year"`, `"years"`
+  - `"m"`, `"month"`, `"months"`
+  - `"w"`, `"week"`, `"weeks"`
+  - `"d"`, `"day"`, `"days"`
+  - `"h"`, `"hour"`, `"hours"`
+  - `"i"`, `"minute"`, `"minutes"`
+  - `"s"`, `"second"`, `"seconds"`
+  - `"f"`, `"millisecond"`, `"milliseconds"`
+- **timezone** (string, *optional*): if set, the `date` is assumed to be in the
+  specified timezone, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
 - returns **isoDate** (string): the calculated ISO 8601 date time string
 
 ```aql
@@ -774,24 +997,29 @@ DATE_ADD(DATE_ADD("2016-02", "month", 1), -1, "day") // last day of February (29
 
 ---
 
-`DATE_ADD(date, isoDuration) → isoDate`
+`DATE_ADD(date, isoDuration, timezone) → isoDate`
 
-You may also pass an ISO duration string as *amount* and leave out *unit*.
+You may also pass an ISO duration string as `amount` and leave out `unit`.
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
-- **isoDuration** (string): an ISO 8601 duration string to add to *date*, see below
+- **isoDuration** (string): an ISO 8601 duration string to add to `date`, see below
+- **timezone** (string, *optional*): if set, the `date` is assumed to be in the
+  specified timezone, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
 - returns **isoDate** (string):  the calculated ISO 8601 date time string
 
 The format is `P_Y_M_W_DT_H_M_._S`, where underscores stand for digits and
 letters for time intervals - except for the separators `P` (period) and `T` (time).
 The meaning of the other letters are:
-- Y – years
-- M – months (if before T)
-- W – weeks
-- D – days
-- H – hours
-- M – minutes (if after T)
-- S – seconds (optionally with 3 decimal places for milliseconds)
+- `Y` – years
+- `M` – months (if before T)
+- `W` – weeks
+- `D` – days
+- `H` – hours
+- `M` – minutes (if after T)
+- `S` – seconds (optionally with 3 decimal places for milliseconds)
 
 The string must be prefixed by a `P`. A separating `T` is only required if
 `H`, `M` and/or `S` are specified. You only need to specify the needed pairs
@@ -808,52 +1036,62 @@ DATE_ADD("2000-01-01", "P1Y2M3W4DT5H6M7.89S") // add a bit of everything
 
 ### DATE_SUBTRACT()
 
-`DATE_SUBTRACT(date, amount, unit) → isoDate`
+`DATE_SUBTRACT(date, amount, unit, timezone) → isoDate`
 
-Subtract *amount* given in *unit* from *date* and return the calculated date.
+Subtract `amount` given in `unit` from `date` and return the calculated date.
 
 It works the same as [DATE_ADD()](#date_add), except that it subtracts. It is
-equivalent to calling *DATE_ADD()* with a negative amount, except that
-*DATE_SUBTRACT()* can also subtract ISO durations. Note that negative ISO
+equivalent to calling `DATE_ADD()` with a negative amount, except that
+`DATE_SUBTRACT()` can also subtract ISO durations. Note that negative ISO
 durations are not supported (i.e. starting with `-P`, like `-P1Y`).
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
-- **amount** (number\|string): number of *unit*s to subtract (positive value) or
+- **amount** (number\|string): number of `unit`s to subtract (positive value) or
   add (negative value). It is recommended to use positive values only,
   and use [DATE_ADD()](#date_add) for additions instead.
 - **unit** (string): either of the following to specify the time unit to add or
   subtract (case-insensitive):
-  - y, year, years
-  - m, month, months
-  - w, week, weeks
-  - d, day, days
-  - h, hour, hours
-  - i, minute, minutes
-  - s, second, seconds
-  - f, millisecond, milliseconds
+  - `"y"`, `"year"`, `"years"`
+  - `"m"`, `"month"`, `"months"`
+  - `"w"`, `"week"`, `"weeks"`
+  - `"d"`, `"day"`, `"days"`
+  - `"h"`, `"hour"`, `"hours"`
+  - `"i"`, `"minute"`, `"minutes"`
+  - `"s"`, `"second"`, `"seconds"`
+  - `"f"`, `"millisecond"`, `"milliseconds"`
+- **timezone** (string, *optional*): if set, the `date` is assumed to be in the
+  specified timezone, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
 - returns **isoDate** (string): the calculated ISO 8601 date time string
 
 ---
 
-`DATE_SUBTRACT(date, isoDuration) → isoDate`
+`DATE_SUBTRACT(date, isoDuration, timezone) → isoDate`
 
-You may also pass an ISO duration string as *amount* and leave out *unit*.
+You may also pass an ISO duration string as `amount` and leave out `unit`.
 
 - **date** (number\|string): numeric timestamp or ISO 8601 date time string
-- **isoDuration** (string): an ISO 8601 duration string to subtract from *date*,
+- **isoDuration** (string): an ISO 8601 duration string to subtract from `date`,
   see below
+- **timezone** (string, *optional*): if set, the `date` is assumed to be in the
+  specified timezone, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
 - returns **isoDate** (string): the calculated ISO 8601 date time string
 
 The format is `P_Y_M_W_DT_H_M_._S`, where underscores stand for digits and
 letters for time intervals - except for the separators `P` (period) and `T` (time).
 The meaning of the other letters are:
-- Y – years
-- M – months (if before T)
-- W – weeks
-- D – days
-- H – hours
-- M – minutes (if after T)
-- S – seconds (optionally with 3 decimal places for milliseconds)
+- `Y` – years
+- `M` – months (if before T)
+- `W` – weeks
+- `D` – days
+- `H` – hours
+- `M` – minutes (if after T)
+- `S` – seconds (optionally with 3 decimal places for milliseconds)
 
 The string must be prefixed by a `P`. A separating `T` is only required if
 `H`, `M` and/or `S` are specified. You only need to specify the needed pairs
@@ -869,27 +1107,40 @@ DATE_SUBTRACT(DATE_NOW(), "PT1H3M") // 1 hour and 30 minutes ago
 
 ### DATE_DIFF()
 
-`DATE_DIFF(date1, date2, unit, asFloat) → diff`
+`DATE_DIFF(date1, date2, unit, asFloat, timezone1, timezone2) → diff`
 
-Calculate the difference between two dates in given time *unit*, optionally
+Calculate the difference between two dates in given time `unit`, optionally
 with decimal places.
 
 - **date1** (number\|string): numeric timestamp or ISO 8601 date time string
 - **date2** (number\|string): numeric timestamp or ISO 8601 date time string
 - **unit** (string): either of the following to specify the time unit to return the
   difference in (case-insensitive):
-  - y, year, years
-  - m, month, months
-  - w, week, weeks
-  - d, day, days
-  - h, hour, hours
-  - i, minute, minutes
-  - s, second, seconds
-  - f, millisecond, milliseconds
-- **asFloat** (boolean, *optional*): if set to *true*, decimal places will be
-  preserved in the result. The default is *false* and an integer is returned.
-- returns **diff** (number): the calculated difference as number in *unit*.
-  The value will be negative if *date2* is before *date1*.
+  - `"y"`, `"year"`, `"years"`
+  - `"m"`, `"month"`, `"months"`
+  - `"w"`, `"week"`, `"weeks"`
+  - `"d"`, `"day"`, `"days"`
+  - `"h"`, `"hour"`, `"hours"`
+  - `"i"`, `"minute"`, `"minutes"`
+  - `"s"`, `"second"`, `"seconds"`
+  - `"f"`, `"millisecond"`, `"milliseconds"`
+- **asFloat** (boolean, *optional*): if set to `true`, decimal places are
+  preserved in the result. The default is `false` and an integer is returned.
+- **timezone1** (string, *optional*): if set, `date1` is assumed to be in the
+  specified timezone. If `timezone2` is not set, then both `date1` and `date2`
+  are assumed to be in the timezone specified by `timezone1`,
+  e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
+- **timezone2** (string, *optional*): if set, `date2` is assumed to be in the
+  timezone specified by `timezone2`, and `date1` is assumed to be in the timezone
+  specified by `timezone1`, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
+- returns **diff** (number): the calculated difference as number in `unit`.
+  The value is negative if `date2` is before `date1`.
 
 ### DATE_COMPARE()
 
@@ -901,29 +1152,29 @@ Check if two partial dates match.
 - **date2** (number\|string): numeric timestamp or ISO 8601 date time string
 - **unitRangeStart** (string): unit to start from, see below
 - **unitRangeEnd** (string, *optional*):  unit to end with, leave out to only
-  compare the component as specified by *unitRangeStart*. An error is raised if
-  *unitRangeEnd* is a unit before *unitRangeStart*.
-- returns **bool** (bool): *true* if the dates match, *false* otherwise
+  compare the component as specified by `unitRangeStart`. An error is raised if
+  `unitRangeEnd` is a unit before `unitRangeStart`.
+- returns **bool** (bool): `true` if the dates match, `false` otherwise
 
 The parts to compare are defined by a range of time units. The full range is:
 years, months, days, hours, minutes, seconds, milliseconds (in this order).
 
-All components of *date1* and *date2* as specified by the range will be compared.
+All components of `date1` and `date2` as specified by the range are compared.
 You can refer to the units as:
 
-- y, year, years
-- m, month, months
-- d, day, days
-- h, hour, hours
-- i, minute, minutes
-- s, second, seconds
-- f, millisecond, milliseconds
+- `"y"`, `"year"`, `"years"`
+- `"m"`, `"month"`, `"months"`
+- `"d"`, `"day"`, `"days"`
+- `"h"`, `"hour"`, `"hours"`
+- `"i"`, `"minute"`, `"minutes"`
+- `"s"`, `"second"`, `"seconds"`
+- `"f"`, `"millisecond"`, `"milliseconds"`
 
 ```aql
 // Compare months and days, true on birthdays if you're born on 4th of April
 DATE_COMPARE("1985-04-04", DATE_NOW(), "months", "days")
 
-// Will only match on one day if the current year is a leap year!
+// Only matches on one day if the current year is a leap year!
 // You may want to add or subtract one day from date1 to match every year.
 DATE_COMPARE("1984-02-29", DATE_NOW(), "months", "days")
 
@@ -933,8 +1184,8 @@ DATE_COMPARE("2001-01-01T15:30:45.678Z", "2001-01-01T08:08:08.008Z", "years", "d
 
 You can directly compare ISO date **strings** if you want to find dates before or
 after a certain date, or in between two dates (`>=`, `>`, `<`, `<=`).
-No special date function is required. Equality tests (`==` and `!=`) will only
-match the exact same date and time however. You may use `SUBSTRING()` to
+No special date function is required. Equality tests (`==` and `!=`) only
+match the exact same date and time, however. You may use `SUBSTRING()` to
 compare partial date strings, `DATE_COMPARE()` is basically a convenience
 function for that. However, neither is really required to limit a search to a
 certain day as demonstrated here:
@@ -950,7 +1201,7 @@ comparison (e.g. `2015-05-15T11:30:00.000Z`). Dates before `2015-05-15` are smal
 and therefore filtered out by the first condition. Every date past `2015-05-15` is
 greater than this date in a string comparison, and therefore filtered out by the
 second condition. The result is that the time components in the dates you compare
-with are "ignored". The query will return every document with *date* ranging from
+with are "ignored". The query returns every document with `date` ranging from
 `2015-05-15T00:00:00.000Z` to `2015-05-15T23:99:99.999Z`. It would also include
 `2015-05-15T24:00:00.000Z`, but that date is actually `2015-05-16T00:00:00.000Z`
 and can only occur if inserted manually (you may want to pass dates through
@@ -982,7 +1233,7 @@ FOR user IN users
 
 <small>Introduced in: v3.8.0</small>
 
-Converts *date* assumed in Zulu time (UTC) to local *timezone*.
+Converts `date` assumed in Zulu time (UTC) to local `timezone`.
 
 It takes historic daylight saving times into account.
 
@@ -993,9 +1244,9 @@ It takes historic daylight saving times into account.
   [IANA timezone name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones),
   e.g. `"America/New_York"`, `"Europe/Berlin"` or `"UTC"`.
   Use `"America/Los_Angeles"` for Pacific time (PST/PDT).
-  Will throw an error if the timezone is not known to ArangoDB
-- **zoneinfo** (boolean, *optional*): if set to *true*, an object with timezone
-  information is returned. The default is *false* and a date string is returned
+  Throws an error if the timezone is not known to ArangoDB.
+- **zoneinfo** (boolean, *optional*): if set to `true`, an object with timezone
+  information is returned. The default is `false` and a date string is returned
 - returns **date** (string\|object): an ISO 8601 date time string in
   unqualified local time, or an object with the following attributes:
   - **local** (string): ISO 8601 date time string in unqualified local time
@@ -1004,8 +1255,8 @@ It takes historic daylight saving times into account.
     - **name** (string): timezone abbreviation (GMT, PST, CET, ...)
     - **begin** (string\|null): begin of the timezone effect as UTC date time string
     - **end** (string\|null): end of the timezone effect as UTC date time string
-    - **dst** (boolean): *true* when daylight saving time (DST) is active,
-      *false* otherwise
+    - **dst** (boolean): `true` when daylight saving time (DST) is active,
+      `false` otherwise
     - **offset** (number): offset to UTC in seconds
 
 ```aql
@@ -1045,7 +1296,7 @@ RETURN DATE_UTCTOLOCAL(DATE_NOW(), "Africa/Lagos", true)
 
 <small>Introduced in: v3.8.0</small>
 
-Converts *date* assumed in local *timezone* to Zulu time (UTC).
+Converts `date` assumed in local `timezone` to Zulu time (UTC).
 
 It takes historic daylight saving times into account.
 
@@ -1056,9 +1307,9 @@ It takes historic daylight saving times into account.
   [IANA timezone name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones),
   e.g. `"America/New_York"`, `"Europe/Berlin"` or `"UTC"`.
   Use `"America/Los_Angeles"` for Pacific time (PST/PDT).
-  Will throw an error if the timezone is not known to ArangoDB
-- **zoneinfo** (boolean, *optional*): if set to *true*, an object with timezone
-  information is returned. The default is *false* and a date string is returned
+  Throws an error if the timezone is not known to ArangoDB.
+- **zoneinfo** (boolean, *optional*): if set to `true`, an object with timezone
+  information is returned. The default is `false` and a date string is returned
 - returns **date** (string\|object): an ISO 8601 date time string in
   Zulu time (UTC), or an object with the following attributes:
   - **utc** (string): ISO 8601 date time string in Zulu time (UTC)
@@ -1067,8 +1318,8 @@ It takes historic daylight saving times into account.
     - **name** (string): timezone abbreviation (GMT, PST, CET, ...)
     - **begin** (string\|null): begin of the timezone effect as UTC date time string
     - **end** (string\|null): end of the timezone effect as UTC date time string
-    - **dst** (boolean): *true* when daylight saving time (DST) is active,
-      *false* otherwise
+    - **dst** (boolean): `true` when daylight saving time (DST) is active,
+      `false` otherwise
     - **offset** (number): offset to UTC in seconds
 
 ```aql
@@ -1110,7 +1361,7 @@ RETURN DATE_LOCALTOUTC("2021-03-16T12:00:00.000", "Africa/Lagos", true)
 
 Returns system timezone ArangoDB is running on.
 
-For cloud servers this will most likely be "Etc/UTC".
+For cloud servers, this is most likely `"Etc/UTC"`.
 
 `DATE_TIMEZONE() → timezone`
 
