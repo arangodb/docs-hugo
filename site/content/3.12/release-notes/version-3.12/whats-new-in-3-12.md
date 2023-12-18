@@ -522,11 +522,14 @@ _arangodump_ operations on the server:
 
 ### arangorestore
 
-The following option has been added that allows _arangorestore_ to override
+The following startup option has been added that allows _arangorestore_ to override
 the `writeConcern` value specified in a database dump when creating new
 collections:
-- `writeConcern`: Override the `writeConcern` value. Can be specified multiple
-  times.
+
+- `--write-concern`: Override the `writeConcern` value for collections.
+  Can be specified multiple times, e.g. `--write-concern 2 --write-concern myCollection=3`
+  to set the write concern for the collection called `myCollection` to 3 and
+  for all other collections to 2.
 
 ### arangoimport
 
