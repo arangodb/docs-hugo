@@ -32,15 +32,24 @@ To learn more, go to the [ArangoGraph documentation](../../arangograph/_index.md
 
 ### Self-managed in the cloud
 
-ArangoDB can be self-deployed on AWS or other cloud platforms too. However, when
-using a self-managed deployment, you take full control of procuring the resources
-needed to run it in the cloud.
+ArangoDB can be self-deployed on AWS or other cloud platforms, too. However, when
+using a self-managed deployment, you take full control of managing the resources
+needed to run it in the cloud. This involves tasks such as configuring,
+provisioning, and monitoring the system. For more details, see
+[self-deploying ArangoDB in the cloud](../../deploy/in-the-cloud.md).
 
-For more details, see [self-deploying ArangoDB in the cloud](../../deploy/in-the-cloud.md). 
+ArangoDB supports Kubernetes through its official
+[Kubernetes Operator](../../deploy/kubernetes.md) that allows you to easily
+deploy and manage clusters within a Kubernetes environment.
 
 ### On-premises
 
-You can install ArangoDB on your local machine by downloading and running the
+Running ArangoDB on-premises means that ArangoDB is installed locally, on your
+organization's computers and servers, and involves managing all the necessary
+resources within the organization's environment, rather than using external
+services.
+
+You can install ArangoDB locally by downloading and running the
 [official packages](https://arangodb.com/download/) or run it using
 [Docker images](../../operations/installation/docker.md).
 
