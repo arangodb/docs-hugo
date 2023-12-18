@@ -93,7 +93,7 @@ memory limit and not just 56% of it.
 
 ## Higher reported memory usage for AQL queries
 
-Due to the [improved memory accounting in v3.12](whats-new-in-3-12.md#improved-memory-accounting),
+Due to the [improved memory accounting in v3.12](whats-new-in-3-12.md#improved-memory-accounting-and-usage),
 certain AQL queries may now get aborted because they exceed the defined
 memory limit but didn't get killed in previous versions. This is because of the
 more accurate memory tracking that reports a higher (actual) usage now. It allows
@@ -248,6 +248,7 @@ This following startup options of arangodump are obsolete from ArangoDB 3.12 on:
   time range with the MMFiles storage engine. It had no effect for the RocksDB 
   storage engine and so it is removed now.
 
+
 ### arangorestore
 
 #### Maximum value for import errors
@@ -259,3 +260,10 @@ the import will stop.
 Previously, the import would continue even when there were many errors. To
 achieve the same behavior with the new version, the value of `--max-errors` can
 be set to a higher value.
+
+### arangoimport
+
+*arangoimport* now automatically detects the type of the import file based on
+the file extension. The default value of the `--type` startup option has been
+changed from `json` to `auto`. You might need to explicitly specify the `--type`
+in exceptional cases now whereas it was not necessary to do so previously.

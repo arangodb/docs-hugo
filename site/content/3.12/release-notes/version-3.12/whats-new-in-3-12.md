@@ -174,6 +174,14 @@ UPDATE { logins: OLD.logins + 1 } IN users
 
 Read more about [`UPSERT` operations](../../aql/high-level-operations/upsert.md) in AQL.
 
+### Added AQL functions
+
+The new `PARSE_COLLECTION()` and `PARSE_KEY()` let you more extract the
+collection name respectively the document key from a document identifier with
+less overhead.
+
+See [Document and object functions in AQL](../../aql/functions/document-object.md#parse_collection).
+
 ## Indexing
 
 ### Stored values can contain the `_id` attribute
@@ -522,6 +530,21 @@ The following option has been added to _arangoimport_:
 
 You can use this option to limit the amount of errors displayed by _arangoimport_,
 and to abort the import after this value has been reached.
+
+#### File format automatically detected
+
+The default value for the `--type` startup option has been changed from `json`
+to `auto`. *arangoimport* now automatically detects the type of the import file
+based on the file extension.
+
+The following file extensions are automatically detected:
+- `.json`
+- `.jsonl`
+- `.csv`
+- `.tsv`
+
+If the file extension doesn't correspond to any of the mentioned types, the
+import defaults to the `json` format.
 
 ## Internal changes
 

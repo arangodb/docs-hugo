@@ -1072,7 +1072,7 @@ To enable tracing for traversals and path searches at startup, you can set
 `--log.level graphs=trace`.
 
 To enable or disable it at runtime, you can call the
-[`PUT /_admin/log/level`](../../develop/http-api/monitoring/logs.md#set-the-sersver-log-levels)
+[`PUT /_admin/log/level`](../../develop/http-api/monitoring/logs.md#set-the-server-log-levels)
 endpoint of the HTTP API and set the log level using a request body like
 `{"graphs":"TRACE"}`.
 

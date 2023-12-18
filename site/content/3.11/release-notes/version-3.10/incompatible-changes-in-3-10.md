@@ -109,8 +109,8 @@ interpretation of GeoJSON polygons in version 3.9 and older:
 This can mean that old polygon GeoJSON data in the database is
 suddenly interpreted in a different way. See
 [Legacy Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons) for details.
-Also see the definition of [Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#polygon)
-and [GeoJSON interpretation](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson-interpretation).
+Also see the definition of [Polygons](../../aql/functions/geo.md#polygon)
+and [GeoJSON interpretation](../../aql/functions/geo.md#geojson-interpretation).
 
 ## `geojson` Analyzers
 
@@ -148,7 +148,7 @@ the new Analyzers.
 | The smaller of the two regions defined by a linear ring is interpreted as the interior of the ring. | The area to the left of the boundary ring's path is considered to be the interior. |
 | A ring can at most enclose half the Earth's surface | A ring can enclose the entire surface of the Earth |
 
-Also see the definition of [Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#polygon) and the
+Also see the definition of [Polygons](../../aql/functions/geo.md#polygon) and the
 [`geojson` Analyzer](../../index-and-search/analyzers.md#geojson) documentation.
 
 ## Maximum Array / Object Nesting
