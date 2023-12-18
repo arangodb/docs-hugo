@@ -512,5 +512,13 @@ _arangodump_ operations on the server:
   dump thread was blocked because it honored the server-side memory
   limit for dumps.
 
+### arangorestore
+
+The following option has been added that allows _arangorestore_ to override
+the `writeConcern` value specified in a database dump when creating new
+collections:
+- `writeConcern`: Override the `writeConcern` value. Can be specified multiple
+  times.
+
 ## Internal changes
 
