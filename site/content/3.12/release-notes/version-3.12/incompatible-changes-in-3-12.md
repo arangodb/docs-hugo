@@ -247,3 +247,15 @@ This following startup options of arangodump are obsolete from ArangoDB 3.12 on:
 - `--tick-end`: setting this option allowed to restrict the dumped data to some 
   time range with the MMFiles storage engine. It had no effect for the RocksDB 
   storage engine and so it is removed now.
+
+### arangorestore
+
+#### Maximum value for import errors
+
+The new `--max-errors` option has been introduced to limit the amount of errors
+displayed by _arangoimport_. The default value is `20`. When this value is reached,
+the import will stop.
+
+Previously, the import would continue even when there were many errors. To
+achieve the same behavior with the new version, the value of `--max-errors` can
+be set to a higher value.

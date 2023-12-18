@@ -512,5 +512,16 @@ _arangodump_ operations on the server:
   dump thread was blocked because it honored the server-side memory
   limit for dumps.
 
+### arangoimport
+
+#### Maximum value for import errors
+
+The following option has been added to _arangoimport_:
+- `--max-errors`: The maximum number of errors after which the import will stop.
+  The default value is `20`.
+
+You can use this option to limit the amount of errors displayed by _arangoimport_,
+and to abort the import after this value has been reached.
+
 ## Internal changes
 
