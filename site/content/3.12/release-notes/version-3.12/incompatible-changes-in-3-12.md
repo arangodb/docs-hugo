@@ -251,5 +251,6 @@ This following startup options of arangodump are obsolete from ArangoDB 3.12 on:
 ### arangoimport
 
 *arangoimport* now automatically detects the type of the import file based on
-the file extension. The default value for the `--type` option has been changed
-from `json` to `auto`.
+the file extension. The default value of the `--type` startup option has been
+changed from `json` to `auto`. You might need to explicitly specify the `--type`
+in exceptional cases now whereas it was not necessary to do so previously.

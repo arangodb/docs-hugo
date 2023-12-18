@@ -514,18 +514,18 @@ _arangodump_ operations on the server:
 
 ### arangoimport
 
-The default value for the `--type` option has been changed from `json` to
-`auto`. *arangoimport* now automatically detects the type of the import file
+The default value for the `--type` startup option has been changed from `json`
+to `auto`. *arangoimport* now automatically detects the type of the import file
 based on the file extension.
 
 The following file extensions are automatically detected:
-- .json
-- .jsonl
-- .csv
-- .tsv
+- `.json`
+- `.jsonl`
+- `.csv`
+- `.tsv`
 
 If the file extension doesn't correspond to any of the mentioned types, the
-import defaults to `json` format.
+import defaults to the `json` format.
 
 ## Internal changes
 
