@@ -93,7 +93,7 @@ memory limit and not just 56% of it.
 
 ## Higher reported memory usage for AQL queries
 
-Due to the [improved memory accounting in v3.12](whats-new-in-3-12.md#improved-memory-accounting),
+Due to the [improved memory accounting in v3.12](whats-new-in-3-12.md#improved-memory-accounting-and-usage),
 certain AQL queries may now get aborted because they exceed the defined
 memory limit but didn't get killed in previous versions. This is because of the
 more accurate memory tracking that reports a higher (actual) usage now. It allows

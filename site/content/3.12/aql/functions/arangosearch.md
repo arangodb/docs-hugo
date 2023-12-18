@@ -1063,7 +1063,7 @@ be used in conjunction with ArangoSearch.
 
 `GEO_CONTAINS(geoJsonA, geoJsonB) → bool`
 
-Checks whether the [GeoJSON object](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson) `geoJsonA`
+Checks whether the [GeoJSON object](geo.md#geojson) `geoJsonA`
 fully contains `geoJsonB` (every point in B is also in A).
 
 - **geoJsonA** (object\|array): first GeoJSON object or coordinate array
@@ -1079,7 +1079,7 @@ fully contains `geoJsonB` (every point in B is also in A).
 
 `GEO_DISTANCE(geoJsonA, geoJsonB) → distance`
 
-Return the distance between two [GeoJSON objects](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson),
+Return the distance between two [GeoJSON objects](geo.md#geojson),
 measured from the `centroid` of each shape.
 
 - **geoJsonA** (object\|array): first GeoJSON object or coordinate array
@@ -1095,7 +1095,7 @@ measured from the `centroid` of each shape.
 
 `GEO_IN_RANGE(geoJsonA, geoJsonB, low, high, includeLow, includeHigh) → bool`
 
-Checks whether the distance between two [GeoJSON objects](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson)
+Checks whether the distance between two [GeoJSON objects](geo.md#geojson)
 lies within a given interval. The distance is measured from the `centroid` of
 each shape.
 
@@ -1119,7 +1119,7 @@ each shape.
 
 `GEO_INTERSECTS(geoJsonA, geoJsonB) → bool`
 
-Checks whether the [GeoJSON object](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson) `geoJsonA`
+Checks whether the [GeoJSON object](geo.md#geojson) `geoJsonA`
 intersects with `geoJsonB` (i.e. at least one point of B is in A or vice versa).
 
 - **geoJsonA** (object\|array): first GeoJSON object or coordinate array
