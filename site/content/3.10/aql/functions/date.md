@@ -7,6 +7,8 @@ description: >-
   ISO 8601 date time strings
 archetype: default
 ---
+## Date and time representations
+
 AQL offers functionality to work with dates, but it does not have a special data type
 for dates (neither does JSON, which is usually used as format to ship data into and
 out of ArangoDB). Instead, dates in AQL are represented by either numbers or strings.

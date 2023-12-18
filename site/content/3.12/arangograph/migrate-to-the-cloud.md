@@ -46,7 +46,7 @@ chmod 755 ./arangosync-migration
 
 Before getting started, make sure the following prerequisites are in place:
 
-- Go to the [ArangoGraph Insights Platform](https://cloud.arangodb.com/home)
+- Go to the [ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home)
   and sign in. If you don’t have an account yet, sign-up to create one.
 
 - Generate an ArangoGraph API key and API secret. See a detailed guide on

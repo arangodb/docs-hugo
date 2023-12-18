@@ -578,7 +578,7 @@ For external links, use standard Markdown. Clicking these links automatically
 opens them in a new tab:
 
 ```markdown
-[ArangoGraph Insights Platform](https://cloud.arangodb.com)
+[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud)
 ```
 
 For internal links, use relative paths to the Markdown files. Always link to

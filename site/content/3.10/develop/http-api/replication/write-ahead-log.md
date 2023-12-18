@@ -179,8 +179,8 @@ paths:
 
         - `data`: the original document data
 
-        A more detailed description of the individual replication event types and their
-        data structures can be found in [Operation Types](#operation-types).
+        For a more detailed description of the individual replication event types
+        and their data structures, see the Operation Types.
 
         The response also contains the following HTTP headers:
 

@@ -49,7 +49,7 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   or modified, using an AQL expression.
 
 - [**Multiple Environments**](../../operations/installation/_index.md#supported-platforms-and-architectures):
-  Use ArangoDB as a [managed service](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
+  Use ArangoDB as a [managed service](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
   in your own cloud, or on-premises.
   Develop and test with ArangoDB on Linux, macOS, and Windows, and run it in
   production on Linux. ArangoDB is available for 64-bit ARM chips on macOS and
@@ -137,7 +137,7 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   Flexible data field pre-processing with custom queries and the ability to
   chain built-in and custom Analyzers. Language-agnostic tokenization of text.
 
-- [**GeoJSON Support**](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson):
+- [**GeoJSON Support**](../../aql/functions/geo.md#geojson):
   Geographic data encoded in the popular GeoJSON format can be stored and used
   for geo-spatial queries.
 
