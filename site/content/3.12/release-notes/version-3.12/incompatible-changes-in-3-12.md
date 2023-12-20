@@ -249,19 +249,19 @@ This following startup options of arangodump are obsolete from ArangoDB 3.12 on:
   storage engine and so it is removed now.
 
 
-### arangorestore
+### arangoimport
 
-#### Maximum value for import errors
+#### Maximum number of import errors
 
-The new `--max-errors` option has been introduced to limit the amount of errors
-displayed by _arangoimport_. The default value is `20`. When this value is reached,
-the import will stop.
+The new `--max-errors` startup option limits the amount of errors displayed by
+_arangoimport_, and the import is stopped when this value is reached.
+The default value is `20`.
 
 Previously, the import would continue even when there were many errors. To
-achieve the same behavior with the new version, the value of `--max-errors` can
-be set to a higher value.
+achieve a similar behavior with the new version, set the value of `--max-errors`
+to a high value.
 
-### arangoimport
+#### Automatic file format detection
 
 *arangoimport* now automatically detects the type of the import file based on
 the file extension. The default value of the `--type` startup option has been

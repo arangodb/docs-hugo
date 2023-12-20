@@ -522,16 +522,17 @@ _arangodump_ operations on the server:
 
 ### arangoimport
 
-#### Maximum value for import errors
+#### Maximum number of import errors
 
-The following option has been added to _arangoimport_:
-- `--max-errors`: The maximum number of errors after which the import will stop.
+The following startup option has been added to _arangoimport_:
+
+- `--max-errors`: The maximum number of errors after which the import is stopped.
   The default value is `20`.
 
 You can use this option to limit the amount of errors displayed by _arangoimport_,
 and to abort the import after this value has been reached.
 
-#### File format automatically detected
+#### Automatic file format detection
 
 The default value for the `--type` startup option has been changed from `json`
 to `auto`. *arangoimport* now automatically detects the type of the import file
