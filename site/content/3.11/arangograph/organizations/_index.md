@@ -58,8 +58,6 @@ Note that the following features are not included in the perpetual free tier:
 - Upload backups to cloud storage
 - Private Endpoints
 - Grafana and Prometheus integration
-  
-See how to upgrade your free deployment to a paid deployment.
 
 ### On-Demand
 

@@ -35,18 +35,29 @@ member of one _Free-to-try_ tier organization at a time.
 With the ArangoGraph Insights Platform, your organization can choose one of the
 following packages.
 
-### Free Trial
+### Perpetual Free Trial
 
-ArangoGraph comes with a free-to-try tier that lets you test ArangoGraph for
-free for 14 days. You can get started quickly, without needing to enter a
-credit card.
+ArangoGraph comes with a perpetual free tier that lets you access the platform
+without incurring any costs indefinitely. You can get started quickly, without
+needing to enter a credit card.
 
-The free trial gives you access to:
-- One small deployment (4GB) in a region of your choice for 14 days
+The perpetual free tier is ideal for anyone who wants to explore ArangoGraph
+and run smaller-scale development projects, experimentation, and prototyping.
+
+The perpetual free trial gives you access to:
+- One small deployment (4GB) limited to a few selected regions (AWS Ohio and AWS Ireland)
 - Local backups
 - One ArangoGraph Notebook for learning and data science
 
-After the trial period, your deployment will be deleted automatically.
+{{< warning >}}
+Free deployments are automatically paused if unused for 2 hours and
+automatically deleted if unused for 30 days.
+{{< /warning >}}
+
+Note that the following features are not included in the perpetual free tier:
+- Upload backups to cloud storage
+- Private Endpoints
+- Grafana and Prometheus integration
 
 ### On-Demand
 
