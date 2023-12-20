@@ -3,7 +3,8 @@ title: Which Index to use when
 menuTitle: Which index to use when
 weight: 10
 description: >-
-  Which Index to use when
+  Pick the right index type for your use case, choosing from persistent,
+  inverted, TTL, and multi-dimensional indexes, as well as Views
 archetype: default
 ---
 ArangoDB automatically indexes the `_key` attribute in each collection. There

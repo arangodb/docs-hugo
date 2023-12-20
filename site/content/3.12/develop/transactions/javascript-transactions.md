@@ -8,8 +8,6 @@ description: >-
   read and modify multiple documents from multiple collections
 archetype: default
 ---
-{{< description >}}
-
 JavaScript transactions are different from transactions in SQL.
 
 In SQL, transactions are started with explicit *BEGIN* or *START TRANSACTION*
@@ -465,5 +463,5 @@ db.c2.count(); // 0
 
 ## HTTP API
 
-See the [HTTP Interface for JavaScript Transactions](../http/transactions/javascript-transactions.md)
+See the [HTTP Interface for JavaScript Transactions](../http-api/transactions/javascript-transactions.md)
 documentation.

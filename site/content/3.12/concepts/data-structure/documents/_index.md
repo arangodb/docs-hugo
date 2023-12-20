@@ -7,8 +7,6 @@ description: >-
   a single record or instance of an entity
 archetype: chapter
 ---
-{{< description >}}
-
 Documents in ArangoDB are JSON objects that contain structured or semi-structured
 data. They are stored in [collections](../collections.md).
 
@@ -62,15 +60,17 @@ Example document:
 All documents contain special attributes at the top-level that start with an 
 underscore, known as **system attributes**:
 
-- The **document identifier** is stored as a string in the `_id` attribute.
 - The **document key** is stored as a string in the `_key` attribute.
+- The **document identifier** is stored as a string in the `_id` attribute.
 - The **document revision** is stored as a string in the `_rev` attribute.
 
 You can specify a value for the `_key` attribute when creating a document.
+The `_id` attribute is automatically set based on the collection and `_key`.
 The `_id` and `_key` values are immutable once the document has been created.
 The `_rev` value is maintained by ArangoDB automatically.
 
 Edge documents in edge collections have two additional system attributes:
+
 - The document identifier of the source vertex stored in the `_from` attribute.
 - The document identifier of the target vertex stored in the `_to` attribute.
 
@@ -81,6 +81,9 @@ you should avoid using own attribute names starting with an underscore.
 
 Each document has a unique **document key** (or _primary key_) which identifies
 it within its collection.
+
+To distinguish between documents from multiple collections, see
+[Document identifiers](#document-identifiers).
 
 A document key uniquely identifies a document in the collection it is
 stored in. It can and should be used by clients when specific documents
@@ -99,6 +102,13 @@ This behavior can be changed on a per-collection level by creating
 collections with the `keyOptions` attribute. Using `keyOptions`, it is possible
 to disallow user-specified keys completely, or to force a specific regime for
 auto-generating the `_key` values.
+
+{{< warning >}}
+You should not use both user-specified and automatically generated document keys
+in the same collection in cluster deployments for collections with more than a
+single shard. Mixing the two can lead to conflicts because Coordinators that
+auto-generate keys in this case are not aware of all keys which are already used.
+{{< /warning >}}
 
 #### User-specified keys
 
@@ -151,6 +161,10 @@ forward slash (`/`), like `collection-name/document-key`.
 
 See [Collection names](../collections.md#collection-names) and
 [Document keys](#document-keys) for information about the allowed characters.
+
+When working with documents from multiple collections, you can see what
+collections they are from by looking at the `_id` attribute values and tell
+documents from different collections but the same keys apart.
 
 ### Document revisions
 

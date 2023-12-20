@@ -3,7 +3,8 @@ title: ArangoDB Starter Architecture
 menuTitle: Architecture
 weight: 15
 description: >-
-  The ArangoDB Starter is a program used to create ArangoDB database deployments on bare-metal (or virtual machines) with ease
+  The Starter files and configuration explained, what modes it supports, and how
+  it runs distributed across multiple machines
 archetype: default
 ---
 ## What does the Starter do
@@ -44,10 +45,9 @@ arangod --version
 
 ## Starter deployment modes
 
-The Starter supports 3 different modes of ArangoDB deployments:
+The Starter supports different modes of ArangoDB deployments:
 
 1. Single server
-1. Active failover
 1. Cluster
 
 Note: Datacenter replication is an option for the `cluster` deployment mode.
@@ -152,11 +152,10 @@ Running the Starter with the configuration example above and adding the
 
 ## Running on multiple machines
 
-For the `activefailover` and `cluster` mode, it is required to run multiple
-Starters, as every Starter only launches a subset of all servers needed
-to form the entire deployment.
-In the `cluster` mode, for example, a single Starter launches at most one Agent,
-one DB-Server, and one Coordinator.
+For the `cluster` mode, it is required to run multiple Starters, as every Starter
+only launches a subset of all servers needed to form the entire deployment.
+For example, a single Starter launches at most one Agent, one DB-Server, and one
+Coordinator.
 
 It is the responsibility of the user to run the Starter on multiple machines such
 that enough servers are started to form the entire deployment.
@@ -190,8 +189,8 @@ The `setup.json` config file must not be edited manually.
 
 ## Running on multiple machines (under the hood)
 
-As mentioned above, when the Starter is used to create an `activefailover`
-or `cluster` deployment, it first creates a "cluster" of Starters.
+As mentioned above, when the Starter is used to create a or `cluster` deployment,
+it first creates a "cluster" of Starters.
 
 These are the steps taken by the Starters to bootstrap such a deployment
 from scratch.

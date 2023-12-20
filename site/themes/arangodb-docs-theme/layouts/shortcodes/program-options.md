@@ -71,9 +71,9 @@ This is a command, no value needs to be specified. The process terminates after 
 {{ with $option.default }}
   {{ if ne $option.category "command"}}
     {{ if $option.dynamic }}
-Default: _dynamic_ (e.g. `{{ . }}`)
+Default: _dynamic_ (e.g. `{{ string . }}`)
     {{ else }}{{/* if $option.type is a vector, don't print e.g. [info info] as that is not how it would be set by users */}}
-Default: `{{ index (slice | append .) 0 }}`
+Default: `{{ string (index (slice | append .) 0) }}`
     {{ end }}
   {{ end }}
 {{ end }}

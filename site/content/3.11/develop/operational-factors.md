@@ -7,10 +7,9 @@ description: >-
   or break the performance of your application
 archetype: default
 ---
-Designing the data model of your application is a crucial task that can make or
-break the performance of your application. A well-designed data model
-allows you to write efficient AQL queries, increase throughput of CRUD operations,
-and makes sure your data is distributed in the most effective way.
+A well-designed data model allows you to write efficient AQL queries, increase
+throughput of CRUD operations, and makes sure your data is distributed in the
+most effective way.
 
 Whether you design a new application with ArangoDB or port an existing one to
 use ArangoDB, you should always analyze the (expected) data access patterns of
@@ -144,7 +143,7 @@ Should you decide to create an index you should consider a few things:
 
 - Indexes are a trade-off between storage space, maintenance cost and query speed.
 - Each new index increases the amount of RAM and the amount of disk space needed.
-- Indexes with [indexed array values](../index-and-search/indexing/index-basics.md#indexing-array-values)
+- Indexes with [indexed array values](../index-and-search/indexing/basics.md#indexing-array-values)
   need an extra index entry per array entry
 - Adding indexes increases the write-amplification i.e. it negatively affects
   the write performance (how much depends on the storage engine)
@@ -165,7 +164,7 @@ to understand the bottlenecks in your queries.
 
 Always consider the additional space requirements of extra indexes when
 planning server capacities. For more information on indexes see
-[Index Basics](../index-and-search/indexing/index-basics.md).
+[Index Basics](../index-and-search/indexing/basics.md).
 
 ## Number of Databases and Collections
 
@@ -178,7 +177,7 @@ results in good performance.
 Grouping documents into collections by type (i.e. a session collection
 'sessions_dev', 'sessions_prod') allows you to avoid an extra index on a _type_
 field. Similarly you may consider to
-[split edge collections](../graphs/first-steps.md#multiple-edge-collections-vs-filters-on-edge-document-attributes)
+[split edge collections](../graphs/_index.md#multiple-edge-collections-vs-filters-on-edge-document-attributes)
 instead of specifying the type of the connection inside the edge document.
 
 A few things to consider:
@@ -305,8 +304,9 @@ of the RocksDB storage engine.
 - Consider a maximum size of 50-75 kB _per document_ as a good rule of thumb.
   This allows you to maintain steady write throughput even under very high load.
 - Transactions are held in-memory before they are committed.
-  This means that transactions have to be split if they become too big, see the
-  [limitations section](transactions/limitations.md#rocksdb-storage-engine).
+  This means that certain transactions have to be split if they become too big.
+  See [Known limitations for AQL queries](../aql/fundamentals/limitations.md#storage-engine-properties)
+  for details.
 
 ### Improving Update Query Performance
 

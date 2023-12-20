@@ -40,6 +40,38 @@ commands:
             mkdir -p /tmp/<< parameters.version >>
             cp -r /root/project/. /tmp/<< parameters.version >>
 
+  update-openssl-workaround:
+    description: "Update OpenSSL in compiling"
+    parameters:
+      openssl:
+        type: string
+        default: ""
+    steps:
+      - run:
+          name: Print SCCache Settings
+          command: |
+           apk --no-cache add perl
+           set -e
+
+            # Compile openssl library:
+            export OPENSSLVERSION=<< parameters.openssl >>
+
+            echo $OPENSSLBRANCH
+
+            echo "https://www.openssl.org/source/${OLD}openssl-$OPENSSLVERSION.tar.gz"
+
+            test -n "$OPENSSLVERSION"
+            export OPENSSLPATH=`echo $OPENSSLVERSION | sed 's/\.[0-9]*$//g'`
+            cd /tmp
+            curl -O https://www.openssl.org/source/${OLD}openssl-$OPENSSLVERSION.tar.gz
+            tar xzvf openssl-$OPENSSLVERSION.tar.gz
+            cd openssl-$OPENSSLVERSION
+            ./config --prefix=/opt/openssl-$OPENSSLPATH no-async no-shared
+            make build_libs -j `nproc`
+            make install_dev -j `nproc`
+            cd /tmp
+            rm -rf openssl-$OPENSSLVERSION.tar.gz openssl-$OPENSSLVERSION
+
   check-arangodb-image-exists:
     description: "Check ArangoDB branch docker image exists"
     parameters:
@@ -74,10 +106,12 @@ commands:
       version:
         type: string
         default: ""
+      openssl:
+        type: string
+        default: ""
     steps:
-      - run:
-          name: Print SCCache Settings
-          command: sccache -s
+      - update-openssl-workaround:
+          openssl: << parameters.openssl >>
       - run:
           name: Configure
           command: |
@@ -92,7 +126,7 @@ commands:
           name: Build
           command: |
             set +e
-            cmake --build --preset enterprise-pr --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest
+            cmake --build --preset enterprise-pr --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest arangobackup arangovpack
 
             if [ "$?" != "0" ]; then
               echo "**ArangoDB Compile Error**<br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
@@ -337,7 +371,10 @@ jobs:
       - run: 
           name: Clone docs repo
           command: |
-            git clone --depth 1 git@github.com:arangodb/docs-hugo.git --branch $CIRCLE_BRANCH
+            git clone git@github.com:arangodb/docs-hugo.git
+            cd /home/circleci/project/docs-hugo
+            git fetch origin $CIRCLE_BRANCH:$CIRCLE_SHA1 && git checkout $CIRCLE_SHA1
+
 
       - run:
           name: Build site
@@ -346,7 +383,7 @@ jobs:
             export HUGO_URL=<< parameters.url >>
             export HUGO_ENV=frontend
 
-            cd docs-hugo/toolchain/docker/amd64
+            cd /home/circleci/project/docs-hugo/toolchain/docker/amd64
             docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
       - upload-summary:
           summary-name: "plain-build-summary"
@@ -462,11 +499,11 @@ jobs:
       version:
         type: string
         default: ""
-      openssl:
+      build-image:
         type: string
-        default: ""
+        default: "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
     docker:
-      - image: arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl<< parameters.openssl >>
+      - image: << parameters.build-image >>
     resource_class: xlarge
     environment:
       GIT_SSH_COMMAND: ssh

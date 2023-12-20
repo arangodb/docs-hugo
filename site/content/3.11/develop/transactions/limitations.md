@@ -1,9 +1,8 @@
 ---
-title: Limitations
+title: Limitations of transactions
 menuTitle: Limitations
 weight: 25
-description: >-
-  Transactions in ArangoDB have been designed with particular use cases in mind
+description: ''
 archetype: default
 ---
 <!-- TODO: Update for RocksDB -->
@@ -91,7 +90,7 @@ A transaction on *one DB-Server* is either committed completely or not at all.
 ArangoDB transactions do currently not require any form of global consensus. This makes
 them relatively fast, but also vulnerable to unexpected server outages.
 
-Should a transaction involve [Leader Shards](../../deploy/deployment/cluster/_index.md#db-servers) 
+Should a transaction involve [Leader Shards](../../deploy/cluster/_index.md#db-servers) 
 on *multiple DB-Servers*, the atomicity of the distributed transaction *during the commit operation*
 cannot be guaranteed. Should one of the involved DB-Servers fail during the commit the transaction
 is not rolled-back globally, sub-transactions may have been committed on some DB-Servers, but not on others.
@@ -126,52 +125,14 @@ time when the transaction begins *on that DB-Server*.
 It is guaranteed that successfully committed transactions are persistent. Using
 replication and / or *waitForSync* increases the durability (Just as with the single-server).
 
-## RocksDB storage engine
+## Size and time limits
 
-{{< info >}}
-The following restrictions and limitations do not apply to JavaScript
-transactions, since their intended use case is for smaller transactions
-with full transactional guarantees. So the following only applies
-to AQL queries and transactions created through the document API (i.e. batch operations).
-{{< /info >}}
+### Intermediate commits
 
-Data of ongoing transactions is stored in RAM. Transactions that get too big 
-(in terms of number of operations involved or the total size of data created or
-modified by the transaction) will be committed automatically. Effectively this 
-means that big user transactions are split into multiple smaller RocksDB 
-transactions that are committed individually. The entire user transaction will 
-not necessarily have ACID properties in this case.
- 
-The following global options can be used to control the RAM usage and automatic 
-intermediate commits for the RocksDB engine: 
-
-`--rocksdb.max-transaction-size`
-
-Transaction size limit (in bytes). Transactions store all keys and values in
-RAM, so large transactions run the risk of causing out-of-memory situations.
-This setting allows you to ensure that does not happen by limiting the size of
-any individual transaction. Transactions whose operations would consume more
-RAM than this threshold value will abort automatically with error 32 ("resource
-limit exceeded").
-
-`--rocksdb.intermediate-commit-size`
-
-If the size of all operations in a transaction reaches this threshold, the transaction 
-is committed automatically and a new transaction is started. The value is specified in bytes.
-  
-`--rocksdb.intermediate-commit-count`
-
-If the number of operations in a transaction reaches this value, the transaction is 
-committed automatically and a new transaction is started.
-
-The above values can also be adjusted per query, by setting the following
-attributes in the call to *db._query()*:
-
-- *maxTransactionSize*: transaction size limit in bytes
-- *intermediateCommitSize*: maximum total size of operations after which an intermediate
-  commit is performed automatically
-- *intermediateCommitCount*: maximum number of operations after which an intermediate
-  commit is performed automatically
+[Intermediate commits](../../aql/fundamentals/limitations.md#storage-engine-properties)
+that would automatically split and commit parts of big transactions are **disabled**
+for JavaScript Transactions and Stream Transactions in the RocksDB storage engine,
+including AQL queries that run inside of such transactions.
 
 ### Limits for Stream transactions
 

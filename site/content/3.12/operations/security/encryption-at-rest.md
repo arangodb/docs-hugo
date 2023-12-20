@@ -3,7 +3,8 @@ title: Encryption at Rest
 menuTitle: Encryption at Rest
 weight: 15
 description: >-
-  Securing physical storage media, available in the Enterprise Edition
+  You can secure the physical storage media of an ArangoDB deployment by letting
+  it encrypt the database directories
 archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
@@ -45,7 +46,6 @@ The encryption feature has the following limitations:
   data you will need to take a backup first, then enable encryption and
   start your server on an empty data-directory, and finally restore your
   backup.
-- The Encryption feature requires the RocksDB storage engine.
 
 ## Encryption keys
 
@@ -75,16 +75,12 @@ to the server.
 Make sure to pass this option the very first time you start your database.
 You cannot encrypt a database that already exists.
 
-Note: You also have to activate the RocksDB storage engine.
-
 ### Encryption key stored in file
 
 Pass the following option to `arangod`:
 
 ```
-$ arangod \
-    --rocksdb.encryption-keyfile=/mytmpfs/mySecretKey \
-    --server.storage-engine=rocksdb
+$ arangod --rocksdb.encryption-keyfile=/mytmpfs/mySecretKey ...
 ```
 The file `/mytmpfs/mySecretKey` must contain the encryption key. This
 file must be secured, so that only `arangod` can access it. You should
@@ -97,9 +93,7 @@ creating an in-memory file-system under `/mytmpfs`.
 Pass the following option to `arangod`:
 
 ```
-$ arangod \
-    --rocksdb.encryption-key-generator=path-to-my-generator \
-    --server.storage-engine=rocksdb
+$ arangod --rocksdb.encryption-key-generator=path-to-my-generator ...
 ```
 
 The program `path-to-my-generator` output the encryption on standard
@@ -109,7 +103,7 @@ output and exit.
 
 If you use _kube-arangodb_ then use the `spec.rocksdb.encryption.keySecretName`
 setting to specify the name of the Kubernetes secret to be used for encryption.
-See [Kubernetes Deployment Resource](../../deploy/deployment/kubernetes/deployment-resource-reference.md#specrocksdbencryptionkeysecretname).
+See the [kube-arangodb documentation](https://arangodb.github.io/kube-arangodb/docs/api/ArangoDeployment.V1#specrocksdbencryptionkeysecretname).
 
 ## Creating keys
 
@@ -133,7 +127,7 @@ master key can be generated from random characters if the startup option
 `--rocksdb.encryption-gen-internal-key` is set to `true`.
 
 It is possible to change the user supplied encryption at rest key via the
-[HTTP API](../../develop/http/security.md#encryption-at-rest). This API
+[HTTP API](../../develop/http-api/security.md#encryption-at-rest). This API
 is disabled by default, but can be turned on by setting the startup option
 `--rocksdb.encryption-key-rotation` to `true`.
 
@@ -142,8 +136,7 @@ To enable smooth rollout of new keys you can use the new option
 _arangod_ will then store the master key encrypted with the provided secrets.
 
 ```
-$ arangod \
-    --rocksdb.encryption-keyfolder=/mytmpfs/mySecrets
+$ arangod --rocksdb.encryption-keyfolder=/mytmpfs/mySecrets ...
 ```
 
 To start an arangod instance only one of the secrets needs to be correct, 

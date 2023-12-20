@@ -1,12 +1,15 @@
 <head>
-    {{- partial "stylesheet.html" . }}
+  {{ partial "stylesheet.html" . -}}
 
-    {{- partial "meta.html" . }}
-    {{- $link := "<link href=\"%s\" rel=\"%s\" type=\"%s\" title=\"%s\">" }}
-    <title>{{ if and .Title (not (eq .Title .Site.Title)) }}{{ .Title | markdownify | plainify | safeHTML }} {{ default "::" .Site.Params.titleSeparator }} {{ end }}{{ .Site.Title }}</title>
+  {{ partial "meta.html" . -}}
+  <title>{{ if and .Title (not (eq .Title .Site.Title)) }}{{ .Title | markdownify | plainify | safeHTML }} {{ default "::" .Site.Params.titleSeparator }} {{ end }}{{ .Site.Title }}</title>
+  <link href="{{ "/images/favicon.png" | relURL }}" rel="icon" type="image/png">
+  {{ partial "javascript.html" . -}}
 
-    <link href="{{ "/images/favicon.png" | relURL }}" rel="icon" type="image/png">
-    {{- partial "javascript.html" . }}
-
-
+  {{ $isProduction := eq site.BaseURL "https://docs.arangodb.com" -}}
+  {{ if $isProduction -}}
+    {{- partial "tracking/gtag.html" . -}}
+    {{- partial "tracking/twitter.html" . -}}
+    {{- partial "tracking/linkedin.html" . -}}
+  {{ end -}}
 </head>

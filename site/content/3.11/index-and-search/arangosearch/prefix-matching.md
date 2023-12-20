@@ -6,8 +6,6 @@ description: >-
   Search for strings or tokens that start with one or more substrings
 archetype: default
 ---
-{{< description >}}
-
 A typical use case for matching prefixes is to provide word completion
 (auto-complete). If the requirement is to find exact prefix matches only then
 indexing strings with the `identity` Analyzer is sufficient. The search term
@@ -39,15 +37,16 @@ It creates the necessary index data to perform prefix queries with
 
 ### View definition
 
-#### `search-alias` View
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 db.imdb_vertices.ensureIndex({ name: "inv-exact", type: "inverted", fields: [ "title" ] });
 db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices", index: "inv-exact" } ] });
 ```
+{{< /tab >}}
 
-#### `arangosearch` View
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -63,6 +62,9 @@ db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices
   }
 }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ### AQL queries
 
@@ -150,15 +152,16 @@ conditions for different tokens can be fulfilled.
 
 ### View definition
 
-#### `search-alias` View
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 db.imdb_vertices.ensureIndex({ name: "inv-text", type: "inverted", fields: [ { name: "title", analyzer: "text_en" } ] });
 db._createView("imdb_alias", "search-alias", { indexes: [ { collection: "imdb_vertices", index: "inv-text" } ] });
 ```
+{{< /tab >}}
 
-#### `arangosearch` View
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -174,26 +177,33 @@ db._createView("imdb_alias", "search-alias", { indexes: [ { collection: "imdb_ve
   }
 }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ### AQL queries
 
 Match movie titles that contain three out of five prefixes.
 
-_`search-alias` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```aql
 FOR doc IN imdb_alias
   SEARCH STARTS_WITH(doc.title, TOKENS("Sec Cham Har Pot Phoe", "text_en"), 3)
   RETURN doc.title
 ```
+{{< /tab >}}
 
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(STARTS_WITH(doc.title, TOKENS("Sec Cham Har Pot Phoe", "text_en"), 3), "text_en")
   RETURN doc.title
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | Result |
 |:-------|
@@ -203,23 +213,27 @@ FOR doc IN imdb
 You can calculate the number of prefixes that need to match dynamically, for
 example to require that all prefixes must match.
 
-_`search-alias` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```aql
 LET prefixes = TOKENS("Brot Blu", "text_en")
 FOR doc IN imdb_alias
   SEARCH STARTS_WITH(doc.title, prefixes, LENGTH(prefixes))
   RETURN doc.title
 ```
+{{< /tab >}}
 
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```aql
 LET prefixes = TOKENS("Brot Blu", "text_en")
 FOR doc IN imdb
   SEARCH ANALYZER(STARTS_WITH(doc.title, prefixes, LENGTH(prefixes)), "text_en")
   RETURN doc.title
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | Result |
 |:-------|
@@ -274,15 +288,16 @@ db._query(`RETURN TOKENS("Ocean Equilibrium", "edge_ngram")`);
 
 ### View definition
 
-#### `search-alias` View
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 db.imdb_vertices.ensureIndex({ name: "inv-ngram", type: "inverted", fields: [ { name: "title", analyzer: "edge_ngram" } ] });
 db._createView("imdb_alias", "search-alias", { indexes: [ { collection: "imdb_vertices", index: "inv-ngram" } ] });
 ```
+{{< /tab >}}
 
-#### `arangosearch` View
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -298,26 +313,33 @@ db._createView("imdb_alias", "search-alias", { indexes: [ { collection: "imdb_ve
   }
 }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ### AQL queries
 
 Match movie titles that have a word starting with `"ocea"`
 
-_`search-alias` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```aql
 FOR doc IN imdb_alias
   SEARCH doc.title == "ocea"
   RETURN doc.title
 ```
+{{< /tab >}}
 
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(doc.title == "ocea", "edge_ngram")
   RETURN doc.title
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | Result |
 |:-------|
@@ -345,21 +367,25 @@ examples on this page don't require them.
 Now we can also match movie titles that start with `"Oceä"`
 (normalized to `"ocea"`):
 
-_`search-alias` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```aql
 FOR doc IN imdb_alias
   SEARCH doc.title == TOKENS("Oceä", "match_edge_ngram")[0]
   RETURN doc.title
 ```
+{{< /tab >}}
 
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(doc.title == TOKENS("Oceä", "match_edge_ngram")[0], "edge_ngram")
   RETURN doc.title
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | Result |
 |:-------|
@@ -376,41 +402,49 @@ if `preserveOriginal` is enabled. For example, this query does not match
 anything because the longest indexed edge _n_-gram is `"equili"` but the search
 term is nine characters long:
 
-_`search-alias` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```aql
 FOR doc IN imdb_alias
   SEARCH doc.title == TOKENS("Equilibri", "match_edge_ngram")[0]
   RETURN doc.title
 ```
+{{< /tab >}}
 
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(doc.title == TOKENS("Equilibri", "match_edge_ngram")[0], "edge_ngram")
   RETURN doc.title
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 Searching for `"Equilibrium"` does match because the full token `"equilibrium"`
 is indexed by our custom Analyzer thanks to `preserveOriginal`. We can take
 advantage of the full token being indexed with the `STARTS_WITH()` function:
 
-_`search-alias` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```aql
 FOR doc IN imdb_alias
   SEARCH STARTS_WITH(doc.title, TOKENS("Equilibri", "match_edge_ngram"))
   RETURN doc.title
 ```
+{{< /tab >}}
 
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(STARTS_WITH(doc.title, TOKENS("Equilibri", "match_edge_ngram")), "edge_ngram")
   RETURN doc.title
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | Result |
 |:-------|

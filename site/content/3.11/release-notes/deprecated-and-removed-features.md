@@ -1,7 +1,7 @@
 ---
 title: Deprecated and removed features
 menuTitle: Deprecated and removed features
-weight: 65
+weight: 100
 description: >-
   Features listed in this section should no longer be used, because they are considered obsolete and may get removed in a future release
 archetype: default
@@ -45,14 +45,14 @@ detailed information about breaking changes before upgrading.
     backing storage for large datasets has been removed.
 
 - **Leader/Follower Deployment Mode**:
-  The Leader/Follower deployment type is deprecated and already removed from
+  The Leader/Follower deployment mode is deprecated and already removed from
   documentation. Active Failover and OneShard databases in clusters are better
   alternatives.
 
 - **Skiplist and hash indexes**:
   Skiplist and hash indexes have been deprecated in 3.9 and will be removed in a 
   future version of ArangoDB. Currently, they are an alias for a
-  [persistent index](../index-and-search/indexing/index-basics.md#persistent-index).
+  [persistent index](../index-and-search/indexing/basics.md#persistent-index).
 
 - **Bundled NPM modules**:
   The bundled NPM modules `aqb`, `chai`, `dedent`, `error-stack-parser`,
@@ -63,14 +63,14 @@ detailed information about breaking changes before upgrading.
   [Foxx guide](../develop/foxx-microservices/guides/using-node-modules.md).
 
 - **Batch Requests API**:
-  The [batch request REST API](../develop/http/batch-requests.md) is deprecated and will be 
+  The [batch request REST API](../develop/http-api/batch-requests.md) is deprecated and will be 
   removed in a future version. Instead of using this API, please use the 
-  [HTTP interface for documents](../develop/http/documents.md#multiple-document-operations)
+  [HTTP interface for documents](../develop/http-api/documents.md#multiple-document-operations)
   that can insert, update, replace or remove arrays of documents.
 
 - **PUT method in Cursor API**:
   The HTTP endpoint `PUT /_api/cursor/<cursor-id>` in the
-  [Cursor REST API](../develop/http/queries/aql-queries.md) is deprecated and will be
+  [Cursor REST API](../develop/http-api/queries/aql-queries.md) is deprecated and will be
   removed in a future version. Please use the drop-in replacement
   `POST /_api/cursor/<cursor-id>` instead. The POST endpoint is functionally
   equivalent to the PUT endpoint, but does not violate idempotency requirements

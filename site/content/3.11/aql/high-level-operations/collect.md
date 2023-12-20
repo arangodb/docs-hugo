@@ -1,5 +1,5 @@
 ---
-title: COLLECT operation in AQL
+title: '`COLLECT` operation in AQL'
 menuTitle: COLLECT
 weight: 40
 description: >-
@@ -8,8 +8,6 @@ description: >-
   statistical properties efficiently
 archetype: default
 ---
-{{< description >}}
-
 The different variants of `COLLECT` cover most needs for grouping and aggregating
 data. For aggregation using a sliding window, see the [`WINDOW` operation](window.md).
 

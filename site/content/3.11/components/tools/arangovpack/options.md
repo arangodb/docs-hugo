@@ -3,7 +3,7 @@ title: _arangovpack_ Options
 menuTitle: Options
 weight: 5
 description: >-
-  arangovpack Options
+  The startup options of the `arangovpack` executable
 pageToc:
   maxHeadlineLevel: 2
 archetype: default

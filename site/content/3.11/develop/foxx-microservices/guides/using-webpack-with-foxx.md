@@ -2,8 +2,7 @@
 title: Using Webpack with Foxx
 menuTitle: Using Webpack with Foxx
 weight: 45
-description: >-
-  You can use Webpack to compile your Foxx services the same way you would compile any other JavaScript code
+description: ''
 archetype: default
 ---
 You can use [Webpack](https://webpack.js.org/) to compile your Foxx services

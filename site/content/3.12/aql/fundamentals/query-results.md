@@ -3,23 +3,78 @@ title: AQL query results
 menuTitle: Query Results
 weight: 35
 description: >-
-  The result of an AQL query is an array of values
+  The result set of an AQL query is always an array of values, even if it
+  returns a single element only
 archetype: default
 ---
-## Result sets
+AQL queries and also [subqueries](subqueries.md) each produce an array with zero
+or more elements.
 
-The result of an AQL query is an array of values. The individual values in the
-result array may or may not have a homogeneous structure, depending on what is
-actually queried.
+An empty array typically means that no (matching) data was found to act upon, or
+that a write query didn't specify anything to return.
 
-For example, when returning data from a collection with inhomogeneous documents
-(the individual documents in the collection have different attribute names)
-without modification, the result values will as well have an inhomogeneous
-structure. Each result value itself is a document:
+```aql
+FOR doc IN emptyCollection
+  RETURN doc  // no documents
+```
+
+```
+FOR u IN users
+  FILTER age == -1  // no matches
+  RETURN u
+```
+
+```aql
+UPDATE { id: 2, active: true } IN users
+// no RETURN operation
+```
+
+The result set of the above examples is empty:
+
+```json
+[ ]
+```
+
+If there is a single result, you get an array with one element back, not the
+result value only.
+
 
 ```aql
 FOR u IN users
-    RETURN u
+  LIMIT 1
+  RETURN u.name
+```
+
+```json
+[ "John" ]
+```
+
+If there are multiple results, you get an array with many elements back.
+
+```aql
+FOR u IN users
+  RETURN u.name
+```
+
+```json
+[
+  "John",
+  "Vanessa",
+  "Amy"
+]
+```
+
+The individual values in the result array of a query may or may not have a
+homogeneous structure, depending on what is actually queried.
+
+For example, the individual documents of a collection can use different sets of
+attribute names. When returning data from a collection with inhomogeneous
+documents without modification, the result values have an inhomogeneous structure,
+too. Each result value itself is a document:
+
+```aql
+FOR u IN users
+  RETURN u
 ```
 
 ```json
@@ -31,12 +86,12 @@ FOR u IN users
 ```
 
 However, if a fixed set of attributes from the collection is queried, then the 
-query result values will have a homogeneous structure. Each result value is
-still a document:
+query result values have a homogeneous structure. Each result value is
+still (a projection of) a document:
 
 ```aql
 FOR u IN users
-    RETURN { "id": u.id, "name": u.name }
+  RETURN { "id": u.id, "name": u.name }
 ```
 
 ```json
@@ -47,21 +102,14 @@ FOR u IN users
 ]
 ```
 
-It is also possible to query just scalar values. In this case, the result set
+It is also possible to query scalar values only. In this case, the result set
 is an array of scalars, and each result value is a scalar value:
 
 ```aql
 FOR u IN users
-    RETURN u.id
+  RETURN u.id
 ```
 
 ```json
 [ 1, 2, 3 ]
-```
-
-If a query does not produce any results because no matching data can be
-found, it will produce an empty result array:
-
-```json
-[ ]
 ```

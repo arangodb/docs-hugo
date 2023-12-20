@@ -6,8 +6,6 @@ description: >-
   Search for exact strings, numbers or number ranges, as well as booleans without Analyzer transformations applied
 archetype: default
 ---
-{{< description >}}
-
 If you want to find strictly equal values, then the `identity` Analyzer is what
 you need. It will not apply any transformations. It is a no-operation Analyzer
 that passes everything through unaltered.
@@ -24,15 +22,16 @@ the entire string is equal (not matching substrings).
 
 ### View definition
 
-#### `search-alias` View
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 db.imdb_vertices.ensureIndex({ name: "inv-exact", type: "inverted", fields: [ "title" ] });
 db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices", index: "inv-exact" } ] });
 ```
+{{< /tab >}}
 
-#### `arangosearch` View
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -48,6 +47,9 @@ db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices
   }
 }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ### AQL queries
 

@@ -2,8 +2,7 @@
 title: _arangosh_ Examples
 menuTitle: Examples
 weight: 5
-description: >-
-  By default, arangosh tries to connect to an ArangoDB server running on server localhost on port 8529
+description: ''
 archetype: default
 ---
 ## Connecting to a server
@@ -65,7 +64,7 @@ VelocyStream | TCP              | `vst+tcp`, `vst+srv`, `vst`
 VelocyStream | TCP with SSL/TLS | `vst+ssl`, `vsts`
 VelocyStream | Unix             | `vst+unix`
 
-## Using _arangosh_
+## Using *arangosh*
 
 To change the current database after the connection has been made, you
 can use the `db._useDatabase()` command in _arangosh_:

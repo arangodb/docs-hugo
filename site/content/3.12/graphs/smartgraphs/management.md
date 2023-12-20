@@ -3,7 +3,7 @@ title: SmartGraph Management
 menuTitle: Management
 weight: 10
 description: >-
-  This chapter describes the JavaScript interface for creating and modifying SmartGraphs
+  How to manage named graphs of the type SmartGraph
 archetype: default
 ---
 This chapter describes the JavaScript interface for creating and modifying
@@ -253,7 +253,7 @@ db._drop("vertices");
 Alternatively, you can `truncate()` all collections of the graph if you just
 want to get rid of the data but keep the collections and graph definition.
 
-### Remove an edge collection
+### Remove an edge definition
 
 Delete an edge definition from the graph:
 

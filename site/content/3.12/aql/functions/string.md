@@ -3,11 +3,9 @@ title: String functions in AQL
 menuTitle: String
 weight: 50
 description: >-
-  For string processing, AQL offers the following functions
+  AQL offers functions for string processing
 archetype: default
 ---
-For string processing, AQL offers the following functions:
-
 ## CHAR_LENGTH()
 
 `CHAR_LENGTH(str) → length`
@@ -1431,7 +1429,9 @@ Split the given string `value` into a list of strings, using the `separator`.
 
 To split a document identifier (`_id`) into the collection name and document key
 (`_key`), you should use the more optimized
-[`PARSE_IDENTIFIER()` function](document-object.md#parse_identifier).
+[`PARSE_IDENTIFIER()` function](document-object.md#parse_identifier), respectively
+[`PARSE_COLLECTION()`](document-object.md#parse_collection) or
+[`PARSE_KEY()`](document-object.md#parse_key) to only extract the name or key.
 
 - **value** (string): a string
 - **separator** (string): either a string or a list of strings. If `separator` is

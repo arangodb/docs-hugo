@@ -1,14 +1,12 @@
 ---
 title: Integrations
 menuTitle: Integrations
-weight: 281
+weight: 290
 description: >-
   Integrations for third-party tools and frameworks let you use ArangoDB as the
   database backend for these products
 archetype: chapter
 ---
-{{< description >}}
-
 Database integrations allow applications to work with different database systems
 using a common interface. They are higher-level than database drivers because
 they abstract away the details of specific database systems, especially the
@@ -31,13 +29,6 @@ Apache Spark has first-party support for the Scala, Java, Python, and R language
 
 - Repository: [github.com/arangodb/arangodb-spark-datasource](https://github.com/arangodb/arangodb-spark-datasource)
 - [Changelog](https://github.com/arangodb/arangodb-spark-datasource/blob/main/ChangeLog.md)
-
-The [**ArangoDB-Spark-Connector**](arangodb-spark-connector/_index.md) is the predecessor of
-the ArangoDB Datasource library for the Scala and Java programming languages,
-but it is recommended to use the new library instead.
-
- - Repository: [github.com/arangodb/arangodb-spark-connector](https://github.com/arangodb/arangodb-spark-connector)
- - [Changelog](https://github.com/arangodb/arangodb-spark-connector/blob/master/ChangeLog.md#readme)
 
 ## Apache Kafka
 

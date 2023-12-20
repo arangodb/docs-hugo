@@ -3,7 +3,8 @@ title: Features and Improvements in ArangoDB 3.11
 menuTitle: What's New in 3.11
 weight: 5
 description: >-
-  ArangoDB v3.11 Release Notes New Features
+  Improved performance and reporting for AQL queries, new caching features for
+  indexed data, improvements to the web interface
 archetype: default
 ---
 The following list shows in detail which features have been added or improved in
@@ -50,7 +51,7 @@ to be requested from the RocksDB storage engine.
 
 ---
 
-[Inverted indexes](../../develop/http/indexes/inverted.md) also support similar new caching
+[Inverted indexes](../../develop/http-api/indexes/inverted.md) also support similar new caching
 options.
 
 <small>Introduced in: v3.10.2</small>
@@ -238,7 +239,7 @@ Instead of batching the array of documents (with a default batch size of `1000`)
 a single request per DB-Server is used internally to transfer the data.
 
 The optimization brings the AQL `INSERT` performance close to the performance of
-the specialized HTTP API for [creating multiple documents](../../develop/http/documents.md#create-multiple-documents).
+the specialized HTTP API for [creating multiple documents](../../develop/http-api/documents.md#create-multiple-documents).
 
 The pattern that is recognized by the optimizer is as follows:
 
@@ -357,7 +358,7 @@ Also see:
 - [AQL `UPDATE` operation](../../aql/high-level-operations/update.md#refillindexcaches)
 - [AQL `REPLACE` operation](../../aql/high-level-operations/replace.md#refillindexcaches)
 - [AQL `REMOVE` operation](../../aql/high-level-operations/remove.md#refillindexcaches)
-- [Document HTTP API](../../develop/http/documents.md)
+- [Document HTTP API](../../develop/http-api/documents.md)
 - [Index cache refill options](#index-cache-refill-options)
 
 ### Retry request for result batch
@@ -514,7 +515,7 @@ Query Statistics:
 
 ### New stage in query profiling output
 
-<small>Introduced in: v3.10.3, v3.11.0</small>
+<small>Introduced in: v3.10.3</small>
 
 The query profiling output has a new `instantiating executors` stage.
 The time spent in this stage is the time needed to create the query executors
@@ -1011,6 +1012,44 @@ attempt to create an additional database fails with error
 if other databases are dropped first. The default value for this option is
 unlimited, so an arbitrary amount of databases can be created.
 
+### Cluster-internal connectivity checks
+
+<small>Introduced in: v3.11.5</small>
+
+This feature makes Coordinators and DB-Servers in a cluster periodically send
+check requests to each other, in order to see if all nodes can connect to
+each other.
+If a cluster-internal connection to another Coordinator or DB-Server cannot
+be established within 10 seconds, a warning is now logged.
+
+The new `--cluster.connectivity-check-interval` startup option can be used
+to control the frequency of the connectivity check, in seconds.
+If set to a value greater than zero, the initial connectivity check is
+performed approximately 15 seconds after the instance start, and subsequent
+connectivity checks are executed with the specified frequency.
+If set to `0`, connectivity checks are disabled.
+
+You can also use the following metrics to monitor and detect temporary or
+permanent connectivity issues:
+- `arangodb_network_connectivity_failures_coordinators`: Number of failed
+  connectivity check requests sent by this instance to Coordinators.
+- `arangodb_network_connectivity_failures_dbservers_total`: Number of failed
+  connectivity check requests sent to DB-Servers.
+
+### Configurable maximum for queued log entries
+
+<small>Introduced in: v3.10.12, v3.11.5</small>
+
+The new `--log.max-queued-entries` startup option lets you configure how many
+log entries are queued in a background thread.
+
+Log entries are pushed on a queue for asynchronous writing unless you enable the
+`--log.force-direct` startup option. If you use a slow log output (e.g. syslog),
+the queue might grow and eventually overflow.
+
+You can configure the upper bound of the queue with this option. If the queue is
+full, log entries are written synchronously until the queue has space again.
+
 ## Miscellaneous changes
 
 ### Write-write conflict improvements
@@ -1033,7 +1072,7 @@ To enable tracing for traversals and path searches at startup, you can set
 `--log.level graphs=trace`.
 
 To enable or disable it at runtime, you can call the
-[`PUT /_admin/log/level`](../../develop/http/monitoring.md#set-the-server-log-levels)
+[`PUT /_admin/log/level`](../../develop/http-api/monitoring/logs.md#set-the-server-log-levels)
 endpoint of the HTTP API and set the log level using a request body like
 `{"graphs":"TRACE"}`.
 
@@ -1059,7 +1098,7 @@ for details.
 
 You can also use the newly added HTTP endpoints with the
 `/_api/control_pregel/history` route.
-See [Pregel HTTP API](../../develop/http/pregel.md) for details.
+See [Pregel HTTP API](../../develop/http-api/pregel.md) for details.
 
 You can still use the old interfaces (the `pregel.status()` method as well as
 the `GET /_api/control_pregel` and `GET /_api/control_pregel/{id}` endpoints).
@@ -1131,7 +1170,7 @@ been added:
 The memory usage of in-memory edge index caches is reduced if most of the edges
 in an index refer to a single or mostly the same collection.
 
-Previously, the full edge IDs, consisting of the the referred-to collection
+Previously, the full edge IDs, consisting of the referred-to collection
 name and the referred-to key of the edge, were stored in full, i.e. the full
 values of the edges' `_from` and `_to` attributes.
 Now, the first edge inserted into an edge index' in-memory cache determines
@@ -1196,6 +1235,15 @@ The following system metrics have been added:
 | `arangodb_file_descriptors_limit` | System limit for the number of open files for the arangod process. |
 | `arangodb_file_descriptors_current` | Number of file descriptors currently opened by the arangod process. |
 
+### More instant Hot Backups
+
+<small>Introduced in: v3.10.10, v3.11.3</small>
+
+Cluster deployments no longer wait for all in-progress transactions to get
+committed when a user requests a Hot Backup. The waiting could cause deadlocks
+and thus Hot Backups to fail, in particular in ArangoGraph. Now, Hot Backups are
+created immediately and commits have to wait until the backup process is done.
+
 ### In-memory edge cache startup options and metrics
 
 <small>Introduced in: v3.11.4</small>
@@ -1219,7 +1267,7 @@ The following metrics have been added:
 
 ### Observability of in-memory cache subsystem
 
-<small>Introduced in: v3.10.11, v.3.11.4</small>
+<small>Introduced in: v3.10.11, v3.11.4</small>
 
 The following metrics have been added to improve the observability of in-memory
 cache subsystem:
@@ -1240,6 +1288,46 @@ cache subsystem:
   the migrate tasks of the in-memory cache subsystem. Migrate tasks are scheduled
   by the cache subsystem to migrate existing cache hash tables to a bigger or
   smaller table.
+
+### Detached scheduler threads
+
+<small>Introduced in: v3.11.5</small>
+
+A scheduler thread now has the capability to detach itself from the scheduler
+if it observes the need to perform a potentially long running task, like waiting
+for a lock. This allows a new scheduler thread to be started and prevents
+scenarios where all threads are blocked waiting for a lock, which has previously
+led to deadlock situations.
+
+Threads waiting for more than 1 second on a collection lock will detach
+themselves.
+
+The following startup option has been added:
+- `--server.max-number-detached-threads`: The maximum number of detached scheduler
+  threads.
+
+The following metric has been added:
+- `arangodb_scheduler_num_detached_threads`: The number of worker threads
+  currently started and detached from the scheduler.
+
+### Memory usage of connection and request statistics
+
+<small>Introduced in: v3.10.12, v3.11.6</small>
+
+The following metrics have been added:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_connection_statistics_memory_usage` | Total memory usage of connection statistics. |
+| `arangodb_request_statistics_memory_usage` | Total memory usage of request statistics. |
+
+If the `--server.statistics` startup option is set to `true`, then some
+connection and request statistics are built up in memory for incoming request.
+It is expected that the memory usage reported by these metrics remains
+relatively constant over time. It may grow only when there are bursts of new
+connections. Some memory is pre-allocated at startup for higher efficiency. If the
+`--server.statistics` startup option is set to `false`, then no memory will be
+allocated for connection and request statistics.
 
 ## Client tools
 

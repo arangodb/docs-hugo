@@ -16,14 +16,9 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-type ExampleType string
 type RenderType string
 
 const (
-	JS   ExampleType = "js"
-	AQL  ExampleType = "aql"
-	HTTP ExampleType = "http"
-
 	INPUT        RenderType = "input"
 	OUTPUT       RenderType = "output"
 	INPUT_OUTPUT RenderType = "input/output"
@@ -31,7 +26,6 @@ const (
 
 // @Example represents an example request to be supplied to an arango instance
 type Example struct {
-	Type          ExampleType    `json:"type"`
 	Options       ExampleOptions `json:"options"` // The codeblock yaml part
 	Code          string         `json:"code"`
 	Repository    Repository     `json:"-"`
@@ -92,13 +86,16 @@ func ParseExample(request io.Reader, headers http.Header) (Example, error) {
 	optionsYaml.SaveCache = headers.Get("Cache")
 	optionsYaml.Version = headers.Get("Version")
 
-	overrideRE := regexp2.MustCompile(Conf.Override, 0)
-
-	optionsYaml.SaveCache = strconv.FormatBool(utils.Regexp2StringHasMatch(overrideRE, optionsYaml.Name))
+	if Conf.Override != " " {
+		overrideRE := regexp2.MustCompile(Conf.Override, 0)
+		optionsYaml.SaveCache = strconv.FormatBool(utils.Regexp2StringHasMatch(overrideRE, optionsYaml.Name))
+	}
 
 	code := strings.Replace(string(decodedRequest), string(options), "", -1)
 
-	return Example{Type: "", Options: optionsYaml, Code: code, Base64Request: string(req)}, nil
+	Logger.Debug("[%s] Example Information:\n%s", optionsYaml.Name, optionsYaml.String())
+
+	return Example{Options: optionsYaml, Code: code, Base64Request: string(req)}, nil
 }
 
 func (r Example) String() string {
@@ -111,12 +108,7 @@ func (r Example) String() string {
 }
 
 func (r ExampleOptions) String() string {
-	j, err := json.Marshal(r)
-	if err != nil {
-		return ""
-	}
-
-	return string(j)
+	return fmt.Sprintf("Type: %s\nVersion: %s\nSaveCache: %s\nPosition: %s\n", r.Type, r.Version, r.SaveCache, r.Position)
 }
 
 type ExampleResponse struct {

@@ -3,8 +3,8 @@ title: Executing AQL queries from _arangosh_
 menuTitle: with arangosh
 weight: 5
 description: >-
-  In the ArangoDB shell, you can use the db._query() and db._createStatement()
-  methods to execute AQL queries.
+  How to run queries, set bind parameters, and obtain the resulting and
+  additional information using the JavaScript API
 archetype: default
 ---
 In the ArangoDB shell, you can use the `db._query()` and `db._createStatement()`
@@ -429,7 +429,7 @@ the entire query result in RAM, use a streaming query (see the
 
 If you set this option to `true` and execute the query against a cluster
 deployment, then the Coordinator is allowed to read from any shard replica and
-not only from the leader. See [Read from followers](../../develop/http/documents.md#read-from-followers)
+not only from the leader. See [Read from followers](../../develop/http-api/documents.md#read-from-followers)
 for details.
 
 #### `skipInaccessibleCollections`

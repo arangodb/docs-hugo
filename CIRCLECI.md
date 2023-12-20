@@ -4,13 +4,14 @@
 
 The `plain-build` workflow is automatically triggered whenever there is a push
 in a PR.
+
 It is configured to build the docs without re-generating the examples
-(using a committed cache file.)
+(using a committed cache file).
 
 A plain build is sufficient for the following types of changes:
 
-- Creating a new page or editing an existing page, as long as no code blocks with front matter
-  (i.e. generated examples) are added or modified.
+- Creating a new page or editing an existing page, as long as no code blocks
+  with front matter (i.e. generated examples) are added or modified.
 
 - Adding a new or editing an existing HTTP API endpoint description, as long as no
   accompanying `` ```curl `` examples are added or modified. The `plain-build` workflow
@@ -21,27 +22,33 @@ The build report including OpenAPI syntax validation can be found in the
 
 Invoke Args:
 
-| Name | Value |
-|:-----|:------|
-| `workflow` | `plain-build` |
-| `deploy-url` | `deploy-preview-{PR_NUMBER}` |
+| Parameter Type | Name | Value |
+|:---------------|:-----|:------|
+| string | `workflow` | `plain-build` |
+| string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
 
-## Deploy to production a plain build
+### Deploy a plain build to production
 
-To publish a plain build to the production site hosted at <https://docs.arangodb.com>,
-follow the steps below:
+To update the live documentation independently of an ArangoDB release, for
+example, because of changes to the ArangoGraph docs or to publish documentation
+improvements before the next ArangoDB release, follow the steps below.
 
 1. Go to CircleCI and select the `docs-hugo` project.
 2. Select the `main` branch.
 3. Click the **Trigger Pipeline** button.
-4. Add the following parameter:
-   - Parameter type: string
-   - Name: `workflow`
-   - Value: `release`
+4. Add the parameters described below.
 5. Click **Trigger Pipeline**.
 
-The pipeline gets triggered, but stays on hold as it requires an approval.
-Select the pipeline from the dashboard and approve the workflow.
+**Parameters used for docs-only publication**
+
+| Parameter type | Name | Value |
+|:---------------|:-----|:------|
+| string | `workflow` | `release` |
+
+(The `release-type` is `docs` by default)
+
+The docs-only release workflow runs a **plain build** of the documentation and
+deploys to production at <https://docs.arangodb.com> without approval step.
 
 ## Example generation
 
@@ -65,14 +72,14 @@ image in the PR description, as they are required for the compile step.
 When commenting a PR with the `/generate` command, the following
 arguments are invoked:
 
-| Name | Value |
-|:-----|:------|
-| `workflow` | `generate` |
-| `arangodb-3_10` | `{string in PR Template at 3.10}` |
-| `arangodb-3_11` | `{string in PR Template at 3.11}` |
-| `arangodb-3_12` | `{string in PR Template at 3.12}` |
-| `generators` | `examples` |
-| `deploy-url` | `deploy-preview-{PR_NUMBER}` |
+| Parameter type | Name | Value |
+|:---------------|:-----|:------|
+| string | `workflow` | `generate` |
+| string | `arangodb-3_10` | [Upstream reference](#upstream-reference) for 3.10 |
+| string | `arangodb-3_11` | [Upstream reference](#upstream-reference) for 3.11 |
+| string | `arangodb-3_12` | [Upstream reference](#upstream-reference) for 3.12 |
+| string | `generators` | `examples` |
+| string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
 
 ### `/commit`
 
@@ -83,15 +90,15 @@ arguments are invoked:
 When commenting a PR with the `/generate-commit` command, the following
 arguments are invoked:
 
-| Name | Value |
-|:-----|:------|
-| `workflow` | `generate` |
-| `arangodb-3_10` | `{string in PR Template at 3.10}` |
-| `arangodb-3_11` | `{string in PR Template at 3.11}` |
-| `arangodb-3_12` | `{string in PR Template at 3.12}` |
-| `generators` | `examples` |
-| `deploy-url` | `deploy-preview-{PR_NUMBER}` |
-| `commit-generated` | `true` |
+| Parameter type | Name | Value |
+|:---------------|:-----|:------|
+| string | `workflow` | `generate` |
+| string | `arangodb-3_10` | [Upstream reference](#upstream-reference) for 3.10 |
+| string | `arangodb-3_11` | [Upstream reference](#upstream-reference) for 3.11 |
+| string | `arangodb-3_12` | [Upstream reference](#upstream-reference) for 3.12 |
+| string | `generators` | `examples` |
+| string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
+| boolean | `commit-generated` | `true` |
 
 ### `cache override`
 
@@ -111,18 +118,45 @@ Note that the override is valid for all versions that are specified using the
 `arangodb` parameters. You can override the example output for a single version
 or for multiple versions.
 
-| Name | Value |
-|:-----|:------|
-| `workflow` | `generate` |
-| `arangodb-3_10` | `{string in PR Template at 3.10}` |
-| `arangodb-3_11` | `{string in PR Template at 3.11}` |
-| `generators` | `examples` |
-| `commit-generated` | `true` |
-| `override` | `http,^aql.*` |
+| Parameter type | Name | Value |
+|:---------------|:-----|:------|
+| string | `workflow` | `generate` |
+| string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
+| string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
+| string | `generators` | `examples` |
+| boolean | `commit-generated` | `true` |
+| string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
+| string | `override` | `http,^aql.*` |
 
-## Release workflow (ArangoDB)
+### Upstream references
 
-To run a release job for a new ArangoDB patch release (e.g. 3.11.4), follow the
+Documentation pull requests specify upstream references like so:
+
+```markdown
+- 3.10: 
+- 3.11: https://github.com/arangodb/arangodb/pull/12345
+- 3.12: arangodb/enterprise-preview:devel-nightly
+```
+
+The above example indicates that ArangoDB versions 3.11 and 3.12 contain changes
+relevant to the docs PR, but 3.10 does not. Relevant changes are typically
+behavior changes of _arangod_ that will be visible in documentation examples.
+
+For 3.11, a link to a PR in the `arangodb/arangodb` repository is given. It is
+used by the GitHub integration to determine the feature branch to compile and
+use for generating examples. Do not specify a link when manually triggering a
+pipeline in CircleCI but the **branch name** (like `feature/new-aql-function`)!
+
+For 3.12, an ArangoDB Enterprise Edition image hosted on
+[Docker Hub](https://hub.docker.com/) is specified. Using Docker images has the
+advantage that the compilation of ArangoDB can be skipped, making the example
+generation faster. Of course, this requires that an image containing relevant
+changes to ArangoDB exists.
+
+## Release workflow for ArangoDB releases
+
+To run a release job for a new ArangoDB patch release (e.g. 3.11.4),
+minor release (e.g. 3.12.0), or major release (e.g. 4.0.0), follow the
 steps below.
 
 1. Go to CircleCI and select the `docs-hugo` project.
@@ -138,17 +172,19 @@ steps below.
 | string | `workflow` | `release` |
 | string | `release-type` | `arangodb` |
 | string | `docs-version` | `3.11` (the docs version folder) |
-| string | `arangodb-branch` | `3.11` |
-| string | `arangodb-version` | `3.11.4` |
+| string | `arangodb-branch` | `3.11` (the arangodb/arangodb branch to compile) |
+| string | `arangodb-version` | `3.11.4` (updates the `versions.yaml` file) |
 
 The ArangoDB release workflow includes the following jobs:
 - `generate` workflow (all examples are re-generated for the specified version)
-- a release branch is created with the generated content, which needs to be approved and merged
-- will be on hold until it is approved in CircleCI as well
-- once approved, starts deploying to production at https://docs.arangodb.com
+- will be on hold until the workflow run is approved in CircleCI
+- a release branch and pull request is created with the generated content, which
+  needs to be reviewed and merged on GitHub
+- once merged, the workflow in CircleCI needs to be approved again to start
+  deploying to production at <https://docs.arangodb.com>
 
-If any of the examples or generated content fails, the workflow will fail as well. 
-The build report can be found in the `generate-summary` check in GitHub.
+If any of the examples or generated content fails, the workflow fails as well.
+The build report can be found in the `generate-summary` check on GitHub.
 
 ## Scheduled workflow
 
@@ -163,32 +199,33 @@ This workflow uses predefined arguments and generates the data files of the foll
 
 Invoke Args:
 
-| Name | Value |
-|:-----|:------|
-| `workflow` | `generate-scheduled` |
-| `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
-| `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
-| `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
-| `generators` | `metrics error-codes optimizer options` |
-| `commit-generated` | `true` |
-| `create-pr` | `true` |
-| `pr-branch` | `scheduled-content-generate_$CIRCLE_BUILD_NUM` |
+| Parameter type | Name | Value |
+|:---------------|:-----|:------|
+| string | `workflow` | `generate-scheduled` |
+| string | `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
+| string | `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
+| string | `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
+| string | `generators` | `metrics error-codes optimizer options` |
+| boolean | `commit-generated` | `true` |
+| boolean | `create-pr` | `true` |
+| string | `pr-branch` | `scheduled-content-generate_$CIRCLE_BUILD_NUM` |
 
 Similarly, the `generate-oasisctl` workflow is automatically triggered
-and repeats on the 5th of every month. It generates pages about the command-line interface of the tool.
+and repeats on the 5th of every month. It generates pages about the
+command-line interface of the tool.
 
 Invoke Args:
 
-| Name | Value |
-|:-----|:------|
-| `workflow` | `generate-oasisctl` |
-| `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
-| `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
-| `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
-| `generators` | `oasisctl` |
-| `commit-generated` | `true` |
-| `create-pr` | `true` |
-| `pr-branch` | `scheduled-oasisctl-generate_$CIRCLE_BUILD_NUM` |
+| Parameter type | Name | Value |
+|:---------------|:-----|:------|
+| string | `workflow` | `generate-oasisctl` |
+| string | `arangodb-3_10` | `arangodb/enterprise-preview:3.10-nightly` |
+| string | `arangodb-3_11` | `arangodb/enterprise-preview:3.11-nightly` |
+| string | `arangodb-3_12` | `arangodb/enterprise-preview:devel-nightly` |
+| string | `generators` | `oasisctl` |
+| boolean | `commit-generated` | `true` |
+| boolean | `create-pr` | `true` |
+| string | `pr-branch` | `scheduled-oasisctl-generate_$CIRCLE_BUILD_NUM` |
 
 Both workflows can be manually triggered in the CircleCI web interface
 via **Trigger Pipeline**.
@@ -197,12 +234,12 @@ via **Trigger Pipeline**.
 
 ### Create Docs Images AMD64
 
-| Name | Value |
-|:-----|:------|
-| `workflow` | `create-docs-images-amd64` |
+| Parameter type | Name | Value |
+|:---------------|:-----|:------|
+| string | `workflow` | `create-docs-images-amd64` |
 
 ### Create Docs Images ARM64
 
-| Name | Value |
-|:-----|:------|
-| `workflow` | `create-docs-images-arm64` |
+| Parameter type | Name | Value |
+|:---------------|:-----|:------|
+| string | `workflow` | `create-docs-images-arm64` |

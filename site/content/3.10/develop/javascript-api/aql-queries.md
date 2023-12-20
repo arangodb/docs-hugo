@@ -1,14 +1,13 @@
 ---
-title: Queries Module
+title: The `@arangodb/aql/queries` module of the JavaScript API
 menuTitle: '@arangodb/aql/queries'
 weight: 20
 description: >-
-  Queries Module
+  The query module provides the infrastructure for working with currently
+  running AQL queries via arangosh
 archetype: default
 ---
 `const queries = require('@arangodb/aql/queries')`
-
-The query module provides the infrastructure for working with currently running AQL queries via arangosh.
 
 ## Properties
 

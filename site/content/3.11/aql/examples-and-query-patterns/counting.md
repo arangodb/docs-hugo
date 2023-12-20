@@ -3,7 +3,7 @@ title: Counting in AQL
 menuTitle: Counting
 weight: 10
 description: >-
-  To return the count of documents that currently exist in a collection,you can call the LENGTH() function
+  You can count the documents of a collection in different ways
 archetype: default
 ---
 ## Amount of documents in a collection

@@ -3,11 +3,10 @@ title: Information Retrieval with ArangoSearch
 menuTitle: ArangoSearch
 weight: 155
 description: >-
-  ArangoSearch is ArangoDB's built-in search engine for full-text, complex data structures and more
+  ArangoSearch is ArangoDB's built-in search engine for full-text, complex data
+  structures, and more
 archetype: chapter
 ---
-{{< description >}}
-
 ArangoSearch provides information retrieval features, natively integrated
 into ArangoDB's query language and with support for all data models. It is
 primarily a full-text search engine, a much more powerful alternative to the
@@ -69,7 +68,7 @@ user-defined relevance boosting and dynamic score calculation.
 
 ![Conceptual model of ArangoSearch interacting with Collections and Analyzers](../../../images/arangosearch.png)
 
-Views can be managed in the web interface, via an [HTTP API](../../develop/http/views/_index.md) and
+Views can be managed in the web interface, via an [HTTP API](../../develop/http-api/views/_index.md) and
 through a [JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#views).
 
 Views can be queried with AQL using the [`SEARCH` operation](../../aql/high-level-operations/search.md).
@@ -534,12 +533,27 @@ available.
 Here is an example that sorts results from high to low BM25 score and also
 returns the score:
 
+{{< tabs "view-definition">}}
+
+{{< tab "`search-alias` View" >}}
+```aql
+FOR doc IN food_view
+  SEARCH doc.type == "vegetable"
+  SORT BM25(doc) DESC
+  RETURN { name: doc.name, type: doc.type, score: BM25(doc) }
+```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN food_view
   SEARCH ANALYZER(doc.type == "vegetable", "identity")
   SORT BM25(doc) DESC
   RETURN { name: doc.name, type: doc.type, score: BM25(doc) }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 As you can see, the variable emitted by the View in the `FOR … IN` loop is
 passed to the [`BM25()` function](../../aql/functions/arangosearch.md#bm25).
@@ -552,12 +566,27 @@ passed to the [`BM25()` function](../../aql/functions/arangosearch.md#bm25).
 
 The [`TFIDF()` function](../../aql/functions/arangosearch.md#tfidf) works the same:
 
+{{< tabs "view-definition">}}
+
+{{< tab "`search-alias` View" >}}
+```aql
+FOR doc IN food_view
+  SEARCH doc.type == "vegetable"
+  SORT TFIDF(doc) DESC
+  RETURN { name: doc.name, type: doc.type, score: TFIDF(doc) }
+```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN food_view
   SEARCH ANALYZER(doc.type == "vegetable", "identity")
   SORT TFIDF(doc) DESC
   RETURN { name: doc.name, type: doc.type, score: TFIDF(doc) }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 It returns different scores:
 
@@ -591,8 +620,52 @@ including their sub-attributes without having to modifying the View definition
 as new sub-attribute are added. This is possible with `arangosearch` Views
 as well as with inverted indexes if you use them through `search-alias` Views.
 
-_`arangosearch` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
+You need to create an inverted index and enable the **Include All Fields**
+feature to index all document attributes, then add the index to a
+`search-alias` View. No matter what attributes you add to your documents,
+they will automatically get indexed.
+
+You can also add **Fields**, click their underlined names, and enable
+**Include All Fields** for specific attributes and their sub-attributes:
+
+```js
+...
+  "fields": [
+    {
+      "name": "value",
+      "includeAllFields": true
+    }
+  ],
+...
+```
+
+This will index the attribute `value` and its sub-attributes. Consider the
+following example document:
+
+```json
+{
+  "value": {
+    "nested": {
+      "deep": "apple pie"
+    }
+  }
+}
+```
+
+The View will automatically index `apple pie`, and it can then be queried
+like this:
+
+```aql
+FOR doc IN food_view
+  SEARCH doc.value.nested.deep == "apple pie"
+  RETURN doc
+```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
 We already used the **Include All Fields** feature to index all document
 attributes above when we modified the View definition to this:
 
@@ -655,53 +728,14 @@ FOR doc IN food_view
   RETURN doc
 ```
 
+{{< /tab >}}
+
+{{< /tabs >}}
+
 {{< warning >}}
 Using `includeAllFields` for a lot of attributes in combination with complex
 Analyzers may significantly slow down the indexing process.
 {{< /warning >}}
-
-_`search-alias` View:_
-
-You need to create an inverted index and enable the **Include All Fields**
-feature to index all document attributes, then add the index to a
-`search-alias` View. No matter what attributes you add to your documents,
-they will automatically get indexed.
-
-You can also add **Fields**, click their underlined names, and enable
-**Include All Fields** for specific attributes and their sub-attributes:
-
-```js
-...
-  "fields": [
-    {
-      "name": "value",
-      "includeAllFields": true
-    }
-  ],
-...
-```
-
-This will index the attribute `value` and its sub-attributes. Consider the
-following example document:
-
-```json
-{
-  "value": {
-    "nested": {
-      "deep": "apple pie"
-    }
-  }
-}
-```
-
-The View will automatically index `apple pie`, and it can then be queried
-like this:
-
-```aql
-FOR doc IN food_view
-  SEARCH doc.value.nested.deep == "apple pie"
-  RETURN doc
-```
 
 ### Indexing and querying arrays
 
@@ -773,23 +807,39 @@ For example, given the field `text` is analyzed with `"text_en"` and contains
 the string `"a quick brown fox jumps over the lazy dog"`, the following
 expression will be true:
 
-```aql
-// arangosearch View:
-ANALYZER(doc.text == 'fox', "text_en")
+{{< tabs "view-definition">}}
 
-// search-alias View:
+{{< tab "`search-alias` View" >}}
+```aql
 doc.text == 'fox'
 ```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
+```aql
+ANALYZER(doc.text == 'fox', "text_en")
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 Note that the `"text_en"` Analyzer stems the words, so this is also true:
 
-```aql
-// arangosearch View:
-ANALYZER(doc.text == 'jump', "text_en")
+{{< tabs "view-definition">}}
 
-// search-alias View:
+{{< tab "`search-alias` View" >}}
+```aql
 doc.text == 'jump'
 ```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
+```aql
+ANALYZER(doc.text == 'jump', "text_en")
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 So a comparison will actually test if a word is contained in the text. With
 `trackListPositions: false`, this means for arrays if the word is contained in
@@ -801,24 +851,40 @@ any element of the array. For example, given:
 
 … the following will be true:
 
-```aql
-// arangosearch View:
-ANALYZER(doc.text == 'jump', "text_en")
+{{< tabs "view-definition">}}
 
-// search-alias View:
+{{< tab "`search-alias` View" >}}
+```aql
 doc.text == 'jump'
 ```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
+```aql
+ANALYZER(doc.text == 'jump', "text_en")
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 With `trackListPositions: true` you would need to specify the index of the
 array element `"jumps over the"` to be true:
 
-```aql
-// arangosearch View:
-ANALYZER(doc.text[2] == 'jump', "text_en")
+{{< tabs "view-definition">}}
 
-// search-alias View:
+{{< tab "`search-alias` View" >}}
+```aql
 doc.text[2] == 'jump'
 ```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
+```aql
+ANALYZER(doc.text[2] == 'jump', "text_en")
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 Arrays of strings are handled similarly. Each array element is treated like a
 token (or possibly multiple tokens if a tokenizing Analyzer is used and

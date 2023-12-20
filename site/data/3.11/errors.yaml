@@ -1359,6 +1359,10 @@
   text: "queue time violated"
   desc: "Will be returned if a request with a queue time requirement is set and it cannot be fulfilled."
   code: 21004
+- name: ERROR_TOO_MANY_DETACHED_THREADS
+  text: "too many detached scheduler threads"
+  desc: "Will be returned if a scheduler thread tries to detach itself but there are already too many detached scheduler threads."
+  code: 21005
 - group: Maintenance errors
 - name: ERROR_ACTION_OPERATION_UNABORTABLE
   text: "this maintenance action cannot be stopped"

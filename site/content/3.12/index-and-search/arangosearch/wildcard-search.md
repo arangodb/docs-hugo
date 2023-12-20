@@ -6,8 +6,6 @@ description: >-
   Search for strings with placeholders that stand for one or many arbitrary characters
 archetype: default
 ---
-{{< description >}}
-
 You can use the `LIKE()` function for this search technique to find strings
 that start with, contain or end with a certain substring, but it can do more
 than that. You can place the special characters `_` and `%` as wildcards for
@@ -53,15 +51,16 @@ escaping (`\\\\` in bind variables and `\\\\\\\\` in queries)
 
 ### View definition
 
-#### `search-alias` View
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 db.imdb_vertices.ensureIndex({ name: "inv-exact", type: "inverted", fields: [ "title" ] });
 db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices", index: "inv-exact" } ] });
 ```
+{{< /tab >}}
 
-#### `arangosearch` View
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -77,6 +76,9 @@ db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices
   }
 }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ### AQL queries
 

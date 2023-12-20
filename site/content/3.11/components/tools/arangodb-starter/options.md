@@ -3,14 +3,10 @@ title: ArangoDB Starter Options
 menuTitle: Options
 weight: 5
 description: >-
-  The ArangoDB Starter provides a lot of options to control various aspects of the cluster or database you want to run
+  The Starter provides options to control various aspects of a cluster or other
+  deployment you want to run
 archetype: default
 ---
-The ArangoDB Starter provides a lot of options to control various aspects
-of the cluster or database you want to run.
-
-Below you find a list of all options and their meanings.
-
 ## Common options
 
 - `--starter.data-dir=path`
@@ -38,7 +34,7 @@ These are valid arguments, for example:
 ```
 
 You can also supply multiple addresses.
-See [Using multiple join arguments](../../../deploy/deployment/cluster/deployment/using-the-arangodb-starter.md#using-multiple-join-arguments)
+See [Using multiple join arguments](../../../deploy/cluster/deployment/using-the-arangodb-starter.md#using-multiple-join-arguments)
 for details.
 
 - `--starter.local`

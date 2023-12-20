@@ -1,9 +1,8 @@
 ---
-title: Request objects
+title: Foxx request objects
 menuTitle: Request
 weight: 15
-description: >-
-  The request object specifies the following properties
+description: ''
 archetype: default
 ---
 The request object specifies the following properties:

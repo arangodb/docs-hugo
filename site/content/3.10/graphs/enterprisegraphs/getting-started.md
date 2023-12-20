@@ -6,8 +6,6 @@ description: >-
   This chapter walks you through the first steps you need to follow to create an EnterpriseGraph
 archetype: default
 ---
-{{< description >}}
-
 EnterpriseGraphs **cannot use existing collections**. When switching to
 EnterpriseGraph from an existing dataset, you have to import the data into a
 fresh EnterpriseGraph.
@@ -216,7 +214,7 @@ EnterpriseGraphs. To get started, follow the steps outlined below.
 
 ![Create EnterpriseGraph](../../../images/graphs-create-enterprise-graph-dialog.png)
    
-## Create an EnterpriseGraph using _arangosh_
+## Create an EnterpriseGraph using *arangosh*
 
 Compared to SmartGraphs, the option `isSmart: true` is required but the
 `smartGraphAttribute` is forbidden. 

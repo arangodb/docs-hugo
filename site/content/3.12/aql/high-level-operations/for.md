@@ -1,5 +1,5 @@
 ---
-title: FOR operation in AQL
+title: '`FOR` operation in AQL'
 menuTitle: FOR
 weight: 5
 description: >-
@@ -7,8 +7,6 @@ description: >-
   elements of an array, or traverse a graph
 archetype: default
 ---
-{{< description >}}
-
 ## Syntax
 
 The general syntax for iterating over collections and arrays is:
@@ -95,7 +93,7 @@ Also see [Combining queries with subqueries](../fundamentals/subqueries.md).
 ## Options
 
 For collections and Views, the `FOR` construct supports an optional `OPTIONS`
-clause to modify behavior. The general syntax is:
+clause to modify the behavior. The general syntax is as follows:
 
 <pre><code>FOR <em>variableName</em> IN <em>expression</em> OPTIONS { <em>option</em>: <em>value</em>, <em>...</em> }</code></pre>
 

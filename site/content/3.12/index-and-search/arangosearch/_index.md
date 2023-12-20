@@ -3,11 +3,10 @@ title: Information Retrieval with ArangoSearch
 menuTitle: ArangoSearch
 weight: 155
 description: >-
-  ArangoSearch is ArangoDB's built-in search engine for full-text, complex data structures and more
+  ArangoSearch is ArangoDB's built-in search engine for full-text, complex data
+  structures, and more
 archetype: chapter
 ---
-{{< description >}}
-
 ArangoSearch provides information retrieval features, natively integrated
 into ArangoDB's query language and with support for all data models. It is
 primarily a full-text search engine, a much more powerful alternative to the
@@ -69,7 +68,7 @@ user-defined relevance boosting and dynamic score calculation.
 
 ![Conceptual model of ArangoSearch interacting with Collections and Analyzers](../../../images/arangosearch.png)
 
-Views can be managed in the web interface, via an [HTTP API](../../develop/http/views/_index.md) and
+Views can be managed in the web interface, via an [HTTP API](../../develop/http-api/views/_index.md) and
 through a [JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#views).
 
 Views can be queried with AQL using the [`SEARCH` operation](../../aql/high-level-operations/search.md).
@@ -310,8 +309,61 @@ There are a few pre-configured text Analyzers, but you can also add your own as
 needed. For now, let us use the built-in `text_en` Analyzer for tokenizing
 English text.
 
-_`arangosearch` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
+ 1. Collection indexes cannot be changed once created. Therefore, you need to
+    create a new inverted index to index a field differently.
+    In the **COLLECTIONS** section of the web interface, go to the **Indexes**
+    tab and click **Add Index**. 
+ 2. Select **Inverted index** as the **Type**.
+ 3. In the **Fields** panel, enter `name` into **Fields** and confirm.
+ 4. Click the underlined `name` field and select `text_en` as **Analyzer**.
+    Note that every field can only be indexed with a single Analyzer in inverted
+    indexes and `search-alias` Views.
+ 5. In the **General** panel, give the index a **Name** like `inv-idx-name-en`
+     to make it easier for you to identify the index.
+ 6. Click **Create**.
+    The inverted indexes indexes the `name` attribute of the documents with the
+    `text_en` Analyzer, which splits strings into tokens so that you can search
+    for individual words.
+ 7. In the **VIEWS** section, click the **Add View** card.
+ 8. Enter a name for the View (e.g. `food_view_fulltext`) and select
+    **search-alias** as the **Type**.
+ 9. Select the `food` collection as **Collection** and select the
+    `inv-idx-name-en` inverted index as **Index**.
+10. Click **Create**. After a few seconds, the `name` attribute has been indexed
+    with the `text_en` Analyzer.
+11. Run below query which searches for the word `pepper`:
+    ```aql
+    FOR doc IN food_view_fulltext
+      SEARCH doc.name == "pepper"
+      RETURN doc.name
+    ```
+    It matches `chili pepper` because the Analyzer tokenized it into `chili` and
+    `pepper` and the latter matches the search criterion.
+12. Try a different search term:
+    ```aql
+    FOR doc IN food_view_fulltext
+      SEARCH doc.name == "PéPPêR"
+      RETURN doc.name
+    ```
+    This does not match anything, even though the `text_en` Analyzer converts
+    characters to lowercase and accented characters to their base characters.
+    The problem is that this transformation is applied to the document attribute
+    when it gets indexed, but we haven't applied it to the search term.
+13. If we apply the same transformation then we get a match:
+    ```aql
+    FOR doc IN food_view_fulltext
+      SEARCH doc.name == TOKENS("PéPPêR", "text_en")[0]
+      RETURN doc.name
+    ```
+    Note that the [`TOKENS()` functions](../../aql/functions/string.md#tokens)
+    returns an array. We pick the first element with `[0]`, which is the
+    normalized search term `"pepper"`.
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
 1. In the **VIEWS** section of the web interface, click the card of the
    previously created `food_view` of type `arangosearch`.
 2. In the **Links** panel, click the underlined name of the
@@ -367,58 +419,9 @@ _`arangosearch` View:_
    Note that the [`TOKENS()` functions](../../aql/functions/string.md#tokens)
    returns an array. We pick the first element with `[0]`, which is the
    normalized search term `"pepper"`.
+{{< /tab >}}
 
-_`search-alias` View:_
-
- 1. Collection indexes cannot be changed once created. Therefore, you need to
-    create a new inverted index to index a field differently.
-    In the **COLLECTIONS** section of the web interface, go to the **Indexes**
-    tab and click **Add Index**. 
- 2. Select **Inverted index** as the **Type**.
- 3. In the **Fields** panel, enter `name` into **Fields** and confirm.
- 4. Click the underlined `name` field and select `text_en` as **Analyzer**.
-    Note that every field can only be indexed with a single Analyzer in inverted
-    indexes and `search-alias` Views.
- 5. In the **General** panel, give the index a **Name** like `inv-idx-name-en`
-     to make it easier for you to identify the index.
- 6. Click **Create**.
-    The inverted indexes indexes the `name` attribute of the documents with the
-    `text_en` Analyzer, which splits strings into tokens so that you can search
-    for individual words.
- 7. In the **VIEWS** section, click the **Add View** card.
- 8. Enter a name for the View (e.g. `food_view_fulltext`) and select
-    **search-alias** as the **Type**.
- 9. Select the `food` collection as **Collection** and select the
-    `inv-idx-name-en` inverted index as **Index**.
-10. Click **Create**. After a few seconds, the `name` attribute has been indexed
-    with the `text_en` Analyzer.
-11. Run below query which searches for the word `pepper`:
-    ```aql
-    FOR doc IN food_view_fulltext
-      SEARCH doc.name == "pepper"
-      RETURN doc.name
-    ```
-    It matches `chili pepper` because the Analyzer tokenized it into `chili` and
-    `pepper` and the latter matches the search criterion.
-12. Try a different search term:
-    ```aql
-    FOR doc IN food_view_fulltext
-      SEARCH doc.name == "PéPPêR"
-      RETURN doc.name
-    ```
-    This does not match anything, even though the `text_en` Analyzer converts
-    characters to lowercase and accented characters to their base characters.
-    The problem is that this transformation is applied to the document attribute
-    when it gets indexed, but we haven't applied it to the search term.
-13. If we apply the same transformation then we get a match:
-    ```aql
-    FOR doc IN food_view_fulltext
-      SEARCH doc.name == TOKENS("PéPPêR", "text_en")[0]
-      RETURN doc.name
-    ```
-    Note that the [`TOKENS()` functions](../../aql/functions/string.md#tokens)
-    returns an array. We pick the first element with `[0]`, which is the
-    normalized search term `"pepper"`.
+{{< /tabs >}}
 
 ### Search expressions with ArangoSearch functions
 
@@ -534,12 +537,27 @@ available.
 Here is an example that sorts results from high to low BM25 score and also
 returns the score:
 
+{{< tabs "view-definition">}}
+
+{{< tab "`search-alias` View" >}}
+```aql
+FOR doc IN food_view
+  SEARCH doc.type == "vegetable"
+  SORT BM25(doc) DESC
+  RETURN { name: doc.name, type: doc.type, score: BM25(doc) }
+```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN food_view
   SEARCH ANALYZER(doc.type == "vegetable", "identity")
   SORT BM25(doc) DESC
   RETURN { name: doc.name, type: doc.type, score: BM25(doc) }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 As you can see, the variable emitted by the View in the `FOR … IN` loop is
 passed to the [`BM25()` function](../../aql/functions/arangosearch.md#bm25).
@@ -552,12 +570,27 @@ passed to the [`BM25()` function](../../aql/functions/arangosearch.md#bm25).
 
 The [`TFIDF()` function](../../aql/functions/arangosearch.md#tfidf) works the same:
 
+{{< tabs "view-definition">}}
+
+{{< tab "`search-alias` View" >}}
+```aql
+FOR doc IN food_view
+  SEARCH doc.type == "vegetable"
+  SORT TFIDF(doc) DESC
+  RETURN { name: doc.name, type: doc.type, score: TFIDF(doc) }
+```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN food_view
   SEARCH ANALYZER(doc.type == "vegetable", "identity")
   SORT TFIDF(doc) DESC
   RETURN { name: doc.name, type: doc.type, score: TFIDF(doc) }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 It returns different scores:
 
@@ -591,8 +624,52 @@ including their sub-attributes without having to modifying the View definition
 as new sub-attribute are added. This is possible with `arangosearch` Views
 as well as with inverted indexes if you use them through `search-alias` Views.
 
-_`arangosearch` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
+You need to create an inverted index and enable the **Include All Fields**
+feature to index all document attributes, then add the index to a
+`search-alias` View. No matter what attributes you add to your documents,
+they will automatically get indexed.
+
+You can also add **Fields**, click their underlined names, and enable
+**Include All Fields** for specific attributes and their sub-attributes:
+
+```js
+...
+  "fields": [
+    {
+      "name": "value",
+      "includeAllFields": true
+    }
+  ],
+...
+```
+
+This will index the attribute `value` and its sub-attributes. Consider the
+following example document:
+
+```json
+{
+  "value": {
+    "nested": {
+      "deep": "apple pie"
+    }
+  }
+}
+```
+
+The View will automatically index `apple pie`, and it can then be queried
+like this:
+
+```aql
+FOR doc IN food_view
+  SEARCH doc.value.nested.deep == "apple pie"
+  RETURN doc
+```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
 We already used the **Include All Fields** feature to index all document
 attributes above when we modified the View definition to this:
 
@@ -655,53 +732,14 @@ FOR doc IN food_view
   RETURN doc
 ```
 
+{{< /tab >}}
+
+{{< /tabs >}}
+
 {{< warning >}}
 Using `includeAllFields` for a lot of attributes in combination with complex
 Analyzers may significantly slow down the indexing process.
 {{< /warning >}}
-
-_`search-alias` View:_
-
-You need to create an inverted index and enable the **Include All Fields**
-feature to index all document attributes, then add the index to a
-`search-alias` View. No matter what attributes you add to your documents,
-they will automatically get indexed.
-
-You can also add **Fields**, click their underlined names, and enable
-**Include All Fields** for specific attributes and their sub-attributes:
-
-```js
-...
-  "fields": [
-    {
-      "name": "value",
-      "includeAllFields": true
-    }
-  ],
-...
-```
-
-This will index the attribute `value` and its sub-attributes. Consider the
-following example document:
-
-```json
-{
-  "value": {
-    "nested": {
-      "deep": "apple pie"
-    }
-  }
-}
-```
-
-The View will automatically index `apple pie`, and it can then be queried
-like this:
-
-```aql
-FOR doc IN food_view
-  SEARCH doc.value.nested.deep == "apple pie"
-  RETURN doc
-```
 
 ### Indexing and querying arrays
 
@@ -773,23 +811,39 @@ For example, given the field `text` is analyzed with `"text_en"` and contains
 the string `"a quick brown fox jumps over the lazy dog"`, the following
 expression will be true:
 
-```aql
-// arangosearch View:
-ANALYZER(doc.text == 'fox', "text_en")
+{{< tabs "view-definition">}}
 
-// search-alias View:
+{{< tab "`search-alias` View" >}}
+```aql
 doc.text == 'fox'
 ```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
+```aql
+ANALYZER(doc.text == 'fox', "text_en")
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 Note that the `"text_en"` Analyzer stems the words, so this is also true:
 
-```aql
-// arangosearch View:
-ANALYZER(doc.text == 'jump', "text_en")
+{{< tabs "view-definition">}}
 
-// search-alias View:
+{{< tab "`search-alias` View" >}}
+```aql
 doc.text == 'jump'
 ```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
+```aql
+ANALYZER(doc.text == 'jump', "text_en")
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 So a comparison will actually test if a word is contained in the text. With
 `trackListPositions: false`, this means for arrays if the word is contained in
@@ -801,24 +855,40 @@ any element of the array. For example, given:
 
 … the following will be true:
 
-```aql
-// arangosearch View:
-ANALYZER(doc.text == 'jump', "text_en")
+{{< tabs "view-definition">}}
 
-// search-alias View:
+{{< tab "`search-alias` View" >}}
+```aql
 doc.text == 'jump'
 ```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
+```aql
+ANALYZER(doc.text == 'jump', "text_en")
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 With `trackListPositions: true` you would need to specify the index of the
 array element `"jumps over the"` to be true:
 
-```aql
-// arangosearch View:
-ANALYZER(doc.text[2] == 'jump', "text_en")
+{{< tabs "view-definition">}}
 
-// search-alias View:
+{{< tab "`search-alias` View" >}}
+```aql
 doc.text[2] == 'jump'
 ```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
+```aql
+ANALYZER(doc.text[2] == 'jump', "text_en")
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 Arrays of strings are handled similarly. Each array element is treated like a
 token (or possibly multiple tokens if a tokenizing Analyzer is used and

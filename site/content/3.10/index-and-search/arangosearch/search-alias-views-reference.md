@@ -1,6 +1,6 @@
 ---
-title: search-alias Views Reference
-menuTitle: <code>search-alias</code> Views Reference
+title: '`search-alias` Views Reference'
+menuTitle: '`search-alias` Views Reference'
 weight: 80
 description: ''
 archetype: default
@@ -24,12 +24,12 @@ Some of the inverted index settings only apply if they are used in a
 index standalone or as part of a View.
 
 Inverted indexes can be managed as follows:
-- via the [Indexes HTTP API](../../develop/http/indexes/inverted.md)
+- via the [Indexes HTTP API](../../develop/http-api/indexes/inverted.md)
 - through the [JavaScript API](../indexing/working-with-indexes/_index.md#creating-an-index)
   with `<collection>.ensureIndex()`
 
 Views of type `search-alias` can be managed as follows:
-- via the [Views HTTP API](../../develop/http/views/_index.md)
+- via the [Views HTTP API](../../develop/http-api/views/_index.md)
 - through the [JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#views)
 
 Once you set up a View, you can query it via AQL with the

@@ -3,7 +3,7 @@ title: SatelliteGraph Management
 menuTitle: Management
 weight: 5
 description: >-
-  This chapter describes the JavaScript interface for creating and modifying SatelliteGraphs
+  How to manage named graphs of the type SatelliteGraph
 archetype: default
 ---
 This chapter describes the `satellite-graph` module, the JavaScript API to
@@ -219,7 +219,7 @@ db._drop("vertices");
 Alternatively, you can `truncate()` all collections of the graph if you just
 want to get rid of the data but keep the collections and graph definition.
 
-### Remove an edge collection
+### Remove an edge definition
 
 Delete an edge definition from the graph:
 

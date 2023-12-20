@@ -6,8 +6,6 @@ description: >-
   Search for phrases and nearby words in full-text
 archetype: default
 ---
-{{< description >}}
-
 With phrase search, you can query for tokens in a certain order. This allows
 you to match partial or full sentences. You can also specify how many arbitrary
 tokens may occur between defined tokens for word proximity searches.
@@ -18,15 +16,16 @@ tokens may occur between defined tokens for word proximity searches.
 
 ## View definition
 
-### `search-alias` View
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 db.imdb_vertices.ensureIndex({ name: "inv-text", type: "inverted", fields: [ { name: "description", analyzer: "text_en" } ] });
 db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices", index: "inv-text" } ] });
 ```
+{{< /tab >}}
 
-### `arangosearch` View
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -42,6 +41,9 @@ db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices
   }
 }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Phrase Search
 
@@ -69,13 +71,13 @@ constructed dynamically using a subquery for instance:
 
 ```aql
 LET p = (
-  FOR word IN ["tale", "of", "a", "woman"]
+  FOR word IN TOKENS("tale of a woman", "text_en")
     SORT RAND()
     LIMIT 2
     RETURN word
 )
 FOR doc IN imdb
-  SEARCH ANALYZER(PHRASE(doc.description, p), "text_en")
+  SEARCH PHRASE(doc.description, p, "text_en")
   RETURN {
     title: doc.title,
     description: doc.description
@@ -121,7 +123,7 @@ performs a proximity search for movies with the phrase
 their description:
 
 ```aql
-LET title = DOCUMENT("imdb_vertices/39967").title // Family Business
+LET title = FIRST(FOR doc IN imdb_vertices FILTER doc._key == "39967" RETURN doc.title) // Family Business
 FOR doc IN imdb
   SEARCH
     PHRASE(doc.description, INTERLEAVE(TOKENS(title, "text_en"), [1]), "text_en") OR

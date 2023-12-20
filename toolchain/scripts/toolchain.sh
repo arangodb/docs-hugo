@@ -34,7 +34,7 @@ echo "[INIT] Environment variables:"
 
 ## if no generators set, defaults to all
 if [[ -z "${GENERATORS}" ]] || [ "${GENERATORS}" == "" ]; then
-  GENERATORS="examples metrics error-codes options optimizer oasisctl"
+  GENERATORS="examples metrics error-codes options optimizer"
 fi
 
 ## Split the ARANGODB_BRANCH env var into name, image, version fields (for CI/CD)
@@ -224,11 +224,6 @@ function run_arangoproxy_and_site() {
     arch="arm64"
   fi
 
-  docker pull arangodb/docs-hugo:arangoproxy-"$arch"
-  docker pull arangodb/docs-hugo:site-"$arch"
-  docker tag arangodb/docs-hugo:arangoproxy-"$arch" arangoproxy
-  docker tag arangodb/docs-hugo:site-"$arch" site
-
   set +e
   
   cd ../../
@@ -246,7 +241,7 @@ function run_arangoproxy_and_site() {
       -p 1313:1313 \
       --volumes-from toolchain \
       --log-opt tag="{{.Name}}" \
-      site
+      arangodb/docs-hugo:site-"$arch"
 
     docker run -d --name docs_arangoproxy --network=docs_net --ip=192.168.129.129 \
       -e ENV="$ENV" \
@@ -256,7 +251,7 @@ function run_arangoproxy_and_site() {
       -v arangosh:/arangosh \
       --volumes-from toolchain \
       --log-opt tag="{{.Name}}" \
-      arangoproxy
+      arangodb/docs-hugo:arangoproxy-"$arch"
   fi
 }
 
@@ -367,19 +362,44 @@ function process_server() {
   echo "</ul></li>" >> /home/summary.md
 }
 
+### Check status of ArangoDB instance until it is up and running
+function wait_for_arangodb_ready() {
+  attempts="${2:-1}"
+  res=$(docker exec -it $1 wget -q -S -O - http://localhost:8529/_api/version 2>&1 | grep -m 1 HTTP/ | awk '{print $2}')
+  if [ "$res" = "200" ]; then
+    log "Server is ready: $1"
+  else
+    log "Server not ready: $1  $res"
+    let attempts++
+    if [ "$attempts" -gt 30 ]; then
+      log "Giving up waiting on server."
+      exit 1
+    else
+      sleep 2s
+      wait_for_arangodb_ready $1 $attempts
+    fi
+  fi
+}
+
+
 ### Setup and run an ArangoDB docker image
 function run_arangodb_container() {
   container_name="$1"
   image_id="$2"
 
   if [ $TRAP == 0 ]; then
-    log "[run_arangodb_container] Run single server"
-    docker run -e ARANGO_NO_AUTH=1 --net docs_net --name "$container_name" -v arangosh:/tmp -d "$image_id" --server.endpoint http+tcp://0.0.0.0:8529
-
     log "[run_arangodb_container] Run cluster server"
     docker run -d --net=docs_net -e ARANGO_NO_AUTH=1 --name="$container_name"_cluster \
       "$image_id" \
       arangodb --starter.local --starter.data-dir=./localdata
+
+    log "[run_arangodb_container] Run single server"
+    docker run -d --net docs_net -e ARANGO_NO_AUTH=1 --name "$container_name" -v arangosh:/tmp \
+      "$image_id" \
+      --server.endpoint http+tcp://0.0.0.0:8529
+
+    wait_for_arangodb_ready "$container_name"
+    wait_for_arangodb_ready "$container_name"_cluster
   fi
 }
 
@@ -522,6 +542,10 @@ function generate_oasisctl() {
 
   log "[generate_oasisctl] Generate OasisCTL docs"
 
+  if [ ! -f /tmp/oasisctl.zip ]; then
+    log "[generate_oasisctl] /tmp/oasisctl.zip not found. Invoking download_oasisctl"
+    download_oasisctl
+  fi
 
   mkdir -p /tmp/oasisctl
   mkdir -p /tmp/preserve
@@ -549,6 +573,17 @@ function generate_oasisctl() {
   echo "</li>" >> /home/summary.md
 
   log "[generate_oasisctl] Done"
+}
+
+function download_oasisctl() {
+  oasisctlVersion=$(curl -I https://github.com/arangodb-managed/oasisctl/releases/latest | awk -F '/' '/^location/ {print  substr($NF, 1, length($NF)-1)}')
+  log "[download_oasisctl] Downloading oasisctl version $oasisctlVersion"
+  cd /tmp
+  wget https://github.com/arangodb-managed/oasisctl/releases/download/$oasisctlVersion/oasisctl.zip
+  unzip oasisctl.zip
+  mv bin/linux/arm/ bin/linux/arm64
+  mv bin/linux/amd64/oasisctl /usr/bin/oasisctl && chmod +x /usr/bin/oasisctl
+  cd /home/toolchain/scripts
 }
 
 

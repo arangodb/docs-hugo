@@ -57,7 +57,7 @@ supports the SCIM provisioning feature.
 3. Navigate to the **Provisioning** tab. The SCIM connection settings are
    displayed under **Settings > Integration**.
 4. Fill in the following fields:
-   - For **SCIM connector base URL**, use `https://cloud.arangodb.com/api/scim/v1`
+   - For **SCIM connector base URL**, use `https://dashboard.arangodb.cloud/api/scim/v1`
    - For **Unique identifier field for users**, use `userName`
 5. For **Supported provisioning actions**, enable the following:
    - **Import New Users and Profile Updates**

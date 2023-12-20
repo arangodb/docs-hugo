@@ -142,13 +142,11 @@ func (formatter OpenapiFormatter) EditDescriptions(req []byte) []byte {
 	payloadString = strings.Replace(payloadString, "{{< warning >}}", "> **WARNING:**", -1)
 	payloadString = strings.Replace(payloadString, "{{< info >}}", "> **INFO:**", -1)
 	payloadString = strings.Replace(payloadString, "{{< danger >}}", "> **DANGER:**", -1)
-	payloadString = strings.Replace(payloadString, "{{< success >}}", "> **SUCCESS:**", -1)
 	payloadString = strings.Replace(payloadString, "{{< tip >}}", "> **TIP:**", -1)
 
 	payloadString = strings.Replace(payloadString, "{{< /tip >}}", "", -1)
 	payloadString = strings.Replace(payloadString, "{{< /warning >}}", "", -1)
 	payloadString = strings.Replace(payloadString, "{{< /info >}}", "", -1)
-	payloadString = strings.Replace(payloadString, "{{< /success >}}", "", -1)
 	payloadString = strings.Replace(payloadString, "{{< /danger >}}", "", -1)
 
 	return []byte(payloadString)

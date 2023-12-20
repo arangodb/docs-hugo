@@ -26,8 +26,7 @@ function menuEntryClickListener() {
             toggleMenuItem(event)
             return
         }
-        console.log(event.target)
-        updateHistory("", event.target.getAttribute('href'))
+        updateHistory(event.target.getAttribute('href'))
         $('#sidebar.mobile').removeClass("active")
 
     });
@@ -95,7 +94,7 @@ function decodeHtmlEntities(text) {
 }
 
 function replaceArticle(href, newDoc) {
-  var re = new RegExp(/<title>(.*?)<\/title>/, "m");
+  var re = /<title>(.*?)<\/title>/;
   var match = re.exec(newDoc);
 
   $(".container-main").replaceWith($(".container-main", newDoc));
@@ -109,17 +108,14 @@ function replaceArticle(href, newDoc) {
 }
 
 
-function updateHistory(title, url) {
-  console.log("Update History " + url)
-  if (url == window.location.href) {
+function updateHistory(urlPath) {
+  if (urlPath == window.location.pathname + window.location.hash) {
     return
   } 
   
-  window.history.pushState("navchange", "ArangoDB Documentation", url);
+  window.history.pushState("navchange", "ArangoDB Documentation", urlPath);
+  if (!urlPath.startsWith("#")) trackPageView(document.title, urlPath);
 
-  var _hsq = window._hsq = window._hsq || [];
-  _hsq.push(['setPath', url]);
-  _hsq.push(['trackPageView']);
   var popStateEvent = new PopStateEvent('popstate', { state: "navchange" });
   dispatchEvent(popStateEvent);
 }
@@ -158,11 +154,23 @@ function loadPage(target) {
   getCurrentVersion(href);
   renderVersion();
   loadMenu(new URL(href).pathname);
-  var version = getVersionInfo(getVersionByURL()).name
-  href = href.replace(getVersionByURL(), version)
+  var version = getVersionInfo(getVersionByURL()).name;
+  href = href.replace(getVersionByURL(), version);
+  var xhr = new XMLHttpRequest();
   $.get({
+    xhr: function() { return xhr; },
     url: href,
     success: function(newDoc) {
+      if (xhr.responseURL && href.replace(/#.*/, "") !== xhr.responseURL) {
+        updateHistory(xhr.responseURL.replace(version, getVersionByURL()));
+        return;
+      }
+      if (!newDoc.includes("<body>")) {
+        // https://github.com/gohugoio/hugo/blob/master/tpl/tplimpl/embedded/templates/alias.html
+        var match = /<title>(.*?)<\/title>/.exec(newDoc)[1];
+        updateHistory(match.replace(version, getVersionByURL()))
+        return;
+      }
       replaceArticle(href, newDoc)
       scrollToFragment();
       initArticle(href);
@@ -175,9 +183,13 @@ function loadPage(target) {
 }
 
 function internalLinkListener() {
-  $('.link-internal').click(function(event) {
+  $('.link').click(function(event) {
+    if (event.target.getAttribute("target")) {
+      // external link
+      return;
+    }
     event.preventDefault();
-    updateHistory("", event.target.getAttribute('href'))
+    updateHistory(event.target.getAttribute('href'))
   })
 }
 
@@ -189,7 +201,18 @@ function codeShowMoreListener() {
   })
 }
 
+function trackPageView(title, urlPath) {
+  if (window.gtag) {
+    gtag('config', 'G-6PSX8LKTTJ', {
+      'page_title': title,
+      'page_path': urlPath
+    });
+  }
 
+  var _hsq = window._hsq = window._hsq || [];
+  _hsq.push(['setPath', urlPath]);
+  _hsq.push(['trackPageView']);
+}
 
 function initArticle(url) {
   restoreTabSelections();
@@ -199,7 +222,7 @@ function initArticle(url) {
   styleImages();
   internalLinkListener();
   codeShowMoreListener();
-  aliazeLinks('article', 'a.link-internal');
+  aliazeLinks('article', 'a.link:not([target])');
   aliazeLinks('article', 'a.header-link');
   aliazeLinks('#breadcrumbs', 'a')
 }
@@ -209,18 +232,12 @@ function initArticle(url) {
 $(window).on('popstate', function (e) {
   var state = e.originalEvent.state;
   if (state !== null) {
-    console.log("Received popstate event " + window.location.href)
     loadPage(window.location.href);
   }
 });
 
 $(window).on('hashchange', function (e) {
   window.history.pushState("popstate", "ArangoDB Documentation", window.location.href);
-
-  var _hsq = window._hsq = window._hsq || [];
-  _hsq.push(['setPath', window.location.href]);
-  _hsq.push(['trackPageView']);
-
   scrollToFragment()
 });
 
@@ -408,16 +425,14 @@ function changeVersion() {
         localStorage.setItem('docs-version', newVersion);
         renderVersion();
         window.setupDocSearch(newVersion);
-        console.log(newVersion);
     } catch(exception) {
       console.log({exception})
         changeVersion();
     }
 
     
-    var newUrl = window.location.href.replace(getVersionByURL(), getVersionInfo(newVersion).alias)
-    console.log("Change Version URL " + newUrl)
-    updateHistory("", newUrl);
+    var newUrl = window.location.pathname.replace(getVersionByURL(), getVersionInfo(newVersion).alias) + window.location.hash;
+    updateHistory(newUrl);
 }
 
 
@@ -444,7 +459,6 @@ function hideEmptyOpenapiDiv() {
     if (element.tagName == "DETAILS") {
       method = fragment.split("_").slice(0,2).join("_")
       fields = fragment.split("_").slice(2)
-      console.log(fields)
       for (var i = 0; i < fields.length; i++) {
         field = fields.slice(0, i+1).join("_")
         var el = document.getElementById(method+"_"+field);
@@ -462,7 +476,6 @@ function initClickHandlers() {
     $(".openapi-prop").click(function(event) {
         if (this === event.target) {
             $(event.target).toggleClass("collapsed");
-            console.log($(event.target).find('.openapi-prop-content').first())
             $(event.target).find('.openapi-prop-content').first().toggleClass("hidden");
         }
     });
@@ -513,8 +526,8 @@ const goToTop = (event) => {
 
 function goToHomepage(event){
     event.preventDefault();
-    var homepage = window.location.origin + "/" + getVersionByURL() + "/";
-    updateHistory("", homepage);
+    var homepage = "/" + getVersionByURL() + "/";
+    updateHistory(homepage);
 }
 
 function copyURI(evt) {
@@ -540,10 +553,7 @@ function toggleExpandShortcode(event) {
 
 window.onload = () => {
     window.history.pushState("popstate", "ArangoDB Documentation", window.location.href);
-
-    var _hsq = window._hsq = window._hsq || [];
-    _hsq.push(['setPath', window.location.href]);
-    _hsq.push(['trackPageView']);
+    trackPageView(document.title, window.location.pathname);
 
     var iframe =  document.getElementById('menu-iframe');
     var iFrameBody = iframe.contentDocument || iframe.contentWindow.document;
@@ -557,7 +567,12 @@ window.onload = () => {
     renderVersion();
     loadPage(window.location.href)
 
-    window.setupDocSearch(getVersionInfo(getVersionByURL()).name);
+    if (getVersionInfo(getVersionByURL()) != undefined) {
+      window.setupDocSearch(getVersionInfo(getVersionByURL()).name);
+    } else {
+      window.setupDocSearch(stableVersion);
+
+    }
 
     content.addEventListener("click", menuToggleClick);
 

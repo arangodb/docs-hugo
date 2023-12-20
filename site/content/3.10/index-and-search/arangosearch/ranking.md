@@ -6,8 +6,6 @@ description: >-
   You can query Views and return the most relevant results first based on their ranking score
 archetype: default
 ---
-{{< description >}}
-
 ArangoSearch supports the two most popular ranking schemes:
 
 - [Okapi BM25](https://en.wikipedia.org/wiki/Okapi_BM25)
@@ -59,8 +57,9 @@ inverse document frequency (IDF).
 
 ### View definition
 
-#### `search-alias` View
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 db.imdb_vertices.ensureIndex({
   name: "inv-text",
@@ -74,9 +73,9 @@ db._createView("imdb_alias", "search-alias", { indexes: [
   { collection: "imdb_vertices", index: "inv-text" }
 ] });
 ```
+{{< /tab >}}
 
-#### `arangosearch` View
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -92,14 +91,18 @@ db._createView("imdb_alias", "search-alias", { indexes: [
   }
 }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ### AQL queries
 
 Search for movies with certain keywords in their description and rank the
 results using the [`BM25()` function](../../aql/functions/arangosearch.md#bm25):
 
-_`search-alias` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```aql
 FOR doc IN imdb_alias
   SEARCH doc.description IN TOKENS("amazing action world alien sci-fi science documental galaxy", "text_en")
@@ -111,9 +114,9 @@ FOR doc IN imdb_alias
     score: BM25(doc)
   }
 ```
+{{< /tab >}}
 
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(doc.description IN TOKENS("amazing action world alien sci-fi science documental galaxy", "text_en"), "text_en")
@@ -125,6 +128,9 @@ FOR doc IN imdb
     score: BM25(doc)
   }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | title | description | score |
 |:------|:------------|:------|
@@ -141,8 +147,9 @@ FOR doc IN imdb
 
 Do the same but with the [`TFIDF()` function](../../aql/functions/arangosearch.md#tfidf):
 
-_`search-alias` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```aql
 FOR doc IN imdb_alias
   SEARCH doc.description IN TOKENS("amazing action world alien sci-fi science documental galaxy", "text_en")
@@ -154,9 +161,9 @@ FOR doc IN imdb_alias
     score: TFIDF(doc)
   }
 ```
+{{< /tab >}}
 
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(doc.description IN TOKENS("amazing action world alien sci-fi science documental galaxy", "text_en"), "text_en")
@@ -168,6 +175,9 @@ FOR doc IN imdb
     score: TFIDF(doc)
   }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | title | description | score |
 |:------|:------------|:------|
@@ -214,6 +224,19 @@ attribute with the built-in `text-en` Analyzer. Then, you can run the following
 query to find movies that contain the token `ninja` in the description, sorted
 by best matching according to the Okapi BM25 scoring scheme:
 
+{{< tabs "view-definition">}}
+
+{{< tab "`search-alias` View" >}}
+```aql
+FOR doc IN imdb_alias
+  SEARCH doc.description IN TOKENS("ninja", "text_en")
+  LET score = BM25(doc)
+  SORT score DESC
+  RETURN { title: doc.title, score }
+```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(doc.description IN TOKENS("ninja", "text_en"), "text_en")
@@ -221,6 +244,9 @@ FOR doc IN imdb
   SORT score DESC
   RETURN { title: doc.title, score }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 Note the 5th and 6th result, which both have the same score of `6.30634880065918`:
 
@@ -237,6 +263,20 @@ Note the 5th and 6th result, which both have the same score of `6.30634880065918
 If you add a `LIMIT` operation for pagination and fetch the first 5 results,
 you may get the **Batman movie** as the 5th result:
 
+{{< tabs "view-definition">}}
+
+{{< tab "`search-alias` View" >}}
+```aql
+FOR doc IN imdb_alias
+  SEARCH doc.description IN TOKENS("ninja", "text_en")
+  LET score = BM25(doc)
+  SORT score DESC
+  LIMIT 0, 5
+  RETURN { title: doc.title, score }
+```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(doc.description IN TOKENS("ninja", "text_en"), "text_en")
@@ -245,6 +285,9 @@ FOR doc IN imdb
   LIMIT 0, 5
   RETURN { title: doc.title, score }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | title | score |
 |:------|:------|
@@ -278,6 +321,20 @@ consistently sorted by the document identifier to break ties. This guarantees
 that either the Batman or the Ninja Turtles movie is included in the first batch
 and the other movie in the second batch.
 
+{{< tabs "view-definition">}}
+
+{{< tab "`search-alias` View" >}}
+```aql
+FOR doc IN imdb_alias
+  SEARCH doc.description IN TOKENS("ninja", "text_en")
+  LET score = BM25(doc)
+  SORT score DESC, doc._id
+  LIMIT 0, 5  // first batch
+  RETURN { title: doc.title, score }
+```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(doc.description IN TOKENS("ninja", "text_en"), "text_en")
@@ -286,6 +343,9 @@ FOR doc IN imdb
   LIMIT 0, 5  // first batch
   RETURN { title: doc.title, score }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | title | score |
 |:------|:------|
@@ -295,6 +355,20 @@ FOR doc IN imdb
 | TMNT | 7.002012729644775 | 
 | **Teenage Mutant Ninja Turtles II: The Secret of the Ooze** | 6.30634880065918 | 
 
+{{< tabs "view-definition">}}
+
+{{< tab "`search-alias` View" >}}
+```aql
+FOR doc IN imdb_alias
+  SEARCH doc.description IN TOKENS("ninja", "text_en")
+  LET score = BM25(doc)
+  SORT score DESC, doc._id
+  LIMIT 5, 5  // second batch
+  RETURN { title: doc.title, score }
+```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(doc.description IN TOKENS("ninja", "text_en"), "text_en")
@@ -303,6 +377,9 @@ FOR doc IN imdb
   LIMIT 5, 5  // second batch
   RETURN { title: doc.title, score }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | title | score |
 |:------|:------|
@@ -330,8 +407,9 @@ boosted parts of the search expression will get higher scores.
 
 ### View definition
 
-#### `search-alias` View
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 db.imdb_vertices.ensureIndex({
   name: "inv-text",
@@ -345,9 +423,9 @@ db._createView("imdb_alias", "search-alias", { indexes: [
   { collection: "imdb_vertices", index: "inv-text" }
 ] });
 ```
+{{< /tab >}}
 
-#### `arangosearch` View
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -363,13 +441,17 @@ db._createView("imdb_alias", "search-alias", { indexes: [
   }
 }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ### AQL queries
 
 Prefer `galaxy` over the other keywords:
 
-_`search-alias` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```aql
 FOR doc IN imdb_alias
   SEARCH doc.description IN TOKENS("amazing action world alien sci-fi science documental", "text_en")
@@ -382,9 +464,9 @@ FOR doc IN imdb_alias
     score: BM25(doc)
   }
 ```
+{{< /tab >}}
 
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(doc.description IN TOKENS("amazing action world alien sci-fi science documental", "text_en")
@@ -397,6 +479,9 @@ FOR doc IN imdb
     score: BM25(doc)
   }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | title | description | score |
 |:------|:------------|:------|
@@ -415,8 +500,9 @@ If you are an information retrieval expert and want to fine-tuning the
 weighting schemes at query time, then you can do so. The `BM25()` function
 accepts free coefficients as parameters to turn it into BM15 for instance:
 
-_`search-alias` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```aql
 FOR doc IN imdb_alias
   SEARCH doc.description IN TOKENS("amazing action world alien sci-fi science documental", "text_en")
@@ -430,9 +516,9 @@ FOR doc IN imdb_alias
     score
   }
 ```
+{{< /tab >}}
 
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(doc.description IN TOKENS("amazing action world alien sci-fi science documental", "text_en")
@@ -446,6 +532,9 @@ FOR doc IN imdb
     score
   }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | title | description | score |
 |:------|:------------|:------|
@@ -466,11 +555,11 @@ of the document.
 Match movies with the (normalized) phrase `star war` in the title and calculate
 a custom score based on BM25 and the movie runtime to favor longer movies:
 
+{{< tabs "view-definition">}}
+
+{{< tab "`search-alias` View" >}}
 ```aql
-FOR doc IN imdb
-/* `search-alias` View:
 FOR doc IN imdb_alias
-*/
   SEARCH PHRASE(doc.title, "Star Wars", "text_en")
   LET score = BM25(doc) * LOG(doc.runtime + 1)
   SORT score DESC
@@ -481,6 +570,24 @@ FOR doc IN imdb_alias
     score
   }
 ```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
+```aql
+FOR doc IN imdb
+  SEARCH PHRASE(doc.title, "Star Wars", "text_en")
+  LET score = BM25(doc) * LOG(doc.runtime + 1)
+  SORT score DESC
+  RETURN {
+    title: doc.title,
+    runtime: doc.runtime,
+    bm25: BM25(doc),
+    score
+  }
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | title | runtime | bm25 | score |
 |:------|:--------|:-----|:------|

@@ -3,7 +3,8 @@ title: Projections and Filters in AQL
 menuTitle: Projections and filters
 weight: 20
 description: >-
-  To return three complete documents from collection users, the following query can be used
+  Examples of returning documents unaltered and subsets of their attributes,
+  as well as filtering
 archetype: default
 ---
 ## Returning unaltered documents

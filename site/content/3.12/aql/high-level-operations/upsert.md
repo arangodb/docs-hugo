@@ -1,13 +1,17 @@
 ---
-title: UPSERT operation in AQL
+title: '`UPSERT` operation in AQL'
 menuTitle: UPSERT
 weight: 70
 description: >-
-  The `UPSERT` operations either modifies an existing document, or creates a new
+  An `UPSERT` operation either modifies an existing document, or creates a new
   document if it does not exist
 archetype: default
 ---
-{{< description >}}
+`UPSERT` looks up a single document that matches the provided example or filter
+conditions. If there is no match, an insert operation is executed to create a
+document. If a document is found, you can either update or replace the document.
+These subtypes are called **upsert** (update or insert) and **repsert**
+(replace or insert).
 
 Each `UPSERT` operation is restricted to a single collection, and the 
 [collection name](../../concepts/data-structure/collections.md#collection-names) must not be dynamic.
@@ -15,14 +19,19 @@ Only a single `UPSERT` statement per collection is allowed per AQL query, and
 it cannot be followed by read or write operations that access the same collection, by
 traversal operations, or AQL functions that can read documents.
 
-## Syntax
+## Exact-value matching syntax
 
-The syntax for upsert and repsert operations is:
+This syntax can only look up documents by exact-value matching using an
+object literal and does not support arbitrary filter conditions.
+
+The syntax for an upsert operation:
 
 <pre><code>UPSERT <em>searchExpression</em>
 INSERT <em>insertExpression</em>
 UPDATE <em>updateExpression</em>
 IN <em>collection</em></code></pre>
+
+The syntax for a repsert operation:
 
 <pre><code>UPSERT <em>searchExpression</em>
 INSERT <em>insertExpression</em>
@@ -31,30 +40,31 @@ IN <em>collection</em></code></pre>
 
 Both variants can optionally end with an `OPTIONS { … }` clause.
 
-When using the `UPDATE` variant of the upsert operation, the found document
-will be partially updated, meaning only the attributes specified in
-*updateExpression* will be updated or added. When using the `REPLACE` variant
-of upsert (repsert), existing documents will be replaced with the contexts of
+When using the `UPDATE` variant of the `UPSERT` operation, the found document
+is partially updated, meaning only the attributes specified in
+*updateExpression* are updated or added. When using the `REPLACE` variant
+of `UPSERT` (repsert), the found document is replaced with the content of
 *updateExpression*.
 
-Updating a document will modify the document's revision number with a server-generated value.
-The system attributes `_id`, `_key` and `_rev` cannot be updated, `_from` and `_to` can.
+Updating a document modifies the document's revision number with a server-generated value.
+The system attributes `_id`, `_key`, and `_rev` cannot be updated, but `_from` and `_to`
+can be modified.
 
-The *searchExpression* contains the document to be looked for. It must be an object 
-literal without dynamic attribute names. In case no such document can be found in
-*collection*, a new document will be inserted into the collection as specified in the
-*insertExpression*. 
+The *searchExpression* contains the document to be looked for. It must be an
+**object literal** (`UPSERT { <key>: <value>, ... } ...`) without dynamic
+attribute names. In case no such document can be found in *collection*, a new
+document is inserted into the collection as specified in the *insertExpression*.
 
-In case at least one document in *collection* matches the *searchExpression*, it will
-be updated using the *updateExpression*. When more than one document in the collection
-matches the *searchExpression*, it is undefined which of the matching documents will
-be updated. It is therefore often sensible to make sure by other means (such as unique 
+In case at least one document in *collection* matches the *searchExpression*, it is
+updated using the *updateExpression*. When more than one document in the collection
+matches the *searchExpression*, it is undefined which of the matching documents is
+updated. It is therefore often sensible to make sure by other means (such as unique
 indexes, application logic etc.) that at most one document matches *searchExpression*.
 
-The following query will look in the *users* collection for a document with a specific
-*name* attribute value. If the document exists, its *logins* attribute will be increased
-by one. If it does not exist, a new document will be inserted, consisting of the
-attributes *name*, *logins*, and *dateCreated*:
+The following query looks for a document in the `users` collection with a specific
+`name` attribute value. If the document exists, its *logins* attribute is increased
+by one. If it does not exist, a new document is inserted, consisting of the
+attributes `name`, `logins`, and `dateCreated`:
 
 ```aql
 UPSERT { name: 'superuser' } 
@@ -64,6 +74,55 @@ UPDATE { logins: OLD.logins + 1 } IN users
 
 Note that in the `UPDATE` case it is possible to refer to the previous version of the
 document using the `OLD` pseudo-value.
+
+## Filter matching syntax
+
+The alternative syntax for `UPSERT` operations allows you to use more flexible
+filter conditions beyond equality matches to look up documents.
+
+The syntax for an upsert operation:
+
+<pre><code>UPSERT FILTER<em>filter-condition</em>
+INSERT <em>insertExpression</em>
+UPDATE <em>updateExpression</em>
+IN <em>collection</em></code></pre>
+
+The syntax for a repsert operation:
+
+<pre><code>UPSERT FILTER<em>filter-condition</em>
+INSERT <em>insertExpression</em>
+REPLACE <em>updateExpression</em>
+IN <em>collection</em></code></pre>
+
+Both variants can optionally end with an `OPTIONS { … }` clause.
+
+The filter condition for the lookup can make use of the `CURRENT` pseudo-variable
+to access the lookup document. Example:
+
+```aql
+UPSERT FILTER CURRENT.name == 'superuser'
+INSERT { name: 'superuser', logins: 1, dateCreated: DATE_NOW() }
+UPDATE { logins: OLD.logins + 1 } IN users
+```
+
+The `FILTER` expression can contain operators such as `AND` and `OR` to create
+complex filter conditions. You can apply all kinds of filters on the
+`CURRENT` pseudo-variable, and indexes may get utilized to accelerate the lookup
+if they are eligible.
+
+```aql
+UPSERT FILTER CURRENT.age < 30 AND (STARTS_WITH(CURRENT.name, "Jo") OR CURRENT.gender IN ["f", "x"])
+INSERT { name: 'Jordan', age: 29, logins: 1, dateCreated: DATE_NOW() }
+UPDATE { logins: OLD.logins + 1 } IN users
+```
+
+If no document is found in the collection which fits the `FILTER` condition,
+then the `INSERT` operation is executed.
+If exactly one document is found in the collection which fits the `FILTER`
+condition, then the `UPDATE` operation is executed on that document.
+If many documents are found in the collection which fit the `FILTER`
+condition, then the first found document that satisfies the condition is
+updated/replaced.
 
 ## Query options
 
@@ -98,7 +157,7 @@ inside of arrays (e.g. `{ attr: [ { nested: null } ] }`).
 
 ### `mergeObjects`
 
-The option `mergeObjects` controls whether object contents will be
+The option `mergeObjects` controls whether object contents are
 merged if an object attribute is present in both the `UPDATE` query and in the 
 to-be-updated document.
 
@@ -127,9 +186,9 @@ FOR i IN 1..1000
 ```
 
 {{< info >}}
-You need to add the `_rev` value in the *updateExpression*. It will not be used
+You need to add the `_rev` value in the *updateExpression*. It is not used
 within the *searchExpression*. Even worse, if you use an outdated `_rev` in the
-*searchExpression*, `UPSERT` will trigger the `INSERT` path instead of the
+*searchExpression*, `UPSERT` triggers the `INSERT` path instead of the
 `UPDATE` path, because it has not found a document exactly matching the
 *searchExpression*.
 {{< /info >}}
@@ -155,7 +214,7 @@ FOR i IN 1..1000
 
 ### `indexHint`
 
-The `indexHint` option will be used as a hint for the document lookup
+The `indexHint` option is used as a hint for the document lookup
 performed as part of the `UPSERT` operation, and can help in cases such as
 `UPSERT` not picking the best index automatically.
 
@@ -168,6 +227,8 @@ UPSERT { a: 1234 }
 
 The index hint is passed through to an internal `FOR` loop that is used for the
 lookup. Also see [`indexHint` Option of the `FOR` Operation](for.md#indexhint).
+
+Inverted indexes cannot be used for `UPSERT` lookups.
 
 ### `forceIndexHint`
 
@@ -187,11 +248,11 @@ UPSERT { a: 1234 }
 `UPSERT` statements can optionally return data. To do so, they need to be followed
 by a `RETURN` statement (intermediate `LET` statements are allowed, too). These statements
 can optionally perform calculations and refer to the pseudo-values `OLD` and `NEW`.
-In case the upsert performed an insert operation, `OLD` will have a value of `null`.
-In case the upsert performed an update or replace operation, `OLD` will contain the
+In case the upsert performed an insert operation, `OLD` has a value of `null`.
+In case the upsert performed an update or replace operation, `OLD` contains the
 previous version of the document, before update/replace.
 
-`NEW` will always be populated. It will contain the inserted document in case the
+`NEW` is always populated. It contains the inserted document in case the
 upsert performed an insert, or the updated/replaced document in case it performed an
 update/replace.
 
@@ -205,35 +266,42 @@ UPDATE { logins: OLD.logins + 1 } IN users
 RETURN { doc: NEW, type: OLD ? 'update' : 'insert' }
 ```
 
-## Transactionality
+## Transactionality and Limitations
 
-On a single server, upserts are executed transactionally in an all-or-nothing
-fashion.
+- On a single server, upserts are generally executed transactionally in an
+  all-or-nothing fashion.
 
-If the RocksDB engine is used and intermediate commits are enabled, a query may
-execute intermediate transaction commits in case the running transaction (AQL
-query) hits the specified size thresholds. In this case, the query's operations
-carried out so far will be committed and not rolled back in case of a later
-abort/rollback. That behavior can be controlled by adjusting the intermediate
-commit settings for the RocksDB engine.
+  For sharded collections in cluster deployments, the entire query and/or upsert
+  operation may not be transactional, especially if it involves different shards,
+  DB-Servers, or both.
 
-For sharded collections, the entire query and/or upsert operation may not be
-transactional, especially if it involves different shards and/or DB-Servers.
+- Queries may execute intermediate transaction commits in case the running
+  transaction (AQL query) hits the specified size thresholds. This writes the
+  data that has been modified so far and it is not rolled back in case of a later
+  abort/rollback of the transaction.
+  
+  Such  **intermediate commits** can occur for `UPSERT` operations over all
+  documents of a large collection, for instance. This has the side-effect that
+  atomicity of this operation cannot be guaranteed anymore and ArangoDB cannot
+  guarantee that "read your own writes" in upserts work.
 
-## Limitations
+  This is only an issue if you write a query where your search condition would
+  hit the same document multiple times, and only if you have large transactions.
+  You can adjust the behavior of the RocksDB storage engine by increasing the
+  `intermediateCommit` thresholds for data size and operation counts.
 
 - The lookup and the insert/update/replace parts are executed one after
   another, so that other operations in other threads can happen in
-  between. This means if multiple UPSERT queries run concurrently, they
+  between. This means if multiple `UPSERT` queries run concurrently, they
   may all determine that the target document does not exist and then
   create it multiple times!
 
   Note that due to this gap between the lookup and insert/update/replace,
-  even with a unique index there may be duplicate key errors or conflicts.
+  even with a unique index, duplicate key errors or conflicts can occur.
   But if they occur, the application/client code can execute the same query
   again.
 
-  To prevent this from happening, one should add a unique index to the lookup
+  To prevent this from happening, you should add a unique index to the lookup
   attribute(s). Note that in the cluster a unique index can only be created if
   it is equal to the shard key attribute of the collection or at least contains
   it as a part.
@@ -242,18 +310,20 @@ transactional, especially if it involves different shards and/or DB-Servers.
   `exclusive` option to limit write concurrency for this collection to 1, which
   helps avoiding conflicts but is bad for throughput!
 
-- Using very large transactions in an UPSERT (e.g. UPSERT over all documents in
-  a collection) an **intermediate commit** can be triggered. This intermediate
-  commit will write the data that has been modified so far. However this will
-  have the side-effect that atomicity of this operation cannot be guaranteed
-  anymore and that ArangoDB cannot guarantee to that read your own writes in
-  upsert will work.
+- `UPSERT` operations do not observe their own writes correctly in cluster
+  deployments. They only do for OneShard databases with the `cluster-one-shard`
+  optimizer rule active.
 
-  This will only be an issue if you write a query where your search condition
-  would hit the same document multiple times, and only if you have large
-  transactions. In order to avoid this issues you can increase the
-  `intermediateCommit` thresholds for data and operation counts.
+  If upserts in a query create new documents and would then semantically hit the
+  same documents again, the operation may incorrectly use the `INSERT` branch to
+  create more documents instead of the `UPDATE`/`REPLACE` branch to update the
+  previously created documents.
+
+  If upserts find existing documents for updating/replacing, you can access the
+  current document via the `OLD` pseudo-variable, but this may hold the initial
+  version of the document from before the query even if it has been modified
+  by `UPSERT` in the meantime.
 
 - The lookup attribute(s) from the search expression should be indexed in order
-  to improve UPSERT performance. Ideally, the search expression contains the
+  to improve the `UPSERT` performance. Ideally, the search expression contains the
   shard key, as this allows the lookup to be restricted to a single shard.

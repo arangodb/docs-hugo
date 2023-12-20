@@ -1,15 +1,11 @@
 ---
+archetype: default
+description: Description of the oasisctl list groups command
 title: Oasisctl List Groups
 menuTitle: List Groups
-weight: 110
-description: >-
-  Description of the oasisctl list groups command
-archetype: default
+weight: 115
 ---
-List all groups of the given organization
-
 ## Synopsis
-
 List all groups of the given organization
 
 ```
@@ -17,14 +13,12 @@ oasisctl list groups [flags]
 ```
 
 ## Options
-
 ```
   -h, --help                     help for groups
   -o, --organization-id string   Identifier of the organization
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -32,6 +26,5 @@ oasisctl list groups [flags]
 ```
 
 ## See also
-
 * [oasisctl list](_index.md)	 - List resources
 

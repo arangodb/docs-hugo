@@ -1,9 +1,9 @@
 ---
-title: Filesystem Module
+title: The `fs` module of the JavaScript API
 menuTitle: fs
 weight: 45
 description: >-
-  Filesystem Module
+  An implementation of the CommonJS Filesystem interface in the ArangoDB JavaScript API
 archetype: default
 ---
 `const fs = require('fs')`
@@ -13,6 +13,7 @@ The implementation tries to follow the CommonJS
 specification where possible.
 
 ## Working Directory
+
 The directory functions below shouldn't use the current working directory of the server like `.` or `./test`.
 You will not be able to tell whether the environment the server is running in will permit directory listing,
 reading or writing of files.

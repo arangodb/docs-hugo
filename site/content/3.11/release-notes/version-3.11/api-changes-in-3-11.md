@@ -3,13 +3,10 @@ title: API Changes in ArangoDB 3.11
 menuTitle: API changes in 3.11
 weight: 20
 description: >-
-  ArangoDB v3.11 Release Notes API Changes
+  A summary of the changes to the HTTP API and other interfaces that are relevant
+  for developers, like maintainers of drivers and integrations for ArangoDB
 archetype: default
 ---
-This document summarizes the HTTP API changes and other API changes in ArangoDB 3.11.
-The target audience for this document are developers who maintain drivers and
-integrations for ArangoDB 3.11.
-
 ## HTTP RESTful API
 
 ### Behavior changes
@@ -265,6 +262,23 @@ Disabled:
 arangodb_agency_cache_callback_number{role="SINGLE"}0
 ```
 
+#### Limit to the number of databases in a deployment
+
+<small>Introduced in: v3.10.10, v3.11.2</small>
+
+The new `--database.max-databases` startup option can cap the number of databases
+and creating databases using the `POST /_api/database` endpoint can thus now fail
+for this reason if your deployment is at or above the configured maximum. Example:
+
+```json
+{
+  "code": 400,
+  "error": true,
+  "errorMessage": "unable to create additional database because it would exceed the configured maximum number of databases (2)",
+  "errorNum": 32
+}
+```
+
 ### Endpoint return value changes
 
 <small>Introduced in: v3.8.8, v3.9.4, v3.10.1</small>
@@ -339,7 +353,7 @@ to extend the timeout.
 
 The maintenance mode ends automatically after the defined timeout.
 
-Also see the [HTTP interface for cluster maintenance](../../develop/http/cluster.md#get-the-maintenance-status-of-a-db-server).
+Also see the [HTTP interface for cluster maintenance](../../develop/http-api/cluster.md#get-the-maintenance-status-of-a-db-server).
 
 ### Endpoints augmented
 
@@ -427,8 +441,8 @@ Enterprise Edition:
 
 #### Query API
 
-The [`GET /_api/query/current`](../../develop/http/queries/aql-queries.md#list-the-running-aql-queries)
-and [`GET /_api/query/slow`](../../develop/http/queries/aql-queries.md#list-the-slow-aql-queries)
+The [`GET /_api/query/current`](../../develop/http-api/queries/aql-queries.md#list-the-running-aql-queries)
+and [`GET /_api/query/slow`](../../develop/http-api/queries/aql-queries.md#list-the-slow-aql-queries)
 endpoints include a new numeric `peakMemoryUsage` attribute.
 
 ---
@@ -481,7 +495,7 @@ persisted execution statistics for Pregel jobs:
 - `DELETE /_api/control_pregel/history` to delete the persisted execution
   statistics of all Pregel jobs
 
-See [Pregel HTTP API](../../develop/http/pregel.md) for details.
+See [Pregel HTTP API](../../develop/http-api/pregel.md) for details.
 
 #### Cluster rebalance API
 
@@ -601,6 +615,52 @@ The following metric stores the peak value of the `rocksdb_cache_allocated` metr
 | Label | Description |
 |:------|:------------|
 | `rocksdb_cache_peak_allocated` | Global peak memory allocation of ArangoDB in-memory caches. |
+
+---
+
+<small>Introduced in: v3.11.2</small>
+
+The following metrics have been added about the LZ4 compression for values in
+the in-memory edge cache:
+
+- `rocksdb_cache_edge_inserts_effective_entries_size_total`
+- `rocksdb_cache_edge_inserts_uncompressed_entries_size_total`
+- `rocksdb_cache_edge_compression_ratio`
+
+---
+
+<small>Introduced in: v3.10.11, v3.11.4</small>
+
+The following metrics have been added to improve the observability of in-memory
+cache subsystem:
+
+- `rocksdb_cache_free_memory_tasks_total`
+- `rocksdb_cache_free_memory_tasks_duration_total`
+- `rocksdb_cache_migrate_tasks_total`
+- `rocksdb_cache_migrate_tasks_duration_total`
+
+---
+
+<small>Introduced in: v3.11.4</small>
+
+The following metrics have been added to improve the observability of in-memory
+edge cache:
+
+- `rocksdb_cache_edge_compressed_inserts_total`
+- `rocksdb_cache_edge_empty_inserts_total`
+- `rocksdb_cache_edge_inserts_total`
+
+---
+
+<small>Introduced in: v3.11.5</small>
+
+The following metrics have been added to monitor and detect temporary or
+permanent connectivity issues as well as how many scheduler threads are in the
+detached state:
+
+- `arangodb_network_connectivity_failures_coordinators`
+- `arangodb_network_connectivity_failures_dbservers_total`
+- `arangodb_scheduler_num_detached_threads`
 
 #### Log level API
 

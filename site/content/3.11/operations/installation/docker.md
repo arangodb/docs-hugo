@@ -6,8 +6,6 @@ description: >-
   You can use Docker images to run ArangoDB in containers on Linux, macOS, and Windows
 archetype: default
 ---
-{{< description >}}
-
 The recommended way of using ArangoDB is via ArangoDB Docker images with,
 for instance, [Docker Desktop](https://www.docker.com/products/docker-desktop/). 
 
@@ -18,9 +16,9 @@ You can choose one of the following:
   maintained and directly published by ArangoDB on a regular basis.
 
 Check also the following resources:
-- [Manually starting a stand-alone instance via Docker](../../deploy/deployment/single-instance/manual-start.md#manual-start-in-docker)
-- [Manually starting an Active Failover deployment via Docker](../../deploy/deployment/active-failover/manual-start.md#manual-start-in-docker)
-- [Manually starting a Cluster via Docker](../../deploy/deployment/cluster/deployment/manual-start.md#manual-start-in-docker)
+- [Manually starting a stand-alone instance via Docker](../../deploy/single-instance/manual-start.md#manual-start-in-docker)
+- [Manually starting an Active Failover deployment via Docker](../../deploy/active-failover/manual-start.md#manual-start-in-docker)
+- [Manually starting a Cluster via Docker](../../deploy/cluster/deployment/manual-start.md#manual-start-in-docker)
 
 ## Start an ArangoDB instance
 
@@ -153,7 +151,7 @@ For more information, see the [Configuration](../administration/configuration.md
 `arangod` checks the following environment variables, which can be used to
 restrict how much memory and how many CPU cores it should use.
 
-- `ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY` *(introduced in v3.6.3)*
+- `ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY`
 
   This variable can be used to override the automatic detection of the total
   amount of RAM present in the system. You can specify a decimal number

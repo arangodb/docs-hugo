@@ -2,8 +2,7 @@
 title: Reducing the Memory Footprint of ArangoDB servers
 menuTitle: Reduce Memory Footprint
 weight: 35
-description: >-
-  Reducing the Memory Footprint of ArangoDB servers
+description: ''
 archetype: default
 ---
 {{< warning >}}

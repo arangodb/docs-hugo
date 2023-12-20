@@ -170,10 +170,22 @@ Apple silicon like M1).
 Run the `docker compose` services using the `docker-compose.pain-build.yml` file.
 
 ```shell
-docs-hugo/toolchain/docker/amd64> docker compose -f docker-compose.plain-build.yml up
+docs-hugo/toolchain/docker/amd64> docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
 ```
 
 The site will be available at `http://localhost:1313`.
+
+To make the documentation tooling not start a live server in watch mode but
+rather create a static build and exit, set the environment variable `ENV` to
+any value other than `local` before calling `docker compose ...`:
+
+```shell
+export ENV=static  # Bash
+set -xg ENV static # Fish
+$Env:ENV='static'  # PowerShell
+```
+
+The output files will be written to `site/public/`.
 
 #### Scheduled and example generation build
 
@@ -235,32 +247,10 @@ Apple silicon like M1).
 Run the `docker compose` services without specifying a file:
 
 ```shell
-docs-hugo/toolchain/docker/arm64> docker compose up
+docs-hugo/toolchain/docker/arm64> docker compose up --abort-on-container-exit
 ```
 
-
 The site will be available at `http://localhost:1313`
-
-<!--
-#### Run without Docker
-
-- Build and start the _arangoproxy_ web server
-
-  ```shell
-  toolchain/arangoproxy/cmd> go build -o arangoproxy
-  toolchain/arangoproxy/cmd> ./arangoproxy {flags}
-  ```
-- Launch the hugo build command
-
-  ```shell
-  docs-hugo/site> hugo
-  ```
-
-The static HTML is placed under `site/public/`.
-
-For development purpose, it is suggested to use the `hugo serve` command for
-hot-reload on changes. The runtime server is available at `http://localhost:1313/`.
--->
 
 ## Work with the documentation content
 
@@ -343,8 +333,6 @@ code blocks but the syntax then needs to be like this:
 
 ````yaml
 ```openapi
-### Headline
-
 paths:
   /_api/endpoint:
     post:
@@ -355,6 +343,11 @@ paths:
         ...
 ```
 ````
+
+For the OpenAPI JSON output, this is rendered as `> **WARNING:** ...`
+(a blockquote with the admonition type in bold and uppercase).
+Only a single paragraph is properly supported by the toolchain. Additional
+paragraphs will not be part of the blockquote.
 
 Admonitions inside of other shortcodes need to use the special syntax, too:
 
@@ -382,18 +375,27 @@ Display content with a tabbed interface, like information for different
 operating systems or code examples using different languages.
 
 ```markdown
-{{< tabs groupid="os" >}}
+{{< tabs "os" >}}
 
-{{< tab name="Linux" >}}
+{{< tab "Linux" >}}
 Run `./script.sh`.
 {{< /tab >}}
 
-{{< tab name="Windows" >}}
+{{< tab "Windows" >}}
 Run `.\script.ps1`.
 {{< /tab >}}
 
 {{< /tabs >}}
 ```
+
+The parameter for the `tabs` shortcode is a group identifier. If there are
+multiple tab groups in one page, changing the active tab of one of them also
+changes the active tabs of all other groups with the same identifier while
+groups with different identifiers are unaffected. The browser remembers the last
+active tab of each group.
+
+The parameter for the `tab` shortcode is the label to display for the tab in the
+tab panel. Tab groups using the same identifier should use the same tab labels.
 
 #### Figures
 
@@ -487,7 +489,7 @@ The following shortcodes also exist but are rarely used:
 
 - Use inclusive language, e.g. _work-hours_ instead of _man-hours_.
 
-- Get to point quickly on every page. [Add a Lead Paragraph](#adding-a-lead-paragraph)
+- Get to point quickly on every page. [Add lead paragraphs](#add-lead-paragraphs)
   that summarizes what the page is about.
 
 - Target end-users and focus on the outcome. It should be about solutions, not
@@ -517,8 +519,12 @@ The following shortcodes also exist but are rarely used:
   `../drivers/js/_index.md` instead of `/3.12/drivers/js/_index.md` or
   `https://docs.arangodb.com/3.12/drivers/js/`.
 
-- Avoid `**bold**` and `_italic_` markup in headlines. Inline `` `code` `` is
-  acceptable for code values, nonetheless.
+- Avoid **bold** and *italic* markup in headlines. If you have to use it, then
+  prefer `**bold**` and `*italic*`  over `__bold__` and `_italic_` because the
+  underscores are preserved in anchor links but asterisks are removed!
+
+- Inline `` `code` `` in headlines is acceptable for code values, and required
+  for startup options because `--` otherwise gets turned into an n-dash.
 
 - `-` is preferred for bullet points in unordered lists over `*`
 
@@ -558,6 +564,7 @@ The following shortcodes also exist but are rarely used:
   - _Datacenter-to-Datacenter Replication_ (note the hyphens), _DC2DC_
   - _ArangoGraph Insights Platform_ and _ArangoGraph_ for short, but not
     ~~Oasis~~, ~~ArangoDB Oasis~~, or ~~ArangoDB Cloud~~
+  - _Deployment mode_ (single server, cluster, etc.), not ~~deployment type~~
 
 - Never capitalize the names of executables or code values, e.g. write
   _arangosh_ instead of _Arangosh_.
@@ -571,7 +578,7 @@ For external links, use standard Markdown. Clicking these links automatically
 opens them in a new tab:
 
 ```markdown
-[ArangoGraph Insights Platform](https://cloud.arangodb.com)
+[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud)
 ```
 
 For internal links, use relative paths to the Markdown files. Always link to
@@ -717,19 +724,21 @@ with such a brief description. It is supposed to clarify the scope of the
 article so that the reader can quickly assess whether the following information
 is of relevance, but also acts as an introduction.
 
+You can set the lead paragraph via the `description` parameter in the
+front matter of a page:
+
 ```markdown
 ---
 title: Feature X
 description: >-
   You can do this and that with X, and it is ideal to solve problem Y
 ---
-{{< description >}}
-
 ...
 ```
 
-The lead paragraph text should end without a period, contain no links and usually
-avoid other markup as well but bold, italic, and inline code are acceptable.
+The lead paragraph text should end without a period, contain no links, and
+usually avoid other markup as well. However, **bold**, _italic_, and
+`inline code` are acceptable.
 
 ### Add a page or section
 
@@ -764,7 +773,14 @@ Add the actual content formatted in Markdown syntax below the front matter.
 
 ### Rename a page or section
 
-The following steps are necessary for moving content:
+Netlify supports server-side redirects configured with a text file
+([documentation](https://docs.netlify.com/routing/redirects/#syntax-for-the-redirects-file)).
+This is helpful when renaming folders with many subfolders and files because
+there is support for splatting and placeholders (but not regular expressions). See
+[Redirect options](https://docs.netlify.com/routing/redirects/redirect-options/)
+for details. The configuration file is `site/content/_redirects`.
+
+Otherwise, the following steps are necessary for moving content:
 1. Rename file or folder
 2. Set up `aliases` via the front matter as needed
 3. Adjust `weight` of pages in the front matter if necessary
@@ -802,6 +818,12 @@ front matter to `new/_index.md`:
 aliases:
   - old
 ```
+
+For aliases in `_index.md` files, think of the folder they are in as a file.
+In the above example, the folder is `new/`. Treating it like the file that
+defines the page means that the alias `old` is relative to its parent folder
+(here: the root folder of the content, `site/content/`). Therefore, the alias
+needs to be `old`, not `../old`.
 
 Note that you need to set up aliases for all files in `new/` so that every URL
 which includes the old folder name redirects to the corresponding new URL.
@@ -844,20 +866,261 @@ its documentation needs to be marked as such. For the respective version, set
 the `deprecated` attribute to `true` in the `site/data/versions.yaml` file:
 
 ```diff
- - name: '3.10'
-   version: '3.10.9'
-   alias: ""
+ - name: "3.10"
+   version: "3.10.9"
+   alias: "3.10"
 -  deprecated: false
 +  deprecated: true
 ```
 
 It makes a warning show at the top of every page for that version.
 
-<!--
 ### Add a new version
 
-TODO: Pending CircleCI dynamic config
--->
+1. In the `site/data/versions.yaml` file, add a new entry for the version you
+   want to add. Example:
+
+   ```diff
+   +- name: "4.0"
+   +  version: "4.0.0"
+   +  alias: "4.0"
+   +  deprecated: false
+   +
+    - name: "3.12"
+      version: "3.12.0"
+      alias: "devel"
+      deprecated: false
+   ```
+
+2. Near the top of the `.circleci/config.yml` file under `parameters`, find the
+   last entry with the format `arangodb-X_XX` where `X_XX` is a version number
+   like `3_12`, so `arangodb-3_12` for example. Duplicate the block and adjust
+   the version number. Example:
+
+   ```diff
+      arangodb-3_12:
+        type: string
+        default: "undefined"
+   +
+   +  arangodb-4_0:
+   +    type: string
+   +    default: "undefined"
+   ```
+
+   Near the end of the file under `jobs.generate-config.steps[0].run.command`,
+   find the line of code that calls `python3 generate_config.py`. In one of the
+   following lines, a parameter for every version is passed as argument. Add one
+   for the new version. Example:
+
+   ```diff
+                python3 generate_config.py \
+                  --workflow << pipeline.parameters.workflow >> \
+   -              --arangodb-branches << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> \
+   +              --arangodb-branches << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_0 >> \
+   ```
+
+3. In the `toolchain/docker/amd64/docker-compose.yml` file, add an entry under
+   `services.toolchain.volumes` for the new version. Simply increment the value
+   after `:-/tmp/`. Example:
+
+   ```diff
+          - ${ARANGODB_SRC_3_12:-/tmp/2}:/tmp/3.12
+   +      - ${ARANGODB_SRC_4_0:-/tmp/3}:/tmp/4.0
+   ```
+
+   Under `services.toolchain.environment`, you need to add two different entries
+   for the new version. Example:
+
+   ```diff
+          ARANGODB_SRC_3_11: ${ARANGODB_SRC_3_11}
+          ARANGODB_SRC_3_12: ${ARANGODB_SRC_3_12}
+   +      ARANGODB_SRC_4_0: ${ARANGODB_SRC_4_0}
+          ARANGODB_BRANCH_3_11: ${ARANGODB_BRANCH_3_11}
+          ARANGODB_BRANCH_3_12: ${ARANGODB_BRANCH_3_12}
+   +      ARANGODB_BRANCH_4_0: ${ARANGODB_BRANCH_4_0}
+   ```
+
+   The same changes are required in the
+   `toolchain/docker/arm64/docker-compose.yml` file.
+
+4. In the `toolchain/docker/config.yaml` file, add an entry for the new version.
+   Example:
+
+   ```diff
+      - image: ${ARANGODB_BRANCH_3_12_IMAGE}
+        version: ${ARANGODB_BRANCH_3_12_VERSION}
+   +
+   +  - image: ${ARANGODB_BRANCH_4_0_IMAGE}
+   +    version: ${ARANGODB_BRANCH_4_0_VERSION}
+   ```
+
+5. In the `toolchain/scripts/toolchain.sh` file, find the code that accesses
+   environment variables with the format `$ARANGODB_BRANCH_X_XX` where `X_XX`
+   is a version number like `3_12`, so `$ARANGODB_BRANCH_3_12` for instance.
+   Duplicate the block of an existing version and adjust all version numbers.
+   Example:
+
+   ```diff
+    if [ "$ARANGODB_BRANCH_3_12" != "" ] ; then
+          export ARANGODB_BRANCH_3_12_IMAGE="$ARANGODB_BRANCH_3_12"
+          export ARANGODB_BRANCH_3_12_VERSION="3.12"
+    fi
+    
+   +if [ "$ARANGODB_BRANCH_4_0" != "" ] ; then
+   +      export ARANGODB_BRANCH_4_0_IMAGE="$ARANGODB_BRANCH_4_0"
+   +      export ARANGODB_BRANCH_4_0_VERSION="4.0"
+   +fi
+   ```
+
+6. In the `site/data` folder, create a new folder with the short version number
+   as the name, e.g. `4.0`. In the new `site/data/4.0` folder, create a
+   `cache.json` file with the following content:
+
+   ```json
+   {}
+   ```
+
+   Add this untracked file to Git!
+
+7. Duplicate the folder of the most recent version in `site/content`, e.g.
+   the `3.12` folder, and rename the copy to the new version, e.g. `4.0`.
+
+   The `menuTitle` in the front matter of the version homepage, e.g.
+   `site/content/4.0/_index.md`, needs to adjusted to the new version,
+   like `menuTitle: '4.0'`.
+
+   In the folder for release notes, e.g. `site/content/4.0/release-notes/`,
+   duplicate the folder of the most recent version, e.g. `version-3.12`, and
+   rename it, e.g. to `version-4.0`. In this folder, rename the files to replace
+   the old with the new version number, e.g. `api-changes-in-3-12.md` to
+   `api-changes-in-4-0.md` and so on.
+   
+   In the `_index.md` file in the folder, e.g.
+   `site/content/4.0/release-notes/version-4.0/_index.md`, you need to replace
+   the version numbers in the front matter and links. You also need to adjust
+   the `weight` in the front matter. Decrement the value by one to make the new
+   version appear before the existing versions, but make sure that it is greater
+   than `0`, which may require adjusting the weights in all of the section files.
+
+   In the other files of the release notes, remove the version-specific content
+   and only leave the front matter, introductions, and headlines that are
+   commonly used across different versions in the release notes. Adjust the
+   version numbers in the front matter and content.
+
+   Search the entire version folder, e.g. `site/content/4.0/`, for links that
+   are meant to point to the release notes of the own version, but which are
+   still pointing to the version the content has been copied from. For example,
+   if you duplicated the `3.12` folder, search the `4.0` folder for
+   `version-3.12/`. You should find links to `version-3.12/known-issues-in-3-12.md`
+   that need to be updated to `version-4.0/known-issues-in-4-0.md`.
+
+   In the release notes root file, e.g. `site/content/4.0/release-notes/_index.md`,
+   add the links for the new version following the existing pattern. Do this
+   after updating the links to the known issues so that you don't accidentally
+   change the 3.12 link in the release notes root file.
+
+   In the _Highlights by Version_ page, e.g.
+   `site/content/4.0/introduction/features/highlights-by-version.md`, add a
+   section for the new version including a link to the release notes.
+
+   Add the new, untracked files to Git!
+
+8. In the `PULL_REQUEST_TEMPLATE.md` file, add a new line for the new version.
+   Example:
+
+   ```diff
+    - 3.12: 
+   +- 4.0: 
+   ```
+
+   Stage all changes and commit them. Open a pull request (PR) on GitHub. You only
+   need to specify a Docker image or PR link for `- 4.0: ` if you plan to use
+   the `/generate` or `/generate-commit` command to re-generate the examples.
+   If you follow the next step, the example generation is run manually along
+   with some other generators, so using the commands shouldn't be necessary.
+
+   Expect the plain build to fail for the time being because of missing data files.
+
+9. You can use CircleCI to initially generate the data files for the new version,
+   like the startup option dumps. You can also populate the example cache at the
+   same time.
+
+   Before you continue, make sure there are no conflicts in the PR with the
+   `main` branch. The CircleCI workflow will otherwise create a merge commit
+   favoring the `main` branch (in order to update the cache file but also
+   affecting other files), and this can cause e.g. the `versions.yaml` file to
+   get reverted in case of a conflict. The toolchain would then be unaware of
+   the newly added version.   
+   
+   In CircleCI at <https://app.circleci.com/pipelines/github/arangodb/docs-hugo>,
+   select the branch of your PR and click **Trigger Pipeline**.
+   Enter the parameters similar to this example:
+
+   | Type | Name | Value |
+   |:-----|:-----|:------|
+   | string | `workflow` | `generate` |
+   | string | `arangodb-4_0` | Docker Hub image (e.g. `arangodb/enterprise-preview:devel-nightly`) or GitHub main repo PR link (e.g. `https://github.com/arangodb/arangodb/pull/123456`) |
+   | string | `generators` | `examples metrics error-codes optimizer options` |
+   | string | `deploy-url` | `deploy-preview-{PR-number}` with the number of the docs PR |
+   | boolean | `commit-generated` | `true` |
+
+   Approve the workflow in CircleCI. After a successful run, you should see a
+   commit in the docs PR with the updated data files, as well as an updated
+   example cache file. The plain build should no longer fail and provide you
+   with a Netlify preview.
+
+### Remove a version
+
+The process is similar to [adding a version](#add-a-new-version) but you need to
+undo the changes.
+
+### Change the stable version
+
+For example, if the current stable version is 3.11 and the devel version is 3.12,
+the `site/data/versions.yaml` file may look like this:
+
+```yaml
+- name: "4.0"
+  version: "4.0.0"
+  alias: "4.0"
+  deprecated: false
+
+- name: "3.12"
+  version: "3.12.0"
+  alias: "devel"
+  deprecated: false
+
+- name: "3.11"
+  version: "3.11.4"
+  alias: "stable"
+  deprecated: false
+```
+
+To make 3.12 the new stable version, you need to set `alias` to `"stable"` for
+the 3.12 entry. As there can only be a single stable version (in the
+documentation sense), the `alias` value of the former stable version needs to be
+changed. In this example, it is the 3.11 entry where you need to change `alias`
+to the version `name`, which is `"3.11"` in this case. Finally, you need to
+re-assign the `"devel"` alias to the version that comes after the new stable
+version. In this example, you need to adjust the `alias` of the 4.0 entry.
+The final configuration would then look lik this:
+
+```yaml
+- name: "4.0"
+  version: "4.0.0"
+  alias: "devel"   # was "4.0"
+  deprecated: false
+
+- name: "3.12"
+  version: "3.12.0"
+  alias: "stable"  # was "devel"
+  deprecated: false
+
+- name: "3.11"
+  version: "3.11.4"
+  alias: "3.11"    # was "stable"
+  deprecated: false
+```
 
 ### Add a new arangosh example
 

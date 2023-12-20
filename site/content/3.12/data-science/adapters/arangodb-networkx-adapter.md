@@ -6,8 +6,6 @@ description: >-
   The ArangoDB-NetworkX Adapter allows you to export graphs from ArangoDB into NetworkX for graph analysis with Python and vice-versa
 archetype: default
 ---
-{{< description >}}
-
 [NetworkX](https://networkx.org/) is a commonly used tool for
 analysis of network-data. If your
 analytics use cases require the use of all your graph data, for example,
@@ -46,27 +44,40 @@ Check also the
 [interactive tutorial](https://colab.research.google.com/github/arangoml/networkx-adapter/blob/master/examples/ArangoDB_NetworkX_Adapter.ipynb).
 
 ```py
-from arango import ArangoClient # Python-Arango driver
-from networkx import grid_2d_graph # Sample graph from NetworkX
+import networkx as nx
 
-from adbnx_adapter import ADBNX_Adapter
+from arango import ArangoClient
+from adbnx_adapter import ADBNX_Adapter, ADBNX_Controller
 
-# Let's assume that the ArangoDB "fraud detection" dataset is imported to this endpoint
-db = ArangoClient(hosts="http://localhost:8529").db("_system", username="root", password="")
+# Connect to ArangoDB
+db = ArangoClient().db()
 
+# Instantiate the adapter
 adbnx_adapter = ADBNX_Adapter(db)
+```
 
-# Use Case 1.1: ArangoDB to NetworkX via Graph name
-nx_fraud_graph = adbnx_adapter.arangodb_graph_to_networkx("fraud-detection")
+### ArangoDB to NetworkX
+```py
+#######################
+# 1.1: via Graph name #
+#######################
 
-# Use Case 1.2: ArangoDB to NetworkX via Collection names
-nx_fraud_graph_2 = adbnx_adapter.arangodb_collections_to_networkx(
+nx_g = adbnx_adapter.arangodb_graph_to_networkx("fraud-detection")
+
+#############################
+# 1.2: via Collection names #
+#############################
+
+nx_g = adbnx_adapter.arangodb_collections_to_networkx(
     "fraud-detection", 
     {"account", "bank", "branch", "Class", "customer"}, # Vertex collections
     {"accountHolder", "Relationship", "transaction"} # Edge collections
 )
 
-# Use Case 1.3: ArangoDB to NetworkX via Metagraph
+######################
+# 1.3: via Metagraph #
+######################
+
 metagraph = {
     "vertexCollections": {
         "account": {"Balance", "account_type", "customer_id", "rank"},
@@ -77,16 +88,110 @@ metagraph = {
         "accountHolder": {},
     },
 }
-nx_fraud_graph_3 = adbnx_adapter.arangodb_to_networkx("fraud-detection", metagraph)
 
-# Use Case 2: NetworkX to ArangoDB
-nx_grid_graph = grid_2d_graph(5, 5)
-adb_grid_edge_definitions = [
+nx_g = adbnx_adapter.arangodb_to_networkx("fraud-detection", metagraph)
+
+#######################################
+# 1.4: with a custom ADBNX Controller #
+#######################################
+
+class Custom_ADBNX_Controller(ADBNX_Controller):
+    """ArangoDB-NetworkX controller.
+
+    Responsible for controlling how nodes & edges are handled when
+    transitioning from ArangoDB to NetworkX, and vice-versa.
+    """
+
+    def _prepare_arangodb_vertex(self, adb_vertex: dict, col: str) -> None:
+        """Prepare an ArangoDB vertex before it gets inserted into the NetworkX
+        graph.
+
+        :param adb_vertex: The ArangoDB vertex object to (optionally) modify.
+        :param col: The ArangoDB collection the vertex belongs to.
+        """
+        adb_vertex["foo"] = "bar"
+
+    def _prepare_arangodb_edge(self, adb_edge: dict, col: str) -> None:
+        """Prepare an ArangoDB edge before it gets inserted into the NetworkX
+        graph.
+
+        :param adb_edge: The ArangoDB edge object to (optionally) modify.
+        :param col: The ArangoDB collection the edge belongs to.
+        """
+        adb_edge["bar"] = "foo"
+
+nx_g = ADBNX_Adapter(db, Custom_ADBNX_Controller()).arangodb_graph_to_networkx("fraud-detection")
+```
+
+### NetworkX to ArangoDB
+```py
+#################################
+# 2.1: with a Homogeneous Graph #
+#################################
+
+nx_g = nx.grid_2d_graph(5, 5)
+edge_definitions = [
     {
         "edge_collection": "to",
         "from_vertex_collections": ["Grid_Node"],
         "to_vertex_collections": ["Grid_Node"],
     }
 ]
-adb_grid_graph = adbnx_adapter.networkx_to_arangodb("Grid", nx_grid_graph, adb_grid_edge_definitions)
+
+adb_g = adbnx_adapter.networkx_to_arangodb("Grid", nx_g, edge_definitions)
+
+#############################################################
+# 2.2: with a Homogeneous Graph & a custom ADBNX Controller #
+#############################################################
+
+class Custom_ADBNX_Controller(ADBNX_Controller):
+    """ArangoDB-NetworkX controller.
+
+    Responsible for controlling how nodes & edges are handled when
+    transitioning from ArangoDB to NetworkX, and vice-versa.
+    """
+
+    def _prepare_networkx_node(self, nx_node: dict, col: str) -> None:
+        """Prepare a NetworkX node before it gets inserted into the ArangoDB
+        collection **col**.
+
+        :param nx_node: The NetworkX node object to (optionally) modify.
+        :param col: The ArangoDB collection the node belongs to.
+        """
+        nx_node["foo"] = "bar"
+
+    def _prepare_networkx_edge(self, nx_edge: dict, col: str) -> None:
+        """Prepare a NetworkX edge before it gets inserted into the ArangoDB
+        collection **col**.
+
+        :param nx_edge: The NetworkX edge object to (optionally) modify.
+        :param col: The ArangoDB collection the edge belongs to.
+        """
+        nx_edge["bar"] = "foo"
+
+adb_g = ADBNX_Adapter(db, Custom_ADBNX_Controller()).networkx_to_arangodb("Grid", nx_g, edge_definitions)
+
+###################################
+# 2.3: with a Heterogeneous Graph #
+###################################
+
+edges = [
+   ('student:101', 'lecture:101'), 
+   ('student:102', 'lecture:102'), 
+   ('student:103', 'lecture:103'), 
+   ('student:103', 'student:101'), 
+   ('student:103', 'student:102'),
+   ('teacher:101', 'lecture:101'),
+   ('teacher:102', 'lecture:102'),
+   ('teacher:103', 'lecture:103'),
+   ('teacher:101', 'teacher:102'),
+   ('teacher:102', 'teacher:103')
+]
+nx_g = nx.MultiDiGraph()
+nx_g.add_edges_from(edges)
+
+# ...
+
+# Learn how this example is handled in Colab:
+# https://colab.research.google.com/github/arangoml/networkx-adapter/blob/master/examples/ArangoDB_NetworkX_Adapter.ipynb#scrollTo=OuU0J7p1E9OM
 ```

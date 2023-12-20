@@ -6,8 +6,6 @@ description: >-
   You can write UDFs in JavaScript to extend AQL or to simplify queries
 archetype: default
 ---
-{{< description >}}
-
 AQL comes with a [built-in set of functions](functions/_index.md), but it is
 not a fully-featured programming language. To add missing functionality or to
 simplify queries, you may write your own user-defined functions (**UDFs**) in
@@ -34,7 +32,7 @@ Rule of thumb is, the closer the UDF is to your final `RETURN` statement
 (or maybe even inside it), the better. 
 
 When used in clusters, UDFs are always executed on a
-[Coordinator](../deploy/deployment/cluster/_index.md).
+[Coordinator](../deploy/cluster/_index.md).
 It is not possible to execute UDFs on DB-Servers, as no JavaScript execution
 engine is available on DB-Servers. Queries that would push UDF execution to
 DB-Servers are aborted with a parse error. This includes using UDFs in traversal
@@ -193,7 +191,7 @@ var aqlfunctions = require("@arangodb/aql/functions");
 To register a function, the fully qualified function name plus the
 function code must be specified. This can easily be done in
 [arangosh](../components/tools/arangodb-shell/_index.md). The
-[HTTP Interface](../develop/http/queries/user-defined-aql-functions.md) also offers
+[HTTP Interface](../develop/http-api/queries/user-defined-aql-functions.md) also offers
 User Functions management.
 
 In a cluster setup, make sure to connect to a Coordinator to manage the UDFs.

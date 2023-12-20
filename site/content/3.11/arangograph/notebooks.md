@@ -6,8 +6,6 @@ description: >-
   How to create and manage colocated Jupyter Notebooks within ArangoGraph
 archetype: default
 ---
-{{< description >}}
-
 {{< info >}}
 This documentation describes the beta version of the Notebooks feature and is
 subject to change. The beta version is free for all.
@@ -22,7 +20,7 @@ passwords, and endpoint URLs.
 
 ![ArangoGraph Notebooks Architecture](../../images/arangograph-notebooks-architecture.png)
 
-The ArangoGraph Notebook has built-in [ArangoGraph Magic Commands](.#arangograph-magic-commands)
+The ArangoGraph Notebook has built-in [ArangoGraph Magic Commands](#arangograph-magic-commands)
 that answer questions like:
 - What ArangoDB database am I connected to at the moment?
 - What data does the ArangoDB instance contain?

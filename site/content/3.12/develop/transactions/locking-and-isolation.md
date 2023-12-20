@@ -1,14 +1,13 @@
 ---
-title: Locking and Isolation
+title: Locking and isolation of transactions
 menuTitle: Locking and isolation
 weight: 15
-description: >-
-  Transactions need to specify from which collections they will read data and which collections they intend to modify
+description: ''
 archetype: default
 ---
 Transactions need to specify from which collections they will read data and which
-collections they intend to modify. This can be done by setting the *read*, *write*,
-or *exclusive* attributes in the *collections* attribute of the transaction:
+collections they intend to modify. This can be done by setting the `read`, `write`,
+or `exclusive` attributes in the `collections` attribute of the transaction:
 
 ```js
 db._executeTransaction({
@@ -35,7 +34,7 @@ concurrent transactions.
 
 ## Storage engine
 
-The *RocksDB* engine does not lock any collections participating in a transaction
+The RocksDB storage engine does not lock any collections participating in a transaction
 for read. Read operations can run in parallel to other read or write operations on the
 same collections.
 
@@ -233,7 +232,7 @@ In case this is not possible because collections are added dynamically inside th
 transaction, deadlocks may occur and the deadlock detection may kick in and abort
 the transaction. 
 
-The *RocksDB* engine uses document-level locks and therefore will not have a deadlock
+The RocksDB storage engine uses document-level locks and therefore will not have a deadlock
 problem on collection level. If two concurrent transactions however modify the same
 documents or index entries, the RocksDB engine will signal a write-write conflict
 and abort one of the transactions with error 1200 ("conflict") automatically.

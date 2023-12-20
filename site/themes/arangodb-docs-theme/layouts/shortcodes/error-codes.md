@@ -1,14 +1,16 @@
-{{ $pageVersion := .Page.Store.Get "versionShort" }}
+{{- $pageVersion := .Page.Store.Get "versionShort" }}
+{{- $dataFolderByVersion := index site.Data $pageVersion }}
+{{- $data := index $dataFolderByVersion "errors" }}
+{{- $basePage := .Page.RelPermalink }}
+{{- range $data }}
+{{- if index . "group" }}
 
-{{ $dataFolderByVersion := index site.Data $pageVersion }}
-{{ $data := index $dataFolderByVersion "errors"}}
+### {{ .group }}
 
-{{ $basePage := .Page.RelPermalink }}
-{{ range $data }}
-    {{ if index . "group" }}
-## {{ .group }} 
-    {{ else }}
-#### {{ .code }} - {{ .name }} 
+{{ else }}
+
+#### {{ .code }} - {{ .name }} {#{{ .code }}}
+
 <p>{{ .desc }}</p>
-{{ end }}
-{{ end }}
+{{- end }}
+{{- end }}

@@ -252,7 +252,7 @@ var curlRequest = function () {
 var logJsonResponseRaw = internal.appendJsonResponse(rawAppender, rawAppender);
 var logJsonResponse = internal.appendJsonResponse(rawAppender, jsonAppender);
 
-var logJsonLResponseRaw = internal.appendJsonLResponse(rawAppender, jsonLAppender);
+var logJsonLResponseRaw = internal.appendJsonLResponse(rawAppender, rawAppender);
 var logJsonLResponse = function (response) {
   var r = logJsonLResponseRaw.apply(logJsonLResponseRaw, [response]);
   print("RESP");

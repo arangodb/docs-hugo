@@ -3,7 +3,8 @@ title: Driver setup
 menuTitle: Driver Setup
 weight: 5
 description: >-
-  Driver setup
+  How to connect your Java application to an ArangoDB server, as well as
+  important configuration settings and information about the driver
 archetype: default
 ---
 The driver can be configured and instantiated using `com.arangodb.ArangoDB.Builder`:
@@ -90,6 +91,7 @@ Here are examples to integrate configuration properties from different sources:
 - `loadBalancingStrategy(LoadBalancingStrategy)`: load balancing strategy, possible values are: `NONE`, `ROUND_ROBIN`, `ONE_RANDOM`, (default: `NONE`)
 - `responseQueueTimeSamples(Integer)`:            amount of samples kept for queue time metrics, (default: `10`)
 - `serde(ArangoSerde)`:                           serde to serialize and deserialize user-data
+- `asyncExecutor(Executor)`:                      downstream `java.util.concurrent.Executor` that will be used to consume the responses of the async API
 
 ### Config File Properties
 

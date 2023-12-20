@@ -20,6 +20,7 @@ if sys.version_info[0] != 3:
 versions = yaml.safe_load(open("versions.yaml", "r"))
 versions = sorted(versions, key=lambda d: d['name']) 
 
+
 print(f"Loaded versions {versions}")
 
 """argv"""
@@ -29,34 +30,34 @@ if "--help-flags" in sys.argv:
 
 parser = argparse.ArgumentParser()
 parser.add_argument(
-    "--workflow", help="file containing the circleci base config", type=str
+    "--workflow", help="The workflow to trigger", type=str
 )
 parser.add_argument(
-    "--arangodb-branches",  nargs='+', help="arangodb branches"
+    "--arangodb-branches",  nargs='+', help="The arangodb/arangodb branches to be used for the generate workflow"
 )
 parser.add_argument(
-    "--arangodb-branch", help="file containing the test definitions", type=str
+    "--arangodb-branch", help="The arangodb/arangodb branch to be used for the release workflow", type=str
 )
 parser.add_argument(
-    "--generators", nargs='+', help="file containing the test definitions", type=str
+    "--generators", nargs='+', help="The generators to be used by the toolchain", type=str
 )
 parser.add_argument(
-    "--commit-generated", help="file containing the test definitions", type=bool
+    "--commit-generated", help="Whether to use the CircleCI commit step", type=bool
 )
 parser.add_argument(
-    "--create-pr", help="file containing the test definitions", type=bool
+    "--create-pr", help="If --commit-generated is used, create a separate PR on GitHub with the committed files", type=bool
 )
 parser.add_argument(
-    "--pr-branch", nargs="?", help="file containing the test definitions", type=str
+    "--pr-branch", nargs="?", help="If --create-pr is used, sets the PR branch name", type=str
 )
 parser.add_argument(
-    "--release-type", nargs="?", help="file containing the test definitions", type=str
+    "--release-type", nargs="?", help="The kind of release, docs (default) or arangodb, for the release workflow", type=str
 )
 parser.add_argument(
-    "--docs-version", nargs="?", help="file containing the test definitions", type=str
+    "--docs-version", nargs="?", help="For --release-type arangodb, the documentation version (x.y) corresponding to the ArangoDB version of the release", type=str
 )
 parser.add_argument(
-    "--arangodb-version", nargs="?", help="file containing the test definitions", type=str
+    "--arangodb-version", nargs="?", help="For --release-type arangodb, the ArangoDB version (x.y.z) to put in versions.yaml", type=str
 )
 
 args = parser.parse_args()
@@ -111,9 +112,8 @@ def workflow_generate(config):
             }
         }
 
-        compileJob["compile-linux"]["openssl"] = "3.0.9"
         if not "enterprise-preview" in branch:
-            compileJob["compile-linux"]["openssl"] = findOpensslVersion(branch)
+            openssl = findOpensslVersion(branch)
 
             if not extendedCompileJob:
                 extendedCompileJob = True
@@ -126,9 +126,17 @@ def workflow_generate(config):
                 config["jobs"]["compile-linux"]["steps"].append({
                     "compile-and-dockerize-arangodb": {
                         "branch": branch,
-                        "version": version
+                        "version": version,
+                        "openssl": openssl,
                     }
                 })
+
+            if openssl.startswith("3.0"):
+                compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.10"
+            if openssl.startswith("3.1"):
+                compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
+            if openssl.startswith("1.1"):
+                compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
 
         generateRequires.append(f"compile-{version}")
         jobs.append(compileJob)
@@ -173,8 +181,7 @@ def workflow_generate_scheduled(config):
                 "context": ["sccache-aws-bucket"],
                 "name": f"compile-{version}",
                 "arangodb-branch": f"arangodb/enterprise-preview:{version}-nightly" if versions[i]["alias"] != "devel" else "arangodb/enterprise-preview:devel-nightly",
-                "version": version,
-                "openssl": "3.0.9",
+                "version": version
             }
         }
         generateRequires.append(f"compile-{version}")
@@ -203,6 +210,7 @@ def workflow_generate_scheduled(config):
 
 def workflow_release_arangodb(config):
     config = workflow_release_launch_command(config)
+    config = workflow_release_store_artifacts_command(config)
 
     jobs = config["workflows"]["release"]["jobs"]
 
@@ -217,14 +225,21 @@ def workflow_release_arangodb(config):
             "context": ["sccache-aws-bucket"],
             "name": f"compile-{args.docs_version}",
             "arangodb-branch": args.arangodb_branch,
-            "version": args.docs_version,
-            "openssl": openssl,
+            "version": args.docs_version
         }
     }
+    if openssl.startswith("3.0"):
+        compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.10"
+    if openssl.startswith("3.1"):
+        compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
+    if openssl.startswith("1.1"):
+        compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
+
     config["jobs"]["compile-linux"]["steps"].append({
         "compile-and-dockerize-arangodb": {
             "branch": args.arangodb_branch,
-            "version": args.docs_version
+            "version": args.docs_version,
+            "openssl": openssl,
         }
     })
     generateRequires.append(f"compile-{args.docs_version}")
@@ -316,6 +331,25 @@ def workflow_generate_store_artifacts_command(config):
     config["commands"]["store-generated-data"]["steps"][0]["run"]["command"] = shell
     return config
 
+
+def workflow_release_store_artifacts_command(config):
+    shell = "cd docs-hugo/site/data"
+
+    version = args.docs_version
+    branch = args.arangodb_branch
+
+    branchEnv = f"tar -cvf /tmp/{version}-generated.tar {version}/\n"
+    shell = f"{shell}\n{branchEnv}"
+    config["commands"]["store-generated-data"]["steps"].append({
+        "store_artifacts": {
+            "path": f"/tmp/{version}-generated.tar"
+        }
+    })
+
+
+    config["commands"]["store-generated-data"]["steps"][0]["run"]["command"] = shell
+    return config
+
 def workflow_commit_generated_download_data(config):
     cmd = config["commands"]["download-generated-data"]["steps"][0]["run"]["command"]
 
@@ -349,6 +383,7 @@ export ARANGODB_SRC_{version_underscore}=/home/circleci/project/{args.docs_versi
     shell = f"{shell}\n{branchEnv}"
 
     shell = f"{shell}\n\
+cd docs-hugo/toolchain/docker/amd64\n \
 docker compose up --exit-code-from toolchain\n \
 exit $?"
 
@@ -379,7 +414,8 @@ def findOpensslVersion(branch):
     print(f"Github response: {r.text}")
     for line in r.text.split("\n"):
         if "OPENSSL_LINUX" in line:
-            return line.replace("OPENSSL_LINUX", "").replace(" ", "").replace("\"", "")
+            version = line.replace("OPENSSL_LINUX", "").replace(" ", "").replace("\"", "")
+            return version
 
 
 ## MAIN

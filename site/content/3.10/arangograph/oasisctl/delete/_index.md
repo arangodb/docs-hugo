@@ -1,15 +1,11 @@
 ---
+archetype: default
+description: Description of the oasisctl delete command
 title: Oasisctl Delete
 menuTitle: Delete
-weight: 45
-description: >-
-  Description of the oasisctl delete command
-archetype: chapter
+weight: 5
 ---
-Delete resources
-
 ## Synopsis
-
 Delete resources
 
 ```
@@ -17,13 +13,11 @@ oasisctl delete [flags]
 ```
 
 ## Options
-
 ```
   -h, --help   help for delete
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -31,7 +25,6 @@ oasisctl delete [flags]
 ```
 
 ## See also
-
 * [oasisctl](../options.md)	 - ArangoGraph Insights Platform
 * [oasisctl delete apikey](delete-apikey.md)	 - Delete an API key with given identifier
 * [oasisctl delete auditlog](delete-auditlog.md)	 - Delete an auditlog
