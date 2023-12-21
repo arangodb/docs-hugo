@@ -575,6 +575,17 @@ _arangodump_ operations on the server:
   dump thread was blocked because it honored the server-side memory
   limit for dumps.
 
+### arangorestore
+
+The following startup option has been added that allows _arangorestore_ to override
+the `writeConcern` value specified in a database dump when creating new
+collections:
+
+- `--write-concern`: Override the `writeConcern` value for collections.
+  Can be specified multiple times, e.g. `--write-concern 2 --write-concern myCollection=3`
+  to set the write concern for the collection called `myCollection` to 3 and
+  for all other collections to 2.
+
 ### arangoimport
 
 The default value for the `--type` startup option has been changed from `json`
