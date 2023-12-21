@@ -201,6 +201,63 @@ The previously fixed limit of 128 MiB for [Stream Transactions](../../develop/tr
 can now be configured with the new `--transaction.streaming-max-transaction-size`
 startup option. The default value remains 128 MiB.
 
+### Transparent compression of requests and responses between ArangoDB servers and client tools
+
+The following startup options have been added to all
+[client tools](../../components/tools/_index.md) (except the ArangoDB Starter)
+and can be used to enable transparent compression of the data that is sent
+between a client tool and an ArangoDB server:
+
+- `--compress-transfer`
+- `--compress-request-threshold`
+
+If the `--compress-transfer` option is set to `true`, the client tool adds an
+extra `Accept-Encoding: deflate` HTTP header to all requests made to the server.
+This allows the server to compress its responses before sending them back to the
+client tool.
+
+The client also transparently compresses its own requests to the server if the
+size of the request body (in bytes) is at least the value of the
+`--compress-request-threshold` startup option. The default value is `0`, which
+disables the compression of the request bodies in the client tool. To opt in to
+sending compressed data, set the option to a value greater than `0`.
+The client tool adds a `Content-Encoding: deflate` HTTP header to the request
+if the request body is compressed using the deflate compression algorithm.
+
+The following options have been added to the ArangoDB server:
+
+- `--http.compress-response-threshold`
+- `--http.handle-content-encoding-for-unauthenticated-requests`
+
+The value of the `--http.compress-response-threshold` startup option specifies
+the threshold value (in bytes) from which on response bodies are sent out
+compressed by the server. The default value is `0`, which disables sending out
+compressed response bodies. To enable compression, the option should be set to a
+value greater than `0`. The selected value should be large enough to justify the
+compression overhead. Regardless of the value of this option, the client has to
+signal that it expects a compressed response body by sending an
+`Accept-Encoding: gzip` or `Accept-Encoding: deflate` HTTP header with its request.
+If that header is missing, no response compression is performed by the server.
+
+If the `--http.handle-content-encoding-for-unauthenticated-requests`
+startup option is set to `true`, the ArangoDB server automatically decompresses
+incoming HTTP requests with `Content-Encodings: gzip` or
+`Content-Encoding: deflate` HTTP header even if the request is not authenticated.
+If the option is set to `false`, any unauthenticated request that has a
+`Content-Encoding` header set is rejected. This is the default setting.
+
+{{< info >}}
+As compression uses CPU cycles, it should be activated only when the network
+communication between the server and clients is slow and there is enough CPU
+capacity left for the extra compression/decompression work.
+
+Furthermore, requests and responses should only be compressed when they exceed a
+certain minimum size, e.g. 250 bytes.
+
+Request and response compression is only supported for responses that use the
+HTTP/1.1 or HTTP/2 protocol, and not when using the VelocyStream (VST) protocol.
+{{< /info >}}
+
 ### LZ4 compression for values in the in-memory edge cache
 
 <small>Introduced in: v3.11.2</small>
@@ -308,16 +365,6 @@ the queue might grow and eventually overflow.
 
 You can configure the upper bound of the queue with this option. If the queue is
 full, log entries are written synchronously until the queue has space again.
-
-## Client tools
-
-### arangodump
-
-_arangodump_ now supports a `--ignore-collection` startup option that you can
-specify multiple times to exclude the specified collections from a dump.
-
-It cannot be used together with the existing `--collection` option for specifying
-collections to include.
 
 ## Miscellaneous changes
 
@@ -445,6 +492,14 @@ The following metric as been added:
 
 ### arangodump
 
+### `--ignore-collection` startup option
+
+_arangodump_ now supports a `--ignore-collection` startup option that you can
+specify multiple times to exclude the specified collections from a dump.
+
+It cannot be used together with the existing `--collection` option for specifying
+collections to include.
+
 #### Improved dump performance and size
 
 From version 3.12 onward, _arangodump_ has extended parallelization capabilities
@@ -534,6 +589,13 @@ The following file extensions are automatically detected:
 
 If the file extension doesn't correspond to any of the mentioned types, the
 import defaults to the `json` format.
+
+### Transparent compression of requests and responses
+
+Startup options to enable transparent compression of the data that is sent
+between a client tool and the ArangoDB server have been added. See the
+[Server options](#transparent-compression-of-requests-and-responses-between-arangodb-servers-and-client-tools)
+section above that includes a description of the added client tool options.
 
 ## Internal changes
 
