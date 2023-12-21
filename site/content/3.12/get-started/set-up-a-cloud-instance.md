@@ -140,9 +140,10 @@ Alternatively, follow the steps of the linked guides:
 
 The ArangoGraph Insights Platform comes with a [perpetual free tier](../arangograph/organizations/_index.md#perpetual-free-trial)
 that lets you test the platform indefinitely at no cost. It includes one project
-and one small deployment of 4GB, local backups, and one notebook for learning
-and data science. Free deployments are automatically paused if unused for 2
-hours and automatically deleted if unused for 30 days.
+and one small deployment (Single Server with 4 GB memory), local backups, and
+one ArangoGraph notebook for learning and data science. Free deployments are
+automatically paused if unused for 2 hours and automatically deleted if unused
+for 30 days.
 
 You can unlock all features in ArangoGraph at any time by adding 
 your billing details and at least one payment method. See:
