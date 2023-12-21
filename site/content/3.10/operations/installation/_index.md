@@ -40,7 +40,7 @@ ArangoDB requires systems with Little Endian byte order.
 {{< /info >}}
 
 {{< tip >}}
-[ArangoGraph Insights Platform](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
+[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
 is a fully-managed service and requires no installation. It's the easiest way
 to run ArangoDB in the cloud.
 {{< /tip >}}

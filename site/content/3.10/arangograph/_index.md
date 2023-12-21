@@ -7,7 +7,7 @@ description: >-
   ArangoDB as a service, without the need to run or manage databases yourself
 archetype: chapter
 ---
-The [ArangoGraph Insights Platform](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
+The [ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
 formerly called Oasis, provides ArangoDB databases as a Service (DBaaS).
 It enables you to use the entire functionality of an ArangoDB cluster
 deployment without the need to run or manage the system yourself.
@@ -31,7 +31,7 @@ The ArangoGraph Insights Platform...
   access to it is protected with industry standard safeguards.
 
 For more information see
-[cloud.arangodb.com](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
+[dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
 
 For quick start guide, see
 [Use ArangoDB in the Cloud](../get-started/set-up-a-cloud-instance.md).

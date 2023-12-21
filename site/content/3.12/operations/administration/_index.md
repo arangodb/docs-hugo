@@ -30,13 +30,12 @@ Deployments of ArangoDB servers can be managed with the following tools:
   [driver](../../develop/drivers/_index.md) developers.
 
 - [**ArangoDB Starter**](../../components/tools/arangodb-starter/_index.md): This deployment tool
-  helps to start _arangod_ instances, like for a Cluster or an Active Failover setup.
+  helps to start _arangod_ instances, like for a Cluster setup.
   
 For a full list of tools, please refer to the [Programs & Tools](../../components/tools/_index.md) chapter.
 
 ## Deployment Administration
 
-- [Active Failover](../../deploy/active-failover/administration.md)
 - [Cluster](../../deploy/cluster/administration.md)
 - [Datacenter-to-Datacenter Replication](../../deploy/arangosync/administration.md)
 - [ArangoDB Starter Administration](arangodb-starter/_index.md)

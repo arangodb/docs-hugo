@@ -7,6 +7,12 @@ description: >-
   this ArangoDB version and adjust any client applications if necessary
 archetype: default
 ---
+## Active Failover deployment mode deprecation
+
+Running a single server with asynchronous replication to one or more passive
+single servers for automatic failover is deprecated and will no longer be
+supported in the next minor version of ArangoDB, from v3.12 onward.
+
 ## Extended naming constraints for collections, Views, and indexes
 
 In ArangoDB 3.9, the `--database.extended-names-databases` startup option was

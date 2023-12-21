@@ -39,7 +39,7 @@ paths:
 
         - `parameters`: the collection properties
 
-        - `indexes`: an array of the indexes of a the collection. Primary indexes and edge indexes
+        - `indexes`: an array of the indexes of the collection. Primary indexes and edge indexes
            are not included in this array.
 
         The `state` attribute contains the current state of the replication logger. It
@@ -89,13 +89,17 @@ paths:
           response will be empty and clients can go to sleep for a while and try again
           later.
 
-        **Note**: on a Coordinator, this request must have a `DBserver`
+        {{</* info */>}}
+        On a Coordinator, this request must have a `DBserver`
         query parameter which must be an ID of a DB-Server.
         The very same request is forwarded synchronously to that DB-Server.
         It is an error if this attribute is not bound in the Coordinator case.
+        {{</* /info */>}}
 
-        **Note**: Using the `global` parameter the top-level object contains a key `databases`
+        {{</* info */>}}
+        Using the `global` parameter the top-level object contains a key `databases`
         under which each key represents a database name, and the value conforms to the above description.
+        {{</* /info */>}}
       parameters:
         - name: includeSystem
           in: query
@@ -144,7 +148,7 @@ paths:
 ## Batch
 
 The *batch* method will create a snapshot of the current state that then can be
-dumped. A batchId is required when using the dump API with RocksDB.
+dumped.
 
 ### Create a new dump batch
 
@@ -167,10 +171,12 @@ paths:
         - `state`: additional leader state information (only present if the
           `state` URL parameter was set to `true` in the request)
 
-        **Note**: on a Coordinator, this request must have a `DBserver`
+        {{</* info */>}}
+        On a Coordinator, this request must have a `DBserver`
         query parameter which must be an ID of a DB-Server.
         The very same request is forwarded synchronously to that DB-Server.
         It is an error if this attribute is not bound in the Coordinator case.
+        {{</* /info */>}}
       parameters:
         - name: state
           in: query
@@ -223,10 +229,12 @@ paths:
 
         Deletes the existing dump batch, allowing compaction and cleanup to resume.
 
-        **Note**: on a Coordinator, this request must have a `DBserver`
+        {{</* info */>}}
+        On a Coordinator, this request must have a `DBserver`
         query parameter which must be an ID of a DB-Server.
         The very same request is forwarded synchronously to that DB-Server.
         It is an error if this attribute is not bound in the Coordinator case.
+        {{</* /info */>}}
       parameters:
         - name: id
           in: path
@@ -266,10 +274,12 @@ paths:
 
         If the batch's TTL can be extended successfully, the response is empty.
 
-        **Note**: on a Coordinator, this request must have a `DBserver`
+        {{</* info */>}}
+        On a Coordinator, this request must have a `DBserver`
         query parameter which must be an ID of a DB-Server.
         The very same request is forwarded synchronously to that DB-Server.
         It is an error if this attribute is not bound in the Coordinator case.
+        {{</* /info */>}}
       requestBody:
         content:
           application/json:
@@ -365,7 +375,9 @@ paths:
 
           - 2302: document/edge deletion
 
-        **Note**: there will be no distinction between inserts and updates when calling this method.
+        {{</* info */>}}
+        There will be no distinction between inserts and updates when calling this method.
+        {{</* /info */>}}
       parameters:
         - name: collection
           in: query
@@ -764,7 +776,9 @@ paths:
 
         Use with caution!
 
-        **Note**: this method is not supported on a Coordinator in a cluster.
+        {{</* info */>}}
+        This method is not supported on a Coordinator in a cluster deployment.
+        {{</* /info */>}}
       requestBody:
         content:
           application/json:
@@ -842,7 +856,7 @@ paths:
             is returned if an error occurred during synchronization.
         '501':
           description: |
-            is returned when this operation is called on a Coordinator in a cluster.
+            is returned when this operation is called on a Coordinator in a cluster deployment.
       tags:
         - Replication
 ```

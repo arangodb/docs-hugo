@@ -311,7 +311,7 @@ paths:
       responses:
         '200':
           description: |
-            On success, an object with the following attributes is returned
+            On success, an object with the following attributes is returned:
           content:
             application/json:
               schema:
@@ -436,7 +436,7 @@ paths:
       responses:
         '200':
           description: |
-            On success, an object with the following attributes is returned
+            On success, an object with the following attributes is returned:
           content:
             application/json:
               schema:
@@ -527,7 +527,9 @@ paths:
         - `name`: The new name of the View.
         - `type`: The View type.
 
-        **Note**: This method is not available in a cluster.
+        {{</* info */>}}
+        Renaming Views is not supported in cluster deployments.
+        {{</* /info */>}}
       parameters:
         - name: view-name
           in: path

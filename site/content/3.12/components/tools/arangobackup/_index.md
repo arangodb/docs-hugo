@@ -23,7 +23,7 @@ Hot backups rely on hard link magic performed on the database's
 persistence layer.
 
 _arangobackup_ can be used for all ArangoDB deployment modes
-(Single Instance, Active Failover, Cluster). It always creates what
+(Single Instance, Cluster). It always creates what
 is most readily described as a persistence layer consistent snapshot
 of the entire instance. Therefore, no such thing as database or
 collection level hot backup exists. Consequently, unlike with

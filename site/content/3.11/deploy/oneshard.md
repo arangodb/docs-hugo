@@ -10,13 +10,19 @@ archetype: default
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 The OneShard option for ArangoDB clusters restricts all collections of a
-database to a single shard and places them on one DB-Server node. This way,
-whole queries can be pushed to and executed on that server, massively reducing
-cluster-internal communication. The Coordinator only gets back the final result.
+database to a single shard so that every collection has `numberOfShards` set to `1`,
+and all leader shards are placed on one DB-Server node. This way, whole queries
+can be pushed to and executed on that server, massively reducing cluster-internal
+communication. The Coordinator only gets back the final result.
 
 Queries are always limited to a single database, and with the data of a whole
 database on a single node, the OneShard option allows running transactions with
 ACID guarantees on shard leaders.
+
+Collections can have replicas by setting a `replicationFactor` greater than `1`
+as usual. For each replica, the follower shards are all placed on one DB-Server
+node when using the OneShard option. This allows for a quick failover in case
+the DB-Server with the leader shards fails.
 
 A OneShard setup is highly recommended for most graph use cases and join-heavy
 queries.
@@ -276,10 +282,13 @@ on the leader shards in a cluster, a few things need to be considered:
 - The collection option `writeConcern: 2` makes sure that a transaction is only
   successful if at least one follower shard is in sync with the leader shard,
   for a total of two shard replicas.
-- The RocksDB engine supports intermediate commits for larger document
-  operations, potentially breaking the atomicity of transactions. To prevent
+- The RocksDB storage engine uses intermediate commits for larger document
+  operations carried out by standalone AQL queries
+  (outside of JavaScript Transactions and Stream Transactions).
+  This potentially breaks the atomicity of transactions. To prevent
   this for individual queries you can increase `intermediateCommitSize`
   (default 512 MB) and `intermediateCommitCount` accordingly as query option.
+  Also see [Known limitations for AQL queries](../aql/fundamentals/limitations.md#storage-engine-properties).
 
 ### Limitations
 

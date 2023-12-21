@@ -36,8 +36,7 @@ Cases 1. and 2. are more common, though cases 3. and 4. are also possible.
 ## Upgrade Procedure
 
 The following procedure has to be executed on every ArangoDB _Starter_ instance.
-It is assumed that a _Starter_ deployment with mode `single`, `activefailover` or
-`cluster` is running.
+It is assumed that a _Starter_ deployment with mode `single` or `cluster` is running.
 
 {{< warning >}}
 It is highly recommended to take a backup of your data before upgrading ArangoDB
@@ -219,7 +218,7 @@ For deployment mode `single`, the `arangodb upgrade` command will:
 The `arangodb upgrade` command will complete right away.
 Inspect the log of the _Starter_ to know when the upgrade has finished.
 
-#### Deployment mode `activefailover` or `cluster`
+#### Deployment mode `cluster`
 
 The _Starters_ will now perform an initial check that upgrading is possible
 and when that all succeeds, create an upgrade _plan_. This _plan_ is then 
@@ -251,7 +250,7 @@ you are:
 
 ## Retrying a failed upgrade
 
-When an upgrade _plan_ (in deployment mode `activefailover` or `cluster`)
+When an upgrade _plan_ (in deployment mode `cluster`)
 has failed, it can be retried.
 
 To retry, run:
@@ -265,7 +264,7 @@ of the starters, e.g. `http://localhost:8528`.
 
 ## Aborting an upgrade
 
-When an upgrade _plan_ (in deployment mode `activefailover` or `cluster`)
+When an upgrade _plan_ (in deployment mode `cluster`)
 is in progress or has failed, it can be aborted.
 
 To abort, run:

@@ -851,7 +851,9 @@ paths:
         - `name`: The new name of the View.
         - `type`: The View type.
 
-        **Note**: This method is not available in a cluster.
+        {{</* info */>}}
+        Renaming Views is not supported in cluster deployments.
+        {{</* /info */>}}
       parameters:
         - name: view-name
           in: path

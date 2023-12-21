@@ -81,7 +81,7 @@ applied license for reference and support from ArangoDB.
 
 In order to monitor the remaining validity of the license, the metric
 `arangodb_license_expires` is exposed by Coordinators and DB-Servers, see the
-[Metrics API](../../develop/http-api/monitoring.md#metrics).
+[Metrics API](../../develop/http-api/monitoring/metrics.md).
 
 ## Managing Your License
 

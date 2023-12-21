@@ -408,7 +408,7 @@ Also see [Server security options](../../operations/security/security-options.md
 
 ### ArangoSearch metrics and figures
 
-The [Metrics HTTP API](../../develop/http-api/monitoring.md#metrics) has been
+The [Metrics HTTP API](../../develop/http-api/monitoring/metrics.md) has been
 extended with metrics for ArangoSearch for monitoring `arangosearch` View links
 and inverted indexes.
 
@@ -581,7 +581,7 @@ This diverges from the previous implementation in two fundamental ways:
    that the "smaller" of the two connected components are the interior.
    This allows specifying polygons that cover more than half of
    the surface of the Earth and conforms to the GeoJSON standard.
-   See [GeoJSON interpretation](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson-interpretation)
+   See [GeoJSON interpretation](../../aql/functions/geo.md#geojson-interpretation)
    for examples.
 
 Additionally, the reported issues, which occasionally produced
@@ -1528,7 +1528,7 @@ been added:
 The memory usage of in-memory edge index caches is reduced if most of the edges 
 in an index refer to a single or mostly the same collection.
 
-Previously, the full edge IDs, consisting of the the referred-to collection
+Previously, the full edge IDs, consisting of the referred-to collection
 name and the referred-to key of the edge, were stored in full, i.e. the full
 values of the edges' `_from` and `_to` attributes. 
 Now, the first edge inserted into an edge index' in-memory cache determines
@@ -1593,9 +1593,28 @@ The following system metrics have been added:
 | `arangodb_file_descriptors_limit` | System limit for the number of open files for the arangod process. |
 | `arangodb_file_descriptors_current` | Number of file descriptors currently opened by the arangod process. |
 
+### Memory usage of connection and request statistics
+
+<small>Introduced in: v3.10.12</small>
+
+The following metrics have been added:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_connection_statistics_memory_usage` | Total memory usage of connection statistics. |
+| `arangodb_request_statistics_memory_usage` | Total memory usage of request statistics. |
+
+If the `--server.statistics` startup option is set to `true`, then some
+connection and request statistics are built up in memory for incoming request.
+It is expected that the memory usage reported by these metrics remains
+relatively constant over time. It may grow only when there are bursts of new
+connections. Some memory is pre-allocated at startup for higher efficiency. If the
+`--server.statistics` startup option is set to `false`, then no memory will be
+allocated for connection and request statistics.
+
 ### More instant Hot Backups
 
-<small>Introduced in: v3.10.10, v3.11.3</small>
+<small>Introduced in: v3.10.10</small>
 
 Cluster deployments no longer wait for all in-progress transactions to get
 committed when a user requests a Hot Backup. The waiting could cause deadlocks

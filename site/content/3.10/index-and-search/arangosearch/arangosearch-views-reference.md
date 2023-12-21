@@ -227,7 +227,7 @@ cache-related options and thus recreate inverted indexes and Views. See
   
   - `"lz4"` (default): use LZ4 fast compression.
   - `"none"`: disable compression to trade space for speed.
-  
+
 - **primarySortCache** (_optional_; type: `boolean`; default: `false`; _immutable_)
 
   {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}

@@ -1142,6 +1142,3 @@ Additionally you can now send read-only requests to followers, so you can
 use them for read scaling. To make sure only requests that are intended for
 this use-case are served by the follower you need to add a
 `X-Arango-Allow-Dirty-Read: true` header to HTTP requests.
-
-For more information see
-[Active Failover Architecture](../../deploy/active-failover/_index.md).

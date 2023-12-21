@@ -432,8 +432,10 @@ paths:
 
                     Default: `false`
 
-                    **Warning**: Using `includeAllFields` for a lot of attributes in combination
+                    {{</* warning */>}}
+                    Using `includeAllFields` for a lot of attributes in combination
                     with complex Analyzers may significantly slow down the indexing process.
+                    {{</* /warning */>}}
                   type: boolean
                 trackListPositions:
                   description: |

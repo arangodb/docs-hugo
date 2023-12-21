@@ -253,7 +253,7 @@ paths:
 ```curl
 ---
 description: |-
-  Return the active storage engine with the RocksDB storage engine in use:
+  Return the active storage engine:
 name: RestEngine
 ---
 var response = logCurlRequest('GET', '/_api/engine');
@@ -559,6 +559,11 @@ paths:
           description: |
             HTTP 503 will be returned in case the server is during startup or during shutdown,
             is set to read-only mode or is currently a follower in an Active Failover deployment setup.
+
+            In addition, HTTP 503 will be returned in case the fill grade of the scheduler
+            queue exceeds the configured high-water mark (adjustable via startup option
+            `--server.unavailability-queue-fill-grade`), which by default is set to 75 % of
+            the maximum queue length.
       tags:
         - Administration
 ```
@@ -754,16 +759,14 @@ paths:
         Can be called on single servers, Coordinators, and DB-Servers.
       responses:
         '200':
-          description: ''
+          description: |
+            Returns the license information.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - features
                   - license
-                  - version
-                  - status
                 properties:
                   features:
                     description: |
@@ -777,14 +780,23 @@ paths:
                           The `expires` key lists the expiry date as Unix timestamp (seconds since
                           January 1st, 1970 UTC).
                         type: number
+                        example: 1683173040
                   license:
                     description: |
-                      The encrypted license key in Base64 encoding.
+                      The encrypted license key in Base64 encoding, or `"none"`
+                      in the Community Edition.
                     type: string
+                    example: V0h/W...wEDw==
+                  hash:
+                    description: |
+                      The hash value of the license.
+                    type: string
+                    example: 982db5...44f3
                   version:
                     description: |
                       The license version number.
                     type: number
+                    example: 1
                   status:
                     description: |
                       The `status` key allows you to confirm the state of the installed license on a
@@ -797,6 +809,12 @@ paths:
                       - `read-only`: The license is expired over 2 weeks. The instance is now
                         restricted to read-only mode.
                     type: string
+                    example: good
+                  upgrading:
+                    description: |
+                      Whether the server is performing a database upgrade.
+                    type: boolean
+                    example: false
       tags:
         - Administration
 ```
@@ -837,28 +855,142 @@ paths:
             Set to `true` to change the license even if it expires sooner than the current one.
           schema:
             type: boolean
+            default: false
       requestBody:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - license
-              properties:
-                license:
-                  description: |
-                    The request body has to contain the Base64-encoded string wrapped in double quotes.
-                  type: string
+              description: |
+                The request body has to contain the Base64-encoded string wrapped in double quotes.
+              type: string
+              example: eyJncmFudCI6...(Base64-encoded license string)...
       responses:
-        '400':
-          description: |
-            If the license expires earlier than the previously installed one.
         '201':
           description: |
             License successfully deployed.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - result
+                properties:
+                  result:
+                    type: object
+                    required:
+                      - error
+                      - code
+                    properties:
+                      error:
+                        description: |
+                          A flag indicating that no error occurred.
+                        type: boolean
+                        example: false
+                      code:
+                        description: |
+                          The HTTP status code.
+                        type: integer
+                        example: 201
+        '400':
+          description: |
+            If the license expires earlier than the previously installed one,
+            or if the supplied license string is invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      The ArangoDB error number.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '501':
+          description: |
+            If you try to apply a license in the Community Edition.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP status code.
+                    type: integer
+                    example: 501
+                  errorNum:
+                    description: |
+                      The ArangoDB error number.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Administration
 ```
+
+**Examples**
+
+{{< comment >}}
+Example not generated because it would require a valid license to demonstrate the API.
+{{< /comment >}}
+
+```bash
+curl --header 'accept: application/json' --dump - --data '"eyJncmFudCI6...(Base64-encoded license string)..."' -X PUT http://localhost:8529/_admin/license
+```
+
+{{< expand title="Show output" >}}
+```bash
+HTTP/1.1 201 Created
+content-type: application/json
+cache-control: no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0
+connection: Keep-Alive
+content-length: 37
+content-security-policy: frame-ancestors 'self'; form-action 'self';
+expires: 0
+pragma: no-cache
+server: ArangoDB
+strict-transport-security: max-age=31536000 ; includeSubDomains
+x-arango-queue-time-seconds: 0.000000
+x-content-type-options: nosniff
+
+{
+  "result": {
+    "error": false,
+    "code": 201
+  }
+}
+```
+{{< /expand >}}
 
 ## Shutdown
 
@@ -876,7 +1008,7 @@ paths:
           in: query
           required: false
           description: |
-            <small>Introduced in v3.7.12, v3.8.1, v3.9.0</small>
+            <small>Introduced in: v3.7.12, v3.8.1, v3.9.0</small>
 
             If set to `true`, this initiates a soft shutdown. This is only available
             on Coordinators. When issued, the Coordinator tracks a number of ongoing
@@ -891,12 +1023,12 @@ paths:
             requests will be handled by the remaining Coordinators, reducing the designated
             Coordinator's load.
 
-            The following types of operations are tracked
+            The following types of operations are tracked:
 
              - AQL cursors (in particular streaming cursors)
              - Transactions (in particular stream transactions)
              - Pregel runs (conducted by this Coordinator)
-             - Ongoing asynchronous requests (using the `x-arango-async store` HTTP header)
+             - Ongoing asynchronous requests (using the `x-arango-async: store` HTTP header)
              - Finished asynchronous requests, whose result has not yet been
                collected
              - Queued low priority requests (most normal requests)
@@ -1337,9 +1469,11 @@ paths:
         the only attribute, and with the value being a string describing the
         endpoint.
 
-        **Note**: retrieving the array of all endpoints is allowed in the system database
+        {{</* info */>}}
+        Retrieving the array of all endpoints is allowed in the system database
         only. Calling this action in any other database will make the server return
         an error.
+        {{</* /info */>}}
       responses:
         '200':
           description: |
