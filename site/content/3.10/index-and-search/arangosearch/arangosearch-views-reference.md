@@ -345,9 +345,9 @@ of removing unused segments after release of internal resources.
 
   For the case where there are a lot of inserts/updates, a higher value causes the
   index not to account for them and memory usage continues to grow until the commit.
-  For the case where there are a few inserts/updates, a lower value impacts
-  performance (because of synchronous locking) and wastes disk space for each
-  commit call.
+  A lower value impacts performance, including the case where there are no or only a
+  few inserts/updates because of synchronous locking, and it wastes disk space for
+  each commit call.
 
   > For data retrieval `arangosearch` Views follow the concept of
   > "eventually-consistent", i.e. eventually all the data in ArangoDB is
@@ -398,8 +398,8 @@ is used by these writers (in terms of "writers pool") one can use
   to disable use: `0`; _immutable_)
 
   Maximum memory byte size per writer (segment) before a writer (segment) flush is
-  triggered. `0` value turns off this limit for any writer (buffer) and data will
-  be flushed periodically. `0` value should be used carefully due to high
+  triggered. `0` value turns off this limit for any writer (buffer) and data is
+  flushed periodically. `0` value should be used carefully due to high
   potential memory consumption.
 
 - **consolidationPolicy** (_optional_; type: `object`; default: `{}`)
