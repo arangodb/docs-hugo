@@ -343,12 +343,11 @@ of removing unused segments after release of internal resources.
   Wait at least this many milliseconds between committing View data store
   changes and making documents visible to queries.
 
-  For the case where there are a lot of inserts/updates, a lower value, until
-  commit, causes the index not to account for them and memory usage continues
-  to grow.
-  For the case where there are a few inserts/updates, a higher value impacts
-  performance and wastes disk space for each commit call without any added
-  benefits.
+  For the case where there are a lot of inserts/updates, a higher value causes the
+  index not to account for them and memory usage continues to grow until the commit.
+  For the case where there are a few inserts/updates, a lower value impacts
+  performance (because of synchronous locking) and wastes disk space for each
+  commit call.
 
   > For data retrieval `arangosearch` Views follow the concept of
   > "eventually-consistent", i.e. eventually all the data in ArangoDB is

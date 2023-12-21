@@ -178,12 +178,11 @@ paths:
                     Wait at least this many milliseconds between committing View data store
                     changes and making documents visible to queries (default: 1000, to disable
                     use: 0).
-                    For the case where there are a lot of inserts/updates, a lower value, until
-                    commit, will cause the index not to account for them and memory usage would
-                    continue to grow.
-                    For the case where there are a few inserts/updates, a higher value will impact
-                    performance and waste disk space for each commit call without any added
-                    benefits.
+                    For the case where there are a lot of inserts/updates, a higher value causes the
+                    index not to account for them and memory usage continues to grow until the commit.
+                    For the case where there are a few inserts/updates, a lower value impacts
+                    performance (because of synchronous locking) and wastes disk space for each
+                    commit call.
 
                     _Background:_
                       For data retrieval, ArangoSearch follows the concept of
@@ -540,12 +539,11 @@ paths:
                     Wait at least this many milliseconds between committing View data store
                     changes and making documents visible to queries (default: 1000, to disable
                     use: 0).
-                    For the case where there are a lot of inserts/updates, a lower value, until
-                    commit, will cause the index not to account for them and memory usage would
-                    continue to grow.
-                    For the case where there are a few inserts/updates, a higher value will impact
-                    performance and waste disk space for each commit call without any added
-                    benefits.
+                    For the case where there are a lot of inserts/updates, a higher value causes the
+                    index not to account for them and memory usage continues to grow until the commit.
+                    For the case where there are a few inserts/updates, a lower value impacts
+                    performance (because of synchronous locking) and wastes disk space for each
+                    commit call.
 
                     _Background:_
                       For data retrieval, ArangoSearch follow the concept of
@@ -707,12 +705,11 @@ paths:
                     Wait at least this many milliseconds between committing View data store
                     changes and making documents visible to queries (default: 1000, to disable
                     use: 0).
-                    For the case where there are a lot of inserts/updates, a lower value, until
-                    commit, will cause the index not to account for them and memory usage would
-                    continue to grow.
-                    For the case where there are a few inserts/updates, a higher value will impact
-                    performance and waste disk space for each commit call without any added
-                    benefits.
+                    For the case where there are a lot of inserts/updates, a higher value causes the
+                    index not to account for them and memory usage continues to grow until the commit.
+                    For the case where there are a few inserts/updates, a lower value impacts
+                    performance (because of synchronous locking) and wastes disk space for each
+                    commit call.
 
                     _Background:_
                       For data retrieval, ArangoSearch follows the concept of
