@@ -125,7 +125,7 @@ your running database from the **Examples** tab of your deployment.
 
 {{< tip >}}
 You can try out the ArangoGraph Insights Platform at no cost with our
-[perpetual free tier](../arangograph/organizations/_index.md#perpetual-free-trial).
+[perpetual free tier](../arangograph/organizations/_index.md#perpetual-free-tier).
 Sign up at [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 {{< /tip >}}
 

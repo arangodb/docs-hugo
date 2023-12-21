@@ -138,7 +138,7 @@ Alternatively, follow the steps of the linked guides:
 
 ## Free-to-Try vs. Paid
 
-The ArangoGraph Insights Platform comes with a [perpetual free tier](../arangograph/organizations/_index.md#perpetual-free-trial)
+The ArangoGraph Insights Platform comes with a [perpetual free tier](../arangograph/organizations/_index.md#perpetual-free-tier)
 that lets you test the platform indefinitely at no cost. It includes one project
 and one small deployment (Single Server with 4 GB memory), local backups, and
 one ArangoGraph notebook for learning and data science. Free deployments are
