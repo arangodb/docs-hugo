@@ -75,6 +75,7 @@ The following new metrics have been added for memory observability:
 | Label | Description |
 |:------|:------------|
 | `arangodb_agency_node_memory_usage` | Memory used by Agency store/cache. |
+| `arangodb_aql_cursors_memory_usage` | Total memory usage of active AQL query result cursors.  |
 | `arangodb_index_estimates_memory_usage` | Total memory usage of all index selectivity estimates. |
 | `arangodb_internal_cluster_info_memory_usage` | Amount of memory spent in ClusterInfo. |
 | `arangodb_requests_memory_usage` | Memory consumed by incoming, queued, and currently processed requests. |
