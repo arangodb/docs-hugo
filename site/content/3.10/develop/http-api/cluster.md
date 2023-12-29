@@ -346,6 +346,8 @@ paths:
         maintenance mode, so that no attempts are made to re-distribute the data in a
         cluster for such planned events. DB-Servers in maintenance mode are not
         considered viable failover targets because they are likely restarted soon.
+
+        Possible values for `mode` are `"maintenance"` and `"normal"`.
       parameters:
         - name: DB-Server-ID
           in: path
