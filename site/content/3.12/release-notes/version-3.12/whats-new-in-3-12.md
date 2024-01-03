@@ -118,6 +118,18 @@ The new tabular format includes the following features:
   such as name, date, or size. This functionality provides a flexible way to
   organize and view your data.
 
+### Options & optimizer rules management in the Query Editor
+
+You can now specify extra options for your queries via the query editor.
+You can find all available options in the new **Options** tab in the
+right-hand pane of the editor view, positioned alongside the **Bind Variables**
+tab.
+
+In the new **Options** tab, you also have access to the
+[optimizer rules](../../aql/execution-and-performance/query-optimization.md#optimizer-rules).
+This section allows you to selectively disable multiple optimizer rules, giving
+you more control over query optimization according to your specific requirements.
+
 ### Swagger UI
 
 The interactive tool for exploring HTTP APIs has been updated to version 5.4.1.
