@@ -13,6 +13,7 @@ representing the nodes and a corresponding CSV file representing the edges.
 
 This example uses a sample data set of two files, `airports.csv` and `flights.csv`
 to create a graph showing flights arriving to and departing from various cities.
+You can download the files from [GitHub](https://github.com/arangodb/example-datasets/tree/master/Data%20Loader).
 
 The `airports.csv` contains rows of airport entries, which are the future nodes
 in your graph. The `flights.csv` contains rows of flight entries, which are the
