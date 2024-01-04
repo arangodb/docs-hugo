@@ -243,6 +243,20 @@ UPSERT { a: 1234 }
   OPTIONS { indexHint: … , forceIndexHint: true }
 ```
 
+### `readOwnWrites`
+
+The `readOwnWrites` option allows `UPSERT` operations to process its inputs one
+by one. The default value is `true`. When enabled, the `UPSERT` operation can
+observe its own writes and can handle modifying the same target document multiple
+times in the same query.
+
+When the option is set to `false`, an `UPSERT` operation processes its inputs
+in batches. A batch has normally 1000 inputs, so it can lead to a faster execution.
+However, when using batches, the `UPSERT` operation cannot observe its own writes.
+The `readOwnWrites` option should be set to `false` only if it can
+be guaranteed that the input of the `UPSERT` leads to disjoint documents being
+inserted, updated, or replaced.
+
 ## Returning documents
 
 `UPSERT` statements can optionally return data. To do so, they need to be followed
