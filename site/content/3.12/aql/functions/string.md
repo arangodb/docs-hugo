@@ -1233,6 +1233,35 @@ description: ''
 RETURN REGEX_REPLACE("An Avocado", "a", "_", true)
 ```
 
+## REPEAT()
+
+`REPEAT(value, count) → repeatedString`
+
+Repeat the input as many times as specified.
+
+- **value** (string): a string
+- **count** (number): how often to repeat the `value`
+- returns **repeatedString** (string): a new string with the `value` repeated
+  `count` times
+
+**Examples**
+
+```aql
+---
+name: aqlRepeat_1
+description: ''
+---
+RETURN REPEAT("foo ", 3)
+```
+
+```aql
+---
+name: aqlRepeat_2
+description: ''
+---
+RETURN REPEAT(5, 5)
+```
+
 ## REVERSE()
 
 `REVERSE(value) → reversedString`
@@ -1889,6 +1918,28 @@ description: ''
 RETURN [
   TO_BASE64("ABC."),
   TO_BASE64("123456")
+]
+```
+
+## TO_CHAR()
+
+`TO_CHAR(codepoint) → character`
+
+Return the character with the specified codepoint.
+
+- **codepoint** (number): a Unicode codepoint
+- returns **character** (string): the character with the specified codepoint
+
+**Examples**
+
+```aql
+---
+name: aqlToChar
+description: ''
+---
+RETURN [
+  TO_CHAR(216),
+  TO_CHAR(0x1F951)
 ]
 ```
 

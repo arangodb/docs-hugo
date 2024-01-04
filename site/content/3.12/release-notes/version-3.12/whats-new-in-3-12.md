@@ -182,6 +182,13 @@ less overhead.
 
 See [Document and object functions in AQL](../../aql/functions/document-object.md#parse_collection).
 
+The new `REPEAT()` function repeats the input value a given number of times and
+returns the resulting string.
+The new `TO_CHAR()` functions lets you specify a numeric Unicode codepoint and
+returns the corresponding character as a string.
+
+See [String functions in AQL](../../aql/functions/string.md#repeat).
+
 ## Indexing
 
 ### Stored values can contain the `_id` attribute
