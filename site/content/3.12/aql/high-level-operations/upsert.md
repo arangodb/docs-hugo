@@ -245,16 +245,16 @@ UPSERT { a: 1234 }
 
 ### `readOwnWrites`
 
-The `readOwnWrites` option allows `UPSERT` operations to process its inputs one
+The `readOwnWrites` option allows an `UPSERT` operation to process its inputs one
 by one. The default value is `true`. When enabled, the `UPSERT` operation can
 observe its own writes and can handle modifying the same target document multiple
 times in the same query.
 
 When the option is set to `false`, an `UPSERT` operation processes its inputs
-in batches. A batch has normally 1000 inputs, so it can lead to a faster execution.
+in batches. Normally, a batch has 1000 inputs, which can lead to a faster execution.
 However, when using batches, the `UPSERT` operation cannot observe its own writes.
-The `readOwnWrites` option should be set to `false` only if it can
-be guaranteed that the input of the `UPSERT` leads to disjoint documents being
+You should only set the `readOwnWrites` option to `false` if you can
+guarantee that the input of the `UPSERT` leads to disjoint documents being
 inserted, updated, or replaced.
 
 ## Returning documents
