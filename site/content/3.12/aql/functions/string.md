@@ -1235,14 +1235,16 @@ RETURN REGEX_REPLACE("An Avocado", "a", "_", true)
 
 ## REPEAT()
 
-`REPEAT(value, count) → repeatedString`
+`REPEAT(value, count, separator) → repeatedString`
 
-Repeat the input as many times as specified.
+Repeat the input as many times as specified, optionally with a separator.
 
 - **value** (string): a string
 - **count** (number): how often to repeat the `value`
-- returns **repeatedString** (string): a new string with the `value` repeated
-  `count` times
+- **separator** (string, *optional*): a string to place between repetitions
+- returns **repeatedString** (string\|null): a new string with the `value`
+  repeated `count` times, or `null` and a warning if the output string exceeds
+  the limit of 16 MB
 
 **Examples**
 
@@ -1251,12 +1253,20 @@ Repeat the input as many times as specified.
 name: aqlRepeat_1
 description: ''
 ---
-RETURN REPEAT("foo ", 3)
+RETURN REPEAT("foo", 3)
 ```
 
 ```aql
 ---
 name: aqlRepeat_2
+description: ''
+---
+RETURN REPEAT("foo", 3, " | ")
+```
+
+```aql
+---
+name: aqlRepeat_3
 description: ''
 ---
 RETURN REPEAT(5, 5)
