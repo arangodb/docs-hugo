@@ -189,6 +189,8 @@ returns the corresponding character as a string.
 
 See [String functions in AQL](../../aql/functions/string.md#repeat).
 
+A numeric function `RANDOM()` has been added as an alias for the existing `RAND()`.
+
 ## Indexing
 
 ### Stored values can contain the `_id` attribute

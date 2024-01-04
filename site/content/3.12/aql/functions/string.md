@@ -281,7 +281,7 @@ RETURN CONTAINS("foobarbaz", "horse", true)
 
 ## COUNT()
 
-This is an alias for [LENGTH()](#length).
+This is an alias for [`LENGTH()`](#length).
 
 ## CRC32()
 
