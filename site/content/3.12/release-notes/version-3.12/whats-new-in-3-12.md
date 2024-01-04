@@ -195,6 +195,11 @@ indexes have been allowing to index and store the `_id` system attribute.
 
 ## Server options
 
+### Protocol aliases for endpoints
+
+You can now use `http://` and `https://` as aliases for `tcp://` and `ssl://`
+in the `--server.endpoint` startup option of the server.
+
 ### Adjustable Stream Transaction size
 
 The previously fixed limit of 128 MiB for [Stream Transactions](../../develop/transactions/stream-transactions.md)
@@ -489,6 +494,11 @@ The following metric as been added:
   currently started and detached from the scheduler. 
 
 ## Client tools
+
+### Protocol aliases for endpoints
+
+You can now use `http://` and `https://` as aliases for `tcp://` and `ssl://`
+in the `--server.endpoint` startup option with all client tools.
 
 ### arangodump
 
