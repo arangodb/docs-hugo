@@ -44,7 +44,7 @@ The MMFiles storage engine is deprecated starting with version
 3.6.0 and it will be removed in a future release.
 
 We recommend to switch to RocksDB even before the removal of MMFiles.
-RocksDB is the default [storage engine](../../deploy/architecture/storage-engine.md)
+RocksDB is the default [storage engine](../../components/arangodb-server/storage-engine.md)
 since v3.4.0.
 
 ## Requests statistics
