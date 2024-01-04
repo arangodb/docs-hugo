@@ -191,6 +191,17 @@ also restored or already present on the server.
 
 See [_arangodump_](../arangodump/examples.md#encryption) for details.
 
+## Compression
+
+You can optionally let *arangorestore* compress the data for the network transfer
+with the `--compress-transfer` startup option. This can reduce the traffic and
+thus save time. Set the `--compress-request-threshold` startup option to define
+the minimum size for request bodies (in bytes) at which compression is applied.
+
+```
+arangorestore --input-directory "dump" --compress-transfer --compress-request-threshold 250
+```
+
 ## Reloading Data into a different Collection
 
 _arangorestore_ restores documents and edges with the exact same `_key`,
