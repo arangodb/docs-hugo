@@ -35,16 +35,16 @@ member of one _Free-to-try_ tier organization at a time.
 With the ArangoGraph Insights Platform, your organization can choose one of the
 following packages.
 
-### Perpetual Free Tier
+### Perpetual Free Deployments
 
-ArangoGraph comes with a perpetual free tier that lets you access the platform
+ArangoGraph comes with a perpetual free package that lets you access the platform
 without incurring any costs indefinitely. You can get started quickly, without
 needing to enter credit card details.
 
-The perpetual free tier is ideal for anyone who wants to explore ArangoGraph,
-experiment, prototype, and run smaller-scale development projects.
+The perpetual free deployments are ideal for anyone who wants to explore
+ArangoGraph, experiment, prototype, and run smaller-scale development projects.
 
-The perpetual free tier gives you access to:
+This package gives you access to:
 - One small deployment (Single Server with 4 GB memory) limited to a few
   selected regions (AWS Ohio and AWS Ireland)
 - Local backups
@@ -55,14 +55,19 @@ Free deployments are automatically paused if unused for 2 hours and
 automatically deleted if unused for 30 days.
 {{< /warning >}}
 
-Note that the following features are not included in the perpetual free tier:
+Note that the following features are not included:
 - Upload backups to cloud storage
 - Private Endpoints
 - Grafana and Prometheus integration
 
+{{< tip >}}
+Organizations subscribed to the paid packages can also benefit from perpetual
+free deployments at no additional cost.
+{{< /tip >}}
+
 ### On-Demand
 
-Add a payment payment method to gain access to ArangoGraph's full feature set.
+Add a payment method to gain access to ArangoGraph's full feature set.
 Pay monthly via a credit card for what you actually use.
 
 This package unlocks all ArangoGraph functionality, including:
