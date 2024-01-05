@@ -301,7 +301,7 @@ Also see [What's New in 3.5](../../release-notes/version-3.5/whats-new-in-3-5.md
   as soon as possible.
 
 - **RocksDB as Default Storage Engine**: With ArangoDB 3.4 the default
-  [storage engine](../../deploy/architecture/storage-engine.md) for fresh installations will
+  [storage engine](../../components/arangodb-server/storage-engine.md) for fresh installations will
   switch from MMFiles to RocksDB. Many optimizations have been made to RocksDB
   since the first release in 3.2. For 3.4 we optimized the binary storage
   format for improved insertion, implemented "optional caching", reduced the
@@ -342,7 +342,7 @@ Also see [What's New in 3.3](../../release-notes/version-3.3/whats-new-in-3-3.md
 
 **All Editions**
 
-- [**RocksDB Storage Engine**](../../deploy/architecture/storage-engine.md): You can now use
+- [**RocksDB Storage Engine**](../../components/arangodb-server/storage-engine.md): You can now use
   as much data in ArangoDB as you can fit on your disk. Plus, you can enjoy
   performance boosts on writes by having only document-level locks.
 

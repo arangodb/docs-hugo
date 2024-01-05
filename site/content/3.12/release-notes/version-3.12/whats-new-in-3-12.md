@@ -75,6 +75,7 @@ The following new metrics have been added for memory observability:
 | Label | Description |
 |:------|:------------|
 | `arangodb_agency_node_memory_usage` | Memory used by Agency store/cache. |
+| `arangodb_aql_cursors_memory_usage` | Total memory usage of active AQL query result cursors.  |
 | `arangodb_index_estimates_memory_usage` | Total memory usage of all index selectivity estimates. |
 | `arangodb_internal_cluster_info_memory_usage` | Amount of memory spent in ClusterInfo. |
 | `arangodb_requests_memory_usage` | Memory consumed by incoming, queued, and currently processed requests. |
@@ -196,6 +197,15 @@ collection name respectively the document key from a document identifier with
 less overhead.
 
 See [Document and object functions in AQL](../../aql/functions/document-object.md#parse_collection).
+
+The new `REPEAT()` function repeats the input value a given number of times,
+optionally with a separator between repetitions, and returns the resulting string.
+The new `TO_CHAR()` functions lets you specify a numeric Unicode codepoint and
+returns the corresponding character as a string.
+
+See [String functions in AQL](../../aql/functions/string.md#repeat).
+
+A numeric function `RANDOM()` has been added as an alias for the existing `RAND()`.
 
 ## Indexing
 
