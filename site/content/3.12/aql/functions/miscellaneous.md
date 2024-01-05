@@ -139,7 +139,7 @@ Return an array of collections.
 
 ### COUNT()
 
-This is an alias for [LENGTH()](#length).
+This is an alias for [`LENGTH()`](#length).
 
 ### CURRENT_DATABASE()
 

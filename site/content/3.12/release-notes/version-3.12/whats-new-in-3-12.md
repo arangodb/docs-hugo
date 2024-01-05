@@ -183,6 +183,15 @@ less overhead.
 
 See [Document and object functions in AQL](../../aql/functions/document-object.md#parse_collection).
 
+The new `REPEAT()` function repeats the input value a given number of times,
+optionally with a separator between repetitions, and returns the resulting string.
+The new `TO_CHAR()` functions lets you specify a numeric Unicode codepoint and
+returns the corresponding character as a string.
+
+See [String functions in AQL](../../aql/functions/string.md#repeat).
+
+A numeric function `RANDOM()` has been added as an alias for the existing `RAND()`.
+
 ## Indexing
 
 ### Stored values can contain the `_id` attribute
@@ -195,6 +204,11 @@ sub-attribute in `fields` of persistent indexes. On the other hand, inverted
 indexes have been allowing to index and store the `_id` system attribute.
 
 ## Server options
+
+### Protocol aliases for endpoints
+
+You can now use `http://` and `https://` as aliases for `tcp://` and `ssl://`
+in the `--server.endpoint` startup option of the server.
 
 ### Adjustable Stream Transaction size
 
@@ -490,6 +504,11 @@ The following metric as been added:
   currently started and detached from the scheduler. 
 
 ## Client tools
+
+### Protocol aliases for endpoints
+
+You can now use `http://` and `https://` as aliases for `tcp://` and `ssl://`
+in the `--server.endpoint` startup option with all client tools.
 
 ### arangodump
 
