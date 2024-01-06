@@ -252,7 +252,7 @@ times in the same query.
 
 When the option is set to `false`, an `UPSERT` operation processes its inputs
 in batches. Normally, a batch has 1000 inputs, which can lead to a faster execution.
-However, when using batches, the `UPSERT` operation cannot observe its own writes.
+However, when using batches, the `UPSERT` operation can essentially not observe its own writes.
 You should only set the `readOwnWrites` option to `false` if you can
 guarantee that the input of the `UPSERT` leads to disjoint documents being
 inserted, updated, or replaced.
