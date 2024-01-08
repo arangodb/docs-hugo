@@ -207,6 +207,13 @@ See [String functions in AQL](../../aql/functions/string.md#repeat).
 
 A numeric function `RANDOM()` has been added as an alias for the existing `RAND()`.
 
+### Improved `move-filters-into-enumerate` optimizer rule
+
+The `move-filters-into-enumerate` optimizer rule can now also move filters into
+`EnumerateListNodes` for early pruning. This can significantly improve the
+performance of queries that do a lot of filtering on longer lists of
+non-collection data.
+
 ## Indexing
 
 ### Stored values can contain the `_id` attribute
