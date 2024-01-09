@@ -117,7 +117,8 @@ against other databases by specifying the prefixed name, e.g.
 The following Analyzer types are available:
 
 - [`identity`](#identity): treats value as atom (no transformation)
-- [`delimiter`](#delimiter): splits into tokens at user-defined characters
+- [`delimiter`](#delimiter): splits into tokens at a user-defined character sequence
+- [`multi_delimiter`](#multi_delimiter): splits into tokens at user-defined character sequences
 - [`stem`](#stem): applies stemming to the value as a whole
 - [`norm`](#norm): applies normalization to the value as a whole
 - [`ngram`](#ngram): creates _n_-grams from value with user-defined lengths
@@ -254,53 +255,93 @@ db._query(`RETURN TOKENS("UPPER lower dïäcríticš", "identity")`).toArray();
 
 ### `delimiter`
 
-An Analyzer capable of breaking up delimited text into tokens as per
-[RFC 4180](https://tools.ietf.org/html/rfc4180)
-(without starting new records on newlines).
+An Analyzer capable of breaking up delimited text into tokens.
+
+It follows [RFC 4180](https://tools.ietf.org/html/rfc4180) but without starting
+new records on newlines and letting you freely choose the delimiter. You can
+wrap tokens in the input string in double quote marks to quote the delimiter.
+For example, a `delimiter` Analyzer that uses `,` as delimiter and an input
+string of `foo,"bar,baz"` results in the tokens `foo` and `bar,baz` instead of
+`foo`, `bar`, and `baz`.
 
 The *properties* allowed for this Analyzer are an object with the following
 attributes:
 
-- `delimiter` (string\|array): the delimiting character(s). If you provide a
-  string, the whole string is considered as one delimiter. You can also provide
-  a list of strings (introduced in v3.12.0), of which each is considered as one
-  delimiter that can be one or multiple characters long.
-
-You can wrap tokens in the input string in double quote marks to quote the
-delimiter. For example, a `delimiter` Analyzer that uses `,` as delimiter and an
-input string of `foo,"bar,baz"` results in the tokens `foo` and `bar,baz`
-instead of `foo`, `bar`, and `baz`.
+- `delimiter` (string): the delimiting character or character sequence.
+  The whole string is considered as one delimiter.
 
 **Examples**
 
-Split input strings into tokens at hyphen-minus characters:
-
 ```js
 ---
-name: analyzerDelimiter
-description: ''
+name: analyzerDelimiter1
+description: Split comma-separated text into tokens but do not split quoted fields
 ---
 var analyzers = require("@arangodb/analyzers");
-var a = analyzers.save("delimiter_hyphen", "delimiter", {
-  delimiter: "-"
+var a = analyzers.save("delimiter_csv", "delimiter", {
+  delimiter: ","
 }, []);
-db._query(`RETURN TOKENS("some-delimited-words", "delimiter_hyphen")`).toArray();
+db._query(`RETURN TOKENS('foo,bar,baz,"bar,baz"', "delimiter_csv")`).toArray();
 ~analyzers.remove(a.name);
 ```
 
-Split at delimiting characters `,` and `;`, as well as the character sequence
-`||` but not a single `|` character:
+```js
+---
+name: analyzerDelimiter2
+description: >
+  Split input strings into tokens at every character sequence of hyphen-minus,
+  right angled bracket, and a space
+---
+var analyzers = require("@arangodb/analyzers");
+var a = analyzers.save("delimiter_arrow", "delimiter", {
+  delimiter: "-> "
+}, []);
+db._query(`RETURN TOKENS("some-> hand-picked-> words", "delimiter_arrow")`).toArray();
+~analyzers.remove(a.name);
+```
+
+### `multi_delimiter`
+
+An Analyzer capable of breaking up text into tokens using multiple delimiters.
+
+Unlike with the `delimiter` Analyzer, the `multi_delimiter` Analyzer does not
+support quoting fields.
+
+
+The *properties* allowed for this Analyzer are an object with the following
+attributes:
+
+- `delimiters` (array): a list of strings of which each is considered as one
+  delimiter that can be one or multiple characters long. The delimiters must not
+  overlap, which means that a delimiter cannot be a prefix of another delimiter.
+
+**Examples**
 
 ```js
 ---
-name: analyzerDelimiterMultiple
-description: ''
+name: analyzerMultiDelimiter1
+description: >
+  Split at delimiting characters `,` and `;`, as well as the character sequence
+  `||` but not a single `|` character
 ---
 var analyzers = require("@arangodb/analyzers");
-var a = analyzers.save("delimiter_multiple", "delimiter", {
-  delimiter: [",", ";", "||"]
+var a = analyzers.save("delimiter_multiple", "multi_delimiter", {
+  delimiters: [",", ";", "||"]
 }, []);
 db._query(`RETURN TOKENS("differently,delimited;words||one|token", "delimiter_multiple")`).toArray();
+~analyzers.remove(a.name);
+```
+
+```js
+---
+name: analyzerMultiDelimiter2
+description: Double quote marks have no effect on the splitting
+---
+var analyzers = require("@arangodb/analyzers");
+var a = analyzers.save("delimiter_noquote", "multi_delimiter", {
+  delimiters: [","]
+}, []);
+db._query(`RETURN TOKENS('foo,bar,baz,"bar,baz"', "delimiter_noquote")`).toArray();
 ~analyzers.remove(a.name);
 ```
 
