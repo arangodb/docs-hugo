@@ -19,7 +19,7 @@ and the [ArangoDeployment Custom Resource](https://arangodb.github.io/kube-arang
 description.
 
 To start ArangoML in your Kubernetes cluster, follow the instructions provided
-in the [ArangoMLExtension Custom Resource](https://github.com/arangodb/kube-arangodb/blob/master/docs/mlextension-resource.md)
+in the [ArangoMLExtension Custom Resource](https://arangodb.github.io/kube-arangodb/docs/mlextension-resource.html)
 description. Once the `CustomResource` has been created and the ArangoML extension
 is ready, you can start using the ArangoML functionalities.
 
