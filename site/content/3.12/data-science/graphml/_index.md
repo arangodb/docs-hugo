@@ -3,7 +3,7 @@ title: GraphML
 menuTitle: GraphML
 weight: 125
 description: >-
-  Enterprise-ready, graph-powered machine learning as a cloud service
+  Enterprise-ready, graph-powered machine learning as a cloud service or self-managed
 archetype: chapter
 ---
 Traditional machine learning overlooks the connections and relationships
@@ -13,11 +13,59 @@ specialized teams of data scientists. ArangoGraphML, on the other hand,
 simplifies the utilization of GraphML, enabling a broader range of personas to
 extract profound insights from their data.
 
+## GraphML: managed-service versus self-managed
+
+ArangoDB offers two solutions for GraphML, tailored to suit diverse requirements
+and infrastructure preferences: [ArangoGraphML](getting-started-with-arangographml.md)
+our managed cloud service, and a [self-managed ArangoML](arangoml-self-managed.md)
+solution via the [ArangoDB Kubernetes Operator](https://github.com/arangodb/kube-arangodb).
+
+### ArangoGraphML
+
+ArangoGraphML provides enterprise-ready graph-powered machine learning as a
+cloud service via Jupyter Notebooks that run on the
+[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+The managed-service offers a pre-configured environment where everything,
+including necessary components and configurations, comes preloaded. You don't
+need to set up or configure the infrastructure, but immediately start using the
+GraphML functionalities.
+
+See how to get started with [ArangoGraphML](getting-started-with-arangographml.md).
+
 {{< tip >}}
 To get access to ArangoGraphML services and packages,
 [get in touch](https://www.arangodb.com/contact/)
 with the ArangoDB team.
 {{< /tip >}}
+
+ArangoGraphML uses GraphML techniques that focus on solving different problems
+and, at the same time, provides actionable insights leveraging ArangoDB's graph
+data model.
+
+- **Accessible at all levels**
+  - Low code UI
+  - Notebooks
+  - APIs
+- **Full usability**
+  - MLOps lifecycle
+  - Metrics
+  - Metadata capture
+  - Model management
+
+![ArangoGraphML Pipeline](../../../images/ArangoGraphML_Pipeline.png)
+
+### Self-managed ArangoML
+
+{{< tag "ArangoDB Enterprise Edition" >}}
+
+The self-managed solution enables you to deploy and manage ArangoML within your
+Kubernetes cluster using the [ArangoDB Kubernetes Operator](https://github.com/arangodb/kube-arangodb).
+The ArangoML package includes the same features as in ArangoGraphML.
+The primary distinction lies in the environment setup: with the self-managed
+solution, you have direct control over configuring your environment.
+
+See how to get started with the [self-managed ArangoML](arangoml-self-managed.md)
+solution.
 
 ## How GraphML works
 
@@ -42,35 +90,13 @@ learned patterns and relationships within the graph.
 ![GraphML Workflow](../../../images/GraphML-How-it-works.webp)
 
 It is no longer necessary to understand the complexities involved with graph
-machine learning, thanks to the accessibility of the ArangoGraphML platform.
-Solutions with the ArangoGraphML platform only require input from a user about
-their data, and the ArangoGraphML managed services handle the rest.
+machine learning, thanks to the accessibility of the ArangoML package.
+Solutions with ArangoGraphML only require input from a user about
+their data, and the ArangoGraphML managed service handles the rest.
 
 The platform comes preloaded with all the tools needed to prepare your graph
 for machine learning, high-accuracy training, and persisting predictions back
-to the database for application use. 
-
-## ArangoGraphML
-
-ArangoGraphML provides enterprise-ready graph-powered machine learning as a
-cloud service via Jupyter Notebooks that run on the
-[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
-
-ArangoGraphML uses GraphML techniques that focus on solving different problems
-and, at the same time, provides actionable insights leveraging ArangoDB's graph
-data model.
-
-- **Accessible at all levels**
-  - Low code UI
-  - Notebooks
-  - APIs
-- **Full usability**
-  - MLOps lifecycle
-  - Metrics
-  - Metadata capture
-  - Model management
-
-![ArangoGraphML Pipeline](../../../images/ArangoGraphML_Pipeline.png)
+to the database for application use.
 
 ### Classification
 
@@ -107,7 +133,7 @@ Node classification can be used to solve complex problems such as:
 
 Many use cases can be solved with node classification. With many challenges,
 there are multiple ways to attempt to solve them, and that's why the
-ArangoGraphML node classification is only the first of many techniques to be
+ArangoML node classification is only the first of many techniques to be
 introduced. You can sign up to get immediate access to our latest stable
 features and also try out other features included in the pipeline, such as
 embedding similarity or link prediction.
@@ -123,7 +149,7 @@ Before using a model to provide predictions to your application, there needs
 to be a way to determine its level of accuracy. Additionally, a mechanism must
 be in place to ensure the experiments comply with auditor requirements.
 
-ArangoGraphML supports these objectives by storing all relevant training data
+ArangoML supports these objectives by storing all relevant training data
 and metrics in a metadata graph, which is only available to you and is never
 viewable by ArangoDB. This metagraph contains valuable training metrics such as
 average accuracy (the general metric for determining model performance), F1,
@@ -140,26 +166,3 @@ which houses all this information. Since the data lives with the deployment,
 it benefits from the ArangoGraph SOC 2 compliance and Enterprise security features.
 All ArangoGraphML services live alongside the ArangoGraph deployment and are only
 accessible within that organization.
-
-## Getting Started with ArangoGraphML Services and Packages
-
-ArangoGraphML is a suite of services and packages driven by what we call
-"specifications". These specifications are standard Python dictionaries and
-empower users to define tasks concisely and repeatable.
-
-[Notebooks](../../arangograph/notebooks.md) that have the ArangoGraphML services
-enabled come preloaded with valuable data science and ML packages, and most
-notably, the server includes the `arangoml` package, which provides access
-to all of the ArangoGraphML specific features.
-
-The package allows for managing all of the necessary ArangoGraphML components, including:
-- **Project Management**: Projects are at the top level, and all activities must
-  link to a project.
-- **Feature Generation**: Data must be featurized to work with Graph Neural Networks
-  (GNNs), and the featurization package handles this.
-- **Training**: Start training data with a simple description of the problem and
-  the data used to solve it. Jobs can be started, tracked, or cancelled using
-  the `arangoml` package.
-- **Predictions**: Once a trained model exists, it is time to persist it.
-  The prediction service generates predictions and persists them to the source
-  graph in a new collection or within the source document.

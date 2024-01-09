@@ -1,6 +1,6 @@
 ---
 title: Getting Started with ArangoGraphML Services and Packages
-menuTitle: Getting started with ArangoGraphML
+menuTitle: ArangoGraphML
 weight: 5
 description: >-
   Interface to control all resources inside ArangoGraphML in a scriptable manner
@@ -11,12 +11,26 @@ interface for graph machine learning. Since all of the orchestration and trainin
 logic is managed by ArangoGraph, all that is typically required is a
 specification outlining the data to be used to solve a task.
 
-The following is a guide to show how to use the `arangoml` package in order to:
-- Manage projects
-- Featurize data
-- Submit training jobs
-- Evaluate Metrics
-- Generate predictions
+ArangoGraphML's suite of services and packages is driven by what we call
+"specifications". These specifications are standard Python dictionaries and
+empower users to define tasks concisely and repeatable.
+
+[Notebooks](../../arangograph/notebooks.md) that have the ArangoGraphML services
+enabled come preloaded with valuable data science and ML packages, and most
+notably, the server includes the `arangoml` package, which provides access
+to all of the ArangoGraphML specific features.
+
+The package allows for managing all of the necessary ArangoGraphML components, including:
+- **Project Management**: Projects are at the top level, and all activities must
+  link to a project.
+- **Feature Generation**: Data must be featurized to work with Graph Neural Networks
+  (GNNs), and the featurization package handles this.
+- **Training**: Start training data with a simple description of the problem and
+  the data used to solve it. Jobs can be started, tracked, or cancelled using
+  the `arangoml` package.
+- **Predictions**: Once a trained model exists, it is time to persist it.
+  The prediction service generates predictions and persists them to the source
+  graph in a new collection or within the source document.
 
 {{< tip >}}
 To enable the ArangoGraphML services,
@@ -25,9 +39,14 @@ with the ArangoDB team. Regular notebooks in ArangoGraph don't include the
 `arangoml` package.
 {{< /tip >}}
 
-## Specifications
+The following is a guide to show how to use the `arangoml` package in order to:
+- Manage projects
+- Featurize data
+- Submit training jobs
+- Evaluate model metrics
+- Generate predictions
 
-The `arangoml` package requires a properly formed specification. The specifications
+The `arangoml` package requires properly formed **specifications**. The specifications
 describe the task being performed and the data being used. The ArangoGraphML services
 work closely together, with one task providing inputs to another.
 
@@ -231,7 +250,7 @@ Each experiment consists of three main phases:
 - Model Selection
 - Predictions
 
-## Training Specification 
+### Training Specification 
 
 Training graph machine learning models with ArangoGraphML only requires two steps:
 1. Describe which data points should be included in the training job.
@@ -303,7 +322,7 @@ arangoml.training.cancel_job(job_id)
 'OK'
 ```
 
-## Model Selection
+### Model Selection
 
 Once the training is complete you can review the model statistics.
 The training completes 12 training jobs using grid search parameter optimization.
@@ -356,7 +375,7 @@ print(model)
  'target_field': 'label_field'}
 ```
 
-## Prediction
+### Prediction
 
 After selecting a model, it is time to persist the results to a collection
 using the `predict` function.
@@ -377,7 +396,7 @@ selected model. Then, by default, it writes the predictions to a new collection
 connected via an edge to the original source document.
 You may choose to specify instead a `collection`.
 
-### Get prediction job status
+#### Get prediction job status
 
 ```python
 prediction_status = arangoml.prediction.get_job(prediction_job.job_id)
@@ -398,7 +417,7 @@ prediction_status = arangoml.prediction.get_job(prediction_job.job_id)
  'time_submitted': '2023-09-05T15:09:02.768518'}
 ```
 
-### Access the predictions
+#### Access the predictions
 
 You can now directly access your predictions in your application.
 If you left the default option you can access them via the dynamically created
