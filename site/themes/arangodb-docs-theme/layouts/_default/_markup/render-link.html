@@ -12,22 +12,36 @@
 
 {{- if $isRemote }}
   {{- $isProduction := eq site.BaseURL "https://docs.arangodb.com" }}
-  {{- if and (not $isProduction) (eq .Destination "https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic") }}
-    {{- $permalink = "https://cloud.arangodb.com/home" }}
+  {{- if and (not $isProduction) (eq .Destination "https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic") }}
+    {{- $permalink = "https://dashboard.arangodb.cloud/home" }}
   {{- else }}
     {{- $permalink = .Destination }}
   {{- end }}
 {{- else }}
+  {{- $currentFile := .Page.File.Path }}
   {{- $isOnlyFragment := findRE `(?m)^#` $link }}
   {{- if $isOnlyFragment }}
+    {{- if not (.Page.Fragments.Identifiers.Contains $url.Fragment) }}
+      {{- if site.Params.failOnBrokenLinks }}
+        {{- errorf "<error code=1> Broken anchor link '%v' found in %s, available anchors: %v </error><br>" $fragment $currentFile (delimit .Page.Fragments.Identifiers ", ") }}
+      {{- else }}
+        {{- warnf "Broken anchor link '%v' found in %s, available anchors: %v" $fragment $currentPage (delimit .Page.Fragments.Identifiers ", ") }}
+      {{- end }}
+    {{- end }}
     {{- $permalink = $fragment }}
   {{- else }}
     {{- $page := .Page.GetPage $path }}
-    {{- with $page }}
+    {{- if $page }}
+      {{- if and $fragment (not (strings.HasSuffix $path "arangodb-server/options.md")) (not (strings.HasSuffix $path "query-optimization.md")) (not ($page.Fragments.Identifiers.Contains $url.Fragment)) }}
+        {{- if site.Params.failOnBrokenLinks }}
+          {{- errorf "<error code=1> Broken anchor link '%v%v' found in %s, available anchors: %v </error><br>" $path $fragment $currentFile (delimit $page.Fragments.Identifiers ", ") }}
+        {{- else }}
+          {{- warnf "Broken anchor link '%v%v' found in %s, available anchors: %v" $path $fragment $currentPage (delimit $page.Fragments.Identifiers ", ") }}
+        {{- end }}
+      {{- end }}
       {{- $permalink = printf "%s%s" $page.RelPermalink $fragment }}
     {{- else }}
       {{- if ne $currentPage "/" }}
-        {{- $currentFile := .Page.File.Path }}
         {{- if site.Params.failOnBrokenLinks }}
           {{- errorf "<error code=1> Broken link '%v' found in %s </error><br>" $link $currentFile }}
         {{- else }}

@@ -24,6 +24,18 @@
     }
   },
   {
+    "name": "replace-like-with-range",
+    "description": "Replace LIKE() function with range scans where possible.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": false,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
     "name": "simplify-conditions",
     "description": "Replace parts in `CalculationNode` expressions with\nsimpler expressions.",
     "flags": {
@@ -360,6 +372,18 @@
     }
   },
   {
+    "name": "optimize-enumerate-path-filters",
+    "description": "Move `FILTER` conditions on the path output variable into the path search",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
     "name": "optimize-paths",
     "description": "Check how the output variables of `K_PATHS`, `K_SHORTEST_PATHS`,\nand `ALL_SHORTEST_PATHS` path search graph algorithms are used and avoid\nloading the vertex documents if they are not accessed in the query.",
     "flags": {
@@ -613,7 +637,7 @@
   },
   {
     "name": "move-filters-into-enumerate",
-    "description": "Move filters on non-indexed collection attributes into\n`IndexNode` or `EnumerateCollectionNode` to allow early pruning of\nnon-matching documents. This optimization can help to avoid a lot of temporary\ndocument copies.",
+    "description": "Move filters on non-indexed collection attributes into\n`IndexNode` or `EnumerateCollectionNode` to allow early pruning of\nnon-matching documents. This optimization can help to avoid a lot of temporary\ndocument copies. The optimization can also be applied to enumerations over\nnon-collection array.",
     "flags": {
       "hidden": false,
       "clusterOnly": false,
@@ -770,6 +794,18 @@
   {
     "name": "late-document-materialization",
     "description": "Try to read from collections as late as possible if the\ninvolved attributes are covered by regular indexes.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
+    "name": "batch-materialize-documents",
+    "description": "Batch document lookup from indexes.",
     "flags": {
       "hidden": false,
       "clusterOnly": false,

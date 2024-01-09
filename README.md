@@ -578,7 +578,7 @@ For external links, use standard Markdown. Clicking these links automatically
 opens them in a new tab:
 
 ```markdown
-[ArangoGraph Insights Platform](https://cloud.arangodb.com)
+[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud)
 ```
 
 For internal links, use relative paths to the Markdown files. Always link to
@@ -778,7 +778,7 @@ Netlify supports server-side redirects configured with a text file
 This is helpful when renaming folders with many subfolders and files because
 there is support for splatting and placeholders (but not regular expressions). See
 [Redirect options](https://docs.netlify.com/routing/redirects/redirect-options/)
-for details. The configuration file is `site/content/_redirects`.
+for details. The configuration file is `site/static/_redirects`.
 
 Otherwise, the following steps are necessary for moving content:
 1. Rename file or folder

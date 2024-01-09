@@ -51,7 +51,7 @@ shards, followers, leaders, Coordinators, databases, and servers participating
 in sharding).
 
 - The date and time of fetching the deployment information
-- The deployment mode (cluster, Active Failover, etc.)
+- The deployment mode (cluster, single server)
 - The persisted deployment ID
 - The startup mode (ArangoDB Starter, Kubernetes operator, etc.)
 - The number of Agents

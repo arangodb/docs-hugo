@@ -8,7 +8,7 @@ archetype: chapter
 aliases:
   - arangograph-api
 ---
-The [ArangoGraph Insights Platform](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
+The [ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
 comes with its own API. This API enables you to control all
 resources inside ArangoGraph in a scriptable manner. Typical use cases are spinning
 up ArangoGraph deployments during continuous integration and infrastructure as code.

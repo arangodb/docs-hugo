@@ -18,6 +18,11 @@ An _Active Failover_ is defined as:
 An _Active Failover_ behaves differently from an [ArangoDB Cluster](../cluster/_index.md),
 please see the [limitations section](#limitations) for more details.
 
+{{< warning >}}
+The Active Failover deployment mode is deprecated and will no longer be
+supported in the next minor version of ArangoDB, from v3.12 onward.
+{{< /warning >}}
+
 ![ArangoDB Active Failover](../../../images/leader-follower.png)
 
 The advantage of the _Active Failover_ setup is that there is an active third party, the _Agency_,

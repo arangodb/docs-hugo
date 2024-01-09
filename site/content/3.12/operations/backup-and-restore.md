@@ -30,8 +30,8 @@ and get up and running again in case of serious problems.
 Creating backups of your data before an ArangoDB upgrade is also a best practice.
 
 {{< warning >}}
-Making use of a high availability deployment mode of ArangoDB, like Active Failover,
-Cluster or Datacenter-to-Datacenter Replication, does not remove the need of
+Making use of a high availability deployment modes of ArangoDB
+(Cluster, Datacenter-to-Datacenter Replication) does not remove the need of
 taking frequent backups, which are recommended also when using such deployment modes.
 {{< /warning >}}
 
@@ -42,9 +42,8 @@ by making a raw copy of the ArangoDB data directory.
 
 Such backups are extremely fast as they only involve file copying.
 
-If ArangoDB runs in Active Failover or Cluster mode, it is necessary
-to copy the data directories of all the involved processes (_Agents_, _Coordinators_ and
-_DB-Servers_).
+If ArangoDB runs in Cluster mode, it is necessary to copy the data directories
+of all the involved processes (_Agents_, _Coordinators_ and _DB-Servers_).
 
 {{< warning >}}
 It is extremely important that physical backups are taken only after all the ArangoDB
@@ -228,19 +227,6 @@ not be suited for.
   It must be ensured that for the hot backup no such changes are made to the
   cluster's inventory, as this could lead to inconsistent hot backups.
 
-- **Active Failover Special Limitations**
-
-  When restoring hot backups in Active Failover setups, it is necessary to
-  prevent that a non-restored follower becomes leader by temporarily setting
-  the maintenance mode:
-
-  1. `curl -X PUT <endpoint>/_admin/cluster/maintenance -d'"on"'`
-  2. Restore the Hot Backup
-  3. `curl -X PUT <endpoint>/_admin/cluster/maintenance -d'"off"'`
-
-  Substitute `<endpoint>` with the actual endpoint of the **leader**
-  single server instance.
-
 - **Restoring from a different version**
 
   Hot backups share the same limitations with respect to different versions
@@ -328,10 +314,8 @@ not be suited for.
 
 - **Replication and Hot Backup**
 
-  Hot backups are not automatically replicated between instances. This is
-  true for both the Active Failover setup with 2 (or more) single servers
-  and for the Datacenter-to-Datacenter Replication between clusters.
-  Simply take hot backups on all instances.
+  Hot backups are not automatically replicated between clusters when using
+  Datacenter-to-Datacenter Replication. Simply take hot backups on all instances.
 
   {{< info >}}
   The DC2DC replication needs to be stopped before restoring a Hot Backup.
