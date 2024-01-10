@@ -54,6 +54,80 @@ for details.
 ## Analyzers
 
 
+## Improved memory accounting and usage
+
+Version 3.12 features multiple improvements to observability of ArangoDB
+deployments. Memory usage is more accurately tracked and additional metrics have
+been added for monitoring the memory consumption.
+
+AQL queries may now report a higher memory usage and thus run into memory limits
+sooner, see [Higher reported memory usage for AQL queries](incompatible-changes-in-3-12.md#higher-reported-memory-usage-for-aql-queries).
+
+Furthermore, the memory usage of some subsystems has been optimized. When
+dropping a database, all contained collections are now marked as dropped
+immediately. Ongoing operations on these collections can be stopped earlier, and
+memory for the underlying collections and indexes can be reclaimed sooner.
+Memory used for index selectively estimates is now also released early.
+ArangoSearch has a smaller memory footprint for removal operations now.
+
+The following new metrics have been added for memory observability:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_agency_node_memory_usage` | Memory used by Agency store/cache. |
+| `arangodb_aql_cursors_memory_usage` | Total memory usage of active AQL query result cursors.  |
+| `arangodb_index_estimates_memory_usage` | Total memory usage of all index selectivity estimates. |
+| `arangodb_internal_cluster_info_memory_usage` | Amount of memory spent in ClusterInfo. |
+| `arangodb_requests_memory_usage` | Memory consumed by incoming, queued, and currently processed requests. |
+| `arangodb_revision_tree_buffered_memory_usage` | Total memory usage of buffered updates for all revision trees. |
+| `arangodb_scheduler_queue_memory_usage` | Number of bytes allocated for tasks in the scheduler queue. |
+| `arangodb_scheduler_stack_memory_usage` | Approximate stack memory usage of worker threads. |
+| `arangodb_search_consolidations_memory_usage` | Amount of memory in bytes that is used for consolidating an ArangoSearch index. |
+| `arangodb_search_mapped_memory` | Amount of memory in bytes that is mapped for an ArangoSearch index. |
+| `arangodb_search_readers_memory_usage` | Amount of memory in bytes that is used for reading from an ArangoSearch index. |
+| `arangodb_search_writers_memory_usage` | Amount of memory in bytes that is used for writing to an ArangoSearch index. |
+| `arangodb_transactions_internal_memory_usage` | Total memory usage of internal transactions. |
+| `arangodb_transactions_rest_memory_usage` | Total memory usage of user transactions (excluding top-level AQL queries). |
+
+## Web interface
+
+### Shard rebalancing
+
+The feature for rebalancing shards in cluster deployments has been moved from
+the **Rebalance Shards** tab in the **NODES** section to the **Distribution**
+tab in the **CLUSTER** section of the web interface.
+
+The updated interface now offers the following options:
+- **Move Leaders**
+- **Move Followers**
+- **Include System Collections**
+
+### Unified list view
+
+ArangoDB 3.12 brings a significant enhancement to the display of collections,
+Views, graphs, users, services, and databases in the web interface.
+The previous tile format has been replaced with a user-friendly tabular
+layout, providing a consistent and intuitive experience that is visually
+aligned across all components. The existing tabular views have also been
+reworked to ensure a seamless transition.
+
+The new tabular format includes the following features:
+- **Dynamic filters on columns**: Each column now has a dynamic filter box,
+  allowing you to efficiently search and filter based on keywords. This makes
+  it easy to locate specific items within the list.
+- **Dynamic sorting on columns**: Sort elements easily based on column data
+  such as name, date, or size. This functionality provides a flexible way to
+  organize and view your data.
+
+### Swagger UI
+
+The interactive tool for exploring HTTP APIs has been updated to version 5.4.1.
+You can find it in the web interface in the **Rest API** tab of the **SUPPORT**
+section, as well as in the **API** tab of Foxx services and Foxx routes that use
+`module.context.createDocumentationRouter()`.
+
+The new version adds support for OpenAPI 3.x specifications in addition to
+Swagger 2.x compatibility.
 
 ## AQL
 
@@ -185,81 +259,6 @@ The `move-filters-into-enumerate` optimizer rule can now also move filters into
 `EnumerateListNodes` for early pruning. This can significantly improve the
 performance of queries that do a lot of filtering on longer lists of
 non-collection data.
-
-## Improved memory accounting and usage
-
-Version 3.12 features multiple improvements to observability of ArangoDB
-deployments. Memory usage is more accurately tracked and additional metrics have
-been added for monitoring the memory consumption.
-
-AQL queries may now report a higher memory usage and thus run into memory limits
-sooner, see [Higher reported memory usage for AQL queries](incompatible-changes-in-3-12.md#higher-reported-memory-usage-for-aql-queries).
-
-Furthermore, the memory usage of some subsystems has been optimized. When
-dropping a database, all contained collections are now marked as dropped
-immediately. Ongoing operations on these collections can be stopped earlier, and
-memory for the underlying collections and indexes can be reclaimed sooner.
-Memory used for index selectively estimates is now also released early.
-ArangoSearch has a smaller memory footprint for removal operations now.
-
-The following new metrics have been added for memory observability:
-
-| Label | Description |
-|:------|:------------|
-| `arangodb_agency_node_memory_usage` | Memory used by Agency store/cache. |
-| `arangodb_aql_cursors_memory_usage` | Total memory usage of active AQL query result cursors.  |
-| `arangodb_index_estimates_memory_usage` | Total memory usage of all index selectivity estimates. |
-| `arangodb_internal_cluster_info_memory_usage` | Amount of memory spent in ClusterInfo. |
-| `arangodb_requests_memory_usage` | Memory consumed by incoming, queued, and currently processed requests. |
-| `arangodb_revision_tree_buffered_memory_usage` | Total memory usage of buffered updates for all revision trees. |
-| `arangodb_scheduler_queue_memory_usage` | Number of bytes allocated for tasks in the scheduler queue. |
-| `arangodb_scheduler_stack_memory_usage` | Approximate stack memory usage of worker threads. |
-| `arangodb_search_consolidations_memory_usage` | Amount of memory in bytes that is used for consolidating an ArangoSearch index. |
-| `arangodb_search_mapped_memory` | Amount of memory in bytes that is mapped for an ArangoSearch index. |
-| `arangodb_search_readers_memory_usage` | Amount of memory in bytes that is used for reading from an ArangoSearch index. |
-| `arangodb_search_writers_memory_usage` | Amount of memory in bytes that is used for writing to an ArangoSearch index. |
-| `arangodb_transactions_internal_memory_usage` | Total memory usage of internal transactions. |
-| `arangodb_transactions_rest_memory_usage` | Total memory usage of user transactions (excluding top-level AQL queries). |
-
-## Web interface
-
-### Shard rebalancing
-
-The feature for rebalancing shards in cluster deployments has been moved from
-the **Rebalance Shards** tab in the **NODES** section to the **Distribution**
-tab in the **CLUSTER** section of the web interface.
-
-The updated interface now offers the following options:
-- **Move Leaders**
-- **Move Followers**
-- **Include System Collections**
-
-### Unified list view
-
-ArangoDB 3.12 brings a significant enhancement to the display of collections,
-Views, graphs, users, services, and databases in the web interface.
-The previous tile format has been replaced with a user-friendly tabular
-layout, providing a consistent and intuitive experience that is visually
-aligned across all components. The existing tabular views have also been
-reworked to ensure a seamless transition.
-
-The new tabular format includes the following features:
-- **Dynamic filters on columns**: Each column now has a dynamic filter box,
-  allowing you to efficiently search and filter based on keywords. This makes
-  it easy to locate specific items within the list.
-- **Dynamic sorting on columns**: Sort elements easily based on column data
-  such as name, date, or size. This functionality provides a flexible way to
-  organize and view your data.
-
-### Swagger UI
-
-The interactive tool for exploring HTTP APIs has been updated to version 5.4.1.
-You can find it in the web interface in the **Rest API** tab of the **SUPPORT**
-section, as well as in the **API** tab of Foxx services and Foxx routes that use
-`module.context.createDocumentationRouter()`.
-
-The new version adds support for OpenAPI 3.x specifications in addition to
-Swagger 2.x compatibility.
 
 ## Indexing
 
