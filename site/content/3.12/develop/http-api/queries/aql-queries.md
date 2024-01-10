@@ -178,9 +178,9 @@ Content-type: application/json
 }
 ```
 
-If the `allowRetry` query option is set to `true`, then the response object
-contains a `nextBatchId` attribute, except for the last batch (if `hasMore` is
-`false`). If retrieving a result batch fails because of a connection issue, you
+The response object contains a `nextBatchId` attribute, except for the last batch
+(when `hasMore` is `false`). If the `allowRetry` query option is set to `true`
+and if retrieving a result batch fails because of a connection issue, you
 can ask for that batch again using the `POST /_api/cursor/<cursor-id>/<batch-id>`
 endpoint. The first batch has an ID of `1` and the value is incremented by 1
 with every batch. Every result response except the last one also includes a
@@ -498,11 +498,12 @@ paths:
 
                         Default value: 128MB.
 
-                        **Note**:
+                        {{</* info */>}}
                         Spilling data from RAM onto disk is an experimental feature and is turned off
                         by default. The query results are still built up entirely in RAM on Coordinators
                         and single servers for non-streaming queries. To avoid the buildup of
                         the entire query result in RAM, use a streaming query (see the `stream` option).
+                        {{</* /info */>}}
                       type: integer
                     spillOverThresholdNumRows:
                       description: |
@@ -520,11 +521,12 @@ paths:
 
                         Default value: `5000000` rows.
 
-                        **Note**:
+                        {{</* info */>}}
                         Spilling data from RAM onto disk is an experimental feature and is turned off
                         by default. The query results are still built up entirely in RAM on Coordinators
                         and single servers for non-streaming queries. To avoid the buildup of
                         the entire query result in RAM, use a streaming query (see the `stream` option).
+                        {{</* /info */>}}
                       type: integer
                     optimizer:
                       description: |
@@ -960,6 +962,9 @@ paths:
           description: |
             is returned if the JSON representation is malformed, the query specification is
             missing from the request, or if the query is invalid.
+
+            The body of the response contains a JSON object with additional error
+            details. The object has the following attributes:
           content:
             application/json:
               schema:

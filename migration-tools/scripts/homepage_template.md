@@ -29,7 +29,7 @@ Find the right deployment type and set up your ArangoDB instance.
 {{% /card %}}
 
 {{% card title="Develop topics" link="develop/" %}}
-The the in-depth feature and API documentation to start developing application
+The in-depth feature and API documentation to start developing application
 with ArangoDB as your backend.
 {{% /card %}}
 

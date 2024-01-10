@@ -167,6 +167,7 @@ ongoing dumps, ArangoSearch parallelism and used file descriptors:
 The following new metrics for improved memory observability have been added:
 
 - `arangodb_agency_node_memory_usage`
+- `arangodb_aql_cursors_memory_usage`
 - `arangodb_index_estimates_memory_usage`
 - `arangodb_internal_cluster_info_memory_usage`
 - `arangodb_requests_memory_usage`

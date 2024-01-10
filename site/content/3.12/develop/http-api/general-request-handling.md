@@ -139,7 +139,7 @@ HTTP request. The server executes the jobs from the queue asynchronously as fast
 as possible, while clients can continue to do other work.
 
 If the server queue is full (i.e. contains as many jobs as specified by the
-[`--server.maximal-queue-size`](../../components/arangodb-server/options.md#arangodb-server-options)
+[`--server.maximal-queue-size`](../../components/arangodb-server/options.md#--servermaximal-queue-size)
 startup option), then the request is rejected instantly with an HTTP
 `503 Service Unavailable` status code.
 

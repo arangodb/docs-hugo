@@ -22,15 +22,15 @@ for ArangoDB and provides mapping of Java objects to ArangoDB documents (ODM).
 
 Spring Data ArangoDB is compatible with:
 
-{{< tabs groupid="spring-data" >}}
+{{< tabs "spring-data" >}}
 
-{{< tab name="Version 4" >}}
+{{< tab "Version 4" >}}
 - all the still supported Spring Boot 3.x [versions](https://spring.io/projects/spring-boot#support)
   and related Spring Framework versions
 - all the still supported ArangoDB [versions](https://www.arangodb.com/eol-notice)
 {{< /tab >}}
 
-{{< tab name="Version 3" >}}
+{{< tab "Version 3" >}}
 - all the still supported Spring Boot 2.x [versions](https://spring.io/projects/spring-boot#support)
   and related Spring Framework versions
 - all the still supported ArangoDB [versions](https://www.arangodb.com/eol-notice)
@@ -56,9 +56,9 @@ There is a [demonstration app](https://github.com/arangodb/spring-data-demo), wh
 
 ## Configuration
 
-{{< tabs groupid="spring-data" >}}
+{{< tabs "spring-data" >}}
 
-{{< tab name="Version 4" >}}
+{{< tab "Version 4" >}}
 You can use Java to configure your Spring Data environment as show below.
 Setting up the underlying driver (`ArangoDB.Builder`) with default configuration
 automatically loads a properties file `arangodb.properties`, if it exists in the
@@ -97,7 +97,7 @@ public ArangoDB.Builder arango() {
 ```
 {{< /tab >}}
 
-{{< tab name="Version 3" >}}
+{{< tab "Version 3" >}}
 You can use Java to configure your Spring Data environment as show below.
 Setting up the underlying driver (`ArangoDB.Builder`) with default configuration
 automatically loads a properties file `arangodb.properties`, if it exists in the
@@ -185,16 +185,16 @@ Spring Boot support is offered by [Spring Boot Starter ArangoDB](https://github.
 
 ## Limitations
 
-{{< tabs groupid="spring-data" >}}
+{{< tabs "spring-data" >}}
 
-{{< tab name="Version 4" >}}
+{{< tab "Version 4" >}}
 - Java Record classes and Kotlin Data classes are not supported (DE-539)
 - GraalVM Native Image (available with Spring Boot 3) is not supported (DE-677)
 - Spring Data REST is not supported (DE-43)
 - Spring Data Reactive is not supported (DE-678)
 {{< /tab >}}
 
-{{< tab name="Version 3" >}}
+{{< tab "Version 3" >}}
 - Java Record classes and Kotlin Data classes are not supported (DE-539)
 - Spring Data REST is not supported (DE-43)
 - Spring Data Reactive is not supported (DE-678)

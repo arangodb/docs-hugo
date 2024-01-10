@@ -227,7 +227,7 @@ cache-related options and thus recreate inverted indexes and Views. See
   
   - `"lz4"` (default): use LZ4 fast compression.
   - `"none"`: disable compression to trade space for speed.
-  
+
 - **primarySortCache** (_optional_; type: `boolean`; default: `false`; _immutable_)
 
   {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
@@ -343,12 +343,11 @@ of removing unused segments after release of internal resources.
   Wait at least this many milliseconds between committing View data store
   changes and making documents visible to queries.
 
-  For the case where there are a lot of inserts/updates, a lower value, until
-  commit, causes the index not to account for them and memory usage continues
-  to grow.
-  For the case where there are a few inserts/updates, a higher value impacts
-  performance and wastes disk space for each commit call without any added
-  benefits.
+  For the case where there are a lot of inserts/updates, a higher value causes the
+  index not to account for them and memory usage continues to grow until the commit.
+  A lower value impacts performance, including the case where there are no or only a
+  few inserts/updates because of synchronous locking, and it wastes disk space for
+  each commit call.
 
   > For data retrieval `arangosearch` Views follow the concept of
   > "eventually-consistent", i.e. eventually all the data in ArangoDB is
@@ -399,8 +398,8 @@ is used by these writers (in terms of "writers pool") one can use
   to disable use: `0`; _immutable_)
 
   Maximum memory byte size per writer (segment) before a writer (segment) flush is
-  triggered. `0` value turns off this limit for any writer (buffer) and data will
-  be flushed periodically. `0` value should be used carefully due to high
+  triggered. `0` value turns off this limit for any writer (buffer) and data is
+  flushed periodically. `0` value should be used carefully due to high
   potential memory consumption.
 
 - **consolidationPolicy** (_optional_; type: `object`; default: `{}`)

@@ -1,21 +1,25 @@
-{{- $context := .context }}
-{{- $tabs := .tabs | default slice }}
-{{- $groupid := .groupid | default "default" }}
-{{- with $context }}
+{{ $context := .context -}}
+{{ $tabs := .tabs | default slice -}}
+{{ $groupid := .groupid | default "default" -}}
+{{ with $context -}}
 <div class="tab-panel">
   <div class="tab-content">
     <div class="tab-nav">
-      {{- range $idx, $tab := $tabs }}
-        {{- if ne .name "" }}
-          <button data-tab-group="{{ $groupid }}" data-tab-item="{{ .name }}" class="tab-nav-button {{ cond (eq $idx 0) "selected" ""}}" onclick="switchTab('{{ $groupid }}','{{.name}}',event)"><span>{{ .name }}</span></button>
-        {{- end }}
-      {{- end }}
+    {{ range $idx, $tab := $tabs -}}
+      {{ if ne .name "" -}}
+        <button data-tab-group="{{ $groupid }}" data-tab-item="{{ .name }}" class="tab-nav-button
+          {{- cond (eq $idx 0) " selected" ""}}" onclick="switchTab('{{ $groupid }}','{{ .name }}',event)">
+          <span>{{ .name | markdownify }}</span>
+        </button>
+      {{ end -}}
+    {{ end -}}
     </div>
-    {{- range $idx, $tab := $tabs }}
-      <div data-tab-item="{{ .name }}" data-tab-group="{{ $groupid }}" class="tab-item {{ cond (eq $idx 0) "selected" ""}}">
-        {{- .content | $context.Page.RenderString -}}
-      </div>
-    {{- end }}
+    {{ range $idx, $tab := $tabs -}}
+    <div data-tab-item="{{ .name }}" data-tab-group="{{ $groupid }}" class="tab-item
+      {{ cond (eq $idx 0) " selected" "" }}">
+      {{ .content | $context.Page.RenderString -}}
+    </div>
+    {{ end -}}
   </div>
 </div>
-{{- end }}
+{{ end -}}

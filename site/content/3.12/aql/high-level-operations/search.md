@@ -352,6 +352,13 @@ number of total parallel execution threads is defined by the
 [`--arangosearch.execution-threads-limit` startup option](../../components/arangodb-server/options.md#--arangosearchexecution-threads-limit)
 that defaults to twice the number of CPU cores.
 
+{{< info >}}
+Using too high parallelization can overload your hardware. It is recommended to
+leave the default parallelism at `1` and set the `parallelism` option for queries
+that highly benefit from the parallelization only. Use a moderate value in
+accordance with the number of available CPU cores.
+{{< /info >}}
+
 The `parallelism` option should be considered a hint. Not all search queries are
 eligible. Queries also don't wait for the specified number of threads to be
 available. They start immediately even if only single-threaded and may acquire

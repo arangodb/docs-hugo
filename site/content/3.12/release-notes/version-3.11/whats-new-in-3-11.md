@@ -1072,7 +1072,7 @@ To enable tracing for traversals and path searches at startup, you can set
 `--log.level graphs=trace`.
 
 To enable or disable it at runtime, you can call the
-[`PUT /_admin/log/level`](../../develop/http-api/monitoring.md#set-the-server-log-levels)
+[`PUT /_admin/log/level`](../../develop/http-api/monitoring/logs.md#set-the-server-log-levels)
 endpoint of the HTTP API and set the log level using a request body like
 `{"graphs":"TRACE"}`.
 
@@ -1170,7 +1170,7 @@ been added:
 The memory usage of in-memory edge index caches is reduced if most of the edges
 in an index refer to a single or mostly the same collection.
 
-Previously, the full edge IDs, consisting of the the referred-to collection
+Previously, the full edge IDs, consisting of the referred-to collection
 name and the referred-to key of the edge, were stored in full, i.e. the full
 values of the edges' `_from` and `_to` attributes.
 Now, the first edge inserted into an edge index' in-memory cache determines
@@ -1308,11 +1308,11 @@ The following startup option has been added:
 
 The following metric has been added:
 - `arangodb_scheduler_num_detached_threads`: The number of worker threads
-  currently started and detached from the scheduler. 
+  currently started and detached from the scheduler.
 
 ### Memory usage of connection and request statistics
 
-<small>Introduced in: v3.10.12</small>
+<small>Introduced in: v3.10.12, v3.11.6</small>
 
 The following metrics have been added:
 

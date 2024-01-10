@@ -42,12 +42,11 @@ for details.
 Start a local (test) cluster. Since all servers are running on a single machine
 this is really not intended for production setups.
 
-- `--starter.mode=cluster|single|activefailover`
+- `--starter.mode=cluster|single`
 
 Select what kind of database configuration you want.
-This can be a `cluster` configuration (which is the default),
-a `single` server configuration or a `activefailover` configuration with
-2 single services configured to take over when needed.
+This can be a `cluster` configuration (which is the default) or a
+`single` server configuration.
 
 Note that when running a `single` server configuration you lose all
 high availability features that a cluster provides you.

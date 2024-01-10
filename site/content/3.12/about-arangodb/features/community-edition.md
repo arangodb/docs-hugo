@@ -39,7 +39,7 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   documents, or graphs - perfect for social relations. Optional document
   validation using JSON Schema (draft-4, without remote schema support).
 
-- [**Data Storage**](../../deploy/architecture/storage-engine.md):
+- [**Data Storage**](../../components/arangodb-server/storage-engine.md):
   RocksDB storage engine to persist data and indexes on disk, with a hot set in
   memory. It uses journaling (write-ahead logging) and can take advantage of
   modern storage hardware, like SSDs and large caches.
@@ -49,7 +49,7 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   or modified, using an AQL expression.
 
 - [**Multiple Environments**](../../operations/installation/_index.md#supported-platforms-and-architectures):
-  Use ArangoDB as a [managed service](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
+  Use ArangoDB as a [managed service](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
   in your own cloud, or on-premises.
   Develop and test with ArangoDB on Linux, macOS, and Windows, and run it in
   production on Linux. ArangoDB is available for 64-bit ARM chips on macOS and
@@ -66,10 +66,6 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   operation, and only considered successful when the configured number of writes
   is reached. Synchronous replication works on a per-shard basis. For each
   collection, you can configure how many copies of each shard are kept in the cluster.
-
-- [**Active Failover**](../../deploy/active-failover/_index.md):
-  Run a single server with asynchronous replication to one or more passive
-  single servers for automatic failover.
 
 - [**Automatic Failover Cluster**](../../deploy/cluster/_index.md#automatic-failover):
   If a nodes goes down, another node takes over to avoid any downtime. <!-- TODO: Can we say that? -->
@@ -141,7 +137,7 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   Flexible data field pre-processing with custom queries and the ability to
   chain built-in and custom Analyzers. Language-agnostic tokenization of text.
 
-- [**GeoJSON Support**](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson):
+- [**GeoJSON Support**](../../aql/functions/geo.md#geojson):
   Geographic data encoded in the popular GeoJSON format can be stored and used
   for geo-spatial queries.
 
@@ -277,6 +273,6 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   You can import from JSON, JSONL, CSV, and TSV files, and export to JSON, JSONL,
   CSV, TSV, XML, and XGMML files.
 
-- [**Metrics**](../../develop/http-api/monitoring.md#metrics):
+- [**Metrics**](../../develop/http-api/monitoring/metrics.md):
   Monitor the healthiness and performance of ArangoDB servers using the metrics
   exported in the Prometheus format.

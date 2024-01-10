@@ -1400,7 +1400,7 @@
       "agent",
       "single"
     ],
-    "default" : 7739681792,
+    "default" : 7739682816,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -2862,7 +2862,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 6191745433,
+    "default" : 6191746252,
     "deprecatedIn" : null,
     "description" : "Maximum memory usage (in bytes) to be used by all ongoing dumps.",
     "dynamic" : true,
@@ -3213,6 +3213,70 @@
     "requiresValue" : true,
     "section" : "",
     "type" : "string"
+  },
+  "http.compress-response-threshold" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 0,
+    "deprecatedIn" : null,
+    "description" : "The HTTP response body size from which on responses are transparently compressed in case the client asks for it.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.0"
+    ],
+    "longDescription" : "Automatically compress outgoing HTTP responses with the\ndeflate or gzip compression format, in case the client request advertises\nsupport for this. Compression will only happen for HTTP/1.1 and HTTP/2\nconnections, if the size of the uncompressed response body exceeds \nthe threshold value controlled by this startup option,\nand if the response body size after compression is less than the original \nresponse body size.\nUsing the value 0 disables the automatic response compression.\"",
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "http",
+    "type" : "uint64"
+  },
+  "http.handle-content-encoding-for-unauthenticated-requests" : {
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : false,
+    "deprecatedIn" : null,
+    "description" : "Handle Content-Encoding headers for unauthenticated requests.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.0"
+    ],
+    "longDescription" : "If the option is set to `true`, the server will automatically \nuncompress incoming HTTP requests with Content-Encodings gzip and deflate\neven if the request is not authenticated.",
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "http",
+    "type" : "boolean"
   },
   "http.keep-alive-timeout" : {
     "base" : 1,
@@ -7540,7 +7604,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33106210816,
+    "base" : 33106214912,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7548,7 +7612,7 @@
       "agent",
       "single"
     ],
-    "default" : 26816030761,
+    "default" : 26816034078,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7833,7 +7897,7 @@
     "type" : "double"
   },
   "query.memory-limit" : {
-    "base" : 33106210816,
+    "base" : 33106214912,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7841,7 +7905,7 @@
       "agent",
       "single"
     ],
-    "default" : 19863726489,
+    "default" : 19863728947,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -9050,7 +9114,7 @@
       "agent",
       "single"
     ],
-    "default" : 9287618150,
+    "default" : 9287619379,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -11604,7 +11668,7 @@
       "agent",
       "single"
     ],
-    "default" : 12383490867,
+    "default" : 12383492505,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,

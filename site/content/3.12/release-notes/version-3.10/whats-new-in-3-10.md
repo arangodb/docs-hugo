@@ -408,7 +408,7 @@ Also see [Server security options](../../operations/security/security-options.md
 
 ### ArangoSearch metrics and figures
 
-The [Metrics HTTP API](../../develop/http-api/monitoring.md#metrics) has been
+The [Metrics HTTP API](../../develop/http-api/monitoring/metrics.md) has been
 extended with metrics for ArangoSearch for monitoring `arangosearch` View links
 and inverted indexes.
 
@@ -581,7 +581,7 @@ This diverges from the previous implementation in two fundamental ways:
    that the "smaller" of the two connected components are the interior.
    This allows specifying polygons that cover more than half of
    the surface of the Earth and conforms to the GeoJSON standard.
-   See [GeoJSON interpretation](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson-interpretation)
+   See [GeoJSON interpretation](../../aql/functions/geo.md#geojson-interpretation)
    for examples.
 
 Additionally, the reported issues, which occasionally produced
@@ -1528,7 +1528,7 @@ been added:
 The memory usage of in-memory edge index caches is reduced if most of the edges 
 in an index refer to a single or mostly the same collection.
 
-Previously, the full edge IDs, consisting of the the referred-to collection
+Previously, the full edge IDs, consisting of the referred-to collection
 name and the referred-to key of the edge, were stored in full, i.e. the full
 values of the edges' `_from` and `_to` attributes. 
 Now, the first edge inserted into an edge index' in-memory cache determines
