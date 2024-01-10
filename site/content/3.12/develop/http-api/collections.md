@@ -970,7 +970,19 @@ paths:
       responses:
         '200':
           description: |
-            The key generators that were found.
+            The available generators for document keys.
+          content:
+            application/json:
+              schema:
+                type: array
+                uniqueItems: true
+                items:
+                  type: string
+                  enum:
+                    - padded
+                    - uuid
+                    - autoincrement
+                    - traditional
       tags:
         - Collections
 ```
@@ -980,10 +992,10 @@ paths:
 ```curl
 ---
 description: |-
-  Retrieving the key generators of collections:
+  Retrieving the key generators for collections:
 name: RestCollectionGetKeyGenerators
 ---
-var url = "/_api/key-generators/"
+var url = "/_api/key-generators"
 var response = logCurlRequest('GET', url);
 assert(response.code === 200);
 logJsonResponse(response);
