@@ -111,7 +111,15 @@ The default value remains 128 MiB.
 
 ### Endpoints added
 
+#### Collections API
 
+You can now retrieve the key generators for collections using the following
+endpoint:
+
+`GET /_api/key-generators`
+
+See the [description](../../develop/http-api/collections.md#get-the-available-key-generators)
+for details.
 
 ### Endpoints augmented
 

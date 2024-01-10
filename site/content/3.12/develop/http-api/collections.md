@@ -950,6 +950,45 @@ logJsonResponse(response);
 db._drop(cn);
 ```
 
+### Get the available key generators
+
+```openapi
+paths:
+  /_api/key-generators:
+    get:
+      operationId: getKeyGenerators
+      description: |
+        Returns the available key generators for collections.
+
+        The call returns a JSON object with the available key generators
+        on success:
+
+        - `padded`
+        - `uuid`
+        - `autoincrement`
+        - `traditional`
+      responses:
+        '200':
+          description: |
+            The key generators that were found.
+      tags:
+        - Collections
+```
+
+**Examples:**
+
+```curl
+---
+description: |-
+  Retrieving the key generators of collections:
+name: RestCollectionGetKeyGenerators
+---
+var url = "/_api/key-generators/"
+var response = logCurlRequest('GET', url);
+assert(response.code === 200);
+logJsonResponse(response);
+```
+
 ## Create and delete collections
 
 ### Create a collection
