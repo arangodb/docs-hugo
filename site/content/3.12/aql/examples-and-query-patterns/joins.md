@@ -847,7 +847,7 @@ saves even more precious CPU cycles and gives the optimizer more alternatives.
 For joins in particular, you should make sure indexes can be utilized to
 [speed up your queries](../execution-and-performance/explaining-queries.md).
 
-Note that sparse indexes don't qualify for joins. You often want to join
+Note that sparse indexes don't qualify for joins. Often, You also want to join
 documents not containing the property you join with. However, sparse indexes
 don't contain references to documents that don't contain the indexed
 attributes - thus they would be missing from the join operation. For this reason,
@@ -857,7 +857,7 @@ The `join-index-nodes` AQL optimizer rule automatically recognizes whether a
 better strategy for joining collections can be used if suitable indexes are present.
 
 If two or more collections are joined using nested `FOR` loops and the
-attributes you join on are indexed by the primary index or persistent indexes,
+attributes you join on are indexed by primary indexes or persistent indexes,
 then a merge join can be performed. This is possible because these indexes are
 always sorted.
 
@@ -882,7 +882,52 @@ The `_key` attribute is covered by the primary index of the `users` collection.
 If the `orders` collection has a persistent index defined over the `user`
 attribute and additionally includes the `total` attribute in
 [`storedValues`](../../index-and-search/indexing/working-with-indexes/persistent-indexes.md#storing-additional-values-in-indexes),
-then the query is eligible for a merge join.
+then the query is eligible for a merge join. You can check the query explain
+output for `JoinNode` entries:
+
+```aql
+Execution plan:
+ Id   NodeType          Par     Est.   Comment
+  1   SingletonNode                1   * ROOT
+ 10   JoinNode            ✓   500000     - JOIN
+ 10   JoinNode                500000       - FOR o IN orders   LET #8 = o.`total`   /* index scan (projections: `total`) */
+ 10   JoinNode                     1       - FOR u IN users   /* index scan + document lookup */
+  6   CalculationNode     ✓   500000     - LET #4 = { "orderTotal" : #8, "user" : u }   /* simple expression */   /* collections used: u : users */
+  7   ReturnNode              500000     - RETURN #4
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields       Stored values   Ranges
+ 10   idx_1784521139132825600   persistent   orders       false    false    false      100.00 %   [ `user` ]   [ `total` ]     *
+ 10   primary                   primary      users        true     false    false      100.00 %   [ `_key` ]   [  ]            (o.`user` == u.`_key`)
+```
+
+More complex merge joins are supported as well, for example, joining three or
+two-by-two collections, also with additional filters, sort and limit.
+Optimizations like early pruning and late materialization may get applied.
+
+```aql
+FOR doc1 IN coll1
+  FOR doc2 IN coll2
+    FOR doc3 IN coll3
+      FOR doc4 IN coll4
+      FILTER doc1.x == doc3.y AND doc3.z IN ["foo", "bar"]
+      FILTER doc2.x == doc4.y
+      SORT doc4.y
+      LIMIT 20
+      RETURN [doc1.x, doc2.x, doc3.y, doc4.y]
+```
+
+In exceptional cases, merge joins can be slower than the regular joining strategy.
+For example, if the values of two collections are interleaved, it can better to
+disable the `join-index-nodes` optimizer rule. For example, in _arangosh_:
+
+```js
+db._query(
+  `FOR o IN odd FOR e IN even FILTER o.val == e.val RETURN e.val`,
+  { },
+  { optimizer: { rules: ["-join-index-nodes"] } }
+)
+```
 
 ### Pitfalls
 

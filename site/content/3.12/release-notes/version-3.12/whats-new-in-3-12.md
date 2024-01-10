@@ -63,7 +63,7 @@ The AQL optimizer now automatically recognizes whether a better strategy for
 joining collections can be used, using the new `join-index-nodes` optimizer rule.
 
 If two or more collections are joined using nested `FOR` loops and the
-attributes you join on are indexed by the primary index or persistent indexes,
+attributes you join on are indexed by primary indexes or persistent indexes,
 then a merge join can be performed because they are sorted.
 
 Note that returning document attributes from the outer loop is limited to
