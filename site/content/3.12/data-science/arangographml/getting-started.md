@@ -15,14 +15,13 @@ specification outlining the data to be used to solve a task. If you are using
 the self-managed solution, additional configurations are needed such as loading
 the database.
 
-The package allows for managing all of the necessary ArangoGraphML components, including:
+The `arangoml` package allows for managing all of the necessary ArangoGraphML components, including:
 - **Project Management**: Projects are at the top level, and all activities must
   link to a project.
 - **Feature Generation**: Data must be featurized to work with Graph Neural Networks
   (GNNs), and the featurization package handles this.
 - **Training**: Start training data with a simple description of the problem and
-  the data used to solve it. Jobs can be started, tracked, or cancelled using
-  the `arangoml` package.
+  the data used to solve it.
 - **Predictions**: Once a trained model exists, it is time to persist it.
   The prediction service generates predictions and persists them to the source
   graph in a new collection or within the source document.
@@ -51,14 +50,19 @@ The following is a guide to show how to use the `arangoml` package in order to:
 {{< tabs "arangoml" >}}
 
 {{< tab "ArangoGraphML" >}}
-The `arangoml` package comes pre-loaded with every ArangoGraphML notebook environment. To start using it, simply import it:
+The `arangoml` package comes pre-loaded with every ArangoGraphML notebook environment.
+To start using it, simply import it, and enable it via a Jupyter Magic Command.
 
 ```py
 import arangoml
+arangoml = %enable_arangoml
 ```
 {{< /tab >}}
 
 {{< tab "Self-managed" >}}
+It is possible to instantiate an ArangoML object in multiple ways:
+
+1. via parameters
 ```py
 from arangoml import ArangoML
 
@@ -66,11 +70,72 @@ arangoml = ArangoML(
     hosts="http://localhost:8529"
     username="root",
     password="password",
+    # ca_cert_file="/path/to/ca.pem", # optional
+    # user_token="..." # alternative to username/password
     projects_endpoint="http://localhost:8503",
     training_endpoint="http://localhost:8502",
     prediction_endpoint="http://localhost:8501",
 )
 ```
+
+2. via parameters + a custom ArangoClient instance
+```py
+from arangoml import ArangoML
+from arango import ArangoClient
+
+client = ArangoClient(
+    hosts="http://localhost:8529",
+    verify_override="/path/to/ca.pem",
+    hosts_resolver=...,
+    ...
+)
+
+arangoml = ArangoML(
+    client=client,
+    username="root",
+    password="password",
+    # user_token="..." # alternative to username/password
+    projects_endpoint="http://localhost:8503",
+    training_endpoint="http://localhost:8502",
+    prediction_endpoint="http://localhost:8501",
+)
+```
+
+3. via environment variables
+```py
+import os
+from arangoml import ArangoML
+
+os.environ["ARANGODB_HOSTS"] = "http://localhost:8529"
+os.environ["ARANGODB_CA_CERT_FILE"]="/path/to/ca.pem"
+os.environ["ARANGODB_USER"] = "root"
+os.environ["ARANGODB_PW"] = "password"
+# os.environ["ARANGODB_USER_TOKEN"] = "..."
+os.environ["PROJECTS_ENDPOINT"] = "http://localhost:8503"
+os.environ["TRAINING_ENDPOINT"] = "http://localhost:8502"
+os.environ["PREDICTION_ENDPOINT"] = "http://localhost:8501"
+
+arangoml = ArangoML()
+```
+
+4. via configuration files
+```py
+import os
+from arangoml import ArangoML
+
+arangoml = ArangoML(settings_files=["settings_1.toml", "settings_2.toml"])
+```
+
+5. via a Jupyter Magic Command
+```
+%load_ext arangoml
+%enable_arangoml
+```
+note:
+- this assumes you are working out of a Jupter Notebook environment, and
+have set the environment variables in the notebook environment (see above). 
+- Running `%load_ext arangoml` will also provide access to other ArangoGraphML Jupyter Magic Commands. See the full list by running `%lsmagic` in a notebook cell.
+
 {{< /tab >}}
 
 {{< /tabs >}}
@@ -80,7 +145,21 @@ arangoml = ArangoML(
 {{< tabs "arangoml" >}}
 
 {{< tab "ArangoGraphML" >}}
-The ArangoDB database is already loaded in your ArangoGraph deployment.
+
+```py
+from arango_datasets.datasets import Datasets
+
+DATASET_NAME = "OPEN_INTELLIGENCE_ANGOLA"
+
+# Setup the database
+%deleteDatabase {DATASET_NAME}
+%createDatabase {DATASET_NAME}
+dataset_db = %useDatabase {DATASET_NAME}
+
+# Import the dataset
+# More Info: https://github.com/arangoml/arangodb_datasets
+Datasets(dataset_db).load(DATASET_NAME)
+```
 
 {{< /tab >}}
 
@@ -90,16 +169,22 @@ from arango_datasets.datasets import Datasets
 
 DATASET_NAME = "OPEN_INTELLIGENCE_ANGOLA"
 
-username = arangoml.settings.ARANGODB_USER
-password = arangoml.settings.ARANGODB_PW
+client = arangoml.client
+system_db = arangoml.system_db
 
-# Create the Database for the Dataset
-system_db = client.db("_system", username=username, password=password, verify=True)
+# Setup the database
 system_db.delete_database(DATASET_NAME, ignore_missing=True)
 system_db.create_database(DATASET_NAME)
+dataset_db = client.db(
+    name=DATASET_NAME, 
+    username=arangoml.settings.get("ARANGODB_USER"),
+    password=arangoml.settings.get("ARANGODB_PW"),
+    user_token=arangoml.settings.get("ARANGODB_USER_TOKEN"),
+    verify=True
+)
 
-# Load the Dataset
-dataset_db = client.db(DATASET_NAME, username=username, password=password, verify=True)
+# Import the dataset
+# More Info: https://github.com/arangoml/arangodb_datasets
 Datasets(dataset_db).load(DATASET_NAME)
 ```
 {{< /tab >}}
@@ -112,48 +197,20 @@ Projects are an important reference used throughout the entire ArangoGraphML
 lifecycle. All activities link back to a project. The creation of the project
 is very simple. 
 
-### Create a project
-
+### Get/Create a project
 ```py
-project = arangoml.projects.create_project({"name":"ArangoGraphML_Project_Name"})
+project = arangoml.get_or_create_project(DATASET_NAME)
 ```
 
 ### List projects
 
 ```py
-arangoml.projects.list_projects(limit=limit, offset=offset)
-```
-
-### Lookup an existing project
-
-```py
-project = arangoml.projects.get_project_by_name("ArangoGraphML_Project_Name")
-
-# or by id
-project = arangoml.projects.get_project("project_id")
-```
-
-### Update an existing project
-
-```py
-arangoml.projects.update_project(body={'id': 'project_id', 'name': 'Updated_ArangoGraphML_Project_Name'}, project_id='existing_project_id')
-```
-
-### List models associated with project
-
-```py
-arangoml.projects.list_models(project_name=project_name, project_id=project_id, job_id=job_id)
-```
-
-### Delete an existing project
-
-```python
-api_instance.delete_project(project_id)
+arangoml.projects.list_projects()
 ```
 
 ## Featurization
 
-The featurization specification asks that you input the following:
+The Featurization Specification asks that you input the following:
 - `featurization_name`: A name for the featurization task.
 - `project_name`: The associated project name. You can use `project.name` here
   if was created or retrieved as descried above.
@@ -202,91 +259,95 @@ The featurization specification asks that you input the following:
   },
   ```
 
-Once you have filled out the featurization specification, you can pass it to
+Once you have filled out the Featurization Specification, you can pass it to
 the `featurizer` function.
 
 ```py
-from arangoml.featurizer import featurizer
-
-featurizer(featurizer(_db, featurization_spec))
-```
-
-This is all you need to get started with featurization. The following also shows
-an example of using the featurization package with a movie dataset and some
-additional options available.
-
-```py
-from arangoml.featurizer import featurizer
-
 featurization_spec = {
-  "featurization_name": "Movie_Recommendation",
-  "project_name": "movie_recommendation_project",
-  "graph_name": "fake_m_hetero_2",
+  "featurization_name": f"{DATASET_NAME}_Featurization",
+  "project_name": project.name,
+  "graph_name": DATASET_NAME,
+  "default_config": {
+      "dimensionality_reduction": {"size": 64},
+      "output_name": "x",
+  },
   "vertexCollections": {
-    "v0": {
-      "features": {
-        "movie_title": {
-          "feature_type": "text",
-          "feature_generator": {
-            "method": "transformer_embeddings",
-            "feature_name": "movie_title_embeddings",
-          },
-        },
-        "genre": {
-          "feature_type": "category",
-          "feature_generator": {
-            "method": "one_hot_encoding",
-            "feature_name": "genre_embeddings",
-          },
-        },
-      }
-    },
-    "v1": {
-      "features": {
-        "actor_summary": {
-          "feature_type": "text",
-          "feature_generator": {
-            "method": "transformer_embeddings",
-            "feature_name": "actor_summary_embeddings",
-          },
-        },
-        "actor_country": {
-          "feature_type": "category",
-          "feature_generator": {
-            "method": "one_hot_encoding",
-            "feature_name": "actor_country_embedding",
-          },
-        },
-      }
-    },
-    "v2": {
-      "features": {
-        "director_summary": {
-          "feature_type": "text",
-        },
-      }
-    },
+      "Actor": {
+          "features": {
+              "name": {
+                  "feature_type": "text",
+              },
+          }
+      },
+      "Class": {
+          "features": {
+              "name": {
+                  "feature_type": "text",
+              },
+          }
+      },
+      "Country": {
+          "features": {
+              "name": {
+                  "feature_type": "text",
+              }
+          }
+      },
+      "Event": {
+          "features": {
+              "description": {
+                  "feature_type": "text",
+              },
+              "label": {
+                  "feature_type": "label",
+              },
+          }
+      },
+      "Source": {
+          "features": {
+              "name": {
+                  "feature_type": "text",
+              },
+              "sourceScale": {
+                  "feature_type": "category",
+              },
+          }
+      },
+      "Location": {
+          "features": {
+              "name": {
+                  "feature_type": "text",
+              }
+          }
+      },
+      "Region": {
+          "features": {
+              "name": {
+                  "feature_type": "category",
+              },
+          }
+      },
   },
   "edgeCollections": {
-    "e0"
+      "eventActor": {},
+      "hasSource": {},
+      "hasLocation": {},
+      "inCountry": {},
+      "inRegion": {},
+      "subClass": {},
+      "type": {},
   },
 }
 
-output = featurizer(_db, featurization_spec, batch_size=32)
-print(output)
-
-# can also run without analysis
-# featurizer(db, featurization_spec, run_analysis_checks=False)
-# can also be run with a feature store
-import arangomlFeatureStore
-from arangomlFeatureStore.defaults import DEFAULT_FEATURE_STORE_DB
-fs_db = client.db(DEFAULT_FEATURE_STORE_DB, username="root", password="")  # nosec
-admin = arangomlFeatureStore.FeatureStoreAdmin(
-  database_connection=fs_db,
+# Run Featurization
+feature_result = arangoml.featurization.featurize(
+  database_name=dataset_db.name,
+  featurization_spec=featurization_spec,
+  batch_size=256,
+  use_feature_store=False,
+  run_analysis_checks=False,
+  ...,
 )
-feature_store = admin.get_feature_store()
-output = featurizer(db, featurization_spec, feature_store=feature_store, batch_size=32)
-print(output)
 ```
 
 ## Experiment
@@ -298,11 +359,11 @@ Each experiment consists of three main phases:
 
 ### Training Specification 
 
-Training graph machine learning models with ArangoGraphML only requires two steps:
-1. Describe which data points should be included in the training job.
-2. Pass the training specification to the training service.
+Training Graph Machine Learning Models with ArangoGraphML only requires two steps:
+1. Describe which data points should be included in the Training Job.
+2. Pass the Training Specification to the Training Service.
 
-See below the different components of the training specification.
+See below the different components of the Training Specification.
 
 - `database_name`: The database name the source data is in.
 - `project_name`: The top-level project to which all the experiments will link back. 
@@ -317,26 +378,46 @@ See below the different components of the training specification.
   - `edgeCollections`: Here, you describe the relevant edge collections and any
     relevant attributes or features that should be considered when training.
 
-A training specification allows for concisely defining your training task in a
+A Training Specification allows for concisely defining your training task in a
 single object and then passing that object to the training service using the
 Python API client, as shown below.
 
-#### Create a training job
+#### Create a Training Job
 
 ```py
-job = arangoml.training.train(training_spec)
-print(job)
-job_id = job.job_id
+training_spec = {
+    "database_name": dataset_db.name,
+    "project_name": project.name,
+    "metagraph": {
+        "mlSpec": {
+            "classification": {
+                "targetCollection": "Event",
+                "inputFeatures": f"{DATASET_NAME}_x",
+                "labelField": f"{DATASET_NAME}_y",
+            }
+        },
+        "graph": DATASET_NAME,
+        "vertexCollections": feature_result.vertexCollections,
+        "edgeCollections": feature_result.edgeCollections,
+    },
+}
+    
+training_job = arangoml.training.train(training_spec)
+
+print(training_job)
 ```
+
 **Expected output:**
 ```py
 {'job_id': 'f09bd4a0-d2f3-5dd6-80b1-a84602732d61'}
 ```
 
-#### Get status of a training job
+#### Wait for a Training job to complete
 
 ```py
-arangoml.training.get_job(job_id)
+training_job_result = arangoml.wait_for_training(training_job.job_id)
+
+print(training_job_result)
 ```
 
 **Expected output:**
@@ -359,10 +440,10 @@ arangoml.training.get_job(job_id)
  'time_submitted': '2023-09-01T16:58:43.374269'}
 ```
 
-#### Cancel a running training job
+#### Cancel a running Training Job
 
 ```python
-arangoml.training.cancel_job(job_id)
+arangoml.training.cancel_job(training_job.job_id)
 ```
 
 **Expected output:**
@@ -372,23 +453,25 @@ arangoml.training.cancel_job(job_id)
 
 ### Model Selection
 
-Once the training is complete you can review the model statistics.
-The training completes 12 training jobs using grid search parameter optimization.
+Once the Training is complete you can review the model statistics.
+The Training Service returns **12 Models** using grid search parameter optimization.
  
-To select a model, use the projects API to gather all relevant models and choose
+To select a Model, use the Projects API to gather all relevant models and choose
 the one you prefer for the next step.
 
-The following examples uses the model with the highest validation accuracy,
+The following examples uses the model with the highest **test accuracy**,
 but there may be other factors that motivate you to choose another model.
+See the `model_statistics` field below for more information.
 
 ```py
-models = arangoml.projects.list_models(project_name=project_name, project_id=project_id, job_id=job_id)
+best_model = arangoml.get_best_model(
+    project.name,
+    training_job.job_id,
+    sort_parent_key="test",
+    sort_child_key="accuracy",
+)
 
-# Tip: Sort by accuracy
-models.models.sort(key=(lambda model : model.model_statistics["test"]["accuracy"]) , reverse=True)
-# The most accurate model is the first in the list
-model = models.models[0]
-print(model)
+print(best_model)
 ```
 
 **Expected output:**
@@ -431,23 +514,26 @@ using the `predict` function.
 ```py
 prediction_spec = {
   "project_name": project.name,
-  "database_name": db.name,
-  "model_id": model.model_id
+  "database_name": dataset_db.name,
+  "model_id": best_model.model_id,
 }
 
 prediction_job = arangoml.prediction.predict(prediction_spec)
+
 print(prediction_job)
 ```
 
-This creates a prediction job that grabs data and generates inferences using the
-selected model. Then, by default, it writes the predictions to a new collection
-connected via an edge to the original source document.
-You may choose to specify instead a `collection`.
+This creates a Prediction Job that grabs data and generates inferences using the
+selected model. By default, predictions are written to the same Vertex Collection as
+the source data. However, you can also specify a different Vertex Collection name, which
+will be created & connected to the original Vertex Collection via an Edge.
 
-#### Get prediction job status
+#### Wait for a Prediction job to complete
 
 ```py
-prediction_status = arangoml.prediction.get_job(prediction_job.job_id)
+prediction_job_result = arangoml.wait_for_prediction(prediction_job.job_id)
+
+print(prediction_job_result)
 ```
 
 **Expected output:**
@@ -469,20 +555,20 @@ prediction_status = arangoml.prediction.get_job(prediction_job.job_id)
 #### Access the predictions
 
 You can now directly access your predictions in your application.
-If you left the default option you can access them via the dynamically created
-collection with a query such as the following:
 
 ```py
-## Query to return results
+import json
+
+output_collection_name = prediction_job_result["job_state_information"]['outputCollectionName']
 
 query = f"""
-FOR prediction IN {prediction_status.job_state_information['outputCollectionName']}
-    RETURN prediction
+  FOR doc IN {output_collection_name}
+    SORT RAND()
+    LIMIT 5
+    RETURN doc
 """
-results = db.aql.execute(query)
 
-for r in results:
-    for key in r:
-        print(key +": "+ str(r[key]))
-    print(" ")
+docs = [doc for doc in dataset_db.aql.execute(query)]
+
+print(json.dumps(docs, indent=2))
 ```
