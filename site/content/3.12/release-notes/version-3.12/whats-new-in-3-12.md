@@ -175,6 +175,21 @@ UPDATE { logins: OLD.logins + 1 } IN users
 
 Read more about [`UPSERT` operations](../../aql/high-level-operations/upsert.md) in AQL.
 
+### `readOwnWrites` option for `UPSERT` operations
+
+A `readOwnWrites` option has been added for `UPSERT` operations. The default
+value is `true` and the behavior is identical to previous versions of ArangoDB that
+do not have this option. When enabled, an `UPSERT` operation processes its
+inputs one by one. This way, the operation can observe its own writes and can
+handle modifying the same target document multiple times in the same query.
+
+When the option is set to `false`, an `UPSERT` operation processes its inputs
+in batches. Normally, a batch has 1000 inputs, which can lead to a faster execution.
+However, when using batches, the `UPSERT` operation cannot observe its own writes.
+Therefore, you should only set the `readOwnWrites` option to `false` if you can
+guarantee that the input of the `UPSERT` leads to disjoint documents being
+inserted, updated, or replaced.
+
 ### Added AQL functions
 
 The new `PARSE_COLLECTION()` and `PARSE_KEY()` let you more extract the
@@ -191,6 +206,13 @@ returns the corresponding character as a string.
 See [String functions in AQL](../../aql/functions/string.md#repeat).
 
 A numeric function `RANDOM()` has been added as an alias for the existing `RAND()`.
+
+### Improved `move-filters-into-enumerate` optimizer rule
+
+The `move-filters-into-enumerate` optimizer rule can now also move filters into
+`EnumerateListNodes` for early pruning. This can significantly improve the
+performance of queries that do a lot of filtering on longer lists of
+non-collection data.
 
 ## Indexing
 
