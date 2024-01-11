@@ -1333,7 +1333,7 @@ attributes:
 - `legacy` (boolean, _optional_):
   This option controls how GeoJSON Polygons are interpreted (introduced in v3.10.5).
   Also see [Legacy Polygons](indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons) and
-  [GeoJSON interpretation](indexing/working-with-indexes/geo-spatial-indexes.md#geojson-interpretation).
+  [GeoJSON interpretation](../aql/functions/geo.md#geojson-interpretation).
 
   - If `legacy` is `true`, the smaller of the two regions defined by a
     linear ring is interpreted as the interior of the ring and a ring can at most

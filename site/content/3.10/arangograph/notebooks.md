@@ -20,7 +20,7 @@ passwords, and endpoint URLs.
 
 ![ArangoGraph Notebooks Architecture](../../images/arangograph-notebooks-architecture.png)
 
-The ArangoGraph Notebook has built-in [ArangoGraph Magic Commands](.#arangograph-magic-commands)
+The ArangoGraph Notebook has built-in [ArangoGraph Magic Commands](#arangograph-magic-commands)
 that answer questions like:
 - What ArangoDB database am I connected to at the moment?
 - What data does the ArangoDB instance contain?

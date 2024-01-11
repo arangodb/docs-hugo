@@ -16,6 +16,9 @@ module:
     - source: "content/images"
       target: "assets/images"
 
+    - source: "static"
+      target: "static"
+
 markup:
   highlight:
     noClasses: false
