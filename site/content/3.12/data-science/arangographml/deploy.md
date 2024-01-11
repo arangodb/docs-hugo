@@ -17,8 +17,8 @@ and infrastructure preferences:
 
 ### ArangoGraphML
 
-ArangoGraphML provides enterprise-ready graph-powered machine learning as a
-cloud service via Jupyter Notebooks that run on the
+ArangoGraphML provides enterprise-ready Graph Machine Learning as a
+Cloud Service via Jupyter Notebooks that run on the
 [ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 
 {{< tip >}}
@@ -45,7 +45,7 @@ The ArangoGraphML managed-service runs on the
 [ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 It offers a pre-configured environment where everything,
 including necessary components and configurations, comes preloaded. You don't
-need to set up or configure the infrastructure, but immediately start using the
+need to set up or configure the infrastructure, and can immediately start using the
 GraphML functionalities.
 
 To summarize, all you need to do is:
