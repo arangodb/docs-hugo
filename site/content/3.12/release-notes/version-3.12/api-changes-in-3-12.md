@@ -69,6 +69,13 @@ Moreover, a `remove-unnecessary-calculations-4` rule has been added.
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
 
+#### Gharial API
+
+The `PATCH /_api/gharial/{graph}/edge/{collection}/{edge}` endpoint to update
+edges in named graphs now validates the referenced vertex if only the `_from`
+or `_to` edge attribute is modified. Previously, the validation only occurred if
+both were set in the request.
+
 #### Limit to the number of databases in a deployment
 
 <small>Introduced in: v3.10.10, v3.11.2</small>
