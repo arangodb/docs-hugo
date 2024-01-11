@@ -1,10 +1,12 @@
 ---
-title: GraphML
-menuTitle: GraphML
+title: ArangoGraphML
+menuTitle: ArangoGraphML
 weight: 125
 description: >-
   Enterprise-ready, graph-powered machine learning as a cloud service or self-managed
 archetype: chapter
+aliases:
+  - graphml
 ---
 Traditional machine learning overlooks the connections and relationships
 between data points, which is where graph machine learning excels. However,
@@ -12,60 +14,6 @@ accessibility to GraphML has been limited to sizable enterprises equipped with
 specialized teams of data scientists. ArangoGraphML, on the other hand,
 simplifies the utilization of GraphML, enabling a broader range of personas to
 extract profound insights from their data.
-
-## GraphML: managed-service versus self-managed
-
-ArangoDB offers two solutions for GraphML, tailored to suit diverse requirements
-and infrastructure preferences: [ArangoGraphML](getting-started-with-arangographml.md)
-our managed cloud service, and a [self-managed ArangoML](arangoml-self-managed.md)
-solution via the [ArangoDB Kubernetes Operator](https://github.com/arangodb/kube-arangodb).
-
-### ArangoGraphML
-
-ArangoGraphML provides enterprise-ready graph-powered machine learning as a
-cloud service via Jupyter Notebooks that run on the
-[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
-The managed-service offers a pre-configured environment where everything,
-including necessary components and configurations, comes preloaded. You don't
-need to set up or configure the infrastructure, but immediately start using the
-GraphML functionalities.
-
-See how to get started with [ArangoGraphML](getting-started-with-arangographml.md).
-
-{{< tip >}}
-To get access to ArangoGraphML services and packages,
-[get in touch](https://www.arangodb.com/contact/)
-with the ArangoDB team.
-{{< /tip >}}
-
-ArangoGraphML uses GraphML techniques that focus on solving different problems
-and, at the same time, provides actionable insights leveraging ArangoDB's graph
-data model.
-
-- **Accessible at all levels**
-  - Low code UI
-  - Notebooks
-  - APIs
-- **Full usability**
-  - MLOps lifecycle
-  - Metrics
-  - Metadata capture
-  - Model management
-
-![ArangoGraphML Pipeline](../../../images/ArangoGraphML_Pipeline.png)
-
-### Self-managed ArangoML
-
-{{< tag "ArangoDB Enterprise Edition" >}}
-
-The self-managed solution enables you to deploy and manage ArangoML within your
-Kubernetes cluster using the [ArangoDB Kubernetes Operator](https://github.com/arangodb/kube-arangodb).
-The ArangoML package includes the same features as in ArangoGraphML.
-The primary distinction lies in the environment setup: with the self-managed
-solution, you have direct control over configuring your environment.
-
-See how to get started with the [self-managed ArangoML](arangoml-self-managed.md)
-solution.
 
 ## How GraphML works
 
@@ -133,7 +81,7 @@ Node classification can be used to solve complex problems such as:
 
 Many use cases can be solved with node classification. With many challenges,
 there are multiple ways to attempt to solve them, and that's why the
-ArangoML node classification is only the first of many techniques to be
+ArangoGraphML node classification is only the first of many techniques to be
 introduced. You can sign up to get immediate access to our latest stable
 features and also try out other features included in the pipeline, such as
 embedding similarity or link prediction.
@@ -149,7 +97,7 @@ Before using a model to provide predictions to your application, there needs
 to be a way to determine its level of accuracy. Additionally, a mechanism must
 be in place to ensure the experiments comply with auditor requirements.
 
-ArangoML supports these objectives by storing all relevant training data
+ArangoGraphML supports these objectives by storing all relevant training data
 and metrics in a metadata graph, which is only available to you and is never
 viewable by ArangoDB. This metagraph contains valuable training metrics such as
 average accuracy (the general metric for determining model performance), F1,

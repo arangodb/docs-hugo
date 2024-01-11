@@ -1,24 +1,19 @@
 ---
-title: Getting Started with ArangoGraphML Services and Packages
-menuTitle: ArangoGraphML
-weight: 5
+title: Getting Started with ArangoGraphML
+menuTitle: Getting Started
+weight: 10
 description: >-
-  Interface to control all resources inside ArangoGraphML in a scriptable manner
+  How to control all resources inside ArangoGraphML in a scriptable manner
 archetype: default
+aliases:
+  - getting-started-with-arangographml
 ---
 ArangoGraphML is a set of services that provide an easy to use and scalable
 interface for graph machine learning. Since all of the orchestration and training
 logic is managed by ArangoGraph, all that is typically required is a
-specification outlining the data to be used to solve a task.
-
-ArangoGraphML's suite of services and packages is driven by what we call
-"specifications". These specifications are standard Python dictionaries and
-empower users to define tasks concisely and repeatable.
-
-[Notebooks](../../arangograph/notebooks.md) that have the ArangoGraphML services
-enabled come preloaded with valuable data science and ML packages, and most
-notably, the server includes the `arangoml` package, which provides access
-to all of the ArangoGraphML specific features.
+specification outlining the data to be used to solve a task. If you are using
+the self-managed solution, additional configurations are needed such as loading
+the database.
 
 The package allows for managing all of the necessary ArangoGraphML components, including:
 - **Project Management**: Projects are at the top level, and all activities must
@@ -33,11 +28,16 @@ The package allows for managing all of the necessary ArangoGraphML components, i
   graph in a new collection or within the source document.
 
 {{< tip >}}
-To enable the ArangoGraphML services,
+To enable the ArangoGraphML services in the ArangoGraph platform,
 [get in touch](https://www.arangodb.com/contact/)
 with the ArangoDB team. Regular notebooks in ArangoGraph don't include the
 `arangoml` package.
 {{< /tip >}}
+
+ArangoGraphML's suite of services and packages is driven by what we call
+"specifications". These specifications are standard Python dictionaries and
+describe the task being performed and the data being used. The ArangoGraphML
+services work closely together, with one task providing inputs to another.
 
 The following is a guide to show how to use the `arangoml` package in order to:
 - Manage projects
@@ -46,19 +46,65 @@ The following is a guide to show how to use the `arangoml` package in order to:
 - Evaluate model metrics
 - Generate predictions
 
-The `arangoml` package requires properly formed **specifications**. The specifications
-describe the task being performed and the data being used. The ArangoGraphML services
-work closely together, with one task providing inputs to another.
+## Initialize ArangoML
 
-## Import
+{{< tabs "arangoml" >}}
 
-The `arangoml` package comes pre-loaded with every ArangoGraphML notebook environment.
+{{< tab "ArangoGraphML" >}}
+The `arangoml` package comes pre-loaded with every ArangoGraphML notebook environment. To start using it, simply import it:
 
-To start using it, simply import it:
-
-```python
+```py
 import arangoml
 ```
+{{< /tab >}}
+
+{{< tab "Self-managed" >}}
+```py
+from arangoml import ArangoML
+
+arangoml = ArangoML(
+    hosts="http://localhost:8529"
+    username="root",
+    password="password",
+    projects_endpoint="http://localhost:8503",
+    training_endpoint="http://localhost:8502",
+    prediction_endpoint="http://localhost:8501",
+)
+```
+{{< /tab >}}
+
+{{< /tabs >}}
+
+## Load the database
+
+{{< tabs "arangoml" >}}
+
+{{< tab "ArangoGraphML" >}}
+The ArangoDB database is already loaded in your ArangoGraph deployment.
+
+{{< /tab >}}
+
+{{< tab "Self-managed" >}}
+```py
+from arango_datasets.datasets import Datasets
+
+DATASET_NAME = "OPEN_INTELLIGENCE_ANGOLA"
+
+username = arangoml.settings.ARANGODB_USER
+password = arangoml.settings.ARANGODB_PW
+
+# Create the Database for the Dataset
+system_db = client.db("_system", username=username, password=password, verify=True)
+system_db.delete_database(DATASET_NAME, ignore_missing=True)
+system_db.create_database(DATASET_NAME)
+
+# Load the Dataset
+dataset_db = client.db(DATASET_NAME, username=username, password=password, verify=True)
+Datasets(dataset_db).load(DATASET_NAME)
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Projects
 
@@ -66,40 +112,40 @@ Projects are an important reference used throughout the entire ArangoGraphML
 lifecycle. All activities link back to a project. The creation of the project
 is very simple. 
 
-**Create a project**
+### Create a project
 
-```python
+```py
 project = arangoml.projects.create_project({"name":"ArangoGraphML_Project_Name"})
 ```
 
-**List projects**
+### List projects
 
-```python
+```py
 arangoml.projects.list_projects(limit=limit, offset=offset)
 ```
 
-**Lookup an existing project**
+### Lookup an existing project
 
-```python
+```py
 project = arangoml.projects.get_project_by_name("ArangoGraphML_Project_Name")
 
 # or by id
 project = arangoml.projects.get_project("project_id")
 ```
 
-**Update an existing project**
+### Update an existing project
 
-```python
+```py
 arangoml.projects.update_project(body={'id': 'project_id', 'name': 'Updated_ArangoGraphML_Project_Name'}, project_id='existing_project_id')
 ```
 
-**List models associated with project**
+### List models associated with project
 
-```python
+```py
 arangoml.projects.list_models(project_name=project_name, project_id=project_id, job_id=job_id)
 ```
 
-**Delete an existing project**
+### Delete an existing project
 
 ```python
 api_instance.delete_project(project_id)
@@ -156,10 +202,10 @@ The featurization specification asks that you input the following:
   },
   ```
 
-Once you have filled out the featurization specification you can pass it to
+Once you have filled out the featurization specification, you can pass it to
 the `featurizer` function.
 
-```python
+```py
 from arangoml.featurizer import featurizer
 
 featurizer(featurizer(_db, featurization_spec))
@@ -169,7 +215,7 @@ This is all you need to get started with featurization. The following also shows
 an example of using the featurization package with a movie dataset and some
 additional options available.
 
-```python
+```py
 from arangoml.featurizer import featurizer
 
 featurization_spec = {
@@ -275,25 +321,26 @@ A training specification allows for concisely defining your training task in a
 single object and then passing that object to the training service using the
 Python API client, as shown below.
 
-**Create a training job**
+#### Create a training job
 
-```python
+```py
 job = arangoml.training.train(training_spec)
 print(job)
 job_id = job.job_id
 ```
-
-```python
+**Expected output:**
+```py
 {'job_id': 'f09bd4a0-d2f3-5dd6-80b1-a84602732d61'}
 ```
 
-**Get status of a training job**
+#### Get status of a training job
 
-```python
+```py
 arangoml.training.get_job(job_id)
 ```
 
-```python
+**Expected output:**
+```py
 {'database_name': 'db_name',
  'job_id': 'efac147a-3654-4866-88fe-03866d0d40a5',
  'job_state': None,
@@ -312,12 +359,13 @@ arangoml.training.get_job(job_id)
  'time_submitted': '2023-09-01T16:58:43.374269'}
 ```
 
-**Cancel a running training job**
+#### Cancel a running training job
 
 ```python
 arangoml.training.cancel_job(job_id)
 ```
 
+**Expected output:**
 ```python
 'OK'
 ```
@@ -333,7 +381,7 @@ the one you prefer for the next step.
 The following examples uses the model with the highest validation accuracy,
 but there may be other factors that motivate you to choose another model.
 
-```python
+```py
 models = arangoml.projects.list_models(project_name=project_name, project_id=project_id, job_id=job_id)
 
 # Tip: Sort by accuracy
@@ -341,10 +389,10 @@ models.models.sort(key=(lambda model : model.model_statistics["test"]["accuracy"
 # The most accurate model is the first in the list
 model = models.models[0]
 print(model)
-
 ```
 
-```python
+**Expected output:**
+```py
 {'job_id': 'f09bd4a0-d2f3-5dd6-80b1-a84602732d61',
  'model_display_name': 'Node Classification Model',
  'model_id': '123',
@@ -380,7 +428,7 @@ print(model)
 After selecting a model, it is time to persist the results to a collection
 using the `predict` function.
 
-```python
+```py
 prediction_spec = {
   "project_name": project.name,
   "database_name": db.name,
@@ -398,11 +446,12 @@ You may choose to specify instead a `collection`.
 
 #### Get prediction job status
 
-```python
+```py
 prediction_status = arangoml.prediction.get_job(prediction_job.job_id)
 ```
 
-```python
+**Expected output:**
+```py
 {'database_name': 'db_name',
  'job_id': '123-ee43-4106-99e7-123',
  'job_state_information': {'outputAttribute': 'label_field_predicted',
@@ -423,7 +472,7 @@ You can now directly access your predictions in your application.
 If you left the default option you can access them via the dynamically created
 collection with a query such as the following:
 
-```python
+```py
 ## Query to return results
 
 query = f"""
