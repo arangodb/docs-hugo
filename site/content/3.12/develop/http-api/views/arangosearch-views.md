@@ -183,10 +183,10 @@ paths:
                     Wait at least this many commits between removing unused files in the
                     ArangoSearch data directory (default: 2, to disable use: 0).
                     For the case where the consolidation policies merge segments often (i.e. a lot
-                    of commit+consolidate), a lower value will cause a lot of disk space to be
+                    of commit+consolidate), a lower value causes a lot of disk space to be
                     wasted.
                     For the case where the consolidation policies rarely merge segments (i.e. few
-                    inserts/deletes), a higher value will impact performance without any added
+                    inserts/deletes), a higher value impacts performance without any added
                     benefits.
 
                     _Background:_
@@ -202,12 +202,11 @@ paths:
                     Wait at least this many milliseconds between committing View data store
                     changes and making documents visible to queries (default: 1000, to disable
                     use: 0).
-                    For the case where there are a lot of inserts/updates, a lower value, until
-                    commit, will cause the index not to account for them and memory usage would
-                    continue to grow.
-                    For the case where there are a few inserts/updates, a higher value will impact
-                    performance and waste disk space for each commit call without any added
-                    benefits.
+                    For the case where there are a lot of inserts/updates, a higher value causes the
+                    index not to account for them and memory usage continues to grow until the commit.
+                    A lower value impacts performance, including the case where there are no or only a
+                    few inserts/updates because of synchronous locking, and it wastes disk space for
+                    each commit call.
 
                     _Background:_
                       For data retrieval, ArangoSearch follows the concept of
@@ -229,11 +228,11 @@ paths:
                     For the case where there are a lot of data modification operations, a higher
                     value could potentially have the data store consume more space and file handles.
                     For the case where there are a few data modification operations, a lower value
-                    will impact performance due to no segment candidates available for
+                    impacts performance due to no segment candidates being available for
                     consolidation.
 
                     _Background:_
-                      For data modification, ArangoSearch follow the concept of a
+                      For data modification, ArangoSearch follows the concept of a
                       "versioned data store". Thus old versions of data may be removed once there
                       are no longer any users of the old data. The frequency of the cleanup and
                       compaction operations are governed by `consolidationIntervalMsec` and the
@@ -247,8 +246,8 @@ paths:
                     _Background:_
                       With each ArangoDB transaction that inserts documents, one or more
                       ArangoSearch-internal segments get created.
-                      Similarly, for removed documents the segments that contain such documents
-                      will have these documents marked as 'deleted'.
+                      Similarly, for removed documents, the segments that contain such documents
+                      have these documents marked as 'deleted'.
                       Over time, this approach causes a lot of small and sparse segments to be
                       created.
                       A "consolidation" operation selects one or more segments and copies all of
@@ -275,10 +274,10 @@ paths:
                         (default: 2097152)
                       - `segmentsBytesMax` (number, _optional_): Maximum allowed size of all
                         consolidated segments in bytes (default: 5368709120)
-                      - `segmentsMax` (number, _optional_): The maximum number of segments that will
-                        be evaluated as candidates for consolidation (default: 10)
-                      - `segmentsMin` (number, _optional_): The minimum number of segments that will
-                        be evaluated as candidates for consolidation (default: 1)
+                      - `segmentsMax` (number, _optional_): The maximum number of segments that are
+                        evaluated as candidates for consolidation (default: 10)
+                      - `segmentsMin` (number, _optional_): The minimum number of segments that are
+                        evaluated as candidates for consolidation (default: 1)
                       - `minScore` (number, _optional_): (default: 0)
                   type: object
                 writebufferIdle:
@@ -296,7 +295,7 @@ paths:
                   description: |
                     Maximum memory byte size per writer (segment) before a writer (segment) flush
                     is triggered. `0` value turns off this limit for any writer (buffer) and data
-                    will be flushed periodically based on the value defined for the flush thread
+                    is flushed periodically based on the value defined for the flush thread
                     (ArangoDB server startup option). `0` value should be used carefully due to
                     high potential memory consumption
                     (default: 33554432, use 0 to disable, immutable)
@@ -545,10 +544,10 @@ paths:
                     Wait at least this many commits between removing unused files in the
                     ArangoSearch data directory (default: 2, to disable use: 0).
                     For the case where the consolidation policies merge segments often (i.e. a lot
-                    of commit+consolidate), a lower value will cause a lot of disk space to be
+                    of commit+consolidate), a lower value causes a lot of disk space to be
                     wasted.
                     For the case where the consolidation policies rarely merge segments (i.e. few
-                    inserts/deletes), a higher value will impact performance without any added
+                    inserts/deletes), a higher value impacts performance without any added
                     benefits.
 
                     _Background:_
@@ -564,15 +563,14 @@ paths:
                     Wait at least this many milliseconds between committing View data store
                     changes and making documents visible to queries (default: 1000, to disable
                     use: 0).
-                    For the case where there are a lot of inserts/updates, a lower value, until
-                    commit, will cause the index not to account for them and memory usage would
-                    continue to grow.
-                    For the case where there are a few inserts/updates, a higher value will impact
-                    performance and waste disk space for each commit call without any added
-                    benefits.
+                    For the case where there are a lot of inserts/updates, a higher value causes the
+                    index not to account for them and memory usage continues to grow until the commit.
+                    A lower value impacts performance, including the case where there are no or only a
+                    few inserts/updates because of synchronous locking, and it wastes disk space for
+                    each commit call.
 
                     _Background:_
-                      For data retrieval, ArangoSearch follow the concept of
+                      For data retrieval, ArangoSearch follows the concept of
                       "eventually-consistent", i.e. eventually all the data in ArangoDB will be
                       matched by corresponding query expressions.
                       The concept of ArangoSearch "commit" operations is introduced to
@@ -591,11 +589,11 @@ paths:
                     For the case where there are a lot of data modification operations, a higher
                     value could potentially have the data store consume more space and file handles.
                     For the case where there are a few data modification operations, a lower value
-                    will impact performance due to no segment candidates available for
+                    impacts performance due to no segment candidates being available for
                     consolidation.
 
                     _Background:_
-                      For data modification, ArangoSearch follow the concept of a
+                      For data modification, ArangoSearch follows the concept of a
                       "versioned data store". Thus old versions of data may be removed once there
                       are no longer any users of the old data. The frequency of the cleanup and
                       compaction operations are governed by `consolidationIntervalMsec` and the
@@ -609,8 +607,8 @@ paths:
                     _Background:_
                       With each ArangoDB transaction that inserts documents, one or more
                       ArangoSearch-internal segments get created.
-                      Similarly, for removed documents the segments that contain such documents
-                      will have these documents marked as 'deleted'.
+                      Similarly, for removed documents, the segments that contain such documents
+                      have these documents marked as 'deleted'.
                       Over time, this approach causes a lot of small and sparse segments to be
                       created.
                       A "consolidation" operation selects one or more segments and copies all of
@@ -637,10 +635,10 @@ paths:
                         (default: 2097152)
                       - `segmentsBytesMax` (number, _optional_): Maximum allowed size of all
                         consolidated segments in bytes (default: 5368709120)
-                      - `segmentsMax` (number, _optional_): The maximum number of segments that will
-                        be evaluated as candidates for consolidation (default: 10)
-                      - `segmentsMin` (number, _optional_): The minimum number of segments that will
-                        be evaluated as candidates for consolidation (default: 1)
+                      - `segmentsMax` (number, _optional_): The maximum number of segments that are
+                        evaluated as candidates for consolidation (default: 10)
+                      - `segmentsMin` (number, _optional_): The minimum number of segments that are
+                        evaluated as candidates for consolidation (default: 1)
                       - `minScore` (number, _optional_): (default: 0)
                   type: object
       responses:
@@ -712,10 +710,10 @@ paths:
                     Wait at least this many commits between removing unused files in the
                     ArangoSearch data directory (default: 2, to disable use: 0).
                     For the case where the consolidation policies merge segments often (i.e. a lot
-                    of commit+consolidate), a lower value will cause a lot of disk space to be
+                    of commit+consolidate), a lower value causes a lot of disk space to be
                     wasted.
                     For the case where the consolidation policies rarely merge segments (i.e. few
-                    inserts/deletes), a higher value will impact performance without any added
+                    inserts/deletes), a higher value impacts performance without any added
                     benefits.
 
                     _Background:_
@@ -731,12 +729,11 @@ paths:
                     Wait at least this many milliseconds between committing View data store
                     changes and making documents visible to queries (default: 1000, to disable
                     use: 0).
-                    For the case where there are a lot of inserts/updates, a lower value, until
-                    commit, will cause the index not to account for them and memory usage would
-                    continue to grow.
-                    For the case where there are a few inserts/updates, a higher value will impact
-                    performance and waste disk space for each commit call without any added
-                    benefits.
+                    For the case where there are a lot of inserts/updates, a higher value causes the
+                    index not to account for them and memory usage continues to grow until the commit.
+                    A lower value impacts performance, including the case where there are no or only a
+                    few inserts/updates because of synchronous locking, and it wastes disk space for
+                    each commit call.
 
                     _Background:_
                       For data retrieval, ArangoSearch follows the concept of
@@ -758,11 +755,11 @@ paths:
                     For the case where there are a lot of data modification operations, a higher
                     value could potentially have the data store consume more space and file handles.
                     For the case where there are a few data modification operations, a lower value
-                    will impact performance due to no segment candidates available for
+                    impacts performance due to no segment candidates being available for
                     consolidation.
 
                     _Background:_
-                      For data modification, ArangoSearch follow the concept of a
+                      For data modification, ArangoSearch follows the concept of a
                       "versioned data store". Thus old versions of data may be removed once there
                       are no longer any users of the old data. The frequency of the cleanup and
                       compaction operations are governed by `consolidationIntervalMsec` and the
@@ -776,8 +773,8 @@ paths:
                     _Background:_
                       With each ArangoDB transaction that inserts documents, one or more
                       ArangoSearch-internal segments get created.
-                      Similarly, for removed documents the segments that contain such documents
-                      will have these documents marked as 'deleted'.
+                      Similarly, for removed documents, the segments that contain such documents
+                      have these documents marked as 'deleted'.
                       Over time, this approach causes a lot of small and sparse segments to be
                       created.
                       A "consolidation" operation selects one or more segments and copies all of
@@ -804,10 +801,10 @@ paths:
                         (default: 2097152)
                       - `segmentsBytesMax` (number, _optional_): Maximum allowed size of all
                         consolidated segments in bytes (default: 5368709120)
-                      - `segmentsMax` (number, _optional_): The maximum number of segments that will
-                        be evaluated as candidates for consolidation (default: 10)
-                      - `segmentsMin` (number, _optional_): The minimum number of segments that will
-                        be evaluated as candidates for consolidation (default: 1)
+                      - `segmentsMax` (number, _optional_): The maximum number of segments that are
+                        evaluated as candidates for consolidation (default: 10)
+                      - `segmentsMin` (number, _optional_): The minimum number of segments that are
+                        evaluated as candidates for consolidation (default: 1)
                       - `minScore` (number, _optional_): (default: 0)
                   type: object
       responses:

@@ -65,11 +65,11 @@ RETURN APPEND([ 1, 2, 3 ], [ 3, 4, 5, 2, 9 ], true)
 
 ## CONTAINS_ARRAY()
 
-This is an alias for [POSITION()](#position).
+This is an alias for [`POSITION()`](#position).
 
 ## COUNT()
 
-This is an alias for [LENGTH()](#length).
+This is an alias for [`LENGTH()`](#length).
 
 ## COUNT_DISTINCT()
 
@@ -100,7 +100,7 @@ RETURN COUNT_DISTINCT([ "yes", "no", "yes", "sauron", "no", "yes" ])
 
 ## COUNT_UNIQUE()
 
-This is an alias for [COUNT_DISTINCT()](#count_distinct).
+This is an alias for [`COUNT_DISTINCT()`](#count_distinct).
 
 ## FIRST()
 
