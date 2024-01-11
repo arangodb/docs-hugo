@@ -238,7 +238,8 @@ Return the weekday number of `date`.
 ```aql
 ---
 name: datedyofwk1
-description: ''
+description: |
+  The 29th of August in 2020 was a Saturday:
 ---
 RETURN DATE_DAYOFWEEK("2020-08-29")
 ```
@@ -246,7 +247,8 @@ RETURN DATE_DAYOFWEEK("2020-08-29")
 ```aql
 ---
 name: datedyofwk2
-description: ''
+description: |
+  The Unix epoch began on the 1st of January 1970, which was a Thursday:
 ---
 RETURN DATE_DAYOFWEEK(0)
 ```
@@ -254,7 +256,8 @@ RETURN DATE_DAYOFWEEK(0)
 ```aql
 ---
 name: datedyofwk3
-description: ''
+description: |
+  At 11 PM UTC, it is already the next day in Germany (UTC+1 or UTC+2):
 ---
 RETURN DATE_DAYOFWEEK("2023-03-25T23:00:00.000Z", "Europe/Berlin")
 ```
@@ -278,7 +281,8 @@ Return the year of `date`.
 ```aql
 ---
 name: dateyr1
-description: ''
+description: |
+  Extract the year from a date time string:
 ---
 RETURN DATE_YEAR("2020-08-29")
 ```
@@ -286,7 +290,8 @@ RETURN DATE_YEAR("2020-08-29")
 ```aql
 ---
 name: dateyr2
-description: ''
+description: |
+  Extract the year from a Unix timestamp:
 ---
 RETURN DATE_YEAR(0)
 ```
@@ -294,7 +299,9 @@ RETURN DATE_YEAR(0)
 ```aql
 ---
 name: dateyr3
-description: ''
+description: |
+  Extract the year from a date time string, with a point in time one hour before
+  New Year's Day in UTC, which is already New Year in Germany:
 ---
 RETURN DATE_YEAR("2023-12-31T23:00:00.000Z", "Europe/Berlin")
 ```
@@ -318,7 +325,8 @@ Return the month of `date`.
 ```aql
 ---
 name: datemn1
-description: ''
+description: |
+  Extract the month from a date time string:
 ---
 RETURN DATE_MONTH("2020-08-29")
 ```
@@ -326,7 +334,8 @@ RETURN DATE_MONTH("2020-08-29")
 ```aql
 ---
 name: datemn2
-description: ''
+description: |
+  Extract the month from a Unix timestamp:
 ---
 RETURN DATE_MONTH(0)
 ```
@@ -334,7 +343,9 @@ RETURN DATE_MONTH(0)
 ```aql
 ---
 name: datemn3
-description: ''
+description: |
+  Extract the month from a date time string, with a point in time one hour before
+  the next month in UTC, which is already the next month in Germany:
 ---
  RETURN DATE_MONTH("2023-12-31T23:00:00.000Z", "Europe/Berlin")
 ```
@@ -358,7 +369,8 @@ Return the day of `date`.
 ```aql
 ---
 name: datedy1
-description: ''
+description: |
+  Extract the day from a date time string:
 ---
 RETURN DATE_DAY("2020-08-29")
 ```
@@ -366,7 +378,8 @@ RETURN DATE_DAY("2020-08-29")
 ```aql
 ---
 name: datedy2
-description: ''
+description: |
+  Extract the day from a Unix timestamp:
 ---
 RETURN DATE_DAY(0)
 ```
@@ -374,7 +387,9 @@ RETURN DATE_DAY(0)
 ```aql
 ---
 name: datedy3
-description: ''
+description: |
+  Extract the day from a date time string, with a point in time one hour before
+  the next day in UTC, which is already the next day in Germany:
 ---
 RETURN DATE_DAY("2023-12-31T23:00:00.000Z", "Europe/Berlin")
 ```
@@ -398,7 +413,8 @@ Return the hour of `date`.
 ```aql
 ---
 name: datehr1
-description: ''
+description: |
+  Extract the hour of a date time string:
 ---
 RETURN DATE_HOUR("2020-08-29T16:30:05.123")
 ```
@@ -406,7 +422,18 @@ RETURN DATE_HOUR("2020-08-29T16:30:05.123")
 ```aql
 ---
 name: datehr2
-description: ''
+description: |
+  Extract the hour of a Unix timestamp:
+---
+RETURN DATE_HOUR(14400000)
+```
+
+```aql
+---
+name: datehr3
+description: |
+  Extract the hour of a date time string, using Germany's timezone that is one
+  hour ahead compared to UTC in this case:
 ---
 RETURN DATE_HOUR("2023-12-31T23:00:00.000Z", "Europe/Berlin")
 ```
@@ -430,7 +457,8 @@ Return the minute of `date`.
 ```aql
 ---
 name: datemin1
-description: ''
+description: |
+  Extract the minute of a date time string:
 ---
 RETURN DATE_MINUTE("2020-08-29T16:30:05.123")
 ```
@@ -438,7 +466,18 @@ RETURN DATE_MINUTE("2020-08-29T16:30:05.123")
 ```aql
 ---
 name: datemin2
-description: ''
+description: |
+  Extract the minute of a Unix timestamp:
+---
+RETURN DATE_MINUTE(2520000)
+```
+
+```aql
+---
+name: datemin3
+description: |
+  Extract the minute of a date time string, using Nepal's timezone that is
+  5 hours and 45 minutes ahead of UTC:
 ---
 RETURN DATE_MINUTE("2023-12-31T23:00:00.000Z", "Asia/Kathmandu")
 ```
@@ -457,9 +496,19 @@ Return the second of `date`.
 ```aql
 ---
 name: datesec1
-description: ''
+description: |
+  Extract the second of a date time string:
 ---
 RETURN DATE_SECOND("2020-08-29T16:30:05.123")
+```
+
+```aql
+---
+name: datesec2
+description: |
+  Extract the second of a Unix timestamp:
+---
+RETURN DATE_SECOND(1234567890)
 ```
 
 ### DATE_MILLISECOND()
@@ -477,6 +526,15 @@ name: datemilsec1
 description: ''
 ---
 RETURN DATE_MILLISECOND("2020-08-29T16:30:05.123")
+```
+
+```aql
+---
+name: datesec2
+description: |
+  Extract the millisecond of a Unix timestamp:
+---
+RETURN DATE_MILLISECOND(1234567890)
 ```
 
 ### DATE_DAYOFYEAR()
@@ -499,7 +557,8 @@ Return the day of year of `date`.
 ```aql
 ---
 name: datedyofyr1
-description: ''
+description: |
+  Extract the day of year from a date time string:
 ---
 RETURN DATE_DAYOFYEAR("2020-08-29")
 ```
@@ -507,7 +566,18 @@ RETURN DATE_DAYOFYEAR("2020-08-29")
 ```aql
 ---
 name: datedyofyr2
-description: ''
+description: |
+  Extract the day of year from a Unix timestamp:
+---
+RETURN DATE_DAYOFYEAR(86400000)
+```
+
+```aql
+---
+name: datedyofyr3
+description: |
+  Determine the day of year from a date time string, with a point in time one
+  hour before the next day in UTC, which is already the next day in Germany:
 ---
 RETURN DATE_DAYOFYEAR("2023-12-31T23:00:00.000Z", "Europe/Berlin")
 ```
@@ -530,9 +600,19 @@ Return the week number in the year of `date` according to ISO 8601.
 ```aql
 ---
 name: dateisofwk1
-description: ''
+description: |
+  Determine the week number from a date time string:
 ---
 RETURN DATE_ISOWEEK("2020-08-29")
+```
+
+```aql
+---
+name: dateisofwk2
+description: |
+  Determine the week number from a Unix timestamp:
+---
+RETURN DATE_ISOWEEK(1234567890)
 ```
 
 ### DATE_ISOWEEKYEAR()
@@ -552,22 +632,20 @@ week belongs to.
 
 **Examples**
 
-January 1st of 2023 is part of the previous year's last week:
-
 ```aql
 ---
 name: aqlDateIsoWeekYear1
-description: ''
+description: |
+  January 1st of 2023 is part of the previous year's last week:
 ---
 RETURN DATE_ISOWEEKYEAR("2023-01-01")
 ```
 
-The last two days of 2019 are part of the next year's first week:
-
 ```aql
 ---
 name: aqlDateIsoWeekYear2
-description: ''
+description: |
+  The last two days of 2019 are part of the next year's first week:
 ---
 RETURN DATE_ISOWEEKYEAR("2019-12-30")
 ```
@@ -591,7 +669,8 @@ Return whether `date` is in a leap year.
 ```aql
 ---
 name: datelpyr1
-description: ''
+description: |
+  2020 was a leap year:
 ---
 RETURN DATE_LEAPYEAR("2020-01-01")
 ```
@@ -599,7 +678,8 @@ RETURN DATE_LEAPYEAR("2020-01-01")
 ```aql
 ---
 name: datelpyr2
-description: ''
+description: |
+  2021 was not a leap year:
 ---
 RETURN DATE_LEAPYEAR("2021-01-01")
 ```
@@ -607,7 +687,9 @@ RETURN DATE_LEAPYEAR("2021-01-01")
 ```aql
 ---
 name: datelpyr3
-description: ''
+description: |
+  2016 was a leap year but the point in time is one hour before the next year in
+  UTC, which is already 2017 in Germany, and that was not a leap year:
 ---
 RETURN DATE_LEAPYEAR("2016-12-31T23:00:00.000Z", "Europe/Berlin")
 ```
@@ -635,7 +717,8 @@ Return which quarter `date` belongs to.
 ```aql
 ---
 name: dateqtr1
-description: ''
+description: |
+  Determine the quarter of a date time string:
 ---
 RETURN DATE_QUARTER("2020-08-29")
 ```
@@ -643,7 +726,9 @@ RETURN DATE_QUARTER("2020-08-29")
 ```aql
 ---
 name: dateqtr2
-description: ''
+description: |
+  Determine the quarter of a date time string, with a point in time one hour
+  before the next quarter in UTC, which is already the next quarter in Germany:
 ---
 RETURN DATE_QUARTER("2023-12-31T23:00:00.000Z", "Europe/Berlin")
 ```
@@ -667,7 +752,8 @@ Return the number of days in the month of `date`.
 ```aql
 ---
 name: datedysmn1
-description: ''
+description: |
+  Determine the number of days in August using a date time string:
 ---
 RETURN DATE_DAYS_IN_MONTH("2020-08-01")
 ```
@@ -675,7 +761,8 @@ RETURN DATE_DAYS_IN_MONTH("2020-08-01")
 ```aql
 ---
 name: datedysmn2
-description: ''
+description: |
+  Determine the number of days in September using a date time string:
 ---
 RETURN DATE_DAYS_IN_MONTH("2020-09-01")
 ```
@@ -683,7 +770,8 @@ RETURN DATE_DAYS_IN_MONTH("2020-09-01")
 ```aql
 ---
 name: datedysmn3
-description: ''
+description: |
+  Determine the number of days in February in a leap year using a date time string:
 ---
 RETURN DATE_DAYS_IN_MONTH("2020-02-01")
 ```
@@ -691,7 +779,8 @@ RETURN DATE_DAYS_IN_MONTH("2020-02-01")
 ```aql
 ---
 name: datedysmn4
-description: ''
+description: |
+  Determine the number of days in February in a a non-leap year using a date time string:
 ---
 RETURN DATE_DAYS_IN_MONTH("2021-02-01")
 ```
@@ -699,7 +788,19 @@ RETURN DATE_DAYS_IN_MONTH("2021-02-01")
 ```aql
 ---
 name: datedysmn5
-description: ''
+description: |
+  Determine the number of days in the month using a Unix timestamp:
+---
+RETURN DATE_DAYS_IN_MONTH(3045600000)
+```
+
+```aql
+---
+name: datedysmn6
+description: |
+  Determine the number of days in the month using a date time string, with a
+  point in time one hour before the end of November in UTC, which is already
+  December in Germany:
 ---
 RETURN DATE_DAYS_IN_MONTH("2023-11-30T23:00:00.000Z", "Europe/Berlin")
 ```
@@ -738,16 +839,18 @@ DATE_TRUNC('2023-03-25 23:00:00', 'day', 'Europe/Berlin') // 2023-03-25T23:00:00
 ```aql
 ---
 name: dateTruncGroup
-description: ''
+description: |
+  Truncate date time strings comprised of a year, month, and day to the year and
+  group another attribute by it:
 bindVars: 
   {
-  "data": [
-    { "date": "2018-03-05", "value": "Spring" },
-    { "date": "2018-07-11", "value": "Summer" },
-    { "date": "2018-10-26", "value": "Autumn" },
-    { "date": "2019-01-09", "value": "Winter" },
-    { "date": "2019-04-02", "value": "Spring" }
-  ]
+    "data": [
+      { "date": "2018-03-05", "value": "Spring" },
+      { "date": "2018-07-11", "value": "Summer" },
+      { "date": "2018-10-26", "value": "Autumn" },
+      { "date": "2019-01-09", "value": "Winter" },
+      { "date": "2019-04-02", "value": "Spring" }
+    ]
   }
 ---
 RETURN MERGE(
@@ -791,7 +894,10 @@ DATE_ROUND('2023-03-25T23:55:55.555Z', 1, 'day', "Europe/Berlin") // 2023-03-25T
 ```aql
 ---
 name: dateRoundAggregate
-description: ''
+description: |
+  Round full date time strings to 5 minutes and aggregate temperature readings
+  by these time buckets:
+
 bindVars:
   {
     "sensorData": [
@@ -895,7 +1001,8 @@ DATE_FORMAT("2016-03-01", "%xxx%") // "063", trailing % ignored
 ```aql
 ---
 name: dateFormat
-description: ''
+description: |
+  Show example calls of the formatting function and their results:
 bindVars:
   {
     "formats": [
@@ -929,7 +1036,9 @@ FOR format IN @formats
 ```aql
 ---
 name: dateFormatTimezoned
-description: ''
+description: |
+  Show example calls of the formatting function and their results, using the
+  timezone of Germany (and Nepal in one case):
 bindVars:
   {
     "formats": [
@@ -993,6 +1102,19 @@ DATE_ADD(DATE_ADD("2015-04-01", 5, "years"), 1, "month") // May 1st 2020
 DATE_ADD("2015-04-01", 12*5 + 1, "months") // also May 1st 2020
 DATE_ADD(DATE_TIMESTAMP(DATE_YEAR(DATE_NOW()), 12, 24), -4, "years") // Christmas four years ago
 DATE_ADD(DATE_ADD("2016-02", "month", 1), -1, "day") // last day of February (29th, because 2016 is a leap year!)
+```
+
+```aql
+---
+name: dateadd1
+description: |
+  UTC does not have daylight saving time but Germany does, only adding 23 hours
+  when adding a day:
+---
+RETURN {
+  UTC: DATE_ADD("2023-03-25T23:00:00.000Z", 1, "day"),
+  Germany: DATE_ADD("2023-03-25T23:00:00.000Z", 1, "day", "Europe/Berlin")
+}
 ```
 
 ---
@@ -1142,9 +1264,42 @@ with decimal places.
 - returns **diff** (number): the calculated difference as number in `unit`.
   The value is negative if `date2` is before `date1`.
 
+```aql
+---
+name: datediff1
+description: |
+  Determine how many days it is from New Year's Eve until April Fools' day:
+---
+RETURN DATE_DIFF("2023-12-01", "2024-04-01", "days")
+```
+
+```aql
+---
+name: datediff2
+description: |
+  Determine how many hours (with decimal places) Nepal and the USA are apart
+  using the same date time string:
+---
+LET date = "2024-01-01T00:00:00.000Z"
+RETURN DATE_DIFF(date, date, "hours", true, "Asia/Kathmandu", "America/Los_Angeles")
+```
+
+```aql
+---
+name: datediff3
+description: |
+  Determine the hour difference between two date time strings, where Germany has
+  one hour more due to the switch from winter to summer time:
+---
+RETURN {
+  UTC: DATE_DIFF("2023-03-25T23:00:00.000Z", "2023-03-26T23:00:00.000Z", "hours"),
+  Germany: DATE_DIFF("2023-03-25T23:00:00.000Z", "2023-03-26T23:00:00.000Z", "hours", "Europe/Berlin")
+}
+```
+
 ### DATE_COMPARE()
 
-`DATE_COMPARE(date1, date2, unitRangeStart, unitRangeEnd) → bool`
+`DATE_COMPARE(date1, date2, unitRangeStart, unitRangeEnd, timezone1, timezone2) → bool`
 
 Check if two partial dates match.
 
@@ -1154,6 +1309,19 @@ Check if two partial dates match.
 - **unitRangeEnd** (string, *optional*):  unit to end with, leave out to only
   compare the component as specified by `unitRangeStart`. An error is raised if
   `unitRangeEnd` is a unit before `unitRangeStart`.
+- **timezone1** (string, *optional*): if set, `date1` is assumed to be in the
+  specified timezone. If `timezone2` is not set, then both `date1` and `date2`
+  are assumed to be in the timezone specified by `timezone1`,
+  e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
+- **timezone2** (string, *optional*): if set, `date2` is assumed to be in the
+  timezone specified by `timezone2`, and `date1` is assumed to be in the timezone
+  specified by `timezone1`, e.g. `"America/New_York"`, `"Europe/Berlin"`, or `"UTC"`.
+  Use `"America/Los_Angeles"` for Pacific time (PST/PDT). See
+  [IANA timezone names](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones).
+  Throws an error if the timezone is not known to ArangoDB.
 - returns **bool** (bool): `true` if the dates match, `false` otherwise
 
 The parts to compare are defined by a range of time units. The full range is:
@@ -1169,6 +1337,8 @@ You can refer to the units as:
 - `"i"`, `"minute"`, `"minutes"`
 - `"s"`, `"second"`, `"seconds"`
 - `"f"`, `"millisecond"`, `"milliseconds"`
+
+**Examples**
 
 ```aql
 // Compare months and days, true on birthdays if you're born on 4th of April
@@ -1229,6 +1399,21 @@ FOR user IN users
     RETURN user
 ```
 
+```aql
+---
+name: datecmp1
+description: |
+  Compare the time of two date time strings that is different in UTC but the
+  same in two different local timezones:
+---
+RETURN {
+  Germany: DATE_UTCTOLOCAL("2023-04-01T09:00:00.000Z", "Europe/Berlin"),
+  USA: DATE_UTCTOLOCAL("2024-04-01T18:00:00.000Z", "America/Los_Angeles"),
+  sameTimeUTC: DATE_COMPARE("2023-04-01T09:00:00.000Z", "2024-04-01T18:00:00.000Z", "hour", "minute"),
+  sameTimeLocal: DATE_COMPARE("2023-04-01T09:00:00.000Z", "2024-04-01T18:00:00.000Z", "hour", "minute", "Europe/Berlin", "America/Los_Angeles")
+}
+```
+
 ### DATE_UTCTOLOCAL()
 
 <small>Introduced in: v3.8.0</small>
@@ -1262,7 +1447,8 @@ It takes historic daylight saving times into account.
 ```aql
 ---
 name: aqlDateTimeToLocal_1
-description: ''
+description: |
+  Convert a date time string to different local timezones:
 ---
 RETURN [
   DATE_UTCTOLOCAL("2020-03-15T00:00:00.000", "Europe/Berlin"),
@@ -1274,7 +1460,9 @@ RETURN [
 ```aql
 ---
 name: aqlDateTimeToLocal_2
-description: ''
+description: |
+  Convert date time strings with and without UTC indicator (`Z`), with a timezone
+  offset, and a Unix timestamp to local time:
 ---
 RETURN [
   DATE_UTCTOLOCAL("2020-03-15T00:00:00.000", "Asia/Shanghai"),
@@ -1287,7 +1475,8 @@ RETURN [
 ```aql
 ---
 name: aqlDateTimeToLocal_3
-description: ''
+description: |
+  Convert to local time and include timezone information:
 ---
 RETURN DATE_UTCTOLOCAL(DATE_NOW(), "Africa/Lagos", true)
 ```
@@ -1325,7 +1514,8 @@ It takes historic daylight saving times into account.
 ```aql
 ---
 name: aqlDateTimeToUTC_1
-description: ''
+description: |
+  Convert a date time string from different local timezones to UTC:
 ---
 RETURN [
   DATE_LOCALTOUTC("2020-03-15T00:00:00.000", "Europe/Berlin"),
@@ -1337,7 +1527,9 @@ RETURN [
 ```aql
 ---
 name: aqlDateTimeToUTC_2
-description: ''
+description: |
+  Convert date time strings with and without UTC indicator (`Z`), with a timezone
+  offset, and a Unix timestamp to UTC time:
 ---
 RETURN [
   DATE_LOCALTOUTC("2020-03-15T00:00:00.000", "Asia/Shanghai"),
@@ -1350,7 +1542,8 @@ RETURN [
 ```aql
 ---
 name: aqlDateTimeToUTC_3
-description: ''
+description: |
+  Convert to UTC time and include timezone information:
 ---
 RETURN DATE_LOCALTOUTC("2021-03-16T12:00:00.000", "Africa/Lagos", true)
 ```
