@@ -174,6 +174,39 @@ UPDATE { logins: OLD.logins + 1 } IN users
 
 Read more about [`UPSERT` operations](../../aql/high-level-operations/upsert.md) in AQL.
 
+### Timezone parameter for date functions
+
+The following AQL date functions now accept an optional timezone argument to
+perform date and time calculations in certain timezones:
+
+- `DATE_DAYOFWEEK(date, timezone)`
+- `DATE_YEAR(date, timezone)`
+- `DATE_MONTH(date, timezone)`
+- `DATE_DAY(date, timezone)`
+- `DATE_HOUR(date, timezone)`
+- `DATE_MINUTE(date, timezone)`
+- `DATE_DAYOFYEAR(date, timezone)`
+- `DATE_ISOWEEK(date, timezone)`
+- `DATE_ISOWEEKYEAR(date, timezone)`
+- `DATE_LEAPYEAR(date, timezone)`
+- `DATE_QUARTER(date, timezone)`
+- `DATE_DAYS_IN_MONTH(date, timezone)`
+- `DATE_TRUNC(date, unit, timezone)`
+- `DATE_ROUND(date, amount, unit, timezone)`
+- `DATE_FORMAT(date, format, timezone)`
+- `DATE_ADD(date, amount, unit, timezone)`
+- `DATE_SUBTRACT(date, amount, unit, timezone)`
+
+The following two functions accept up to two timezone arguments. If you only
+specify the first, then both input dates are assumed to be in this one timezone.
+If you specify two timezones, then the first date is assumed to be in the first
+timezone, and the second date in the second timezone:
+
+- `DATE_DIFF(date1, date2, unit, asFloat, timezone1, timezone2)` (`asFloat` can be left out)
+- `DATE_COMPARE(date1, date2, unitRangeStart, unitRangeEnd, timezone1, timezone2)`
+
+See [Date functions in AQL](../../aql/functions/date.md#date_dayofweek)
+
 ## Indexing
 
 ### Stored values can contain the `_id` attribute
