@@ -120,11 +120,13 @@ The following Analyzer types are available:
 - [`delimiter`](#delimiter): splits into tokens at user-defined character
 - [`stem`](#stem): applies stemming to the value as a whole
 - [`norm`](#norm): applies normalization to the value as a whole
-- [`ngram`](#ngram): creates _n_-grams from value with user-defined lengths
+- [`ngram`](#ngram): creates _n_-grams from the value with user-defined lengths
 - [`text`](#text): tokenizes text strings into words, optionally with stemming,
   normalization, stop-word filtering and edge _n_-gram generation
 - [`segmentation`](#segmentation): tokenizes text in a language-agnostic manner,
   optionally with normalization
+- [`wildcard`](#wildcard): can apply another Analyzer and creates _n_-grams to
+  enable fast partial matching for large strings
 - [`aql`](#aql): runs an AQL query to prepare tokens for index
 - [`pipeline`](#pipeline): chains multiple Analyzers
 - [`stopwords`](#stopwords): removes the specified tokens from the input
@@ -141,7 +143,6 @@ The following Analyzer types are available:
   indexing geo-spatial data (Enterprise Edition only)
 - [`geopoint`](#geopoint): breaks up JSON data describing a coordinate pair into
   a set of indexable tokens
-- [`wildcard`](#wildcard): to able run heavy wildcard queries on large string field
 
 The following table compares the Analyzers for **text processing**:
 
@@ -1049,6 +1050,83 @@ db._query(`LET str = 'Test\twith An_EMAIL-address+123@example.org\n蝴蝶。\u20
 ~analyzers.remove(graphic.name);
 ```
 
+### `wildcard`
+
+<small>Introduced in: v3.12.0</small>
+
+An Analyzer that creates _n_-grams to enable fast partial matching for wildcard
+queries if you have large string values, especially if you want to search for
+suffixes or substrings in the middle of strings (infixes) as opposed to prefixes.
+
+It can apply an Analyzer of your choice before creating the _n_-grams, for example,
+to normalize text for case-insensitive and accent-insensitive search.
+
+See [Wildcard Search with ArangoSearch](arangosearch/wildcard-search.md) for an
+example of how to use this Analyzer with Views, and
+[Inverted indexes](indexing/working-with-indexes/inverted-indexes.md#wildcard-search)
+for an example using a standalone inverted index.
+
+The *properties* allowed for this Analyzer are an object with the following
+attributes:
+
+- `ngramSize` (number, _required_): unsigned integer for the _n_-gram length,
+  needs to be at least `2`. It can be greater than the substrings between
+  wildcards that you want to search for, e.g. `4` with an expected search pattern
+  of `%up%if%ref%` (substrings of length 2 and 3 between `%`), but this leads to
+  a slower search (for `ref%` with post-validation using the ICU regular expression
+  engine)
+- `analyzer` (object, _optional_): an Analyzer definition-like objects with
+  `type` and `properties` attributes
+
+You cannot set the `offset` [Analyzer features](#analyzer-features) for this
+Analyzer. You can create the Analyzer without features, or use
+`["frequency", "position"]` which uses more memory but doesn't need to read
+stored column values for prefix, suffix, infix, and exact queries (`something%`,
+`%something`, `%something%`, `something`, but not `some%thing` or `%some%thing%`)
+
+The set of _n_-grams that are created for each input token includes one start
+_n_-gram and `ngramSize - 1` end _n_-grams using `"\uFFFD"` as start marker
+respectively end marker. For example, with an `ngramSize` of `3` and the input
+`"graph"`, the generated _n_-grams are:
+- `"�gr"`
+- `"gra"`
+- `"rap"`
+- `"aph"`
+- `"ph�"`
+- `"h�"`
+
+**Examples**
+
+```js
+---
+name: analyzerWildcard1
+description: |
+  Create a `wildcard` Analyzer with an _n_-gram size of 4 and without enabling
+  Analyzer features:
+---
+var analyzers = require("@arangodb/analyzers");
+var analyzerWildcard = analyzers.save("wildcard_4", "wildcard", { ngramSize: 4 }, []);
+
+db._query(`RETURN TOKENS("The quick brown Foxx", "wildcard_4")`).toArray();
+~analyzers.remove(analyzerWildcard.name);
+```
+
+```js
+---
+name: analyzerWildcard2
+description: |
+  Use a `norm` Analyzer to normalize the input to lowercase and convert accented
+  characters to their base characters, then create trigrams from the string:
+---
+var analyzers = require("@arangodb/analyzers");
+var analyzerWildcard = analyzers.save("wildcard_3", "wildcard", { ngramSize: 3, "analyzer": {
+  type: "norm", properties: { locale: "en", accent: false, case: "lower" }
+} }, ["frequency","position"]);
+
+db._query(`RETURN TOKENS("The quick brown Foxx", "wildcard_3")`).toArray();
+~analyzers.remove(analyzerWildcard.name);
+```
+
 ### `minhash`
 
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
@@ -1578,23 +1656,6 @@ db._query(`LET point = GEO_POINT(6.93, 50.94)
 ~analyzers.remove("geo_latlng", true);
 ~db._drop("geo");
 ```
-
-### Wildcard
-
-Parameters:
- ngramSize (required) -- unsigned integer, should be >= 2
- analyzer (optional) -- same parameter as for minhash analyzer
-
-It's needed when user have large string field and want to run not-prefix wildcard queries on it.
-
-This analyzer have features validation:
-It's not possible to create it with offset feature (same as for elastic).
-So it's possible to valid combinations of features: [] and ["frequency", "position"].
-Second option is required more memory, but doesn't need to read stored column values for prefix/suffix/exact queries ( %something%, %something, something% , something)
-
-Also if you have ngramSize  greater than simple part in wildcard query it can be slowdown, example
-ngramSize == 4, and pattern %jo%jo%ref%, will search ref% and then made linear post-validation via icu regex engine
-https://www.elastic.co/blog/find-strings-within-strings-faster-with-the-new-elasticsearch-wildcard-field (simplified description how it works)
 
 ## Built-in Analyzers
 

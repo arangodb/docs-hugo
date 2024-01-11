@@ -53,6 +53,17 @@ for details.
 
 ## Analyzers
 
+### `wildcard` Analyzer
+
+You can use the new `wildcard` Analyzer in combination with an inverted index or
+View to accelerate wildcard searches, especially if you want to find non-prefix
+partial matches in long strings.
+
+The Analyzer can apply another Analyzer of your choice before creating _n_-grams
+that are then used in `LIKE` searches with `_` and `%` wildcards.
+
+See [Transforming data with Analyzers](../../index-and-search/analyzers.md#wildcard)
+for details.
 
 ## Improved memory accounting and usage
 
