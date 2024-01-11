@@ -12087,6 +12087,40 @@
     "section" : "server",
     "type" : "uint32"
   },
+  "server.max-number-detached-threads" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 1000,
+    "deprecatedIn" : null,
+    "description" : "The maximum number of detached scheduler threads.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.10.13"
+    ],
+    "longDescription" : "If a scheduler thread performs a potentially long running operation like waiting for a lock, it can detach itself from the scheduler. This allows a new scheduler thread to be started and avoids blocking all threads with long-running operations, thereby avoiding deadlock situations. The default should normally be OK.",
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "server",
+    "type" : "uint64"
+  },
   "server.maximal-queue-size" : {
     "base" : 1,
     "category" : "option",
