@@ -120,7 +120,8 @@ as well as configuration details in terms of sharding and replication.
     - The number of fulltext indexes
     - The number of iresearch indexes
     - The number of inverted indexes
-    - The number of zkd indexes
+    - The number of mdi indexes
+    - The number of mdi-prefixed indexes
     - A list of detailed information per index
       - The index type
       - Is it a unique index?

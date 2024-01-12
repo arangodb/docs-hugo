@@ -240,8 +240,8 @@ Also see [Caching of index values](../../index-and-search/indexing/working-with-
 
 ### `lookahead`
 
-The multi-dimensional index type `zkd` supports an optional index hint for
-tweaking performance:
+The multi-dimensional index types `mdi` and `mdi-prefixed` support an optional
+index hint for tweaking performance:
 
 ```aql
 FOR … IN … OPTIONS { lookahead: 32 }

@@ -126,7 +126,8 @@ Other attributes may be necessary, depending on the index type.
   - `"ttl"`: time-to-live index
   - `"fulltext"`: full-text index (deprecated from ArangoDB 3.10 onwards)
   - `"geo"`: geo-spatial index, with _one_ or _two_ attributes
-  - `"zkd"`: multi-dimensional index (experimental)
+  - `"mdi"`: multi-dimensional index
+  - `"mdi-prefixed"`: multi-dimensional index with search prefix
 
 - `fields`: an array of attribute paths, containing the document attributes
   (or sub-attributes) to be indexed. Some indexes allow using only a single path,
