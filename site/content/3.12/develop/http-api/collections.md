@@ -959,30 +959,20 @@ paths:
       operationId: getKeyGenerators
       description: |
         Returns the available key generators for collections.
-
-        The call returns a JSON object with the available key generators
-        on success:
-
-        - `padded`
-        - `uuid`
-        - `autoincrement`
-        - `traditional`
       responses:
         '200':
           description: |
-            The available generators for document keys.
+            A list of the available generators for document keys:
+            - `"padded"`
+            - `"uuid"`
+            - `"autoincrement"`
+            - `"traditional"`
           content:
             application/json:
               schema:
                 type: array
-                uniqueItems: true
                 items:
                   type: string
-                  enum:
-                    - padded
-                    - uuid
-                    - autoincrement
-                    - traditional
       tags:
         - Collections
 ```
