@@ -72,8 +72,8 @@ The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 #### Gharial API
 
 The `PATCH /_api/gharial/{graph}/edge/{collection}/{edge}` endpoint to update
-edges in named graphs now validates the referenced vertex if only the `_from`
-or `_to` edge attribute is modified. Previously, the validation only occurred if
+edges in named graphs now validates the referenced vertex when modifying either
+the `_from` or `_to` edge attribute. Previously, the validation only occurred if
 both were set in the request.
 
 #### Limit to the number of databases in a deployment
