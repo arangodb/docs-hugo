@@ -133,7 +133,7 @@ arangoml = ArangoML(settings_files=["settings_1.toml", "settings_2.toml"])
 ```
 note:
 - this assumes you are working out of a Jupter Notebook environment, and
-have set the environment variables in the notebook environment (see above). 
+have set the environment variables in the notebook environment (see above) with **_system** access.
 - Running `%load_ext arangoml` will also provide access to other ArangoGraphML Jupyter Magic Commands. See the full list by running `%lsmagic` in a notebook cell.
 
 {{< /tab >}}
@@ -169,8 +169,11 @@ from arango_datasets.datasets import Datasets
 
 DATASET_NAME = "OPEN_INTELLIGENCE_ANGOLA"
 
-client = arangoml.client
-system_db = arangoml.system_db
+system_user = "root"
+system_pw = "password"
+system_db = arangoml.client.db(
+    name="_system", username=system_user, password=system_pw, verify=True
+)
 
 # Setup the database
 system_db.delete_database(DATASET_NAME, ignore_missing=True)
