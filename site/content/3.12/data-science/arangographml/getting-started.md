@@ -34,16 +34,17 @@ with the ArangoDB team. Regular notebooks in ArangoGraph don't include the
 {{< /tip >}}
 
 ArangoGraphML's suite of services and packages is driven by what we call
-"specifications". These specifications are standard Python dictionaries and
+**"specifications"**. These specifications are standard Python dictionaries and
 describe the task being performed and the data being used. The ArangoGraphML
 services work closely together, with one task providing inputs to another.
 
 The following is a guide to show how to use the `arangoml` package in order to:
-- Manage projects
-- Featurize data
-- Submit training jobs
-- Evaluate model metrics
-- Generate predictions
+
+1. Manage projects
+2. Featurize data
+3. Submit Training Jobs
+4. Evaluate Model Metrics
+5. Generate Predictions
 
 ## Initialize ArangoML
 
@@ -57,9 +58,24 @@ To start using it, simply import it, and enable it via a Jupyter Magic Command.
 import arangoml
 arangoml = %enable_arangoml
 ```
+
+{{<tip>}}Other ArangoGraphML Magic Commands are available! See the full list by running `%lsmagic` in a notebook cell.{{</tip>}}
+
 {{< /tab >}}
 
 {{< tab "Self-managed" >}}
+
+The `ArangoML` class is the main entry point for the `arangoml` package.
+It requires the following parameters:
+- `hosts`: The ArangoDB host(s) to connect to. This can be a single host or a list of hosts.
+- `username`: The ArangoDB username to use for authentication.
+- `password`: The ArangoDB password to use for authentication.
+- `ca_cert_file`: (Optional) The path to the CA certificate file to use for TLS verification.
+- `user_token`: (Optional) The ArangoDB user token to use for authentication. This is an alternative to username/password authentication.
+- `projects_endpoint`: The URL to the ArangoGraphML Projects Service.
+- `training_endpoint`: The URL to the ArangoGraphML Training Service.
+- `prediction_endpoint`: The URL to the ArangoGraphML Prediction Service.
+
 It is possible to instantiate an ArangoML object in multiple ways:
 
 1. via parameters
@@ -70,8 +86,8 @@ arangoml = ArangoML(
     hosts="http://localhost:8529"
     username="root",
     password="password",
-    # ca_cert_file="/path/to/ca.pem", # optional
-    # user_token="..." # alternative to username/password
+    # ca_cert_file="/path/to/ca.pem",
+    # user_token="..."
     projects_endpoint="http://localhost:8503",
     training_endpoint="http://localhost:8502",
     prediction_endpoint="http://localhost:8501",
@@ -94,7 +110,7 @@ arangoml = ArangoML(
     client=client,
     username="root",
     password="password",
-    # user_token="..." # alternative to username/password
+    # user_token="..."
     projects_endpoint="http://localhost:8503",
     training_endpoint="http://localhost:8502",
     prediction_endpoint="http://localhost:8501",
@@ -133,7 +149,8 @@ arangoml = ArangoML(settings_files=["settings_1.toml", "settings_2.toml"])
 ```
 note:
 - this assumes you are working out of a Jupter Notebook environment, and
-have set the environment variables in the notebook environment (see above) with **_system** access.
+have set the environment variables in the notebook environment (see above) with user authentication
+that has **_system** access.
 - Running `%load_ext arangoml` will also provide access to other ArangoGraphML Jupyter Magic Commands. See the full list by running `%lsmagic` in a notebook cell.
 
 {{< /tab >}}
@@ -142,9 +159,25 @@ have set the environment variables in the notebook environment (see above) with 
 
 ## Load the database
 
+We'll be using ArangoML to predict the **class** of ``Events`` in a Knowledge Graph constructed from the [GDELT Project](https://www.gdeltproject.org/).
+
+  > GDELT monitors the world's news media from nearly every corner of every country in print, broadcast, and web formats, in over 100 languages, every moment of every day. [...] Put simply, the GDELT Project is a realtime open data global graph over human society as seen through the eyes of the world's news media, reaching deeply into local events, reaction, discourse, and emotions of the most remote corners of the world in near-realtime and making all of this available as an open data firehose to enable research over human society.`
+
+The events we're using today range from peaceful protests to significant battles in Angola. The image below depicts the connections around an example event:
+
+![Example Event](../../../images/ArangoML_open_intelligence_sample.png)
+
+The image below shows a larger portion of this graph, showing how the events, actors, news sources, and locations are interconnected into a large graph.
+
+![Example Event](../../../images/ArangoML_open_intelligence_visualization.png)
+
+Let's get started!
+
 {{< tabs "arangoml" >}}
 
 {{< tab "ArangoGraphML" >}}
+
+The [arango-datasets]((https://github.com/arangoml/arangodb_datasets)) package allows you to load a dataset into ArangoDB. It comes pre-installed in the ArangoGraphML notebook environment.
 
 ```py
 from arango_datasets.datasets import Datasets
@@ -164,6 +197,13 @@ Datasets(dataset_db).load(DATASET_NAME)
 {{< /tab >}}
 
 {{< tab "Self-managed" >}}
+
+The [arango-datasets]((https://github.com/arangoml/arangodb_datasets)) package allows you to load a dataset into ArangoDB. It can be installed with:
+
+```
+pip install arango-datasets
+```
+
 ```py
 from arango_datasets.datasets import Datasets
 
@@ -244,26 +284,38 @@ The Featurization Specification asks that you input the following:
         ArangoDB attribute name.
         ```python
         "collectionName": {
-        "features": {
-          "attribute_name": {
-            "feature_type": 'text' # Currently the supported types include text, category, numerical
-            "feature_generator": { # this advanced option is optional.
-              "method": "transformer_embeddings",
-              "feature_name": "movie_title_embeddings",
+          "features": {
+            "attribute_name_1": {
+              "feature_type": 'text' # Suported types: text, category, numerical, label
+              "feature_generator": { # this advanced option is optional.
+                "method": "transformer_embeddings",
+                "feature_name": "movie_title_embeddings",
+              },
             },
+            "attribute_name_2": ...,
+          },
+        },
+        "collectionName2": ...
         ```
 
 - `edgeCollections`: This is the list of edge collections associated with the
   vertex collections. There are no additional options.
   ```python
   "edgeCollections": {
-    "edge_name_1",
-    "edge_name_2
+    "edge_name_1": {},
+    "edge_name_2: {}
   },
   ```
 
 Once you have filled out the Featurization Specification, you can pass it to
 the `featurizer` function.
+
+Here's an an example Featurization Specification for the GDELT dataset. 
+- It featurizes the `name` attribute of the `Actor`, `Class`, `Country`, `Source`, `Location`, and `Region` collections as a `text` features.
+- It featurizes the `description` attribute of the `Event` collection as a `text` feature.
+- It featurizes the `label` attribute of the `Event` collection as a `label` feature (this is the attribute we want to predict).
+- It featurizes the `sourceScale` attribute of the `Source` collection as a `category` feature.
+- It featurizes the `name` attribute of the `Region` collection as a `category` feature.
 
 ```py
 featurization_spec = {
@@ -353,20 +405,107 @@ feature_result = arangoml.featurization.featurize(
 )
 ```
 
-## Experiment
+**Example Output:**
+```py
+{
+  "job_id": "16349541",
+  "output_db_name": "OPEN_INTELLIGENCE_ANGOLA",
+  "graph": "OPEN_INTELLIGENCE_ANGOLA",
+  "feature_set_id": "16349537",
+  "feature_set_ids": [
+      "16349537"
+  ],
+  "vertexCollections": {
+      "Actor": {
+          "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+      },
+      "Class": {
+          "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+      },
+      "Country": {
+          "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+      },
+      "Event": {
+          "x": "OPEN_INTELLIGENCE_ANGOLA_x",
+          "y": "OPEN_INTELLIGENCE_ANGOLA_y"
+      },
+      "Source": {
+          "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+      },
+      "Location": {
+          "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+      },
+      "Region": {
+          "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+      }
+  },
+  "edgeCollections": {
+      "eventActor": {},
+      "hasSource": {},
+      "hasLocation": {},
+      "inCountry": {},
+      "inRegion": {},
+      "subClass": {},
+      "type": {}
+  },
+  "label_field": "OPEN_INTELLIGENCE_ANGOLA_y",
+  "input_field": "OPEN_INTELLIGENCE_ANGOLA_x",
+  "feature_set_id_to_results": {
+      "16349537": {
+          "feature_set_id": "16349537",
+          "output_db_name": "OPEN_INTELLIGENCE_ANGOLA",
+          "graph": "OPEN_INTELLIGENCE_ANGOLA",
+          "vertexCollections": {
+              "Actor": {
+                  "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+              },
+              "Class": {
+                  "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+              },
+              "Country": {
+                  "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+              },
+              "Event": {
+                  "x": "OPEN_INTELLIGENCE_ANGOLA_x",
+                  "y": "OPEN_INTELLIGENCE_ANGOLA_y"
+              },
+              "Source": {
+                  "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+              },
+              "Location": {
+                  "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+              },
+              "Region": {
+                  "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+              }
+          },
+          "edgeCollections": {
+              "eventActor": {},
+              "hasSource": {},
+              "hasLocation": {},
+              "inCountry": {},
+              "inRegion": {},
+              "subClass": {},
+              "type": {}
+          },
+          "label_field": "OPEN_INTELLIGENCE_ANGOLA_y",
+          "input_field": "OPEN_INTELLIGENCE_ANGOLA_x",
+          "is_feature_store": false,
+          "target_collection": "Event"
+      }
+  },
+  "is_feature_store": false,
+  "target_collection": "Event"
+}
+```
 
-Each experiment consists of three main phases:
-- Training
-- Model Selection
-- Predictions
-
-### Training Specification 
+## Training
 
 Training Graph Machine Learning Models with ArangoGraphML only requires two steps:
 1. Describe which data points should be included in the Training Job.
 2. Pass the Training Specification to the Training Service.
 
-See below the different components of the Training Specification.
+See below for the different components of the Training Specification.
 
 - `database_name`: The database name the source data is in.
 - `project_name`: The top-level project to which all the experiments will link back. 
@@ -374,6 +513,10 @@ See below the different components of the Training Specification.
   objective and the associated data points.
   - `mlSpec`: Describes the desired machine learning task, input features, and
     the attribute label to be predicted.
+    - `classification`: The classification task.
+      - `targetCollection`: The ArangoDB collection name that contains the prediction label.
+      - `inputFeatures`: The name of the feature to be used as input.
+      - `labelField`: The name of the attribute to be predicted.
   - `graph`: The ArangoDB graph name.
   - `vertexCollections`: Here, you can describe all the vertex collections and
     the features you would like to include in training. You must provide an `x`
@@ -385,7 +528,14 @@ A Training Specification allows for concisely defining your training task in a
 single object and then passing that object to the training service using the
 Python API client, as shown below.
 
-#### Create a Training Job
+### Submit a Training Job
+
+The ArangoGraphML Training Service is responsible for training a series of Graph Machine Learning
+Models using the data provided in the Training Specification. It assumes that the data
+has been featurized and is ready to be used for training.
+
+Given that we've ran a Featurization Job, we can create the Training Specification
+using the `feature_result` object returned from the Featurization Job:
 
 ```py
 training_spec = {
@@ -404,18 +554,18 @@ training_spec = {
         "edgeCollections": feature_result.edgeCollections,
     },
 }
-    
+
 training_job = arangoml.training.train(training_spec)
 
 print(training_job)
 ```
 
-**Expected output:**
+**Example Output:**
 ```py
-{'job_id': 'f09bd4a0-d2f3-5dd6-80b1-a84602732d61'}
+{'job_id': '691ceb2f-1931-492a-b4eb-0536925a4697'}
 ```
 
-#### Wait for a Training job to complete
+### Wait for a Training job to complete
 
 ```py
 training_job_result = arangoml.wait_for_training(training_job.job_id)
@@ -423,48 +573,88 @@ training_job_result = arangoml.wait_for_training(training_job.job_id)
 print(training_job_result)
 ```
 
-**Expected output:**
+**Example Output:**
 ```py
-{'database_name': 'db_name',
- 'job_id': 'efac147a-3654-4866-88fe-03866d0d40a5',
- 'job_state': None,
- 'job_status': 'COMPLETED',
- 'metagraph': {'edgeCollections': {...},
-               'graph': 'graph_name',
-               'mlSpec': {'classification': {'inputFeatures': 'x',
-                                             'labelField': 'label_field',
-                                             'targetCollection': 'target_collection_name'}},
-               'vertexCollections': {...}
-               },
- 'project_id': 'project_id',
- 'project_name': 'project_name',
- 'time_ended': '2023-09-01T17:32:05.899493',
- 'time_started': '2023-09-01T17:04:01.616354',
- 'time_submitted': '2023-09-01T16:58:43.374269'}
+{
+  "job_id": "691ceb2f-1931-492a-b4eb-0536925a4697",
+  "job_status": "COMPLETED",
+  "project_name": "OPEN_INTELLIGENCE_ANGOLA_GraphML_Node_Classification",
+  "project_id": "16832427",
+  "database_name": "OPEN_INTELLIGENCE_ANGOLA",
+  "metagraph": {
+      "mlSpec": {
+          "classification": {
+              "targetCollection": "Event",
+              "inputFeatures": "OPEN_INTELLIGENCE_ANGOLA_x",
+              "labelField": "OPEN_INTELLIGENCE_ANGOLA_y",
+              "metrics": None
+          }
+      },
+      "graph": "OPEN_INTELLIGENCE_ANGOLA",
+      "vertexCollections": {
+          "Actor": {
+              "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+          },
+          "Class": {
+              "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+          },
+          "Country": {
+              "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+          },
+          "Event": {
+              "x": "OPEN_INTELLIGENCE_ANGOLA_x",
+              "y": "OPEN_INTELLIGENCE_ANGOLA_y"
+          },
+          "Source": {
+              "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+          },
+          "Location": {
+              "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+          },
+          "Region": {
+              "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+          }
+      },
+      "edgeCollections": {
+          "eventActor": {},
+          "hasSource": {},
+          "hasLocation": {},
+          "inCountry": {},
+          "inRegion": {},
+          "subClass": {},
+          "type": {}
+      },
+      "batch_size": 64
+  },
+  "time_submitted": "2024-01-12T02:19:19.686286",
+  "time_started": "2024-01-12T02:19:29.403742",
+  "time_ended": "2024-01-12T02:30:59.313038",
+  "job_state": None,
+  "job_conditions": None
+}
 ```
 
-#### Cancel a running Training Job
+### Cancel a running Training Job
 
 ```python
 arangoml.training.cancel_job(training_job.job_id)
 ```
 
-**Expected output:**
+**Example Output:**
 ```python
 'OK'
 ```
 
-### Model Selection
+## Model Selection
 
-Once the Training is complete you can review the model statistics.
-The Training Service returns **12 Models** using grid search parameter optimization.
- 
-To select a Model, use the Projects API to gather all relevant models and choose
-the one you prefer for the next step.
+Model Statistics can be observed upon completion of a Training Job. 
+To select a Model, the ArangoGraphML Projects Service can be used to gather all relevant models and choose
+the preferred model for a Prediction Job.
 
-The following examples uses the model with the highest **test accuracy**,
+The following example uses the model with the highest **test accuracy**,
 but there may be other factors that motivate you to choose another model.
-See the `model_statistics` field below for more information.
+See the `model_statistics` field below for more information the full list of
+available metrics.
 
 ```py
 best_model = arangoml.get_best_model(
@@ -477,42 +667,52 @@ best_model = arangoml.get_best_model(
 print(best_model)
 ```
 
-**Expected output:**
+**Example Output:**
 ```py
-{'job_id': 'f09bd4a0-d2f3-5dd6-80b1-a84602732d61',
- 'model_display_name': 'Node Classification Model',
- 'model_id': '123',
- 'model_name': 'Node Classification Model '
-               '123',
- 'model_statistics': {'_id': 'devperf/123',
-                      '_key': '123',
-                      '_rev': '_gkUc8By--_',
-                      'run_id': '123',
-                      'test': {'accuracy': 0.8891242216547955,
-                               'confusion_matrix': [[13271, 2092],
-                                                    [1276, 5684]],
-                               'f1': 0.9,
-                               'loss': 0.1,
-                               'precision': 0.9,
-                               'recall': 0.8,
-                               'roc_auc': 0.8},
-                      'timestamp': '2023-09-01T17:32:05.899493',
-                      'validation': {'accuracy': 0.9,
-                               'confusion_matrix': [[13271, 2092],
-                                                    [1276, 5684]],
-                               'f1': 0.85,
-                               'loss': 0.1,
-                               'precision': 0.86,
-                               'recall': 0.85,
-                               'roc_auc': 0.85}},
- 'target_collection': 'target_collection_name',
- 'target_field': 'label_field'}
+{
+  "job_id": "691ceb2f-1931-492a-b4eb-0536925a4697",
+  "model_id": "02297435-3394-4e7e-aaac-82e1d224f85c",
+  "model_statistics": {
+      "_id": "devperf/123",
+      "_key": "123",
+      "_rev": "_gkUc8By--_",
+      "run_id": "123",
+      "test": {
+          "accuracy": 0.8891242216547955,
+          "confusion_matrix": [[13271, 2092], [1276, 5684]],
+          "f1": 0.9,
+          "loss": 0.1,
+          "precision": 0.9,
+          "recall": 0.8,
+          "roc_auc": 0.8,
+      },
+      "validation": {
+          "accuracy": 0.9,
+          "confusion_matrix": [[13271, 2092], [1276, 5684]],
+          "f1": 0.85,
+          "loss": 0.1,
+          "precision": 0.86,
+          "recall": 0.85,
+          "roc_auc": 0.85,
+      },
+  },
+  "target_collection": "Event",
+  "target_field": "label",
+}
 ```
 
-### Prediction
+## Prediction
 
-After selecting a model, it is time to persist the results to a collection
-using the `predict` function.
+After selecting a model, a Prediction Job can be created. The Prediction Job
+will generate predictions and persist them to the source graph in a new
+collection or within the source document.
+
+The Prediction Specification requires the following:
+- `project_name`: The top-level project to which all the experiments will link back.
+- `database_name`: The database name the source data is in.
+- `model_id`: The model ID to use for generating predictions.
+
+### Submit a Prediction Job
 
 ```py
 prediction_spec = {
@@ -526,12 +726,12 @@ prediction_job = arangoml.prediction.predict(prediction_spec)
 print(prediction_job)
 ```
 
-This creates a Prediction Job that grabs data and generates inferences using the
-selected model. By default, predictions are written to the same Vertex Collection as
-the source data. However, you can also specify a different Vertex Collection name, which
-will be created & connected to the original Vertex Collection via an Edge.
+**Example Output:**
+```py
+{'job_id': 'b2a422bb-5650-4fbc-ba6b-0578af0049d9'}
+```
 
-#### Wait for a Prediction job to complete
+### Wait for a Prediction job to complete
 
 ```py
 prediction_job_result = arangoml.wait_for_prediction(prediction_job.job_id)
@@ -539,23 +739,29 @@ prediction_job_result = arangoml.wait_for_prediction(prediction_job.job_id)
 print(prediction_job_result)
 ```
 
-**Expected output:**
+**Example Output:**
 ```py
-{'database_name': 'db_name',
- 'job_id': '123-ee43-4106-99e7-123',
- 'job_state_information': {'outputAttribute': 'label_field_predicted',
-                           'outputCollectionName': 'collectionName_predicted_123',
-                           'outputGraphName': 'graph_name'},
- 'job_status': 'COMPLETED',
- 'model_id': '123',
- 'project_id': '123456',
- 'project_name': 'project_name',
- 'time_ended': '2023-09-05T15:23:01.595214',
- 'time_started': '2023-09-05T15:13:51.034780',
- 'time_submitted': '2023-09-05T15:09:02.768518'}
+{
+  "job_id": "b2a422bb-5650-4fbc-ba6b-0578af0049d9",
+  "job_status": "COMPLETED",
+  "project_name": "OPEN_INTELLIGENCE_ANGOLA_GraphML_Node_Classification",
+  "project_id": "16832427",
+  "database_name": "OPEN_INTELLIGENCE_ANGOLA",
+  "model_id": "1a365657-f5ed-4da9-948b-1ff60bc6e7de",
+  "job_state_information": {
+      "outputGraphName": "OPEN_INTELLIGENCE_ANGOLA",
+      "outputCollectionName": "Event",
+      "outputAttribute": "OPEN_INTELLIGENCE_ANGOLA_y_predicted",
+      "numberOfPredictedDocuments": 3302,
+      "outputEdgeCollectionName": None
+  },
+  "time_submitted": "2024-01-12T02:31:18.382625",
+  "time_started": "2024-01-12T02:31:23.550469",
+  "time_ended": "2024-01-12T02:31:40.021035"
+}
 ```
 
-#### Access the predictions
+### Access the predictions
 
 You can now directly access your predictions in your application.
 
