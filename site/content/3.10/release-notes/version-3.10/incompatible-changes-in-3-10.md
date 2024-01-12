@@ -192,6 +192,14 @@ It is also an error if you specify an edge collection that is not part of the
 named graph's definition or of the list of edge collections (code `1939` and
 HTTP status `400 Bad Request`).
 
+## Exit code adjustments
+
+<small>Introduced in: v3.10.13</small>
+
+For some fatal errors like a require database upgrade or a failed version check,
+_arangod_ set the generic exit code of `1`. It now returns a different, more
+specific exit code in these cases.
+
 ## Startup Options
 
 ### Handling of Invalid Startup Options
