@@ -126,11 +126,32 @@ for details.
 
 #### Index API
 
+##### Inverted indexes
+
 Indexes of type `inverted` accept a new `optimizeTopK` property for the
 ArangoSearch WAND optimization. It is an array of strings, optional, and
 defaults to `[]`.
 
 See the [inverted index `optimizeTopK` property](../../develop/http-api/indexes/inverted.md)
+for details.
+
+##### Multi-dimensional indexes
+
+The previously experimental `zkd` index is now stable and has been renamed to
+`mdi`. Existing indexes keep the `zkd` type. The HTTP API still allows the old
+name to create new indexes that behave exactly like `mdi` indexes but this is
+discouraged. The `zkd` alias may get removed in a future version.
+
+An additional `mdi-prefixed` index variant has been added. This is a new index
+type in the API with the same settings as the `mdi` index but with one additional
+`prefixFields` attribute. It is a required setting and accepts an array of strings
+similar to the `fields` attribute.
+
+Both multi-dimensional index variants now support a `sparse` (boolean) and
+`storedValues` (array of strings) setting that were not supported by the `zkd`
+index in previous versions.
+
+See [Working with multi-dimensional indexes](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md)
 for details.
 
 #### Optimizer rule descriptions

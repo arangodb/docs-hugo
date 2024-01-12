@@ -15,6 +15,10 @@ aliases:
 
 - 
 
+- [**Multi-dimensional indexes**](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md):
+  An index type to efficiently intersect multiple range queries, like finding
+  all appointments that intersect a time range.
+
 **Enterprise Edition**
 
 - [**ArangoSearch WAND optimization**](../../index-and-search/arangosearch/performance.md#wand-optimization):

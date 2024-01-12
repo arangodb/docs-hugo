@@ -7,13 +7,9 @@ description: >-
   such as time ranges, for efficient intersection of multiple range queries
 archetype: default
 ---
-The multi-dimensional index type is called **ZKD**.
+The multi-dimensional index type was previously called `"zkd"`.
 
-{{< warning >}}
-`zkd` indexes are an **experimental** feature.
-{{< /warning >}}
-
-A multi-dimensional index is setup by setting the index type to `"zkd"`.
+A multi-dimensional index is setup by setting the index type to `"mdi"`.
 The `fields` attribute describes which fields are used as dimensions.
 The value of each dimension has to be a numeric (double) value.
 
@@ -33,7 +29,7 @@ To do so one creates a multi-dimensional index on the attributes `x`, `y` and
 
 ```js
 db.collection.ensureIndex({
-    type: "zkd",
+    type: "mdi",
     fields: ["x", "y", "z"],
     fieldValueTypes: "double"
 });
@@ -154,7 +150,6 @@ FOR app IN appointments OPTIONS { lookahead: 32 }
 Currently there are a few limitations:
 
 - Using array expansions for attributes is not possible (e.g. `array[*].attr`)
-- The `sparse` property is not supported.
 - You can only index numeric values that are representable as IEEE-754 double.
 - A high number of dimensions (more than 5) can impact the performance considerably.
 - The performance can vary depending on the dataset. Densely packed points can
