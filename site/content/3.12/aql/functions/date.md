@@ -530,7 +530,7 @@ RETURN DATE_MILLISECOND("2020-08-29T16:30:05.123")
 
 ```aql
 ---
-name: datesec2
+name: datemilsec2
 description: |
   Extract the millisecond of a Unix timestamp:
 ---
