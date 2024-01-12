@@ -227,6 +227,19 @@ indexes have been allowing to index and store the `_id` system attribute.
 
 ## Server options
 
+### Effective and available startup options
+
+The new `GET /_admin/options` and `GET /_admin/options-description` HTTP API
+endpoints allow you to return the effective configuration and the available
+startup options of the queried _arangod_ instance.
+
+Previously, it was only possible to [fetch the current configuration](../../operations/administration/configuration.md#fetch-current-configuration-options)
+on single servers and Coordinators using a JavaScript transaction, and to list
+the available startup options with `--dump-options`.
+
+See the [HTTP interface for administration](../../develop/http-api/administration.md#startup-options)
+for details.
+
 ### Protocol aliases for endpoints
 
 You can now use `http://` and `https://` as aliases for `tcp://` and `ssl://`
