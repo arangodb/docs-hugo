@@ -119,6 +119,14 @@ can now be configured with the `--transaction.streaming-max-transaction-size`
 startup option. The default value remains 128 MiB but configuring a lower limit
 can cause previously working Stream Transactions to fail.
 
+## Exit code adjustments
+
+<small>Introduced in: v3.10.13, v3.11.7, v3.12.0</small>
+
+For some fatal errors like a required database upgrade or a failed version check,
+_arangod_ set the generic exit code of `1`. It now returns a different, more
+specific exit code in these cases.
+
 ## Client tools
 
 ### jslint feature in arangosh
