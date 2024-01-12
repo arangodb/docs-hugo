@@ -75,6 +75,7 @@ The following new metrics have been added for memory observability:
 | Label | Description |
 |:------|:------------|
 | `arangodb_agency_node_memory_usage` | Memory used by Agency store/cache. |
+| `arangodb_aql_cursors_memory_usage` | Total memory usage of active AQL query result cursors.  |
 | `arangodb_index_estimates_memory_usage` | Total memory usage of all index selectivity estimates. |
 | `arangodb_internal_cluster_info_memory_usage` | Amount of memory spent in ClusterInfo. |
 | `arangodb_requests_memory_usage` | Memory consumed by incoming, queued, and currently processed requests. |
@@ -174,13 +175,20 @@ UPDATE { logins: OLD.logins + 1 } IN users
 
 Read more about [`UPSERT` operations](../../aql/high-level-operations/upsert.md) in AQL.
 
-### Added AQL functions
+### `readOwnWrites` option for `UPSERT` operations
 
-The new `PARSE_COLLECTION()` and `PARSE_KEY()` let you more extract the
-collection name respectively the document key from a document identifier with
-less overhead.
+A `readOwnWrites` option has been added for `UPSERT` operations. The default
+value is `true` and the behavior is identical to previous versions of ArangoDB that
+do not have this option. When enabled, an `UPSERT` operation processes its
+inputs one by one. This way, the operation can observe its own writes and can
+handle modifying the same target document multiple times in the same query.
 
-See [Document and object functions in AQL](../../aql/functions/document-object.md#parse_collection).
+When the option is set to `false`, an `UPSERT` operation processes its inputs
+in batches. Normally, a batch has 1000 inputs, which can lead to a faster execution.
+However, when using batches, the `UPSERT` operation cannot observe its own writes.
+Therefore, you should only set the `readOwnWrites` option to `false` if you can
+guarantee that the input of the `UPSERT` leads to disjoint documents being
+inserted, updated, or replaced.
 
 ### Parallel execution within an AQL query
 
@@ -191,8 +199,8 @@ improvements if there is still reserve (scheduler) capacity.
 
 The new `Par` column in a query explain output shows which nodes of a query are
 eligible for asynchronous prefetching. Write queries, graph execution nodes,
-nodes inside subqueries, and query parts involving remote execution are not
-eligible.
+nodes inside subqueries, `LIMIT` nodes and their dependencies above, as well as
+all query parts that include a `RemoteNode` are not eligible.
 
 ```aql
 Execution plan:
@@ -207,6 +215,63 @@ Execution plan:
 The profiling output for queries includes a new `Par` column as well, but it
 shows the number of successful parallel asynchronous prefetch calls.
 
+### Added AQL functions
+
+The new `PARSE_COLLECTION()` and `PARSE_KEY()` let you more extract the
+collection name respectively the document key from a document identifier with
+less overhead.
+
+See [Document and object functions in AQL](../../aql/functions/document-object.md#parse_collection).
+
+The new `REPEAT()` function repeats the input value a given number of times,
+optionally with a separator between repetitions, and returns the resulting string.
+The new `TO_CHAR()` functions lets you specify a numeric Unicode codepoint and
+returns the corresponding character as a string.
+
+See [String functions in AQL](../../aql/functions/string.md#repeat).
+
+A numeric function `RANDOM()` has been added as an alias for the existing `RAND()`.
+
+### Timezone parameter for date functions
+
+The following AQL date functions now accept an optional timezone argument to
+perform date and time calculations in certain timezones:
+
+- `DATE_DAYOFWEEK(date, timezone)`
+- `DATE_YEAR(date, timezone)`
+- `DATE_MONTH(date, timezone)`
+- `DATE_DAY(date, timezone)`
+- `DATE_HOUR(date, timezone)`
+- `DATE_MINUTE(date, timezone)`
+- `DATE_DAYOFYEAR(date, timezone)`
+- `DATE_ISOWEEK(date, timezone)`
+- `DATE_ISOWEEKYEAR(date, timezone)`
+- `DATE_LEAPYEAR(date, timezone)`
+- `DATE_QUARTER(date, timezone)`
+- `DATE_DAYS_IN_MONTH(date, timezone)`
+- `DATE_TRUNC(date, unit, timezone)`
+- `DATE_ROUND(date, amount, unit, timezone)`
+- `DATE_FORMAT(date, format, timezone)`
+- `DATE_ADD(date, amount, unit, timezone)`
+- `DATE_SUBTRACT(date, amount, unit, timezone)`
+
+The following two functions accept up to two timezone arguments. If you only
+specify the first, then both input dates are assumed to be in this one timezone.
+If you specify two timezones, then the first date is assumed to be in the first
+timezone, and the second date in the second timezone:
+
+- `DATE_DIFF(date1, date2, unit, asFloat, timezone1, timezone2)` (`asFloat` can be left out)
+- `DATE_COMPARE(date1, date2, unitRangeStart, unitRangeEnd, timezone1, timezone2)`
+
+See [Date functions in AQL](../../aql/functions/date.md#date_dayofweek)
+
+### Improved `move-filters-into-enumerate` optimizer rule
+
+The `move-filters-into-enumerate` optimizer rule can now also move filters into
+`EnumerateListNodes` for early pruning. This can significantly improve the
+performance of queries that do a lot of filtering on longer lists of
+non-collection data.
+
 ## Indexing
 
 ### Stored values can contain the `_id` attribute
@@ -219,6 +284,11 @@ sub-attribute in `fields` of persistent indexes. On the other hand, inverted
 indexes have been allowing to index and store the `_id` system attribute.
 
 ## Server options
+
+### Protocol aliases for endpoints
+
+You can now use `http://` and `https://` as aliases for `tcp://` and `ssl://`
+in the `--server.endpoint` startup option of the server.
 
 ### Adjustable Stream Transaction size
 
@@ -514,6 +584,11 @@ The following metric as been added:
   currently started and detached from the scheduler. 
 
 ## Client tools
+
+### Protocol aliases for endpoints
+
+You can now use `http://` and `https://` as aliases for `tcp://` and `ssl://`
+in the `--server.endpoint` startup option with all client tools.
 
 ### arangodump
 

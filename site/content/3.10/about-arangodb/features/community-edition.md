@@ -39,7 +39,7 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   documents, or graphs - perfect for social relations. Optional document
   validation using JSON Schema (draft-4, without remote schema support).
 
-- [**Data Storage**](../../deploy/architecture/storage-engine.md):
+- [**Data Storage**](../../components/arangodb-server/storage-engine.md):
   RocksDB storage engine to persist data and indexes on disk, with a hot set in
   memory. It uses journaling (write-ahead logging) and can take advantage of
   modern storage hardware, like SSDs and large caches.

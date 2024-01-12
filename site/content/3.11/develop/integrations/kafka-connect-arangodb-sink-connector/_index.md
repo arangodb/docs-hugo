@@ -253,7 +253,6 @@ See [SSL configuration](configuration.md#ssl) for further options.
 
 ## Limitations
 
-- The `VST` communication protocol (`connection.protocol=VST`) is currently not working (DE-619)
 - Record values are required to be object-like structures (DE-644)
 - Auto-creation of ArangoDB collection is not supported (DE-653)
 - `ssl.cert.value` does not support multiple certificates (DE-655)
