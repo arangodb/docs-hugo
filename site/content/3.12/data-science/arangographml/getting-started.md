@@ -177,7 +177,7 @@ Let's get started!
 
 {{< tab "ArangoGraphML" >}}
 
-The [arango-datasets]((https://github.com/arangoml/arangodb_datasets)) package allows you to load a dataset into ArangoDB. It comes pre-installed in the ArangoGraphML notebook environment.
+The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package allows you to load a dataset into ArangoDB. It comes pre-installed in the ArangoGraphML notebook environment.
 
 ```py
 from arango_datasets.datasets import Datasets
@@ -198,7 +198,7 @@ Datasets(dataset_db).load(DATASET_NAME)
 
 {{< tab "Self-managed" >}}
 
-The [arango-datasets]((https://github.com/arangoml/arangodb_datasets)) package allows you to load a dataset into ArangoDB. It can be installed with:
+The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package allows you to load a dataset into ArangoDB. It can be installed with:
 
 ```
 pip install arango-datasets
