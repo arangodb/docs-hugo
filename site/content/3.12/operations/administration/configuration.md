@@ -333,18 +333,3 @@ instance, or adjusted at runtime via an API call. Examples:
 Use the [`GET /_admin/options` HTTP API](../../develop/http-api/administration.md#startup-options)
 to retrieve the effective configuration of the queried _arangod_ instance as
 set by startup options on the command-line and via a configuration file.
-
-Alternatively, you can connect to an `arangod` instance with an
-[ArangoShell](../../components/tools/arangodb-shell/_index.md) and invoke a
-[JavaScript Transaction](../../develop/transactions/javascript-transactions.md)
-by calling `db._executeTransaction()` with the following function to retrieve the
-server options, but this is limited to Coordinators and single servers with
-JavaScript/V8 enabled:
-
-```js
----
-name: listCurrentConfigOpts
-description: ''
----
-db._executeTransaction({ collections: {}, action: function() {return require("internal").options(); } })
-```
