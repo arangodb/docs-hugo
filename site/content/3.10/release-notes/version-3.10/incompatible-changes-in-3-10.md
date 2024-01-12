@@ -196,7 +196,7 @@ HTTP status `400 Bad Request`).
 
 <small>Introduced in: v3.10.13</small>
 
-For some fatal errors like a require database upgrade or a failed version check,
+For some fatal errors like a required database upgrade or a failed version check,
 _arangod_ set the generic exit code of `1`. It now returns a different, more
 specific exit code in these cases.
 
