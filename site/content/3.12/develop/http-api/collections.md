@@ -962,7 +962,7 @@ paths:
       responses:
         '200':
           description: |
-            A list of the available generators for document keys:
+            An object that contains a list of the available generators for document keys:
             - `"padded"`
             - `"uuid"`
             - `"autoincrement"`
@@ -975,6 +975,8 @@ paths:
                   - keyGenerators
                 properties:
                   keyGenerators:
+                    description: |
+                      The available document key generators.
                     type: array
                     uniqueItems: true
                     items:
@@ -984,6 +986,7 @@ paths:
                         - uuid
                         - autoincrement
                         - traditional
+                    example: ["traditional", "autoincrement", "padded", "uuid"]
       tags:
         - Collections
 ```
