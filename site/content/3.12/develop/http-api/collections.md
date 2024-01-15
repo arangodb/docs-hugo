@@ -971,8 +971,6 @@ paths:
             application/json:
               schema:
                 type: array
-                items:
-                  type: string
       tags:
         - Collections
 ```
