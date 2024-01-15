@@ -190,6 +190,31 @@ Therefore, you should only set the `readOwnWrites` option to `false` if you can
 guarantee that the input of the `UPSERT` leads to disjoint documents being
 inserted, updated, or replaced.
 
+### Parallel execution within an AQL query
+
+The new `async-prefetch` optimizer rule allows certain operations of a query to
+asynchronously prefetch the next batch of data while processing the current batch,
+allowing parts of the query to run in parallel. This can lead to performance
+improvements if there is still reserve (scheduler) capacity.
+
+The new `Par` column in a query explain output shows which nodes of a query are
+eligible for asynchronous prefetching. Write queries, graph execution nodes,
+nodes inside subqueries, `LIMIT` nodes and their dependencies above, as well as
+all query parts that include a `RemoteNode` are not eligible.
+
+```aql
+Execution plan:
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT
+  2   EnumerateCollectionNode     ✓     18     - FOR doc IN places   /* full collection scan  */   FILTER (doc.`label` IN [ "Glasgow", "Aberdeen" ])   /* early pruning */
+  5   CalculationNode             ✓     18       - LET #2 = doc.`label`   /* attribute expression */   /* collections used: doc : places */
+  6   SortNode                    ✓     18       - SORT #2 ASC   /* sorting strategy: standard */
+  7   ReturnNode                        18       - RETURN doc
+```
+
+The profiling output for queries includes a new `Par` column as well, but it
+shows the number of successful parallel asynchronous prefetch calls.
+
 ### Added AQL functions
 
 The new `PARSE_COLLECTION()` and `PARSE_KEY()` let you more extract the
@@ -206,6 +231,39 @@ returns the corresponding character as a string.
 See [String functions in AQL](../../aql/functions/string.md#repeat).
 
 A numeric function `RANDOM()` has been added as an alias for the existing `RAND()`.
+
+### Timezone parameter for date functions
+
+The following AQL date functions now accept an optional timezone argument to
+perform date and time calculations in certain timezones:
+
+- `DATE_DAYOFWEEK(date, timezone)`
+- `DATE_YEAR(date, timezone)`
+- `DATE_MONTH(date, timezone)`
+- `DATE_DAY(date, timezone)`
+- `DATE_HOUR(date, timezone)`
+- `DATE_MINUTE(date, timezone)`
+- `DATE_DAYOFYEAR(date, timezone)`
+- `DATE_ISOWEEK(date, timezone)`
+- `DATE_ISOWEEKYEAR(date, timezone)`
+- `DATE_LEAPYEAR(date, timezone)`
+- `DATE_QUARTER(date, timezone)`
+- `DATE_DAYS_IN_MONTH(date, timezone)`
+- `DATE_TRUNC(date, unit, timezone)`
+- `DATE_ROUND(date, amount, unit, timezone)`
+- `DATE_FORMAT(date, format, timezone)`
+- `DATE_ADD(date, amount, unit, timezone)`
+- `DATE_SUBTRACT(date, amount, unit, timezone)`
+
+The following two functions accept up to two timezone arguments. If you only
+specify the first, then both input dates are assumed to be in this one timezone.
+If you specify two timezones, then the first date is assumed to be in the first
+timezone, and the second date in the second timezone:
+
+- `DATE_DIFF(date1, date2, unit, asFloat, timezone1, timezone2)` (`asFloat` can be left out)
+- `DATE_COMPARE(date1, date2, unitRangeStart, unitRangeEnd, timezone1, timezone2)`
+
+See [Date functions in AQL](../../aql/functions/date.md#date_dayofweek)
 
 ### Improved `move-filters-into-enumerate` optimizer rule
 
@@ -226,6 +284,19 @@ sub-attribute in `fields` of persistent indexes. On the other hand, inverted
 indexes have been allowing to index and store the `_id` system attribute.
 
 ## Server options
+
+### Effective and available startup options
+
+The new `GET /_admin/options` and `GET /_admin/options-description` HTTP API
+endpoints allow you to return the effective configuration and the available
+startup options of the queried _arangod_ instance.
+
+Previously, it was only possible to fetch the current configuration on
+single servers and Coordinators using a JavaScript Transaction, and to list
+the available startup options with `--dump-options`.
+
+See the [HTTP interface for administration](../../develop/http-api/administration.md#startup-options)
+for details.
 
 ### Protocol aliases for endpoints
 
