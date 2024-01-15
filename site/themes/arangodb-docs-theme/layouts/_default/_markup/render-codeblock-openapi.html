@@ -124,7 +124,7 @@
                   {{ range $k, $v := $content.content }}
                     {{ if $v.schema.items }}
                       {{ $required := false }}
-                      {{ $v }}
+                      {{/* TODO: Improve array rendering */}}
                       {{- template "renderProperty" dict "title" $statusId "prop" "" "value" $v.schema "required" $required }}
                     {{ else }}
                       {{ range $prop, $value := $v.schema.properties}}
