@@ -8,7 +8,7 @@ archetype: default
 aliases:
   - getting-started-with-arangographml
 ---
-ArangoGraphML is a set of services that provide an easy to use and scalable
+ArangoGraphML is a set of services that provide an easy-to-use and scalable
 interface for graph machine learning. Since all of the orchestration and training
 logic is managed by ArangoGraph, all that is typically required is a
 specification outlining the data to be used to solve a task. If you are using
@@ -59,7 +59,10 @@ import arangoml
 arangoml = %enable_arangoml
 ```
 
-{{<tip>}}Other ArangoGraphML Magic Commands are available! See the full list by running `%lsmagic` in a notebook cell.{{</tip>}}
+{{< tip >}}
+Other ArangoGraphML Magic Commands are also available. See the full list by
+running `%lsmagic` in a notebook cell.
+{{< /tip >}}
 
 {{< /tab >}}
 
@@ -67,18 +70,21 @@ arangoml = %enable_arangoml
 
 The `ArangoML` class is the main entry point for the `arangoml` package.
 It requires the following parameters:
-- `hosts`: The ArangoDB host(s) to connect to. This can be a single host or a list of hosts.
+- `hosts`: The ArangoDB host(s) to connect to. This can be a single host or a
+  list of hosts.
 - `username`: The ArangoDB username to use for authentication.
 - `password`: The ArangoDB password to use for authentication.
-- `ca_cert_file`: (Optional) The path to the CA certificate file to use for TLS verification.
-- `user_token`: (Optional) The ArangoDB user token to use for authentication. This is an alternative to username/password authentication.
+- `ca_cert_file`: (Optional) The path to the CA certificate file to use for TLS
+  verification.
+- `user_token`: (Optional) The ArangoDB user token to use for authentication.
+  This is an alternative to username/password authentication.
 - `projects_endpoint`: The URL to the ArangoGraphML Projects Service.
 - `training_endpoint`: The URL to the ArangoGraphML Training Service.
 - `prediction_endpoint`: The URL to the ArangoGraphML Prediction Service.
 
 It is possible to instantiate an ArangoML object in multiple ways:
 
-1. via parameters
+1. Via parameters
 ```py
 from arangoml import ArangoML
 
@@ -94,7 +100,7 @@ arangoml = ArangoML(
 )
 ```
 
-2. via parameters + a custom ArangoClient instance
+2. Via parameters and a custom `ArangoClient` instance
 ```py
 from arangoml import ArangoML
 from arango import ArangoClient
@@ -117,7 +123,7 @@ arangoml = ArangoML(
 )
 ```
 
-3. via environment variables
+3. Via environment variables
 ```py
 import os
 from arangoml import ArangoML
@@ -134,7 +140,7 @@ os.environ["PREDICTION_ENDPOINT"] = "http://localhost:8501"
 arangoml = ArangoML()
 ```
 
-4. via configuration files
+4. Via configuration files
 ```py
 import os
 from arangoml import ArangoML
@@ -142,16 +148,21 @@ from arangoml import ArangoML
 arangoml = ArangoML(settings_files=["settings_1.toml", "settings_2.toml"])
 ```
 
-5. via a Jupyter Magic Command
+5. Via a Jupyter Magic Command
 ```
 %load_ext arangoml
 %enable_arangoml
 ```
-note:
-- this assumes you are working out of a Jupter Notebook environment, and
-have set the environment variables in the notebook environment (see above) with user authentication
-that has **_system** access.
-- Running `%load_ext arangoml` will also provide access to other ArangoGraphML Jupyter Magic Commands. See the full list by running `%lsmagic` in a notebook cell.
+{{< info >}}
+This assumes you are working out of a Jupyter Notebook environment, and
+have set the environment variables in the notebook environment with user
+authentication that has **_system** access.
+{{< /info >}}
+
+{{< tip >}}
+Running `%load_ext arangoml` also provides access to other ArangoGraphML
+Jupyter Magic Commands. See the full list by running `%lsmagic` in a notebook cell.
+{{< /tip >}}
 
 {{< /tab >}}
 
@@ -159,15 +170,25 @@ that has **_system** access.
 
 ## Load the database
 
-We'll be using ArangoML to predict the **class** of ``Events`` in a Knowledge Graph constructed from the [GDELT Project](https://www.gdeltproject.org/).
+This example is using ArangoML to predict the **class** of `Events` in a
+Knowledge Graph constructed from the [GDELT Project](https://www.gdeltproject.org/).
 
-  > GDELT monitors the world's news media from nearly every corner of every country in print, broadcast, and web formats, in over 100 languages, every moment of every day. [...] Put simply, the GDELT Project is a realtime open data global graph over human society as seen through the eyes of the world's news media, reaching deeply into local events, reaction, discourse, and emotions of the most remote corners of the world in near-realtime and making all of this available as an open data firehose to enable research over human society.`
+> GDELT monitors the world's news media from nearly every corner of every
+  country in print, broadcast, and web formats, in over 100 languages, every
+  moment of every day. [...] Put simply, the GDELT Project is a realtime open
+  data global graph over human society as seen through the eyes of the world's
+  news media, reaching deeply into local events, reaction, discourse, and
+  emotions of the most remote corners of the world in near-realtime and making
+  all of this available as an open data firehose to enable research over human
+  society.
 
-The events we're using today range from peaceful protests to significant battles in Angola. The image below depicts the connections around an example event:
+The events used range from peaceful protests to significant battles in Angola.
+The image below depicts the connections around an example event:
 
 ![Example Event](../../../images/ArangoML_open_intelligence_sample.png)
 
-The image below shows a larger portion of this graph, showing how the events, actors, news sources, and locations are interconnected into a large graph.
+You can also see a larger portion of this graph, showing how the events, actors,
+news sources, and locations are interconnected into a large graph.
 
 ![Example Event](../../../images/ArangoML_open_intelligence_visualization.png)
 
@@ -177,7 +198,9 @@ Let's get started!
 
 {{< tab "ArangoGraphML" >}}
 
-The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package allows you to load a dataset into ArangoDB. It comes pre-installed in the ArangoGraphML notebook environment.
+The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package
+allows you to load a dataset into ArangoDB. It comes pre-installed in the
+ArangoGraphML notebook environment.
 
 ```py
 from arango_datasets.datasets import Datasets
@@ -198,7 +221,8 @@ Datasets(dataset_db).load(DATASET_NAME)
 
 {{< tab "Self-managed" >}}
 
-The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package allows you to load a dataset into ArangoDB. It can be installed with:
+The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package
+allows you to load a dataset into ArangoDB. It can be installed with:
 
 ```
 pip install arango-datasets
@@ -256,7 +280,7 @@ arangoml.projects.list_projects()
 The Featurization Specification asks that you input the following:
 - `featurization_name`: A name for the featurization task.
 - `project_name`: The associated project name. You can use `project.name` here
-  if was created or retrieved as descried above.
+  if was created or retrieved as described above.
 - `graph_name`: The associated graph name that exists within the database.
 - `default_config` Optional: The optional default configuration to be applied
   across all features. Individual collection feature settings override this option.
@@ -274,8 +298,8 @@ The Featurization Specification asks that you input the following:
   - `features`: A single feature or multiple features can be supplied per collection
     and they can all be featurized in different ways. Supplying multiple features
     results in a single concatenated feature.
-    - `feature_type`: Provide the feature type. Currently the supported types
-      include `text`, `category`, `numerical`.
+    - `feature_type`: Provide the feature type. Currently, the supported types
+      include `text`, `category`, and `numerical`.
     - `feature_generator` Optional: Adjust advanced feature generation parameters.
       - `feature_name`: The name of this Dict should match the attribute name of the
         document stored in ArangoDB. This overrides the name provided for the parent Dict.
@@ -310,12 +334,17 @@ The Featurization Specification asks that you input the following:
 Once you have filled out the Featurization Specification, you can pass it to
 the `featurizer` function.
 
-Here's an an example Featurization Specification for the GDELT dataset. 
-- It featurizes the `name` attribute of the `Actor`, `Class`, `Country`, `Source`, `Location`, and `Region` collections as a `text` features.
-- It featurizes the `description` attribute of the `Event` collection as a `text` feature.
-- It featurizes the `label` attribute of the `Event` collection as a `label` feature (this is the attribute we want to predict).
-- It featurizes the `sourceScale` attribute of the `Source` collection as a `category` feature.
-- It featurizes the `name` attribute of the `Region` collection as a `category` feature.
+See an example of Featurization Specification for the GDELT dataset:
+- It featurizes the `name` attribute of the `Actor`, `Class`, `Country`,
+  `Source`, `Location`, and `Region` collections as a `text` features.
+- It featurizes the `description` attribute of the `Event` collection as a
+  `text` feature.
+- It featurizes the `label` attribute of the `Event` collection as a `label`
+  feature (this is the attribute you want to predict).
+- It featurizes the `sourceScale` attribute of the `Source` collection as a
+  `category` feature.
+- It featurizes the `name` attribute of the `Region` collection as a
+  `category` feature.
 
 ```py
 featurization_spec = {
@@ -505,7 +534,7 @@ Training Graph Machine Learning Models with ArangoGraphML only requires two step
 1. Describe which data points should be included in the Training Job.
 2. Pass the Training Specification to the Training Service.
 
-See below for the different components of the Training Specification.
+See below for the different components of the Training Specification:
 
 - `database_name`: The database name the source data is in.
 - `project_name`: The top-level project to which all the experiments will link back. 
@@ -530,12 +559,14 @@ Python API client, as shown below.
 
 ### Submit a Training Job
 
-The ArangoGraphML Training Service is responsible for training a series of Graph Machine Learning
-Models using the data provided in the Training Specification. It assumes that the data
-has been featurized and is ready to be used for training.
+The ArangoGraphML Training Service is responsible for training a series of
+Graph Machine Learning Models using the data provided in the Training
+Specification. It assumes that the data has been featurized and is ready to be
+used for training.
 
-Given that we've ran a Featurization Job, we can create the Training Specification
-using the `feature_result` object returned from the Featurization Job:
+Given that you have run a Featurization Job, you can create the Training
+Specification using the `feature_result` object returned from the Featurization
+Job:
 
 ```py
 training_spec = {
@@ -648,13 +679,13 @@ arangoml.training.cancel_job(training_job.job_id)
 ## Model Selection
 
 Model Statistics can be observed upon completion of a Training Job. 
-To select a Model, the ArangoGraphML Projects Service can be used to gather all relevant models and choose
-the preferred model for a Prediction Job.
+To select a Model, the ArangoGraphML Projects Service can be used to gather
+all relevant models and choose the preferred model for a Prediction Job.
 
 The following example uses the model with the highest **test accuracy**,
 but there may be other factors that motivate you to choose another model.
-See the `model_statistics` field below for more information the full list of
-available metrics.
+See the `model_statistics` field below for more information on the full list
+of available metrics.
 
 ```py
 best_model = arangoml.get_best_model(

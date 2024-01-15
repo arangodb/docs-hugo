@@ -4,7 +4,7 @@ menuTitle: Deploy
 weight: 5
 description: >-
   You can deploy ArangoGraphML in your own Kubernetes cluster or use the managed
-  cloud service that comes with a ready to go, pre-configured environment
+  cloud service that comes with a ready-to-go, pre-configured environment
 archetype: default
 ---
 
@@ -51,7 +51,7 @@ GraphML functionalities.
 To summarize, all you need to do is:
 1. Sign up for an [ArangoGraph account](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 2. Create a new [deployment in ArangoGraph](../../arangograph/deployments/_index.md#how-to-create-a-new-deployment).
-3. Start using the ArangoGraphML functionatalities.
+3. Start using the ArangoGraphML functionalities.
 
 ### Self-managed ArangoGraphML
 
