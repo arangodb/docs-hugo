@@ -131,6 +131,13 @@ the available startup options with `--dump-options`.
 See the [HTTP interface for administration](../../develop/http-api/administration.md#startup-options)
 for details.
 
+#### Available key generators
+
+You can now retrieve the available key generators for collections using the new
+`GET /_api/key-generators` endpoint.
+
+See the [HTTP API description](../../develop/http-api/collections.md#get-the-available-key-generators)
+
 ### Endpoints augmented
 
 #### View API
