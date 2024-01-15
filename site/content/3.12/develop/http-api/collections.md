@@ -970,7 +970,20 @@ paths:
           content:
             application/json:
               schema:
-                type: array
+                type: object
+                required:
+                  - keyGenerators
+                properties:
+                  keyGenerators:
+                    type: array
+                    uniqueItems: true
+                    items:
+                      type: string
+                      enum:
+                        - padded
+                        - uuid
+                        - autoincrement
+                        - traditional
       tags:
         - Collections
 ```
