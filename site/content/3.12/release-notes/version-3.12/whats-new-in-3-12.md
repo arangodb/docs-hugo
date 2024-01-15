@@ -190,6 +190,31 @@ Therefore, you should only set the `readOwnWrites` option to `false` if you can
 guarantee that the input of the `UPSERT` leads to disjoint documents being
 inserted, updated, or replaced.
 
+### Parallel execution within an AQL query
+
+The new `async-prefetch` optimizer rule allows certain operations of a query to
+asynchronously prefetch the next batch of data while processing the current batch,
+allowing parts of the query to run in parallel. This can lead to performance
+improvements if there is still reserve (scheduler) capacity.
+
+The new `Par` column in a query explain output shows which nodes of a query are
+eligible for asynchronous prefetching. Write queries, graph execution nodes,
+nodes inside subqueries, `LIMIT` nodes and their dependencies above, as well as
+all query parts that include a `RemoteNode` are not eligible.
+
+```aql
+Execution plan:
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT
+  2   EnumerateCollectionNode     ✓     18     - FOR doc IN places   /* full collection scan  */   FILTER (doc.`label` IN [ "Glasgow", "Aberdeen" ])   /* early pruning */
+  5   CalculationNode             ✓     18       - LET #2 = doc.`label`   /* attribute expression */   /* collections used: doc : places */
+  6   SortNode                    ✓     18       - SORT #2 ASC   /* sorting strategy: standard */
+  7   ReturnNode                        18       - RETURN doc
+```
+
+The profiling output for queries includes a new `Par` column as well, but it
+shows the number of successful parallel asynchronous prefetch calls.
+
 ### Added AQL functions
 
 The new `PARSE_COLLECTION()` and `PARSE_KEY()` let you more extract the
