@@ -122,9 +122,8 @@
                 <ul class="openapi-table">
                   <div class="openapi-table-title">Response Body</div>
                   {{ range $k, $v := $content.content }}
-                    {{ if $v.schema.items }}
+                    {{ if eq $v.schema.type "array" }}
                       {{ $required := false }}
-                      {{/* TODO: Improve array rendering */}}
                       {{- template "renderProperty" dict "title" $statusId "prop" "" "value" $v.schema "required" $required }}
                     {{ else }}
                       {{ range $prop, $value := $v.schema.properties}}
@@ -179,8 +178,8 @@
   {{ $type := $value.type }}
   {{ $anchor := printf "%s_%s" $title $prop }}
   <li class="openapi-table-row regular-font">
-    {{ if eq $value.type "array" }}
-      {{ $type = printf "[%s]" $value.items.type }}
+    {{ if and (eq $value.type "array") ($value.items.type) }}
+      {{ $type = printf "array<%s>" $value.items.type }}
     {{ else if eq $value.type "object" }}
       {{ $type = "object" }}
     {{ end }}
