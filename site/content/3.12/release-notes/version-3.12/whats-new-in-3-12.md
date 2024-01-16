@@ -482,28 +482,113 @@ The bundled V8 JavaScript engine has been upgraded from version 7.9.317 to
 12.1.165. As part of this upgrade, the bundled Unicode character handling library
 ICU has been upgraded as well, from version 64.2 to 73.1.
 
-The resource usage of V8 has improved a lot. Memory usage is down by 15%,
-spawning a new Isolate has become almost 10 times faster.
+Note that ArangoDB's build of V8 has pointer compression disabled to allow for
+more than 4 GB of heap memory.
 
-Here is the list of improvements that may matter to you as an ArangoDB user:
+The V8 upgrade brings various language features to JavaScript contexts in ArangoDB
+like arangosh, Foxx, and JavaScript Transactions. These features are part of the
+ECMAScript specifications ES2020 through ES2024. The following list is non-exhaustive:
 
-- Pointer compression (disabled to allow for more than 4 GB of memory?)
-- Optional chaining foo?.bar?.length
-- Nullish coalescing operator foo ?? bar (bar if foo null or undefined)
-- const deCurrencyNames = new Intl.DisplayNames(['de'], {type: 'currency'});
-  (new Intl.DisplayNames(['uk'], { type: 'calendar' })).of("buddhist")
-  Intl.DateTimeFormat timeZoneName additions, e.g. shortOffset
-  Intl.supportedValuesOf('calendar')
-- class #privateMethod
-- class static { /* initialization blocks */ }
-- String replaceAll
-- Logical assignment operators &&=, ||=, ??=
-- RegExp match indices /re/d.exec("e").incides[0]
-- Array [1,2,3].at(-1)
-- Array findLast, findLastIndex
-- Object.hasOwn
-- const e = new Error("parent"); new Error("parent", { cause: e})
-- 
+- Optional chaining, like `obj.foo?.bar?.length` to easily access an object
+  property or call a function but stop evaluating the expression as soon as the
+  value is `undefined` or `null` and return `undefined` instead throwing an error
+
+- Nullish coalescing operator, like `foo ?? bar` to evaluate to the value of `bar`
+  if `foo` is `null` or `undefined`, otherwise to the value of `foo`
+
+- Return the array element at the given index, allowing positive as well as
+  negative integer values, like `[1,2,3].at(-1)`
+
+- Copying versions of the array methods `reverse()`, `sort()`, and `splice()`
+  that perform in-place operations, and a copying version of the bracket notation
+  for changing the value at a given index
+  - Return a new array with the elements in reverse order, like `[1,2,3].toReversed()`
+  - Return a new array with the elements sorted in ascending order, like `[2,3,1].toSorted()`
+  - Return a new array with elements removed and optionally inserted at a given
+    index, like `[1,2,3,4].toSpliced(1,2,"new", "items")`
+  - Return a new array with one element replaced at a given index, allowing
+    positive and negative integer values, like `[1,2,3,4].with(-2, "three")`
+
+- Find array elements from the end with `findLast()` and `findLastIndex()`, like
+  `[1,2,3,4].findLast(v => v % 2 == 1)`
+
+- Return a new string with all matches of a pattern replaced with a provided value,
+  not requiring a regular expression, like `"foo bar foo".replaceAll("foo", "baz")`
+
+- If the `matchAll()` method of a string is used with a regular expression that
+  misses the global `g` flag, an error is thrown
+
+- A new regular expression flag `d` to include capture group start and end indices,
+  like `/f(o+)/d.exec("foobar").indices[1]`
+
+- A new regular expression flag `v` to enable the Unicode sets mode, like
+  `/^\p{RGI_Emoji}$/v.test("👨🏾‍⚕️")` or `/[\p{Script_Extensions=Greek}--[α-γ]]/v.test('β')`
+
+- A static method to check whether an object directly defines a property, like
+  `Object.hasOwn({ foo: 42 })`, superseding `Object.prototype.hasOwnProperty()`
+
+- `Object.groupBy()` and `Map.groupBy()` to group the elements of an iterable
+  according to the string values returned by a provided callback function
+
+- Logical assignment operators `&&=`, `||=`, `??=`
+
+- Private properties that cannot be referenced outside of the class,
+  like `class P { #privField = 42; #privMethod() { } }`
+
+- Static initialization blocks in classes that run when the class itself is
+  evaluated, like `class S { static { console.log("init block") } }`
+
+- `WeakRef` to hold a weak reference to another object, without preventing that
+  object from getting garbage-collected
+
+- A `cause` property for Error instances to indicate the original cause of the error
+
+- Extended internationalization APIs. Examples:
+
+  ```js
+  let egyptLocale = new Intl.Locale("ar-EG")
+  egyptLocale.numberingSystems // [ "arab" ]
+  egyptLocale.calendars  // [ "gregory", "coptic", "islamic", "islamic-civil", "islamic-tbla" ]
+  egyptLocale.hourCycles // [ "hc12" ]
+  egyptLocale.timeZones  // [ "Africa/Cairo" ]
+  egyptLocale.textInfo   // { "direction": "rtl" }
+  egyptLocale.weekInfo   // { "firstDay": 6, "weekend" : [5, 6], "minimalDays": 1 }
+
+  Intl.supportedValuesOf("collation"); // [ "compat", "emoji", "eor", "phonebk", ... ]
+  Intl.supportedValuesOf("calendar"); // [ "buddhist", "chinese", "coptic", "dangi", ... ]
+  // Other supported values: "currency", "numberingSystem", "timeZone", "unit"
+
+  let germanLocale = new Intl.Locale("de")
+  germanLocale.collations // [ "emoji", "eor", "phonebk" ]
+  germanLocale.weekInfo   // { "firstDay": 1, "weekend" : [6, 7], "minimalDays": 4 }
+
+  let ukrainianCalendarNames = new Intl.DisplayNames(["uk"], { type: "calendar" })
+  ukrainianCalendarNames.of("buddhist") // "буддійський календар"
+
+  let frenchDateTimeFieldNames = new Intl.DisplayNames(["fr"], { type: "dateTimeField" })
+  frenchDateTimeFieldNames.of("day") // "jour"
+
+  let japaneseDialectLangNames = new Intl.DisplayNames(["ja"], { type: "language" })
+  let japaneseStandardLangNames = new Intl.DisplayNames(["ja"], { type: "language", languageDisplay: "standard" })
+  japaneseDialectLangNames.of('en-US')  // "アメリカ英語"
+  japaneseDialectLangNames.of('en-GB')  // "イギリス英語"
+  japaneseStandardLangNames.of('en-US') // "英語 (アメリカ合衆国)"
+  japaneseStandardLangNames.of('en-GB') // "英語 (イギリス)"
+
+  let americanDateTimeFormat = new Intl.DateTimeFormat("en-US", { timeZoneName: "longGeneric" })
+  americanDateTimeFormat.formatRange(new Date(0), new Date()) // e.g. with a German local time:
+  // "1/1/1970, Central European Standard Time – 1/16/2024, Central European Time"
+  
+  let swedishCurrencyNames = new Intl.DisplayNames(["sv"], { type: "currency" })
+  swedishCurrencyNames.of("TZS") // "tanzanisk shilling"
+
+  let americanNumberFormat = new Intl.NumberFormat("en-US", {
+    style: "currency", currency: "EUR", maximumFractionDigits: 0 })
+  americanNumberFormat.formatRange(1.5, 10) // "€2 – €10"
+
+  let welshPluralRules = new Intl.PluralRules("cy")
+  welshPluralRules.selectRange(1, 3) // "few"
+  ```
 
 ### Active AQL query cursors metric
 
