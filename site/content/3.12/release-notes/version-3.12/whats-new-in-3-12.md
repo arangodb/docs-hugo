@@ -476,6 +476,35 @@ full, log entries are written synchronously until the queue has space again.
 
 ## Miscellaneous changes
 
+### V8 and ICU library upgrades
+
+The bundled V8 JavaScript engine has been upgraded from version 7.9.317 to
+12.1.165. As part of this upgrade, the bundled Unicode character handling library
+ICU has been upgraded as well, from version 64.2 to 73.1.
+
+The resource usage of V8 has improved a lot. Memory usage is down by 15%,
+spawning a new Isolate has become almost 10 times faster.
+
+Here is the list of improvements that may matter to you as an ArangoDB user:
+
+- Pointer compression (disabled to allow for more than 4 GB of memory?)
+- Optional chaining foo?.bar?.length
+- Nullish coalescing operator foo ?? bar (bar if foo null or undefined)
+- const deCurrencyNames = new Intl.DisplayNames(['de'], {type: 'currency'});
+  (new Intl.DisplayNames(['uk'], { type: 'calendar' })).of("buddhist")
+  Intl.DateTimeFormat timeZoneName additions, e.g. shortOffset
+  Intl.supportedValuesOf('calendar')
+- class #privateMethod
+- class static { /* initialization blocks */ }
+- String replaceAll
+- Logical assignment operators &&=, ||=, ??=
+- RegExp match indices /re/d.exec("e").incides[0]
+- Array [1,2,3].at(-1)
+- Array findLast, findLastIndex
+- Object.hasOwn
+- const e = new Error("parent"); new Error("parent", { cause: e})
+- 
+
 ### Active AQL query cursors metric
 
 The `arangodb_aql_cursors_active` metric has been added and shows the number
