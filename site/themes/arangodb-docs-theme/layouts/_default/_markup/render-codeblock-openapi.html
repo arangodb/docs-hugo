@@ -179,7 +179,7 @@
   {{ $anchor := printf "%s_%s" $title $prop }}
   <li class="openapi-table-row regular-font">
     {{ if and (eq $value.type "array") ($value.items.type) }}
-      {{ $type = printf "array<%s>" $value.items.type }}
+      {{ $type = printf "array of %ss" $value.items.type }}
     {{ else if eq $value.type "object" }}
       {{ $type = "object" }}
     {{ end }}
