@@ -55,7 +55,6 @@ The `arangoml` package comes pre-loaded with every ArangoGraphML notebook enviro
 To start using it, simply import it, and enable it via a Jupyter Magic Command.
 
 ```py
-import arangoml
 arangoml = %enable_arangoml
 ```
 
@@ -280,7 +279,7 @@ arangoml.projects.list_projects()
 The Featurization Specification asks that you input the following:
 - `featurization_name`: A name for the featurization task.
 - `project_name`: The associated project name. You can use `project.name` here
-  if was created or retrieved as described above.
+  if it was created or retrieved as described above.
 - `graph_name`: The associated graph name that exists within the database.
 - `default_config` Optional: The optional default configuration to be applied
   across all features. Individual collection feature settings override this option.
