@@ -251,6 +251,14 @@ the result array for the respective documents, along with the successful ones:
 {"_key":"valid","_id":"coll/valid","_rev":"_gG9JHsW---"}
 ```
 
+## Exit code adjustments
+
+<small>Introduced in: v3.10.13, v3.11.7</small>
+
+For some fatal errors like a required database upgrade or a failed version check,
+_arangod_ set the generic exit code of `1`. It now returns a different, more
+specific exit code in these cases.
+
 ## Batch-reading an empty list of documents succeeds
 
 <small>Introduced in: v3.11.1</small>

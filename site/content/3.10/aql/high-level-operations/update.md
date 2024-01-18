@@ -3,8 +3,8 @@ title: '`UPDATE` operation in AQL'
 menuTitle: UPDATE
 weight: 55
 description: >-
-  You can use `UPDATE` operations to partially update documents in a collection
-  by adding or updating specific attributes
+  The `UPDATE` operation partially modifies a document with the given attributes,
+  by adding new and updating existing attributes
 archetype: default
 ---
 Each `UPDATE` operation is restricted to a single collection, and the

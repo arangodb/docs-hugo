@@ -213,6 +213,31 @@ Therefore, you should only set the `readOwnWrites` option to `false` if you can
 guarantee that the input of the `UPSERT` leads to disjoint documents being
 inserted, updated, or replaced.
 
+### Parallel execution within an AQL query
+
+The new `async-prefetch` optimizer rule allows certain operations of a query to
+asynchronously prefetch the next batch of data while processing the current batch,
+allowing parts of the query to run in parallel. This can lead to performance
+improvements if there is still reserve (scheduler) capacity.
+
+The new `Par` column in a query explain output shows which nodes of a query are
+eligible for asynchronous prefetching. Write queries, graph execution nodes,
+nodes inside subqueries, `LIMIT` nodes and their dependencies above, as well as
+all query parts that include a `RemoteNode` are not eligible.
+
+```aql
+Execution plan:
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT
+  2   EnumerateCollectionNode     ✓     18     - FOR doc IN places   /* full collection scan  */   FILTER (doc.`label` IN [ "Glasgow", "Aberdeen" ])   /* early pruning */
+  5   CalculationNode             ✓     18       - LET #2 = doc.`label`   /* attribute expression */   /* collections used: doc : places */
+  6   SortNode                    ✓     18       - SORT #2 ASC   /* sorting strategy: standard */
+  7   ReturnNode                        18       - RETURN doc
+```
+
+The profiling output for queries includes a new `Par` column as well, but it
+shows the number of successful parallel asynchronous prefetch calls.
+
 ### Added AQL functions
 
 The new `PARSE_COLLECTION()` and `PARSE_KEY()` let you more extract the
@@ -229,6 +254,39 @@ returns the corresponding character as a string.
 See [String functions in AQL](../../aql/functions/string.md#repeat).
 
 A numeric function `RANDOM()` has been added as an alias for the existing `RAND()`.
+
+### Timezone parameter for date functions
+
+The following AQL date functions now accept an optional timezone argument to
+perform date and time calculations in certain timezones:
+
+- `DATE_DAYOFWEEK(date, timezone)`
+- `DATE_YEAR(date, timezone)`
+- `DATE_MONTH(date, timezone)`
+- `DATE_DAY(date, timezone)`
+- `DATE_HOUR(date, timezone)`
+- `DATE_MINUTE(date, timezone)`
+- `DATE_DAYOFYEAR(date, timezone)`
+- `DATE_ISOWEEK(date, timezone)`
+- `DATE_ISOWEEKYEAR(date, timezone)`
+- `DATE_LEAPYEAR(date, timezone)`
+- `DATE_QUARTER(date, timezone)`
+- `DATE_DAYS_IN_MONTH(date, timezone)`
+- `DATE_TRUNC(date, unit, timezone)`
+- `DATE_ROUND(date, amount, unit, timezone)`
+- `DATE_FORMAT(date, format, timezone)`
+- `DATE_ADD(date, amount, unit, timezone)`
+- `DATE_SUBTRACT(date, amount, unit, timezone)`
+
+The following two functions accept up to two timezone arguments. If you only
+specify the first, then both input dates are assumed to be in this one timezone.
+If you specify two timezones, then the first date is assumed to be in the first
+timezone, and the second date in the second timezone:
+
+- `DATE_DIFF(date1, date2, unit, asFloat, timezone1, timezone2)` (`asFloat` can be left out)
+- `DATE_COMPARE(date1, date2, unitRangeStart, unitRangeEnd, timezone1, timezone2)`
+
+See [Date functions in AQL](../../aql/functions/date.md#date_dayofweek)
 
 ### Improved `move-filters-into-enumerate` optimizer rule
 
@@ -249,6 +307,19 @@ sub-attribute in `fields` of persistent indexes. On the other hand, inverted
 indexes have been allowing to index and store the `_id` system attribute.
 
 ## Server options
+
+### Effective and available startup options
+
+The new `GET /_admin/options` and `GET /_admin/options-description` HTTP API
+endpoints allow you to return the effective configuration and the available
+startup options of the queried _arangod_ instance.
+
+Previously, it was only possible to fetch the current configuration on
+single servers and Coordinators using a JavaScript Transaction, and to list
+the available startup options with `--dump-options`.
+
+See the [HTTP interface for administration](../../develop/http-api/administration.md#startup-options)
+for details.
 
 ### Protocol aliases for endpoints
 
@@ -428,6 +499,120 @@ full, log entries are written synchronously until the queue has space again.
 
 ## Miscellaneous changes
 
+### V8 and ICU library upgrades
+
+The bundled V8 JavaScript engine has been upgraded from version 7.9.317 to
+12.1.165. As part of this upgrade, the bundled Unicode character handling library
+ICU has been upgraded as well, from version 64.2 to 73.1.
+
+Note that ArangoDB's build of V8 has pointer compression disabled to allow for
+more than 4 GB of heap memory.
+
+The V8 upgrade brings various language features to JavaScript contexts in ArangoDB
+like arangosh, Foxx, and JavaScript Transactions. These features are part of the
+ECMAScript specifications ES2020 through ES2024. The following list is non-exhaustive:
+
+- Optional chaining, like `obj.foo?.bar?.length` to easily access an object
+  property or call a function but stop evaluating the expression as soon as the
+  value is `undefined` or `null` and return `undefined` instead of throwing an error
+
+- Nullish coalescing operator, like `foo ?? bar` to evaluate to the value of `bar`
+  if `foo` is `null` or `undefined`, otherwise to the value of `foo`
+
+- Return the array element at the given index, allowing positive as well as
+  negative integer values, like `[1,2,3].at(-1)`
+
+- Copying versions of the array methods `reverse()`, `sort()`, and `splice()`
+  that perform in-place operations, and a copying version of the bracket notation
+  for changing the value at a given index
+  - Return a new array with the elements in reverse order, like `[1,2,3].toReversed()`
+  - Return a new array with the elements sorted in ascending order, like `[2,3,1].toSorted()`
+  - Return a new array with elements removed and optionally inserted at a given
+    index, like `[1,2,3,4].toSpliced(1,2,"new", "items")`
+  - Return a new array with one element replaced at a given index, allowing
+    positive and negative integer values, like `[1,2,3,4].with(-2, "three")`
+
+- Find array elements from the end with `findLast()` and `findLastIndex()`, like
+  `[1,2,3,4].findLast(v => v % 2 == 1)`
+
+- Return a new string with all matches of a pattern replaced with a provided value,
+  not requiring a regular expression, like `"foo bar foo".replaceAll("foo", "baz")`
+
+- If the `matchAll()` method of a string is used with a regular expression that
+  misses the global `g` flag, an error is thrown
+
+- A new regular expression flag `d` to include capture group start and end indices,
+  like `/f(o+)/d.exec("foobar").indices[1]`
+
+- A new regular expression flag `v` to enable the Unicode sets mode, like
+  `/^\p{RGI_Emoji}$/v.test("👨🏾‍⚕️")` or `/[\p{Script_Extensions=Greek}--[α-γ]]/v.test('β')`
+
+- A static method to check whether an object directly defines a property, like
+  `Object.hasOwn({ foo: 42 })`, superseding `Object.prototype.hasOwnProperty()`
+
+- `Object.groupBy()` and `Map.groupBy()` to group the elements of an iterable
+  according to the string values returned by a provided callback function
+
+- Logical assignment operators `&&=`, `||=`, `??=`
+
+- Private properties that cannot be referenced outside of the class,
+  like `class P { #privField = 42; #privMethod() { } }`
+
+- Static initialization blocks in classes that run when the class itself is
+  evaluated, like `class S { static { console.log("init block") } }`
+
+- `WeakRef` to hold a weak reference to another object, without preventing that
+  object from getting garbage-collected
+
+- A `cause` property for Error instances to indicate the original cause of the error
+
+- Extended internationalization APIs. Examples:
+
+  ```js
+  let egyptLocale = new Intl.Locale("ar-EG")
+  egyptLocale.numberingSystems // [ "arab" ]
+  egyptLocale.calendars  // [ "gregory", "coptic", "islamic", "islamic-civil", "islamic-tbla" ]
+  egyptLocale.hourCycles // [ "hc12" ]
+  egyptLocale.timeZones  // [ "Africa/Cairo" ]
+  egyptLocale.textInfo   // { "direction": "rtl" }
+  egyptLocale.weekInfo   // { "firstDay": 6, "weekend" : [5, 6], "minimalDays": 1 }
+
+  Intl.supportedValuesOf("collation"); // [ "compat", "emoji", "eor", "phonebk", ... ]
+  Intl.supportedValuesOf("calendar"); // [ "buddhist", "chinese", "coptic", "dangi", ... ]
+  // Other supported values: "currency", "numberingSystem", "timeZone", "unit"
+
+  let germanLocale = new Intl.Locale("de")
+  germanLocale.collations // [ "emoji", "eor", "phonebk" ]
+  germanLocale.weekInfo   // { "firstDay": 1, "weekend" : [6, 7], "minimalDays": 4 }
+
+  let ukrainianCalendarNames = new Intl.DisplayNames(["uk"], { type: "calendar" })
+  ukrainianCalendarNames.of("buddhist") // "буддійський календар"
+
+  let frenchDateTimeFieldNames = new Intl.DisplayNames(["fr"], { type: "dateTimeField" })
+  frenchDateTimeFieldNames.of("day") // "jour"
+
+  let japaneseDialectLangNames = new Intl.DisplayNames(["ja"], { type: "language" })
+  let japaneseStandardLangNames = new Intl.DisplayNames(["ja"], { type: "language", languageDisplay: "standard" })
+  japaneseDialectLangNames.of('en-US')  // "アメリカ英語"
+  japaneseDialectLangNames.of('en-GB')  // "イギリス英語"
+  japaneseStandardLangNames.of('en-US') // "英語 (アメリカ合衆国)"
+  japaneseStandardLangNames.of('en-GB') // "英語 (イギリス)"
+
+  let americanDateTimeFormat = new Intl.DateTimeFormat("en-US", { timeZoneName: "longGeneric" })
+  americanDateTimeFormat.formatRange(new Date(0), new Date()) // e.g. with a German local time:
+  // "1/1/1970, Central European Standard Time – 1/16/2024, Central European Time"
+  
+  let swedishCurrencyNames = new Intl.DisplayNames(["sv"], { type: "currency" })
+  swedishCurrencyNames.of("TZS") // "tanzanisk shilling"
+
+  let americanNumberFormat = new Intl.NumberFormat("en-US", {
+    style: "currency", currency: "EUR", maximumFractionDigits: 0 })
+  americanNumberFormat.formatRange(1.5, 10) // "€2 – €10"
+
+  let welshPluralRules = new Intl.PluralRules("cy")
+  welshPluralRules.selectRange(1, 3) // "few"
+  ```
+
 ### Active AQL query cursors metric
 
 The `arangodb_aql_cursors_active` metric has been added and shows the number
@@ -529,7 +714,7 @@ cache subsystem:
 
 ### Detached scheduler threads
 
-<small>Introduced in: v3.11.5</small>
+<small>Introduced in: v3.10.13, v3.11.5</small>
 
 A scheduler thread now has the capability to detach itself from the scheduler
 if it observes the need to perform a potentially long running task, like waiting

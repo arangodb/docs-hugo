@@ -69,6 +69,13 @@ Moreover, a `remove-unnecessary-calculations-4` rule has been added.
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
 
+#### Gharial API
+
+The `PATCH /_api/gharial/{graph}/edge/{collection}/{edge}` endpoint to update
+edges in named graphs now validates the referenced vertex when modifying either
+the `_from` or `_to` edge attribute. Previously, the validation only occurred if
+both were set in the request.
+
 #### Limit to the number of databases in a deployment
 
 <small>Introduced in: v3.10.10, v3.11.2</small>
@@ -117,7 +124,25 @@ a new `multi_delimiter` Analyzer that accepts an array of strings in a
 
 ### Endpoints added
 
+#### Effective and available startup options
 
+The new `GET /_admin/options` and `GET /_admin/options-description` HTTP API
+endpoints allow you to return the effective configuration and the available
+startup options of the queried _arangod_ instance.
+
+Previously, it was only possible to [fetch the current configuration](../../operations/administration/configuration.md#fetch-current-configuration-options)
+on single servers and Coordinators using a JavaScript transaction, and to list
+the available startup options with `--dump-options`.
+
+See the [HTTP interface for administration](../../develop/http-api/administration.md#startup-options)
+for details.
+
+#### Available key generators
+
+You can now retrieve the available key generators for collections using the new
+`GET /_api/key-generators` endpoint.
+
+See the [HTTP API description](../../develop/http-api/collections.md#get-the-available-key-generators)
 
 ### Endpoints augmented
 
