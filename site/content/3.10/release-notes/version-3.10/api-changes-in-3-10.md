@@ -50,52 +50,6 @@ The `/_api/gharial` endpoints for named graphs have changed:
   `POST /_api/gharial/{graph}/edge/{collection}` but the `collection` doesn't
   belong to the `graph`, then the error is `ERROR_GRAPH_EDGE_COLLECTION_NOT_USED`.
 
-#### Validation of `smartGraphAttribute` in SmartGraphs
-
-<small>Introduced in: v3.10.13</small>
-
-The new validation of the `smartGraphAttribute` now checks that the attribute
-is not changed afterward by update or replace operations. Previously, the 
-`smartGraphAttribute` value was checked only when inserting documents into a
-SmartGraph vertex collection, but not for update or replace operations.
-
-The missing checks on update and replace operations allowed to retroactively
-modify the value of the `smartGraphAttribute` for existing documents, which
-could have led to problems when the data of such a SmartGraph vertex collection was
-replicated to a new follower shard. On the new follower shard, the documents
-went through the full validation and led to documents with modified
-`smartGraphAttribute` values being rejected on the follower. This could have
-led to follower shards not getting in sync.
-
-Now, the value of the `smartGraphAttribute` is fully validated with every
-insert, update, or replace operation, and every attempt to modify the value of
-the `smartGraphAttribute` retroactively fails with the `4003` error,
-`ERROR_KEY_MUST_BE_PREFIXED_WITH_SMART_GRAPH_ATTRIBUTE`.
-Additionally, if upon insertion the `smartGraphAttribute` is missing for a
-SmartGraph vertex, the error code is error `4001`, `ERROR_NO_SMART_GRAPH_ATTRIBUTE`.
-
-To retroactively repair the data in any of the affected collections, it is
-possible to update every (affected) document with the correct value of the
-`smartGraphAttribute` via an AQL query as follows:
-
-```
-FOR doc IN @@collection
-  LET expected = SUBSTRING(doc._key, 0, FIND_FIRST(doc._key, ':'))
-  LET actual = doc.@attr
-  FILTER expected != actual
-  UPDATE doc WITH {@attr: expected} IN @@collection
-  COLLECT WITH COUNT INTO updated
-  RETURN updated
-```  
-
-This updates all documents with the correct (expected) value of the
-`smartGraphAttribute` if it deviates from the expected value. The query
-returns the number of updated documents as well.
-
-The bind parameters necessary to run this query are:
-- `@@collection`: name of a SmartGraph vertex collection to be updated
-- `@attr`: attribute name of the `smartGraphAttribute` of the collection
-
 #### Disabled Foxx APIs
 
 <small>Introduced in: v3.10.5</small>
