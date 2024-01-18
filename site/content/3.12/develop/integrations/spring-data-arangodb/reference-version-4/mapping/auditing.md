@@ -93,8 +93,9 @@ public class MyEntity {
 }
 ```
 
-To customize the behavior of deciding whether an entity instance is new or already previously persisted, the entity can 
-implement the `org.springframework.data.domain.Persistable<ID>` interface which is defined as follows:
+To customize the behavior of deciding whether an entity instance is new or has
+already been persisted previously, the entity can implement the
+`org.springframework.data.domain.Persistable<ID>` interface which is defined as follows:
 
 ```java
 public interface Persistable<ID> {
@@ -115,7 +116,8 @@ public interface Persistable<ID> {
 }
 ```
 
-For example, we might want to consider an entity instance new if the field `createdDate` is  `null`:
+For example, we might want to consider an entity instance new if the field
+`createdDate` is  `null`:
 
 ```java
 @Document
