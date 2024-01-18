@@ -491,7 +491,7 @@ ECMAScript specifications ES2020 through ES2024. The following list is non-exhau
 
 - Optional chaining, like `obj.foo?.bar?.length` to easily access an object
   property or call a function but stop evaluating the expression as soon as the
-  value is `undefined` or `null` and return `undefined` instead throwing an error
+  value is `undefined` or `null` and return `undefined` instead of throwing an error
 
 - Nullish coalescing operator, like `foo ?? bar` to evaluate to the value of `bar`
   if `foo` is `null` or `undefined`, otherwise to the value of `foo`
