@@ -98,7 +98,7 @@ The default value remains 128 MiB.
 
 The [`/_api/analyzer` endpoints](../../develop/http-api/analyzers.md) supports
 a new `multi_delimiter` Analyzer that accepts an array of strings in a
-`delimiters` attribute of the `properties` object.
+`delimiter` attribute of the `properties` object.
 
 ### Privilege changes
 

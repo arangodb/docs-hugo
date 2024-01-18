@@ -69,7 +69,7 @@ quoting, use the `multi_delimiter` Analyzer instead of chaining multiple
 ```js
 var analyzers = require("@arangodb/analyzers");
 var a = analyzers.save("delimiter_multiple", "multi_delimiter", {
-  delimiters: [",", ";", "||"]
+  delimiter: [",", ";", "||"]
 }, []);
 db._query(`RETURN TOKENS("differently,delimited;words||one|token", "delimiter_multiple")`).toArray();
 // [ ["differently", "delimited", "words", "one|token"] ]
