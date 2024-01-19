@@ -275,7 +275,7 @@ attributes:
 ```js
 ---
 name: analyzerDelimiter1
-description: Split comma-separated text into tokens but do not split quoted fields
+description: Split comma-separated text into tokens but do not split quoted fields:
 ---
 var analyzers = require("@arangodb/analyzers");
 var a = analyzers.save("delimiter_csv", "delimiter", {
@@ -290,7 +290,7 @@ db._query(`RETURN TOKENS('foo,bar,baz,"bar,baz"', "delimiter_csv")`).toArray();
 name: analyzerDelimiter2
 description: >
   Split input strings into tokens at every character sequence of hyphen-minus,
-  right angled bracket, and a space
+  right angled bracket, and a space:
 ---
 var analyzers = require("@arangodb/analyzers");
 var a = analyzers.save("delimiter_arrow", "delimiter", {
@@ -322,7 +322,7 @@ attributes:
 name: analyzerMultiDelimiter1
 description: >
   Split at delimiting characters `,` and `;`, as well as the character sequence
-  `||` but not a single `|` character
+  `||` but not a single `|` character:
 ---
 var analyzers = require("@arangodb/analyzers");
 var a = analyzers.save("delimiter_multiple", "multi_delimiter", {
@@ -335,7 +335,7 @@ db._query(`RETURN TOKENS("differently,delimited;words||one|token", "delimiter_mu
 ```js
 ---
 name: analyzerMultiDelimiter2
-description: Double quote marks have no effect on the splitting
+description: Double quote marks have no effect on the splitting:
 ---
 var analyzers = require("@arangodb/analyzers");
 var a = analyzers.save("delimiter_noquote", "multi_delimiter", {
