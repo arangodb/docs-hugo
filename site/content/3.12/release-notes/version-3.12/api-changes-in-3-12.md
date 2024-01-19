@@ -80,9 +80,11 @@ both were set in the request.
 
 <small>Introduced in: v3.10.13, v3.11.7</small>
 
-The new validation of the `smartGraphAttribute` now checks that the attribute
-is not changed afterward by update or replace operations. Previously, the 
-`smartGraphAttribute` value was checked only when inserting documents into a
+The attribute defined by the `smartGraphAttribute` graph property is not allowed to be
+changed in the documents of SmartGraph vertex collections. This is now strictly enforced.
+You must set the attribute when creating a document. Any attempt to modify or remove
+the attribute afterward by update or replace operations now throws an error. Previously,
+the `smartGraphAttribute` value was checked only when inserting documents into a
 SmartGraph vertex collection, but not for update or replace operations.
 
 The missing checks on update and replace operations allowed to retroactively
