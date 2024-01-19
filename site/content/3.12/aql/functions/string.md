@@ -3,11 +3,9 @@ title: String functions in AQL
 menuTitle: String
 weight: 50
 description: >-
-  For string processing, AQL offers the following functions
+  AQL offers functions for string processing
 archetype: default
 ---
-For string processing, AQL offers the following functions:
-
 ## CHAR_LENGTH()
 
 `CHAR_LENGTH(str) → length`
@@ -283,7 +281,7 @@ RETURN CONTAINS("foobarbaz", "horse", true)
 
 ## COUNT()
 
-This is an alias for [LENGTH()](#length).
+This is an alias for [`LENGTH()`](#length).
 
 ## CRC32()
 
@@ -1235,6 +1233,45 @@ description: ''
 RETURN REGEX_REPLACE("An Avocado", "a", "_", true)
 ```
 
+## REPEAT()
+
+`REPEAT(value, count, separator) → repeatedString`
+
+Repeat the input as many times as specified, optionally with a separator.
+
+- **value** (string): a string
+- **count** (number): how often to repeat the `value`
+- **separator** (string, *optional*): a string to place between repetitions
+- returns **repeatedString** (string\|null): a new string with the `value`
+  repeated `count` times, or `null` and a warning if the output string exceeds
+  the limit of 16 MB
+
+**Examples**
+
+```aql
+---
+name: aqlRepeat_1
+description: ''
+---
+RETURN REPEAT("foo", 3)
+```
+
+```aql
+---
+name: aqlRepeat_2
+description: ''
+---
+RETURN REPEAT("foo", 3, " | ")
+```
+
+```aql
+---
+name: aqlRepeat_3
+description: ''
+---
+RETURN REPEAT(5, 5)
+```
+
 ## REVERSE()
 
 `REVERSE(value) → reversedString`
@@ -1431,7 +1468,9 @@ Split the given string `value` into a list of strings, using the `separator`.
 
 To split a document identifier (`_id`) into the collection name and document key
 (`_key`), you should use the more optimized
-[`PARSE_IDENTIFIER()` function](document-object.md#parse_identifier).
+[`PARSE_IDENTIFIER()` function](document-object.md#parse_identifier), respectively
+[`PARSE_COLLECTION()`](document-object.md#parse_collection) or
+[`PARSE_KEY()`](document-object.md#parse_key) to only extract the name or key.
 
 - **value** (string): a string
 - **separator** (string): either a string or a list of strings. If `separator` is
@@ -1889,6 +1928,28 @@ description: ''
 RETURN [
   TO_BASE64("ABC."),
   TO_BASE64("123456")
+]
+```
+
+## TO_CHAR()
+
+`TO_CHAR(codepoint) → character`
+
+Return the character with the specified codepoint.
+
+- **codepoint** (number): a Unicode codepoint
+- returns **character** (string): the character with the specified codepoint
+
+**Examples**
+
+```aql
+---
+name: aqlToChar
+description: ''
+---
+RETURN [
+  TO_CHAR(216),
+  TO_CHAR(0x1F951)
 ]
 ```
 

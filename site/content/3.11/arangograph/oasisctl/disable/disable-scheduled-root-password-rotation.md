@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl disable scheduled-root-password-rotation command
 title: Oasisctl Disable Scheduled-Root-Password-Rotation
 menuTitle: Disable Scheduled-Root-Password-Rotation

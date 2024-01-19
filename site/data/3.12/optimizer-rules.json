@@ -24,6 +24,18 @@
     }
   },
   {
+    "name": "replace-like-with-range",
+    "description": "Replace LIKE() function with range scans where possible.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": false,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
     "name": "simplify-conditions",
     "description": "Replace parts in `CalculationNode` expressions with\nsimpler expressions.",
     "flags": {
@@ -164,6 +176,18 @@
       "canBeDisabled": true,
       "canCreateAdditionalPlans": false,
       "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
+    "name": "replace-equal-attribute-accesses",
+    "description": "Replace attribute accesses that are equal due to a filter statement\nwith the same value. This might enable other optimizations later on.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": true,
       "enterpriseOnly": false
     }
   },
@@ -338,6 +362,18 @@
   {
     "name": "optimize-traversals",
     "description": "Try to move `FILTER` conditions into `TraversalNode` for\nearly pruning of results, apply traversal projections, and avoid calculating\nedge and path output variables that are not declared in the query for the\nAQL traversal.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
+    "name": "optimize-enumerate-path-filters",
+    "description": "Move `FILTER` conditions on the path output variable into the path search",
     "flags": {
       "hidden": false,
       "clusterOnly": false,
@@ -601,7 +637,7 @@
   },
   {
     "name": "move-filters-into-enumerate",
-    "description": "Move filters on non-indexed collection attributes into\n`IndexNode` or `EnumerateCollectionNode` to allow early pruning of\nnon-matching documents. This optimization can help to avoid a lot of temporary\ndocument copies.",
+    "description": "Move filters on non-indexed collection attributes into\n`IndexNode` or `EnumerateCollectionNode` to allow early pruning of\nnon-matching documents. This optimization can help to avoid a lot of temporary\ndocument copies. The optimization can also be applied to enumerations over\nnon-collection array.",
     "flags": {
       "hidden": false,
       "clusterOnly": false,
@@ -720,18 +756,6 @@
     }
   },
   {
-    "name": "async-prefetch",
-    "description": "Allow query execution nodes to asynchronously prefetch the\nnext batch while processing the current batch, allowing parts of the query to\nrun in parallel. This is an experimental option as not all operations are\nthread-safe.",
-    "flags": {
-      "hidden": true,
-      "clusterOnly": false,
-      "canBeDisabled": true,
-      "canCreateAdditionalPlans": false,
-      "disabledByDefault": true,
-      "enterpriseOnly": false
-    }
-  },
-  {
     "name": "decay-unnecessary-sorted-gather",
     "description": "Avoid merge-sorting results on a Coordinator if they are all\nfrom a single shard and fully sorted by a DB-Server already.",
     "flags": {
@@ -780,6 +804,18 @@
     }
   },
   {
+    "name": "batch-materialize-documents",
+    "description": "Batch document lookup from indexes.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
     "name": "late-materialization-offset-info",
     "description": "Get the search highlighting offsets as late as possible to\navoid unnecessary reads.",
     "flags": {
@@ -792,8 +828,8 @@
     }
   },
   {
-    "name": "remove-unnecessary-projections",
-    "description": "Remove projections that are no longer used.",
+    "name": "join-index-nodes",
+    "description": "Join adjacent index nodes and replace them with a join node\nin case the indexes qualify for it.",
     "flags": {
       "hidden": false,
       "clusterOnly": false,
@@ -804,8 +840,44 @@
     }
   },
   {
-    "name": "join-index-nodes",
-    "description": "Join adjacent index nodes and replace them with a join node\nin case the indexes qualify for it.",
+    "name": "optimize-projections",
+    "description": "Remove projections that are no longer used and store projection\nresults in separate output registers.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
+    "name": "remove-unnecessary-calculations-4",
+    "description": "Fourth pass of removing all calculations whose result is not\nreferenced in the query. This can be a consequence of applying other\noptimizations",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
+    "name": "async-prefetch",
+    "description": "Allow query execution nodes to asynchronously prefetch the\nnext batch while processing the current batch, allowing parts of the query to\nrun in parallel. This is only possible for certain operations in a query.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
+    "name": "immutable-search-condition",
+    "description": "Optimize immutable search condition for nested loops, we don't need to make real search many times, if we can cache results in bitset",
     "flags": {
       "hidden": false,
       "clusterOnly": false,

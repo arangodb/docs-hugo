@@ -1,9 +1,8 @@
 ---
-title: Community to Enterprise Upgrade Procedure
-menuTitle: Community to Enterprise Upgrade
+title: Community Edition to Enterprise Edition Upgrade Procedure
+menuTitle: Community to Enterprise Edition
 weight: 5
-description: >-
-  While migrating from the Community to the Enterprise Edition is supported, installing directly the Enterprise package over the Community package is not supported
+description: ''
 archetype: default
 ---
 {{< warning >}}
@@ -32,20 +31,20 @@ procedure.
 The Enterprise Edition of ArangoDB requires a license to run the Enterprise Edition and activate its features.
 For more information about setting a license key, see [License Management](../administration/license-management.md).
 
-## Procedure for a _Logical_ Upgrade
+## Procedure for a *Logical* Upgrade
 
 1. Use the tool [_arangodump_](../../components/tools/arangodump/_index.md) to **take a backup**
    of your data stored by your Community Edition installation
 2. Uninstall the ArangoDB Community Edition package
 3. Install the ArangoDB Enterprise Edition package
-   (and start your _Single Instance_, _Active Failover_ or _Cluster_)
+   (and start your _Single Instance_ or _Cluster_)
 4. Restore the backup using the tool [_arangorestore_](../../components/tools/arangorestore/_index.md).
 
-## Procedure for an _In-Place_ Upgrade
+## Procedure for an *In-Place* Upgrade
 
 1. Shutdown ArangoDB and make a copy of your data directory (e.g., in Linux, by
    using the _cp_ command). If you are using a setup that involves several _arangod_ processes
-   (e.g. _Active Failover_ or _Cluster_) please make sure all _arangod_ processes
+   (a cluster deployment), please make sure all _arangod_ processes
    are stopped and all the data directories in use are copied in a safe location 
 2. Uninstall the ArangoDB Community Edition package (make sure this is done in a way that
    your database is kept on your disk, e.g. on _Debian_ systems do **not** use the
@@ -56,8 +55,8 @@ For more information about setting a license key, see [License Management](../ad
    your data directory with the option `--database.auto-upgrade` (in addition to
    any other options you are currently using). The server will stop after a while
    (check the log file of _arangod_ as it should contain relevant information about
-   the upgrade). If you are using a setup that involves several _arangod_ processes
-   (e.g. _Active Failover_ or _Cluster_) this step has to be repeated for all _arangod_
+   the upgrade). If you use a setup that involves several _arangod_ processes
+   (a cluster deployment), this step has to be repeated for all _arangod_
    processes
 5. Start ArangoDB Enterprise Edition
    (in the same way you were starting ArangoDB Community Edition)

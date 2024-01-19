@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl rebalance command
 title: Oasisctl Rebalance
 menuTitle: Rebalance

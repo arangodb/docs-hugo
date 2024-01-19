@@ -3,15 +3,16 @@ title: Graph traversals in AQL
 menuTitle: Traversals
 weight: 10
 description: >-
-  There are two syntaxes for graph traversals in ArangoDB Query Language (AQL), the named graph and the anonymous graph.
+  You can traverse named graphs and anonymous graphs with a native AQL
+  language construct
 archetype: default
 ---
 ## Syntax
 
 There are two slightly different syntaxes for traversals in AQL, one for
-- [named graphs](../../graphs/first-steps.md#named-graphs) and another to
+- [named graphs](../../graphs/_index.md#named-graphs) and another to
 - specify a [set of edge collections](#working-with-collection-sets)
-  ([anonymous graph](../../graphs/first-steps.md#anonymous-graphs)).
+  ([anonymous graph](../../graphs/_index.md#anonymous-graphs)).
 
 ### Working with named graphs
 
@@ -443,7 +444,7 @@ FOR v,e,p IN 2..3 OUTBOUND "places/London" GRAPH "kShortestPathsGraph"
 
 {{< warning >}}
 You can use AQL functions in prune expressions but only those that can be
-executed on DB-Servers, regardless of your deployment type. The following
+executed on DB-Servers, regardless of your deployment mode. The following
 functions cannot be used in the expression:
 - `CALL()`
 - `APPLY()`

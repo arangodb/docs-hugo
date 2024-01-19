@@ -6,8 +6,6 @@ description: >-
   Learn about the different ways you can use and communicate with ArangoDB
 archetype: default
 ---
-{{< description >}}
-
 ## How to Communicate with the Server
 
 The core component of ArangoDB is the [ArangoDB server](../components/arangodb-server/_index.md)
@@ -57,21 +55,21 @@ as well as the drivers and integrations for different programming languages and
 environments. They all provide a convenient way to work with ArangoDB, but you
 may use the low-level REST API directly as needed.
 
-See the [HTTP](../develop/http/_index.md) documentation to learn more about the API, how requests
+See the [HTTP](../develop/http-api/_index.md) documentation to learn more about the API, how requests
 are handled and what endpoints are available.
 
 ## Set Up and Deploy ArangoDB
 
 [ArangoDB Starter](../components/tools/arangodb-starter/_index.md) (`arangodb` binary) helps you set up
 and deploy ArangoDB instances on bare-metal servers and supports all ArangoDB
-deployment modes, such as a single server instance, Active Failover, and cluster
+deployment modes, a single server instance and cluster
 (including Datacenter-to-Datacenter Replication).
 
 In addition to the Starter, there are also other ways that you can use to deploy
 ArangoDB:
 - Run the `arangod` executable directly
 - [Docker containers](../operations/installation/docker.md)
-- [Kubernetes](../deploy/deployment/kubernetes/_index.md)
+- [Kubernetes](../deploy/kubernetes.md)
 - Use installation packages
 
 ## How to Get Data In and Out of ArangoDB

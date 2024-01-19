@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl delete organization command
 title: Oasisctl Delete Organization
 menuTitle: Delete Organization

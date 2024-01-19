@@ -1,12 +1,14 @@
-{{- $page := .page }}
-{{- $content := .content }}
+{{ $page := .page -}}
+{{ $content := .content -}}
 
-
-{{- with $page }}
-    <article class="default">
-      {{- partial "deprecated.html" . }}
-      {{- partial "in-development.html" . }}
+{{- with $page -}}
+  <article class="default">
+    {{ partial "deprecated.html" . -}}
+    {{ partial "in-development.html" . -}}
+    <hgroup>
       <h1 class="page-title">{{ .Title | markdownify }}</h1>
-      {{ $content | safeHTML }}
-    </article>
+      {{ with .Params.Description }}<p class="lead">{{ . | markdownify }}</p>{{ end }}
+    </hgroup>
+    {{ $content | safeHTML }}
+  </article>
 {{- end }}

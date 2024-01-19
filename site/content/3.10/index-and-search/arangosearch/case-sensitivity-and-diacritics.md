@@ -6,8 +6,6 @@ description: >-
   You can normalize values for case-insensitive matching and to ignore diacritics, also in combination with other search techniques
 archetype: default
 ---
-{{< description >}}
-
 ## Normalizing a Single Token
 
 ### Dataset
@@ -30,15 +28,16 @@ examples on this page don't require them.
 
 ### View definition
 
-#### `search-alias` View
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 db.imdb_vertices.ensureIndex({ name: "inv-ci", type: "inverted", fields: [ { name: "title", analyzer: "norm_en" } ] });
 db._createView("imdb_alias", "search-alias", { indexes: [ { collection: "imdb_vertices", index: "inv-ci" } ] });
 ```
+{{< /tab >}}
 
-#### `arangosearch` View
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -54,6 +53,9 @@ db._createView("imdb_alias", "search-alias", { indexes: [ { collection: "imdb_ve
   }
 }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ### AQL queries
 
@@ -62,21 +64,25 @@ db._createView("imdb_alias", "search-alias", { indexes: [ { collection: "imdb_ve
 Match movie title, ignoring capitalization and using the base characters
 instead of accented characters (full string).
 
-_`search-alias` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```aql
 FOR doc IN imdb_alias
   SEARCH doc.title == TOKENS("thé mäTRïX", "norm_en")[0]
   RETURN doc.title
 ```
+{{< /tab >}}
 
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(doc.title == TOKENS("thé mäTRïX", "norm_en")[0], "norm_en")
   RETURN doc.title
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | Result |
 |:-------|
@@ -86,21 +92,25 @@ FOR doc IN imdb
 
 Match a title prefix (case-insensitive).
 
-_`search-alias` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```aql
 FOR doc IN imdb_alias
   SEARCH STARTS_WITH(doc.title, "the matr")
   RETURN doc.title
 ```
+{{< /tab >}}
 
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(STARTS_WITH(doc.title, "the matr"), "norm_en")
   RETURN doc.title
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | Result |
 |:-------|

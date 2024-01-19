@@ -1,15 +1,11 @@
 ---
-title: Oasisctl Enable Scheduled-root-password-rotation
-menuTitle: Enable Scheduled Root Password Rotation
-weight: 5
-description: >-
-  Description of the oasisctl enable scheduled-root-password-rotation command
 archetype: default
+description: Description of the oasisctl enable scheduled-root-password-rotation command
+title: Oasisctl Enable Scheduled-Root-Password-Rotation
+menuTitle: Enable Scheduled-Root-Password-Rotation
+weight: 10
 ---
-Enable scheduled root password rotation
-
 ## Synopsis
-
 Enable scheduled root password rotation
 
 ```
@@ -17,7 +13,6 @@ oasisctl enable scheduled-root-password-rotation [flags]
 ```
 
 ## Options
-
 ```
   -d, --deployment-id string     Identifier of the deployment
   -h, --help                     help for scheduled-root-password-rotation
@@ -25,8 +20,7 @@ oasisctl enable scheduled-root-password-rotation [flags]
   -p, --project-id string        Identifier of the project
 ```
 
-## Options inherited from parent commands
-
+## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
       --format string     Output format (table|json) (default "table")
@@ -34,6 +28,5 @@ oasisctl enable scheduled-root-password-rotation [flags]
 ```
 
 ## See also
-
 * [oasisctl enable](_index.md)	 - Enable some settings related to deployment
 

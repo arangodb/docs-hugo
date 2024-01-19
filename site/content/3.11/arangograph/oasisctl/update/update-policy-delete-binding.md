@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update policy delete binding command
 title: Oasisctl Update Policy Delete Binding
 menuTitle: Update Policy Delete Binding

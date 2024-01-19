@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl login command
 title: Oasisctl Login
 menuTitle: Login

@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl list arangodb command
 title: Oasisctl List Arangodb
 menuTitle: List Arangodb

@@ -3,7 +3,7 @@ title: ArangoDB Server Options
 menuTitle: Options
 weight: 5
 description: >-
-  ArangoDB Server Options
+  The startup options of the `arangod` executable
 pageToc:
   maxHeadlineLevel: 2
 archetype: default

@@ -3,12 +3,9 @@ title: Numeric functions in AQL
 menuTitle: Numeric
 weight: 45
 description: >-
-  AQL offers some numeric functions for calculations
+  AQL offers functions for numeric calculations
 archetype: default
 ---
-AQL offers some numeric functions for calculations. The following functions are
-supported:
-
 ## ABS()
 
 `ABS(value) → unsignedValue`
@@ -104,7 +101,7 @@ AVERAGE( [ 999, 80, 4, 4, 4, 3, 3, 3 ] ) // 137.5
 
 ## AVG()
 
-This is an alias for [AVERAGE()](#average).
+This is an alias for [`AVERAGE()`](#average).
 
 ## CEIL()
 
@@ -580,6 +577,10 @@ Result:
 ]
 ```
 
+## RANDOM()
+
+This is an alias for [`RAND()`](#rand).
+
 ## RANGE()
 
 `RANGE(start, stop, step) → numArray`
@@ -707,7 +708,7 @@ STDDEV_SAMPLE( [ 1, 3, 6, 5, 2 ] ) // 2.0736441353327724
 
 ## STDDEV()
 
-This is an alias for [STDDEV_POPULATION()](#stddev_population).
+This is an alias for [`STDDEV_POPULATION()`](#stddev_population).
 
 ## SUM()
 
@@ -772,4 +773,4 @@ VARIANCE_SAMPLE( [ 1, 3, 6, 5, 2 ] ) // 4.300000000000001
 
 ## VARIANCE()
 
-This is an alias for [VARIANCE_POPULATION()](#variance_population).
+This is an alias for [`VARIANCE_POPULATION()`](#variance_population).

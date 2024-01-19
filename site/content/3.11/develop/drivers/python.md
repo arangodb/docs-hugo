@@ -2,8 +2,7 @@
 title: ArangoDB Python driver
 menuTitle: Python driver
 weight: 30
-description: >-
-  The python-arango driver is the recommended Python driver for ArangoDB
+description: ''
 archetype: default
 ---
 The **Python-Arango** driver is the recommended Python driver for ArangoDB.

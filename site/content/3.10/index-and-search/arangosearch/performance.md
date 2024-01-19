@@ -7,8 +7,6 @@ description: >-
   primary sort order, stored values and other optimizations
 archetype: default
 ---
-{{< description >}}
-
 ## Primary Sort Order
 
 Inverted indexes and `arangosearch` Views can have a primary sort order.
@@ -18,12 +16,98 @@ queries which iterate over a collection or View and sort by one or multiple of t
 indexed attributes. If the field(s) and the sorting direction(s) match, then the
 data can be read directly from the index without actual sort operation.
 
-You can only set the `primarySort` option and the related
-`primarySortCompression` and `primarySortCache` options on View creation.
+{{< tabs "view-definition">}}
+
+{{< tab "`search-alias` View" >}}
+You can define a primary sort order when creating inverted indexes and utilize it
+using inverted indexes standalone or via `search-alias` Views.
+
+Definition of an inverted index with a `primarySort` property:
+
+```js
+db.coll.ensureIndex({
+  name: "inv-idx",
+  type: "inverted",
+  fields: ["text", "date"],
+  primarySort: {
+    fields: [
+      { field: "date", direction: "desc" }
+    ]
+  }
+});
+```
+
+AQL query example:
+
+```aql
+FOR doc IN coll OPTIONS { indexHint: "inv-idx", forceIndexHint: true }
+  SORT doc.date DESC
+  RETURN doc
+```
+
+Execution plan **without** a sorted index being used:
+
+```aql
+Execution plan:
+ Id   NodeType                  Est.   Comment
+  1   SingletonNode                1   * ROOT
+  2   EnumerateCollectionNode      0     - FOR doc IN coll   /* full collection scan  */
+  3   CalculationNode              0       - LET #1 = doc.`date`   /* attribute expression */   /* collections used: doc : coll */
+  4   SortNode                     0       - SORT #1 DESC   /* sorting strategy: standard */
+  5   ReturnNode                   0       - RETURN doc
+```
+
+Execution plan with the primary sort order of the index being utilized:
+
+```aql
+Execution plan:
+ Id   NodeType        Est.   Comment
+  1   SingletonNode      1   * ROOT
+  6   IndexNode          0     - FOR doc IN coll   /* reverse inverted index scan, index scan + document lookup */
+  5   ReturnNode         0       - RETURN doc
+```
+
+You can add the inverted index to a `search-alias` View. Queries against the
+View can benefit from the primary sort order, too:
+
+```js
+db._createView("viewName", "search-alias", { indexes: [
+  { collection: "coll", index: "inv-idx" }
+] });
+
+db._query(`FOR doc IN viewName
+  SORT doc.date DESC
+  RETURN doc`);
+```
+
+To define more than one attribute to sort by, use multiple sub-objects in the
+`primarySort` array:
+
+```js
+db.coll.ensureIndex({
+  name: "inv-idx",
+  type: "inverted",
+  fields: ["text", "date"],
+  primarySort: {
+    fields: [
+      { field: "date", direction: "desc" },
+      { field: "text", direction: "asc" }
+    ]
+  }
+});
+```
+
+{{< info >}}
+If you mix directions in the primary sort order, the inverted index cannot be
+utilized for fully optimizing out a matching `SORT` operation if you use the
+inverted index standalone.
+{{< /info >}}
+
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
 
 {{< youtube id="bKeKzexInm0" >}}
-
-`arangosearch` View definition example:
 
 ```json
 {
@@ -40,19 +124,22 @@ You can only set the `primarySort` option and the related
     },
     "primarySort": [
       {
-        "field": "text",
-        "direction": "asc"
+        "field": "date",
+        "direction": "desc"
       }
     ]
   }
 }
 ```
 
+You can only set the `primarySort` option and the related
+`primarySortCompression` and `primarySortCache` options on View creation.
+
 AQL query example:
 
 ```aql
 FOR doc IN viewName
-  SORT doc.text
+  SORT doc.date DESC
   RETURN doc
 ```
 
@@ -63,31 +150,30 @@ Execution plan:
  Id   NodeType            Est.   Comment
   1   SingletonNode          1   * ROOT
   2   EnumerateViewNode      1     - FOR doc IN viewName   /* view query */
-  3   CalculationNode        1       - LET #1 = doc.`text`   /* attribute expression */
-  4   SortNode               1       - SORT #1 ASC   /* sorting strategy: standard */
+  3   CalculationNode        1       - LET #1 = doc.`date`   /* attribute expression */
+  4   SortNode               1       - SORT #1 DESC   /* sorting strategy: standard */
   5   ReturnNode             1       - RETURN doc
 ```
 
-Execution plan with a the primary sort order of the index being utilized:
+Execution plan with the primary sort order of the index being utilized:
 
 ```aql
 Execution plan:
  Id   NodeType            Est.   Comment
   1   SingletonNode          1   * ROOT
-  2   EnumerateViewNode      1     - FOR doc IN viewName SORT doc.`text` ASC   /* view query */
+  2   EnumerateViewNode      1     - FOR doc IN viewName SORT doc.`date` DESC   /* view query */
   5   ReturnNode             1       - RETURN doc
 ```
 
-To define more than one attribute to sort by, simply add more sub-objects to
-the `primarySort` array:
+To define more than one attribute to sort by, use multiple sub-objects in the
+`primarySort` array:
 
 ```json
 {
   "links": {
     "coll1": {
       "fields": {
-        "text": {},
-        "date": {}
+        "text": {}
       }
     },
     "coll2": {
@@ -108,9 +194,32 @@ the `primarySort` array:
   }
 }
 ```
+{{< /tab >}}
 
-You can also define a primary sort order for inverted indexes and utilize it
-via a `search-alias` View:
+{{< /tabs >}}
+
+The optimization can be applied to queries which sort by both fields as
+defined (`SORT doc.date DESC, doc.name`), but also if they sort in descending
+order by the `date` attribute only (`SORT doc.date DESC`). Queries which sort
+by `text` alone (`SORT doc.name`) are not eligible, because the index is sorted
+by `date` first. This is similar to persistent indexes, but inverted sorting
+directions are not covered by the View index
+(e.g. `SORT doc.date, doc.name DESC`).
+
+You can disable the **primary sort compression** on View or index creation to
+trade space for speed. The primary sort data is LZ4-compressed by default (`"lz4"`).
+
+- `arangosearch` Views: `primarySortCompression: "none"`
+- Inverted indexes: `primarySort: { compression: "none" }` 
+
+You can additionally enable the **primary sort cache** to always cache the primary
+sort columns in memory, which can improve the query performance.
+
+{{< tabs "view-definition">}}
+
+{{< tab "`search-alias` View" >}}
+For inverted indexes, set the `cache` option of the
+[`primarySort` property](../../develop/http-api/indexes/inverted.md) to `true`.
 
 ```js
 db.coll.ensureIndex({
@@ -121,57 +230,20 @@ db.coll.ensureIndex({
     fields: [
       { field: "date", direction: "desc" },
       { field: "text", direction: "asc" }
-    ]
+    ],
+    cache: true
   }
 });
-```
 
-AQL query example:
-
-```aql
-FOR doc IN coll OPTIONS { indexHint: "inv-idx", forceIndexHint: true }
-  SORT doc.name
-  RETURN doc
-```
-
-If you add the inverted index to a `search-alias` View, then the query example
-is the same as for the `arangosearch` View:
-
-```js
-db._createView("viewName", "search-alias", { indexes: [
+db._createView("myView", "search-alias", { indexes: [
   { collection: "coll", index: "inv-idx" }
 ] });
-
-db._query(`FOR doc IN viewName
-  SORT doc.text
-  RETURN doc`);
 ```
+{{< /tab >}}
 
-The optimization can be applied to queries which sort by both fields as
-defined (`SORT doc.date DESC, doc.name`), but also if they sort in descending
-order by the `date` attribute only (`SORT doc.date DESC`). Queries which sort
-by `text` alone (`SORT doc.name`) are not eligible, because the index is sorted
-by `date` first. This is similar to persistent indexes, but inverted sorting
-directions are not covered by the View index
-(e.g. `SORT doc.date, doc.name DESC`).
-
-Note that the `primarySort` option is immutable: it cannot be changed after
-View creation. Index definitions are generally immutable, so it cannot be
-changed for inverted indexes after creation either.
-
-The primary sort data is LZ4-compressed by default.
-- `arangosearch` Views: `primarySortCompression: "lz4"`
-- Inverted indexes: `primarySort: { compression: "lz4" }`
-
-Set it to `"none"` on View or index creation to trade space for speed.
-
-You can additionally enable the primary sort cache to always cache the primary
-sort columns in memory, which can improve the query performance. For
-`arangosearch` Views, set the [`primarySortCache` View property](arangosearch-views-reference.md#view-properties)
-to `true`. For inverted indexes, set the `cache` option of the
-[`primarySort` property](../../develop/http/indexes/inverted.md) to `true`.
-
-_`arangosearch` View:_
+{{< tab "`arangosearch` View" >}}
+Set the [`primarySortCache` View property](arangosearch-views-reference.md#view-properties)
+to `true`.
 
 ```json
 {
@@ -201,27 +273,9 @@ _`arangosearch` View:_
   }
 }
 ```
+{{< /tab >}}
 
-_`search-alias` View:_
-
-```js
-db.coll.ensureIndex({
-  name: "inv-idx",
-  type: "inverted",
-  fields: ["text", "date"],
-  primarySort: {
-    fields: [
-      { field: "date", direction: "desc" },
-      { field: "text", direction: "asc" }
-    ],
-    cache: true
-  }
-});
-
-db._createView("myView", "search-alias", { indexes: [
-  { collection: "coll", index: "inv-idx" }
-] });
-```
+{{< /tabs >}}
 
 ## Stored Values
 
@@ -235,28 +289,9 @@ stored values, improving the query performance.
 While late document materialization reduces the amount of fetched documents,
 this optimization can avoid to access the storage engine entirely.
 
-_`arangosearch` View:_
+{{< tabs "view-definition">}}
 
-```json
-{
-  "links": {
-    "articles": {
-      "fields": {
-        "categories": {}
-      }
-    }
-  },
-  "primarySort": [
-    { "field": "publishedAt", "direction": "desc" }
-  ],
-  "storedValues": [
-    { "fields": [ "title", "categories" ] }
-  ]
-}
-```
-
-_`search-alias` View:_
-
+{{< tab "`search-alias` View" >}}
 ```js
 db.articles.ensureIndex({
   name: "inv-idx",
@@ -278,6 +313,29 @@ db._createView("articlesView", "search-alias", { indexes: [
   { collection: "articles", index: "inv-idx" }
 ] });
 ```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
+```json
+{
+  "links": {
+    "articles": {
+      "fields": {
+        "categories": {}
+      }
+    }
+  },
+  "primarySort": [
+    { "field": "publishedAt", "direction": "desc" }
+  ],
+  "storedValues": [
+    { "fields": [ "title", "categories" ] }
+  ]
+}
+```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 In above View definitions, the document attribute `categories` is indexed for
 searching, `publishedAt` is used as primary sort order, and `title` as well as
@@ -322,28 +380,9 @@ Optimization rules applied:
 The stored values data is LZ4-compressed by default (`"lz4"`).
 Set it to `"none"` on View or index creation to trade space for speed.
 
-_`arangosearch` View:_
+{{< tabs "view-definition">}}
 
-```json
-{
-  "links": {
-    "articles": {
-      "fields": {
-        "categories": {}
-      }
-    }
-  },
-  "primarySort": [
-    { "field": "publishedAt", "direction": "desc" }
-  ],
-  "storedValues": [
-    { "fields": [ "title", "categories" ], "compression": "none" }
-  ]
-}
-```
-
-_`search-alias` View:_
-
+{{< tab "`search-alias` View" >}}
 ```js
 db.articles.ensureIndex({
   name: "inv-idx",
@@ -366,14 +405,9 @@ db._createView("articlesView", "search-alias", { indexes: [
   { collection: "articles", index: "inv-idx" }
 ] });
 ```
+{{< /tab >}}
 
-You can additionally enable the ArangoSearch column cache for stored values by
-setting the `cache` option in the `storedValues` definition of
-`arangosearch` Views or inverted indexes to `true`. This always caches
-stored values in memory, which can improve the query performance.
-
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -387,16 +421,22 @@ _`arangosearch` View:_
     { "field": "publishedAt", "direction": "desc" }
   ],
   "storedValues": [
-    { "fields": [ "title", "categories" ], "cache": true }
+    { "fields": [ "title", "categories" ], "compression": "none" }
   ]
 }
 ```
+{{< /tab >}}
 
-See the [`storedValues` View property](arangosearch-views-reference.md#view-properties)
-for details.
+{{< /tabs >}}
 
-_`search-alias` View:_
+You can additionally enable the ArangoSearch column cache for stored values by
+setting the `cache` option in the `storedValues` definition of
+`arangosearch` Views or inverted indexes to `true`. This always caches
+stored values in memory, which can improve the query performance.
 
+{{< tabs "view-definition">}}
+
+{{< tab "`search-alias` View" >}}
 ```js
 db.articles.ensureIndex({
   name: "inv-idx",
@@ -420,8 +460,34 @@ db._createView("articlesView", "search-alias", { indexes: [
 ] });
 ```
 
-See the [inverted index `storedValues` property](../../develop/http/indexes/inverted.md)
+See the [inverted index `storedValues` property](../../develop/http-api/indexes/inverted.md)
 for details.
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
+```json
+{
+  "links": {
+    "articles": {
+      "fields": {
+        "categories": {}
+      }
+    }
+  },
+  "primarySort": [
+    { "field": "publishedAt", "direction": "desc" }
+  ],
+  "storedValues": [
+    { "fields": [ "title", "categories" ], "cache": true }
+  ]
+}
+```
+
+See the [`storedValues` View property](arangosearch-views-reference.md#view-properties)
+for details.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Condition Optimization Options
 
@@ -489,33 +555,9 @@ You can also enable this option to always cache auxiliary data used for querying
 fields that are indexed with Geo Analyzers in memory, as the default or for
 specific fields. This can improve the performance of geo-spatial queries.
 
-_`arangosearch` View:_
+{{< tabs "view-definition">}}
 
-```json
-{
-  "links": {
-    "coll1": {
-      "fields": {
-        "attr": {
-          "analyzers": ["text_en"],
-          "cache": true
-        }
-      }
-    },
-    "coll2": {
-      "includeAllFields": true,
-      "analyzers": ["text_en"],
-      "cache": true
-    }
-  }
-}
-```
-
-See the [`cache` Link property](arangosearch-views-reference.md#link-properties)
-for details.
-
-_`search-alias` View:_
-
+{{< tab "`search-alias` View" >}}
 ```js
 db.coll1.ensureIndex({
   name: "inv-idx",
@@ -543,7 +585,35 @@ db._createView("myView", "search-alias", { indexes: [
 ] });
 ```
 
-See the [inverted index `cache` property](../../develop/http/indexes/inverted.md) for details.
+See the [inverted index `cache` property](../../develop/http-api/indexes/inverted.md) for details.
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
+```json
+{
+  "links": {
+    "coll1": {
+      "fields": {
+        "attr": {
+          "analyzers": ["text_en"],
+          "cache": true
+        }
+      }
+    },
+    "coll2": {
+      "includeAllFields": true,
+      "analyzers": ["text_en"],
+      "cache": true
+    }
+  }
+}
+```
+
+See the [`cache` Link property](arangosearch-views-reference.md#link-properties)
+for details.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 The `"norm"` Analyzer feature has performance implications even if the cache is
 used. You can create custom Analyzers without this feature to disable the
@@ -559,27 +629,12 @@ You can always cache the primary key columns in memory. This can improve the
 performance of queries that return many documents, making it faster to map
 document IDs in the index to actual documents.
 
-To enable this feature for `arangosearch` Views, set the
-[`primaryKeyCache` View property](arangosearch-views-reference.md#view-properties) to
-`true` on View creation. For inverted indexes, set the
-[`primaryKeyCache` property](../../develop/http/indexes/inverted.md) to `true`.
+{{< tabs "view-definition">}}
 
-_`arangosearch` View:_
-
-```json
-{
-  "links": {
-    "articles": {
-      "fields": {
-        "categories": {}
-      }
-    }
-  },
-  "primaryKeyCache": true
-}
-```
-
-_`search-alias` View:_
+{{< tab "`search-alias` View" >}}
+To enable this feature for inverted indexes and by extension `search-alias` Views,
+set the [`primaryKeyCache` property](../../develop/http-api/indexes/inverted.md)
+to `true` when creating inverted indexes.
 
 ```js
 db.articles.ensureIndex({
@@ -593,3 +648,25 @@ db._createView("articlesView", "search-alias", { indexes: [
   { collection: "articles", index: "inv-idx" }
 ] });
 ```
+{{< /tab >}}
+
+{{< tab "`arangosearch` View" >}}
+To enable this feature for `arangosearch` Views, set the
+[`primaryKeyCache` View property](arangosearch-views-reference.md#view-properties)
+to `true` on View creation.
+
+```json
+{
+  "links": {
+    "articles": {
+      "fields": {
+        "categories": {}
+      }
+    }
+  },
+  "primaryKeyCache": true
+}
+```
+{{< /tab >}}
+
+{{< /tabs >}}

@@ -3,7 +3,8 @@ title: Installation
 menuTitle: Installation
 weight: 210
 description: >-
-  To install ArangoDB, as first step, please download the package for your OperatingSystem from the official Download page of the ArangoDB web site
+  You can install ArangoDB by downloading and running the official packages,
+  as well as run ArangoDB using Docker images
 archetype: chapter
 ---
 To install ArangoDB, as first step, please download a package for your operating
@@ -25,10 +26,10 @@ see the [Docker](docker.md) section.
 {{< /tip >}}
 
 If you prefer to compile ArangoDB from source, please refer to the [Compiling](compiling/_index.md)
-_Section_.
+section.
 
 For detailed information on how to deploy ArangoDB, once it has been installed,
-please refer to the [Deployment](../../deploy/deployment/_index.md) chapter.
+please refer to the [Deploy](../../deploy/_index.md) chapter.
 
 ## Supported platforms and architectures
 
@@ -39,7 +40,7 @@ ArangoDB requires systems with Little Endian byte order.
 {{< /info >}}
 
 {{< tip >}}
-[ArangoGraph Insights Platform](https://cloud.arangodb.com/)
+[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
 is a fully-managed service and requires no installation. It's the easiest way
 to run ArangoDB in the cloud.
 {{< /tip >}}

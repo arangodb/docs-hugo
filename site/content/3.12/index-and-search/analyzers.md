@@ -7,8 +7,6 @@ description: >-
   searching, either standalone or in combination with Views and inverted indexes
 archetype: default
 ---
-{{< description >}}
-
 While AQL string functions allow for basic text manipulation, true text
 processing including tokenization, language-specific word stemming, case
 conversion and removal of diacritical marks (accents) from characters only
@@ -45,7 +43,7 @@ The configuration is comprised of type-specific properties and list of features.
 The features control the additional metadata to be generated to augment View
 indexes, to be able to rank results for instance.
 
-Analyzers can be managed via an [HTTP API](../develop/http/analyzers.md) and through
+Analyzers can be managed via an [HTTP API](../develop/http-api/analyzers.md) and through
 a [JavaScript module](../develop/javascript-api/analyzers.md).
 
 {{< youtube id="tbOTYL26reg" >}}
@@ -119,7 +117,8 @@ against other databases by specifying the prefixed name, e.g.
 The following Analyzer types are available:
 
 - [`identity`](#identity): treats value as atom (no transformation)
-- [`delimiter`](#delimiter): splits into tokens at user-defined character
+- [`delimiter`](#delimiter): splits into tokens at a user-defined character sequence
+- [`multi_delimiter`](#multi_delimiter): splits into tokens at user-defined character sequences
 - [`stem`](#stem): applies stemming to the value as a whole
 - [`norm`](#norm): applies normalization to the value as a whole
 - [`ngram`](#ngram): creates _n_-grams from value with user-defined lengths
@@ -256,38 +255,93 @@ db._query(`RETURN TOKENS("UPPER lower dïäcríticš", "identity")`).toArray();
 
 ### `delimiter`
 
-An Analyzer capable of breaking up delimited text into tokens as per
-[RFC 4180](https://tools.ietf.org/html/rfc4180)
-(without starting new records on newlines).
+An Analyzer capable of breaking up delimited text into tokens.
+
+It follows [RFC 4180](https://tools.ietf.org/html/rfc4180) but without starting
+new records on newlines and letting you freely choose the delimiter. You can
+wrap tokens in the input string in double quote marks to quote the delimiter.
+For example, a `delimiter` Analyzer that uses `,` as delimiter and an input
+string of `foo,"bar,baz"` results in the tokens `foo` and `bar,baz` instead of
+`foo`, `bar`, and `baz`.
 
 The *properties* allowed for this Analyzer are an object with the following
 attributes:
 
-- `delimiter` (string): the delimiting character(s). The whole string is
-  considered as one delimiter.
-
-You can wrap tokens in the input string in double quote marks to quote the
-delimiter. For example, a `delimiter` Analyzer that uses `,` as delimiter and an
-input string of `foo,"bar,baz"` results in the tokens `foo` and `bar,baz`
-instead of `foo`, `bar`, and `baz`.
-
-You can chain multiple `delimiter` Analyzers with a [`pipeline` Analyzer](#pipeline)
-to split by different delimiters.
+- `delimiter` (string): the delimiting character or character sequence.
+  The whole string is considered as one delimiter.
 
 **Examples**
 
-Split input strings into tokens at hyphen-minus characters:
+```js
+---
+name: analyzerDelimiter1
+description: Split comma-separated text into tokens but do not split quoted fields
+---
+var analyzers = require("@arangodb/analyzers");
+var a = analyzers.save("delimiter_csv", "delimiter", {
+  delimiter: ","
+}, []);
+db._query(`RETURN TOKENS('foo,bar,baz,"bar,baz"', "delimiter_csv")`).toArray();
+~analyzers.remove(a.name);
+```
 
 ```js
 ---
-name: analyzerDelimiter
-description: ''
+name: analyzerDelimiter2
+description: >
+  Split input strings into tokens at every character sequence of hyphen-minus,
+  right angled bracket, and a space
 ---
 var analyzers = require("@arangodb/analyzers");
-var a = analyzers.save("delimiter_hyphen", "delimiter", {
-  delimiter: "-"
+var a = analyzers.save("delimiter_arrow", "delimiter", {
+  delimiter: "-> "
 }, []);
-db._query(`RETURN TOKENS("some-delimited-words", "delimiter_hyphen")`).toArray();
+db._query(`RETURN TOKENS("some-> hand-picked-> words", "delimiter_arrow")`).toArray();
+~analyzers.remove(a.name);
+```
+
+### `multi_delimiter`
+
+An Analyzer capable of breaking up text into tokens using multiple delimiters.
+
+Unlike with the `delimiter` Analyzer, the `multi_delimiter` Analyzer does not
+support quoting fields.
+
+
+The *properties* allowed for this Analyzer are an object with the following
+attributes:
+
+- `delimiters` (array): a list of strings of which each is considered as one
+  delimiter that can be one or multiple characters long. The delimiters must not
+  overlap, which means that a delimiter cannot be a prefix of another delimiter.
+
+**Examples**
+
+```js
+---
+name: analyzerMultiDelimiter1
+description: >
+  Split at delimiting characters `,` and `;`, as well as the character sequence
+  `||` but not a single `|` character
+---
+var analyzers = require("@arangodb/analyzers");
+var a = analyzers.save("delimiter_multiple", "multi_delimiter", {
+  delimiter: [",", ";", "||"]
+}, []);
+db._query(`RETURN TOKENS("differently,delimited;words||one|token", "delimiter_multiple")`).toArray();
+~analyzers.remove(a.name);
+```
+
+```js
+---
+name: analyzerMultiDelimiter2
+description: Double quote marks have no effect on the splitting
+---
+var analyzers = require("@arangodb/analyzers");
+var a = analyzers.save("delimiter_noquote", "multi_delimiter", {
+  delimiter: [","]
+}, []);
+db._query(`RETURN TOKENS('foo,bar,baz,"bar,baz"', "delimiter_noquote")`).toArray();
 ~analyzers.remove(a.name);
 ```
 
@@ -898,7 +952,7 @@ db._query(`RETURN TOKENS("Quick brown foX", "ngram_upper")`).toArray();
 ~analyzers.remove(a.name);
 ```
 
-Split at delimiting characters `,` and `;`, then stem the tokens:
+Split at delimiting character `,`, then stem the tokens:
 
 ```js
 ---
@@ -908,10 +962,9 @@ description: ''
 var analyzers = require("@arangodb/analyzers");
 var a = analyzers.save("delimiter_stem", "pipeline", { pipeline: [
   { type: "delimiter", properties: { delimiter: "," } },
-  { type: "delimiter", properties: { delimiter: ";" } },
   { type: "stem", properties: { locale: "en" } }
 ] }, []);
-db._query(`RETURN TOKENS("delimited,stemmable;words", "delimiter_stem")`).toArray();
+db._query(`RETURN TOKENS("delimited,stemmable,words", "delimiter_stem")`).toArray();
 ~analyzers.remove(a.name);
 ```
 
@@ -1256,7 +1309,7 @@ attributes:
 - `legacy` (boolean, _optional_):
   This option controls how GeoJSON Polygons are interpreted (introduced in v3.10.5).
   Also see [Legacy Polygons](indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons) and
-  [GeoJSON interpretation](indexing/working-with-indexes/geo-spatial-indexes.md#geojson-interpretation).
+  [GeoJSON interpretation](../aql/functions/geo.md#geojson-interpretation).
 
   - If `legacy` is `true`, the smaller of the two regions defined by a
     linear ring is interpreted as the interior of the ring and a ring can at most

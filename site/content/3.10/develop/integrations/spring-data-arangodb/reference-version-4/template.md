@@ -7,8 +7,6 @@ description: >-
   interactions with the database over a rich feature set
 archetype: default
 ---
-{{< description >}}
-
 `ArangoTemplate` mostly offers the features from the ArangoDB Java driver with
 additional exception translation from the drivers exceptions to the Spring Data
 access exceptions inheriting the `DataAccessException` class.

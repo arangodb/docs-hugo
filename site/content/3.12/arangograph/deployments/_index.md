@@ -38,11 +38,11 @@ Deployments contain exactly **one policy**. Within that policy, you can define
 role bindings to regulate access control on a deployment level.
 {{< /info >}}
 
-### In the __General__ section
+### In the **General** section
 
 - Enter the name and optionally a short description for the deployment.
 
-### In the __Location__ section
+### In the **Location** section
 
 1. Select the __Provider__ and __Region__ of the provider.
    {{< warning >}}
@@ -67,7 +67,7 @@ role bindings to regulate access control on a deployment level.
 For any kind of production deployment we strongly advise to use an IP allowlist.
 {{< /security >}}
 
-### In the __Configuration__ section
+### In the **Configuration** section
 
 Choose between a **OneShard**, **Sharded** or **Single Server** deployment.
 
@@ -111,7 +111,7 @@ provider and region in the Location section.
 
 ![ArangoGraph Deployment Single Server](../../../images/arangograph-new-deployment-singleserver.png)
 
-### In the __Summary__ section
+### In the **Summary** section
 
 1. Review the configuration, and if you're ok with the setup press the
   __Create__ button.
@@ -250,22 +250,25 @@ attached to your role. Read more about [roles and permissions](../security-and-a
    - Select a different CA certificate.
    - Add or remove an IP allowlist.
 5. In the **Configuration** section, you can do the following:
-   - Upgrade the memory size per node. The disk size is automatically set for you.
+   - Scale up or down the memory size per node. The disk size is
+     automatically set for you.
+     {{< warning >}}
+     When scaling up or down the memory size in AWS deployments, the new
+     value gets locked and cannot be changed again until the cloud provider rate
+     limit is reset. 
+     {{< /warning >}}
    - Change **OneShard** deployments into **Sharded** deployments. To do so,
      click **Sharded**. In addition to the other configuration options, you can
      select the number of nodes for your deployment. This can also be modified later on.
-
-   {{< warning >}}
-   Notice that you cannot switch from **Sharded** back to **OneShard**.
-   {{< /warning >}}
-
-   {{< warning >}}
-   When upgrading the memory size in AWS deployments, the value gets locked and
-   cannot be changed until the cloud provider rate limit is reset. 
-   {{< /warning >}}
-
+     {{< warning >}}
+     You cannot switch from **Sharded** back to **OneShard**.
+     {{< /warning >}}
+   - Change **Single Server** deployments into **OneShard** or **Sharded** deployments.
+     {{< warning >}}
+     You cannot switch from **Sharded** or **OneShard** back to **Single Server**.
+     {{< /warning >}}
 6. All changes are reflected in the **Summary** section. Review the new
-   configuration and click **Save**. 
+   configuration and click **Save**.
 
 ## How to connect a driver to your deployment
 

@@ -1,5 +1,5 @@
 ---
-title: arangosearch Views Reference
+title: '`arangosearch` Views Reference'
 menuTitle: '`arangosearch` Views Reference'
 weight: 85
 description: ''
@@ -15,7 +15,7 @@ attributes, unlike collections with user-defined indexes.
 
 Views can be managed as follows:
 - in the web interface, in the **VIEWS** section
-- via the [Views HTTP API](../../develop/http/views/_index.md)
+- via the [Views HTTP API](../../develop/http-api/views/_index.md)
 - through the [JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#views)
 
 Once you set up a View, you can query it via AQL with the
@@ -211,7 +211,7 @@ During view modification the following directives apply:
   during View index creation, so that it remains basically available.
   `inBackground` is an option that can be set when adding links. It does not get
   persisted as it is not a View property, but only a one-off option. Also see:
-  [Creating Indexes in Background](../indexing/index-basics.md#creating-indexes-in-background)
+  [Creating Indexes in Background](../indexing/basics.md#creating-indexes-in-background)
 
 - **cache** (_optional_; type: `boolean`; default: `false`)
 
@@ -392,12 +392,11 @@ of removing unused segments after release of internal resources.
   Wait at least this many milliseconds between committing View data store
   changes and making documents visible to queries.
 
-  For the case where there are a lot of inserts/updates, a lower value, until
-  commit, causes the index not to account for them and memory usage continues
-  to grow.
-  For the case where there are a few inserts/updates, a higher value impacts
-  performance and wastes disk space for each commit call without any added
-  benefits.
+  For the case where there are a lot of inserts/updates, a higher value causes the
+  index not to account for them and memory usage continues to grow until the commit.
+  A lower value impacts performance, including the case where there are no or only a
+  few inserts/updates because of synchronous locking, and it wastes disk space for
+  each commit call.
 
   > For data retrieval `arangosearch` Views follow the concept of
   > "eventually-consistent", i.e. eventually all the data in ArangoDB is
@@ -448,8 +447,8 @@ is used by these writers (in terms of "writers pool") one can use
   to disable use: `0`; _immutable_)
 
   Maximum memory byte size per writer (segment) before a writer (segment) flush is
-  triggered. `0` value turns off this limit for any writer (buffer) and data will
-  be flushed periodically. `0` value should be used carefully due to high
+  triggered. `0` value turns off this limit for any writer (buffer) and data
+  is flushed periodically. `0` value should be used carefully due to high
   potential memory consumption.
 
 - **consolidationPolicy** (_optional_; type: `object`; default: `{}`)

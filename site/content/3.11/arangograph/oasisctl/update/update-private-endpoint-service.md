@@ -1,5 +1,5 @@
 ---
-layout: default
+archetype: default
 description: Description of the oasisctl update private endpoint service command
 title: Oasisctl Update Private Endpoint Service
 menuTitle: Update Private Endpoint Service
@@ -19,6 +19,7 @@ oasisctl update private endpoint service [flags]
       --azure-client-subscription-id strings   List of Azure subscription IDs from which a Private Endpoint can be created
   -d, --deployment-id string                   Identifier of the deployment that the private endpoint service is connected to
       --description string                     Description of the private endpoint service
+      --enable-private-dns                     Enable private DNS (applicable for AWS only)
       --gcp-project strings                    List of GCP projects from which a Private Endpoint can be created
   -h, --help                                   help for service
       --name string                            Name of the private endpoint service

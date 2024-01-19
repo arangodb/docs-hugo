@@ -3,7 +3,8 @@ title: Type check and cast functions in AQL
 menuTitle: Type check & cast
 weight: 55
 description: >-
-  Some operators expect their operands to have a certain data type
+  AQL provides functions for checking data types and converting between
+  different types
 archetype: default
 ---
 Some operators expect their operands to have a certain data type. For example,
@@ -139,7 +140,7 @@ TO_ARRAY({foo: 1, bar: 2, baz: [3, 4, 5]}) // [1, 2, [3, 4, 5]]
 
 `TO_LIST(value) → array`
 
-This is an alias for [TO_ARRAY()](#to_array).
+This is an alias for [`TO_ARRAY()`](#to_array).
 
 ## Type check functions
 
@@ -204,7 +205,7 @@ Check whether *value* is an array / list
 
 `IS_LIST(value) → bool`
 
-This is an alias for [IS_ARRAY()](#is_array)
+This is an alias for [`IS_ARRAY()`](#is_array)
 
 ### IS_OBJECT()
 
@@ -220,7 +221,7 @@ Check whether *value* is an object / document
 
 `IS_DOCUMENT(value) → bool`
 
-This is an alias for [IS_OBJECT()](#is_object)
+This is an alias for [`IS_OBJECT()`](#is_object)
 
 ### IS_DATESTRING()
 

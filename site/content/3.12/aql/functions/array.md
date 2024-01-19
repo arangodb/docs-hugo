@@ -3,14 +3,16 @@ title: Array functions in AQL
 menuTitle: Array
 weight: 10
 description: >-
-  Array functions
+  AQL provides functions for higher-level array manipulation in addition to
+  language constructs that can also be used for arrays
 archetype: default
 ---
-AQL provides functions for higher-level array manipulation. Also see the
-[numeric functions](numeric.md) for functions that work on number arrays.
+You can use the AQL functions listed below to work with lists of items. Also
+see the [numeric functions](numeric.md) for functions that work on number arrays.
+
 If you want to concatenate the elements of an array equivalent to `join()`
-in JavaScript, see [CONCAT()](string.md#concat) and
-[CONCAT_SEPARATOR()](string.md#concat_separator) in the string functions chapter.
+in JavaScript, see [`CONCAT()`](string.md#concat) and
+[`CONCAT_SEPARATOR()`](string.md#concat_separator) in the string functions chapter.
 
 Apart from that, AQL also offers several language constructs:
 
@@ -63,11 +65,11 @@ RETURN APPEND([ 1, 2, 3 ], [ 3, 4, 5, 2, 9 ], true)
 
 ## CONTAINS_ARRAY()
 
-This is an alias for [POSITION()](#position).
+This is an alias for [`POSITION()`](#position).
 
 ## COUNT()
 
-This is an alias for [LENGTH()](#length).
+This is an alias for [`LENGTH()`](#length).
 
 ## COUNT_DISTINCT()
 
@@ -98,7 +100,7 @@ RETURN COUNT_DISTINCT([ "yes", "no", "yes", "sauron", "no", "yes" ])
 
 ## COUNT_UNIQUE()
 
-This is an alias for [COUNT_DISTINCT()](#count_distinct).
+This is an alias for [`COUNT_DISTINCT()`](#count_distinct).
 
 ## FIRST()
 

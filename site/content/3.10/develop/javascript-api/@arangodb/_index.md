@@ -1,9 +1,10 @@
 ---
-title: ArangoDB Module
+title: The `@arangodb` module of the JavaScript API
 menuTitle: '@arangodb'
 weight: 5
 description: >-
-  The @arangodb module provides the db object and AQL helper methods for Foxx, arangosh etc.
+  The `@arangodb` module provides the `db` object and AQL helper methods for
+  Foxx, arangosh, and a few other JavaScript contexts
 archetype: chapter
 ---
 `const arangodb = require('@arangodb')`

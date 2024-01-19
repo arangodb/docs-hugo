@@ -3,12 +3,13 @@ title: Document and object functions in AQL
 menuTitle: Document / Object
 weight: 25
 description: >-
-  AQL provides below listed functions to operate on objects / document values
+  AQL provides functions to operate on objects respectively document values
 archetype: default
 ---
-AQL provides below listed functions to operate on objects / document values.
+You can use the below listed functions with the
+[object data type](../../concepts/data-structure/documents/_index.md#data-types).
 Also see [object access](../fundamentals/data-types.md#objects--documents) for
-additional language constructs.
+additional language constructs for objects.
 
 ## ATTRIBUTES()
 
@@ -74,7 +75,7 @@ FOR attributeArray IN attributesPerDocument
 
 ## COUNT()
 
-This is an alias for [LENGTH()](#length).
+This is an alias for [`LENGTH()`](#length).
 
 ## HAS()
 
@@ -631,24 +632,56 @@ RETURN MERGE_RECURSIVE(
 )
 ```
 
+## PARSE_COLLECTION()
+
+`PARSE_COLLECTION(documentIdentifier) → collectionName`
+
+Parse a [document ID](../../concepts/data-structure/documents/_index.md#document-identifiers) and
+return the collection name.
+
+- **documentIdentifier** (string\|object): a document identifier string (e.g. `_users/1234`)
+  or a regular document from a collection. Passing either a non-string or a non-document
+  or a document without an `_id` attribute results in an error.
+- returns **collectionName** (string): the name of the collection
+
+**Examples**
+
+Parse a document identifier string and extract the collection name:
+
+```aql
+---
+name: aqlParseCollection_1
+description: ''
+---
+RETURN PARSE_COLLECTION("_users/my-user")
+```
+
+Parse the `_id` attribute of a document to extract the collection name:
+
+```aql
+---
+name: aqlParseCollection_2
+description: ''
+---
+RETURN PARSE_COLLECTION( { "_id": "mycollection/mykey", "value": "some value" } )
+```
+
 ## PARSE_IDENTIFIER()
 
 `PARSE_IDENTIFIER(documentIdentifier) → parts`
 
-Parse a [document ID](../../concepts/data-structure/documents/_index.md#document-identifiers) and
-return its individual parts as separate attributes.
-
-This function can be used to easily determine the
-[collection name](../../concepts/data-structure/collections.md#collection-names) and key of a given document.
+Parse a [document ID](../../concepts/data-structure/documents/_index.md#document-identifiers)
+and separately return the collection name and the document key.
 
 - **documentIdentifier** (string\|object): a document identifier string (e.g. `_users/1234`)
   or a regular document from a collection. Passing either a non-string or a non-document
-  or a document without an `_id` attribute will result in an error.
-- returns **parts** (object): an object with the attributes *collection* and *key*
+  or a document without an `_id` attribute results in an error.
+- returns **parts** (object): an object with the attributes `collection` and `key`
 
 **Examples**
 
-Parse a document identifier string:
+Parse a document identifier string and extract both the collection name and the
+document key:
 
 ```aql
 ---
@@ -658,7 +691,8 @@ description: ''
 RETURN PARSE_IDENTIFIER("_users/my-user")
 ```
 
-Parse the document identifier string of a document (`_id` attribute):
+Parse the `_id` attribute of a document to extract both the collection name and
+the document key:
 
 ```aql
 ---
@@ -666,6 +700,40 @@ name: aqlParseIdentifier_2
 description: ''
 ---
 RETURN PARSE_IDENTIFIER( { "_id": "mycollection/mykey", "value": "some value" } )
+```
+
+## PARSE_KEY()
+
+`PARSE_KEY(documentIdentifier) → key`
+
+Parse a [document ID](../../concepts/data-structure/documents/_index.md#document-identifiers) and
+return the document key.
+
+- **documentIdentifier** (string\|object): a document identifier string (e.g. `_users/1234`)
+  or a regular document from a collection. Passing either a non-string or a non-document
+  or a document without an `_id` attribute results in an error.
+- returns **key** (string): the document key
+
+**Examples**
+
+Parse a document identifier string and extract the document key:
+
+```aql
+---
+name: aqlParseKey_1
+description: ''
+---
+RETURN PARSE_KEY("_users/my-user")
+```
+
+Parse the `_id` attribute of a document to extract the document key:
+
+```aql
+---
+name: aqlParseKey_2
+description: ''
+---
+RETURN PARSE_KEY( { "_id": "mycollection/mykey", "value": "some value" } )
 ```
 
 ## TRANSLATE()

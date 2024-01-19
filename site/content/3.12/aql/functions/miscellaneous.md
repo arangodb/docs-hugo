@@ -3,7 +3,7 @@ title: Miscellaneous functions in AQL
 menuTitle: Miscellaneous
 weight: 40
 description: >-
-  Miscellaneous functions
+  AQL functions that do not fall into other categories are listed here
 archetype: default
 ---
 ## Control flow functions
@@ -139,7 +139,7 @@ Return an array of collections.
 
 ### COUNT()
 
-This is an alias for [LENGTH()](#length).
+This is an alias for [`LENGTH()`](#length).
 
 ### CURRENT_DATABASE()
 

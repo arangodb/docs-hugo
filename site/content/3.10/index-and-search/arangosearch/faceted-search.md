@@ -7,8 +7,6 @@ description: >-
   overall
 archetype: default
 ---
-{{< description >}}
-
 A popular method for filtering items in an online shop is to display product
 categories in a list, together with the number of items in each category.
 This way, users get an idea of how many items will be left after applying a
@@ -26,15 +24,16 @@ View instead of a collection.
 
 ## View definition
 
-### `search-alias` View
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 db.imdb_vertices.ensureIndex({ name: "inv-exact", type: "inverted", fields: [ "title" ] });
 db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices", index: "inv-exact" } ] });
 ```
+{{< /tab >}}
 
-### `arangosearch` View
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -50,6 +49,9 @@ db._createView("imdb", "search-alias", { indexes: [ { collection: "imdb_vertices
   }
 }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## AQL queries
 

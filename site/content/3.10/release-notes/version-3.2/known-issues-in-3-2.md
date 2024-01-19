@@ -3,11 +3,10 @@ title: Known Issues in ArangoDB 3.2
 menuTitle: Known Issues in 3.2
 weight: 10
 description: >-
-  Known issues of ArangoDB version 3.2.x products
+  Important issues affecting the 3.2.x versions of the ArangoDB suite of products
 archetype: default
 ---
-The following known issues are present in this version of ArangoDB and will be fixed
-in follow-up releases:
+Note that this page does not list all open issues.
 
 ## RocksDB storage engine
 

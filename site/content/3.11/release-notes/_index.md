@@ -3,7 +3,8 @@ title: Release Notes
 menuTitle: Release Notes
 weight: 285
 description: >-
-  For a high level list of changes, please refer to one of the following sections
+  You can directly navigate to the information about changes in a specific
+  version of ArangoDB by following the links of this overview
 archetype: chapter
 ---
 ## What's New

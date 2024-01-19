@@ -1,5 +1,5 @@
 ---
-title: FILTER operation in AQL
+title: '`FILTER` operation in AQL'
 menuTitle: FILTER
 weight: 15
 description: >-
@@ -7,8 +7,6 @@ description: >-
   arbitrary logical conditions
 archetype: default
 ---
-{{< description >}}
-
 ## Syntax
 
 <pre><code>FILTER <em>expression</em></code></pre>

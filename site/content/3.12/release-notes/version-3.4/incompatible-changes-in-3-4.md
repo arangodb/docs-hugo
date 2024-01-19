@@ -3,14 +3,10 @@ title: Deprecated features
 menuTitle: Incompatible changes in 3.4
 weight: 15
 description: >-
-  It is recommended to check the following list of incompatible changes before upgrading to ArangoDB 3.4
+  Check the following list of potential breaking changes **before** upgrading to
+  this ArangoDB version and adjust any client applications if necessary
 archetype: default
 ---
-It is recommended to check the following list of incompatible changes **before**
-upgrading to ArangoDB 3.4, and adjust any client programs if necessary.
-
-The following incompatible changes have been made in ArangoDB 3.4:
-
 ## Release packages
 
 The official ArangoDB release packages for Linux are now built as static executables

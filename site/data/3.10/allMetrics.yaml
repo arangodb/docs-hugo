@@ -996,6 +996,31 @@
     It is normal that this number is growing rapidly when there is any
     kind of activity in the cluster.
 
+- name: arangodb_connection_statistics_memory_usage
+  introducedIn: "3.10.12"
+  help: |
+    Total memory usage of connection statistics.
+  unit: bytes
+  type: gauge
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+    - single
+  description: |
+    Total memory usage of connection statistics. 
+    If the startup option `--server.statistics` is set to `true`, then some
+    connection statistics are built up in memory for every connection that is
+    made to the arangod server.
+    It is expected that the memory usage reported by this metric remains
+    relatively constant over time. It should grow only when there are bursts of 
+    new connections.
+    Some memory is pre-allocated at startup for higher efficiency.
+    No memory will be allocated for connection statistics if the startup option
+    is set to `false`.
+
 - name: arangodb_dirty_read_queries_total
   introducedIn: "3.10.0"
   help: |
@@ -3358,6 +3383,30 @@
     Histogram of the body sizes of the received VST requests in bytes.
     Note that this does include the binary header.
 
+- name: arangodb_request_statistics_memory_usage
+  introducedIn: "3.10.12"
+  help: |
+    Total memory usage of request statistics.
+  unit: bytes
+  type: gauge
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+    - single
+  description: |
+    Total memory usage of request statistics. 
+    If the startup option `--server.statistics` is set to `true`, then some
+    request statistics are built up in memory for incoming requests.
+    Some memory is pre-allocated at startup for higher efficiency.
+    It is expected that the memory usage reported by this metric remains
+    relatively constant over time. It should grow only when there are bursts of 
+    incoming requests.
+    No memory will be allocated for request statistics if the startup option
+    is set to `false`.
+
 - name: arangodb_revision_tree_hibernations_total
   introducedIn: "3.8.5"
   help: |
@@ -3737,6 +3786,25 @@
     The number of worker threads currently working on some job or spinning while
     waiting for new work (i.e., not sleeping).
 
+- name: arangodb_scheduler_num_detached_threads
+  introducedIn: "3.10.13"
+  help: |
+    Current number of detached worker threads.
+  unit: number
+  type: gauge
+  category: Scheduler
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+    - single
+  description: |
+    The number of worker threads currently started and detached from the 
+    scheduler. Worker threads which perform potentially long running
+    tasks like waiting for a lock can detach themselves from the scheduler 
+    to allow new scheduler threads to be started and avoid server blockage.
+
 - name: arangodb_scheduler_num_worker_threads
   introducedIn: "3.6.7"
   help: |
@@ -3751,8 +3819,9 @@
     - agent
     - single
   description: |
-    The number of worker threads currently started. Worker threads can be started
-    and stopped dynamically based on the server load.
+    The number of worker threads currently started. This includes detached 
+    worker threads. Worker threads can be started and stopped dynamically
+    based on the server load.
 
 - name: arangodb_scheduler_num_working_threads
   introducedIn: "3.6.10"

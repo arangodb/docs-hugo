@@ -7,10 +7,8 @@ description: >-
   setting up and accessing your first ArangoGraph deployment
 archetype: default
 ---
-{{< description >}}
-
 For general information about the ArangoGraph Insights Platform, see
-[cloud.arangodb.com](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+[dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 
 For guides and reference documentation, see the [ArangoGraph](../arangograph/_index.md) documentation.
 
@@ -32,7 +30,7 @@ used for multiple accounts.
 
 ## How to Create a New Account
 
-1. Go to [cloud.arangodb.com](https://cloud.arangodb.com/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+1. Go to [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 2. Click the __Start Free__ button or click the __Sign Up__ link in the top
    right corner.
 
@@ -62,7 +60,7 @@ used for multiple accounts.
    name, and then press the __Save__ button.
 9. An organization with a default project is now prepared for you.
    Once that is completed, you are redirected to the
-   [ArangoGraph dashboard](https://cloud.arangodb.com/dashboard).
+   [ArangoGraph dashboard](https://dashboard.arangodb.cloud/).
 
 ## Get a Deployment up and Running
 
@@ -154,7 +152,7 @@ your billing details and at least one payment method. See:
 ## Managed Cloud Service vs. On-premises Comparison: Key Differences
 
 The ArangoGraph Insights Platform aims to make all features of the ArangoDB
-[Enterprise Edition](../introduction/features/enterprise-edition.md) available to you, but
+[Enterprise Edition](../about-arangodb/features/enterprise-edition.md) available to you, but
 there are a few key differences:
 
 - Encryption (both at rest & network traffic) is always on and cannot be

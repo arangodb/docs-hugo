@@ -1,9 +1,8 @@
 ---
-title: Durability
+title: Durability of transactions
 menuTitle: Durability
 weight: 20
-description: >-
-  Transactions are executed until there is either a rollback or a commit
+description: ''
 archetype: default
 ---
 Transactions are executed until there is either a rollback

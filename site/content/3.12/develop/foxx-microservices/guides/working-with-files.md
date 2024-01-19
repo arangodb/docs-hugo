@@ -2,8 +2,7 @@
 title: File access in Foxx
 menuTitle: Working with files
 weight: 60
-description: >-
-  Files within the service folder should always be considered read-only
+description: ''
 archetype: default
 ---
 Files within the service folder should always be considered read-only.
@@ -62,11 +61,11 @@ the filesystem from within a service:
   may therefore cause race conditions and **result in corrupted data**.
 
 - Writing to files outside the service folder introduces external state. In
-  a cluster this will result in Coordinators no longer being interchangeable.
+  a cluster, this results in Coordinators no longer being interchangeable.
 
 - Writing to files during setup is unreliable because the setup script may
-  be executed several times or not at all. In a cluster the setup script
-  will only be executed on a single Coordinator.
+  be executed several times or not at all. In a cluster, the setup script
+  is only executed on a single Coordinator.
 
 Therefore it is almost always a better option to store files using a
 specialized, external file storage service
@@ -78,13 +77,13 @@ ArangoDB documents by using a separate collection.
 {{< danger >}}
 Due to the way ArangoDB stores documents internally, you should not store
 file contents alongside other attributes that might be updated independently.
-Additionally, large file sizes will impact performance for operations
+Additionally, large file sizes impact performance for operations
 involving the document and may affect overall database performance.
 {{< /danger >}}
 
 {{< warning >}}
 In production, you should avoid storing any files in ArangoDB or handling file
-uploads in Foxx. The following example will work for moderate amounts of small
+uploads in Foxx. The following example works for moderate amounts of small
 files but is not recommended for large files or frequent uploads or
 modifications.
 {{< /warning >}}

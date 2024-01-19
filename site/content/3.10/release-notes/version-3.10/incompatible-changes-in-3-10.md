@@ -3,14 +3,10 @@ title: Incompatible changes in ArangoDB 3.10
 menuTitle: Incompatible changes in 3.10
 weight: 15
 description: >-
-  It is recommended to check the following list of incompatible changes before upgrading to ArangoDB 3.10
+  Check the following list of potential breaking changes **before** upgrading to
+  this ArangoDB version and adjust any client applications if necessary
 archetype: default
 ---
-It is recommended to check the following list of incompatible changes **before**
-upgrading to ArangoDB 3.10, and adjust any client programs if necessary.
-
-The following incompatible changes have been made in ArangoDB 3.10:
-
 ## Declaration of start vertex collections
 
 In cluster deployments, you need to declare collections that an AQL query
@@ -113,8 +109,8 @@ interpretation of GeoJSON polygons in version 3.9 and older:
 This can mean that old polygon GeoJSON data in the database is
 suddenly interpreted in a different way. See
 [Legacy Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#legacy-polygons) for details.
-Also see the definition of [Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#polygon)
-and [GeoJSON interpretation](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#geojson-interpretation).
+Also see the definition of [Polygons](../../aql/functions/geo.md#polygon)
+and [GeoJSON interpretation](../../aql/functions/geo.md#geojson-interpretation).
 
 ## `geojson` Analyzers
 
@@ -152,7 +148,7 @@ the new Analyzers.
 | The smaller of the two regions defined by a linear ring is interpreted as the interior of the ring. | The area to the left of the boundary ring's path is considered to be the interior. |
 | A ring can at most enclose half the Earth's surface | A ring can enclose the entire surface of the Earth |
 
-Also see the definition of [Polygons](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md#polygon) and the
+Also see the definition of [Polygons](../../aql/functions/geo.md#polygon) and the
 [`geojson` Analyzer](../../index-and-search/analyzers.md#geojson) documentation.
 
 ## Maximum Array / Object Nesting
@@ -195,6 +191,14 @@ part of the specified named graph (code `1926` and HTTP status `404 Not Found`).
 It is also an error if you specify an edge collection that is not part of the
 named graph's definition or of the list of edge collections (code `1939` and
 HTTP status `400 Bad Request`).
+
+## Exit code adjustments
+
+<small>Introduced in: v3.10.13</small>
+
+For some fatal errors like a required database upgrade or a failed version check,
+_arangod_ set the generic exit code of `1`. It now returns a different, more
+specific exit code in these cases.
 
 ## Startup Options
 

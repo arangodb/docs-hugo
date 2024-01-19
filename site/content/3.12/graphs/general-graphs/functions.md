@@ -3,13 +3,13 @@ title: Graph Functions
 menuTitle: Functions
 weight: 10
 description: >-
-  This chapter describes various functions on a graph
+  Utility functions available for named graphs
 archetype: default
 ---
-This chapter describes [various functions on a graph](../first-steps.md).
+This chapter describes [various functions on a graph](../_index.md).
 A lot of these accept a vertex (or edge) example as parameter as defined in the next section.
 
-Examples will explain the API on the the [City Graph](../example-graphs.md#city-graph):
+Examples explain the API using the [City Graph](../example-graphs.md#city-graph):
 
 ![Social Example Graph](../../../images/cities_graph.png)
 

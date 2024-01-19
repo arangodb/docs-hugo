@@ -1,9 +1,9 @@
 ---
-title: Console Module
+title: The `console` module of the JavaScript API
 menuTitle: console
 weight: 40
 description: >-
-  Implementation of the console module in the JavaScript API
+  An implementation of the CommonJS console interface in the ArangoDB JavaScript API
 archetype: default
 ---
 `global.console === require('console')`

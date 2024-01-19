@@ -3,13 +3,10 @@ title: API Changes in ArangoDB 3.8
 menuTitle: API changes in 3.8
 weight: 20
 description: >-
-  ArangoDB v3.8 Release Notes API Changes
+  A summary of the changes to the HTTP API and other interfaces that are relevant
+  for developers, like maintainers of drivers and integrations for ArangoDB
 archetype: default
 ---
-This document summarizes the HTTP API changes and other API changes in ArangoDB 3.8.
-The target audience for this document are developers who maintain drivers and
-integrations for ArangoDB 3.8.
-
 ## HTTP RESTful API
 
 ### Collection API

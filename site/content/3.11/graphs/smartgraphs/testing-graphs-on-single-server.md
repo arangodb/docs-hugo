@@ -7,8 +7,6 @@ description: >-
   to port them to an ArangoDB cluster later
 archetype: default
 ---
-{{< description >}}
-
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 ## General idea

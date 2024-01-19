@@ -2,14 +2,13 @@
 title: _arangorestore_ Examples
 menuTitle: Examples
 weight: 5
-description: >-
-  To restore data from a dump previously created with arangodump, ArangoDB provides the arangorestore tool
+description: ''
 archetype: default
 ---
 To restore data from a dump previously created with [_arangodump_](../arangodump/_index.md),
 ArangoDB provides the _arangorestore_ tool.
 
-## Invoking _arangorestore_
+## Invoking *arangorestore*
 
 _arangorestore_ can be invoked from the command-line as follows:
 
@@ -191,6 +190,17 @@ also restored or already present on the server.
 ## Encryption
 
 See [_arangodump_](../arangodump/examples.md#encryption) for details.
+
+## Compression
+
+You can optionally let *arangorestore* compress the data for the network transfer
+with the `--compress-transfer` startup option. This can reduce the traffic and
+thus save time. Set the `--compress-request-threshold` startup option to define
+the minimum size for request bodies (in bytes) at which compression is applied.
+
+```
+arangorestore --input-directory "dump" --compress-transfer --compress-request-threshold 250
+```
 
 ## Reloading Data into a different Collection
 

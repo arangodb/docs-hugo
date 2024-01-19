@@ -7,8 +7,6 @@ description: >-
   Views with ArangoSearch, to highlight what was found in search results
 archetype: default
 ---
-{{< description >}}
-
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 ArangoSearch lets you search for terms and phrases in full-text, and more.
@@ -87,8 +85,9 @@ Analyzer features can be overwritten in the inverted index definition.
 
 #### View definition
 
-##### `search-alias` View
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 db.food.ensureIndex({
   name: "inv-text-offset",
@@ -100,9 +99,9 @@ db.food.ensureIndex({
 
 db._createView("food_view", "search-alias", { indexes: [ { collection: "food", index: "inv-text-offset" } ] });
 ```
+{{< /tab >}}
 
-##### `arangosearch` View
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -122,6 +121,9 @@ db._createView("food_view", "search-alias", { indexes: [ { collection: "food", i
   }
 }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 #### AQL queries
 
@@ -136,8 +138,9 @@ returns a `name` that describes the path of the attribute or array element with
 the match. You can use the [`VALUE()` function](../../aql/functions/document-object.md#value)
 to dynamically get the respective value.
 
-_`search-alias` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 ---
 name: searchHighlighting_2
@@ -170,9 +173,9 @@ db._query(`FOR doc IN food_view
 ~db._dropView("food_view");
 ~db._drop("food");
 ```
+{{< /tab >}}
 
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```js
 ---
 name: searchHighlighting_1
@@ -208,3 +211,6 @@ db._query(`FOR doc IN food_view
 ~db._drop("food");
 ~analyzers.remove(analyzer.name);
 ```
+{{< /tab >}}
+
+{{< /tabs >}}

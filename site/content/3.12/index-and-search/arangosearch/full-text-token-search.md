@@ -6,8 +6,6 @@ description: >-
   Search for tokens in full-text that can occur in any order
 archetype: default
 ---
-{{< description >}}
-
 Full-text strings can be tokenized by `text` Analyzers so that each token
 (usually a word) gets indexed separately. Subsequently, it becomes possible to
 search for individual tokens. This is also possible with arrays of strings,
@@ -34,15 +32,16 @@ Token search is covered below. For phrase search see
 
 ### View definition
 
-#### `search-alias` View
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```js
 db.imdb_vertices.ensureIndex({ name: "inv-text", type: "inverted", fields: [ { name: "description", analyzer: "text_en" } ] });
 db._createView("imdb_alias", "search-alias", { indexes: [ { collection: "imdb_vertices", index: "inv-text" } ] });
 ```
+{{< /tab >}}
 
-#### `arangosearch` View
-
+{{< tab "`arangosearch` View" >}}
 ```json
 {
   "links": {
@@ -58,6 +57,9 @@ db._createView("imdb_alias", "search-alias", { indexes: [ { collection: "imdb_ve
   }
 }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ### AQL queries
 
@@ -65,8 +67,9 @@ db._createView("imdb_alias", "search-alias", { indexes: [ { collection: "imdb_ve
 
 Search for movies with `dinosaur` or `park` (or both) in their description.
 
-_`search-alias` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```aql
 FOR doc IN imdb_alias
   SEARCH doc.description IN TOKENS("dinosaur park", "text_en")
@@ -75,9 +78,9 @@ FOR doc IN imdb_alias
     description: doc.description
   }
 ```
+{{< /tab >}}
 
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(doc.description IN TOKENS("dinosaur park", "text_en"), "text_en")
@@ -86,6 +89,9 @@ FOR doc IN imdb
     description: doc.description
   }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | title | description |
 |:------|:------------|
@@ -99,8 +105,9 @@ FOR doc IN imdb
 
 Search for movies with both `dinosaur` and `park` in their description:
 
-_`search-alias` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```aql
 FOR doc IN imdb_alias
   SEARCH TOKENS("dinosaur park", "text_en") ALL == doc.description
@@ -109,9 +116,9 @@ FOR doc IN imdb_alias
     description: doc.description
   }
 ```
+{{< /tab >}}
 
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(TOKENS("dinosaur park", "text_en") ALL == doc.description, "text_en")
@@ -120,6 +127,9 @@ FOR doc IN imdb
     description: doc.description
   }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | title | description |
 |:------|:------------|
@@ -137,8 +147,9 @@ Search for movies with two out of the three provided tokens in their description
 so `dinosaur` and `scientist`, `dinosaur` and `moon`, or `scientist` and `moon`,
 in any order:
 
-_`search-alias` View:_
+{{< tabs "view-definition">}}
 
+{{< tab "`search-alias` View" >}}
 ```aql
 FOR doc IN imdb_alias
   SEARCH TOKENS("dinosaur scientist moon", "text_en") AT LEAST (2) == doc.description
@@ -147,9 +158,9 @@ FOR doc IN imdb_alias
     description: doc.description
   }
 ```
+{{< /tab >}}
 
-_`arangosearch` View:_
-
+{{< tab "`arangosearch` View" >}}
 ```aql
 FOR doc IN imdb
   SEARCH ANALYZER(TOKENS("dinosaur scientist moon", "text_en") AT LEAST (2) == doc.description, "text_en")
@@ -158,6 +169,9 @@ FOR doc IN imdb
     description: doc.description
   }
 ```
+{{< /tab >}}
+
+{{< /tabs >}}
 
 | title | description |
 |:------|:------------|

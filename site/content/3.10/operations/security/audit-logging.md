@@ -10,8 +10,6 @@ pageToc:
   maxHeadlineLevel: 3
 archetype: default
 ---
-{{< description >}}
-
 {{< tag "ArangoDB Enterprise Edition" >}}
 
 {{< tip >}}

@@ -55,6 +55,13 @@ trigger tasks reconfiguration in case of changes.
 
 Interval for acquiring the host list.
 
+### connection.rebalance.interval.ms
+
+- type: _int_
+- default: `1_800_000` (30 min)
+
+Interval for re-balancing the connections across the endpoints.
+
 ### connection.protocol
 
 - type: _string_
@@ -172,6 +179,14 @@ to `update`:
 
 - `true`: objects are merged
 - `false`: existing document fields are overwritten
+
+### batch.size
+
+- type: _int_
+- default: `3_000`
+
+Specifies how many records to attempt to batch together for insertion or deletion
+into the destination collection.
 
 ### insert.timeout.ms
 

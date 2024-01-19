@@ -2,16 +2,17 @@
 title: Dashboard
 menuTitle: Dashboard
 weight: 5
-description: >-
-  The Dashboard tab provides statistics which are polled regularly from the ArangoDB server
+description: ''
 archetype: default
 ---
-The *Dashboard* tab provides statistics which are polled regularly from the
+The **DASHBOARD** section provides statistics which are polled regularly from the
 ArangoDB server.
 
 ![Nodes](../../../images/dashboardView.png)
 
-Requests Statistics:
+There is a different interface for [Cluster](cluster.md) deployments.
+
+Statistics:
 
  - Requests per second
  - Request types

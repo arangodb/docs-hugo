@@ -5,6 +5,12 @@ weight: 10
 description: >-
   ArangoDB Datasource for Apache Spark allows batch reading and writing Spark DataFrame data
 archetype: default
+aliases:
+- arangodb-spark-connector
+- arangodb-spark-connector/getting-started
+- arangodb-spark-connector/reference
+- arangodb-spark-connector/reference/java
+- arangodb-spark-connector/reference/scala
 ---
 ArangoDB Datasource for Apache Spark allows batch reading and writing Spark DataFrame data from and to ArangoDB, by implementing the Spark Data Source V2 API.
 
@@ -256,7 +262,7 @@ Use the `overwriteMode` write configuration parameter to specify the document ov
 ### Write Resiliency
 
 The data of each partition is saved in batches using the ArangoDB API for
-[inserting multiple documents](../http/documents.md#multiple-document-operations).
+[inserting multiple documents](../http-api/documents.md#multiple-document-operations).
 This operation is not atomic, therefore some documents could be successfully written to the database, while others could fail. To make the job more resilient to temporary errors (i.e. connectivity problems), in case of failure the request will be retried (with another Coordinator), if the provided configuration allows idempotent requests, namely: 
 - the schema of the dataframe has a **not nullable** `_key` field and
 - `overwriteMode` is set to one of the following values:

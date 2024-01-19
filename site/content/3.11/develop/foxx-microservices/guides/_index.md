@@ -3,12 +3,10 @@ title: Guides
 menuTitle: Guides
 weight: 10
 description: >-
-  These guides provide solutions to common problems when building applications with Foxx services
+  The following guides provide solutions to common problems when building
+  applications with Foxx services
 archetype: chapter
 ---
-These guides provide solutions to common problems when building
-applications with Foxx services:
-
 ## Up and running
 
 - [Working with routers](working-with-routers.md)

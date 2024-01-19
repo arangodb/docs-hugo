@@ -1,9 +1,8 @@
 ---
-title: Header Session Transport
+title: Foxx Header Session Transport
 menuTitle: Header transport
 weight: 10
-description: >-
-  Header Session Transport
+description: ''
 archetype: default
 ---
 `const headerTransport = require('@arangodb/foxx/sessions/transports/header');`

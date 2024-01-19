@@ -3,13 +3,10 @@ title: API Changes in ArangoDB 3.12
 menuTitle: API changes in 3.12
 weight: 20
 description: >-
-  ArangoDB v3.12 Release Notes API Changes
+  A summary of the changes to the HTTP API and other interfaces that are relevant
+  for developers, like maintainers of drivers and integrations for ArangoDB
 archetype: default
 ---
-This document summarizes the HTTP API changes and other API changes in ArangoDB 3.12.
-The target audience for this document are developers who maintain drivers and
-integrations for ArangoDB 3.12.
-
 ## HTTP RESTful API
 
 ### Behavior changes
@@ -62,6 +59,58 @@ Note that it is still forbidden to use `_id` as a top-level attribute or
 sub-attribute in `fields` of persistent indexes. On the other hand, inverted
 indexes have been allowing to index and store the `_id` system attribute.
 
+#### Optimizer rule changes
+
+Due to the [improved joins](whats-new-in-3-12.md#improved-joins) in AQL, there
+is a new `join-index-nodes` optimizer rule and a `JoinNode` that may appear in
+execution plans.
+
+The `remove-unnecessary-projections` AQL optimizer rule has been renamed to
+`optimize-projections` and now includes an additional optimization.
+
+Moreover, a `remove-unnecessary-calculations-4` rule has been added.
+
+The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
+`GET /_api/query/rules`.
+
+#### Gharial API
+
+The `PATCH /_api/gharial/{graph}/edge/{collection}/{edge}` endpoint to update
+edges in named graphs now validates the referenced vertex when modifying either
+the `_from` or `_to` edge attribute. Previously, the validation only occurred if
+both were set in the request.
+
+#### Limit to the number of databases in a deployment
+
+<small>Introduced in: v3.10.10, v3.11.2</small>
+
+The new `--database.max-databases` startup option can cap the number of databases
+and creating databases using the `POST /_api/database` endpoint can thus now fail
+for this reason if your deployment is at or above the configured maximum. Example:
+
+```json
+{
+  "code": 400,
+  "error": true,
+  "errorMessage": "unable to create additional database because it would exceed the configured maximum number of databases (2)",
+  "errorNum": 32
+}
+```
+
+#### Adjustable Stream Transaction size
+
+The [Stream Transactions HTTP API](../../develop/http-api/transactions/stream-transactions.md)
+may now allow larger transactions or be limited to smaller transactions because
+the maximum transaction size can now be configured with the
+`--transaction.streaming-max-transaction-size` startup option.
+The default value remains 128 MiB.
+
+#### Analyzer API
+
+The [`/_api/analyzer` endpoints](../../develop/http-api/analyzers.md) supports
+a new `multi_delimiter` Analyzer that accepts an array of strings in a
+`delimiter` attribute of the `properties` object.
+
 ### Privilege changes
 
 
@@ -79,7 +128,25 @@ indexes have been allowing to index and store the `_id` system attribute.
 
 ### Endpoints added
 
+#### Effective and available startup options
 
+The new `GET /_admin/options` and `GET /_admin/options-description` HTTP API
+endpoints allow you to return the effective configuration and the available
+startup options of the queried _arangod_ instance.
+
+Previously, it was only possible to [fetch the current configuration](../../operations/administration/configuration.md#fetch-current-configuration-options)
+on single servers and Coordinators using a JavaScript transaction, and to list
+the available startup options with `--dump-options`.
+
+See the [HTTP interface for administration](../../develop/http-api/administration.md#startup-options)
+for details.
+
+#### Available key generators
+
+You can now retrieve the available key generators for collections using the new
+`GET /_api/key-generators` endpoint.
+
+See the [HTTP API description](../../develop/http-api/collections.md#get-the-available-key-generators)
 
 ### Endpoints augmented
 
@@ -98,7 +165,7 @@ Indexes of type `inverted` accept a new `optimizeTopK` property for the
 ArangoSearch WAND optimization. It is an array of strings, optional, and
 defaults to `[]`.
 
-See the [inverted index `optimizeTopK` property](../../develop/http/indexes/inverted.md)
+See the [inverted index `optimizeTopK` property](../../develop/http-api/indexes/inverted.md)
 for details.
 
 #### Optimizer rule descriptions
@@ -115,6 +182,81 @@ returns the `warnings` attribute, even if no warnings were produced while parsin
 the query. In that case, `warnings` contains an empty array.
 In previous versions, no `warnings` attribute was returned when parsing a query
 produced no warnings.
+
+#### Metrics API
+
+The metrics endpoint includes the following new metrics about AQL queries,
+ongoing dumps, ArangoSearch parallelism and used file descriptors:
+
+- `arangodb_aql_cursors_active`
+- `arangodb_dump_memory_usage`
+- `arangodb_dump_ongoing`
+- `arangodb_dump_threads_blocked_total`
+- `arangodb_search_execution_threads_demand`
+- `arangodb_search_file_descriptors`
+
+The following new metrics for improved memory observability have been added:
+
+- `arangodb_agency_node_memory_usage`
+- `arangodb_aql_cursors_memory_usage`
+- `arangodb_index_estimates_memory_usage`
+- `arangodb_internal_cluster_info_memory_usage`
+- `arangodb_requests_memory_usage`
+- `arangodb_revision_tree_buffered_memory_usage`
+- `arangodb_scheduler_queue_memory_usage`
+- `arangodb_scheduler_stack_memory_usage`
+- `arangodb_search_consolidations_memory_usage`
+- `arangodb_search_mapped_memory`
+- `arangodb_search_readers_memory_usage`
+- `arangodb_search_writers_memory_usage`
+- `arangodb_transactions_internal_memory_usage`
+- `arangodb_transactions_rest_memory_usage`
+
+---
+
+<small>Introduced in: v3.11.2</small>
+
+The following metrics have been added about the LZ4 compression for values in
+the in-memory edge cache:
+
+- `rocksdb_cache_edge_inserts_effective_entries_size_total`
+- `rocksdb_cache_edge_inserts_uncompressed_entries_size_total`
+- `rocksdb_cache_edge_compression_ratio`
+
+---
+
+<small>Introduced in: v3.10.11, v3.11.4</small>
+
+The following metrics have been added to improve the observability of in-memory
+cache subsystem:
+
+- `rocksdb_cache_free_memory_tasks_total`
+- `rocksdb_cache_free_memory_tasks_duration_total`
+- `rocksdb_cache_migrate_tasks_total`
+- `rocksdb_cache_migrate_tasks_duration_total`
+
+---
+
+<small>Introduced in: v3.11.4</small>
+
+The following metrics have been added to improve the observability of in-memory
+edge cache:
+
+- `rocksdb_cache_edge_compressed_inserts_total`
+- `rocksdb_cache_edge_empty_inserts_total`
+- `rocksdb_cache_edge_inserts_total`
+
+---
+
+<small>Introduced in: v3.11.5</small>
+
+The following metrics have been added to monitor and detect temporary or
+permanent connectivity issues as well as how many scheduler threads are in the
+detached state:
+
+- `arangodb_network_connectivity_failures_coordinators`
+- `arangodb_network_connectivity_failures_dbservers_total`
+- `arangodb_scheduler_num_detached_threads`
 
 ### Endpoints moved
 

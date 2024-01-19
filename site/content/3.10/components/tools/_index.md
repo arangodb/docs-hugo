@@ -1,16 +1,17 @@
 ---
-title: Programs & Tools
+title: Tools
 menuTitle: Tools
 weight: 180
 description: >-
-  The full ArangoDB package ships with the following programs and tools
+  ArangoDB ships with command-line tools like for accessing server instances
+  programmatically, deploying clusters, creating backups, and importing data
 archetype: chapter
 ---
-The full ArangoDB package ships with the following programs and tools:
+A full ArangoDB installation package contains the [ArangoDB server](../arangodb-server/_index.md)
+(`arangod`) as well as the following client tools:
 
 | Executable name | Brief description |
 |-----------------|-------------------|
-| `arangod`       | [ArangoDB server](../arangodb-server/_index.md). This server program is intended to run as a daemon process / service to serve the various client connections to the server via TCP / HTTP. It also provides a [web interface](../web-interface/_index.md).
 | `arangosh`      | [ArangoDB shell](arangodb-shell/_index.md). A client that implements a read-eval-print loop (REPL) and provides functions to access and administrate the ArangoDB server.
 | `arangodb`      | [ArangoDB Starter](arangodb-starter/_index.md) for easy deployment of ArangoDB instances.
 | `arangodump`    | Tool to [create backups](arangodump/_index.md) of an ArangoDB database.
@@ -22,22 +23,13 @@ The full ArangoDB package ships with the following programs and tools:
 | `arangovpack`   | Utility to validate and [convert VelocyPack](arangovpack/_index.md) and JSON data.
 | `arangoinspect` | [Inspection tool](arangoinspect/_index.md) that gathers server setup information.
 
-The client package comes with a subset of programs and tools:
-
-- `arangosh`
-- `arangoimport`
-- `arangoexport`
-- `arangodump`
-- `arangorestore`
-- `arangobackup`
-- `arangobench`
-- `arangoinspect`
-- `arangovpack`
+A client installation package comes without the `arangod` server executable and
+the ArangoDB Starter.
 
 Additional tools which are available separately:
 
 | Name            | Brief description |
 |-----------------|-------------------|
 | [Foxx CLI](foxx-cli/_index.md) | Command line tool for managing and developing Foxx services
-| [kube-arangodb](../../deploy/deployment/kubernetes/_index.md) | Operators to manage Kubernetes deployments
+| [kube-arangodb](../../deploy/kubernetes.md) | Operators to manage Kubernetes deployments
 | [Oasisctl](../../arangograph/oasisctl/_index.md) | Command-line tool for managing the ArangoGraph Insights Platform

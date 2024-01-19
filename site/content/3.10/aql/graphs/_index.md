@@ -3,10 +3,11 @@ title: Graphs in AQL
 menuTitle: Graphs
 weight: 35
 description: >-
-  There are multiple ways to work with graphs in ArangoDB,as well as different ways to query your graphs using AQL
+  You can perform graph traversals and path searches on named graphs as well as
+  collection sets with AQL
 archetype: chapter
 ---
-There are multiple ways to work with [graphs in ArangoDB](../../graphs/first-steps.md),
+There are multiple ways to work with [graphs in ArangoDB](../../graphs/_index.md),
 as well as different ways to query your graphs using AQL.
 
 The two options in managing graphs are to either use

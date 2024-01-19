@@ -3,12 +3,10 @@ title: Incompatible changes in ArangoDB 3.0
 menuTitle: Incompatible changes in 3.0
 weight: 10
 description: >-
-  It is recommended to check the following list of incompatible changes before upgrading to ArangoDB 3
+  Check the following list of potential breaking changes **before** upgrading to
+  this ArangoDB version and adjust any client applications if necessary
 archetype: default
 ---
-It is recommended to check the following list of incompatible changes **before**
-upgrading to ArangoDB 3.0, and adjust any client programs if necessary.
-
 ## Build system
 
 Building ArangoDB 3.0 from source now requires CMake.
@@ -1076,7 +1074,7 @@ the option is unchanged.
 The command-line option `--quiet` was removed from all client tools except arangosh 
 because it had no effect in them.
 
-### _arangobench_
+### arangobench
 
 In order to make its purpose more apparent the former `arangob` client tool has 
 been renamed to `arangobench` in 3.0.

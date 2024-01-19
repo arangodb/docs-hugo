@@ -1,13 +1,11 @@
 ---
-title: INSERT operation in AQL
+title: '`INSERT` operation in AQL'
 menuTitle: INSERT
 weight: 65
 description: >-
   You can use the `INSERT` operation to create new documents in a collection
 archetype: default
 ---
-{{< description >}}
-
 Each `INSERT` operation is restricted to a single collection, and the
 [collection name](../../concepts/data-structure/collections.md#collection-names) must not be dynamic.
 Only a single `INSERT` statement per collection is allowed per AQL query, and
@@ -207,12 +205,12 @@ FOR i IN 1..100
 On a single server, an insert operation is executed transactionally in an
 all-or-nothing fashion.
 
-If the RocksDB engine is used and intermediate commits are enabled, a query may
-execute intermediate transaction commits in case the running transaction (AQL
-query) hits the specified size thresholds. In this case, the query's operations
-carried out so far will be committed and not rolled back in case of a later
-abort/rollback. That behavior can be controlled by adjusting the intermediate
-commit settings for the RocksDB engine.
+A query may execute intermediate transaction commits in case the running
+transaction (AQL query) hits the specified size thresholds. In this case, the
+query's operations carried out so far are committed and not rolled back in case
+of a later abort/rollback. This behavior can be controlled by adjusting the
+intermediate commit settings for the RocksDB engine. See
+[Known limitations for AQL queries](../fundamentals/limitations.md#storage-engine-properties).
 
 For sharded collections, the entire query and/or insert operation may not be
 transactional, especially if it involves different shards and/or DB-Servers.

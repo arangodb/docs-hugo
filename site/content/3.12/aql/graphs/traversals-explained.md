@@ -3,7 +3,8 @@ title: AQL graph traversals explained
 menuTitle: Traversals explained
 weight: 5
 description: >-
-  A traversal starts at one specific document (startVertex) and follows all edges connected to this document
+  Traversing a graph means to follow edges connected to a start vertex and
+  neighboring vertices until a specified depth
 archetype: default
 ---
 ## General query idea

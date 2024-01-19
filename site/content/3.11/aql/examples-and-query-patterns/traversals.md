@@ -3,7 +3,7 @@ title: Combining AQL Graph Traversals
 menuTitle: Traversals
 weight: 40
 description: >-
-  Our first example will locate the start vertex for a graph traversal via a geo index
+  You can combine graph queries with other AQL features like geo-spatial search
 archetype: default
 ---
 ## Finding the start vertex via a geo query

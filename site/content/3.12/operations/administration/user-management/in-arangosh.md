@@ -3,14 +3,14 @@ title: Managing Users in the ArangoDB Shell
 menuTitle: In arangosh
 weight: 5
 description: >-
-  The module @arangodb/users exposes a JavaScript API to manage user accounts.
+  The `@arangodb/users` module exposes a JavaScript API to manage user accounts
 archetype: default
 ---
 Connect with `arangosh` to the server or a Coordinator respectively.
 The module `@arangodb/users` exposes a JavaScript API to manage user accounts.
 
 Please note, that for backward compatibility the server access levels
-follow from the database access level on the database *_system*.
+follow from the database access level on the `_system` database.
 
 Also note that the server and database access levels are represented as
 
@@ -18,11 +18,12 @@ Also note that the server and database access levels are represented as
 - `ro`: for *Access*
 - `none`: for *No access*
 
-This is again for backward compatibility.
+See [Managing Users](../_index.md) for details and note that using wildcard
+database and collection access levels is discouraged.
 
 **Example**
 
-Fire up *arangosh* and require the users module. Use it to create a new user:
+Start *arangosh* and require the users module. Use it to create a new user:
 
 ```js
 arangosh --server.endpoint tcp://127.0.0.1:8529 ...
@@ -66,15 +67,13 @@ and grant him access to it with `grantDatabase()`:
 This grants the user *Administrate* access to the database
 *testdb*. `revokeDatabase()` will revoke this access level setting.
 
-**Note**: Be aware that from 3.2 onwards the `grantDatabase()` will not
-automatically grant users the access level to write or read collections in a
-database. If you grant access to a database `testdb` you will
-additionally need to explicitly grant access levels to individual
-collections via `grantCollection()`.
-
-The upgrade procedure from 3.1 to 3.2 sets the wildcard database access
-level for all users to *Administrate* and sets the wildcard collection
-access level for all user/database pairs to *Read/Write*.
+{{< info >}}
+Using the `grantDatabase()` function does not necessarily grant users the
+access level to read or write to collections in a database. If you grant access
+to a database, you need to explicitly grant access levels to individual
+collections via `grantCollection()` unless a wildcard or `_system` database
+access level applies.
+{{< /info >}}
 
 Before we can grant *JohnSmith* access to a collection, we first have to
 connect to the new database and create a collection. Disconnect `arangosh`

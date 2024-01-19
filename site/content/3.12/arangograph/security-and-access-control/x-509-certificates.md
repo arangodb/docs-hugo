@@ -8,8 +8,6 @@ description: >-
   encrypted using the TLS protocol
 archetype: default
 ---
-{{< description >}}
-
 X.509 certificates are digital certificates that are used to verify the
 authenticity of a website, user, or organization using a public key infrastructure
 (PKI). They are used in various applications, including SSL/TLS encryption,
@@ -80,7 +78,8 @@ deployment in your browser.
 {{< info >}}
 The well-known certificate is a wildcard certificate and cannot contain
 Subject Alternative Names (SANs). To include a SAN field, which is needed
-for private endpoints, please use the self-signed certificate option.
+for private endpoints running on Azure, please use the self-signed certificate
+option.
 {{< /info >}}
 
 ### Self-signed X.509 certificates
@@ -102,7 +101,7 @@ The Subject Alternative Name (SAN) is an extension to the X.509 specification
 that allows you to specify additional host names for a single SSL certificate.
 
 When using [private endpoints](../deployments/private-endpoints.md),
-you can specify alternate domain names. Note that these are added **only** to
+you can specify custom domain names. Note that these are added **only** to
 the self-signed certificate as Subject Alternative Name (SAN).
 
 ## How to create a new certificate
