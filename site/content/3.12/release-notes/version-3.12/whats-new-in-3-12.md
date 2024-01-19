@@ -606,6 +606,10 @@ DB-Servers:
   leaders, per shard, and optionally also split by user.
 - `arangodb_collection_leader_writes_total`: The number of write requests on
   leaders, per shard, and optionally also split by user.
+- `arangodb_collection_requests_bytes_read_total`: The number of bytes read in
+  read requests on leaders.
+- `arangodb_collection_requests_bytes_written_total`: The number of bytes written
+  in write requests on leaders and followers.  
 
 To opt into these metrics, you can use the new `--server.export-shard-usage-metrics`
 startup option. It can be set to one of the following values on DB-Servers:
@@ -647,6 +651,11 @@ and/or users in the deployment, these metrics are turned off by default.
 When turned on, the metrics are exposed only via the new
 `GET /_admin/usage-metrics` endpoint. They are not exposed via the existing
 metrics `GET /_admin/metrics` endpoint.
+
+Note that internal operations, such as internal queries executed for statistics
+gathering, internal garbage collection, and TTL index cleanup are not counted in
+these metrics. Additionally, all requests that are using the superuser JWT for 
+authentication and that do not have a specific user set are not counted.
 
 ## Client tools
 
