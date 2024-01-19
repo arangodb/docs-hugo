@@ -61,6 +61,10 @@ indexes have been allowing to index and store the `_id` system attribute.
 
 #### Optimizer rule changes
 
+Due to the [improved joins](whats-new-in-3-12.md#improved-joins) in AQL, there
+is a new `join-index-nodes` optimizer rule and a `JoinNode` that may appear in
+execution plans.
+
 The `remove-unnecessary-projections` AQL optimizer rule has been renamed to
 `optimize-projections` and now includes an additional optimization.
 

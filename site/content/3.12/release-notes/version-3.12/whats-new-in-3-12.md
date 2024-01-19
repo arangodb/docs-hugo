@@ -131,6 +131,52 @@ Swagger 2.x compatibility.
 
 ## AQL
 
+### Improved joins
+
+The AQL optimizer now automatically recognizes whether a better strategy for
+joining collections can be used, using the new `join-index-nodes` optimizer rule.
+
+If two or more collections are joined using nested `FOR` loops and the
+attributes you join on are indexed by primary indexes or persistent indexes,
+then a merge join can be performed because they are sorted.
+
+Note that returning document attributes from the outer loop is limited to
+attributes covered by the index, or the improved join strategy cannot be used.
+
+The following example query shows an inner join between orders and users on
+user ID. Each document in the `orders` collection references a `user`, and the
+`users` collection stores the user ID in the `_key` attribute. The query returns
+the `total` attribute of every order along with the user information:
+
+```aql
+FOR o IN orders
+  FOR u IN users
+    FILTER o.user == u._key
+    RETURN { orderTotal: o.total, user: u }
+```
+
+The `_key` attribute is covered by the primary index of the `users` collection.
+If the `orders` collection has a persistent index defined over the `user`
+attribute and additionally includes the `total` attribute in
+[`storedValues`](../../index-and-search/indexing/working-with-indexes/persistent-indexes.md#storing-additional-values-in-indexes),
+then the query is eligible for a merge join.
+
+```aql
+Execution plan:
+ Id   NodeType          Par     Est.   Comment
+  1   SingletonNode                1   * ROOT
+ 10   JoinNode            ✓   500000     - JOIN
+ 10   JoinNode                500000       - FOR o IN orders   LET #8 = o.`total`   /* index scan (projections: `total`) */
+ 10   JoinNode                     1       - FOR u IN users   /* index scan + document lookup */
+  6   CalculationNode     ✓   500000     - LET #4 = { "orderTotal" : #8, "user" : u }   /* simple expression */   /* collections used: u : users */
+  7   ReturnNode              500000     - RETURN #4
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields       Stored values   Ranges
+ 10   idx_1784521139132825600   persistent   orders       false    false    false      100.00 %   [ `user` ]   [ `total` ]     *
+ 10   primary                   primary      users        true     false    false      100.00 %   [ `_key` ]   [  ]            (o.`user` == u.`_key`)
+```
+
 ### Filter matching syntax for `UPSERT` operations
 
 Version 3.12 introduces an alternative syntax for
