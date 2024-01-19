@@ -92,3 +92,58 @@ public class MyEntity {
 
 }
 ```
+
+To customize the behavior of deciding whether an entity instance is new or has
+already been persisted previously, the entity can implement the
+`org.springframework.data.domain.Persistable<ID>` interface which is defined as follows:
+
+```java
+public interface Persistable<ID> {
+    /**
+     * Returns the id of the entity.
+     *
+     * @return the id. Can be {@literal null}.
+     */
+    @Nullable
+    ID getId();
+
+    /**
+     * Returns if the {@code Persistable} is new or was persisted already.
+     *
+     * @return if {@literal true} the object is new.
+     */
+    boolean isNew();
+}
+```
+
+For example, we might want to consider an entity instance new if the field
+`createdDate` is  `null`:
+
+```java
+@Document
+public class Person implements Persistable<String> {
+
+        @Id
+        private String id;
+        private String name;
+
+        @CreatedDate
+        private Instant createdDate;
+
+        @LastModifiedDate
+        private Instant modifiedDate;
+
+        @Override
+        public String getId() {
+            return id;
+        }
+
+        @Override
+        @Transient
+        public boolean isNew() {
+            return created == null;
+        }
+
+        // ...
+}        
+```
