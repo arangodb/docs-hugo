@@ -53,6 +53,29 @@ for details.
 
 ## Analyzers
 
+### `multi_delimiter` Analyzer
+
+The new `multi_delimiter` Analyzer type accepts an array of strings to define
+multiple delimiters to split the input at. Each string is considered as one
+delimiter that can be one or multiple characters long.
+
+Unlike with the `delimiter` Analyzer, the `multi_delimiter` Analyzer does not
+support quoting fields.
+
+If you want to split text using multiple delimiters and don't require CSV-like
+quoting, use the `multi_delimiter` Analyzer instead of chaining multiple
+`delimiter` Analyzers in a `pipeline` Analyzer.
+
+```js
+var analyzers = require("@arangodb/analyzers");
+var a = analyzers.save("delimiter_multiple", "multi_delimiter", {
+  delimiter: [",", ";", "||"]
+}, []);
+db._query(`RETURN TOKENS("differently,delimited;words||one|token", "delimiter_multiple")`).toArray();
+// [ ["differently", "delimited", "words", "one|token"] ]
+```
+
+See [Analyzers](../../index-and-search/analyzers.md#multi_delimiter) for details.
 
 ## Improved memory accounting and usage
 
