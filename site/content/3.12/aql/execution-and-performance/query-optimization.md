@@ -377,6 +377,10 @@ The following execution node types appear in the output of `explain`:
   Inserts documents into a collection (given in its *collection* attribute).
   Appears exactly once in a query that contains an *INSERT* statement.
 
+- **JoinNode**:
+  Replaces `EnumerateCollectionNode` and `IndexNode` for eligible join queries
+  to perform optimized joins.
+
 - **KShortestPathsNode**:
   Indicates a traversal for k Shortest Paths (`K_SHORTEST_PATHS` in AQL).
 

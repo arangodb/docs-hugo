@@ -61,6 +61,10 @@ indexes have been allowing to index and store the `_id` system attribute.
 
 #### Optimizer rule changes
 
+Due to the [improved joins](whats-new-in-3-12.md#improved-joins) in AQL, there
+is a new `join-index-nodes` optimizer rule and a `JoinNode` that may appear in
+execution plans.
+
 The `remove-unnecessary-projections` AQL optimizer rule has been renamed to
 `optimize-projections` and now includes an additional optimization.
 
@@ -75,6 +79,54 @@ The `PATCH /_api/gharial/{graph}/edge/{collection}/{edge}` endpoint to update
 edges in named graphs now validates the referenced vertex when modifying either
 the `_from` or `_to` edge attribute. Previously, the validation only occurred if
 both were set in the request.
+
+#### Validation of `smartGraphAttribute` in SmartGraphs
+
+<small>Introduced in: v3.10.13, v3.11.7</small>
+
+The attribute defined by the `smartGraphAttribute` graph property is not allowed to be
+changed in the documents of SmartGraph vertex collections. This is now strictly enforced.
+You must set the attribute when creating a document. Any attempt to modify or remove
+the attribute afterward by update or replace operations now throws an error. Previously,
+the `smartGraphAttribute` value was checked only when inserting documents into a
+SmartGraph vertex collection, but not for update or replace operations.
+
+The missing checks on update and replace operations allowed to retroactively
+modify the value of the `smartGraphAttribute` for existing documents, which
+could have led to problems when the data of such a SmartGraph vertex collection was
+replicated to a new follower shard. On the new follower shard, the documents
+went through the full validation and led to documents with modified
+`smartGraphAttribute` values being rejected on the follower. This could have
+led to follower shards not getting in sync.
+
+Now, the value of the `smartGraphAttribute` is fully validated with every
+insert, update, or replace operation, and every attempt to modify the value of
+the `smartGraphAttribute` retroactively fails with the `4003` error,
+`ERROR_KEY_MUST_BE_PREFIXED_WITH_SMART_GRAPH_ATTRIBUTE`.
+Additionally, if upon insertion the `smartGraphAttribute` is missing for a
+SmartGraph vertex, the error code is error `4001`, `ERROR_NO_SMART_GRAPH_ATTRIBUTE`.
+
+To retroactively repair the data in any of the affected collections, it is
+possible to update every (affected) document with the correct value of the
+`smartGraphAttribute` via an AQL query as follows:
+
+```
+FOR doc IN @@collection
+  LET expected = SUBSTRING(doc._key, 0, FIND_FIRST(doc._key, ':'))
+  LET actual = doc.@attr
+  FILTER expected != actual
+  UPDATE doc WITH {@attr: expected} IN @@collection
+  COLLECT WITH COUNT INTO updated
+  RETURN updated
+```  
+
+This updates all documents with the correct (expected) value of the
+`smartGraphAttribute` if it deviates from the expected value. The query
+returns the number of updated documents as well.
+
+The bind parameters necessary to run this query are:
+- `@@collection`: name of a SmartGraph vertex collection to be updated
+- `@attr`: attribute name of the `smartGraphAttribute` of the collection
 
 #### Limit to the number of databases in a deployment
 
@@ -100,6 +152,12 @@ may now allow larger transactions or be limited to smaller transactions because
 the maximum transaction size can now be configured with the
 `--transaction.streaming-max-transaction-size` startup option.
 The default value remains 128 MiB.
+
+#### Analyzer API
+
+The [`/_api/analyzer` endpoints](../../develop/http-api/analyzers.md) supports
+a new `multi_delimiter` Analyzer that accepts an array of strings in a
+`delimiter` attribute of the `properties` object.
 
 ### Privilege changes
 
