@@ -403,6 +403,21 @@ The maintenance mode ends automatically after the defined timeout.
 
 Also see the [HTTP interface for cluster maintenance](../../develop/http-api/cluster.md#get-the-maintenance-status-of-a-db-server).
 
+#### Shard usage metrics
+
+<small>Introduced in: v3.10.13, v3.11.7</small>
+
+With `GET /_admin/usage-metrics` you can retrieve detailed shard usage metrics on
+DB-Servers.
+
+These metrics can be enabled by setting the `--server.export-shard-usage-metrics`
+startup option to `enabled-per-shard` to make DB-Servers collect per-shard
+usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
+usage metrics per shard and per user whenever a shard is accessed.
+
+For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-usage-metrics)
+and [Monitoring per collection/database/user](../version-3.11/whats-new-in-3-11.md#monitoring-per-collectiondatabaseuser).
+
 ### Endpoints augmented
 
 #### Cursor API
