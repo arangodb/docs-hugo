@@ -658,6 +658,134 @@ assert(response.parsedBody.deployment.servers !== undefined);
 logJsonResponse(response);
 ```
 
+## Startup options
+
+### Get the startup option configuration
+
+```openapi
+paths:
+  /_admin/options:
+    get:
+      operationId: getEffectiveStartupOptions
+      description: |
+        Return the effective configuration of the queried _arangod_ instance as
+        set by startup options on the command-line and via a configuration file.
+
+        {{</* security */>}}
+        This endpoint may reveal sensitive information about the deployment!
+        {{</* /security */>}}
+
+        The endpoint can only be accessed via the `_system` database.
+        In addition, the `--server.options-api` startup option controls the
+        required privileges to access the option endpoints and allows you to
+        disable them entirely. The option can have the following values:
+        - `disabled`: the option endpoints are disabled
+        - `jwt`: the option endpoints can only be accessed using a superuser JWT (default)
+        - `admin`: the option endpoints can only be accessed by users with
+          *Administrate* access level for the `_system` database
+        - `public`: every user with access to the `_system` database can access
+          the option endpoints
+      responses:
+        '200':
+          description: |
+            An object with startup option names as keys and their effective
+            value as values. The values can be of different data types, typically
+            numbers, strings, or arrays thereof.
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Administration
+```
+
+### Get the available startup options
+
+```openapi
+paths:
+  /_admin/options-description:
+    get:
+      operationId: getAvailableStartupOptions
+      description: |
+        Return the startup options available to configure the queried _arangod_
+        instance, similar to the `--dump-options` startup option.
+
+        The endpoint can only be accessed via the `_system` database.
+        In addition, the `--server.options-api` startup option controls the
+        required privileges to access the option endpoints and allows you to
+        disable them entirely. The option can have the following values:
+        - `disabled`: the option endpoints are disabled
+        - `jwt`: the option endpoints can only be accessed using a superuser JWT (default)
+        - `admin`: the option endpoints can be accessed by admin users in the `_system`
+          database only.
+        - `public`: every user with access to the `_system` database can access
+          the option endpoints.
+      responses:
+        '200':
+          description: |
+            An object with startup option names as keys and sub-objects as values.
+            The structure of each sub-object is as follows:
+            - `section` (string): The part before the dot of a startup option
+              (`--section.param`), or `""` if it is a general option that doesn't
+              belong to a section
+            - `description` (string): A succinct explanation of the startup option
+            - `longDescription` (string, *optional*): Additional details about the
+              startup option if available
+            - `category` (string): Either `"option"` for regular options or `"command"`
+              if using the option performs an action and then terminates the process
+            - `hidden` (boolean): Whether the option is uncommon. If yes, then
+              the `--help` command does not list it, but `--help-all` lists every
+              startup option
+            - `type` (string): the data type of the option, typically one of
+              `"uint64"`, `"uint32"`, `"int64"`, `"int32"`, `"double"`, `"boolean"`,
+              `"string"`, `"string..."`
+            - `experimental` (boolean): Whether the option relates to a feature
+              that is not ready for production yet
+            - `obsolete` (boolean): Whether the option has been deprecated and
+              no effect anymore
+            - `enterpriseOnly` (boolean): Whether the option is only available in
+              the Enterprise Edition. The Community Edition does have most of the
+              Enterprise Edition startup options and they are thus not reported
+            - `requiresValue` (boolean): Whether the option can be specified
+              without a value to enable it
+            - `os` (array of strings): The operating systems the startup option
+              is supported on, typically `["linux", "macos", "windows"]`. On an
+              OS that does not support a specific option, the option is not
+              reported
+            - `component` (array of strings): A list of server roles the startup
+              option is available on. If it is supported by all cluster node types
+              as well as the single server deployment mode, then the value is
+              `["coordinator", "dbserver", "agent", "single"]`
+            - `introducedIn` (array of strings\|null): A list of versions the
+              startup option has been added in. Does not include later minor and
+              major versions then the current version, and the information may
+              get removed once all listed versions reach their end of life
+            - `deprecatedIn` (array of strings\|null): A list of versions the
+              startup option has been marked for deprecation in. It can still
+              be used until fully removed. Does not include later minor and
+              major versions then the current version, and the information may
+              get removed once all listed versions reach their end of life
+            - `values` (string, *optional*):
+              A description of the possible values you can set
+            - `default` (any, *optional*): The standard value if the option is not set
+            - `dynamic` (boolean): Whether the default value is calculated based
+              on the target host configuration, e.g. available memory
+            - `required` (boolean): Whether the option must be specified
+            - `base` (number, *optional*): the unit for a numeric option
+            - `minValue` (number, *optional*): The minimum value for a numeric option
+            - `maxValue` (number, *optional*): The maximum value for a numeric option
+            - `minInclusive` (boolean, *optional*): Whether the minimum value is
+              included in the allowed value range
+            - `maxInclusive` (boolean, *optional*): Whether the maximum value is
+              included in the allowed value range
+          content:
+            application/json:
+              schema:
+                type: object
+      tags:
+        - Administration
+```
+
 ## Server mode
 
 ### Return whether or not a server is in read-only mode

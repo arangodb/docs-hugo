@@ -131,7 +131,7 @@ binary large objects (BLOBs) and works best with small to medium-sized
 JSON objects.
 
 For more information about how ArangoDB persists data, see
-[Storage Engine](../deploy/architecture/storage-engine.md).
+[Storage Engine](../components/arangodb-server/storage-engine.md).
 
 ## ArangoDB as a Search Engine
 

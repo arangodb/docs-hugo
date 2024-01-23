@@ -330,15 +330,6 @@ instance, or adjusted at runtime via an API call. Examples:
 
 ## Fetch Current Configuration Options
 
-To list the configuration options of a running `arangod` instance, you can
-connect with an [ArangoShell](../../components/tools/arangodb-shell/_index.md) and invoke a
-[Transaction](../../develop/transactions/_index.md) by calling `db._executeTransaction()`
-and providing a JavaScript function to retrieve the server options:
-
-```js
----
-name: listCurrentConfigOpts
-description: ''
----
-db._executeTransaction({ collections: {}, action: function() {return require("internal").options(); } })
-```
+Use the [`GET /_admin/options` HTTP API](../../develop/http-api/administration.md#startup-options)
+to retrieve the effective configuration of the queried _arangod_ instance as
+set by startup options on the command-line and via a configuration file.

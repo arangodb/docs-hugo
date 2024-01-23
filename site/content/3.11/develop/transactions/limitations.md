@@ -76,7 +76,7 @@ Understanding these differences is important when designing applications that ne
 to be resilient against outages of individual servers.
 
 Cluster transactions share the underlying characteristics of the
-[storage engine](../../deploy/architecture/storage-engine.md) that is used for the cluster deployment.
+[storage engine](../../components/arangodb-server/storage-engine.md) that is used for the cluster deployment.
 A transaction started on a Coordinator translates to one transaction per involved DB-Server.
 The guarantees and characteristics of the given storage-engine apply additionally
 to the cluster specific information below.
