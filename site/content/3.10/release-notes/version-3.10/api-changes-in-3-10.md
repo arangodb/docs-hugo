@@ -747,6 +747,22 @@ figures, and for `arangosearch` Views, `withHidden` needs to be enabled, too:
 }
 ```
 
+#### Progress indication on the index generation
+
+<small>Introduced in: v3.10.13, v3.11.7</small>
+
+The `GET /_api/index` endpoint now returns a `progress` attribute that can
+optionally show indexes that are currently being created and indicate progress
+on the index generation.
+
+To return indexes that are not yet fully built but are in the building phase,
+add the option `withHidden=true` to `GET /_api/index?collection=<collectionName>`.
+
+```
+curl --header 'accept: application/json' --dump -
+"http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
+```
+
 #### Document API
 
 <small>Introduced in: v3.9.6, v3.10.2</small>
