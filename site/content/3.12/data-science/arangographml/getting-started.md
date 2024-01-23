@@ -690,6 +690,8 @@ arangoml.training.cancel_job(training_job.job_id)
 
 ## Model Selection
 
+**API Documentation [ArangoML.projects.list_models](https://arangoml.github.io/arangoml/specification.html#arangoml_ml_projects_api.DefaultApi.list_models)**
+
 Model Statistics can be observed upon completion of a Training Job. 
 To select a Model, the ArangoGraphML Projects Service can be used to gather
 all relevant models and choose the preferred model for a Prediction Job.
