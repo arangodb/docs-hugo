@@ -51,6 +51,9 @@ The following is a guide to show how to use the `arangoml` package in order to:
 {{< tabs "arangoml" >}}
 
 {{< tab "ArangoGraphML" >}}
+
+**API Documentation: [arangoml.ArangoMLMagics.enable_arangoml](https://arangoml.github.io/arangoml/magics.html#arangoml.magic.ArangoMLMagics.enable_arangoml)**
+
 The `arangoml` package comes pre-loaded with every ArangoGraphML notebook environment.
 To start using it, simply import it, and enable it via a Jupyter Magic Command.
 
@@ -59,13 +62,14 @@ arangoml = %enable_arangoml
 ```
 
 {{< tip >}}
-Other ArangoGraphML Magic Commands are also available. See the full list by
-running `%lsmagic` in a notebook cell.
+ArangoGraphML comes with other ArangoDB Magic Commands! See the full list [here](https://arangoml.github.io/arangoml/magics.html).
 {{< /tip >}}
 
 {{< /tab >}}
 
 {{< tab "Self-managed" >}}
+
+**API Documentation: [arangoml.ArangoML](https://arangoml.github.io/arangoml/specification.html#arangoml.main.ArangoML)**
 
 The `ArangoML` class is the main entry point for the `arangoml` package.
 It requires the following parameters:
@@ -148,6 +152,9 @@ arangoml = ArangoML(settings_files=["settings_1.toml", "settings_2.toml"])
 ```
 
 5. Via a Jupyter Magic Command
+
+**API Documentation: [arangoml.ArangoMLMagics.enable_arangoml](https://arangoml.github.io/arangoml/magics.html#arangoml.magic.ArangoMLMagics.enable_arangoml)**
+
 ```
 %load_ext arangoml
 %enable_arangoml
@@ -159,8 +166,8 @@ authentication that has **_system** access.
 {{< /info >}}
 
 {{< tip >}}
-Running `%load_ext arangoml` also provides access to other ArangoGraphML
-Jupyter Magic Commands. See the full list by running `%lsmagic` in a notebook cell.
+Running `%load_ext arangoml` also provides access to other [ArangoGraphML
+Jupyter Magic Commands](https://arangoml.github.io/arangoml/magics.html).
 {{< /tip >}}
 
 {{< /tab >}}
@@ -259,6 +266,8 @@ Datasets(dataset_db).load(DATASET_NAME)
 
 ## Projects
 
+**API Documentation: [ArangoML.projects](https://arangoml.github.io/arangoml/specification.html#projects)**
+
 Projects are an important reference used throughout the entire ArangoGraphML
 lifecycle. All activities link back to a project. The creation of the project
 is very simple. 
@@ -275,6 +284,8 @@ arangoml.projects.list_projects()
 ```
 
 ## Featurization
+
+**API Documentation: [ArangoML.featurization](https://arangoml.github.io/arangoml/specification.html#module-arangoml.featurization)**
 
 The Featurization Specification asks that you input the following:
 - `featurization_name`: A name for the featurization task.
@@ -529,6 +540,8 @@ feature_result = arangoml.featurization.featurize(
 
 ## Training
 
+**API Documentation: [ArangoML.training](https://arangoml.github.io/arangoml/specification.html#training)**
+
 Training Graph Machine Learning Models with ArangoGraphML only requires two steps:
 1. Describe which data points should be included in the Training Job.
 2. Pass the Training Specification to the Training Service.
@@ -677,6 +690,8 @@ arangoml.training.cancel_job(training_job.job_id)
 
 ## Model Selection
 
+**API Documentation [ArangoML.projects.list_models](https://arangoml.github.io/arangoml/specification.html#arangoml_ml_projects_api.DefaultApi.list_models)**
+
 Model Statistics can be observed upon completion of a Training Job. 
 To select a Model, the ArangoGraphML Projects Service can be used to gather
 all relevant models and choose the preferred model for a Prediction Job.
@@ -732,6 +747,8 @@ print(best_model)
 ```
 
 ## Prediction
+
+**API Documentation: [ArangoML.prediction](https://arangoml.github.io/arangoml/specification.html#prediction)**
 
 After selecting a model, a Prediction Job can be created. The Prediction Job
 will generate predictions and persist them to the source graph in a new
