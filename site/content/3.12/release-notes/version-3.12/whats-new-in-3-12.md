@@ -840,6 +840,11 @@ gathering, internal garbage collection, and TTL index cleanup are not counted in
 these metrics. Additionally, all requests that are using the superuser JWT for 
 authentication and that do not have a specific user set are not counted.
 
+Enabling these metrics can likely result in a small latency overhead of a few
+percent for write operations. The exact overhead depends on
+several factors, such as the type of operation (single or multi-document operation),
+replication factor, network latency, etc.
+
 ## Client tools
 
 ### Protocol aliases for endpoints
