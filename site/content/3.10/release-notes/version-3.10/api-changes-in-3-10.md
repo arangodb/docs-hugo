@@ -749,7 +749,7 @@ figures, and for `arangosearch` Views, `withHidden` needs to be enabled, too:
 
 #### Progress indication on the index generation
 
-<small>Introduced in: v3.10.13, v3.11.7</small>
+<small>Introduced in: v3.10.13</small>
 
 The `GET /_api/index` endpoint now returns a `progress` attribute that can
 optionally show indexes that are currently being created and indicate progress
