@@ -196,6 +196,19 @@ You can now retrieve the available key generators for collections using the new
 
 See the [HTTP API description](../../develop/http-api/collections.md#get-the-available-key-generators)
 
+#### Shard usage metrics
+
+With `GET /_admin/usage-metrics` you can retrieve detailed shard usage metrics on
+DB-Servers.
+
+These metrics can be enabled by setting the `--server.export-shard-usage-metrics`
+startup option to `enabled-per-shard` to make DB-Servers collect per-shard
+usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
+usage metrics per shard and per user whenever a shard is accessed.
+
+For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-usage-metrics)
+and [Monitoring per collection/database/user](../version-3.12/whats-new-in-3-12.md#monitoring-per-collectiondatabaseuser).
+
 ### Endpoints augmented
 
 #### View API
@@ -209,12 +222,30 @@ for details.
 
 #### Index API
 
+##### `optimizeTopK` for inverted indexes
+
 Indexes of type `inverted` accept a new `optimizeTopK` property for the
 ArangoSearch WAND optimization. It is an array of strings, optional, and
 defaults to `[]`.
 
 See the [inverted index `optimizeTopK` property](../../develop/http-api/indexes/inverted.md)
 for details.
+
+##### Progress indication on the index generation
+
+<small>Introduced in: v3.10.13, v3.11.7</small>
+
+The `GET /_api/index` endpoint now returns a `progress` attribute that can
+optionally show indexes that are currently being created and indicate progress
+on the index generation.
+
+To return indexes that are not yet fully built but are in the building phase,
+add the option `withHidden=true` to `GET /_api/index?collection=<collectionName>`.
+
+```
+curl --header 'accept: application/json' --dump -
+"http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
+```
 
 #### Optimizer rule descriptions
 
