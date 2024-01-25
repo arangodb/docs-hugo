@@ -1400,7 +1400,7 @@
       "agent",
       "single"
     ],
-    "default" : 7739682816,
+    "default" : 7739681792,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -7518,7 +7518,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33106214912,
+    "base" : 33106210816,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7526,7 +7526,7 @@
       "agent",
       "single"
     ],
-    "default" : 26816034078,
+    "default" : 26816030761,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7816,7 +7816,7 @@
     "type" : "double"
   },
   "query.memory-limit" : {
-    "base" : 33106214912,
+    "base" : 33106210816,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7824,7 +7824,7 @@
       "agent",
       "single"
     ],
-    "default" : 19863728947,
+    "default" : 19863726489,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -9059,7 +9059,7 @@
       "agent",
       "single"
     ],
-    "default" : 9287619379,
+    "default" : 9287618150,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -11640,7 +11640,7 @@
       "agent",
       "single"
     ],
-    "default" : 12383492505,
+    "default" : 12383490867,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
@@ -12436,6 +12436,33 @@
     "requiresValue" : false,
     "section" : "server",
     "type" : "boolean"
+  },
+  "server.export-shard-usage-metrics" : {
+    "category" : "option",
+    "component" : [
+      "dbserver"
+    ],
+    "default" : "disabled",
+    "deprecatedIn" : null,
+    "description" : "Whether or not to export shard usage metrics.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.11.7"
+    ],
+    "longDescription" : "This option can be used to make DB servers export\ndetailed shard usage metrics. By default, this option is set to 'disabled' so\nthat no shard usage metrics are exported. \nSetting the option to 'enabled-per-shard' will make DB-Servers collect per-shard\nusage metrics whenever a shard is accessed.\nSetting the option to 'enabled-per-shard-per-user' will make DB-Servers collect\nusage metrics per shard and per user whenever a shard is accessed. \nNote that enabling shard usage metrics can produce a lot of metrics if there \nare many shards and/or users in the system.",
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "server",
+    "type" : "string",
+    "values" : "Possible values: \"disabled\", \"enabled-per-shard\", \"enabled-per-shard-per-user\""
   },
   "server.gid" : {
     "category" : "option",
