@@ -45,6 +45,35 @@
           replaceWith: "ArangoDB",
         },
       ],
+      customCardSettings: [
+        {
+          filters: {
+            UrlMatch: {
+              ruleType: "PartialUrl",
+              partialUrl: "docs.arangodb.com",
+            },
+          },
+          searchTabLabel: "Official Docs",
+        },
+        {
+          filters: {
+            UrlMatch: {
+              ruleType: "PartialUrl",
+              partialUrl: "developer.arangodb.com",
+            },
+          },
+          searchTabLabel: "Developer Hub",
+        },
+        {
+          filters: {
+            UrlMatch: {
+              ruleType: "PartialUrl",
+              partialUrl: "arangodb.com",
+            },
+          },
+          searchTabLabel: "Home",
+        },
+      ],
     });
     const chatButton = inkeep.embed({
       componentType: "ChatButton",
@@ -81,11 +110,6 @@
           ],
           getHelpCallToActions: [
             {
-              icon: { builtIn: "IoPeopleOutline" },
-              name: "Google Groups",
-              url: "https://groups.google.com/g/arangodb",
-            },
-            {
               icon: { builtIn: "FaSlack" },
               name: "Slack",
               url: "https://arangodb-community.slack.com/",
@@ -93,6 +117,10 @@
           ],
         },
         searchSettings: {
+          tabSettings: {
+            isAllTabEnabled: false,
+            alwaysDisplayedTabs: ["Official Docs", "Developer Hub", "Home"],
+          },
         },
       },
     });
