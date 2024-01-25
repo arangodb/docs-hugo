@@ -88,13 +88,31 @@ The driver configuration can be customized by implementing `ArangoConfiguration#
 ```java
 @Override
 public ArangoDB.Builder arango() {
-  ArangoDB.Builder arango = new ArangoDB.Builder()
+  return new ArangoDB.Builder()
       .host("127.0.0.1", 8529)
       .user("root")
       .password("xxx");
-  return arango;
 }
 ```
+
+Note that, in case the driver is configured to use a protocol with `VPACK` content type 
+(i.e. `VST`, `HTTP_VPACK` or `HTTP2_VPACK`), then the method
+`ArangoConfiguration#contentType()` must be overridden to return `ContentType.VPACK`, for example:
+
+```java
+@Override
+public ArangoDB.Builder arango() {
+  new ArangoDB.Builder()
+      // ...    
+      .protocol(Protocol.HTTP2_VPACK);
+}
+
+@Override
+public ContentType contentType() {
+  return ContentType.VPACK;
+}
+```
+
 {{< /tab >}}
 
 {{< tab "Version 3" >}}
