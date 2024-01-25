@@ -1,13 +1,14 @@
 <script type="text/javascript">
-  const SCRIPT_SRC = 'https://unpkg.com/@inkeep/widgets-embed@0.2.215/dist/embed.js';
+  const SCRIPT_SRC =
+    "https://unpkg.com/@inkeep/widgets-embed@0.2.258/dist/embed.js";
 
   function loadAndInitializeInkeep() {
     if (document.querySelector(`script[src="${SCRIPT_SRC}]"`)) {
       return;
     }
 
-    const script = document.createElement('script');
-    script.type = 'module';
+    const script = document.createElement("script");
+    script.type = "module";
     script.src = SCRIPT_SRC;
     script.onload = initializeInkeep;
 
@@ -16,44 +17,44 @@
 
   function initializeInkeep() {
     const inkeep = Inkeep({
-      integrationId: 'clo4lx6jk0000s601cp21x2ok',
-      apiKey: '13b4e56966a76e86c6ff359cd795ee6a0412f751d75d6383',
-      organizationId: 'org_HGBkkzGAa4KeGJGh',
-      organizationDisplayName: 'ArangoDB',
-      primaryBrandColor: '#80a54d',
+      integrationId: "clo4lx6jk0000s601cp21x2ok",
+      apiKey: "13b4e56966a76e86c6ff359cd795ee6a0412f751d75d6383",
+      organizationId: "org_HGBkkzGAa4KeGJGh",
+      organizationDisplayName: "ArangoDB",
+      primaryBrandColor: "#80a54d",
       stringReplacementRules: [
         {
           matchingRule: {
-            ruleType: 'Substring',
-            string: 'Arangograph',
+            ruleType: "Substring",
+            string: "Arangograph",
           },
-          replaceWith: 'ArangoGraph',
+          replaceWith: "ArangoGraph",
         },
         {
           matchingRule: {
-            ruleType: 'Substring',
-            string: 'Aql',
+            ruleType: "Substring",
+            string: "Aql",
           },
-          replaceWith: 'AQL',
+          replaceWith: "AQL",
         },
         {
           matchingRule: {
-            ruleType: 'Substring',
-            string: 'Arangodb',
+            ruleType: "Substring",
+            string: "Arangodb",
           },
-          replaceWith: 'ArangoDB',
+          replaceWith: "ArangoDB",
         },
       ],
     });
     const chatButton = inkeep.embed({
-      componentType: 'ChatButton',
-      targetElement: document.getElementById('inkeep-chat-button'),
+      componentType: "ChatButton",
       properties: {
-        stylesheetUrls: ['/css/fonts.css'],
+        stylesheetUrls: ["/css/fonts.css"],
+        fixedPositionXOffset: '52px',
         baseSettings: {
           theme: {
             primaryColors: {
-              textColorOnPrimary: 'white',
+              textColorOnPrimary: "white",
             },
             tokens: {
               fonts: {
@@ -68,37 +69,31 @@
                 toast: 14000,
                 tooltip: 15000,
               },
-            }
-          }
+            },
+          },
         },
         aiChatSettings: {
-          botAvatarSrcUrl: '/images/ArangoDB_Logo_White_small.png',
+          botAvatarSrcUrl: "/images/ArangoDB_Logo_White_small.png",
           quickQuestions: [
-            'What can do with AQL that is not feasible with SQL?',
-            'How do I search for objects within arrays?',
-            'Where can I deploy my ArangoDB instance?',
+            "What can do with AQL that is not feasible with SQL?",
+            "How do I search for objects within arrays?",
+            "Where can I deploy my ArangoDB instance?",
           ],
           getHelpCallToActions: [
             {
-              icon: { builtIn: 'IoPeopleOutline' },
-              name: 'Google Groups',
-              url: 'https://groups.google.com/g/arangodb',
+              icon: { builtIn: "IoPeopleOutline" },
+              name: "Google Groups",
+              url: "https://groups.google.com/g/arangodb",
             },
             {
-              icon: { builtIn: 'FaSlack' },
-              name: 'Slack',
-              url: 'https://arangodb-community.slack.com/',
+              icon: { builtIn: "FaSlack" },
+              name: "Slack",
+              url: "https://arangodb-community.slack.com/",
             },
           ],
         },
         searchSettings: {
-          // not implemented for now
         },
-        modalSettings: {
-          defaultView: 'AI_CHAT',
-          isModeSwitchingEnabled: false,
-          openShortcutKey: 'l',
-        }
       },
     });
   }
