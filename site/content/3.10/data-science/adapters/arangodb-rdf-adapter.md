@@ -1,5 +1,5 @@
 ---
-title: ArangoRDF
+title: RDF Adapter
 menuTitle: RDF
 weight: 25
 description: >-
