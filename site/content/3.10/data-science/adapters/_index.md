@@ -14,8 +14,8 @@ process and make it easier to leverage the power of ArangoDB in data science.
 
 Read more about the adapters available in ArangoDB:
 
-- [ArangoDB-NetworkX Adapter](arangodb-networkx-adapter.md)
-- [ArangoDB-DGL Adapter](arangodb-dgl-adapter.md)
-- [ArangoDB-cuGraph Adapter](arangodb-cugraph-adapter.md)
-- [ArangoDB-PyG Adapter](arangodb-pyg-adapter.md)
-- [ArangoDB-RDF Adapter](arangodb-rdf-adapter.md)
+- [NetworkX](arangodb-networkx-adapter.md)
+- [cuGraph](arangodb-cugraph-adapter.md)
+- [PyTorch Geometric (PyG)](arangodb-pyg-adapter.md)
+- [Deep Graph Library (DGL)](arangodb-dgl-adapter.md)
+- [Resource Description Framework (RDF)](arangodb-rdf-adapter.md)
