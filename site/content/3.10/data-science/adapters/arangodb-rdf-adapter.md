@@ -1,6 +1,6 @@
 ---
 title: ArangoRDF
-menuTitle: ArangoDB-RDF Adapter
+menuTitle: RDF
 weight: 25
 description: >-
   ArangoRDF allows you to export graphs from ArangoDB into RDF and vice-versa

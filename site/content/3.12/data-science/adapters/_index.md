@@ -14,8 +14,8 @@ process and make it easier to leverage the power of ArangoDB in data science.
 
 Read more about the adapters available in ArangoDB:
 
-- [ArangoDB-NetworkX Adapter](arangodb-networkx-adapter.md)
-- [ArangoDB-DGL Adapter](arangodb-dgl-adapter.md)
-- [ArangoDB-cuGraph Adapter](arangodb-cugraph-adapter.md)
-- [ArangoDB-PyG Adapter](arangodb-pyg-adapter.md)
-- [ArangoDB-RDF Adapter](arangodb-rdf-adapter.md)
+- [NetworkX Adapter](arangodb-networkx-adapter.md)
+- [DGL Adapter](arangodb-dgl-adapter.md)
+- [cuGraph Adapter](arangodb-cugraph-adapter.md)
+- [PyG Adapter](arangodb-pyg-adapter.md)
+- [RDF Adapter](arangodb-rdf-adapter.md)
