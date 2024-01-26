@@ -1,7 +1,7 @@
 ---
 title: DGL Adapter
 menuTitle: DGL
-weight: 10
+weight: 20
 description: >-
   The DGL Adapter exports graphs from ArangoDB into Deep Graph Library (DGL), a Python package for graph neural networks, and vice-versa
 archetype: default

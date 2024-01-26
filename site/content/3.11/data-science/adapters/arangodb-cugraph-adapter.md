@@ -1,7 +1,7 @@
 ---
 title: cuGraph Adapter
 menuTitle: cuGraph
-weight: 15
+weight: 10
 description: >-
   The cuGraph Adapter exports graphs from ArangoDB into RAPIDS cuGraph, a library of collective GPU-accelerated graph algorithms, and vice-versa
 archetype: default
