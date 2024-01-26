@@ -18,4 +18,4 @@ Read more about the adapters available in ArangoDB:
 - [ArangoDB-DGL Adapter](arangodb-dgl-adapter.md)
 - [ArangoDB-cuGraph Adapter](arangodb-cugraph-adapter.md)
 - [ArangoDB-PyG Adapter](arangodb-pyg-adapter.md)
-- [ArangoRDF Adapter](arangordf-adapter/_index.md)
+- [ArangoDB-RDF Adapter](arangodb-rdf-adapter.md)
