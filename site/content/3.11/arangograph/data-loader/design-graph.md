@@ -19,7 +19,7 @@ Nodes are the main objects in your data model and include the attributes of the
 objects.
 
 1. To create a new node, click the **Add node** button.
-2. In the graph designer, click on the newly create node to view the **Node details**.
+2. In the graph designer, click on the newly created node to view the **Node details**.
 3. In the **Node details** panel, fill in the following fields:
    - For **Node label**, enter a name you want to use for the node.
    - For **File**, select a file from the list to associate it with the node.
@@ -33,13 +33,19 @@ objects.
 
 Nodes can be connected by edges to express and categorize the relations between
 them. A relation always has a direction, going from one node to another. You can
-define this direction in the graph designer by dragging your cursor from a
+define this direction in the graph designer by dragging your cursor from one
 particular node to another.
 
 To connect two nodes, you can use the **Connect node(s)** button. Click on any
-node to self-reference it or drag to connect it to another node. Alternatively,
+node to self-reference it or drag it to connect it to another node. Alternatively,
 when you select a node, a plus sign will appear, allowing you to directly add a
 new node with an edge.
+
+{{< tip >}}
+To quickly recenter your elements on the canvas, you can use the **Center View**
+button located in the bottom right corner. This brings your nodes and edges back
+into focus.
+{{< /tip >}}
 
 The edge needs to be associated with a file and must have a label. Note that a
 node and an edge cannot have the same label.

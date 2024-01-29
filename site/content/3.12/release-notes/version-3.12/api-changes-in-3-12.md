@@ -61,6 +61,10 @@ indexes have been allowing to index and store the `_id` system attribute.
 
 #### Optimizer rule changes
 
+Due to the [improved joins](whats-new-in-3-12.md#improved-joins) in AQL, there
+is a new `join-index-nodes` optimizer rule and a `JoinNode` that may appear in
+execution plans.
+
 The `remove-unnecessary-projections` AQL optimizer rule has been renamed to
 `optimize-projections` and now includes an additional optimization.
 
@@ -68,6 +72,61 @@ Moreover, a `remove-unnecessary-calculations-4` rule has been added.
 
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
+
+#### Gharial API
+
+The `PATCH /_api/gharial/{graph}/edge/{collection}/{edge}` endpoint to update
+edges in named graphs now validates the referenced vertex when modifying either
+the `_from` or `_to` edge attribute. Previously, the validation only occurred if
+both were set in the request.
+
+#### Validation of `smartGraphAttribute` in SmartGraphs
+
+<small>Introduced in: v3.10.13, v3.11.7</small>
+
+The attribute defined by the `smartGraphAttribute` graph property is not allowed to be
+changed in the documents of SmartGraph vertex collections. This is now strictly enforced.
+You must set the attribute when creating a document. Any attempt to modify or remove
+the attribute afterward by update or replace operations now throws an error. Previously,
+the `smartGraphAttribute` value was checked only when inserting documents into a
+SmartGraph vertex collection, but not for update or replace operations.
+
+The missing checks on update and replace operations allowed to retroactively
+modify the value of the `smartGraphAttribute` for existing documents, which
+could have led to problems when the data of such a SmartGraph vertex collection was
+replicated to a new follower shard. On the new follower shard, the documents
+went through the full validation and led to documents with modified
+`smartGraphAttribute` values being rejected on the follower. This could have
+led to follower shards not getting in sync.
+
+Now, the value of the `smartGraphAttribute` is fully validated with every
+insert, update, or replace operation, and every attempt to modify the value of
+the `smartGraphAttribute` retroactively fails with the `4003` error,
+`ERROR_KEY_MUST_BE_PREFIXED_WITH_SMART_GRAPH_ATTRIBUTE`.
+Additionally, if upon insertion the `smartGraphAttribute` is missing for a
+SmartGraph vertex, the error code is error `4001`, `ERROR_NO_SMART_GRAPH_ATTRIBUTE`.
+
+To retroactively repair the data in any of the affected collections, it is
+possible to update every (affected) document with the correct value of the
+`smartGraphAttribute` via an AQL query as follows:
+
+```
+FOR doc IN @@collection
+  LET expected = SUBSTRING(doc._key, 0, FIND_FIRST(doc._key, ':'))
+  LET actual = doc.@attr
+  FILTER expected != actual
+  UPDATE doc WITH {@attr: expected} IN @@collection
+  COLLECT WITH COUNT INTO updated
+  RETURN updated
+```  
+
+This updates all documents with the correct (expected) value of the
+`smartGraphAttribute` if it deviates from the expected value. The query
+returns the number of updated documents as well.
+
+The bind parameters necessary to run this query are:
+- `@@collection`: name of a SmartGraph vertex collection to be updated
+- `@attr`: attribute name of the `smartGraphAttribute` of the collection
 
 #### Limit to the number of databases in a deployment
 
@@ -94,6 +153,12 @@ the maximum transaction size can now be configured with the
 `--transaction.streaming-max-transaction-size` startup option.
 The default value remains 128 MiB.
 
+#### Analyzer API
+
+The [`/_api/analyzer` endpoints](../../develop/http-api/analyzers.md) supports
+a new `multi_delimiter` Analyzer that accepts an array of strings in a
+`delimiter` attribute of the `properties` object.
+
 ### Privilege changes
 
 
@@ -111,7 +176,38 @@ The default value remains 128 MiB.
 
 ### Endpoints added
 
+#### Effective and available startup options
 
+The new `GET /_admin/options` and `GET /_admin/options-description` HTTP API
+endpoints allow you to return the effective configuration and the available
+startup options of the queried _arangod_ instance.
+
+Previously, it was only possible to [fetch the current configuration](../../operations/administration/configuration.md#fetch-current-configuration-options)
+on single servers and Coordinators using a JavaScript transaction, and to list
+the available startup options with `--dump-options`.
+
+See the [HTTP interface for administration](../../develop/http-api/administration.md#startup-options)
+for details.
+
+#### Available key generators
+
+You can now retrieve the available key generators for collections using the new
+`GET /_api/key-generators` endpoint.
+
+See the [HTTP API description](../../develop/http-api/collections.md#get-the-available-key-generators)
+
+#### Shard usage metrics
+
+With `GET /_admin/usage-metrics` you can retrieve detailed shard usage metrics on
+DB-Servers.
+
+These metrics can be enabled by setting the `--server.export-shard-usage-metrics`
+startup option to `enabled-per-shard` to make DB-Servers collect per-shard
+usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
+usage metrics per shard and per user whenever a shard is accessed.
+
+For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-usage-metrics)
+and [Monitoring per collection/database/user](../version-3.12/whats-new-in-3-12.md#monitoring-per-collectiondatabaseuser).
 
 ### Endpoints augmented
 
@@ -126,12 +222,30 @@ for details.
 
 #### Index API
 
+##### `optimizeTopK` for inverted indexes
+
 Indexes of type `inverted` accept a new `optimizeTopK` property for the
 ArangoSearch WAND optimization. It is an array of strings, optional, and
 defaults to `[]`.
 
 See the [inverted index `optimizeTopK` property](../../develop/http-api/indexes/inverted.md)
 for details.
+
+##### Progress indication on the index generation
+
+<small>Introduced in: v3.10.13, v3.11.7</small>
+
+The `GET /_api/index` endpoint now returns a `progress` attribute that can
+optionally show indexes that are currently being created and indicate progress
+on the index generation.
+
+To return indexes that are not yet fully built but are in the building phase,
+add the option `withHidden=true` to `GET /_api/index?collection=<collectionName>`.
+
+```
+curl --header 'accept: application/json' --dump -
+"http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
+```
 
 #### Optimizer rule descriptions
 

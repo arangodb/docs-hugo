@@ -80,6 +80,37 @@ logPlainResponse(response);
 
 {{% metrics %}}
 
+## Get usage metrics
+
+```openapi
+paths:
+  /_admin/usage-metrics:
+    get:
+      operationId: getUsageMetrics
+      description: |
+        Returns detailed shard usage metrics on DB-Servers.
+        
+        These metrics can be enabled by setting the `--server.export-shard-usage-metrics`
+        startup option to `enabled-per-shard` to make DB-Servers collect per-shard
+        usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
+        usage metrics per shard and per user whenever a shard is accessed.
+      parameters:
+        - name: serverId
+          in: query
+          required: false
+          description: |
+            Returns the usage metrics of the specified server. If no `serverId` is given,
+            the asked server will reply. This parameter is only meaningful on Coordinators.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Metrics were returned successfully.
+      tags:
+        - Monitoring
+```
+
 ## Metrics API
 
 ### Get the metrics (deprecated)

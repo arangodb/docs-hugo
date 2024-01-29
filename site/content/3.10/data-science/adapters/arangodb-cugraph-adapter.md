@@ -1,9 +1,9 @@
 ---
 title: cuGraph Adapter
-menuTitle: ArangoDB-cuGraph Adapter
-weight: 15
+menuTitle: cuGraph
+weight: 10
 description: >-
-  The ArangoDB-cuGraph Adapter exports graphs from ArangoDB into RAPIDS cuGraph, a library of collective GPU-accelerated graph algorithms, and vice-versa
+  The cuGraph Adapter exports graphs from ArangoDB into RAPIDS cuGraph, a library of collective GPU-accelerated graph algorithms, and vice-versa
 archetype: default
 ---
 While offering a similar API and set of graph algorithms to NetworkX,
@@ -15,12 +15,12 @@ In order to run cuGraph, an Nvidia-CUDA-enabled GPU is required.
 
 ## Resources
 
-The [ArangoDB-cuGraph Adapter repository](https://github.com/arangoml/cugraph-adapter)
+The [cuGraph Adapter repository](https://github.com/arangoml/cugraph-adapter)
 is available on Github. Check it out!
 
 ## Installation
 
-To install the latest release of the ArangoDB-cuGraph Adapter,
+To install the latest release of the cuGraph Adapter,
 run the following command:
 
 ```bash
@@ -30,7 +30,7 @@ pip install adbcug-adapter
 
 ## Quickstart
 
-The following examples show how to get started with ArangoDB-cuGraph Adapter.
+The following examples show how to get started with the cuGraph Adapter.
 Check also the 
 [interactive tutorial](https://colab.research.google.com/github/arangoml/cugraph-adapter/blob/master/examples/ArangoDB_cuGraph_Adapter.ipynb).
 

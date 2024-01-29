@@ -185,6 +185,15 @@ the condition, which is **not usable in index lookups**. However, this should
 still be better than overusing memory or taking a very long time to compute the
 DNF version.
 
+## Validation of `smartGraphAttribute` in SmartGraphs
+
+<small>Introduced in: v3.10.13, v3.11.7</small>
+
+The attribute defined by the `smartGraphAttribute` graph property is not allowed to be
+changed in the documents of SmartGraph vertex collections. This is now strictly enforced.
+See [API Changes in ArangoDB 3.11](api-changes-in-3-11.md#validation-of-smartgraphattribute-in-smartgraphs)
+for details and instructions on how to repair affected attributes.
+
 ## Validation of traversal collection restrictions
 
 <small>Introduced in: v3.9.11, v3.10.7</small>
@@ -250,6 +259,14 @@ the result array for the respective documents, along with the successful ones:
 > curl http://localhost:8529/_api/document/coll/valid
 {"_key":"valid","_id":"coll/valid","_rev":"_gG9JHsW---"}
 ```
+
+## Exit code adjustments
+
+<small>Introduced in: v3.10.13, v3.11.7</small>
+
+For some fatal errors like a required database upgrade or a failed version check,
+_arangod_ set the generic exit code of `1`. It now returns a different, more
+specific exit code in these cases.
 
 ## Batch-reading an empty list of documents succeeds
 

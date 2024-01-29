@@ -161,6 +161,15 @@ The limit is also enforced when converting any server data to JavaScript in Foxx
 when sending JavaScript input data from Foxx to a server API.
 This maximum recursion depth is hard-coded in arangod and all client tools.
 
+## Validation of `smartGraphAttribute` in SmartGraphs
+
+<small>Introduced in: v3.10.13</small>
+
+The attribute defined by the `smartGraphAttribute` graph property is not allowed to be
+changed in the documents of SmartGraph vertex collections. This is now strictly enforced.
+See [API Changes in ArangoDB 3.10](api-changes-in-3-10.md#validation-of-smartgraphattribute-in-smartgraphs)
+for details and instructions on how to repair affected attributes.
+
 ## Validation of traversal collection restrictions
 
 <small>Introduced in: v3.9.11, v3.10.7</small>
@@ -191,6 +200,14 @@ part of the specified named graph (code `1926` and HTTP status `404 Not Found`).
 It is also an error if you specify an edge collection that is not part of the
 named graph's definition or of the list of edge collections (code `1939` and
 HTTP status `400 Bad Request`).
+
+## Exit code adjustments
+
+<small>Introduced in: v3.10.13</small>
+
+For some fatal errors like a required database upgrade or a failed version check,
+_arangod_ set the generic exit code of `1`. It now returns a different, more
+specific exit code in these cases.
 
 ## Startup Options
 

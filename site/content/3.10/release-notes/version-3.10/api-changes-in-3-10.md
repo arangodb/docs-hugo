@@ -50,6 +50,54 @@ The `/_api/gharial` endpoints for named graphs have changed:
   `POST /_api/gharial/{graph}/edge/{collection}` but the `collection` doesn't
   belong to the `graph`, then the error is `ERROR_GRAPH_EDGE_COLLECTION_NOT_USED`.
 
+#### Validation of `smartGraphAttribute` in SmartGraphs
+
+<small>Introduced in: v3.10.13</small>
+
+The attribute defined by the `smartGraphAttribute` graph property is not allowed to be
+changed in the documents of SmartGraph vertex collections. This is now strictly enforced.
+You must set the attribute when creating a document. Any attempt to modify or remove
+the attribute afterward by update or replace operations now throws an error. Previously,
+the `smartGraphAttribute` value was checked only when inserting documents into a
+SmartGraph vertex collection, but not for update or replace operations.
+
+The missing checks on update and replace operations allowed to retroactively
+modify the value of the `smartGraphAttribute` for existing documents, which
+could have led to problems when the data of such a SmartGraph vertex collection was
+replicated to a new follower shard. On the new follower shard, the documents
+went through the full validation and led to documents with modified
+`smartGraphAttribute` values being rejected on the follower. This could have
+led to follower shards not getting in sync.
+
+Now, the value of the `smartGraphAttribute` is fully validated with every
+insert, update, or replace operation, and every attempt to modify the value of
+the `smartGraphAttribute` retroactively fails with the `4003` error,
+`ERROR_KEY_MUST_BE_PREFIXED_WITH_SMART_GRAPH_ATTRIBUTE`.
+Additionally, if upon insertion the `smartGraphAttribute` is missing for a
+SmartGraph vertex, the error code is error `4001`, `ERROR_NO_SMART_GRAPH_ATTRIBUTE`.
+
+To retroactively repair the data in any of the affected collections, it is
+possible to update every (affected) document with the correct value of the
+`smartGraphAttribute` via an AQL query as follows:
+
+```
+FOR doc IN @@collection
+  LET expected = SUBSTRING(doc._key, 0, FIND_FIRST(doc._key, ':'))
+  LET actual = doc.@attr
+  FILTER expected != actual
+  UPDATE doc WITH {@attr: expected} IN @@collection
+  COLLECT WITH COUNT INTO updated
+  RETURN updated
+```  
+
+This updates all documents with the correct (expected) value of the
+`smartGraphAttribute` if it deviates from the expected value. The query
+returns the number of updated documents as well.
+
+The bind parameters necessary to run this query are:
+- `@@collection`: name of a SmartGraph vertex collection to be updated
+- `@attr`: attribute name of the `smartGraphAttribute` of the collection
+
 #### Disabled Foxx APIs
 
 <small>Introduced in: v3.10.5</small>
@@ -263,6 +311,21 @@ to extend the timeout.
 The maintenance mode ends automatically after the defined timeout.
 
 Also see the [HTTP interface for cluster maintenance](../../develop/http-api/cluster.md#get-the-maintenance-status-of-a-db-server).
+
+#### Shard usage metrics
+
+<small>Introduced in: v3.10.13</small>
+
+With `GET /_admin/usage-metrics` you can retrieve detailed shard usage metrics on
+DB-Servers.
+
+These metrics can be enabled by setting the `--server.export-shard-usage-metrics`
+startup option to `enabled-per-shard` to make DB-Servers collect per-shard
+usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
+usage metrics per shard and per user whenever a shard is accessed.
+
+For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-usage-metrics)
+and [Monitoring per collection/database/user](../version-3.10/whats-new-in-3-10.md#monitoring-per-collectiondatabaseuser).
 
 ### Endpoints augmented
 
@@ -697,6 +760,22 @@ figures, and for `arangosearch` Views, `withHidden` needs to be enabled, too:
     "indexSize" : 1358
   }, ...
 }
+```
+
+#### Progress indication on the index generation
+
+<small>Introduced in: v3.10.13</small>
+
+The `GET /_api/index` endpoint now returns a `progress` attribute that can
+optionally show indexes that are currently being created and indicate progress
+on the index generation.
+
+To return indexes that are not yet fully built but are in the building phase,
+add the option `withHidden=true` to `GET /_api/index?collection=<collectionName>`.
+
+```
+curl --header 'accept: application/json' --dump -
+"http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
 ```
 
 #### Document API

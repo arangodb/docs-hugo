@@ -3,8 +3,8 @@ title: '`REPLACE` operation in AQL'
 menuTitle: REPLACE
 weight: 60
 description: >-
-  You can use `REPLACE` operations to replace documents in a collection by
-  replacing all their attributes except the document keys, IDs, and revisions
+  The `REPLACE` operation removes all attributes of a document and sets the
+  given attributes, excluding immutable system attributes
 archetype: default
 ---
 Each `REPLACE` operation is restricted to a single collection, and the
