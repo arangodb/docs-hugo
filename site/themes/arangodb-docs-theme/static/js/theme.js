@@ -281,15 +281,28 @@ function tocHiglighter() {
       removeActiveFromAllAnchors();
       const highlightedHref = document.querySelector('#TableOfContents a[href="#' + id + '"]');
       highlightedHref.parentElement.classList.add('is-active');
-      highlightedHref.parentElement.scrollIntoView({behavior: "smooth", block: "nearest" });
+      //highlightedHref.parentElement.scrollIntoView({behavior: "smooth", block: "nearest" });
     }
   });
 }
 
-$(window).scroll(function(){
-  tocHiglighter();
-});
+function throttle(callback, limit) {
+  var waiting = false;
+  return function () {
+    if (!waiting) {
+      callback.apply(this, arguments);
+      waiting = true;
+      setTimeout(function () {
+        waiting = false;
+      }, limit);
+    }
+  }
+}
 
+$(window).scroll(throttle(function() {
+  tocHiglighter();
+  backToTopButton();
+}, 250));
 
 /*
     Tabs
@@ -501,18 +514,12 @@ function initClickHandlers() {
 */
 
 function backToTopButton() {
-    if (window.pageYOffset > 100) {
+    if (window.scrollY > 100) {
         document.querySelector(".back-to-top").classList.remove("hidden");
     } else {
         document.querySelector(".back-to-top").classList.add("hidden");
     }
 }
-
-
-window.addEventListener("scroll", () => {
-    backToTopButton();
-});
-
 
 const goToTop = (event) => {
     if (event != undefined)       // Comes from the back-to-top button
