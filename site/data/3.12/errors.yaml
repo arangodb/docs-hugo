@@ -1126,7 +1126,7 @@
   text: "no valid initial collection found"
   desc: "during the graph creation process no collection could be selected as the needed initial collection. Happens if a distributeShardsLike or replicationFactor mismatch was found."
   code: 1946
-- name: ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED
+- name: ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_PART_OF_THE_GRAPH
   text: "referenced vertex collection is not part of the graph"
   desc: "the _from or _to collection specified for the edge refers to a vertex collection which is not used in any edge definition of the graph."
   code: 1947
@@ -1134,6 +1134,10 @@
   text: "negative edge weight found"
   desc: "a negative edge weight was found during a weighted graph traversal or shortest path query"
   code: 1948
+- name: ERROR_GRAPH_COLLECTION_NOT_PART_OF_THE_GRAPH
+  text: "the given collection is not part of the graph"
+  desc: "The collection is not used in any edge definition or as an orphan collection."
+  code: 1949
 - group: Session errors
 - name: ERROR_SESSION_UNKNOWN
   text: "unknown session"
