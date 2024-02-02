@@ -22,6 +22,7 @@
 /3.10/deploy/kubernetes/tls/                              https://arangodb.github.io/kube-arangodb/docs/tls
 /3.10/deploy/kubernetes/troubleshooting/                  https://arangodb.github.io/kube-arangodb/docs/troubleshooting
 /3.10/operations/upgrading/kubernetes-deployments/        https://arangodb.github.io/kube-arangodb/docs/upgrading
+/3.10/arangograph/changelog/                              https://docs.arangodb.com/3.10/arangograph/
 
 /3.11/deploy/kubernetes/deployment-resource-reference/    https://arangodb.github.io/kube-arangodb/docs/api/ArangoDeployment.V1
 /3.11/deploy/kubernetes/backup-resource/                  https://arangodb.github.io/kube-arangodb/docs/api/ArangoBackup.V1
@@ -43,6 +44,7 @@
 /3.11/deploy/kubernetes/tls/                              https://arangodb.github.io/kube-arangodb/docs/tls
 /3.11/deploy/kubernetes/troubleshooting/                  https://arangodb.github.io/kube-arangodb/docs/troubleshooting
 /3.11/operations/upgrading/kubernetes-deployments/        https://arangodb.github.io/kube-arangodb/docs/upgrading
+/3.11/arangograph/changelog/                              https://docs.arangodb.com/3.11/arangograph/
 
 /stable/deploy/kubernetes/deployment-resource-reference/  https://arangodb.github.io/kube-arangodb/docs/api/ArangoDeployment.V1
 /stable/deploy/kubernetes/backup-resource/                https://arangodb.github.io/kube-arangodb/docs/api/ArangoBackup.V1
@@ -64,6 +66,7 @@
 /stable/deploy/kubernetes/tls/                            https://arangodb.github.io/kube-arangodb/docs/tls
 /stable/deploy/kubernetes/troubleshooting/                https://arangodb.github.io/kube-arangodb/docs/troubleshooting
 /stable/operations/upgrading/kubernetes-deployments/      https://arangodb.github.io/kube-arangodb/docs/upgrading
+/stable/arangograph/changelog/                            https://docs.arangodb.com/stable/arangograph/
 
 /3.12/deploy/kubernetes/deployment-resource-reference/    https://arangodb.github.io/kube-arangodb/docs/api/ArangoDeployment.V1
 /3.12/deploy/kubernetes/backup-resource/                  https://arangodb.github.io/kube-arangodb/docs/api/ArangoBackup.V1
@@ -85,6 +88,7 @@
 /3.12/deploy/kubernetes/tls/                              https://arangodb.github.io/kube-arangodb/docs/tls
 /3.12/deploy/kubernetes/troubleshooting/                  https://arangodb.github.io/kube-arangodb/docs/troubleshooting
 /3.12/operations/upgrading/kubernetes-deployments/        https://arangodb.github.io/kube-arangodb/docs/upgrading
+/3.12/arangograph/changelog/                              https://docs.arangodb.com/3.12/arangograph/
 
 /devel/deploy/kubernetes/deployment-resource-reference/   https://arangodb.github.io/kube-arangodb/docs/api/ArangoDeployment.V1
 /devel/deploy/kubernetes/backup-resource/                 https://arangodb.github.io/kube-arangodb/docs/api/ArangoBackup.V1
@@ -106,6 +110,7 @@
 /devel/deploy/kubernetes/tls/                             https://arangodb.github.io/kube-arangodb/docs/tls
 /devel/deploy/kubernetes/troubleshooting/                 https://arangodb.github.io/kube-arangodb/docs/troubleshooting
 /devel/operations/upgrading/kubernetes-deployments/       https://arangodb.github.io/kube-arangodb/docs/upgrading
+/devel/arangograph/changelog/                             https://docs.arangodb.com/devel/arangograph/
 
 /3.10/deploy/deployment/*              /3.10/deploy/:splat
 /3.11/deploy/deployment/*              /3.11/deploy/:splat
