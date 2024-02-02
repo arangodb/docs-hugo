@@ -66,9 +66,6 @@ that you can focus on building amazing things on top of ArangoDB. See
 You can also install ArangoDB locally or on your own server hardware.
 See [Install ArangoDB on-premises](on-premises-installation.md) for more details.
 
-If you want to migrate from bare metal servers to the cloud with minimal downtime,
-check out the [Cloud Migration Tool](../arangograph/migrate-to-the-cloud.md).
-
 ## Interactive Tutorials
 
 To get started with ArangoDB and try out some of its features, you can use the
