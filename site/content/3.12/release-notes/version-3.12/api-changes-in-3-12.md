@@ -48,6 +48,13 @@ unknown attributes and values are detected in the request body.
 Note that all invalid elements and combinations will be rejected in future
 versions.
 
+#### Dropping a collection from a graph
+
+Dropping a collection from a graph using the
+`DELETE /_api/collection/{collection-name}` endpoint is now strictly enforced
+so that the graph definition remains intact. Previously, it was allowed to drop
+collections that were part of an existing graph.
+
 #### Index API
 
 ##### Stored values can contain the `_id` attribute
