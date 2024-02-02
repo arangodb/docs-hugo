@@ -770,51 +770,9 @@
     "section" : "javascript",
     "type" : "string..."
   },
-  "javascript.run-main" : {
-    "category" : "option",
-    "default" : false,
-    "deprecatedIn" : null,
-    "description" : "Execute main function.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "required" : false,
-    "requiresValue" : false,
-    "section" : "javascript",
-    "type" : "boolean"
-  },
-  "javascript.script-parameter" : {
-    "category" : "option",
-    "default" : [
-    ],
-    "deprecatedIn" : null,
-    "description" : "Script parameter.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : false,
-    "introducedIn" : null,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos",
-      "windows"
-    ],
-    "requiresValue" : true,
-    "section" : "javascript",
-    "type" : "string..."
-  },
   "javascript.startup-directory" : {
     "category" : "option",
-    "default" : "./js",
+    "default" : "/usr/share/arangodb3/js",
     "deprecatedIn" : null,
     "description" : "The startup paths containing the JavaScript files.",
     "dynamic" : false,
@@ -1787,7 +1745,7 @@
   "server.endpoint" : {
     "category" : "option",
     "default" : [
-      "http+tcp://127.0.0.1:8529"
+      "tcp://127.0.0.1:8529"
     ],
     "deprecatedIn" : null,
     "description" : "The endpoint to connect to. Use 'none' to start without a server. Use http+ssl:// as schema to connect to an SSL-secured server endpoint, otherwise http+tcp:// or unix://",

@@ -1030,10 +1030,6 @@
   text: "invalid edge"
   desc: "Will be raised when an invalid edge id is passed to the server."
   code: 1906
-- name: ERROR_GRAPH_TOO_MANY_ITERATIONS
-  text: "too many iterations - try increasing the value of 'maxIterations'"
-  desc: "Will be raised when too many iterations are done in a graph traversal."
-  code: 1909
 - name: ERROR_GRAPH_INVALID_FILTER_RESULT
   text: "invalid filter result"
   desc: "Will be raised when an invalid filter result is returned in a graph traversal."
@@ -1110,6 +1106,10 @@
   text: "internal graph data corrupt"
   desc: "The _graphs collection contains invalid data."
   code: 1941
+- name: ERROR_GRAPH_MUST_NOT_DROP_COLLECTION
+  text: "must not drop collection while part of graph"
+  desc: "The collection must not be dropped while it is used as part of at least one graph definition."
+  code: 1942
 - name: ERROR_GRAPH_CREATE_MALFORMED_ORPHAN_LIST
   text: "malformed orphan list"
   desc: "the orphan list argument is malformed. It has to be an array of strings."
