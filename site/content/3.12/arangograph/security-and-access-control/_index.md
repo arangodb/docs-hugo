@@ -51,7 +51,15 @@ For example, an organization has exactly one policy,
 which binds roles to members of the organization. These bindings are used to
 give the users permissions to perform operations in this organization.
 This is useful when, as an organization owner, you need to extend the permissions
-for an organization member. 
+for an organization member.
+
+{{< info >}}
+Permissions linked to predefined roles vary between organization owners and
+organization members. If you need to extend permissions for an organization
+member, you can create a new role binding. The complete list of roles and
+their respective permissions for both organization owners and members can be
+viewed on the **Policy** page of an organization within the ArangoGraph dashboard.
+{{< /info >}}
 
 ### How to view, edit, or remove role bindings of a policy
 
@@ -104,15 +112,8 @@ Predefined roles are created by ArangoGraph and group related permissions togeth
 An example of a predefined role is `deployment-viewer`. This role
 contains all permissions needed to view deployments in a project.
 
-Predefined roles cannot be deleted.
-
-{{< info >}}
-Permissions linked to predefined roles vary between organization owners and
-organization members. If you need to extend permissions for an organization
-member, you can create a new role binding. The complete list of roles and
-their respective permissions can be viewed on the **Policy** page within the
-ArangoGraph dashboard.
-{{< /info >}}
+Predefined roles cannot be deleted. Note that permissions linked to predefined
+roles vary between organization owners and organization members.
 
 {{% comment %}}
 Windows command to generate below list (cmd.exe):
