@@ -1116,8 +1116,8 @@ suffixes or substrings in the middle of strings (infixes) as opposed to prefixes
 It can apply an Analyzer of your choice before creating the _n_-grams, for example,
 to normalize text for case-insensitive and accent-insensitive search.
 
-See [Wildcard Search with ArangoSearch](arangosearch/wildcard-search.md) for an
-example of how to use this Analyzer with Views, and
+See [Wildcard Search with ArangoSearch](arangosearch/wildcard-search.md#wildcard-analyzer-examples)
+for an example of how to use this Analyzer with Views, and
 [Inverted indexes](indexing/working-with-indexes/inverted-indexes.md#wildcard-search)
 for an example using a standalone inverted index.
 
@@ -1129,7 +1129,7 @@ attributes:
   wildcards that you want to search for, e.g. `4` with an expected search pattern
   of `%up%if%ref%` (substrings of length 2 and 3 between `%`), but this leads to
   a slower search (for `ref%` with post-validation using the ICU regular expression
-  engine)
+  engine). A value of `3` is a good default, `2` is better for short strings
 - `analyzer` (object, _optional_): an Analyzer definition-like objects with
   `type` and `properties` attributes
 
@@ -1137,7 +1137,7 @@ You cannot set the `offset` [Analyzer features](#analyzer-features) for this
 Analyzer. You can create the Analyzer without features, or use
 `["frequency", "position"]` which uses more memory but doesn't need to read
 stored column values for prefix, suffix, infix, and exact queries (`something%`,
-`%something`, `%something%`, `something`, but not `some%thing` or `%some%thing%`)
+`%something`, `%something%`, `something`, but not `some%thing` or `%some%thin_`)
 
 The set of _n_-grams that are created for each input token includes one start
 _n_-gram and `ngramSize - 1` end _n_-grams using `"\uFFFD"` as start marker
@@ -1170,8 +1170,9 @@ db._query(`RETURN TOKENS("The quick brown Foxx", "wildcard_4")`).toArray();
 ---
 name: analyzerWildcard2
 description: |
-  Use a `norm` Analyzer to normalize the input to lowercase and convert accented
-  characters to their base characters, then create trigrams from the string:
+  Use a `norm` Analyzer in a `wildcard` Analyzer to normalize the input to
+  lowercase and convert accented characters to their base characters before
+  creating trigrams from the string:
 ---
 var analyzers = require("@arangodb/analyzers");
 var analyzerWildcard = analyzers.save("wildcard_3", "wildcard", { ngramSize: 3, "analyzer": {

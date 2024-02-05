@@ -211,6 +211,21 @@ and [Monitoring per collection/database/user](../version-3.12/whats-new-in-3-12.
 
 ### Endpoints augmented
 
+#### Analyzer API
+
+A new `wildcard` Analyzer with the following properties has been added,
+affecting the `/_api/analyzer` endpoints:
+
+- `ngramSize` (number, _required_): unsigned integer, needs to be at least `2`
+- `analyzer` (object, _optional_): an Analyzer definition-like objects with
+  `type` and `properties` attributes, where `type` is a string and `properties`
+  an object whose attributes depend on the `type`
+
+The `offset` Analyzer feature is not valid for this Analyzer.
+
+See [Transforming data with Analyzers](../../index-and-search/analyzers.md#wildcard)
+for details.
+
 #### View API
 
 Views of type `arangosearch` accept a new `optimizeTopK` View property for the
