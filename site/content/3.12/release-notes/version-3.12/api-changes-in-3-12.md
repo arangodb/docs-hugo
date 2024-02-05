@@ -387,3 +387,21 @@ not handle larger amounts of data and were thus very limited.
 
 Users of the JavaScript-based traversal API should use
 [AQL traversal queries](../../aql/graphs/traversals.md) instead.
+
+### `collection` object
+
+`collection.replace(object, data, options)` and
+`collection.update(object, data, options)` now have an optional
+`versionAttribute` property that adds external versioning support. It can also
+be used for `collection.insert(data, options)` with `overwriteMode: "update"`
+or `overwriteMode: "replace"`.
+
+If set, the attribute with the name specified by the property is looked up in
+the document to be replaced or updated and its content is read and compared
+numerically to the value of the versioning attribute in the document that
+updates or replaces it.
+If the version number in the new document is higher than in the document that
+already exists in the database, then the operation is performed normally.
+If the version number in the new document is lower or equal to what exists in
+the database, the operation is not performed and behaves like a no-op. No error
+is returned in this case.

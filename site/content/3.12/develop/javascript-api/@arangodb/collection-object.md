@@ -996,6 +996,18 @@ used to specify the following options:
   existing document's value. If set to `true`, objects will be merged.
   The default is `true`.
   This option controls the update-insert behavior only.
+- `versionAttribute`: The optional `versionAttribute` adds external versioning
+  support and can be used with `overwriteMode: "update"` or `overwriteMode: "replace"`.
+  If set, the attribute with the name specified by the property is
+  looked up in the document to be updated or to be replaced.
+  If no such attribute exists, the operation is performed as usual. If such an
+  attribute exists, its content is read and compared numerically to the value of
+  the versioning attribute in the document that updates or replaces it.
+  If the version number in the new document is higher than in the document that
+  already exists in the database, then the operation is performed normally.
+  If the version number in the new document is lower or equal to what exists in
+  the database, the operation is not performed and behaves like a no-op. No error
+  is returned in this case.
 
 ---
 
@@ -1301,6 +1313,17 @@ Replaces an existing document, with additional options passed as an object:
   revision of the document is returned in the output under the
   attribute `old`.
 - `silent`: If this flag is set to `true`, no output is returned.
+- `versionAttribute`: The optional `versionAttribute` adds external versioning
+  support. If set, the attribute with the name specified by the property is
+  looked up in the document to be replaced.
+  If no such attribute exists, the operation is performed as usual. If such an
+  attribute exists, its content is read and compared numerically to the value of
+  the versioning attribute in the document that replaces it.
+  If the version number in the new document is higher than in the document that
+  already exists in the database, then the operation is performed normally.
+  If the version number in the new document is lower or equal to what exists in
+  the database, the operation is not performed and behaves like a no-op. No error
+  is returned in this case.
 
 ---
 
@@ -1473,6 +1496,17 @@ an object:
   set to `false`, the value in the patch document will overwrite the
   existing document's value. If set to `true`, objects will be merged.
   The default is `true`.
+- `versionAttribute`: The optional `versionAttribute` adds external versioning
+  support. If set, the attribute with the name specified by the property is
+  looked up in the document to be updated.
+  If no such attribute exists, the operation is performed as usual. If such an
+  attribute exists, its content is read and compared numerically to the value of
+  the versioning attribute in the document that updates it.
+  If the version number in the new document is higher than in the document that
+  already exists in the database, then the operation is performed normally.
+  If the version number in the new document is lower or equal to what exists in
+  the database, the operation is not performed and behaves like a no-op. No error
+  is returned in this case.
 
 ---
 

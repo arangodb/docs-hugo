@@ -368,6 +368,18 @@ UPDATE { _key: "123", _from: "vert/C", _to: "vert/D" } IN edgeColl
   OPTIONS { refillIndexCaches: true }
 ```
 
+### `versionAttribute`
+
+The optional `versionAttribute` can be used for external versioning
+support. If set, the attribute with the name specified by the option is
+looked up in the document to be updated and its content is read and compared numerically to the value of
+the versioning attribute in the document that updates it.
+If the version number in the new document is higher than in the document that
+already exists in the database, then the operation is performed normally.
+If the version number in the new document is lower or equal to what exists in
+the database, the operation is not performed and behaves like a no-op. No error
+is returned in this case.
+
 ## Returning the modified documents
 
 You can optionally return the documents modified by the query. In this case, the `UPDATE` 
