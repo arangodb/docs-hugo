@@ -1400,7 +1400,7 @@
       "agent",
       "single"
     ],
-    "default" : 7739682816,
+    "default" : 7739681792,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -2862,7 +2862,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 6191746252,
+    "default" : 6191745433,
     "deprecatedIn" : null,
     "description" : "Maximum memory usage (in bytes) to be used by all ongoing dumps.",
     "dynamic" : true,
@@ -7604,7 +7604,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33106214912,
+    "base" : 33106210816,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7612,7 +7612,7 @@
       "agent",
       "single"
     ],
-    "default" : 26816034078,
+    "default" : 26816030761,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7897,7 +7897,7 @@
     "type" : "double"
   },
   "query.memory-limit" : {
-    "base" : 33106214912,
+    "base" : 33106210816,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7905,7 +7905,7 @@
       "agent",
       "single"
     ],
-    "default" : 19863728947,
+    "default" : 19863726489,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -9054,7 +9054,7 @@
       "agent",
       "single"
     ],
-    "default" : 9287619379,
+    "default" : 9287618150,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -11676,7 +11676,7 @@
       "agent",
       "single"
     ],
-    "default" : 12383492505,
+    "default" : 12383490867,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
@@ -14154,7 +14154,7 @@
       "agent",
       "single"
     ],
-    "default" : 1000000,
+    "default" : 100000,
     "deprecatedIn" : null,
     "description" : "The maximum number of documents to remove per collection in each invocation of the TTL thread.",
     "dynamic" : false,
