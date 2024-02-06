@@ -231,6 +231,13 @@ meant to facilitate downgrading or reverting the option change. When the option
 is set to `false`, all database objects with extended names that were created
 in the meantime should be removed manually.
 
+### Changed TTL index removal default
+
+The default value of the `--ttl.max-collection-removes` startup option has been
+lowered from 1 million to 100,000. The background thread for time-to-live indexes
+now removes fewer documents from a collection in each iteration to give other
+collections a chance of being cleaned up as well.
+
 ## Client tools
 
 ### arangodump
