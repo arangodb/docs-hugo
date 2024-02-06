@@ -470,10 +470,18 @@ operator to perform a wildcard search:
 
 ```js
 var analyzers = require("@arangodb/analyzers");
-var wildcardNormAnalyzer = analyzers.save("wildcard_norm", "wildcard", { ngramSize: 3, analyzer: { type: "norm", properties: { locale: "en", accent: false, case: "lower" } } }, ["frequency", "norm"]);
-var matchingNormAnalyzer = analyzers.save("only_norm", "norm", { locale: "en", accent: false, case: "lower" });
 
-db.imdb_vertices.ensureIndex({ name: "inv-wildcard", type: "inverted", fields: [ { name: "description", analyzer: "wildcard_norm" } ] });
+var wildcardNormAnalyzer = analyzers.save("wildcard_norm", "wildcard", {
+  ngramSize: 3, analyzer: {
+    type: "norm", properties: { locale: "en", accent: false, case: "lower" }
+  } }, ["frequency", "norm"]);
+
+var matchingNormAnalyzer = analyzers.save("only_norm", "norm", {
+  locale: "en", accent: false, case: "lower" });
+
+db.imdb_vertices.ensureIndex({ name: "inv-wildcard", type: "inverted", fields: [
+  { name: "description", analyzer: "wildcard_norm" }
+] });
 
 db._query(`
   LET search = "%AY!"
