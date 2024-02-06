@@ -1050,6 +1050,72 @@ the queue might grow and eventually overflow.
 You can configure the upper bound of the queue with this option. If the queue is
 full, log entries are written synchronously until the queue has space again.
 
+### Monitoring per collection/database/user
+
+<small>Introduced in: v3.10.13, v3.11.7</small>
+
+The following metrics have been introduced to track per-shard requests on
+DB-Servers:
+- `arangodb_collection_leader_reads_total`: The number of read requests on 
+  leaders, per shard, and optionally also split by user.
+- `arangodb_collection_leader_writes_total`: The number of write requests on
+  leaders, per shard, and optionally also split by user.
+- `arangodb_collection_requests_bytes_read_total`: The number of bytes read in
+  read requests on leaders.
+- `arangodb_collection_requests_bytes_written_total`: The number of bytes written
+  in write requests on leaders and followers.   
+
+To opt into these metrics, you can use the new `--server.export-shard-usage-metrics`
+startup option. It can be set to one of the following values on DB-Servers:
+- `disabled`: No shard usage metrics are recorded nor exported. This is the
+  default value.
+- `enabled-per-shard`: This makes DB-Servers collect per-shard usage metrics.
+- `enabled-per-shard-per-user`: This makes DB-Servers collect per-shard
+  and per-user metrics. This is more granular than `enabled-per-shard` but
+  can produce a lot of metrics.
+   
+Whenever a shard is accessed in read or write mode by one of the following 
+operations, the metrics are populated dynamically, either with a per-user
+label or not, depending on the above setting.
+The metrics are retained in memory on DB-Servers. Removing databases,
+collections, or users that are already included in the metrics won't remove
+the metrics until the DB-Server is restarted.
+
+The following operations increase the metrics:
+- AQL queries: an AQL query increases the read or write counters exactly
+  once for each involved shard. For shards that are accessed in read/write 
+  mode, only the write counter is increased.
+- Single-document insert, update, replace, and remove operations: for each
+  such operation, the write counter is increased once for the affected
+  shard.
+- Multi-document insert, update, replace, and remove operations: for each
+  such operation, the write counter is increased once for each shard
+  that is affected by the operation. Note that this includes collection
+  truncate operations.
+- Single and multi-document read operations: for each such operation, the
+  read counter is increased once for each shard that is affected by the
+  operation.
+
+The metrics are increased when any of the above operations start, and they
+are not decreased should an operation abort or if an operation does not
+lead to any actual reads or writes.
+
+As there can be many of these dynamic metrics based on the number of shards
+and/or users in the deployment, these metrics are turned off by default.
+When turned on, the metrics are exposed only via the new
+`GET /_admin/usage-metrics` endpoint. They are not exposed via the existing
+metrics `GET /_admin/metrics` endpoint.
+
+Note that internal operations, such as internal queries executed for statistics
+gathering, internal garbage collection, and TTL index cleanup are not counted in
+these metrics. Additionally, all requests that are using the superuser JWT for 
+authentication and that do not have a specific user set are not counted.
+
+Enabling these metrics can likely result in a small latency overhead of a few
+percent for write operations. The exact overhead depends on
+several factors, such as the type of operation (single or multi-document operation),
+replication factor, network latency, etc.
+
 ## Miscellaneous changes
 
 ### Write-write conflict improvements
@@ -1291,7 +1357,7 @@ cache subsystem:
 
 ### Detached scheduler threads
 
-<small>Introduced in: v3.11.5</small>
+<small>Introduced in: v3.10.13, v3.11.5</small>
 
 A scheduler thread now has the capability to detach itself from the scheduler
 if it observes the need to perform a potentially long running task, like waiting

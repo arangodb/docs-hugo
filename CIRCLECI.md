@@ -75,9 +75,9 @@ arguments are invoked:
 | Parameter type | Name | Value |
 |:---------------|:-----|:------|
 | string | `workflow` | `generate` |
-| string | `arangodb-3_10` | [Upstream reference](#upstream-reference) for 3.10 |
-| string | `arangodb-3_11` | [Upstream reference](#upstream-reference) for 3.11 |
-| string | `arangodb-3_12` | [Upstream reference](#upstream-reference) for 3.12 |
+| string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
+| string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
+| string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
 | string | `generators` | `examples` |
 | string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
 
@@ -93,9 +93,9 @@ arguments are invoked:
 | Parameter type | Name | Value |
 |:---------------|:-----|:------|
 | string | `workflow` | `generate` |
-| string | `arangodb-3_10` | [Upstream reference](#upstream-reference) for 3.10 |
-| string | `arangodb-3_11` | [Upstream reference](#upstream-reference) for 3.11 |
-| string | `arangodb-3_12` | [Upstream reference](#upstream-reference) for 3.12 |
+| string | `arangodb-3_10` | [Upstream reference](#upstream-references) for 3.10 |
+| string | `arangodb-3_11` | [Upstream reference](#upstream-references) for 3.11 |
+| string | `arangodb-3_12` | [Upstream reference](#upstream-references) for 3.12 |
 | string | `generators` | `examples` |
 | string | `deploy-url` | `deploy-preview-{PR_NUMBER}` |
 | boolean | `commit-generated` | `true` |

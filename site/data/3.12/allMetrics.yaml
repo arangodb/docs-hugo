@@ -33,16 +33,13 @@
   exposedBy:
     - dbserver
     - coordinator
-    - single
   description: |
     This reflects the current number of callbacks the local `AgencyCache`
     has registered.
     This metric was named `arangodb_agency_cache_callback_count` in
     previous versions of ArangoDB.
-    Note that on single servers this metric only has a non-zero value
-    in the Active Failover deployment mode.
   threshold: |
-    This number is usually very low, something like `2` or `3`.
+    This number is usually very low, something between `10` and `20`.
   troubleshoot: |
     If this number is considerably higher, this should be investigated.
     Please contact support.
@@ -59,16 +56,15 @@
   exposedBy:
     - coordinator
     - dbserver
-    - single
   description: |
     This metric reflects the current number of Agency callbacks being
     registered, including Agency cache callbacks.
     This metric was named `arangodb_agency_callback_count` in previous versions
     of ArangoDB.
-    Note that on single servers this metric only has a non-zero value
-    in the Active Failover deployment mode.
   threshold: |
-    This number is usually very low, something like `2` or `3`.
+    This number is usually low, between `10` or `20`. It can temporarily
+    increase while there are ongoing DDL operations in the cluster. The
+    number should go down again once the DDL operations have finished.
   troubleshoot: |
     If this number is considerably higher, this should be investigated.
     Please contact support.
@@ -85,12 +81,9 @@
   exposedBy:
     - coordinator
     - dbserver
-    - single
   description: |
     This metric was named `arangodb_agency_callback_registered` in previous versions
     of ArangoDB.
-    Note that on single servers this metric only has a non-zero value
-    in the Active Failover deployment mode.
 
 - name: arangodb_agency_client_lookup_table_size
   introducedIn: "3.6.11"
@@ -812,6 +805,82 @@
     Histogram of the sent response sizes in bytes, only user traffic, i.e.
     traffic that has been authenticated with a real user (or role).
 
+- name: arangodb_collection_leader_reads_total
+  introducedIn: "3.12.0"
+  help: |
+    Number of read operation requests on leaders.
+  unit: number
+  type: counter
+  category: Transactions
+  complexity: advanced
+  exposedBy:
+    - dbserver
+  description: |
+    This metric exposes the number of per-shard read operation requests on DB-Servers.
+    It is increased by AQL queries and single-/multi-document read operations.
+  
+    An AQL query increases the counter exactly once for a shard that is involved
+    in the query in read-only mode, regardless if and how many documents/edges the
+    query actually reads from the shard. For shards that are accessed by an AQL query
+    in read/write mode, only the write counter is increased.
+  
+    For every single- or multi-document read operation, the counter is
+    increased exactly once for each shard that is affected by the operation, even
+    if multiple documents are read from the same shard.
+    
+    This metric is not exposed by default. It is only present if the startup option
+    `--server.export-shard-usage-metrics` is set to either `enabled-per-shard` or 
+    `enabled-per-shard-per-user`. With the former setting, the metric has different 
+    labels for each shard that was read from. With the latter setting, the metric 
+    has different labels for each combination of shard and user that accessed the shard.
+    The metric is only exposed on DB servers and not on Coordinators or single servers.
+  
+    Note that internal operations, such as internal queries executed for statistics
+    gathering, internal garbage collection, and TTL index cleanup are not counted in
+    these metrics. Additionally, all requests that use the superuser JWT for
+    authentication and that do not have a specific user set, are not counted.
+    Requests are also only counted if they have an ArangoDB user associated with them,
+    so that the cluster must also be running with authentication turned on.
+
+- name: arangodb_collection_leader_writes_total
+  introducedIn: "3.12.0"
+  help: |
+    Number of write operation requests on leaders.
+  unit: number
+  type: counter
+  category: Transactions
+  complexity: advanced
+  exposedBy:
+    - dbserver
+  description: |
+    This metric exposes the number of per-shard write operation requests on DB-Servers.
+    It is increased by AQL queries and single-/multi-document write operations.
+  
+    An AQL query increases the counter exactly once for a shard that is involved
+    in the query in write-only or read-write mode, regardless if and how many
+    documents/edges are inserted or modified in the shard.
+  
+    For every single- or multi-document write operation, the counter is
+    increased exactly once for each shard that is affected by the operation, even
+    if multiple documents are inserted, modified, or removed from the same shard.
+  
+    For collection truncate operations, the counter is also increased exactly once for
+    each shard affected by the truncate.
+    
+    This metric is not exposed by default. It is only present if the startup option
+    `--server.export-shard-usage-metrics` is set to either `enabled-per-shard` or 
+    `enabled-per-shard-per-user`. With the former setting, the metric has different 
+    labels for each shard that was read from. With the latter setting, the metric 
+    has different labels for each combination of shard and user that accessed the shard.
+    The metric is only exposed on DB servers and not on Coordinators or single servers.
+    
+    Note that internal operations, such as internal queries executed for statistics
+    gathering, internal garbage collection, and TTL index cleanup are not counted in
+    these metrics. Additionally, all requests that use the superuser JWT for
+    authentication and that do not have a specific user set, are not counted.
+    Requests are also only counted if they have an ArangoDB user associated with them,
+    so that the cluster must also be running with authentication turned on.
+
 - name: arangodb_collection_lock_acquisition_micros_total
   renamedFrom: arangodb_collection_lock_acquisition_micros
   introducedIn: "3.8.0"
@@ -931,6 +1000,120 @@
     or transactions that use exclusive locks on collections, and try to reduce them.
     Operations using exclusive locks may lock out other queries/transactions temporarily,
     which can lead to other operations running into timeouts waiting for the same locks.
+
+- name: arangodb_collection_requests_bytes_read_total
+  introducedIn: "3.12.0"
+  help: |
+    Number of bytes read in read requests on DB-Servers.
+  unit: number
+  type: counter
+  category: Transactions
+  complexity: advanced
+  exposedBy:
+    - dbserver
+  description: |
+    This metric exposes the per-shard number of bytes read by read operation
+    requests on DB-Servers.
+    It is increased by AQL queries that read documents or edges and for single-
+    or multi-document read operations.
+    The metric is normally increased only on the leader, but it can also increase
+    on followers if "reads from followers" are enabled.
+  
+    For every read operation, the metric is increased by the approximate
+    number of bytes read to retrieve the underlying document or edge data. This
+    is also true if a document or edge is served from an in-memory cache.
+    If an operation reads multiple documents/edges, it increases the counter
+    multiple times, each time with the approximate number of bytes read for the
+    particular document/edge.
+    
+    The numbers reported by this metric normally relate to the cumulated sizes of
+    documents/edges read.
+    The metric is also increased for transactions that are started but later
+    aborted. However, metrics updates may be buffered until the end of a transaction.
+    Note that the metric is not increased for secondary index point lookups or
+    scans, or for scans in a collection that iterate over documents but do not
+    read them.
+    
+    This metric is not exposed by default. It is only present if the startup option
+    `--server.export-shard-usage-metrics` is set to either `enabled-per-shard` or 
+    `enabled-per-shard-per-user`. With the former setting, the metric has different 
+    labels for each shard that was read from. With the latter setting, the metric 
+    has different labels for each combination of shard and user that accessed the shard.
+    The metric is only exposed on DB servers and not on Coordinators or single servers.
+    
+    Note that internal operations, such as internal queries executed for statistics
+    gathering, internal garbage collection, and TTL index cleanup are not counted in
+    these metrics. Additionally, all requests that use the superuser JWT for
+    authentication and that do not have a specific user set, are not counted.
+    Requests are also only counted if they have an ArangoDB user associated with them,
+    so that the cluster must also be running with authentication turned on.
+  
+    Enabling this metric via the startup option will likely result in a small
+    latency overhead of few percent for read operations. The exact overhead depends on
+    several factors, such as the type of operation (single or multi-document operation),
+    replication factor, network latency etc.
+
+- name: arangodb_collection_requests_bytes_written_total
+  introducedIn: "3.12.0"
+  help: |
+    Number of bytes written in write requests on DB-Servers.
+  unit: number
+  type: counter
+  category: Transactions
+  complexity: advanced
+  exposedBy:
+    - dbserver
+  description: |
+    This metric exposes the per-shard number of bytes written by write operation
+    requests on DB-Servers, on both leaders and followers.
+    It is increased by AQL queries and single-/multi-document write operations.
+    The metric is first increased only the leader. With traditional replication,
+    the metric is also increased on followers for every replication request that 
+    the leader make to the followers. With the new replication protocol 
+    ("replication2"), the metric is not increased on followers.
+    
+    For every write operation, the metric is increased by the approximate
+    number of bytes written for the document or edge in question.
+    If an operation writes multiple documents/edges, it increases the counter
+    multiple times, each time with the approximate number of bytes written for the
+    particular document/edge.
+  
+    An AQL query also increases the counter for every document or edge written,
+    each time with the approximate number of bytes written for document/edge.
+    
+    The numbers reported by this metric normally relate to the cumulated sizes of
+    documents/edges written. For remove operations, however, only a fixed number of
+    bytes is counted per removed document/edge. For truncate operations, the metrics
+    will be affected differently depending on how the truncate is executed internally.
+    For truncates on smaller shards, the truncate operation will be executed as the
+    removal of the individual documents in the shard. Thus the metric will also be
+    increased as if the documents were removed individually. Truncate operations on
+    larger shards however will be executed via a special operation in the storage
+    engine, which marks a whole range of documents as removed, but defers the actual
+    removal until much later (compaction process). If a truncate is executed like
+    this, the metric will not be increased at all.
+    Writes into secondary indexes are not counted at all.
+    The metric is also increased for transactions that are started but later aborted.
+    However, metrics updates may be buffered until the end of a transaction.
+  
+    This metric is not exposed by default. It is only present if the startup option
+    `--server.export-shard-usage-metrics` is set to either `enabled-per-shard` or 
+    `enabled-per-shard-per-user`. With the former setting, the metric has different 
+    labels for each shard that was read from. With the latter setting, the metric 
+    has different labels for each combination of shard and user that accessed the shard.
+    The metric is only exposed on DB servers and not on Coordinators or single servers.
+    
+    Note that internal operations, such as internal queries executed for statistics
+    gathering, internal garbage collection, and TTL index cleanup are not counted in
+    these metrics. Additionally, all requests that use the superuser JWT for
+    authentication and that do not have a specific user set, are not counted.
+    Requests are also only counted if they have an ArangoDB user associated with them,
+    so that the cluster must also be running with authentication turned on.
+    
+    Enabling this metric via the startup option will likely result in a small
+    latency overhead of few percent for write operations. The exact overhead depends on
+    several factors, such as the type of operation (single or multi-document operation),
+    replication factor, network latency etc.
 
 - name: arangodb_collection_truncate_time
   introducedIn: "3.8.0"
@@ -1332,7 +1515,7 @@
     The value will also go down when the server-side part of an abandoned 
     arangodump operation time out and all its data is removed from memory.
     
-    This metric will have a value of 0 on coordinators. The metric will
+    This metric will have a value of 0 on Coordinators. The metric will
     not be increased for any arangodump invocations that did not use the
     `--parallel-dump` option.
   troubleshoot: |
@@ -1369,10 +1552,10 @@
     option and the server hosts at least one collection/shard that is
     part of the dump.
     The value will be decreased whenever a parallel arangodump operation
-    finishes, or if it is abandonded, after the timeout value used for
+    finishes, or if it is abandoned, after the timeout value used for
     the server-side part of the dump operation.
     
-    This metric will have a value of 0 on coordinators. The metric will
+    This metric will have a value of 0 on Coordinators. The metric will
     not be increased for any arangodump invocations that did not use the
     `--parallel-dump` option.
 
@@ -1485,13 +1668,11 @@
   exposedBy:
     - coordinator
     - dbserver
-    - single
   description: |
     Total number of failed heartbeat transmissions.
     Servers in a cluster periodically send their heartbeats to
     the Agency to report their own liveliness. This counter gets
-    increased whenever sending such a heartbeat fails. In the single
-    server, this counter is only used in the Active Failover deployment mode.
+    increased whenever sending such a heartbeat fails. 
   threshold: |
     It is a bad sign for health if heartbeat transmissions fail. This can
     lead to failover actions which are ultimately bad for the service.
@@ -1510,12 +1691,9 @@
   exposedBy:
     - coordinator
     - dbserver
-    - single
   description: |
     Histogram of times required to send heartbeats. For every heartbeat
     sent the time is measured and an event is put into the histogram.
-    In the single server, this counter is only used in the Active Failover
-    deployment mode.
   threshold: |
     It is a bad sign for health if heartbeat transmissions are not fast.
     If there are heartbeats which frequently take longer than a few hundred
@@ -1909,7 +2087,7 @@
     operations that still have to be applied.
     Index selectivity estimates are used for edge indexes and
     persistent indexes.
-    On coordinators, this metric will always have a value of 0.
+    On Coordinators, this metric will always have a value of 0.
   troubleshoot: |
     Persistent indexes can be created with selectivity
     estimates turned off to save a bit of memory and slightly
