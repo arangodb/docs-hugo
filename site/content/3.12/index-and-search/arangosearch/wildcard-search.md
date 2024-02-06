@@ -333,19 +333,23 @@ a space, two hyphens, and another space.
 {{< tabs "view-definition">}}
 
 {{< tab "`search-alias` View" >}}
+```aql
 LET search = "%C_T_ -- %"
 LET searchNormalized = TOKENS(search, "only_norm")[0]
 FOR doc IN imdb
   SEARCH doc.description LIKE searchNormalized
   RETURN {d: doc.description }
+```
 {{< /tab >}}
 
 {{< tab "`arangosearch` View" >}}
+```aql
 LET search = "%C_T_ -- %"
 LET searchNormalized = TOKENS(search, "only_norm")[0]
 FOR doc IN imdb
   SEARCH ANALYZER(doc.description LIKE searchNormalized, "wildcard_norm")
   RETURN {d: doc.description }
+```
 {{< /tab >}}
 
 {{< /tabs >}}
