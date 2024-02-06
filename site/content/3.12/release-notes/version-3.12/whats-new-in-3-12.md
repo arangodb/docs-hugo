@@ -671,6 +671,12 @@ As it is unclear if and when a client will fetch any remaining data from a
 cursor, every cursor has a server-side timeout value (TTL) after which it is
 considered inactive and garbage-collected.
 
+### Per-collection compaction in cluster
+
+The `PUT /_api/collection/{collection-name}/compact` endpoint of the HTTP API
+can now be used to start the compaction for a specific collection in cluster
+deployments. This feature was previously available for single servers only.
+
 ### RocksDB .sst file partitioning (experimental)
 
 The following experimental startup options for RockDB .sst file partitioning
