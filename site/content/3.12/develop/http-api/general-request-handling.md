@@ -12,12 +12,6 @@ ArangoDB exposes its API via HTTP, making the server accessible easily with
 a variety of clients and tools (e.g. browsers, curl, telnet). The communication
 can optionally be SSL-encrypted.
 
-Additionally, there is a custom binary protocol called
-[VelocyStream](https://github.com/arangodb/velocystream)
-which can be used for better throughput. HTTP requests are easily mappable
-to VelocyStream and no separate documentation exists as the API is essentially
-the same for both network protocols.
-
 ArangoDB uses the standard HTTP methods (e.g. `GET`, `POST`, `PUT`, `DELETE`) plus
 the `PATCH` method described in [RFC 5789](http://tools.ietf.org/html/rfc5789).
 
@@ -30,7 +24,6 @@ Clients sending requests to ArangoDB must use either of the following protocols:
 
 - HTTP 1.1
 - HTTP 2
-- VelocyStream
 
 Other HTTP versions or protocols are not supported by ArangoDB.
 
@@ -86,10 +79,6 @@ in [Section 5](https://tools.ietf.org/html/rfc7540#section-5).
 On TLS encrypted connections with `https` scheme in the URI ArangoDB supports the
 ALPN extension with the `h2` protocol identifier. This means the connection may
 switch to using HTTP/2 right away after a successful TLS handshake.
-
-An upgrade to the VelocyStream protocol may happen by sending `VST/1.1\r\n\r\n`
-(11 octets) to the server _before_ sending anything else. The server will then
-start using VelocyStream 1.1. Sending anything else is an error.
 
 ## Request execution
 

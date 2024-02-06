@@ -62,6 +62,16 @@ It is not sufficient to take a hot backup of a little-endian deployment and
 restore it because when restoring a hot backup, the original database format is
 restored as it was at time of the backup.
 
+#### VelocyStream protocol removed
+
+ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is no
+longer supported. You can no longer specify any scheme starting with `vst` in
+the `--server.endpoint` startup option.
+
+VelocyPack remains as the internally used binary storage format and you can
+continue to use it in transport over the HTTP protocol, as well as use JSON
+over the HTTP protocol.
+
 ## In-memory cache subsystem
 
 By default, the in-memory cache subsystem uses up to 95% of its configured

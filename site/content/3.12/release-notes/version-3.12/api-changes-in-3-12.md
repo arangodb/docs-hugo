@@ -11,6 +11,16 @@ archetype: default
 
 ### Behavior changes
 
+#### VelocyStream protocol removed
+
+ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is no
+longer supported. You can no longer specify any scheme starting with `vst` in
+the `--server.endpoint` startup option.
+
+VelocyPack remains as the internally used binary storage format and you can
+continue to use it in transport over the HTTP protocol, as well as use JSON
+over the HTTP protocol.
+
 #### HTTP headers
 
 The following long-deprecated features have been removed from ArangoDB's HTTP

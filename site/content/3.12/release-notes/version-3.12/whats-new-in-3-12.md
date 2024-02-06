@@ -430,9 +430,6 @@ capacity left for the extra compression/decompression work.
 
 Furthermore, requests and responses should only be compressed when they exceed a
 certain minimum size, e.g. 250 bytes.
-
-Request and response compression is only supported for responses that use the
-HTTP/1.1 or HTTP/2 protocol, and not when using the VelocyStream (VST) protocol.
 {{< /info >}}
 
 ### LZ4 compression for values in the in-memory edge cache
