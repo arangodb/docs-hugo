@@ -51,8 +51,8 @@ versions.
 #### Dropping a collection from a graph
 
 Dropping a collection from a graph using the
-`DELETE /_api/collection/{collection-name}` endpoint is now strictly enforced
-so that the graph definition remains intact. Previously, it was allowed to drop
+`DELETE /_api/collection/{collection-name}` endpoint now strictly enforces
+that graph definitions remain intact. Previously, it was allowed to drop
 collections that were part of an existing graph.
 
 #### Index API
