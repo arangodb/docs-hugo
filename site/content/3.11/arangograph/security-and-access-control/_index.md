@@ -14,40 +14,57 @@ access control:
 - Projects
 - Deployments
 
-For each of these resources you can perform various operations.
-For example, you can create a project in an organization and create a deployment inside a project.
+For each of these resources, you can perform various operations.
+For example, you can create a project in an organization and create a deployment
+inside a project.
 
 ## Locked resources
 
-In ArangoGraph, you can lock the resources to prevent accidental deletion. When a resource is locked,
-it cannot be deleted and must be unlocked first.
+In ArangoGraph, you can lock the resources to prevent accidental deletion. When
+a resource is locked, it cannot be deleted and must be unlocked first.
 
-The hierarchial structure of the resources (organization-project-deployment) is used in the locking functionality: if a child resource is locked
-(for example, a deployment), you cannot delete the parent project without unlocking that deployment first.
+The hierarchical structure of the resources (organization-project-deployment)
+is used in the locking functionality: if a child resource is locked
+(for example, a deployment), you cannot delete the parent project without
+unlocking that deployment first.
 
 {{< info >}}
-If you lock a backup policy of a deployment or an IP allowlist, CA certificate, and IAM provider of a project, it is still possible to delete
+If you lock a backup policy of a deployment or an IP allowlist, CA certificate,
+and IAM provider of a project, it is still possible to delete
 the corresponding parent resource without unlocking those properties first.
 {{< /info >}}
  
 ## Policy
 
-Various actions in ArangoGraph require different permissions, which can be granted to users via
-**roles**.
+Various actions in ArangoGraph require different permissions, which can be
+granted to users via **roles**.
 
 The association of a member with a role is called a **role binding**.
 All role bindings of a resource comprise a **policy**.
 
-Roles can be bound on an organization, project and deployment level (listed in the high to low level order, with lower
-levels inheriting permissions from their parents). This means that there is a unique policy per resource (an organization, a project or a deployment).
+Roles can be bound on an organization, project, and deployment level (listed in
+the high to low level order, with lower levels inheriting permissions from their
+parents). This means that there is a unique policy per resource (an organization,
+a project, or a deployment).
 
 For example, an organization has exactly one policy,
 which binds roles to members of the organization. These bindings are used to
 give the users permissions to perform operations in this organization.
+This is useful when, as an organization owner, you need to extend the permissions
+for an organization member.
 
-### How to view, edit or remove role bindings of a policy
+{{< info >}}
+Permissions linked to predefined roles vary between organization owners and
+organization members. If you need to extend permissions for an organization
+member, you can create a new role binding. The complete list of roles and
+their respective permissions for both organization owners and members can be
+viewed on the **Policy** page of an organization within the ArangoGraph dashboard.
+{{< /info >}}
 
-Decide whether you want to edit the policy for an organization, a project or a deployment:
+### How to view, edit, or remove role bindings of a policy
+
+Decide whether you want to edit the policy for an organization, a project,
+or a deployment:
 
 - **Organization**: In the main navigation menu, click **Access Control**, then
   open the **Policy** tab.
@@ -76,13 +93,14 @@ Currently, you cannot edit a role binding, you can only delete it.
 
 ## Roles
 
-Operations on resources in ArangoGraph require zero (just an authentication) or more permissions. Since the
+Operations on resources in ArangoGraph require zero (just an authentication) or
+more permissions. Since the
 number of permissions is large and very detailed, it is not practical to assign
 permissions directly to users. Instead, ArangoGraph uses **roles**.
 
 A role is a set of permissions. Roles can be bound to groups (preferably)
 or individual users. You can create such bindings for the respective organization,
-project or deployment policy.
+project, or deployment policy.
 
 There are predefined roles, but you can also create custom ones.
 
@@ -91,10 +109,11 @@ There are predefined roles, but you can also create custom ones.
 ### Predefined roles
 
 Predefined roles are created by ArangoGraph and group related permissions together.
-An example of a predefine role is `deployment-viewer`. This role
+An example of a predefined role is `deployment-viewer`. This role
 contains all permissions needed to view deployments in a project.
 
-Predefined roles cannot be deleted.
+Predefined roles cannot be deleted. Note that permissions linked to predefined
+roles vary between organization owners and organization members.
 
 {{% comment %}}
 Windows command to generate below list (cmd.exe):
