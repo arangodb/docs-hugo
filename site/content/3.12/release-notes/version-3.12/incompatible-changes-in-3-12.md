@@ -62,6 +62,13 @@ It is not sufficient to take a hot backup of a little-endian deployment and
 restore it because when restoring a hot backup, the original database format is
 restored as it was at time of the backup.
 
+## Control character escaping in audit log
+
+The audit log feature of the Enterprise Edition previously logged query strings
+verbatim. Control characters, in particular line breaks, can cause issues with
+parsing the audit log. They are now escaped for query strings which often contain
+line breaks.
+
 ## Higher reported memory usage for AQL queries
 
 Due to the [improved memory accounting in v3.12](whats-new-in-3-12.md#improved-memory-accounting-and-usage),
