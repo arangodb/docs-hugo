@@ -73,12 +73,23 @@ Moreover, a `remove-unnecessary-calculations-4` rule has been added.
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
 
-#### Gharial API
+#### Graph API (Gharial)
 
-The `PATCH /_api/gharial/{graph}/edge/{collection}/{edge}` endpoint to update
-edges in named graphs now validates the referenced vertex when modifying either
-the `_from` or `_to` edge attribute. Previously, the validation only occurred if
-both were set in the request.
+- The `PATCH /_api/gharial/{graph}/edge/{collection}/{edge}` endpoint to update
+  edges in named graphs now validates the referenced vertex when modifying either
+  the `_from` or `_to` edge attribute. Previously, the validation only occurred if
+  both were set in the request.
+
+- A new error code `1949` with the name `TRI_ERROR_GRAPH_VERTEX_COLLECTION_NOT_USED`
+  has been added is now returned instead of `TRI_ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED`
+  with the code `1947` if you attempt to read from or write to a vertex collection
+  through the graph API but the collection is not part of the graph definition.
+
+- The error code `1947` with the name `TRI_ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED`
+  has been renamed to `ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_PART_OF_THE_GRAPH`.
+  This error is (now only) raised if you attempt to reference a document in the
+  `_from` or `_to` attribute of an edge but the document's collection is not
+  part of the graph definition.
 
 #### Validation of `smartGraphAttribute` in SmartGraphs
 
