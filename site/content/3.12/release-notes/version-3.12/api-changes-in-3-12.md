@@ -81,7 +81,7 @@ The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
   both were set in the request.
 
 - A new error code `1949` with the name `TRI_ERROR_GRAPH_VERTEX_COLLECTION_NOT_USED`
-  has been added is now returned instead of `TRI_ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED`
+  has been added and is now returned instead of `TRI_ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED`
   with the code `1947` if you attempt to read from or write to a vertex collection
   through the graph API but the collection is not part of the graph definition.
 
