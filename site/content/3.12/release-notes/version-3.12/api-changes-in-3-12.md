@@ -80,12 +80,23 @@ Moreover, a `remove-unnecessary-calculations-4` rule has been added.
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
 
-#### Gharial API
+#### Graph API (Gharial)
 
-The `PATCH /_api/gharial/{graph}/edge/{collection}/{edge}` endpoint to update
-edges in named graphs now validates the referenced vertex when modifying either
-the `_from` or `_to` edge attribute. Previously, the validation only occurred if
-both were set in the request.
+- The `PATCH /_api/gharial/{graph}/edge/{collection}/{edge}` endpoint to update
+  edges in named graphs now validates the referenced vertex when modifying either
+  the `_from` or `_to` edge attribute. Previously, the validation only occurred if
+  both were set in the request.
+
+- A new error code `1949` with the name `TRI_ERROR_GRAPH_VERTEX_COLLECTION_NOT_USED`
+  has been added and is now returned instead of `TRI_ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED`
+  with the code `1947` if you attempt to read from or write to a vertex collection
+  through the graph API but the collection is not part of the graph definition.
+
+- The error code `1947` with the name `TRI_ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED`
+  has been renamed to `ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_PART_OF_THE_GRAPH`.
+  This error is (now only) raised if you attempt to reference a document in the
+  `_from` or `_to` attribute of an edge but the document's collection is not
+  part of the graph definition.
 
 #### Validation of `smartGraphAttribute` in SmartGraphs
 
@@ -217,6 +228,21 @@ For more information, see the [HTTP API description](../../develop/http-api/moni
 and [Monitoring per collection/database/user](../version-3.12/whats-new-in-3-12.md#monitoring-per-collectiondatabaseuser).
 
 ### Endpoints augmented
+
+#### Analyzer API
+
+A new `wildcard` Analyzer with the following properties has been added,
+affecting the `/_api/analyzer` endpoints:
+
+- `ngramSize` (number, _required_): unsigned integer, needs to be at least `2`
+- `analyzer` (object, _optional_): an Analyzer definition-like objects with
+  `type` and `properties` attributes, where `type` is a string and `properties`
+  an object whose attributes depend on the `type`
+
+The `offset` Analyzer feature is not valid for this Analyzer.
+
+See [Transforming data with Analyzers](../../index-and-search/analyzers.md#wildcard)
+for details.
 
 #### View API
 

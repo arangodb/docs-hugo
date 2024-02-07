@@ -29,6 +29,12 @@ markup:
       attribute:
         block: true
         title: true
+    extensions:
+      typographer:
+        # The automatic conversion of two hyphens to an en dash interferes with
+        # search examples using the IMDB dataset (in result tables)
+        emDash: '---'
+        enDash: '--'
 
 outputFormats:
   navigation:

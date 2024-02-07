@@ -33,16 +33,13 @@
   exposedBy:
     - dbserver
     - coordinator
-    - single
   description: |
     This reflects the current number of callbacks the local `AgencyCache`
     has registered.
     This metric was named `arangodb_agency_cache_callback_count` in
     previous versions of ArangoDB.
-    Note that on single servers this metric only has a non-zero value
-    in the Active Failover deployment mode.
   threshold: |
-    This number is usually very low, something like `2` or `3`.
+    This number is usually very low, something between `10` and `20`.
   troubleshoot: |
     If this number is considerably higher, this should be investigated.
     Please contact support.
@@ -59,16 +56,15 @@
   exposedBy:
     - coordinator
     - dbserver
-    - single
   description: |
     This metric reflects the current number of Agency callbacks being
     registered, including Agency cache callbacks.
     This metric was named `arangodb_agency_callback_count` in previous versions
     of ArangoDB.
-    Note that on single servers this metric only has a non-zero value
-    in the Active Failover deployment mode.
   threshold: |
-    This number is usually very low, something like `2` or `3`.
+    This number is usually low, between `10` or `20`. It can temporarily
+    increase while there are ongoing DDL operations in the cluster. The
+    number should go down again once the DDL operations have finished.
   troubleshoot: |
     If this number is considerably higher, this should be investigated.
     Please contact support.
@@ -85,12 +81,9 @@
   exposedBy:
     - coordinator
     - dbserver
-    - single
   description: |
     This metric was named `arangodb_agency_callback_registered` in previous versions
     of ArangoDB.
-    Note that on single servers this metric only has a non-zero value
-    in the Active Failover deployment mode.
 
 - name: arangodb_agency_client_lookup_table_size
   introducedIn: "3.6.11"
@@ -1675,13 +1668,11 @@
   exposedBy:
     - coordinator
     - dbserver
-    - single
   description: |
     Total number of failed heartbeat transmissions.
     Servers in a cluster periodically send their heartbeats to
     the Agency to report their own liveliness. This counter gets
-    increased whenever sending such a heartbeat fails. In the single
-    server, this counter is only used in the Active Failover deployment mode.
+    increased whenever sending such a heartbeat fails. 
   threshold: |
     It is a bad sign for health if heartbeat transmissions fail. This can
     lead to failover actions which are ultimately bad for the service.
@@ -1700,12 +1691,9 @@
   exposedBy:
     - coordinator
     - dbserver
-    - single
   description: |
     Histogram of times required to send heartbeats. For every heartbeat
     sent the time is measured and an event is put into the histogram.
-    In the single server, this counter is only used in the Active Failover
-    deployment mode.
   threshold: |
     It is a bad sign for health if heartbeat transmissions are not fast.
     If there are heartbeats which frequently take longer than a few hundred
