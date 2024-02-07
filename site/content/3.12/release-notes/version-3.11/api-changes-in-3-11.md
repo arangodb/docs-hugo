@@ -831,9 +831,6 @@ const historyStatus = pregel.history(execution);
 pregel.removeHistory();
 ```
 
-See [Distributed Iterative Graph Processing (Pregel)](../../data-science/pregel/_index.md#get-persisted-execution-statistics)
-for details.
-
 ### Deprecations
 
 The `collection.iterate()` method is deprecated from v3.11.0 onwards and will be

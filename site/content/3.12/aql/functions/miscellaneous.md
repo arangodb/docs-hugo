@@ -649,20 +649,6 @@ FOR doc IN coll
   RETURN doc
 ```
 
-### PREGEL_RESULT()
-
-`PREGEL_RESULT(jobId, withId) → results`
-
-Allows to access results of a Pregel job that are only held in memory.
-See [Pregel AQL integration](../../data-science/pregel/_index.md#aql-integration).
-
-- **jobId** (string): the `id` of a Pregel job
-- **withId** (bool): if enabled, then the document `_id` is returned in
-  addition to the `_key` for each vertex
-- returns **results** (array): an array of objects, one element per vertex, with
-  the attributes computed by the Pregel algorithm and the document key (and
-  optionally identifier)
-
 ## Internal functions
 
 The following functions are used during development of ArangoDB as a database

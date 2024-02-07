@@ -129,18 +129,6 @@ In queries, you can define in which directions the edge relations may be followe
 - [All Shortest Paths](../aql/graphs/all-shortest-paths.md)
 - [k Shortest Paths](../aql/graphs/k-shortest-paths.md)
 - [k Paths](../aql/graphs/k-paths.md)
-- [Distributed Iterative Graph Processing (Pregel)](../data-science/pregel/_index.md)
-  - Page Rank
-  - Seeded Page Rank
-  - Single-Source Shortest Path (SSSP)
-  - Connected Components
-  - Weakly Connected Components (WCC)
-  - Strongly Connected Components (SCC)
-  - Hyperlink-Induced Topic Search (HITS)
-  - Effective Closeness Vertex Centrality
-  - LineRank Vertex Centrality
-  - Label Propagation Community Detection
-  - Speaker-Listener Label Propagation (SLPA) Community Detection
 
 ## Managed and unmanaged graphs
 

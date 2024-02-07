@@ -700,8 +700,6 @@ There are now three algorithms to find connected components in a graph:
    The algorithm is more complex than the WCC algorithm and requires more memory,
    because each vertex needs to store much more state.
 
-Also see [Pregel](../../data-science/pregel/_index.md)
-
 ## Foxx
 
 Foxx endpoints now provide the methods `securityScheme`, `securityScope` and 
