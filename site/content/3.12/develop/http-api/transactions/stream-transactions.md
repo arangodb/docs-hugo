@@ -28,7 +28,7 @@ This will automatically cause these operations to use the specified transaction.
 Supported transactional API operations include:
 
 - All operations in the [Document API](../documents.md)
-- Number of documents via the [Collection API](../collections.md#get-the-document-count-of-a-collection)
+- Get the number of documents via the [Collection API](../collections.md#get-the-document-count-of-a-collection)
 - Truncate a collection via the [Collection API](../collections.md#truncate-a-collection)
 - Create an AQL cursor via the [Cursor API](../queries/aql-queries.md#create-a-cursor)
 - Handle [vertices](../graphs/named-graphs.md#vertices) and [edges](../graphs/named-graphs.md#edges)
