@@ -229,22 +229,6 @@ lowered from 1 million to 100,000. The background thread for time-to-live indexe
 now removes fewer documents from a collection in each iteration to give other
 collections a chance of being cleaned up as well.
 
-### In-memory cache subsystem
-
-By default, the in-memory cache subsystem uses up to 95% of its configured
-memory limit value (as configured by the `--cache.size` startup option).
-
-Previous versions of ArangoDB effectively used a hard-coded 56% of the configured
-memory limit value for the cache subsystem. From version 3.11.4 on, this is
-configurable via the `--cache.high-water-multiplier` startup option.
-The default value is `0.56`, so still 56% for the cache subsystem.
-
-You can increase the multiplier to make the cache subsystem use more memory, but
-this may overcommit memory because the cache memory reclamation procedure is
-asynchronous and can run in parallel to other tasks that insert new data.
-In case a deployment's memory usage is already close to the maximum, increasing
-the multiplier can lead to out-of-memory (OOM) kills.
-
 ## Client tools
 
 ### arangodump

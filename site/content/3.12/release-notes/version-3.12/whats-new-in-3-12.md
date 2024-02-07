@@ -727,10 +727,18 @@ The following startup options have been added:
 
 - `--cache.max-spare-memory-usage`: the maximum memory usage for spare tables
   in the in-memory cache.
+
 - `--cache.high-water-multiplier`: controls the cache's effective memory usage
   limit. The user-defined memory limit (i.e. `--cache.size`) is multiplied with
   this value to create the effective memory limit, from which on the cache tries
-  to free up memory by evicting the oldest entries.
+  to free up memory by evicting the oldest entries. The default value is `0.56`,
+  matching the previously hardcoded 56% for the cache subsystem.
+
+  You can increase the multiplier to make the cache subsystem use more memory, but
+  this may overcommit memory because the cache memory reclamation procedure is
+  asynchronous and can run in parallel to other tasks that insert new data.
+  In case a deployment's memory usage is already close to the maximum, increasing
+  the multiplier can lead to out-of-memory (OOM) kills.
 
 The following metrics have been added:
 
