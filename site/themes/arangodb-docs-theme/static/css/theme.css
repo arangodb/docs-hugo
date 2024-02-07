@@ -1469,6 +1469,7 @@ code, p code {
     margin: 0;
     padding: 2px;
     word-break: break-word;
+    white-space: pre-wrap;
     border-radius: 0px;
     background: var(--gray-100);
     box-shadow: none;
