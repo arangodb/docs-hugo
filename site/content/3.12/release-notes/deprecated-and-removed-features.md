@@ -63,6 +63,19 @@ detailed information about breaking changes before upgrading.
   - The `useMemoryMaps` option for Pregel jobs to use memory-mapped files as a
     backing storage for large datasets has been removed.
 
+- **Pregel**:
+
+  The distributed iterative graph processing (Pregel) system has been deprecated
+  in v3.12.
+
+  The following functionalities have been removed:
+  - Pregel algorithms (PageRank, Vertex Centrality, Vertex Closeness,
+    Connected Components, and Community Detection) have been removed.
+
+  - `@arangodb/pregel` JavaScript API package has been removed.
+  
+  - Pregel HTTP API has been removed.
+
 - **Leader/Follower Deployment Mode**:
   The Leader/Follower deployment mode is deprecated and already removed from
   documentation. OneShard databases in clusters are a better alternative.

@@ -19,6 +19,17 @@ offer better resilience and synchronous replication. Also see the
 See [Single instance vs. Cluster deployments](../../deploy/single-instance-vs-cluster.md)
 for details about how a cluster deployment differs and how to migrate to it.
 
+## Pregel
+
+The distributed iterative graph processing (Pregel) system is no longer supported
+from v3.12 onward.
+
+The following functionalities are removed:
+- Pregel algorithms (PageRank, Vertex Centrality, Vertex Closeness,
+Connected Components, and Community Detection)
+- `@arangodb/pregel` JavaScript API package
+- Pregel HTTP API
+
 ## Little-endian on-disk key format for the RocksDB storage engine
 
 ArangoDB 3.12 does not support the little-endian on-disk key for the RocksDB

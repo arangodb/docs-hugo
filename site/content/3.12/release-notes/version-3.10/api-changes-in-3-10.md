@@ -944,9 +944,6 @@ Both endpoints return a new `detail` attribute with additional Pregel run detail
       - `<serverId>` (object)
         - (the same attributes like under `aggregatedStatus`)
 
-For a detailed description of the attributes, see
-[Pregel HTTP API](../../develop/http-api/pregel.md#get-a-pregel-job-execution-status).
-
 #### Log level API
 
 <small>Introduced in: v3.10.2</small>

@@ -8,6 +8,7 @@ description: >-
 archetype: default
 aliases:
   - pregel-algorithms
+draft: true
 ---
 Pregel algorithms are used in scenarios where you need to do an
 analysis of a graph stored in ArangoDB to get insights about its

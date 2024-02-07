@@ -576,8 +576,6 @@ persisted execution statistics for Pregel jobs:
 - `DELETE /_api/control_pregel/history` to delete the persisted execution
   statistics of all Pregel jobs
 
-See [Pregel HTTP API](../../develop/http-api/pregel.md) for details.
-
 #### Cluster rebalance API
 
 The `POST /_admin/cluster/rebalance` and `PUT /_admin/cluster/rebalance`
