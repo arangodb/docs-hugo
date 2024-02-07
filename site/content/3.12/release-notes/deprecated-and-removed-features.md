@@ -12,6 +12,9 @@ aliases:
   - ../deploy/active-failover/manual-start
   - ../deploy/active-failover/administration
   - ../deploy/active-failover
+  - ../data-science/pregel
+  - ../data-science/algorithms
+  - ../develop/http-api/pregel
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
