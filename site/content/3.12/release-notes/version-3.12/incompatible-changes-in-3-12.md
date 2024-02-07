@@ -24,9 +24,8 @@ for details about how a cluster deployment differs and how to migrate to it.
 The distributed iterative graph processing (Pregel) system is no longer supported
 from v3.12 onward.
 
-The following functionalities are removed:
-- Pregel algorithms (PageRank, Vertex Centrality, Vertex Closeness,
-Connected Components, and Community Detection)
+The following functionalities have been removed:
+- Pregel algorithms
 - `@arangodb/pregel` JavaScript API package
 - Pregel HTTP API
 

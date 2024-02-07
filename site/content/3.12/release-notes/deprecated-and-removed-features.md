@@ -66,15 +66,8 @@ detailed information about breaking changes before upgrading.
 - **Pregel**:
 
   The distributed iterative graph processing (Pregel) system has been deprecated
-  in v3.12.
-
-  The following functionalities have been removed:
-  - Pregel algorithms (PageRank, Vertex Centrality, Vertex Closeness,
-    Connected Components, and Community Detection) have been removed.
-
-  - `@arangodb/pregel` JavaScript API package has been removed.
-  
-  - Pregel HTTP API has been removed.
+  and removed in v3.12 including the Pregel algorithms, the `@arangodb/pregel`
+  JavaScript API module, and the Pregel HTTP API.
 
 - **Leader/Follower Deployment Mode**:
   The Leader/Follower deployment mode is deprecated and already removed from
