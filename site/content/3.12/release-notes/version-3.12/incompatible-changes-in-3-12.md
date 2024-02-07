@@ -25,9 +25,10 @@ The distributed iterative graph processing (Pregel) system is no longer supporte
 from v3.12 onward.
 
 The following functionalities have been removed:
-- Pregel algorithms
-- `@arangodb/pregel` JavaScript API package
-- Pregel HTTP API
+- All Pregel graph algorithms
+- The `PREGEL_RESULT()` AQL function
+- The `@arangodb/pregel` JavaScript API module
+- The Pregel HTTP API (`/_api/control_pregel/*`)
 
 ## Little-endian on-disk key format for the RocksDB storage engine
 

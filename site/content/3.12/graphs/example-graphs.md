@@ -225,7 +225,7 @@ examples.dropGraph("routeplanner");
 ## Connected Components Graph
 
 A small example graph comprised of `components` (vertices) and `connections`
-(edges). Good for trying out Pregel algorithms such as Weakly Connected
+(edges). Good for trying out graph algorithms such as Weakly Connected
 Components (WCC).
 
 ![Three disjoint subgraphs with 36 nodes and edges in total](../../images/connected_components.png)

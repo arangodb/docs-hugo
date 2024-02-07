@@ -13,7 +13,7 @@ aliases:
   - ../deploy/active-failover/administration
   - ../deploy/active-failover
   - ../data-science/pregel
-  - ../data-science/algorithms
+  - ../data-science/pregel/algorithms
   - ../develop/http-api/pregel
 ---
 Features listed on this page should no longer be used because they have been
@@ -51,9 +51,14 @@ detailed information about breaking changes before upgrading.
   See [Incompatible changes in ArangoDB 3.12](version-3.12/incompatible-changes-in-3-12.md#little-endian-on-disk-key-format-for-the-rocksdb-storage-engine)
   for details.
 
-- **Pregel features**:
+- **Pregel**:
 
-  The following features have been deprecated or removed from Pregel in v3.11:
+  The distributed iterative graph processing (Pregel) system has been deprecated
+  and fully removed in v3.12, including all Pregel graph algorithms, the
+  `PREGEL_RESULT()` AQL function, the `@arangodb/pregel` JavaScript API module,
+  and the Pregel HTTP API (`/_api/control_pregel/*`).
+
+  In 3.11, the following features had been deprecated or removed from Pregel:
 
   - The experimental _Custom Pregel_ feature, also known as
     _programmable Pregel algorithms_ (PPA), has been removed.
@@ -65,12 +70,6 @@ detailed information about breaking changes before upgrading.
 
   - The `useMemoryMaps` option for Pregel jobs to use memory-mapped files as a
     backing storage for large datasets has been removed.
-
-- **Pregel**:
-
-  The distributed iterative graph processing (Pregel) system has been deprecated
-  and removed in v3.12 including the Pregel algorithms, the `@arangodb/pregel`
-  JavaScript API module, and the Pregel HTTP API.
 
 - **Leader/Follower Deployment Mode**:
   The Leader/Follower deployment mode is deprecated and already removed from

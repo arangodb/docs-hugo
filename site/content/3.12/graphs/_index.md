@@ -403,7 +403,7 @@ For example data that you can use for learning graphs, see
 {{% comment %}}
 ## Query graphs
 
-Explain traversal, pattern matching, shortest paths, pregel
+Explain traversal, pattern matching, shortest paths
 direction, depth, order, conditions, weights?
 combine with geo, search, ...
 {{% /comment %}}

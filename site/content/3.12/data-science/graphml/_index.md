@@ -76,8 +76,8 @@ data model.
 
 Node classification is a natural fit for graph databases as it can leverage
 existing graph analytics insights during model training. For instance, if you
-have performed some community detection, potentially using ArangoDB's built-in
-Pregel support, you can use these insights as inputs for graph machine learning. 
+have performed some community detection, you can use these insights as inputs
+for graph machine learning. 
 
 #### What is Node Classification
 

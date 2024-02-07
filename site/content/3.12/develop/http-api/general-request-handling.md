@@ -399,7 +399,6 @@ whose value will be the ID of the node which actually answered the request:
 
 The following APIs may use request forwarding:
 
-- `/_api/control_pregel`
 - `/_api/cursor`
 - `/_api/job`
 - `/_api/replication`
