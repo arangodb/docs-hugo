@@ -62,34 +62,12 @@ It is not sufficient to take a hot backup of a little-endian deployment and
 restore it because when restoring a hot backup, the original database format is
 restored as it was at time of the backup.
 
-## In-memory cache subsystem
+## Control character escaping in audit log
 
-By default, the in-memory cache subsystem uses up to 95% of its configured
-memory limit value (as configured by the `--cache.size` startup option).
-
-Previous versions of ArangoDB effectively used only 56% of the configured memory
-limit value for the cache subsystem. The 56% value was hard-coded in ArangoDB
-versions before 3.11.3, and has been configurable since then via the 
-`--cache.high-water-multiplier` startup option. To make things compatible, the 
-default value for the high water multiplier was set to 56% in 3.11.
-
-ArangoDB 3.12 now adjusts this default value to 95%, i.e. the cache subsystem
-uses up to 95% of the configured memory. Although this is a behavior
-change, it seems more sensible to use up to 95% of the configured limit value 
-rather than just 56%.
-The change can lead to the cache subsystem effectively using more memory than
-before. In case a deployment's memory usage is already close to the maximum,
-the change can lead to out-of-memory (OOM) kills. To avoid this, you have
-two options:
-
-1. Decrease the value of `--cache.high-water-multiplier` to 0.56, which should
-   mimic the old behavior.
-2. Leave the high water multiplier untouched, but decrease the value of the 
-   `--cache.size` startup option to about half of its current value.
-
-The second option is the recommended one, as it signals the intent more clearly,
-and makes the cache behave "as expected", i.e. use up to the configured
-memory limit and not just 56% of it.
+The audit log feature of the Enterprise Edition previously logged query strings
+verbatim. Control characters, in particular line breaks, can cause issues with
+parsing the audit log. They are now escaped for query strings which often contain
+line breaks.
 
 ## Higher reported memory usage for AQL queries
 
@@ -276,6 +254,13 @@ with extended names can be created with the option disabled. This state is only
 meant to facilitate downgrading or reverting the option change. When the option
 is set to `false`, all database objects with extended names that were created
 in the meantime should be removed manually.
+
+### Changed TTL index removal default
+
+The default value of the `--ttl.max-collection-removes` startup option has been
+lowered from 1 million to 100,000. The background thread for time-to-live indexes
+now removes fewer documents from a collection in each iteration to give other
+collections a chance of being cleaned up as well.
 
 ## Client tools
 

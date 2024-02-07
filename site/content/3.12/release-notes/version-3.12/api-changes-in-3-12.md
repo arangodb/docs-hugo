@@ -306,6 +306,12 @@ the query. In that case, `warnings` contains an empty array.
 In previous versions, no `warnings` attribute was returned when parsing a query
 produced no warnings.
 
+#### Per-collection compaction in cluster
+
+The `PUT /_api/collection/{collection-name}/compact` endpoint can now be used
+to start the compaction for a specific collection in cluster deployments.
+This feature was previously available for single servers only.
+
 #### Metrics API
 
 The metrics endpoint includes the following new metrics about AQL queries,
