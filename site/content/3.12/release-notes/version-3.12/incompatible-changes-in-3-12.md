@@ -136,22 +136,20 @@ changed in the documents of SmartGraph vertex collections. This is now strictly 
 See [API Changes in ArangoDB 3.12](api-changes-in-3-12.md#validation-of-smartgraphattribute-in-smartgraphs)
 for details and instructions on how to repair affected attributes.
 
-## Prevent dropping a collection from a graph
+## Dropping graph collections disallowed
 
-Dropping collections that are part of an existing graph is now strictly enforced
-so that the graph definition remains intact even if you attempt to drop a
-collection.
-
-While previously it was allowed to drop collections that were part of an existing
-graph, trying to do so results in the following error:
-`ERROR_GRAPH_MUST_NOT_DROP_COLLECTION` with the `1942` error code.
+Dropping a collection now strictly enforces that graph definitions remain intact.
+Previously, it was allowed to drop collections that were part of an existing graph.
+Trying to do so now results in the error `ERROR_GRAPH_MUST_NOT_DROP_COLLECTION`
+with the number `1942`.
 
 This may require changes in the client application code that drops individual
-collections from graphs for clean-up purposes. The recommended way to drop
-these collections is to drop the graph instead. Dropping the graph can optionally
-delete all associated collections of the graph as well. Even if this is not used,
-collections that are not part of a graph definition anymore can later be dropped
-regularly.
+collections from graphs for clean-up purposes. You can drop an entire graph
+and its collections along with it, as long as they aren't used in another graph.
+To remove individual collections, update or remove edge definitions first to not
+include the desired collections anymore. In case of vertex collections, they
+become orphan collections that you need to remove from the graph definition as
+well to drop the collections.
 
 ## Client tools
 
