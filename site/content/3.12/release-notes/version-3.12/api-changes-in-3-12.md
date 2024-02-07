@@ -41,12 +41,30 @@ characters using the default settings.
 
 #### Collection API
 
+##### Warnings for invalid collection creation options
+
 When creating a collection using the `POST /_api/collection` endpoint, the
 server log now displays a deprecation message if illegal combinations and
 unknown attributes and values are detected in the request body.
 
 Note that all invalid elements and combinations will be rejected in future
 versions.
+
+##### Dropping graph collections disallowed
+
+Dropping a collection using the `DELETE /_api/collection/{collection-name}`
+endpoint now strictly enforces that graph definitions remain intact.
+Previously, it was allowed to drop collections that were part of an existing graph.
+Trying to do so now results in the error `ERROR_GRAPH_MUST_NOT_DROP_COLLECTION`
+with the number `1942`.
+
+This may require changes in the client application code that drops individual
+collections from graphs for clean-up purposes. You can drop an entire graph
+and its collections along with it, as long as they aren't used in another graph.
+To remove individual collections, update or remove edge definitions first to not
+include the desired collections anymore. In case of vertex collections, they
+become orphan collections that you need to remove from the graph definition as
+well to drop the collections.
 
 #### Index API
 
