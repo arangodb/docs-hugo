@@ -188,6 +188,16 @@ The [`/_api/analyzer` endpoints](../../develop/http-api/analyzers.md) supports
 a new `multi_delimiter` Analyzer that accepts an array of strings in a
 `delimiter` attribute of the `properties` object.
 
+#### Adjustable `writeConcern` for collections with `distributeShardsLike`
+
+Collections that are sharded like another collection via the `distributeShardsLike`
+property use the `replicationFactor`, `numberOfShards`, and `shardingStrategy`
+properties of the prototype collection. You can independently set a `writeConcern`,
+but this property couldn't be changed after the collection creation if
+`distributeShardsLike` was used. Now, you can adjust the `writeConcern` later on.
+It still defaults to the `writeConcern` of the prototype collection if you don't
+specify it explicitly.
+
 ### Privilege changes
 
 
