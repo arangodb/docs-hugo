@@ -871,6 +871,37 @@ percent for write operations. The exact overhead depends on
 several factors, such as the type of operation (single or multi-document operation),
 replication factor, network latency, etc.
 
+### Compression for cluster-internal traffic
+
+The following startup options have been added to optionally compress relevant
+cluster-internal traffic:
+- `--network.compression-method`: The compression method used for cluster-internal
+  requests.
+- `--network.compress-request-threshold`: The HTTP request body from which on
+  cluster-internal requests are transparently compressed.
+
+If the `--network.compression-method` startup option is set to `none`, then no
+compression is performed. To enable compression for cluster-internal requests,
+you can set this option to either `deflate`, `gzip`, `lz4`, or `auto`.
+
+The `deflate` and `gzip` compression methods are general purpose but can
+have significant CPU overhead for performing the compression work.
+The `lz4` compression method compresses slightly worse but has a lot lower
+CPU overhead for performing the compression.
+The `auto` compression method uses `deflate` by default and `lz4` for
+requests that have a size that is at least 3 times the configured threshold
+size.
+
+The compression method only matters if `--network.compress-request-threshold`
+is set to a value greater than zero. This option configures a threshold value
+from which on the outgoing requests will be compressed. If the threshold is
+set to a value of 0, then no compression is performed. If the threshold
+is set to a value greater than 0, then the size of the request body is
+compared against the threshold value, and compression happens if the
+uncompressed request body size exceeds the threshold value.
+The threshold can thus be used to avoid futile compression attempts for too
+small requests.
+
 ## Client tools
 
 ### Protocol aliases for endpoints
