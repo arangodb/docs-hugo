@@ -5,7 +5,6 @@ weight: 20
 description: ''
 archetype: default
 ---
-
 ## Get the replication server ID
 
 ```openapi

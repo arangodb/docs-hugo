@@ -5,7 +5,6 @@ weight: 20
 description: ''
 archetype: default
 ---
-
 ## Create a multi-dimensional index
 
 ```openapi
@@ -83,7 +82,9 @@ paths:
 
                     Attributes in `storedValues` cannot overlap with attributes
                     specified in `prefixFields` but you can have the attributes
-                    in both `storedValues` and `fields`.
+                    in both `storedValues` and `fields` because the attributes
+                    in `fields` cannot be used for projections to cover queries
+                    with the indexed data.
                   type: array
                   items:
                     type: string
