@@ -188,6 +188,12 @@ The [`/_api/analyzer` endpoints](../../develop/http-api/analyzers.md) supports
 a new `multi_delimiter` Analyzer that accepts an array of strings in a
 `delimiter` attribute of the `properties` object.
 
+#### Log API
+
+The [`/_admin/log/*` endpoints](../../develop/http-api/monitoring/logs.md) no
+longer use the `ldap` log topic. Changing the log level of the `ldap` topic or
+any other unknown topic is not an error, however.
+
 ### Privilege changes
 
 

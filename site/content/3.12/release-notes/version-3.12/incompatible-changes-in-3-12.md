@@ -29,7 +29,8 @@ Enterprise Edition has been removed.
   TODO: still a regular option (not obsoleted) even though it previously stated "This option is only necessary if you use an external authentication system like LDAP."
 - The `--server.local-authentication` startup option has been obsoleted and
   will be fully removed in a future version
-- The `ldap` log topic is no longer available
+- The `ldap` log topic is no longer available and specifying it in the
+  `--log.level` startup option raises a warning
 
 ## Little-endian on-disk key format for the RocksDB storage engine
 
