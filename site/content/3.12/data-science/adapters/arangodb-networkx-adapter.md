@@ -1,9 +1,9 @@
 ---
 title: NetworkX Adapter
-menuTitle: ArangoDB-NetworkX Adapter
+menuTitle: NetworkX
 weight: 5
 description: >-
-  The ArangoDB-NetworkX Adapter allows you to export graphs from ArangoDB into NetworkX for graph analysis with Python and vice-versa
+  The NetworkX Adapter allows you to export graphs from ArangoDB into NetworkX for graph analysis with Python and vice-versa
 archetype: default
 ---
 [NetworkX](https://networkx.org/) is a commonly used tool for
@@ -25,12 +25,12 @@ to see how using this adapter gives you the best of both
 graph worlds - the speed and flexibility of ArangoDB combined with the
 ubiquity of NetworkX.
 
-The [ArangoDB-NetworkX Adapter repository](https://github.com/arangoml/networkx-adapter)
+The [NetworkX Adapter repository](https://github.com/arangoml/networkx-adapter)
 is available on Github. Check it out!
 
 ## Installation
 
-To install the latest release of the ArangoDB-NetworkX Adapter,
+To install the latest release of the NetworkX Adapter,
 run the following command:
 
 ```bash
@@ -39,7 +39,7 @@ pip install adbnx-adapter
 
 ## Quickstart
 
-The following examples show how to get started with ArangoDB-NetworkX Adapter.
+The following examples show how to get started with the NetworkX Adapter.
 Check also the 
 [interactive tutorial](https://colab.research.google.com/github/arangoml/networkx-adapter/blob/master/examples/ArangoDB_NetworkX_Adapter.ipynb).
 

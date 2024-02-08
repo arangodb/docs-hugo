@@ -41,12 +41,30 @@ characters using the default settings.
 
 #### Collection API
 
+##### Warnings for invalid collection creation options
+
 When creating a collection using the `POST /_api/collection` endpoint, the
 server log now displays a deprecation message if illegal combinations and
 unknown attributes and values are detected in the request body.
 
 Note that all invalid elements and combinations will be rejected in future
 versions.
+
+##### Dropping graph collections disallowed
+
+Dropping a collection using the `DELETE /_api/collection/{collection-name}`
+endpoint now strictly enforces that graph definitions remain intact.
+Previously, it was allowed to drop collections that were part of an existing graph.
+Trying to do so now results in the error `ERROR_GRAPH_MUST_NOT_DROP_COLLECTION`
+with the number `1942`.
+
+This may require changes in the client application code that drops individual
+collections from graphs for clean-up purposes. You can drop an entire graph
+and its collections along with it, as long as they aren't used in another graph.
+To remove individual collections, update or remove edge definitions first to not
+include the desired collections anymore. In case of vertex collections, they
+become orphan collections that you need to remove from the graph definition as
+well to drop the collections.
 
 #### Index API
 
@@ -61,6 +79,10 @@ indexes have been allowing to index and store the `_id` system attribute.
 
 #### Optimizer rule changes
 
+Due to the [improved joins](whats-new-in-3-12.md#improved-joins) in AQL, there
+is a new `join-index-nodes` optimizer rule and a `JoinNode` that may appear in
+execution plans.
+
 The `remove-unnecessary-projections` AQL optimizer rule has been renamed to
 `optimize-projections` and now includes an additional optimization.
 
@@ -68,6 +90,72 @@ Moreover, a `remove-unnecessary-calculations-4` rule has been added.
 
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
+
+#### Graph API (Gharial)
+
+- The `PATCH /_api/gharial/{graph}/edge/{collection}/{edge}` endpoint to update
+  edges in named graphs now validates the referenced vertex when modifying either
+  the `_from` or `_to` edge attribute. Previously, the validation only occurred if
+  both were set in the request.
+
+- A new error code `1949` with the name `TRI_ERROR_GRAPH_VERTEX_COLLECTION_NOT_USED`
+  has been added and is now returned instead of `TRI_ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED`
+  with the code `1947` if you attempt to read from or write to a vertex collection
+  through the graph API but the collection is not part of the graph definition.
+
+- The error code `1947` with the name `TRI_ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED`
+  has been renamed to `ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_PART_OF_THE_GRAPH`.
+  This error is (now only) raised if you attempt to reference a document in the
+  `_from` or `_to` attribute of an edge but the document's collection is not
+  part of the graph definition.
+
+#### Validation of `smartGraphAttribute` in SmartGraphs
+
+<small>Introduced in: v3.10.13, v3.11.7</small>
+
+The attribute defined by the `smartGraphAttribute` graph property is not allowed to be
+changed in the documents of SmartGraph vertex collections. This is now strictly enforced.
+You must set the attribute when creating a document. Any attempt to modify or remove
+the attribute afterward by update or replace operations now throws an error. Previously,
+the `smartGraphAttribute` value was checked only when inserting documents into a
+SmartGraph vertex collection, but not for update or replace operations.
+
+The missing checks on update and replace operations allowed to retroactively
+modify the value of the `smartGraphAttribute` for existing documents, which
+could have led to problems when the data of such a SmartGraph vertex collection was
+replicated to a new follower shard. On the new follower shard, the documents
+went through the full validation and led to documents with modified
+`smartGraphAttribute` values being rejected on the follower. This could have
+led to follower shards not getting in sync.
+
+Now, the value of the `smartGraphAttribute` is fully validated with every
+insert, update, or replace operation, and every attempt to modify the value of
+the `smartGraphAttribute` retroactively fails with the `4003` error,
+`ERROR_KEY_MUST_BE_PREFIXED_WITH_SMART_GRAPH_ATTRIBUTE`.
+Additionally, if upon insertion the `smartGraphAttribute` is missing for a
+SmartGraph vertex, the error code is error `4001`, `ERROR_NO_SMART_GRAPH_ATTRIBUTE`.
+
+To retroactively repair the data in any of the affected collections, it is
+possible to update every (affected) document with the correct value of the
+`smartGraphAttribute` via an AQL query as follows:
+
+```
+FOR doc IN @@collection
+  LET expected = SUBSTRING(doc._key, 0, FIND_FIRST(doc._key, ':'))
+  LET actual = doc.@attr
+  FILTER expected != actual
+  UPDATE doc WITH {@attr: expected} IN @@collection
+  COLLECT WITH COUNT INTO updated
+  RETURN updated
+```  
+
+This updates all documents with the correct (expected) value of the
+`smartGraphAttribute` if it deviates from the expected value. The query
+returns the number of updated documents as well.
+
+The bind parameters necessary to run this query are:
+- `@@collection`: name of a SmartGraph vertex collection to be updated
+- `@attr`: attribute name of the `smartGraphAttribute` of the collection
 
 #### Limit to the number of databases in a deployment
 
@@ -94,6 +182,12 @@ the maximum transaction size can now be configured with the
 `--transaction.streaming-max-transaction-size` startup option.
 The default value remains 128 MiB.
 
+#### Analyzer API
+
+The [`/_api/analyzer` endpoints](../../develop/http-api/analyzers.md) supports
+a new `multi_delimiter` Analyzer that accepts an array of strings in a
+`delimiter` attribute of the `properties` object.
+
 ### Privilege changes
 
 
@@ -111,9 +205,55 @@ The default value remains 128 MiB.
 
 ### Endpoints added
 
+#### Effective and available startup options
 
+The new `GET /_admin/options` and `GET /_admin/options-description` HTTP API
+endpoints allow you to return the effective configuration and the available
+startup options of the queried _arangod_ instance.
+
+Previously, it was only possible to [fetch the current configuration](../../operations/administration/configuration.md#fetch-current-configuration-options)
+on single servers and Coordinators using a JavaScript transaction, and to list
+the available startup options with `--dump-options`.
+
+See the [HTTP interface for administration](../../develop/http-api/administration.md#startup-options)
+for details.
+
+#### Available key generators
+
+You can now retrieve the available key generators for collections using the new
+`GET /_api/key-generators` endpoint.
+
+See the [HTTP API description](../../develop/http-api/collections.md#get-the-available-key-generators)
+
+#### Shard usage metrics
+
+With `GET /_admin/usage-metrics` you can retrieve detailed shard usage metrics on
+DB-Servers.
+
+These metrics can be enabled by setting the `--server.export-shard-usage-metrics`
+startup option to `enabled-per-shard` to make DB-Servers collect per-shard
+usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
+usage metrics per shard and per user whenever a shard is accessed.
+
+For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-usage-metrics)
+and [Monitoring per collection/database/user](../version-3.12/whats-new-in-3-12.md#monitoring-per-collectiondatabaseuser).
 
 ### Endpoints augmented
+
+#### Analyzer API
+
+A new `wildcard` Analyzer with the following properties has been added,
+affecting the `/_api/analyzer` endpoints:
+
+- `ngramSize` (number, _required_): unsigned integer, needs to be at least `2`
+- `analyzer` (object, _optional_): an Analyzer definition-like objects with
+  `type` and `properties` attributes, where `type` is a string and `properties`
+  an object whose attributes depend on the `type`
+
+The `offset` Analyzer feature is not valid for this Analyzer.
+
+See [Transforming data with Analyzers](../../index-and-search/analyzers.md#wildcard)
+for details.
 
 #### View API
 
@@ -126,7 +266,7 @@ for details.
 
 #### Index API
 
-##### Inverted indexes
+##### `optimizeTopK` for inverted indexes
 
 Indexes of type `inverted` accept a new `optimizeTopK` property for the
 ArangoSearch WAND optimization. It is an array of strings, optional, and
@@ -154,6 +294,22 @@ index in previous versions.
 See [Working with multi-dimensional indexes](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md)
 for details.
 
+##### Progress indication on the index generation
+
+<small>Introduced in: v3.10.13, v3.11.7</small>
+
+The `GET /_api/index` endpoint now returns a `progress` attribute that can
+optionally show indexes that are currently being created and indicate progress
+on the index generation.
+
+To return indexes that are not yet fully built but are in the building phase,
+add the option `withHidden=true` to `GET /_api/index?collection=<collectionName>`.
+
+```
+curl --header 'accept: application/json' --dump -
+"http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
+```
+
 #### Optimizer rule descriptions
 
 <small>Introduced in: v3.10.9, v3.11.2</small>
@@ -168,6 +324,12 @@ returns the `warnings` attribute, even if no warnings were produced while parsin
 the query. In that case, `warnings` contains an empty array.
 In previous versions, no `warnings` attribute was returned when parsing a query
 produced no warnings.
+
+#### Per-collection compaction in cluster
+
+The `PUT /_api/collection/{collection-name}/compact` endpoint can now be used
+to start the compaction for a specific collection in cluster deployments.
+This feature was previously available for single servers only.
 
 #### Metrics API
 

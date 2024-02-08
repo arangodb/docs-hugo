@@ -6,6 +6,8 @@ description: >-
   The ArangoGraph Insights Platform provides the entire functionality of
   ArangoDB as a service, without the need to run or manage databases yourself
 archetype: chapter
+aliases:
+  - arangograph/changelog
 ---
 The [ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
 formerly called Oasis, provides ArangoDB databases as a Service (DBaaS).

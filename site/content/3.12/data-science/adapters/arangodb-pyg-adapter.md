@@ -1,9 +1,9 @@
 ---
 title: PyTorch Geometric (PyG) Adapter
-menuTitle: ArangoDB-PyG Adapter
-weight: 20
+menuTitle: PyG
+weight: 15
 description: >-
-  The ArangoDB-PyG Adapter exports Graphs from ArangoDB into PyTorch Geometric (PyG), a PyTorch-based Graph Neural Network library, and vice-versa
+  The PyG Adapter exports Graphs from ArangoDB into PyTorch Geometric (PyG), a PyTorch-based Graph Neural Network library, and vice-versa
 archetype: default
 ---
 PyTorch Geometric (PyG) is a library built upon [PyTorch](https://pytorch.org/)
@@ -24,12 +24,12 @@ graphs as well as on 3D meshes or point clouds.
 
 ## Resources
 
-The [ArangoDB-PyG Adapter repository](https://github.com/arangoml/pyg-adapter)
+The [PyG Adapter repository](https://github.com/arangoml/pyg-adapter)
 is available on Github. Check it out!
 
 ## Installation
 
-To install the latest release of the ArangoDB-PyG Adapter,
+To install the latest release of the PyG Adapter,
 run the following command:
 
 ```bash
@@ -39,7 +39,7 @@ pip install adbpyg-adapter
 
 ## Quickstart
 
-The following examples show how to get started with ArangoDB-PyG Adapter.
+The following examples show how to get started with the PyG Adapter.
 Check also the 
 [interactive tutorial](https://colab.research.google.com/github/arangoml/pyg-adapter/blob/master/examples/ArangoDB_PyG_Adapter.ipynb).
 

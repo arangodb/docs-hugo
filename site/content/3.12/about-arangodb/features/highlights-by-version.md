@@ -13,7 +13,9 @@ aliases:
 
 **All Editions**
 
-- 
+- [**`wildcard` Analyzer**](../../index-and-search/analyzers.md#wildcard):
+  Accelerate wildcard searches against Views and inverted indexes with _n_-grams
+  to quickly find candidate matches.
 
 - [**Multi-dimensional indexes**](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md):
   An index type to efficiently intersect multiple range queries, like finding

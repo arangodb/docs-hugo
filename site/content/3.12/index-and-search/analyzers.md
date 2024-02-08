@@ -117,14 +117,17 @@ against other databases by specifying the prefixed name, e.g.
 The following Analyzer types are available:
 
 - [`identity`](#identity): treats value as atom (no transformation)
-- [`delimiter`](#delimiter): splits into tokens at user-defined character
+- [`delimiter`](#delimiter): splits into tokens at a user-defined character sequence
+- [`multi_delimiter`](#multi_delimiter): splits into tokens at user-defined character sequences
 - [`stem`](#stem): applies stemming to the value as a whole
 - [`norm`](#norm): applies normalization to the value as a whole
-- [`ngram`](#ngram): creates _n_-grams from value with user-defined lengths
+- [`ngram`](#ngram): creates _n_-grams from the value with user-defined lengths
 - [`text`](#text): tokenizes text strings into words, optionally with stemming,
   normalization, stop-word filtering and edge _n_-gram generation
 - [`segmentation`](#segmentation): tokenizes text in a language-agnostic manner,
   optionally with normalization
+- [`wildcard`](#wildcard): can apply another Analyzer and creates _n_-grams to
+  enable fast partial matching for large strings
 - [`aql`](#aql): runs an AQL query to prepare tokens for index
 - [`pipeline`](#pipeline): chains multiple Analyzers
 - [`stopwords`](#stopwords): removes the specified tokens from the input
@@ -254,38 +257,93 @@ db._query(`RETURN TOKENS("UPPER lower dïäcríticš", "identity")`).toArray();
 
 ### `delimiter`
 
-An Analyzer capable of breaking up delimited text into tokens as per
-[RFC 4180](https://tools.ietf.org/html/rfc4180)
-(without starting new records on newlines).
+An Analyzer capable of breaking up delimited text into tokens.
+
+It follows [RFC 4180](https://tools.ietf.org/html/rfc4180) but without starting
+new records on newlines and letting you freely choose the delimiter. You can
+wrap tokens in the input string in double quote marks to quote the delimiter.
+For example, a `delimiter` Analyzer that uses `,` as delimiter and an input
+string of `foo,"bar,baz"` results in the tokens `foo` and `bar,baz` instead of
+`foo`, `bar`, and `baz`.
 
 The *properties* allowed for this Analyzer are an object with the following
 attributes:
 
-- `delimiter` (string): the delimiting character(s). The whole string is
-  considered as one delimiter.
-
-You can wrap tokens in the input string in double quote marks to quote the
-delimiter. For example, a `delimiter` Analyzer that uses `,` as delimiter and an
-input string of `foo,"bar,baz"` results in the tokens `foo` and `bar,baz`
-instead of `foo`, `bar`, and `baz`.
-
-You can chain multiple `delimiter` Analyzers with a [`pipeline` Analyzer](#pipeline)
-to split by different delimiters.
+- `delimiter` (string): the delimiting character or character sequence.
+  The whole string is considered as one delimiter.
 
 **Examples**
 
-Split input strings into tokens at hyphen-minus characters:
+```js
+---
+name: analyzerDelimiter1
+description: Split comma-separated text into tokens but do not split quoted fields
+---
+var analyzers = require("@arangodb/analyzers");
+var a = analyzers.save("delimiter_csv", "delimiter", {
+  delimiter: ","
+}, []);
+db._query(`RETURN TOKENS('foo,bar,baz,"bar,baz"', "delimiter_csv")`).toArray();
+~analyzers.remove(a.name);
+```
 
 ```js
 ---
-name: analyzerDelimiter
-description: ''
+name: analyzerDelimiter2
+description: >
+  Split input strings into tokens at every character sequence of hyphen-minus,
+  right angled bracket, and a space
 ---
 var analyzers = require("@arangodb/analyzers");
-var a = analyzers.save("delimiter_hyphen", "delimiter", {
-  delimiter: "-"
+var a = analyzers.save("delimiter_arrow", "delimiter", {
+  delimiter: "-> "
 }, []);
-db._query(`RETURN TOKENS("some-delimited-words", "delimiter_hyphen")`).toArray();
+db._query(`RETURN TOKENS("some-> hand-picked-> words", "delimiter_arrow")`).toArray();
+~analyzers.remove(a.name);
+```
+
+### `multi_delimiter`
+
+An Analyzer capable of breaking up text into tokens using multiple delimiters.
+
+Unlike with the `delimiter` Analyzer, the `multi_delimiter` Analyzer does not
+support quoting fields.
+
+
+The *properties* allowed for this Analyzer are an object with the following
+attributes:
+
+- `delimiters` (array): a list of strings of which each is considered as one
+  delimiter that can be one or multiple characters long. The delimiters must not
+  overlap, which means that a delimiter cannot be a prefix of another delimiter.
+
+**Examples**
+
+```js
+---
+name: analyzerMultiDelimiter1
+description: >
+  Split at delimiting characters `,` and `;`, as well as the character sequence
+  `||` but not a single `|` character
+---
+var analyzers = require("@arangodb/analyzers");
+var a = analyzers.save("delimiter_multiple", "multi_delimiter", {
+  delimiter: [",", ";", "||"]
+}, []);
+db._query(`RETURN TOKENS("differently,delimited;words||one|token", "delimiter_multiple")`).toArray();
+~analyzers.remove(a.name);
+```
+
+```js
+---
+name: analyzerMultiDelimiter2
+description: Double quote marks have no effect on the splitting
+---
+var analyzers = require("@arangodb/analyzers");
+var a = analyzers.save("delimiter_noquote", "multi_delimiter", {
+  delimiter: [","]
+}, []);
+db._query(`RETURN TOKENS('foo,bar,baz,"bar,baz"', "delimiter_noquote")`).toArray();
 ~analyzers.remove(a.name);
 ```
 
@@ -896,7 +954,7 @@ db._query(`RETURN TOKENS("Quick brown foX", "ngram_upper")`).toArray();
 ~analyzers.remove(a.name);
 ```
 
-Split at delimiting characters `,` and `;`, then stem the tokens:
+Split at delimiting character `,`, then stem the tokens:
 
 ```js
 ---
@@ -906,10 +964,9 @@ description: ''
 var analyzers = require("@arangodb/analyzers");
 var a = analyzers.save("delimiter_stem", "pipeline", { pipeline: [
   { type: "delimiter", properties: { delimiter: "," } },
-  { type: "delimiter", properties: { delimiter: ";" } },
   { type: "stem", properties: { locale: "en" } }
 ] }, []);
-db._query(`RETURN TOKENS("delimited,stemmable;words", "delimiter_stem")`).toArray();
+db._query(`RETURN TOKENS("delimited,stemmable,words", "delimiter_stem")`).toArray();
 ~analyzers.remove(a.name);
 ```
 
@@ -1046,6 +1103,84 @@ db._query(`LET str = 'Test\twith An_EMAIL-address+123@example.org\n蝴蝶。\u20
 ~analyzers.remove(all.name);
 ~analyzers.remove(alpha.name);
 ~analyzers.remove(graphic.name);
+```
+
+### `wildcard`
+
+<small>Introduced in: v3.12.0</small>
+
+An Analyzer that creates _n_-grams to enable fast partial matching for wildcard
+queries if you have large string values, especially if you want to search for
+suffixes or substrings in the middle of strings (infixes) as opposed to prefixes.
+
+It can apply an Analyzer of your choice before creating the _n_-grams, for example,
+to normalize text for case-insensitive and accent-insensitive search.
+
+See [Wildcard Search with ArangoSearch](arangosearch/wildcard-search.md#wildcard-analyzer-examples)
+for an example of how to use this Analyzer with Views, and
+[Inverted indexes](indexing/working-with-indexes/inverted-indexes.md#wildcard-search)
+for an example using a standalone inverted index.
+
+The *properties* allowed for this Analyzer are an object with the following
+attributes:
+
+- `ngramSize` (number, _required_): unsigned integer for the _n_-gram length,
+  needs to be at least `2`. It can be greater than the substrings between
+  wildcards that you want to search for, e.g. `4` with an expected search pattern
+  of `%up%if%ref%` (substrings of length 2 and 3 between `%`), but this leads to
+  a slower search (for `ref%` with post-validation using the ICU regular expression
+  engine). A value of `3` is a good default, `2` is better for short strings
+- `analyzer` (object, _optional_): an Analyzer definition-like objects with
+  `type` and `properties` attributes
+
+You cannot set the `offset` [Analyzer features](#analyzer-features) for this
+Analyzer. You can create the Analyzer without features, or use
+`["frequency", "position"]` which uses more memory but doesn't need to read
+stored column values for prefix, suffix, infix, and exact queries (`something%`,
+`%something`, `%something%`, `something`, but not `some%thing` or `%some%thin_`)
+
+The set of _n_-grams that are created for each input token includes one start
+_n_-gram and `ngramSize - 1` end _n_-grams using `"\uFFFD"` as start marker
+respectively end marker. For example, with an `ngramSize` of `3` and the input
+`"graph"`, the generated _n_-grams are:
+- `"�gr"`
+- `"gra"`
+- `"rap"`
+- `"aph"`
+- `"ph�"`
+- `"h�"`
+
+**Examples**
+
+```js
+---
+name: analyzerWildcard1
+description: |
+  Create a `wildcard` Analyzer with an _n_-gram size of 4 and without enabling
+  Analyzer features:
+---
+var analyzers = require("@arangodb/analyzers");
+var analyzerWildcard = analyzers.save("wildcard_4", "wildcard", { ngramSize: 4 }, []);
+
+db._query(`RETURN TOKENS("The quick brown Foxx", "wildcard_4")`).toArray();
+~analyzers.remove(analyzerWildcard.name);
+```
+
+```js
+---
+name: analyzerWildcard2
+description: |
+  Use a `norm` Analyzer in a `wildcard` Analyzer to normalize the input to
+  lowercase and convert accented characters to their base characters before
+  creating trigrams from the string:
+---
+var analyzers = require("@arangodb/analyzers");
+var analyzerWildcard = analyzers.save("wildcard_3", "wildcard", { ngramSize: 3, "analyzer": {
+  type: "norm", properties: { locale: "en", accent: false, case: "lower" }
+} }, ["frequency","position"]);
+
+db._query(`RETURN TOKENS("The quick brown Foxx", "wildcard_3")`).toArray();
+~analyzers.remove(analyzerWildcard.name);
 ```
 
 ### `minhash`

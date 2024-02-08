@@ -11,8 +11,9 @@ archetype: default
 To transform your data into a graph, you need to have CSV files with entities
 representing the nodes and a corresponding CSV file representing the edges.
 
-This example uses a sample data set of two files, `airports.csv` and `flights.csv`
-to create a graph showing flights arriving to and departing from various cities.
+This example uses a sample data set of two files, `airports.csv`, and `flights.csv`.
+These files are used to create a graph showing flights arriving at and departing
+from various cities.
 You can download the files from [GitHub](https://github.com/arangodb/example-datasets/tree/master/Data%20Loader).
 
 The `airports.csv` contains rows of airport entries, which are the future nodes
@@ -32,7 +33,7 @@ The whole process can be broken down into these steps:
    [EnterpriseGraph](../../graphs/enterprisegraphs/_index.md) and its
    corresponding collections.
 
-## Step 1: Create database and choose graph name
+## Step 1: Create a database and choose the graph name
 
 Start by creating a new database and adding a name for your graph.
 
@@ -79,14 +80,14 @@ the `destination airport` header as a target for the edge.
 
 ![Data Loader Example Step 3 Edges](../../../images/arangograph-data-loader-example-map-edges.png)
 
-Note that the values of source and target for the edge correspond to the
+Note that the values of the source and target for the edge correspond to the
 **Primary identifier** (`_key` attribute) of the nodes. In this case, it is the
 airport code (i.e. GKA) used as the `_key` in the node documents and in the source
 and destination headers to configure the edges.
 
 See also [Design your graph in the Data Loader](../data-loader/design-graph.md). 
 
-## Step 4: Import and see resulting graph
+## Step 4: Import and see the resulting graph
 
 After all the mapping is done, all you need to do is click
 **Save and start import**. The report provides an overview of the files

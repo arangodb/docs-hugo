@@ -8,6 +8,11 @@ description: >-
 archetype: chapter
 ---
 
+ArangoGraph provides different ways of loading your data into the platform,
+based on your migration use case.
+
+## Transform data into a graph
+
 The ArangoGraph Data Loader allows you to transform existing data from CSV file
 formats into data that can be analyzed by the ArangoGraph platform.
 
@@ -44,15 +49,12 @@ corresponding collections, available in your ArangoDB web interface.
 Follow this [working example](../data-loader/example.md) to see how easy it is
 to transform existing data into a graph.
 
-## How to access the Data Loader
+## Migrate on-prem to the cloud
 
-1. If you do not have a deployment yet, [create a deployment](../deployments/_index.md#how-to-create-a-new-deployment) first.
-2. Open the deployment you want to load data into.
-3. In the **Load Data** section, click the **Load your data** button.
+To transfer data from an existing on-premises ArangoDB instance to your
+ArangoGraph cluster, see the [cloud migration tool](../migrate-to-the-cloud.md).
 
-![ArangoGraph Data Loader Overview](../../../images/arangograph-data-loader-overview.png)
-
-## Other options to import data into ArangoGraph
+## Import data to the cloud
 
 To import data from various files into collections **without creating a graph**,
 get the ArangoDB client tools for your operating system from the
@@ -63,5 +65,12 @@ get the ArangoDB client tools for your operating system from the
   [arangorestore](../../components/tools/arangorestore/).
 - To import pre-existing data in JSON, CSV, or TSV format, see
   [arangoimport](../../components/tools/arangoimport/).
-- To transfer data from an existing on-premises ArangoDB instance to your
-  ArangoGraph cluster, see the [cloud migration tool](../migrate-to-the-cloud.md).
+
+## How to access the Data Loader
+
+1. If you do not have a deployment yet, [create a deployment](../deployments/_index.md#how-to-create-a-new-deployment) first.
+2. Open the deployment you want to load data into.
+3. In the **Load Data** section, click the **Load your data** button.
+4. Select your migration use case.
+
+![ArangoGraph Data Loader Migration Use Cases](../../../images/arangograph-data-loader-migration-use-cases.png)
