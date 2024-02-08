@@ -675,8 +675,6 @@
     - single
   description: |
     The number of client connections that are currently open.
-    Note: this metric considers only HTTP and HTTP/2 connections, but not VST
-    connections.
 
 - name: arangodb_client_connection_statistics_connection_time
   introducedIn: "3.8.0"
@@ -696,7 +694,7 @@
     point when the connection was established until it was closed. Smaller
     numbers indicate that there is not a lot of load and/or that connections
     are not reused for multiple requests. Consider using keep-alive header
-    or HTTP/2 or VST.
+    or HTTP/2.
 
 - name: arangodb_client_connection_statistics_io_time
   introducedIn: "3.8.0"
@@ -1753,7 +1751,7 @@
     - agent
     - single
   description: |
-    This counter reflects the total number of **asynchronous** HTTP (or VST)
+    This counter reflects the total number of **asynchronous** HTTP
     requests which have hit this particular instance of `arangod`. Asynchronous
     refers to the fact that the response is not sent with the HTTP response,
     but is rather queried separately using the `/_api/jobs` API.
@@ -1782,7 +1780,7 @@
     - agent
     - single
   description: |
-    This counter reflects the total number of HTTP (or VST) **DELETE**
+    This counter reflects the total number of HTTP **DELETE**
     requests which have hit this particular instance of `arangod`.
     
     Note that this counter is ever growing during the lifetime of the
@@ -1809,7 +1807,7 @@
     - agent
     - single
   description: |
-    This counter reflects the total number of HTTP (or VST) **GET**
+    This counter reflects the total number of HTTP **GET**
     requests which have hit this particular instance of `arangod`.
     
     Note that this counter is ever growing during the lifetime of the
@@ -1836,7 +1834,7 @@
     - agent
     - single
   description: |
-    This counter reflects the total number of HTTP (or VST) **HEAD**
+    This counter reflects the total number of HTTP **HEAD**
     requests which have hit this particular instance of `arangod`.
     
     Note that this counter is ever growing during the lifetime of the
@@ -1863,7 +1861,7 @@
     - agent
     - single
   description: |
-    This counter reflects the total number of HTTP (or VST) **OPTIONS**
+    This counter reflects the total number of HTTP **OPTIONS**
     requests which have hit this particular instance of `arangod`.
     
     Note that this counter is ever growing during the lifetime of the
@@ -1890,7 +1888,7 @@
     - agent
     - single
   description: |
-    This counter reflects the total number of HTTP (or VST) **PATCH**
+    This counter reflects the total number of HTTP **PATCH**
     requests which have hit this particular instance of `arangod`.
     
     Note that this counter is ever growing during the lifetime of the
@@ -1917,7 +1915,7 @@
     - agent
     - single
   description: |
-    This counter reflects the total number of HTTP (or VST) **POST**
+    This counter reflects the total number of HTTP **POST**
     requests which have hit this particular instance of `arangod`.
     
     Note that this counter is ever growing during the lifetime of the
@@ -1944,7 +1942,7 @@
     - agent
     - single
   description: |
-    This counter reflects the total number of HTTP (or VST) **PUT**
+    This counter reflects the total number of HTTP **PUT**
     requests which have hit this particular instance of `arangod`.
     
     Note that this counter is ever growing during the lifetime of the
@@ -1971,7 +1969,7 @@
     - agent
     - single
   description: |
-    This counter reflects the total number of HTTP (or VST) **other**
+    This counter reflects the total number of HTTP **other**
     or **ILLEGAL** requests which have hit this particular instance of
     `arangod`. These are all requests, which are not one of the following:
     `DELETE`, `GET`, `HEAD`, `POST`, `PUT`, `OPTIONS`, `PATCH`.
@@ -2000,7 +1998,7 @@
     - agent
     - single
   description: |
-    This counter reflects the total number of HTTP (or VST)
+    This counter reflects the total number of HTTP
     requests that have been authenticated with the JWT superuser token,
     which have hit this particular instance of
     `arangod`.
@@ -2029,7 +2027,7 @@
     - agent
     - single
   description: |
-    This counter reflects the total number of HTTP (or VST) requests which
+    This counter reflects the total number of HTTP requests which
     have hit this particular instance of `arangod`. Note that this counter
     is ever growing during the lifetime of the `arangod` process. However,
     when the process is restarted, it starts from scratch. In the Grafana
@@ -2055,7 +2053,7 @@
     - agent
     - single
   description: |
-    This counter reflects the total number of HTTP (or VST) requests
+    This counter reflects the total number of HTTP requests
     that have been authenticated for some user (as opposed to with the
     JWT superuser token), which have hit this particular instance of
     `arangod`.
@@ -2733,186 +2731,6 @@
     A dirty read is one which may also use follower shards and not only
     leader shards. Note that it is the transaction in the context of which
     the read runs which determines, if dirty reads are allowed.
-
-- name: arangodb_pregel_conductors_loading_number
-  introducedIn: "3.10.0"
-  help: |
-    Number of loading Pregel conductors.
-  unit: number
-  type: gauge
-  category: Pregel
-  complexity: simple
-  exposedBy:
-    - dbserver
-    - single
-    - coordinator
-  description: |
-    Number of loading Pregel conductors.
-
-- name: arangodb_pregel_conductors_number
-  introducedIn: "3.10.0"
-  help: |
-    Number of Pregel conductors.
-  unit: number
-  type: gauge
-  category: Pregel
-  complexity: simple
-  exposedBy:
-    - dbserver
-    - single
-    - coordinator
-  description: |
-    Number of Pregel conductors.
-
-- name: arangodb_pregel_conductors_running_number
-  introducedIn: "3.10.0"
-  help: |
-    Number of running Pregel conductors.
-  unit: number
-  type: gauge
-  category: Pregel
-  complexity: simple
-  exposedBy:
-    - dbserver
-    - single
-    - coordinator
-  description: |
-    Number of running Pregel conductors.
-
-- name: arangodb_pregel_conductors_storing_number
-  introducedIn: "3.10.0"
-  help: |
-    Number of storing Pregel conductors.
-  unit: number
-  type: gauge
-  category: Pregel
-  complexity: simple
-  exposedBy:
-    - dbserver
-    - single
-    - coordinator
-  description: |
-    Number of storing Pregel conductors.
-
-- name: arangodb_pregel_graph_memory_bytes_number
-  introducedIn: "3.10.0"
-  help: |
-    Memory allocated by Pregel for graph storage.
-  unit: bytes
-  type: gauge
-  category: Pregel
-  complexity: simple
-  exposedBy:
-    - dbserver
-    - single
-    - coordinator
-  description: |
-    The number of bytes allocated by Pregel.
-
-- name: arangodb_pregel_messages_received_total
-  introducedIn: "3.10.0"
-  help: |
-    Number of messages received by Pregel.
-  unit: number
-  type: gauge
-  category: Pregel
-  complexity: simple
-  exposedBy:
-    - dbserver
-    - single
-    - coordinator
-  description: |
-    The number of messages received by Pregel.
-
-- name: arangodb_pregel_messages_sent_total
-  introducedIn: "3.10.0"
-  help: |
-    Number of messages sent by Pregel.
-  unit: number
-  type: gauge
-  category: Pregel
-  complexity: simple
-  exposedBy:
-    - dbserver
-    - single
-    - coordinator
-  description: |
-    Number of messages sent by Pregel.
-
-- name: arangodb_pregel_threads_number
-  introducedIn: "3.10.0"
-  help: |
-    Number of threads running for Pregel.
-  unit: number
-  type: gauge
-  category: Pregel
-  complexity: simple
-  exposedBy:
-    - dbserver
-    - single
-    - coordinator
-  description: |
-    Number of threads running for Pregel.
-
-- name: arangodb_pregel_workers_loading_number
-  introducedIn: "3.10.0"
-  help: |
-    Number of loading Pregel workers.
-  unit: number
-  type: gauge
-  category: Pregel
-  complexity: simple
-  exposedBy:
-    - dbserver
-    - single
-    - coordinator
-  description: |
-    Number of loading Pregel workers.
-
-- name: arangodb_pregel_workers_number
-  introducedIn: "3.10.0"
-  help: |
-    Number of Pregel workers.
-  unit: number
-  type: gauge
-  category: Pregel
-  complexity: simple
-  exposedBy:
-    - dbserver
-    - single
-    - coordinator
-  description: |
-    Number of Pregel Workers.
-
-- name: arangodb_pregel_workers_running_number
-  introducedIn: "3.10.0"
-  help: |
-    Number of running Pregel workers.
-  unit: number
-  type: gauge
-  category: Pregel
-  complexity: simple
-  exposedBy:
-    - dbserver
-    - single
-    - coordinator
-  description: |
-    Number of running Pregel workers.
-
-- name: arangodb_pregel_workers_storing_number
-  introducedIn: "3.10.0"
-  help: |
-    Number of storing Pregel workers.
-  unit: number
-  type: gauge
-  category: Pregel
-  complexity: simple
-  exposedBy:
-    - dbserver
-    - single
-    - coordinator
-  description: |
-    Number of storing Pregel workers.
 
 - name: arangodb_process_statistics_major_page_faults_total
   renamedFrom: arangodb_process_statistics_major_page_faults
@@ -4446,23 +4264,6 @@
   description: |
     Histogram of the body sizes of the received HTTP/2 requests in bytes.
     Note that this does not account for the header.
-
-- name: arangodb_request_body_size_vst
-  introducedIn: "3.7.15"
-  help: |
-    Body size in bytes for VST requests.
-  unit: bytes
-  type: histogram
-  category: Statistics
-  complexity: medium
-  exposedBy:
-    - coordinator
-    - dbserver
-    - agent
-    - single
-  description: |
-    Histogram of the body sizes of the received VST requests in bytes.
-    Note that this does include the binary header.
 
 - name: arangodb_request_statistics_memory_usage
   introducedIn: "3.12.0"
@@ -6130,23 +5931,6 @@
     This is the minimum number of concurrent V8 contexts. This is limited
     by a server option. V8 contexts are created and destroyed as needed
     but there are never fewer than the limit shown in this metric.
-
-- name: arangodb_vst_connections_total
-  introducedIn: "3.7.15"
-  help: |
-    Total number of VST connections accepted.
-  unit: number
-  type: counter
-  category: Connectivity
-  complexity: medium
-  exposedBy:
-    - coordinator
-    - dbserver
-    - agent
-    - single
-  description: |
-    Total number of connections accepted for VST, this are upgraded
-    connections from HTTP/1.1.
 
 - name: rocksdb_actual_delayed_write_rate
   introducedIn: "3.6.1"
