@@ -274,8 +274,7 @@ Gets the value of a header by name. You can validate request headers using the
 
 Returns the header value.
 
-is
---
+## is
 
 `req.is(types): string`
 
