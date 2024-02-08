@@ -1,0 +1,130 @@
+<script type="text/javascript">
+  const SCRIPT_SRC =
+    "https://unpkg.com/@inkeep/widgets-embed@0.2.258/dist/embed.js";
+
+  function loadAndInitializeInkeep() {
+    if (document.querySelector(`script[src="${SCRIPT_SRC}]"`)) {
+      return;
+    }
+
+    const script = document.createElement("script");
+    script.type = "module";
+    script.src = SCRIPT_SRC;
+    script.onload = initializeInkeep;
+
+    document.head.appendChild(script);
+  }
+
+  function initializeInkeep() {
+    const inkeep = Inkeep({
+      integrationId: "clo4lx6jk0000s601cp21x2ok",
+      apiKey: "13b4e56966a76e86c6ff359cd795ee6a0412f751d75d6383",
+      organizationId: "org_HGBkkzGAa4KeGJGh",
+      organizationDisplayName: "ArangoDB",
+      primaryBrandColor: "#80a54d",
+      stringReplacementRules: [
+        {
+          matchingRule: {
+            ruleType: "Substring",
+            string: "Arangograph",
+          },
+          replaceWith: "ArangoGraph",
+        },
+        {
+          matchingRule: {
+            ruleType: "Substring",
+            string: "Aql",
+          },
+          replaceWith: "AQL",
+        },
+        {
+          matchingRule: {
+            ruleType: "Substring",
+            string: "Arangodb",
+          },
+          replaceWith: "ArangoDB",
+        },
+      ],
+      customCardSettings: [
+        {
+          filters: {
+            UrlMatch: {
+              ruleType: "PartialUrl",
+              partialUrl: "docs.arangodb.com",
+            },
+          },
+          searchTabLabel: "Official Docs",
+        },
+        {
+          filters: {
+            UrlMatch: {
+              ruleType: "PartialUrl",
+              partialUrl: "developer.arangodb.com",
+            },
+          },
+          searchTabLabel: "Developer Hub",
+        },
+        {
+          filters: {
+            UrlMatch: {
+              ruleType: "PartialUrl",
+              partialUrl: "arangodb.com",
+            },
+          },
+          searchTabLabel: "Home",
+        },
+      ],
+    });
+    const chatButton = inkeep.embed({
+      componentType: "ChatButton",
+      properties: {
+        stylesheetUrls: ["/css/fonts.css"],
+        fixedPositionXOffset: '52px',
+        baseSettings: {
+          theme: {
+            primaryColors: {
+              textColorOnPrimary: "white",
+            },
+            tokens: {
+              fonts: {
+                body: "'Inter'",
+                heading: "'Inter'",
+              },
+              zIndex: {
+                overlay: 10000,
+                modal: 11000,
+                popover: 12000,
+                skipLink: 13000,
+                toast: 14000,
+                tooltip: 15000,
+              },
+            },
+          },
+        },
+        aiChatSettings: {
+          botAvatarSrcUrl: "/images/ArangoDB_Logo_White_small.png",
+          quickQuestions: [
+            "What can you do with AQL that is not feasible with SQL?",
+            "How do I search for objects within arrays?",
+            "Where can I deploy my ArangoDB instance?",
+          ],
+          getHelpCallToActions: [
+            {
+              icon: { builtIn: "FaSlack" },
+              name: "Slack",
+              url: "https://arangodb-community.slack.com/",
+            },
+          ],
+        },
+        searchSettings: {
+          tabSettings: {
+            isAllTabEnabled: false,
+            alwaysDisplayedTabs: ["Official Docs", "Developer Hub", "Home"],
+          },
+        },
+      },
+    });
+  }
+
+  loadAndInitializeInkeep();
+</script>

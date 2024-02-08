@@ -1207,7 +1207,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 0.95,
+    "default" : 0.56,
     "deprecatedIn" : null,
     "description" : "The multiplier to be used for calculating the in-memory cache's effective memory usage limit.",
     "dynamic" : false,
@@ -11226,7 +11226,7 @@
       "agent",
       "single"
     ],
-    "default" : false,
+    "default" : true,
     "deprecatedIn" : null,
     "description" : "account for .sst file metadata memory in block cache",
     "dynamic" : false,
@@ -11254,7 +11254,7 @@
       "agent",
       "single"
     ],
-    "default" : false,
+    "default" : true,
     "deprecatedIn" : null,
     "description" : "Account for table building memory in block cache.",
     "dynamic" : false,
@@ -11282,7 +11282,7 @@
       "agent",
       "single"
     ],
-    "default" : false,
+    "default" : true,
     "deprecatedIn" : null,
     "description" : "Account for table reader memory in block cache.",
     "dynamic" : false,
@@ -12487,7 +12487,7 @@
     "introducedIn" : [
       "v3.12.0"
     ],
-    "longDescription" : "This option can be used to make DB servers export\ndetailed shard usage metrics. By default, this option is set to 'disabled' so\nthat no shard usage metrics are exported. \nSetting the option to 'enabled-per-shard' will make DB-Servers collect per-shard\nusage metrics whenever a shard is accessed.\nSetting the option to 'enabled-per-shard-per-user' will make DB-Servers collect\nusage metrics per shard and per user whenever a shard is accessed. \nNote that enabling shard usage metrics can produce a lot of metrics if there \nare many shards and/or users in the system.",
+    "longDescription" : "This option can be used to make DB-Servers export\ndetailed shard usage metrics.\n\n- By default, this option is set to `disabled` so that no shard usage metrics\n  are exported.\n\n- Set the option to `enabled-per-shard` to make DB-Servers collect per-shard\n  usage metrics whenever a shard is accessed.\n\n- Set this option to `enabled-per-shard-per-user` to make DB-Servers collect\n  usage metrics per shard and per user whenever a shard is accessed.\n\nNote that enabling shard usage metrics can produce a lot of metrics if there \nare many shards and/or users in the system.",
     "obsolete" : false,
     "os" : [
       "linux",
@@ -14154,7 +14154,7 @@
       "agent",
       "single"
     ],
-    "default" : 1000000,
+    "default" : 100000,
     "deprecatedIn" : null,
     "description" : "The maximum number of documents to remove per collection in each invocation of the TTL thread.",
     "dynamic" : false,

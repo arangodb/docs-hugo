@@ -117,8 +117,7 @@ Enterprise Edition.
 See [Optimizing View query performance](../../index-and-search/arangosearch/performance.md)
 for examples.
 
-UI
---
+## UI
 
 ### Rebalance Shards for all databases in Web UI
 

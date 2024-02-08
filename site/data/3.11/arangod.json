@@ -2347,7 +2347,7 @@
       "agent",
       "single"
     ],
-    "default" : "/var/lib/arangodb3",
+    "default" : "",
     "deprecatedIn" : null,
     "description" : "The path to the database directory.",
     "dynamic" : false,
@@ -3427,7 +3427,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "/var/lib/arangodb3-apps",
+    "default" : "./js/apps",
     "deprecatedIn" : null,
     "description" : "The directory for Foxx applications.",
     "dynamic" : false,
@@ -3725,6 +3725,7 @@
       "single"
     ],
     "default" : [
+      "./enterprise/js"
     ],
     "deprecatedIn" : null,
     "description" : "Additional paths containing JavaScript modules.",
@@ -3803,7 +3804,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "/usr/share/arangodb3/js",
+    "default" : "./js",
     "deprecatedIn" : null,
     "description" : "A path to the directory containing the JavaScript startup scripts.",
     "dynamic" : false,
@@ -6193,7 +6194,7 @@
       "agent",
       "single"
     ],
-    "default" : "-",
+    "default" : "",
     "deprecatedIn" : null,
     "description" : "shortcut for '--log.output file://<filename>'",
     "dynamic" : false,
@@ -8356,6 +8357,99 @@
     "section" : "rclone",
     "type" : "string"
   },
+  "replicated-log.threshold-log-compaction" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 1000,
+    "deprecatedIn" : null,
+    "description" : "threshold for log compaction. Number of log entries to wait for before compacting.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : null,
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "replicated-log",
+    "type" : "uint64"
+  },
+  "replicated-log.threshold-network-batch-size" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 1048576,
+    "deprecatedIn" : null,
+    "description" : "send a batch of log updates early when threshold (in bytes) is exceeded",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : null,
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 1048576,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "replicated-log",
+    "type" : "uint64"
+  },
+  "replicated-log.threshold-rocksdb-write-batch-size" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 1048576,
+    "deprecatedIn" : null,
+    "description" : "write a batch of log updates to RocksDB early when threshold (in bytes) is exceeded",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : null,
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 1048576,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "replicated-log",
+    "type" : "uint64"
+  },
   "replication.active-failover" : {
     "category" : "option",
     "component" : [
@@ -9773,6 +9867,35 @@
       "v3.5.4"
     ],
     "longDescription" : "This option allows you to make all writes to the\nRocksDB storage exclusive and therefore avoid write-write conflicts.\n\nThis option was introduced to open a way to upgrade from the legacy MMFiles to\nthe RocksDB storage engine without modifying client application code.\nYou should avoid enabling this option as the use of exclusive locks on\ncollections introduce a noticeable throughput penalty.\n\n**Note**: The MMFiles engine was removed and this option is a stopgap measure\nonly. This option is thus deprecated, and will be removed in a future\nversion.",
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "rocksdb",
+    "type" : "boolean"
+  },
+  "rocksdb.force-legacy-little-endian-keys" : {
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : false,
+    "deprecatedIn" : null,
+    "description" : "Force usage of legacy little endian key encoding when creating a new RocksDB database directory. DO NOT USE IN PRODUCTION.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : true,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.11.4"
+    ],
+    "longDescription" : "If enabled and a new RocksDB database\nis generated, the legacy little endian key encoding is used.\n\nOnly use this option for testing purposes! It is bad for performance and\ndisables a few features like parallel index generation!",
     "obsolete" : false,
     "os" : [
       "linux",
@@ -12206,7 +12329,7 @@
       "agent",
       "single"
     ],
-    "default" : 0,
+    "default" : 10,
     "deprecatedIn" : null,
     "description" : "Cluster metrics polling timeout (in seconds).",
     "dynamic" : false,
@@ -12450,9 +12573,10 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : [
+      "v3.10.13",
       "v3.11.7"
     ],
-    "longDescription" : "This option can be used to make DB servers export\ndetailed shard usage metrics. By default, this option is set to 'disabled' so\nthat no shard usage metrics are exported. \nSetting the option to 'enabled-per-shard' will make DB-Servers collect per-shard\nusage metrics whenever a shard is accessed.\nSetting the option to 'enabled-per-shard-per-user' will make DB-Servers collect\nusage metrics per shard and per user whenever a shard is accessed. \nNote that enabling shard usage metrics can produce a lot of metrics if there \nare many shards and/or users in the system.",
+    "longDescription" : "This option can be used to make DB-Servers export\ndetailed shard usage metrics.\n\n- By default, this option is set to `disabled` so that no shard usage metrics\n  are exported.\n\n- Set the option to `enabled-per-shard` to make DB-Servers collect per-shard\n  usage metrics whenever a shard is accessed.\n\n- Set this option to `enabled-per-shard-per-user` to make DB-Servers collect\n  usage metrics per shard and per user whenever a shard is accessed.\n\nNote that enabling shard usage metrics can produce a lot of metrics if there \nare many shards and/or users in the system.",
     "obsolete" : false,
     "os" : [
       "linux",
@@ -12463,6 +12587,33 @@
     "section" : "server",
     "type" : "string",
     "values" : "Possible values: \"disabled\", \"enabled-per-shard\", \"enabled-per-shard-per-user\""
+  },
+  "server.failure-point" : {
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : [
+    ],
+    "deprecatedIn" : null,
+    "description" : "The failure point to set during server startup (requires compilation with failure points support).",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : null,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "server",
+    "type" : "string..."
   },
   "server.gid" : {
     "category" : "option",
@@ -13242,7 +13393,7 @@
       "dbserver",
       "single"
     ],
-    "default" : true,
+    "default" : false,
     "deprecatedIn" : null,
     "description" : "Whether to enable the telemetrics API.",
     "dynamic" : false,
@@ -14076,7 +14227,7 @@
       "agent",
       "single"
     ],
-    "default" : 1000000,
+    "default" : 100000,
     "deprecatedIn" : null,
     "description" : "The maximum number of documents to remove per collection in each invocation of the TTL thread.",
     "dynamic" : false,
