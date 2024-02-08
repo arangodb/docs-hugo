@@ -19,6 +19,18 @@ offer better resilience and synchronous replication. Also see the
 See [Single instance vs. Cluster deployments](../../deploy/single-instance-vs-cluster.md)
 for details about how a cluster deployment differs and how to migrate to it.
 
+## LDAP authentication
+
+Support for ArangoDB user authentication with an LDAP server in the
+Enterprise Edition has been removed.
+
+- All `--ldap.*` and `--ldap2.*` startup options have been removed
+- The `--server.authentication-timeout` startup option ...
+  TODO: still a regular option (not obsoleted) even though it previously stated "This option is only necessary if you use an external authentication system like LDAP."
+- The `--server.local-authentication` startup option has been obsoleted and
+  will be fully removed in a future version
+- The `ldap` log topic is no longer available
+
 ## Little-endian on-disk key format for the RocksDB storage engine
 
 ArangoDB 3.12 does not support the little-endian on-disk key for the RocksDB

@@ -477,10 +477,6 @@ paths:
                   description: |
                     One of the possible log topics.
                   type: string
-                ldap:
-                  description: |
-                    One of the possible log topics (_Enterprise Edition only_).
-                  type: string
                 libiresearch:
                   description: |
                     One of the possible log topics.

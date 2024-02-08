@@ -160,7 +160,6 @@ there are a few key differences:
 - Foxx services are not allowed to call out to the internet by default for
   security reasons, but can be enabled on request.
   Incoming calls to Foxx services are fully supported.
-- LDAP authentication is not supported.
 - Datacenter-to-Datacenter Replication (DC2DC) is not yet available in a
   managed form.
 

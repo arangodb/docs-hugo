@@ -12,6 +12,7 @@ aliases:
   - ../deploy/active-failover/manual-start
   - ../deploy/active-failover/administration
   - ../deploy/active-failover
+  - ../components/arangodb-server/ldap
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -32,6 +33,10 @@ detailed information about breaking changes before upgrading.
   single servers for automatic failover is no longer supported from v3.12 onward.
   You can use [cluster deployments](../deploy/cluster/_index.md) instead, which
   offer better resilience and synchronous replication.
+
+- **LDAP authentication**:
+  ArangoDB user authentication with an LDAP server in the Enterprise Edition is
+  no longer available starting with v3.12.
 
 - **Standalone Agency and Agency HTTP API**:
   The Standalone Agency deployment mode and the corresponding Agency HTTP API
