@@ -2575,7 +2575,7 @@ When no writes are happening, allowing reading from followers is generally safe.
 
 The following APIs support reading from followers:
 
-- Single document reads (`GET /_api/document`)
+- Single document reads (`GET /_api/document` and `HEAD /_api/document`)
 - Batch document reads (`PUT /_api/document?onlyget=true`)
 - Read-only AQL queries (`POST /_api/cursor`)
 - The edge API (`GET /_api/edges`)
