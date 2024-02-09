@@ -192,11 +192,12 @@ a new `multi_delimiter` Analyzer that accepts an array of strings in a
 
 Collections that are sharded like another collection via the `distributeShardsLike`
 property use the `replicationFactor`, `numberOfShards`, and `shardingStrategy`
-properties of the prototype collection. You can independently set a `writeConcern`,
-but this property couldn't be changed after the collection creation if
-`distributeShardsLike` was used. Now, you can adjust the `writeConcern` later on.
-It still defaults to the `writeConcern` of the prototype collection if you don't
-specify it explicitly.
+properties of the prototype collection. In previous versions, the `writeConcern`
+property of the prototype collection was used as well. Now, you can independently
+set a `writeConcern` when creating a collection with `distributeShardsLike`.
+The property defaults to the `writeConcern` of the prototype collection if you
+don't specify it explicitly. You can adjust the `writeConcern` later on in
+either case.
 
 ### Privilege changes
 

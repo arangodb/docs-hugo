@@ -288,8 +288,14 @@ paths:
                       in the cluster, a shard refuses to write. Writes to shards with enough
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
+
+                      If `distributeShardsLike` is set, the `writeConcern`
+                      is that of the prototype collection.
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
-                      equal the number of DB-Servers and has a value of `0`. _(cluster only)_
+                      equal the number of DB-Servers and has a value of `0`.
+                      Otherwise, the default value is controlled by the current database's
+                      default `writeConcern`, which uses the `--cluster.write-concern`
+                      startup option as default, which defaults to `1`. _(cluster only)_
                     type: integer
                   shardingStrategy:
                     description: |
@@ -306,7 +312,7 @@ paths:
                   distributeShardsLike:
                     description: |
                       The name of another collection. This collection uses the `replicationFactor`,
-                      `numberOfShards` and `shardingStrategy` properties of the other collection and
+                      `numberOfShards`, `shardingStrategy`, and `writeConcern` properties of the other collection and
                       the shards of this collection are distributed in the same way as the shards of
                       the other collection.
                     type: string
@@ -1172,8 +1178,14 @@ paths:
                     in the cluster, a shard refuses to write. Writes to shards with enough
                     up-to-date copies succeed at the same time, however. The value of
                     `writeConcern` cannot be greater than `replicationFactor`.
+
+                    If `distributeShardsLike` is set, the `writeConcern`
+                    is that of the prototype collection.
                     For SatelliteCollections, the `writeConcern` is automatically controlled to
-                    equal the number of DB-Servers and has a value of `0`. _(cluster only)_
+                    equal the number of DB-Servers and has a value of `0`.
+                    Otherwise, the default value is controlled by the current database's
+                    default `writeConcern`, which uses the `--cluster.write-concern`
+                    startup option as default, which defaults to `1`. _(cluster only)_
                   type: integer
                 shardingStrategy:
                   description: |
@@ -1209,7 +1221,7 @@ paths:
                 distributeShardsLike:
                   description: |
                     The name of another collection. If this property is set in a cluster, the
-                    collection copies the `replicationFactor`, `numberOfShards` and `shardingStrategy`
+                    collection copies the `replicationFactor`, `numberOfShards`, `shardingStrategy`, and `writeConcern`
                     properties from the specified collection (referred to as the _prototype collection_)
                     and distributes the shards of this collection in the same way as the shards of
                     the other collection. In an Enterprise Edition cluster, this data co-location is
@@ -1427,8 +1439,14 @@ paths:
                       in the cluster, a shard refuses to write. Writes to shards with enough
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
+
+                      If `distributeShardsLike` is set, the `writeConcern`
+                      is that of the prototype collection.
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
-                      equal the number of DB-Servers and has a value of `0`. _(cluster only)_
+                      equal the number of DB-Servers and has a value of `0`.
+                      Otherwise, the default value is controlled by the current database's
+                      default `writeConcern`, which uses the `--cluster.write-concern`
+                      startup option as default, which defaults to `1`. _(cluster only)_
                     type: integer
                   shardingStrategy:
                     description: |
@@ -1445,7 +1463,7 @@ paths:
                   distributeShardsLike:
                     description: |
                       The name of another collection. This collection uses the `replicationFactor`,
-                      `numberOfShards` and `shardingStrategy` properties of the other collection and
+                      `numberOfShards`, `shardingStrategy`, and `writeConcern` properties of the other collection and
                       the shards of this collection are distributed in the same way as the shards of
                       the other collection.
                     type: string
@@ -2104,8 +2122,14 @@ paths:
                     in the cluster, a shard refuses to write. Writes to shards with enough
                     up-to-date copies succeed at the same time, however. The value of
                     `writeConcern` cannot be greater than `replicationFactor`.
+
+                    If `distributeShardsLike` is set, the `writeConcern`
+                    is that of the prototype collection.
                     For SatelliteCollections, the `writeConcern` is automatically controlled to
-                    equal the number of DB-Servers and has a value of `0`. _(cluster only)_
+                    equal the number of DB-Servers and has a value of `0`.
+                    Otherwise, the default value is controlled by the current database's
+                    default `writeConcern`, which uses the `--cluster.write-concern`
+                    startup option as default, which defaults to `1`. _(cluster only)_
                   type: integer
       responses:
         '400':
