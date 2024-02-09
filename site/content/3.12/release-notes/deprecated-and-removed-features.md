@@ -35,9 +35,9 @@ detailed information about breaking changes before upgrading.
 
 - **VelocyStream protocol**:
   ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is no
-  longer supported. VelocyPack remains as the internally used binary storage
-  format and you can continue to use it in transport over the HTTP protocol, as
-  well as use JSON over the HTTP protocol.
+  longer supported. VelocyPack remains as ArangoDB's binary storage format and
+  you can continue to use it in transport over the HTTP protocol, as well as use
+  JSON over the HTTP protocol.
 
 - **Standalone Agency and Agency HTTP API**:
   The Standalone Agency deployment mode and the corresponding Agency HTTP API
