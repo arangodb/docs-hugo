@@ -284,12 +284,13 @@ discouraged. The `zkd` alias may get removed in a future version.
 
 An additional `mdi-prefixed` index variant has been added. This is a new index
 type in the API with the same settings as the `mdi` index but with one additional
-`prefixFields` attribute. It is a required setting and accepts an array of strings
-similar to the `fields` attribute.
+`prefixFields` attribute. It is a required setting for the `mdi-prefixed` index
+type and accepts an array of strings similar to the `fields` attribute. You can
+use it to narrow down the search space using equality checks.
 
-Both multi-dimensional index variants now support a `sparse` (boolean) and
-`storedValues` (array of strings) setting that were not supported by the `zkd`
-index in previous versions.
+Both multi-dimensional index variants now support a `sparse` setting (boolean)
+and `storedValues` setting (array of strings) that were not supported by the
+`zkd` index type in previous versions.
 
 See [Working with multi-dimensional indexes](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md)
 for details.

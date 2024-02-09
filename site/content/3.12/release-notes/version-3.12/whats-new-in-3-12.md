@@ -362,9 +362,9 @@ The previously experimental `zkd` index is now stable and has been renamed to
 
 Multi-dimensional indexes can now be declared as `sparse` to exclude documents
 from the index that do not have the defined attributes or are explicitly set to
-`null` values. If a non-value is set, it still needs to be numeric.
+`null` values. If a value other than `null` is set, it still needs to be numeric.
 
-Multi-dimensional indexes now support stored values to cover queries for better
+Multi-dimensional indexes now support `storedValues` to cover queries for better
 performance.
 
 An additional `mdi-prefixed` index variant has been added that lets you specify

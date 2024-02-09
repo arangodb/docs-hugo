@@ -7,11 +7,40 @@ description: >-
   such as time ranges, for efficient intersection of multiple range queries
 archetype: default
 ---
-The multi-dimensional index type was previously called `"zkd"`.
+A multi-dimensional index maps multi-dimensional data in the form of multiple
+numeric attributes to one dimension while mostly preserving locality so that
+similar values in all of the dimensions remain close to each other in the mapping
+to a single dimension. Queries that filter by multiple value ranges at once can
+be better accelerated with such an index compared to a persistent index.
 
-A multi-dimensional index is setup by setting the index type to `"mdi"`.
-The `fields` attribute describes which fields are used as dimensions.
-The value of each dimension has to be a numeric (double) value.
+You can choose between two subtypes of multi-dimensional indexes:
+
+- An `mdi` index with a `fields` property that describes which document
+  attributes to use as dimensions
+- An `mdi-prefixed` index with a `fields` property as well as a `prefixFields`
+  property to specify one or more mandatory document attributes to narrow down
+  the search space using equality checks
+
+Both subtypes require that the attributes described by `fields` have numeric
+values. You can optionally omit documents from the index that have any of
+the `fields` or `prefixFields` attributes not set or set to `null` by declaring
+the index as `sparse`.
+
+Multi-dimensional indexes can be declared as `unique` to only allow a single
+document with a given combination of attribute values, using all of the `prefix`
+attributes and (for `mdi-prefixed` indexes) `prefixFields`. Documents omitted
+because of `sparse: true` are exempt.
+
+You can store additional attributes in multi-dimensional indexes with the
+`storedValues` property. They can be used for projections (unlike the `fields`
+attributes) so that indexes can cover more queries without having to access the
+full documents.
+
+`estimates`
+
+{{< info >}}
+The `mdi` index type was previously called `zkd`.
+{{< /info >}}
 
 ## Querying documents within a 3D box
 
@@ -35,10 +64,10 @@ db.collection.ensureIndex({
 });
 ```
 
-Unlike for other indexes the order of the fields does not matter.
+Unlike with other indexes, the order of the `fields` does not matter.
 
-`fieldValueTypes` is required and the only allowed value is `"double"`.
-Future extensions of the index will allow other types.
+`fieldValueTypes` is required and the only allowed value is `"double"` to use a
+double-precision (64-bit) floating-point format internally.
 
 Now we can use the index in a query:
 
@@ -124,6 +153,61 @@ FOR app IN appointments
     RETURN app
 ```
 
+## Prefix fields
+
+
+
+## Storing additional values in indexes
+
+<small>Introduced in: v3.10.0</small>
+
+Multi-dimensional indexes allow you to store additional attributes in the index
+that can be used to satisfy projections of the document. They cannot be used for
+index lookups or for sorting, but for projections only. They allow multi-dimensional
+indexes to fully cover more queries and avoid extra document lookups. This can
+have a great positive effect on index scan performance if the number of scanned
+index entries is large.
+
+You can set the `storedValues` option and specify the additional attributes as
+an array of attribute paths when creating a new `mdi` or `mdi-prefixed` index,
+similar to the `fields` option:
+
+```js
+db.<collection>.ensureIndex({
+  type: "mdi",
+  fields: ["value1"],
+  storedValues: ["value1", "value2"]
+});
+```
+<!-- TODO -->
+This will index the `value1` attribute in the traditional sense, so that the index 
+can be used for looking up by `value1` or for sorting by `value1`. The index also
+supports projections on `value1` as usual.
+
+In addition, due to `storedValues` being used here, the index can now also 
+supply the values for the `value2` attribute for projections without having to
+look up the full document. Non-existing attributes are stored as `null` values.
+
+Attributes in `storedValues` cannot overlap with the attributes specified in
+`prefixFields` but you can have the attributes in both `storedValues` and
+`fields` as the attributes in `fields` cannot be used for projections to
+cover queries because the indexed data is different to the attribute values.
+
+The maximum number of attributes that you can use in `storedValues` is 32.
+You cannot specify the same attribute path in both, the `fields` and the
+`storedValues` option. If there is an overlap, the index creation will abort
+with an error message.
+
+In unique indexes, only the index attributes in `fields` and (for `mdi-prefixed`
+indexes) `prefixFields` are checked for uniqueness. The index attributes in
+`storedValues` are not checked for their uniqueness.
+
+You cannot create multiple multi-dimensional indexes with the same `fields`
+attributes but different `storedValues` settings. That means the value of
+`storedValues` is not considered by calls to `ensureIndex()` when checking if an
+index is already present or needs to be created.
+
+
 ## Lookahead Index Hint
 
 <small>Introduced in: v3.10.0</small>
@@ -146,8 +230,6 @@ FOR app IN appointments OPTIONS { lookahead: 32 }
 ```
 
 ## Limitations
-
-Currently there are a few limitations:
 
 - Using array expansions for attributes is not possible (e.g. `array[*].attr`)
 - You can only index numeric values that are representable as IEEE-754 double.
