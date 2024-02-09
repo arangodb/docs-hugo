@@ -401,7 +401,7 @@ Also see [What's New in 3.3](../../release-notes/version-3.3/whats-new-in-3-3.md
 
 **Enterprise Edition**
 
-- [**LDAP integration**](../../components/arangodb-server/ldap.md): Users and permissions
+- **LDAP integration**: Users and permissions
   can be managed from outside ArangoDB with an LDAP server in different
   authentication configurations.
 
