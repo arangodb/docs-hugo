@@ -462,6 +462,36 @@ db._query(`FOR doc IN imdb_vertices OPTIONS { indexHint: "inv-ci", forceIndexHin
   RETURN doc.title`);
 ```
 
+Accelerate wildcard searches by indexing with the `wildcard` Analyzer, for example,
+match movie descriptions that end with `AY!` case-insensitively by taking the
+search string and applying a `norm` Analyzer that matches the one of a
+`wildcard` Analyzer (both normalizing to lowercase), and then using the `LIKE`
+operator to perform a wildcard search:
+
+```js
+var analyzers = require("@arangodb/analyzers");
+
+var wildcardNormAnalyzer = analyzers.save("wildcard_norm", "wildcard", {
+  ngramSize: 3, analyzer: {
+    type: "norm", properties: { locale: "en", accent: false, case: "lower" }
+  } }, ["frequency", "norm"]);
+
+var matchingNormAnalyzer = analyzers.save("only_norm", "norm", {
+  locale: "en", accent: false, case: "lower" });
+
+db.imdb_vertices.ensureIndex({ name: "inv-wildcard", type: "inverted", fields: [
+  { name: "description", analyzer: "wildcard_norm" }
+] });
+
+db._query(`
+  LET search = "%AY!"
+  LET searchNormalized = TOKENS(search, "only_norm")[0]
+  FOR doc IN imdb_vertices OPTIONS { indexHint: "inv-wildcard", forceIndexHint: true }
+    FILTER doc.description LIKE searchNormalized
+    RETURN doc.description
+`);
+```
+
 ### Full-text token search
 
 Search for movies with both `dinosaur` and `park` in their description:
