@@ -366,7 +366,9 @@ Users of the `/_api/traversal` REST API should use
 
 #### Pregel API
 
-The HTTP API for Pregel has been removed in v3.12.0 and is no longer supported.
+The `/_api/control_pregel/*` endpoints have been removed in v3.12.0 as Pregel
+graph processing is no longer supported. The `arangodb_pregel_*` metrics and the
+`pregel` log topic have been removed as well from the respective endpoints.
 
 ## JavaScript API
 

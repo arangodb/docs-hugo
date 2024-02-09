@@ -53,23 +53,11 @@ detailed information about breaking changes before upgrading.
 
 - **Pregel**:
 
-  The distributed iterative graph processing (Pregel) system has been deprecated
-  and fully removed in v3.12, including all Pregel graph algorithms, the
-  `PREGEL_RESULT()` AQL function, the `@arangodb/pregel` JavaScript API module,
-  and the Pregel HTTP API (`/_api/control_pregel/*`).
-
-  In 3.11, the following features had been deprecated or removed from Pregel:
-
-  - The experimental _Custom Pregel_ feature, also known as
-    _programmable Pregel algorithms_ (PPA), has been removed.
-
-  - The built-in _DMID_ Pregel algorithm has been deprecated and will be removed
-    in a future release.
-
-  - The `async` option for Pregel jobs has been removed.
-
-  - The `useMemoryMaps` option for Pregel jobs to use memory-mapped files as a
-    backing storage for large datasets has been removed.
+  The distributed iterative graph processing (Pregel) system is no longer supported
+  from v3.12 onward. All Pregel graph algorithms, the Pregel JavaScript API and
+  HTTP API, and everything else related to Pregel has been removed.
+  All other graph features including AQL graph traversals and path finding
+  algorithms are unaffected.
 
 - **Leader/Follower Deployment Mode**:
   The Leader/Follower deployment mode is deprecated and already removed from
