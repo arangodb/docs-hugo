@@ -1,10 +1,12 @@
 ---
-title: GraphML
-menuTitle: GraphML
+title: ArangoGraphML
+menuTitle: ArangoGraphML
 weight: 125
 description: >-
-  Enterprise-ready, graph-powered machine learning as a cloud service
+  Enterprise-ready, graph-powered machine learning as a cloud service or self-managed
 archetype: chapter
+aliases:
+  - graphml
 ---
 Traditional machine learning overlooks the connections and relationships
 between data points, which is where graph machine learning excels. However,
@@ -12,12 +14,6 @@ accessibility to GraphML has been limited to sizable enterprises equipped with
 specialized teams of data scientists. ArangoGraphML, on the other hand,
 simplifies the utilization of GraphML, enabling a broader range of personas to
 extract profound insights from their data.
-
-{{< tip >}}
-To get access to ArangoGraphML services and packages,
-[get in touch](https://www.arangodb.com/contact/)
-with the ArangoDB team.
-{{< /tip >}}
 
 ## How GraphML works
 
@@ -42,35 +38,13 @@ learned patterns and relationships within the graph.
 ![GraphML Workflow](../../../images/GraphML-How-it-works.webp)
 
 It is no longer necessary to understand the complexities involved with graph
-machine learning, thanks to the accessibility of the ArangoGraphML platform.
-Solutions with the ArangoGraphML platform only require input from a user about
-their data, and the ArangoGraphML managed services handle the rest.
+machine learning, thanks to the accessibility of the ArangoML package.
+Solutions with ArangoGraphML only require input from a user about
+their data, and the ArangoGraphML managed service handles the rest.
 
 The platform comes preloaded with all the tools needed to prepare your graph
 for machine learning, high-accuracy training, and persisting predictions back
-to the database for application use. 
-
-## ArangoGraphML
-
-ArangoGraphML provides enterprise-ready graph-powered machine learning as a
-cloud service via Jupyter Notebooks that run on the
-[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
-
-ArangoGraphML uses GraphML techniques that focus on solving different problems
-and, at the same time, provides actionable insights leveraging ArangoDB's graph
-data model.
-
-- **Accessible at all levels**
-  - Low code UI
-  - Notebooks
-  - APIs
-- **Full usability**
-  - MLOps lifecycle
-  - Metrics
-  - Metadata capture
-  - Model management
-
-![ArangoGraphML Pipeline](../../../images/ArangoGraphML_Pipeline.png)
+to the database for application use.
 
 ### Classification
 
@@ -140,26 +114,3 @@ which houses all this information. Since the data lives with the deployment,
 it benefits from the ArangoGraph SOC 2 compliance and Enterprise security features.
 All ArangoGraphML services live alongside the ArangoGraph deployment and are only
 accessible within that organization.
-
-## Getting Started with ArangoGraphML Services and Packages
-
-ArangoGraphML is a suite of services and packages driven by what we call
-"specifications". These specifications are standard Python dictionaries and
-empower users to define tasks concisely and repeatable.
-
-[Notebooks](../../arangograph/notebooks.md) that have the ArangoGraphML services
-enabled come preloaded with valuable data science and ML packages, and most
-notably, the server includes the `arangoml` package, which provides access
-to all of the ArangoGraphML specific features.
-
-The package allows for managing all of the necessary ArangoGraphML components, including:
-- **Project Management**: Projects are at the top level, and all activities must
-  link to a project.
-- **Feature Generation**: Data must be featurized to work with Graph Neural Networks
-  (GNNs), and the featurization package handles this.
-- **Training**: Start training data with a simple description of the problem and
-  the data used to solve it. Jobs can be started, tracked, or cancelled using
-  the `arangoml` package.
-- **Predictions**: Once a trained model exists, it is time to persist it.
-  The prediction service generates predictions and persists them to the source
-  graph in a new collection or within the source document.
