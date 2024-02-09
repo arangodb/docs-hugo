@@ -53,6 +53,18 @@ for details.
 
 ## Analyzers
 
+### `wildcard` Analyzer
+
+You can use the new `wildcard` Analyzer in combination with an inverted index or
+View to accelerate wildcard searches, especially if you want to find non-prefix
+partial matches in long strings.
+
+The Analyzer can apply another Analyzer of your choice before creating _n_-grams
+that are then used in `LIKE` searches with `_` and `%` wildcards.
+
+See [Transforming data with Analyzers](../../index-and-search/analyzers.md#wildcard)
+for details.
+
 ### `multi_delimiter` Analyzer
 
 The new `multi_delimiter` Analyzer type accepts an array of strings to define
@@ -668,6 +680,12 @@ As it is unclear if and when a client will fetch any remaining data from a
 cursor, every cursor has a server-side timeout value (TTL) after which it is
 considered inactive and garbage-collected.
 
+### Per-collection compaction in cluster
+
+The `PUT /_api/collection/{collection-name}/compact` endpoint of the HTTP API
+can now be used to start the compaction for a specific collection in cluster
+deployments. This feature was previously available for single servers only.
+
 ### RocksDB .sst file partitioning (experimental)
 
 The following experimental startup options for RockDB .sst file partitioning
@@ -718,10 +736,18 @@ The following startup options have been added:
 
 - `--cache.max-spare-memory-usage`: the maximum memory usage for spare tables
   in the in-memory cache.
+
 - `--cache.high-water-multiplier`: controls the cache's effective memory usage
   limit. The user-defined memory limit (i.e. `--cache.size`) is multiplied with
   this value to create the effective memory limit, from which on the cache tries
-  to free up memory by evicting the oldest entries.
+  to free up memory by evicting the oldest entries. The default value is `0.56`,
+  matching the previously hardcoded 56% for the cache subsystem.
+
+  You can increase the multiplier to make the cache subsystem use more memory, but
+  this may overcommit memory because the cache memory reclamation procedure is
+  asynchronous and can run in parallel to other tasks that insert new data.
+  In case a deployment's memory usage is already close to the maximum, increasing
+  the multiplier can lead to out-of-memory (OOM) kills.
 
 The following metrics have been added:
 

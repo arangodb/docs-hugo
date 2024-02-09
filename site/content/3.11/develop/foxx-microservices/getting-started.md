@@ -109,7 +109,7 @@ otherwise check out the chapter on [routes](reference/routers/endpoints.md).
 
 The object returned by the router's methods provides additional methods to
 attach metadata and validation to the route. We're using `summary` and
-`description` to document what the route does -- these aren't strictly
+`description` to document what the route does – these aren't strictly
 necessary but give us some nice auto-generated documentation.
 The `response` method lets us additionally document the response content
 type and what the response body will represent.
