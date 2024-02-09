@@ -31,6 +31,8 @@ Enterprise Edition has been removed.
   will be fully removed in a future version
 - The `ldap` log topic is no longer available and specifying it in the
   `--log.level` startup option raises a warning
+- The `ERROR_LDAP_*` error codes with the numbers in the range from `1800`
+  through `1820` have been removed
 
 ## Little-endian on-disk key format for the RocksDB storage engine
 
