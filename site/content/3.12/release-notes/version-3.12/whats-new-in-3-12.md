@@ -877,10 +877,10 @@ The following startup options have been added to optionally compress relevant
 cluster-internal traffic:
 - `--network.compression-method`: The compression method used for cluster-internal
   requests.
-- `--network.compress-request-threshold`: The HTTP request body from which on
+- `--network.compress-request-threshold`: The HTTP request body size from which on
   cluster-internal requests are transparently compressed.
 
-If the `--network.compression-method` startup option is set to `none`, then no
+If the `--network.compression-method` startup option is set to `none` (default), then no
 compression is performed. To enable compression for cluster-internal requests,
 you can set this option to either `deflate`, `gzip`, `lz4`, or `auto`.
 
@@ -901,6 +901,9 @@ compared against the threshold value, and compression happens if the
 uncompressed request body size exceeds the threshold value.
 The threshold can thus be used to avoid futile compression attempts for too
 small requests.
+
+Compression for all Agency traffic is disabled regardless of the settings
+of these options.
 
 ## Client tools
 
