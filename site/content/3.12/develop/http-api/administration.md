@@ -1387,7 +1387,7 @@ paths:
                     type: string
                   protocol:
                     description: |
-                      The transport protocol, one of `"http"`, `"https"`, `"velocystream"`
+                      The transport protocol, one of `"http"`, `"https"`
                     type: string
                   portType:
                     description: |

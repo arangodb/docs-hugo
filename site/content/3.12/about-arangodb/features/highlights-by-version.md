@@ -426,8 +426,7 @@ Also see [What's New in 3.2](../../release-notes/version-3.2/whats-new-in-3-2.md
 
 - [**VelocyPack over HTTP**](https://www.arangodb.com/2016/10/updated-java-drivers-with-arangodb-3-1/):
   In addition to JSON, the binary storage format VelocyPack can now also be
-  used in transport over the HTTP protocol, as well as streamed using the new
-  bi-directional asynchronous binary protocol **VelocyStream**.
+  used in transport over the HTTP protocol.
 
 **Enterprise Edition**
 

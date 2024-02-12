@@ -62,6 +62,24 @@ It is not sufficient to take a hot backup of a little-endian deployment and
 restore it because when restoring a hot backup, the original database format is
 restored as it was at time of the backup.
 
+## VelocyStream protocol removed
+
+ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is no
+longer supported.
+
+The server immediately closes the connection if you attempt to use the
+VelocyStream protocol. If you specify any scheme starting with `vst` in the
+`--server.endpoint` startup option of a client tool, the HTTP protocol is used
+instead.
+
+The following metrics related to VelocyStream have been removed:
+- `arangodb_request_body_size_vst`
+- `arangodb_vst_connections_total`
+
+VelocyPack remains as ArangoDB's binary storage format and you can continue to
+use it in transport over the HTTP protocol, as well as use JSON over the
+HTTP protocol.
+
 ## Control character escaping in audit log
 
 The audit log feature of the Enterprise Edition previously logged query strings
