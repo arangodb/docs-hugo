@@ -37,7 +37,6 @@ For a full list of tools, please refer to the [Programs & Tools](../../component
 ## Deployment Administration
 
 - [Cluster](../../deploy/cluster/administration.md)
-- [Datacenter-to-Datacenter Replication](../../deploy/arangosync/administration.md)
 - [ArangoDB Starter Administration](arangodb-starter/_index.md)
 
 ## Other Topics

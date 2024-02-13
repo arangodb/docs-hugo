@@ -100,9 +100,6 @@ features outlined below. For additional information, see
 
 ## Security
 
-- [**DC2DC**](../../deploy/arangosync/_index.md):
-  Datacenter-to-Datacenter Replication for disaster recovery.
-
 - [**Auditing**](../../operations/security/audit-logging.md):
   Audit logs of all server interactions.
 

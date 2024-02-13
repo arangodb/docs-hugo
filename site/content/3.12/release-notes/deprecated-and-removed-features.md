@@ -12,6 +12,17 @@ aliases:
   - ../deploy/active-failover/manual-start
   - ../deploy/active-failover/administration
   - ../deploy/active-failover
+  - ../deploy/arangosync
+  - ../deploy/arangosync/deployment
+  - ../deploy/arangosync/deployment/arangodb-cluster
+  - ../deploy/arangosync/deployment/arangosync-master
+  - ../deploy/arangosync/deployment/arangosync-workers
+  - ../deploy/arangosync/deployment/prometheus-and-grafana
+  - ../deploy/arangosync/administration
+  - ../deploy/arangosync/operations-and-maintenance
+  - ../deploy/arangosync/security
+  - ../deploy/arangosync/monitoring
+  - ../deploy/arangosync/troubleshooting
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -32,6 +43,10 @@ detailed information about breaking changes before upgrading.
   single servers for automatic failover is no longer supported from v3.12 onward.
   You can use [cluster deployments](../deploy/cluster/_index.md) instead, which
   offer better resilience and synchronous replication.
+
+- **Datacenter-to-Datacenter Replication (DC2DC)**:
+  The Datacenter-to-Datacenter Replication for cluster deployments is no longer
+  supported from v3.12 onward.
 
 - **VelocyStream protocol**:
   ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is no

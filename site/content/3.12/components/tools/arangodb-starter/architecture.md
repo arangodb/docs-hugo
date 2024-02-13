@@ -12,7 +12,7 @@ archetype: default
 The ArangoDB Starter is a program used to create ArangoDB database deployments
 on bare-metal (or virtual machines) with ease.
 It enables you to create everything from a simple Single server instance
-to a full blown Cluster with Datacenter-to-Datacenter Replication in under 5 minutes.
+to a full blown Cluster in under 5 minutes.
 
 The Starter is intended to be used in environments where there is no higher
 level orchestration system (e.g. Kubernetes) available.

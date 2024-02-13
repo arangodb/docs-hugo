@@ -31,7 +31,7 @@ Creating backups of your data before an ArangoDB upgrade is also a best practice
 
 {{< warning >}}
 Making use of a high availability deployment modes of ArangoDB
-(Cluster, Datacenter-to-Datacenter Replication) does not remove the need of
+does not remove the need of
 taking frequent backups, which are recommended also when using such deployment modes.
 {{< /warning >}}
 

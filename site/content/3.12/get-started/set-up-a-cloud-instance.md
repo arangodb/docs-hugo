@@ -161,7 +161,5 @@ there are a few key differences:
   security reasons, but can be enabled on request.
   Incoming calls to Foxx services are fully supported.
 - LDAP authentication is not supported.
-- Datacenter-to-Datacenter Replication (DC2DC) is not yet available in a
-  managed form.
 
 For more information, see the [comparison between on-premises editions and the managed cloud service](https://www.arangodb.com/subscriptions/).

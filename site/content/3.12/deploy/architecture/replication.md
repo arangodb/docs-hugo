@@ -14,7 +14,7 @@ offers.
 ArangoDB offers **synchronous** and **asynchronous** replication.
 
 - Synchronous replication is used between the _DB-Servers_ of an ArangoDB Cluster.
-- Asynchronous replication is used between multiple ArangoDB [Data Centers](../arangosync/deployment/_index.md)
+- Asynchronous replication is used between multiple ArangoDB Data Centers
   (inside the same Data Center, replication is synchronous).
 
 ## Synchronous replication

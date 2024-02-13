@@ -233,42 +233,6 @@ Example:
 arangodb --envs.all.ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY=2G --envs.coordinators.ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY=4G --envs.dbservers.ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY=8G ...
 ```
 
-## Datacenter-to-Datacenter Replication options
-
-- `--starter.sync=bool`
-
-If set, the Starter also starts `arangosync` instances.
-
-- `--sync.start-master=bool`
-
-Should an ArangoSync master instance be started (only relevant if `--starter.sync`
-is enabled, defaults to `true`)
-
-- `--sync.start-worker=bool`
-
-Should an ArangoSync worker instance be started (only relevant if `--starter.sync`
-is enabled, defaults to `true`)
-
-- `--sync.monitoring.token=<token>`
-
-Bearer token used to access ArangoSync monitoring endpoints.
-
-- `--sync.master.jwt-secret=<secret>`
-
-Path of file containing JWT secret used to access the Sync Master (from Sync Worker).
-
-- `--sync.mq.type=<message queue type>`
-
-Type of message queue used by the Sync Master (defaults to "direct").
-
-- `--sync.server.keyfile=<path of keyfile>`
-
-TLS keyfile of local sync master.
-
-- `--sync.server.client-cafile=<path of CA certificate>`
-
-CA Certificate used for client certificate verification.
-
 ## Miscellaneous options
 
 - `--version`
