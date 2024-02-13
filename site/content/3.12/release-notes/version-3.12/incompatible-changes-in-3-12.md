@@ -19,6 +19,11 @@ offer better resilience and synchronous replication. Also see the
 See [Single instance vs. Cluster deployments](../../deploy/single-instance-vs-cluster.md)
 for details about how a cluster deployment differs and how to migrate to it.
 
+## Datacenter-to-Datacenter Replication (DC2DC)
+
+The _Datacenter-to-Datacenter Replication_ (DC2DC) for clusters including the
+_arangosync_ tool is no longer supported from v3.12 onward.
+
 ## Little-endian on-disk key format for the RocksDB storage engine
 
 ArangoDB 3.12 does not support the little-endian on-disk key for the RocksDB
