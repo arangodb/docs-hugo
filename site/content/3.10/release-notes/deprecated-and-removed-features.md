@@ -5,6 +5,8 @@ weight: 100
 description: >-
   Features listed in this section should no longer be used, because they are considered obsolete and may get removed in a future release
 archetype: default
+aliases:
+  - ../arangograph/migrate-to-the-cloud
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -19,6 +21,10 @@ This page only lists significant obsolete features but not minor API changes.
 See the [Release notes](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
+
+- **Cloud Migration Tool**:
+  The `arangosync-migration` tool to move from on-premises to the cloud is not
+  available anymore.
 
 - **Leader/Follower Deployment Mode**:
   The Leader/Follower deployment mode is deprecated and already removed from
