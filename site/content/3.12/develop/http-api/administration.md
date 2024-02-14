@@ -1134,7 +1134,6 @@ paths:
 
              - AQL cursors (in particular streaming cursors)
              - Transactions (in particular stream transactions)
-             - Pregel runs (conducted by this Coordinator)
              - Ongoing asynchronous requests (using the `x-arango-async: store` HTTP header)
              - Finished asynchronous requests, whose result has not yet been
                collected
@@ -1166,7 +1165,6 @@ paths:
 
          - AQL cursors (in particular streaming cursors)
          - Transactions (in particular stream transactions)
-         - Pregel runs (conducted by this Coordinator)
          - Ongoing asynchronous requests (using the `x-arango-async: store` HTTP header)
          - Finished asynchronous requests, whose result has not yet been
            collected
@@ -1190,7 +1188,6 @@ paths:
                   - transactions
                   - pendingJobs
                   - doneJobs
-                  - pregelConductors
                   - lowPrioOngoingRequests
                   - lowPrioQueuedRequests
                   - allClear
@@ -1214,10 +1211,6 @@ paths:
                   doneJobs:
                     description: |
                       Number of finished asynchronous requests, whose result has not yet been collected.
-                    type: number
-                  pregelConductors:
-                    description: |
-                      Number of ongoing Pregel jobs.
                     type: number
                   lowPrioOngoingRequests:
                     description: |
@@ -1387,7 +1380,7 @@ paths:
                     type: string
                   protocol:
                     description: |
-                      The transport protocol, one of `"http"`, `"https"`, `"velocystream"`
+                      The transport protocol, one of `"http"`, `"https"`
                     type: string
                   portType:
                     description: |

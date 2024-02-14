@@ -154,6 +154,18 @@ The new tabular format includes the following features:
   such as name, date, or size. This functionality provides a flexible way to
   organize and view your data.
 
+### Options & optimizer rules management in the Query Editor
+
+You can now specify extra options for your queries via the query editor.
+You can find all available options in the new **Options** tab in the
+right-hand pane of the editor view, positioned alongside the **Bind Variables**
+tab.
+
+In the new **Options** tab, you also have access to the
+[optimizer rules](../../aql/execution-and-performance/query-optimization.md#optimizer-rules).
+This section allows you to selectively disable multiple optimizer rules, giving
+you more control over query optimization according to your specific requirements.
+
 ### Swagger UI
 
 The interactive tool for exploring HTTP APIs has been updated to version 5.4.1.
@@ -442,9 +454,6 @@ capacity left for the extra compression/decompression work.
 
 Furthermore, requests and responses should only be compressed when they exceed a
 certain minimum size, e.g. 250 bytes.
-
-Request and response compression is only supported for responses that use the
-HTTP/1.1 or HTTP/2 protocol, and not when using the VelocyStream (VST) protocol.
 {{< /info >}}
 
 ### LZ4 compression for values in the in-memory edge cache
