@@ -12,6 +12,7 @@ aliases:
   - ../deploy/active-failover/manual-start
   - ../deploy/active-failover/administration
   - ../deploy/active-failover
+  - ../arangograph/migrate-to-the-cloud
   - ../data-science/pregel
   - ../data-science/pregel/algorithms
   - ../develop/http-api/pregel
@@ -64,6 +65,10 @@ detailed information about breaking changes before upgrading.
   HTTP API, and everything else related to Pregel has been removed.
   All other graph features including AQL graph traversals and path finding
   algorithms are unaffected.
+
+- **Cloud Migration Tool**:
+  The `arangosync-migration` tool to move from on-premises to the cloud is not
+  available anymore.
 
 - **Leader/Follower Deployment Mode**:
   The Leader/Follower deployment mode is deprecated and already removed from

@@ -5,6 +5,7 @@ weight: 30
 description: >-
   Migrating data from bare metal servers to the cloud with minimal downtime
 archetype: default
+draft: true
 ---
 The `arangosync-migration` tool allows you to easily move from on-premises to
 the cloud while ensuring a smooth transition with minimal downtime.
