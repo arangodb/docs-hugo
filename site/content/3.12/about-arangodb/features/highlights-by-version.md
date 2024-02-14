@@ -388,7 +388,7 @@ Also see [What's New in 3.3](../../release-notes/version-3.3/whats-new-in-3-3.md
   as much data in ArangoDB as you can fit on your disk. Plus, you can enjoy
   performance boosts on writes by having only document-level locks.
 
-- [**Pregel**](../../data-science/pregel/_index.md):
+- **Pregel**
   We implemented distributed graph processing with Pregel to discover hidden
   patterns, identify communities and perform in-depth analytics of large graph
   data sets.

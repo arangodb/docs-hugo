@@ -1159,12 +1159,8 @@ const historyStatus = pregel.history(execution);
 pregel.removeHistory();
 ```
 
-See [Distributed Iterative Graph Processing (Pregel)](../../data-science/pregel/_index.md#get-persisted-execution-statistics)
-for details.
-
 You can also use the newly added HTTP endpoints with the
 `/_api/control_pregel/history` route.
-See [Pregel HTTP API](../../develop/http-api/pregel.md) for details.
 
 You can still use the old interfaces (the `pregel.status()` method as well as
 the `GET /_api/control_pregel` and `GET /_api/control_pregel/{id}` endpoints).

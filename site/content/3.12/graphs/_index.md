@@ -53,7 +53,7 @@ relationship in graph terms. These two types of graphs have different properties
 and different algorithms exist to analyze the data.
 
 {{< info >}}
-New to graphs? [**Take our free graph course for freshers**](https://www.arangodb.com/arangodb-graph-course/)
+New to graphs? [Take our free graph course for freshers](https://www.arangodb.com/arangodb-graph-course/)
 and get from zero knowledge to advanced query techniques.
 {{< /info >}}
 
@@ -129,18 +129,6 @@ In queries, you can define in which directions the edge relations may be followe
 - [All Shortest Paths](../aql/graphs/all-shortest-paths.md)
 - [k Shortest Paths](../aql/graphs/k-shortest-paths.md)
 - [k Paths](../aql/graphs/k-paths.md)
-- [Distributed Iterative Graph Processing (Pregel)](../data-science/pregel/_index.md)
-  - Page Rank
-  - Seeded Page Rank
-  - Single-Source Shortest Path (SSSP)
-  - Connected Components
-  - Weakly Connected Components (WCC)
-  - Strongly Connected Components (SCC)
-  - Hyperlink-Induced Topic Search (HITS)
-  - Effective Closeness Vertex Centrality
-  - LineRank Vertex Centrality
-  - Label Propagation Community Detection
-  - Speaker-Listener Label Propagation (SLPA) Community Detection
 
 ## Managed and unmanaged graphs
 
@@ -415,7 +403,7 @@ For example data that you can use for learning graphs, see
 {{% comment %}}
 ## Query graphs
 
-Explain traversal, pattern matching, shortest paths, pregel
+Explain traversal, pattern matching, shortest paths
 direction, depth, order, conditions, weights?
 combine with geo, search, ...
 {{% /comment %}}

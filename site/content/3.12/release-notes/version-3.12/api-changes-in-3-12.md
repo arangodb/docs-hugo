@@ -382,6 +382,12 @@ larger amounts of data and was thus very limited.
 Users of the `/_api/traversal` REST API should use
 [AQL traversal queries](../../aql/graphs/traversals.md) instead.
 
+#### Pregel API
+
+The `/_api/control_pregel/*` endpoints have been removed in v3.12.0 as Pregel
+graph processing is no longer supported. The `arangodb_pregel_*` metrics and the
+`pregel` log topic have been removed as well from the respective endpoints.
+
 ## JavaScript API
 
 ### Collection creation
@@ -405,3 +411,8 @@ not handle larger amounts of data and were thus very limited.
 
 Users of the JavaScript-based traversal API should use
 [AQL traversal queries](../../aql/graphs/traversals.md) instead.
+
+### `@arangodb/pregel` package
+
+The `@arangodb/pregel` JavaScript API package has been removed in v3.12.0 and
+will no longer be supported.

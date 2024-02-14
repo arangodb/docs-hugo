@@ -15,7 +15,7 @@ the search request as well.
 {{< info >}}
 If you want to try out fuzzy search with ArangoDB for yourself, then check out
 our interactive
-[**Fuzzy Search tutorial**](https://colab.research.google.com/github/arangodb/interactive_tutorials/blob/master/notebooks/FuzzySearch.ipynb).
+[Fuzzy Search tutorial](https://colab.research.google.com/github/arangodb/interactive_tutorials/blob/master/notebooks/FuzzySearch.ipynb).
 {{< /info >}}
 
 ## Similarity Measures

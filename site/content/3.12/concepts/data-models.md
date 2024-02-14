@@ -70,9 +70,8 @@ for every edge that you want to be able to follow in both directions.
 
 Aside from basic graph traversal, ArangoDB offers
 [graph algorithms](../graphs/_index.md#supported-graph-algorithms) to find one
-or multiple shortest paths between two vertices, can return a specified amount
-of paths between two vertices in order of increasing length, and supports
-distributed graph processing based on the Pregel framework.
+or multiple shortest paths between two vertices and can return a specified amount
+of paths between two vertices in order of increasing length.
 
 You can perform operations directly on the documents of graphs and run graph
 traversals using ad-hoc sets of vertex and edge collections. These are called
