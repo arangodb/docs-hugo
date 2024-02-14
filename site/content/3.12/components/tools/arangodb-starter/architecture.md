@@ -50,12 +50,10 @@ The Starter supports different modes of ArangoDB deployments:
 1. Single server
 1. Cluster
 
-Note: Datacenter replication is an option for the `cluster` deployment mode.
-
 You select one of these modes using the `--starter.mode` command line option.
 
 Depending on the mode you've selected, the Starter launches one or more
-(`arangod` / `arangosync`) server processes.
+`arangod` server processes.
 
 No matter which mode you select, the Starter always provides you
 a common directory structure for storing the servers data, configuration & log files.

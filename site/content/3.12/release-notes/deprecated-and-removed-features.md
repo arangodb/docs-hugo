@@ -48,8 +48,8 @@ detailed information about breaking changes before upgrading.
   offer better resilience and synchronous replication.
 
 - **Datacenter-to-Datacenter Replication (DC2DC)**:
-  The Datacenter-to-Datacenter Replication for cluster deployments is no longer
-  supported from v3.12 onward.
+  The Datacenter-to-Datacenter Replication for cluster deployments including the
+  _arangosync_ tool is no longer supported from v3.12 onward.
 
 - **VelocyStream protocol**:
   ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is no

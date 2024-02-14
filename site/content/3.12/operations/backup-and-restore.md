@@ -312,19 +312,6 @@ not be suited for.
   Such an encrypted backup can only be restored to an instance using the
   same encryption key.
 
-- **Replication and Hot Backup**
-
-  Hot backups are not automatically replicated between clusters when using
-  Datacenter-to-Datacenter Replication. Simply take hot backups on all instances.
-
-  {{< info >}}
-  The DC2DC replication needs to be stopped before restoring a Hot Backup.
-  
-  1. Stop the DC2DC synchronization with `arangosync stop sync ...`.
-  2. Restore the Hot Backup.
-  3. Restart the DC2DC synchronization with `arangosync configure sync ...`.
-  {{< /info >}}
-
 - **Known Issues**
 
   See the list of [Known Issues](../release-notes/version-3.12/known-issues-in-3-12.md#hot-backup).

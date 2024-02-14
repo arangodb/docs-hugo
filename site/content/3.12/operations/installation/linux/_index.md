@@ -45,7 +45,7 @@ installation steps are:
 
 6. You can start ArangoDB in several ways. The exact start-up command depends on
    your Linux distribution, as well as on the type of ArangoDB deployment you
-   are interested in (_Single Server_, _Cluster_, _DC2DC_).
+   are interested in (_Single Server_, _Cluster_).
    Please refer to the [Deploy](../../../deploy/_index.md) chapter for details.
 
 ## Securing your Installation
