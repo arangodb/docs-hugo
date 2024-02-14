@@ -301,6 +301,9 @@ paths:
                     (default: 33554432, use 0 to disable, immutable)
                   type: integer
       responses:
+        '200':
+          description: |
+            The View has been created.
         '400':
           description: |
             If the *name* or *type* attribute are missing or invalid, then an *HTTP 400*
@@ -339,6 +342,7 @@ paths:
     get:
       operationId: getView
       description: |
+        Returns the basic information about a specific View.
         The result is an object briefly describing the View with the following attributes:
         - `id`: The identifier of the View
         - `name`: The name of the View
@@ -352,6 +356,51 @@ paths:
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            The basic information about the View.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - id
+                  - name
+                  - type
+                  - globallyUniqueId
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  id:
+                    description: |
+                      A unique identifier of the View (deprecated).
+                    type: string
+                  name:
+                    description: |
+                      The name of the View.
+                    type: string
+                    example: coll
+                  type:
+                    description: |
+                      The type of the View:
+                      - `"arangosearch"`
+                      - `"search-alias"`
+                    type: integer
+                    example: search-alias
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the View. This is an internal property.
+                    type: string
         '404':
           description: |
             If the `view-name` is unknown, then a *HTTP 404* is returned.
@@ -402,9 +451,6 @@ paths:
       operationId: getViewProperties
       description: |
         Returns an object containing the definition of the View identified by `view-name`.
-
-        The result is an object with a full description of a specific View, including
-        View type dependent properties.
       parameters:
         - name: view-name
           in: path
@@ -414,6 +460,10 @@ paths:
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            An object with a full description of a specific View, including
+            View type dependent properties.
         '400':
           description: |
             If the `view-name` is missing, then a *HTTP 400* is returned.
@@ -478,7 +528,61 @@ paths:
       responses:
         '200':
           description: |
-            The list of Views
+            The list of Views.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  result:
+                    description: |
+                      The result object.
+                    content:
+                      application/json:
+                        schema:
+                          type: array
+                          items:
+                            type: object
+                            required:
+                              - id
+                              - name
+                              - type
+                              - globallyUniqueId
+                            properties:
+                              id:
+                                description: |
+                                  A unique identifier of the View (deprecated).
+                                type: string
+                              name:
+                                description: |
+                                  The name of the View.
+                                type: string
+                                example: coll
+                              type:
+                                description: |
+                                  The type of the View:
+                                  - `"arangosearch"`
+                                  - `"search-alias"`
+                                type: integer
+                                example: search-alias
+                              globallyUniqueId:
+                                description: |
+                                  A unique identifier of the View. This is an internal property.
+                                type: string
       tags:
         - Views
 ```
@@ -642,6 +746,9 @@ paths:
                       - `minScore` (number, _optional_): (default: 0)
                   type: object
       responses:
+        '200':
+          description: |
+            The View has been updated successfully.
         '400':
           description: |
             If the `view-name` is missing, then a *HTTP 400* is returned.
@@ -808,6 +915,9 @@ paths:
                       - `minScore` (number, _optional_): (default: 0)
                   type: object
       responses:
+        '200':
+          description: |
+            The View has been updated successfully.
         '400':
           description: |
             If the `view-name` is missing, then a *HTTP 400* is returned.
@@ -863,6 +973,9 @@ paths:
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            The View has been renamed successfully.
         '400':
           description: |
             If the `view-name` is missing, then a *HTTP 400* is returned.
@@ -913,6 +1026,9 @@ paths:
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            The View has been dropped successfully.
         '400':
           description: |
             If the `view-name` is missing, then a *HTTP 400* is returned.
