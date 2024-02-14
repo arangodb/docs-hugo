@@ -33,17 +33,6 @@ available patch version in the selected version. For example, if `3.10` is
 selected and `3.10.3` is the latest version of ArangoDB available for the `3.10`
 minor version, then the deployment is initially using ArangoDB `3.10.3`.
 
-## End of Life (EoL)
-
-Each minor version’s availability within ArangoGraph is based on the end of
-life date of that particular minor version of ArangoDB, as published in the
-[ArangoDB EoL policy](https://www.arangodb.com/master-services-agreement-inc-august-2019/#eolpolicy).
-You can refer to the upcoming EoL versions on the
-[end of life announcements](https://www.arangodb.com/subscriptions/end-of-life-notice/) page.
-
-You can create new deployments of ArangoDB using a minor version up to one
-month before the planned end of life date.
-
 ## Upgrades
 
 ### Manual Upgrades
@@ -58,7 +47,7 @@ Upon changing your release channel, an upgrade process for your deployment is
 initiated to upgrade your running database to the latest patch release of your
 selected release channel. You can use this mechanism to upgrade your deployments
 at a time that suits you, prior to the forced upgrade when your release channel
-reaches its end of life.
+is no longer available.
 
 ### Automatic Upgrades
 
@@ -69,19 +58,10 @@ of any applications connecting to your ArangoGraph deployment. As a result, when
 a new major version is released on the ArangoGraph platform, an email is sent out
 to inform you of this release.
 
-You are not forced to upgrade to the latest major release channel until all
-other previous release channels have reached their end of life. For example,
-you are not forced to upgrade to `4.0` or later until the latest `3.Y` release
-channel is end of life. Typically, this would provide a window of upgrade of
-around 12 months. It is recommended to pro-actively test with and upgrade to
-the latest release channel when it becomes available, rather than waiting for
-the end of life of your existing release channel with a forced upgrade.
-
-In the event that you are using the last minor version of a previous major
-version that reaches end of life, you are forcibly upgraded to the next
-available version. For example, if you are using `3.11` and the version
-channels `4.0` and `4.1` are also available, upon the end of life of `3.11`,
-you are going to be upgraded to the `4.0` release channel, not `4.1`.
+If the ArangoDB version that you are currently using is no longer available on the
+ArangoGraph platform, you are forced to upgrade to the next available version.
+Prior to the removal of the version, an email is sent out to inform you of this
+forced upgrade.
 
 #### Minor Versions (`x.Y.z`)
 
@@ -93,14 +73,10 @@ This is why minor upgrades are treated in the same manner as major upgrades
 within ArangoGraph. When a new minor version is released on the ArangoGraph
 platform, an email is sent out to inform you of this release.
 
-You are not forced to upgrade to the next major version until all other
-previous release channels have reached their end of life. For example,
-if you are running the `3.9` release channel and it reaches end of life,
-you are going to be upgraded to `3.10` rather than `3.11`. Typically, this
-would provide a window of upgrade of around 12 months. It is recommended to
-pro-actively test with and upgrade to the latest release channel when it becomes
-available, rather than waiting for the end of life of your existing release
-channel with a forced upgrade.
+If the ArangoDB version that you are currently using is no longer available on the
+ArangoGraph platform, you are forced to upgrade to the next available version.
+Prior to the removal of the version, an email is sent out to inform you of this
+forced upgrade.
 
 #### Patch Versions (`x.y.Z`)
 
