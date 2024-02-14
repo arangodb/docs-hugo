@@ -78,9 +78,6 @@ features outlined below. For additional information, see
 
 ## Querying
 
-- [**Pregel in Cluster**](../../data-science/pregel/_index.md#prerequisites):
-  Distributed iterative graph analytics for cluster deployments.
-
 - [**Search highlighting**](../../index-and-search/arangosearch/search-highlighting.md):
   Get the substring positions of matched terms, phrases, or _n_-grams.
 

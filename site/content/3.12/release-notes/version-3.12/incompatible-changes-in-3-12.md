@@ -24,6 +24,21 @@ for details about how a cluster deployment differs and how to migrate to it.
 The _Datacenter-to-Datacenter Replication_ (DC2DC) for clusters including the
 _arangosync_ tool is no longer supported from v3.12 onward.
 
+## Pregel
+
+The distributed iterative graph processing (Pregel) system is no longer supported
+from v3.12 onward.
+
+In detail, the following functionalities have been removed:
+- All Pregel graph algorithms
+- The `PREGEL_RESULT()` AQL function
+- The `@arangodb/pregel` JavaScript API module
+- The Pregel HTTP API (`/_api/control_pregel/*`)
+- All `arangodb_pregel_*` metrics
+- The `pregel` log topic
+- The `--pregel.max-parallelism`, `--pregel.min-parallelism`, and
+  `--pregel.parallelism` startup options
+
 ## Little-endian on-disk key format for the RocksDB storage engine
 
 ArangoDB 3.12 does not support the little-endian on-disk key for the RocksDB

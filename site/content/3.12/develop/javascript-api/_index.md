@@ -202,9 +202,6 @@ You can use the following modules as an end-user:
 - [**@arangodb/users**](../../operations/administration/user-management/in-arangosh.md)
   provides an interface for user management.
 
-- [**@arangodb/pregel**](../../data-science/pregel/_index.md#javascript-api)
-  provides an interface for Pregel management.
-
 ### Node-compatibility modules
 
 ArangoDB supports a number of modules for compatibility with Node.js, including:
