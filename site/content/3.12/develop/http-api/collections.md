@@ -34,23 +34,87 @@ paths:
     get:
       operationId: listCollections
       description: |
-        Returns an object with a `result` attribute containing an array with the
-        descriptions of all collections in the current database.
-
-        By providing the optional `excludeSystem` query parameter with a value of
-        `true`, all system collections are excluded from the response.
+        Returns basic information for all collections in the current database,
+        optionally excluding system collections.
       parameters:
         - name: excludeSystem
           in: query
           required: false
           description: |
-            Whether or not system collections should be excluded from the result.
+            Whether system collections should be excluded from the result.
           schema:
             type: boolean
       responses:
         '200':
           description: |
-            The list of collections
+            The list of collections.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  result:
+                    description: |
+                      The result object.
+                    type: object
+                    required:
+                      - id
+                      - name
+                      - status
+                      - type
+                      - isSystem
+                      - globallyUniqueId
+                    properties:
+                      id:
+                        description: |
+                          A unique identifier of the collection (deprecated).
+                        type: string
+                      name:
+                        description: |
+                          The name of the collection.
+                        type: string
+                        example: coll
+                      status:
+                        description: |
+                          The status of the collection.
+                          - `3`: loaded
+                          - `5`: deleted
+
+                          Every other status indicates a corrupted collection.
+                        type: integer
+                        example: 3
+                      type:
+                        description: |
+                          The type of the collection:
+                          - `0`: "unknown"
+                          - `2`: regular document collection
+                          - `3`: edge collection
+                        type: integer
+                        example: 2
+                      isSystem:
+                        description: |
+                          Whether the collection is a system collection. Collection names that starts with
+                          an underscore are usually system collections.
+                        type: boolean
+                        example: false
+                      globallyUniqueId:
+                        description: |
+                          A unique identifier of the collection. This is an internal property.
+                        type: string
       tags:
         - Collections
 ```
@@ -80,29 +144,12 @@ paths:
     get:
       operationId: getCollection
       description: |
+        Returns the basic information about a specific collection.
+
         {{</* warning */>}}
         Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
         You should reference them via their names instead.
         {{</* /warning */>}}
-
-        The result is an object describing the collection with the following
-        attributes:
-
-        - `id`: The identifier of the collection.
-
-        - `name`: The name of the collection.
-
-        - `status`: The status of the collection as number.
-          - 3: loaded
-          - 5: deleted
-
-        Every other status indicates a corrupted collection.
-
-        - `type`: The type of the collection as number.
-          - 2: document collection (normal case)
-          - 3: edge collection
-
-        - `isSystem`: If `true` then the collection is a system collection.
       parameters:
         - name: collection-name
           in: path
@@ -112,10 +159,101 @@ paths:
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            The basic information about a collection.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - id
+                  - name
+                  - status
+                  - type
+                  - isSystem
+                  - globallyUniqueId
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
+                  name:
+                    description: |
+                      The name of the collection.
+                    type: string
+                    example: coll
+                  status:
+                    description: |
+                      The status of the collection.
+                      - `3`: loaded
+                      - `5`: deleted
+
+                      Every other status indicates a corrupted collection.
+                    type: integer
+                    example: 3
+                  type:
+                    description: |
+                      The type of the collection:
+                      - `0`: "unknown"
+                      - `2`: regular document collection
+                      - `3`: edge collection
+                    type: integer
+                    example: 2
+                  isSystem:
+                    description: |
+                      Whether the collection is a system collection. Collection names that starts with
+                      an underscore are usually system collections.
+                    type: boolean
+                    example: false
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the collection. This is an internal property.
+                    type: string
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is
-            returned.
+            The specified collection is unknown.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - error
+                  - errorMessage
+                  - errorNum
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                    example: 1203
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Collections
 ```
@@ -128,12 +266,12 @@ paths:
     get:
       operationId: getCollectionProperties
       description: |
+        Returns all properties of the specified collection.
+
         {{</* warning */>}}
         Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
         You should reference them via their names instead.
         {{</* /warning */>}}
-
-        Returns all properties of the specified collection.
       parameters:
         - name: collection-name
           in: path
@@ -143,14 +281,6 @@ paths:
           schema:
             type: string
       responses:
-        '400':
-          description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
-            returned.
-        '404':
-          description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
-            is returned.
         '200':
           description: ''
           content:
@@ -361,6 +491,14 @@ paths:
                     description: |
                       A unique identifier of the collection. This is an internal property.
                     type: string
+        '400':
+          description: |
+            If the `collection-name` placeholder is missing, then a *HTTP 400* is
+            returned.
+        '404':
+          description: |
+            If the collection is unknown, then a *HTTP 404*
+            is returned.
       tags:
         - Collections
 ```
@@ -430,13 +568,27 @@ paths:
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            All properties of the collection but additionally the document `count`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - count
+                properties:
+                  count:
+                    description: |
+                      The number of documents currently present in the collection.
+                    type: integer
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
+            If the `collection-name` placeholder is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
+            If the collection is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
@@ -505,7 +657,8 @@ paths:
       responses:
         '200':
           description: |
-            Returns information about the collection:
+            All properties of the collection but additionally the document `count`
+            and collection `figures`.
           content:
             application/json:
               schema:
@@ -544,11 +697,11 @@ paths:
                             type: integer
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
+            If the `collection-name` placeholder is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
+            If the collection is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
@@ -645,14 +798,14 @@ paths:
             Returns the ID of the responsible shard.
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
+            If the `collection-name` placeholder is missing, then a *HTTP 400* is
             returned.
             Additionally, if not all of the collection's shard key
             attributes are present in the input document, then a
             *HTTP 400* is returned as well.
         '404':
           description: |
-            If the `collection-name` is unknown, then an *HTTP 404*
+            If the collection is unknown, then an *HTTP 404*
             is returned.
         '501':
           description: |
@@ -721,11 +874,11 @@ paths:
             Returns the collection's shards.
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
+            If the `collection-name` placeholder is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the `collection-name` is unknown, then an *HTTP 404*
+            If the collection is unknown, then an *HTTP 404*
             is returned.
         '501':
           description: |
@@ -788,8 +941,6 @@ paths:
         The response will contain the collection's latest used revision id.
         The revision id is a server-generated string that clients can use to
         check whether data in a collection has changed since the last revision check.
-
-        - `revision`: The collection revision id as a string.
       parameters:
         - name: collection-name
           in: path
@@ -799,13 +950,26 @@ paths:
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            All collection properties but additionally the collection `revision`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - revision
+                properties:
+                  revision:
+                    description: |
+                      The collection revision id as a string.
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
+            If the `collection-name` placeholder is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
+            If the collection is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
@@ -866,12 +1030,6 @@ paths:
         {{</* info */>}}
         Including user-defined attributes will make the checksumming slower.
         {{</* /info */>}}
-
-        The response is a JSON object with the following attributes:
-
-        - `checksum`: The calculated checksum as a number.
-
-        - `revision`: The collection revision id as a string.
       parameters:
         - name: collection-name
           in: path
@@ -895,13 +1053,31 @@ paths:
           schema:
             type: boolean
       responses:
+        '200':
+          description: |
+            The basic information about the collection but additionally the
+            collection `checksum` and `revision`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - checksum
+                  - revision
+                properties:
+                  checksum:
+                    description: |
+                      The calculated checksum as a number.
+                  revision:
+                    description: |
+                      The collection revision id as a string.
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
+            If the `collection-name` placeholder is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
+            If the collection is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
@@ -1338,15 +1514,9 @@ paths:
           schema:
             type: boolean
       responses:
-        '400':
-          description: |
-            If the `collection-name` is missing, then an *HTTP 400* is
-            returned.
-        '404':
-          description: |
-            If the `collection-name` is unknown, then an *HTTP 404* is returned.
         '200':
-          description: ''
+          description: |
+            The collection has been created.
           content:
             application/json:
               schema:
@@ -1555,6 +1725,13 @@ paths:
                     description: |
                       A unique identifier of the collection. This is an internal property.
                     type: string
+        '400':
+          description: |
+            If the `collection-name` placeholder is missing, then an *HTTP 400* is
+            returned.
+        '404':
+          description: |
+            If the collection is unknown, then an *HTTP 404* is returned.
       tags:
         - Collections
 ```
@@ -1623,19 +1800,12 @@ paths:
     delete:
       operationId: deleteCollection
       description: |
+        Drops the collection identified by `collection-name`.
+
         {{</* warning */>}}
         Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
         You should reference them via their names instead.
         {{</* /warning */>}}
-
-        Drops the collection identified by `collection-name`.
-
-        If the collection was successfully dropped, an object is returned with
-        the following attributes:
-
-        - `error`: `false`
-
-        - `id`: The identifier of the dropped collection.
       parameters:
         - name: collection-name
           in: path
@@ -1653,13 +1823,38 @@ paths:
           schema:
             type: boolean
       responses:
+        '200':
+          description: |
+            Dropping the collection was successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - id
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  id:
+                    description: |
+                      The identifier of the dropped collection.
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
+            If the `collection-name` placeholder is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is returned.
+            If the collection is unknown, then a *HTTP 404* is returned.
       tags:
         - Collections
 ```
@@ -1761,14 +1956,19 @@ paths:
             intention is to start over with an empty collection, specify `false`.
           schema:
             type: boolean
+            default: true
       responses:
+        '200':
+          description: |
+            Truncating the collection was successful.
+            Returns the basic information about the collection.
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
+            If the `collection-name` placeholder is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
+            If the collection is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
@@ -1852,13 +2052,16 @@ paths:
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            The request was valid.
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
+            If the `collection-name` placeholder is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
+            If the collection is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
@@ -1928,13 +2131,16 @@ paths:
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            The request was valid.
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
+            If the `collection-name` placeholder is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is returned.
+            If the collection is unknown, then a *HTTP 404* is returned.
       tags:
         - Collections
 ```
@@ -2009,11 +2215,11 @@ paths:
             If the index loading has been scheduled for all suitable indexes.
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
+            If the `collection-name` placeholder is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is returned.
+            If the collection is unknown, then a *HTTP 404* is returned.
       tags:
         - Collections
 ```
@@ -2046,15 +2252,15 @@ paths:
     put:
       operationId: updateCollectionProperties
       description: |
-        {{</* warning */>}}
-        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-        You should reference them via their names instead.
-        {{</* /warning */>}}
-
         Changes the properties of a collection. Only the provided attributes are
         updated. Collection properties **cannot be changed** once a collection is
         created except for the listed properties, as well as the collection name via
         the rename endpoint (but not in clusters).
+
+        {{</* warning */>}}
+        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+        You should reference them via their names instead.
+        {{</* /warning */>}}
       parameters:
         - name: collection-name
           in: path
@@ -2163,13 +2369,16 @@ paths:
                     equal the number of DB-Servers and has a value of `0`. _(cluster only)_
                   type: integer
       responses:
+        '200':
+          description: |
+            The request was valid.
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
+            If the `collection-name` placeholder is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
+            If the collection is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
@@ -2203,35 +2412,19 @@ paths:
     put:
       operationId: renameCollection
       description: |
-        {{</* warning */>}}
-        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-        You should reference them via their names instead.
-        {{</* /warning */>}}
-
-        Renames a collection. Expects an object with the attribute(s)
-
-        - `name`: The new name.
-
-        It returns an object with the attributes
-
-        - `id`: The identifier of the collection.
-
-        - `name`: The new name of the collection.
-
-        - `status`: The status of the collection as number.
-
-        - `type`: The collection type. Valid types are:
-          - 2: document collection
-          - 3: edges collection
-
-        - `isSystem`: If `true` then the collection is a system collection.
-
-        If renaming the collection succeeds, then the collection is also renamed in
-        all graph definitions inside the `_graphs` collection in the current database.
+        Renames a collection.
 
         {{</* info */>}}
         Renaming collections is not supported in cluster deployments.
         {{</* /info */>}}
+
+        If renaming the collection succeeds, then the collection is also renamed in
+        all graph definitions inside the `_graphs` collection in the current database.
+
+        {{</* warning */>}}
+        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+        You should reference them via their names instead.
+        {{</* /warning */>}}
       parameters:
         - name: collection-name
           in: path
@@ -2240,14 +2433,30 @@ paths:
             The name of the collection to rename.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  description: |
+                    The new collection name.
+                  type: string
+
       responses:
+        '200':
+          description: |
+            The collection has been renamed. Returns all collection properties.
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
+            If the `collection-name` placeholder is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
+            If the collection is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
@@ -2285,10 +2494,6 @@ paths:
       operationId: recalculateCollectionCount
       description: |
         Recalculates the document count of a collection, if it ever becomes inconsistent.
-
-        It returns an object with the attributes
-
-        - `result`: will be `true` if recalculating the document count succeeded.
       parameters:
         - name: collection-name
           in: path
@@ -2300,10 +2505,37 @@ paths:
       responses:
         '200':
           description: |
-            If the document count was recalculated successfully, *HTTP 200* is returned.
+            The document count has been recalculated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                  - count
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  result:
+                    type: boolean
+                    example: true
+                  count:
+                    description: |
+                      The recalculated document count.
+                    type: integer
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is returned.
+            If the collection is unknown, then a *HTTP 404* is returned.
       tags:
         - Collections
 ```
@@ -2336,10 +2568,10 @@ paths:
       responses:
         '200':
           description: |
-            Compaction started successfully
+            The compaction has been started successfully.
         '401':
           description: |
-            if the request was not authenticated as a user with sufficient rights
+            If the request was not authenticated as a user with sufficient rights.
       tags:
         - Collections
 ```
