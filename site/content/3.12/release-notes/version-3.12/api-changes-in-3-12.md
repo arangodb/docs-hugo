@@ -86,7 +86,8 @@ execution plans.
 The `remove-unnecessary-projections` AQL optimizer rule has been renamed to
 `optimize-projections` and now includes an additional optimization.
 
-Moreover, a `remove-unnecessary-calculations-4` rule has been added.
+Moreover, a `remove-unnecessary-calculations-4` and `batch-materialize-documents`
+rule have been added.
 
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
