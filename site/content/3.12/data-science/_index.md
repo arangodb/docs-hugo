@@ -66,31 +66,6 @@ GraphML can answer questions like:
 This section contains an overview of different use cases where Graph Analytics
 and GraphML can be applied.
 
-### Graph Analytics
-
-Graph Analytics is applicable in various fields such as marketing, fraud detection, supply chain,
-product recommendations, drug development, law enforcement, and cybersecurity.
-
-Graph Analytics uses an unsupervised
-learning method based on algorithms that perform analytical processing
-directly on graphs stored in ArangoDB. The
-[Distributed Iterative Graph Processing (Pregel)](pregel/_index.md)
-is intended to help you gain analytical insights in
-your data, without having to use external processing systems.
-
-ArangoDB includes the following graph algorithms:
-- [Page Rank](pregel/algorithms.md#pagerank): used for ranking documents in a graph
-  search/traversal.
-- [Single-Source Shortest Path](pregel/algorithms.md#single-source-shortest-path): calculates
-  the shortest path length between the source and all other vertices.
-  For example, _How to get from a to b_?
-- [Hyperlink-Induced Topic Search (HITS)](pregel/algorithms.md#hyperlink-induced-topic-search-hits): 
-  a link analysis algorithm that rates web pages.
-- [Vertex Centrality](pregel/algorithms.md#vertex-centrality): identifies the most important
-  nodes in a graph. For example, _Who are the influencers in a social network?_
-- [Community Detection](pregel/algorithms.md#community-detection): identifies distinct subgroups
-  within a community structure.
-
 ### GraphML
 
 GraphML capabilities of using more data outperform conventional deep learning

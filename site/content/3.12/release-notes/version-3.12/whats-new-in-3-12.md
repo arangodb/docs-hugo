@@ -53,6 +53,18 @@ for details.
 
 ## Analyzers
 
+### `wildcard` Analyzer
+
+You can use the new `wildcard` Analyzer in combination with an inverted index or
+View to accelerate wildcard searches, especially if you want to find non-prefix
+partial matches in long strings.
+
+The Analyzer can apply another Analyzer of your choice before creating _n_-grams
+that are then used in `LIKE` searches with `_` and `%` wildcards.
+
+See [Transforming data with Analyzers](../../index-and-search/analyzers.md#wildcard)
+for details.
+
 ### `multi_delimiter` Analyzer
 
 The new `multi_delimiter` Analyzer type accepts an array of strings to define
@@ -141,6 +153,18 @@ The new tabular format includes the following features:
 - **Dynamic sorting on columns**: Sort elements easily based on column data
   such as name, date, or size. This functionality provides a flexible way to
   organize and view your data.
+
+### Options & optimizer rules management in the Query Editor
+
+You can now specify extra options for your queries via the query editor.
+You can find all available options in the new **Options** tab in the
+right-hand pane of the editor view, positioned alongside the **Bind Variables**
+tab.
+
+In the new **Options** tab, you also have access to the
+[optimizer rules](../../aql/execution-and-performance/query-optimization.md#optimizer-rules).
+This section allows you to selectively disable multiple optimizer rules, giving
+you more control over query optimization according to your specific requirements.
 
 ### Swagger UI
 
@@ -502,9 +526,6 @@ capacity left for the extra compression/decompression work.
 
 Furthermore, requests and responses should only be compressed when they exceed a
 certain minimum size, e.g. 250 bytes.
-
-Request and response compression is only supported for responses that use the
-HTTP/1.1 or HTTP/2 protocol, and not when using the VelocyStream (VST) protocol.
 {{< /info >}}
 
 ### LZ4 compression for values in the in-memory edge cache
@@ -743,6 +764,12 @@ As it is unclear if and when a client will fetch any remaining data from a
 cursor, every cursor has a server-side timeout value (TTL) after which it is
 considered inactive and garbage-collected.
 
+### Per-collection compaction in cluster
+
+The `PUT /_api/collection/{collection-name}/compact` endpoint of the HTTP API
+can now be used to start the compaction for a specific collection in cluster
+deployments. This feature was previously available for single servers only.
+
 ### RocksDB .sst file partitioning (experimental)
 
 The following experimental startup options for RockDB .sst file partitioning
@@ -793,10 +820,18 @@ The following startup options have been added:
 
 - `--cache.max-spare-memory-usage`: the maximum memory usage for spare tables
   in the in-memory cache.
+
 - `--cache.high-water-multiplier`: controls the cache's effective memory usage
   limit. The user-defined memory limit (i.e. `--cache.size`) is multiplied with
   this value to create the effective memory limit, from which on the cache tries
-  to free up memory by evicting the oldest entries.
+  to free up memory by evicting the oldest entries. The default value is `0.56`,
+  matching the previously hardcoded 56% for the cache subsystem.
+
+  You can increase the multiplier to make the cache subsystem use more memory, but
+  this may overcommit memory because the cache memory reclamation procedure is
+  asynchronous and can run in parallel to other tasks that insert new data.
+  In case a deployment's memory usage is already close to the maximum, increasing
+  the multiplier can lead to out-of-memory (OOM) kills.
 
 The following metrics have been added:
 
@@ -916,6 +951,40 @@ Enabling these metrics can likely result in a small latency overhead of a few
 percent for write operations. The exact overhead depends on
 several factors, such as the type of operation (single or multi-document operation),
 replication factor, network latency, etc.
+
+### Compression for cluster-internal traffic
+
+The following startup options have been added to optionally compress relevant
+cluster-internal traffic:
+- `--network.compression-method`: The compression method used for cluster-internal
+  requests.
+- `--network.compress-request-threshold`: The HTTP request body size from which on
+  cluster-internal requests are transparently compressed.
+
+If the `--network.compression-method` startup option is set to `none` (default), then no
+compression is performed. To enable compression for cluster-internal requests,
+you can set this option to either `deflate`, `gzip`, `lz4`, or `auto`.
+
+The `deflate` and `gzip` compression methods are general purpose but can
+have significant CPU overhead for performing the compression work.
+The `lz4` compression method compresses slightly worse but has a lot lower
+CPU overhead for performing the compression.
+The `auto` compression method uses `deflate` by default and `lz4` for
+requests that have a size that is at least 3 times the configured threshold
+size.
+
+The compression method only matters if `--network.compress-request-threshold`
+is set to a value greater than zero. This option configures a threshold value
+from which on the outgoing requests will be compressed. If the threshold is
+set to a value of 0, then no compression is performed. If the threshold
+is set to a value greater than 0, then the size of the request body is
+compared against the threshold value, and compression happens if the
+uncompressed request body size exceeds the threshold value.
+The threshold can thus be used to avoid futile compression attempts for too
+small requests.
+
+Compression for all Agency traffic is disabled regardless of the settings
+of these options.
 
 ## Client tools
 

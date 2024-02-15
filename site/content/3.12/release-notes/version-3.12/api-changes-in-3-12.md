@@ -11,6 +11,24 @@ archetype: default
 
 ### Behavior changes
 
+#### VelocyStream protocol removed
+
+ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is no
+longer supported.
+
+The server immediately closes the connection if you attempt to use the
+VelocyStream protocol. If you specify any scheme starting with `vst` in the
+`--server.endpoint` startup option of a client tool, the HTTP protocol is used
+instead.
+
+The following metrics related to VelocyStream have been removed:
+- `arangodb_request_body_size_vst`
+- `arangodb_vst_connections_total`
+
+VelocyPack remains as ArangoDB's binary storage format and you can continue to
+use it in transport over the HTTP protocol, as well as use JSON over the
+HTTP protocol.
+
 #### HTTP headers
 
 The following long-deprecated features have been removed from ArangoDB's HTTP
@@ -364,6 +382,12 @@ larger amounts of data and was thus very limited.
 Users of the `/_api/traversal` REST API should use
 [AQL traversal queries](../../aql/graphs/traversals.md) instead.
 
+#### Pregel API
+
+The `/_api/control_pregel/*` endpoints have been removed in v3.12.0 as Pregel
+graph processing is no longer supported. The `arangodb_pregel_*` metrics and the
+`pregel` log topic have been removed as well from the respective endpoints.
+
 ## JavaScript API
 
 ### Collection creation
@@ -405,3 +429,8 @@ already exists in the database, then the operation is performed normally.
 If the version number in the new document is lower or equal to what exists in
 the database, the operation is not performed and behaves like a no-op. No error
 is returned in this case.
+
+### `@arangodb/pregel` package
+
+The `@arangodb/pregel` JavaScript API package has been removed in v3.12.0 and
+will no longer be supported.

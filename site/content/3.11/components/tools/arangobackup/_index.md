@@ -36,7 +36,7 @@ Snapshots can be uploaded to or downloaded from remote repositories.
 
 {{< info >}}
 Please review the
-[**requirements and limitations**](../../../operations/backup-and-restore.md#hot-backup-limitations)
+[requirements and limitations](../../../operations/backup-and-restore.md#hot-backup-limitations)
 of hot backups, specifically regarding storage engine, deployment, scope
 and storage space.
 {{< /info >}}

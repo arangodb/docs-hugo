@@ -19,6 +19,21 @@ offer better resilience and synchronous replication. Also see the
 See [Single instance vs. Cluster deployments](../../deploy/single-instance-vs-cluster.md)
 for details about how a cluster deployment differs and how to migrate to it.
 
+## Pregel
+
+The distributed iterative graph processing (Pregel) system is no longer supported
+from v3.12 onward.
+
+In detail, the following functionalities have been removed:
+- All Pregel graph algorithms
+- The `PREGEL_RESULT()` AQL function
+- The `@arangodb/pregel` JavaScript API module
+- The Pregel HTTP API (`/_api/control_pregel/*`)
+- All `arangodb_pregel_*` metrics
+- The `pregel` log topic
+- The `--pregel.max-parallelism`, `--pregel.min-parallelism`, and
+  `--pregel.parallelism` startup options
+
 ## Little-endian on-disk key format for the RocksDB storage engine
 
 ArangoDB 3.12 does not support the little-endian on-disk key for the RocksDB
@@ -62,34 +77,30 @@ It is not sufficient to take a hot backup of a little-endian deployment and
 restore it because when restoring a hot backup, the original database format is
 restored as it was at time of the backup.
 
-## In-memory cache subsystem
+## VelocyStream protocol removed
 
-By default, the in-memory cache subsystem uses up to 95% of its configured
-memory limit value (as configured by the `--cache.size` startup option).
+ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is no
+longer supported.
 
-Previous versions of ArangoDB effectively used only 56% of the configured memory
-limit value for the cache subsystem. The 56% value was hard-coded in ArangoDB
-versions before 3.11.3, and has been configurable since then via the 
-`--cache.high-water-multiplier` startup option. To make things compatible, the 
-default value for the high water multiplier was set to 56% in 3.11.
+The server immediately closes the connection if you attempt to use the
+VelocyStream protocol. If you specify any scheme starting with `vst` in the
+`--server.endpoint` startup option of a client tool, the HTTP protocol is used
+instead.
 
-ArangoDB 3.12 now adjusts this default value to 95%, i.e. the cache subsystem
-uses up to 95% of the configured memory. Although this is a behavior
-change, it seems more sensible to use up to 95% of the configured limit value 
-rather than just 56%.
-The change can lead to the cache subsystem effectively using more memory than
-before. In case a deployment's memory usage is already close to the maximum,
-the change can lead to out-of-memory (OOM) kills. To avoid this, you have
-two options:
+The following metrics related to VelocyStream have been removed:
+- `arangodb_request_body_size_vst`
+- `arangodb_vst_connections_total`
 
-1. Decrease the value of `--cache.high-water-multiplier` to 0.56, which should
-   mimic the old behavior.
-2. Leave the high water multiplier untouched, but decrease the value of the 
-   `--cache.size` startup option to about half of its current value.
+VelocyPack remains as ArangoDB's binary storage format and you can continue to
+use it in transport over the HTTP protocol, as well as use JSON over the
+HTTP protocol.
 
-The second option is the recommended one, as it signals the intent more clearly,
-and makes the cache behave "as expected", i.e. use up to the configured
-memory limit and not just 56% of it.
+## Control character escaping in audit log
+
+The audit log feature of the Enterprise Edition previously logged query strings
+verbatim. Control characters, in particular line breaks, can cause issues with
+parsing the audit log. They are now escaped for query strings which often contain
+line breaks.
 
 ## Higher reported memory usage for AQL queries
 
@@ -136,6 +147,21 @@ changed in the documents of SmartGraph vertex collections. This is now strictly 
 See [API Changes in ArangoDB 3.12](api-changes-in-3-12.md#validation-of-smartgraphattribute-in-smartgraphs)
 for details and instructions on how to repair affected attributes.
 
+## Dropping graph collections disallowed
+
+Dropping a collection now strictly enforces that graph definitions remain intact.
+Previously, it was allowed to drop collections that were part of an existing graph.
+Trying to do so now results in the error `ERROR_GRAPH_MUST_NOT_DROP_COLLECTION`
+with the number `1942`.
+
+This may require changes in the client application code that drops individual
+collections from graphs for clean-up purposes. You can drop an entire graph
+and its collections along with it, as long as they aren't used in another graph.
+To remove individual collections, update or remove edge definitions first to not
+include the desired collections anymore. In case of vertex collections, they
+become orphan collections that you need to remove from the graph definition as
+well to drop the collections.
+
 ## Client tools
 
 ### jslint feature in arangosh
@@ -179,6 +205,24 @@ server:
   `--http.hide-product-header`.
   The functionality has now been removed and setting the startup option does
   nothing.
+
+### Graph API (Gharial)
+
+- The `PATCH /_api/gharial/{graph}/edge/{collection}/{edge}` endpoint to update
+  edges in named graphs now validates the referenced vertex when modifying either
+  the `_from` or `_to` edge attribute. Previously, the validation only occurred if
+  both were set in the request.
+
+- A new error code `1949` with the name `TRI_ERROR_GRAPH_VERTEX_COLLECTION_NOT_USED`
+  has been added is now returned instead of `TRI_ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED`
+  with the code `1947` if you attempt to read from or write to a vertex collection
+  through the graph API but the collection is not part of the graph definition.
+
+- The error code `1947` with the name `TRI_ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED`
+  has been renamed to `ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_PART_OF_THE_GRAPH`.
+  This error is (now only) raised if you attempt to reference a document in the
+  `_from` or `_to` attribute of an edge but the document's collection is not
+  part of the graph definition.
 
 ## JavaScript API
 
@@ -243,6 +287,13 @@ with extended names can be created with the option disabled. This state is only
 meant to facilitate downgrading or reverting the option change. When the option
 is set to `false`, all database objects with extended names that were created
 in the meantime should be removed manually.
+
+### Changed TTL index removal default
+
+The default value of the `--ttl.max-collection-removes` startup option has been
+lowered from 1 million to 100,000. The background thread for time-to-live indexes
+now removes fewer documents from a collection in each iteration to give other
+collections a chance of being cleaned up as well.
 
 ## Client tools
 

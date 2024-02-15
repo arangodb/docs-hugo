@@ -106,8 +106,7 @@ Computed value expressions have the following properties:
 
 - You cannot access any stored data other than the current document via the
   `@doc` bind parameter. AQL functions that read from the database system cannot
-  be used in the expression (e.g. `DOCUMENT()`, `PREGEL_RESULT()`,
-  `COLLECTION_COUNT()`).
+  be used in the expression (e.g. `DOCUMENT()`, `COLLECTION_COUNT()`).
 
 - You cannot access the result of another computed value that is generated on
   the same `computeOn` event.

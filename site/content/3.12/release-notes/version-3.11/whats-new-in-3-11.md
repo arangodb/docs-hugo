@@ -1159,12 +1159,8 @@ const historyStatus = pregel.history(execution);
 pregel.removeHistory();
 ```
 
-See [Distributed Iterative Graph Processing (Pregel)](../../data-science/pregel/_index.md#get-persisted-execution-statistics)
-for details.
-
 You can also use the newly added HTTP endpoints with the
 `/_api/control_pregel/history` route.
-See [Pregel HTTP API](../../develop/http-api/pregel.md) for details.
 
 You can still use the old interfaces (the `pregel.status()` method as well as
 the `GET /_api/control_pregel` and `GET /_api/control_pregel/{id}` endpoints).
@@ -1318,10 +1314,18 @@ The following startup options have been added:
 
 - `--cache.max-spare-memory-usage`: the maximum memory usage for spare tables
   in the in-memory cache.
+
 - `--cache.high-water-multiplier`: controls the cache's effective memory usage
   limit. The user-defined memory limit (i.e. `--cache.size`) is multiplied with
   this value to create the effective memory limit, from which on the cache tries
-  to free up memory by evicting the oldest entries.
+  to free up memory by evicting the oldest entries. The default value is `0.56`,
+  matching the previously hardcoded 56% for the cache subsystem.
+
+  You can increase the multiplier to make the cache subsystem use more memory, but
+  this may overcommit memory because the cache memory reclamation procedure is
+  asynchronous and can run in parallel to other tasks that insert new data.
+  In case a deployment's memory usage is already close to the maximum, increasing
+  the multiplier can lead to out-of-memory (OOM) kills.
 
 The following metrics have been added:
 
