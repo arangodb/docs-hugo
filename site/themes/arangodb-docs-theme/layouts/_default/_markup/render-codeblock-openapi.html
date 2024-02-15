@@ -65,6 +65,16 @@
       </ul>
     </div>
   </div>
+  <div class="openapi-parameters regular-font">
+    <div class="openapi-table-title">HTTP Headers</div>
+    <div>
+      <ul class="openapi-table">
+      {{ range $k, $v := $content }}
+        {{- template "renderParameter" dict "title" $title "prop" $v.name "value" $v "category" "header" }}
+      {{ end }}
+      </ul>
+    </div>
+  </div>
 {{ end }}
 
 {{- define "renderRequestBody" }}
