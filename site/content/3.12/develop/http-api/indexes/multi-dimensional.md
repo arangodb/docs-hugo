@@ -69,22 +69,27 @@ paths:
                     attributes to store in the index. These additional attributes cannot be used for
                     index lookups or for sorting, but they can be used for projections. This allows an
                     index to fully cover more queries and avoid extra document lookups.
-                    The maximum number of attributes in `storedValues` is 32.
 
-                    It is not possible to create multiple indexes with the same `fields` attributes
-                    and uniqueness but different `storedValues` attributes. That means the value of
-                    `storedValues` is not considered by index creation calls when checking if an
-                    index is already present or needs to be created.
+                    You can have the same attributes in `storedValues` and `fields` as the attributes
+                    in `fields` cannot be used for projections, but you can also store additional
+                    attributes that are not listed in `fields`.
+                    Attributes in `storedValues` cannot overlap with the attributes specified in
+                    `prefixFields`. There is no reason to store them in the index because you need
+                    to specify them in queries in order to use `mdi-prefixed` indexes.
 
-                    In unique indexes, only the attributes in `fields` are checked for uniqueness,
-                    but the attributes in `storedValues` are not checked for their uniqueness.
+                    You cannot create multiple multi-dimensional indexes with the same `sparse`,
+                    `unique`, `fields` and (for `mdi-prefixed` indexes) `prefixFields` attributes
+                    but different `storedValues` settings. That means the value of `storedValues` is
+                    not considered by index creation calls when checking if an index is already
+                    present or needs to be created.
+
+                    In unique indexes, only the index attributes in `fields` and (for `mdi-prefixed`
+                    indexes) `prefixFields` are checked for uniqueness. The index attributes in
+                    `storedValues` are not checked for their uniqueness.
+
                     Non-existing attributes are stored as `null` values inside `storedValues`.
 
-                    Attributes in `storedValues` cannot overlap with attributes
-                    specified in `prefixFields` but you can have the attributes
-                    in both `storedValues` and `fields` because the attributes
-                    in `fields` cannot be used for projections to cover queries
-                    with the indexed data.
+                    The maximum number of attributes in `storedValues` is 32.
                   type: array
                   items:
                     type: string
@@ -98,6 +103,23 @@ paths:
                     If `true`, then create a sparse index.
                   type: boolean
                   default: false
+                estimates:
+                  description: |
+                    This attribute controls whether index selectivity estimates are maintained for the
+                    index. Not maintaining index selectivity estimates can have a slightly positive
+                    impact on write performance.
+
+                    The downside of turning off index selectivity estimates is that
+                    the query optimizer is not able to determine the usefulness of different
+                    competing indexes in AQL queries when there are multiple candidate indexes to
+                    choose from.
+
+                    The `estimates` attribute is optional and defaults to `true` if not set.
+                    It has no effect on indexes other than `persistent`, `mdi`, and `mdi-prefixed`.
+                    It cannot be disabled for non-unique `mdi` indexes because they have a fixed
+                    selectivity estimate of `1`.
+                  type: boolean
+                  default: true
                 inBackground:
                   description: |
                     You can set this option to `true` to create the index

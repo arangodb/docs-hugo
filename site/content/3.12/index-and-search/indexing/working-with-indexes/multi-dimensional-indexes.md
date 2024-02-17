@@ -24,19 +24,26 @@ You can choose between two subtypes of multi-dimensional indexes:
 Both subtypes require that the attributes described by `fields` have numeric
 values. You can optionally omit documents from the index that have any of
 the `fields` or `prefixFields` attributes not set or set to `null` by declaring
-the index as `sparse`.
+the index as sparse with `sparse: true`.
 
-Multi-dimensional indexes can be declared as `unique` to only allow a single
-document with a given combination of attribute values, using all of the `prefix`
-attributes and (for `mdi-prefixed` indexes) `prefixFields`. Documents omitted
-because of `sparse: true` are exempt.
+Multi-dimensional indexes can be created with a uniqueness constraint with
+`unique: true`. This only allows a single document with a given combination of
+attribute values, using all of the `fields` attributes and (for `mdi-prefixed`
+indexes) `prefixFields`. Documents omitted because of `sparse: true` are exempt.
 
 You can store additional attributes in multi-dimensional indexes with the
 `storedValues` property. They can be used for projections (unlike the `fields`
 attributes) so that indexes can cover more queries without having to access the
 full documents.
 
-`estimates`
+Non-unique `mdi` indexes have a fixed selectivity estimate of `1`. For `mdi`
+indexes with `unique: true` as well as for `mdi-prefixed` indexes, you can
+control whether index selectivity estimates are maintained for the index.
+It is enabled by default and you can disable it with `estimates: false`.
+Not maintaining index selectivity estimates can have a slightly positive impact
+on write performance but the query optimizer is not able to determine the
+usefulness of different competing indexes in AQL queries when there are multiple
+candidate indexes to choose from.
 
 {{< info >}}
 The `mdi` index type was previously called `zkd`.
@@ -57,10 +64,10 @@ To do so one creates a multi-dimensional index on the attributes `x`, `y` and
 `z`, e.g. in _arangosh_:
 
 ```js
-db.collection.ensureIndex({
-    type: "mdi",
-    fields: ["x", "y", "z"],
-    fieldValueTypes: "double"
+db.points.ensureIndex({
+  type: "mdi",
+  fields: ["x", "y", "z"],
+  fieldValueTypes: "double"
 });
 ```
 
@@ -73,10 +80,10 @@ Now we can use the index in a query:
 
 ```aql
 FOR p IN points
-    FILTER x0 <= p.x && p.x <= x1
-    FILTER y0 <= p.y && p.y <= y1
-    FILTER z0 <= p.z && p.z <= z1
-    RETURN p
+  FILTER x0 <= p.x && p.x <= x1
+  FILTER y0 <= p.y && p.y <= y1
+  FILTER z0 <= p.z && p.z <= z1
+  RETURN p
 ```
 
 ## Possible range queries
@@ -92,10 +99,10 @@ is translated to their non-strict counterparts and a post-filter is inserted.
 
 ```aql
 FOR p IN points
-    FILTER 2 <= p.x && p.x < 9
-    FILTER y0 >= 80
-    FILTER p.z == 4
-    RETURN p
+  FILTER 2 <= p.x && p.x < 9
+  FILTER p.y >= 80
+  FILTER p.z == 4
+  RETURN p
 ```
 
 ## Example Use Case
@@ -105,9 +112,9 @@ that contains the appointments. The documents would roughly look as follows:
 
 ```json
 {
-    "from": 345365,
-    "to": 678934,
-    "what": "Dentist",
+  "from": 345365,
+  "to": 678934,
+  "what": "Dentist",
 }
 ```
 
@@ -129,9 +136,9 @@ Thus our query would be:
 
 ```aql
 FOR app IN appointments
-    FILTER f <= app.from
-    FILTER app.to <= t
-    RETURN app
+  FILTER f <= app.from
+  FILTER app.to <= t
+  RETURN app
 ```
 
 ### Finding all appointments that intersect a time range
@@ -148,18 +155,51 @@ Thus our query would be:
 
 ```aql
 FOR app IN appointments
-    FILTER f <= app.to
-    FILTER app.from <= t
-    RETURN app
+  FILTER f <= app.to
+  FILTER app.from <= t
+  RETURN app
 ```
 
 ## Prefix fields
 
+Multi-dimensional indexes can accelerate range queries well but they are
+inefficient for queries that check for equality of values. For use cases where
+you have a combination of equality and range conditions in queries, you can use
+the `mdi-prefixed` subtype instead of `mdi`. It has all the features of the
+`mdi` subtype but additionally lets you define one or more document attributes
+you want to use for equality checks. This combination allows to efficiently
+narrow down the search space to a subset of multi-dimensional index data before
+performing the range checking.
 
+```js
+db.<collection>.ensureIndex({
+  type: "mdi-prefixed",
+  prefixFields: ["v", "w"]
+  fields: ["x", "y"],
+  fieldValueTypes: "double"
+});
+```
+
+You need to specify all of the `prefixFields` attributes in your queries to
+utilize the index.
+
+```aql
+FOR p IN points
+  FILTER p.v == "type"
+  FILTER p.w == "group"
+  FILTER 2 <= p.x && p.x < 9
+  FILTER p.y >= 80
+  RETURN p
+```
+
+You can create `mdi-prefixed` indexes on edge collections with the `_from` or
+`_to` edge attribute as the first prefix field. Graph traversals with range filters
+can then utilize such indexes. See [Vertex-centric indexes](vertex-centric-indexes.md)
+for details.
 
 ## Storing additional values in indexes
 
-<small>Introduced in: v3.10.0</small>
+<small>Introduced in: v3.12.0</small>
 
 Multi-dimensional indexes allow you to store additional attributes in the index
 that can be used to satisfy projections of the document. They cannot be used for
@@ -175,38 +215,42 @@ similar to the `fields` option:
 ```js
 db.<collection>.ensureIndex({
   type: "mdi",
-  fields: ["value1"],
-  storedValues: ["value1", "value2"]
+  fields: ["x", "y"],
+  fieldValueTypes: "double",
+  storedValues: ["y", "z"]
 });
 ```
-<!-- TODO -->
-This will index the `value1` attribute in the traditional sense, so that the index 
-can be used for looking up by `value1` or for sorting by `value1`. The index also
-supports projections on `value1` as usual.
 
-In addition, due to `storedValues` being used here, the index can now also 
-supply the values for the `value2` attribute for projections without having to
-look up the full document. Non-existing attributes are stored as `null` values.
+This indexes the `x` and `y` attributes so that the index can be used for range
+queries by these attributes. Using these document attributes like for returning
+them from the query is not covered by the index, however, unless you add the
+attributes to `storedValues` in addition to `fields`. The reason is that the
+index doesn't store the original values of the attributes.
+
+You can have the same attributes in `storedValues` and `fields` as the attributes
+in `fields` cannot be used for projections, but you can also store additional
+attributes that are not listed in `fields`.
+The above example stores the `y` and `z` attribute values in the index using
+`storedValues`. The index can thus supply the values for projections without
+having to look up the full document.
 
 Attributes in `storedValues` cannot overlap with the attributes specified in
-`prefixFields` but you can have the attributes in both `storedValues` and
-`fields` as the attributes in `fields` cannot be used for projections to
-cover queries because the indexed data is different to the attribute values.
-
-The maximum number of attributes that you can use in `storedValues` is 32.
-You cannot specify the same attribute path in both, the `fields` and the
-`storedValues` option. If there is an overlap, the index creation will abort
-with an error message.
+`prefixFields`. There is no reason to store them in the index because you need
+to specify them in queries in order to use `mdi-prefixed` indexes.
 
 In unique indexes, only the index attributes in `fields` and (for `mdi-prefixed`
 indexes) `prefixFields` are checked for uniqueness. The index attributes in
 `storedValues` are not checked for their uniqueness.
 
-You cannot create multiple multi-dimensional indexes with the same `fields`
-attributes but different `storedValues` settings. That means the value of
-`storedValues` is not considered by calls to `ensureIndex()` when checking if an
-index is already present or needs to be created.
+You cannot create multiple multi-dimensional indexes with the same `sparse`,
+`unique`, `fields` and (for `mdi-prefixed` indexes) `prefixFields` attributes
+but different `storedValues` settings. That means the value of `storedValues` is
+not considered by index creation calls when checking if an index is already
+present or needs to be created.
 
+Non-existing attributes are stored as `null` values.
+
+The maximum number of attributes that you can use in `storedValues` is 32.
 
 ## Lookahead Index Hint
 

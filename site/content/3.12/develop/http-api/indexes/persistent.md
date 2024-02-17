@@ -120,8 +120,8 @@ paths:
                     index. Not maintaining index selectivity estimates can have a slightly positive
                     impact on write performance.
 
-                    The downside of turning off index selectivity estimates will be that
-                    the query optimizer will not be able to determine the usefulness of different
+                    The downside of turning off index selectivity estimates is that
+                    the query optimizer is not able to determine the usefulness of different
                     competing indexes in AQL queries when there are multiple candidate indexes to
                     choose from.
 

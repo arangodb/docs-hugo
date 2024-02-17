@@ -277,8 +277,8 @@ for details.
 
 ##### Multi-dimensional indexes
 
-The previously experimental `zkd` index is now stable and has been renamed to
-`mdi`. Existing indexes keep the `zkd` type. The HTTP API still allows the old
+The previously experimental `zkd` index type is now stable and has been renamed
+to `mdi`. Existing indexes keep the `zkd` type. The HTTP API still allows the old
 name to create new indexes that behave exactly like `mdi` indexes but this is
 discouraged. The `zkd` alias may get removed in a future version.
 
