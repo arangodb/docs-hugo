@@ -392,7 +392,7 @@ Also see [What's New in 3.3](../../release-notes/version-3.3/whats-new-in-3-3.md
   as much data in ArangoDB as you can fit on your disk. Plus, you can enjoy
   performance boosts on writes by having only document-level locks.
 
-- [**Pregel**](../../data-science/pregel/_index.md):
+- **Pregel**
   We implemented distributed graph processing with Pregel to discover hidden
   patterns, identify communities and perform in-depth analytics of large graph
   data sets.
@@ -430,8 +430,7 @@ Also see [What's New in 3.2](../../release-notes/version-3.2/whats-new-in-3-2.md
 
 - [**VelocyPack over HTTP**](https://www.arangodb.com/2016/10/updated-java-drivers-with-arangodb-3-1/):
   In addition to JSON, the binary storage format VelocyPack can now also be
-  used in transport over the HTTP protocol, as well as streamed using the new
-  bi-directional asynchronous binary protocol **VelocyStream**.
+  used in transport over the HTTP protocol.
 
 **Enterprise Edition**
 

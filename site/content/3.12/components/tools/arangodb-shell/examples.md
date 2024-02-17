@@ -60,9 +60,6 @@ Protocol     | Socket           | Schema
 HTTP         | TCP              | `http+tcp`, `http+srv`, `http`, `tcp`
 HTTP         | TCP with SSL/TLS | `http+ssl`, `https`, `ssl`
 HTTP         | Unix             | `http+unix`, `unix`
-VelocyStream | TCP              | `vst+tcp`, `vst+srv`, `vst`
-VelocyStream | TCP with SSL/TLS | `vst+ssl`, `vsts`
-VelocyStream | Unix             | `vst+unix`
 
 ## Using *arangosh*
 

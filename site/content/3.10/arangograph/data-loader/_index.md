@@ -49,11 +49,6 @@ corresponding collections, available in your ArangoDB web interface.
 Follow this [working example](../data-loader/example.md) to see how easy it is
 to transform existing data into a graph.
 
-## Migrate on-prem to the cloud
-
-To transfer data from an existing on-premises ArangoDB instance to your
-ArangoGraph cluster, see the [cloud migration tool](../migrate-to-the-cloud.md).
-
 ## Import data to the cloud
 
 To import data from various files into collections **without creating a graph**,

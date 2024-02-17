@@ -885,7 +885,7 @@
       "info"
     ],
     "deprecatedIn" : null,
-    "description" : "Set the topic-specific log level, using `--log.level level` for the general topic or `--log.level topic=level` for the specified topic (can be specified multiple times).\nAvailable log levels: fatal, error, warning, info, debug, trace.\nAvailable log topics: all, agency, agencycomm, agencystore, aql, audit-authentication, audit-authorization, audit-collection, audit-database, audit-document, audit-hotbackup, audit-service, audit-view, authentication, authorization, backup, bench, cache, cluster, communication, config, crash, deprecation, development, dump, engines, flush, general, graphs, heartbeat, httpclient, ldap, license, maintenance, memory, mmap, pregel, queries, rep-state, rep-wal, replication, replication2, requests, restore, rocksdb, security, ssl, startup, statistics, supervision, syscall, threads, trx, ttl, v8, validation, views.",
+    "description" : "Set the topic-specific log level, using `--log.level level` for the general topic or `--log.level topic=level` for the specified topic (can be specified multiple times).\nAvailable log levels: fatal, error, warning, info, debug, trace.\nAvailable log topics: all, agency, agencycomm, agencystore, aql, audit-authentication, audit-authorization, audit-collection, audit-database, audit-document, audit-hotbackup, audit-service, audit-view, authentication, authorization, backup, bench, cache, cluster, communication, config, crash, deprecation, development, dump, engines, flush, general, graphs, heartbeat, httpclient, license, maintenance, memory, mmap, queries, rep-state, rep-wal, replication, replication2, requests, restore, rocksdb, security, ssl, startup, statistics, supervision, syscall, threads, trx, ttl, v8, validation, views.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -1145,7 +1145,7 @@
     "introducedIn" : [
       "v3.10.0"
     ],
-    "longDescription" : "Some log messages can be displayed together with\nadditional information in a structured form. The following parameters are\navailable:\n\n- `database`: The name of the database.\n- `username`: The name of the user.\n- `url`: The endpoint path.\n- `pregelID`: The ID of the Pregel job.\n\nThe format to enable or disable a parameter is `<parameter>=<bool>`, or\n`<parameter>` to enable it. You can specify the option multiple times to\nconfigure multiple parameters:\n\n`arangod --log.structured-param database=true --log.structured-param url\n--log.structured-param username=false`\n\nYou can adjust the parameter settings at runtime using the\n`/_admin/log/structured` HTTP API.",
+    "longDescription" : "Some log messages can be displayed together with\nadditional information in a structured form. The following parameters are\navailable:\n\n- `database`: The name of the database.\n- `username`: The name of the user.\n- `url`: The endpoint path.\n\nThe format to enable or disable a parameter is `<parameter>=<bool>`, or\n`<parameter>` to enable it. You can specify the option multiple times to\nconfigure multiple parameters:\n\n`arangod --log.structured-param database=true --log.structured-param url\n--log.structured-param username=false`\n\nYou can adjust the parameter settings at runtime using the\n`/_admin/log/structured` HTTP API.",
     "obsolete" : false,
     "os" : [
       "linux",

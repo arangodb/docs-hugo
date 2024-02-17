@@ -29,7 +29,7 @@ queries.
 
 {{< info >}}
 For graphs larger than what fits on a single DB-Server node, you can use the
-[**SmartGraphs**](../graphs/smartgraphs/_index.md) feature to efficiently limit the
+[SmartGraphs](../graphs/smartgraphs/_index.md) feature to efficiently limit the
 network hops between Coordinator and DB-Servers.
 {{< /info >}}
 

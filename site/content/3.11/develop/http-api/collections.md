@@ -429,6 +429,14 @@ paths:
             The name of the collection.
           schema:
             type: string
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       responses:
         '400':
           description: |
@@ -614,9 +622,9 @@ paths:
 
         The response is a JSON object with a `shardId` attribute, which will
         contain the ID of the responsible shard.
-        
+
         {{</* info */>}}
-        This method is only available on Coordinators in cluster deployments.
+        This method is only available in cluster deployments on Coordinators.
         {{</* /info */>}}
       requestBody:
         content:
@@ -698,7 +706,7 @@ paths:
         In the detailed response, the leader shards will be first in the arrays.
 
         {{</* info */>}}
-        This method is only available on Coordinators in cluster deployments.
+        This method is only available in cluster deployments on Coordinators.
         {{</* /info */>}}
       parameters:
         - name: collection-name
@@ -1143,7 +1151,7 @@ paths:
                     Documents are sent to shards based on the values of their shard key attributes.
                     The values of all shard key attributes in a document are hashed,
                     and the hash value is used to determine the target shard.
-                    
+
                     {{</* info */>}}
                     Values of shard key attributes cannot be changed once set.
                     {{</* /info */>}}
@@ -1706,6 +1714,14 @@ paths:
             intention is to start over with an empty collection, specify `false`.
           schema:
             type: boolean
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       responses:
         '400':
           description: |
