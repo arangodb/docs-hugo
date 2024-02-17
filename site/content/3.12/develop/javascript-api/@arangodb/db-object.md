@@ -1259,6 +1259,14 @@ description: ''
 require("@arangodb").db._version();
 ```
 
+```js
+---
+name: dbVersionDetails
+description: ''
+---
+require("@arangodb").db._version(true);
+```
+
 ## License
 
 ### `db._getLicense()`
