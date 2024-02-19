@@ -16,6 +16,10 @@ aliases:
   - ../data-science/pregel
   - ../data-science/pregel/algorithms
   - ../develop/http-api/pregel
+  - ../operations/installation/macos
+  - ../operations/installation/windows
+  - ../operations/upgrading/os-specific-information/macos
+  - ../operations/upgrading/os-specific-information/windows
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -30,6 +34,11 @@ This page only lists significant obsolete features but not minor API changes.
 See the [Release notes](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
+
+- **Windows and macOS**:
+  Starting with v3.12, ArangoDB packages for Windows and macOS are not provided
+  anymore. You can use the official [Docker images](https://hub.docker.com/_/arangodb/)
+  instead, to run ArangoDB in containers.
 
 - **Active Failover deployment mode**:
   Running a single server with asynchronous replication to one or more passive

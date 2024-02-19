@@ -51,9 +51,9 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
 - [**Multiple Environments**](../../operations/installation/_index.md#supported-platforms-and-architectures):
   Use ArangoDB as a [managed service](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
   in your own cloud, or on-premises.
-  Develop and test with ArangoDB on Linux, macOS, and Windows, and run it in
-  production on Linux. ArangoDB is available for 64-bit ARM chips on macOS and
-  Linux as well as for the x86-64 architecture.
+  Develop and test with ArangoDB on Linux, macOS, and Windows using the official
+  Docker images, and run it in production on Linux. ArangoDB is available for
+  64-bit ARM chips on Linux as well as for the x86-64 architecture.
 
 ## Scalability & High Availability
 
