@@ -239,6 +239,16 @@ and defaults to `[]`.
 See the [`optimizeTopK` View property](../../index-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
 for details.
 
+#### Document API
+
+The `PUT /_api/document/{collection}/{key}` and `PATCH /_api/document/{collection}/{key}`
+endpoints accept a new `versionAttribute` property that adds external versioning
+support.
+If set, the attribute with the name specified by the property is looked up in
+the document to be replaced or updated and its content is read and compared
+numerically to the value of the versioning attribute in the document that
+updates or replaces it.
+
 #### Index API
 
 ##### `optimizeTopK` for inverted indexes

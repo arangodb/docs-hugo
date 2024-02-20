@@ -856,6 +856,14 @@ paths:
             replacements affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
+        - name: versionAttribute
+          in: query
+          required: false
+          description: |
+            Adds external versioning support. If set, the attribute with the name
+            specified by the property is looked up in the document to be replaced.
+          schema:
+            type: string
         - name: If-Match
           in: header
           required: false
@@ -1178,6 +1186,14 @@ paths:
             affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
+        - name: versionAttribute
+          in: query
+          required: false
+          description: |
+            Adds external versioning support. If set, the attribute with the name
+            specified by the property is looked up in the document to be updated.
+          schema:
+            type: string
         - name: If-Match
           in: header
           required: false
