@@ -28,9 +28,21 @@ FOR u IN users
 
 Above query returns the first five documents of the `users` collection.
 It could also be written as `LIMIT 0, 5` for the same result.
-Which documents it actually returns is rather arbitrary, because no explicit
-sorting order is specified however. Therefore, a limit should be usually
+Which documents it returns is rather arbitrary, because no explicit
+sorting order is specified, however. Therefore, a limit should be usually
 accompanied by a `SORT` operation.
+
+{{< info >}}
+In case multiple documents contain the same `SORT` attribute value, the result
+set does not contain those documents in a fixed order as the `SORT` operation
+does not guarantee a stable sort if there is no unique value to sort by.
+
+When stable sort is required, you can use a tiebreaker field. If the application
+has a preferred field that indicates the order of documents with the same score,
+then this field should be used in the `SORT` operation as a tiebreaker. If there
+is no such field, you can use the `_id` system attribute as it is unique and
+present in every document.
+{{< /info >}}
 
 The `offset` value specifies how many elements from the result shall be
 skipped. It must be 0 or greater. The `count` value specifies how many
