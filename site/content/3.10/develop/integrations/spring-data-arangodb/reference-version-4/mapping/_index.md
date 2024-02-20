@@ -183,3 +183,62 @@ ArangoConverter arangoConverter;
   // ...
   MyEntity entity = converter.read(MyEntity.class, jn);
 ```
+
+## Object Mapping
+
+Spring Data ArangoDB delegates object mapping, object creation, field and property access to
+[Spring Data Commons](https://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#mapping.fundamentals).
+
+Methods in `ArangoOperations` try modifying the domain objects accepted as parameters,
+updating the properties potentially modified by the server side, if the related fields are mutable. This applies to the 
+fields annotated with:
+- `@ArangoId`
+- `@Id` 
+- `@Rev`
+
+In addition, the methods:
+- `ArangoOperations#repsert(Object)`
+- `ArangoOperations#repsertAll(Iterable<Object>, Class<?>)`
+will also try updating the fields annotated with `@ComputedValueField`.
+
+## Object Identity
+
+The most of the methods in `ArangoOperations` and `ArangoRepository` return new entity instances, except:
+- `ArangoRepository#save(Object)`
+- `ArangoRepository#saveAll(Iterable<Object>)`
+
+These methods return by default the same instance(s) of the domain object(s) accepted as parameter(s) and update the 
+properties potentially modified by the server side, if the related fields are mutable. 
+This applies to the fields annotated with:
+- `@ArangoId`
+- `@Id`
+- `@Rev`
+- `@ComputedValueField`
+
+This behavior can be changed by overriding `ArangoConfiguration#returnOriginalEntities()`, which by default returns 
+`true`. For example, to return new entity instances from `ArangoRepository#save(Object)` and 
+`ArangoRepository#saveAll(Iterable<Object>)`:
+
+```java
+@Configuration
+@EnableArangoRepositories
+public class MyConfiguration implements ArangoConfiguration {
+
+  // ...
+
+  @Override
+  public boolean returnOriginalEntities() {
+    return false; 
+  }
+  
+}
+```
+
+Note that also in this case, input parameters properties are still updated, if mutable.
+
+## Working with immutable objects
+
+Spring Data ArangoDB can work with immutable entity classes, like Java Records, Kotlin data classes and final classes
+with immutable properties. In this case, to use `ArangoRepository#save(Object)` and 
+`ArangoRepository#saveAll(Iterable<Object>)` is required overriding `ArangoConfiguration#returnOriginalEntities()` to
+make it return `false`, see [Object Identity](#object-identity).
