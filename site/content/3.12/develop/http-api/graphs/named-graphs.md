@@ -3636,6 +3636,14 @@ paths:
             new version of the document.
           schema:
             type: boolean
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -3933,6 +3941,14 @@ paths:
             only if it has a different revision as the given ETag. Otherwise a HTTP 304 is returned.
           schema:
             type: string
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -4204,6 +4220,14 @@ paths:
             If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
             if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
             you can supply the ETag in an attribute rev in the URL.
+          schema:
+            type: string
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
           schema:
             type: string
       requestBody:
@@ -4597,6 +4621,14 @@ paths:
             you can supply the ETag in an attribute rev in the URL.
           schema:
             type: string
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -4970,6 +5002,14 @@ paths:
             you can supply the ETag in an attribute rev in the URL.
           schema:
             type: string
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -5233,6 +5273,14 @@ paths:
             new version of the document.
           schema:
             type: boolean
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -5615,6 +5663,14 @@ paths:
             only if it has a different revision as the given ETag. Otherwise a HTTP 304 is returned.
           schema:
             type: string
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -5897,6 +5953,14 @@ paths:
             If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
             if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
             you can supply the ETag in an attribute rev in the URL.
+          schema:
+            type: string
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
           schema:
             type: string
       requestBody:
@@ -6351,6 +6415,14 @@ paths:
             you can supply the ETag in an attribute rev in the URL.
           schema:
             type: string
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -6792,6 +6864,14 @@ paths:
             If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
             if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
             you can supply the ETag in an attribute rev in the URL.
+          schema:
+            type: string
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
           schema:
             type: string
       responses:

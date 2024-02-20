@@ -486,6 +486,14 @@ paths:
             is inserted.
           schema:
             type: boolean
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -832,6 +840,14 @@ paths:
             using the `if-match` HTTP header.
           schema:
             type: string
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       responses:
         '201':
           description: |
@@ -1111,6 +1127,14 @@ paths:
             using the `if-match` HTTP header.
           schema:
             type: string
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       responses:
         '201':
           description: |
@@ -1288,6 +1312,14 @@ paths:
           description: |
             You can conditionally remove a document based on a target revision id by
             using the `if-match` HTTP header.
+          schema:
+            type: string
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
           schema:
             type: string
       responses:
@@ -1724,6 +1756,14 @@ paths:
             inserted.
           schema:
             type: boolean
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -1959,6 +1999,14 @@ paths:
             edge documents are replaced.
           schema:
             type: boolean
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       responses:
         '201':
           description: |
@@ -2145,6 +2193,14 @@ paths:
             edge documents are updated.
           schema:
             type: boolean
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       responses:
         '201':
           description: |
@@ -2272,6 +2328,14 @@ paths:
             with other edges if edge documents are removed.
           schema:
             type: boolean
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -2511,7 +2575,7 @@ When no writes are happening, allowing reading from followers is generally safe.
 
 The following APIs support reading from followers:
 
-- Single document reads (`GET /_api/document`)
+- Single document reads (`GET /_api/document` and `HEAD /_api/document`)
 - Batch document reads (`PUT /_api/document?onlyget=true`)
 - Read-only AQL queries (`POST /_api/cursor`)
 - The edge API (`GET /_api/edges`)

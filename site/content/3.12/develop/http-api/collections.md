@@ -429,6 +429,14 @@ paths:
             The name of the collection.
           schema:
             type: string
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       responses:
         '400':
           description: |
@@ -1761,6 +1769,14 @@ paths:
             intention is to start over with an empty collection, specify `false`.
           schema:
             type: boolean
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       responses:
         '400':
           description: |

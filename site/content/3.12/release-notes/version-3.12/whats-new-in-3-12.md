@@ -437,6 +437,52 @@ If neither the existing document in the database nor the new document version
 does not contain the version attribute, or if the version attribute in any of
 the two is not a number inside the valid range, the `UPDATE` and `REPLACE` operations behave as if no version checking was requested.
 
+### Improved late document materialization
+
+When `FILTER` operations can be covered by `primary`, `edge`, or `persistent`
+indexes, ArangoDB utilizes the index information to only request documents from
+the storage engine that fulfill the criteria. This late document materialization
+has been improved to load documents in batches for efficiency. It now also
+supports projections to fetch subsets of the documents if only a few attributes
+are accessed in an AQL query.
+
+For example, a query like below can use late materialization if there is a
+`persistent` index over the `x` attribute:
+
+```aql
+FOR doc IN coll
+  FILTER doc.x > 5
+  RETURN [doc.y, doc.z, doc.a]
+```
+
+If the `y`, `z`, and `a` attributes are not covered by the index (e.g. `storedValues`),
+then they need to be fetched from the storage engine. This no longer requires to
+load the full documents, as indicated by the `/* (projections: … ) /*` comment
+on the `MaterializeNode` due to an improved `reduce-extraction-to-projection`
+optimizer rule. The loading is performed in batches due to the new
+`batch-materialize-documents` optimization.
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT
+  7   IndexNode           ✓   1000     - FOR doc IN coll   /* persistent index scan, index scan + document lookup */    /* with late materialization */
+  8   MaterializeNode         1000       - MATERIALIZE doc /* (projections: `a`, `y`, `z`) */
+  5   CalculationNode     ✓   1000       - LET #2 = [ doc.`y`, doc.`z`, doc.`a` ]   /* simple expression */   /* collections used: doc : coll */
+  6   ReturnNode              1000       - RETURN #2
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields    Stored values   Ranges
+  7   idx_1788354556957032448   persistent   coll         false    false    false      100.00 %   [ `x` ]   [ `b` ]         (doc.`x` > 5)
+
+Optimization rules applied:
+ Id   Rule Name                                 Id   Rule Name                                 Id   Rule Name                        
+  1   move-calculations-up                       5   use-indexes                                9   batch-materialize-documents      
+  2   move-filters-up                            6   remove-filter-covered-by-index            10   async-prefetch                   
+  3   move-calculations-up-2                     7   remove-unnecessary-calculations-2
+  4   move-filters-up-2                          8   reduce-extraction-to-projection  
+```
+
 ## Indexing
 
 ### Stored values can contain the `_id` attribute
