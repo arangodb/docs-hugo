@@ -19,7 +19,7 @@ level orchestration system (e.g. Kubernetes) available.
 
 ## Starter versions
 
-The Starter is a separate process in a binary called `arangodb` (or `arangodb.exe` on Windows).
+The Starter is a separate process in a binary called `arangodb`.
 This binary has its own version number that is independent of a ArangoDB (database)
 version.
 

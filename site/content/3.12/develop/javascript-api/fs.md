@@ -99,7 +99,7 @@ absolute path to the same location is returned.
 
 ### chmod
 
-sets file permissions of specified files (non windows only)
+sets file permissions of specified files
 `fs.chmod(path, mode)`
 
 where `mode` is a string with a leading zero matching the `OCTAL-MODE` as explained

@@ -172,7 +172,6 @@ The value `none` is case-insensitive.
 {{% comment %}}
 Specific to arangod, move to programs detail page?
 Does the resolution order for config files apply to all binaries?
-Linux only? Also macOS? Windows not addressed so far.
 
 If this command is not passed to the server, then by default, the server
 attempts to first locate a file named `~/.arango/arangod.conf` in the user's home
@@ -241,11 +240,10 @@ In a configuration file:
 path = @TEMP@/arango_tmp
 ```
 
-On a Windows system, above setting would typically make the ArangoDB Server
-create its folder for temporary files in `%USERPROFILE%\AppData\Local\Temp`,
-i.e. `C:\Users\xxx\AppData\Local\Temp\arango_tmp`.
-
-{{% comment %}}What other placeholders are there? @ROOTDIR@ ...{{% /comment %}}
+The `@TEMP@` placeholder is substituted by the value of the `TEMP`
+environment variable. For example, if you set it to `/var/lib`, the resulting
+startup option value is `/var/lib/arango_tmp`. If the environment variable doesn't
+exist, the placeholder is removed and the resulting value is `/arango_tmp`.
 
 ## Options with multiple values
 

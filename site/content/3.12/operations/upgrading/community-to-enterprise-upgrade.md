@@ -48,8 +48,7 @@ For more information about setting a license key, see [License Management](../ad
    are stopped and all the data directories in use are copied in a safe location 
 2. Uninstall the ArangoDB Community Edition package (make sure this is done in a way that
    your database is kept on your disk, e.g. on _Debian_ systems do **not** use the
-   _purge_ option of _dpkg_ or, on Windows, do **not** check the "_Delete databases with
-   uninstallation?_" option)
+   _purge_ option of _dpkg_)
 3. Install the ArangoDB Enterprise Edition package
 4. If you are moving from version A to version B, where B > A, start _arangod_ on
    your data directory with the option `--database.auto-upgrade` (in addition to

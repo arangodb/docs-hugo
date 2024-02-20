@@ -57,8 +57,8 @@ furthermore we experienced some issues with hard links required for Hot Backup.
 
 On Linux ArangoDB uses [jemalloc](https://github.com/jemalloc/jemalloc) as
 its memory allocator. Unfortunately, some OS configurations can interfere with
-jemalloc's ability to function properly. Specifically, Linux's "transparent hugepages",
-Windows' "large pages" and other similar features sometimes prevent jemalloc from
+jemalloc's ability to function properly.
+Specifically, Linux's "transparent hugepages" sometimes prevent jemalloc from
 returning unused memory to the operating system and result in unnecessarily high
 memory use. Therefore, we recommend disabling these features when using jemalloc with
 ArangoDB. Please consult your operating system's documentation for how to do this.

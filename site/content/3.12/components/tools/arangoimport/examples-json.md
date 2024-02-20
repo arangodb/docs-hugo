@@ -202,12 +202,6 @@ data from the `cat` process to arangoimport (in a Bash-like shell):
 cat data.json | arangoimport --file - --type jsonl --collection users
 ```
 
-In a command line or PowerShell on Windows, there is the `type` command:
-
-```
-type data.json | arangoimport --file - --type jsonl --collection users
-```
-
 The option `--file -` with a hyphen as the file name is special and makes it
 read from the standard input. No progress can be reported for such imports as the
 size of the input is unknown to arangoimport.
