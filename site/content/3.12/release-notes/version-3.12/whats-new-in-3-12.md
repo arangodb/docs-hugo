@@ -154,6 +154,18 @@ The new tabular format includes the following features:
   such as name, date, or size. This functionality provides a flexible way to
   organize and view your data.
 
+### Options & optimizer rules management in the Query Editor
+
+You can now specify extra options for your queries via the query editor.
+You can find all available options in the new **Options** tab in the
+right-hand pane of the editor view, positioned alongside the **Bind Variables**
+tab.
+
+In the new **Options** tab, you also have access to the
+[optimizer rules](../../aql/execution-and-performance/query-optimization.md#optimizer-rules).
+This section allows you to selectively disable multiple optimizer rules, giving
+you more control over query optimization according to your specific requirements.
+
 ### Swagger UI
 
 The interactive tool for exploring HTTP APIs has been updated to version 5.4.1.
@@ -353,6 +365,52 @@ The `move-filters-into-enumerate` optimizer rule can now also move filters into
 performance of queries that do a lot of filtering on longer lists of
 non-collection data.
 
+### Improved late document materialization
+
+When `FILTER` operations can be covered by `primary`, `edge`, or `persistent`
+indexes, ArangoDB utilizes the index information to only request documents from
+the storage engine that fulfill the criteria. This late document materialization
+has been improved to load documents in batches for efficiency. It now also
+supports projections to fetch subsets of the documents if only a few attributes
+are accessed in an AQL query.
+
+For example, a query like below can use late materialization if there is a
+`persistent` index over the `x` attribute:
+
+```aql
+FOR doc IN coll
+  FILTER doc.x > 5
+  RETURN [doc.y, doc.z, doc.a]
+```
+
+If the `y`, `z`, and `a` attributes are not covered by the index (e.g. `storedValues`),
+then they need to be fetched from the storage engine. This no longer requires to
+load the full documents, as indicated by the `/* (projections: … ) /*` comment
+on the `MaterializeNode` due to an improved `reduce-extraction-to-projection`
+optimizer rule. The loading is performed in batches due to the new
+`batch-materialize-documents` optimization.
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT
+  7   IndexNode           ✓   1000     - FOR doc IN coll   /* persistent index scan, index scan + document lookup */    /* with late materialization */
+  8   MaterializeNode         1000       - MATERIALIZE doc /* (projections: `a`, `y`, `z`) */
+  5   CalculationNode     ✓   1000       - LET #2 = [ doc.`y`, doc.`z`, doc.`a` ]   /* simple expression */   /* collections used: doc : coll */
+  6   ReturnNode              1000       - RETURN #2
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields    Stored values   Ranges
+  7   idx_1788354556957032448   persistent   coll         false    false    false      100.00 %   [ `x` ]   [ `b` ]         (doc.`x` > 5)
+
+Optimization rules applied:
+ Id   Rule Name                                 Id   Rule Name                                 Id   Rule Name                        
+  1   move-calculations-up                       5   use-indexes                                9   batch-materialize-documents      
+  2   move-filters-up                            6   remove-filter-covered-by-index            10   async-prefetch                   
+  3   move-calculations-up-2                     7   remove-unnecessary-calculations-2
+  4   move-filters-up-2                          8   reduce-extraction-to-projection  
+```
+
 ## Indexing
 
 ### Stored values can contain the `_id` attribute
@@ -442,9 +500,6 @@ capacity left for the extra compression/decompression work.
 
 Furthermore, requests and responses should only be compressed when they exceed a
 certain minimum size, e.g. 250 bytes.
-
-Request and response compression is only supported for responses that use the
-HTTP/1.1 or HTTP/2 protocol, and not when using the VelocyStream (VST) protocol.
 {{< /info >}}
 
 ### LZ4 compression for values in the in-memory edge cache
@@ -870,6 +925,40 @@ Enabling these metrics can likely result in a small latency overhead of a few
 percent for write operations. The exact overhead depends on
 several factors, such as the type of operation (single or multi-document operation),
 replication factor, network latency, etc.
+
+### Compression for cluster-internal traffic
+
+The following startup options have been added to optionally compress relevant
+cluster-internal traffic:
+- `--network.compression-method`: The compression method used for cluster-internal
+  requests.
+- `--network.compress-request-threshold`: The HTTP request body size from which on
+  cluster-internal requests are transparently compressed.
+
+If the `--network.compression-method` startup option is set to `none` (default), then no
+compression is performed. To enable compression for cluster-internal requests,
+you can set this option to either `deflate`, `gzip`, `lz4`, or `auto`.
+
+The `deflate` and `gzip` compression methods are general purpose but can
+have significant CPU overhead for performing the compression work.
+The `lz4` compression method compresses slightly worse but has a lot lower
+CPU overhead for performing the compression.
+The `auto` compression method uses `deflate` by default and `lz4` for
+requests that have a size that is at least 3 times the configured threshold
+size.
+
+The compression method only matters if `--network.compress-request-threshold`
+is set to a value greater than zero. This option configures a threshold value
+from which on the outgoing requests will be compressed. If the threshold is
+set to a value of 0, then no compression is performed. If the threshold
+is set to a value greater than 0, then the size of the request body is
+compared against the threshold value, and compression happens if the
+uncompressed request body size exceeds the threshold value.
+The threshold can thus be used to avoid futile compression attempts for too
+small requests.
+
+Compression for all Agency traffic is disabled regardless of the settings
+of these options.
 
 ## Client tools
 

@@ -112,7 +112,6 @@ See all [Enterprise Edition Features](enterprise-edition.md).
 | Collections can be sharded alike but joins do not utilize co-location | **SmartJoins** for co-located joins in a cluster using identically sharded collections |
 | Graph traversals without parallel execution | **Parallel execution of traversal queries** with many start vertices |
 | Graph traversals always load full documents | **Traversal projections** optimize the data loading of AQL traversal queries if only a few document attributes are accessed |
-| Iterative graph processing (Pregel) for single servers | **Pregel graph processing for clusters** and single servers |
 | Inverted indexes and Views without support for search highlighting and nested search | **Search highlighting** for getting the substring positions of matches and **nested search** for matching arrays with all the conditions met by a single object |
 | Only standard Jaccard index calculation | **Jaccard similarity approximation** with MinHash for entity resolution, such as for finding duplicate records, based on how many common elements they have |{{% comment %}} Experimental feature
 | No fastText model support | Classification of text tokens and finding similar tokens using supervised **fastText word embedding models** |

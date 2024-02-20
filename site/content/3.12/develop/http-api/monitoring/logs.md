@@ -501,10 +501,6 @@ paths:
                   description: |
                     One of the possible log topics.
                   type: string
-                pregel:
-                  description: |
-                    One of the possible log topics.
-                  type: string
                 queries:
                   description: |
                     One of the possible log topics.

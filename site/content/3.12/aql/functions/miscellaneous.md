@@ -204,9 +204,9 @@ identifiers. The collections do not need to be known at query compile time, they
 can be computed at runtime.
 
 {{< info >}}
-It is recommended to use subqueries with the [**`FOR` operation**](../high-level-operations/for.md)
+It is recommended to use subqueries with the [`FOR` operation](../high-level-operations/for.md)
 and filters over `DOCUMENT()` whenever the collections are known in advance,
-especially for [**joins**](../examples-and-query-patterns/joins.md), because they perform better, you
+especially for [joins](../examples-and-query-patterns/joins.md), because they perform better, you
 can add additional filters, and combine it with sorting to get an array of
 documents in a guaranteed order.
 
@@ -648,20 +648,6 @@ FOR doc IN coll
   */
   RETURN doc
 ```
-
-### PREGEL_RESULT()
-
-`PREGEL_RESULT(jobId, withId) → results`
-
-Allows to access results of a Pregel job that are only held in memory.
-See [Pregel AQL integration](../../data-science/pregel/_index.md#aql-integration).
-
-- **jobId** (string): the `id` of a Pregel job
-- **withId** (bool): if enabled, then the document `_id` is returned in
-  addition to the `_key` for each vertex
-- returns **results** (array): an array of objects, one element per vertex, with
-  the attributes computed by the Pregel algorithm and the document key (and
-  optionally identifier)
 
 ## Internal functions
 

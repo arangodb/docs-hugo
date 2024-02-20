@@ -123,11 +123,6 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   and to enumerate all paths between two vertices
   ("[k Paths](../../aql/graphs/k-paths.md)") are available, too.
 
-- [**Pregel**](../../data-science/pregel/_index.md):
-  Iterative graph processing for single servers with pre-built algorithms like
-  PageRank, Connected Components, and Label Propagation. Cluster support
-  requires the Enterprise Edition.
-
 - [**ArangoSearch for Text Search and Ranking**](../../index-and-search/arangosearch/_index.md):
   A built-in search engine for full-text, complex data structures, and more.
   Exact value matching, range queries, prefix matching, case-insensitive and

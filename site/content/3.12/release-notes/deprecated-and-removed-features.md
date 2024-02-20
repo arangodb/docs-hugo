@@ -13,6 +13,10 @@ aliases:
   - ../deploy/active-failover/administration
   - ../deploy/active-failover
   - ../components/arangodb-server/ldap
+  - ../arangograph/migrate-to-the-cloud
+  - ../data-science/pregel
+  - ../data-science/pregel/algorithms
+  - ../develop/http-api/pregel
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -24,7 +28,7 @@ features. There are usually alternatives to replace the old features with.
 
 {{< info >}}
 This page only lists significant obsolete features but not minor API changes.
-See the [**Release notes**](_index.md) of the respective versions for
+See the [Release notes](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
 
@@ -37,6 +41,12 @@ detailed information about breaking changes before upgrading.
 - **LDAP authentication**:
   ArangoDB user authentication with an LDAP server in the Enterprise Edition is
   no longer available starting with v3.12.
+
+- **VelocyStream protocol**:
+  ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is no
+  longer supported. VelocyPack remains as ArangoDB's binary storage format and
+  you can continue to use it in transport over the HTTP protocol, as well as use
+  JSON over the HTTP protocol.
 
 - **Standalone Agency and Agency HTTP API**:
   The Standalone Agency deployment mode and the corresponding Agency HTTP API
@@ -53,20 +63,17 @@ detailed information about breaking changes before upgrading.
   See [Incompatible changes in ArangoDB 3.12](version-3.12/incompatible-changes-in-3-12.md#little-endian-on-disk-key-format-for-the-rocksdb-storage-engine)
   for details.
 
-- **Pregel features**:
+- **Pregel**:
 
-  The following features have been deprecated or removed from Pregel in v3.11:
+  The distributed iterative graph processing (Pregel) system is no longer supported
+  from v3.12 onward. All Pregel graph algorithms, the Pregel JavaScript API and
+  HTTP API, and everything else related to Pregel has been removed.
+  All other graph features including AQL graph traversals and path finding
+  algorithms are unaffected.
 
-  - The experimental _Custom Pregel_ feature, also known as
-    _programmable Pregel algorithms_ (PPA), has been removed.
-
-  - The built-in _DMID_ Pregel algorithm has been deprecated and will be removed
-    in a future release.
-
-  - The `async` option for Pregel jobs has been removed.
-
-  - The `useMemoryMaps` option for Pregel jobs to use memory-mapped files as a
-    backing storage for large datasets has been removed.
+- **Cloud Migration Tool**:
+  The `arangosync-migration` tool to move from on-premises to the cloud is not
+  available anymore.
 
 - **Leader/Follower Deployment Mode**:
   The Leader/Follower deployment mode is deprecated and already removed from

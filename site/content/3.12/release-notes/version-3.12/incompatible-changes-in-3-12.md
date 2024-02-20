@@ -19,16 +19,32 @@ offer better resilience and synchronous replication. Also see the
 See [Single instance vs. Cluster deployments](../../deploy/single-instance-vs-cluster.md)
 for details about how a cluster deployment differs and how to migrate to it.
 
+## Pregel
+
+The distributed iterative graph processing (Pregel) system is no longer supported
+from v3.12 onward.
+
+In detail, the following functionalities have been removed:
+- All Pregel graph algorithms
+- The `PREGEL_RESULT()` AQL function
+- The `@arangodb/pregel` JavaScript API module
+- The Pregel HTTP API (`/_api/control_pregel/*`)
+- All `arangodb_pregel_*` metrics
+- The `pregel` log topic
+- The `--pregel.max-parallelism`, `--pregel.min-parallelism`, and
+  `--pregel.parallelism` startup options
+
 ## LDAP authentication
 
 Support for ArangoDB user authentication with an LDAP server in the
 Enterprise Edition has been removed.
 
 - All `--ldap.*` and `--ldap2.*` startup options have been removed
-- The `--server.authentication-timeout` startup option ...
-  TODO: still a regular option (not obsoleted) even though it previously stated "This option is only necessary if you use an external authentication system like LDAP."
 - The `--server.local-authentication` startup option has been obsoleted and
   will be fully removed in a future version
+- The `--server.authentication-timeout` startup option that mainly controlled
+  the caching for LDAP authentication now only controls the cluster-internal
+  authentication caching and shouldn't be touched
 - The `ldap` log topic is no longer available and specifying it in the
   `--log.level` startup option raises a warning
 - The `ERROR_LDAP_*` error codes with the numbers in the range from `1800`
@@ -76,6 +92,24 @@ The migration can be performed as follows:
 It is not sufficient to take a hot backup of a little-endian deployment and
 restore it because when restoring a hot backup, the original database format is
 restored as it was at time of the backup.
+
+## VelocyStream protocol removed
+
+ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is no
+longer supported.
+
+The server immediately closes the connection if you attempt to use the
+VelocyStream protocol. If you specify any scheme starting with `vst` in the
+`--server.endpoint` startup option of a client tool, the HTTP protocol is used
+instead.
+
+The following metrics related to VelocyStream have been removed:
+- `arangodb_request_body_size_vst`
+- `arangodb_vst_connections_total`
+
+VelocyPack remains as ArangoDB's binary storage format and you can continue to
+use it in transport over the HTTP protocol, as well as use JSON over the
+HTTP protocol.
 
 ## Control character escaping in audit log
 

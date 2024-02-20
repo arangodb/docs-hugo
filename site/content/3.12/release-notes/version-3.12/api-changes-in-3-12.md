@@ -11,6 +11,24 @@ archetype: default
 
 ### Behavior changes
 
+#### VelocyStream protocol removed
+
+ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is no
+longer supported.
+
+The server immediately closes the connection if you attempt to use the
+VelocyStream protocol. If you specify any scheme starting with `vst` in the
+`--server.endpoint` startup option of a client tool, the HTTP protocol is used
+instead.
+
+The following metrics related to VelocyStream have been removed:
+- `arangodb_request_body_size_vst`
+- `arangodb_vst_connections_total`
+
+VelocyPack remains as ArangoDB's binary storage format and you can continue to
+use it in transport over the HTTP protocol, as well as use JSON over the
+HTTP protocol.
+
 #### HTTP headers
 
 The following long-deprecated features have been removed from ArangoDB's HTTP
@@ -41,30 +59,12 @@ characters using the default settings.
 
 #### Collection API
 
-##### Warnings for invalid collection creation options
-
 When creating a collection using the `POST /_api/collection` endpoint, the
 server log now displays a deprecation message if illegal combinations and
 unknown attributes and values are detected in the request body.
 
 Note that all invalid elements and combinations will be rejected in future
 versions.
-
-##### Dropping graph collections disallowed
-
-Dropping a collection using the `DELETE /_api/collection/{collection-name}`
-endpoint now strictly enforces that graph definitions remain intact.
-Previously, it was allowed to drop collections that were part of an existing graph.
-Trying to do so now results in the error `ERROR_GRAPH_MUST_NOT_DROP_COLLECTION`
-with the number `1942`.
-
-This may require changes in the client application code that drops individual
-collections from graphs for clean-up purposes. You can drop an entire graph
-and its collections along with it, as long as they aren't used in another graph.
-To remove individual collections, update or remove edge definitions first to not
-include the desired collections anymore. In case of vertex collections, they
-become orphan collections that you need to remove from the graph definition as
-well to drop the collections.
 
 #### Index API
 
@@ -86,28 +86,18 @@ execution plans.
 The `remove-unnecessary-projections` AQL optimizer rule has been renamed to
 `optimize-projections` and now includes an additional optimization.
 
-Moreover, a `remove-unnecessary-calculations-4` rule has been added.
+Moreover, a `remove-unnecessary-calculations-4` and `batch-materialize-documents`
+rule have been added.
 
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
 
-#### Graph API (Gharial)
+#### Gharial API
 
-- The `PATCH /_api/gharial/{graph}/edge/{collection}/{edge}` endpoint to update
-  edges in named graphs now validates the referenced vertex when modifying either
-  the `_from` or `_to` edge attribute. Previously, the validation only occurred if
-  both were set in the request.
-
-- A new error code `1949` with the name `TRI_ERROR_GRAPH_VERTEX_COLLECTION_NOT_USED`
-  has been added and is now returned instead of `TRI_ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED`
-  with the code `1947` if you attempt to read from or write to a vertex collection
-  through the graph API but the collection is not part of the graph definition.
-
-- The error code `1947` with the name `TRI_ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_USED`
-  has been renamed to `ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_PART_OF_THE_GRAPH`.
-  This error is (now only) raised if you attempt to reference a document in the
-  `_from` or `_to` attribute of an edge but the document's collection is not
-  part of the graph definition.
+The `PATCH /_api/gharial/{graph}/edge/{collection}/{edge}` endpoint to update
+edges in named graphs now validates the referenced vertex when modifying either
+the `_from` or `_to` edge attribute. Previously, the validation only occurred if
+both were set in the request.
 
 #### Validation of `smartGraphAttribute` in SmartGraphs
 
@@ -188,6 +178,17 @@ The [`/_api/analyzer` endpoints](../../develop/http-api/analyzers.md) supports
 a new `multi_delimiter` Analyzer that accepts an array of strings in a
 `delimiter` attribute of the `properties` object.
 
+#### Adjustable `writeConcern` for collections with `distributeShardsLike`
+
+Collections that are sharded like another collection via the `distributeShardsLike`
+property use the `replicationFactor`, `numberOfShards`, and `shardingStrategy`
+properties of the prototype collection. In previous versions, the `writeConcern`
+property of the prototype collection was used as well. Now, you can independently
+set a `writeConcern` when creating a collection with `distributeShardsLike`.
+The property defaults to the `writeConcern` of the prototype collection if you
+don't specify it explicitly. You can adjust the `writeConcern` later on in
+either case.
+
 #### Log API
 
 The [`/_admin/log/*` endpoints](../../develop/http-api/monitoring/logs.md) no
@@ -247,21 +248,6 @@ and [Monitoring per collection/database/user](../version-3.12/whats-new-in-3-12.
 
 ### Endpoints augmented
 
-#### Analyzer API
-
-A new `wildcard` Analyzer with the following properties has been added,
-affecting the `/_api/analyzer` endpoints:
-
-- `ngramSize` (number, _required_): unsigned integer, needs to be at least `2`
-- `analyzer` (object, _optional_): an Analyzer definition-like objects with
-  `type` and `properties` attributes, where `type` is a string and `properties`
-  an object whose attributes depend on the `type`
-
-The `offset` Analyzer feature is not valid for this Analyzer.
-
-See [Transforming data with Analyzers](../../index-and-search/analyzers.md#wildcard)
-for details.
-
 #### View API
 
 Views of type `arangosearch` accept a new `optimizeTopK` View property for the
@@ -312,12 +298,6 @@ returns the `warnings` attribute, even if no warnings were produced while parsin
 the query. In that case, `warnings` contains an empty array.
 In previous versions, no `warnings` attribute was returned when parsing a query
 produced no warnings.
-
-#### Per-collection compaction in cluster
-
-The `PUT /_api/collection/{collection-name}/compact` endpoint can now be used
-to start the compaction for a specific collection in cluster deployments.
-This feature was previously available for single servers only.
 
 #### Metrics API
 
@@ -421,6 +401,12 @@ larger amounts of data and was thus very limited.
 Users of the `/_api/traversal` REST API should use
 [AQL traversal queries](../../aql/graphs/traversals.md) instead.
 
+#### Pregel API
+
+The `/_api/control_pregel/*` endpoints have been removed in v3.12.0 as Pregel
+graph processing is no longer supported. The `arangodb_pregel_*` metrics and the
+`pregel` log topic have been removed as well from the respective endpoints.
+
 ## JavaScript API
 
 ### Collection creation
@@ -444,3 +430,8 @@ not handle larger amounts of data and were thus very limited.
 
 Users of the JavaScript-based traversal API should use
 [AQL traversal queries](../../aql/graphs/traversals.md) instead.
+
+### `@arangodb/pregel` package
+
+The `@arangodb/pregel` JavaScript API package has been removed in v3.12.0 and
+will no longer be supported.
