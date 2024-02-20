@@ -27,18 +27,19 @@
 
   {{- $section := index $optionsMap "General" }}
   {{- if gt ($section | len) 0 }}
-    {{- template "render-section" (dict "name" "General" "section" $section "context" $context) }}
+    {{- template "render-section" (dict "name" "General" "section" $section "context" $context "pageVersion" $pageVersion) }}
   {{- end }}
 
   {{- range $name, $section := $optionsMap }}
     {{- if ne $name "General" }}
-      {{- template "render-section" (dict "name" $name "section" $section "context" $context) }}
+      {{- template "render-section" (dict "name" $name "section" $section "context" $context "pageVersion" $pageVersion) }}
     {{- end }}
   {{- end }}
 {{- end }}
 
 {{- define "render-section" }}
 {{- $context := .context }}
+{{- $pageVersion := .pageVersion }}
 ## {{ .name }}
 
 {{ range $option := .section }}
@@ -82,10 +83,12 @@ Default: `{{ string (index (slice | append .) 0) }}`
 {{ . }}
 {{ end }}
 
-{{ with $option.os }}
-  {{ $size := . | len }}
-  {{ if lt $size 3}}{{/* needs to be equal to the total number of possible OSes */}}
+{{ if or (eq $pageVersion "3.10") (eq $pageVersion "3.11") }}{{/* No Windows/macOS in 3.12+, logic can be removed after 3.11 EOL */}}
+  {{ with $option.os }}
+    {{ $size := . | len }}
+    {{ if lt $size 3 }}{{/* needs to be equal to the total number of possible OSes */}}
 Available on {{ delimit . ", " " and " }} only.
+    {{ end }}
   {{ end }}
 {{ end }}
 
