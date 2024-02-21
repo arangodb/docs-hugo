@@ -99,8 +99,8 @@ AQL queries may now report a higher memory usage and thus run into memory limits
 sooner, see [Higher reported memory usage for AQL queries](incompatible-changes-in-3-12.md#higher-reported-memory-usage-for-aql-queries).
 
 The RocksDB block cache metric `rocksdb_block_cache_usage` now also includes the
-memory used for table building, table reading, file metadata, and compactions
-by default.
+memory used for table building, table reading, file metadata, flushing and
+compactions by default.
 
 Furthermore, the memory usage of some subsystems has been optimized. When
 dropping a database, all contained collections are now marked as dropped

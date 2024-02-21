@@ -303,13 +303,14 @@ The following startup options are now enabled by default:
   - `--rocksdb.reserve-table-reader-memory`
   - `--rocksdb.reserve-file-metadata-memory`
 
-This makes the memory accounting for RocksDB more accurate by including these
-memory uses and the memory used for RocksDB compactions in the existing
-`rocksdb_block_cache_usage` metric.
+This makes the memory accounting for RocksDB more accurate and helps to not
+allocate more memory than is configured by tracking the memory use for
+table building, tabling reading, file metadata, flushes and compactions and
+including it in the existing `rocksdb_block_cache_usage` metric.
 
-This slightly decreases performance due to using the block cache, and you may
-need to allow ArangoDB to use more memory for the RocksDB block cache than
-before with the `--rocksdb.block-cache-size` startup option.
+This slightly decreases performance due to using the block cache for additional
+things, and you may need to allow ArangoDB to use more memory for the RocksDB
+block cache than before with the `--rocksdb.block-cache-size` startup option.
 
 ## Client tools
 
