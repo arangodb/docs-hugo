@@ -205,6 +205,12 @@ that it may take a few minutes to get activated.
 Once enabled, you no longer have to fill in the `root` user and password of
 your ArangoDB deployment.
 
+{{< info >}}
+If you use the auto login feature with AWS
+[private endpoints](../deployments/private-endpoints.md), it is recommended
+to switch off the `custom DNS` setting.
+{{< /info >}}
+
 This feature can be disabled at any time. You may wish to consider explicitly
 disabling this feature in the following situations:
 - Your workflow requires you to access the database UI using different accounts
@@ -213,6 +219,12 @@ disabling this feature in the following situations:
 - You need to give individuals access to a database's UI without giving them
   any access to ArangoGraph. Note, however, that it's possible to only give an
   ArangoGraph user database UI access, without other ArangoGraph permissions.
+
+{{< warning >}}
+When the auto login feature is enabled, users cannot edit their permissions on
+the ArangoDB database web interface as all permissions are managed by the
+ArangoGraph platform.
+{{< /warning >}}
 
 Before getting started, make sure you are signed into ArangoGraph as a user
 with one of the following permissions in your project:

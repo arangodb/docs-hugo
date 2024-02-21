@@ -103,9 +103,6 @@ features outlined below. For additional information, see
 - [**Auditing**](../../operations/security/audit-logging.md):
   Audit logs of all server interactions.
 
-- [**LDAP Authentication**](../../components/arangodb-server/ldap.md):
-  ArangoDB user authentication with an LDAP server.
-
 - [**Encryption at Rest**](../../operations/security/encryption-at-rest.md):
   Hardware-accelerated on-disk encryption for your data.
 
