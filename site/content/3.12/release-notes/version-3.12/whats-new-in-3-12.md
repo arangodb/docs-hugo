@@ -176,6 +176,83 @@ section, as well as in the **API** tab of Foxx services and Foxx routes that use
 The new version adds support for OpenAPI 3.x specifications in addition to
 Swagger 2.x compatibility.
 
+## External versioning support
+
+Document operations that update or replace documents now support a `versionAttribute` option.
+If set, the attribute with the name specified by the option is looked up in the
+stored document and the attribute value is compared numerically to the value of
+the versioning attribute in the supplied document that is supposed to update/replace it.
+The document is only changed if the new number is higher.
+
+This simple versioning can help to avoid overwriting existing data with older
+versions in case data is transferred from an external system into ArangoDB
+and the copies are currently not in sync.
+
+This new feature is supported in AQL, the JavaScript API, and the HTTP API for
+the respective operations to update and replace documents, including the insert
+operations when used to update/replace a document with `overwriteMode: "update"`
+or `overwriteMode: "replace"`.
+
+**Examples:**
+
+Insert a new document normally using _arangosh_:
+
+```js
+db.collection.insert({ _key: "123", externalVersion: 1 });
+```
+
+Update the document if the versioning attribute is higher in the new document,
+which is true in this case:
+
+```js
+db.collection.update("123",
+  { externalVersion: 5, anotherAttribute: true },
+  { versionAttribute: "externalVersion" });
+```
+
+Updating the document is skipped if the versioning attribute is lower or equal
+in the supplied document compared to what is currently stored in ArangoDB:
+
+```js
+db.collection.update("123",
+  { externalVersion: 4, anotherAttribute: false },
+  { versionAttribute: "externalVersion" });
+```
+
+You can also make use of the `versionAttribute` option in an insert-update
+operation for the update case, including in AQL:
+
+```js
+db.collection.insert({ _key: "123", externalVersion: 6, value: "foo" },
+  { overwriteMode: "update", versionAttribute: "externalVersion" });
+
+db._query(`UPDATE { _key: "123", externalVersion: 7, value: "bar" } IN collection 
+  OPTIONS { versionAttribute: "externalVersion"}`);
+```
+
+External versioning is opt-in and no version checking is performed for
+operations for which the `versionAttribute` option isn't set. Document removal
+operations do not support external versioning. Removal operations are always
+carried out normally.
+
+Note that version checking is performed only if both the existing version of
+the document in the database and the new document version contain the version
+attribute with numeric values of `0` or greater. If neither the existing document
+in the database nor the new document contains the version attribute, or if the
+version attribute in any of the two is not a number inside the valid range, the
+update/replace operations behave as if no version checking was requested.
+This may overwrite the versioning attribute in the database.
+
+Also see:
+- The AQL [INSERT](../../aql/high-level-operations/insert.md#versionattribute),
+  [UPDATE](../../aql/high-level-operations/update.md#versionattribute) and
+  [REPLACE](../../aql/high-level-operations/update.md#versionattribute) operations
+- The `insert()`, `update()`, `replace()` methods of the
+  [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
+  in the JavaScript API
+- The endpoints to create, update, and replace a single or multiple documents
+  in the [HTTP API](../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
+
 ## AQL
 
 ### Improved joins
@@ -364,78 +441,6 @@ The `move-filters-into-enumerate` optimizer rule can now also move filters into
 `EnumerateListNodes` for early pruning. This can significantly improve the
 performance of queries that do a lot of filtering on longer lists of
 non-collection data.
-
-### `versionAttribute` property for `UPDATE` and `REPLACE` operations
-
-`UPDATE` and `REPLACE` operations now support an optional `versionAttribute`
-property. If set, the attribute with the name specified by the property is
-looked up in the document to be updated or to be replaced.
-
-This simple versioning can help to avoid overwriting existing data with older
-versions in case data is transferred from an external system into ArangoDB
-and the copies are currently not in sync.
-
-The `versionAttribute` property can be used for `INSERT` operations with
-`overwriteMode: "update"` or `overwriteMode: "replace"`.
-It can also be used inside AQL queries by specifying it in the `OPTIONS`
-clause of an `UPDATE`, `REPLACE`, and `INSERT` operation.
-
-If no such attribute exists, the operation is performed as usual. If such an
-attribute exists, its content is read and compared numerically to the value of
-the versioning attribute in the document that updates or replaces it.
-If the version number in the new document is higher than in the document that
-already exists in the database, then the operation is performed normally.
-If the version number in the new document is lower or equal to what exists in
-the database, the operation is not performed and behaves like a no-op. No error
-is returned in this case.
-
-**Examples:**
-
-Inserts the new document normally:
-```js
-db.collection.insert({_key: "hello", value: 1, ver: 1});
-```
-
-Updates the document because the value of the `versionAttribute` is higher in the
-new document:
-```js
-db.collection.update("hello", 
-  {value: 2, ver: 2}, 
-  {versionAttribute: "ver"});
-```
-
-Does not update the document because the value of the `versionAttribute` is lower
-in the new document:
-```js
-db.collection.update("hello", 
-  {value: 3, ver: 1}, 
-  {versionAttribute: "ver"});
-```
-
-Updates the document because the key already exists and the value of the
-`versionAttribute` is higher in the new document:
-```js
-db.collection.insert({_key: "hello", value: 4, ver: 3}, 
-  {overwriteMode: "update", versionAttribute: "ver"});
-```
-
-```js
-db._query("UPDATE 'hello' WITH {value: 5, ver: 4} IN collection 
-  OPTIONS {versionAttribute: 'ver'}");
-```
-
-Versioning is opt-in and no version checking is performed for
-operations for which the `versionAttribute` property was not set as part of
-the `UPDATE` and `REPLACE` operations or as an option in the AQL query. Document
-removal operations do not support versioning. Removal operations are always
-carried out normally without checking the version attribute, even if it is specified.
-
-Note that version checking is performed only if both the existing version of
-the document in the database and the new document version contain the version
-attribute with numeric values between `0` and `18446744073709551615`.
-If neither the existing document in the database nor the new document version
-does not contain the version attribute, or if the version attribute in any of
-the two is not a number inside the valid range, the `UPDATE` and `REPLACE` operations behave as if no version checking was requested.
 
 ### Improved late document materialization
 

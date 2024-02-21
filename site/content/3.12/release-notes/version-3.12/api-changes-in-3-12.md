@@ -241,13 +241,21 @@ for details.
 
 #### Document API
 
-The `PUT /_api/document/{collection}/{key}` and `PATCH /_api/document/{collection}/{key}`
-endpoints accept a new `versionAttribute` property that adds external versioning
-support.
-If set, the attribute with the name specified by the property is looked up in
-the document to be replaced or updated and its content is read and compared
-numerically to the value of the versioning attribute in the document that
-updates or replaces it.
+The following endpoints accept a new `versionAttribute` query parameter that adds
+external versioning support:
+
+- `PATCH /_api/document/{collection}/{key}` (single document update)
+- `PATCH /_api/document/{collection}` (multiple document update)
+- `PUT /_api/document/{collection}` (single document replace)
+- `PUT /_api/document/{collection}/{key}` (multiple document replace)
+- `POST /_api/document/{collection}` (single document insert, when used to update/replace a document)
+- `POST /_api/document/{collection}/{key}` (multiple document insert, when used to update/replace a document)
+
+If set, the attribute with the name specified by the option is looked up in the
+stored document and the attribute value is compared numerically to the value of
+the versioning attribute in the supplied document that is supposed to update/replace it.
+The document is only changed if the new number is higher. See the
+[Document API](../../develop/http-api/documents.md#create-a-document) for details.
 
 #### Index API
 
@@ -425,21 +433,19 @@ Users of the JavaScript-based traversal API should use
 
 ### `collection` object
 
-`collection.replace(object, data, options)` and
-`collection.update(object, data, options)` now have an optional
-`versionAttribute` property that adds external versioning support. It can also
-be used for `collection.insert(data, options)` with `overwriteMode: "update"`
-or `overwriteMode: "replace"`.
+The following methods now accept a `versionAttribute` option that adds external
+versioning support:
 
-If set, the attribute with the name specified by the property is looked up in
-the document to be replaced or updated and its content is read and compared
-numerically to the value of the versioning attribute in the document that
-updates or replaces it.
-If the version number in the new document is higher than in the document that
-already exists in the database, then the operation is performed normally.
-If the version number in the new document is lower or equal to what exists in
-the database, the operation is not performed and behaves like a no-op. No error
-is returned in this case.
+- `collection.update(object, data, options)`
+- `collection.replace(object, data, options)`
+- `collection.insert(data, options)` when used to update/replace a document
+
+If set, the attribute with the name specified by the option is looked up in the
+stored document and the attribute value is compared numerically to the value of
+the versioning attribute in the supplied document that is supposed to update/replace it.
+The document is only changed if the new number is higher. See the
+[JavaScript API](../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
+for details.
 
 ### `@arangodb/pregel` package
 

@@ -17,6 +17,10 @@ aliases:
   Accelerate wildcard searches against Views and inverted indexes with _n_-grams
   to quickly find candidate matches.
 
+- [**External versioning**](../../release-notes/version-3.12/whats-new-in-3-12.md#external-versioning-support):
+  Specify any top-level attribute to compare whether the version number is higher
+  than the currently stored one when updating or replacing documents.
+
 **Enterprise Edition**
 
 - [**ArangoSearch WAND optimization**](../../index-and-search/arangosearch/performance.md#wand-optimization):
