@@ -94,7 +94,7 @@ security, such as for scaling graphs and managing your data safely.
 - Multi-tenant deployment option for the transactional guarantees and
   performance of a single server
 - Enhanced data security with on-disk and backup encryption, key rotation,
-  audit logging, and LDAP authentication
+  and audit logging
 - Incremental backups without downtime and off-site replication
 
 See all [Enterprise Edition Features](enterprise-edition.md).
@@ -120,7 +120,6 @@ See all [Enterprise Edition Features](enterprise-edition.md).
 | ACID transactions for multi-document / multi-collection queries on single servers, for single document operations in clusters, and for multi-document queries in clusters for collections with a single shard | In addition, ACID transactions for multi-collection queries using the OneShard feature |
 | Always read from leader shards in clusters | Optionally allow dirty reads to **read from followers** to scale reads |
 | TLS key and certificate rotation | In addition, **key rotation for JWT secrets** and **server name indication** (SNI) |
-| Built-in user management and authentication | Additional **LDAP authentication** option |
 | Only server logs | **Audit log** of server interactions |
 | No on-disk encryption | **Encryption at Rest** with hardware-accelerated on-disk encryption and key rotation |
 | Only regular backups | **Datacenter-to-Datacenter Replication** for disaster recovery |

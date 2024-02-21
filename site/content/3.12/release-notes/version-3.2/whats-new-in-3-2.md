@@ -342,7 +342,7 @@ are available in the *Enterprise Edition*.
 
 ## Authentication
 
-- added [LDAP](../../components/arangodb-server/ldap.md) authentication (Enterprise Edition only)
+- added LDAP authentication (Enterprise Edition only)
 
 ## Authorization
 

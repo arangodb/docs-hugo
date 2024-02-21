@@ -240,8 +240,11 @@ paths:
                         in the cluster, a shard refuses to write. Writes to shards with enough
                         up-to-date copies succeed at the same time, however. The value of
                         `writeConcern` cannot be greater than `replicationFactor`.
+
                         For SatelliteCollections, the `writeConcern` is automatically controlled to
-                        equal the number of DB-Servers and has a value of `0`. _(cluster only)_
+                        equal the number of DB-Servers and has a value of `0`.
+                        Otherwise, the default value is controlled by the `--cluster.write-concern`
+                        startup option, which defaults to `1`. _(cluster only)_
                       type: number
                 users:
                   description: |
