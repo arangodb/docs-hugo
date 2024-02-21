@@ -1,22 +1,24 @@
 ---
 title: Computed Values
 menuTitle: Computed Values
-weight: 25
+weight: 27
 description: ''
 archetype: default
 ---
-Spring Data ArangoDB provides annotations to allow mapping computed values to entity properties and to include computed 
-values data definitions during collection creation.
+Spring Data ArangoDB provides annotations to allow mapping computed values to
+entity properties and to include computed values data definitions during
+collection creation.
 
-For reference see the
-[indexing](../../../../../concepts/data-structure/documents/computed-values.md) documentation.
+For reference, see the [indexing](../../../../../concepts/data-structure/documents/computed-values.md)
+documentation.
 
 ## Mapping
 
-Computed values can be mapped to entity properties by annotating the related fields with `@ComputedValueField`. 
+Computed values can be mapped to entity properties by annotating the related
+fields with `@ComputedValueField`. 
  
-If the property is mutable, then the field is automatically updated in place with the value coming from the server
-in the following methods:
+If the property is mutable, then the field is automatically updated in place
+with the value coming from the server in the following methods:
 - `ArangoOperations#repsert(Object)`
 - `ArangoOperations#repsertAll(Iterable, Class)`
 - `ArangoRepository#save(Object)`
@@ -24,11 +26,13 @@ in the following methods:
 
 ## Data Definitions
 
-Computed values data definitions can be specified through parameters of the following annotations:
+Computed values data definitions can be specified through parameters of the
+following annotations:
 - `@ComputedValueField` on fields
 - `@ComputedValueEntry` on classes (optionally within `@ComputedValues`)
 
-For example:
+**Example**
+
 ```java
 @Document
 @ComputedValueEntry(
@@ -49,5 +53,6 @@ class MyEntity {
 }
 ```
 
-On database collection creation, the computed values metadata will be included.
-Note that the data definitions will not be updated, in case the database collection already exists. 
+On database collection creation, the computed values metadata is included.
+Note that the data definitions is not updated in case the database collection
+already exists. 
