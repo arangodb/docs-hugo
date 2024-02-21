@@ -189,6 +189,13 @@ The property defaults to the `writeConcern` of the prototype collection if you
 don't specify it explicitly. You can adjust the `writeConcern` later on in
 either case.
 
+#### Log API
+
+The [`/_admin/log/*` endpoints](../../develop/http-api/monitoring/logs.md) no
+longer use the `ldap` log topic. Changing the log level of the `ldap` topic or
+any other unknown topic is not an error, however. Also see
+[Incompatible changes in ArangoDB 3.12](incompatible-changes-in-3-12.md#ldap-authentication).
+
 ### Privilege changes
 
 

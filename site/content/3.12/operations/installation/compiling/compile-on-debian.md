@@ -69,7 +69,6 @@ sudo aptitude -y install git-core \
     libjemalloc-dev \
     cmake \
     python2.7 \
-sudo aptitude -y install libldap2-dev # Enterprise Edition only
 ```
 
 ## Download the Source

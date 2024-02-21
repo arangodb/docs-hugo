@@ -232,9 +232,6 @@ The following options have been added to it:
   - `--ldap.roles-exclude`
   - `--ldap.superuser-role`
 
-  Please refer to [LDAP](../../components/arangodb-server/ldap.md) for a detailed
-  explanation.
-
 ## Miscellaneous features
 
 - when creating a collection in the cluster, there is now an optional 

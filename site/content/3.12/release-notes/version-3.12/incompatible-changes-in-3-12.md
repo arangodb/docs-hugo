@@ -34,6 +34,22 @@ In detail, the following functionalities have been removed:
 - The `--pregel.max-parallelism`, `--pregel.min-parallelism`, and
   `--pregel.parallelism` startup options
 
+## LDAP authentication
+
+Support for ArangoDB user authentication with an LDAP server in the
+Enterprise Edition has been removed.
+
+- All `--ldap.*` and `--ldap2.*` startup options have been removed
+- The `--server.local-authentication` startup option has been obsoleted and
+  will be fully removed in a future version
+- The `--server.authentication-timeout` startup option that mainly controlled
+  the caching for LDAP authentication now only controls the cluster-internal
+  authentication caching and shouldn't be touched
+- The `ldap` log topic is no longer available and specifying it in the
+  `--log.level` startup option raises a warning
+- The `ERROR_LDAP_*` error codes with the numbers in the range from `1800`
+  through `1820` have been removed
+
 ## Little-endian on-disk key format for the RocksDB storage engine
 
 ArangoDB 3.12 does not support the little-endian on-disk key for the RocksDB
