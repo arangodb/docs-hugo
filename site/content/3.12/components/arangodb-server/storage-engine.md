@@ -198,4 +198,4 @@ max-bytes-for-level-base * (max-bytes-for-level-multiplier ^ (L-1))
 ```
 
 Also see [Reducing the Memory Footprint of ArangoDB servers](../../operations/administration/reduce-memory-footprint.md)
-for descriptions of RocksDB options.
+and [ArangoDB Server Options](options.md#rocksdb) for descriptions of RocksDB options.
