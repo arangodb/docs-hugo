@@ -19,7 +19,7 @@ You can choose between two subtypes of multi-dimensional indexes:
   attributes to use as dimensions
 - An `mdi-prefixed` index with a `fields` property as well as a `prefixFields`
   property to specify one or more mandatory document attributes to narrow down
-  the search space using equality checks
+  the search space using equality checks, see [Prefix fields](#prefix-fields)
 
 Both subtypes require that the attributes described by `fields` have numeric
 values. You can optionally omit documents from the index that have any of
@@ -31,10 +31,10 @@ Multi-dimensional indexes can be created with a uniqueness constraint with
 attribute values, using all of the `fields` attributes and (for `mdi-prefixed`
 indexes) `prefixFields`. Documents omitted because of `sparse: true` are exempt.
 
-You can store additional attributes in multi-dimensional indexes with the
-`storedValues` property. They can be used for projections (unlike the `fields`
-attributes) so that indexes can cover more queries without having to access the
-full documents.
+You can [store additional attributes](#storing-additional-values-in-indexes) in
+multi-dimensional indexes with the `storedValues` property. They can be used for
+projections (unlike the `fields` attributes) so that indexes can cover more
+queries without having to access the full documents.
 
 Non-unique `mdi` indexes have a fixed selectivity estimate of `1`. For `mdi`
 indexes with `unique: true` as well as for `mdi-prefixed` indexes, you can
@@ -170,6 +170,10 @@ the `mdi-prefixed` subtype instead of `mdi`. It has all the features of the
 you want to use for equality checks. This combination allows to efficiently
 narrow down the search space to a subset of multi-dimensional index data before
 performing the range checking.
+
+The attributes for equality checking are specified via the `prefixFields`
+property of `mdi-prefix` indexes. These attributes can have non-numeric values,
+unlike the attributes you use as `fields`.
 
 ```js
 db.<collection>.ensureIndex({
