@@ -467,5 +467,5 @@ for details.
 
 ### `@arangodb/pregel` package
 
-The `@arangodb/pregel` JavaScript API package has been removed in v3.12.0 and
-will no longer be supported.
+The `@arangodb/pregel` module of the JavaScript API has been removed in v3.12.0
+as Pregel is no longer supported.
