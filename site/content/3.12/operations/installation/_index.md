@@ -28,12 +28,16 @@ please refer to the [Deploy](../../deploy/_index.md) chapter.
 
 ## Supported platforms and architectures
 
+{{< tip >}}
+Run ArangoDB on Linux using the production-ready packages for the x86-64 architecture.
+{{< /tip >}}
+
 Starting with v3.12, ArangoDB packages for Windows and macOS are not provided
 anymore. You can use the official [Docker images](https://hub.docker.com/_/arangodb/)
 instead.
 
 {{< info >}}
-Running production environments on ARM architectures is not recommended.
+Running ArangoDB on ARM architectures is suitable for testing and evaluation purposes.
 {{< /info >}}
 
 {{< info >}}
