@@ -75,7 +75,7 @@ detailed information about breaking changes before upgrading.
   Only deployments that were set up with the RocksDB storage engine using
   ArangoDB v3.2 or v3.3 and that have been upgraded since then are affected.
 
-  See [Incompatible changes in ArangoDB 3.12](version-3.12/incompatible-changes-in-3-12.md#little-endian-on-disk-key-format-for-the-rocksdb-storage-engine)
+  See [Incompatible changes in ArangoDB 3.12](version-3.12/incompatible-changes-in-3-12.md#little-endian-on-disk-key-format-for-the-rocksdb-storage-engine-unsupported)
   for details.
 
 - **Pregel**:
