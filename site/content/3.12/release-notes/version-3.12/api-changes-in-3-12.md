@@ -257,6 +257,24 @@ and defaults to `[]`.
 See the [`optimizeTopK` View property](../../index-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
 for details.
 
+#### Document API
+
+The following endpoints accept a new `versionAttribute` query parameter that adds
+external versioning support:
+
+- `PATCH /_api/document/{collection}/{key}` (single document update)
+- `PATCH /_api/document/{collection}` (multiple document update)
+- `PUT /_api/document/{collection}` (single document replace)
+- `PUT /_api/document/{collection}/{key}` (multiple document replace)
+- `POST /_api/document/{collection}` (single document insert, when used to update/replace a document)
+- `POST /_api/document/{collection}/{key}` (multiple document insert, when used to update/replace a document)
+
+If set, the attribute with the name specified by the option is looked up in the
+stored document and the attribute value is compared numerically to the value of
+the versioning attribute in the supplied document that is supposed to update/replace it.
+The document is only changed if the new number is higher. See the
+[Document API](../../develop/http-api/documents.md#create-a-document) for details.
+
 #### Index API
 
 ##### `optimizeTopK` for inverted indexes
@@ -449,6 +467,22 @@ not handle larger amounts of data and were thus very limited.
 
 Users of the JavaScript-based traversal API should use
 [AQL traversal queries](../../aql/graphs/traversals.md) instead.
+
+### `collection` object
+
+The following methods now accept a `versionAttribute` option that adds external
+versioning support:
+
+- `collection.update(object, data, options)`
+- `collection.replace(object, data, options)`
+- `collection.insert(data, options)` when used to update/replace a document
+
+If set, the attribute with the name specified by the option is looked up in the
+stored document and the attribute value is compared numerically to the value of
+the versioning attribute in the supplied document that is supposed to update/replace it.
+The document is only changed if the new number is higher. See the
+[JavaScript API](../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
+for details.
 
 ### `@arangodb/pregel` package
 
