@@ -2747,13 +2747,12 @@
     - agent
     - single
   description: |
-    On Windows, this figure contains the total number of page faults.
-    On other system, this figure contains the number of major faults the
+    This figure contains the number of major faults the
     process has made which have required loading a memory page from disk.
   troubleshooting: |
     If the rate of this is high, i.e. it increases fast, it could be an indication
     that the memory usage is too high, or the memory is too low, or paging is done
-    too aggressively (for Linux, this see sysctl and vm.swappiness).
+    too aggressively (see Linux sysctl and vm.swappiness).
 
 - name: arangodb_process_statistics_minor_page_faults_total
   renamedFrom: arangodb_process_statistics_minor_page_faults
@@ -2771,7 +2770,7 @@
     - single
   description: |
     The number of minor faults the process has made which have not required
-    loading a memory page from disk. This figure is not reported on Windows.
+    loading a memory page from disk.
 
 - name: arangodb_process_statistics_number_of_threads
   introducedIn: "3.6.1"
@@ -2900,10 +2899,7 @@
     - agent
     - single
   description: |
-    On Windows, this figure contains the total amount of memory that the
-    memory manager has committed for the arangod process. On other systems,
-    this figure contains the size of the virtual memory the process is
-    using.
+    This figure contains the size of the virtual memory the process is using.
 
 - name: arangodb_read_transactions_total
   introducedIn: "3.8.2"
