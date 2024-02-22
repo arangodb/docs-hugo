@@ -406,29 +406,3 @@ database. All changes to the access levels must be done using the
 [`@arangodb/users` module of the JavaScript API](in-arangosh.md),
 the [`/_api/user` HTTP API endpoints](../../../develop/http-api/users.md),
 or the web interface.
-
-### LDAP Users
-
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
-ArangoDB supports LDAP as an external authentication system. For detailed
-information please have look into the
-[LDAP configuration guide](../../../components/arangodb-server/ldap.md).
-
-There are a few differences to *normal* ArangoDB users:
-- ArangoDB does not "*know*" LDAP users before they first authenticate.
-  Calls to various APIs using endpoints in `_api/users/*` will **fail** until
-  the user first logs-in.
-- Access levels of each user are periodically updated. This will happen by
-  default every *5 minutes*.
-- It is not possible to change permissions on LDAP users directly, only on **roles**
-- LDAP users cannot store configuration data per user
-  (affects for example custom settings in the graph viewer).
-
-To grant access for an LDAP user you will need to create *roles* within the
-ArangoDB server. A role is just a user with the `:role:` prefix in its name.
-Role users cannot login as database users, the `:role:` prefix ensures this.
-Your LDAP users will need to have at least one role; once users log in they
-will be automatically granted the union of all access rights of all their roles.
-Note that a lower right grant in one role will be overwritten by a higher
-access grant in a different role.

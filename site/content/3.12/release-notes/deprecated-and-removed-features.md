@@ -12,6 +12,7 @@ aliases:
   - ../deploy/active-failover/manual-start
   - ../deploy/active-failover/administration
   - ../deploy/active-failover
+  - ../components/arangodb-server/ldap
   - ../arangograph/migrate-to-the-cloud
   - ../data-science/pregel
   - ../data-science/pregel/algorithms
@@ -45,6 +46,10 @@ detailed information about breaking changes before upgrading.
   single servers for automatic failover is no longer supported from v3.12 onward.
   You can use [cluster deployments](../deploy/cluster/_index.md) instead, which
   offer better resilience and synchronous replication.
+
+- **LDAP authentication**:
+  ArangoDB user authentication with an LDAP server in the Enterprise Edition is
+  no longer available starting with v3.12.
 
 - **VelocyStream protocol**:
   ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is no

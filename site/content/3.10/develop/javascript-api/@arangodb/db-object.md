@@ -392,7 +392,7 @@ error is thrown. For information about the naming constraints for collections, s
 
 - `distributeShardsLike` (string, _optional_, default: `""`):
   The name of another collection. If this property is set in a cluster, the
-  collection copies the `replicationFactor`, `numberOfShards` and `shardingStrategy`
+  collection copies the `replicationFactor`, `numberOfShards`, `shardingStrategy`, and `writeConcern`
   properties from the specified collection (referred to as the _prototype collection_)
   and distributes the shards of this collection in the same way as the shards of
   the other collection. In an Enterprise Edition cluster, this data co-location is
