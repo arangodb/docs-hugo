@@ -160,6 +160,5 @@ there are a few key differences:
 - Foxx services are not allowed to call out to the internet by default for
   security reasons, but can be enabled on request.
   Incoming calls to Foxx services are fully supported.
-- LDAP authentication is not supported.
 
 For more information, see the [comparison between on-premises editions and the managed cloud service](https://www.arangodb.com/subscriptions/).

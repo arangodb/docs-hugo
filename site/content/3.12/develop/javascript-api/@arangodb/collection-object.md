@@ -996,6 +996,28 @@ used to specify the following options:
   existing document's value. If set to `true`, objects will be merged.
   The default is `true`.
   This option controls the update-insert behavior only.
+- `versionAttribute`: Only applicable if `overwrite` is set to `true` or
+  `overwriteMode` is set to `update` or `replace`.
+
+  You can use the `versionAttribute` option for external versioning support.
+  If set, the attribute with the name specified by the option is looked up in the
+  stored document and the attribute value is compared numerically to the value of
+  the versioning attribute in the supplied document that is supposed to update/replace it.
+
+  If the version number in the new document is higher (rounded down to a whole number)
+  than in the document that already exists in the database, then the update/replace
+  operation is performed normally. This is also the case if the new versioning
+  attribute has a non-numeric value, if it is a negative number, or if the
+  attribute doesn't exist in the supplied or stored document.
+
+  If the version number in the new document is lower or equal to what exists in
+  the database, the operation is not performed and the existing document thus not
+  changed. No error is returned in this case.
+
+  The attribute can only be a top-level attribute.
+
+  You can check if `_oldRev` (if present) and `_rev` are different to determine if the
+  document has been changed.
 
 ---
 
@@ -1301,7 +1323,26 @@ Replaces an existing document, with additional options passed as an object:
   revision of the document is returned in the output under the
   attribute `old`.
 - `silent`: If this flag is set to `true`, no output is returned.
+- `versionAttribute`:
+  You can use the `versionAttribute` option for external versioning support.
+  If set, the attribute with the name specified by the option is looked up in the
+  stored document and the attribute value is compared numerically to the value of
+  the versioning attribute in the supplied document that is supposed to replace it.
 
+  If the version number in the new document is higher (rounded down to a whole number)
+  than in the document that already exists in the database, then the replace
+  operation is performed normally. This is also the case if the new versioning
+  attribute has a non-numeric value, if it is a negative number, or if the
+  attribute doesn't exist in the supplied or stored document.
+
+  If the version number in the new document is lower or equal to what exists in
+  the database, the operation is not performed and the existing document thus not
+  changed. No error is returned in this case.
+
+  The attribute can only be a top-level attribute.
+
+  You can check if `_oldRev` and `_rev` are different to determine if the
+  document has been changed.
 ---
 
 `collection.replace(document-identifier, data [, options])`
@@ -1473,6 +1514,26 @@ an object:
   set to `false`, the value in the patch document will overwrite the
   existing document's value. If set to `true`, objects will be merged.
   The default is `true`.
+- `versionAttribute`:
+  You can use the `versionAttribute` option for external versioning support.
+  If set, the attribute with the name specified by the option is looked up in the
+  stored document and the attribute value is compared numerically to the value of
+  the versioning attribute in the supplied document that is supposed to update it.
+
+  If the version number in the new document is higher (rounded down to a whole number)
+  than in the document that already exists in the database, then the update
+  operation is performed normally. This is also the case if the new versioning
+  attribute has a non-numeric value, if it is a negative number, or if the
+  attribute doesn't exist in the supplied or stored document.
+
+  If the version number in the new document is lower or equal to what exists in
+  the database, the operation is not performed and the existing document thus not
+  changed. No error is returned in this case.
+
+  The attribute can only be a top-level attribute.
+
+  You can check if `_oldRev` and `_rev` are different to determine if the
+  document has been changed.
 
 ---
 

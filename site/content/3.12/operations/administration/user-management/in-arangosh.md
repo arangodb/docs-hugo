@@ -118,8 +118,7 @@ curl --dump - http://127.0.0.1:8529/_api/version
 `users.save(user, passwd, active, extra)`
 
 This will create a new ArangoDB user. The user name must be specified in *user*
-and must not be empty. Note that usernames *must* not start with `:role:`
-(reserved for LDAP authentication).
+and must not be empty.
 
 The password must be given as a string, too, but can be left empty if
 required. If you pass the special value *ARANGODB_DEFAULT_ROOT_PASSWORD*, the

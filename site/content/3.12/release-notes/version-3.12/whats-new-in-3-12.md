@@ -98,6 +98,10 @@ been added for monitoring the memory consumption.
 AQL queries may now report a higher memory usage and thus run into memory limits
 sooner, see [Higher reported memory usage for AQL queries](incompatible-changes-in-3-12.md#higher-reported-memory-usage-for-aql-queries).
 
+The RocksDB block cache metric `rocksdb_block_cache_usage` now also includes the
+memory used for table building, table reading, file metadata, flushing and
+compactions by default.
+
 Furthermore, the memory usage of some subsystems has been optimized. When
 dropping a database, all contained collections are now marked as dropped
 immediately. Ongoing operations on these collections can be stopped earlier, and
@@ -175,6 +179,83 @@ section, as well as in the **API** tab of Foxx services and Foxx routes that use
 
 The new version adds support for OpenAPI 3.x specifications in addition to
 Swagger 2.x compatibility.
+
+## External versioning support
+
+Document operations that update or replace documents now support a `versionAttribute` option.
+If set, the attribute with the name specified by the option is looked up in the
+stored document and the attribute value is compared numerically to the value of
+the versioning attribute in the supplied document that is supposed to update/replace it.
+The document is only changed if the new number is higher.
+
+This simple versioning can help to avoid overwriting existing data with older
+versions in case data is transferred from an external system into ArangoDB
+and the copies are currently not in sync.
+
+This new feature is supported in AQL, the JavaScript API, and the HTTP API for
+the respective operations to update and replace documents, including the insert
+operations when used to update/replace a document with `overwriteMode: "update"`
+or `overwriteMode: "replace"`.
+
+**Examples:**
+
+Insert a new document normally using _arangosh_:
+
+```js
+db.collection.insert({ _key: "123", externalVersion: 1 });
+```
+
+Update the document if the versioning attribute is higher in the new document,
+which is true in this case:
+
+```js
+db.collection.update("123",
+  { externalVersion: 5, anotherAttribute: true },
+  { versionAttribute: "externalVersion" });
+```
+
+Updating the document is skipped if the versioning attribute is lower or equal
+in the supplied document compared to what is currently stored in ArangoDB:
+
+```js
+db.collection.update("123",
+  { externalVersion: 4, anotherAttribute: false },
+  { versionAttribute: "externalVersion" });
+```
+
+You can also make use of the `versionAttribute` option in an insert-update
+operation for the update case, including in AQL:
+
+```js
+db.collection.insert({ _key: "123", externalVersion: 6, value: "foo" },
+  { overwriteMode: "update", versionAttribute: "externalVersion" });
+
+db._query(`UPDATE { _key: "123", externalVersion: 7, value: "bar" } IN collection 
+  OPTIONS { versionAttribute: "externalVersion"}`);
+```
+
+External versioning is opt-in and no version checking is performed for
+operations for which the `versionAttribute` option isn't set. Document removal
+operations do not support external versioning. Removal operations are always
+carried out normally.
+
+Note that version checking is performed only if both the existing version of
+the document in the database and the new document version contain the version
+attribute with numeric values of `0` or greater. If neither the existing document
+in the database nor the new document contains the version attribute, or if the
+version attribute in any of the two is not a number inside the valid range, the
+update/replace operations behave as if no version checking was requested.
+This may overwrite the versioning attribute in the database.
+
+Also see:
+- The AQL [INSERT](../../aql/high-level-operations/insert.md#versionattribute),
+  [UPDATE](../../aql/high-level-operations/update.md#versionattribute) and
+  [REPLACE](../../aql/high-level-operations/update.md#versionattribute) operations
+- The `insert()`, `update()`, `replace()` methods of the
+  [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
+  in the JavaScript API
+- The endpoints to create, update, and replace a single or multiple documents
+  in the [HTTP API](../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
 
 ## AQL
 
@@ -364,6 +445,52 @@ The `move-filters-into-enumerate` optimizer rule can now also move filters into
 `EnumerateListNodes` for early pruning. This can significantly improve the
 performance of queries that do a lot of filtering on longer lists of
 non-collection data.
+
+### Improved late document materialization
+
+When `FILTER` operations can be covered by `primary`, `edge`, or `persistent`
+indexes, ArangoDB utilizes the index information to only request documents from
+the storage engine that fulfill the criteria. This late document materialization
+has been improved to load documents in batches for efficiency. It now also
+supports projections to fetch subsets of the documents if only a few attributes
+are accessed in an AQL query.
+
+For example, a query like below can use late materialization if there is a
+`persistent` index over the `x` attribute:
+
+```aql
+FOR doc IN coll
+  FILTER doc.x > 5
+  RETURN [doc.y, doc.z, doc.a]
+```
+
+If the `y`, `z`, and `a` attributes are not covered by the index (e.g. `storedValues`),
+then they need to be fetched from the storage engine. This no longer requires to
+load the full documents, as indicated by the `/* (projections: … ) /*` comment
+on the `MaterializeNode` due to an improved `reduce-extraction-to-projection`
+optimizer rule. The loading is performed in batches due to the new
+`batch-materialize-documents` optimization.
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT
+  7   IndexNode           ✓   1000     - FOR doc IN coll   /* persistent index scan, index scan + document lookup */    /* with late materialization */
+  8   MaterializeNode         1000       - MATERIALIZE doc /* (projections: `a`, `y`, `z`) */
+  5   CalculationNode     ✓   1000       - LET #2 = [ doc.`y`, doc.`z`, doc.`a` ]   /* simple expression */   /* collections used: doc : coll */
+  6   ReturnNode              1000       - RETURN #2
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields    Stored values   Ranges
+  7   idx_1788354556957032448   persistent   coll         false    false    false      100.00 %   [ `x` ]   [ `b` ]         (doc.`x` > 5)
+
+Optimization rules applied:
+ Id   Rule Name                                 Id   Rule Name                                 Id   Rule Name                        
+  1   move-calculations-up                       5   use-indexes                                9   batch-materialize-documents      
+  2   move-filters-up                            6   remove-filter-covered-by-index            10   async-prefetch                   
+  3   move-calculations-up-2                     7   remove-unnecessary-calculations-2
+  4   move-filters-up-2                          8   reduce-extraction-to-projection  
+```
 
 ## Indexing
 
@@ -879,6 +1006,40 @@ Enabling these metrics can likely result in a small latency overhead of a few
 percent for write operations. The exact overhead depends on
 several factors, such as the type of operation (single or multi-document operation),
 replication factor, network latency, etc.
+
+### Compression for cluster-internal traffic
+
+The following startup options have been added to optionally compress relevant
+cluster-internal traffic:
+- `--network.compression-method`: The compression method used for cluster-internal
+  requests.
+- `--network.compress-request-threshold`: The HTTP request body size from which on
+  cluster-internal requests are transparently compressed.
+
+If the `--network.compression-method` startup option is set to `none` (default), then no
+compression is performed. To enable compression for cluster-internal requests,
+you can set this option to either `deflate`, `gzip`, `lz4`, or `auto`.
+
+The `deflate` and `gzip` compression methods are general purpose but can
+have significant CPU overhead for performing the compression work.
+The `lz4` compression method compresses slightly worse but has a lot lower
+CPU overhead for performing the compression.
+The `auto` compression method uses `deflate` by default and `lz4` for
+requests that have a size that is at least 3 times the configured threshold
+size.
+
+The compression method only matters if `--network.compress-request-threshold`
+is set to a value greater than zero. This option configures a threshold value
+from which on the outgoing requests will be compressed. If the threshold is
+set to a value of 0, then no compression is performed. If the threshold
+is set to a value greater than 0, then the size of the request body is
+compared against the threshold value, and compression happens if the
+uncompressed request body size exceeds the threshold value.
+The threshold can thus be used to avoid futile compression attempts for too
+small requests.
+
+Compression for all Agency traffic is disabled regardless of the settings
+of these options.
 
 ## Client tools
 

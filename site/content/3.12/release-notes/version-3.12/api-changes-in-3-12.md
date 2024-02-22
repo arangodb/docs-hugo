@@ -86,7 +86,8 @@ execution plans.
 The `remove-unnecessary-projections` AQL optimizer rule has been renamed to
 `optimize-projections` and now includes an additional optimization.
 
-Moreover, a `remove-unnecessary-calculations-4` rule has been added.
+Moreover, a `remove-unnecessary-calculations-4` and `batch-materialize-documents`
+rule have been added.
 
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
@@ -177,6 +178,24 @@ The [`/_api/analyzer` endpoints](../../develop/http-api/analyzers.md) supports
 a new `multi_delimiter` Analyzer that accepts an array of strings in a
 `delimiter` attribute of the `properties` object.
 
+#### Adjustable `writeConcern` for collections with `distributeShardsLike`
+
+Collections that are sharded like another collection via the `distributeShardsLike`
+property use the `replicationFactor`, `numberOfShards`, and `shardingStrategy`
+properties of the prototype collection. In previous versions, the `writeConcern`
+property of the prototype collection was used as well. Now, you can independently
+set a `writeConcern` when creating a collection with `distributeShardsLike`.
+The property defaults to the `writeConcern` of the prototype collection if you
+don't specify it explicitly. You can adjust the `writeConcern` later on in
+either case.
+
+#### Log API
+
+The [`/_admin/log/*` endpoints](../../develop/http-api/monitoring/logs.md) no
+longer use the `ldap` log topic. Changing the log level of the `ldap` topic or
+any other unknown topic is not an error, however. Also see
+[Incompatible changes in ArangoDB 3.12](incompatible-changes-in-3-12.md#ldap-authentication).
+
 ### Privilege changes
 
 
@@ -237,6 +256,24 @@ and defaults to `[]`.
 
 See the [`optimizeTopK` View property](../../index-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
 for details.
+
+#### Document API
+
+The following endpoints accept a new `versionAttribute` query parameter that adds
+external versioning support:
+
+- `PATCH /_api/document/{collection}/{key}` (single document update)
+- `PATCH /_api/document/{collection}` (multiple document update)
+- `PUT /_api/document/{collection}` (single document replace)
+- `PUT /_api/document/{collection}/{key}` (multiple document replace)
+- `POST /_api/document/{collection}` (single document insert, when used to update/replace a document)
+- `POST /_api/document/{collection}/{key}` (multiple document insert, when used to update/replace a document)
+
+If set, the attribute with the name specified by the option is looked up in the
+stored document and the attribute value is compared numerically to the value of
+the versioning attribute in the supplied document that is supposed to update/replace it.
+The document is only changed if the new number is higher. See the
+[Document API](../../develop/http-api/documents.md#create-a-document) for details.
 
 #### Index API
 
@@ -411,6 +448,22 @@ not handle larger amounts of data and were thus very limited.
 
 Users of the JavaScript-based traversal API should use
 [AQL traversal queries](../../aql/graphs/traversals.md) instead.
+
+### `collection` object
+
+The following methods now accept a `versionAttribute` option that adds external
+versioning support:
+
+- `collection.update(object, data, options)`
+- `collection.replace(object, data, options)`
+- `collection.insert(data, options)` when used to update/replace a document
+
+If set, the attribute with the name specified by the option is looked up in the
+stored document and the attribute value is compared numerically to the value of
+the versioning attribute in the supplied document that is supposed to update/replace it.
+The document is only changed if the new number is higher. See the
+[JavaScript API](../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
+for details.
 
 ### `@arangodb/pregel` package
 

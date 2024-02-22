@@ -23,6 +23,7 @@ aliases:
   - ../deploy/arangosync/security
   - ../deploy/arangosync/monitoring
   - ../deploy/arangosync/troubleshooting
+  - ../components/arangodb-server/ldap
   - ../arangograph/migrate-to-the-cloud
   - ../data-science/pregel
   - ../data-science/pregel/algorithms
@@ -51,6 +52,10 @@ detailed information about breaking changes before upgrading.
 - **Datacenter-to-Datacenter Replication (DC2DC)**:
   The Datacenter-to-Datacenter Replication for cluster deployments including the
   _arangosync_ tool is no longer supported from v3.12 onward.
+
+- **LDAP authentication**:
+  ArangoDB user authentication with an LDAP server in the Enterprise Edition is
+  no longer available starting with v3.12.
 
 - **VelocyStream protocol**:
   ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is no
