@@ -54,8 +54,21 @@ SORT doc.lastName, doc.firstName DESC
 ```
 
 {{< warning >}}
-When iterating over collection-based arrays, the order of documents is
-always **undefined unless an explicit sort order is defined** using `SORT`.
+When iterating over a collection, the order of documents is always
+**undefined unless an explicit sort order is defined** with a `SORT` operation.
+
+If the values you sort by are not unique, the order among tied documents is
+undefined and you may want to sort by another attribute to break ties.
+If the application has a preferred attribute that indicates the order of
+documents with the same value, then use this attribute. If there is no such
+attribute, you can still achieve a stable sort by using the `_id` system attribute
+as it is unique and present in every document.
+
+```aql
+FOR u IN users
+  SORT u.firstName, u._id // break name ties with the document ID
+  RETURN u
+```
 {{< /warning >}}
 
 Constant `SORT` expressions can be used to indicate that no particular
