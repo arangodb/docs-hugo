@@ -197,7 +197,7 @@ are mutable. This applies to the fields annotated with:
 - `@Rev`
 
 In addition, the following methods also try to update the fields annotated with
-`@ComputedValueField`:
+`@ArangoComputedValue`:
 - `ArangoOperations#repsert(Object)`
 - `ArangoOperations#repsertAll(Iterable<Object>, Class<?>)`
 
@@ -215,11 +215,10 @@ This applies to the fields annotated with:
 - `@ArangoId`
 - `@Id`
 - `@Rev`
-- `@ComputedValueField`
+- `@ArangoComputedValue`
 
 This behavior can be changed by overriding `ArangoConfiguration#returnOriginalEntities()`,
-which by default returns `true`. An example of returning new entity instances from
-`ArangoRepository#save(Object)` and `ArangoRepository#saveAll(Iterable<Object>)`:
+which by default returns `true`. For example:
 
 ```java
 @Configuration
