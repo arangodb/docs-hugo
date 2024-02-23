@@ -126,7 +126,8 @@ Other attributes may be necessary, depending on the index type.
   - `"ttl"`: time-to-live index
   - `"fulltext"`: full-text index (deprecated from ArangoDB 3.10 onwards)
   - `"geo"`: geo-spatial index, with _one_ or _two_ attributes
-  - `"zkd"`: multi-dimensional index (experimental)
+  - `"mdi"`: multi-dimensional index
+  - `"mdi-prefixed"`: multi-dimensional index with search prefix, including vertex-centric index
 
 - `fields`: an array of attribute paths, containing the document attributes
   (or sub-attributes) to be indexed. Some indexes allow using only a single path,
@@ -142,17 +143,19 @@ Other attributes may be necessary, depending on the index type.
   that the index attribute value is treated as an array and all array members are
   indexed separately. This is possible with `persistent` and `inverted` indexes.
 
-- `storedValues`: in indexes of type `persistent` and `inverted`, additional
+- `storedValues`: in indexes of type `persistent`, `inverted`, `mdi`, and `mdi-prefixed`, additional
   attributes can be stored in the index. These additional attributes cannot be used for
   index lookups or for sorting, but they can be used for projections. This allows an
   index to fully cover more queries and avoid extra document lookups.
   Non-existing attributes are stored as `null` values inside `storedValues`.
   The maximum number of attributes in `storedValues` is 32.
   It is not possible to create multiple indexes with the same `fields` attributes
-  and uniqueness but different `storedValues` attributes. That means the value of 
+  (and `sparse`, `unique`, and `prefixFields` attributes if supported)
+  but different `storedValues` attributes. That means the value of 
   `storedValues` is not considered in index creation calls when checking if an 
   index is already present or needs to be created.
-  In unique indexes, only the attributes in `fields` are checked for uniqueness,
+  In unique indexes, only the attributes in `fields` and (for `mdi-prefixed`
+  indexes) `prefixFields` are checked for uniqueness,
   but the attributes in `storedValues` are not checked for their uniqueness.
 
 - `name`: can be a string. Index names are subject to the same character
@@ -165,11 +168,12 @@ Other attributes may be necessary, depending on the index type.
   If no index hints are used, going with the auto-generated index names is fine.
 
 - `sparse`: can be `true` or `false`.
-  You can control the sparsity for `persistent` indexes. The `inverted`, `fulltext`,
-  and `geo` index types are [sparse](../which-index-to-use-when.md) by definition.
+  You can control the sparsity for `persistent`, `mdi`, and `mdi-prefixed` indexes.
+  The `inverted`, `fulltext`, and `geo` index types are
+  [sparse](../which-index-to-use-when.md) by definition.
 
-- `unique`: can be `true` or `false` and is supported by `persistent` indexes.
-  By default, all user-defined indexes are non-unique.
+- `unique`: can be `true` or `false` and is supported by `persistent`, `mdi`,
+  and `mdi-prefixed` indexes. By default, all user-defined indexes are non-unique.
   Only the attributes in `fields` are checked for uniqueness. Any attributes in
   from `storedValues` are not checked for their uniqueness.
 
@@ -185,13 +189,12 @@ Other attributes may be necessary, depending on the index type.
   `persistent`. This attribute controls whether index selectivity estimates are
   maintained for the index. Not maintaining index selectivity estimates can have
   a slightly positive impact on write performance.
-  The downside of turning off index selectivity estimates will be that
-  the query optimizer will not be able to determine the usefulness of different
+  The downside of turning off index selectivity estimates is that
+  the query optimizer is not able to determine the usefulness of different
   competing indexes in AQL queries when there are multiple candidate indexes to
   choose from.
-  The `estimates` attribute is optional and defaults to `true` if not set. It will
-  have no effect on indexes other than `persistent` (with `hash` and `skiplist`
-  being mere aliases for the `persistent` index type nowadays).
+  The `estimates` attribute is optional and defaults to `true` if not set. It
+  has no effect on indexes other than `persistent`, `mdi`, and `mdi-prefixed`.
 
 - `cacheEnabled`: can be `true` or `false` and is supported by indexes of type
   `persistent`. The attribute controls whether an extra in-memory hash cache is

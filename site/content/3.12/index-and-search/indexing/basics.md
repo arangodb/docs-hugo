@@ -152,6 +152,18 @@ based on the costs it estimates, even if a vertex-centric index might
 in fact be faster. Vertex-centric indexes are more likely to be chosen
 for highly connected graphs.
 
+You can also use use prefixed multi-dimensional indexes to combine graph
+traversals with range queries:
+
+```aql
+FOR v, e, p in 0..3 INBOUND @start GRAPH @graphName
+  OPTIONS { order: "bfs", uniqueVertices: "path" }
+  FILTER p.edges[*].type ALL == "friend"
+     AND p.edges[*].x ALL >= 5
+     AND p.edges[*].y ALL <= 7
+  RETURN p
+```
+
 ## Persistent Index
 
 The persistent index is a sorted index with logarithmic complexity for insert,

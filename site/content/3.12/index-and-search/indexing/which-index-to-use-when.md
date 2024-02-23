@@ -66,7 +66,7 @@ different usage scenarios:
   documents shall expire at the point in time or a given number of seconds after
   the point in time.
 
-- **multi-dimensional index** (ZKD): a multi dimensional index allows to
+- **multi-dimensional index**: a multi dimensional index allows to
   efficiently intersect multiple range queries. Typical use cases are querying
   intervals that intersect a given point or interval. For example, if intervals
   are stored in documents like

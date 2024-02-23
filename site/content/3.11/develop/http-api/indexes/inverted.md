@@ -5,7 +5,6 @@ weight: 10
 description: ''
 archetype: default
 ---
-
 ## Create an inverted index
 
 ```openapi

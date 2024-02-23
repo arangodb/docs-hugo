@@ -494,6 +494,27 @@ Optimization rules applied:
 
 ## Indexing
 
+### Multi-dimensional indexes
+
+The previously experimental `zkd` index type is now stable and has been renamed
+to `mdi`. Existing indexes keep the `zkd` type.
+
+Multi-dimensional indexes can now be declared as `sparse` to exclude documents
+from the index that do not have the defined attributes or are explicitly set to
+`null` values. If a value other than `null` is set, it still needs to be numeric.
+
+Multi-dimensional indexes now support `storedValues` to cover queries for better
+performance.
+
+An additional `mdi-prefixed` index variant has been added that lets you specify
+additional attributes for the index to narrow down the search space using
+equality checks. It can be used as a vertex-centric index for graph traversals
+if created on an edge collection with the first attribute in `prefixFields` set
+to `_from` or `_to`.
+
+See [Multi-dimensional indexes](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md)
+for details.
+
 ### Stored values can contain the `_id` attribute
 
 The usage of the `_id` system attribute was previously disallowed for

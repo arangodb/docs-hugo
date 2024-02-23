@@ -196,11 +196,9 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   the S2 library. <!-- TODO: list supported queries? Centroid-limitations? -->
   Support for composable, distance-based geo-queries ("geo cursors").
 
-{{% comment %}} Experimental feature
 - [**Multi-dimensional indexes**](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md):
   An index type to efficiently intersect multiple range queries, like finding
   all appointments that intersect a time range.
-{{% /comment %}}
 
 - [**Background Indexing**](../../index-and-search/indexing/basics.md#creating-indexes-in-background):
   Indexes can be created in the background to not block queries in the meantime.

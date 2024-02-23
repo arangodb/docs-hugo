@@ -5,7 +5,6 @@ weight: 15
 description: ''
 archetype: default
 ---
-
 ## Create a TTL index
 
 ```openapi
