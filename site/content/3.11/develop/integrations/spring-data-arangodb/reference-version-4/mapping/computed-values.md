@@ -9,13 +9,13 @@ Spring Data ArangoDB provides annotations to allow mapping computed values to
 entity properties and to include computed values data definitions during
 collection creation.
 
-For reference, see the [indexing](../../../../../concepts/data-structure/documents/computed-values.md)
+For reference, see the [computed values](../../../../../concepts/data-structure/documents/computed-values.md)
 documentation.
 
 ## Mapping
 
 Computed values can be mapped to entity properties by annotating the related
-fields with `@ComputedValueField`. 
+fields with `@ArangoComputedValue`. 
  
 If the property is mutable, then the field is automatically updated in place
 with the value coming from the server in the following methods:
@@ -28,24 +28,24 @@ with the value coming from the server in the following methods:
 
 Computed values data definitions can be specified through parameters of the
 following annotations:
-- `@ComputedValueField` on fields
-- `@ComputedValueEntry` on classes (optionally within `@ComputedValues`)
+- `@ArangoComputedValue` on fields
+- `@ArangoComputedValueDefinition` on classes (optionally within `@ArangoComputedValueDefinitions`)
 
 **Example**
 
 ```java
 @Document
-@ComputedValueEntry(
+@ArangoComputedValueDefinition(
         name = "username",
         expression = "RETURN \"unknown\"",
         computeOn = ComputedValue.ComputeOn.insert
 )
 class MyEntity {
 
-    @ComputedValueField
+    @ArangoComputedValue
     String username;
 
-    @ComputedValueField("RETURN 0")
+    @ArangoComputedValue("RETURN 0")
     int age;
     
     // ...
@@ -54,5 +54,5 @@ class MyEntity {
 ```
 
 On database collection creation, the computed values metadata is included.
-Note that the data definitions is not updated in case the database collection
+Note that the data definitions are not updated in case the database collection
 already exists. 
