@@ -55,19 +55,20 @@ arangodb.password=
 
 ## Network protocol
 
-The drivers default used network protocol is the binary protocol VelocyStream
-which offers the best performance within the driver. To use HTTP, you have to
-set the configuration `useProtocol` to `Protocol.HTTP_JSON` for HTTP with JSON
-content or `Protocol.HTTP_VPACK` for HTTP with
-[VelocyPack](https://github.com/arangodb/velocypack/blob/master/VelocyPack.md) content.
+The driver's default network protocol is the binary VelocyStream protocol.
+It is no longer support by ArangoDB from version 3.12.0 onward. To use the HTTP
+protocol instead, you have to set the configuration with the `useProtocol` method to
+`Protocol.HTTP_JSON` for HTTP with JSON content, or `Protocol.HTTP_VPACK` for
+HTTP with [VelocyPack](https://github.com/arangodb/velocypack/blob/master/VelocyPack.md)
+content.
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
-  .useProtocol(Protocol.VST)
+  .useProtocol(Protocol.HTTP_VPACK)
   .build();
 ```
 
-In addition to set the configuration for HTTP you have to add the
+In addition to set the configuration for HTTP, you have to add the
 apache httpclient to your classpath.
 
 ```xml
@@ -77,9 +78,6 @@ apache httpclient to your classpath.
   <version>4.5.1</version>
 </dependency>
 ```
-
-**Note**: If you are using ArangoDB 3.0.x you have to set the protocol to
-`Protocol.HTTP_JSON` because it is the only one supported.
 
 ## SSL
 
@@ -100,7 +98,7 @@ distributions of Java 8 with TLSv1.3 support).
 ## Connection Pooling
 
 The driver supports connection pooling for VelocyStream with a default of 1 and
-HTTP with a default of 20 maximum connections per host. To change this value
+HTTP with a default of 20 maximum connections per host. To change this value,
 use the method `maxConnections(Integer)` in `ArangoDB.Builder`.
 
 ```java
@@ -239,8 +237,9 @@ The default TTL is `null` (no automatic connection closure).
 
 ## VST Keep-Alive
 
-Since version 6.8 the driver supports setting keep-alive interval (in seconds)
-for VST connections. If set, every VST connection will perform a no-op request
+Since version 6.8, the driver supports setting keep-alive interval (in seconds)
+for VST connections (but VST is not supported from ArangoDB v3.12.0 onward).
+If set, every VST connection will perform a no-op request
 at the specified intervals, to avoid to be closed due to inactivity by the
 server (or by the external environment, e.g. firewall, intermediate routers,
 operating system, ... ).

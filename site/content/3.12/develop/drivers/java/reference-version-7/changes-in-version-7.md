@@ -96,7 +96,7 @@ The main driver artifact `com.arangodb:arangodb-java-driver` has transitive depe
 - `com.arangodb:jackson-serde-json`: `JSON` user-data serde module based on Jackson Databind
 
 Alternative modules are respectively:
-- `com.arangodb:vst-protocol`: `VST` communication protocol
+- `com.arangodb:vst-protocol`: `VST` communication protocol (no longer supported from ArangoDB v3.12.0 onward)
 - `com.arangodb:jackson-serde-vpack`: `VPACK` user-data serde module based on Jackson Databind
 
 The modules above are discovered and loaded using SPI (Service Provider Interface).
@@ -104,12 +104,13 @@ The modules above are discovered and loaded using SPI (Service Provider Interfac
 In case a non-default communication protocol or user serde are used, the related module(s)
 must be explicitly included and the corresponding default module(s) can be excluded.
 
-For example, to use the driver with `VPACK` over `VST`, we must include:
-- `com.arangodb:vst-protocol` and
+For example, to use the driver with `VPACK` over `HTTP`, you must include:
+
+- `com.arangodb:http-protocol` and
 - `com.arangodb:jackson-serde-vpack`
 
-and can exclude:
-- `com.arangodb:http-protocol` and
+and you can exclude:
+- `com.arangodb:vst-protocol` and
 - `com.arangodb:jackson-serde-json`
  
 For example in Maven:
@@ -122,7 +123,7 @@ For example in Maven:
         <exclusions>
             <exclusion>
                 <groupId>com.arangodb</groupId>
-                <artifactId>http-protocol</artifactId>
+                <artifactId>vst-protocol</artifactId>
             </exclusion>
             <exclusion>
                 <groupId>com.arangodb</groupId>
@@ -132,7 +133,7 @@ For example in Maven:
     </dependency>
     <dependency>
         <groupId>com.arangodb</groupId>
-        <artifactId>vst-protocol</artifactId>
+        <artifactId>http-protocol</artifactId>
     </dependency>
     <dependency>
         <groupId>com.arangodb</groupId>

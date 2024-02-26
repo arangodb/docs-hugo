@@ -153,7 +153,7 @@ CompletableFuture<ArangoDBVersion> version = adbAsync.getVersion();
 Under the hood, both synchronous and asynchronous API use the same internal
 communication layer, which has been reworked and re-implemented in an
 asynchronous way. The synchronous API blocks and waits for the result, while the
-asynchronous one returns a `CompletableFuture<>` representing the pending 
+asynchronous one returns a `CompletableFuture<>` representing the pending
 operation being performed.
 Each asynchronous API method is equivalent to the corresponding synchronous
 variant, except for the Cursor API.
@@ -161,11 +161,11 @@ variant, except for the Cursor API.
 ### Async Cursor API
 
 The Cursor API (`ArangoCursor` and `ArangoCursorAsync`) is intrinsically different,
-because the synchronous Cursor API is based on Java's `java.util.Iterator`, which 
+because the synchronous Cursor API is based on Java's `java.util.Iterator`, which
 is an interface only suitable for synchronous scenarios.
-On the other side, the asynchronous Cursor API provides a method 
-`com.arangodb.ArangoCursorAsync#nextBatch()`, which returns a 
-`CompletableFuture<ArangoCursorAsync<T>>` and can be used to consume the next 
+On the other side, the asynchronous Cursor API provides a method
+`com.arangodb.ArangoCursorAsync#nextBatch()`, which returns a
+`CompletableFuture<ArangoCursorAsync<T>>` and can be used to consume the next
 batch of the cursor, for example:
 
 ```java
