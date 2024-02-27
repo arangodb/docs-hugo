@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl get project command
 title: Oasisctl Get Project
 menuTitle: Get Project

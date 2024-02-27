@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl delete organization invite command
 title: Oasisctl Delete Organization Invite
 menuTitle: Delete Organization Invite

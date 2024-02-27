@@ -5,7 +5,6 @@ weight: 60
 description: >-
   You can retrieve the positions of matches within strings when querying
   Views with ArangoSearch, to highlight what was found in search results
-archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 

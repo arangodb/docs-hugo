@@ -3,7 +3,6 @@ title: _arangodump_ Examples
 menuTitle: Examples
 weight: 5
 description: ''
-archetype: default
 ---
 _arangodump_ can be invoked in a command line by executing the following command:
 

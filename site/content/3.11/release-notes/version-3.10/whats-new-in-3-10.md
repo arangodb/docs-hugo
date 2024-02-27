@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Support for ARM, computed values, a new managed graph type with automated
   sharding, various search features, AQL optimizations
-archetype: default
 ---
 The following list shows in detail which features have been added or improved in
 ArangoDB 3.10. ArangoDB 3.10 also contains several bug fixes that are not listed

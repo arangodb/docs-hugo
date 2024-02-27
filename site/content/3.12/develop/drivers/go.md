@@ -3,7 +3,6 @@ title: ArangoDB Go driver
 menuTitle: Go driver
 weight: 15
 description: ''
-archetype: default
 ---
 The official ArangoDB Go Driver
 

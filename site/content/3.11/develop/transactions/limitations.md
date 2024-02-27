@@ -3,7 +3,6 @@ title: Limitations of transactions
 menuTitle: Limitations
 weight: 25
 description: ''
-archetype: default
 ---
 <!-- TODO: Update for RocksDB -->
 

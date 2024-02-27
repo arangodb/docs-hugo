@@ -3,7 +3,6 @@ title: Start an Active Failover deployment manually
 menuTitle: Manual Start
 weight: 5
 description: ''
-archetype: default
 ---
 An ArangoDB _Active Failover_ setup consists of several running _tasks_ or _processes_. 
 

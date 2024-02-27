@@ -5,7 +5,6 @@ weight: 285
 description: >-
   You can directly navigate to the information about changes in a specific
   version of ArangoDB by following the links of this overview
-archetype: chapter
 ---
 ## What's New
 

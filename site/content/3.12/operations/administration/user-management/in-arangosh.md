@@ -4,7 +4,6 @@ menuTitle: In arangosh
 weight: 5
 description: >-
   The `@arangodb/users` module exposes a JavaScript API to manage user accounts
-archetype: default
 ---
 Connect with `arangosh` to the server or a Coordinator respectively.
 The module `@arangodb/users` exposes a JavaScript API to manage user accounts.

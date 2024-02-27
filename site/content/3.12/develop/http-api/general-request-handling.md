@@ -4,7 +4,6 @@ menuTitle: General request handling
 weight: 5
 description: >-
   ArangoDB exposes its API via HTTP, making the server accessible easily with a variety of clients and tools
-archetype: default
 ---
 ## Protocol
 

@@ -5,7 +5,6 @@ weight: 20
 description: >-
   The HTTP API for databases lets you create and delete databases, list
   available databases, and get information about specific databases
-archetype: default
 ---
 The HTTP interface for databases provides operations to create and drop
 individual databases. These are mapped to the standard `POST` and `DELETE`

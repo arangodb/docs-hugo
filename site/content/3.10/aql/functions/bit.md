@@ -5,7 +5,6 @@ weight: 15
 description: >-
   AQL offers a set of bit manipulation and interpretation functions for bitwise
   arithmetic
-archetype: default
 ---
 <small>Introduced in: v3.7.7</small>
 

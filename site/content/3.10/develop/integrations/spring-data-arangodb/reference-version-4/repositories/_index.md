@@ -5,7 +5,6 @@ weight: 15
 description: >-
   Interact with ArangoDB using the high-level and consistent abstraction
   provided by Spring Data repositories
-archetype: chapter
 ---
 Spring Data Commons provides a composable repository infrastructure which
 Spring Data ArangoDB is built on. These allow for interface-based composition of

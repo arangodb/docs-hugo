@@ -5,7 +5,6 @@ weight: 10
 description: >-
   The Starter provides commands to create certificates and tokens for securing
   ArangoDB deployments for encrypting connections and authenticated access control
-archetype: default
 ---
 ## Creating certificates
 

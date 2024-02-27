@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Databases let you create fully isolated sets of collections for multi-tenancy
   applications
-archetype: default
 ---
 ArangoDB can handle multiple databases in the same server instance. Databases
 can be used to logically group and separate data. An ArangoDB database consists

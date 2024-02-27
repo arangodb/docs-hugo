@@ -4,7 +4,6 @@ menuTitle: Full-text token search
 weight: 35
 description: >-
   Search for tokens in full-text that can occur in any order
-archetype: default
 ---
 Full-text strings can be tokenized by `text` Analyzers so that each token
 (usually a word) gets indexed separately. Subsequently, it becomes possible to

@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl update organization email domain restrictions command
 title: Oasisctl Update Organization Email Domain Restrictions
 menuTitle: Update Organization Email Domain Restrictions

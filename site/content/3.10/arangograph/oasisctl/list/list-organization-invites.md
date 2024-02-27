@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl list organization invites command
 title: Oasisctl List Organization Invites
 menuTitle: List Organization Invites

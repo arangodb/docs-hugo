@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl resume deployment command
 title: Oasisctl Resume Deployment
 menuTitle: Resume Deployment

@@ -5,7 +5,6 @@ weight: 45
 description: >-
   This guide explains which access control concepts are available in
   ArangoGraph and how to use them
-archetype: chapter
 ---
 The ArangoGraph Insights Platform has a structured set of resources that are subject to security and
 access control:

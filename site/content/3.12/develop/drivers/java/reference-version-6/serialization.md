@@ -4,7 +4,6 @@ menuTitle: Serialization
 weight: 10
 description: >-
   Serialization (version 6)
-archetype: default
 ---
 While older versions of the driver used mapping features provided by the
 `velocypack` library, nowadays it is recommended to use

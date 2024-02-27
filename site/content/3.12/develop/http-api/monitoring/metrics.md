@@ -7,7 +7,6 @@ description: >-
   of the system
 pageToc:
   maxHeadlineLevel: 3
-archetype: default
 ---
 _arangod_ exports metrics in the
 [Prometheus format](https://prometheus.io/docs/instrumenting/exposition_formats/).

@@ -5,7 +5,6 @@ weight: 245
 description: >-
   Designing the data model of your application is a crucial task that can make
   or break the performance of your application
-archetype: default
 ---
 A well-designed data model allows you to write efficient AQL queries, increase
 throughput of CRUD operations, and makes sure your data is distributed in the

@@ -4,7 +4,6 @@ menuTitle: Single instance vs. Cluster
 weight: 40
 description: >-
   Similarities and differences in behavior between single servers and clusters
-archetype: default
 ---
 In general, a single server configuration and a cluster configuration
 of ArangoDB behave very similarly. However, there are differences due to

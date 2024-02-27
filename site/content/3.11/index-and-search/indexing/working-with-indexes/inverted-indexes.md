@@ -5,7 +5,6 @@ weight: 10
 description: >-
   You can use inverted indexes to speed up a broad range of AQL queries,
   from simple to complex, including full-text search
-archetype: default
 ---
 Documents hold attributes, mapping attribute keys to values.
 Inverted indexes store mappings from values (of document attributes) to their

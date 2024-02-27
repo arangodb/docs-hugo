@@ -5,7 +5,6 @@ weight: 30
 description: >-
   `arangoimport` is a command-line client tool to import data in JSON, CSV, and
   TSV format
-archetype: chapter
 ---
 _arangoimport_ can import supported text formats to
 [ArangoDB servers](../../arangodb-server/_index.md).

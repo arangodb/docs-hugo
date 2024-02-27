@@ -6,7 +6,6 @@ description: >-
   The startup options of the `arangobench` executable
 pageToc:
   maxHeadlineLevel: 2
-archetype: default
 ---
 Usage: `arangobench [<options>]`
 

@@ -5,7 +5,6 @@ weight: 95
 description: >-
   The Replication HTTP API is used internally for synchronizing the nodes in
   distributed ArangoDB setups, as well as by users to control the replication
-archetype: chapter
 ---
 The replication architecture and components are described in more details in 
 [Replication](../../../deploy/architecture/replication.md).

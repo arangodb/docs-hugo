@@ -6,7 +6,6 @@ description: >-
   ArangoSearch offers various AQL functions for search queries to control the search context, for filtering and scoring
 pageToc:
   maxHeadlineLevel: 3
-archetype: default
 ---
 You can form search expressions by composing ArangoSearch function calls,
 logical operators and comparison operators. This allows you to filter Views

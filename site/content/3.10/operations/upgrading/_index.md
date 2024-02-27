@@ -5,7 +5,6 @@ weight: 220
 description: >-
   You can create a backup and upgrade ArangoDB in-place, but downgrading
   is only possible with the backup or by dumping and restoring all data
-archetype: chapter
 ---
 ## Upgrade methods
 

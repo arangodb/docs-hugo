@@ -5,7 +5,6 @@ weight: 10
 description: >-
   Check the following list of potential breaking changes **before** upgrading to
   this ArangoDB version and adjust any client applications if necessary
-archetype: default
 ---
 ## Build system
 

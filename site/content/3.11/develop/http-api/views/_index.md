@@ -4,7 +4,6 @@ menuTitle: Views
 weight: 60
 description: >-
   The HTTP API for Views lets you manage Views of any type
-archetype: chapter
 ---
 ## Addresses of Views
 

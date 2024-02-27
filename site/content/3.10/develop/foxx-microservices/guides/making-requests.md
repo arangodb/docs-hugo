@@ -3,7 +3,6 @@ title: Making requests in Foxx
 menuTitle: Making requests
 weight: 65
 description: ''
-archetype: default
 ---
 ArangoDB is primarily a database, so Foxx doesn't offer the same level of
 network access as more general-purpose JavaScript environments like Node.js.

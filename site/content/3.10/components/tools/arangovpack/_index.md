@@ -5,7 +5,6 @@ weight: 45
 description: >-
   `arangovpack` is a command-line client tool for verifying and converting
   VelocyPack and JSON payloads
-archetype: chapter
 ---
 _arangovpack_ can check and convert between ArangoDB's own
 [VelocyPack](http://github.com/arangodb/velocypack) format and JSON.

@@ -4,7 +4,6 @@ menuTitle: Details
 weight: 10
 description: >-
   How to create and use SatelliteGraphs
-archetype: default
 ---
 Below you find usage examples and advanced configuration possibilities for
 SatelliteGraphs. The examples use _arangosh_ and the

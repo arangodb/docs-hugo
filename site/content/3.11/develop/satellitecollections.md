@@ -4,7 +4,6 @@ menuTitle: SatelliteCollections
 weight: 250
 description: >-
   Collections synchronously replicated to all servers, available in the Enterprise Edition
-archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 

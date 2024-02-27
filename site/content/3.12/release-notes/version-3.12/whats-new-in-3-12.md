@@ -5,7 +5,6 @@ weight: 5
 description: >-
   A new optimization for specific ArangoSearch queries, more entries in the
   edge cache with compression
-archetype: default
 ---
 The following list shows in detail which features have been added or improved in
 ArangoDB 3.12. ArangoDB 3.12 also contains several bug fixes that are not listed

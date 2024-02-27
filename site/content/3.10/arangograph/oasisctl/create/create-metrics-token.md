@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl create metrics token command
 title: Oasisctl Create Metrics Token
 menuTitle: Create Metrics Token

@@ -4,7 +4,6 @@ menuTitle: All Shortest Paths
 weight: 20
 description: >-
   Find all paths of shortest length between a start and target vertex
-archetype: default
 ---
 ## General query idea
 

@@ -4,7 +4,6 @@ menuTitle: Using the ArangoDB Starter
 weight: 10
 description: >-
   How to start an ArangoDB stand-alone instance using the ArangoDB Starter
-archetype: default
 ---
 The [_Starter_](../../components/tools/arangodb-starter/_index.md) tool
 (the _arangodb_ executable) supports starting a single server.

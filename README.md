@@ -760,7 +760,6 @@ front matter:
 
 ```yaml
 ---
-archetype: default # or 'chapter' if it is a _index.md section file
 title: The level 1 headline
 description: >-
   A meaningful description of the page

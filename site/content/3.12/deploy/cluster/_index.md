@@ -5,7 +5,6 @@ weight: 15
 description: >-
   ArangoDB clusters are comprised of DB-Servers, Coordinators, and Agents, with
   synchronous data replication between DB-Servers and automatic failover
-archetype: chapter
 ---
 The Cluster architecture of ArangoDB is a _CP_ master/master model with no
 single point of failure. 

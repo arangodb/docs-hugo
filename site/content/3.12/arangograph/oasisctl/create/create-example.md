@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl create example command
 title: Oasisctl Create Example
 menuTitle: Create Example

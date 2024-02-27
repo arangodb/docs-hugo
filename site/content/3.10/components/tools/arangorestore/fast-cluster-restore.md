@@ -4,7 +4,6 @@ menuTitle: Fast Cluster Restore
 weight: 10
 description: >-
   The Fast Cluster Restore procedure documented in this page is recommended to speed-up the performance of arangorestore in a Cluster environment
-archetype: default
 ---
 The _Fast Cluster Restore_ procedure documented in this page is recommended
 to speed-up the performance of [_arangorestore_](_index.md)

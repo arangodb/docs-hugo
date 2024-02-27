@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Running a single server instance of ArangoDB is the most simple way to get
   started
-archetype: chapter
 ---
 Using a _single server_ or _single instance_ means to run the ArangoDB server
 binary `arangod` stand-alone, without replication, without failover opportunity,

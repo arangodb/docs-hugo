@@ -3,7 +3,6 @@ title: ArangoDB Java driver
 menuTitle: Java driver
 weight: 10
 description: ''
-archetype: chapter
 ---
 The official ArangoDB [Java Driver](https://github.com/arangodb/arangodb-java-driver).
 

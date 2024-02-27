@@ -4,7 +4,6 @@ menuTitle: SmartGraphs
 weight: 95
 description: >-
   SmartGraphs enable you to manage graphs at scale using value-based sharding
-archetype: chapter
 ---
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 

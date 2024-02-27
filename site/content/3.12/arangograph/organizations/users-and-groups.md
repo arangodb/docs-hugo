@@ -4,7 +4,6 @@ menuTitle: Users & Groups
 weight: 5
 description: >-
    How to manage individual members and user groups in ArangoGraph
-archetype: default
 ---
 ## Users, groups & members
 

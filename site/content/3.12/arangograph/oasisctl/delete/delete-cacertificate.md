@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl delete cacertificate command
 title: Oasisctl Delete Cacertificate
 menuTitle: Delete Cacertificate

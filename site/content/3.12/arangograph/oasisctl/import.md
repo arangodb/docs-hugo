@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl import command
 title: Oasisctl Import
 menuTitle: Import

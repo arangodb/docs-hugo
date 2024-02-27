@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl create backup command
 title: Oasisctl Create Backup
 menuTitle: Create Backup

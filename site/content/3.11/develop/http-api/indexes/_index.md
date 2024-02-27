@@ -4,7 +4,6 @@ menuTitle: Indexes
 weight: 55
 description: >-
   The HTTP API for indexes lets you create, delete, and list indexes
-archetype: chapter
 ---
 ## Addresses of indexes
 

@@ -4,7 +4,6 @@ menuTitle: '@arangodb/actions'
 weight: 10
 description: >-
   The actions module provides the infrastructure for defining low-level HTTP actions
-archetype: default
 ---
 `const actions = require('@arangodb/actions')`
 

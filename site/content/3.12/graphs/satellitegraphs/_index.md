@@ -4,7 +4,6 @@ menuTitle: SatelliteGraphs
 weight: 90
 description: >-
   Graphs synchronously replicated to all servers, available in the Enterprise Edition
-archetype: chapter
 ---
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 

@@ -5,7 +5,6 @@ weight: 50
 description: >-
    You can manually create backups or use a backup policy to schedule periodic
    backups, and both ways allow you to store your backups in multiple regions simultaneously
-archetype: default
 ---
 ## How to create backups
 

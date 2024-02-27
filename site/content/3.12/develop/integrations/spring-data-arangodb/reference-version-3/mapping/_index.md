@@ -5,7 +5,6 @@ weight: 20
 description: >-
   The features and conventions for mapping Java objects to documents and how to
   override those conventions with annotation based mapping metadata
-archetype: chapter
 ---
 ## Conventions
 

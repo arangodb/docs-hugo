@@ -5,7 +5,6 @@ weight: 15
 description: >-
   Simulate SmartGraphs and SatelliteGraphs on a single server to make it easier
   to port them to an ArangoDB cluster later
-archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 

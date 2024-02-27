@@ -3,7 +3,6 @@ title: _arangosh_ Examples
 menuTitle: Examples
 weight: 5
 description: ''
-archetype: default
 ---
 ## Connecting to a server
 

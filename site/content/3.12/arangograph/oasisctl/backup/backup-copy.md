@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl backup copy command
 title: Oasisctl Backup Copy
 menuTitle: Backup Copy

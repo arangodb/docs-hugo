@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl delete group command
 title: Oasisctl Delete Group
 menuTitle: Delete Group

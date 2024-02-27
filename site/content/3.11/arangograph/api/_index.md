@@ -4,7 +4,6 @@ menuTitle: ArangoGraph API
 weight: 60
 description: >-
   Interface to control all resources inside ArangoGraph in a scriptable manner
-archetype: chapter
 aliases:
   - arangograph-api
 ---

@@ -6,7 +6,6 @@ description: >-
   The startup options of the `arangodump` executable
 pageToc:
   maxHeadlineLevel: 2
-archetype: default
 ---
 _arangodump_ Options
 

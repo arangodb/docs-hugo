@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl get private endpoint command
 title: Oasisctl Get Private Endpoint
 menuTitle: Get Private Endpoint

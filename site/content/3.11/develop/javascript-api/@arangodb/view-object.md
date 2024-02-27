@@ -5,7 +5,6 @@ weight: 15
 description: >-
   View objects represent ArangoSearch Views and provide access to information
   and methods for executing View-related operations
-archetype: default
 ---
 The JavaScript API returns _view_ objects when you use the following methods
 of the [`db` object](db-object.md) from the `@arangodb` module:

@@ -4,7 +4,6 @@ menuTitle: Numeric
 weight: 45
 description: >-
   AQL offers functions for numeric calculations
-archetype: default
 ---
 ## ABS()
 

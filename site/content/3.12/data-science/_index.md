@@ -4,7 +4,6 @@ menuTitle: Data Science
 weight: 115
 description: >-
   ArangoDB lets you apply analytics and machine learning to graph data at scale
-archetype: chapter
 aliases:
   - data-science/overview
 ---

@@ -4,7 +4,6 @@ menuTitle: Design graph
 weight: 10
 description: >-
   Design your graph database schema using the integrated graph modeler in the Data Loader
-archetype: default
 ---
 
 Based on the data you have uploaded, you can start designing your graph.

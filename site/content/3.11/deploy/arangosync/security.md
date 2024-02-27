@@ -5,7 +5,6 @@ weight: 20
 description: >-
   Firewalls must not block specific ports and you can secure DC2DC setups using
   certificates for encryption and authentication
-archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" >}}
 

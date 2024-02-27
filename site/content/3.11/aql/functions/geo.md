@@ -5,7 +5,6 @@ weight: 35
 description: >-
   AQL supports functions for geo-spatial queries and a subset of calls can be
   accelerated by geo-spatial indexes
-archetype: default
 ---
 ## Geo-spatial data representations
 

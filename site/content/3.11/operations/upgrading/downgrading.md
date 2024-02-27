@@ -5,7 +5,6 @@ weight: 30
 description: >-
   Downgrading database files and to an older version of ArangoDB requires a
   logical backup
-archetype: default
 ---
 A direct, in-place downgrade of ArangoDB is **not** supported. If you have upgraded
 your ArangoDB package, and then also upgraded your current data directory, it is

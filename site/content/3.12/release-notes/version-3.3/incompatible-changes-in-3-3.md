@@ -5,7 +5,6 @@ weight: 15
 description: >-
   Check the following list of potential breaking changes **before** upgrading to
   this ArangoDB version and adjust any client applications if necessary
-archetype: default
 ---
 - AQL: during a traversal if a vertex is not found, arangod will not log an error and 
   continue with a NULL value, but will instead register a warning at the query and 

@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl create cacertificate command
 title: Oasisctl Create Cacertificate
 menuTitle: Create Cacertificate

@@ -5,7 +5,6 @@ weight: 5
 description: >-
   The HTTP API for Views lets you manage `search-alias` Views, including adding
   and removing inverted indexes
-archetype: default
 ---
 ## Create a search-alias View
 

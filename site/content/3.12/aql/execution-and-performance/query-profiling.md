@@ -5,7 +5,6 @@ weight: 20
 description: >-
   For understanding the performance of specific queries, you can profile them to
   identify slow parts of query execution plans
-archetype: default
 ---
 ArangoDB allows to execute your query with special instrumentation code enabled.
 It provides you a query plan with detailed execution statistics.
