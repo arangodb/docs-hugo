@@ -1071,7 +1071,7 @@ in the `--server.endpoint` startup option with all client tools.
 
 ### arangodump
 
-### `--ignore-collection` startup option
+#### `--ignore-collection` startup option
 
 _arangodump_ now supports a `--ignore-collection` startup option that you can
 specify multiple times to exclude the specified collections from a dump.
@@ -1081,7 +1081,7 @@ collections to include.
 
 #### Improved dump performance and size
 
-From version 3.12 onward, _arangodump_ has extended parallelization capabilities
+_arangodump_ has extended parallelization capabilities
 to work not only at the collection level, but also at the shard level.
 In combination with the newly added support for the VelocyPack format that
 ArangoDB uses internally, database dumps can now be created and restored more
