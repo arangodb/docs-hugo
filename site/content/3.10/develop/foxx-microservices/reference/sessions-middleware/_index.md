@@ -3,7 +3,6 @@ title: Foxx Session Middleware
 menuTitle: Sessions middleware
 weight: 25
 description: ''
-archetype: chapter
 ---
 `const sessionMiddleware = require('@arangodb/foxx/sessions');`
 

@@ -4,7 +4,6 @@ menuTitle: Linux
 weight: 5
 description: >-
   How to upgrade a single server installation installed using package managers
-archetype: default
 aliases:
   - upgrading-on-linux
 ---

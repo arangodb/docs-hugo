@@ -6,7 +6,6 @@ description: >-
   The HTTP API for collections lets you create and delete collections, get
   information about collections, and modify certain properties of existing
   collections
-archetype: default
 ---
 ## Addresses of collections
 

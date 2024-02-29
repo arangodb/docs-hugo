@@ -5,7 +5,6 @@ weight: 30
 description: >-
   You can group data by arbitrary criteria with AQL's `COLLECT` operation,
   with optional aggregation during grouping or using post-aggregation
-archetype: default
 ---
 To group results by arbitrary criteria, AQL provides the `COLLECT` keyword.
 `COLLECT` will perform a grouping, but no aggregation. Aggregation can still be

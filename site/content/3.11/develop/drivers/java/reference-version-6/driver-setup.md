@@ -4,7 +4,6 @@ menuTitle: Driver Setup
 weight: 5
 description: >-
   Driver setup (version 6)
-archetype: default
 ---
 Setup with default configuration, this automatically loads a properties file
 `arangodb.properties` if exists in the classpath:

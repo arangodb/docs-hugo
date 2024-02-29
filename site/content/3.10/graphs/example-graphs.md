@@ -4,7 +4,6 @@ menuTitle: Example graphs
 weight: 110
 description: >-
   How to use the example graphs built into ArangoDB
-archetype: default
 ---
 ArangoDB comes with a set of easy-to-understand graphs for demonstration
 purposes.

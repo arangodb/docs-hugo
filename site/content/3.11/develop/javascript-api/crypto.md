@@ -5,7 +5,6 @@ weight: 25
 description: >-
   The crypto module provides implementations of various hashing algorithms as
   well as functions related to cryptography
-archetype: default
 ---
 `const crypto = require('@arangodb/crypto')`
 

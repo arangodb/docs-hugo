@@ -4,7 +4,6 @@ menuTitle: What's New in 3.9
 weight: 5
 description: >-
   Extended SmartGraphs, new AQL and index features for efficiency, new Analyzers
-archetype: default
 ---
 The following list shows in detail which features have been added or improved in
 ArangoDB 3.9. ArangoDB 3.9 also contains several bug fixes that are not listed

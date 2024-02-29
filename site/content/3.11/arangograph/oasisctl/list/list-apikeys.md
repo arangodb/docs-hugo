@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl list apikeys command
 title: Oasisctl List Apikeys
 menuTitle: List Apikeys

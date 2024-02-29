@@ -4,7 +4,6 @@ menuTitle: INSERT
 weight: 65
 description: >-
   You can use the `INSERT` operation to create new documents in a collection
-archetype: default
 ---
 Each `INSERT` operation is restricted to a single collection, and the
 [collection name](../../concepts/data-structure/collections.md#collection-names) must not be dynamic.

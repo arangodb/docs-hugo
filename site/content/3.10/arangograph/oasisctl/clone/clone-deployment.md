@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl clone deployment command
 title: Oasisctl Clone Deployment
 menuTitle: Clone Deployment

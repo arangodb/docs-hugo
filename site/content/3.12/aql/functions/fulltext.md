@@ -4,7 +4,6 @@ menuTitle: Fulltext
 weight: 30
 description: >-
   AQL offers functions to filter data using fulltext indexes
-archetype: default
 ---
 See [fulltext indexes](../../index-and-search/indexing/working-with-indexes/fulltext-indexes.md)
 for details.

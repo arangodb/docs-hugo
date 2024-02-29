@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl accept command
 title: Oasisctl Accept
 menuTitle: Accept

@@ -5,7 +5,6 @@ weight: 50
 description: >-
   The HTTP APIs for transactions support Stream Transactions and
   JavaScript Transactions
-archetype: chapter
 ---
 Transactions are executed on the server-side.
 Clients can run different types of transactions that involve different interfaces:

@@ -3,7 +3,6 @@ title: Cluster
 menuTitle: Cluster
 weight: 10
 description: ''
-archetype: default
 ---
 The web interface differs for cluster deployments and single-server instances.
 Instead of a single [Dashboard](dashboard.md), there

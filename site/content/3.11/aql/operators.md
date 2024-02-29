@@ -5,7 +5,6 @@ weight: 15
 description: >-
   AQL supports a number of operators that can be used in expressions,
   such as for arithmetic, comparing values, and logically combining conditions
-archetype: default
 ---
 ## Comparison operators
 

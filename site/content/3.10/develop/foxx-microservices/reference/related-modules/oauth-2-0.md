@@ -3,7 +3,6 @@ title: Foxx OAuth 2.0
 menuTitle: OAuth 2.0
 weight: 15
 description: ''
-archetype: default
 ---
 `const createOAuth2Client = require('@arangodb/foxx/oauth2');`
 

@@ -5,7 +5,6 @@ weight: 15
 description: >-
   With the shortest path algorithm, you can find one shortest path between
   two vertices using AQL
-archetype: default
 ---
 ## General query idea
 

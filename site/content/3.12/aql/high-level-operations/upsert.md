@@ -5,7 +5,6 @@ weight: 70
 description: >-
   An `UPSERT` operation either modifies an existing document, or creates a new
   document if it does not exist
-archetype: default
 ---
 `UPSERT` looks up a single document that matches the provided example or filter
 conditions. If there is no match, an insert operation is executed to create a

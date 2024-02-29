@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl disable command
 title: Oasisctl Disable
 menuTitle: Disable

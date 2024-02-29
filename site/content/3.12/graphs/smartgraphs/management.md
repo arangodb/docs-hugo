@@ -4,7 +4,6 @@ menuTitle: Management
 weight: 10
 description: >-
   How to manage named graphs of the type SmartGraph
-archetype: default
 ---
 This chapter describes the JavaScript interface for creating and modifying
 SmartGraphs. A SmartGraph is a specialized version of a General Graph, which

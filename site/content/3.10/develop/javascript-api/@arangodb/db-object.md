@@ -6,7 +6,6 @@ description: >-
   The database object represents the currently selected database and provides
   access to information and methods for executing operations in the context of
   this database
-archetype: default
 ---
 The `db` object of the JavaScript API is available in [arangosh](../../../components/tools/arangodb-shell/_index.md)
 by default, and can also be imported and used in Foxx services and other

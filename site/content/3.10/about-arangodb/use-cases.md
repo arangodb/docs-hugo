@@ -7,7 +7,6 @@ description: >-
   graphs, documents, key-value, search engine, and machine learning all in one
 pageToc:
   maxHeadlineLevel: 2
-archetype: default
 aliases:
   - ../introduction/use-cases
 ---

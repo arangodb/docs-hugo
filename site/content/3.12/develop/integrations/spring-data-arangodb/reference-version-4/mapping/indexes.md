@@ -3,7 +3,6 @@ title: Indexes
 menuTitle: Indexes
 weight: 25
 description: ''
-archetype: default
 ---
 Indexes can be ensured using the following annotations. For reference see the
 [indexing](../../../../../index-and-search/indexing/_index.md) documentation

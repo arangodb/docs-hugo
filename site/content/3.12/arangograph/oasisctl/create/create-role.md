@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl create role command
 title: Oasisctl Create Role
 menuTitle: Create Role

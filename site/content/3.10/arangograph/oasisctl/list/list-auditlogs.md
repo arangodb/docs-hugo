@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl list auditlogs command
 title: Oasisctl List Auditlogs
 menuTitle: List Auditlogs

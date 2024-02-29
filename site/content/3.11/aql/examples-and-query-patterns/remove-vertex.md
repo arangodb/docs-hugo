@@ -5,7 +5,6 @@ weight: 45
 description: >-
   Removing connected edges along with vertex documents directly in AQL is
   possible in a limited way
-archetype: default
 ---
 Deleting vertices with associated edges is currently not handled via AQL while 
 the [graph management interface](../../graphs/general-graphs/management.md#remove-a-vertex)

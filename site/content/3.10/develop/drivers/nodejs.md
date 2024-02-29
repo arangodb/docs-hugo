@@ -5,7 +5,6 @@ weight: 25
 description: >-
   ArangoJS is the JavaScript driver to access ArangoDB from outside the
   database system, primarily with Node.js
-archetype: default
 ---
 The official ArangoDB low-level JavaScript client.
 

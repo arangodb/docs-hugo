@@ -6,7 +6,6 @@ description: >-
   JavaScript Transactions allow you to submit single-request transactions
   that leverage ArangoDB's JavaScript API to run complex operations that can
   read and modify multiple documents from multiple collections
-archetype: default
 ---
 JavaScript transactions are different from transactions in SQL.
 

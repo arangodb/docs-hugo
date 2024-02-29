@@ -5,7 +5,6 @@ weight: 30
 description: >-
   You can create and manage named graphs in the web interface, as well as
   visually explore graphs with the graph viewer
-archetype: default
 ---
 The **GRAPHS** section of the web interface lists the _named graphs_ stored in
 ArangoDB (EnterpriseGraphs, SmartGraphs, SatelliteGraphs, General Graphs) and

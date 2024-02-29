@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl get organization command
 title: Oasisctl Get Organization
 menuTitle: Get Organization

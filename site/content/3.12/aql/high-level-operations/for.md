@@ -5,7 +5,6 @@ weight: 5
 description: >-
   The versatile `FOR` operation can iterate over a collection or View, the
   elements of an array, or traverse a graph
-archetype: default
 ---
 ## Syntax
 

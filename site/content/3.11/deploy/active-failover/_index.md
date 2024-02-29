@@ -5,7 +5,6 @@ weight: 10
 description: >-
   You can set up multiple single server instances to have one leader and multiple
   asynchronously replicated followers with automatic failover
-archetype: chapter
 ---
 An _Active Failover_ is defined as:
 

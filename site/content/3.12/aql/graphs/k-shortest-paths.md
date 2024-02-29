@@ -5,7 +5,6 @@ weight: 25
 description: >-
   Determine a specified number of shortest paths in increasing path length or
   weight order
-archetype: default
 ---
 ## General query idea
 

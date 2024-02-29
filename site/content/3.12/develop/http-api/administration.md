@@ -5,7 +5,6 @@ weight: 110
 description: >-
   You can get information about ArangoDB servers, toggle the maintenance mode,
   shut down server nodes, and start actions like compaction
-archetype: default
 ---
 ## Information
 

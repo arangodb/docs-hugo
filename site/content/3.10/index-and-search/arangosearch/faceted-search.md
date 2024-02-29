@@ -5,7 +5,6 @@ weight: 45
 description: >-
   Combine aggregation with search queries to retrieve how often values occur
   overall
-archetype: default
 ---
 A popular method for filtering items in an online shop is to display product
 categories in a list, together with the number of items in each category.

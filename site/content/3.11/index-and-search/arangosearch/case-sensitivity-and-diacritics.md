@@ -4,7 +4,6 @@ menuTitle: Case-sensitivity and Diacritics
 weight: 25
 description: >-
   You can normalize values for case-insensitive matching and to ignore diacritics, also in combination with other search techniques
-archetype: default
 ---
 ## Normalizing a Single Token
 

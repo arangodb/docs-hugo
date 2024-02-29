@@ -5,7 +5,6 @@ weight: 80
 description: >-
   The HTTP API for jobs lets you access the results of asynchronously executed
   requests and check the status of such jobs
-archetype: default
 ---
 ## Get the results of an async job
 

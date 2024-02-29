@@ -3,7 +3,6 @@ title: ArangoDB C#/.NET driver
 menuTitle: C#/.NET driver
 weight: 20
 description: ''
-archetype: default
 ---
 The official ArangoDB C#/.NET driver. Built using .NET Standard 2.0, the library
 provides .NET Core and .NET Framework applications with the complete range of

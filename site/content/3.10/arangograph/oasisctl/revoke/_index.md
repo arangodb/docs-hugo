@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl revoke command
 title: Oasisctl Revoke
 menuTitle: Revoke

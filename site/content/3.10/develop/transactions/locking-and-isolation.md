@@ -3,7 +3,6 @@ title: Locking and isolation of transactions
 menuTitle: Locking and isolation
 weight: 15
 description: ''
-archetype: default
 ---
 Transactions need to specify from which collections they will read data and which
 collections they intend to modify. This can be done by setting the `read`, `write`,

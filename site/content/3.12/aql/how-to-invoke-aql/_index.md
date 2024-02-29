@@ -3,7 +3,6 @@ title: How to execute AQL queries
 menuTitle: How to invoke AQL
 weight: 5
 description: ''
-archetype: chapter
 ---
 AQL queries can be invoked in the following ways:
 

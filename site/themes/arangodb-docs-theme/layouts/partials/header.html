@@ -26,8 +26,8 @@
       <a href="#" class="home-link is-current" aria-label="Go to home page" onclick="goToHomepage(event);"></a>
       <div id="searchbox">
       </div>
-      {{ partial "inkeep-widget.html" . -}}
-      {{ partial "version-selector.html" . }}
+      {{ partialCached "inkeep-widget.html" . -}}
+      {{ partialCached "version-selector.html" . }}
     </div>
 
   </header>

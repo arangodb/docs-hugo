@@ -4,7 +4,6 @@ menuTitle: Traversals
 weight: 40
 description: >-
   You can combine graph queries with other AQL features like geo-spatial search
-archetype: default
 ---
 ## Finding the start vertex via a geo query
 

@@ -3,7 +3,6 @@ title: ArangoDB Sink Connector Configuration Properties
 menuTitle: Configuration
 weight: 5
 description: ''
-archetype: default
 ---
 ## Connection
 

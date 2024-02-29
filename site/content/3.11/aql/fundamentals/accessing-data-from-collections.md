@@ -5,7 +5,6 @@ weight: 25
 description: >-
   You can access collection data by looping over a collection and reading
   document attributes, with non-existing attributes returning a `null` value
-archetype: default
 ---
 A collection can be thought of as an array of documents. To access the documents,
 use a [`FOR` operation](../high-level-operations/for.md) to iterate over a

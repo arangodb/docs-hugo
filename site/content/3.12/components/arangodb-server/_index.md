@@ -5,7 +5,6 @@ weight: 170
 description: >-
   The ArangoDB daemon (arangod) is the central server binary that can run in
   different modes for a variety of setups like single server and clusters
-archetype: chapter
 ---
 The ArangoDB server is the core component of ArangoDB. The executable file to
 run it is named `arangod`. The `d` stands for daemon. A daemon is a long-running

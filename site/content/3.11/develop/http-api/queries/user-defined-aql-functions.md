@@ -5,7 +5,6 @@ weight: 15
 description: >-
   The HTTP API for user-defined functions (UDFs) lets you add, delete, and list
   registered AQL extensions
-archetype: default
 ---
 AQL user functions are a means to extend the functionality
 of ArangoDB's query language (AQL) with user-defined JavaScript code.

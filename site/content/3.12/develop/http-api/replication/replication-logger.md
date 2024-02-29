@@ -3,7 +3,6 @@ title: Replication logger commands
 menuTitle: Replication Logger
 weight: 10
 description: ''
-archetype: default
 ---
 All data-modification operations are written to the server's write-ahead log and are
 not handled by a separate replication logger.

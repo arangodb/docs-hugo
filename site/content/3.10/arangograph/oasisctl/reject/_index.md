@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl reject command
 title: Oasisctl Reject
 menuTitle: Reject

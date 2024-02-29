@@ -3,7 +3,6 @@ title: Set up Prometheus & Grafana for Datacenter-to-Datacenter-Replication
 menuTitle: Prometheus & Grafana
 weight: 20
 description: ''
-archetype: default
 ---
 _ArangoSync_ provides metrics in a format supported by [Prometheus](https://prometheus.io)
 that you can optionally use.

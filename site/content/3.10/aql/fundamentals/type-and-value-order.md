@@ -5,7 +5,6 @@ weight: 20
 description: >-
   AQL uses a set of rules for equality checks and comparisons that takes both
   the data types and the actual values into account
-archetype: default
 ---
 When checking for equality or inequality, or when determining the sort order of
 values, AQL uses a deterministic algorithm for the comparison.

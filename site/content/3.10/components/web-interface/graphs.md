@@ -5,7 +5,6 @@ weight: 30
 description: >-
   You can create and manage named graphs in the web interface, as well as
   visually explore graphs with the graph viewer
-archetype: default
 ---
 The *Graphs* tab provides a viewer facility for graph data stored in ArangoDB.
 It allows browsing ArangoDB graphs stored in the *_graphs* system collection or

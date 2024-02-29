@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl list providers command
 title: Oasisctl List Providers
 menuTitle: List Providers

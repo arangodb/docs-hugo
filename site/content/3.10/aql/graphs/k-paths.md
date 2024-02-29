@@ -5,7 +5,6 @@ weight: 30
 description: >-
   Determine all paths between a start and end vertex limited specified path
   lengths
-archetype: default
 ---
 ## General query idea
 

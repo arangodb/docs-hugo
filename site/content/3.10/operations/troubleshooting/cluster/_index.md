@@ -4,7 +4,6 @@ menuTitle: Cluster
 weight: 20
 description: >-
   Troubleshooting issues of ArangoDB cluster deployments
-archetype: chapter
 ---
 - Cluster front end is unresponsive
   - Check if the _Coordinator(s)_ in question are started up.

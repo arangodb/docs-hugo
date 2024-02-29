@@ -5,7 +5,6 @@ weight: 5
 description: >-
   An alternative storage engine, distributed graph processing, on-disk data
   encryption, replicated collections, LDAP support
-archetype: default
 ---
 The following list shows in detail which features have been added or improved in
 ArangoDB 3.2. ArangoDB 3.2 also contains several bugfixes that are not listed

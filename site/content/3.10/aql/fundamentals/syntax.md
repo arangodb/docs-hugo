@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Query types, whitespace, comments, keywords, and names in the AQL language
   explained
-archetype: default
 ---
 ## Query types
 

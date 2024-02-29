@@ -3,7 +3,6 @@ title: Query methods
 menuTitle: Query methods
 weight: 10
 description: ''
-archetype: default
 ---
 Queries using [ArangoDB Query Language (AQL)](../../../../../../aql/_index.md)
 can be supplied with the `@Query` annotation on methods.

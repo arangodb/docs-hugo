@@ -5,7 +5,6 @@ weight: 105
 description: >-
   Edges are documents with special `_from` and `_to` attributes to reference
   other documents by their ID to form a graph
-archetype: default
 ---
 Edges are used in [graphs](_index.md) to link vertices together.
 They are documents with two additional system attributes that you set, a

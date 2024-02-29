@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl update private endpoint command
 title: Oasisctl Update Private Endpoint
 menuTitle: Update Private Endpoint

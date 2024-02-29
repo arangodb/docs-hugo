@@ -5,7 +5,6 @@ weight: 45
 description: >-
   You can execute AQL queries in different ways, from the easy-to-use
   web interface to the raw HTTP API
-archetype: default
 ---
 ## How to invoke AQL
 

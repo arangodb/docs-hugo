@@ -3,7 +3,6 @@ title: Exposing Foxx to the browser
 menuTitle: Access from the browser
 weight: 70
 description: ''
-archetype: default
 ---
 There are three ways to use Foxx in a web application:
 

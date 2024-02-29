@@ -3,7 +3,6 @@ title: Working with persistent indexes
 menuTitle: Persistent
 weight: 5
 description: ''
-archetype: default
 ---
 {{< info >}}
 The index types `hash` and `skiplist` are aliases for the `persistent` index

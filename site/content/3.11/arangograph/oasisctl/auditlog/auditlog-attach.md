@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl auditlog attach command
 title: Oasisctl Auditlog Attach
 menuTitle: Audit Log Attach

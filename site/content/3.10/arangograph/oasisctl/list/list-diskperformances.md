@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl list diskperformances command
 title: Oasisctl List Diskperformances
 menuTitle: List Diskperformances

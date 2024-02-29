@@ -5,7 +5,6 @@ weight: 15
 description: >-
   Documents are self-contained units of information, each typically representing
   a single record or instance of an entity
-archetype: chapter
 ---
 Documents in ArangoDB are JSON objects that contain structured or semi-structured
 data. They are stored in [collections](../collections.md).

@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl delete deployment command
 title: Oasisctl Delete Deployment
 menuTitle: Delete Deployment

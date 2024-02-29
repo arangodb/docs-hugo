@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl list servers command
 title: Oasisctl List Servers
 menuTitle: List Servers

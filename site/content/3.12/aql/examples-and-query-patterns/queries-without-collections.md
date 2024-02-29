@@ -5,7 +5,6 @@ weight: 50
 description: >-
   You can use AQL with only expressions and no document access for some
   calculation and testing purposes
-archetype: default
 ---
 AQL queries typically access one or more collections to read from documents
 or to modify them. Queries don't necessarily have to involve collections

@@ -5,7 +5,6 @@ weight: 65
 description: >-
   The HTTP API for Analyzers lets you create and delete Analyzers, as well as
   list all or get specific Analyzers with all their settings
-archetype: default
 ---
 The RESTful API for managing ArangoSearch Analyzers is accessible via the
 `/_api/analyzer` endpoint.

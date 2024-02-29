@@ -4,7 +4,6 @@ menuTitle: ArangoGraphML
 weight: 125
 description: >-
   Enterprise-ready, graph-powered machine learning as a cloud service or self-managed
-archetype: chapter
 aliases:
   - graphml
 ---

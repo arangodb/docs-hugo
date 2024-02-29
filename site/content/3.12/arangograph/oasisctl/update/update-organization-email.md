@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl update organization email command
 title: Oasisctl Update Organization Email
 menuTitle: Update Organization Email

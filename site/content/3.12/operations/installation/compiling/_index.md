@@ -4,7 +4,6 @@ menuTitle: Compiling
 weight: 25
 description: >-
   ArangoDB can be compiled directly from source code
-archetype: chapter
 ---
 ArangoDB can be compiled directly from source. It will compile on most Linux
 and macOS systems, as well as on Windows.
