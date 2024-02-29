@@ -47,10 +47,6 @@
   text: "forbidden"
   desc: "Will be raised when you are missing permission for the operation."
   code: 11
-- name: ERROR_OUT_OF_MEMORY_MMAP
-  text: "out of memory in mmap"
-  desc: "Will be raised when there is a memory shortage."
-  code: 12
 - name: ERROR_CORRUPTED_CSV
   text: "csv is corrupt"
   desc: "Will be raised when encountering a corrupt csv line."

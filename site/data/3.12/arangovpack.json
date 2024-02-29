@@ -11,8 +11,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -31,8 +30,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -51,8 +49,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -72,8 +69,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -91,8 +87,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -110,8 +105,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -132,8 +126,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -153,8 +146,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -175,8 +167,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -200,8 +191,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -220,8 +210,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -244,8 +233,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -268,8 +256,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -289,8 +276,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -309,8 +295,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -329,8 +314,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -350,8 +334,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -371,8 +354,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -395,8 +377,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -416,8 +397,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -440,8 +420,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -460,8 +439,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -487,8 +465,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -517,8 +494,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -535,12 +511,11 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "This option allows you to direct the global or\nper-topic log messages to different outputs. The output definition can be one\nof the following:\n\n- `-` for stdin\n- `+` for stderr\n- `syslog://<syslog-facility>`\n- `syslog://<syslog-facility>/<application-name>`\n- `file://<relative-or-absolute-path>`\n\nTo set up a per-topic output configuration, use\n`--log.output <topic>=<definition>`:\n\n`--log.output queries=file://queries.log`\n\nThe above example logs query-related messages to the file `queries.log`.\n\nYou can specify the option multiple times in order to configure the output\nfor different log topics:\n\n`--log.level queries=trace --log.output queries=file:///queries.log\n--log.level requests=info --log.output requests=file:///requests.log`\n\nThe above example logs all query-related messages to the file `queries.log`\nand HTTP requests with a level of `info` or higher to the file `requests.log`.\n\nAny occurrence of `$PID` in the log output value is replaced at runtime with\nthe actual process ID. This enables logging to process-specific files:\n\n`--log.output 'file://arangod.log.$PID'`\n\nNote that dollar sign may need extra escaping when specified on a\ncommand-line such as Bash.\n\nIf you specify `--log.file-mode <octalvalue>`, then any newly created log\nfile uses `octalvalue` as file mode. Please note that the `umask` value is\napplied as well.\n\nIf you specify `--log.file-group <name>`, then any newly created log file tries\nto use `<name>` as the group name. Note that you have to be a member of that\ngroup. Otherwise, the group ownership is not changed. This option is only\navailable under Linux and macOS. It is not available under Windows.\n\nThe old `--log.file` option is still available for convenience. It is a\nshortcut for the more general option `--log.output file://filename`.\n\nThe old `--log.requests-file` option is still available. It is a shortcut for\nthe more general option `--log.output requests=file://...`.",
+    "longDescription" : "This option allows you to direct the global or\nper-topic log messages to different outputs. The output definition can be one\nof the following:\n\n- `-` for stdin\n- `+` for stderr\n- `syslog://<syslog-facility>`\n- `syslog://<syslog-facility>/<application-name>`\n- `file://<relative-or-absolute-path>`\n\nTo set up a per-topic output configuration, use\n`--log.output <topic>=<definition>`:\n\n`--log.output queries=file://queries.log`\n\nThe above example logs query-related messages to the file `queries.log`.\n\nYou can specify the option multiple times in order to configure the output\nfor different log topics:\n\n`--log.level queries=trace --log.output queries=file:///queries.log\n--log.level requests=info --log.output requests=file:///requests.log`\n\nThe above example logs all query-related messages to the file `queries.log`\nand HTTP requests with a level of `info` or higher to the file `requests.log`.\n\nAny occurrence of `$PID` in the log output value is replaced at runtime with\nthe actual process ID. This enables logging to process-specific files:\n\n`--log.output 'file://arangod.log.$PID'`\n\nNote that dollar sign may need extra escaping when specified on a\ncommand-line such as Bash.\n\nIf you specify `--log.file-mode <octalvalue>`, then any newly created log\nfile uses `octalvalue` as file mode. Please note that the `umask` value is\napplied as well.\n\nIf you specify `--log.file-group <name>`, then any newly created log file tries\nto use `<name>` as the group name. Note that you have to be a member of that\ngroup. Otherwise, the group ownership is not changed.\n\nThe old `--log.file` option is still available for convenience. It is a\nshortcut for the more general option `--log.output file://filename`.\n\nThe old `--log.requests-file` option is still available. It is a shortcut for\nthe more general option `--log.output requests=file://...`.",
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -561,8 +536,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -583,8 +557,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -605,8 +578,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -626,8 +598,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -648,8 +619,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -669,8 +639,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -694,8 +663,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -714,8 +682,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -735,8 +702,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -757,8 +723,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -781,8 +746,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -805,8 +769,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -829,8 +792,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -850,8 +812,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -872,8 +833,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -885,13 +845,13 @@
     "category" : "option",
     "default" : 1,
     "deprecatedIn" : null,
-    "description" : "The random number generator to use (1 = MERSENNE, 2 = RANDOM, 3 = URANDOM, 4 = COMBINED (not available on Windows), 5 = WinCrypt (Windows only). The options 2, 3, 4, and 5 are deprecated and will be removed in a future version.",
+    "description" : "The random number generator to use (1 = MERSENNE, 2 = RANDOM, 3 = URANDOM, 4 = COMBINED). The options 2, 3, and 4 are deprecated and will be removed in a future version.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
     "hidden" : true,
     "introducedIn" : null,
-    "longDescription" : "- `1`: a pseudo-random number generator using an\nimplication of the Mersenne Twister MT19937 algorithm\n- `2`: use a blocking random (or pseudo-random) number generator\n- `3`: use the non-blocking random (or pseudo-random) number generator supplied\n  by the operating system\n- `4`: a combination of the blocking random number generator and the Mersenne\n  Twister (not available on Windows)\n- `5`: use WinCrypt (Windows only)",
+    "longDescription" : "- `1`: a pseudo-random number generator using an\nimplication of the Mersenne Twister MT19937 algorithm\n- `2`: use a blocking random (or pseudo-random) number generator\n- `3`: use the non-blocking random (or pseudo-random) number generator supplied\n  by the operating system\n- `4`: a combination of the blocking random number generator and the Mersenne\n  Twister",
     "maxInclusive" : true,
     "maxValue" : 4294967295,
     "minInclusive" : true,
@@ -899,8 +859,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "random",
@@ -941,8 +900,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -962,8 +920,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : false,
     "section" : "",
