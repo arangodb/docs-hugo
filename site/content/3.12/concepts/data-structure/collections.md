@@ -5,7 +5,6 @@ weight: 10
 description: >-
   Collections allow you to store documents and you can use them to group records
   of similar kinds together
-archetype: default
 ---
 A collection can contain a set of documents, similar to how a folder contains
 files. You can store documents with varying data structures in a single

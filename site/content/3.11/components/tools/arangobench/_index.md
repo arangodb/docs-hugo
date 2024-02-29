@@ -5,7 +5,6 @@ weight: 40
 description: >-
   `arangobench` is a benchmark and test tool that can be used to issue test
   requests to the database system for performance and server function testing
-archetype: chapter
 ---
 _arangobench_ is a client tool which makes network connections to an ArangoDB
 server in about the same way as a client application would do via an ArangoDB

@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl delete backup command
 title: Oasisctl Delete Backup
 menuTitle: Delete Backup

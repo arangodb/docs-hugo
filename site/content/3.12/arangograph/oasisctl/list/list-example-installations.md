@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl list example installations command
 title: Oasisctl List Example Installations
 menuTitle: List Example Installations

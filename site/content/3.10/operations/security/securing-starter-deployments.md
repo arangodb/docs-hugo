@@ -5,7 +5,6 @@ weight: 25
 description: >-
   You should enable authentication for deployments you create with the
   ArangoDB Starter before starting them the first time
-archetype: default
 ---
 The password that is set for the _root_ user during the installation of the ArangoDB
 package has no effect in case of deployments done with the tool _ArangoDB Starter_,

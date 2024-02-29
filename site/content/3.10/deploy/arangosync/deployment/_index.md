@@ -3,7 +3,6 @@ title: Datacenter-to-Datacenter Replication deployment
 menuTitle: Deployment
 weight: 5
 description: ''
-archetype: chapter
 ---
 {{< tag "ArangoDB Enterprise Edition" >}}
 

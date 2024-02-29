@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Command-line client tool for managing ArangoGraph
 title: ArangoGraph Shell oasisctl
 menuTitle: Options

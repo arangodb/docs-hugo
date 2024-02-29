@@ -5,7 +5,6 @@ weight: 5
 description: >-
   You can use Pregel algorithms for graph exploration, path finding, analytics
   queries, and much more
-archetype: default
 aliases:
   - pregel-algorithms
 ---

@@ -4,7 +4,6 @@ menuTitle: Linux
 weight: 10
 description: >-
   Download an installation or tar package, or use a package manager
-archetype: chapter
 ---
 You can install ArangoDB on most common Linux distributions. The basic
 installation steps are:

@@ -3,7 +3,6 @@ title: Foxx CLI Details
 menuTitle: Details
 weight: 5
 description: ''
-archetype: default
 ---
 ## Install
 

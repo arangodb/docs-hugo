@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl list nodesizes command
 title: Oasisctl List Nodesizes
 menuTitle: List Nodesizes

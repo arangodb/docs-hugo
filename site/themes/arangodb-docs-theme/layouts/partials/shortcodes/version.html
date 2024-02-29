@@ -1,5 +1,5 @@
 {{- $page := .page }}
-{{- $versions := index site.Data "versions" }}
+{{- $versions := site.Data.versions }}
 {{- range $i, $version := $versions }}
   {{- if eq $page.Type $version.name }}
     {{- $page.Store.Set "version" $version.version }}

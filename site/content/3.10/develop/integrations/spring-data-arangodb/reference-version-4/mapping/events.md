@@ -3,7 +3,6 @@ title: Events
 menuTitle: Events
 weight: 35
 description: ''
-archetype: default
 ---
 Spring Data ArangoDB includes several `ApplicationEvent` events that your
 application can respond to by registering subclasses of

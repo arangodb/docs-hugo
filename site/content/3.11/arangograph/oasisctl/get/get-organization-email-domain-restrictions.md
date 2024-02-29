@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl get organization email domain restrictions command
 title: Oasisctl Get Organization Email Domain Restrictions
 menuTitle: Get Organization Email Domain Restrictions

@@ -3,7 +3,6 @@ title: Service manifest
 menuTitle: Service manifest
 weight: 5
 description: ''
-archetype: default
 ---
 Every service comes with a `manifest.json` file providing metadata. Typically, a
 manifest should at least specify the version of ArangoDB the service supports and

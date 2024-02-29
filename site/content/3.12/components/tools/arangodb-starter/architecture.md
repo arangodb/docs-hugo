@@ -5,7 +5,6 @@ weight: 15
 description: >-
   The Starter files and configuration explained, what modes it supports, and how
   it runs distributed across multiple machines
-archetype: default
 ---
 ## What does the Starter do
 

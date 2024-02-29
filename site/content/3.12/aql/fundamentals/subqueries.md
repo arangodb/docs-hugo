@@ -5,7 +5,6 @@ weight: 30
 description: >-
   Subqueries let you form complex requests and allow you to process more data in
   with a single query
-archetype: default
 ---
 ## How to use subqueries
 

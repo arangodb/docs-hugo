@@ -5,7 +5,6 @@ weight: 60
 description: >-
   The `REPLACE` operation removes all attributes of a document and sets the
   given attributes, excluding immutable system attributes
-archetype: default
 ---
 Each `REPLACE` operation is restricted to a single collection, and the
 [collection name](../../concepts/data-structure/collections.md#collection-names) must not be dynamic.

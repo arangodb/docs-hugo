@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl delete project command
 title: Oasisctl Delete Project
 menuTitle: Delete Project

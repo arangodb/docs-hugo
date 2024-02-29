@@ -4,7 +4,6 @@ menuTitle: NetworkX
 weight: 5
 description: >-
   The NetworkX Adapter allows you to export graphs from ArangoDB into NetworkX for graph analysis with Python and vice-versa
-archetype: default
 ---
 [NetworkX](https://networkx.org/) is a commonly used tool for
 analysis of network-data. If your

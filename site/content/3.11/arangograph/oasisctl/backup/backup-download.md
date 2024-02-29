@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl backup download command
 title: Oasisctl Backup Download
 menuTitle: Backup Download

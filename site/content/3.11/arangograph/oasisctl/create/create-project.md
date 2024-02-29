@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl create project command
 title: Oasisctl Create Project
 menuTitle: Create Project

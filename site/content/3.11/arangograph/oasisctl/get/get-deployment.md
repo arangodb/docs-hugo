@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl get deployment command
 title: Oasisctl Get Deployment
 menuTitle: Get Deployment

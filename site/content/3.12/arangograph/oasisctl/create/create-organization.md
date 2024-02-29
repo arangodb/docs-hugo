@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl create organization command
 title: Oasisctl Create Organization
 menuTitle: Create Organization

@@ -5,7 +5,6 @@ weight: 45
 description: >-
   AQL has restrictions with regards to the complexity of queries and the data
   they operate on, as well as design limitations to be aware of
-archetype: default
 ---
 ## Complexity limitations
 

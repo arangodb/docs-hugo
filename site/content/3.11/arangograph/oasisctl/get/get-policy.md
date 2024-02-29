@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl get policy command
 title: Oasisctl Get Policy
 menuTitle: Get Policy

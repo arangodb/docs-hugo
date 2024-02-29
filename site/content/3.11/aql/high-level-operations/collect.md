@@ -6,7 +6,6 @@ description: >-
   The `COLLECT` operation can group data by one or multiple grouping criteria,
   retrieve all distinct values, count how often values occur, and calculate
   statistical properties efficiently
-archetype: default
 ---
 The different variants of `COLLECT` cover most needs for grouping and aggregating
 data. For aggregation using a sliding window, see the [`WINDOW` operation](window.md).

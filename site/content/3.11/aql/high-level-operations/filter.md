@@ -5,7 +5,6 @@ weight: 15
 description: >-
   The `FILTER` operation lets you restrict the results to elements that match
   arbitrary logical conditions
-archetype: default
 ---
 ## Syntax
 

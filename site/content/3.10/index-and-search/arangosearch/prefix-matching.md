@@ -4,7 +4,6 @@ menuTitle: Prefix matching
 weight: 20
 description: >-
   Search for strings or tokens that start with one or more substrings
-archetype: default
 ---
 A typical use case for matching prefixes is to provide word completion
 (auto-complete). If the requirement is to find exact prefix matches only then

@@ -4,7 +4,6 @@ menuTitle: Getting Started
 weight: 5
 description: >-
   This chapter walks you through the first steps you need to follow to create an EnterpriseGraph
-archetype: default
 ---
 EnterpriseGraphs **cannot use existing collections**. When switching to
 EnterpriseGraph from an existing dataset, you have to import the data into a

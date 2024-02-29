@@ -5,7 +5,6 @@ weight: 5
 description: >-
   How to enforce attributes and their data types for documents of individual
   collections using JSON Schema
-archetype: default
 ---
 <small>Introduced in: v3.7.1</small>
 

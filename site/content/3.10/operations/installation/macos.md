@@ -3,7 +3,6 @@ title: Installing ArangoDB on macOS
 menuTitle: macOS
 weight: 15
 description: ''
-archetype: default
 ---
 You can use ArangoDB on macOS in different ways:
 

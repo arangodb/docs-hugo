@@ -5,7 +5,6 @@ weight: 5
 description: >-
   An integrated search engine for full-text and beyond, overhauled geo-spatial
   indexing, query result streaming, storage engine changes
-archetype: default
 ---
 The following list shows in detail which features have been added or improved in
 ArangoDB 3.4. ArangoDB 3.4 also contains several bug fixes that are not listed

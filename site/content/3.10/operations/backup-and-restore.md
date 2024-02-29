@@ -5,7 +5,6 @@ weight: 215
 description: >-
   Physical backups, logical backups with _arangodump_ and _arangorestore_,
   hot backups with _arangobackup_
-archetype: default
 ---
 ArangoDB supports three backup methods:
 

@@ -5,7 +5,6 @@ weight: 60
 description: >-
   ArangoDB stores graphs and documents as JSON objects that can be organized in
   collections and databases
-archetype: chapter
 ---
 ## How Data is Structured in ArangoDB
 

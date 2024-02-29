@@ -4,7 +4,6 @@ menuTitle: Counting
 weight: 10
 description: >-
   You can count the documents of a collection in different ways
-archetype: default
 ---
 ## Amount of documents in a collection
 

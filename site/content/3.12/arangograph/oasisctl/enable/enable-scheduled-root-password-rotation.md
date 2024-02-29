@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl enable scheduled-root-password-rotation command
 title: Oasisctl Enable Scheduled-Root-Password-Rotation
 menuTitle: Enable Scheduled-Root-Password-Rotation

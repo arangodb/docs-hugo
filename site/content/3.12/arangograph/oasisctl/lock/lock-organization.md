@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl lock organization command
 title: Oasisctl Lock Organization
 menuTitle: Lock Organization

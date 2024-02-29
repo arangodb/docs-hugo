@@ -5,7 +5,6 @@ weight: 35
 description: >-
   The tasks module provides an interface for managing scheduled and periodic
   execution of JavaScript code on the server side
-archetype: default
 ---
 `const tasks = require('@arangodb/tasks')`
 

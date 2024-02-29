@@ -5,7 +5,6 @@ weight: 10
 description: >-
   AQL supports both _primitive_ data types consisting of exactly one value and
   _compound_ data types comprised of multiple values
-archetype: default
 ---
 The following types are available:
 

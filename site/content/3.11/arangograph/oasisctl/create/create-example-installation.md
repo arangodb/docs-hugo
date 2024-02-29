@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl create example installation command
 title: Oasisctl Create Example Installation
 menuTitle: Create Example Installation

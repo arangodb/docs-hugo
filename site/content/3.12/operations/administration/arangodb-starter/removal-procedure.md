@@ -5,7 +5,6 @@ weight: 5
 description: >-
   You can remove a machine from a cluster that was started with ArangoDB Starter
   as long as the machine does not run an Agent
-archetype: default
 aliases:
   - ../arangodb-starter-administration/removal-procedure
 ---

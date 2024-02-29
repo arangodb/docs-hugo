@@ -4,7 +4,6 @@ menuTitle: Data Queries
 weight: 20
 description: >-
   With AQL queries, you can read and write data in the form of documents
-archetype: default
 ---
 There are two fundamental types of AQL queries:
 - queries which access data (read documents)

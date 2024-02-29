@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl revoke metrics command
 title: Oasisctl Revoke Metrics
 menuTitle: Revoke Metrics

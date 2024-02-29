@@ -3,7 +3,6 @@ title: How to produce an Agency Dump
 menuTitle: Agency Dump
 weight: 5
 description: ''
-archetype: default
 ---
 One can read out all information of an _Agency_ in the following way:
 

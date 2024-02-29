@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl get private command
 title: Oasisctl Get Private
 menuTitle: Get Private

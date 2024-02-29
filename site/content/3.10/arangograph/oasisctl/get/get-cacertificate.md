@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl get cacertificate command
 title: Oasisctl Get Cacertificate
 menuTitle: Get Cacertificate

@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl delete apikey command
 title: Oasisctl Delete Apikey
 menuTitle: Delete Apikey

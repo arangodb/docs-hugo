@@ -5,7 +5,6 @@ weight: 15
 description: >-
   `arangodump` is a command-line client tool to create backups of the data and
   structures stored in ArangoDB
-archetype: chapter
 ---
 Dumps are meant to be restored with [_arangorestore_](../arangorestore/_index.md).
 

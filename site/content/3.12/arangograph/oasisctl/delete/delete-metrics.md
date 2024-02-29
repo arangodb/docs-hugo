@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl delete metrics command
 title: Oasisctl Delete Metrics
 menuTitle: Delete Metrics

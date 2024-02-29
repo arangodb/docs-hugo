@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl wait command
 title: Oasisctl Wait
 menuTitle: Wait

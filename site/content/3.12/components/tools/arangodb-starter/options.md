@@ -5,7 +5,6 @@ weight: 5
 description: >-
   The Starter provides options to control various aspects of a cluster or other
   deployment you want to run
-archetype: default
 ---
 ## Common options
 

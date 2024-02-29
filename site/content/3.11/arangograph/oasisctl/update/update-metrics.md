@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl update metrics command
 title: Oasisctl Update Metrics
 menuTitle: Update Metrics

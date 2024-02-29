@@ -3,7 +3,6 @@ title: Working with inverted indexes
 menuTitle: Inverted
 weight: 10
 description: ''
-archetype: default
 ---
 {{< info >}}
 If you use ArangoSearch caching in supported 3.9 versions and upgrade an

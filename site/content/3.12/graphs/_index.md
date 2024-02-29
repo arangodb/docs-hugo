@@ -7,7 +7,6 @@ description: >-
   vertices and edges, to naturally model knowledge, social networks, cash flows,
   supply chains, and other information webs, and to extract valuable insights by
   analyzing this connected data
-archetype: chapter
 aliases:
   - graphs/first-steps
 ---

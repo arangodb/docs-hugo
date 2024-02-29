@@ -5,7 +5,6 @@ weight: 20
 description: >-
   AQL includes functions to work with dates as numeric timestamps and as
   ISO 8601 date time strings
-archetype: default
 ---
 ## Date and time representations
 

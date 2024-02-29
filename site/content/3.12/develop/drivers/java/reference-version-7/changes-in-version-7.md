@@ -5,7 +5,6 @@ weight: 15
 description: >-
   Various detailed have changed, like the setup, transport, configuration,
   serialization, and some of the APIs
-archetype: default
 ---
 ## Maven Setup
 

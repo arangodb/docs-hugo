@@ -4,7 +4,6 @@ menuTitle: Production Checklist
 weight: 45
 description: >-
   Important steps to perform before you go live with ArangoDB deployments
-archetype: default
 ---
 The following checklist can help to understand if important steps
 have been performed on your production system before you go live.

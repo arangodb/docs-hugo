@@ -5,7 +5,6 @@ weight: 10
 description: >-
   The HTTP API for JavaScript Transactions lets you run a transaction that
   leverages ArangoDB's JavaScript API by submitting a single HTTP request
-archetype: default
 ---
 JavaScript Transactions are executed on the server. Transactions can be 
 initiated by clients by sending the transaction description for execution to

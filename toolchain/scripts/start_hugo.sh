@@ -27,6 +27,8 @@ hugoOptions=""
 if [ "$ENV" = "local" ]; then
     # Without --buildDrafts (rarely used) to match CI builds
     hugoOptions="serve --watch --bind=0.0.0.0 --ignoreCache --noHTTPCache --disableLiveReload"
+#else
+#  hugoOptions="--templateMetrics --templateMetricsHints"
 fi
 
 

@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl version command
 title: Oasisctl Version
 menuTitle: Version

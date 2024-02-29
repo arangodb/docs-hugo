@@ -3,7 +3,6 @@ title: Named queries
 menuTitle: Named queries
 weight: 15
 description: ''
-archetype: default
 ---
 An alternative to using the `@Query` annotation on methods is specifying them in
 a separate `.properties` file. The default path for the file is

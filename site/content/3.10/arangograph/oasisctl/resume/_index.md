@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl resume command
 title: Oasisctl Resume
 menuTitle: Resume

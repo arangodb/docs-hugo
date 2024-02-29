@@ -4,7 +4,6 @@ menuTitle: Notebooks
 weight: 25
 description: >-
   How to create and manage colocated Jupyter Notebooks within ArangoGraph
-archetype: default
 ---
 {{< info >}}
 This documentation describes the beta version of the Notebooks feature and is

@@ -4,7 +4,6 @@ menuTitle: Deployments
 weight: 20
 description: >-
    How to create and manage deployments in ArangoGraph
-archetype: chapter
 ---
 Below projects in the ArangoGraph deployment hierarchy are deployments. A deployment
 contains an ArangoDB, configured as you choose. You can have any number of

@@ -5,7 +5,6 @@ weight: 10
 description: >-
   The HTTP API for Views lets you manage `arangosearch` Views, including
   handling the general View properties and View links
-archetype: default
 ---
 ## Create an arangosearch View
 

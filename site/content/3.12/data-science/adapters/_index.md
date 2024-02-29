@@ -5,7 +5,6 @@ weight: 140
 description: >-
   ArangoDB offers multiple adapters that enable seamless integration with
   data science tools
-archetype: chapter
 ---
 ArangoDB Adapters provide a convenient way to integrate ArangoDB with popular
 data science tools. By enabling you to to use your preferred programming

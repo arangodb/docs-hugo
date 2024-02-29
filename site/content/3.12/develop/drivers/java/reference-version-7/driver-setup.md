@@ -5,7 +5,6 @@ weight: 5
 description: >-
   How to connect your Java application to an ArangoDB server, as well as
   important configuration settings and information about the driver
-archetype: default
 ---
 The driver can be configured and instantiated using `com.arangodb.ArangoDB.Builder`:
 

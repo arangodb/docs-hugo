@@ -5,7 +5,6 @@ weight: 5
 description: >-
   The server binaries need to be upgraded, requiring a restart of the `arangod`
   processes and optionally using the supervision maintenance mode
-archetype: default
 aliases:
   - ../upgrading-manual-deployments/upgrading-an-active-failover-deployment
 ---

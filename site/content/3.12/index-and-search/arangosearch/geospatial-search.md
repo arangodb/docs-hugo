@@ -4,7 +4,6 @@ menuTitle: Geospatial search
 weight: 55
 description: >-
   ArangoSearch supports geospatial queries like finding locations and GeoJSON shapes within a radius or area
-archetype: default
 ---
 ArangoSearch can accelerate various types of geospatial queries for data that
 is indexed by a View. The regular [geospatial index](../indexing/working-with-indexes/geo-spatial-indexes.md) can do

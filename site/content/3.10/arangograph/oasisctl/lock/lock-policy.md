@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl lock policy command
 title: Oasisctl Lock Policy
 menuTitle: Lock Policy

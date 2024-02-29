@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl logs command
 title: Oasisctl Logs
 menuTitle: Logs

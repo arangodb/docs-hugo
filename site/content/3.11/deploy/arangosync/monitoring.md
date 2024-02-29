@@ -4,7 +4,6 @@ menuTitle: Monitoring
 weight: 25
 description: >-
   Datacenter-to-Datacenter Replication monitoring
-archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" >}}
 

@@ -5,7 +5,6 @@ weight: 35
 description: >-
   The result set of an AQL query is always an array of values, even if it
   returns a single element only
-archetype: default
 ---
 AQL queries and also [subqueries](subqueries.md) each produce an array with zero
 or more elements.

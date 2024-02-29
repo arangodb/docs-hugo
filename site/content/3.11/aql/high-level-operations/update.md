@@ -5,7 +5,6 @@ weight: 55
 description: >-
   The `UPDATE` operation partially modifies a document with the given attributes,
   by adding new and updating existing attributes
-archetype: default
 ---
 Each `UPDATE` operation is restricted to a single collection, and the
 [collection name](../../concepts/data-structure/collections.md#collection-names) must not be dynamic.

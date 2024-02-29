@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl delete auditlog archive command
 title: Oasisctl Delete Auditlog Archive
 menuTitle: Delete Audit Log Archive

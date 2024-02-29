@@ -5,7 +5,6 @@ weight: 85
 description: >-
   The HTTP API for tasks lets you can manage the periodic or timed execution of
   server-side JavaScript code
-archetype: default
 ---
 ## List all tasks
 
