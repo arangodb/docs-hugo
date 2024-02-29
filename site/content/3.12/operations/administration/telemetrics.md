@@ -5,7 +5,6 @@ weight: 10
 description: >-
   ArangoDB automatically gathers information on how it is used and the features
   being utilized, but you can disable this data collection
-archetype: default
 ---
 ArangoDB gathers metrics by default, to identify the primary usage patterns and
 features, and to measure their adoption rate.
@@ -120,7 +119,8 @@ as well as configuration details in terms of sharding and replication.
     - The number of fulltext indexes
     - The number of iresearch indexes
     - The number of inverted indexes
-    - The number of zkd indexes
+    - The number of mdi indexes
+    - The number of mdi-prefixed indexes
     - A list of detailed information per index
       - The index type
       - Is it a unique index?

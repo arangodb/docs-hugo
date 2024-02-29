@@ -4,7 +4,6 @@ menuTitle: Example Datasets
 weight: 5
 description: >-
   Datasets you may use for experimenting with ArangoSearch features
-archetype: default
 ---
 ## IMDB Movie Dataset
 

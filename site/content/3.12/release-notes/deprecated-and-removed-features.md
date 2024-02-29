@@ -4,7 +4,6 @@ menuTitle: Deprecated and removed features
 weight: 100
 description: >-
   Features listed in this section should no longer be used, because they are considered obsolete and may get removed in a future release
-archetype: default
 aliases:
   - ../operations/upgrading-manual-deployments/upgrading-an-active-failover-deployment
   - ../operations/upgrading/manual-deployments/active-failover

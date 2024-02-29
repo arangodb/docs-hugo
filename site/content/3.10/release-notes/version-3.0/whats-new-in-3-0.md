@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Redesigned cluster core architecture, graph traversals using the AQL query
   language, persistent indexes, overhauled Foxx microservices and web interface
-archetype: default
 ---
 The following list shows in detail which features have been added or improved in
 ArangoDB 3.0. ArangoDB 3.0 also contains several bugfixes that are not listed

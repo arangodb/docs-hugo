@@ -5,7 +5,6 @@ weight: 35
 description: >-
   You can create persistent indexes over the `_from` or `_to` attribute and one
   or more additional edge attributes to improve certain graph traversals
-archetype: default
 ---
 ## Introduction to Vertex-Centric Indexes
 

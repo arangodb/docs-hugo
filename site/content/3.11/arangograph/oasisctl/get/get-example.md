@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl get example command
 title: Oasisctl Get Example
 menuTitle: Get Example

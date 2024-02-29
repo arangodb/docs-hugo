@@ -4,7 +4,6 @@ menuTitle: Known Issues in 3.12
 weight: 10
 description: >-
   Important issues affecting the 3.12.x versions of the ArangoDB suite of products
-archetype: default
 ---
 Note that this page does not list all open issues.
 

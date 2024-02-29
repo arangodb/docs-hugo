@@ -5,7 +5,6 @@ weight: 30
 description: >-
   AQL offers an extensive set of functions to allow for complex computations
   and it supports user-defined functions
-archetype: chapter
 ---
 Functions can be called at any query position where an expression is allowed.
 The general function call syntax is:

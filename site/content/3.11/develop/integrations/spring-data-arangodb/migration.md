@@ -3,7 +3,6 @@ title: Spring Data ArangoDB - Migration
 menuTitle: Migration
 weight: 10
 description: ''
-archetype: default
 ---
 ## Migrate from Spring Data ArangoDB 3.x to 4.0
 

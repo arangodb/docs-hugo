@@ -3,7 +3,6 @@ title: Queries
 menuTitle: Queries
 weight: 5
 description: ''
-archetype: chapter
 ---
 Spring Data ArangoDB supports three kinds of queries:
 

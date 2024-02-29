@@ -5,7 +5,6 @@ weight: 20
 description: >-
   A summary of the changes to the HTTP API and other interfaces that are relevant
   for developers, like maintainers of drivers and integrations for ArangoDB
-archetype: default
 ---
 ## HTTP RESTful API
 

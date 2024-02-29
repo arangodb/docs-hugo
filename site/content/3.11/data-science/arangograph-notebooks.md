@@ -4,7 +4,6 @@ menuTitle: ArangoGraph Notebooks
 weight: 130
 description: >-
   Colocated Jupyter Notebooks within the ArangoGraph Insights Platform
-archetype: default
 ---
 {{< tip >}}
 ArangoGraph Notebooks don't include the ArangoGraphML services.

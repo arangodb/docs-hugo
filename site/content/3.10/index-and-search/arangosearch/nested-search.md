@@ -6,7 +6,6 @@ description: >-
   You can search for nested objects in arrays that satisfy multiple conditions
   each, and define how often these conditions should be fulfilled for the entire
   array
-archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 

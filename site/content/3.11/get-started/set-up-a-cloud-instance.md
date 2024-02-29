@@ -5,7 +5,6 @@ weight: 35
 description: >-
   This quick start guide covers the basics from creating an ArangoGraph account to
   setting up and accessing your first ArangoGraph deployment
-archetype: default
 ---
 For general information about the ArangoGraph Insights Platform, see
 [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).

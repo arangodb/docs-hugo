@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl create apikey command
 title: Oasisctl Create Apikey
 menuTitle: Create Apikey

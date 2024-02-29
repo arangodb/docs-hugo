@@ -5,7 +5,6 @@ weight: 5
 description: >-
   If you have an issue with a specific AQL query, you can create a debug package
   to provide all necessary information to others for investigating the issue
-archetype: default
 ---
 Query debug packages, or debug dumps, facilitate the debugging of issues you
 might find after executing AQL queries. A debug package is a JSON file that

@@ -3,7 +3,6 @@ title: Cluster Deployment
 menuTitle: Deployment
 weight: 5
 description: ''
-archetype: chapter
 ---
 You can deploy an ArangoDB cluster in different ways:
 

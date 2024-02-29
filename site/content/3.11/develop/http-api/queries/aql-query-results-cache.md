@@ -4,7 +4,6 @@ menuTitle: AQL query results cache
 weight: 10
 description: >-
   The query cache HTTP API lets you control the cache for AQL query results
-archetype: default
 ---
 ## List the entries of the AQL query results cache
 

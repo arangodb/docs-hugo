@@ -5,7 +5,6 @@ weight: 20
 description: >-
   Replication synchronizes state between different machines, like the data of
   different cluster nodes
-archetype: default
 ---
 Replication allows you to *replicate* data onto another machine. It
 forms the base of all scalability and failover features ArangoDB

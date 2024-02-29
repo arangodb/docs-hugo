@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl rotate deployment command
 title: Oasisctl Rotate Deployment
 menuTitle: Rotate Deployment

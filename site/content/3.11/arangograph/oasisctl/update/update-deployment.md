@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl update deployment command
 title: Oasisctl Update Deployment
 menuTitle: Update Deployment

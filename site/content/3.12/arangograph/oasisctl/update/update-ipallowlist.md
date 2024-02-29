@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl update ipallowlist command
 title: Oasisctl Update Ipallowlist
 menuTitle: Update Ipallowlist

@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Multiple performance improvements to AQL queries, dynamic search expressions,
   a new cluster deployment mode
-archetype: default
 ---
 The following list shows in detail which features have been added or improved in
 ArangoDB 3.6. ArangoDB 3.6 also contains several bug fixes that are not listed

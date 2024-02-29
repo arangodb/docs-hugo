@@ -4,7 +4,6 @@ menuTitle: cursor object
 weight: 20
 description: >-
   Cursor objects let you iterate over the results of executed AQL queries
-archetype: default
 ---
 The JavaScript API returns _cursor_ objects when you use the following methods
 of the [`db` object](db-object.md) from the `@arangodb`

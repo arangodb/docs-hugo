@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Indexes allow fast access to documents by maintaining special data structures
   to accelerate queries that use indexed attributes
-archetype: default
 ---
 ArangoDB automatically indexes some system attributes but you are free to create
 additional indexes on other attributes of documents. You generally need to strike
@@ -151,6 +150,18 @@ optimizer may prefer the default edge index over vertex-centric indexes
 based on the costs it estimates, even if a vertex-centric index might
 in fact be faster. Vertex-centric indexes are more likely to be chosen
 for highly connected graphs.
+
+You can also use use prefixed multi-dimensional indexes to combine graph
+traversals with range queries:
+
+```aql
+FOR v, e, p in 0..3 INBOUND @start GRAPH @graphName
+  OPTIONS { order: "bfs", uniqueVertices: "path" }
+  FILTER p.edges[*].type ALL == "friend"
+     AND p.edges[*].x ALL >= 5
+     AND p.edges[*].y ALL <= 7
+  RETURN p
+```
 
 ## Persistent Index
 

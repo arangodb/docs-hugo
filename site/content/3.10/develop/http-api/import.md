@@ -4,7 +4,6 @@ menuTitle: Import
 weight: 70
 description: >-
   The Import HTTP API allows you to load JSON data in bulk into ArangoDB
-archetype: default
 ---
 ## Import JSON data as documents
 

@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl enable command
 title: Oasisctl Enable
 menuTitle: Enable

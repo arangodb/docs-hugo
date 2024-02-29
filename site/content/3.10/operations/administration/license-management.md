@@ -4,7 +4,6 @@ menuTitle: License Management
 weight: 15
 description: >-
   How to manage the licenses of ArangoDB Enterprise Edition deployments
-archetype: default
 ---
 The Enterprise Edition of ArangoDB requires a license to activate the
 Enterprise Edition features. How to set a license key and to retrieve

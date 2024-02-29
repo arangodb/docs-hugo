@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl upgrade command
 title: Oasisctl Upgrade
 menuTitle: Upgrade

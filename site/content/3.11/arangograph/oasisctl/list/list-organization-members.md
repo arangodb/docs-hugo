@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl list organization members command
 title: Oasisctl List Organization Members
 menuTitle: List Organization Members

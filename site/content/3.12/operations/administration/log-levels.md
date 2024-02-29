@@ -5,7 +5,6 @@ weight: 15
 description: >-
   Every server log message has a log level that classifies the severity of the
   reported event and ranges from debug information to fatal errors
-archetype: default
 ---
 The log levels in ArangoDB are, from most to least severe:
 

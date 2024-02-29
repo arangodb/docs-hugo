@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl delete example installation command
 title: Oasisctl Delete Example Installation
 menuTitle: Delete Example Installation

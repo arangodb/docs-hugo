@@ -3,7 +3,6 @@ title: Getting Started
 menuTitle: Getting started
 weight: 5
 description: ''
-archetype: default
 ---
 This practical introduction will take you from an empty folder to a first
 Foxx service installed in ArangoDB, with custom endpoints which can handle

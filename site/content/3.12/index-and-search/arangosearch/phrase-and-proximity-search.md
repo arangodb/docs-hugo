@@ -4,7 +4,6 @@ menuTitle: Phrase and proximity search
 weight: 40
 description: >-
   Search for phrases and nearby words in full-text
-archetype: default
 ---
 With phrase search, you can query for tokens in a certain order. This allows
 you to match partial or full sentences. You can also specify how many arbitrary

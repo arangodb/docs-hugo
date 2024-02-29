@@ -5,7 +5,6 @@ weight: 225
 description: >-
   How to configure ArangoDB, manage users accounts and backups, and what tools
   you can use to administrate deployments
-archetype: chapter
 ---
 ## Tools
 

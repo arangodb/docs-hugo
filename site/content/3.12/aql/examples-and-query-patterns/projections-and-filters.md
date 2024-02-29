@@ -5,7 +5,6 @@ weight: 20
 description: >-
   Examples of returning documents unaltered and subsets of their attributes,
   as well as filtering
-archetype: default
 ---
 ## Returning unaltered documents
 

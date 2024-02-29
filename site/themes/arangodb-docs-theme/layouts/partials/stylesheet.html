@@ -11,9 +11,6 @@
 <link href="{{(printf "css/theme-%s.css" .) | relURL}}" rel="stylesheet" id="variant-style">
 {{- end }}
 <link href="{{"css/print.css" | relURL}}" rel="stylesheet" media="print">
-{{- if (fileExists (printf "/static/css/format-%s.css" (partial "output-format.hugo" .))) }}
-<link href="{{(printf "css/format-%s.css" (partial "output-format.hugo" .)) | relURL}}" rel="stylesheet">
-{{- end }}
 <script src="{{"js/variant.js" | relURL}}{{ if not .Site.Params.disableAssetsBusting }}?{{ now.Unix }}{{ end }}"></script>
 <script>
   {{ "// hack to let hugo tell us how to get to the root when using relativeURLs, it needs to be called *url= for it to do its magic:" | safeJS }}
@@ -33,4 +30,3 @@
   {{- end }}
   window.variants && variants.init( [ {{ delimit $quotedthemevariants ", " | safeJS }} ] );
 </script>
-

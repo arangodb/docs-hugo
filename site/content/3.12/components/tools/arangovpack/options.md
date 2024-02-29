@@ -6,7 +6,6 @@ description: >-
   The startup options of the `arangovpack` executable
 pageToc:
   maxHeadlineLevel: 2
-archetype: default
 ---
 Usage: `arangovpack [<options>]`
 

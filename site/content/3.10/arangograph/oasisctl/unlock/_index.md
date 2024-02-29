@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl unlock command
 title: Oasisctl Unlock
 menuTitle: Unlock

@@ -4,7 +4,6 @@ menuTitle: Billing
 weight: 10
 description: >-
    How to manage billing details and payment methods in ArangoGraph
-archetype: default
 ---
 ## How to add billing details
 

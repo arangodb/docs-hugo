@@ -5,7 +5,6 @@ weight: 10
 description: >-
   A tutorial that guides you through the ArangoGraph API as well as the Oasisctl
   command-line tool
-archetype: default
 aliases:
   - ../arangograph-api/getting-started
 ---

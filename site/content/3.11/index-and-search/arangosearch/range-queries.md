@@ -4,7 +4,6 @@ menuTitle: Range Queries
 weight: 15
 description: >-
   Match values that are above, below or between a minimum and a maximum value
-archetype: default
 ---
 The primary use case for range queries is to search **numeric** values in
 documents that are

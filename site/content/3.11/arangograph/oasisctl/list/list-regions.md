@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl list regions command
 title: Oasisctl List Regions
 menuTitle: List Regions

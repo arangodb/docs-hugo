@@ -5,7 +5,6 @@ weight: 15
 description: >-
   The most notable features in the Community and Enterprise Edition of ArangoDB,
   grouped by version
-archetype: default
 aliases:
   - ../../introduction/features/highlights-by-version
 ---
@@ -16,6 +15,10 @@ aliases:
 - [**`wildcard` Analyzer**](../../index-and-search/analyzers.md#wildcard):
   Accelerate wildcard searches against Views and inverted indexes with _n_-grams
   to quickly find candidate matches.
+
+- [**Multi-dimensional indexes**](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md):
+  An index type to efficiently intersect multiple range queries, like finding
+  all appointments that intersect a time range.
 
 - [**External versioning**](../../release-notes/version-3.12/whats-new-in-3-12.md#external-versioning-support):
   Specify any top-level attribute to compare whether the version number is higher

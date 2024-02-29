@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl lock deployment command
 title: Oasisctl Lock Deployment
 menuTitle: Lock Deployment

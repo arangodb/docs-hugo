@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl delete example command
 title: Oasisctl Delete Example
 menuTitle: Delete Example

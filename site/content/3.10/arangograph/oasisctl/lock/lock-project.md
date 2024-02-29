@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl lock project command
 title: Oasisctl Lock Project
 menuTitle: Lock Project

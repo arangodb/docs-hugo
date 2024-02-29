@@ -4,7 +4,6 @@ menuTitle: SCIM Provisioning
 weight: 5
 description: >-
    How to enable SCIM provisioning with Okta for your ArangoGraph project
-archetype: default
 ---
 ArangoGraph provides support to control and manage members access in
 ArangoGraph organizations with the

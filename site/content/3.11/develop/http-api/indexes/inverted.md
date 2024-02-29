@@ -3,9 +3,7 @@ title: Working with inverted indexes
 menuTitle: Inverted
 weight: 10
 description: ''
-archetype: default
 ---
-
 ## Create an inverted index
 
 ```openapi

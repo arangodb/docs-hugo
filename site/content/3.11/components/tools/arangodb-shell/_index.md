@@ -5,7 +5,6 @@ weight: 5
 description: >-
   The ArangoDB shell lets you access ArangoDB servers over a network connection
   using a JavaScript API
-archetype: chapter
 ---
 The ArangoDB shell (_arangosh_) is a command-line client tool that can be used
 for administration of ArangoDB servers.

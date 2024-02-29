@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Customized Analyzers, multiple shortest path algorithm for graphs, fast cluster
   joins, a new transaction API, hot backups, a feature for expiring documents
-archetype: default
 ---
 The following list shows in detail which features have been added or improved in
 ArangoDB 3.5. ArangoDB 3.5 also contains several bug fixes that are not listed

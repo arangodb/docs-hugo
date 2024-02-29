@@ -5,7 +5,6 @@ weight: 40
 description: >-
   Create test data, count documents, use joins, group attributes, traverse
   graphs, and other examples
-archetype: chapter
 ---
 These pages contain some common query patterns with examples. For better
 understandability the query results are also included directly below each query.

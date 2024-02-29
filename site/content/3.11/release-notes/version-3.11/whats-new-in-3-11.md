@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Improved performance and reporting for AQL queries, new caching features for
   indexed data, improvements to the web interface
-archetype: default
 ---
 The following list shows in detail which features have been added or improved in
 ArangoDB 3.11. ArangoDB 3.11 also contains several bug fixes that are not listed

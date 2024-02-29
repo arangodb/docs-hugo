@@ -3,9 +3,7 @@ title: Working with geo-spatial indexes
 menuTitle: Geo-Spatial
 weight: 25
 description: ''
-archetype: default
 ---
-
 ## Create a geo-spatial index
 
 ```openapi

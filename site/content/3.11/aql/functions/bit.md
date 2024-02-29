@@ -5,7 +5,6 @@ weight: 15
 description: >-
   AQL offers a set of bit manipulation and interpretation functions for bitwise
   arithmetic
-archetype: default
 ---
 Bit functions can operate on numeric integer values in the range between 0
 and 4294967295 (2<sup>32</sup> - 1), both included. This allows treating numbers as

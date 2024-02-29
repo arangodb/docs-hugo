@@ -5,7 +5,6 @@ weight: 5
 description: >-
   The HTTP API for named graphs lets you manage General Graphs, SmartGraphs,
   EnterpriseGraphs, and SatelliteGraphs
-archetype: default
 ---
 The HTTP API for [named graphs](../../../graphs/_index.md#named-graphs) is called _Gharial_.
 

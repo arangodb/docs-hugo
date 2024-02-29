@@ -5,7 +5,6 @@ weight: 30
 description: >-
   The `LIMIT` operation allows you to reduce the number of results to at most
   the specified number and optionally skip results using an offset for pagination
-archetype: default
 ---
 ## Syntax
 
@@ -26,11 +25,35 @@ FOR u IN users
   RETURN u
 ```
 
-Above query returns the first five documents of the `users` collection.
+Above query returns five documents of the `users` collection.
 It could also be written as `LIMIT 0, 5` for the same result.
-Which documents it actually returns is rather arbitrary, because no explicit
-sorting order is specified however. Therefore, a limit should be usually
-accompanied by a `SORT` operation.
+Which documents it returns is rather arbitrary because collections have no
+defined order for the documents they contain. A `LIMIT` operation should usually
+be accompanied with a `SORT` operation to explicitly specify a sorting order
+unless any five documents are acceptable for you. However, also consider that if
+you run a query multiple times with varying `LIMIT` offsets for pagination,
+you can miss results or get duplicate results if the sort order is undefined.
+
+{{< info >}}
+In case multiple documents contain the same `SORT` attribute value, the result
+set does not contain the tied documents in a fixed order as the order between
+them is undefined. Additionally, the `SORT` operation does not guarantee a stable
+sort if there is no unique value to sort by.
+
+If a fixed total order is required, you can use a tiebreaker. Sort by an
+additional attribute that can break the ties. If the application has a preferred
+attribute that indicates the order of documents with the same value, then use
+this attribute. If there is no such attribute, you can still achieve a stable
+sort by using the `_id` system attribute as it is unique and present in every
+document.
+
+```aql
+FOR u IN users
+  SORT u.firstName, u._id // break name ties with the document ID
+  LIMIT 5
+  RETURN u
+```
+{{< /info >}}
 
 The `offset` value specifies how many elements from the result shall be
 skipped. It must be 0 or greater. The `count` value specifies how many
@@ -44,10 +67,10 @@ FOR u IN users
 ```
 
 In above example, the documents of `users` are sorted, the first two results
-get skipped and it returns the next five user documents.
+get skipped, and the query returns the next five user documents.
 
 {{< info >}}
-Variables, expressions and subqueries cannot be used for `offset` and `count`.
+Variables, expressions, and subqueries cannot be used for `offset` and `count`.
 The values for `offset` and `count` must be known at query compile time,
 which means that you can only use number literals, bind parameters or
 expressions that can be resolved at query compile time.

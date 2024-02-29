@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl update role command
 title: Oasisctl Update Role
 menuTitle: Update Role

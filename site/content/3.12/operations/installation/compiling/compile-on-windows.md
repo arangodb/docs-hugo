@@ -4,7 +4,6 @@ menuTitle: Compile on Windows
 weight: 10
 description: >-
   This guide describes how to compile ArangoDB 3.4 and onwards under Windows
-archetype: default
 ---
 ## Install chocolatey
 

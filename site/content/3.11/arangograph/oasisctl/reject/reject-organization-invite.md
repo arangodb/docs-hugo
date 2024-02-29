@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl reject organization invite command
 title: Oasisctl Reject Organization Invite
 menuTitle: Reject Organization Invite

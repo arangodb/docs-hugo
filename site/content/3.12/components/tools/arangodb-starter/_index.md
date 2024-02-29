@@ -5,5 +5,4 @@ weight: 10
 description: >-
   The Starter (the `arangodb` binary) is a tool that can help you deploy ArangoDB
   in an easy way and supports all deployment modes
-archetype: chapter
 ---

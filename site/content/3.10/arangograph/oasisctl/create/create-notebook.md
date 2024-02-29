@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl create notebook command
 title: Oasisctl Create Notebook
 menuTitle: Create Notebook

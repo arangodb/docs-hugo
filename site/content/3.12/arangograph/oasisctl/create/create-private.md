@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl create private command
 title: Oasisctl Create Private
 menuTitle: Create Private

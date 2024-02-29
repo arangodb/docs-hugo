@@ -5,7 +5,6 @@ weight: 10
 description: >-
   You can replace a failed machine and recover a cluster that has been created
   with ArangoDB Starter using a new machine with the old or a new IP address
-archetype: default
 aliases:
   - ../arangodb-starter-administration/recovery-procedure
 ---

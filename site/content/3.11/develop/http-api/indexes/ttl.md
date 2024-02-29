@@ -3,9 +3,7 @@ title: Working with TTL (time-to-live) indexes
 menuTitle: TTL
 weight: 15
 description: ''
-archetype: default
 ---
-
 ## Create a TTL index
 
 ```openapi

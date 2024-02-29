@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl update notebook command
 title: Oasisctl Update Notebook
 menuTitle: Update Notebook

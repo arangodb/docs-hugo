@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Vertex-centric indexes, a new managed graph type with smart sharding,
   audit logging
-archetype: default
 ---
 The following list shows in detail which features have been added or improved in
 ArangoDB 3.1. ArangoDB 3.1 also contains several bugfixes that are not listed

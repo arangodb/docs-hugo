@@ -5,7 +5,6 @@ weight: 5
 description: >-
   How to connect your Java application to an ArangoDB server, as well as
   important configuration settings and information about the driver
-archetype: default
 ---
 The driver can be configured and instantiated using `com.arangodb.ArangoDB.Builder`:
 
@@ -203,20 +202,6 @@ connection is open.
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
   .loadBalancingStrategy(LoadBalancingStrategy.ONE_RANDOM)
-  .build();
-```
-
-## Active Failover
-
-In case of an _Active Failover_ deployment the driver should be configured in
-the following way:
-- the load balancing strategy must be either set to `LoadBalancingStrategy.NONE` (default)
-- `acquireHostList` should be set to `true`
-
-```java
-ArangoDB arangoDB = new ArangoDB.Builder()
-  .loadBalancingStrategy(LoadBalancingStrategy.NONE)
-  .acquireHostList(true)
   .build();
 ```
 

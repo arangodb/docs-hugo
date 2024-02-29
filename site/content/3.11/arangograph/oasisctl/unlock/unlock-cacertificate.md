@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl unlock cacertificate command
 title: Oasisctl Unlock Cacertificate
 menuTitle: Unlock Cacertificate

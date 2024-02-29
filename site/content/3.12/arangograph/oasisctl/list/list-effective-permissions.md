@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl list effective permissions command
 title: Oasisctl List Effective Permissions
 menuTitle: List Effective Permissions

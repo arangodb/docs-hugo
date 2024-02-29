@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl get provider command
 title: Oasisctl Get Provider
 menuTitle: Get Provider

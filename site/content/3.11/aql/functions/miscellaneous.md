@@ -4,7 +4,6 @@ menuTitle: Miscellaneous
 weight: 40
 description: >-
   AQL functions that do not fall into other categories are listed here
-archetype: default
 ---
 ## Control flow functions
 

@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl update policy delete command
 title: Oasisctl Update Policy Delete
 menuTitle: Update Policy Delete

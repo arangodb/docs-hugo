@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl get tandc command
 title: Oasisctl Get Tandc
 menuTitle: Get Tandc

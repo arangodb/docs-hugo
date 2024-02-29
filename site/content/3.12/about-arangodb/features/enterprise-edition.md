@@ -6,7 +6,6 @@ description: >-
   The commercial version of ArangoDB offers performance, compliance, and
   security features for larger or more sensitive datasets, as well as additional
   query capabilities
-archetype: default
 aliases:
   - ../../introduction/features/enterprise-edition
 ---

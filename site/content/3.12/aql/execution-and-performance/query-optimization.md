@@ -7,7 +7,6 @@ description: >-
   initial execution plan, looks for optimization opportunities, and applies them
 pageToc:
   maxHeadlineLevel: 3
-archetype: default
 ---
 AQL queries are parsed and planned. The optimizer might produce multiple execution plans
 for a single query. It then calculates the costs for all plans and picks the plan with the

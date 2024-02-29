@@ -3,7 +3,6 @@ title: HTTP interface for WAL access
 menuTitle: Write-Ahead Log
 weight: 25
 description: ''
-archetype: default
 ---
 The WAL Access API is used to facilitate faster and
 more reliable asynchronous replication. The API offers access to the 

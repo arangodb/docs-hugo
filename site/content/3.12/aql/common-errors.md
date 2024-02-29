@@ -5,7 +5,6 @@ weight: 55
 description: >-
   Avoid injection vulnerabilities and avoid pitfalls like incorrect operator
   usage performance issues when using ArangoDB's query language
-archetype: default
 ---
 ## Trailing semicolons in query strings
 

@@ -4,7 +4,6 @@ menuTitle: Ranking
 weight: 70
 description: >-
   You can query Views and return the most relevant results first based on their ranking score
-archetype: default
 ---
 ArangoSearch supports the two most popular ranking schemes:
 

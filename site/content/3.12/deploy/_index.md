@@ -5,7 +5,6 @@ weight: 185
 description: >-
   ArangoDB supports multiple deployment modes to meet the exact needs of your
   project for resilience and performance
-archetype: chapter
 ---
 For installation instructions, please refer to the
 [Installation](../operations/installation/_index.md) chapter.

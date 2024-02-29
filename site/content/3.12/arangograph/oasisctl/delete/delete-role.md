@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl delete role command
 title: Oasisctl Delete Role
 menuTitle: Delete Role

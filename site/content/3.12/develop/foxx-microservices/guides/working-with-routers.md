@@ -3,7 +3,6 @@ title: Working with routers in Foxx services
 menuTitle: Working with routers
 weight: 5
 description: ''
-archetype: default
 ---
 In Foxx [routers](../reference/routers/_index.md) are used to define
 the URLs of your API. The easiest way to use a router is to mount it

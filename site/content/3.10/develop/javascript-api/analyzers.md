@@ -5,7 +5,6 @@ weight: 15
 description: >-
   The analyzers module provides a JavaScript interface for managing ArangoSearch
   Analyzers
-archetype: default
 ---
 The JavaScript API can be accessed via the `@arangodb/analyzers` module from
 both server-side and client-side code (arangosh, Foxx):

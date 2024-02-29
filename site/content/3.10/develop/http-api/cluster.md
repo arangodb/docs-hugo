@@ -6,7 +6,6 @@ description: >-
   The cluster-specific endpoints let you get information about individual
   cluster nodes and the cluster as a whole, as well as monitor and administrate
   cluster deployments
-archetype: default
 ---
 ## Monitoring
 

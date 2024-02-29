@@ -6,7 +6,6 @@ description: >-
   AQL offers an `UPSERT` operation and an `INSERT` operation with different
   overwrite modes, and you can alternatively use the Document API, each having
   different features and performance characteristics
-archetype: default
 ---
 A common requirement when ingesting data is to ensure that certain documents
 exist in a collection. Oftentimes when running a command it is unclear whether

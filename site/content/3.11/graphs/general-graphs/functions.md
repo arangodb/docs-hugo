@@ -4,7 +4,6 @@ menuTitle: Functions
 weight: 10
 description: >-
   Utility functions available for named graphs
-archetype: default
 ---
 This chapter describes [various functions on a graph](../_index.md).
 A lot of these accept a vertex (or edge) example as parameter as defined in the next section.

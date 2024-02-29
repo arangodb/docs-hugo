@@ -5,7 +5,6 @@ weight: 10
 description: >-
   Pick the right index type for your use case, choosing from persistent,
   inverted, TTL, and multi-dimensional indexes, as well as Views
-archetype: default
 ---
 ArangoDB automatically indexes the `_key` attribute in each collection. There
 is no need to index this attribute separately. Please note that a document's
@@ -66,7 +65,7 @@ different usage scenarios:
   documents shall expire at the point in time or a given number of seconds after
   the point in time.
 
-- **multi-dimensional index** (ZKD): a multi dimensional index allows to
+- **multi-dimensional index**: a multi dimensional index allows to
   efficiently intersect multiple range queries. Typical use cases are querying
   intervals that intersect a given point or interval. For example, if intervals
   are stored in documents like

@@ -3,7 +3,6 @@ title: Collections
 menuTitle: Collections
 weight: 15
 description: ''
-archetype: default
 ---
 The collections section displays all available collections. From here you can
 create new collections and jump into a collection for details (click on a

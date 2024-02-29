@@ -5,7 +5,6 @@ weight: 15
 description: >-
   How ArangoDB utilizes indexes to accelerate queries, and under what conditions
   it can or cannot make use of indexes
-archetype: default
 ---
 In most cases ArangoDB will use a single index per collection in a given query. AQL queries can
 use more than one index per collection when multiple `FILTER` conditions are combined with a 

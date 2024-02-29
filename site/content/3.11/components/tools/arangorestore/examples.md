@@ -3,7 +3,6 @@ title: _arangorestore_ Examples
 menuTitle: Examples
 weight: 5
 description: ''
-archetype: default
 ---
 To restore data from a dump previously created with [_arangodump_](../arangodump/_index.md),
 ArangoDB provides the _arangorestore_ tool.

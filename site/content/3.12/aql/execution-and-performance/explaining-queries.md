@@ -6,7 +6,6 @@ description: >-
   You can explain and profile AQL queries to inspect the execution plans and to
   understand the performance characteristics, as well as create debug packages
   for reporting issues
-archetype: default
 ---
 If it is unclear how a given query will perform, clients can retrieve a query's execution plan 
 from the AQL query optimizer without actually executing the query. Getting the query execution 

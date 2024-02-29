@@ -1,5 +1,4 @@
 ---
-archetype: default
 description: Description of the oasisctl renew command
 title: Oasisctl Renew
 menuTitle: Renew
