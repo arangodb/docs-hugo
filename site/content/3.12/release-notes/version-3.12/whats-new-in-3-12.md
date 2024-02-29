@@ -98,6 +98,10 @@ been added for monitoring the memory consumption.
 AQL queries may now report a higher memory usage and thus run into memory limits
 sooner, see [Higher reported memory usage for AQL queries](incompatible-changes-in-3-12.md#higher-reported-memory-usage-for-aql-queries).
 
+The RocksDB block cache metric `rocksdb_block_cache_usage` now also includes the
+memory used for table building, table reading, file metadata, flushing and
+compactions by default.
+
 Furthermore, the memory usage of some subsystems has been optimized. When
 dropping a database, all contained collections are now marked as dropped
 immediately. Ongoing operations on these collections can be stopped earlier, and
@@ -175,6 +179,83 @@ section, as well as in the **API** tab of Foxx services and Foxx routes that use
 
 The new version adds support for OpenAPI 3.x specifications in addition to
 Swagger 2.x compatibility.
+
+## External versioning support
+
+Document operations that update or replace documents now support a `versionAttribute` option.
+If set, the attribute with the name specified by the option is looked up in the
+stored document and the attribute value is compared numerically to the value of
+the versioning attribute in the supplied document that is supposed to update/replace it.
+The document is only changed if the new number is higher.
+
+This simple versioning can help to avoid overwriting existing data with older
+versions in case data is transferred from an external system into ArangoDB
+and the copies are currently not in sync.
+
+This new feature is supported in AQL, the JavaScript API, and the HTTP API for
+the respective operations to update and replace documents, including the insert
+operations when used to update/replace a document with `overwriteMode: "update"`
+or `overwriteMode: "replace"`.
+
+**Examples:**
+
+Insert a new document normally using _arangosh_:
+
+```js
+db.collection.insert({ _key: "123", externalVersion: 1 });
+```
+
+Update the document if the versioning attribute is higher in the new document,
+which is true in this case:
+
+```js
+db.collection.update("123",
+  { externalVersion: 5, anotherAttribute: true },
+  { versionAttribute: "externalVersion" });
+```
+
+Updating the document is skipped if the versioning attribute is lower or equal
+in the supplied document compared to what is currently stored in ArangoDB:
+
+```js
+db.collection.update("123",
+  { externalVersion: 4, anotherAttribute: false },
+  { versionAttribute: "externalVersion" });
+```
+
+You can also make use of the `versionAttribute` option in an insert-update
+operation for the update case, including in AQL:
+
+```js
+db.collection.insert({ _key: "123", externalVersion: 6, value: "foo" },
+  { overwriteMode: "update", versionAttribute: "externalVersion" });
+
+db._query(`UPDATE { _key: "123", externalVersion: 7, value: "bar" } IN collection 
+  OPTIONS { versionAttribute: "externalVersion"}`);
+```
+
+External versioning is opt-in and no version checking is performed for
+operations for which the `versionAttribute` option isn't set. Document removal
+operations do not support external versioning. Removal operations are always
+carried out normally.
+
+Note that version checking is performed only if both the existing version of
+the document in the database and the new document version contain the version
+attribute with numeric values of `0` or greater. If neither the existing document
+in the database nor the new document contains the version attribute, or if the
+version attribute in any of the two is not a number inside the valid range, the
+update/replace operations behave as if no version checking was requested.
+This may overwrite the versioning attribute in the database.
+
+Also see:
+- The AQL [INSERT](../../aql/high-level-operations/insert.md#versionattribute),
+  [UPDATE](../../aql/high-level-operations/update.md#versionattribute) and
+  [REPLACE](../../aql/high-level-operations/update.md#versionattribute) operations
+- The `insert()`, `update()`, `replace()` methods of the
+  [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
+  in the JavaScript API
+- The endpoints to create, update, and replace a single or multiple documents
+  in the [HTTP API](../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
 
 ## AQL
 
@@ -412,6 +493,27 @@ Optimization rules applied:
 ```
 
 ## Indexing
+
+### Multi-dimensional indexes
+
+The previously experimental `zkd` index type is now stable and has been renamed
+to `mdi`. Existing indexes keep the `zkd` type.
+
+Multi-dimensional indexes can now be declared as `sparse` to exclude documents
+from the index that do not have the defined attributes or are explicitly set to
+`null` values. If a value other than `null` is set, it still needs to be numeric.
+
+Multi-dimensional indexes now support `storedValues` to cover queries for better
+performance.
+
+An additional `mdi-prefixed` index variant has been added that lets you specify
+additional attributes for the index to narrow down the search space using
+equality checks. It can be used as a vertex-centric index for graph traversals
+if created on an edge collection with the first attribute in `prefixFields` set
+to `_from` or `_to`.
+
+See [Multi-dimensional indexes](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md)
+for details.
 
 ### Stored values can contain the `_id` attribute
 

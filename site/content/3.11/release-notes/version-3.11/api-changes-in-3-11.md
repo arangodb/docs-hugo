@@ -484,17 +484,16 @@ and [Monitoring per collection/database/user](../version-3.11/whats-new-in-3-11.
 
 <small>Introduced in: v3.10.13, v3.11.7</small>
 
-The `GET /_api/index` endpoint now returns a `progress` attribute that can
-optionally show indexes that are currently being created and indicate progress
-on the index generation.
+The `GET /_api/index` endpoint may now include a `progress` attribute for the
+elements in the `indexes` array. For every index that is currently being created,
+it indicates the progress of the index generation (in percent).
 
 To return indexes that are not yet fully built but are in the building phase,
-add the option `withHidden=true` to `GET /_api/index?collection=<collectionName>`.
+add the `withHidden=true` query parameter to the call of the endpoint.
 
 ```
-curl --header 'accept: application/json' --dump -
-"http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
-```  
+curl "http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
+```
 
 ### Endpoints deprecated
 

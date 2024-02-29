@@ -65,8 +65,12 @@ for a user guide on how to write JSON Schema descriptions.
 System attributes are invisible to the schema validation, i.e. `_key`, `_rev` and `_id`
 (in edge collections additionally `_from` and `_to`) do not need to be
 specified in the schema. You may set `additionalProperties: false` to only
-allow attributes described by the schema. System attributes will not fall under
+allow attributes described by the schema. System attributes do not fall under
 this restriction.
+
+Attributes with numeric values always have the type `"number"`, even if they are
+whole numbers (and internally use an `integer` type). If you want to restrict an
+attribute to integer values, use `"type": "number"` together with `"multipleOf": 1`.
 
 {{< security >}}
 Remote schemas are not supported for security reasons.

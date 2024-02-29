@@ -5,7 +5,6 @@ weight: 30
 description: ''
 archetype: default
 ---
-
 ## Create a full-text index
 
 ```openapi

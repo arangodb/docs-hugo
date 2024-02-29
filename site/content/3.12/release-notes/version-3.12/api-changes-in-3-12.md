@@ -257,6 +257,24 @@ and defaults to `[]`.
 See the [`optimizeTopK` View property](../../index-and-search/arangosearch/arangosearch-views-reference.md#view-properties)
 for details.
 
+#### Document API
+
+The following endpoints accept a new `versionAttribute` query parameter that adds
+external versioning support:
+
+- `PATCH /_api/document/{collection}/{key}` (single document update)
+- `PATCH /_api/document/{collection}` (multiple document update)
+- `PUT /_api/document/{collection}` (single document replace)
+- `PUT /_api/document/{collection}/{key}` (multiple document replace)
+- `POST /_api/document/{collection}` (single document insert, when used to update/replace a document)
+- `POST /_api/document/{collection}/{key}` (multiple document insert, when used to update/replace a document)
+
+If set, the attribute with the name specified by the option is looked up in the
+stored document and the attribute value is compared numerically to the value of
+the versioning attribute in the supplied document that is supposed to update/replace it.
+The document is only changed if the new number is higher. See the
+[Document API](../../develop/http-api/documents.md#create-a-document) for details.
+
 #### Index API
 
 ##### `optimizeTopK` for inverted indexes
@@ -268,20 +286,39 @@ defaults to `[]`.
 See the [inverted index `optimizeTopK` property](../../develop/http-api/indexes/inverted.md)
 for details.
 
+##### Multi-dimensional indexes
+
+The previously experimental `zkd` index type is now stable and has been renamed
+to `mdi`. Existing indexes keep the `zkd` type. The HTTP API still allows the old
+name to create new indexes that behave exactly like `mdi` indexes but this is
+discouraged. The `zkd` alias may get removed in a future version.
+
+An additional `mdi-prefixed` index variant has been added. This is a new index
+type in the API with the same settings as the `mdi` index but with one additional
+`prefixFields` attribute. It is a required setting for the `mdi-prefixed` index
+type and accepts an array of strings similar to the `fields` attribute. You can
+use it to narrow down the search space using equality checks.
+
+Both multi-dimensional index variants now support a `sparse` setting (boolean)
+and `storedValues` setting (array of strings) that were not supported by the
+`zkd` index type in previous versions.
+
+See [Working with multi-dimensional indexes](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md)
+for details.
+
 ##### Progress indication on the index generation
 
 <small>Introduced in: v3.10.13, v3.11.7</small>
 
-The `GET /_api/index` endpoint now returns a `progress` attribute that can
-optionally show indexes that are currently being created and indicate progress
-on the index generation.
+The `GET /_api/index` endpoint may now include a `progress` attribute for the
+elements in the `indexes` array. For every index that is currently being created,
+it indicates the progress of the index generation (in percent).
 
 To return indexes that are not yet fully built but are in the building phase,
-add the option `withHidden=true` to `GET /_api/index?collection=<collectionName>`.
+add the `withHidden=true` query parameter to the call of the endpoint.
 
 ```
-curl --header 'accept: application/json' --dump -
-"http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
+curl "http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
 ```
 
 #### Optimizer rule descriptions
@@ -430,6 +467,22 @@ not handle larger amounts of data and were thus very limited.
 
 Users of the JavaScript-based traversal API should use
 [AQL traversal queries](../../aql/graphs/traversals.md) instead.
+
+### `collection` object
+
+The following methods now accept a `versionAttribute` option that adds external
+versioning support:
+
+- `collection.update(object, data, options)`
+- `collection.replace(object, data, options)`
+- `collection.insert(data, options)` when used to update/replace a document
+
+If set, the attribute with the name specified by the option is looked up in the
+stored document and the attribute value is compared numerically to the value of
+the versioning attribute in the supplied document that is supposed to update/replace it.
+The document is only changed if the new number is higher. See the
+[JavaScript API](../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
+for details.
 
 ### `@arangodb/pregel` package
 

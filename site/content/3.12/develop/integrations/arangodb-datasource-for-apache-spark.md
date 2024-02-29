@@ -86,7 +86,7 @@ To use TLS secured connections to ArangoDB, set `ssl.enabled` to `true` and eith
 
 ### Supported deployment topologies
 
-The connector can work with a single server, a cluster and active failover deployments of ArangoDB.
+The connector can work with a single server and cluster deployments of ArangoDB.
 
 ## Batch Read
 

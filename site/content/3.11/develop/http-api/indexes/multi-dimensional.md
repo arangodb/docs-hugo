@@ -5,7 +5,6 @@ weight: 20
 description: ''
 archetype: default
 ---
-
 ## Create a multi-dimensional index
 
 ```openapi
