@@ -89,7 +89,7 @@ Examples showing how to provide configuration properties from different sources:
 ## Modules
 
 Support for different serdes and communication protocols is offered by separate modules. 
-Defaults modules are transitively included, but they could be excluded if not needed.
+Default modules are transitively included, but they could be excluded if not needed.
 
 The main driver artifact `com.arangodb:arangodb-java-driver` has transitive dependencies on default modules:
 - `com.arangodb:http-protocol`: `HTTP` communication protocol (HTTP/1.1 and HTTP/2)
@@ -104,15 +104,15 @@ The modules above are discovered and loaded using SPI (Service Provider Interfac
 In case a non-default communication protocol or user serde are used, the related module(s)
 must be explicitly included and the corresponding default module(s) can be excluded.
 
-For example, to use the driver with `VPACK` over `HTTP`, you must include:
+For example, to use the driver with `VPACK` over `HTTP`:
 
-- `com.arangodb:http-protocol` and
-- `com.arangodb:jackson-serde-vpack`
+- You must include `com.arangodb:jackson-serde-vpack`
+- You can exclude `com.arangodb:jackson-serde-json`
+- You don't need to include `com.arangodb:http-protocol` because the driver
+  includes it automatically
+- You don't need to exclude `com.arangodb:vst-protocol` because it is not
+  included automatically
 
-and you can exclude:
-- `com.arangodb:vst-protocol` and
-- `com.arangodb:jackson-serde-json`
- 
 For example in Maven:
 
 ```xml
@@ -123,17 +123,9 @@ For example in Maven:
         <exclusions>
             <exclusion>
                 <groupId>com.arangodb</groupId>
-                <artifactId>vst-protocol</artifactId>
-            </exclusion>
-            <exclusion>
-                <groupId>com.arangodb</groupId>
                 <artifactId>jackson-serde-json</artifactId>
             </exclusion>
         </exclusions>
-    </dependency>
-    <dependency>
-        <groupId>com.arangodb</groupId>
-        <artifactId>http-protocol</artifactId>
     </dependency>
     <dependency>
         <groupId>com.arangodb</groupId>
