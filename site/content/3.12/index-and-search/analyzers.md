@@ -328,7 +328,7 @@ description: >
 ---
 var analyzers = require("@arangodb/analyzers");
 var a = analyzers.save("delimiter_multiple", "multi_delimiter", {
-  delimiter: [",", ";", "||"]
+  delimiters: [",", ";", "||"]
 }, []);
 db._query(`RETURN TOKENS("differently,delimited;words||one|token", "delimiter_multiple")`).toArray();
 ~analyzers.remove(a.name);
@@ -341,7 +341,7 @@ description: Double quote marks have no effect on the splitting
 ---
 var analyzers = require("@arangodb/analyzers");
 var a = analyzers.save("delimiter_noquote", "multi_delimiter", {
-  delimiter: [","]
+  delimiters: [","]
 }, []);
 db._query(`RETURN TOKENS('foo,bar,baz,"bar,baz"', "delimiter_noquote")`).toArray();
 ~analyzers.remove(a.name);
