@@ -2,7 +2,7 @@
 description: Description of the oasisctl get policy command
 title: Oasisctl Get Policy
 menuTitle: Get Policy
-weight: 115
+weight: 22
 ---
 ## Synopsis
 Get a policy the authenticated user has access to

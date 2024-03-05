@@ -2,7 +2,7 @@
 description: Description of the oasisctl list effective permissions command
 title: Oasisctl List Effective Permissions
 menuTitle: List Effective Permissions
-weight: 85
+weight: 16
 ---
 ## Synopsis
 List the effective permissions, the authenticated user has for a given URL

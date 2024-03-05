@@ -2,7 +2,7 @@
 description: Description of the oasisctl update backup policy command
 title: Oasisctl Update Backup Policy
 menuTitle: Update Backup Policy
-weight: 20
+weight: 3
 ---
 ## Synopsis
 Update a backup policy

@@ -2,7 +2,7 @@
 description: Description of the oasisctl list nodesizes command
 title: Oasisctl List Nodesizes
 menuTitle: List Nodesizes
-weight: 135
+weight: 26
 ---
 ## Synopsis
 List node sizes

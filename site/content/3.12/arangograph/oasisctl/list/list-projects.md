@@ -2,7 +2,7 @@
 description: Description of the oasisctl list projects command
 title: Oasisctl List Projects
 menuTitle: List Projects
-weight: 175
+weight: 34
 ---
 ## Synopsis
 List all projects of the given organization

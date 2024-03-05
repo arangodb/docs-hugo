@@ -2,7 +2,7 @@
 description: Description of the oasisctl list servers command
 title: Oasisctl List Servers
 menuTitle: List Servers
-weight: 195
+weight: 38
 ---
 ## Synopsis
 List servers information

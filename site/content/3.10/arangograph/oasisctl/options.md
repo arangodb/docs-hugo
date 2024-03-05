@@ -2,7 +2,7 @@
 description: Command-line client tool for managing ArangoGraph
 title: ArangoGraph Shell oasisctl
 menuTitle: Options
-weight: 5
+weight: 1
 ---
 ## Oasisctl
 ArangoGraph Insights Platform

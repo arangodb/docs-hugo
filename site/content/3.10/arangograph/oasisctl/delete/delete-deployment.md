@@ -2,7 +2,7 @@
 description: Description of the oasisctl delete deployment command
 title: Oasisctl Delete Deployment
 menuTitle: Delete Deployment
-weight: 50
+weight: 9
 ---
 ## Synopsis
 Delete a deployment the authenticated user has access to

@@ -2,7 +2,7 @@
 description: Description of the oasisctl delete auditlog archive command
 title: Oasisctl Delete Auditlog Archive
 menuTitle: Delete Audit Log Archive
-weight: 20
+weight: 3
 ---
 ## Synopsis
 Delete an auditlog archive

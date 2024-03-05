@@ -2,7 +2,7 @@
 description: Description of the oasisctl disable command
 title: Oasisctl Disable
 menuTitle: Disable
-weight: 5
+weight: 10
 ---
 ## Synopsis
 Disable some settings related to deployment

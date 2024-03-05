@@ -2,7 +2,7 @@
 description: Description of the oasisctl list deployments command
 title: Oasisctl List Deployments
 menuTitle: List Deployments
-weight: 70
+weight: 13
 ---
 ## Synopsis
 List all deployments of the given project

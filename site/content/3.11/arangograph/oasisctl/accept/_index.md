@@ -2,7 +2,7 @@
 description: Description of the oasisctl accept command
 title: Oasisctl Accept
 menuTitle: Accept
-weight: 5
+weight: 2
 ---
 ## Synopsis
 Accept invites

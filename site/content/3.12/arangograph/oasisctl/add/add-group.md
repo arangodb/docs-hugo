@@ -2,7 +2,7 @@
 description: Description of the oasisctl add group command
 title: Oasisctl Add Group
 menuTitle: Add Group
-weight: 20
+weight: 3
 ---
 ## Synopsis
 Add group resources

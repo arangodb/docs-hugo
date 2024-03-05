@@ -2,7 +2,7 @@
 description: Description of the oasisctl delete metrics command
 title: Oasisctl Delete Metrics
 menuTitle: Delete Metrics
-weight: 80
+weight: 15
 ---
 ## Synopsis
 Delete metrics resources

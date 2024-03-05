@@ -2,7 +2,7 @@
 description: Description of the oasisctl get organization command
 title: Oasisctl Get Organization
 menuTitle: Get Organization
-weight: 80
+weight: 15
 ---
 ## Synopsis
 Get an organization the authenticated user is a member of

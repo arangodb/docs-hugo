@@ -2,7 +2,7 @@
 description: Description of the oasisctl list notebookmodels command
 title: Oasisctl List Notebookmodels
 menuTitle: List Notebookmodels
-weight: 140
+weight: 27
 ---
 ## Synopsis
 List notebook models

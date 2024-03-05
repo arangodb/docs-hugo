@@ -2,7 +2,7 @@
 description: Description of the oasisctl create ipallowlist command
 title: Oasisctl Create Ipallowlist
 menuTitle: Create Ipallowlist
-weight: 55
+weight: 10
 ---
 ## Synopsis
 Create a new IP allowlist

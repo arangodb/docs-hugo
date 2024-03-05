@@ -2,7 +2,7 @@
 description: Description of the oasisctl add auditlog command
 title: Oasisctl Add Auditlog
 menuTitle: Add Auditlog
-weight: 10
+weight: 1
 ---
 ## Synopsis
 Add auditlog resources

@@ -2,7 +2,7 @@
 description: Description of the oasisctl get tandc command
 title: Oasisctl Get Tandc
 menuTitle: Get Tandc
-weight: 170
+weight: 33
 ---
 ## Synopsis
 Get current terms and conditions or get one by ID

@@ -2,7 +2,7 @@
 description: Description of the oasisctl update organization email domain command
 title: Oasisctl Update Organization Email Domain
 menuTitle: Update Organization Email Domain
-weight: 80
+weight: 15
 ---
 ## Synopsis
 Update email domain specific information for an organization
