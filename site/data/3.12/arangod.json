@@ -15,8 +15,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -44,8 +43,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -72,8 +70,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -95,8 +92,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -123,8 +119,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -151,8 +146,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -175,8 +169,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -203,8 +196,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -226,8 +218,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -256,8 +247,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -284,8 +274,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -307,8 +296,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -339,8 +327,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -370,8 +357,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -396,8 +382,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -425,8 +410,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -454,8 +438,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -482,8 +465,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -505,8 +487,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -539,8 +520,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -567,8 +547,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -600,8 +579,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -635,8 +613,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -667,8 +644,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -701,8 +677,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -735,8 +710,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -769,8 +743,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -798,8 +771,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -828,8 +800,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -862,8 +833,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -896,8 +866,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -922,8 +891,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "audit",
@@ -957,8 +925,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "audit",
@@ -985,8 +952,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "audit",
@@ -1014,8 +980,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1044,8 +1009,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1071,8 +1035,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "backup",
@@ -1103,8 +1066,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "backup",
@@ -1129,8 +1091,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "backup",
@@ -1161,8 +1122,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "backup",
@@ -1193,8 +1153,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cache",
@@ -1225,8 +1184,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cache",
@@ -1257,8 +1215,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cache",
@@ -1289,8 +1246,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cache",
@@ -1320,8 +1276,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cache",
@@ -1352,8 +1307,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cache",
@@ -1384,8 +1338,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cache",
@@ -1400,7 +1353,7 @@
       "agent",
       "single"
     ],
-    "default" : 7739683840,
+    "default" : 7739684864,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -1416,8 +1369,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cache",
@@ -1441,8 +1393,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -1467,8 +1418,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1493,8 +1443,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1526,8 +1475,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1550,8 +1498,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1580,8 +1527,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1611,8 +1557,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1636,8 +1581,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1665,8 +1609,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1696,8 +1639,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1725,8 +1667,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1754,8 +1695,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1783,8 +1723,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1808,8 +1747,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1833,8 +1771,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1860,8 +1797,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1886,8 +1822,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1910,8 +1845,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1945,8 +1879,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1977,8 +1910,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -2011,8 +1943,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -2043,8 +1974,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -2075,8 +2005,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -2104,8 +2033,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -2127,8 +2055,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -2157,8 +2084,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -2183,8 +2109,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -2209,8 +2134,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -2236,8 +2160,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2290,8 +2213,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2316,8 +2238,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : false,
     "section" : "database",
@@ -2344,13 +2265,12 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "database",
     "type" : "string",
-    "values" : "Possible values: \"1\", \"2\""
+    "values" : "Possible values: \"1\""
   },
   "database.directory" : {
     "category" : "option",
@@ -2372,8 +2292,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "database",
@@ -2400,8 +2319,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2427,8 +2345,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2453,8 +2370,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : false,
     "section" : "database",
@@ -2482,8 +2398,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2517,8 +2432,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "database",
@@ -2543,8 +2457,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "database",
@@ -2569,8 +2482,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "database",
@@ -2595,8 +2507,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : false,
     "section" : "database",
@@ -2621,8 +2532,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2648,8 +2558,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2678,8 +2587,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -2706,8 +2614,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2734,8 +2641,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -2759,8 +2665,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -2784,8 +2689,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -2816,8 +2720,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "dump",
@@ -2848,8 +2751,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "dump",
@@ -2862,7 +2764,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 6191747072,
+    "default" : 6191747891,
     "deprecatedIn" : null,
     "description" : "Maximum memory usage (in bytes) to be used by all ongoing dumps.",
     "dynamic" : true,
@@ -2880,8 +2782,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "dump",
@@ -2912,8 +2813,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "dump",
@@ -2939,8 +2839,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "encryption",
@@ -2966,8 +2865,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "encryption",
@@ -2992,8 +2890,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3019,8 +2916,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3044,8 +2940,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3072,8 +2967,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3098,8 +2992,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3124,8 +3017,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3155,8 +3047,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "foxx",
@@ -3179,8 +3070,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3207,8 +3097,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -3241,8 +3130,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "http",
@@ -3270,8 +3158,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3303,8 +3190,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "http",
@@ -3329,8 +3215,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3356,8 +3241,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "http",
@@ -3385,8 +3269,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3413,8 +3296,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "http",
@@ -3439,8 +3321,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3469,8 +3350,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -3494,8 +3374,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3519,8 +3398,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3544,8 +3422,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3569,8 +3446,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3594,8 +3470,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3620,8 +3495,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3646,8 +3520,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3671,8 +3544,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3696,8 +3568,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3721,8 +3592,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3746,8 +3616,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3776,8 +3645,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3805,8 +3673,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3829,8 +3696,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3855,8 +3721,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3882,8 +3747,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3909,8 +3773,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3933,8 +3796,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3958,8 +3820,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3983,8 +3844,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -4009,8 +3869,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4036,8 +3895,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4063,8 +3921,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4094,8 +3951,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -4124,8 +3980,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -4153,8 +4008,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -4183,8 +4037,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -4214,8 +4067,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -4242,8 +4094,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -4273,8 +4124,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -4300,8 +4150,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4326,8 +4175,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4356,8 +4204,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4386,8 +4233,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4413,8 +4259,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4439,8 +4284,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4465,8 +4309,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4492,8 +4335,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4519,8 +4361,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4549,8 +4390,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4576,8 +4416,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4606,8 +4445,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4634,8 +4472,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4661,8 +4498,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4692,8 +4528,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4718,8 +4553,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4751,8 +4585,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4787,8 +4620,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4811,12 +4643,11 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "This option allows you to direct the global or\nper-topic log messages to different outputs. The output definition can be one\nof the following:\n\n- `-` for stdin\n- `+` for stderr\n- `syslog://<syslog-facility>`\n- `syslog://<syslog-facility>/<application-name>`\n- `file://<relative-or-absolute-path>`\n\nTo set up a per-topic output configuration, use\n`--log.output <topic>=<definition>`:\n\n`--log.output queries=file://queries.log`\n\nThe above example logs query-related messages to the file `queries.log`.\n\nYou can specify the option multiple times in order to configure the output\nfor different log topics:\n\n`--log.level queries=trace --log.output queries=file:///queries.log\n--log.level requests=info --log.output requests=file:///requests.log`\n\nThe above example logs all query-related messages to the file `queries.log`\nand HTTP requests with a level of `info` or higher to the file `requests.log`.\n\nAny occurrence of `$PID` in the log output value is replaced at runtime with\nthe actual process ID. This enables logging to process-specific files:\n\n`--log.output 'file://arangod.log.$PID'`\n\nNote that dollar sign may need extra escaping when specified on a\ncommand-line such as Bash.\n\nIf you specify `--log.file-mode <octalvalue>`, then any newly created log\nfile uses `octalvalue` as file mode. Please note that the `umask` value is\napplied as well.\n\nIf you specify `--log.file-group <name>`, then any newly created log file tries\nto use `<name>` as the group name. Note that you have to be a member of that\ngroup. Otherwise, the group ownership is not changed. This option is only\navailable under Linux and macOS. It is not available under Windows.\n\nThe old `--log.file` option is still available for convenience. It is a\nshortcut for the more general option `--log.output file://filename`.\n\nThe old `--log.requests-file` option is still available. It is a shortcut for\nthe more general option `--log.output requests=file://...`.",
+    "longDescription" : "This option allows you to direct the global or\nper-topic log messages to different outputs. The output definition can be one\nof the following:\n\n- `-` for stdin\n- `+` for stderr\n- `syslog://<syslog-facility>`\n- `syslog://<syslog-facility>/<application-name>`\n- `file://<relative-or-absolute-path>`\n\nTo set up a per-topic output configuration, use\n`--log.output <topic>=<definition>`:\n\n`--log.output queries=file://queries.log`\n\nThe above example logs query-related messages to the file `queries.log`.\n\nYou can specify the option multiple times in order to configure the output\nfor different log topics:\n\n`--log.level queries=trace --log.output queries=file:///queries.log\n--log.level requests=info --log.output requests=file:///requests.log`\n\nThe above example logs all query-related messages to the file `queries.log`\nand HTTP requests with a level of `info` or higher to the file `requests.log`.\n\nAny occurrence of `$PID` in the log output value is replaced at runtime with\nthe actual process ID. This enables logging to process-specific files:\n\n`--log.output 'file://arangod.log.$PID'`\n\nNote that dollar sign may need extra escaping when specified on a\ncommand-line such as Bash.\n\nIf you specify `--log.file-mode <octalvalue>`, then any newly created log\nfile uses `octalvalue` as file mode. Please note that the `umask` value is\napplied as well.\n\nIf you specify `--log.file-group <name>`, then any newly created log file tries\nto use `<name>` as the group name. Note that you have to be a member of that\ngroup. Otherwise, the group ownership is not changed.\n\nThe old `--log.file` option is still available for convenience. It is a\nshortcut for the more general option `--log.output file://filename`.\n\nThe old `--log.requests-file` option is still available. It is a shortcut for\nthe more general option `--log.output requests=file://...`.",
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4843,8 +4674,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4871,8 +4701,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4899,8 +4728,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4926,8 +4754,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4954,8 +4781,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4981,8 +4807,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5012,8 +4837,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -5038,8 +4862,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5065,8 +4888,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5093,8 +4915,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -5123,8 +4944,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5153,8 +4973,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5183,8 +5002,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5216,8 +5034,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "network",
@@ -5243,8 +5060,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "network",
@@ -5275,8 +5091,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "network",
@@ -5306,8 +5121,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "network",
@@ -5337,8 +5151,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "network",
@@ -5370,8 +5183,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "network",
@@ -5398,8 +5210,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "network",
@@ -5425,8 +5236,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5482,8 +5292,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5515,8 +5324,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5547,8 +5355,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5579,8 +5386,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5606,8 +5412,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5634,8 +5439,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5661,8 +5465,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5670,7 +5473,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33106219008,
+    "base" : 33106223104,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5678,7 +5481,7 @@
       "agent",
       "single"
     ],
-    "default" : 26816037397,
+    "default" : 26816040714,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -5696,8 +5499,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5725,8 +5527,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5760,8 +5561,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5794,8 +5594,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5827,8 +5626,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5859,8 +5657,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5892,8 +5689,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5923,8 +5719,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5955,15 +5750,14 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
     "type" : "double"
   },
   "query.memory-limit" : {
-    "base" : 33106219008,
+    "base" : 33106223104,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5971,7 +5765,7 @@
       "agent",
       "single"
     ],
-    "default" : 19863731405,
+    "default" : 19863733863,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -5987,8 +5781,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -6016,8 +5809,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6049,8 +5841,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -6077,8 +5868,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -6103,8 +5893,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6135,8 +5924,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -6165,8 +5953,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6198,8 +5985,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -6230,8 +6016,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -6256,8 +6041,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6283,8 +6067,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6310,8 +6093,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6338,8 +6120,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6365,8 +6146,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6392,8 +6172,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6411,13 +6190,13 @@
     ],
     "default" : 1,
     "deprecatedIn" : null,
-    "description" : "The random number generator to use (1 = MERSENNE, 2 = RANDOM, 3 = URANDOM, 4 = COMBINED (not available on Windows), 5 = WinCrypt (Windows only). The options 2, 3, 4, and 5 are deprecated and will be removed in a future version.",
+    "description" : "The random number generator to use (1 = MERSENNE, 2 = RANDOM, 3 = URANDOM, 4 = COMBINED). The options 2, 3, and 4 are deprecated and will be removed in a future version.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
     "hidden" : true,
     "introducedIn" : null,
-    "longDescription" : "- `1`: a pseudo-random number generator using an\nimplication of the Mersenne Twister MT19937 algorithm\n- `2`: use a blocking random (or pseudo-random) number generator\n- `3`: use the non-blocking random (or pseudo-random) number generator supplied\n  by the operating system\n- `4`: a combination of the blocking random number generator and the Mersenne\n  Twister (not available on Windows)\n- `5`: use WinCrypt (Windows only)",
+    "longDescription" : "- `1`: a pseudo-random number generator using an\nimplication of the Mersenne Twister MT19937 algorithm\n- `2`: use a blocking random (or pseudo-random) number generator\n- `3`: use the non-blocking random (or pseudo-random) number generator supplied\n  by the operating system\n- `4`: a combination of the blocking random number generator and the Mersenne\n  Twister",
     "maxInclusive" : true,
     "maxValue" : 4294967295,
     "minInclusive" : true,
@@ -6425,8 +6204,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "random",
@@ -6458,8 +6236,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rclone",
@@ -6484,8 +6261,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rclone",
@@ -6509,8 +6285,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6536,8 +6311,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6568,8 +6342,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "replication",
@@ -6599,8 +6372,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "replication",
@@ -6630,8 +6402,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "replication",
@@ -6661,8 +6432,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "replication",
@@ -6687,8 +6457,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6714,8 +6483,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6743,8 +6511,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6775,8 +6542,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -6806,8 +6572,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -6833,8 +6598,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6862,8 +6626,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6896,8 +6659,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -6923,8 +6685,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -6956,8 +6717,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -6988,8 +6748,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7020,8 +6779,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7046,8 +6804,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7105,8 +6862,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7120,7 +6876,7 @@
       "agent",
       "single"
     ],
-    "default" : 9287620608,
+    "default" : 9287621836,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -7136,8 +6892,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7168,8 +6923,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7194,8 +6948,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7220,8 +6973,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7248,8 +7000,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7279,8 +7030,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7306,8 +7056,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7335,8 +7084,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7360,8 +7108,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7386,8 +7133,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7417,8 +7163,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7443,8 +7188,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7471,8 +7215,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7499,8 +7242,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7527,8 +7269,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7553,8 +7294,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7579,8 +7319,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7606,8 +7345,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7635,8 +7373,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7662,8 +7399,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7688,8 +7424,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7715,8 +7450,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7741,8 +7475,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7767,8 +7500,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7796,8 +7528,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7829,8 +7560,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7861,8 +7591,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7892,8 +7621,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7923,8 +7651,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7954,8 +7681,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7985,8 +7711,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8010,8 +7735,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -8042,8 +7766,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8072,8 +7795,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8102,8 +7824,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8135,8 +7856,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8166,8 +7886,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8196,8 +7915,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8227,8 +7945,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8259,8 +7976,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8290,8 +8006,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8323,8 +8038,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8356,8 +8070,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8389,8 +8102,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8422,8 +8134,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8455,8 +8166,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8488,8 +8198,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8521,8 +8230,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8554,8 +8262,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8587,8 +8294,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8620,8 +8326,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8651,8 +8356,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8683,8 +8387,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8713,8 +8416,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8744,8 +8446,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8775,8 +8476,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8805,8 +8505,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8838,8 +8537,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8869,8 +8567,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8892,7 +8589,7 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "Levels above the default of `2` use Snappy\ncompression to reduce the disk space requirements for storing data in these\nlevels.",
+    "longDescription" : "Levels above the default of `2` use\ncompression to reduce the disk space requirements for storing data in these\nlevels.",
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
     "minInclusive" : true,
@@ -8900,8 +8597,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8925,8 +8621,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -8954,8 +8649,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -8983,8 +8677,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9012,8 +8705,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9041,8 +8733,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9070,8 +8761,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9103,8 +8793,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9135,8 +8824,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9168,8 +8856,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9193,8 +8880,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9219,8 +8905,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9247,8 +8932,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9278,8 +8962,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9305,8 +8988,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9333,8 +9015,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9361,8 +9042,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9391,8 +9071,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9450,8 +9129,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9480,8 +9158,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9510,8 +9187,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9535,8 +9211,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9568,8 +9243,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9599,8 +9273,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9631,8 +9304,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9663,8 +9335,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9695,8 +9366,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9727,8 +9397,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9742,7 +9411,7 @@
       "agent",
       "single"
     ],
-    "default" : 12383494144,
+    "default" : 12383495782,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
@@ -9758,8 +9427,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9791,8 +9459,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9821,8 +9488,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9897,8 +9563,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9923,8 +9588,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9977,8 +9641,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : false,
     "section" : "rocksdb",
@@ -10009,8 +9672,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -10034,8 +9696,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -10064,8 +9725,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -10094,8 +9754,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -10119,8 +9778,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10151,8 +9809,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -10177,8 +9834,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10205,8 +9861,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10233,8 +9888,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10265,8 +9919,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10325,8 +9978,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10416,8 +10068,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10442,12 +10093,11 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "You can specify this option multiple times to let\nthe ArangoDB server listen for incoming requests on multiple endpoints.\n\nThe endpoints are normally specified either in ArangoDB's configuration file or\non the command-line with `--server.endpoint`. ArangoDB supports different types\nof endpoints:\n\n- `tcp://ipv4-address:port` - TCP/IP endpoint, using IPv4\n- `tcp://[ipv6-address]:port` - TCP/IP endpoint, using IPv6\n- `ssl://ipv4-address:port` - TCP/IP endpoint, using IPv4, SSL encryption\n- `ssl://[ipv6-address]:port` - TCP/IP endpoint, using IPv6, SSL encryption\n- `unix:///path/to/socket` - Unix domain socket endpoint\n\nYou can use `http://` as an alias for `tcp://`, and `https://` as an alias for\n`ssl://`.\n\nIf a TCP/IP endpoint is specified without a port number, then the default port\n(8529) is used.\n\nIf you use SSL-encrypted endpoints, you must also supply the path to a server\ncertificate using the `--ssl.keyfile` option.\n\n```bash\narangod --server.endpoint tcp://127.0.0.1:8529 \\\n        --server.endpoint ssl://127.0.0.1:8530 \\\n        --ssl.keyfile server.pem /tmp/data-dir\n\n...\n2022-11-07T10:39:30Z [1] INFO [6ea38] {general} using endpoint 'http+ssl://0.0.0.0:8530' for ssl-encrypted requests\n2022-11-07T10:39:30Z [1] INFO [6ea38] {general} using endpoint 'http+tcp://0.0.0.0:8529' for non-encrypted requests\n2022-11-07T10:39:31Z [1] INFO [cf3f4] {general} ArangoDB (version 3.10.0 [linux]) is ready for business. Have fun!\n```\n\nOn one specific ethernet interface, each port can only be bound\n**exactly once**. You can look up your available interfaces using the `ifconfig`\ncommand on Linux / macOS, and `ipconfig` on Windows. The general names of the\ninterfaces differ between operating systems and the hardware they run on.\nHowever, every host has typically a so called loopback interface, which is a\nvirtual interface. By convention, it always has the address `127.0.0.1` (IPv4)\nor `::1` (IPv6), and can only be reached from the very same host. Ethernet\ninterfaces usually have names like `eth0`, `wlan0`, `eth1:17`, `le0`, or a\nplain text name in Windows.\n\nTo find out which services already use ports (so ArangoDB can't bind them\nanymore), you can use the `netstat` command. It behaves a little different on\neach platform; run it with `-lnpt` on Linux, `-p tcp` on macOS, or with `-an`\non Windows for valuable information.\n\nArangoDB can also do a so called *broadcast bind* using `tcp://0.0.0.0:8529`.\nThis way, it is reachable on all interfaces of the host. This may be useful on\ndevelopment systems that frequently change their network setup, like laptops.\n\nArangoDB can also listen to IPv6 link-local addresses via adding the zone ID\nto the IPv6 address in the form `[ipv6-link-local-address%zone-id]`. However,\nwhat you probably want instead is to bind to a local IPv6 address. Local IPv6\naddresses start with `fd`. If you only see a `fe80:` IPv6 address in your\ninterface configuration but no IPv6 address starting with `fd`, your interface\nhas no local IPv6 address assigned. You can read more about IPv6 link-local\naddresses here: https://en.wikipedia.org/wiki/Link-local_address#IPv6.\n\nTo bind to a link-local and local IPv6 address, run `ifconfig` or equivalent\ncommand. The command lists all interfaces and assigned IP addresses. The\nlink-local address may be `fe80::6257:18ff:fe82:3ec6%eth0` (IPv6 address plus\ninterface name). A local IPv6 address may be `fd12:3456::789a`.\nTo bind ArangoDB to it, start `arangod` with\n`--server.endpoint tcp://[fe80::6257:18ff:fe82:3ec6%eth0]:8529`.\nYou can use `telnet` to test the connection.",
+    "longDescription" : "You can specify this option multiple times to let\nthe ArangoDB server listen for incoming requests on multiple endpoints.\n\nThe endpoints are normally specified either in ArangoDB's configuration file or\non the command-line with `--server.endpoint`. ArangoDB supports different types\nof endpoints:\n\n- `tcp://ipv4-address:port` - TCP/IP endpoint, using IPv4\n- `tcp://[ipv6-address]:port` - TCP/IP endpoint, using IPv6\n- `ssl://ipv4-address:port` - TCP/IP endpoint, using IPv4, SSL encryption\n- `ssl://[ipv6-address]:port` - TCP/IP endpoint, using IPv6, SSL encryption\n- `unix:///path/to/socket` - Unix domain socket endpoint\n\nYou can use `http://` as an alias for `tcp://`, and `https://` as an alias for\n`ssl://`.\n\nIf a TCP/IP endpoint is specified without a port number, then the default port\n(8529) is used.\n\nIf you use SSL-encrypted endpoints, you must also supply the path to a server\ncertificate using the `--ssl.keyfile` option.\n\n```bash\narangod --server.endpoint tcp://127.0.0.1:8529 \\\n        --server.endpoint ssl://127.0.0.1:8530 \\\n        --ssl.keyfile server.pem /tmp/data-dir\n\n...\n2022-11-07T10:39:30Z [1] INFO [6ea38] {general} using endpoint 'http+ssl://0.0.0.0:8530' for ssl-encrypted requests\n2022-11-07T10:39:30Z [1] INFO [6ea38] {general} using endpoint 'http+tcp://0.0.0.0:8529' for non-encrypted requests\n2022-11-07T10:39:31Z [1] INFO [cf3f4] {general} ArangoDB (version 3.10.0 [linux]) is ready for business. Have fun!\n```\n\nOn one specific ethernet interface, each port can only be bound\n**exactly once**. You can look up your available interfaces using the `ifconfig`\ncommand on Linux. The general names of the\ninterfaces differ between operating systems and the hardware they run on.\nHowever, every host has typically a so called loopback interface, which is a\nvirtual interface. By convention, it always has the address `127.0.0.1` (IPv4)\nor `::1` (IPv6), and can only be reached from the very same host. Ethernet\ninterfaces usually have names like `eth0`, `wlan0`, `eth1:17`, `le0`.\n\nTo find out which services already use ports (so ArangoDB can't bind them\nanymore), you can use the `netstat` command. It behaves a little different on\neach platform; run it with `-lnpt` on Linux for valuable information.\n\nArangoDB can also do a so called *broadcast bind* using `tcp://0.0.0.0:8529`.\nThis way, it is reachable on all interfaces of the host. This may be useful on\ndevelopment systems that frequently change their network setup, like laptops.\n\nArangoDB can also listen to IPv6 link-local addresses via adding the zone ID\nto the IPv6 address in the form `[ipv6-link-local-address%zone-id]`. However,\nwhat you probably want instead is to bind to a local IPv6 address. Local IPv6\naddresses start with `fd`. If you only see a `fe80:` IPv6 address in your\ninterface configuration but no IPv6 address starting with `fd`, your interface\nhas no local IPv6 address assigned. You can read more about IPv6 link-local\naddresses here: https://en.wikipedia.org/wiki/Link-local_address#IPv6.\n\nTo bind to a link-local and local IPv6 address, run `ifconfig` or equivalent\ncommand. The command lists all interfaces and assigned IP addresses. The\nlink-local address may be `fe80::6257:18ff:fe82:3ec6%eth0` (IPv6 address plus\ninterface name). A local IPv6 address may be `fd12:3456::789a`.\nTo bind ArangoDB to it, start `arangod` with\n`--server.endpoint tcp://[fe80::6257:18ff:fe82:3ec6%eth0]:8529`.\nYou can use `telnet` to test the connection.",
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10475,8 +10125,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10502,8 +10151,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10529,8 +10177,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10556,8 +10203,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10583,8 +10229,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10609,8 +10254,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10641,8 +10285,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10670,8 +10313,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10697,8 +10339,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10724,8 +10365,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10752,8 +10392,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10780,8 +10419,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10810,8 +10448,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10838,8 +10475,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10872,8 +10508,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10904,8 +10539,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10936,8 +10570,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10968,8 +10601,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -11002,8 +10634,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -11030,8 +10661,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -11062,8 +10692,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -11095,8 +10724,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -11121,8 +10749,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11153,8 +10780,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -11185,8 +10811,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -11212,8 +10837,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11238,8 +10862,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11266,8 +10889,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11294,8 +10916,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -11323,8 +10944,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -11351,8 +10971,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11384,8 +11003,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -11410,8 +11028,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -11442,8 +11059,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -11468,8 +11084,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11496,8 +11111,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "ssl",
@@ -11523,8 +11137,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "ssl",
@@ -11549,8 +11162,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "ssl",
@@ -11576,8 +11188,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "ssl",
@@ -11608,8 +11219,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "ssl",
@@ -11634,8 +11244,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11667,8 +11276,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "ssl",
@@ -11694,8 +11302,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11723,8 +11330,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "ssl",
@@ -11749,8 +11355,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11777,8 +11382,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11810,8 +11414,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "tcp",
@@ -11833,12 +11436,11 @@
     "experimental" : false,
     "hidden" : true,
     "introducedIn" : null,
-    "longDescription" : "If you set this option to `true`, the socket\noption `SO_REUSEADDR` is set on all server endpoints, which is the default.\nIf you set this option to `false`, it is possible that it takes up to a minute\nafter a server has terminated until it is possible for a new server to use the\nsame endpoint again.\n\n**Note**: Under some operating systems, this can be a security risk because it\nmight be possible for another process to bind to the same address and port,\npossibly hijacking network traffic. Under Windows, ArangoDB additionally sets\nthe `SO_EXCLUSIVEADDRUSE` flag as a measure to alleviate this problem.",
+    "longDescription" : "If you set this option to `true`, the socket\noption `SO_REUSEADDR` is set on all server endpoints, which is the default.\nIf you set this option to `false`, it is possible that it takes up to a minute\nafter a server has terminated until it is possible for a new server to use the\nsame endpoint again.\n\n**Note**: This can be a security risk because it might be possible for another\nprocess to bind to the same address and port, possibly hijacking network\ntraffic.",
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11871,8 +11473,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "temp",
@@ -11899,8 +11500,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11928,8 +11528,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11958,8 +11557,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "temp",
@@ -11991,8 +11589,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "temp",
@@ -12024,8 +11621,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "temp",
@@ -12051,8 +11647,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "temp",
@@ -12083,8 +11678,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "transaction",
@@ -12114,8 +11708,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "transaction",
@@ -12145,8 +11738,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "transaction",
@@ -12177,8 +11769,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "ttl",
@@ -12209,8 +11800,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "ttl",
@@ -12241,8 +11831,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "ttl",
@@ -12268,8 +11857,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -12321,8 +11909,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -12348,8 +11935,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -12372,8 +11958,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -12398,8 +11983,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "requiresValue" : true,
     "section" : "web-interface",
@@ -12422,8 +12006,7 @@
     "obsolete" : false,
     "os" : [
       "linux",
-      "macos",
-      "windows"
+      "macos"
     ],
     "required" : false,
     "requiresValue" : false,
