@@ -2,7 +2,7 @@
 description: Description of the oasisctl unlock cacertificate command
 title: Oasisctl Unlock Cacertificate
 menuTitle: Unlock Cacertificate
-weight: 10
+weight: 1
 ---
 ## Synopsis
 Unlock a CA certificate, so it can be deleted

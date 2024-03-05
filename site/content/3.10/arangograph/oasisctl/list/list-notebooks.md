@@ -2,7 +2,7 @@
 description: Description of the oasisctl list notebooks command
 title: Oasisctl List Notebooks
 menuTitle: List Notebooks
-weight: 145
+weight: 28
 ---
 ## Synopsis
 List notebooks

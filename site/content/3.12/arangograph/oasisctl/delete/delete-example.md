@@ -2,7 +2,7 @@
 description: Description of the oasisctl delete example command
 title: Oasisctl Delete Example
 menuTitle: Delete Example
-weight: 55
+weight: 10
 ---
 ## Synopsis
 Delete example ...

@@ -2,7 +2,7 @@
 description: Description of the oasisctl get provider command
 title: Oasisctl Get Provider
 menuTitle: Get Provider
-weight: 140
+weight: 27
 ---
 ## Synopsis
 Get a provider the authenticated user has access to

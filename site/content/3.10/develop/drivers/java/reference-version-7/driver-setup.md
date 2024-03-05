@@ -73,7 +73,7 @@ Here are examples to integrate configuration properties from different sources:
 `ArangoDB.Builder` has the following configuration methods:
 
 - `host(String, int)`:           adds a host (hostname and port) to connect to, multiple hosts can be added
-- `protocol(Protocol)`:       communication protocol, possible values are: `VST`, `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, (default: `HTTP2_JSON`)
+- `protocol(Protocol)`:          communication protocol, possible values are: `VST`, `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, (default: `HTTP2_JSON`)
 - `timeout(Integer)`:            connection and request timeout (ms), (default `0`, no timeout)
 - `user(String)`:                username for authentication, (default: `root`)
 - `password(String)`:            password for authentication
@@ -81,7 +81,7 @@ Here are examples to integrate configuration properties from different sources:
 - `useSsl(Boolean)`:             use SSL connection, (default: `false`)
 - `sslContext(SSLContext)`:      SSL context
 - `verifyHost(Boolean)`:         enable hostname verification, (HTTP only, default: `true`)
-- `chunkSize(Integer)`: `VST`    chunk size in bytes, (default: `30000`)
+- `chunkSize(Integer)`:          VST chunk size in bytes, (default: `30000`)
 - `maxConnections(Integer)`:     max number of connections per host, (default: 1 VST, 1 HTTP/2, 20 HTTP/1.1)
 - `connectionTtl(Long)`:         max lifetime of a connection (ms), (default: no ttl)
 - `keepAliveInterval(Integer)`:  VST keep-alive interval (s), (default: no keep-alive probes will be sent)

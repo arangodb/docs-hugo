@@ -2,7 +2,7 @@
 description: Description of the oasisctl delete example installation command
 title: Oasisctl Delete Example Installation
 menuTitle: Delete Example Installation
-weight: 60
+weight: 11
 ---
 ## Synopsis
 Delete an example datasets installation

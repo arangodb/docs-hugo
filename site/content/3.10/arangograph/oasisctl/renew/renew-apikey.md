@@ -2,7 +2,7 @@
 description: Description of the oasisctl renew apikey command
 title: Oasisctl Renew Apikey
 menuTitle: Renew Apikey
-weight: 10
+weight: 1
 ---
 ## Synopsis
 Renew API keys & tokens

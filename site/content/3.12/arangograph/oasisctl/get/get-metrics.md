@@ -2,7 +2,7 @@
 description: Description of the oasisctl get metrics command
 title: Oasisctl Get Metrics
 menuTitle: Get Metrics
-weight: 65
+weight: 12
 ---
 ## Synopsis
 Get metrics information

@@ -2,7 +2,7 @@
 description: Description of the oasisctl update private endpoint service command
 title: Oasisctl Update Private Endpoint Service
 menuTitle: Update Private Endpoint Service
-weight: 125
+weight: 24
 ---
 ## Synopsis
 Update a Private Endpoint Service attached to an existing deployment

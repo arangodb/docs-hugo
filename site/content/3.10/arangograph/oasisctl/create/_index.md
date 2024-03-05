@@ -2,7 +2,7 @@
 description: Description of the oasisctl create command
 title: Oasisctl Create
 menuTitle: Create
-weight: 5
+weight: 8
 ---
 ## Synopsis
 Create resources

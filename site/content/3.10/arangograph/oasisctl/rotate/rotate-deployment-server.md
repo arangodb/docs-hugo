@@ -2,7 +2,7 @@
 description: Description of the oasisctl rotate deployment server command
 title: Oasisctl Rotate Deployment Server
 menuTitle: Rotate Deployment Server
-weight: 15
+weight: 2
 ---
 ## Synopsis
 Rotate a single server of a deployment

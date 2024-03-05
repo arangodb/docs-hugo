@@ -2,7 +2,7 @@
 description: Description of the oasisctl lock cacertificate command
 title: Oasisctl Lock Cacertificate
 menuTitle: Lock Cacertificate
-weight: 10
+weight: 1
 ---
 ## Synopsis
 Lock a CA certificate, so it cannot be deleted

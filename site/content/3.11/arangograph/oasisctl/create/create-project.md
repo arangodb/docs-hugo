@@ -2,7 +2,7 @@
 description: Description of the oasisctl create project command
 title: Oasisctl Create Project
 menuTitle: Create Project
-weight: 100
+weight: 19
 ---
 ## Synopsis
 Create a new project

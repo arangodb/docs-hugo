@@ -2,7 +2,7 @@
 description: Description of the oasisctl delete group members command
 title: Oasisctl Delete Group Members
 menuTitle: Delete Group Members
-weight: 70
+weight: 13
 ---
 ## Synopsis
 Delete members from group

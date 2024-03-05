@@ -2,7 +2,7 @@
 description: Description of the oasisctl get organization email command
 title: Oasisctl Get Organization Email
 menuTitle: Get Organization Email
-weight: 95
+weight: 18
 ---
 ## Synopsis
 Get email specific information for an organization

@@ -48,11 +48,11 @@ To add the driver to your project with Gradle, add the following code to your
 
 ```groovy
 repositories {
-  mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-  implementation 'com.arangodb:arangodb-java-driver:7.x.x'
+    implementation 'com.arangodb:arangodb-java-driver:7.x.x'
 }
 ```
 
@@ -142,10 +142,10 @@ for example:
 
 ```java
 ArangoDB adb = new ArangoDB.Builder()
-        // ...
-        .build();
-        ArangoDBAsync adbAsync = adb.async();
-        CompletableFuture<ArangoDBVersion> version = adbAsync.getVersion();
+    // ...
+    .build();
+ArangoDBAsync adbAsync = adb.async();
+CompletableFuture<ArangoDBVersion> version = adbAsync.getVersion();
 // ...
 ```
 
@@ -170,13 +170,13 @@ batch of the cursor, for example:
 ```java
 CompletableFuture<ArangoCursorAsync<Integer>> future1 = adbAsync.db()
         .query("FOR i IN i..10000", Integer.class);
-        CompletableFuture<ArangoCursorAsync<Integer>> future2 = future1
+CompletableFuture<ArangoCursorAsync<Integer>> future2 = future1
         .thenCompose(c -> {
-        List<Integer> batch = c.getResult();
-        // ...
-        // consume batch
-        // ...
-        return c.nextBatch();
+            List<Integer> batch = c.getResult();
+            // ...
+            // consume batch
+            // ...
+            return c.nextBatch();
         });
 // ...
 ```

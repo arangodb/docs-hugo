@@ -2,7 +2,7 @@
 description: Description of the oasisctl update cacertificate command
 title: Oasisctl Update Cacertificate
 menuTitle: Update Cacertificate
-weight: 25
+weight: 4
 ---
 ## Synopsis
 Update a CA certificate the authenticated user has access to
