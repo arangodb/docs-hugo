@@ -11,6 +11,17 @@ aliases:
   - ../deploy/active-failover/manual-start
   - ../deploy/active-failover/administration
   - ../deploy/active-failover
+  - ../deploy/arangosync
+  - ../deploy/arangosync/deployment
+  - ../deploy/arangosync/deployment/arangodb-cluster
+  - ../deploy/arangosync/deployment/arangosync-master
+  - ../deploy/arangosync/deployment/arangosync-workers
+  - ../deploy/arangosync/deployment/prometheus-and-grafana
+  - ../deploy/arangosync/administration
+  - ../deploy/arangosync/operations-and-maintenance
+  - ../deploy/arangosync/security
+  - ../deploy/arangosync/monitoring
+  - ../deploy/arangosync/troubleshooting
   - ../components/arangodb-server/ldap
   - ../arangograph/migrate-to-the-cloud
   - ../data-science/pregel
@@ -37,6 +48,10 @@ detailed information about breaking changes before upgrading.
   You can use [cluster deployments](../deploy/cluster/_index.md) instead, which
   offer better resilience and synchronous replication.
 
+- **Datacenter-to-Datacenter Replication (DC2DC)**:
+  The Datacenter-to-Datacenter Replication for cluster deployments including the
+  _arangosync_ tool is no longer supported from v3.12 onward.
+
 - **LDAP authentication**:
   ArangoDB user authentication with an LDAP server in the Enterprise Edition is
   no longer available starting with v3.12.
@@ -59,7 +74,7 @@ detailed information about breaking changes before upgrading.
   Only deployments that were set up with the RocksDB storage engine using
   ArangoDB v3.2 or v3.3 and that have been upgraded since then are affected.
 
-  See [Incompatible changes in ArangoDB 3.12](version-3.12/incompatible-changes-in-3-12.md#little-endian-on-disk-key-format-for-the-rocksdb-storage-engine)
+  See [Incompatible changes in ArangoDB 3.12](version-3.12/incompatible-changes-in-3-12.md#little-endian-on-disk-key-format-for-the-rocksdb-storage-engine-unsupported)
   for details.
 
 - **Pregel**:

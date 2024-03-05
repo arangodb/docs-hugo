@@ -17,7 +17,7 @@ side-by-side, but you can get archive packages and unpack them manually.
 
 The provided ArangoDB packages run as single instances out of the box.
 
-Unlike other setups (*Cluster*, *OneShard*, *DC2DC*)
+Unlike other setups (*Cluster*, *OneShard*)
 which require some specific procedure to be started once the ArangoDB package
 has been installed, deploying a single instance is straightforward.
 

@@ -11,6 +11,14 @@ API, it is only supported to access these REST endpoints on a single-server
 instance. While these APIs are also available on DB-Server instances, accessing them
 as a user is not supported. This API replaces some of the APIs in `/_api/replication`.
 
+{% comment -%}
+Since the removal of AF, DC2DC, and Leader/Follower replication, the only async
+replication remaining is used to initialize new DB-Servers for clusters
+(snapshot transfer / SynchronizeShard) - and this is done using the below endpoints.
+They can also be used for testing cluster replication code without running a
+full cluster and can thus not be removed until Replication 1 is gone.
+{% endcomment -%}
+
 ## Get the tick ranges available in the WAL
 
 ```openapi

@@ -11,7 +11,7 @@ description: >-
 The ArangoDB Starter is a program used to create ArangoDB database deployments
 on bare-metal (or virtual machines) with ease.
 It enables you to create everything from a simple Single server instance
-to a full blown Cluster with Datacenter-to-Datacenter Replication in under 5 minutes.
+to a full blown Cluster in under 5 minutes.
 
 The Starter is intended to be used in environments where there is no higher
 level orchestration system (e.g. Kubernetes) available.
@@ -49,12 +49,10 @@ The Starter supports different modes of ArangoDB deployments:
 1. Single server
 1. Cluster
 
-Note: Datacenter replication is an option for the `cluster` deployment mode.
-
 You select one of these modes using the `--starter.mode` command line option.
 
 Depending on the mode you've selected, the Starter launches one or more
-(`arangod` / `arangosync`) server processes.
+`arangod` server processes.
 
 No matter which mode you select, the Starter always provides you
 a common directory structure for storing the servers data, configuration & log files.

@@ -9,7 +9,7 @@ description: >-
 ## Creating certificates
 
 The starter provides commands to create all certificates needed for an ArangoDB
-deployment with optional Datacenter-to-Datacenter Replication.
+deployment.
 
 ### TLS server certificates
 
