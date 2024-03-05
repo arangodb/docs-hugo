@@ -685,7 +685,7 @@ To tag options in lists, place the shortcode as follows:
 ```
 
 Most Enterprise Edition features are also available in ArangoGraph, but some
-features are not or in a different form (e.g. audit log, Hot Backup). If a feature
+features are not or in a different form (e.g. Hot Backup). If a feature
 is not available in ArangoGraph, use the following include instead:
 
 ```markdown
