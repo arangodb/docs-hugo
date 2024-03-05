@@ -2,7 +2,7 @@
 description: Description of the oasisctl list examples command
 title: Oasisctl List Examples
 menuTitle: List Examples
-weight: 100
+weight: 19
 ---
 ## Synopsis
 List all example datasets

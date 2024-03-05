@@ -2,7 +2,7 @@
 description: Description of the oasisctl list command
 title: Oasisctl List
 menuTitle: List
-weight: 5
+weight: 15
 ---
 ## Synopsis
 List resources

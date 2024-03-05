@@ -2,7 +2,7 @@
 description: Description of the oasisctl reject organization invite command
 title: Oasisctl Reject Organization Invite
 menuTitle: Reject Organization Invite
-weight: 15
+weight: 2
 ---
 ## Synopsis
 Reject an organization invite the authenticated user has access to

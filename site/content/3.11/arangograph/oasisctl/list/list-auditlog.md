@@ -2,7 +2,7 @@
 description: Description of the oasisctl list auditlog command
 title: Oasisctl List Auditlog
 menuTitle: List Auditlog
-weight: 25
+weight: 4
 ---
 ## Synopsis
 List resources for auditlogs

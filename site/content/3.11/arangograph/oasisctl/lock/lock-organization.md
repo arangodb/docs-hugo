@@ -2,7 +2,7 @@
 description: Description of the oasisctl lock organization command
 title: Oasisctl Lock Organization
 menuTitle: Lock Organization
-weight: 25
+weight: 4
 ---
 ## Synopsis
 Lock an organization, so it cannot be deleted

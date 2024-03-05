@@ -2,7 +2,7 @@
 description: Description of the oasisctl completion command
 title: Oasisctl Completion
 menuTitle: Completion
-weight: 10
+weight: 7
 ---
 ## Synopsis
 To load completion run

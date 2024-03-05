@@ -2,7 +2,7 @@
 description: Description of the oasisctl create role command
 title: Oasisctl Create Role
 menuTitle: Create Role
-weight: 105
+weight: 20
 ---
 ## Synopsis
 Create a new role

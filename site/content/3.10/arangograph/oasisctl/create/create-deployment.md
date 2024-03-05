@@ -2,7 +2,7 @@
 description: Description of the oasisctl create deployment command
 title: Oasisctl Create Deployment
 menuTitle: Create Deployment
-weight: 35
+weight: 6
 ---
 ## Synopsis
 Create a new deployment

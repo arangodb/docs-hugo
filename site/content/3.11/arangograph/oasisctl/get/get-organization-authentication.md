@@ -2,7 +2,7 @@
 description: Description of the oasisctl get organization authentication command
 title: Oasisctl Get Organization Authentication
 menuTitle: Get Organization Authentication
-weight: 85
+weight: 16
 ---
 ## Synopsis
 Get authentication specific information for an organization

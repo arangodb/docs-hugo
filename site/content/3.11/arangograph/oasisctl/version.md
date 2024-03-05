@@ -2,7 +2,7 @@
 description: Description of the oasisctl version command
 title: Oasisctl Version
 menuTitle: Version
-weight: 45
+weight: 30
 ---
 ## Synopsis
 Show the current version of this tool

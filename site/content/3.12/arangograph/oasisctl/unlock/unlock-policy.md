@@ -2,7 +2,7 @@
 description: Description of the oasisctl unlock policy command
 title: Oasisctl Unlock Policy
 menuTitle: Unlock Policy
-weight: 30
+weight: 5
 ---
 ## Synopsis
 Unlock a backup policy

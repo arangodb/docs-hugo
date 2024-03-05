@@ -2,7 +2,7 @@
 description: Description of the oasisctl auditlog attach command
 title: Oasisctl Auditlog Attach
 menuTitle: Audit Log Attach
-weight: 10
+weight: 1
 ---
 ## Synopsis
 Attach a project to an audit log

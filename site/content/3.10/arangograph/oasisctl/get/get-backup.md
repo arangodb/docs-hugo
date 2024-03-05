@@ -2,7 +2,7 @@
 description: Description of the oasisctl get backup command
 title: Oasisctl Get Backup
 menuTitle: Get Backup
-weight: 25
+weight: 4
 ---
 ## Synopsis
 Get a backup

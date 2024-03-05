@@ -2,7 +2,7 @@
 description: Description of the oasisctl list apikeys command
 title: Oasisctl List Apikeys
 menuTitle: List Apikeys
-weight: 10
+weight: 1
 ---
 ## Synopsis
 List all API keys created for the current user

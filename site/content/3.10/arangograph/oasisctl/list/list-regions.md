@@ -2,7 +2,7 @@
 description: Description of the oasisctl list regions command
 title: Oasisctl List Regions
 menuTitle: List Regions
-weight: 185
+weight: 36
 ---
 ## Synopsis
 List all regions of the given provider

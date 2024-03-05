@@ -2,7 +2,7 @@
 description: Description of the oasisctl enable command
 title: Oasisctl Enable
 menuTitle: Enable
-weight: 5
+weight: 11
 ---
 ## Synopsis
 Enable some settings related to deployment

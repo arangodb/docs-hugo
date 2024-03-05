@@ -2,7 +2,7 @@
 description: Description of the oasisctl accept organization command
 title: Oasisctl Accept Organization
 menuTitle: Accept Organization
-weight: 10
+weight: 1
 ---
 ## Synopsis
 Accept organization related invites
