@@ -3,7 +3,6 @@ title: Administrate an Active Failover deployment
 menuTitle: Administration
 weight: 15
 description: ''
-archetype: default
 ---
 ## Introduction
 

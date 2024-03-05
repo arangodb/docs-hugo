@@ -5,7 +5,6 @@ weight: 35
 description: >-
   You can create indexes over the `_from` or `_to` attribute and one
   or more additional edge attributes to improve certain graph traversals
-archetype: default
 ---
 All edge collections in ArangoDB have a special edge index that enables fast
 graph operations. If you have graphs that contain supernodes (vertices that have

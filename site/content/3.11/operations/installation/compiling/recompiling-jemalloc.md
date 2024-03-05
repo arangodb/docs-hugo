@@ -4,7 +4,6 @@ menuTitle: Recompiling jemalloc
 weight: 20
 description: >-
   Resolving
-archetype: default
 ---
 {{< info >}}
 This article is only relevant if you intend to compile ArangoDB on Ubuntu 16.10

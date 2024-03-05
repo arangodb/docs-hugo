@@ -5,7 +5,6 @@ weight: 15
 description: >-
   Credits give you access to a flexible prepaid model, so you can allocate them
   across multiple deployments as needed
-archetype: default
 ---
 {{< info >}}
 Credits are only available if your organization has signed up for

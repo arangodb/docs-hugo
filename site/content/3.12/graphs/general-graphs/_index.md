@@ -5,7 +5,6 @@ weight: 85
 description: >-
   The basic type of a named graph is called a General Graph and there is a
   JavaScript module for working with these graphs
-archetype: chapter
 ---
 This chapter describes the [general-graph](../_index.md) module.
 It allows you to define a graph that is spread across several edge and document

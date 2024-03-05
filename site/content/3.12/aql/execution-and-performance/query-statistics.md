@@ -5,7 +5,6 @@ weight: 5
 description: >-
   All queries that have successfully run to completion return statistics about
   the execution
-archetype: default
 ---
 Execution statistics can be retrieved by calling `getExtra()` on the cursor.
 The statistics are returned in the return value's `stats` attribute:

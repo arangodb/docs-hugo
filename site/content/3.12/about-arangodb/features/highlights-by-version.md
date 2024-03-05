@@ -5,7 +5,6 @@ weight: 15
 description: >-
   The most notable features in the Community and Enterprise Edition of ArangoDB,
   grouped by version
-archetype: default
 aliases:
   - ../../introduction/features/highlights-by-version
 ---
@@ -363,7 +362,7 @@ Also see [What's New in 3.4](../../release-notes/version-3.4/whats-new-in-3-4.md
 
 **Enterprise Edition**
 
-- [**Datacenter-to-Datacenter Replication**](../../deploy/arangosync/deployment/_index.md):
+- **Datacenter-to-Datacenter Replication**:
   Replicate the entire structure and content of an ArangoDB cluster
   asynchronously to another cluster in a different datacenter with ArangoSync.
   Multi-datacenter support means you can fallback to a replica of your cluster

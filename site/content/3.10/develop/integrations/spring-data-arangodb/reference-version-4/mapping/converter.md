@@ -3,7 +3,6 @@ title: Converter
 menuTitle: Converter
 weight: 30
 description: ''
-archetype: default
 ---
 ## Registering a Spring Converter
 

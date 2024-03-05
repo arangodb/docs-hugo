@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl delete ipallowlist command
 title: Oasisctl Delete Ipallowlist
 menuTitle: Delete Ipallowlist
-weight: 75
+weight: 14
 ---
 ## Synopsis
 Delete an IP allowlist the authenticated user has access to

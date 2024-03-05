@@ -5,7 +5,6 @@ weight: 5
 description: >-
   You can harden an ArangoDB server by restricting APIs, limiting what can be 
   accessed in JavaScript contexts, and disable unused features
-archetype: default
 ---
 _arangod_ provides a variety of options to make a setup more secure. 
 Administrators can use these options to limit access to certain ArangoDB

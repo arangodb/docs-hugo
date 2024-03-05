@@ -4,7 +4,6 @@ menuTitle: Getting Started
 weight: 5
 description: >-
   How to create and use SmartGraphs
-archetype: default
 ---
 SmartGraphs **cannot use existing collections**. When switching to SmartGraph
 from an existing dataset you have to import the data into a fresh SmartGraph.

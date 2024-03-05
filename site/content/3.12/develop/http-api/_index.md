@@ -6,7 +6,6 @@ description: >-
   All functionality of ArangoDB servers is provided via a RESTful API over the
   HTTP protocol, and you can call the API endpoints directly, via database
   drivers, or other tools
-archetype: chapter
 ---
 ArangoDB servers expose an application programming interface (API) for managing
 the database system. It is based on the HTTP protocol that powers the

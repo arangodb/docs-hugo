@@ -5,7 +5,6 @@ weight: 5
 description: >-
   How to enforce attributes and their data types for documents of individual
   collections using JSON Schema
-archetype: default
 ---
 While ArangoDB is schema-less, it allows to enforce certain document structures
 on the collection level. The desired structure can be described in the popular

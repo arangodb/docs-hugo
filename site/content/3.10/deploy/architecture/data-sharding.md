@@ -5,7 +5,6 @@ weight: 10
 description: >-
   ArangoDB can divide collections into multiple shards to distribute the data
   across multiple cluster nodes
-archetype: default
 ---
 ArangoDB organizes its collection data in _shards_. Sharding allows to use
 multiple machines to run a cluster of ArangoDB instances that together

@@ -5,7 +5,6 @@ weight: 22
 description: >-
    Load your data into ArangoGraph and transform it into richly-connected graph
    structures, without needing to write any code or deploy any infrastructure
-archetype: chapter
 ---
 
 ArangoGraph provides different ways of loading your data into the platform,

@@ -4,7 +4,6 @@ menuTitle: Examples
 weight: 5
 description: >-
   How to use the `arangoinspect` tool to collection information for troubleshooting
-archetype: default
 ---
 If you are asked by ArangoDB support to provide an inspector output, run
 the _arangoinspect_ binary to generate a file in the current working folder.

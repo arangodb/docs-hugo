@@ -6,7 +6,6 @@ description: >-
   The commercial version of ArangoDB offers performance, compliance, and
   security features for larger or more sensitive datasets, as well as additional
   query capabilities
-archetype: default
 aliases:
   - ../../introduction/features/enterprise-edition
 ---
@@ -96,9 +95,6 @@ features outlined below. For additional information, see
   the user has no access to them instead of failing the query.
 
 ## Security
-
-- [**DC2DC**](../../deploy/arangosync/_index.md):
-  Datacenter-to-Datacenter Replication for disaster recovery.
 
 - [**Auditing**](../../operations/security/audit-logging.md):
   Audit logs of all server interactions.

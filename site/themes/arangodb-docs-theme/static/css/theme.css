@@ -2098,15 +2098,6 @@ nav.pagination .next {
     background: var(--gray-950);
 }
 
-.page-title {
-    font-size: var(--TYPOGRAPHY-H1-SIZE);
-}
-
-@media screen and (max-width: 768px) {
-    .page-title {
-        font-size: var(--TYPOGRAPHY-H1-SIZE-SMALL);
-    }
-}
 
 
 .DocSearch.DocSearch-Container {

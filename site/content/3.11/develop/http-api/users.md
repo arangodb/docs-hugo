@@ -6,7 +6,6 @@ description: >-
   The HTTP API for user management lets you create, modify, delete, and list
   ArangoDB user accounts, as well as grant and revoke permissions for databases
   and collections
-archetype: default
 ---
 The interface provides the means to manage database system users. All
 users managed through this interface are stored in the protected `_users`

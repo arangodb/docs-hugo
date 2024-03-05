@@ -5,7 +5,6 @@ weight: 15
 description: >-
   Bind parameters allow you to separate the query logic from literal values used
   in the query and safely use user-provided input for these placeholders
-archetype: default
 ---
 It is good practice to separate the query text from the literal values because
 it prevents (malicious) injection of keywords and other collection names into an

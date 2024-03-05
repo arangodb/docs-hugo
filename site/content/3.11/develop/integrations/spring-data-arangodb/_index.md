@@ -3,7 +3,6 @@ title: Spring Data ArangoDB
 menuTitle: Spring Data
 weight: 5
 description: ''
-archetype: chapter
 ---
 This integration is a library for accessing data stored in ArangoDB in
 Spring-based Java application. Spring Data provides a consistent interface for

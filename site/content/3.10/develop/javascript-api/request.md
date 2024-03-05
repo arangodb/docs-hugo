@@ -4,7 +4,6 @@ menuTitle: '@arangodb/request'
 weight: 30
 description: >-
   The request module provides the functionality for making HTTP requests
-archetype: default
 ---
 `const request = require('@arangodb/request')`
 

@@ -4,7 +4,6 @@ menuTitle: How to Interact with ArangoDB
 weight: 50
 description: >-
   Learn about the different ways you can use and communicate with ArangoDB
-archetype: default
 ---
 ## How to Communicate with the Server
 
@@ -62,8 +61,7 @@ are handled and what endpoints are available.
 
 [ArangoDB Starter](../components/tools/arangodb-starter/_index.md) (`arangodb` binary) helps you set up
 and deploy ArangoDB instances on bare-metal servers and supports all ArangoDB
-deployment modes, a single server instance and cluster
-(including Datacenter-to-Datacenter Replication).
+deployment modes, a single server instance and cluster.
 
 In addition to the Starter, there are also other ways that you can use to deploy
 ArangoDB:

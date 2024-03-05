@@ -5,7 +5,6 @@ weight: 10
 description: >-
   You can configure collections to generate document attributes when documents
   are created or modified, using an AQL expression
-archetype: default
 ---
 <small>Introduced in: v3.10.0</small>
 

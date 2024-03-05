@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl list ipallowlists command
 title: Oasisctl List Ipallowlists
 menuTitle: List Ipallowlists
-weight: 120
+weight: 23
 ---
 ## Synopsis
 List all IP allowlists of the given project

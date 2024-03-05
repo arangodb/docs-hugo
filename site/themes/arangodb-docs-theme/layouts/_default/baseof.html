@@ -1,0 +1,29 @@
+{{ partial "shortcodes/version.html" (dict "page" .Page) -}}
+{{ $isProduction := eq site.BaseURL "https://docs.arangodb.com" -}}
+
+<!DOCTYPE html>
+<html lang="{{ .Page.Language | default "en" }}">
+  {{ partial "head.html" . -}}
+  <body>
+    {{ if $isProduction }}{{ partialCached "tracking/body-start.html" . }}{{ end -}}
+    <noscript>You need to enable JavaScript to use the ArangoDB documentation.</noscript>
+    <div id="page-wrapper" class="page_content_splash" style="height: auto; opacity: 0;">
+      <section id="page-main">
+        <section class="page-container" id="page-container">
+          {{ partialCached "header.html" . -}}
+          <iframe src="/nav.html" title="description" id="menu-iframe" class="menu-iframe active" style="opacity: 0;"></iframe>
+          <div class="container-main">
+            <div class="row-main">
+              {{ if gt (len .Page.Ancestors) 1 }}{{ partial "breadcrumbs.html" . }}{{ end -}}
+              {{ block "main" . }}{{ end -}}
+              {{ partial "toc.html" . -}}
+            </div>
+          </div>
+        </section>
+      </section>
+    </div>
+    {{ partialCached "back-to-top.html" . -}}
+    {{ partialCached "search.html" . -}}
+    {{ if $isProduction }}{{ partialCached "tracking/body-end.html" . }}{{ end -}}
+  </body>
+</html>

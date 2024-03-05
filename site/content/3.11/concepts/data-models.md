@@ -5,7 +5,6 @@ weight: 65
 description: >-
   ArangoDB is a native multi-model database with flexible data models
   for key-values, documents, and graphs
-archetype: default
 ---
 ## Key-Value Model
 

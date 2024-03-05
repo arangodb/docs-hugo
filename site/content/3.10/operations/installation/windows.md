@@ -4,7 +4,6 @@ menuTitle: Windows
 weight: 20
 description: >-
   You can use ArangoDB on Windows via Docker images, or use an installer or zip archives
-archetype: default
 ---
 You can use ArangoDB on Windows (64-bit) in different ways:
 

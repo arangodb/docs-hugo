@@ -5,7 +5,6 @@ weight: 75
 description: >-
   You can improve the performance of View and inverted index queries with a
   primary sort order, stored values and other optimizations
-archetype: default
 ---
 ## Primary Sort Order
 

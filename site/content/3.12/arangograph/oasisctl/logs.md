@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl logs command
 title: Oasisctl Logs
 menuTitle: Logs
-weight: 30
+weight: 18
 ---
 ## Synopsis
 Get logs of the servers of a deployment the authenticated user has access to

@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl update metrics command
 title: Oasisctl Update Metrics
 menuTitle: Update Metrics
-weight: 45
+weight: 8
 ---
 ## Synopsis
 Update metrics resources

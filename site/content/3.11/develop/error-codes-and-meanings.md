@@ -7,7 +7,6 @@ description: >-
   and you can look up additional information for a specific kind of error
 pageToc:
   maxHeadlineLevel: 3
-archetype: default
 ---
 ## Numbers, names, and descriptions of errors
 

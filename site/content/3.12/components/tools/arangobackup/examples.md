@@ -4,7 +4,6 @@ menuTitle: Examples
 weight: 5
 description: >-
   How to create a consistent snapshot with the `arangobackup` tool
-archetype: default
 ---
 ## Create
 
@@ -67,8 +66,6 @@ including in the meantime databases, collections, indexes etc.
 The DB-Server of a single server instance and all DB-Servers
 of a cluster will subsequently be restarted.
 
-Datacenter-to-Datacenter Replication (DC2DC) needs to be stopped before
-restoring a Hot Backup.
 {{< /warning >}}
 
 ```bash

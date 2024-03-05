@@ -4,7 +4,6 @@ menuTitle: Management
 weight: 5
 description: >-
   How to manage named graphs of the type General Graph
-archetype: default
 ---
 This chapter describes the JavaScript interface for creating and modifying
 [named graphs](../_index.md#named-graphs).

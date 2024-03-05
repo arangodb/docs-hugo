@@ -4,7 +4,6 @@ menuTitle: Management
 weight: 10
 description: >-
   This chapter describes the JavaScript interface for creating and modifying EnterpriseGraphs
-archetype: default
 ---
 An EnterpriseGraph is a specialized version of a SmartGraph, which
 means that both modules work similarly. The major difference is that

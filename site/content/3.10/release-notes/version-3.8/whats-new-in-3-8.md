@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Sliding window aggregation, new graph algorithms, powerful user-defined
   Analyzers, AQL performance and usability improvements
-archetype: default
 ---
 The following list shows in detail which features have been added or improved in
 ArangoDB 3.8. ArangoDB 3.8 also contains several bug fixes that are not listed

@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl get server command
 title: Oasisctl Get Server
 menuTitle: Get Server
-weight: 160
+weight: 31
 ---
 ## Synopsis
 Get server information

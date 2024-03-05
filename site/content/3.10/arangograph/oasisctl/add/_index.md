@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl add command
 title: Oasisctl Add
 menuTitle: Add
-weight: 5
+weight: 3
 ---
 ## Synopsis
 Add resources

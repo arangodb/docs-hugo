@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Stream Transactions allow you to perform a multi-document transaction with
   individual begin and commit/abort commands
-archetype: default
 ---
 For an introduction to this transaction type, see
 [Stream Transactions](../../transactions/stream-transactions.md).

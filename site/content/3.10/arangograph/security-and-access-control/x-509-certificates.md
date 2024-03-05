@@ -6,7 +6,6 @@ description: >-
   X.509 certificates in ArangoGraph are utilized for encrypted remote administration.
   The communication with and between the servers of an ArangoGraph deployment is
   encrypted using the TLS protocol
-archetype: default
 ---
 X.509 certificates are digital certificates that are used to verify the
 authenticity of a website, user, or organization using a public key infrastructure

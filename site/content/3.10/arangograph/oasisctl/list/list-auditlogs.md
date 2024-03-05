@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl list auditlogs command
 title: Oasisctl List Auditlogs
 menuTitle: List Auditlogs
-weight: 40
+weight: 7
 ---
 ## Synopsis
 List auditlogs

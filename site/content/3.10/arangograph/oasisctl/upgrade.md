@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl upgrade command
 title: Oasisctl Upgrade
 menuTitle: Upgrade
-weight: 40
+weight: 29
 ---
 ## Synopsis
 Check the latest, compatible version and upgrade this tool to that.

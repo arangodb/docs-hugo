@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl list backup command
 title: Oasisctl List Backup
 menuTitle: List Backup
-weight: 45
+weight: 8
 ---
 ## Synopsis
 A list command for various backup resources

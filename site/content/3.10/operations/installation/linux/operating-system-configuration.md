@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Recommendations regarding file systems, memory settings, and other options for
   running ArangoDB on Linux
-archetype: default
 ---
 {{< tip >}}
 The most important suggestions listed in this section can be

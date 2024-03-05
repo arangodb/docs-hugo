@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Indexes allow fast access to documents by maintaining special data structures
   to accelerate queries that use indexed attributes
-archetype: default
 ---
 ArangoDB automatically indexes some system attributes but you are free to create
 additional indexes on other attributes of documents. You generally need to strike

@@ -5,7 +5,6 @@ weight: 20
 description: >-
   The OneShard feature offers a practicable solution that enables significantly
   improved performance and transactional guarantees for cluster deployments
-archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 

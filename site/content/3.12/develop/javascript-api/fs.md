@@ -4,7 +4,6 @@ menuTitle: fs
 weight: 45
 description: >-
   An implementation of the CommonJS Filesystem interface in the ArangoDB JavaScript API
-archetype: default
 ---
 `const fs = require('fs')`
 

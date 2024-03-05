@@ -5,7 +5,6 @@ weight: 40
 description: >-
   How to download and install ArangoDB for using it locally or self-hosting it
   on your own hardware
-archetype: default
 ---
 ## Installation
 

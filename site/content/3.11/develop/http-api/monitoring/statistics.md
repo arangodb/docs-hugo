@@ -5,7 +5,6 @@ weight: 10
 description: >-
   Server statistics let you monitor the system but they are superseded by
   the more detailed server metrics
-archetype: default
 ---
 ## Get the statistics
 

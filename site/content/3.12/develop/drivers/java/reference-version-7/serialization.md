@@ -5,7 +5,6 @@ weight: 10
 description: >-
   The Java driver uses Jackson internally for serialization and deserialization
   but you can use a custom implementation for user data
-archetype: default
 ---
 The driver functionalities related to serialization and deserialization (serde)
 are implemented by 2 different components:

@@ -4,7 +4,6 @@ menuTitle: Start import
 weight: 15
 description: >-
   Once the data files are provided and the graph is designed, you can start the import
-archetype: default
 ---
 
 Before starting the actual import, make sure that:

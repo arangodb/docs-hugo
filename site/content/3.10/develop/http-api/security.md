@@ -5,7 +5,6 @@ weight: 105
 description: >-
   The security-related endpoints let you can configure audit logging,
   encryption at rest, and encryption in transit
-archetype: default
 ---
 ## Audit logging
 

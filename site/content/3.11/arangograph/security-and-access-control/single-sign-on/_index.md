@@ -5,7 +5,6 @@ weight: 10
 description: >-
   ArangoGraph supports **Single Sign-On** (SSO) authentication using
   **Security Assertion Markup language 2.0** (SAML 2.0)
-archetype: chapter
 ---
 {{< info >}}
 To enable the Single Sign-On (SSO) feature, get in touch with the ArangoGraph

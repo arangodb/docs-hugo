@@ -4,7 +4,6 @@ menuTitle: arangorestore
 weight: 20
 description: >-
   `arangorestore` is a command-line client tool to restore backups to ArangoDB servers
-archetype: chapter
 ---
 _arangorestore_ can restore dumps created by [_arangodump_](../arangodump/_index.md)
 and is therefore its counterpart.

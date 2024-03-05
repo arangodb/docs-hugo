@@ -5,7 +5,6 @@ weight: 35
 description: >-
   This quick start guide covers the basics from creating an ArangoGraph account to
   setting up and accessing your first ArangoGraph deployment
-archetype: default
 ---
 For general information about the ArangoGraph Insights Platform, see
 [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
@@ -160,7 +159,5 @@ there are a few key differences:
 - Foxx services are not allowed to call out to the internet by default for
   security reasons, but can be enabled on request.
   Incoming calls to Foxx services are fully supported.
-- Datacenter-to-Datacenter Replication (DC2DC) is not yet available in a
-  managed form.
 
 For more information, see the [comparison between on-premises editions and the managed cloud service](https://www.arangodb.com/subscriptions/).

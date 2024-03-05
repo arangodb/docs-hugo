@@ -5,7 +5,6 @@ weight: 10
 description: >-
   The following guides provide solutions to common problems when building
   applications with Foxx services
-archetype: chapter
 ---
 ## Up and running
 

@@ -3,7 +3,6 @@ title: Foxx Session Storages
 menuTitle: Session storages
 weight: 5
 description: ''
-archetype: chapter
 ---
 Session storages are used by the sessions middleware to persist sessions across
 requests. Session storages must implement the `fromClient` and `forClient`

@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl get example command
 title: Oasisctl Get Example
 menuTitle: Get Example
-weight: 45
+weight: 8
 ---
 ## Synopsis
 Get a single example dataset

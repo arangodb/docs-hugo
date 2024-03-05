@@ -5,7 +5,6 @@ weight: 55
 description: >-
   AQL provides functions for checking data types and converting between
   different types
-archetype: default
 ---
 Some operators expect their operands to have a certain data type. For example,
 logical operators expect their operands to be boolean values, and the arithmetic

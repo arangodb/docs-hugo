@@ -8,7 +8,6 @@ description: >-
   responded
 pageToc:
   maxHeadlineLevel: 3
-archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" >}}
 

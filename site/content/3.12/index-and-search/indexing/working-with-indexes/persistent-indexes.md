@@ -5,7 +5,6 @@ weight: 5
 description: >-
   The persistent index type is a generic kind of index you can define over
   a single or multiple document attributes, as well as arrays
-archetype: default
 ---
 It is possible to define a persistent index on one or more document attributes
 (or attribute paths).

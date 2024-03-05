@@ -3,7 +3,6 @@ title: Relations
 menuTitle: Relations
 weight: 20
 description: ''
-archetype: default
 ---
 With the annotation `@Relations` applied on a collection or array field in a
 class annotated with `@Document`, the nested objects are fetched from the

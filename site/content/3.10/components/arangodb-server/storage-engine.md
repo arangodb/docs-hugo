@@ -5,7 +5,6 @@ weight: 20
 description: >-
   The storage engine is responsible for persisting data on disk, holding copies
   in memory, providing indexes and caches to speed up queries
-archetype: default
 aliases:
   - ../../deploy/architecture/storage-engine
 ---

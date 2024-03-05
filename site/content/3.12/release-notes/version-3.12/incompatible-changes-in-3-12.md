@@ -5,9 +5,8 @@ weight: 15
 description: >-
   Check the following list of potential breaking changes **before** upgrading to
   this ArangoDB version and adjust any client applications if necessary
-archetype: default
 ---
-## Native Windows and macOS suppport
+## Native Windows and macOS support removed
 
 The native platform support for the Windows and macOS operating systems has been
 removed and ArangoDB packages for Windows (installers, ZIP archives) and macOS
@@ -32,9 +31,9 @@ Furthermore, the following _arangosh_ startup option has been removed:
 - `--console.code-page`
 
 The deprecated setting `5` (WinCrypt) for the `--random.generator` startup option
-has now been removed.
+in the server and client tools has now been removed.
 
-## Active Failover deployment mode
+## Active Failover deployment mode removed
 
 Running a single server with asynchronous replication to one or more passive
 single servers for automatic failover is no longer supported from v3.12 onward.
@@ -46,7 +45,12 @@ offer better resilience and synchronous replication. Also see the
 See [Single instance vs. Cluster deployments](../../deploy/single-instance-vs-cluster.md)
 for details about how a cluster deployment differs and how to migrate to it.
 
-## Pregel
+## Datacenter-to-Datacenter Replication (DC2DC) removed
+
+The _Datacenter-to-Datacenter Replication_ (DC2DC) for clusters including the
+_arangosync_ tool is no longer supported from v3.12 onward.
+
+## Pregel removed
 
 The distributed iterative graph processing (Pregel) system is no longer supported
 from v3.12 onward.
@@ -61,7 +65,7 @@ In detail, the following functionalities have been removed:
 - The `--pregel.max-parallelism`, `--pregel.min-parallelism`, and
   `--pregel.parallelism` startup options
 
-## LDAP authentication
+## LDAP authentication support removed
 
 Support for ArangoDB user authentication with an LDAP server in the
 Enterprise Edition has been removed.
@@ -77,7 +81,7 @@ Enterprise Edition has been removed.
 - The `ERROR_LDAP_*` error codes with the numbers in the range from `1800`
   through `1820` have been removed
 
-## Little-endian on-disk key format for the RocksDB storage engine
+## Little-endian on-disk key format for the RocksDB storage engine unsupported
 
 ArangoDB 3.12 does not support the little-endian on-disk key for the RocksDB
 storage engine anymore.
@@ -207,14 +211,14 @@ well to drop the collections.
 
 ## Client tools
 
-### jslint feature in arangosh
+### jslint feature in arangosh removed
 
 The `--jslint` startup option and all of the underlying functionality has been
 removed from arangosh. The feature was mainly for internal purposes.
 
 ## HTTP RESTful API
 
-### JavaScript-based traversal using `/_api/traversal`
+### JavaScript-based traversal using `/_api/traversal` removed
 
 The long-deprecated JavaScript-based traversal functionality has been removed
 in v3.12.0, including the REST API endpoint `/_api/traversal`.
@@ -249,7 +253,7 @@ server:
   The functionality has now been removed and setting the startup option does
   nothing.
 
-### Graph API (Gharial)
+### Graph API (Gharial) behavior
 
 - The `PATCH /_api/gharial/{graph}/edge/{collection}/{edge}` endpoint to update
   edges in named graphs now validates the referenced vertex when modifying either
@@ -269,7 +273,7 @@ server:
 
 ## JavaScript API
 
-### `@arangodb/graph/traversal` module
+### `@arangodb/graph/traversal` module removed
 
 The long-deprecated JavaScript-based traversal functionality has been removed in
 v3.12.0, including the bundled `@arangodb/graph/traversal` JavaScript module.
@@ -282,7 +286,7 @@ not handle larger amounts of data and were thus very limited.
 Users of the JavaScript-based traversal API should use
 [AQL traversal queries](../../aql/graphs/traversals.md) instead.
 
-### Graph compatibility functions
+### Graph compatibility functions removed
 
 The following long-deprecated compatibility graph functions have been removed
 in ArangoDB 3.12. These functions were implemented as JavaScript user-defined 
@@ -361,6 +365,8 @@ block cache than before with the `--rocksdb.block-cache-size` startup option.
 
 This following startup options of arangodump are obsolete from ArangoDB 3.12 on:
 
+#### Obsolete envelope and tick startup options
+
 - `--envelope`: setting this option to `true` previously wrapped every dumped 
   document into a `{data, type}` envelope. 
   This was useful for the MMFiles storage engine, where dumps could also include 
@@ -375,7 +381,6 @@ This following startup options of arangodump are obsolete from ArangoDB 3.12 on:
 - `--tick-end`: setting this option allowed to restrict the dumped data to some 
   time range with the MMFiles storage engine. It had no effect for the RocksDB 
   storage engine and so it is removed now.
-
 
 ### arangoimport
 

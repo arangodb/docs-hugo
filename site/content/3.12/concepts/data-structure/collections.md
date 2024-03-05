@@ -5,7 +5,6 @@ weight: 10
 description: >-
   Collections allow you to store documents and you can use them to group records
   of similar kinds together
-archetype: default
 ---
 A collection can contain a set of documents, similar to how a folder contains
 files. You can store documents with varying data structures in a single
@@ -96,8 +95,7 @@ Please be aware that dumps containing extended names cannot be restored
 into older versions that only support the traditional naming constraints. In a
 cluster setup, it is required to use the same naming constraints for all
 Coordinators and DB-Servers of the cluster. Otherwise, the startup is
-refused. In DC2DC setups, it is also required to use the same naming constraints
-for both datacenters to avoid incompatibilities.
+refused.
 {{< /warning >}}
 
 You can rename collections (except in cluster deployments). This changes the

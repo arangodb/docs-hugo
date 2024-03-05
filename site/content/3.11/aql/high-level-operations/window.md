@@ -5,7 +5,6 @@ weight: 45
 description: >-
   Aggregate adjacent documents or value ranges with a sliding window to
   calculate running totals, rolling averages, and other statistical properties
-archetype: default
 ---
 The `WINDOW` operation can be used for aggregations over adjacent documents, or
 preceding and / or following rows in other words. It can also aggregate based

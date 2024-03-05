@@ -3,7 +3,6 @@ title: Document
 menuTitle: Document
 weight: 5
 description: ''
-archetype: default
 ---
 ## Annotation @Document
 

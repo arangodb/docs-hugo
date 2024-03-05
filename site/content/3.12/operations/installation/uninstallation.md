@@ -4,7 +4,6 @@ menuTitle: Uninstallation
 weight: 30
 description: >-
   You can uninstall ArangoDB from a system and keep your data
-archetype: default
 ---
 Uninstallation depends on the method used to install ArangoDB, and on the
 operating system in use, and typically consists of the following high-level steps:

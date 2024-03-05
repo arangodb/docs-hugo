@@ -3,7 +3,6 @@ title: Derived queries
 menuTitle: Derived queries
 weight: 5
 description: ''
-archetype: default
 ---
 ## Semantic parts
 

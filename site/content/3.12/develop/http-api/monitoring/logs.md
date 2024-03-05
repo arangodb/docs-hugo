@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Server events and errors are logged depending on the defined log levels for
   the available log topics
-archetype: default
 ---
 Whether events are logged to a file, syslog, or only an attached terminal depends
 on the [log startup options](../../../components/arangodb-server/options.md#log).

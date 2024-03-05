@@ -6,7 +6,6 @@ description: >-
   Views can index documents of multiple collections and enable sophisticated
   information retrieval possibilities, like full-text search with ranking by
   relevance
-archetype: default
 ---
 Views allows you to perform complex searches at high performance. They are
 accelerated by inverted indexes that are updated near real-time.
@@ -94,8 +93,7 @@ Please be aware that dumps containing extended names cannot be restored
 into older versions that only support the traditional naming constraints. In a
 cluster setup, it is required to use the same naming constraints for all
 Coordinators and DB-Servers of the cluster. Otherwise, the startup is
-refused. In DC2DC setups, it is also required to use the same naming constraints
-for both datacenters to avoid incompatibilities.
+refused.
 {{< /warning >}}
 
 You can rename Views (except in cluster deployments). This changes the

@@ -5,7 +5,6 @@ weight: 155
 description: >-
   ArangoSearch is ArangoDB's built-in search engine for full-text, complex data
   structures, and more
-archetype: chapter
 ---
 ArangoSearch provides information retrieval features, natively integrated
 into ArangoDB's query language and with support for all data models. It is

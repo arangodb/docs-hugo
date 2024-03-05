@@ -5,7 +5,6 @@ weight: 100
 description: >-
   EnterpriseGraphs enable you to manage graphs at scale with automated sharding
   key selection
-archetype: chapter
 ---
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 

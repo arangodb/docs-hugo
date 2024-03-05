@@ -3,7 +3,6 @@ title: Durability of transactions
 menuTitle: Durability
 weight: 20
 description: ''
-archetype: default
 ---
 Transactions are executed until there is either a rollback
 or a commit. On rollback, the operations from the transaction are reversed.

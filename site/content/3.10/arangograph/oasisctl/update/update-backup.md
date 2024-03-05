@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl update backup command
 title: Oasisctl Update Backup
 menuTitle: Update Backup
-weight: 15
+weight: 2
 ---
 ## Synopsis
 Update a backup

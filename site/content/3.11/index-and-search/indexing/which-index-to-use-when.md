@@ -5,7 +5,6 @@ weight: 10
 description: >-
   Pick the right index type for your use case, choosing from persistent,
   inverted, TTL, and multi-dimensional indexes, as well as Views
-archetype: default
 ---
 ArangoDB automatically indexes the `_key` attribute in each collection. There
 is no need to index this attribute separately. Please note that a document's

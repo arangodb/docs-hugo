@@ -3,7 +3,6 @@ title: Provides arangodb-memory-configuration
 menuTitle: Linux OS Tuning Script Examples
 weight: 10
 description: ''
-archetype: default
 ---
 The most important suggestions listed in the section
 [Linux Operating System Configuration](operating-system-configuration.md)

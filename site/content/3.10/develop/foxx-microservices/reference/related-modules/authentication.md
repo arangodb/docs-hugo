@@ -3,7 +3,6 @@ title: Foxx Authentication
 menuTitle: Authentication
 weight: 5
 description: ''
-archetype: default
 ---
 `const createAuth = require('@arangodb/foxx/auth');`
 

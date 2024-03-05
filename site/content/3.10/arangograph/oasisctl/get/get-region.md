@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl get region command
 title: Oasisctl Get Region
 menuTitle: Get Region
-weight: 145
+weight: 28
 ---
 ## Synopsis
 Get a region the authenticated user has access to

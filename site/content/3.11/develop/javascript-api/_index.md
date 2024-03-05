@@ -5,7 +5,6 @@ weight: 270
 description: >-
   You can use ArangoDB's JavaScript interface on the server-side as well as in
   ArangoDB's shell to interact with the server using the JavaScript language
-archetype: chapter
 ---
 The JavaScript API is available on the server-side in the following contexts:
 

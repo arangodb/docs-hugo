@@ -3,7 +3,6 @@ title: Foxx GraphQL integration
 menuTitle: GraphQL
 weight: 20
 description: ''
-archetype: default
 ---
 `const createGraphQLRouter = require('@arangodb/foxx/graphql');`
 

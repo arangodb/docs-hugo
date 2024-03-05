@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl list organizations command
 title: Oasisctl List Organizations
 menuTitle: List Organizations
-weight: 165
+weight: 32
 ---
 ## Synopsis
 List all organizations the authenticated user is a member of

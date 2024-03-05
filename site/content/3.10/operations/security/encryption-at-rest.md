@@ -5,7 +5,6 @@ weight: 15
 description: >-
   You can secure the physical storage media of an ArangoDB deployment by letting
   it encrypt the database directories
-archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 

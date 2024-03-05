@@ -3,7 +3,6 @@ title: Deploying ArangoDB in the cloud
 menuTitle: In the Cloud
 weight: 35
 description: ''
-archetype: default
 ---
 ## Deploying ArangoDB on AWS
 

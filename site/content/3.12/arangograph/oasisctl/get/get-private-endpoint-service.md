@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl get private endpoint service command
 title: Oasisctl Get Private Endpoint Service
 menuTitle: Get Private Endpoint Service
-weight: 130
+weight: 25
 ---
 ## Synopsis
 Get a Private Endpoint Service the authenticated user has access to

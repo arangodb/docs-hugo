@@ -5,7 +5,6 @@ weight: 10
 description: >-
   You can temporarily start ArangoDB with authentication disabled to set a new
   password for the root user
-archetype: default
 ---
 You can reset the _root_ password in the following way:
 

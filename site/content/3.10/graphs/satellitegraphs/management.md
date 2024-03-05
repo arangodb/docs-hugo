@@ -4,7 +4,6 @@ menuTitle: Management
 weight: 5
 description: >-
   How to manage named graphs of the type SatelliteGraph
-archetype: default
 ---
 This chapter describes the `satellite-graph` module, the JavaScript API to
 create and modify your SatelliteGraphs in ArangoDB.

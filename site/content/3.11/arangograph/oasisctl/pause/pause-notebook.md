@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl pause notebook command
 title: Oasisctl Pause Notebook
 menuTitle: Pause Notebook
-weight: 10
+weight: 1
 ---
 ## Synopsis
 Pause a notebook

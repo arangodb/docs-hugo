@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl list metrics command
 title: Oasisctl List Metrics
 menuTitle: List Metrics
-weight: 125
+weight: 24
 ---
 ## Synopsis
 List metrics resources

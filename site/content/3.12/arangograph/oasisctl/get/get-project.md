@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl get project command
 title: Oasisctl Get Project
 menuTitle: Get Project
-weight: 135
+weight: 26
 ---
 ## Synopsis
 Get a project the authenticated user has access to
