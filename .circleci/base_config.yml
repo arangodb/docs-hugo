@@ -130,16 +130,19 @@ commands:
       #    steps:
       #      - update-openssl-workaround:
       #          openssl: << parameters.openssl >>
+      # TODO: For a devel branch, it picks OpenSSL 3.0.13 despite the VERSIONS file containing 3.2.1 ?!
       - update-openssl-workaround:
           openssl: << parameters.openssl >>
       - run:
-          name: Configure
+          name: Configure # TODO: Picks wrong branch/compiler for devel (g++ instead of clang...), apparently because that is what the 3.11 has? (see setup)
           command: |
             set +e
             if [ "<< parameters.version >>" = "3.10" -o "<< parameters.version >>" = "3.11" ]; then
+              echo "~~~~~~~~~ SELECTED gcc (3.10, 3.11)"
               cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off
             else
-              cmake --preset enterprise-pr -DCMAKE_C_COMPILER=/tools/clang -DCMAKE_CXX_COMPILER=/tools/clang++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DOPENSSL_ROOT_DIR=/opt -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off
+              echo "~~~~~~~~~ SELECTED clang (3.12+)"
+              cmake --preset enterprise-pr-non-maintainer -DCMAKE_C_COMPILER=/tools/clang -DCMAKE_CXX_COMPILER=/tools/clang++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DOPENSSL_ROOT_DIR=/opt -DUSE_FRONTEND=Off
             fi
             if [ "$?" != "0" ]; then
               echo "<strong>ArangoDB Compile Error</strong><br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
