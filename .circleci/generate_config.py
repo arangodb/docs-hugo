@@ -115,7 +115,10 @@ def workflow_generate(config):
         if not "enterprise-preview" in branch:
             openssl = "" # 3.12+
             if version in ["3.10", "3.11"]:
+                print(f"OpenSSL: findOpensslVersion for {version}")
                 openssl = findOpensslVersion(branch)
+            else:
+                print(f"OpenSSL: rely on build image for {version}")
 
             if not extendedCompileJob:
                 extendedCompileJob = True
@@ -246,8 +249,8 @@ def workflow_release_arangodb(config):
             compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
         if openssl.startswith("1.1"):
             compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
-        else: # build image for 3.12 and devel as of 2024-03-06
-            compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:3"
+    else: # build image for 3.12 and devel as of 2024-03-06
+        compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:3"
 
     config["jobs"]["compile-linux"]["steps"].append({
         "compile-and-dockerize-arangodb": {
