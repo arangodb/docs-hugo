@@ -27,7 +27,13 @@ commands:
 
             git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name /root/project
 
-            ENTERPRISE_BRANCH="devel"
+            echo "parameters.version = |<< parameters.version >>|"
+            # TODO: only replace if version alias is "devel" in versions.yaml
+            if [ "<< parameters.version >>" = "3.12" ]; then
+                ENTERPRISE_BRANCH="devel"
+            else
+                ENTERPRISE_BRANCH="<< parameters.version >>"
+            fi
             set +e
             git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git $branch_name
             if [ "$?" == "0" ] ; then
