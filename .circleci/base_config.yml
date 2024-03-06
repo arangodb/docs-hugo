@@ -110,13 +110,20 @@ commands:
         type: string
         default: ""
     steps:
-      - update-openssl-workaround:
-          openssl: << parameters.openssl >>
+      - when:
+          condition: << parameters.openssl >> # non-empty for 3.10, 3.11
+          steps:
+            update-openssl-workaround:
+              openssl: << parameters.openssl >>
       - run:
           name: Configure
           command: |
             set +e
-            cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
+            if [ "<< parameters.version >>" = "3.10" -o "<< parameters.version >>" = "3.11" ]; then
+              cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off
+            else
+              cmake --preset enterprise-pr -DCMAKE_C_COMPILER=/tools/clang -DCMAKE_CXX_COMPILER=/tools/clang++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DOPENSSL_ROOT_DIR=/opt -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off
+            fi
             if [ "$?" != "0" ]; then
               echo "<strong>ArangoDB Compile Error</strong><br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
               exit 1
@@ -126,7 +133,7 @@ commands:
           name: Build
           command: |
             set +e
-            cmake --build --preset enterprise-pr --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest arangobackup arangovpack
+            cmake --build --preset enterprise-pr --parallel 8 --target arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench arangobackup arangovpack
 
             if [ "$?" != "0" ]; then
               echo "**ArangoDB Compile Error**<br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
