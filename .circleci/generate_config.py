@@ -113,12 +113,13 @@ def workflow_generate(config):
         }
 
         if not "enterprise-preview" in branch:
-            openssl = "" # 3.12+
-            if version in ["3.10", "3.11"]:
-                print(f"OpenSSL: findOpensslVersion for {version}")
-                openssl = findOpensslVersion(branch)
-            else:
-                print(f"OpenSSL: rely on build image for {version}")
+            #openssl = "" # 3.12+
+            #if version in ["3.10", "3.11"]:
+            #    print(f"OpenSSL: findOpensslVersion for {version}")
+            #    openssl = findOpensslVersion(branch)
+            #else:
+            #    print(f"OpenSSL: rely on build image for {version}")
+            openssl = findOpensslVersion(branch)
 
             if not extendedCompileJob:
                 extendedCompileJob = True
@@ -229,9 +230,10 @@ def workflow_release_arangodb(config):
 
     print(f"Creating compile job for version {args.docs_version} branch {args.arangodb_branch}")
 
-    openssl = "" # 3.12+
-    if args.docs_version in ["3.10", "3.11"]:
-        openssl = findOpensslVersion(args.arangodb_branch)
+    #openssl = "" # 3.12+
+    #if args.docs_version in ["3.10", "3.11"]:
+    #    openssl = findOpensslVersion(args.arangodb_branch)
+    openssl = findOpensslVersion(args.arangodb_branch)
 
     compileJob = {
         "compile-linux": {

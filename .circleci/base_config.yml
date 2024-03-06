@@ -56,8 +56,10 @@ commands:
       - run:
           name: Print SCCache Settings
           command: |
-           apk --no-cache add perl
-           set -e
+            if command -v apk &> /dev/null; then
+              apk --no-cache add perl
+            fi
+            set -e
 
             # Compile openssl library:
             export OPENSSLVERSION=<< parameters.openssl >>
@@ -123,16 +125,13 @@ commands:
       #- when:
       #    condition:
       #      or:
-      #        - equal: ["3.10", << parameters.openssl >>]
-      #        - equal: ["3.11", << parameters.openssl >>]
+      #        - equal: ["3.10", << parameters.version >>]
+      #        - equal: ["3.11", << parameters.version >>]
       #    steps:
       #      - update-openssl-workaround:
       #          openssl: << parameters.openssl >>
-      - when:
-          condition: << parameters.openssl >>
-          steps:
-            - update-openssl-workaround:
-                openssl: << parameters.openssl >>
+      - update-openssl-workaround:
+          openssl: << parameters.openssl >>
       - run:
           name: Configure
           command: |
