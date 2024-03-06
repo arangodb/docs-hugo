@@ -85,7 +85,11 @@ commands:
       - run:
           name: Check Branch Image already exists
           command: |
-            apk add skopeo
+            if [ "<< parameters.version >>" = "3.10" -o "<< parameters.version >>" = "3.11" ]; then
+              apk add skopeo
+            else
+              apt-get -y install skopeo
+            fi
 
             image_name=$(echo << parameters.branch >> | cut -d/ -f2)
             latestRemoteHash=$(git ls-remote https://github.com/arangodb/arangodb.git << parameters.branch >> | awk '{print $1}' | cut -c1-9)
@@ -176,8 +180,29 @@ commands:
             chmod +x setup-tar-to-docker.sh
             chmod +x docker-entrypoint.sh
 
-            apk add docker-cli
-            
+            if [ "<< parameters.version >>" = "3.10" -o "<< parameters.version >>" = "3.11" ]; then
+              apk add docker-cli
+            else
+              # Add Docker's official GPG key:
+              #apt-get -y update
+              #apt-get -y install ca-certificates curl # already in build image it seems
+              install -m 0755 -d /etc/apt/keyrings
+              curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+              chmod a+r /etc/apt/keyrings/docker.asc
+
+              # Add the repository to Apt sources:
+              set version_codename (cat /etc/os-release | grep -o 'VERSION_CODENAME=\w*' | cut -d '=' -f 2)
+              set architecture (dpkg --print-architecture)
+              set signed_by "/etc/apt/keyrings/docker.asc"
+              set docker_url "https://download.docker.com/linux/ubuntu"
+
+              printf "deb [arch=%s signed-by=%s] %s %s stable\n" $architecture $signed_by $docker_url $version_codename | \
+                tee /etc/apt/sources.list.d/docker.list > /dev/null
+              apt-get -y update
+
+              apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+            fi
+
             docker build -t arangodb/docs-hugo:$image_name-<< parameters.version >>-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
 
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
