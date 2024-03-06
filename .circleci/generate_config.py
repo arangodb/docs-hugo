@@ -143,6 +143,8 @@ def workflow_generate(config):
             else: # build image for 3.12 and devel as of 2024-03-06
                 compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:3"
 
+        print(f"compileJob = {compileJob}")
+
         generateRequires.append(f"compile-{version}")
         jobs.append(compileJob)
 

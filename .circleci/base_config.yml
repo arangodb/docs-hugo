@@ -85,6 +85,7 @@ commands:
       - run:
           name: Check Branch Image already exists
           command: |
+            echo "parameters.version = << parameters.version >>"
             if [ "<< parameters.version >>" = "3.10" -o "<< parameters.version >>" = "3.11" ]; then
               apk add skopeo
             else
