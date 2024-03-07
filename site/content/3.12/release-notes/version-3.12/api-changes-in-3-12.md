@@ -416,6 +416,13 @@ detached state:
 
 ### Endpoints deprecated
 
+#### JavaScript Transactions API
+
+JavaScript Transactions and thus the `POST /_api/transaction` endpoint is
+deprecated from v3.12.0 onward and will be removed in a future version.
+The endpoints for Stream Transactions (`POST /_api/transaction/begin` etc.)
+are unaffected.
+
 ### Endpoints removed
 
 #### Database target version API
@@ -487,3 +494,9 @@ for details.
 
 The `@arangodb/pregel` module of the JavaScript API has been removed in v3.12.0
 as Pregel is no longer supported.
+
+### `db._executeTransaction()` deprecated
+
+JavaScript Transactions and thus the `db._executeTransaction()` method is
+deprecated from v3.12.0 onward and will be removed in a future version.
+The `db._createTransaction()` method for starting Stream Transactions is unaffected.
