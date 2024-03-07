@@ -194,13 +194,14 @@
     "category" : "option",
     "default" : 5,
     "deprecatedIn" : null,
-    "description" : "Number of batches to prefetch on each dbserver.",
+    "description" : "Number of batches to prefetch on each DB-Server.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
     "hidden" : true,
     "introducedIn" : [
-      "v3.12.0"
+      "v3.10.8",
+      "v3.11.2"
     ],
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
@@ -220,13 +221,14 @@
     "category" : "option",
     "default" : 5,
     "deprecatedIn" : null,
-    "description" : "Number of worker threads on each dbserver.",
+    "description" : "Number of worker threads on each DB-Server.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
     "hidden" : true,
     "introducedIn" : [
-      "v3.12.0"
+      "v3.10.8",
+      "v3.11.2"
     ],
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
@@ -570,7 +572,8 @@
     "experimental" : false,
     "hidden" : true,
     "introducedIn" : [
-      "v3.12.0"
+      "v3.10.8",
+      "v3.11.2"
     ],
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
@@ -596,7 +599,8 @@
     "experimental" : false,
     "hidden" : true,
     "introducedIn" : [
-      "v3.12.0"
+      "v3.10.8",
+      "v3.11.2"
     ],
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
@@ -1304,7 +1308,8 @@
     "experimental" : false,
     "hidden" : true,
     "introducedIn" : [
-      "v3.12.0"
+      "v3.10.8",
+      "v3.11.2"
     ],
     "longDescription" : "This option enables a highly parallel variant\nof the dump protocol on the server side. It is only supported with ArangoDB \nservers running version 3.12 or higher.\nIf the dump should be restored into versions of ArangoDB older than 3.12, this\noption should be turned off.",
     "obsolete" : false,
@@ -1604,9 +1609,10 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : [
-      "v3.12.0"
+      "v3.10.10",
+      "v3.11.2"
     ],
-    "longDescription" : "This option only has effect when the option\n`--parallel-dump` is set to `true`. Restoring split files also\nrequires an arangorestore version that is capable of restoring data of a\nsingle collection/shard from multiple files, i.e. ArangoDB 3.12 or higher.",
+    "longDescription" : "This option only has effect when the option\n`--parallel-dump` is set to `true`. Restoring split files also\nrequires an arangorestore version that is capable of restoring data of a\nsingle collection/shard from multiple files.",
     "obsolete" : false,
     "os" : [
       "linux",

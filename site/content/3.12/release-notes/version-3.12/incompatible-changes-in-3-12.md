@@ -115,6 +115,16 @@ VelocyPack remains as ArangoDB's binary storage format and you can continue to
 use it in transport over the HTTP protocol, as well as use JSON over the
 HTTP protocol.
 
+## JavaScript Transactions deprecated
+
+Server-side transactions written in JavaScript and executed via the
+`db._executeTransaction()` method of the JavaScript API or the
+`POST /_api/transaction` endpoint of the HTTP API are deprecated from v3.12.0
+onward and will be removed in a future version.
+
+You can use [Stream Transactions](../../develop/transactions/stream-transactions.md)
+instead in most cases, and in some cases AQL can be sufficient.
+
 ## Control character escaping in audit log
 
 The audit log feature of the Enterprise Edition previously logged query strings
