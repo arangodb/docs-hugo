@@ -155,12 +155,13 @@
     "category" : "option",
     "default" : 5,
     "deprecatedIn" : null,
-    "description" : "Number of batches to prefetch on each dbserver.",
+    "description" : "Number of batches to prefetch on each DB-Server.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : true,
     "hidden" : true,
     "introducedIn" : [
+      "v3.10.8",
       "v3.11.2"
     ],
     "maxInclusive" : true,
@@ -182,12 +183,13 @@
     "category" : "option",
     "default" : 5,
     "deprecatedIn" : null,
-    "description" : "Number of worker threads on each dbserver.",
+    "description" : "Number of worker threads on each DB-Server.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : true,
     "hidden" : true,
     "introducedIn" : [
+      "v3.10.8",
       "v3.11.2"
     ],
     "maxInclusive" : true,
@@ -473,6 +475,7 @@
     "experimental" : true,
     "hidden" : true,
     "introducedIn" : [
+      "v3.10.8",
       "v3.11.2"
     ],
     "maxInclusive" : true,
@@ -500,6 +503,7 @@
     "experimental" : true,
     "hidden" : true,
     "introducedIn" : [
+      "v3.10.8",
       "v3.11.2"
     ],
     "maxInclusive" : true,
@@ -1543,6 +1547,7 @@
     "experimental" : true,
     "hidden" : true,
     "introducedIn" : [
+      "v3.10.10",
       "v3.11.2"
     ],
     "longDescription" : "This option only has effect when the option\n`--use-experimental-dump` is set to `true`. Restoring split files also\nrequires an arangorestore version that is capable of restoring data of a\nsingle collection/shard from multiple files.",
@@ -1674,6 +1679,7 @@
     "experimental" : true,
     "hidden" : true,
     "introducedIn" : [
+      "v3.10.8",
       "v3.11.2"
     ],
     "obsolete" : false,
