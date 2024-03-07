@@ -29,6 +29,7 @@ aliases:
   - ../develop/http-api/pregel
   - ../operations/installation/macos
   - ../operations/installation/windows
+  - ../operations/installation/compiling/compile-on-windows
   - ../operations/upgrading/os-specific-information/macos
   - ../operations/upgrading/os-specific-information/windows
 ---
