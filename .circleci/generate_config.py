@@ -120,20 +120,21 @@ def workflow_generate(config):
             #else:
             #    print(f"OpenSSL: rely on build image for {version}")
             openssl = findOpensslVersion(branch)
+            compileJob["compile-linux"]["openssl"] = openssl
 
             if not extendedCompileJob:
                 extendedCompileJob = True
                 config["jobs"]["compile-linux"]["steps"].append({
                     "check-arangodb-image-exists": {
-                        "branch": branch,
-                        "version": version
+                        "branch": "<< parameters.arangodb-branch >>",
+                        "version": "<< parameters.version >>",
                     }
                 })
                 config["jobs"]["compile-linux"]["steps"].append({
                     "compile-and-dockerize-arangodb": {
-                        "branch": branch,
-                        "version": version,
-                        "openssl": openssl,
+                        "branch": "<< parameters.arangodb-branch >>",
+                        "version": "<< parameters.version >>",
+                        "openssl": "<< parameters.openssl >>",
                     }
                 })
 

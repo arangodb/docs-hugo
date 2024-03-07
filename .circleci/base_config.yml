@@ -27,12 +27,10 @@ commands:
 
             git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name /root/project
 
-            echo "parameters.version = |<< parameters.version >>|"
-            # TODO: only replace if version alias is "devel" in versions.yaml
-            if [ "<< parameters.version >>" = "3.12" ]; then
-                ENTERPRISE_BRANCH="devel"
-            else
+            if [ "<< parameters.version >>" = "3.10" ] || [ "<< parameters.version >>" = "3.11" ]; then
                 ENTERPRISE_BRANCH="<< parameters.version >>"
+            else
+                ENTERPRISE_BRANCH="devel"
             fi
             set +e
             git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git $branch_name
@@ -54,7 +52,7 @@ commands:
         default: ""
     steps:
       - run:
-          name: Print SCCache Settings
+          name: Update OpenSSL Workaround
           command: |
             if command -v apk &> /dev/null; then
               apk --no-cache add perl
@@ -545,6 +543,9 @@ jobs:
         type: string
         default: ""
       version:
+        type: string
+        default: ""
+      openssl:
         type: string
         default: ""
       build-image:
