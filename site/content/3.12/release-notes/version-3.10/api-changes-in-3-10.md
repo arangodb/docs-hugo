@@ -95,7 +95,7 @@ returns the number of updated documents as well.
 
 The bind parameters necessary to run this query are:
 - `@@collection`: name of a SmartGraph vertex collection to be updated
-- `@attr`: attribute name of the `smartGraphAttribute` of the collection  
+- `@attr`: attribute name of the `smartGraphAttribute` of the collection
 
 #### Disabled Foxx APIs
 

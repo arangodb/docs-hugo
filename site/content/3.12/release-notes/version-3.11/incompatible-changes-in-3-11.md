@@ -6,6 +6,12 @@ description: >-
   Check the following list of potential breaking changes **before** upgrading to
   this ArangoDB version and adjust any client applications if necessary
 ---
+## Active Failover deployment mode deprecation
+
+Running a single server with asynchronous replication to one or more passive
+single servers for automatic failover is deprecated and will no longer be
+supported in the next minor version of ArangoDB, from v3.12 onward.
+
 ## Extended naming constraints for collections, Views, and indexes
 
 In ArangoDB 3.9, the `--database.extended-names-databases` startup option was
@@ -252,6 +258,14 @@ the result array for the respective documents, along with the successful ones:
 > curl http://localhost:8529/_api/document/coll/valid
 {"_key":"valid","_id":"coll/valid","_rev":"_gG9JHsW---"}
 ```
+
+## Exit code adjustments
+
+<small>Introduced in: v3.10.13, v3.11.7</small>
+
+For some fatal errors like a required database upgrade or a failed version check,
+_arangod_ set the generic exit code of `1`. It now returns a different, more
+specific exit code in these cases.
 
 ## Batch-reading an empty list of documents succeeds
 
