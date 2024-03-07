@@ -7,6 +7,11 @@ description: >-
   that leverage ArangoDB's JavaScript API to run complex operations that can
   read and modify multiple documents from multiple collections
 ---
+{{< warning >}}
+JavaScript Transactions are deprecated from v3.12.0 onward and will be
+removed in a future version.
+{{< /warning >}}
+
 JavaScript transactions are different from transactions in SQL.
 
 In SQL, transactions are started with explicit *BEGIN* or *START TRANSACTION*
