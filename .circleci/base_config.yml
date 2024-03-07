@@ -205,12 +205,9 @@ commands:
               chmod a+r /etc/apt/keyrings/docker.asc
 
               # Add the repository to Apt sources:
-              set version_codename (cat /etc/os-release | grep -o 'VERSION_CODENAME=\w*' | cut -d '=' -f 2)
-              set architecture (dpkg --print-architecture)
-              set signed_by "/etc/apt/keyrings/docker.asc"
-              set docker_url "https://download.docker.com/linux/ubuntu"
-
-              printf "deb [arch=%s signed-by=%s] %s %s stable\n" $architecture $signed_by $docker_url $version_codename | \
+              echo \
+                "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+                $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
                 tee /etc/apt/sources.list.d/docker.list > /dev/null
               apt-get -y update
 
