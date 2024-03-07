@@ -195,10 +195,6 @@ longer use the `ldap` log topic. Changing the log level of the `ldap` topic or
 any other unknown topic is not an error, however. Also see
 [Incompatible changes in ArangoDB 3.12](incompatible-changes-in-3-12.md#ldap-authentication-support-removed).
 
-### Privilege changes
-
-
-
 ### Endpoint return value changes
 
 #### Storage engine API
@@ -409,10 +405,6 @@ detached state:
 - `arangodb_network_connectivity_failures_coordinators`
 - `arangodb_network_connectivity_failures_dbservers_total`
 - `arangodb_scheduler_num_detached_threads`
-
-### Endpoints moved
-
-
 
 ### Endpoints deprecated
 
