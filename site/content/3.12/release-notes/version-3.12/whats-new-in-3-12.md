@@ -90,7 +90,7 @@ See [Analyzers](../../index-and-search/analyzers.md#multi_delimiter) for details
 
 ## Improved memory accounting and usage
 
-Version 3.12 features multiple improvements to observability of ArangoDB
+Version 3.12 features multiple improvements to the observability of ArangoDB
 deployments. Memory usage is more accurately tracked and additional metrics have
 been added for monitoring the memory consumption.
 
@@ -722,9 +722,9 @@ ICU has been upgraded as well, from version 64.2 to 73.1.
 Note that ArangoDB's build of V8 has pointer compression disabled to allow for
 more than 4 GB of heap memory.
 
-The V8 upgrade brings various language features to JavaScript contexts in ArangoDB
-like arangosh, Foxx, and JavaScript Transactions. These features are part of the
-ECMAScript specifications ES2020 through ES2024. The following list is non-exhaustive:
+The V8 upgrade brings various language features to JavaScript contexts in
+ArangoDB, like arangosh and Foxx. These features are part of the ECMAScript
+specifications ES2020 through ES2024. The following list is non-exhaustive:
 
 - Optional chaining, like `obj.foo?.bar?.length` to easily access an object
   property or call a function but stop evaluating the expression as soon as the

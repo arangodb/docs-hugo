@@ -3,7 +3,7 @@ title: Multi-dimensional indexes
 menuTitle: Multi-dimensional Indexes
 weight: 25
 description: >-
-  Multi-dimensional indexes allow you to index two- or higher dimensional data
+  Multi-dimensional indexes allow you to index two- or higher-dimensional data
   such as time ranges, for efficient intersection of multiple range queries
 ---
 A multi-dimensional index maps multi-dimensional data in the form of multiple

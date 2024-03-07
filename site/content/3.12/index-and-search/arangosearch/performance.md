@@ -291,7 +291,7 @@ the previously defined expressions and has to sort by the result of a
 descending order (`DESC`). Asking for the highest-ranking matches this way with
 some `LIMIT` to the number of results allows ArangoSearch to efficiently fetch
 the results from the View index (the top _k_ ranking results), skipping anything
-with a too low score.
+with a too-low score.
 
 To use this optimization, specify the `optimizeTopK` property when creating an
 `arangosearch` View or an inverted index. In case of the inverted index, you
