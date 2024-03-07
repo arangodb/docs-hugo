@@ -3,7 +3,6 @@ title: Linking Foxx services together
 menuTitle: Linking services together
 weight: 55
 description: ''
-archetype: default
 ---
 When using multiple services (or multiple copies of the same service) in the
 same database, sometimes you may want to share collections or methods between

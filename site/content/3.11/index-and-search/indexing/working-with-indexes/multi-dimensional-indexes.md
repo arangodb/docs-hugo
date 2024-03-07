@@ -5,7 +5,6 @@ weight: 25
 description: >-
   Multi-dimensional indexes allow you to index two- or higher dimensional data
   such as time ranges, for efficient intersection of multiple range queries
-archetype: default
 ---
 A multi-dimensional index maps multi-dimensional data in the form of multiple
 numeric attributes to one dimension while mostly preserving locality so that

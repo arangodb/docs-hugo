@@ -3,7 +3,6 @@ title: Edge
 menuTitle: Edge
 weight: 10
 description: ''
-archetype: default
 ---
 ## Annotation @Edge
 

@@ -5,7 +5,6 @@ weight: 90
 description: >-
   The HTTP API for batch requests lets you send multiple operations in a single
   HTTP request
-archetype: default
 ---
 {{< warning >}}
 The batch request API is deprecated from version 3.8.0 on.

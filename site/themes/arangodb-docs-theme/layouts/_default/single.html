@@ -1,29 +1,16 @@
-{{ partial "shortcodes/version.html" (dict "page" .Page) -}}
-{{ $isProduction := eq site.BaseURL "https://docs.arangodb.com" -}}
-
-<!DOCTYPE html>
-<html lang="{{ .Page.Language | default "en" }}">
-  {{ partial "head.html" . -}}
-  <body>
-    {{ if $isProduction }}{{ partial "tracking/body-start.html" . }}{{ end -}}
-    <noscript>You need to enable JavaScript to use the ArangoDB documentation.</noscript>
-    <div id="page-wrapper" class="page_content_splash" style="height: auto;opacity: 0;">
-      <section id="page-main">
-        <section class="page-container" id="page-container">
-          {{ partial "header.html" . -}}
-          <iframe src="/nav.html" title="description" id="menu-iframe" class="menu-iframe active" style="opacity: 0;"></iframe>
-          <div class="container-main">
-            <div class="row-main">
-              {{ partial "breadcrumbs.html" . -}}
-              {{ partial "output-partial.hugo" (dict "base" "body" "page" . "parameter" (dict "page" . "content" (partial "output-partial.hugo" (dict "base" "content" "page" . "parameter" .)))) -}}
-              {{ partial "toc.html" . -}}
-            </div>
-          </div>
-        </section>
-      </section>
-    </div>
-    {{ partialCached "back-to-top.html" . -}}
-    {{ partial "search.html" . -}}
-    {{ if $isProduction }}{{ partial "tracking/body-end.html" . }}{{ end -}}
-  </body>
-</html>
+{{ define "main" -}}
+  {{ with .Page -}}
+    <article class="default">
+      {{ partial "deprecated.html" . -}}
+      {{ partial "in-development.html" . -}}
+      <hgroup>
+        <h1>{{ .Title | markdownify }}</h1>
+        {{ with .Params.Description }}<p class="lead">{{ . | markdownify }}</p>{{ end }}
+      </hgroup>
+      {{ .Content | safeHTML }}
+      <nav class="pagination">
+        {{- partial "content-footer.html" . -}}
+      </nav>
+    </article>
+  {{- end -}}
+{{ end -}}

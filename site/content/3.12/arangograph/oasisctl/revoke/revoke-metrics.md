@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl revoke metrics command
 title: Oasisctl Revoke Metrics
 menuTitle: Revoke Metrics
-weight: 20
+weight: 3
 ---
 ## Synopsis
 Revoke keys & tokens

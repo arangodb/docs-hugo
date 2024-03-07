@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl unlock organization command
 title: Oasisctl Unlock Organization
 menuTitle: Unlock Organization
-weight: 25
+weight: 4
 ---
 ## Synopsis
 Unlock an organization, so it can be deleted

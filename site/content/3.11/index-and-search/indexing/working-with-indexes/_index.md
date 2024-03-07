@@ -5,7 +5,6 @@ weight: 20
 description: >-
   Create and manage indexes programmatically for document collections using
   ArangoDB's JavaScript API
-archetype: chapter
 ---
 ## Index Identifiers
 

@@ -5,7 +5,6 @@ weight: 30
 description: >-
   The HTTP API for documents lets you create, read, update, and delete documents
   in collections, either one or multiple at a time
-archetype: default
 ---
 The basic operations for documents are mapped to the standard HTTP methods:
 

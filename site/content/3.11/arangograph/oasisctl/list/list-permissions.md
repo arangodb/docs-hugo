@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl list permissions command
 title: Oasisctl List Permissions
 menuTitle: List Permissions
-weight: 170
+weight: 33
 ---
 ## Synopsis
 List the known permissions

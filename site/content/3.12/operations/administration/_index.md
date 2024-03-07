@@ -5,7 +5,6 @@ weight: 225
 description: >-
   How to configure ArangoDB, manage users accounts and backups, and what tools
   you can use to administrate deployments
-archetype: chapter
 ---
 ## Tools
 
@@ -37,7 +36,6 @@ For a full list of tools, please refer to the [Programs & Tools](../../component
 ## Deployment Administration
 
 - [Cluster](../../deploy/cluster/administration.md)
-- [Datacenter-to-Datacenter Replication](../../deploy/arangosync/administration.md)
 - [ArangoDB Starter Administration](arangodb-starter/_index.md)
 
 ## Other Topics

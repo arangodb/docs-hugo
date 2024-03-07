@@ -5,7 +5,6 @@ weight: 15
 description: >-
   Various detailed have changed, like the setup, transport, configuration,
   serialization, and some of the APIs
-archetype: default
 ---
 ## Maven Setup
 
@@ -89,14 +88,14 @@ Examples showing how to provide configuration properties from different sources:
 ## Modules
 
 Support for different serdes and communication protocols is offered by separate modules. 
-Defaults modules are transitively included, but they could be excluded if not needed.
+Default modules are transitively included, but they could be excluded if not needed.
 
 The main driver artifact `com.arangodb:arangodb-java-driver` has transitive dependencies on default modules:
 - `com.arangodb:http-protocol`: `HTTP` communication protocol (HTTP/1.1 and HTTP/2)
 - `com.arangodb:jackson-serde-json`: `JSON` user-data serde module based on Jackson Databind
 
 Alternative modules are respectively:
-- `com.arangodb:vst-protocol`: `VST` communication protocol
+- `com.arangodb:vst-protocol`: `VST` communication protocol (no longer supported from ArangoDB v3.12.0 onward)
 - `com.arangodb:jackson-serde-vpack`: `VPACK` user-data serde module based on Jackson Databind
 
 The modules above are discovered and loaded using SPI (Service Provider Interface).
@@ -104,14 +103,15 @@ The modules above are discovered and loaded using SPI (Service Provider Interfac
 In case a non-default communication protocol or user serde are used, the related module(s)
 must be explicitly included and the corresponding default module(s) can be excluded.
 
-For example, to use the driver with `VPACK` over `VST`, we must include:
-- `com.arangodb:vst-protocol` and
-- `com.arangodb:jackson-serde-vpack`
+For example, to use the driver with `VPACK` over `HTTP`:
 
-and can exclude:
-- `com.arangodb:http-protocol` and
-- `com.arangodb:jackson-serde-json`
- 
+- You must include `com.arangodb:jackson-serde-vpack`
+- You can exclude `com.arangodb:jackson-serde-json`
+- You don't need to include `com.arangodb:http-protocol` because the driver
+  includes it automatically
+- You don't need to exclude `com.arangodb:vst-protocol` because it is not
+  included automatically
+
 For example in Maven:
 
 ```xml
@@ -122,17 +122,9 @@ For example in Maven:
         <exclusions>
             <exclusion>
                 <groupId>com.arangodb</groupId>
-                <artifactId>http-protocol</artifactId>
-            </exclusion>
-            <exclusion>
-                <groupId>com.arangodb</groupId>
                 <artifactId>jackson-serde-json</artifactId>
             </exclusion>
         </exclusions>
-    </dependency>
-    <dependency>
-        <groupId>com.arangodb</groupId>
-        <artifactId>vst-protocol</artifactId>
     </dependency>
     <dependency>
         <groupId>com.arangodb</groupId>
@@ -167,7 +159,7 @@ there are in your project other libraries depending on different versions of Jac
 </dependencyManagement>
 ```
 
-The module `http-protocol` has transitive dependency on `io.vertx:vertx-web-client:4.3.5`,
+The module `http-protocol` has transitive dependency on `io.vertx:vertx-web-client`,
 which in turn depends on packages from `io.netty`.
 
 If these dependency requirements cannot be satisfied, i.e. they cause convergence

@@ -4,7 +4,6 @@ menuTitle: Linux
 weight: 10
 description: >-
   Download an installation or tar package, or use a package manager
-archetype: chapter
 ---
 You can install ArangoDB on most common Linux distributions. The basic
 installation steps are:
@@ -45,7 +44,7 @@ installation steps are:
 
 6. You can start ArangoDB in several ways. The exact start-up command depends on
    your Linux distribution, as well as on the type of ArangoDB deployment you
-   are interested in (_Single Server_, _Cluster_, _DC2DC_).
+   are interested in (_Single Server_, _Cluster_).
    Please refer to the [Deploy](../../../deploy/_index.md) chapter for details.
 
 ## Securing your Installation

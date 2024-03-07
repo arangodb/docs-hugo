@@ -5,7 +5,6 @@ weight: 20
 description: >-
   A summary of the changes to the HTTP API and other interfaces that are relevant
   for developers, like maintainers of drivers and integrations for ArangoDB
-archetype: default
 ---
 ## HTTP RESTful API
 
@@ -194,7 +193,7 @@ either case.
 The [`/_admin/log/*` endpoints](../../develop/http-api/monitoring/logs.md) no
 longer use the `ldap` log topic. Changing the log level of the `ldap` topic or
 any other unknown topic is not an error, however. Also see
-[Incompatible changes in ArangoDB 3.12](incompatible-changes-in-3-12.md#ldap-authentication).
+[Incompatible changes in ArangoDB 3.12](incompatible-changes-in-3-12.md#ldap-authentication-support-removed).
 
 ### Privilege changes
 
@@ -417,6 +416,13 @@ detached state:
 
 ### Endpoints deprecated
 
+#### JavaScript Transactions API
+
+JavaScript Transactions and thus the `POST /_api/transaction` endpoint is
+deprecated from v3.12.0 onward and will be removed in a future version.
+The endpoints for Stream Transactions (`POST /_api/transaction/begin` etc.)
+are unaffected.
+
 ### Endpoints removed
 
 #### Database target version API
@@ -486,5 +492,11 @@ for details.
 
 ### `@arangodb/pregel` package
 
-The `@arangodb/pregel` JavaScript API package has been removed in v3.12.0 and
-will no longer be supported.
+The `@arangodb/pregel` module of the JavaScript API has been removed in v3.12.0
+as Pregel is no longer supported.
+
+### `db._executeTransaction()` deprecated
+
+JavaScript Transactions and thus the `db._executeTransaction()` method is
+deprecated from v3.12.0 onward and will be removed in a future version.
+The `db._createTransaction()` method for starting Stream Transactions is unaffected.

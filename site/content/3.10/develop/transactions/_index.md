@@ -4,7 +4,6 @@ menuTitle: Transactions
 weight: 260
 description: >-
   ArangoDB provides support for user-definable transactions
-archetype: chapter
 ---
 ## Transaction Types
 

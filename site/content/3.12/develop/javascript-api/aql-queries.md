@@ -5,7 +5,6 @@ weight: 20
 description: >-
   The query module provides the infrastructure for working with currently
   running AQL queries via arangosh
-archetype: default
 ---
 `const queries = require('@arangodb/aql/queries')`
 

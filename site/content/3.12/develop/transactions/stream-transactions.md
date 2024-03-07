@@ -6,7 +6,6 @@ description: >-
   Stream Transactions allow you start a transaction, run multiple operations
   like AQL queries over a short period of time, and then commit or abort the
   transaction
-archetype: default
 ---
 Stream Transactions allow you to perform multi-document transaction
 with individual begin and commit / abort commands. This is comparable to the

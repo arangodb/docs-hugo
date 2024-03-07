@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl list cpusizes command
 title: Oasisctl List Cpusizes
 menuTitle: List Cpusizes
-weight: 65
+weight: 12
 ---
 ## Synopsis
 List CPU sizes

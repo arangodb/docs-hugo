@@ -3,7 +3,6 @@ title: ArangoDB Sink Connector Configuration Properties
 menuTitle: Configuration
 weight: 5
 description: ''
-archetype: default
 ---
 ## Connection
 
@@ -69,7 +68,7 @@ Interval for re-balancing the connections across the endpoints.
 
 Communication protocol:
 
-- `VST`
+- `VST` (not supported from ArangoDB v3.12.0 onward)
 - `HTTP11`
 - `HTTP2`
 

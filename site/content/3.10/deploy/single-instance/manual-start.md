@@ -5,7 +5,6 @@ weight: 5
 description: >-
   How to start an ArangoDB stand-alone instance by manually starting the needed
   _arangod_ process
-archetype: default
 ---
 ## Local Start
 

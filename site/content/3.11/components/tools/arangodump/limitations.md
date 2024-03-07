@@ -3,7 +3,6 @@ title: _arangodump_ Limitations
 menuTitle: Limitations
 weight: 20
 description: ''
-archetype: default
 ---
 _arangodump_ has the following limitations:
 

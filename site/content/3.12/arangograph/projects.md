@@ -4,7 +4,6 @@ menuTitle: Projects
 weight: 15
 description: >-
   How to manage projects and IP allowlists in ArangoGraph
-archetype: default
 ---
 Below organizations in the ArangoGraph deployment hierarchy are projects. They can
 represent organizational units such as teams, product groups, environments

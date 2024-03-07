@@ -3,7 +3,6 @@ title: Foxx in a cluster setup
 menuTitle: Foxx in a cluster
 weight: 30
 description: ''
-archetype: default
 ---
 When running ArangoDB in a cluster the Foxx services will run on each
 Coordinator. Installing, upgrading and uninstalling services on any Coordinator

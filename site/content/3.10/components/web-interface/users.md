@@ -3,7 +3,6 @@ title: Managing Users in the Web Interface
 menuTitle: Users
 weight: 40
 description: ''
-archetype: default
 ---
 ArangoDB users are globally stored in the `_system` database and can only be
 managed while logged on to this database. There you can find the *Users* section:

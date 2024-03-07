@@ -5,7 +5,6 @@ weight: 5
 description: >-
   The HTTP API for AQL queries lets you to execute, track, kill, explain, and
   validate queries written in ArangoDB's query language
-archetype: default
 ---
 ## Cursors
 

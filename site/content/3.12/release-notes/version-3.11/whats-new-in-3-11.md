@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Improved performance and reporting for AQL queries, new caching features for
   indexed data, improvements to the web interface
-archetype: default
 ---
 The following list shows in detail which features have been added or improved in
 ArangoDB 3.11. ArangoDB 3.11 also contains several bug fixes that are not listed
@@ -1063,7 +1062,7 @@ DB-Servers:
 - `arangodb_collection_requests_bytes_read_total`: The number of bytes read in
   read requests on leaders.
 - `arangodb_collection_requests_bytes_written_total`: The number of bytes written
-  in write requests on leaders and followers.  
+  in write requests on leaders and followers.
 
 To opt into these metrics, you can use the new `--server.export-shard-usage-metrics`
 startup option. It can be set to one of the following values on DB-Servers:
@@ -1403,8 +1402,34 @@ allocated for connection and request statistics.
 
 ### arangodump
 
+#### Option to not dump Views
+
 _arangodump_ has a new `--dump-views` startup option to control whether
 View definitions shall be included in the backup. The default value is `true`.
+
+#### Improved dump performance (experimental)
+
+<small>Introduced in: v3.10.8, v3.11.2</small>
+
+_arangodump_ has experimental extended parallelization capabilities
+to work not only at the collection level, but also at the shard level.
+In combination with the newly added support for the VelocyPack format that
+ArangoDB uses internally, database dumps can now be created and restored more
+quickly and occupy less disk space. This major performance boost makes dumps and
+restores up to several times faster, which is extremely useful when dealing
+with large shards.
+
+- Whether the new parallel dump variant is used is controlled by the newly added
+  `--use-experimental-dump` startup option (introduced in v3.10.8 and v3.11.2).
+  The default value is `false`.
+
+- Optionally, you can make _arangodump_ write multiple output files per
+  collection/shard (introduced in v3.10.10 and v3.11.2).
+  The file splitting allows for better parallelization when
+  writing the results to disk, which in case of non-split files must be serialized.
+  You can enable it by setting the `--split-files` option to `true`. This option
+  is disabled by default because dumps created with this option enabled cannot
+  be restored into previous versions of ArangoDB.
 
 ## Internal changes
 

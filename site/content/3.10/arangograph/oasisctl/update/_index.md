@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl update command
 title: Oasisctl Update
 menuTitle: Update
-weight: 5
+weight: 28
 ---
 ## Synopsis
 Update resources

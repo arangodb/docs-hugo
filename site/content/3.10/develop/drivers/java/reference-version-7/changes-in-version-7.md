@@ -5,7 +5,6 @@ weight: 15
 description: >-
   Various detailed have changed, like the setup, transport, configuration,
   serialization, and some of the APIs
-archetype: default
 ---
 ## Maven Setup
 
@@ -167,7 +166,7 @@ there are in your project other libraries depending on different versions of Jac
 </dependencyManagement>
 ```
 
-The module `http-protocol` has transitive dependency on `io.vertx:vertx-web-client:4.3.5`,
+The module `http-protocol` has transitive dependency on `io.vertx:vertx-web-client`,
 which in turn depends on packages from `io.netty`.
 
 If these dependency requirements cannot be satisfied, i.e. they cause convergence

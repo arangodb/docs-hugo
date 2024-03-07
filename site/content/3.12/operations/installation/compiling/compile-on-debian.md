@@ -4,7 +4,6 @@ menuTitle: Compile on Debian
 weight: 5
 description: >-
   You want to compile and run the devel branch, for example to test a bug fix
-archetype: default
 ---
 This guide describes how to compile and run the devel branch under a Debian
 based system. It was tested using a fresh Debian Testing machine on Amazon EC2.

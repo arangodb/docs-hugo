@@ -5,7 +5,6 @@ weight: 10
 description: >-
   Select which version of ArangoDB you want to use within your ArangoGraph
   deployment and choose when to roll out your upgrades
-archetype: default
 ---
 {{< info >}}
 Please note that this policy comes into effect in April 2023.

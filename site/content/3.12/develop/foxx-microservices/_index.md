@@ -4,7 +4,6 @@ menuTitle: Foxx Microservices
 weight: 265
 description: >-
   The Foxx framework enables you to execute JavaScript inside of ArangoDB and write custom service endpoints
-archetype: chapter
 ---
 Traditionally, server-side projects have been developed as standalone applications
 that guide the communication between the client-side frontend and the database

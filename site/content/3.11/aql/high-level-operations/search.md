@@ -5,7 +5,6 @@ weight: 20
 description: >-
   The `SEARCH` operation lets you filter Views, accelerated by the underlying
   indexes
-archetype: default
 ---
 The `SEARCH` operation guarantees to use View indexes for an efficient
 execution plan. If you use the `FILTER` keyword for Views, no indexes are

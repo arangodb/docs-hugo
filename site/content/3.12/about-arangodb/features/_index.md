@@ -5,7 +5,6 @@ weight: 20
 description: >-
   ArangoDB is a graph database with a powerful set of features for data management and analytics,
   supported by a rich ecosystem of integrations and drivers
-archetype: chapter
 aliases:
   - ../introduction/features
 ---
@@ -57,9 +56,7 @@ You can deploy it on-premises as a
 [single server](../../deploy/single-instance/_index.md)
 or as a [cluster](../../deploy/cluster/_index.md)
 comprised of multiple nodes with synchronous replication and automatic failover
-for high availability and resilience. For the highest level of data safety,
-you can additionally set up off-site replication for your entire cluster
-([Datacenter-to-Datacenter Replication](../../deploy/arangosync/_index.md)).
+for high availability and resilience.
 
 ArangoDB also integrates with Kubernetes, offering a
 [Kubernetes Operator](../../deploy/kubernetes.md) that lets you deploy in your
@@ -122,5 +119,4 @@ See all [Enterprise Edition Features](enterprise-edition.md).
 | TLS key and certificate rotation | In addition, **key rotation for JWT secrets** and **server name indication** (SNI) |
 | Only server logs | **Audit log** of server interactions |
 | No on-disk encryption | **Encryption at Rest** with hardware-accelerated on-disk encryption and key rotation |
-| Only regular backups | **Datacenter-to-Datacenter Replication** for disaster recovery |
 | Only unencrypted backups and basic data masking for backups | **Hot Backups**, **encrypted backups**, and **enhanced data masking** for backups |

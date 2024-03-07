@@ -4,7 +4,6 @@ menuTitle: Add files
 weight: 5
 description: >-
   Provide your set of files in CSV format containing the data to be imported
-archetype: default
 ---
 
 The Data Loader allows you to upload your data files in CSV format into

@@ -4,7 +4,6 @@ menuTitle: Joins
 weight: 25
 description: >-
   Query examples for joining documents with one-to-many and many-to-many relationships
-archetype: default
 ---
 The two common scenarios when you want to join documents of collections are:
 

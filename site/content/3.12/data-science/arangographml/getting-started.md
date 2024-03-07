@@ -4,7 +4,6 @@ menuTitle: Getting Started
 weight: 10
 description: >-
   How to control all resources inside ArangoGraphML in a scriptable manner
-archetype: default
 aliases:
   - getting-started-with-arangographml
 ---

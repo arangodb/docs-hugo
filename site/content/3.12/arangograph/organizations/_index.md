@@ -4,7 +4,6 @@ menuTitle: Organizations
 weight: 10
 description: >-
    How to manage organizations and what type of packages ArangoGraph offers
-archetype: chapter
 ---
 At the highest level of the ArangoGraph deployment hierarchy are organizations.
 Organizations are a container for projects.

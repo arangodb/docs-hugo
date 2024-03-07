@@ -3,7 +3,6 @@ title: Foxx configuration
 menuTitle: Configuration
 weight: 15
 description: ''
-archetype: default
 ---
 Foxx services can define configuration parameters
 [in the service manifest](service-manifest.md) to make them more re-usable.

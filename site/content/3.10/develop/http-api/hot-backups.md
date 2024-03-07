@@ -5,7 +5,6 @@ weight: 120
 description: >-
   The HTTP API for Hot Backups lets you manage incremental, zero-downtime data
   backups
-archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" >}}
 

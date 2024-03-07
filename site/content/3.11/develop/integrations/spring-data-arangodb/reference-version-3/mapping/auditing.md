@@ -3,7 +3,6 @@ title: Auditing
 menuTitle: Auditing
 weight: 40
 description: ''
-archetype: default
 ---
 Since version 3.0.0 Spring Data ArangoDB provides basic auditing functionality
 where you can track who made changes on your data and when.

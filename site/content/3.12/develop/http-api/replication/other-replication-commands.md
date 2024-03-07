@@ -3,7 +3,6 @@ title: Other Replication Commands
 menuTitle: Other Replication Commands
 weight: 20
 description: ''
-archetype: default
 ---
 ## Get the replication server ID
 

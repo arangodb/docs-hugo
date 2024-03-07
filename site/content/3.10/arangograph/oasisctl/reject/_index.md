@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl reject command
 title: Oasisctl Reject
 menuTitle: Reject
-weight: 5
+weight: 21
 ---
 ## Synopsis
 Reject invites

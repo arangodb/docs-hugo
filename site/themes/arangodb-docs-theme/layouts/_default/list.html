@@ -1,29 +1,39 @@
-{{- partial "shortcodes/version.html" (dict "page" .Page) -}}
-{{ $isProduction := eq site.BaseURL "https://docs.arangodb.com" -}}
+{{ define "main" -}}
+  {{ with .Page -}}
+    {{ $pageVersion := .Page.Store.Get "version" -}}
+    <article class="default">
+      {{ partial "deprecated.html" . -}}
+      {{ partial "in-development.html" . -}}
+      <hgroup>
+        <h1>{{ .Title | markdownify }}</h1>
+        {{ with .Params.Description }}<p class="lead">{{ . | markdownify }}</p>{{ end }}
+      </hgroup>
+      {{ with .Content -}}
+        {{ . }}
+      {{ else -}}
+        {{ template "generateSection" dict "section" .Page "pageVersion" $pageVersion -}}
+      {{ end -}}
+      <nav class="pagination">
+        {{- partial "content-footer.html" . -}}
+      </nav>
+    </article>
+  {{- end -}}
+{{ end -}}
 
-<!DOCTYPE html>
-<html lang="{{ .Page.Language | default "en" }}">
-  {{ partial "head.html" . -}}
-  <body>
-    {{ if $isProduction }}{{ partial "tracking/body-start.html" . }}{{ end -}}
-    <noscript>You need to enable JavaScript to use the ArangoDB documentation.</noscript>
-    <div id="page-wrapper" class="page_content_splash" style="height: auto;opacity: 0;">
-      <section id="page-main">
-        <section class="page-container" id="page-container">
-          {{ partial "header.html" . -}}
-          <iframe src="/nav.html" title="description" id="menu-iframe" class="menu-iframe active" style="opacity: 0;"></iframe>
-          <div class="container-main">
-            <div class="row-main">
-              {{ if gt (len .Page.Ancestors) 1 }}{{ partial "breadcrumbs.html" . }}{{ end -}}
-              {{ partial "output-partial.hugo" (dict "base" "body" "page" . "parameter" (dict "page" . "content" (partial "output-partial.hugo" (dict "base" "content" "page" . "parameter" .)))) -}}
-              {{ partial "toc.html" . -}}
-            </div>
-          </div>
-        </section>
-      </section>
-    </div>
-    {{ partialCached "back-to-top.html" . -}}
-    {{ partial "search.html" . -}}
-    {{ if $isProduction }}{{ partial "tracking/body-end.html" . }}{{ end -}}
-  </body>
-</html>
+{{ define "generateSection" -}}
+{{ $section := .section -}}
+{{ $pageVersion := .pageVersion -}}
+
+<div class="cards">
+  {{ range $section.Pages -}}
+    {{ $title := .Params.menuTitle | markdownify -}}
+    {{ partial "shortcodes/card.html" (dict
+        "Inner" (.Description | markdownify)
+        "title"  $title
+        "link" ( strings.TrimRight "/" .RelPermalink )
+        "context" $section
+      ) -}}
+  {{ end -}}
+</div>
+
+{{- end }}

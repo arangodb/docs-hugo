@@ -3,7 +3,6 @@ title: Dashboard
 menuTitle: Dashboard
 weight: 5
 description: ''
-archetype: default
 ---
 The **DASHBOARD** section provides statistics which are polled regularly from the
 ArangoDB server.

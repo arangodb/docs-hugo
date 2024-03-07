@@ -6,7 +6,6 @@ description: >-
   Errors can occur for queries at compile time, like for syntax errors and
   missing collections, but warnings and errors can also occur during query
   execution
-archetype: default
 ---
 Issuing an invalid query to the server results in a parse error if the query
 is syntactically invalid. ArangoDB detects such errors during query

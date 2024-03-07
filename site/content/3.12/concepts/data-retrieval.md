@@ -5,7 +5,6 @@ weight: 70
 description: >-
   You can get information stored in ArangoDB back out using queries, optionally
   accelerated by indexes, and possibly in result batches
-archetype: default
 ---
 **Queries** are used to filter documents based on certain criteria, to compute
 or store new data, as well as to manipulate or delete existing documents.

@@ -4,7 +4,6 @@ menuTitle: Pregel
 weight: 45
 description: >-
   The HTTP API for Pregel lets you execute, cancel, and list Pregel jobs
-archetype: default
 ---
 See [Distributed Iterative Graph Processing (Pregel)](../../data-science/pregel/_index.md)
 for details.

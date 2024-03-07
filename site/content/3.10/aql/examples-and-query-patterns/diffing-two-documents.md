@@ -4,7 +4,6 @@ menuTitle: Diffing Two Documents
 weight: 55
 description: >-
   How to determine the differences in attributes of two documents
-archetype: default
 ---
 There is no built-in AQL function to compare the attributes of two documents,
 but it is easily possible to build a query that does:

@@ -1,36 +1,46 @@
 <nav id="breadcrumbs">
   <ol class="links" itemscope itemtype="http://schema.org/BreadcrumbList">
   <meta itemprop="itemListOrder" content="Descending" />
-  {{ range .Ancestors.Reverse }}
-    {{ if not .IsHome }}
+  {{ range .Ancestors.Reverse -}}
+    {{ if not .IsHome -}}
     <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
       <meta itemprop="position" content="{{ .Params.menuTitle | markdownify }}" />
       <a itemprop="item" class="link" href="{{ .RelPermalink }}">
-        <span itemprop="name" class="breadcrumb-entry">{{- if eq (len .Ancestors) 1 }}{{ template "getVersionLong" dict "page" .Page }}{{ else }}{{ .Params.menuTitle | markdownify }}{{ end }}</span>
+        <span itemprop="name" class="breadcrumb-entry">
+        {{ if eq (len .Ancestors) 1 -}}
+          {{ template "getVersionLong" dict "pageType" .Page.Type -}}
+        {{ else -}}
+          {{ .Params.menuTitle | markdownify -}}
+        {{ end -}}
+        </span>
       </a>
       <i class="fas fa-chevron-right fa-fw"></i>
     </li>
-    {{ end }}
-  {{- end }}   
-  {{ if not .IsHome }}
+    {{ end -}}
+  {{ end -}}   
+  {{ if not .IsHome -}}
   <li itemscope itemtype="https://schema.org/ListItem" itemprop="itemListElement">
     <meta itemprop="position" content="{{ .Params.menuTitle | markdownify }}" />
     <a itemprop="item" class="link" href="{{ .RelPermalink }}">
-      <span itemprop="name" class="breadcrumb-entry">{{- if eq (len .Ancestors) 1 }}{{ template "getVersionLong" dict "page" .Page }}{{ else }}{{ .Params.menuTitle | markdownify }}{{ end }}</span>
+      <span itemprop="name" class="breadcrumb-entry">
+      {{ if eq (len .Ancestors) 1 -}}
+        {{ template "getVersionLong" dict "pageType" .Page.Type -}}
+      {{ else -}}
+        {{ .Params.menuTitle | markdownify -}}
+      {{ end -}}
+      </span>
     </a>
   </li>
-  {{ end }}
+  {{ end -}}
   </ol>
 </nav>
 
-{{- define "getVersionLong" }}
-
-{{ $pagePath := .page }}
-{{ $versions := index site.Data "versions" }}
-{{ range $i, $version := $versions }}
-    {{ if strings.Contains $pagePath $version.name }}
-        {{ $version.version }}
-    {{ end }}
-{{ end }}
-
-{{ end }}
+{{ define "getVersionLong" -}}
+  {{ $pageType := .pageType -}}
+  {{ $versions := site.Data.versions -}}
+  {{ range $i, $version := $versions -}}
+    {{ if eq $pageType $version.name -}}
+      {{ $version.version -}}
+    {{ end -}}
+  {{ end -}}
+{{ end -}}

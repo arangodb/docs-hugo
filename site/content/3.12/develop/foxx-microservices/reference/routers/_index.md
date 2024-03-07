@@ -3,7 +3,6 @@ title: Foxx Routers
 menuTitle: Routers
 weight: 20
 description: ''
-archetype: chapter
 ---
 `const createRouter = require('@arangodb/foxx/router');`
 

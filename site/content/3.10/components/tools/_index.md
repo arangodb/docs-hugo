@@ -5,7 +5,6 @@ weight: 180
 description: >-
   ArangoDB ships with command-line tools like for accessing server instances
   programmatically, deploying clusters, creating backups, and importing data
-archetype: chapter
 ---
 A full ArangoDB installation package contains the [ArangoDB server](../arangodb-server/_index.md)
 (`arangod`) as well as the following client tools:

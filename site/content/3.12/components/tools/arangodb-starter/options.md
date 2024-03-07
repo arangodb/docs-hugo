@@ -5,7 +5,6 @@ weight: 5
 description: >-
   The Starter provides options to control various aspects of a cluster or other
   deployment you want to run
-archetype: default
 ---
 ## Common options
 
@@ -189,31 +188,6 @@ command like this:
 arangodb --args.coordinators.log.level=requests=debug
 ```
 
-## Passing through `arangosync` options
-
-Options for `arangosync` that are not supported by the starter can still be
-passed to the syncmasters & syncworkers using a pass through option.
-Every option that start with a pass through prefix is passed through to the
-command-line of one or more `arangosync` instances.
-
-- `--args.sync.<section>.<key>=<value>` is passed as
-  `--<section>.<key>=<value>` to all arangosync instances started by this starter.
-- `--args.syncmasters.<section>.<key>=<value>` is passed as
-  `--<section>.<key>=<value>` to all syncmasters started by this starter.
-- `--args.syncworkers.<section>.<key>=<value>` is passed as
-  `--<section>.<key>=<value>` to all syncworkers started by this starter.
-
-Some options are essential to the function of the starter.
-Therefore these options cannot be passed through like this.
-
-Example:
-
-To set a custom token TTL for direct message queue, use a command like this.
-
-```bash
-arangodb --args.syncmasters.mq.direct-token-ttl=12h ...
-```
-
 ## Passing environment variables
 
 Environment variables by default gonna be passed from arangodb process by
@@ -232,42 +206,6 @@ Example:
 ```bash
 arangodb --envs.all.ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY=2G --envs.coordinators.ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY=4G --envs.dbservers.ARANGODB_OVERRIDE_DETECTED_TOTAL_MEMORY=8G ...
 ```
-
-## Datacenter-to-Datacenter Replication options
-
-- `--starter.sync=bool`
-
-If set, the Starter also starts `arangosync` instances.
-
-- `--sync.start-master=bool`
-
-Should an ArangoSync master instance be started (only relevant if `--starter.sync`
-is enabled, defaults to `true`)
-
-- `--sync.start-worker=bool`
-
-Should an ArangoSync worker instance be started (only relevant if `--starter.sync`
-is enabled, defaults to `true`)
-
-- `--sync.monitoring.token=<token>`
-
-Bearer token used to access ArangoSync monitoring endpoints.
-
-- `--sync.master.jwt-secret=<secret>`
-
-Path of file containing JWT secret used to access the Sync Master (from Sync Worker).
-
-- `--sync.mq.type=<message queue type>`
-
-Type of message queue used by the Sync Master (defaults to "direct").
-
-- `--sync.server.keyfile=<path of keyfile>`
-
-TLS keyfile of local sync master.
-
-- `--sync.server.client-cafile=<path of CA certificate>`
-
-CA Certificate used for client certificate verification.
 
 ## Miscellaneous options
 

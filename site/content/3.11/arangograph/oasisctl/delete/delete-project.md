@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl delete project command
 title: Oasisctl Delete Project
 menuTitle: Delete Project
-weight: 110
+weight: 21
 ---
 ## Synopsis
 Delete a project the authenticated user has access to

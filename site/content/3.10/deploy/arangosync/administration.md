@@ -4,7 +4,6 @@ menuTitle: Administration
 weight: 10
 description: >-
   How to administrate Datacenter-to-Datacenter Replication
-archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" >}}
 

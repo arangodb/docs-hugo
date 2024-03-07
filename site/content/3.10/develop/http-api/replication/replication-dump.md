@@ -3,7 +3,6 @@ title: Replication dump commands
 menuTitle: Replication Dump
 weight: 5
 description: ''
-archetype: default
 ---
 ## Inventory
 

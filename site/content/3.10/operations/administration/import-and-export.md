@@ -3,7 +3,6 @@ title: Import and Export
 menuTitle: Import & Export
 weight: 20
 description: ''
-archetype: default
 ---
 Imports and exports can be done with the tools
 [_arangoimport_](../../components/tools/arangoimport/_index.md) and

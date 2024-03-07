@@ -5,7 +5,6 @@ weight: 25
 description: >-
   Learn about ArangoDB's core concepts such as the high-level data
   organization and its data model
-archetype: chapter
 aliases:
   - get-started/overview
 ---

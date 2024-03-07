@@ -3,7 +3,6 @@ title: Logs
 menuTitle: Logs
 weight: 45
 description: ''
-archetype: default
 ---
 The logs section displays all available log entries. Log entries are filterable by
 their log level types.

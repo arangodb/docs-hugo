@@ -4,7 +4,6 @@ menuTitle: User-defined Functions
 weight: 45
 description: >-
   You can write UDFs in JavaScript to extend AQL or to simplify queries
-archetype: default
 ---
 AQL comes with a [built-in set of functions](functions/_index.md), but it is
 not a fully-featured programming language. To add missing functionality or to

@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Traversing a graph means to follow edges connected to a start vertex and
   neighboring vertices until a specified depth
-archetype: default
 ---
 ## General query idea
 

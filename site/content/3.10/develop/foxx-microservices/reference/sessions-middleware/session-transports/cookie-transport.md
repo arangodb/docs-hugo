@@ -3,7 +3,6 @@ title: Foxx Cookie Session Transport
 menuTitle: Cookie transport
 weight: 5
 description: ''
-archetype: default
 ---
 `const cookieTransport = require('@arangodb/foxx/sessions/transports/cookie');`
 

@@ -5,7 +5,6 @@ weight: 5
 description: >-
   ArangoDB supports scaling horizontally and vertically, and each supported
   data model has different properties when scaling to large datasets
-archetype: default
 ---
 ## Horizontal and vertical scalability
 

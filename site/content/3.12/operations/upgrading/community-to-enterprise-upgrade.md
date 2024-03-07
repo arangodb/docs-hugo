@@ -3,7 +3,6 @@ title: Community Edition to Enterprise Edition Upgrade Procedure
 menuTitle: Community to Enterprise Edition
 weight: 5
 description: ''
-archetype: default
 ---
 {{< warning >}}
 While migrating from the Community to the Enterprise Edition is supported, 

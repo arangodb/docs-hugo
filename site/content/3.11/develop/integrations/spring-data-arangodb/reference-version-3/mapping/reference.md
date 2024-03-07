@@ -3,7 +3,6 @@ title: Reference
 menuTitle: Reference
 weight: 15
 description: ''
-archetype: default
 ---
 With the annotation `@Ref` applied on a field the nested object isn't stored as
 a nested object in the document. The `_id` field of the nested object is stored

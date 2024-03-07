@@ -3,7 +3,6 @@ title: Limitations of ArangoDB cluster deployments
 menuTitle: Limitations
 weight: 15
 description: ''
-archetype: default
 ---
 ArangoDB has no built-in limitations to horizontal scalability. The
 central resilient _Agency_ will easily sustain hundreds of _DB-Servers_

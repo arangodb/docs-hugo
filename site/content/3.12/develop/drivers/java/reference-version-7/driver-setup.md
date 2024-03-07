@@ -5,7 +5,6 @@ weight: 5
 description: >-
   How to connect your Java application to an ArangoDB server, as well as
   important configuration settings and information about the driver
-archetype: default
 ---
 The driver can be configured and instantiated using `com.arangodb.ArangoDB.Builder`:
 
@@ -74,7 +73,7 @@ Here are examples to integrate configuration properties from different sources:
 `ArangoDB.Builder` has the following configuration methods:
 
 - `host(String, int)`:           adds a host (hostname and port) to connect to, multiple hosts can be added
-- `protocol(Protocol)`:       communication protocol, possible values are: `VST`, `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, (default: `HTTP2_JSON`)
+- `protocol(Protocol)`:          communication protocol, possible values are: `VST`, `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, (default: `HTTP2_JSON`)
 - `timeout(Integer)`:            connection and request timeout (ms), (default `0`, no timeout)
 - `user(String)`:                username for authentication, (default: `root`)
 - `password(String)`:            password for authentication
@@ -82,7 +81,7 @@ Here are examples to integrate configuration properties from different sources:
 - `useSsl(Boolean)`:             use SSL connection, (default: `false`)
 - `sslContext(SSLContext)`:      SSL context
 - `verifyHost(Boolean)`:         enable hostname verification, (HTTP only, default: `true`)
-- `chunkSize(Integer)`: `VST`    chunk size in bytes, (default: `30000`)
+- `chunkSize(Integer)`:          VST chunk size in bytes, (default: `30000`)
 - `maxConnections(Integer)`:     max number of connections per host, (default: 1 VST, 1 HTTP/2, 20 HTTP/1.1)
 - `connectionTtl(Long)`:         max lifetime of a connection (ms), (default: no ttl)
 - `keepAliveInterval(Integer)`:  VST keep-alive interval (s), (default: no keep-alive probes will be sent)
@@ -223,7 +222,8 @@ If not set or set to `null` (default), no automatic connection closure will be p
 ## VST Keep-Alive
 
 The driver supports setting keep-alive interval (in seconds)
-for VST connections. If set, every VST connection will perform a no-op request
+for VST connections (but VST is not supported from ArangoDB v3.12.0 onward).
+If set, every VST connection will perform a no-op request
 at the specified intervals, to avoid to be closed due to inactivity by the
 server (or by the external environment, e.g. firewall, intermediate routers,
 operating system, ... ).

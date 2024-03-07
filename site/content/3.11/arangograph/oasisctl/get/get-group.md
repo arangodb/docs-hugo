@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl get group command
 title: Oasisctl Get Group
 menuTitle: Get Group
-weight: 55
+weight: 10
 ---
 ## Synopsis
 Get a group the authenticated user has access to

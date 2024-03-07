@@ -4,7 +4,6 @@ menuTitle: Transactions
 weight: 260
 description: >-
   ArangoDB provides support for user-definable transactions
-archetype: chapter
 ---
 ## Transaction Types
 
@@ -31,6 +30,8 @@ The client is responsible for making sure that transactions are committed or
 aborted when they are no longer needed, to avoid taking up resources.
 
 ###  JavaScript Transactions
+
+<small>Deprecated in: v3.12.0</small>
 
 [JavaScript Transactions](javascript-transactions.md) allow you
 to send the server a dedicated piece of JavaScript code (i.e. a function), which

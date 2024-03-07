@@ -1,9 +1,8 @@
 ---
-archetype: default
 description: Description of the oasisctl create organization command
 title: Oasisctl Create Organization
 menuTitle: Create Organization
-weight: 75
+weight: 14
 ---
 ## Synopsis
 Create a new organization

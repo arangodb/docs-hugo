@@ -5,7 +5,6 @@ weight: 15
 description: >-
   `arangodump` supports obfuscating and redacting information when dumping, to
   allow you sharing dumps without sensitive data with third parties
-archetype: default
 ---
 The masking feature allows you to define how sensitive data shall be dumped.
 It is possible to exclude collections entirely, limit the dump to the

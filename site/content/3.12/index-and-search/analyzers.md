@@ -5,7 +5,6 @@ weight: 160
 description: >-
   Analyzers allow you to transform data, for sophisticated text processing and
   searching, either standalone or in combination with Views and inverted indexes
-archetype: default
 ---
 While AQL string functions allow for basic text manipulation, true text
 processing including tokenization, language-specific word stemming, case

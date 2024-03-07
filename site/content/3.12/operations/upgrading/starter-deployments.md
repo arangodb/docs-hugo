@@ -4,7 +4,6 @@ menuTitle: Starter Deployments
 weight: 15
 description: >-
   Procedure to perform a rolling upgrade with the `arangodb` executable
-archetype: default
 aliases:
   - upgrading-starter-deployments
 ---
@@ -189,9 +188,9 @@ the following situation:
 - The ArangoDB Server processes are up and running, and they are still on the
   old version
 
-### Start the upgrade process of all *arangod* & *arangosync* servers
+### Start the upgrade process of all *arangod* servers
 
-Once you have carried out the above steps on all servers of the clusters, the
+Once you have carried out the above steps on all servers of the cluster, the
 actual upgrade procedure can be started.
 
 Run the following command on any of the cluster nodes for any of the starter 
@@ -200,9 +199,6 @@ endpoints (e.g. `http://localhost:8528`) to upgrade the entire cluster:
 ```bash
 arangodb upgrade --starter.endpoint=<endpoint-of-a-starter>
 ```
-
-If you have connected clusters across multiple datacenter
-(DC2DC deployment), then you need to update each of the clusters.
 
 If the upgrade command fails, please try again. If the upgrade command continues
 to fail, please contact the ArangoDB support.
@@ -277,7 +273,7 @@ The `--starter.endpoint` option can be set to the endpoint of any
 of the starters, e.g. `http://localhost:8528`.
 
 Note that an abort does not stop all upgrade processes immediately.
-If an _arangod_ or _arangosync_ server is being upgraded when the abort
+If an _arangod_ server is being upgraded when the abort
 was issued, this upgrade will be finished. Remaining servers will not be
 upgraded.
 

@@ -5,7 +5,6 @@ weight: 185
 description: >-
   ArangoDB supports multiple deployment modes to meet the exact needs of your
   project for resilience and performance
-archetype: chapter
 ---
 For installation instructions, please refer to the
 [Installation](../operations/installation/_index.md) chapter.
@@ -45,16 +44,6 @@ each database restricted to a single shard. This allows queries to run locally
 on a single DB-Server node for better performance and with transactional
 guarantees similar to a single server deployment. OneShard is primarily intended
 for multi-tenant use cases.
-
-### Datacenter-to-Datacenter
-
-{{< tag "ArangoDB Enterprise Edition" >}}
-
-For cluster deployments, ArangoDB supports
-[Datacenter-to-Datacenter Replication](arangosync/_index.md) (DC2DC). You can
-use it as an additional security feature to replicate your entire cluster
-off-site to another datacenter. The leading datacenter asynchronously replicates
-the data and configuration to the other datacenter for disaster recovery.
 
 ## How to deploy
 

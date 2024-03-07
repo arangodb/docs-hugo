@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Extended search features and index utilization, document schema validation,
   replicated and disjoint managed graphs, security features 
-archetype: default
 ---
 The following list shows in detail which features have been added or improved in
 ArangoDB 3.7. ArangoDB 3.7 also contains several bug fixes that are not listed
