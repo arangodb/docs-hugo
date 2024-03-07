@@ -120,26 +120,15 @@ commands:
         type: string
         default: ""
     steps:
-      #- when:
-      #    condition:
-      #      or:
-      #        - equal: ["3.10", << parameters.version >>]
-      #        - equal: ["3.11", << parameters.version >>]
-      #    steps:
-      #      - update-openssl-workaround:
-      #          openssl: << parameters.openssl >>
-      # TODO: For a devel branch, it picks OpenSSL 3.0.13 despite the VERSIONS file containing 3.2.1 ?!
       - update-openssl-workaround:
           openssl: << parameters.openssl >>
       - run:
-          name: Configure # TODO: Picks wrong branch/compiler for devel (g++ instead of clang...), apparently because that is what the 3.11 has? (see setup)
+          name: Configure
           command: |
             set +e
             if [ "<< parameters.version >>" = "3.10" ] || [ "<< parameters.version >>" = "3.11" ]; then
-              echo "~~~~~~~~~ SELECTED gcc (3.10, 3.11) - << parameters.version >>"
               cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off
             else
-              echo "~~~~~~~~~ SELECTED clang (3.12+) - << parameters.version >>"
               cmake --preset enterprise-pr-non-maintainer -DCMAKE_C_COMPILER=/tools/clang -DCMAKE_CXX_COMPILER=/tools/clang++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DOPENSSL_ROOT_DIR=/opt -DUSE_FRONTEND=Off
             fi
             if [ "$?" != "0" ]; then
@@ -198,8 +187,6 @@ commands:
               apk add docker-cli
             else
               # Add Docker's official GPG key:
-              #apt-get -y update
-              #apt-get -y install ca-certificates curl # already in build image it seems
               install -m 0755 -d /etc/apt/keyrings
               curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
               chmod a+r /etc/apt/keyrings/docker.asc

@@ -113,12 +113,7 @@ def workflow_generate(config):
         }
 
         if not "enterprise-preview" in branch:
-            #openssl = "" # 3.12+
-            #if version in ["3.10", "3.11"]:
-            #    print(f"OpenSSL: findOpensslVersion for {version}")
-            #    openssl = findOpensslVersion(branch)
-            #else:
-            #    print(f"OpenSSL: rely on build image for {version}")
+
             openssl = findOpensslVersion(branch)
             compileJob["compile-linux"]["openssl"] = openssl
 
@@ -196,7 +191,7 @@ def workflow_generate_scheduled(config):
                 "version": version
             }
         }
-        # TODO: Does the default build image matter in any way? Defaults to Alpine
+        # TODO: Does the default build image matter here? Defaults to legacy Alpine
         generateRequires.append(f"compile-{version}")
         jobs.append(compileJob)
 
@@ -231,9 +226,6 @@ def workflow_release_arangodb(config):
 
     print(f"Creating compile job for version {args.docs_version} branch {args.arangodb_branch}")
 
-    #openssl = "" # 3.12+
-    #if args.docs_version in ["3.10", "3.11"]:
-    #    openssl = findOpensslVersion(args.arangodb_branch)
     openssl = findOpensslVersion(args.arangodb_branch)
 
     compileJob = {
