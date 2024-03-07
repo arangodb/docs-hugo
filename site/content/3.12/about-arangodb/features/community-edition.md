@@ -47,15 +47,15 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   Persistent document attributes that are generated when documents are created
   or modified, using an AQL expression.
 
-- [**In the cloud or on-premises**](../features/_index.md#on-premises-versus-cloud):
+- [**In the cloud or on-prem**](../features/_index.md#on-premises-versus-cloud):
   Use ArangoDB as a [fully managed service](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
   self-managed in the cloud, or on-premises.
 
 - [**Multiple Environments**](../../operations/installation/_index.md#supported-platforms-and-architectures):
   Run ArangoDB on Linux using the production-ready packages for the x86-64
-  architecture.
-  Develop and test with ArangoDB as a Docker container using the official ArangoDB
-  Docker images - available for Linux, Windows, and macOS.
+  architecture, bare metal or in containers.
+  Develop and test with ArangoDB on Windows, macOS, and Linux using the official
+  ArangoDB Docker images, available for the x86-64 architecture and 64-bit ARM chips.
 
 ## Scalability & High Availability
 
