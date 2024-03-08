@@ -33,8 +33,12 @@ You can run ArangoDB on Linux directly (bare metal) or in containers.
 
 Starting with version 3.12, ArangoDB packages for Windows and macOS are not provided
 anymore. You can use the official [Docker images](https://hub.docker.com/_/arangodb/)
-instead. Running production environments with Windows or macOS as the host
+instead.
+
+{{< warning >}}
+Running production environments with Windows or macOS as the host
 operating system is not supported.
+{{< /warning >}}
 
 ### Linux
 

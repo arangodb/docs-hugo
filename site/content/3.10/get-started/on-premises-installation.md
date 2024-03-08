@@ -9,7 +9,7 @@ description: >-
 ## Installation
 
 Head to [arangodb.com/download](https://www.arangodb.com/download/),
-select your operating system and download ArangoDB. You may also follow
+select your operating system, and download ArangoDB. You may also follow
 the instructions on how to install with a package manager, if available.
 
 If you installed a binary package under Linux, the server is
