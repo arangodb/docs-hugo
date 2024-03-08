@@ -268,7 +268,7 @@ debugging only.
 
 If set to `true`, console log output is colorized.
 The default is `true` when a terminal is attached to stdin,
-`false` otherwise or when running on Windows.
+`false` otherwise.
 
 - `--log.console=bool`
 

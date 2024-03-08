@@ -195,9 +195,9 @@ longer use the `ldap` log topic. Changing the log level of the `ldap` topic or
 any other unknown topic is not an error, however. Also see
 [Incompatible changes in ArangoDB 3.12](incompatible-changes-in-3-12.md#ldap-authentication-support-removed).
 
-### Privilege changes
+#### Error code `12` removed
 
-
+The unused error `ERROR_OUT_OF_MEMORY_MMAP` with the number `12` has been removed.
 
 ### Endpoint return value changes
 

@@ -291,12 +291,9 @@ JavaScript exception: ArangoError 11: not allowed to connect to this URL: http:/
 
 {{< warning >}}
 Startup options may require additional escaping in your command line.
-Examples are:
-- Dollar symbols and backslashes in most Linux and macOS shells (`\$`, `\\`),
-  unless the entire string is wrapped in single quotes (`'tcp://arangodb\.org$'`
-  instead of `tcp://arangodb\\.org\$`)
-- Circumflex accents in Windows `cmd` (`^^`) unless the entire string is
-  wrapped in double quotes (`"^http…"`).
+For examples, dollar symbols and backslashes need to be escaped in most Linux
+shells (`\$`, `\\`) unless the entire string is wrapped in single quotes
+(`'tcp://arangodb\.org$'` instead of `tcp://arangodb\\.org\$`).
 {{< /warning >}}
 
 ### Additional JavaScript security options

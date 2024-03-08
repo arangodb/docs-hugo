@@ -115,8 +115,11 @@ Predefined roles cannot be deleted. Note that permissions linked to predefined
 roles vary between organization owners and organization members.
 
 {{% comment %}}
-Windows command to generate below list (cmd.exe):
-oasisctl list roles --organization-id <id> --format json | jq -r ".[] | select(.predefined == true) | \"**\(.description)** (`\(.id)`):\n\(.permissions ^| split(\", \") ^| map(\"- `\(.)`\n\") ^| join(\"\"))""
+Command to generate below list with (Git)Bash:
+
+export OASIS_TOKEN='<TOKEN>'
+./oasisctl list roles --organization-id <ID> --format json | jq -r '.[] | select(.predefined == true) | "**\(.description)** (`\(.id)`):\n\(.permissions | split(", ") | map("- `\(.)`\n") | join(""))"'
+
 {{% /comment %}}
 
 {{< expand title="List of predefined roles and their permissions" >}}
