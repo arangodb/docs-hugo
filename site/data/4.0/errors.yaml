@@ -1,0 +1,1408 @@
+- group: General errors
+- name: ERROR_NO_ERROR
+  text: "no error"
+  desc: "No error has occurred."
+  code: 0
+- name: ERROR_FAILED
+  text: "failed"
+  desc: "Will be raised when a general error occurred."
+  code: 1
+- name: ERROR_SYS_ERROR
+  text: "system error"
+  desc: "Will be raised when operating system error occurred."
+  code: 2
+- name: ERROR_OUT_OF_MEMORY
+  text: "out of memory"
+  desc: "Will be raised when there is a memory shortage."
+  code: 3
+- name: ERROR_INTERNAL
+  text: "internal error"
+  desc: "Will be raised when an internal error occurred."
+  code: 4
+- name: ERROR_ILLEGAL_NUMBER
+  text: "illegal number"
+  desc: "Will be raised when an illegal representation of a number was given."
+  code: 5
+- name: ERROR_NUMERIC_OVERFLOW
+  text: "numeric overflow"
+  desc: "Will be raised when a numeric overflow occurred."
+  code: 6
+- name: ERROR_ILLEGAL_OPTION
+  text: "illegal option"
+  desc: "Will be raised when an unknown option was supplied by the user."
+  code: 7
+- name: ERROR_DEAD_PID
+  text: "dead process identifier"
+  desc: "Will be raised when a PID without a living process was found."
+  code: 8
+- name: ERROR_NOT_IMPLEMENTED
+  text: "not implemented"
+  desc: "Will be raised when hitting an unimplemented feature."
+  code: 9
+- name: ERROR_BAD_PARAMETER
+  text: "bad parameter"
+  desc: "Will be raised when the parameter does not fulfill the requirements."
+  code: 10
+- name: ERROR_FORBIDDEN
+  text: "forbidden"
+  desc: "Will be raised when you are missing permission for the operation."
+  code: 11
+- name: ERROR_CORRUPTED_CSV
+  text: "csv is corrupt"
+  desc: "Will be raised when encountering a corrupt csv line."
+  code: 13
+- name: ERROR_FILE_NOT_FOUND
+  text: "file not found"
+  desc: "Will be raised when a file is not found."
+  code: 14
+- name: ERROR_CANNOT_WRITE_FILE
+  text: "cannot write file"
+  desc: "Will be raised when a file cannot be written."
+  code: 15
+- name: ERROR_CANNOT_OVERWRITE_FILE
+  text: "cannot overwrite file"
+  desc: "Will be raised when an attempt is made to overwrite an existing file."
+  code: 16
+- name: ERROR_TYPE_ERROR
+  text: "type error"
+  desc: "Will be raised when a type error is encountered."
+  code: 17
+- name: ERROR_LOCK_TIMEOUT
+  text: "lock timeout"
+  desc: "Will be raised when there's a timeout waiting for a lock."
+  code: 18
+- name: ERROR_CANNOT_CREATE_DIRECTORY
+  text: "cannot create directory"
+  desc: "Will be raised when an attempt to create a directory fails."
+  code: 19
+- name: ERROR_CANNOT_CREATE_TEMP_FILE
+  text: "cannot create temporary file"
+  desc: "Will be raised when an attempt to create a temporary file fails."
+  code: 20
+- name: ERROR_REQUEST_CANCELED
+  text: "canceled request"
+  desc: "Will be raised when a request is canceled by the user."
+  code: 21
+- name: ERROR_DEBUG
+  text: "intentional debug error"
+  desc: "Will be raised intentionally during debugging."
+  code: 22
+- name: ERROR_IP_ADDRESS_INVALID
+  text: "IP address is invalid"
+  desc: "Will be raised when the structure of an IP address is invalid."
+  code: 25
+- name: ERROR_FILE_EXISTS
+  text: "file exists"
+  desc: "Will be raised when a file already exists."
+  code: 27
+- name: ERROR_LOCKED
+  text: "locked"
+  desc: "Will be raised when a resource or an operation is locked."
+  code: 28
+- name: ERROR_DEADLOCK
+  text: "deadlock detected"
+  desc: "Will be raised when a deadlock is detected when accessing collections."
+  code: 29
+- name: ERROR_SHUTTING_DOWN
+  text: "shutdown in progress"
+  desc: "Will be raised when a call cannot succeed because a server shutdown is already in progress."
+  code: 30
+- name: ERROR_ONLY_ENTERPRISE
+  text: "only enterprise version"
+  desc: "Will be raised when an Enterprise Edition feature is requested from the Community Edition."
+  code: 31
+- name: ERROR_RESOURCE_LIMIT
+  text: "resource limit exceeded"
+  desc: "Will be raised when the resources used by an operation exceed the configured maximum value."
+  code: 32
+- name: ERROR_ARANGO_ICU_ERROR
+  text: "icu error: %s"
+  desc: "will be raised if ICU operations failed."
+  code: 33
+- name: ERROR_CANNOT_READ_FILE
+  text: "cannot read file"
+  desc: "Will be raised when a file cannot be read."
+  code: 34
+- name: ERROR_INCOMPATIBLE_VERSION
+  text: "incompatible server version"
+  desc: "Will be raised when a server is running an incompatible version of ArangoDB."
+  code: 35
+- name: ERROR_DISABLED
+  text: "disabled"
+  desc: "Will be raised when a requested resource is not enabled."
+  code: 36
+- name: ERROR_MALFORMED_JSON
+  text: "malformed json"
+  desc: "Will be raised when a JSON string could not be parsed."
+  code: 37
+- name: ERROR_STARTING_UP
+  text: "startup ongoing"
+  desc: "Will be raised when a call cannot succeed because the server startup phase is still in progress."
+  code: 38
+- name: ERROR_DESERIALIZE
+  text: "error during deserialization"
+  desc: "Will be raised when a data structure cannot be deserialized, e.g. because the input is invalid."
+  code: 39
+- name: ERROR_END_OF_FILE
+  text: "reached end of file"
+  desc: "Will be raised when a read operation reaches the end of the file."
+  code: 40
+- group: HTTP error status codes
+- name: ERROR_HTTP_BAD_PARAMETER
+  text: "bad parameter"
+  desc: "Will be raised when the HTTP request does not fulfill the requirements."
+  code: 400
+- name: ERROR_HTTP_UNAUTHORIZED
+  text: "unauthorized"
+  desc: "Will be raised when authorization is required but the user is not authorized."
+  code: 401
+- name: ERROR_HTTP_FORBIDDEN
+  text: "forbidden"
+  desc: "Will be raised when the operation is forbidden."
+  code: 403
+- name: ERROR_HTTP_NOT_FOUND
+  text: "not found"
+  desc: "Will be raised when an URI is unknown."
+  code: 404
+- name: ERROR_HTTP_METHOD_NOT_ALLOWED
+  text: "method not supported"
+  desc: "Will be raised when an unsupported HTTP method is used for an operation."
+  code: 405
+- name: ERROR_HTTP_NOT_ACCEPTABLE
+  text: "request not acceptable"
+  desc: "Will be raised when an unsupported HTTP content type is used for an operation, or if a request is not acceptable for a leader or follower."
+  code: 406
+- name: ERROR_HTTP_REQUEST_TIMEOUT
+  text: "request timeout"
+  desc: "Will be raised when a timeout occured."
+  code: 408
+- name: ERROR_HTTP_CONFLICT
+  text: "conflict"
+  desc: "Will be raised when a conflict occurs in an HTTP operation."
+  code: 409
+- name: ERROR_HTTP_GONE
+  text: "content permanently deleted"
+  desc: "Will be raised when the requested content has been permanently deleted."
+  code: 410
+- name: ERROR_HTTP_PRECONDITION_FAILED
+  text: "precondition failed"
+  desc: "Will be raised when a precondition for an HTTP request is not met."
+  code: 412
+- name: ERROR_HTTP_ENHANCE_YOUR_CALM
+  text: "enhance your calm"
+  desc: "Will be raised when too many requests were sent to a rate-limited API."
+  code: 420
+- name: ERROR_HTTP_SERVER_ERROR
+  text: "internal server error"
+  desc: "Will be raised when an internal server is encountered."
+  code: 500
+- name: ERROR_HTTP_NOT_IMPLEMENTED
+  text: "not implemented"
+  desc: "Will be raised when an API is called this is not implemented in general, or not implemented for the current setup."
+  code: 501
+- name: ERROR_HTTP_SERVICE_UNAVAILABLE
+  text: "service unavailable"
+  desc: "Will be raised when a service is temporarily unavailable."
+  code: 503
+- name: ERROR_HTTP_GATEWAY_TIMEOUT
+  text: "gateway timeout"
+  desc: "Will be raised when a service contacted by ArangoDB does not respond in a timely manner."
+  code: 504
+- group: HTTP processing errors
+- name: ERROR_HTTP_CORRUPTED_JSON
+  text: "invalid JSON object"
+  desc: "Will be raised when a string representation of a JSON object is corrupt."
+  code: 600
+- name: ERROR_HTTP_SUPERFLUOUS_SUFFICES
+  text: "superfluous URL suffices"
+  desc: "Will be raised when the URL contains superfluous suffices."
+  code: 601
+- group: Internal ArangoDB storage errors
+- name: ERROR_ARANGO_ILLEGAL_STATE
+  text: "illegal state"
+  desc: "Internal error that will be raised when the datafile is not in the required state."
+  code: 1000
+- name: ERROR_ARANGO_READ_ONLY
+  text: "read only"
+  desc: "Internal error that will be raised when trying to write to a read-only datafile or collection."
+  code: 1004
+- name: ERROR_ARANGO_DUPLICATE_IDENTIFIER
+  text: "duplicate identifier"
+  desc: "Internal error that will be raised when a identifier duplicate is detected."
+  code: 1005
+- group: External ArangoDB storage errors
+- name: ERROR_ARANGO_CORRUPTED_DATAFILE
+  text: "corrupted datafile"
+  desc: "Will be raised when a corruption is detected in a datafile."
+  code: 1100
+- name: ERROR_ARANGO_ILLEGAL_PARAMETER_FILE
+  text: "illegal or unreadable parameter file"
+  desc: "Will be raised if a parameter file is corrupted or cannot be read."
+  code: 1101
+- name: ERROR_ARANGO_CORRUPTED_COLLECTION
+  text: "corrupted collection"
+  desc: "Will be raised when a collection contains one or more corrupted data files."
+  code: 1102
+- name: ERROR_ARANGO_FILESYSTEM_FULL
+  text: "filesystem full"
+  desc: "Will be raised when the filesystem is full."
+  code: 1104
+- name: ERROR_ARANGO_DATADIR_LOCKED
+  text: "database directory is locked"
+  desc: "Will be raised when the database directory is locked by a different process."
+  code: 1107
+- group: General ArangoDB storage errors
+- name: ERROR_ARANGO_CONFLICT
+  text: "conflict"
+  desc: "Will be raised when updating or deleting a document and a conflict has been detected."
+  code: 1200
+- name: ERROR_ARANGO_DOCUMENT_NOT_FOUND
+  text: "document not found"
+  desc: "Will be raised when a document with a given identifier is unknown."
+  code: 1202
+- name: ERROR_ARANGO_DATA_SOURCE_NOT_FOUND
+  text: "collection or view not found"
+  desc: "Will be raised when a collection or View with the given identifier or name is unknown."
+  code: 1203
+- name: ERROR_ARANGO_COLLECTION_PARAMETER_MISSING
+  text: "parameter 'collection' not found"
+  desc: "Will be raised when the collection parameter is missing."
+  code: 1204
+- name: ERROR_ARANGO_DOCUMENT_HANDLE_BAD
+  text: "illegal document identifier"
+  desc: "Will be raised when a document identifier is corrupt."
+  code: 1205
+- name: ERROR_ARANGO_DUPLICATE_NAME
+  text: "duplicate name"
+  desc: "Will be raised when a name duplicate is detected."
+  code: 1207
+- name: ERROR_ARANGO_ILLEGAL_NAME
+  text: "illegal name"
+  desc: "Will be raised when an illegal name is detected."
+  code: 1208
+- name: ERROR_ARANGO_NO_INDEX
+  text: "no suitable index known"
+  desc: "Will be raised when no suitable index for the query is known."
+  code: 1209
+- name: ERROR_ARANGO_UNIQUE_CONSTRAINT_VIOLATED
+  text: "unique constraint violated"
+  desc: "Will be raised when there is a unique constraint violation."
+  code: 1210
+- name: ERROR_ARANGO_INDEX_NOT_FOUND
+  text: "index not found"
+  desc: "Will be raised when an index with a given identifier is unknown."
+  code: 1212
+- name: ERROR_ARANGO_CROSS_COLLECTION_REQUEST
+  text: "cross collection request not allowed"
+  desc: "Will be raised when a cross-collection is requested."
+  code: 1213
+- name: ERROR_ARANGO_INDEX_HANDLE_BAD
+  text: "illegal index identifier"
+  desc: "Will be raised when a index identifier is corrupt."
+  code: 1214
+- name: ERROR_ARANGO_DOCUMENT_TOO_LARGE
+  text: "document too large"
+  desc: "Will be raised when the document cannot fit into any datafile because of it is too large."
+  code: 1216
+- name: ERROR_ARANGO_COLLECTION_TYPE_INVALID
+  text: "collection type invalid"
+  desc: "Will be raised when an invalid collection type is used in a request."
+  code: 1218
+- name: ERROR_ARANGO_ATTRIBUTE_PARSER_FAILED
+  text: "parsing attribute name definition failed"
+  desc: "Will be raised when parsing an attribute name definition failed."
+  code: 1220
+- name: ERROR_ARANGO_DOCUMENT_KEY_BAD
+  text: "illegal document key"
+  desc: "Will be raised when a document key is corrupt."
+  code: 1221
+- name: ERROR_ARANGO_DOCUMENT_KEY_UNEXPECTED
+  text: "unexpected document key"
+  desc: "Will be raised when a user-defined document key is supplied for collections with auto key generation."
+  code: 1222
+- name: ERROR_ARANGO_DATADIR_NOT_WRITABLE
+  text: "server database directory not writable"
+  desc: "Will be raised when the server's database directory is not writable for the current user."
+  code: 1224
+- name: ERROR_ARANGO_OUT_OF_KEYS
+  text: "out of keys"
+  desc: "Will be raised when a key generator runs out of keys."
+  code: 1225
+- name: ERROR_ARANGO_DOCUMENT_KEY_MISSING
+  text: "missing document key"
+  desc: "Will be raised when a document key is missing."
+  code: 1226
+- name: ERROR_ARANGO_DOCUMENT_TYPE_INVALID
+  text: "invalid document type"
+  desc: "Will be raised when there is an attempt to create a document with an invalid type."
+  code: 1227
+- name: ERROR_ARANGO_DATABASE_NOT_FOUND
+  text: "database not found"
+  desc: "Will be raised when a non-existing database is accessed."
+  code: 1228
+- name: ERROR_ARANGO_DATABASE_NAME_INVALID
+  text: "database name invalid"
+  desc: "Will be raised when an invalid database name is used."
+  code: 1229
+- name: ERROR_ARANGO_USE_SYSTEM_DATABASE
+  text: "operation only allowed in system database"
+  desc: "Will be raised when an operation is requested in a database other than the system database."
+  code: 1230
+- name: ERROR_ARANGO_INVALID_KEY_GENERATOR
+  text: "invalid key generator"
+  desc: "Will be raised when an invalid key generator description is used."
+  code: 1232
+- name: ERROR_ARANGO_INVALID_EDGE_ATTRIBUTE
+  text: "expecting both `_from` and `_to` attributes to be defined in the edge document and have the format `<collectionName>/<vertexKey>` "
+  desc: "will be raised when the _from or _to values of an edge are undefined or contain an invalid value."
+  code: 1233
+- name: ERROR_ARANGO_INDEX_CREATION_FAILED
+  text: "index creation failed"
+  desc: "Will be raised when an attempt to create an index has failed."
+  code: 1235
+- name: ERROR_ARANGO_COLLECTION_TYPE_MISMATCH
+  text: "collection type mismatch"
+  desc: "Will be raised when a collection has a different type from what has been expected."
+  code: 1237
+- name: ERROR_ARANGO_COLLECTION_NOT_LOADED
+  text: "collection not loaded"
+  desc: "Will be raised when a collection is accessed that is not yet loaded."
+  code: 1238
+- name: ERROR_ARANGO_DOCUMENT_REV_BAD
+  text: "illegal document revision"
+  desc: "Will be raised when a document revision is corrupt or is missing where needed."
+  code: 1239
+- name: ERROR_ARANGO_INCOMPLETE_READ
+  text: "incomplete read"
+  desc: "Will be raised by the storage engine when a read cannot be completed."
+  code: 1240
+- name: ERROR_ARANGO_OLD_ROCKSDB_FORMAT
+  text: "not supported by old legacy data format"
+  desc: "Will be raised by the storage engine when an operation cannot be performed because the old, deprecated, little endian key encoding format is still used and an operation is tried which is not supported by this format."
+  code: 1241
+- group: Checked ArangoDB storage errors
+- name: ERROR_ARANGO_EMPTY_DATADIR
+  text: "server database directory is empty"
+  desc: "Will be raised when encountering an empty server database directory."
+  code: 1301
+- name: ERROR_ARANGO_TRY_AGAIN
+  text: "operation should be tried again"
+  desc: "Will be raised when an operation should be retried."
+  code: 1302
+- name: ERROR_ARANGO_BUSY
+  text: "engine is busy"
+  desc: "Will be raised when storage engine is busy."
+  code: 1303
+- name: ERROR_ARANGO_MERGE_IN_PROGRESS
+  text: "merge in progress"
+  desc: "Will be raised when storage engine has a datafile merge in progress and cannot complete the operation."
+  code: 1304
+- name: ERROR_ARANGO_IO_ERROR
+  text: "storage engine I/O error"
+  desc: "Will be raised when storage engine encounters an I/O error."
+  code: 1305
+- group: ArangoDB replication errors
+- name: ERROR_REPLICATION_NO_RESPONSE
+  text: "no response"
+  desc: "Will be raised when the replication applier does not receive any or an incomplete response from the leader."
+  code: 1400
+- name: ERROR_REPLICATION_INVALID_RESPONSE
+  text: "invalid response"
+  desc: "Will be raised when the replication applier receives an invalid response from the leader."
+  code: 1401
+- name: ERROR_REPLICATION_LEADER_ERROR
+  text: "leader error"
+  desc: "Will be raised when the replication applier receives a server error from the leader."
+  code: 1402
+- name: ERROR_REPLICATION_LEADER_INCOMPATIBLE
+  text: "leader incompatible"
+  desc: "Will be raised when the replication applier connects to a leader that has an incompatible version."
+  code: 1403
+- name: ERROR_REPLICATION_LEADER_CHANGE
+  text: "leader change"
+  desc: "Will be raised when the replication applier connects to a different leader than before."
+  code: 1404
+- name: ERROR_REPLICATION_LOOP
+  text: "loop detected"
+  desc: "Will be raised when the replication applier is asked to connect to itself for replication."
+  code: 1405
+- name: ERROR_REPLICATION_UNEXPECTED_MARKER
+  text: "unexpected marker"
+  desc: "Will be raised when an unexpected marker is found in the replication log stream."
+  code: 1406
+- name: ERROR_REPLICATION_INVALID_APPLIER_STATE
+  text: "invalid applier state"
+  desc: "Will be raised when an invalid replication applier state file is found."
+  code: 1407
+- name: ERROR_REPLICATION_UNEXPECTED_TRANSACTION
+  text: "invalid transaction"
+  desc: "Will be raised when an unexpected transaction id is found."
+  code: 1408
+- name: ERROR_REPLICATION_SHARD_SYNC_ATTEMPT_TIMEOUT_EXCEEDED
+  text: "shard synchronization attempt timeout exceeded"
+  desc: "Will be raised when the synchronization of a shard takes longer than the configured timeout."
+  code: 1409
+- name: ERROR_REPLICATION_INVALID_APPLIER_CONFIGURATION
+  text: "invalid replication applier configuration"
+  desc: "Will be raised when the configuration for the replication applier is invalid."
+  code: 1410
+- name: ERROR_REPLICATION_RUNNING
+  text: "cannot perform operation while applier is running"
+  desc: "Will be raised when there is an attempt to perform an operation while the replication applier is running."
+  code: 1411
+- name: ERROR_REPLICATION_APPLIER_STOPPED
+  text: "replication stopped"
+  desc: "Special error code used to indicate the replication applier was stopped by a user."
+  code: 1412
+- name: ERROR_REPLICATION_NO_START_TICK
+  text: "no start tick"
+  desc: "Will be raised when the replication applier is started without a known start tick value."
+  code: 1413
+- name: ERROR_REPLICATION_START_TICK_NOT_PRESENT
+  text: "start tick not present"
+  desc: "Will be raised when the replication applier fetches data using a start tick, but that start tick is not present on the logger server anymore."
+  code: 1414
+- name: ERROR_REPLICATION_WRONG_CHECKSUM
+  text: "wrong checksum"
+  desc: "Will be raised when a new born follower submits a wrong checksum"
+  code: 1416
+- name: ERROR_REPLICATION_SHARD_NONEMPTY
+  text: "shard not empty"
+  desc: "Will be raised when a shard is not empty and the follower tries a shortcut"
+  code: 1417
+- name: ERROR_REPLICATION_REPLICATED_LOG_NOT_FOUND
+  text: "replicated log {} not found"
+  desc: "Will be raised when a specific replicated log is not found"
+  code: 1418
+- name: ERROR_REPLICATION_REPLICATED_LOG_NOT_THE_LEADER
+  text: "not the log leader"
+  desc: "Will be raised when a participant of a replicated log is ordered to do something only the leader can do"
+  code: 1419
+- name: ERROR_REPLICATION_REPLICATED_LOG_NOT_A_FOLLOWER
+  text: "not a log follower"
+  desc: "Will be raised when a participant of a replicated log is ordered to do something only a follower can do"
+  code: 1420
+- name: ERROR_REPLICATION_REPLICATED_LOG_APPEND_ENTRIES_REJECTED
+  text: "follower rejected append entries request"
+  desc: "Will be raised when a follower of a replicated log rejects an append entries request"
+  code: 1421
+- name: ERROR_REPLICATION_REPLICATED_LOG_LEADER_RESIGNED
+  text: "a resigned leader instance rejected a request"
+  desc: "Will be raised when a leader instance of a replicated log rejects a request because it just resigned. This can also happen if the term changes (due to a configuration change), even if the leader stays the same."
+  code: 1422
+- name: ERROR_REPLICATION_REPLICATED_LOG_FOLLOWER_RESIGNED
+  text: "a resigned follower instance rejected a request"
+  desc: "Will be raised when a follower instance of a replicated log rejects a request because it just resigned. This can also happen if the term changes (due to a configuration change), even if the server stays a follower."
+  code: 1423
+- name: ERROR_REPLICATION_REPLICATED_LOG_PARTICIPANT_GONE
+  text: "the replicated log of the participant is gone"
+  desc: "Will be raised when a participant instance of a replicated log is no longer available."
+  code: 1424
+- name: ERROR_REPLICATION_REPLICATED_LOG_INVALID_TERM
+  text: "an invalid term was given"
+  desc: "Will be raised when a participant tries to change its term but found a invalid new term."
+  code: 1425
+- name: ERROR_REPLICATION_REPLICATED_LOG_UNCONFIGURED
+  text: "log participant unconfigured"
+  desc: "Will be raised when a participant is currently unconfigured, i.e. neither a leader nor a follower."
+  code: 1426
+- name: ERROR_REPLICATION_REPLICATED_STATE_NOT_FOUND
+  text: "replicated state {id:} of type {type:} not found"
+  desc: "Will be raised when a specific replicated state was not found."
+  code: 1427
+- name: ERROR_REPLICATION_REPLICATED_STATE_NOT_AVAILABLE
+  text: "replicated state {id:} of type {type:} is unavailable"
+  desc: "Will be raised when a specific replicated state was accessed but is not (yet) available."
+  code: 1428
+- name: ERROR_REPLICATION_WRITE_CONCERN_NOT_FULFILLED
+  text: "not enough replicas for the configured write-concern are present"
+  desc: "Will be raised when there are not enough replicas of a shard available to fulfill the write-concern for a write operation."
+  code: 1429
+- name: ERROR_REPLICATION_REPLICATED_LOG_SUBSEQUENT_FAULT
+  text: "operation aborted because a previous operation failed"
+  desc: "Will be raised when an operation is aborted due to a cascading failure."
+  code: 1430
+- name: ERROR_REPLICATION_REPLICATED_STATE_IMPLEMENTATION_NOT_FOUND
+  text: "replicated state type {type:} is unavailable"
+  desc: "Will be raised when a specific replicated state type was used but is not (yet) available."
+  code: 1431
+- name: ERROR_REPLICATION_REPLICATED_WAL_ERROR
+  text: "error in the replicated WAL subsystem"
+  desc: "Will be raised when an error occurred in the replicated WAL subsystem"
+  code: 1432
+- name: ERROR_REPLICATION_REPLICATED_WAL_INVALID_FILE
+  text: "replicated WAL {file:} has an invalid or missing file header"
+  desc: "Will be raised when a log file has an invalid or missing file header."
+  code: 1433
+- name: ERROR_REPLICATION_REPLICATED_WAL_CORRUPT
+  text: "replicated WAL {file:} is corrupt"
+  desc: "Will be raised when a log file has an invalid size or reading from a log file produced unexpected data."
+  code: 1434
+- group: ArangoDB cluster errors
+- name: ERROR_CLUSTER_NOT_FOLLOWER
+  text: "not a follower"
+  desc: "Will be raised when an operation is sent to a non-following server."
+  code: 1446
+- name: ERROR_CLUSTER_FOLLOWER_TRANSACTION_COMMIT_PERFORMED
+  text: "follower transaction intermediate commit already performed"
+  desc: "Will be raised when a follower transaction has already performed an intermediate commit and must be rolled back."
+  code: 1447
+- name: ERROR_CLUSTER_CREATE_COLLECTION_PRECONDITION_FAILED
+  text: "creating collection failed due to precondition"
+  desc: "Will be raised when updating the plan on collection creation failed."
+  code: 1448
+- name: ERROR_CLUSTER_SERVER_UNKNOWN
+  text: "got a request from an unknown server"
+  desc: "Will be raised on some occasions when one server gets a request from another, which has not (yet?) been made known via the Agency."
+  code: 1449
+- name: ERROR_CLUSTER_TOO_MANY_SHARDS
+  text: "too many shards"
+  desc: "Will be raised when the number of shards for a collection is higher than allowed."
+  code: 1450
+- name: ERROR_CLUSTER_COULD_NOT_CREATE_COLLECTION_IN_PLAN
+  text: "could not create collection in plan"
+  desc: "Will be raised when a Coordinator in a cluster cannot create an entry for a new collection in the Plan hierarchy in the Agency."
+  code: 1454
+- name: ERROR_CLUSTER_COULD_NOT_CREATE_COLLECTION
+  text: "could not create collection"
+  desc: "Will be raised when a Coordinator in a cluster notices that some DB-Servers report problems when creating shards for a new collection."
+  code: 1456
+- name: ERROR_CLUSTER_TIMEOUT
+  text: "timeout in cluster operation"
+  desc: "Will be raised when a Coordinator in a cluster runs into a timeout for some cluster wide operation."
+  code: 1457
+- name: ERROR_CLUSTER_COULD_NOT_REMOVE_COLLECTION_IN_PLAN
+  text: "could not remove collection from plan"
+  desc: "Will be raised when a Coordinator in a cluster cannot remove an entry for a collection in the Plan hierarchy in the Agency."
+  code: 1458
+- name: ERROR_CLUSTER_COULD_NOT_CREATE_DATABASE_IN_PLAN
+  text: "could not create database in plan"
+  desc: "Will be raised when a Coordinator in a cluster cannot create an entry for a new database in the Plan hierarchy in the Agency."
+  code: 1460
+- name: ERROR_CLUSTER_COULD_NOT_CREATE_DATABASE
+  text: "could not create database"
+  desc: "Will be raised when a Coordinator in a cluster notices that some DB-Servers report problems when creating databases for a new cluster wide database."
+  code: 1461
+- name: ERROR_CLUSTER_COULD_NOT_REMOVE_DATABASE_IN_PLAN
+  text: "could not remove database from plan"
+  desc: "Will be raised when a Coordinator in a cluster cannot remove an entry for a database in the Plan hierarchy in the Agency."
+  code: 1462
+- name: ERROR_CLUSTER_COULD_NOT_REMOVE_DATABASE_IN_CURRENT
+  text: "could not remove database from current"
+  desc: "Will be raised when a Coordinator in a cluster cannot remove an entry for a database in the Current hierarchy in the Agency."
+  code: 1463
+- name: ERROR_CLUSTER_SHARD_GONE
+  text: "no responsible shard found"
+  desc: "Will be raised when a Coordinator in a cluster cannot determine the shard that is responsible for a given document."
+  code: 1464
+- name: ERROR_CLUSTER_CONNECTION_LOST
+  text: "cluster internal HTTP connection broken"
+  desc: "Will be raised when a Coordinator in a cluster loses an HTTP connection to a DB-Server in the cluster whilst transferring data."
+  code: 1465
+- name: ERROR_CLUSTER_MUST_NOT_SPECIFY_KEY
+  text: "must not specify _key for this collection"
+  desc: "Will be raised when a Coordinator in a cluster finds that the _key attribute was specified in a sharded collection the uses not only _key as sharding attribute."
+  code: 1466
+- name: ERROR_CLUSTER_GOT_CONTRADICTING_ANSWERS
+  text: "got contradicting answers from different shards"
+  desc: "Will be raised if a Coordinator in a cluster gets conflicting results from different shards, which should never happen."
+  code: 1467
+- name: ERROR_CLUSTER_NOT_ALL_SHARDING_ATTRIBUTES_GIVEN
+  text: "not all sharding attributes given"
+  desc: "Will be raised if a Coordinator tries to find out which shard is responsible for a partial document, but cannot do this because not all sharding attributes are specified."
+  code: 1468
+- name: ERROR_CLUSTER_MUST_NOT_CHANGE_SHARDING_ATTRIBUTES
+  text: "must not change the value of a shard key attribute"
+  desc: "Will be raised if there is an attempt to update the value of a shard attribute."
+  code: 1469
+- name: ERROR_CLUSTER_UNSUPPORTED
+  text: "unsupported operation or parameter for clusters"
+  desc: "Will be raised when there is an attempt to carry out an operation that is not supported in the context of a sharded collection."
+  code: 1470
+- name: ERROR_CLUSTER_ONLY_ON_COORDINATOR
+  text: "this operation is only valid on a coordinator in a cluster"
+  desc: "Will be raised if there is an attempt to run a Coordinator-only operation on a different type of node."
+  code: 1471
+- name: ERROR_CLUSTER_READING_PLAN_AGENCY
+  text: "error reading Plan in agency"
+  desc: "Will be raised if a Coordinator or DB-Server cannot read the Plan in the Agency."
+  code: 1472
+- name: ERROR_CLUSTER_AQL_COMMUNICATION
+  text: "error in cluster internal communication for AQL"
+  desc: "Will be raised if the internal communication of the cluster for AQL produces an error."
+  code: 1474
+- name: ERROR_CLUSTER_ONLY_ON_DBSERVER
+  text: "this operation is only valid on a DBserver in a cluster"
+  desc: "Will be raised if there is an attempt to run a DB-Server-only operation on a different type of node."
+  code: 1477
+- name: ERROR_CLUSTER_BACKEND_UNAVAILABLE
+  text: "A cluster backend which was required for the operation could not be reached"
+  desc: "Will be raised if a required DB-Server can't be reached."
+  code: 1478
+- name: ERROR_CLUSTER_AQL_COLLECTION_OUT_OF_SYNC
+  text: "collection/view is out of sync"
+  desc: "Will be raised if a collection/view needed during query execution is out of sync. This currently can happen when using SatelliteCollections, Arangosearch links or inverted indexes."
+  code: 1481
+- name: ERROR_CLUSTER_COULD_NOT_CREATE_INDEX_IN_PLAN
+  text: "could not create index in plan"
+  desc: "Will be raised when a Coordinator in a cluster cannot create an entry for a new index in the Plan hierarchy in the Agency."
+  code: 1482
+- name: ERROR_CLUSTER_COULD_NOT_DROP_INDEX_IN_PLAN
+  text: "could not drop index in plan"
+  desc: "Will be raised when a Coordinator in a cluster cannot remove an index from the Plan hierarchy in the Agency."
+  code: 1483
+- name: ERROR_CLUSTER_CHAIN_OF_DISTRIBUTESHARDSLIKE
+  text: "chain of distributeShardsLike references"
+  desc: "Will be raised if one tries to create a collection with a distributeShardsLike attribute which points to another collection that also has one."
+  code: 1484
+- name: ERROR_CLUSTER_MUST_NOT_DROP_COLL_OTHER_DISTRIBUTESHARDSLIKE
+  text: "must not drop collection while another has a distributeShardsLike attribute pointing to it"
+  desc: "Will be raised if one tries to drop a collection to which another collection points with its distributeShardsLike attribute."
+  code: 1485
+- name: ERROR_CLUSTER_UNKNOWN_DISTRIBUTESHARDSLIKE
+  text: "must not have a distributeShardsLike attribute pointing to an unknown collection"
+  desc: "Will be raised if one tries to create a collection which points to an unknown collection in its distributeShardsLike attribute."
+  code: 1486
+- name: ERROR_CLUSTER_INSUFFICIENT_DBSERVERS
+  text: "the number of current DB-Servers is lower than the requested replicationFactor/writeConcern"
+  desc: "Will be raised if one tries to create a collection with a replicationFactor or writeConcern value greater than the available number of DB-Servers."
+  code: 1487
+- name: ERROR_CLUSTER_COULD_NOT_DROP_FOLLOWER
+  text: "a follower could not be dropped in agency"
+  desc: "Will be raised if a follower that ought to be dropped could not be dropped in the Agency (under Current)."
+  code: 1488
+- name: ERROR_CLUSTER_SHARD_LEADER_REFUSES_REPLICATION
+  text: "a shard leader refuses to perform a replication operation"
+  desc: "Will be raised if a replication operation is refused by a shard leader."
+  code: 1489
+- name: ERROR_CLUSTER_SHARD_FOLLOWER_REFUSES_OPERATION
+  text: "a shard follower refuses to perform an operation"
+  desc: "Will be raised if a replication operation is refused by a shard follower because it is coming from the wrong leader."
+  code: 1490
+- name: ERROR_CLUSTER_SHARD_LEADER_RESIGNED
+  text: "a (former) shard leader refuses to perform an operation, because it has resigned in the meantime"
+  desc: "Will be raised if a non-replication operation is refused by a former shard leader that has found out that it is no longer the leader."
+  code: 1491
+- name: ERROR_CLUSTER_AGENCY_COMMUNICATION_FAILED
+  text: "some agency operation failed"
+  desc: "Will be raised if after various retries an Agency operation could not be performed successfully."
+  code: 1492
+- name: ERROR_CLUSTER_LEADERSHIP_CHALLENGE_ONGOING
+  text: "leadership challenge is ongoing"
+  desc: "Will be raised when servers are currently competing for leadership, and the result is still unknown."
+  code: 1495
+- name: ERROR_CLUSTER_NOT_LEADER
+  text: "not a leader"
+  desc: "Will be raised when an operation is sent to a non-leading server."
+  code: 1496
+- name: ERROR_CLUSTER_COULD_NOT_CREATE_VIEW_IN_PLAN
+  text: "could not create view in plan"
+  desc: "Will be raised when a Coordinator in a cluster cannot create an entry for a new View in the Plan hierarchy in the Agency."
+  code: 1497
+- name: ERROR_CLUSTER_VIEW_ID_EXISTS
+  text: "view ID already exists"
+  desc: "Will be raised when a Coordinator in a cluster tries to create a View and the View ID already exists."
+  code: 1498
+- name: ERROR_CLUSTER_COULD_NOT_DROP_COLLECTION
+  text: "could not drop collection in plan"
+  desc: "Will be raised when a Coordinator in a cluster cannot drop a collection entry in the Plan hierarchy in the Agency."
+  code: 1499
+- group: ArangoDB query errors
+- name: ERROR_QUERY_KILLED
+  text: "query killed"
+  desc: "Will be raised when a running query is killed by an explicit admin command."
+  code: 1500
+- name: ERROR_QUERY_PARSE
+  text: "%s"
+  desc: "Will be raised when query is parsed and is found to be syntactically invalid."
+  code: 1501
+- name: ERROR_QUERY_EMPTY
+  text: "query is empty"
+  desc: "Will be raised when an empty query is specified."
+  code: 1502
+- name: ERROR_QUERY_SCRIPT
+  text: "runtime error '%s'"
+  desc: "Will be raised when a runtime error is caused by the query."
+  code: 1503
+- name: ERROR_QUERY_NUMBER_OUT_OF_RANGE
+  text: "number out of range"
+  desc: "Will be raised when a number is outside the expected range."
+  code: 1504
+- name: ERROR_QUERY_INVALID_GEO_VALUE
+  text: "invalid geo coordinate value"
+  desc: "Will be raised when a geo index coordinate is invalid or out of range."
+  code: 1505
+- name: ERROR_QUERY_VARIABLE_NAME_INVALID
+  text: "variable name '%s' has an invalid format"
+  desc: "Will be raised when an invalid variable name is used."
+  code: 1510
+- name: ERROR_QUERY_VARIABLE_REDECLARED
+  text: "variable '%s' is assigned multiple times"
+  desc: "Will be raised when a variable gets re-assigned in a query."
+  code: 1511
+- name: ERROR_QUERY_VARIABLE_NAME_UNKNOWN
+  text: "unknown variable '%s'"
+  desc: "Will be raised when an unknown variable is used or the variable is undefined the context it is used."
+  code: 1512
+- name: ERROR_QUERY_COLLECTION_LOCK_FAILED
+  text: "unable to read-lock collection %s"
+  desc: "Will be raised when a read lock on the collection cannot be acquired."
+  code: 1521
+- name: ERROR_QUERY_TOO_MANY_COLLECTIONS
+  text: "too many collections/shards"
+  desc: "Will be raised when the number of collections or shards in a query is beyond the allowed value."
+  code: 1522
+- name: ERROR_QUERY_TOO_MUCH_NESTING
+  text: "too much nesting or too many objects"
+  desc: "Will be raised when a query contains expressions or other constructs with too many objects or that are too deeply nested."
+  code: 1524
+- name: ERROR_QUERY_INVALID_OPTIONS_ATTRIBUTE
+  text: "unknown/invalid OPTIONS attribute used"
+  desc: "Will be raised when an unknown attribute name or an invalid attribute value is used inside an OPTIONS clause."
+  code: 1539
+- name: ERROR_QUERY_FUNCTION_NAME_UNKNOWN
+  text: "usage of unknown function '%s()'"
+  desc: "Will be raised when an undefined function is called."
+  code: 1540
+- name: ERROR_QUERY_FUNCTION_ARGUMENT_NUMBER_MISMATCH
+  text: "invalid number of arguments for function '%s()', expected number of arguments: minimum: %d, maximum: %d"
+  desc: "Will be raised when the number of arguments used in a function call does not match the expected number of arguments for the function."
+  code: 1541
+- name: ERROR_QUERY_FUNCTION_ARGUMENT_TYPE_MISMATCH
+  text: "invalid argument type in call to function '%s()'"
+  desc: "Will be raised when the type of an argument used in a function call does not match the expected argument type."
+  code: 1542
+- name: ERROR_QUERY_INVALID_REGEX
+  text: "invalid regex value"
+  desc: "Will be raised when an invalid regex argument value is used in a call to a function that expects a regex."
+  code: 1543
+- name: ERROR_QUERY_BIND_PARAMETERS_INVALID
+  text: "invalid structure of bind parameters"
+  desc: "Will be raised when the structure of bind parameters passed has an unexpected format."
+  code: 1550
+- name: ERROR_QUERY_BIND_PARAMETER_MISSING
+  text: "no value specified for declared bind parameter '%s'"
+  desc: "Will be raised when a bind parameter was declared in the query but the query is being executed with no value for that parameter."
+  code: 1551
+- name: ERROR_QUERY_BIND_PARAMETER_UNDECLARED
+  text: "bind parameter '%s' was not declared in the query"
+  desc: "Will be raised when a value gets specified for an undeclared bind parameter."
+  code: 1552
+- name: ERROR_QUERY_BIND_PARAMETER_TYPE
+  text: "bind parameter '%s' has an invalid value or type"
+  desc: "Will be raised when a bind parameter has an invalid value or type."
+  code: 1553
+- name: ERROR_QUERY_INVALID_ARITHMETIC_VALUE
+  text: "invalid arithmetic value"
+  desc: "Will be raised when a non-numeric value is used in an arithmetic operation."
+  code: 1561
+- name: ERROR_QUERY_DIVISION_BY_ZERO
+  text: "division by zero"
+  desc: "Will be raised when there is an attempt to divide by zero."
+  code: 1562
+- name: ERROR_QUERY_ARRAY_EXPECTED
+  text: "array expected"
+  desc: "Will be raised when a non-array operand is used for an operation that expects an array argument operand."
+  code: 1563
+- name: ERROR_QUERY_COLLECTION_USED_IN_EXPRESSION
+  text: "collection '%s' used as expression operand"
+  desc: "Will be raised when a collection is used as an operand in an AQL expression."
+  code: 1568
+- name: ERROR_QUERY_FAIL_CALLED
+  text: "FAIL(%s) called"
+  desc: "Will be raised when the function FAIL() is called from inside a query."
+  code: 1569
+- name: ERROR_QUERY_GEO_INDEX_MISSING
+  text: "no suitable geo index found for geo restriction on '%s'"
+  desc: "Will be raised when a geo restriction was specified but no suitable geo index is found to resolve it."
+  code: 1570
+- name: ERROR_QUERY_FULLTEXT_INDEX_MISSING
+  text: "no suitable fulltext index found for fulltext query on '%s'"
+  desc: "Will be raised when a fulltext query is performed on a collection without a suitable fulltext index."
+  code: 1571
+- name: ERROR_QUERY_INVALID_DATE_VALUE
+  text: "invalid date value"
+  desc: "Will be raised when a value cannot be converted to a date."
+  code: 1572
+- name: ERROR_QUERY_MULTI_MODIFY
+  text: "multi-modify query"
+  desc: "Will be raised when an AQL query contains more than one data-modifying operation."
+  code: 1573
+- name: ERROR_QUERY_INVALID_AGGREGATE_EXPRESSION
+  text: "invalid aggregate expression"
+  desc: "Will be raised when an AQL query contains an invalid aggregate expression."
+  code: 1574
+- name: ERROR_QUERY_COMPILE_TIME_OPTIONS
+  text: "query options must be readable at query compile time"
+  desc: "Will be raised when an AQL query contains OPTIONS that cannot be figured out at query compile time."
+  code: 1575
+- name: ERROR_QUERY_DNF_COMPLEXITY
+  text: "FILTER/PRUNE condition complexity is too high"
+  desc: "Will be raised internally when a too complex FILTER/PRUNE condition is encountered during the DNF conversion of the condition."
+  code: 1576
+- name: ERROR_QUERY_FORCED_INDEX_HINT_UNUSABLE
+  text: "could not use forced index hint"
+  desc: "Will be raised when forceIndexHint is specified, and the hint cannot be used to serve the query."
+  code: 1577
+- name: ERROR_QUERY_DISALLOWED_DYNAMIC_CALL
+  text: "disallowed dynamic call to '%s'"
+  desc: "Will be raised when a dynamic function call is made to a function that cannot be called dynamically."
+  code: 1578
+- name: ERROR_QUERY_ACCESS_AFTER_MODIFICATION
+  text: "access after data-modification by %s"
+  desc: "Will be raised when collection data are accessed after a data-modification operation."
+  code: 1579
+- group: AQL user function errors
+- name: ERROR_QUERY_FUNCTION_INVALID_NAME
+  text: "invalid user function name"
+  desc: "Will be raised when a user function with an invalid name is registered."
+  code: 1580
+- name: ERROR_QUERY_FUNCTION_INVALID_CODE
+  text: "invalid user function code"
+  desc: "Will be raised when a user function is registered with invalid code."
+  code: 1581
+- name: ERROR_QUERY_FUNCTION_NOT_FOUND
+  text: "user function '%s()' not found"
+  desc: "Will be raised when a user function is accessed but not found."
+  code: 1582
+- name: ERROR_QUERY_FUNCTION_RUNTIME_ERROR
+  text: "user function runtime error: %s"
+  desc: "Will be raised when a user function throws a runtime exception."
+  code: 1583
+- group: AQL query registry errors
+- name: ERROR_QUERY_BAD_JSON_PLAN
+  text: "bad execution plan JSON"
+  desc: "Will be raised when an HTTP API for a query got an invalid JSON object."
+  code: 1590
+- name: ERROR_QUERY_NOT_FOUND
+  text: "query ID not found"
+  desc: "Will be raised when an Id of a query is not found by the HTTP API."
+  code: 1591
+- name: ERROR_QUERY_USER_ASSERT
+  text: "%s"
+  desc: "Will be raised if and user provided expression fails to evaluate to true"
+  code: 1593
+- name: ERROR_QUERY_USER_WARN
+  text: "%s"
+  desc: "Will be raised if and user provided expression fails to evaluate to true"
+  code: 1594
+- name: ERROR_QUERY_WINDOW_AFTER_MODIFICATION
+  text: "window operation after data-modification"
+  desc: "Will be raised when a window node is created after a data-modification operation."
+  code: 1595
+- group: ArangoDB cursor errors
+- name: ERROR_CURSOR_NOT_FOUND
+  text: "cursor not found"
+  desc: "Will be raised when a cursor is requested via its id but a cursor with that id cannot be found."
+  code: 1600
+- name: ERROR_CURSOR_BUSY
+  text: "cursor is busy"
+  desc: "Will be raised when a cursor is requested via its id but a concurrent request is still using the cursor."
+  code: 1601
+- group: ArangoDB schema validation errors
+- name: ERROR_VALIDATION_FAILED
+  text: "schema validation failed"
+  desc: "Will be raised when a document does not pass schema validation."
+  code: 1620
+- name: ERROR_VALIDATION_BAD_PARAMETER
+  text: "invalid schema validation parameter"
+  desc: "Will be raised when the schema description is invalid."
+  code: 1621
+- group: ArangoDB transaction errors
+- name: ERROR_TRANSACTION_INTERNAL
+  text: "internal transaction error"
+  desc: "Will be raised when a wrong usage of transactions is detected. this is an internal error and indicates a bug in ArangoDB."
+  code: 1650
+- name: ERROR_TRANSACTION_NESTED
+  text: "nested transactions detected"
+  desc: "Will be raised when transactions are nested."
+  code: 1651
+- name: ERROR_TRANSACTION_UNREGISTERED_COLLECTION
+  text: "unregistered collection used in transaction"
+  desc: "Will be raised when a collection is used in the middle of a transaction but was not registered at transaction start."
+  code: 1652
+- name: ERROR_TRANSACTION_DISALLOWED_OPERATION
+  text: "disallowed operation inside transaction"
+  desc: "Will be raised when a disallowed operation is carried out in a transaction."
+  code: 1653
+- name: ERROR_TRANSACTION_ABORTED
+  text: "transaction aborted"
+  desc: "Will be raised when a transaction was aborted."
+  code: 1654
+- name: ERROR_TRANSACTION_NOT_FOUND
+  text: "transaction not found"
+  desc: "Will be raised when a transaction was not found."
+  code: 1655
+- group: User management errors
+- name: ERROR_USER_INVALID_NAME
+  text: "invalid user name"
+  desc: "Will be raised when an invalid user name is used."
+  code: 1700
+- name: ERROR_USER_DUPLICATE
+  text: "duplicate user"
+  desc: "Will be raised when a user name already exists."
+  code: 1702
+- name: ERROR_USER_NOT_FOUND
+  text: "user not found"
+  desc: "Will be raised when a user name is updated that does not exist."
+  code: 1703
+- name: ERROR_USER_EXTERNAL
+  text: "user is external"
+  desc: "Will be raised when the user is authenticated by an external server."
+  code: 1705
+- group: Service management errors (legacy)
+- name: ERROR_SERVICE_DOWNLOAD_FAILED
+  text: "service download failed"
+  desc: "Will be raised when a service download from the central repository failed."
+  code: 1752
+- name: ERROR_SERVICE_UPLOAD_FAILED
+  text: "service upload failed"
+  desc: "Will be raised when a service upload from the client to the ArangoDB server failed."
+  code: 1753
+- group: Task errors
+- name: ERROR_TASK_INVALID_ID
+  text: "invalid task id"
+  desc: "Will be raised when a task is created with an invalid id."
+  code: 1850
+- name: ERROR_TASK_DUPLICATE_ID
+  text: "duplicate task id"
+  desc: "Will be raised when a task id is created with a duplicate id."
+  code: 1851
+- name: ERROR_TASK_NOT_FOUND
+  text: "task not found"
+  desc: "Will be raised when a task with the specified id could not be found."
+  code: 1852
+- group: Graph / traversal errors
+- name: ERROR_GRAPH_INVALID_GRAPH
+  text: "invalid graph"
+  desc: "Will be raised when an invalid name is passed to the server."
+  code: 1901
+- name: ERROR_GRAPH_INVALID_EDGE
+  text: "invalid edge"
+  desc: "Will be raised when an invalid edge id is passed to the server."
+  code: 1906
+- name: ERROR_GRAPH_INVALID_FILTER_RESULT
+  text: "invalid filter result"
+  desc: "Will be raised when an invalid filter result is returned in a graph traversal."
+  code: 1910
+- name: ERROR_GRAPH_COLLECTION_MULTI_USE
+  text: "multi use of edge collection in edge def"
+  desc: "an edge collection may only be used once in one edge definition of a graph."
+  code: 1920
+- name: ERROR_GRAPH_COLLECTION_USE_IN_MULTI_GRAPHS
+  text: "edge collection already used in edge def"
+  desc: " is already used by another graph in a different edge definition."
+  code: 1921
+- name: ERROR_GRAPH_CREATE_MISSING_NAME
+  text: "missing graph name"
+  desc: "a graph name is required to create or drop a graph."
+  code: 1922
+- name: ERROR_GRAPH_CREATE_MALFORMED_EDGE_DEFINITION
+  text: "malformed edge definition"
+  desc: "the edge definition is malformed. It has to be an array of objects."
+  code: 1923
+- name: ERROR_GRAPH_NOT_FOUND
+  text: "graph '%s' not found"
+  desc: "a graph with this name could not be found."
+  code: 1924
+- name: ERROR_GRAPH_DUPLICATE
+  text: "graph already exists"
+  desc: "a graph with this name already exists."
+  code: 1925
+- name: ERROR_GRAPH_VERTEX_COL_DOES_NOT_EXIST
+  text: "vertex collection does not exist or is not part of the graph"
+  desc: "the specified vertex collection does not exist or is not part of the graph."
+  code: 1926
+- name: ERROR_GRAPH_WRONG_COLLECTION_TYPE_VERTEX
+  text: "collection not a vertex collection"
+  desc: "the collection is not a vertex collection."
+  code: 1927
+- name: ERROR_GRAPH_NOT_IN_ORPHAN_COLLECTION
+  text: "collection is not in list of orphan collections"
+  desc: "Vertex collection not in list of orphan collections of the graph."
+  code: 1928
+- name: ERROR_GRAPH_COLLECTION_USED_IN_EDGE_DEF
+  text: "collection already used in edge def"
+  desc: "The collection is already used in an edge definition of the graph."
+  code: 1929
+- name: ERROR_GRAPH_EDGE_COLLECTION_NOT_USED
+  text: "edge collection not used in graph"
+  desc: "The edge collection is not used in any edge definition of the graph."
+  code: 1930
+- name: ERROR_GRAPH_NO_GRAPH_COLLECTION
+  text: "collection _graphs does not exist"
+  desc: "collection _graphs does not exist."
+  code: 1932
+- name: ERROR_GRAPH_INVALID_NUMBER_OF_ARGUMENTS
+  text: "Invalid number of arguments. Expected: "
+  desc: "Invalid number of arguments. Expected: "
+  code: 1935
+- name: ERROR_GRAPH_INVALID_PARAMETER
+  text: "Invalid parameter type."
+  desc: "Invalid parameter type."
+  code: 1936
+- name: ERROR_GRAPH_COLLECTION_USED_IN_ORPHANS
+  text: "collection used in orphans"
+  desc: "The collection is already used in the orphans of the graph."
+  code: 1938
+- name: ERROR_GRAPH_EDGE_COL_DOES_NOT_EXIST
+  text: "edge collection does not exist or is not part of the graph"
+  desc: "the specified edge collection does not exist or is not part of the graph."
+  code: 1939
+- name: ERROR_GRAPH_EMPTY
+  text: "empty graph"
+  desc: "The requested graph has no edge collections."
+  code: 1940
+- name: ERROR_GRAPH_INTERNAL_DATA_CORRUPT
+  text: "internal graph data corrupt"
+  desc: "The _graphs collection contains invalid data."
+  code: 1941
+- name: ERROR_GRAPH_MUST_NOT_DROP_COLLECTION
+  text: "must not drop collection while part of graph"
+  desc: "The collection must not be dropped while it is used as part of at least one graph definition."
+  code: 1942
+- name: ERROR_GRAPH_CREATE_MALFORMED_ORPHAN_LIST
+  text: "malformed orphan list"
+  desc: "the orphan list argument is malformed. It has to be an array of strings."
+  code: 1943
+- name: ERROR_GRAPH_EDGE_DEFINITION_IS_DOCUMENT
+  text: "edge definition collection is a document collection"
+  desc: "the collection used as a relation is existing, but is a document collection, it cannot be used here."
+  code: 1944
+- name: ERROR_GRAPH_COLLECTION_IS_INITIAL
+  text: "initial collection is not allowed to be removed manually"
+  desc: "the collection is used as the initial collection of this graph and is not allowed to be removed manually."
+  code: 1945
+- name: ERROR_GRAPH_NO_INITIAL_COLLECTION
+  text: "no valid initial collection found"
+  desc: "during the graph creation process no collection could be selected as the needed initial collection. Happens if a distributeShardsLike or replicationFactor mismatch was found."
+  code: 1946
+- name: ERROR_GRAPH_REFERENCED_VERTEX_COLLECTION_NOT_PART_OF_THE_GRAPH
+  text: "referenced vertex collection is not part of the graph"
+  desc: "the _from or _to collection specified for the edge refers to a vertex collection which is not used in any edge definition of the graph."
+  code: 1947
+- name: ERROR_GRAPH_NEGATIVE_EDGE_WEIGHT
+  text: "negative edge weight found"
+  desc: "a negative edge weight was found during a weighted graph traversal or shortest path query"
+  code: 1948
+- name: ERROR_GRAPH_COLLECTION_NOT_PART_OF_THE_GRAPH
+  text: "the given collection is not part of the graph"
+  desc: "The collection is not used in any edge definition or as an orphan collection."
+  code: 1949
+- group: Session errors
+- name: ERROR_SESSION_UNKNOWN
+  text: "unknown session"
+  desc: "Will be raised when an invalid/unknown session id is passed to the server."
+  code: 1950
+- name: ERROR_SESSION_EXPIRED
+  text: "session expired"
+  desc: "Will be raised when a session is expired."
+  code: 1951
+- group: Simple Client errors
+- name: ERROR_SIMPLE_CLIENT_UNKNOWN_ERROR
+  text: "unknown client error"
+  desc: "This error should not happen."
+  code: 2000
+- name: ERROR_SIMPLE_CLIENT_COULD_NOT_CONNECT
+  text: "could not connect to server"
+  desc: "Will be raised when the client could not connect to the server."
+  code: 2001
+- name: ERROR_SIMPLE_CLIENT_COULD_NOT_WRITE
+  text: "could not write to server"
+  desc: "Will be raised when the client could not write data."
+  code: 2002
+- name: ERROR_SIMPLE_CLIENT_COULD_NOT_READ
+  text: "could not read from server"
+  desc: "Will be raised when the client could not read data."
+  code: 2003
+- name: ERROR_WAS_ERLAUBE
+  text: "was erlaube?!"
+  desc: "Will be raised if was erlaube?!"
+  code: 2019
+- group: internal AQL errors
+- name: ERROR_INTERNAL_AQL
+  text: "General internal AQL error"
+  desc: "Internal error during AQL execution"
+  code: 2200
+- group: Foxx management errors
+- name: ERROR_MALFORMED_MANIFEST_FILE
+  text: "failed to parse manifest file"
+  desc: "The service manifest file is not well-formed JSON."
+  code: 3000
+- name: ERROR_INVALID_SERVICE_MANIFEST
+  text: "manifest file is invalid"
+  desc: "The service manifest contains invalid values."
+  code: 3001
+- name: ERROR_SERVICE_FILES_MISSING
+  text: "service files missing"
+  desc: "The service folder or bundle does not exist on this server."
+  code: 3002
+- name: ERROR_SERVICE_FILES_OUTDATED
+  text: "service files outdated"
+  desc: "The local service bundle does not match the checksum in the database."
+  code: 3003
+- name: ERROR_INVALID_FOXX_OPTIONS
+  text: "service options are invalid"
+  desc: "The service options contain invalid values."
+  code: 3004
+- name: ERROR_INVALID_MOUNTPOINT
+  text: "invalid mountpath"
+  desc: "The service mountpath contains invalid characters."
+  code: 3007
+- name: ERROR_SERVICE_NOT_FOUND
+  text: "service not found"
+  desc: "No service found at the given mountpath."
+  code: 3009
+- name: ERROR_SERVICE_NEEDS_CONFIGURATION
+  text: "service needs configuration"
+  desc: "The service is missing configuration or dependencies."
+  code: 3010
+- name: ERROR_SERVICE_MOUNTPOINT_CONFLICT
+  text: "service already exists"
+  desc: "A service already exists at the given mountpath."
+  code: 3011
+- name: ERROR_SERVICE_MANIFEST_NOT_FOUND
+  text: "missing manifest file"
+  desc: "The service directory does not contain a manifest file."
+  code: 3012
+- name: ERROR_SERVICE_OPTIONS_MALFORMED
+  text: "failed to parse service options"
+  desc: "The service options are not well-formed JSON."
+  code: 3013
+- name: ERROR_SERVICE_SOURCE_NOT_FOUND
+  text: "source path not found"
+  desc: "The source path does not match a file or directory."
+  code: 3014
+- name: ERROR_SERVICE_SOURCE_ERROR
+  text: "error resolving source"
+  desc: "The source path could not be resolved."
+  code: 3015
+- name: ERROR_SERVICE_UNKNOWN_SCRIPT
+  text: "unknown script"
+  desc: "The service does not have a script with this name."
+  code: 3016
+- name: ERROR_SERVICE_API_DISABLED
+  text: "service api disabled"
+  desc: "The API for managing Foxx services has been disabled on this server."
+  code: 3099
+- group: JavaScript module loader errors
+- name: ERROR_MODULE_NOT_FOUND
+  text: "cannot locate module"
+  desc: "The module path could not be resolved."
+  code: 3100
+- name: ERROR_MODULE_SYNTAX_ERROR
+  text: "syntax error in module"
+  desc: "The module could not be parsed because of a syntax error."
+  code: 3101
+- name: ERROR_MODULE_FAILURE
+  text: "failed to invoke module"
+  desc: "Failed to invoke the module in its context."
+  code: 3103
+- group: Enterprise Edition errors
+- name: ERROR_NO_SMART_COLLECTION
+  text: "collection is not smart"
+  desc: "The requested collection needs to be smart, but it isn't."
+  code: 4000
+- name: ERROR_NO_SMART_GRAPH_ATTRIBUTE
+  text: "smart graph attribute not given"
+  desc: "The given document does not have the SmartGraph attribute set."
+  code: 4001
+- name: ERROR_CANNOT_DROP_SMART_COLLECTION
+  text: "cannot drop this smart collection"
+  desc: "This smart collection cannot be dropped, it dictates sharding in the graph."
+  code: 4002
+- name: ERROR_KEY_MUST_BE_PREFIXED_WITH_SMART_GRAPH_ATTRIBUTE
+  text: "in smart vertex collections _key must be a string and prefixed with the value of the smart graph attribute"
+  desc: "In a smart vertex collection _key must be prefixed with the value of the SmartGraph attribute."
+  code: 4003
+- name: ERROR_ILLEGAL_SMART_GRAPH_ATTRIBUTE
+  text: "attribute cannot be used as smart graph attribute"
+  desc: "The given smartGraph attribute is illegal and cannot be used for sharding. All system attributes are forbidden."
+  code: 4004
+- name: ERROR_SMART_GRAPH_ATTRIBUTE_MISMATCH
+  text: "smart graph attribute mismatch"
+  desc: "The SmartGraph attribute of the given collection does not match the SmartGraph attribute of the graph."
+  code: 4005
+- name: ERROR_INVALID_SMART_JOIN_ATTRIBUTE
+  text: "invalid smart join attribute declaration"
+  desc: "Will be raised when the smartJoinAttribute declaration is invalid."
+  code: 4006
+- name: ERROR_KEY_MUST_BE_PREFIXED_WITH_SMART_JOIN_ATTRIBUTE
+  text: "shard key value must be prefixed with the value of the smart join attribute"
+  desc: "when using smartJoinAttribute for a collection, the shard key value must be prefixed with the value of the SmartJoin attribute."
+  code: 4007
+- name: ERROR_NO_SMART_JOIN_ATTRIBUTE
+  text: "smart join attribute not given or invalid"
+  desc: "The given document does not have the required SmartJoin attribute set or it has an invalid value."
+  code: 4008
+- name: ERROR_CLUSTER_MUST_NOT_CHANGE_SMART_JOIN_ATTRIBUTE
+  text: "must not change the value of the smartJoinAttribute"
+  desc: "Will be raised if there is an attempt to update the value of the smartJoinAttribute."
+  code: 4009
+- name: ERROR_INVALID_DISJOINT_SMART_EDGE
+  text: "non disjoint edge found"
+  desc: "Will be raised if there is an attempt to create an edge between separated graph components."
+  code: 4010
+- name: ERROR_UNSUPPORTED_CHANGE_IN_SMART_TO_SATELLITE_DISJOINT_EDGE_DIRECTION
+  text: "Unsupported alternating Smart and Satellite in Disjoint SmartGraph."
+  desc: "Switching back and forth between Satellite and Smart in Disjoint SmartGraph is not supported within a single AQL statement. Split into multiple statements."
+  code: 4011
+- group: Agency errors
+- name: ERROR_AGENCY_MALFORMED_GOSSIP_MESSAGE
+  text: "malformed gossip message"
+  desc: "Malformed gossip message."
+  code: 20001
+- name: ERROR_AGENCY_MALFORMED_INQUIRE_REQUEST
+  text: "malformed inquire request"
+  desc: "Malformed inquire request."
+  code: 20002
+- name: ERROR_AGENCY_INFORM_MUST_BE_OBJECT
+  text: "Inform message must be an object."
+  desc: "The inform message in the Agency must be an object."
+  code: 20011
+- name: ERROR_AGENCY_INFORM_MUST_CONTAIN_TERM
+  text: "Inform message must contain uint parameter 'term'"
+  desc: "The inform message in the Agency must contain a uint parameter 'term'."
+  code: 20012
+- name: ERROR_AGENCY_INFORM_MUST_CONTAIN_ID
+  text: "Inform message must contain string parameter 'id'"
+  desc: "The inform message in the Agency must contain a string parameter 'id'."
+  code: 20013
+- name: ERROR_AGENCY_INFORM_MUST_CONTAIN_ACTIVE
+  text: "Inform message must contain array 'active'"
+  desc: "The inform message in the Agency must contain an array 'active'."
+  code: 20014
+- name: ERROR_AGENCY_INFORM_MUST_CONTAIN_POOL
+  text: "Inform message must contain object 'pool'"
+  desc: "The inform message in the Agency must contain an object 'pool'."
+  code: 20015
+- name: ERROR_AGENCY_INFORM_MUST_CONTAIN_MIN_PING
+  text: "Inform message must contain object 'min ping'"
+  desc: "The inform message in the Agency must contain an object 'min ping'."
+  code: 20016
+- name: ERROR_AGENCY_INFORM_MUST_CONTAIN_MAX_PING
+  text: "Inform message must contain object 'max ping'"
+  desc: "The inform message in the Agency must contain an object 'max ping'."
+  code: 20017
+- name: ERROR_AGENCY_INFORM_MUST_CONTAIN_TIMEOUT_MULT
+  text: "Inform message must contain object 'timeoutMult'"
+  desc: "The inform message in the Agency must contain an object 'timeoutMult'."
+  code: 20018
+- name: ERROR_AGENCY_CANNOT_REBUILD_DBS
+  text: "Cannot rebuild readDB and spearHead"
+  desc: "Will be raised if the readDB or the spearHead cannot be rebuilt from the replicated log."
+  code: 20021
+- name: ERROR_AGENCY_MALFORMED_TRANSACTION
+  text: "malformed agency transaction"
+  desc: "Malformed agency transaction."
+  code: 20030
+- group: Supervision errors
+- name: ERROR_SUPERVISION_GENERAL_FAILURE
+  text: "general supervision failure"
+  desc: "General supervision failure."
+  code: 20501
+- group: Scheduler errors
+- name: ERROR_QUEUE_FULL
+  text: "queue is full"
+  desc: "Will be returned if the scheduler queue is full."
+  code: 21003
+- name: ERROR_QUEUE_TIME_REQUIREMENT_VIOLATED
+  text: "queue time violated"
+  desc: "Will be returned if a request with a queue time requirement is set and it cannot be fulfilled."
+  code: 21004
+- name: ERROR_TOO_MANY_DETACHED_THREADS
+  text: "too many detached scheduler threads"
+  desc: "Will be returned if a scheduler thread tries to detach itself but there are already too many detached scheduler threads."
+  code: 21005
+- group: Maintenance errors
+- name: ERROR_ACTION_UNFINISHED
+  text: "maintenance action still processing"
+  desc: "This maintenance action is still processing"
+  code: 6003
+- group: Backup/Restore errors
+- name: ERROR_HOT_BACKUP_INTERNAL
+  text: "internal hot backup error"
+  desc: "Failed to create hot backup set"
+  code: 7001
+- name: ERROR_HOT_RESTORE_INTERNAL
+  text: "internal hot restore error"
+  desc: "Failed to restore to hot backup set"
+  code: 7002
+- name: ERROR_BACKUP_TOPOLOGY
+  text: "backup does not match this topology"
+  desc: "The hot backup set cannot be restored on non matching cluster topology"
+  code: 7003
+- name: ERROR_NO_SPACE_LEFT_ON_DEVICE
+  text: "no space left on device"
+  desc: "No space left on device"
+  code: 7004
+- name: ERROR_FAILED_TO_UPLOAD_BACKUP
+  text: "failed to upload hot backup set to remote target"
+  desc: "Failed to upload hot backup set to remote target"
+  code: 7005
+- name: ERROR_FAILED_TO_DOWNLOAD_BACKUP
+  text: "failed to download hot backup set from remote source"
+  desc: "Failed to download hot backup set from remote source"
+  code: 7006
+- name: ERROR_NO_SUCH_HOT_BACKUP
+  text: "no such hot backup set can be found"
+  desc: "Cannot find a hot backup set with this Id"
+  code: 7007
+- name: ERROR_REMOTE_REPOSITORY_CONFIG_BAD
+  text: "remote hotback repository configuration error"
+  desc: "The configuration given for upload or download operation to/from remote hot backup repositories is wrong."
+  code: 7008
+- name: ERROR_LOCAL_LOCK_FAILED
+  text: "some db servers cannot be reached for transaction locks"
+  desc: "Some of the DB-Servers cannot be reached for transaction locks."
+  code: 7009
+- name: ERROR_LOCAL_LOCK_RETRY
+  text: "some db servers cannot be reached for transaction locks"
+  desc: "Some of the DB-Servers cannot be reached for transaction locks."
+  code: 7010
+- name: ERROR_HOT_BACKUP_CONFLICT
+  text: "hot backup conflict"
+  desc: "Conflict of multiple hot backup processes."
+  code: 7011
+- name: ERROR_HOT_BACKUP_DBSERVERS_AWOL
+  text: "hot backup not all db servers reachable"
+  desc: "One or more DB-Servers could not be reached for hot backup inquiry"
+  code: 7012
+- group: Plan Analyzers errors
+- name: ERROR_CLUSTER_COULD_NOT_MODIFY_ANALYZERS_IN_PLAN
+  text: "analyzers in plan could not be modified"
+  desc: "Plan could not be modified while creating or deleting Analyzers revision"
+  code: 7021
+- group: Licensing
+- name: ERROR_LICENSE_EXPIRED_OR_INVALID
+  text: "license has expired or is invalid"
+  desc: "The license has expired or is invalid."
+  code: 9001
+- name: ERROR_LICENSE_SIGNATURE_VERIFICATION
+  text: "license verification failed"
+  desc: "Verification of license failed."
+  code: 9002
+- name: ERROR_LICENSE_NON_MATCHING_ID
+  text: "non-matching license id"
+  desc: "The ID of the license does not match the ID of this instance."
+  code: 9003
+- name: ERROR_LICENSE_FEATURE_NOT_ENABLED
+  text: "feature is not enabled by the license"
+  desc: "The installed license does not cover this feature."
+  code: 9004
+- name: ERROR_LICENSE_RESOURCE_EXHAUSTED
+  text: "the resource is exhausted"
+  desc: "The installed license does not cover a higher number of this resource."
+  code: 9005
+- name: ERROR_LICENSE_INVALID
+  text: "invalid license"
+  desc: "The license does not hold features of an ArangoDB license."
+  code: 9006
+- name: ERROR_LICENSE_CONFLICT
+  text: "conflicting license"
+  desc: "The license has one or more inferior features."
+  code: 9007
+- name: ERROR_LICENSE_VALIDATION_FAILED
+  text: "failed to validate license signature"
+  desc: "Could not verify the license's signature."
+  code: 9008
