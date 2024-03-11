@@ -10,6 +10,7 @@ services:
       - ${ARANGODB_SRC:-/dev/null}:${ARANGODB_SRC:-/dev/null}
       - ${ARANGODB_SRC_2:-/tmp/1}:${ARANGODB_SRC_2:-/tmp/1}
       - ${ARANGODB_SRC_3:-/tmp/2}:${ARANGODB_SRC_3:-/tmp/2}
+      - ${ARANGODB_SRC_4:-/tmp/3}:${ARANGODB_SRC_4:-/tmp/3}
       - ../../:/home/
       - /var/run/docker.sock:/var/run/docker.sock
     environment:
@@ -20,6 +21,8 @@ services:
       ARANGODB_SRC_3_10: ${ARANGODB_SRC_3_10}
       ARANGODB_SRC_3_11: ${ARANGODB_SRC_3_11}
       ARANGODB_SRC_3_12: ${ARANGODB_SRC_3_12}
+      ARANGODB_SRC_4_0: ${ARANGODB_SRC_4_0}
       ARANGODB_BRANCH_3_10: ${ARANGODB_BRANCH_3_10}
       ARANGODB_BRANCH_3_11: ${ARANGODB_BRANCH_3_11}
       ARANGODB_BRANCH_3_12: ${ARANGODB_BRANCH_3_12}
+      ARANGODB_BRANCH_4_0: ${ARANGODB_BRANCH_4_0}

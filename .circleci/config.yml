@@ -43,6 +43,10 @@ parameters:
     type: string
     default: "undefined"
 
+  arangodb-4_0:
+    type: string
+    default: "undefined"
+
   commit-generated:
     type: boolean
     default: false
@@ -89,7 +93,7 @@ jobs:
 
             python3 generate_config.py \
               --workflow << pipeline.parameters.workflow >> \
-              --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> \
+              --arangodb-branches << pipeline.parameters.arangodb-3_10 >> << pipeline.parameters.arangodb-3_11 >> << pipeline.parameters.arangodb-3_12 >> << pipeline.parameters.arangodb-4_0 >> \
               --arangodb-branch << pipeline.parameters.arangodb-branch >> \
               --release-type << pipeline.parameters.release-type >> \
               --docs-version << pipeline.parameters.docs-version >> \
