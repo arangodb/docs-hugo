@@ -24,6 +24,33 @@ For details, see the
 [Evolving ArangoDB's Licensing Model for a Sustainable Future](https://arangodb.com/2024/02/update-evolving-arangodbs-licensing-model-for-a-sustainable-future/)
 blog post.
 
+## Native Windows and macOS support removed
+
+The native platform support for the Windows and macOS operating systems has been
+removed and ArangoDB packages for Windows (installers, ZIP archives) and macOS
+(_DMG_ packages, _tar.gz_ archives) are not provided anymore.
+
+You can use the official [Docker images](https://hub.docker.com/_/arangodb/)
+instead, to run ArangoDB in Linux containers, with
+[Docker Desktop](https://www.docker.com/products/docker-desktop/), for instance.
+
+The following Windows-specific startup options have been removed from _arangod_:
+
+- `--start-service`
+- `--install-service`
+- `--uninstall-service`
+- `--servicectl-start`
+- `--servicectl-start-wait`
+- `--servicectl-stop`
+- `--servicectl-stop-wait`
+
+Furthermore, the following _arangosh_ startup option has been removed:
+
+- `--console.code-page`
+
+The deprecated setting `5` (WinCrypt) for the `--random.generator` startup option
+in the server and client tools has now been removed.
+
 ## Active Failover deployment mode removed
 
 Running a single server with asynchronous replication to one or more passive

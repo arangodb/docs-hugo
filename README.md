@@ -371,18 +371,24 @@ See [Edition remarks](#edition-remarks) for details.
 
 #### Tabs
 
-Display content with a tabbed interface, like information for different
-operating systems or code examples using different languages.
+Display content with a tabbed interface, like for code examples using different
+languages or if there are multiple ways of achieving a goal like configuring
+ArangoDB.
 
 ```markdown
-{{< tabs "os" >}}
+{{< tabs "startup-options" >}}
 
-{{< tab "Linux" >}}
-Run `./script.sh`.
+{{< tab "Command-line" >}}
+Start `arangod` with the startup option `--log.level startup=trace`.
 {{< /tab >}}
 
-{{< tab "Windows" >}}
-Run `.\script.ps1`.
+{{< tab "Configuration file" >}}
+Include the following startup option setting in your `arangod.conf`:
+
+```conf
+[log]
+level = startup=trace
+```
 {{< /tab >}}
 
 {{< /tabs >}}
