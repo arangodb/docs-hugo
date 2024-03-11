@@ -3,8 +3,8 @@ title: Features and Improvements in ArangoDB 3.12
 menuTitle: What's New in 3.12
 weight: 5
 description: >-
-  A new optimization for specific ArangoSearch queries, more entries in the
-  edge cache with compression
+  Improved memory accounting, wildcard search, and dump performance,
+  multi-dimensional indexes, external versioning, and transparent compression
 ---
 The following list shows in detail which features have been added or improved in
 ArangoDB 3.12. ArangoDB 3.12 also contains several bug fixes that are not listed
