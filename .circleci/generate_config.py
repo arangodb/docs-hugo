@@ -299,7 +299,7 @@ export GENERATORS='<< parameters.generators >>'\n"
         branch = args.arangodb_branches[i]
 
         if args.workflow != "generate": #generate scheduled etc.
-            branch = f"arangodb/enterprise-preview:{version}-nightly" if versions[i]["alias"] != "devel" else "arangodb/enterprise-preview:devel-nightly"
+            branch = f"arangodb/enterprise-preview:{version}-nightly" if version in ["3.10", "3.11"] else "arangodb/enterprise-preview:devel-nightly" # TODO: Any other 3.12.x image we could use?
 
         if branch == "undefined":
             continue

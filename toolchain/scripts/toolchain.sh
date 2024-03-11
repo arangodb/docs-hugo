@@ -55,7 +55,7 @@ fi
 
 if [ "$ARANGODB_BRANCH_4_0" != "" ] ; then
       export ARANGODB_BRANCH_4_0_IMAGE="$ARANGODB_BRANCH_4_0"
-      export ARANGODB_BRANCH_4_0_VERSION="3.12"
+      export ARANGODB_BRANCH_4_0_VERSION="4.0"
 fi
 
 start_servers=false
