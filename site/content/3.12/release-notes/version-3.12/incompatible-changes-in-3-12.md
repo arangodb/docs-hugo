@@ -210,13 +210,6 @@ include the desired collections anymore. In case of vertex collections, they
 become orphan collections that you need to remove from the graph definition as
 well to drop the collections.
 
-## Client tools
-
-### jslint feature in arangosh removed
-
-The `--jslint` startup option and all of the underlying functionality has been
-removed from arangosh. The feature was mainly for internal purposes.
-
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
@@ -401,3 +394,8 @@ to a high value.
 the file extension. The default value of the `--type` startup option has been
 changed from `json` to `auto`. You might need to explicitly specify the `--type`
 in exceptional cases now whereas it was not necessary to do so previously.
+
+### jslint feature in arangosh removed
+
+The `--jslint` startup option and all of the underlying functionality has been
+removed from arangosh. The feature was mainly for internal purposes.
