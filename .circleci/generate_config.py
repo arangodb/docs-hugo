@@ -187,7 +187,7 @@ def workflow_generate_scheduled(config):
             "compile-linux": {
                 "context": ["sccache-aws-bucket"],
                 "name": f"compile-{version}",
-                "arangodb-branch": f"arangodb/enterprise-preview:{version}-nightly" if versions[i]["alias"] != "devel" else "arangodb/enterprise-preview:devel-nightly", # TODO: will break after 3.12 GA!
+                "arangodb-branch": f"arangodb/enterprise-preview:{version}-nightly" if version in ["3.10", "3.11"] else "arangodb/enterprise-preview:devel-nightly", # TODO: Any other 3.12.x image we could use?
                 "version": version
             }
         }
