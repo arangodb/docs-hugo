@@ -6,6 +6,24 @@ description: >-
   Check the following list of potential breaking changes **before** upgrading to
   this ArangoDB version and adjust any client applications if necessary
 ---
+## License change
+
+ArangoDB changes the licensing model for the ArangoDB source code and the
+Community Edition, starting with version 3.12.
+
+The Apache 2.0 license is replaced by the source-available
+Business Source License 1.1 (BUSL-1.1). The full license text is available on
+GitHub: <https://github.com/arangodb/arangodb/blob/devel/LICENSE>
+
+The official, prepackaged ArangoDB Community Edition binaries are now governed
+by a new ArangoDB Community License, which limits the use for commercial purposes
+to a 100 GB limit on dataset size in production within a single cluster and a
+maximum of three clusters.
+
+For details, see the
+[Evolving ArangoDB's Licensing Model for a Sustainable Future](https://arangodb.com/2024/02/update-evolving-arangodbs-licensing-model-for-a-sustainable-future/)
+blog post.
+
 ## Active Failover deployment mode removed
 
 Running a single server with asynchronous replication to one or more passive
