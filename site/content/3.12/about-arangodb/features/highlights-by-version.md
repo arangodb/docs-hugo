@@ -12,17 +12,30 @@ aliases:
 
 **All Editions**
 
+- [**Improved memory accounting**](../../release-notes/version-3.12/whats-new-in-3-12.md#improved-memory-accounting-and-usage):
+  Better tracking and observability of memory consumption for ArangoDB deployments
+  and reduced memory usage.
+
 - [**`wildcard` Analyzer**](../../index-and-search/analyzers.md#wildcard):
-  Accelerate wildcard searches against Views and inverted indexes with _n_-grams
-  to quickly find candidate matches.
+  Accelerate `LIKE` searches with `_` and `%` wildcards against Views and
+  inverted indexes with _n_-grams to quickly find candidate matches.
 
 - [**Multi-dimensional indexes**](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md):
   An index type to efficiently intersect multiple range queries, like finding
-  all appointments that intersect a time range.
+  all appointments that intersect a time range. Optionally with prefix fields,
+  with support for using it as vertex-centric index in graph traversals.
 
 - [**External versioning**](../../release-notes/version-3.12/whats-new-in-3-12.md#external-versioning-support):
   Specify any top-level attribute to compare whether the version number is higher
   than the currently stored one when updating or replacing documents.
+
+- [**Improved dump performance**](../../release-notes/version-3.12/whats-new-in-3-12.md#improved-dump-performance-and-size)
+  Create logical backups faster with arangodump thanks to parallel dumping at
+  the shard level, as well as transfer compression and file splitting.
+
+- [**Request and response compression**](../../release-notes/version-3.12/whats-new-in-3-12.md#transparent-compression-of-requests-and-responses-between-arangodb-servers-and-client-tools)
+  Speed up data transfers and reduce traffic with transparent compression of
+  requests and responses between ArangoDB servers and client tools.
 
 **Enterprise Edition**
 

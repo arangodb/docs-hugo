@@ -1062,7 +1062,7 @@ DB-Servers:
 - `arangodb_collection_requests_bytes_read_total`: The number of bytes read in
   read requests on leaders.
 - `arangodb_collection_requests_bytes_written_total`: The number of bytes written
-  in write requests on leaders and followers.   
+  in write requests on leaders and followers.
 
 To opt into these metrics, you can use the new `--server.export-shard-usage-metrics`
 startup option. It can be set to one of the following values on DB-Servers:
@@ -1072,7 +1072,7 @@ startup option. It can be set to one of the following values on DB-Servers:
 - `enabled-per-shard-per-user`: This makes DB-Servers collect per-shard
   and per-user metrics. This is more granular than `enabled-per-shard` but
   can produce a lot of metrics.
-   
+
 Whenever a shard is accessed in read or write mode by one of the following 
 operations, the metrics are populated dynamically, either with a per-user
 label or not, depending on the above setting.

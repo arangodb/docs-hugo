@@ -1,11 +1,16 @@
+- name: "4.0"
+  version: "4.0.0"
+  alias: "devel"
+  deprecated: false
+
 - name: "3.12"
   version: "3.12.0"
-  alias: "devel"
+  alias: "stable"
   deprecated: false
 
 - name: "3.11"
   version: "3.11.8"
-  alias: "stable"
+  alias: "3.11"
   deprecated: false
 
 - name: "3.10"
