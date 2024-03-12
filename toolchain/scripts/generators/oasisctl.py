@@ -29,6 +29,7 @@ TITLE_CASE = {
     'cacertificate': 'CA Certificate',
     'cacertificates': 'CA Certificates',
     'diskperformances': 'Disk Performances',
+    'generate-docs': 'Generate Documentation',
     'ipallowlist': 'IP Allowlist',
     'ipallowlists': 'IP Allowlists',
     'notebookmodels': 'Notebook Models',
@@ -126,8 +127,9 @@ def rewrite_content(data, section, filename, weight):
             continue
 
         if flags["inFrontMatter"] and not flags["endFrontMatter"]:
-            if line.startswith("description: ") and filename.endswith("/options.md"):
-                content = content + "description: Command-line client tool for managing ArangoGraph\n"
+            if line.startswith("description: "):
+                if filename.endswith("/options.md"):
+                    content = content + "description: Command-line client tool for managing ArangoGraph\n"
                 continue
 
             if line.startswith("layout: "):
@@ -139,13 +141,11 @@ def rewrite_content(data, section, filename, weight):
                     continue
 
                 menuTitle = ""
-                title = line.replace("title: ", "")
-                lineWords = title.split(" ")
-                for word in lineWords:
+                title = line.rstrip().replace("title: ", "")
+                for word in title.split(" "):
                     menuTitle = menuTitle + f" {TITLE_CASE.get(word.lower(), word)}"
 
-                menuTitle = menuTitle.replace("Oasisctl ", "")
-                content = content + f"{line}menuTitle:{menuTitle}weight: {weight}\n"
+                content = content + f"title: {menuTitle}\nmenuTitle:{menuTitle.replace('Oasisctl ', '')}\nweight: {weight}\n"
                 continue
             
         if line.startswith("###### Auto generated"):
@@ -169,7 +169,7 @@ def rewrite_content(data, section, filename, weight):
                 continue
 
             if line.startswith("## "):
-                content = content + string.capwords(line)
+                content = content + line
                 continue
 
         if line == "---\n":
