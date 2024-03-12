@@ -89,7 +89,10 @@ Here are examples to integrate configuration properties from different sources:
 - `acquireHostListInterval(Integer)`:             acquireHostList interval (ms), (default: `3_600_000`, 1 hour)
 - `loadBalancingStrategy(LoadBalancingStrategy)`: load balancing strategy, possible values are: `NONE`, `ROUND_ROBIN`, `ONE_RANDOM`, (default: `NONE`)
 - `responseQueueTimeSamples(Integer)`:            amount of samples kept for queue time metrics, (default: `10`)
-- `serde(ArangoSerde)`:                           serde to serialize and deserialize user-data
+- `compression(Compression)`:      the `content-encoding` and `accept-encoding` to use for HTTP requests, possible values are: `NONE`, `DEFLATE`, `GZIP`, (default: `NONE`)
+- `compressionThreshold(Integer)`: the minimum HTTP request body size (in bytes) to trigger compression, (default: `1024`)
+- `compressionLevel`:              compression level between 0 and 9, (default: `6`)
+- `serde(ArangoSerde)`:            serde to serialize and deserialize user-data
 
 ### Config File Properties
 
@@ -114,6 +117,9 @@ The properties read are:
 - `acquireHostListInterval`
 - `loadBalancingStrategy`: `NONE`, `ROUND_ROBIN` or `ONE_RANDOM`
 - `responseQueueTimeSamples`
+- `compression`: `NONE`, `DEFLATE` or `GZIP`
+- `compressionThreshold`
+- `compressionLevel`
 
 ## SSL
 
