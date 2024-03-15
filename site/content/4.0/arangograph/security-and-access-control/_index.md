@@ -653,6 +653,10 @@ organization. The following commands are available to configure this option:
 
 ## Using an audit log
 
+{{< info >}} 
+To enable the audit log feature, get in touch with the ArangoGraph team via **Request Help**, available in the left sidebar menu of the ArangoGraph Dashboard. 
+{{< /info >}}
+
 To have a better overview of the events happening in your ArangoGraph organization,
 you can set up an audit log, which will track and log auditing information for you.
 The audit log is created on the organization level, then you can use the log for
