@@ -8,7 +8,7 @@ orbs:
 parameters:
   workflow:
     type: enum
-    enum: [no-op, plain-build, generate, api-docs, release, compile, generate-scheduled, commit-generated, generate-oasisctl, create-docs-images-amd64, create-docs-images-arm64]
+    enum: [no-op, plain-build, generate, release, compile, generate-scheduled, commit-generated, generate-oasisctl, create-docs-images-amd64, create-docs-images-arm64]
     default: no-op
   
   deploy-url:
