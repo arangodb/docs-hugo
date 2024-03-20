@@ -1205,3 +1205,4 @@ section above that includes a description of the added client tool options.
 For ArangoDB 3.12, the bundled version of rclone is 1.65.2. Check if your
 rclone configuration files require changes.
 
+The bundled version of the OpenSSL library has been upgraded to 3.2.1.
