@@ -83,7 +83,7 @@ Here are examples to integrate configuration properties from different sources:
 - `verifyHost(Boolean)`:         enable hostname verification, (HTTP only, default: `true`)
 - `chunkSize(Integer)`:          VST chunk size in bytes, (default: `30000`)
 - `maxConnections(Integer)`:     max number of connections per host, (default: 1 VST, 1 HTTP/2, 20 HTTP/1.1)
-- `connectionTtl(Long)`:         max lifetime of a connection (ms), (default: no ttl)
+- `connectionTtl(Long)`:         time to live of an inactive connection (ms), (default: no ttl for VST, `30_000` for HTTP)
 - `keepAliveInterval(Integer)`:  VST keep-alive interval (s), (default: no keep-alive probes will be sent)
 - `acquireHostList(Boolean)`:    acquire the list of available hosts, (default: `false`)
 - `acquireHostListInterval(Integer)`:             acquireHostList interval (ms), (default: `3_600_000`, 1 hour)
@@ -132,7 +132,7 @@ ArangoDB arangoDB = new ArangoDB.Builder()
 The driver keeps a pool of connections for each host, the max amount of
 connections is configurable.
 
-Connections are released after the configured connection time-to-live
+Inactive connections are released after the configured connection time-to-live
 (`ArangoDB.Builder.connectionTtl(Long)`) or when the driver is shut down:
 
 ```java
@@ -221,7 +221,7 @@ ArangoDB arangoDB = new ArangoDB.Builder()
 
 ## Connection time to live
 
-The driver supports setting a TTL (time to life) for connections:
+The driver supports setting a TTL (time to live) for connections:
 
 ```java
 ArangoDB arango = new ArangoDB.Builder()
@@ -229,9 +229,11 @@ ArangoDB arango = new ArangoDB.Builder()
   .build();
 ```
 
-In this example all connections will be closed/reopened after 5 minutes.
+In this example inactive connections will be closed after 5 minutes.
 
-If not set or set to `null` (default), no automatic connection closure will be performed.
+The default TTL for HTTP connections is 30 seconds, while it is `null` for VST connections.
+
+If set to `null`, no automatic connection closure will be performed.
 
 ## VST Keep-Alive
 
