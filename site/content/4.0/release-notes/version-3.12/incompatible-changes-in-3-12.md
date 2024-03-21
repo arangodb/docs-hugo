@@ -170,6 +170,24 @@ onward and will be removed in a future version.
 You can use [Stream Transactions](../../develop/transactions/stream-transactions.md)
 instead in most cases, and in some cases AQL can be sufficient.
 
+## Breaking changes to the `collation` Analyzer
+
+The [`collation` Analyzer](../../index-and-search/analyzers.md#collation) lets
+you adhere to the alphabetic order of a language in range queries. For example,
+using the Swedish locale (`sv`), `å` goes after `z` and not near `a`, which
+can impact queries.
+
+Sorting by the output of the `collation` Analyzer like
+`SORT TOKENS(<text>, <collationAnalyzer>` did not produce meaningful results in
+previous versions. Sorting the letters `å`, `a`, `b`, `z` resulted in the order
+`b` `a` `å` `z` using an English locale (`en`) and `b` `å` `a` `z` using a
+Swedish locale (`sv`).
+
+In v3.12, this now sorts properly to `a` `å` `b` `z` (English) and
+`a` `b` `z` `å` (Swedish). This change can make queries behave differently
+compared to v3.11 and older, and inverted indexes and Views using
+`collation` Analyzers need to be recreated to ensure that they work correctly.
+
 ## Control character escaping in audit log
 
 The audit log feature of the Enterprise Edition previously logged query strings
