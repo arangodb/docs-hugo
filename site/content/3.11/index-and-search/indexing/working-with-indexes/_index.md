@@ -62,7 +62,8 @@ You can set the following parameters:
 - `withStats` (boolean, _optional_): whether to include index figures and
   estimates in the result. Default: `false`
 - `withHidden` (boolean, _optional_): whether to include hidden indexes in the
-  result. Default: `false`
+  result. Internal indexes and ones that are currently built in the background
+  are hidden. Default: `false`
 
 The `indexes()` method is an alias for `getIndexes()`.
 
