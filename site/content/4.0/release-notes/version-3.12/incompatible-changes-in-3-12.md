@@ -188,7 +188,7 @@ range queries involving the `collation` Analyzers and indexes created in v3.11
 or older versions may behave in unpredicted ways.
 
 Note that sorting by the output of the `collation` Analyzer like
-`SORT TOKENS(<text>, <collationAnalyzer>` is still not a supported feature and
+`SORT TOKENS(<text>, <collationAnalyzer>)` is still not a supported feature and
 doesn't produce meaningful results.
 
 ## Control character escaping in audit log
