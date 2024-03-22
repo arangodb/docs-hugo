@@ -83,7 +83,7 @@ Here are examples to integrate configuration properties from different sources:
 - `verifyHost(Boolean)`:         enable hostname verification, (HTTP only, default: `true`)
 - `chunkSize(Integer)`:          VST chunk size in bytes, (default: `30000`)
 - `maxConnections(Integer)`:     max number of connections per host, (default: 1 VST, 1 HTTP/2, 20 HTTP/1.1)
-- `connectionTtl(Long)`:         time to live of an inactive connection (ms), (default: no ttl for VST, `30_000` for HTTP)
+- `connectionTtl(Long)`:         time to live of an inactive connection (ms), (default: `30_000` for HTTP, no TTL for VST)
 - `keepAliveInterval(Integer)`:  VST keep-alive interval (s), (default: no keep-alive probes will be sent)
 - `acquireHostList(Boolean)`:    acquire the list of available hosts, (default: `false`)
 - `acquireHostListInterval(Integer)`:             acquireHostList interval (ms), (default: `3_600_000`, 1 hour)
@@ -229,16 +229,16 @@ ArangoDB arango = new ArangoDB.Builder()
   .build();
 ```
 
-In this example inactive connections will be closed after 5 minutes.
+In this example, inactive connections are closed after 5 minutes.
 
 The default TTL for HTTP connections is 30 seconds, while it is `null` for VST connections.
 
-If set to `null`, no automatic connection closure will be performed.
+If set to `null`, no automatic connection closure is performed.
 
 ## VST Keep-Alive
 
 The driver supports setting keep-alive interval (in seconds)
-for VST connections. If set, every VST connection will perform a no-op request
+for VST connections. If set, every VST connection performs a no-op request
 at the specified intervals, to avoid to be closed due to inactivity by the
 server (or by the external environment, e.g. firewall, intermediate routers,
 operating system, ... ).
