@@ -83,13 +83,16 @@ Here are examples to integrate configuration properties from different sources:
 - `verifyHost(Boolean)`:         enable hostname verification, (HTTP only, default: `true`)
 - `chunkSize(Integer)`:          VST chunk size in bytes, (default: `30000`)
 - `maxConnections(Integer)`:     max number of connections per host, (default: 1 VST, 1 HTTP/2, 20 HTTP/1.1)
-- `connectionTtl(Long)`:         max lifetime of a connection (ms), (default: no ttl)
+- `connectionTtl(Long)`:         time to live of an inactive connection (ms), (default: `30_000` for HTTP, no TTL for VST)
 - `keepAliveInterval(Integer)`:  VST keep-alive interval (s), (default: no keep-alive probes will be sent)
 - `acquireHostList(Boolean)`:    acquire the list of available hosts, (default: `false`)
 - `acquireHostListInterval(Integer)`:             acquireHostList interval (ms), (default: `3_600_000`, 1 hour)
 - `loadBalancingStrategy(LoadBalancingStrategy)`: load balancing strategy, possible values are: `NONE`, `ROUND_ROBIN`, `ONE_RANDOM`, (default: `NONE`)
 - `responseQueueTimeSamples(Integer)`:            amount of samples kept for queue time metrics, (default: `10`)
-- `serde(ArangoSerde)`:                           serde to serialize and deserialize user-data
+- `compression(Compression)`:      the `content-encoding` and `accept-encoding` to use for HTTP requests, possible values are: `NONE`, `DEFLATE`, `GZIP`, (default: `NONE`)
+- `compressionThreshold(Integer)`: the minimum HTTP request body size (in bytes) to trigger compression, (default: `1024`)
+- `compressionLevel`:              compression level between 0 and 9, (default: `6`)
+- `serde(ArangoSerde)`:            serde to serialize and deserialize user-data
 
 ### Config File Properties
 
@@ -114,6 +117,9 @@ The properties read are:
 - `acquireHostListInterval`
 - `loadBalancingStrategy`: `NONE`, `ROUND_ROBIN` or `ONE_RANDOM`
 - `responseQueueTimeSamples`
+- `compression`: `NONE`, `DEFLATE` or `GZIP`
+- `compressionThreshold`
+- `compressionLevel`
 
 ## SSL
 
@@ -132,7 +138,7 @@ ArangoDB arangoDB = new ArangoDB.Builder()
 The driver keeps a pool of connections for each host, the max amount of
 connections is configurable.
 
-Connections are released after the configured connection time-to-live
+Inactive connections are released after the configured connection time-to-live
 (`ArangoDB.Builder.connectionTtl(Long)`) or when the driver is shut down:
 
 ```java
@@ -207,7 +213,7 @@ ArangoDB arangoDB = new ArangoDB.Builder()
 
 ## Connection time to live
 
-The driver supports setting a TTL (time to life) for connections:
+The driver supports setting a TTL (time to live) for connections:
 
 ```java
 ArangoDB arango = new ArangoDB.Builder()
@@ -215,15 +221,17 @@ ArangoDB arango = new ArangoDB.Builder()
   .build();
 ```
 
-In this example all connections will be closed/reopened after 5 minutes.
+In this example, inactive connections are closed after 5 minutes.
 
-If not set or set to `null` (default), no automatic connection closure will be performed.
+The default TTL for HTTP connections is 30 seconds, while it is `null` for VST connections.
+
+If set to `null`, no automatic connection closure is performed.
 
 ## VST Keep-Alive
 
 The driver supports setting keep-alive interval (in seconds)
 for VST connections (but VST is not supported from ArangoDB v3.12.0 onward).
-If set, every VST connection will perform a no-op request
+If set, every VST connection performs a no-op request
 at the specified intervals, to avoid to be closed due to inactivity by the
 server (or by the external environment, e.g. firewall, intermediate routers,
 operating system, ... ).

@@ -170,6 +170,27 @@ onward and will be removed in a future version.
 You can use [Stream Transactions](../../develop/transactions/stream-transactions.md)
 instead in most cases, and in some cases AQL can be sufficient.
 
+## Breaking changes to the `collation` Analyzer
+
+The [`collation` Analyzer](../../index-and-search/analyzers.md#collation) lets
+you adhere to the alphabetic order of a language in range queries. For example,
+using a Swedish locale (`sv`), the sorting order is `å` after `z`, whereas using
+an English locale (`en`), `å` is preceded by `a`. This impacts queries with
+`SEARCH` expressions like `doc.text < "c"`, excluding `å` when using the Swedish
+locale.
+
+ArangoDB 3.12 bundles an upgraded version of the ICU library. It is used for
+Unicode character handling including text sorting. Because of changes in ICU,
+data produced by the `collation` Analyzer in previous versions is not compatible
+with ArangoDB v3.12. You need to **recreate inverted indexes and Views that use
+`collation` Analyzers** to ensure that they work correctly. Otherwise,
+range queries involving the `collation` Analyzers and indexes created in v3.11
+or older versions may behave in unpredicted ways.
+
+Note that sorting by the output of the `collation` Analyzer like
+`SORT TOKENS(<text>, <collationAnalyzer>)` is still not a supported feature and
+doesn't produce meaningful results.
+
 ## Control character escaping in audit log
 
 The audit log feature of the Enterprise Edition previously logged query strings
