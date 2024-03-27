@@ -8,7 +8,7 @@ description: >-
 aliases:
   - ../../introduction/features/highlights-by-version
 ---
-## Version 4.0
+## Version 3.13
 
 **All Editions**
 
@@ -18,7 +18,7 @@ aliases:
 
 - 
 
-Also see [What's New in 4.0](../../release-notes/version-4.0/whats-new-in-4-0.md).
+Also see [What's New in 3.13](../../release-notes/version-3.13/whats-new-in-3-13.md).
 
 ## Version 3.12
 

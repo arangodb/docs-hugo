@@ -1,6 +1,6 @@
 ---
-title: Incompatible changes in ArangoDB 4.0
-menuTitle: Incompatible changes in 4.0
+title: Incompatible changes in ArangoDB 3.13
+menuTitle: Incompatible changes in 3.13
 weight: 15
 description: >-
   Check the following list of potential breaking changes **before** upgrading to
