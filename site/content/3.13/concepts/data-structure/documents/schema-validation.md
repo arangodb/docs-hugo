@@ -13,7 +13,7 @@ without remote schema support). The level of validation and a custom error
 message can be configured. The system attributes `_key`, `_id`, `_rev`, `_from`
 and `_to` are ignored by the schema validation.
 
-Also see [Known Issues](../../../release-notes/version-4.0/known-issues-in-4-0.md#schema-validation)
+Also see [Known Issues](../../../release-notes/version-3.13/known-issues-in-3-13.md#schema-validation)
 
 ## Enable schema validation for a collection
 
@@ -93,7 +93,7 @@ The level controls when the validation is triggered:
 
 If the schema validation for a document fails, then a generic error is raised.
 The schema validation cannot pin-point which part of a rule made it fail,
-also see [Known Issues](../../../release-notes/version-4.0/known-issues-in-4-0.md#schema-validation).
+also see [Known Issues](../../../release-notes/version-3.13/known-issues-in-3-13.md#schema-validation).
 You may customize the error message via the `message` attribute to provide a
 summary of what is expected or point out common mistakes.
 
