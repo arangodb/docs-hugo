@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl disable scheduled-root-password-rotation command
-title: Oasisctl Disable Scheduled-Root-Password-Rotation
+title:  Oasisctl Disable Scheduled-Root-Password-Rotation
 menuTitle: Disable Scheduled-Root-Password-Rotation
 weight: 1
 ---
+## oasisctl disable scheduled-root-password-rotation
+
+Disable scheduled root password rotation
+
 ## Synopsis
 Disable scheduled root password rotation
 

@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl update command
-title: Oasisctl Update
+title:  Oasisctl Update
 menuTitle: Update
 weight: 28
 ---
+## oasisctl update
+
+Update resources
+
 ## Synopsis
 Update resources
 

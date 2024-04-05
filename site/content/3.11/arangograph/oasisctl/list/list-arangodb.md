@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl list arangodb command
-title: Oasisctl List Arangodb
-menuTitle: List Arangodb
+title:  Oasisctl List ArangoDB
+menuTitle: List ArangoDB
 weight: 2
 ---
+## oasisctl list arangodb
+
+List ArangoDB information
+
 ## Synopsis
 List ArangoDB information
 

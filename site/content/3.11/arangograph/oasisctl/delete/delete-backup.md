@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl delete backup command
-title: Oasisctl Delete Backup
+title:  Oasisctl Delete Backup
 menuTitle: Delete Backup
 weight: 6
 ---
+## oasisctl delete backup
+
+Delete a backup for a given ID.
+
 ## Synopsis
 Delete a backup for a given ID.
 

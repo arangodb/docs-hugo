@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl delete auditlog destination command
-title: Oasisctl Delete Auditlog Destination
+title:  Oasisctl Delete Audit Log Destination
 menuTitle: Delete Audit Log Destination
 weight: 5
 ---
+## oasisctl delete auditlog destination
+
+Delete a destination from an auditlog
+
 ## Synopsis
 Delete a destination from an auditlog
 

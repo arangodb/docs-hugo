@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl auditlog get attached project command
-title: Oasisctl Auditlog Get Attached Project
+title:  Oasisctl Audit Log Get Attached Project
 menuTitle: Audit Log Get Attached Project
 weight: 5
 ---
+## oasisctl auditlog get attached project
+
+Get an attached log to a project
+
 ## Synopsis
 Get an attached log to a project
 

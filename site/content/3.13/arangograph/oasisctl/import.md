@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl import command
-title: Oasisctl Import
+title:  Oasisctl Import
 menuTitle: Import
 weight: 14
 ---
+## oasisctl import
+
+Import data from a local database or from another remote database into an Oasis deployment.
+
 ## Synopsis
 Import data from a local database or from another remote database into an Oasis deployment.
 

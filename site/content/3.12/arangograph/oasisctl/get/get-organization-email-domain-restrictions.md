@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl get organization email domain restrictions command
-title: Oasisctl Get Organization Email Domain Restrictions
+title:  Oasisctl Get Organization Email Domain Restrictions
 menuTitle: Get Organization Email Domain Restrictions
 weight: 20
 ---
+## oasisctl get organization email domain restrictions
+
+Get which email domain restrictions are placed on accessing a specific organization
+
 ## Synopsis
 Get which email domain restrictions are placed on accessing a specific organization
 

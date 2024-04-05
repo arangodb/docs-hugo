@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl unlock command
-title: Oasisctl Unlock
+title:  Oasisctl Unlock
 menuTitle: Unlock
 weight: 27
 ---
+## oasisctl unlock
+
+Unlock resources
+
 ## Synopsis
 Unlock resources
 

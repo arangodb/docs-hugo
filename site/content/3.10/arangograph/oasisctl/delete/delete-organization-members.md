@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl delete organization members command
-title: Oasisctl Delete Organization Members
+title:  Oasisctl Delete Organization Members
 menuTitle: Delete Organization Members
 weight: 20
 ---
+## oasisctl delete organization members
+
+Delete members from organization
+
 ## Synopsis
 Delete members from organization
 

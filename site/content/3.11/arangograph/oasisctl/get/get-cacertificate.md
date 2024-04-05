@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl get cacertificate command
-title: Oasisctl Get Cacertificate
-menuTitle: Get Cacertificate
+title:  Oasisctl Get CA Certificate
+menuTitle: Get CA Certificate
 weight: 6
 ---
+## oasisctl get cacertificate
+
+Get a CA certificate the authenticated user has access to
+
 ## Synopsis
 Get a CA certificate the authenticated user has access to
 

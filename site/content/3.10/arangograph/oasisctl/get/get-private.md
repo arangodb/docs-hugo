@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl get private command
-title: Oasisctl Get Private
+title:  Oasisctl Get Private
 menuTitle: Get Private
 weight: 23
 ---
+## oasisctl get private
+
+Get private information
+
 ## Synopsis
 Get private information
 

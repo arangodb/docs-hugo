@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl get server status command
-title: Oasisctl Get Server Status
+title:  Oasisctl Get Server Status
 menuTitle: Get Server Status
 weight: 32
 ---
+## oasisctl get server status
+
+Get the status of servers for a deployment
+
 ## Synopsis
 Get the status of servers for a deployment
 

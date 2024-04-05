@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl rebalance command
-title: Oasisctl Rebalance
+title:  Oasisctl Rebalance
 menuTitle: Rebalance
 weight: 20
 ---
+## oasisctl rebalance
+
+Rebalance resources
+
 ## Synopsis
 Rebalance resources
 

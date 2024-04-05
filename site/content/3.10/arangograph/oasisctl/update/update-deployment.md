@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl update deployment command
-title: Oasisctl Update Deployment
+title:  Oasisctl Update Deployment
 menuTitle: Update Deployment
 weight: 5
 ---
+## oasisctl update deployment
+
+Update a deployment the authenticated user has access to
+
 ## Synopsis
 Update a deployment the authenticated user has access to
 

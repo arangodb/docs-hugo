@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl get private endpoint command
-title: Oasisctl Get Private Endpoint
+title:  Oasisctl Get Private Endpoint
 menuTitle: Get Private Endpoint
 weight: 24
 ---
+## oasisctl get private endpoint
+
+
+
 ## Synopsis
 
 

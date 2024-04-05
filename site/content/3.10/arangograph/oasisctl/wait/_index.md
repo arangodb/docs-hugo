@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl wait command
-title: Oasisctl Wait
+title:  Oasisctl Wait
 menuTitle: Wait
 weight: 31
 ---
+## oasisctl wait
+
+Wait for a status change
+
 ## Synopsis
 Wait for a status change
 

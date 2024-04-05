@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl create cacertificate command
-title: Oasisctl Create Cacertificate
-menuTitle: Create Cacertificate
+title:  Oasisctl Create CA Certificate
+menuTitle: Create CA Certificate
 weight: 5
 ---
+## oasisctl create cacertificate
+
+Create a new CA certificate
+
 ## Synopsis
 Create a new CA certificate
 

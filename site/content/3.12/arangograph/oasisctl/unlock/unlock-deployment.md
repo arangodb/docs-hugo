@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl unlock deployment command
-title: Oasisctl Unlock Deployment
+title:  Oasisctl Unlock Deployment
 menuTitle: Unlock Deployment
 weight: 2
 ---
+## oasisctl unlock deployment
+
+Unlock a deployment, so it can be deleted
+
 ## Synopsis
 Unlock a deployment, so it can be deleted
 

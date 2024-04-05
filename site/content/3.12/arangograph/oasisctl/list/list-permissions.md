@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl list permissions command
-title: Oasisctl List Permissions
+title:  Oasisctl List Permissions
 menuTitle: List Permissions
 weight: 33
 ---
+## oasisctl list permissions
+
+List the known permissions
+
 ## Synopsis
 List the known permissions
 

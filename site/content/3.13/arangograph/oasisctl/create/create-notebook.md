@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl create notebook command
-title: Oasisctl Create Notebook
+title:  Oasisctl Create Notebook
 menuTitle: Create Notebook
 weight: 13
 ---
+## oasisctl create notebook
+
+Create a new notebook
+
 ## Synopsis
 Create a new notebook
 

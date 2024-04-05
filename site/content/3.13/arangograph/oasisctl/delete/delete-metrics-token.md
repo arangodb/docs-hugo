@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl delete metrics token command
-title: Oasisctl Delete Metrics Token
+title:  Oasisctl Delete Metrics Token
 menuTitle: Delete Metrics Token
 weight: 16
 ---
+## oasisctl delete metrics token
+
+Delete a metrics token for a deployment
+
 ## Synopsis
 Delete a metrics token for a deployment
 

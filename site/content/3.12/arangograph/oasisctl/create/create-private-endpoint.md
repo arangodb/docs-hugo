@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl create private endpoint command
-title: Oasisctl Create Private Endpoint
+title:  Oasisctl Create Private Endpoint
 menuTitle: Create Private Endpoint
 weight: 17
 ---
+## oasisctl create private endpoint
+
+
+
 ## Synopsis
 
 

@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl create metrics command
-title: Oasisctl Create Metrics
+title:  Oasisctl Create Metrics
 menuTitle: Create Metrics
 weight: 11
 ---
+## oasisctl create metrics
+
+Create metrics resources
+
 ## Synopsis
 Create metrics resources
 

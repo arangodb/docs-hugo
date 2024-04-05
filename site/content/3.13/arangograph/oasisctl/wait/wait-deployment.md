@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl wait deployment command
-title: Oasisctl Wait Deployment
+title:  Oasisctl Wait Deployment
 menuTitle: Wait Deployment
 weight: 1
 ---
+## oasisctl wait deployment
+
+Wait for a deployment to reach the ready status
+
 ## Synopsis
 Wait for a deployment to reach the ready status
 

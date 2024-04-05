@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl lock command
-title: Oasisctl Lock
+title:  Oasisctl Lock
 menuTitle: Lock
 weight: 16
 ---
+## oasisctl lock
+
+Lock resources
+
 ## Synopsis
 Lock resources
 

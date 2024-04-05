@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl create metrics token command
-title: Oasisctl Create Metrics Token
+title:  Oasisctl Create Metrics Token
 menuTitle: Create Metrics Token
 weight: 12
 ---
+## oasisctl create metrics token
+
+Create a new metrics access token
+
 ## Synopsis
 Create a new metrics access token
 

@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl get example installation command
-title: Oasisctl Get Example Installation
+title:  Oasisctl Get Example Installation
 menuTitle: Get Example Installation
 weight: 9
 ---
+## oasisctl get example installation
+
+Get a single example dataset installation
+
 ## Synopsis
 Get a single example dataset installation
 

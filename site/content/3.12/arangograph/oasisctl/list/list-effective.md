@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl list effective command
-title: Oasisctl List Effective
+title:  Oasisctl List Effective
 menuTitle: List Effective
 weight: 15
 ---
+## oasisctl list effective
+
+List effective information
+
 ## Synopsis
 List effective information
 

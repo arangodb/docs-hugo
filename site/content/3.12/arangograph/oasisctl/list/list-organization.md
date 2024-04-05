@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl list organization command
-title: Oasisctl List Organization
+title:  Oasisctl List Organization
 menuTitle: List Organization
 weight: 29
 ---
+## oasisctl list organization
+
+List organization resources
+
 ## Synopsis
 List organization resources
 

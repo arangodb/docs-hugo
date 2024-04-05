@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl resume deployment command
-title: Oasisctl Resume Deployment
+title:  Oasisctl Resume Deployment
 menuTitle: Resume Deployment
 weight: 1
 ---
+## oasisctl resume deployment
+
+Resume a paused deployment the authenticated user has access to
+
 ## Synopsis
 Resume a paused deployment the authenticated user has access to
 

@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl delete organization invite command
-title: Oasisctl Delete Organization Invite
+title:  Oasisctl Delete Organization Invite
 menuTitle: Delete Organization Invite
 weight: 19
 ---
+## oasisctl delete organization invite
+
+Delete an organization invite the authenticated user has access to
+
 ## Synopsis
 Delete an organization invite the authenticated user has access to
 

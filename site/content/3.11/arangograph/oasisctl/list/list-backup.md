@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl list backup command
-title: Oasisctl List Backup
+title:  Oasisctl List Backup
 menuTitle: List Backup
 weight: 8
 ---
+## oasisctl list backup
+
+A list command for various backup resources
+
 ## Synopsis
 A list command for various backup resources
 

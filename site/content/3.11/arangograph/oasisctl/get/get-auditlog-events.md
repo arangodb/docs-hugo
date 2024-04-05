@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl get auditlog events command
-title: Oasisctl Get Auditlog Events
+title:  Oasisctl Get Audit Log Events
 menuTitle: Get Audit Log Events
 weight: 3
 ---
+## oasisctl get auditlog events
+
+Get auditlog events
+
 ## Synopsis
 Get auditlog events
 

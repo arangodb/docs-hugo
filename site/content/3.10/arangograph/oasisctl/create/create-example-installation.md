@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl create example installation command
-title: Oasisctl Create Example Installation
+title:  Oasisctl Create Example Installation
 menuTitle: Create Example Installation
 weight: 8
 ---
+## oasisctl create example installation
+
+Create a new example dataset installation
+
 ## Synopsis
 Create a new example dataset installation
 

@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl enable scheduled-root-password-rotation command
-title: Oasisctl Enable Scheduled-Root-Password-Rotation
+title:  Oasisctl Enable Scheduled-Root-Password-Rotation
 menuTitle: Enable Scheduled-Root-Password-Rotation
 weight: 1
 ---
+## oasisctl enable scheduled-root-password-rotation
+
+Enable scheduled root password rotation
+
 ## Synopsis
 Enable scheduled root password rotation
 

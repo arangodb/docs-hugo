@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl list auditlog archives command
-title: Oasisctl List Auditlog Archives
+title:  Oasisctl List Audit Log Archives
 menuTitle: List Audit Log Archives
 weight: 5
 ---
+## oasisctl list auditlog archives
+
+List auditlog archives
+
 ## Synopsis
 List auditlog archives
 

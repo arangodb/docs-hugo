@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl top command
-title: Oasisctl Top
+title:  Oasisctl Top
 menuTitle: Top
 weight: 26
 ---
+## oasisctl top
+
+Show the most important server metrics
+
 ## Synopsis
 Show the most important server metrics
 

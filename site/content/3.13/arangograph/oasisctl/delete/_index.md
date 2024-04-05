@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl delete command
-title: Oasisctl Delete
+title:  Oasisctl Delete
 menuTitle: Delete
 weight: 9
 ---
+## oasisctl delete
+
+Delete resources
+
 ## Synopsis
 Delete resources
 

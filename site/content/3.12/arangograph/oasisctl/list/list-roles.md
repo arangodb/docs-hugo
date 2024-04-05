@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl list roles command
-title: Oasisctl List Roles
+title:  Oasisctl List Roles
 menuTitle: List Roles
 weight: 37
 ---
+## oasisctl list roles
+
+List all roles of the given organization
+
 ## Synopsis
 List all roles of the given organization
 

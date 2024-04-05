@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl list backup policies command
-title: Oasisctl List Backup Policies
+title:  Oasisctl List Backup Policies
 menuTitle: List Backup Policies
 weight: 9
 ---
+## oasisctl list backup policies
+
+List backup policies
+
 ## Synopsis
 List backup policies
 

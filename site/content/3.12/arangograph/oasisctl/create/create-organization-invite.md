@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl create organization invite command
-title: Oasisctl Create Organization Invite
+title:  Oasisctl Create Organization Invite
 menuTitle: Create Organization Invite
 weight: 15
 ---
+## oasisctl create organization invite
+
+Create a new invite to an organization
+
 ## Synopsis
 Create a new invite to an organization
 

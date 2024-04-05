@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl update policy add command
-title: Oasisctl Update Policy Add
+title:  Oasisctl Update Policy Add
 menuTitle: Update Policy Add
 weight: 18
 ---
+## oasisctl update policy add
+
+Add to a policy
+
 ## Synopsis
 Add to a policy
 

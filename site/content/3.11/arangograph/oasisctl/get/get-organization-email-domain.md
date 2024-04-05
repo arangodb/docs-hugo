@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl get organization email domain command
-title: Oasisctl Get Organization Email Domain
+title:  Oasisctl Get Organization Email Domain
 menuTitle: Get Organization Email Domain
 weight: 19
 ---
+## oasisctl get organization email domain
+
+Get email domain specific information for an organization
+
 ## Synopsis
 Get email domain specific information for an organization
 

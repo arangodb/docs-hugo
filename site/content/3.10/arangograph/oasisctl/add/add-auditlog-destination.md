@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl add auditlog destination command
-title: Oasisctl Add Auditlog Destination
+title:  Oasisctl Add Audit Log Destination
 menuTitle: Add Audit Log Destination
 weight: 2
 ---
+## oasisctl add auditlog destination
+
+Add a destination to an auditlog.
+
 ## Synopsis
 Add a destination to an auditlog.
 

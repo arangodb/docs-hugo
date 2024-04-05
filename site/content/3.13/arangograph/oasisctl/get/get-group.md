@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl get group command
-title: Oasisctl Get Group
+title:  Oasisctl Get Group
 menuTitle: Get Group
 weight: 10
 ---
+## oasisctl get group
+
+Get a group the authenticated user has access to
+
 ## Synopsis
 Get a group the authenticated user has access to
 

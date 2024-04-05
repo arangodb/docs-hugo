@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl add group members command
-title: Oasisctl Add Group Members
+title:  Oasisctl Add Group Members
 menuTitle: Add Group Members
 weight: 4
 ---
+## oasisctl add group members
+
+Add members to group
+
 ## Synopsis
 Add members to group
 

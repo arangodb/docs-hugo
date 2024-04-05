@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl pause command
-title: Oasisctl Pause
+title:  Oasisctl Pause
 menuTitle: Pause
 weight: 19
 ---
+## oasisctl pause
+
+Pause resources
+
 ## Synopsis
 Pause resources
 

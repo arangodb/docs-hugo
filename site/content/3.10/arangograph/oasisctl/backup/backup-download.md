@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl backup download command
-title: Oasisctl Backup Download
+title:  Oasisctl Backup Download
 menuTitle: Backup Download
 weight: 2
 ---
+## oasisctl backup download
+
+Download a backup
+
 ## Synopsis
 Download a backup from the cloud storage to the local deployment disks, so it can be restored.
 

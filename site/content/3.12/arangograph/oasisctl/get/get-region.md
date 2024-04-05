@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl get region command
-title: Oasisctl Get Region
+title:  Oasisctl Get Region
 menuTitle: Get Region
 weight: 28
 ---
+## oasisctl get region
+
+Get a region the authenticated user has access to
+
 ## Synopsis
 Get a region the authenticated user has access to
 

@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl update organization authentication providers command
-title: Oasisctl Update Organization Authentication Providers
+title:  Oasisctl Update Organization Authentication Providers
 menuTitle: Update Organization Authentication Providers
 weight: 13
 ---
+## oasisctl update organization authentication providers
+
+Update allowed authentication providers for an organization the authenticated user has access to
+
 ## Synopsis
 Update allowed authentication providers for an organization the authenticated user has access to
 
