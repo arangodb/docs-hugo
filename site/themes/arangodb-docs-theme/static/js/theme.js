@@ -190,7 +190,12 @@ function internalLinkListener() {
     }
     event.preventDefault();
     updateHistory(event.target.getAttribute('href'))
-  })
+  });
+
+  $('.card-link').click(function(event) {
+    event.preventDefault();
+    updateHistory(this.getAttribute('href'))
+  });
 }
 
 function codeShowMoreListener() {
@@ -222,8 +227,7 @@ function initArticle(url) {
   styleImages();
   internalLinkListener();
   codeShowMoreListener();
-  aliazeLinks('article', 'a.link:not([target])');
-  aliazeLinks('article', 'a.header-link');
+  aliazeLinks('article', 'a.link:not([target]), a.card-link, a.header-link');
   aliazeLinks('#breadcrumbs', 'a')
 }
 
