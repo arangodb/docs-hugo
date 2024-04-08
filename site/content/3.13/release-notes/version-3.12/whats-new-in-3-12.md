@@ -1061,6 +1061,16 @@ small requests.
 Compression for all Agency traffic is disabled regardless of the settings
 of these options.
 
+### Read-only shards metric
+
+<small>Introduced in: v3.12.1</small>
+
+The following cluster health metric has been added:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_vocbase_shards_read_only_by_write_concern` | Number of shards that are read-only due to an undercut of the write concern. |
+
 ## Client tools
 
 ### Protocol aliases for endpoints
