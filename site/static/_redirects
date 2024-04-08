@@ -3,6 +3,11 @@
 /3.12/operations/installation/compiling/running-custom-build/      https://github.com/arangodb/arangodb/blob/devel/CONTRIBUTING.md
 /3.12/operations/installation/compiling/recompiling-jemalloc/      https://github.com/arangodb/arangodb/blob/devel/CONTRIBUTING.md
 
+/stable/operations/installation/compiling/                         https://github.com/arangodb/arangodb/blob/devel/CONTRIBUTING.md
+/stable/operations/installation/compiling/compile-on-debian/       https://github.com/arangodb/arangodb/blob/devel/CONTRIBUTING.md
+/stable/operations/installation/compiling/running-custom-build/    https://github.com/arangodb/arangodb/blob/devel/CONTRIBUTING.md
+/stable/operations/installation/compiling/recompiling-jemalloc/    https://github.com/arangodb/arangodb/blob/devel/CONTRIBUTING.md
+
 /3.10/develop/http/*                   /3.10/develop/http-api/:splat
 /3.11/develop/http/*                   /3.11/develop/http-api/:splat
 /3.12/develop/http/*                   /3.12/develop/http-api/:splat
