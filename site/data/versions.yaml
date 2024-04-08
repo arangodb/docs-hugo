@@ -16,4 +16,4 @@
 - name: "3.10"
   version: "3.10.14"
   alias: "3.10"
-  deprecated: false
+  deprecated: true
