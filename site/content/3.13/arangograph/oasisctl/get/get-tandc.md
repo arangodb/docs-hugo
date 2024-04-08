@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Terms & Conditions
+title: Oasisctl Get Terms & Conditions
 menuTitle: Get Terms & Conditions
 weight: 33
 ---

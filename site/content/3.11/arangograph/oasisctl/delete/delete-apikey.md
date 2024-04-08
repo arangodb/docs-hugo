@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete API Key
+title: Oasisctl Delete API Key
 menuTitle: Delete API Key
 weight: 1
 ---

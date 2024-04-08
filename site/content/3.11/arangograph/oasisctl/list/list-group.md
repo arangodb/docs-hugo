@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Group
+title: Oasisctl List Group
 menuTitle: List Group
 weight: 20
 ---

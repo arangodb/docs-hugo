@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Rotate Deployment Server
+title: Oasisctl Rotate Deployment Server
 menuTitle: Rotate Deployment Server
 weight: 2
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Unlock Project
+title: Oasisctl Unlock Project
 menuTitle: Unlock Project
 weight: 6
 ---

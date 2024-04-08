@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Create Notebook
+title: Oasisctl Create Notebook
 menuTitle: Create Notebook
 weight: 13
 ---

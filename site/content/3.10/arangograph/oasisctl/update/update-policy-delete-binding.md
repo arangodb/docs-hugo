@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update Policy Delete Binding
+title: Oasisctl Update Policy Delete Binding
 menuTitle: Update Policy Delete Binding
 weight: 21
 ---

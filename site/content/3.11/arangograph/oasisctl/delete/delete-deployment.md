@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete Deployment
+title: Oasisctl Delete Deployment
 menuTitle: Delete Deployment
 weight: 9
 ---

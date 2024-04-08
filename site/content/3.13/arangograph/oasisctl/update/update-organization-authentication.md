@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update Organization Authentication
+title: Oasisctl Update Organization Authentication
 menuTitle: Update Organization Authentication
 weight: 12
 ---

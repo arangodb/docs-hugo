@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update Deployment
+title: Oasisctl Update Deployment
 menuTitle: Update Deployment
 weight: 5
 ---

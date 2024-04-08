@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete Organization Members
+title: Oasisctl Delete Organization Members
 menuTitle: Delete Organization Members
 weight: 20
 ---

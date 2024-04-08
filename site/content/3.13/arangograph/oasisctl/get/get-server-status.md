@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Server Status
+title: Oasisctl Get Server Status
 menuTitle: Get Server Status
 weight: 32
 ---

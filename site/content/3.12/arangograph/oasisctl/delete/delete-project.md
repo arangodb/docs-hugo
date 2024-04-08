@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete Project
+title: Oasisctl Delete Project
 menuTitle: Delete Project
 weight: 21
 ---

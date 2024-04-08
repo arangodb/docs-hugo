@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Clone
+title: Oasisctl Clone
 menuTitle: Clone
 weight: 6
 ---

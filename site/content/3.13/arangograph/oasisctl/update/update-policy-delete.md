@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update Policy Delete
+title: Oasisctl Update Policy Delete
 menuTitle: Update Policy Delete
 weight: 20
 ---

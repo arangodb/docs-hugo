@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get CA Certificate
+title: Oasisctl Get CA Certificate
 menuTitle: Get CA Certificate
 weight: 6
 ---

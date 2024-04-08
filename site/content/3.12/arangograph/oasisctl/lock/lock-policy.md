@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Lock Policy
+title: Oasisctl Lock Policy
 menuTitle: Lock Policy
 weight: 5
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete Example Installation
+title: Oasisctl Delete Example Installation
 menuTitle: Delete Example Installation
 weight: 11
 ---

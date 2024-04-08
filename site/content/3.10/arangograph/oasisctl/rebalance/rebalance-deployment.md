@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Rebalance Deployment
+title: Oasisctl Rebalance Deployment
 menuTitle: Rebalance Deployment
 weight: 1
 ---

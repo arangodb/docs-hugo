@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update Organization Email Domain Restrictions
+title: Oasisctl Update Organization Email Domain Restrictions
 menuTitle: Update Organization Email Domain Restrictions
 weight: 16
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Create Backup Policy
+title: Oasisctl Create Backup Policy
 menuTitle: Create Backup Policy
 weight: 4
 ---

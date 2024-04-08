@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Resume
+title: Oasisctl Resume
 menuTitle: Resume
 weight: 23
 ---

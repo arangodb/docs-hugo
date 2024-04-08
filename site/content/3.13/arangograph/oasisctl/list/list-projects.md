@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Projects
+title: Oasisctl List Projects
 menuTitle: List Projects
 weight: 34
 ---

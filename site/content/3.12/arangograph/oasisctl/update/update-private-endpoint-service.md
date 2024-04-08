@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update Private Endpoint Service
+title: Oasisctl Update Private Endpoint Service
 menuTitle: Update Private Endpoint Service
 weight: 24
 ---

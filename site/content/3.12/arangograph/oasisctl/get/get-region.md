@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Region
+title: Oasisctl Get Region
 menuTitle: Get Region
 weight: 28
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Revoke API Key
+title: Oasisctl Revoke API Key
 menuTitle: Revoke API Key
 weight: 1
 ---

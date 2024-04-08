@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List API Keys
+title: Oasisctl List API Keys
 menuTitle: List API Keys
 weight: 1
 ---

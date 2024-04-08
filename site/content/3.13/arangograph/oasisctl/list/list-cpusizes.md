@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List CPU Sizes
+title: Oasisctl List CPU Sizes
 menuTitle: List CPU Sizes
 weight: 12
 ---

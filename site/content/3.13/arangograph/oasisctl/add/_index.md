@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Add
+title: Oasisctl Add
 menuTitle: Add
 weight: 3
 ---

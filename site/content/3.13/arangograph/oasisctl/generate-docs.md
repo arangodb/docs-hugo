@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Generate Documentation
+title: Oasisctl Generate Documentation
 menuTitle: Generate Documentation
 weight: 12
 ---

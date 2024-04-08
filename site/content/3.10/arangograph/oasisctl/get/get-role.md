@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Role
+title: Oasisctl Get Role
 menuTitle: Get Role
 weight: 29
 ---

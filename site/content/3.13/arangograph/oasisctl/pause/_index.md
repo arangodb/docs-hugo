@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Pause
+title: Oasisctl Pause
 menuTitle: Pause
 weight: 19
 ---

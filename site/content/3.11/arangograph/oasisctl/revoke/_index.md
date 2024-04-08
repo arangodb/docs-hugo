@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Revoke
+title: Oasisctl Revoke
 menuTitle: Revoke
 weight: 24
 ---

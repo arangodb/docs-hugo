@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Backup
+title: Oasisctl Get Backup
 menuTitle: Get Backup
 weight: 4
 ---

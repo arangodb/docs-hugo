@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Lock IP Allowlist
+title: Oasisctl Lock IP Allowlist
 menuTitle: Lock IP Allowlist
 weight: 3
 ---

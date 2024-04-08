@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Resume Deployment
+title: Oasisctl Resume Deployment
 menuTitle: Resume Deployment
 weight: 1
 ---

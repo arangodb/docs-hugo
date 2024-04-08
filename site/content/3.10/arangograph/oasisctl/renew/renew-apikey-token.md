@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Renew API Key Token
+title: Oasisctl Renew API Key Token
 menuTitle: Renew API Key Token
 weight: 2
 ---

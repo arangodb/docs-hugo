@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Reject
+title: Oasisctl Reject
 menuTitle: Reject
 weight: 21
 ---

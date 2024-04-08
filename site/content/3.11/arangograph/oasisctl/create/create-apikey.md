@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Create API Key
+title: Oasisctl Create API Key
 menuTitle: Create API Key
 weight: 1
 ---

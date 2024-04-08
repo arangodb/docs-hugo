@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Clone Deployment
+title: Oasisctl Clone Deployment
 menuTitle: Clone Deployment
 weight: 1
 ---

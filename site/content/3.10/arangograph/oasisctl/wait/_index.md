@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Wait
+title: Oasisctl Wait
 menuTitle: Wait
 weight: 31
 ---

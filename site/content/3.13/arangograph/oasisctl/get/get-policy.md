@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Policy
+title: Oasisctl Get Policy
 menuTitle: Get Policy
 weight: 22
 ---

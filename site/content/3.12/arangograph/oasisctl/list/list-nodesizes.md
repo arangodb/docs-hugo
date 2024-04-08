@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Node Sizes
+title: Oasisctl List Node Sizes
 menuTitle: List Node Sizes
 weight: 26
 ---

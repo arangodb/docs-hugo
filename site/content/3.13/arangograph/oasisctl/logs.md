@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Logs
+title: Oasisctl Logs
 menuTitle: Logs
 weight: 18
 ---

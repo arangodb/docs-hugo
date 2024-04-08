@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Backup
+title: Oasisctl List Backup
 menuTitle: List Backup
 weight: 8
 ---

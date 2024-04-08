@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete Metrics
+title: Oasisctl Delete Metrics
 menuTitle: Delete Metrics
 weight: 15
 ---

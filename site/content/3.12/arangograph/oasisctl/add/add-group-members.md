@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Add Group Members
+title: Oasisctl Add Group Members
 menuTitle: Add Group Members
 weight: 4
 ---

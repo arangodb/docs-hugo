@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Lock CA Certificate
+title: Oasisctl Lock CA Certificate
 menuTitle: Lock CA Certificate
 weight: 1
 ---

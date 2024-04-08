@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete Backup
+title: Oasisctl Delete Backup
 menuTitle: Delete Backup
 weight: 6
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Resume Notebook
+title: Oasisctl Resume Notebook
 menuTitle: Resume Notebook
 weight: 2
 ---

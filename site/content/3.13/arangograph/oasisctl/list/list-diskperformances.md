@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Disk Performances
+title: Oasisctl List Disk Performances
 menuTitle: List Disk Performances
 weight: 14
 ---

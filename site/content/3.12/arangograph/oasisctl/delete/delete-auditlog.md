@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete Audit Log
+title: Oasisctl Delete Audit Log
 menuTitle: Delete Audit Log
 weight: 2
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Group Members
+title: Oasisctl List Group Members
 menuTitle: List Group Members
 weight: 21
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Clone Deployment Backup
+title: Oasisctl Clone Deployment Backup
 menuTitle: Clone Deployment Backup
 weight: 2
 ---

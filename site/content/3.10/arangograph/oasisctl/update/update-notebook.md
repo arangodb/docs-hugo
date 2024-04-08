@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update Notebook
+title: Oasisctl Update Notebook
 menuTitle: Update Notebook
 weight: 10
 ---

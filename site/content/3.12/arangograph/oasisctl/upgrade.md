@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Upgrade
+title: Oasisctl Upgrade
 menuTitle: Upgrade
 weight: 29
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update Project
+title: Oasisctl Update Project
 menuTitle: Update Project
 weight: 25
 ---

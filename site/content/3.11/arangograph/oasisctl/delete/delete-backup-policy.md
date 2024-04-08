@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete Backup Policy
+title: Oasisctl Delete Backup Policy
 menuTitle: Delete Backup Policy
 weight: 7
 ---

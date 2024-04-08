@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Create Private
+title: Oasisctl Create Private
 menuTitle: Create Private
 weight: 16
 ---

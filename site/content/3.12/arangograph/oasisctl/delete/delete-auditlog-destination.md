@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete Audit Log Destination
+title: Oasisctl Delete Audit Log Destination
 menuTitle: Delete Audit Log Destination
 weight: 5
 ---

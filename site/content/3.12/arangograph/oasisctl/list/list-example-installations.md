@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Example Installations
+title: Oasisctl List Example Installations
 menuTitle: List Example Installations
 weight: 18
 ---

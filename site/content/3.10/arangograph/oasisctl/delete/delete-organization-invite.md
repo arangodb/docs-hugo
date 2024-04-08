@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete Organization Invite
+title: Oasisctl Delete Organization Invite
 menuTitle: Delete Organization Invite
 weight: 19
 ---

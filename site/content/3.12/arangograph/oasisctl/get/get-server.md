@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Server
+title: Oasisctl Get Server
 menuTitle: Get Server
 weight: 31
 ---

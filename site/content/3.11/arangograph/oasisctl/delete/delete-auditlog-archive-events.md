@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete Audit Log Archive Events
+title: Oasisctl Delete Audit Log Archive Events
 menuTitle: Delete Audit Log Archive Events
 weight: 4
 ---

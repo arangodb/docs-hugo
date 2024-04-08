@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Login
+title: Oasisctl Login
 menuTitle: Login
 weight: 17
 ---

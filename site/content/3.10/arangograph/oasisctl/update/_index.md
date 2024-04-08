@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update
+title: Oasisctl Update
 menuTitle: Update
 weight: 28
 ---

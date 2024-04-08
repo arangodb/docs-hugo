@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Create Example
+title: Oasisctl Create Example
 menuTitle: Create Example
 weight: 7
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Group
+title: Oasisctl Get Group
 menuTitle: Get Group
 weight: 10
 ---

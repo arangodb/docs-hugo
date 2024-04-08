@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List IP Allowlists
+title: Oasisctl List IP Allowlists
 menuTitle: List IP Allowlists
 weight: 23
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Providers
+title: Oasisctl List Providers
 menuTitle: List Providers
 weight: 35
 ---

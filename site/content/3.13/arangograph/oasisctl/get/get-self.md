@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Self
+title: Oasisctl Get Self
 menuTitle: Get Self
 weight: 30
 ---

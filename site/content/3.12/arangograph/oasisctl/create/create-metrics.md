@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Create Metrics
+title: Oasisctl Create Metrics
 menuTitle: Create Metrics
 weight: 11
 ---

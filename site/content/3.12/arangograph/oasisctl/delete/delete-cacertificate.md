@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete CA Certificate
+title: Oasisctl Delete CA Certificate
 menuTitle: Delete CA Certificate
 weight: 8
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete Example
+title: Oasisctl Delete Example
 menuTitle: Delete Example
 weight: 10
 ---

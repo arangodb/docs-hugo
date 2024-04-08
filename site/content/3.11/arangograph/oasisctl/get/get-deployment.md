@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Deployment
+title: Oasisctl Get Deployment
 menuTitle: Get Deployment
 weight: 7
 ---

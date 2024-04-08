@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Reject Organization Invite
+title: Oasisctl Reject Organization Invite
 menuTitle: Reject Organization Invite
 weight: 2
 ---

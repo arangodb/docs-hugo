@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Enable Scheduled-Root-Password-Rotation
+title: Oasisctl Enable Scheduled-Root-Password-Rotation
 menuTitle: Enable Scheduled-Root-Password-Rotation
 weight: 1
 ---

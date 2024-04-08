@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Pause Notebook
+title: Oasisctl Pause Notebook
 menuTitle: Pause Notebook
 weight: 1
 ---

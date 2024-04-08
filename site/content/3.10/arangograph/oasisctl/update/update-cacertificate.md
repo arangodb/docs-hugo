@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update CA Certificate
+title: Oasisctl Update CA Certificate
 menuTitle: Update CA Certificate
 weight: 4
 ---

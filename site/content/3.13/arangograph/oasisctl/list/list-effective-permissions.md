@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Effective Permissions
+title: Oasisctl List Effective Permissions
 menuTitle: List Effective Permissions
 weight: 16
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List ArangoDB Versions
+title: Oasisctl List ArangoDB Versions
 menuTitle: List ArangoDB Versions
 weight: 3
 ---

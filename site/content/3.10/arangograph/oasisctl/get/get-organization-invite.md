@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Organization Invite
+title: Oasisctl Get Organization Invite
 menuTitle: Get Organization Invite
 weight: 21
 ---

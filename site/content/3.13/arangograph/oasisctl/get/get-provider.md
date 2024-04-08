@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Provider
+title: Oasisctl Get Provider
 menuTitle: Get Provider
 weight: 27
 ---

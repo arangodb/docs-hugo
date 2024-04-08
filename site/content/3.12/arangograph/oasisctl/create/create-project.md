@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Create Project
+title: Oasisctl Create Project
 menuTitle: Create Project
 weight: 19
 ---

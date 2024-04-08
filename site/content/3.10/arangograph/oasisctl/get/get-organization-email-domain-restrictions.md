@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Organization Email Domain Restrictions
+title: Oasisctl Get Organization Email Domain Restrictions
 menuTitle: Get Organization Email Domain Restrictions
 weight: 20
 ---

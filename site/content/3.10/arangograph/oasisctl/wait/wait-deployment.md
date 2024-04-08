@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Wait Deployment
+title: Oasisctl Wait Deployment
 menuTitle: Wait Deployment
 weight: 1
 ---

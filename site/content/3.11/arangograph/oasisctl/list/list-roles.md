@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Roles
+title: Oasisctl List Roles
 menuTitle: List Roles
 weight: 37
 ---

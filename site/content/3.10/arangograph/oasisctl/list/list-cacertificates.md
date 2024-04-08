@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List CA Certificates
+title: Oasisctl List CA Certificates
 menuTitle: List CA Certificates
 weight: 11
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update Metrics
+title: Oasisctl Update Metrics
 menuTitle: Update Metrics
 weight: 8
 ---

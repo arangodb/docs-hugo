@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Servers
+title: Oasisctl List Servers
 menuTitle: List Servers
 weight: 38
 ---

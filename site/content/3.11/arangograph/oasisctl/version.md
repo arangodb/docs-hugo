@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Version
+title: Oasisctl Version
 menuTitle: Version
 weight: 30
 ---

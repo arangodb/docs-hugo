@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update Organization
+title: Oasisctl Update Organization
 menuTitle: Update Organization
 weight: 11
 ---

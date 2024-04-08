@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Organization Invites
+title: Oasisctl List Organization Invites
 menuTitle: List Organization Invites
 weight: 30
 ---

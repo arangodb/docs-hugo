@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete Role
+title: Oasisctl Delete Role
 menuTitle: Delete Role
 weight: 22
 ---

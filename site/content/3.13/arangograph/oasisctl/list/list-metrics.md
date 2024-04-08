@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Metrics
+title: Oasisctl List Metrics
 menuTitle: List Metrics
 weight: 24
 ---

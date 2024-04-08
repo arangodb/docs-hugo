@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Unlock Organization
+title: Oasisctl Unlock Organization
 menuTitle: Unlock Organization
 weight: 4
 ---

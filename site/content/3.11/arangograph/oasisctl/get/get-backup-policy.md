@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Backup Policy
+title: Oasisctl Get Backup Policy
 menuTitle: Get Backup Policy
 weight: 5
 ---

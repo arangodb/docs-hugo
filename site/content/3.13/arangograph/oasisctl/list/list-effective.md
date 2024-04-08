@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Effective
+title: Oasisctl List Effective
 menuTitle: List Effective
 weight: 15
 ---

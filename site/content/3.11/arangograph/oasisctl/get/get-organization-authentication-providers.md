@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Organization Authentication Providers
+title: Oasisctl Get Organization Authentication Providers
 menuTitle: Get Organization Authentication Providers
 weight: 17
 ---

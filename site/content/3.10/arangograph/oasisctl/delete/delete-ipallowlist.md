@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete IP Allowlist
+title: Oasisctl Delete IP Allowlist
 menuTitle: Delete IP Allowlist
 weight: 14
 ---

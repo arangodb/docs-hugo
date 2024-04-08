@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Audit Log Get
+title: Oasisctl Audit Log Get
 menuTitle: Audit Log Get
 weight: 3
 ---

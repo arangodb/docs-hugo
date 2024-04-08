@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Notebook Models
+title: Oasisctl List Notebook Models
 menuTitle: List Notebook Models
 weight: 27
 ---

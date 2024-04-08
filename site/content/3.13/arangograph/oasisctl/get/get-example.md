@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Example
+title: Oasisctl Get Example
 menuTitle: Get Example
 weight: 8
 ---

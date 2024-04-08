@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update Policy
+title: Oasisctl Update Policy
 menuTitle: Update Policy
 weight: 17
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Create IP Allowlist
+title: Oasisctl Create IP Allowlist
 menuTitle: Create IP Allowlist
 weight: 10
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Backup Policies
+title: Oasisctl List Backup Policies
 menuTitle: List Backup Policies
 weight: 9
 ---

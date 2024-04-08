@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Enable
+title: Oasisctl Enable
 menuTitle: Enable
 weight: 11
 ---

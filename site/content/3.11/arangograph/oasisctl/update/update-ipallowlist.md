@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update IP Allowlist
+title: Oasisctl Update IP Allowlist
 menuTitle: Update IP Allowlist
 weight: 7
 ---

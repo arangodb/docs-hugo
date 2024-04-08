@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Unlock Policy
+title: Oasisctl Unlock Policy
 menuTitle: Unlock Policy
 weight: 5
 ---

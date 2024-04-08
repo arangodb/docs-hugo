@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Audit Log Events
+title: Oasisctl Get Audit Log Events
 menuTitle: Get Audit Log Events
 weight: 3
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update Private
+title: Oasisctl Update Private
 menuTitle: Update Private
 weight: 22
 ---

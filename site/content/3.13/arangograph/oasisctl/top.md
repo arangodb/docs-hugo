@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Top
+title: Oasisctl Top
 menuTitle: Top
 weight: 26
 ---

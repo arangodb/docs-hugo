@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Revoke Metrics
+title: Oasisctl Revoke Metrics
 menuTitle: Revoke Metrics
 weight: 3
 ---

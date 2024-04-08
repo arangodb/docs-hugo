@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Create Example Installation
+title: Oasisctl Create Example Installation
 menuTitle: Create Example Installation
 weight: 8
 ---

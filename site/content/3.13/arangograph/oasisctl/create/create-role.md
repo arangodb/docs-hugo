@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Create Role
+title: Oasisctl Create Role
 menuTitle: Create Role
 weight: 20
 ---

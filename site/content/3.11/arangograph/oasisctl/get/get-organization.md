@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Organization
+title: Oasisctl Get Organization
 menuTitle: Get Organization
 weight: 15
 ---

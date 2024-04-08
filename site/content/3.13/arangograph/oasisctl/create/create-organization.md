@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Create Organization
+title: Oasisctl Create Organization
 menuTitle: Create Organization
 weight: 14
 ---

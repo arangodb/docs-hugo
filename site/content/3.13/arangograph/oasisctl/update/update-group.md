@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update Group
+title: Oasisctl Update Group
 menuTitle: Update Group
 weight: 6
 ---

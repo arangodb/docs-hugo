@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Accept
+title: Oasisctl Accept
 menuTitle: Accept
 weight: 2
 ---

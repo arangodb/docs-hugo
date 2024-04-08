@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Rebalance
+title: Oasisctl Rebalance
 menuTitle: Rebalance
 weight: 20
 ---

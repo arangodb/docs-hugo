@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Unlock
+title: Oasisctl Unlock
 menuTitle: Unlock
 weight: 27
 ---

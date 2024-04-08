@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete
+title: Oasisctl Delete
 menuTitle: Delete
 weight: 9
 ---

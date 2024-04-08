@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Project
+title: Oasisctl Get Project
 menuTitle: Get Project
 weight: 26
 ---

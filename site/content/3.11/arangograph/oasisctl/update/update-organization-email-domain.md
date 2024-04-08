@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update Organization Email Domain
+title: Oasisctl Update Organization Email Domain
 menuTitle: Update Organization Email Domain
 weight: 15
 ---

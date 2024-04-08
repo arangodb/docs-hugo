@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Regions
+title: Oasisctl List Regions
 menuTitle: List Regions
 weight: 36
 ---

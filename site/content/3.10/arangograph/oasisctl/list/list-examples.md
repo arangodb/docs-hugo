@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Examples
+title: Oasisctl List Examples
 menuTitle: List Examples
 weight: 19
 ---

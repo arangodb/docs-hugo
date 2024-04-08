@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete Notebook
+title: Oasisctl Delete Notebook
 menuTitle: Delete Notebook
 weight: 17
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Organization Email
+title: Oasisctl Get Organization Email
 menuTitle: Get Organization Email
 weight: 18
 ---

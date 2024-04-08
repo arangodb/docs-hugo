@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Rebalance Deployment Shards
+title: Oasisctl Rebalance Deployment Shards
 menuTitle: Rebalance Deployment Shards
 weight: 2
 ---

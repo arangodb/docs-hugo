@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Organization Authentication
+title: Oasisctl Get Organization Authentication
 menuTitle: Get Organization Authentication
 weight: 16
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Lock Project
+title: Oasisctl Lock Project
 menuTitle: Lock Project
 weight: 6
 ---

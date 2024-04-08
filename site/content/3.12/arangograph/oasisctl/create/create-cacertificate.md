@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Create CA Certificate
+title: Oasisctl Create CA Certificate
 menuTitle: Create CA Certificate
 weight: 5
 ---

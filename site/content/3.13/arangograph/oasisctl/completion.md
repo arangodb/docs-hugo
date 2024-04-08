@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Completion
+title: Oasisctl Completion
 menuTitle: Completion
 weight: 7
 ---

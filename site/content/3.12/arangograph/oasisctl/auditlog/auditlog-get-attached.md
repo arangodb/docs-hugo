@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Audit Log Get Attached
+title: Oasisctl Audit Log Get Attached
 menuTitle: Audit Log Get Attached
 weight: 4
 ---

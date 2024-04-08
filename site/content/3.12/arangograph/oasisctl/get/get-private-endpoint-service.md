@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Private Endpoint Service
+title: Oasisctl Get Private Endpoint Service
 menuTitle: Get Private Endpoint Service
 weight: 25
 ---

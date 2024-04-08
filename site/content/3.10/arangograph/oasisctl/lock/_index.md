@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Lock
+title: Oasisctl Lock
 menuTitle: Lock
 weight: 16
 ---

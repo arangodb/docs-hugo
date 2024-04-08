@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Create Private Endpoint Service
+title: Oasisctl Create Private Endpoint Service
 menuTitle: Create Private Endpoint Service
 weight: 18
 ---

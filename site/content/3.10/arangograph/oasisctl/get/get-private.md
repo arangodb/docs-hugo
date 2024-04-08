@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Private
+title: Oasisctl Get Private
 menuTitle: Get Private
 weight: 23
 ---

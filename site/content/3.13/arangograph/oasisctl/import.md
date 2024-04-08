@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Import
+title: Oasisctl Import
 menuTitle: Import
 weight: 14
 ---

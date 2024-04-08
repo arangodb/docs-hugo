@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Create Organization Invite
+title: Oasisctl Create Organization Invite
 menuTitle: Create Organization Invite
 weight: 15
 ---

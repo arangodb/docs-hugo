@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Rotate
+title: Oasisctl Rotate
 menuTitle: Rotate
 weight: 25
 ---

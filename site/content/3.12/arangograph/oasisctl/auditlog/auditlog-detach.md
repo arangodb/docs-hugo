@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Audit Log Detach
+title: Oasisctl Audit Log Detach
 menuTitle: Audit Log Detach
 weight: 2
 ---

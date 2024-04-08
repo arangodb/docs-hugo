@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List ArangoDB
+title: Oasisctl List ArangoDB
 menuTitle: List ArangoDB
 weight: 2
 ---

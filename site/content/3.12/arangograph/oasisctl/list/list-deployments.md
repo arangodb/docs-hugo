@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Deployments
+title: Oasisctl List Deployments
 menuTitle: List Deployments
 weight: 13
 ---

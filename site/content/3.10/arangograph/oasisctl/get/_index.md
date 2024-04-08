@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get
+title: Oasisctl Get
 menuTitle: Get
 weight: 13
 ---

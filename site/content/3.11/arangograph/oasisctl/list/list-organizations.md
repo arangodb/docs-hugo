@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Organizations
+title: Oasisctl List Organizations
 menuTitle: List Organizations
 weight: 32
 ---

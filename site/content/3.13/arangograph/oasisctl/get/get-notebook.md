@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Notebook
+title: Oasisctl Get Notebook
 menuTitle: Get Notebook
 weight: 14
 ---

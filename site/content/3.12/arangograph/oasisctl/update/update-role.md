@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update Role
+title: Oasisctl Update Role
 menuTitle: Update Role
 weight: 26
 ---

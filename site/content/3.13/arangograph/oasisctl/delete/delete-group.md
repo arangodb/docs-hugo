@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete Group
+title: Oasisctl Delete Group
 menuTitle: Delete Group
 weight: 12
 ---

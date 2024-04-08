@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Audit Log
+title: Oasisctl Audit Log
 menuTitle: Audit Log
 weight: 4
 ---

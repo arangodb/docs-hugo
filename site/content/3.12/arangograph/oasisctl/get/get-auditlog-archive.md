@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Get Audit Log Archive
+title: Oasisctl Get Audit Log Archive
 menuTitle: Get Audit Log Archive
 weight: 2
 ---

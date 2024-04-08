@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl List Permissions
+title: Oasisctl List Permissions
 menuTitle: List Permissions
 weight: 33
 ---

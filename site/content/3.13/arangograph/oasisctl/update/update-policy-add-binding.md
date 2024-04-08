@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update Policy Add Binding
+title: Oasisctl Update Policy Add Binding
 menuTitle: Update Policy Add Binding
 weight: 19
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Renew
+title: Oasisctl Renew
 menuTitle: Renew
 weight: 22
 ---

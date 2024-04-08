@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Lock Organization
+title: Oasisctl Lock Organization
 menuTitle: Lock Organization
 weight: 4
 ---

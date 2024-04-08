@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Delete Metrics Token
+title: Oasisctl Delete Metrics Token
 menuTitle: Delete Metrics Token
 weight: 16
 ---

@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Unlock Deployment
+title: Oasisctl Unlock Deployment
 menuTitle: Unlock Deployment
 weight: 2
 ---

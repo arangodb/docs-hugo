@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Update Backup Policy
+title: Oasisctl Update Backup Policy
 menuTitle: Update Backup Policy
 weight: 3
 ---

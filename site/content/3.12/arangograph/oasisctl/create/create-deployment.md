@@ -1,5 +1,5 @@
 ---
-title:  Oasisctl Create Deployment
+title: Oasisctl Create Deployment
 menuTitle: Create Deployment
 weight: 6
 ---
