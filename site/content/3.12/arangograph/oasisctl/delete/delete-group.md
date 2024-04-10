@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl delete group command
 title: Oasisctl Delete Group
 menuTitle: Delete Group
 weight: 12
 ---
+## oasisctl delete group
+
+Delete a group the authenticated user has access to
+
 ## Synopsis
 Delete a group the authenticated user has access to
 

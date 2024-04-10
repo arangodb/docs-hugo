@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl reject organization command
 title: Oasisctl Reject Organization
 menuTitle: Reject Organization
 weight: 1
 ---
+## oasisctl reject organization
+
+Reject organization related invites
+
 ## Synopsis
 Reject organization related invites
 

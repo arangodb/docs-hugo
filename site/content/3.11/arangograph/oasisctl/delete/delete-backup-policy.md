@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl delete backup policy command
 title: Oasisctl Delete Backup Policy
 menuTitle: Delete Backup Policy
 weight: 7
 ---
+## oasisctl delete backup policy
+
+Delete a backup policy for a given ID.
+
 ## Synopsis
 Delete a backup policy for a given ID.
 

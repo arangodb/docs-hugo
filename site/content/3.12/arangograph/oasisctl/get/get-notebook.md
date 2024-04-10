@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl get notebook command
 title: Oasisctl Get Notebook
 menuTitle: Get Notebook
 weight: 14
 ---
+## oasisctl get notebook
+
+Get a notebook
+
 ## Synopsis
 Get a notebook
 

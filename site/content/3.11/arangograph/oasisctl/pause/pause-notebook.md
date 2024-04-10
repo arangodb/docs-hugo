@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl pause notebook command
 title: Oasisctl Pause Notebook
 menuTitle: Pause Notebook
 weight: 1
 ---
+## oasisctl pause notebook
+
+Pause a notebook
+
 ## Synopsis
 Pause a notebook
 

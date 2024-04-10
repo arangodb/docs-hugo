@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl update project command
 title: Oasisctl Update Project
 menuTitle: Update Project
 weight: 25
 ---
+## oasisctl update project
+
+Update a project the authenticated user has access to
+
 ## Synopsis
 Update a project the authenticated user has access to
 

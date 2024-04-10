@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl list cacertificates command
-title: Oasisctl List Cacertificates
-menuTitle: List Cacertificates
+title: Oasisctl List CA Certificates
+menuTitle: List CA Certificates
 weight: 11
 ---
+## oasisctl list cacertificates
+
+List all CA certificates of the given project
+
 ## Synopsis
 List all CA certificates of the given project
 

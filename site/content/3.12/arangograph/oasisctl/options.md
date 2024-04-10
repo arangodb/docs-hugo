@@ -4,7 +4,8 @@ title: ArangoGraph Shell oasisctl
 menuTitle: Options
 weight: 1
 ---
-## Oasisctl
+## oasisctl
+
 ArangoGraph Insights Platform
 
 ## Synopsis

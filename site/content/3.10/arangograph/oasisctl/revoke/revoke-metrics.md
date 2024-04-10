@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl revoke metrics command
 title: Oasisctl Revoke Metrics
 menuTitle: Revoke Metrics
 weight: 3
 ---
+## oasisctl revoke metrics
+
+Revoke keys & tokens
+
 ## Synopsis
 Revoke keys & tokens
 

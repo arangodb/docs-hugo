@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl create private command
 title: Oasisctl Create Private
 menuTitle: Create Private
 weight: 16
 ---
+## oasisctl create private
+
+Create private resources
+
 ## Synopsis
 Create private resources
 

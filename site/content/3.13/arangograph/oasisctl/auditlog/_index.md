@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl auditlog command
-title: Oasisctl Auditlog
-menuTitle: Auditlog
+title: Oasisctl Audit Log
+menuTitle: Audit Log
 weight: 4
 ---
+## oasisctl auditlog
+
+AuditLog resources
+
 ## Synopsis
 AuditLog resources
 

@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl list ipallowlists command
-title: Oasisctl List Ipallowlists
-menuTitle: List Ipallowlists
+title: Oasisctl List IP Allowlists
+menuTitle: List IP Allowlists
 weight: 23
 ---
+## oasisctl list ipallowlists
+
+List all IP allowlists of the given project
+
 ## Synopsis
 List all IP allowlists of the given project
 

@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl update organization email domain restrictions command
 title: Oasisctl Update Organization Email Domain Restrictions
 menuTitle: Update Organization Email Domain Restrictions
 weight: 16
 ---
+## oasisctl update organization email domain restrictions
+
+Update which domain restrictions are placed on accessing a specific organization
+
 ## Synopsis
 Update which domain restrictions are placed on accessing a specific organization
 

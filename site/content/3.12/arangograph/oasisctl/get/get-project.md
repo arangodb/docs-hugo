@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl get project command
 title: Oasisctl Get Project
 menuTitle: Get Project
 weight: 26
 ---
+## oasisctl get project
+
+Get a project the authenticated user has access to
+
 ## Synopsis
 Get a project the authenticated user has access to
 

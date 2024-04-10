@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl clone command
 title: Oasisctl Clone
 menuTitle: Clone
 weight: 6
 ---
+## oasisctl clone
+
+Clone resources
+
 ## Synopsis
 Clone resources
 

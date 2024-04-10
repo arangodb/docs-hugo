@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl backup copy command
 title: Oasisctl Backup Copy
 menuTitle: Backup Copy
 weight: 1
 ---
+## oasisctl backup copy
+
+Copy a backup from source backup to given region
+
 ## Synopsis
 Copy a backup from source backup to given region
 

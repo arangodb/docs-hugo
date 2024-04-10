@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl list cpusizes command
-title: Oasisctl List Cpusizes
-menuTitle: List Cpusizes
+title: Oasisctl List CPU Sizes
+menuTitle: List CPU Sizes
 weight: 12
 ---
+## oasisctl list cpusizes
+
+List CPU sizes
+
 ## Synopsis
 List CPU sizes
 
