@@ -53,7 +53,7 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
 
 - [**Multiple Environments**](../../operations/installation/_index.md#supported-platforms-and-architectures):
   Run ArangoDB on Linux using the production-ready packages for the x86-64
-  architecture, bare metal or in containers.
+  architecture, on bare metal or in containers.
   Develop and test with ArangoDB on Windows, macOS, and Linux using the official
   ArangoDB Docker images, available for the x86-64 architecture and 64-bit ARM chips.
 

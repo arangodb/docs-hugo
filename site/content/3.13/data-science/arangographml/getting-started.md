@@ -308,7 +308,7 @@ The Featurization Specification asks that you input the following:
     and they can all be featurized in different ways. Supplying multiple features
     results in a single concatenated feature.
     - `feature_type`: Provide the feature type. Currently, the supported types
-      include `text`, `category`, and `numerical`.
+      include `text`, `category`, `numeric` and `label`.
     - `feature_generator` Optional: Adjust advanced feature generation parameters.
       - `feature_name`: The name of this Dict should match the attribute name of the
         document stored in ArangoDB. This overrides the name provided for the parent Dict.
@@ -319,7 +319,7 @@ The Featurization Specification asks that you input the following:
         "collectionName": {
           "features": {
             "attribute_name_1": {
-              "feature_type": 'text' # Suported types: text, category, numerical, label
+              "feature_type": 'text' # Suported types: text, category, numeric, label
               "feature_generator": { # this advanced option is optional.
                 "method": "transformer_embeddings",
                 "feature_name": "movie_title_embeddings",

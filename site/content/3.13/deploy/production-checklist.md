@@ -50,13 +50,6 @@ have been performed on your production system before you go live.
   update-rc.d -f arangodb3 remove
   ```
 
-  On Windows in a command prompt with elevated rights:
-
-  ```
-  sc config arangodb start= disabled
-  sc stop arangodb
-  ```
-  
 - If you have deployed a Cluster, the _replication factor_  and 
   _minimal_replication_factor_ of your collections
   are set to a value equal or higher than 2, otherwise you run the risk of

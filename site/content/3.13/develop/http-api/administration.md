@@ -136,7 +136,7 @@ paths:
                         type: string
                       platform:
                         description: |
-                          the host os - `linux`, `windows` or `darwin`
+                          the host operating system, always `linux`
                         type: string
                       reactor-type:
                         description: |
@@ -748,9 +748,7 @@ paths:
             - `requiresValue` (boolean): Whether the option can be specified
               without a value to enable it
             - `os` (array of strings): The operating systems the startup option
-              is supported on, typically `["linux", "macos", "windows"]`. On an
-              OS that does not support a specific option, the option is not
-              reported
+              is supported on, always `["linux"]`
             - `component` (array of strings): A list of server roles the startup
               option is available on. If it is supported by all cluster node types
               as well as the single server deployment mode, then the value is

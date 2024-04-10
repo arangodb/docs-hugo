@@ -23,8 +23,7 @@ To load your own JavaScript code into the current JavaScript interpreter context
 use the load command:
 
 ```js
-require("internal").load("/tmp/test.js")     // <- Linux / macOS
-require("internal").load("c:\\tmp\\test.js") // <- Windows
+require("internal").load("/tmp/test.js")
 ```
 
 You can exit arangosh using the key combination `<CTRL> + D` or by
@@ -91,7 +90,7 @@ To turn on pretty printing again, use the `start_pretty_print()` command.
 ## Escaping
 
 In AQL, escaping is done traditionally with the backslash character: `\`.
-As seen above, this leads to double backslashes when specifying Windows paths.
+For literal backslashes, you need to double backslashes to `\\`.
 _arangosh_ requires another level of escaping, also with the backslash character.
 It adds up to four backslashes that need to be written in _arangosh_ for a single
 literal backslash (`c:\tmp\test.js`):
@@ -169,8 +168,7 @@ and finally try it out:
 
 _arangosh_ looks for a user-defined startup script named `.arangosh.rc` in the
 user's home directory on startup. The home directory is likely at `/home/<username>/`
-on Unix/Linux, and is determined on Windows by peeking into the environment variables
-`%HOMEDRIVE%` and `%HOMEPATH%`. 
+on Unix/Linux.
 
 If the file `.arangosh.rc` is present in the home directory, _arangosh_ executes
 the contents of this file inside the global scope.
