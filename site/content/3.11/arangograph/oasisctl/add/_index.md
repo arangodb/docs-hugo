@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl add command
 title: Oasisctl Add
 menuTitle: Add
 weight: 3
 ---
+## oasisctl add
+
+Add resources
+
 ## Synopsis
 Add resources
 

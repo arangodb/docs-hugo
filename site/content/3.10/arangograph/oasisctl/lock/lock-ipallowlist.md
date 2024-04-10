@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl lock ipallowlist command
-title: Oasisctl Lock Ipallowlist
-menuTitle: Lock Ipallowlist
+title: Oasisctl Lock IP Allowlist
+menuTitle: Lock IP Allowlist
 weight: 3
 ---
+## oasisctl lock ipallowlist
+
+Lock an IP allowlist, so it cannot be deleted
+
 ## Synopsis
 Lock an IP allowlist, so it cannot be deleted
 

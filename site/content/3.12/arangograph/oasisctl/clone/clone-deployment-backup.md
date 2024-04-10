@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl clone deployment backup command
 title: Oasisctl Clone Deployment Backup
 menuTitle: Clone Deployment Backup
 weight: 2
 ---
+## oasisctl clone deployment backup
+
+Clone a deployment from a backup.
+
 ## Synopsis
 Clone a deployment from a backup.
 

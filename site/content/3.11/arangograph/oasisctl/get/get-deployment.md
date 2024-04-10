@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl get deployment command
 title: Oasisctl Get Deployment
 menuTitle: Get Deployment
 weight: 7
 ---
+## oasisctl get deployment
+
+Get a deployment the authenticated user has access to
+
 ## Synopsis
 Get a deployment the authenticated user has access to
 

@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl get ipallowlist command
-title: Oasisctl Get Ipallowlist
-menuTitle: Get Ipallowlist
+title: Oasisctl Get IP Allowlist
+menuTitle: Get IP Allowlist
 weight: 11
 ---
+## oasisctl get ipallowlist
+
+Get an IP allowlist the authenticated user has access to
+
 ## Synopsis
 Get an IP allowlist the authenticated user has access to
 

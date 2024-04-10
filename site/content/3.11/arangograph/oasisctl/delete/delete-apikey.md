@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl delete apikey command
-title: Oasisctl Delete Apikey
-menuTitle: Delete Apikey
+title: Oasisctl Delete API Key
+menuTitle: Delete API Key
 weight: 1
 ---
+## oasisctl delete apikey
+
+Delete an API key with given identifier
+
 ## Synopsis
 Delete an API key with given identifier
 

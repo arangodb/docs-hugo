@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl get auditlog command
-title: Oasisctl Get Auditlog
-menuTitle: Get Auditlog
+title: Oasisctl Get Audit Log
+menuTitle: Get Audit Log
 weight: 1
 ---
+## oasisctl get auditlog
+
+Get auditlog archive
+
 ## Synopsis
 Get auditlog archive
 

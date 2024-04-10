@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl create example command
 title: Oasisctl Create Example
 menuTitle: Create Example
 weight: 7
 ---
+## oasisctl create example
+
+Create example ...
+
 ## Synopsis
 Create example ...
 

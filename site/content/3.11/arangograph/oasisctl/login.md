@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl login command
 title: Oasisctl Login
 menuTitle: Login
 weight: 17
 ---
+## oasisctl login
+
+Login to ArangoDB Oasis using an API key
+
 ## Synopsis
 To authenticate in a script environment, run:
 	

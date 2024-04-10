@@ -145,7 +145,7 @@ def rewrite_content(data, section, filename, weight):
                 for word in title.split(" "):
                     menuTitle = menuTitle + f" {TITLE_CASE.get(word.lower(), word)}"
 
-                content = content + f"title: {menuTitle}\nmenuTitle:{menuTitle.replace('Oasisctl ', '')}\nweight: {weight}\n"
+                content = content + f"title:{menuTitle}\nmenuTitle:{menuTitle.replace('Oasisctl ', '')}\nweight: {weight}\n"
                 continue
             
         if line.startswith("###### Auto generated"):

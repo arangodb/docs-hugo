@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl revoke apikey command
-title: Oasisctl Revoke Apikey
-menuTitle: Revoke Apikey
+title: Oasisctl Revoke API Key
+menuTitle: Revoke API Key
 weight: 1
 ---
+## oasisctl revoke apikey
+
+Revoke an API key with given identifier
+
 ## Synopsis
 Revoke an API key with given identifier
 

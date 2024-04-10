@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl list apikeys command
-title: Oasisctl List Apikeys
-menuTitle: List Apikeys
+title: Oasisctl List API Keys
+menuTitle: List API Keys
 weight: 1
 ---
+## oasisctl list apikeys
+
+List all API keys created for the current user
+
 ## Synopsis
 List all API keys created for the current user
 

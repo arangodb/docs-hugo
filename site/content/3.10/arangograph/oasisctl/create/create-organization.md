@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl create organization command
 title: Oasisctl Create Organization
 menuTitle: Create Organization
 weight: 14
 ---
+## oasisctl create organization
+
+Create a new organization
+
 ## Synopsis
 Create a new organization
 

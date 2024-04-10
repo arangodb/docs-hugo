@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl delete organization command
 title: Oasisctl Delete Organization
 menuTitle: Delete Organization
 weight: 18
 ---
+## oasisctl delete organization
+
+Delete an organization the authenticated user has access to
+
 ## Synopsis
 Delete an organization the authenticated user has access to
 

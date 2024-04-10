@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl list groups command
 title: Oasisctl List Groups
 menuTitle: List Groups
 weight: 22
 ---
+## oasisctl list groups
+
+List all groups of the given organization
+
 ## Synopsis
 List all groups of the given organization
 

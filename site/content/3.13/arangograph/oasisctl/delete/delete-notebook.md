@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl delete notebook command
 title: Oasisctl Delete Notebook
 menuTitle: Delete Notebook
 weight: 17
 ---
+## oasisctl delete notebook
+
+Delete a notebook
+
 ## Synopsis
 Delete a notebook
 

@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl completion command
 title: Oasisctl Completion
 menuTitle: Completion
 weight: 7
 ---
+## oasisctl completion
+
+Generates bash completion scripts
+
 ## Synopsis
 To load completion run
 

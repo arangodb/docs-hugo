@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl list group command
 title: Oasisctl List Group
 menuTitle: List Group
 weight: 20
 ---
+## oasisctl list group
+
+List group resources
+
 ## Synopsis
 List group resources
 

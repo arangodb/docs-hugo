@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl upgrade command
 title: Oasisctl Upgrade
 menuTitle: Upgrade
 weight: 29
 ---
+## oasisctl upgrade
+
+Upgrade Oasisctl tool
+
 ## Synopsis
 Check the latest, compatible version and upgrade this tool to that.
 

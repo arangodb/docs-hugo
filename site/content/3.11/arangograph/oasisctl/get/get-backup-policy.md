@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl get backup policy command
 title: Oasisctl Get Backup Policy
 menuTitle: Get Backup Policy
 weight: 5
 ---
+## oasisctl get backup policy
+
+Get an existing backup policy
+
 ## Synopsis
 Get an existing backup policy
 

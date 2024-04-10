@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl reject command
 title: Oasisctl Reject
 menuTitle: Reject
 weight: 21
 ---
+## oasisctl reject
+
+Reject invites
+
 ## Synopsis
 Reject invites
 

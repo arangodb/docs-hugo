@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl update policy add binding command
 title: Oasisctl Update Policy Add Binding
 menuTitle: Update Policy Add Binding
 weight: 19
 ---
+## oasisctl update policy add binding
+
+Add a role binding to a policy
+
 ## Synopsis
 Add a role binding to a policy
 

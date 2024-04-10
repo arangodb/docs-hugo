@@ -1,9 +1,12 @@
 ---
-description: Description of the oasisctl get example command
 title: Oasisctl Get Example
 menuTitle: Get Example
 weight: 8
 ---
+## oasisctl get example
+
+Get a single example dataset
+
 ## Synopsis
 Get a single example dataset
 
