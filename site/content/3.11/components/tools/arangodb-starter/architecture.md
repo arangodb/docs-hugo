@@ -123,7 +123,7 @@ args.all.log.level = startup=trace
 args.all.log.level = warning
 
 [starter]
-  mode = single
+mode = single
 
 [args]
 all.log.level = queries=debug

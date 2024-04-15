@@ -8,12 +8,10 @@ description: >-
 ---
 While ArangoDB is schema-less, it allows to enforce certain document structures
 on the collection level. The desired structure can be described in the popular
-[JSON Schema](https://json-schema.org/) format (draft-4,
-without remote schema support). The level of validation and a custom error
+[JSON Schema](https://json-schema.org/) format (draft-4, without support for
+remote schemas for security reasons). The level of validation and a custom error
 message can be configured. The system attributes `_key`, `_id`, `_rev`, `_from`
 and `_to` are ignored by the schema validation.
-
-Also see [Known Issues](../../../release-notes/version-3.11/known-issues-in-3-11.md#schema-validation)
 
 ## Enable schema validation for a collection
 
@@ -92,10 +90,14 @@ The level controls when the validation is triggered:
 ## Error message
 
 If the schema validation for a document fails, then a generic error is raised.
-The schema validation cannot pin-point which part of a rule made it fail,
-also see [Known Issues](../../../release-notes/version-3.11/known-issues-in-3-11.md#schema-validation).
 You may customize the error message via the `message` attribute to provide a
-summary of what is expected or point out common mistakes.
+summary of what the expected document structure is or point out common mistakes.
+
+The schema validation cannot pin-point which part of a rule made it fail because
+it is difficult to determine and report for complex schemas. For example, when
+using `not` and `anyOf`, this would result in trees of possible errors. You can
+use tools like [jsonschemavalidator.net](https://www.jsonschemavalidator.net/)
+to examine schema validation issues.
 
 ## Performance
 
@@ -110,3 +112,11 @@ The following AQL functions are available to work with schemas:
 
  - [SCHEMA_GET()](../../../aql/functions/miscellaneous.md#schema_get)
  - [SCHEMA_VALIDATE()](../../../aql/functions/miscellaneous.md#schema_validate)
+
+## Backup and restore
+
+Logical backups created with arangodump include the schema configuration, which
+is a collection property.
+
+When using arangorestore to restore to a collection with a defined schema,
+no schema validation is executed.
