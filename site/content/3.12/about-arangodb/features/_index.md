@@ -66,11 +66,10 @@ Kubernetes cluster.
 
 ### Community Edition
 
-ArangoDB is freely available in a **Community Edition** under the Apache 2.0
-open-source license. It is a fully-featured version without time or size
-restrictions and includes cluster support.
+ArangoDB is available in a **Community Edition** governed by the
+[ArangoDB Community License](https://arangodb.com/2024/02/update-evolving-arangodbs-licensing-model-for-a-sustainable-future/).
+You can download prepackaged binaries and official Docker images for free.
 
-- Open source under a permissive license
 - One database core for all graph, document, key-value, and search needs
 - A single composable query language for all data models
 - Extensible through microservices with custom REST APIs and user-definable
@@ -78,6 +77,21 @@ restrictions and includes cluster support.
 - Cluster deployments for high availability and resilience
 
 See all [Community Edition Features](community-edition.md).
+
+The Community Edition is a fully-featured version without time
+restrictions and includes cluster support. The use for commercial purposes is
+limited to a 100 GB on dataset size in production within a single cluster and a
+maximum of three clusters.
+
+The source code of the Community Edition is available under the
+[Business Source License 1.1 (BUSL-1.1)](https://github.com/arangodb/arangodb/blob/devel/LICENSE).
+Copying, modification, redistribution, non-commercial use, and commercial use in
+a non-production context are always allowed. Additionally, you can deploy
+BUSL-licensed ArangoDB source code for any purpose (including production) as
+long as you are not creating a commercial derivative work or offering, or are
+including it in a commercial product, application, or service. On the fourth
+anniversary of the first publicly available distribution of a specific version,
+the license changes to the open-source Apache 2.0 license.
 
 ### Enterprise Edition
 
@@ -100,7 +114,7 @@ See all [Enterprise Edition Features](enterprise-edition.md).
 
 | Community Edition | Enterprise Edition |
 |-------------------|--------------------|
-| Apache 2.0 License | Commercial License |
+| ArangoDB Community License for prepacked binaries, BUSL-1.1 for the source code | Commercial License |
 | Sharding using consistent hashing on the default or custom shard keys | In addition, **smart sharding** for improved data locality |
 | Only hash-based graph sharding | **SmartGraphs** to intelligently shard large graph datasets and **EnterpriseGraphs** with an automatic sharding key selection |
 | Only regular collection replication without data locality optimizations | **SatelliteCollections** to replicate collections on all cluster nodes and data locality optimizations for queries |
