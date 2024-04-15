@@ -15,8 +15,11 @@ function initCopyToClipboard() {
             }
             var span = $('<span>').addClass("copy-to-clipboard-button").attr("title", window.T_Copy_to_clipboard).attr("onclick", "copyCode(event);")
             code.before(span);
-            if ( code.text().split(/\r\n|\r|\n/).length > 16) {
-              var showMore = $('<button class="code-show-more"></button>')
+            // n-times line-height * root em, larger than to-be-applied max-height to always reveal some lines
+            // False for currently collapsed code ("Show output" with display: none)
+            if ( code.prop('scrollHeight') > 20 * 1.8 * 16 ) {
+              code.addClass('code-long');
+              var showMore = $('<button class="code-show-more"></button>');
               code.after(showMore);
             }
 

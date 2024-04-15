@@ -1537,7 +1537,10 @@ li > code {
     font-family: Consolas,liberation mono,Menlo,Courier,monospace;
     padding: 28px;
     font-size: 1rem;
-    max-height: calc(17 * 1.8rem);
+}
+
+.copy-to-clipboard > .copy-to-clipboard-code.code-long {
+    max-height: calc(15 * 1.8rem);
     overflow: hidden;
 }
 
@@ -1546,7 +1549,7 @@ li > code {
 }
 
 .copy-to-clipboard > .copy-to-clipboard-code.expanded {
-    max-height: 100%;
+    max-height: unset;
 }
 
 pre > .code-show-more {
