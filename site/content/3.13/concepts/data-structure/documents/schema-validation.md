@@ -110,8 +110,8 @@ validation than very simple schemas.
 
 The following AQL functions are available to work with schemas:
 
- - [SCHEMA_GET()](../../../aql/functions/miscellaneous.md#schema_get)
- - [SCHEMA_VALIDATE()](../../../aql/functions/miscellaneous.md#schema_validate)
+ - [`SCHEMA_GET()`](../../../aql/functions/miscellaneous.md#schema_get)
+ - [`SCHEMA_VALIDATE()`](../../../aql/functions/miscellaneous.md#schema_validate)
 
 ## Backup and restore
 

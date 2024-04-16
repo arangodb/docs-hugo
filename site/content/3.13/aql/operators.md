@@ -92,7 +92,7 @@ more reasonable `! LIKE(doc.attr, "…")`.
 The regular expression operators `=~` and `!~` expect their left-hand operands to
 be strings, and their right-hand operands to be strings containing valid regular
 expressions as specified in the documentation for the AQL function
-[REGEX_TEST()](functions/string.md#regex_test).
+[`REGEX_TEST()`](functions/string.md#regex_test).
 
 ## Array comparison operators
 
@@ -227,7 +227,7 @@ RETURN [-x, +y]
 // [5, 1]
 ```
 
-For exponentiation, there is a [numeric function](functions/numeric.md#pow) *POW()*.
+For exponentiation, there is a [numeric function](functions/numeric.md#pow) `POW()`.
 The syntax `base ** exp` is not supported.
 
 For string concatenation, you must use the [`CONCAT()` string function](functions/string.md#concat).
@@ -246,7 +246,7 @@ Also see [Common Errors](common-errors.md).
 
 The arithmetic operators accept operands of any type. Passing non-numeric values to an 
 arithmetic operator casts the operands to numbers using the type casting rules 
-applied by the [TO_NUMBER()](functions/type-check-and-cast.md#to_number) function:
+applied by the [`TO_NUMBER()`](functions/type-check-and-cast.md#to_number) function:
 
 - `null` is converted to `0`
 - `false` is converted to `0`, `true` is converted to `1`
@@ -496,8 +496,8 @@ RETURN (
 ```
 
 Note that the elements are not de-duplicated. For a flat array with only unique
-elements, a combination of [UNIQUE()](functions/array.md#unique) and
-[FLATTEN()](functions/array.md#flatten) is advisable.
+elements, a combination of [`UNIQUE()`](functions/array.md#unique) and
+[`FLATTEN()`](functions/array.md#flatten) is advisable.
 
 ### Inline expressions
 
