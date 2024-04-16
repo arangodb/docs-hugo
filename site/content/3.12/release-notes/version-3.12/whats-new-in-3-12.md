@@ -762,7 +762,8 @@ specifications ES2020 through ES2024. The following list is non-exhaustive:
   `/^\p{RGI_Emoji}$/v.test("👨🏾‍⚕️")` or `/[\p{Script_Extensions=Greek}--[α-γ]]/v.test('β')`
 
 - A static method to check whether an object directly defines a property, like
-  `Object.hasOwn({ foo: 42 })`, superseding `Object.prototype.hasOwnProperty()`
+  `Object.hasOwn({ foo: 42 }, "toString")`, superseding
+  `Object.prototype.hasOwnProperty.call(…)`
 
 - `Object.groupBy()` and `Map.groupBy()` to group the elements of an iterable
   according to the string values returned by a provided callback function
