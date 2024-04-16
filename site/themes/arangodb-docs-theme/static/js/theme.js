@@ -18,9 +18,8 @@ function menuToggleClick(event) {
     toggleMenuItem(event);
 }
 
-
 function menuEntryClickListener() {
-    $('.menu-link').click(function(event) {
+    $('.menu-link').on("click", function(event) {
         event.preventDefault();
         if (event.target.pathname == window.location.pathname) {
             toggleMenuItem(event)
@@ -42,7 +41,7 @@ function renderVersion() {
             entry.style.display = 'none';
         }
     }
-};
+}
 
 function closeAllEntries() {
     $(".dd-item.active").removeClass("active");
@@ -183,7 +182,7 @@ function loadPage(target) {
 }
 
 function internalLinkListener() {
-  $('.link').click(function(event) {
+  $('.link').on("click", function(event) {
     if (event.target.getAttribute("target")) {
       // external link
       return;
@@ -192,7 +191,7 @@ function internalLinkListener() {
     updateHistory(event.target.getAttribute('href'))
   });
 
-  $('.card-link').click(function(event) {
+  $('.card-link').on('click', function(event) {
     event.preventDefault();
     updateHistory(this.getAttribute('href'))
   });
@@ -510,14 +509,14 @@ function hideEmptyOpenapiDiv() {
 function initClickHandlers() {
     hideEmptyOpenapiDiv();
 
-    $(".openapi-prop").click(function(event) {
+    $(".openapi-prop").on("click", function(event) {
         if (this === event.target) {
             $(event.target).toggleClass("collapsed");
             $(event.target).find('.openapi-prop-content').first().toggleClass("hidden");
         }
     });
     
-    $(".openapi-table.show-children").click(function(event) {
+    $(".openapi-table.show-children").on("click", function(event) {
         $(event.target).toggleClass("collapsed");
         $(event.target).next(".openapi-table").toggleClass("hidden");
     });
