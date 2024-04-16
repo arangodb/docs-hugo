@@ -395,7 +395,7 @@ function aliazeLinks(parentSelector, linkSelector) {
 
   $(parentSelector).find(linkSelector).each(function() {
     $(this).attr("href", function(index, old) {
-          if (old == undefined) return old;
+          if (old == undefined || old.startsWith("#")) return old;
           let splitLink = old.split("/");
           let linkVersion = splitLink[1];
           let alias = nameAliasMapping[linkVersion] || linkVersion;
