@@ -1530,7 +1530,7 @@ li > code {
     color: var(--green-700);
 }
 
-.copy-to-clipboard > .copy-to-clipboard-code {
+pre > code {
     margin: 0;
     word-break: break-word;
     white-space: break-spaces;
@@ -1540,17 +1540,17 @@ li > code {
     font-size: 1rem;
 }
 
-.copy-to-clipboard > .copy-to-clipboard-code.code-long {
+.code-long {
     max-height: calc(15 * 1.8rem);
     overflow: hidden;
 }
 
-.copy-to-clipboard:hover > .copy-to-clipboard-button {
-    display: flex;
+.code-long.expanded {
+    max-height: unset;
 }
 
-.copy-to-clipboard > .copy-to-clipboard-code.expanded {
-    max-height: unset;
+.copy-to-clipboard:hover > .copy-to-clipboard-button {
+    display: flex;
 }
 
 pre > .code-show-more {
