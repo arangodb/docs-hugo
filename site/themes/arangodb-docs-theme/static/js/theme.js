@@ -199,11 +199,11 @@ function internalLinkListener() {
 }
 
 function codeShowMoreListener() {
-  $('.code-show-more').click(function(event) {
+  $('article').on('click', '.code-show-more', function(event) {
     var t = $(event.target)
     t.toggleClass("expanded")
     t.prev().toggleClass("expanded")
-  })
+  });
 }
 
 function trackPageView(title, urlPath) {
@@ -222,6 +222,7 @@ function trackPageView(title, urlPath) {
 function initArticle(url) {
   restoreTabSelections();
   initCopyToClipboard();
+  addShowMoreButton('article');
   initClickHandlers();
   goToTop();
   styleImages();
@@ -324,6 +325,7 @@ function switchTab(tabGroup, tabId, event) {
 
   allTabItems.removeClass("selected");
   targetTabItems.addClass("selected");
+  addShowMoreButton(targetTabItems);
   if (event) {
       // Keep relative offset of tab in viewport to avoid jumping content
       var topAfter = clickedTab.getBoundingClientRect().top;
