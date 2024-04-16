@@ -521,7 +521,8 @@ a.section-link {
     position: relative;
     max-width: 300px;
     background-color: transparent;
-    border: 0px;
+    border: 0;
+    border-radius: 0;
     text-decoration: none;
     white-space: nowrap;
     overflow: hidden;
