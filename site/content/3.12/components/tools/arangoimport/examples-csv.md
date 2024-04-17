@@ -3,7 +3,6 @@ title: _arangoimport_ Examples CSV / TSV
 menuTitle: Examples CSV
 weight: 10
 description: ''
-archetype: default
 ---
 ## Importing CSV Data
 

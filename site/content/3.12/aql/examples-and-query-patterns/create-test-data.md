@@ -4,7 +4,6 @@ menuTitle: Create Test Data
 weight: 5
 description: >-
   How to fill a collection with dummy documents
-archetype: default
 ---
 We assume that there is already a collection to the hold documents called
 `myCollection` in below example queries.

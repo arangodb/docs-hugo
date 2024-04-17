@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl rebalance command
 title: Oasisctl Rebalance
 menuTitle: Rebalance
-weight: 5
+weight: 20
 ---
+## oasisctl rebalance
+
+Rebalance resources
+
 ## Synopsis
 Rebalance resources
 

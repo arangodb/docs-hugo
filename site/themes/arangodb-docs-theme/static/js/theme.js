@@ -53,7 +53,7 @@ function closeAllEntries() {
 
 function loadMenu(url) {
     closeAllEntries();
-    var version = getVersionByURL()
+    var version = getVersionFromURL()
 
     $('.version-menu.'+version).find('a').each(function() {
       $(this).attr("href", function(index, old) {
@@ -146,7 +146,7 @@ function loadNotFoundPage() {
 function loadPage(target) {
   var href = target;
 
-  if (getVersionInfo(getVersionByURL()) == undefined) {
+  if (getVersionInfo(getVersionFromURL()) == undefined) {
     loadNotFoundPage();
     return;
   }
@@ -154,21 +154,21 @@ function loadPage(target) {
   getCurrentVersion(href);
   renderVersion();
   loadMenu(new URL(href).pathname);
-  var version = getVersionInfo(getVersionByURL()).name;
-  href = href.replace(getVersionByURL(), version);
+  var version = getVersionInfo(getVersionFromURL()).name;
+  href = href.replace(getVersionFromURL(), version);
   var xhr = new XMLHttpRequest();
   $.get({
     xhr: function() { return xhr; },
     url: href,
     success: function(newDoc) {
       if (xhr.responseURL && href.replace(/#.*/, "") !== xhr.responseURL) {
-        updateHistory(xhr.responseURL.replace(version, getVersionByURL()));
+        updateHistory(xhr.responseURL.replace(version, getVersionFromURL()));
         return;
       }
       if (!newDoc.includes("<body>")) {
         // https://github.com/gohugoio/hugo/blob/master/tpl/tplimpl/embedded/templates/alias.html
         var match = /<title>(.*?)<\/title>/.exec(newDoc)[1];
-        updateHistory(match.replace(version, getVersionByURL()))
+        updateHistory(match.replace(version, getVersionFromURL()))
         return;
       }
       replaceArticle(href, newDoc)
@@ -190,7 +190,12 @@ function internalLinkListener() {
     }
     event.preventDefault();
     updateHistory(event.target.getAttribute('href'))
-  })
+  });
+
+  $('.card-link').click(function(event) {
+    event.preventDefault();
+    updateHistory(this.getAttribute('href'))
+  });
 }
 
 function codeShowMoreListener() {
@@ -222,8 +227,7 @@ function initArticle(url) {
   styleImages();
   internalLinkListener();
   codeShowMoreListener();
-  aliazeLinks('article', 'a.link:not([target])');
-  aliazeLinks('article', 'a.header-link');
+  aliazeLinks('article', 'a.link:not([target]), a.card-link, a.header-link');
   aliazeLinks('#breadcrumbs', 'a')
 }
 
@@ -370,15 +374,33 @@ function getVersionInfo(version) {
   return undefined;
 }
 
-function getVersionByURL() {
+function getVersionFromURL() {
   return window.location.pathname.split("/")[1]
 }
 
+function isUsingAlias() {
+  let urlVersion = getVersionFromURL();
+  for (let v of versions) {
+    if (urlVersion == v.alias) return true;
+  }
+  return false;
+}
+
 function aliazeLinks(parentSelector, linkSelector) {
+  if (!isUsingAlias()) return;
+  let nameAliasMapping = {};
+  for (let v of versions) {
+    nameAliasMapping[v.name] = v.alias;
+  }
+
   $(parentSelector).find(linkSelector).each(function() {
     $(this).attr("href", function(index, old) {
-          if (old == undefined) return old
-          return old.replace(old.split("/")[1], getVersionByURL());
+          if (old == undefined) return old;
+          let splitLink = old.split("/");
+          let linkVersion = splitLink[1];
+          let alias = nameAliasMapping[linkVersion] || linkVersion;
+          splitLink.splice(1, 1, alias);
+          return splitLink.join("/");
     });
   });
 }
@@ -402,7 +424,7 @@ function getCurrentVersion() {
   var urlVersion = stableVersion.name
 
   if (window.location.pathname.split("/").length > 0) {
-    newVersion = getVersionByURL()
+    newVersion = getVersionFromURL()
 
     if (newVersion === "3.8" || newVersion === "3.9") {
       handleOldDocsVersion(newVersion)
@@ -444,7 +466,7 @@ function changeVersion() {
     }
 
     
-    var newUrl = window.location.pathname.replace(getVersionByURL(), getVersionInfo(newVersion).alias) + window.location.hash;
+    var newUrl = window.location.pathname.replace(getVersionFromURL(), getVersionInfo(newVersion).alias) + window.location.hash;
     updateHistory(newUrl);
 }
 
@@ -533,7 +555,7 @@ const goToTop = (event) => {
 
 function goToHomepage(event){
     event.preventDefault();
-    var homepage = "/" + getVersionByURL() + "/";
+    var homepage = "/" + getVersionFromURL() + "/";
     updateHistory(homepage);
 }
 
@@ -574,8 +596,8 @@ window.onload = () => {
     renderVersion();
     loadPage(window.location.href)
 
-    if (getVersionInfo(getVersionByURL()) != undefined) {
-      window.setupDocSearch(getVersionInfo(getVersionByURL()).name);
+    if (getVersionInfo(getVersionFromURL()) != undefined) {
+      window.setupDocSearch(getVersionInfo(getVersionFromURL()).name);
     } else {
       window.setupDocSearch(stableVersion);
 

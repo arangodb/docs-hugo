@@ -6,7 +6,6 @@ description: >-
   The open-source version of ArangoDB is available under the permissive
   Apache 2.0 license and offers an extensive feature set including cluster
   support for free
-archetype: default
 aliases:
   - ../../introduction/features/community-edition
 ---
@@ -48,12 +47,14 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   Persistent document attributes that are generated when documents are created
   or modified, using an AQL expression.
 
-- [**Multiple Environments**](../../operations/installation/_index.md#supported-platforms-and-architectures):
+- [**In the cloud or on-prem**](../features/_index.md#on-premises-versus-cloud):
   Use ArangoDB as a [managed service](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
   in your own cloud, or on-premises.
+
+- [**Multiple Environments**](../../operations/installation/_index.md#supported-platforms-and-architectures):
   Develop and test with ArangoDB on Linux, macOS, and Windows, and run it in
   production on Linux. ArangoDB is available for 64-bit ARM chips on macOS and
-  Linux as well as for the x86-64 architecture.
+  Linux for evaluation, as well as production-ready for the x86-64 architecture.
 
 ## Scalability & High Availability
 

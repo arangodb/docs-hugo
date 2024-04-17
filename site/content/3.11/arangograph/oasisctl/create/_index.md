@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl create command
 title: Oasisctl Create
 menuTitle: Create
-weight: 5
+weight: 8
 ---
+## oasisctl create
+
+Create resources
+
 ## Synopsis
 Create resources
 

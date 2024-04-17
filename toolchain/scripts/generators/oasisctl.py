@@ -5,11 +5,11 @@ import string
 import re
 
 
-parser = argparse.ArgumentParser(description='Optional app description')
+parser = argparse.ArgumentParser(description='Post-process files produced by oasisctl generate-docs')
 parser.add_argument('--src', type=str,
-                    help='docs/ folder')
+                    help='docs/ source folder')
 parser.add_argument('--dst', type=str,
-                    help='api-docs.json file destination')
+                    help='oasisctl/ destination folder')
 args = parser.parse_args()
 
 if args.src is None or args.dst is None:
@@ -21,8 +21,6 @@ dst = args.dst
 
 params = {"currentSection": "topLevel", "topLevel": {"weight": 0}}
 
-
-
 TITLE_CASE = {
     'apikey': 'API Key',
     'apikeys': 'API Keys',
@@ -31,6 +29,7 @@ TITLE_CASE = {
     'cacertificate': 'CA Certificate',
     'cacertificates': 'CA Certificates',
     'diskperformances': 'Disk Performances',
+    'generate-docs': 'Generate Documentation',
     'ipallowlist': 'IP Allowlist',
     'ipallowlists': 'IP Allowlists',
     'notebookmodels': 'Notebook Models',
@@ -56,15 +55,25 @@ def processFile(filepath, filename, params):
 
     filename, section = create_filename(filename)
 
-    if not section in params:
+    if not section in params: # _index.md
         params[section] = {"weight": 0}
+        params["topLevel"]["weight"] += 1
+        weight = params["topLevel"]["weight"]
+    else:
+        params[section]["weight"] += 1
+        weight = params[section]["weight"]
 
-    if section != params["currentSection"]:
-        params["currentSection"] = section
-        
-    params[section]["weight"] = params[section]["weight"] + 5
+    #print("Section: {:12}  Current: {:12}  Weight: {:3}  topLevel: {:3}  Final: {:3}  {}".format(
+    #    section,
+    #    params.get('currentSection'),
+    #    params.get(section, {}).get('weight', -1),
+    #    params["topLevel"]["weight"],
+    #    weight,
+    #    filename))
 
-    content = rewrite_content(data, section, filename)
+    params["currentSection"] = section
+
+    content = rewrite_content(data, section, filename, weight)
 
     os.makedirs(os.path.dirname(filename), exist_ok=True)
     with open(filename, "w") as f:
@@ -103,7 +112,7 @@ def create_filename(filename):
     
     return newFilename, "topLevel"
 
-def rewrite_content(data, section, filename):
+def rewrite_content(data, section, filename, weight):
     title = ""
     content = ""
     flags = {"inFrontMatter": False, "endFrontMatter": False, "inHeader": False, "firstHeaderContent": False}
@@ -117,42 +126,34 @@ def rewrite_content(data, section, filename):
             content = content + line
             continue
 
-        if "description: " in line and "/options.md" in filename:
-            content = content + "description: Command-line client tool for managing ArangoGraph\n"
-            continue
-
-        if "layout: "in line:
-            content = content + line.replace("layout: ", "archetype: ")
-            continue
-
-
-        if "title: " in line:
-            if "/options.md" in filename:
-                content = content + f"title: ArangoGraph Shell oasisctl\nmenuTitle: Options\nweight: {params[section]['weight']}\n"
+        if flags["inFrontMatter"] and not flags["endFrontMatter"]:
+            if line.startswith("description: "):
+                if filename.endswith("/options.md"):
+                    content = content + "description: Command-line client tool for managing ArangoGraph\n"
                 continue
 
-            menuTitle = ""
-            lineWords = line.replace("title: ", "").split(" ")
-            title = " ".join(lineWords)
-            for word in lineWords:
-                if word.lower() in TITLE_CASE:
-                    menuTitle = menuTitle + f" {TITLE_CASE[word.lower()]}"
+            if line.startswith("layout: "):
+                continue
+
+            if line.startswith("title: "):
+                if filename.endswith("/options.md"):
+                    content = content + f"title: ArangoGraph Shell oasisctl\nmenuTitle: Options\nweight: {weight}\n"
                     continue
 
-                menuTitle = menuTitle + f" {word}"
+                menuTitle = ""
+                title = line.rstrip().replace("title: ", "")
+                for word in title.split(" "):
+                    menuTitle = menuTitle + f" {TITLE_CASE.get(word.lower(), word)}"
 
-            menuTitle = menuTitle.replace("Oasisctl ", "")
-            content = content + f"{line}menuTitle:{menuTitle}weight: {params[section]['weight']}\n"
-            continue
-
+                content = content + f"title:{menuTitle}\nmenuTitle:{menuTitle.replace('Oasisctl ', '')}\nweight: {weight}\n"
+                continue
             
         if line.startswith("###### Auto generated"):
             continue
 
-        if "### SEE ALSO" in line:
+        if line.startswith("### SEE ALSO"):
             content = content + "## See also"
             continue
-
 
         if line.startswith("#"):
             header = line.replace("#", "").replace(" ", "", 1)
@@ -168,10 +169,10 @@ def rewrite_content(data, section, filename):
                 continue
 
             if line.startswith("## "):
-                content = content + string.capwords(line)
+                content = content + line
                 continue
 
-        if line == "---":
+        if line == "---\n":
             content = content + line
             flags["inFrontMatter"] = not flags["inFrontMatter"]
             if not flags["inFrontMatter"]:
@@ -182,7 +183,6 @@ def rewrite_content(data, section, filename):
             line = adjustLink(line, filename)
             content = content + line
             continue
-
 
         if flags["firstHeaderContent"]:
             continue
@@ -204,7 +204,7 @@ def adjustLink(line, filename):
     if newLink == "oasisctl.html":
         newLink = newLink.replace("oasisctl.html", "options.md")
         if params["currentSection"] != "topLevel":
-            newLink = "../"+newLink
+            newLink = "../" + newLink
         
         line = line.replace(link, newLink)
         return line

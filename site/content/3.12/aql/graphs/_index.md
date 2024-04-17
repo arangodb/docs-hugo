@@ -5,7 +5,6 @@ weight: 35
 description: >-
   You can perform graph traversals and path searches on named graphs as well as
   collection sets with AQL
-archetype: chapter
 ---
 There are multiple ways to work with [graphs in ArangoDB](../../graphs/_index.md),
 as well as different ways to query your graphs using AQL.
@@ -43,6 +42,6 @@ These types of queries are only useful if you use edge collections and/or graphs
 your data model.
 
 {{< info >}}
-New to graphs? [**Take our free graph course for freshers**](https://www.arangodb.com/arangodb-graph-course/)
+New to graphs? [Take our free graph course for freshers](https://www.arangodb.com/arangodb-graph-course/)
 and get from zero knowledge to advanced query techniques.
 {{< /info >}}

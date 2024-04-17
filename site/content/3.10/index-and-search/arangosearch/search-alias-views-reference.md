@@ -3,7 +3,6 @@ title: '`search-alias` Views Reference'
 menuTitle: '`search-alias` Views Reference'
 weight: 80
 description: ''
-archetype: default
 ---
 `search-alias` Views let you add one or more inverted indexes to a View, enabling
 federate searching, sorting search results by relevance, and search highlighting, on top of

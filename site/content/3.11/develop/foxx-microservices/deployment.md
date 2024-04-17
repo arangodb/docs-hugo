@@ -5,7 +5,6 @@ weight: 15
 description: >-
   You can deploy Foxx services with Foxx CLI, the ArangoDB HTTP API, or its
   web interface
-archetype: default
 ---
 Foxx services can be deployed in multiple ways:
 

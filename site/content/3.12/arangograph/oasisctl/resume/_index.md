@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl resume command
 title: Oasisctl Resume
 menuTitle: Resume
-weight: 5
+weight: 23
 ---
+## oasisctl resume
+
+Resume resources
+
 ## Synopsis
 Resume resources
 

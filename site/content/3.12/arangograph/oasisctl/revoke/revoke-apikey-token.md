@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl revoke apikey token command
-title: Oasisctl Revoke Apikey Token
+title: Oasisctl Revoke API Key Token
 menuTitle: Revoke API Key Token
-weight: 15
+weight: 2
 ---
+## oasisctl revoke apikey token
+
+Revoke an API key token
+
 ## Synopsis
 Revoke the token (resulting from API key authentication)
 

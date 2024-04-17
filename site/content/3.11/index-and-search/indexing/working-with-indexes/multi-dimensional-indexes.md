@@ -3,19 +3,29 @@ title: Multi-dimensional indexes
 menuTitle: Multi-dimensional Indexes
 weight: 25
 description: >-
-  Multi-dimensional indexes allow you to index two- or higher dimensional data
+  Multi-dimensional indexes allow you to index two- or higher-dimensional data
   such as time ranges, for efficient intersection of multiple range queries
-archetype: default
 ---
-The multi-dimensional index type is called **ZKD**.
+A multi-dimensional index maps multi-dimensional data in the form of multiple
+numeric attributes to one dimension while mostly preserving locality so that
+similar values in all of the dimensions remain close to each other in the mapping
+to a single dimension. Queries that filter by multiple value ranges at once can
+be better accelerated with such an index compared to a persistent index.
+
+The multi-dimensional index type is called `zkd`.
 
 {{< warning >}}
 `zkd` indexes are an **experimental** feature.
 {{< /warning >}}
 
-A multi-dimensional index is setup by setting the index type to `"zkd"`.
-The `fields` attribute describes which fields are used as dimensions.
-The value of each dimension has to be a numeric (double) value.
+
+The `fields` property of a `zkd` index describes which document attributes to
+use as dimensions. It is required that the attributes are present and have
+numeric values.
+
+Multi-dimensional indexes can be declared as `unique` to only allow a single
+document with a given combination of attribute values, using all of the `fields`
+attributes.
 
 ## Querying documents within a 3D box
 

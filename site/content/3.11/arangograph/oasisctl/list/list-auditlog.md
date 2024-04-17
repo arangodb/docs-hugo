@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl list auditlog command
-title: Oasisctl List Auditlog
-menuTitle: List Auditlog
-weight: 25
+title: Oasisctl List Audit Log
+menuTitle: List Audit Log
+weight: 4
 ---
+## oasisctl list auditlog
+
+List resources for auditlogs
+
 ## Synopsis
 List resources for auditlogs
 

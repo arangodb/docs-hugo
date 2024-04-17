@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl list metrics tokens command
 title: Oasisctl List Metrics Tokens
 menuTitle: List Metrics Tokens
-weight: 130
+weight: 25
 ---
+## oasisctl list metrics tokens
+
+List all metrics tokens of the given deployment
+
 ## Synopsis
 List all metrics tokens of the given deployment
 

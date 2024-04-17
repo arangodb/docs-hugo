@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl delete auditlog archive events command
-title: Oasisctl Delete Auditlog Archive Events
+title: Oasisctl Delete Audit Log Archive Events
 menuTitle: Delete Audit Log Archive Events
-weight: 25
+weight: 4
 ---
+## oasisctl delete auditlog archive events
+
+Delete auditlog archive events
+
 ## Synopsis
 Delete auditlog archive events
 

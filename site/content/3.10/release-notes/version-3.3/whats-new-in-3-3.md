@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Replication of clusters to other datacenters, encrypted backups, server-level
   replication, asynchronous failover for single servers
-archetype: default
 ---
 The following list shows in detail which features have been added or improved in
 ArangoDB 3.3. ArangoDB 3.3 also contains several bugfixes that are not listed

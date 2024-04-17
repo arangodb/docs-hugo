@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl list command
 title: Oasisctl List
 menuTitle: List
-weight: 5
+weight: 15
 ---
+## oasisctl list
+
+List resources
+
 ## Synopsis
 List resources
 

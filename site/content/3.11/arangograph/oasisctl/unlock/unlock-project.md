@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl unlock project command
 title: Oasisctl Unlock Project
 menuTitle: Unlock Project
-weight: 35
+weight: 6
 ---
+## oasisctl unlock project
+
+Unlock a project, so it can be deleted
+
 ## Synopsis
 Unlock a project, so it can be deleted
 

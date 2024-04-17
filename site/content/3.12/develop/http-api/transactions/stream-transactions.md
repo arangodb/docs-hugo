@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Stream Transactions allow you to perform a multi-document transaction with
   individual begin and commit/abort commands
-archetype: default
 ---
 For an introduction to this transaction type, see
 [Stream Transactions](../../transactions/stream-transactions.md).
@@ -14,7 +13,7 @@ To use a Stream Transaction, a client first sends the [configuration](#begin-a-s
 of the transaction to the ArangoDB server.
 
 {{< info >}}
-Contrary to [**JavaScript Transactions**](javascript-transactions.md),
+Contrary to [JavaScript Transactions](javascript-transactions.md),
 the definition of Stream Transaction must only contain the collections that are
 going to be used and (optionally) the various transaction options supported by
 ArangoDB. No `action` attribute is supported.
@@ -28,7 +27,7 @@ This will automatically cause these operations to use the specified transaction.
 Supported transactional API operations include:
 
 - All operations in the [Document API](../documents.md)
-- Number of documents via the [Collection API](../collections.md#get-the-document-count-of-a-collection)
+- Get the number of documents via the [Collection API](../collections.md#get-the-document-count-of-a-collection)
 - Truncate a collection via the [Collection API](../collections.md#truncate-a-collection)
 - Create an AQL cursor via the [Cursor API](../queries/aql-queries.md#create-a-cursor)
 - Handle [vertices](../graphs/named-graphs.md#vertices) and [edges](../graphs/named-graphs.md#edges)

@@ -5,7 +5,6 @@ weight: 25
 description: >-
   `arangobackup` is a command-line client tool to create global hot backups of
   ArangoDB deployments
-archetype: chapter
 ---
 {{< tag "ArangoDB Enterprise Edition" >}}
 
@@ -36,7 +35,7 @@ Snapshots can be uploaded to or downloaded from remote repositories.
 
 {{< info >}}
 Please review the
-[**requirements and limitations**](../../../operations/backup-and-restore.md#hot-backup-limitations)
+[requirements and limitations](../../../operations/backup-and-restore.md#hot-backup-limitations)
 of hot backups, specifically regarding storage engine, deployment, scope
 and storage space.
 {{< /info >}}

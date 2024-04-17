@@ -5,7 +5,6 @@ weight: 25
 description: >-
   A detailed guide to Datacenter-to-Datacenter Replication (DC2DC) for clusters
   and the _arangosync_ tool
-archetype: chapter
 ---
 {{< tag "ArangoDB Enterprise Edition" >}}
 

@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl update notebook command
 title: Oasisctl Update Notebook
 menuTitle: Update Notebook
-weight: 55
+weight: 10
 ---
+## oasisctl update notebook
+
+Update notebook
+
 ## Synopsis
 Update notebook
 

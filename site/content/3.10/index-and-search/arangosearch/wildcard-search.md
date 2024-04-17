@@ -4,7 +4,6 @@ menuTitle: Wildcard search
 weight: 30
 description: >-
   Search for strings with placeholders that stand for one or many arbitrary characters
-archetype: default
 ---
 You can use the `LIKE()` function for this search technique to find strings
 that start with, contain or end with a certain substring, but it can do more

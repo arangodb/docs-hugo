@@ -4,7 +4,6 @@ menuTitle: Indexes
 weight: 55
 description: >-
   The HTTP API for indexes lets you create, delete, and list indexes
-archetype: chapter
 ---
 ## Addresses of indexes
 
@@ -55,7 +54,8 @@ paths:
           in: query
           required: false
           description: |
-            Whether to include hidden indexes in the result.
+            Whether to include hidden indexes in the result. Internal indexes
+            and ones that are currently built in the background are hidden.
           schema:
             type: boolean
       responses:

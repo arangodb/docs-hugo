@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl version command
 title: Oasisctl Version
 menuTitle: Version
-weight: 45
+weight: 30
 ---
+## oasisctl version
+
+Show the current version of this tool
+
 ## Synopsis
 Show the current version of this tool
 

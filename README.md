@@ -371,18 +371,24 @@ See [Edition remarks](#edition-remarks) for details.
 
 #### Tabs
 
-Display content with a tabbed interface, like information for different
-operating systems or code examples using different languages.
+Display content with a tabbed interface, like for code examples using different
+languages or if there are multiple ways of achieving a goal like configuring
+ArangoDB.
 
 ```markdown
-{{< tabs "os" >}}
+{{< tabs "startup-options" >}}
 
-{{< tab "Linux" >}}
-Run `./script.sh`.
+{{< tab "Command-line" >}}
+Start `arangod` with the startup option `--log.level startup=trace`.
 {{< /tab >}}
 
-{{< tab "Windows" >}}
-Run `.\script.ps1`.
+{{< tab "Configuration file" >}}
+Include the following startup option setting in your `arangod.conf`:
+
+```conf
+[log]
+level = startup=trace
+```
 {{< /tab >}}
 
 {{< /tabs >}}
@@ -560,8 +566,6 @@ The following shortcodes also exist but are rarely used:
   - _DB-Server_, not ~~dbserver~~, ~~db-server~~, ~~DBserver~~ (unless it is a code value)
   - _Coordinator_ (uppercase C)
   - _Agent_, _Agency_ (uppercase A)
-  - _Active Failover_
-  - _Datacenter-to-Datacenter Replication_ (note the hyphens), _DC2DC_
   - _ArangoGraph Insights Platform_ and _ArangoGraph_ for short, but not
     ~~Oasis~~, ~~ArangoDB Oasis~~, or ~~ArangoDB Cloud~~
   - _Deployment mode_ (single server, cluster, etc.), not ~~deployment type~~
@@ -687,7 +691,7 @@ To tag options in lists, place the shortcode as follows:
 ```
 
 Most Enterprise Edition features are also available in ArangoGraph, but some
-features are not or in a different form (e.g. DC2DC, Hot Backup). If a feature
+features are not or in a different form (e.g. Hot Backup). If a feature
 is not available in ArangoGraph, use the following include instead:
 
 ```markdown
@@ -760,7 +764,6 @@ front matter:
 
 ```yaml
 ---
-archetype: default # or 'chapter' if it is a _index.md section file
 title: The level 1 headline
 description: >-
   A meaningful description of the page

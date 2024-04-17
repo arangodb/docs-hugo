@@ -4,7 +4,8 @@ menuTitle: Deprecated and removed features
 weight: 100
 description: >-
   Features listed in this section should no longer be used, because they are considered obsolete and may get removed in a future release
-archetype: default
+aliases:
+  - ../arangograph/migrate-to-the-cloud
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -16,7 +17,7 @@ features. There are usually alternatives to replace the old features with.
 
 {{< info >}}
 This page only lists significant obsolete features but not minor API changes.
-See the [**Release notes**](_index.md) of the respective versions for
+See the [Release notes](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
 
@@ -43,6 +44,10 @@ detailed information about breaking changes before upgrading.
 
   - The `useMemoryMaps` option for Pregel jobs to use memory-mapped files as a
     backing storage for large datasets has been removed.
+
+- **Cloud Migration Tool**:
+  The `arangosync-migration` tool to move from on-premises to the cloud is not
+  available anymore.
 
 - **Leader/Follower Deployment Mode**:
   The Leader/Follower deployment mode is deprecated and already removed from

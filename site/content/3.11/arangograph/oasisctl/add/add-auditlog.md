@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl add auditlog command
-title: Oasisctl Add Auditlog
-menuTitle: Add Auditlog
-weight: 10
+title: Oasisctl Add Audit Log
+menuTitle: Add Audit Log
+weight: 1
 ---
+## oasisctl add auditlog
+
+Add auditlog resources
+
 ## Synopsis
 Add auditlog resources
 

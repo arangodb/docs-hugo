@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl list group members command
 title: Oasisctl List Group Members
 menuTitle: List Group Members
-weight: 110
+weight: 21
 ---
+## oasisctl list group members
+
+List members of a group the authenticated user is a member of
+
 ## Synopsis
 List members of a group the authenticated user is a member of
 

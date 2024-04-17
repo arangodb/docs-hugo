@@ -4,7 +4,6 @@ menuTitle: Datasource for Apache Spark
 weight: 10
 description: >-
   ArangoDB Datasource for Apache Spark allows batch reading and writing Spark DataFrame data
-archetype: default
 aliases:
 - arangodb-spark-connector
 - arangodb-spark-connector/getting-started
@@ -151,6 +150,7 @@ usersDF.filter(col("birthday") === "1982-12-15").show()
 - `sampleSize`: sample size prefetched for schema inference, only used if read schema is not provided, `1000` by default
 - `fillBlockCache`: specifies whether the query should store the data it reads in the RocksDB block cache (`true` or `false`), `false` by default
 - `stream`: specifies whether the query should be executed lazily, `true` by default
+- `ttl`: cursor time to live in seconds, `30` by default
 - `mode`: allows setting a mode for dealing with corrupt records during parsing:
   - `PERMISSIVE` : win case of a corrupted record, the malformed string is put into a field configured by 
     `columnNameOfCorruptRecord`, and sets malformed fields to null. To keep corrupt records, a user can set a string 

@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl update policy delete command
 title: Oasisctl Update Policy Delete
 menuTitle: Update Policy Delete
-weight: 105
+weight: 20
 ---
+## oasisctl update policy delete
+
+Delete from a policy
+
 ## Synopsis
 Delete from a policy
 

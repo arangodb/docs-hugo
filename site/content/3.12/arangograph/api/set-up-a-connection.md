@@ -4,7 +4,6 @@ menuTitle: Get started with the API
 weight: 5
 description: >-
    Quick start guide on how to set up a connection to the ArangoGraph API
-archetype: default
 aliases:
   - ../arangograph-api/getting-started-with-the-api
 ---

@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl unlock ipallowlist command
-title: Oasisctl Unlock Ipallowlist
-menuTitle: Unlock Ipallowlist
-weight: 20
+title: Oasisctl Unlock IP Allowlist
+menuTitle: Unlock IP Allowlist
+weight: 3
 ---
+## oasisctl unlock ipallowlist
+
+Unlock an IP allowlist, so it can be deleted
+
 ## Synopsis
 Unlock an IP allowlist, so it can be deleted
 

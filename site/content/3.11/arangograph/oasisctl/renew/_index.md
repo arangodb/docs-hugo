@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl renew command
 title: Oasisctl Renew
 menuTitle: Renew
-weight: 5
+weight: 22
 ---
+## oasisctl renew
+
+Renew keys & tokens
+
 ## Synopsis
 Renew keys & tokens
 

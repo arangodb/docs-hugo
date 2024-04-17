@@ -155,13 +155,13 @@
     "category" : "option",
     "default" : 5,
     "deprecatedIn" : null,
-    "description" : "Number of batches to prefetch on each dbserver.",
+    "description" : "Number of batches to prefetch on each DB-Server.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
     "hidden" : true,
     "introducedIn" : [
-      "v3.12.0"
+      "v3.10.8"
     ],
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
@@ -182,13 +182,13 @@
     "category" : "option",
     "default" : 5,
     "deprecatedIn" : null,
-    "description" : "Number of worker threads on each dbserver.",
+    "description" : "Number of worker threads on each DB-Server.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
     "hidden" : true,
     "introducedIn" : [
-      "v3.12.0"
+      "v3.10.8"
     ],
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
@@ -450,7 +450,7 @@
     "experimental" : false,
     "hidden" : true,
     "introducedIn" : [
-      "v3.12.0"
+      "v3.10.8"
     ],
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
@@ -477,7 +477,7 @@
     "experimental" : false,
     "hidden" : true,
     "introducedIn" : [
-      "v3.12.0"
+      "v3.10.8"
     ],
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
@@ -1290,7 +1290,7 @@
   },
   "server.authentication" : {
     "category" : "option",
-    "default" : true,
+    "default" : false,
     "deprecatedIn" : null,
     "description" : "Require authentication credentials when connecting (does not affect the server-side authentication settings).",
     "dynamic" : false,
@@ -1357,7 +1357,7 @@
   "server.endpoint" : {
     "category" : "option",
     "default" : [
-      "tcp://127.0.0.1:8529"
+      "http+tcp://127.0.0.1:8529"
     ],
     "deprecatedIn" : null,
     "description" : "The endpoint to connect to. Use 'none' to start without a server. Use http+ssl:// as schema to connect to an SSL-secured server endpoint, otherwise http+tcp:// or unix://",
@@ -1519,7 +1519,7 @@
     "experimental" : true,
     "hidden" : true,
     "introducedIn" : [
-      "v3.12.0"
+      "v3.10.10"
     ],
     "longDescription" : "This option only has effect when the option\n`--use-experimental-dump` is set to `true`. Restoring split files also\nrequires an arangorestore version that is capable of restoring data of a\nsingle collection/shard from multiple files.",
     "obsolete" : false,
@@ -1650,7 +1650,7 @@
     "experimental" : true,
     "hidden" : true,
     "introducedIn" : [
-      "v3.12.0"
+      "v3.10.8"
     ],
     "obsolete" : false,
     "os" : [

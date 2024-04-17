@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl list arangodb versions command
-title: Oasisctl List Arangodb Versions
+title: Oasisctl List ArangoDB Versions
 menuTitle: List ArangoDB Versions
-weight: 20
+weight: 3
 ---
+## oasisctl list arangodb versions
+
+List all supported ArangoDB versions
+
 ## Synopsis
 List all supported ArangoDB versions
 

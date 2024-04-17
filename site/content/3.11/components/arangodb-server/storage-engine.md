@@ -5,7 +5,6 @@ weight: 20
 description: >-
   The storage engine is responsible for persisting data on disk, holding copies
   in memory, providing indexes and caches to speed up queries
-archetype: default
 aliases:
   - ../../deploy/architecture/storage-engine
 ---
@@ -111,6 +110,23 @@ Performance reports for the storage engine can be found here:
 - [github.com/facebook/rocksdb/wiki/performance-benchmarks](https://github.com/facebook/rocksdb/wiki/performance-benchmarks)
 - [github.com/facebook/rocksdb/wiki/RocksDB-Tuning-Guide](https://github.com/facebook/rocksdb/wiki/RocksDB-Tuning-Guide)
 
+### Compression
+
+RocksDB can compress the content it stores to save disk space and improve the
+I/O performance at the cost of an increased CPU utilization. It is controlled
+by the `--rocksdb.compression-type` startup option of the ArangoDB server.
+
+ArangoDB has compression enabled by default using the LZ4 algorithm. It is
+optimized for compressing and decompressing with a low CPU overhead instead of a
+high compression ratio but can still achieve a 1:6 ratio for lexical content.
+The Snappy compression algorithm has similar characteristics but is slower at
+decompression.
+
+No compression is used for the lowest levels of the RocksDB LSM tree as this
+data gets rewritten into the higher levels quickly. By default, only level 2
+and higher use compression. This is configurable via the
+`--rocksdb.num-uncompressed-levels` startup option.
+
 ### ArangoDB options
 
 ArangoDB has a cache for the persistent indexes in RocksDB. The total size
@@ -179,3 +195,6 @@ calculated as follows:
 ```
 max-bytes-for-level-base * (max-bytes-for-level-multiplier ^ (L-1))
 ```
+
+Also see [Reducing the Memory Footprint of ArangoDB servers](../../operations/administration/reduce-memory-footprint.md)
+and [ArangoDB Server Options](options.md#rocksdb) for descriptions of RocksDB options.

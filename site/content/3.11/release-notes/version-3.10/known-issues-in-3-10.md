@@ -4,7 +4,6 @@ menuTitle: Known Issues in 3.10
 weight: 10
 description: >-
   Important issues affecting the 3.10.x versions of the ArangoDB suite of products
-archetype: default
 ---
 Note that this page does not list all open issues.
 
@@ -46,14 +45,6 @@ Note that this page does not list all open issues.
 | **Date Added:** 2019-10-09 <br> **Component:** Hot Backup API / arangobackup <br> **Deployment Mode:** DC2DC <br> **Description:** Hot Backup functionality in Datacenter-to-Datacenter Replication setups is experimental and may not work. <br> **Affected Versions:** 3.5.x, 3.6.x, 3.7.x, 3.8.x, 3.9.x, 3.10.x <br> **Fixed in Versions:** - <br> **Reference:** N/A |
 | **Date Added:** 2019-10-09 <br> **Component:** arangobackup <br> **Deployment Mode:** All <br> **Description:** The startup option `--operation` works as positional argument only, e.g. `arangobackup list`. The alternative syntax `arangobackup --operation list` is not accepted. <br> **Affected Versions:** 3.5.x, 3.6.x, 3.7.x, 3.8.x, 3.9.x, 3.10.x <br> **Fixed in Versions:** - <br> **Reference:** N/A |
 
-## Schema Validation
-
-| Issue      |
-|------------|
-| **Date Added:** 2019-03-17 <br> **Component:** Schema Validation <br> **Deployment Mode:** All <br> **Description:** The schema validation cannot pin-point which part of a rule made it fail. This is under investigation but very hard to solve for complex schemas. For example, when using `not` and `anyOf`, this would result in trees of possible errors. For now users should fall back to tools like [jsonschemavalidator.net](https://www.jsonschemavalidator.net/) <br> **Affected Versions:** 3.7.x, 3.8.x, 3.9.x, 3.10.x <br> **Fixed in Versions:** - <br> **Reference:** N/A |
-| **Date Added:** 2019-03-17 <br> **Component:** Schema Validation <br> **Deployment Mode:** All <br> **Description:** Remote schemas are not supported for security reasons. This limitation will likely remain unfixed. <br> **Affected Versions:** 3.7.x, 3.8.x, 3.9.x, 3.10.x <br> **Fixed in Versions:** - <br> **Reference:** N/A |
-| **Date Added:** 2019-06-25 <br> **Component:** Schema Validation <br> **Deployment Mode:** All <br> **Description:** When using arangorestore for a collection with a defined schema, schema validation is not executed. <br> **Affected Versions:** 3.7.x, 3.8.x, 3.9.x, 3.10.x <br> **Fixed in Versions:** - <br> **Reference:** N/A |
-
 ## Other
 
 | Issue      |
@@ -69,3 +60,4 @@ Note that this page does not list all open issues.
 | **Date Added:** 2023-02-17 <br> **Component:** ArangoDB Starter <br> **Deployment Mode:** All <br> **Description:** When using a Windows build with `netgo`, the `localhost` cannot be resolved. <br> **Affected Versions:** 3.9.8, 3.10.3 <br> **Fixed in Versions:** 3.9.9, 3.10.4 <br> **Reference:** [GT-330](https://arangodb.atlassian.net/browse/GT-330) (internal) |
 | **Date Added:** 2023-06-07 <br> **Component:** ArangoSync <br> **Deployment Mode:** All <br> **Description:** In ArangoSync v2.18.0, synchronization may be interrupted with errors like "CloneDirectMQToken failed" due to network disturbances. <br> **Affected Versions:** 3.9.11, 3.10.7 <br> **Fixed in Versions:** - <br> **Reference:** N/A |
 | **Date Added:** 2023-06-16 <br> **Component:** arangod <br> **Deployment Mode:** Cluster <br> **Description:** If more than a certain threshold of queries on the same Coordinator get into the shutdown networking code at the same time, all of them lock up and the Coordinator does not longer process requests. <br> **Affected Versions:** 3.9.x. 3.10.x <br> **Fixed in Versions:** 3.9.12, 3.10.8 <br> **Reference:** [BTS-1486](https://arangodb.atlassian.net/browse/BTS-1486) (internal) |
+| **Date Added:** 2024-03-21 <br> **Component:** arangod <br> **Deployment Mode:** All <br> **Description:** When creating an `inverted` index with the `inBackground` option enabled, HTTP API calls like `http://localhost:8529/_api/index?collection=<coll>&withHidden=true` don't return the `isBuilding` and `progress` attributes and the progress of the index building can thus not be observed. <br> **Affected Versions:** 3.10.13 <br> **Fixed in Versions:** - <br> **Reference:** [BTS-1788](https://arangodb.atlassian.net/browse/BTS-1788) (internal) |

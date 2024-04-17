@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl create deployment command
 title: Oasisctl Create Deployment
 menuTitle: Create Deployment
-weight: 35
+weight: 6
 ---
+## oasisctl create deployment
+
+Create a new deployment
+
 ## Synopsis
 Create a new deployment
 

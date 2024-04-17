@@ -5,7 +5,6 @@ weight: 20
 description: >-
   Follow this complete working example to see how easy it is to transform existing
   data into a graph and get insights from the connected entities 
-archetype: default
 ---
 
 To transform your data into a graph, you need to have CSV files with entities

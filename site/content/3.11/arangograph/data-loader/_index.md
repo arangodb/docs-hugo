@@ -5,7 +5,6 @@ weight: 22
 description: >-
    Load your data into ArangoGraph and transform it into richly-connected graph
    structures, without needing to write any code or deploy any infrastructure
-archetype: chapter
 ---
 
 ArangoGraph provides different ways of loading your data into the platform,
@@ -48,11 +47,6 @@ corresponding collections, available in your ArangoDB web interface.
 
 Follow this [working example](../data-loader/example.md) to see how easy it is
 to transform existing data into a graph.
-
-## Migrate on-prem to the cloud
-
-To transfer data from an existing on-premises ArangoDB instance to your
-ArangoGraph cluster, see the [cloud migration tool](../migrate-to-the-cloud.md).
 
 ## Import data to the cloud
 

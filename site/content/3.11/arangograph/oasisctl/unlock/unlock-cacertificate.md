@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl unlock cacertificate command
-title: Oasisctl Unlock Cacertificate
-menuTitle: Unlock Cacertificate
-weight: 10
+title: Oasisctl Unlock CA Certificate
+menuTitle: Unlock CA Certificate
+weight: 1
 ---
+## oasisctl unlock cacertificate
+
+Unlock a CA certificate, so it can be deleted
+
 ## Synopsis
 Unlock a CA certificate, so it can be deleted
 

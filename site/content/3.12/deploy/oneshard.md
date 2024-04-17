@@ -5,7 +5,6 @@ weight: 20
 description: >-
   The OneShard feature offers a practicable solution that enables significantly
   improved performance and transactional guarantees for cluster deployments
-archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
@@ -29,7 +28,7 @@ queries.
 
 {{< info >}}
 For graphs larger than what fits on a single DB-Server node, you can use the
-[**SmartGraphs**](../graphs/smartgraphs/_index.md) feature to efficiently limit the
+[SmartGraphs](../graphs/smartgraphs/_index.md) feature to efficiently limit the
 network hops between Coordinator and DB-Servers.
 {{< /info >}}
 

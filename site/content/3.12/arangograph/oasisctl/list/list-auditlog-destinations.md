@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl list auditlog destinations command
-title: Oasisctl List Auditlog Destinations
+title: Oasisctl List Audit Log Destinations
 menuTitle: List Audit Log Destinations
-weight: 35
+weight: 6
 ---
+## oasisctl list auditlog destinations
+
+List auditlog destinations
+
 ## Synopsis
 List auditlog destinations
 

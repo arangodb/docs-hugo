@@ -5,7 +5,6 @@ weight: 15
 description: >-
   The most notable features in the Community and Enterprise Edition of ArangoDB,
   grouped by version
-archetype: default
 aliases:
   - ../../introduction/features/highlights-by-version
 ---

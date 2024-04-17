@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl auditlog detach command
-title: Oasisctl Auditlog Detach
+title: Oasisctl Audit Log Detach
 menuTitle: Audit Log Detach
-weight: 15
+weight: 2
 ---
+## oasisctl auditlog detach
+
+Detach a project from an auditlog
+
 ## Synopsis
 Detach a project from an auditlog
 

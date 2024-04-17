@@ -5,7 +5,6 @@ weight: 10
 description: >-
   AQL provides functions for higher-level array manipulation in addition to
   language constructs that can also be used for arrays
-archetype: default
 ---
 You can use the AQL functions listed below to work with lists of items. Also
 see the [numeric functions](numeric.md) for functions that work on number arrays.

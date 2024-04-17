@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl enable command
 title: Oasisctl Enable
 menuTitle: Enable
-weight: 5
+weight: 11
 ---
+## oasisctl enable
+
+Enable some settings related to deployment
+
 ## Synopsis
 Enable some settings related to deployment
 

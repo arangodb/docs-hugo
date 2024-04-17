@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Support for ARM, computed values, a new managed graph type with automated
   sharding, various search features, AQL optimizations
-archetype: default
 ---
 The following list shows in detail which features have been added or improved in
 ArangoDB 3.10. ArangoDB 3.10 also contains several bug fixes that are not listed
@@ -1773,6 +1772,32 @@ is `arangodb-starter.conf` and can be changed using the `--configuration` option
 See the [Starter configuration file](../../components/tools/arangodb-starter/architecture.md#starter-configuration-file)
 section for more information about the configuration file format, passing
 through command line options, and examples. 
+
+### arangodump
+
+#### Improved dump performance (experimental)
+
+<small>Introduced in: v3.10.8</small>
+
+_arangodump_ has experimental extended parallelization capabilities
+to work not only at the collection level, but also at the shard level.
+In combination with the newly added support for the VelocyPack format that
+ArangoDB uses internally, database dumps can now be created and restored more
+quickly and occupy less disk space. This major performance boost makes dumps and
+restores up to several times faster, which is extremely useful when dealing
+with large shards.
+
+- Whether the new parallel dump variant is used is controlled by the newly added
+  `--use-experimental-dump` startup option (introduced in v3.10.8).
+  The default value is `false`.
+
+- Optionally, you can make _arangodump_ write multiple output files per
+  collection/shard (introduced in v3.10.10).
+  The file splitting allows for better parallelization when
+  writing the results to disk, which in case of non-split files must be serialized.
+  You can enable it by setting the `--split-files` option to `true`. This option
+  is disabled by default because dumps created with this option enabled cannot
+  be restored into previous versions of ArangoDB.
 
 ## Internal changes
 

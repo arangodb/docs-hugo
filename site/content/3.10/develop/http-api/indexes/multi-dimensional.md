@@ -3,9 +3,7 @@ title: Working with multi-dimensional indexes
 menuTitle: Multi-dimensional
 weight: 20
 description: ''
-archetype: default
 ---
-
 ## Create a multi-dimensional index
 
 ```openapi

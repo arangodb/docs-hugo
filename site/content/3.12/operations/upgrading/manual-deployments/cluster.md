@@ -5,7 +5,6 @@ weight: 10
 description: >-
   The server binaries need to be upgraded, requiring a restart of the `arangod`
   processes and using the supervision maintenance mode
-archetype: default
 aliases:
   - ../upgrading-manual-deployments/upgrading-a-cluster
 ---

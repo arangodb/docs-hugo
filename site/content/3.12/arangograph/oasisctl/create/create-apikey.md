@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl create apikey command
-title: Oasisctl Create Apikey
-menuTitle: Create Apikey
-weight: 10
+title: Oasisctl Create API Key
+menuTitle: Create API Key
+weight: 1
 ---
+## oasisctl create apikey
+
+Create a new API key
+
 ## Synopsis
 Create a new API key
 

@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl update private command
 title: Oasisctl Update Private
 menuTitle: Update Private
-weight: 115
+weight: 22
 ---
+## oasisctl update private
+
+Update private resources
+
 ## Synopsis
 Update private resources
 

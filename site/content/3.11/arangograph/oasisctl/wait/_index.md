@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl wait command
 title: Oasisctl Wait
 menuTitle: Wait
-weight: 5
+weight: 31
 ---
+## oasisctl wait
+
+Wait for a status change
+
 ## Synopsis
 Wait for a status change
 

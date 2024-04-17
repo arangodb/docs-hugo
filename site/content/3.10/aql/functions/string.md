@@ -4,7 +4,6 @@ menuTitle: String
 weight: 50
 description: >-
   AQL offers functions for string processing
-archetype: default
 ---
 ## CHAR_LENGTH()
 

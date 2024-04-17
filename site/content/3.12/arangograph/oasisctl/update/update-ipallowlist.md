@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl update ipallowlist command
-title: Oasisctl Update Ipallowlist
-menuTitle: Update Ipallowlist
-weight: 40
+title: Oasisctl Update IP Allowlist
+menuTitle: Update IP Allowlist
+weight: 7
 ---
+## oasisctl update ipallowlist
+
+Update an IP allowlist the authenticated user has access to
+
 ## Synopsis
 Update an IP allowlist the authenticated user has access to
 

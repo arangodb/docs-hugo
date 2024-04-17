@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl revoke command
 title: Oasisctl Revoke
 menuTitle: Revoke
-weight: 5
+weight: 24
 ---
+## oasisctl revoke
+
+Revoke keys & tokens
+
 ## Synopsis
 Revoke keys & tokens
 

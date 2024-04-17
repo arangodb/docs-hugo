@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl create auditlog command
-title: Oasisctl Create Auditlog
-menuTitle: Create Auditlog
-weight: 15
+title: Oasisctl Create Audit Log
+menuTitle: Create Audit Log
+weight: 2
 ---
+## oasisctl create auditlog
+
+Create an auditlog
+
 ## Synopsis
 Create an auditlog
 

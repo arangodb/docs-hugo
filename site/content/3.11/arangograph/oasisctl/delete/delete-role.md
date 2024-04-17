@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl delete role command
 title: Oasisctl Delete Role
 menuTitle: Delete Role
-weight: 115
+weight: 22
 ---
+## oasisctl delete role
+
+Delete a role the authenticated user has access to
+
 ## Synopsis
 Delete a role the authenticated user has access to
 

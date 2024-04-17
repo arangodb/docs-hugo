@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl renew apikey token command
-title: Oasisctl Renew Apikey Token
+title: Oasisctl Renew API Key Token
 menuTitle: Renew API Key Token
-weight: 15
+weight: 2
 ---
+## oasisctl renew apikey token
+
+Renew an API key token
+
 ## Synopsis
 Renew the token (resulting from API key authentication)
 

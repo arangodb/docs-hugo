@@ -5,7 +5,6 @@ weight: 40
 description: >-
    ArangoGraph provides various built-in tools and integrations to help you
    monitor your deployment
-archetype: default
 ---
 The ArangoGraph Insights Platform provides integrated charts, metrics, and logs
 to help you monitor your deployment. This allows you to track your deployment's

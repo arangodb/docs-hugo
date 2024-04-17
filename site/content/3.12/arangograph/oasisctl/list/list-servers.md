@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl list servers command
 title: Oasisctl List Servers
 menuTitle: List Servers
-weight: 195
+weight: 38
 ---
+## oasisctl list servers
+
+List servers information
+
 ## Synopsis
 List servers information
 

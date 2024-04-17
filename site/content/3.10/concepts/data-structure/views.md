@@ -6,7 +6,6 @@ description: >-
   Views can index documents of multiple collections and enable sophisticated
   information retrieval possibilities, like full-text search with ranking by
   relevance
-archetype: default
 ---
 Views allows you to perform complex searches at high performance. They are
 accelerated by inverted indexes that are updated near real-time.

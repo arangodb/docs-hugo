@@ -5,7 +5,6 @@ weight: 10
 description: >-
   Collection objects represent document collections and provide access to
   information and methods for executing collection-related operations
-archetype: default
 ---
 The JavaScript API returns _collection_ objects when you use the following methods
 of the [`db` object](db-object.md) from the `@arangodb`:
@@ -266,7 +265,7 @@ In a cluster setup, the result also contains the following attributes:
 
 - `distributeShardsLike` (string):
   The name of another collection. This collection uses the `replicationFactor`,
-  `numberOfShards` and `shardingStrategy` properties of the other collection and
+  `numberOfShards`, `shardingStrategy`, `writeConcern` properties of the other collection and
   the shards of this collection are distributed in the same way as the shards of
   the other collection.
 

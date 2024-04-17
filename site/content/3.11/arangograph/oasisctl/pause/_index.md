@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl pause command
 title: Oasisctl Pause
 menuTitle: Pause
-weight: 5
+weight: 19
 ---
+## oasisctl pause
+
+Pause resources
+
 ## Synopsis
 Pause resources
 

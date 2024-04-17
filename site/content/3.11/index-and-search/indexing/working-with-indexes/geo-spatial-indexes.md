@@ -5,7 +5,6 @@ weight: 30
 description: >-
   Indexing GeoJSON geometry and latitude/longitude pairs can accelerate
   geo-spatial queries
-archetype: default
 ---
 The geo-spatial index type in ArangoDB is based on [Google S2](http://s2geometry.io/).
 Indexing is supported for a subset of the [**GeoJSON**](../../../aql/functions/geo.md#geojson)

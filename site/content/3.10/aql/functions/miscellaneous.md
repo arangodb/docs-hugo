@@ -4,7 +4,6 @@ menuTitle: Miscellaneous
 weight: 40
 description: >-
   AQL functions that do not fall into other categories are listed here
-archetype: default
 ---
 ## Control flow functions
 
@@ -204,9 +203,9 @@ identifiers. The collections do not need to be known at query compile time, they
 can be computed at runtime.
 
 {{< info >}}
-It is recommended to use subqueries with the [**`FOR` operation**](../high-level-operations/for.md)
+It is recommended to use subqueries with the [`FOR` operation](../high-level-operations/for.md)
 and filters over `DOCUMENT()` whenever the collections are known in advance,
-especially for [**joins**](../examples-and-query-patterns/joins.md), because they perform better, you
+especially for [joins](../examples-and-query-patterns/joins.md), because they perform better, you
 can add additional filters, and combine it with sorting to get an array of
 documents in a guaranteed order.
 

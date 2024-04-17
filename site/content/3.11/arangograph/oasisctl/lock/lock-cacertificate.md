@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl lock cacertificate command
-title: Oasisctl Lock Cacertificate
-menuTitle: Lock Cacertificate
-weight: 10
+title: Oasisctl Lock CA Certificate
+menuTitle: Lock CA Certificate
+weight: 1
 ---
+## oasisctl lock cacertificate
+
+Lock a CA certificate, so it cannot be deleted
+
 ## Synopsis
 Lock a CA certificate, so it cannot be deleted
 

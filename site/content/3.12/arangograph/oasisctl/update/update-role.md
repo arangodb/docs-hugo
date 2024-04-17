@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl update role command
 title: Oasisctl Update Role
 menuTitle: Update Role
-weight: 135
+weight: 26
 ---
+## oasisctl update role
+
+Update a role the authenticated user has access to
+
 ## Synopsis
 Update a role the authenticated user has access to
 

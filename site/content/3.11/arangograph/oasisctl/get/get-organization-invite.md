@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl get organization invite command
 title: Oasisctl Get Organization Invite
 menuTitle: Get Organization Invite
-weight: 110
+weight: 21
 ---
+## oasisctl get organization invite
+
+Get an organization invite the authenticated user has access to
+
 ## Synopsis
 Get an organization invite the authenticated user has access to
 

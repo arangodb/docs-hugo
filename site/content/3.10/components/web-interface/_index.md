@@ -4,7 +4,6 @@ menuTitle: Web Interface
 weight: 175
 description: >-
   ArangoDB has a graphical user interface you can access with your browser 
-archetype: chapter
 ---
 The ArangoDB server (*arangod*) comes with a built-in web interface for
 administration. It lets you manage databases, collections, documents,

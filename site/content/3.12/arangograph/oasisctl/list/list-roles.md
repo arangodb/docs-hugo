@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl list roles command
 title: Oasisctl List Roles
 menuTitle: List Roles
-weight: 190
+weight: 37
 ---
+## oasisctl list roles
+
+List all roles of the given organization
+
 ## Synopsis
 List all roles of the given organization
 

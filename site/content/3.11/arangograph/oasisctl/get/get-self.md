@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl get self command
 title: Oasisctl Get Self
 menuTitle: Get Self
-weight: 155
+weight: 30
 ---
+## oasisctl get self
+
+Get information about the authenticated user
+
 ## Synopsis
 Get information about the authenticated user
 

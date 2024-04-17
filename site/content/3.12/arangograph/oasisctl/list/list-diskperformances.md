@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl list diskperformances command
-title: Oasisctl List Diskperformances
-menuTitle: List Diskperformances
-weight: 75
+title: Oasisctl List Disk Performances
+menuTitle: List Disk Performances
+weight: 14
 ---
+## oasisctl list diskperformances
+
+List disk performances
+
 ## Synopsis
 List disk performances
 

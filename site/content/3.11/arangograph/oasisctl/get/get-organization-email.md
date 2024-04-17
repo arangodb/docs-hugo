@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl get organization email command
 title: Oasisctl Get Organization Email
 menuTitle: Get Organization Email
-weight: 95
+weight: 18
 ---
+## oasisctl get organization email
+
+Get email specific information for an organization
+
 ## Synopsis
 Get email specific information for an organization
 

@@ -5,7 +5,6 @@ weight: 10
 description: >-
   You can traverse named graphs and anonymous graphs with a native AQL
   language construct
-archetype: default
 ---
 ## Syntax
 

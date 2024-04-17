@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl list organization members command
 title: Oasisctl List Organization Members
 menuTitle: List Organization Members
-weight: 160
+weight: 31
 ---
+## oasisctl list organization members
+
+List members of an organization the authenticated user is a member of
+
 ## Synopsis
 List members of an organization the authenticated user is a member of
 

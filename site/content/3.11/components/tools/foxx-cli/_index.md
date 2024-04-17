@@ -4,7 +4,6 @@ menuTitle: Foxx CLI
 weight: 55
 description: >-
   `foxx-cli` is command line tool for managing and developing ArangoDB Foxx services
-archetype: chapter
 ---
 Foxx CLI is an optional tool which requires Node.js and can be installed via the
 package managers NPM and Yarn.

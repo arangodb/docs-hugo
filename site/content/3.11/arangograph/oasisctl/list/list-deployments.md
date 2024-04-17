@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl list deployments command
 title: Oasisctl List Deployments
 menuTitle: List Deployments
-weight: 70
+weight: 13
 ---
+## oasisctl list deployments
+
+List all deployments of the given project
+
 ## Synopsis
 List all deployments of the given project
 

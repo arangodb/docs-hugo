@@ -5,7 +5,6 @@ weight: 15
 description: >-
   The most notable features in the Community and Enterprise Edition of ArangoDB,
   grouped by version
-archetype: default
 aliases:
   - ../../introduction/features/highlights-by-version
 ---
@@ -13,9 +12,30 @@ aliases:
 
 **All Editions**
 
+- [**Improved memory accounting**](../../release-notes/version-3.12/whats-new-in-3-12.md#improved-memory-accounting-and-usage):
+  Better tracking and observability of memory consumption for ArangoDB deployments
+  and reduced memory usage.
+
 - [**`wildcard` Analyzer**](../../index-and-search/analyzers.md#wildcard):
-  Accelerate wildcard searches against Views and inverted indexes with _n_-grams
-  to quickly find candidate matches.
+  Accelerate `LIKE` searches with `_` and `%` wildcards against Views and
+  inverted indexes with _n_-grams to quickly find candidate matches.
+
+- [**Multi-dimensional indexes**](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md):
+  An index type to efficiently intersect multiple range queries, like finding
+  all appointments that intersect a time range. Optionally with prefix fields,
+  with support for using it as vertex-centric index in graph traversals.
+
+- [**External versioning**](../../release-notes/version-3.12/whats-new-in-3-12.md#external-versioning-support):
+  Specify any top-level attribute to compare whether the version number is higher
+  than the currently stored one when updating or replacing documents.
+
+- [**Improved dump performance**](../../release-notes/version-3.12/whats-new-in-3-12.md#improved-dump-performance-and-size)
+  Create logical backups faster with arangodump thanks to parallel dumping at
+  the shard level, as well as transfer compression and file splitting.
+
+- [**Request and response compression**](../../release-notes/version-3.12/whats-new-in-3-12.md#transparent-compression-of-requests-and-responses-between-arangodb-servers-and-client-tools)
+  Speed up data transfers and reduce traffic with transparent compression of
+  requests and responses between ArangoDB servers and client tools.
 
 **Enterprise Edition**
 
@@ -355,7 +375,7 @@ Also see [What's New in 3.4](../../release-notes/version-3.4/whats-new-in-3-4.md
 
 **Enterprise Edition**
 
-- [**Datacenter-to-Datacenter Replication**](../../deploy/arangosync/deployment/_index.md):
+- **Datacenter-to-Datacenter Replication**:
   Replicate the entire structure and content of an ArangoDB cluster
   asynchronously to another cluster in a different datacenter with ArangoSync.
   Multi-datacenter support means you can fallback to a replica of your cluster
@@ -388,7 +408,7 @@ Also see [What's New in 3.3](../../release-notes/version-3.3/whats-new-in-3-3.md
   as much data in ArangoDB as you can fit on your disk. Plus, you can enjoy
   performance boosts on writes by having only document-level locks.
 
-- [**Pregel**](../../data-science/pregel/_index.md):
+- **Pregel**
   We implemented distributed graph processing with Pregel to discover hidden
   patterns, identify communities and perform in-depth analytics of large graph
   data sets.
@@ -401,7 +421,7 @@ Also see [What's New in 3.3](../../release-notes/version-3.3/whats-new-in-3-3.md
 
 **Enterprise Edition**
 
-- [**LDAP integration**](../../components/arangodb-server/ldap.md): Users and permissions
+- **LDAP integration**: Users and permissions
   can be managed from outside ArangoDB with an LDAP server in different
   authentication configurations.
 

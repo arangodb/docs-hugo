@@ -5,7 +5,6 @@ weight: 20
 description: >-
   A summary of the changes to the HTTP API and other interfaces that are relevant
   for developers, like maintainers of drivers and integrations for ArangoDB
-archetype: default
 ---
 ## HTTP RESTful API
 
@@ -96,7 +95,7 @@ returns the number of updated documents as well.
 
 The bind parameters necessary to run this query are:
 - `@@collection`: name of a SmartGraph vertex collection to be updated
-- `@attr`: attribute name of the `smartGraphAttribute` of the collection  
+- `@attr`: attribute name of the `smartGraphAttribute` of the collection
 
 #### Disabled Foxx APIs
 
@@ -766,16 +765,15 @@ figures, and for `arangosearch` Views, `withHidden` needs to be enabled, too:
 
 <small>Introduced in: v3.10.13</small>
 
-The `GET /_api/index` endpoint now returns a `progress` attribute that can
-optionally show indexes that are currently being created and indicate progress
-on the index generation.
+The `GET /_api/index` endpoint may now include a `progress` attribute for the
+elements in the `indexes` array. For every index that is currently being created,
+it indicates the progress of the index generation (in percent).
 
 To return indexes that are not yet fully built but are in the building phase,
-add the option `withHidden=true` to `GET /_api/index?collection=<collectionName>`.
+add the `withHidden=true` query parameter to the call of the endpoint.
 
 ```
-curl --header 'accept: application/json' --dump -
-"http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
+curl "http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
 ```
 
 #### Document API

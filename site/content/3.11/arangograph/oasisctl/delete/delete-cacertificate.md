@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl delete cacertificate command
-title: Oasisctl Delete Cacertificate
-menuTitle: Delete Cacertificate
-weight: 45
+title: Oasisctl Delete CA Certificate
+menuTitle: Delete CA Certificate
+weight: 8
 ---
+## oasisctl delete cacertificate
+
+Delete a CA certificate the authenticated user has access to
+
 ## Synopsis
 Delete a CA certificate the authenticated user has access to
 

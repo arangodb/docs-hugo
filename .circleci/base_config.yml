@@ -25,9 +25,13 @@ commands:
 
             echo "[SETUP] Git clone $branch_name"
 
-            git clone --depth 1 https://github.com/arangodb/arangodb.git --branch $branch_name /root/project
+            git clone --depth 1 --branch $branch_name --recurse-submodules --shallow-submodules --jobs 8 https://github.com/arangodb/arangodb.git /root/project
 
-            ENTERPRISE_BRANCH="devel"
+            if [ "<< parameters.version >>" = "3.10" ] || [ "<< parameters.version >>" = "3.11" ]; then
+                ENTERPRISE_BRANCH="<< parameters.version >>"
+            else
+                ENTERPRISE_BRANCH="devel"
+            fi
             set +e
             git ls-remote --exit-code --heads git@github.com:arangodb/enterprise.git $branch_name
             if [ "$?" == "0" ] ; then
@@ -35,7 +39,7 @@ commands:
             fi
             set -e
             echo "Using enterprise branch $ENTERPRISE_BRANCH"
-            git clone --depth 1 git@github.com:arangodb/enterprise.git --branch "$ENTERPRISE_BRANCH" /root/project/enterprise
+            git clone --depth 1 --branch "$ENTERPRISE_BRANCH" git@github.com:arangodb/enterprise.git /root/project/enterprise
 
             mkdir -p /tmp/<< parameters.version >>
             cp -r /root/project/. /tmp/<< parameters.version >>
@@ -48,10 +52,12 @@ commands:
         default: ""
     steps:
       - run:
-          name: Print SCCache Settings
+          name: Update OpenSSL Workaround
           command: |
-           apk --no-cache add perl
-           set -e
+            if command -v apk &> /dev/null; then
+              apk --no-cache add perl
+            fi
+            set -e
 
             # Compile openssl library:
             export OPENSSLVERSION=<< parameters.openssl >>
@@ -85,7 +91,11 @@ commands:
       - run:
           name: Check Branch Image already exists
           command: |
-            apk add skopeo
+            if command -v apk &> /dev/null; then
+              apk add skopeo
+            else
+              apt-get -y install skopeo
+            fi
 
             image_name=$(echo << parameters.branch >> | cut -d/ -f2)
             latestRemoteHash=$(git ls-remote https://github.com/arangodb/arangodb.git << parameters.branch >> | awk '{print $1}' | cut -c1-9)
@@ -116,7 +126,11 @@ commands:
           name: Configure
           command: |
             set +e
-            cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib
+            if [ "<< parameters.version >>" = "3.10" ] || [ "<< parameters.version >>" = "3.11" ]; then
+              cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off
+            else
+              cmake --preset enterprise-pr-non-maintainer -DCMAKE_C_COMPILER=/tools/clang -DCMAKE_CXX_COMPILER=/tools/clang++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DOPENSSL_ROOT_DIR=/opt -DUSE_FRONTEND=Off
+            fi
             if [ "$?" != "0" ]; then
               echo "<strong>ArangoDB Compile Error</strong><br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
               exit 1
@@ -126,7 +140,7 @@ commands:
           name: Build
           command: |
             set +e
-            cmake --build --preset enterprise-pr --parallel 8 --target arangodbtests arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench fuertetest arangobackup arangovpack
+            cmake --build --preset enterprise-pr --parallel 8 --target arangod arangosh arangoimport arangoexport arangodump arangorestore arangobench arangobackup arangovpack
 
             if [ "$?" != "0" ]; then
               echo "**ArangoDB Compile Error**<br><br> Please check CircleCI Logs" | curl -X POST -d@- https://candid-daffodil-f96315.netlify.app/.netlify/functions/circleci --header 'docs-webhook-event: create-summary' --header 'docs-branch-sha: '$CIRCLE_SHA1'' --header 'docs-branch-name: '$CIRCLE_BRANCH''
@@ -169,8 +183,24 @@ commands:
             chmod +x setup-tar-to-docker.sh
             chmod +x docker-entrypoint.sh
 
-            apk add docker-cli
-            
+            if command -v apk &> /dev/null; then
+              apk add docker-cli
+            else
+              # Add Docker's official GPG key:
+              install -m 0755 -d /etc/apt/keyrings
+              curl -fsSL https://download.docker.com/linux/ubuntu/gpg -o /etc/apt/keyrings/docker.asc
+              chmod a+r /etc/apt/keyrings/docker.asc
+
+              # Add the repository to Apt sources:
+              echo \
+                "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.asc] https://download.docker.com/linux/ubuntu \
+                $(. /etc/os-release && echo "$VERSION_CODENAME") stable" | \
+                tee /etc/apt/sources.list.d/docker.list > /dev/null
+              apt-get -y update
+
+              apt-get -y install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+            fi
+
             docker build -t arangodb/docs-hugo:$image_name-<< parameters.version >>-$main_hash --target arangodb-tar-starter -f tar-to-docker.Dockerfile .
 
             echo "$DOCKERHUB_PASS" | docker login -u "$DOCKERHUB_USER" --password-stdin
@@ -499,6 +529,9 @@ jobs:
       version:
         type: string
         default: ""
+      openssl:
+        type: string
+        default: ""
       build-image:
         type: string
         default: "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
@@ -511,7 +544,7 @@ jobs:
       SCCACHE_LOG: info,sccache::cache=debug,sccache::compiler::compiler=debug
     steps:
       - setup_remote_docker:
-          version: 20.10.14
+          version: default # TODO: Does this need to match the installed docker-cli version?
       - add_ssh_keys:
           fingerprints:
             - "7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a"

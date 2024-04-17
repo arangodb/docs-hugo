@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl create cacertificate command
-title: Oasisctl Create Cacertificate
-menuTitle: Create Cacertificate
-weight: 30
+title: Oasisctl Create CA Certificate
+menuTitle: Create CA Certificate
+weight: 5
 ---
+## oasisctl create cacertificate
+
+Create a new CA certificate
+
 ## Synopsis
 Create a new CA certificate
 

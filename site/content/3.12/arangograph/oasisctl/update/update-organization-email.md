@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl update organization email command
 title: Oasisctl Update Organization Email
 menuTitle: Update Organization Email
-weight: 75
+weight: 14
 ---
+## oasisctl update organization email
+
+Update email specific information for an organization
+
 ## Synopsis
 Update email specific information for an organization
 

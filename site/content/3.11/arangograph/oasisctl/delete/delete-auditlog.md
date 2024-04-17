@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl delete auditlog command
-title: Oasisctl Delete Auditlog
-menuTitle: Delete Auditlog
-weight: 15
+title: Oasisctl Delete Audit Log
+menuTitle: Delete Audit Log
+weight: 2
 ---
+## oasisctl delete auditlog
+
+Delete an auditlog
+
 ## Synopsis
 Delete an auditlog
 

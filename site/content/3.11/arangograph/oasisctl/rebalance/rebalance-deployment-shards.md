@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl rebalance deployment shards command
 title: Oasisctl Rebalance Deployment Shards
 menuTitle: Rebalance Deployment Shards
-weight: 15
+weight: 2
 ---
+## oasisctl rebalance deployment shards
+
+Rebalance shards of a deployment
+
 ## Synopsis
 Rebalance shards of a deployment
 

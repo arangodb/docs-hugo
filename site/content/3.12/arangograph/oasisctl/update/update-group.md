@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl update group command
 title: Oasisctl Update Group
 menuTitle: Update Group
-weight: 35
+weight: 6
 ---
+## oasisctl update group
+
+Update a group the authenticated user has access to
+
 ## Synopsis
 Update a group the authenticated user has access to
 

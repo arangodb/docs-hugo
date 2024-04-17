@@ -5,7 +5,6 @@ weight: 75
 description: >-
   The HTTP API for Foxx allows you to manipulate Foxx microservices installed in
   a database
-archetype: default
 ---
 <small>Introduced in: v3.2.0</small>
 

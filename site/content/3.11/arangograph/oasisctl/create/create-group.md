@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl create group command
 title: Oasisctl Create Group
 menuTitle: Create Group
-weight: 50
+weight: 9
 ---
+## oasisctl create group
+
+Create a new group
+
 ## Synopsis
 Create a new group
 

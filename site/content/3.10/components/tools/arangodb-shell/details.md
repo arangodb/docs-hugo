@@ -3,7 +3,6 @@ title: _arangosh_ Details
 menuTitle: Details
 weight: 10
 description: ''
-archetype: default
 ---
 ## Interaction
 

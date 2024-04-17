@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl update cacertificate command
-title: Oasisctl Update Cacertificate
-menuTitle: Update Cacertificate
-weight: 25
+title: Oasisctl Update CA Certificate
+menuTitle: Update CA Certificate
+weight: 4
 ---
+## oasisctl update cacertificate
+
+Update a CA certificate the authenticated user has access to
+
 ## Synopsis
 Update a CA certificate the authenticated user has access to
 

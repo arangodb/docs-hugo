@@ -6,7 +6,6 @@ description: >-
   The HTTP API for collections lets you create and delete collections, get
   information about collections, and modify certain properties of existing
   collections
-archetype: default
 ---
 ## Addresses of collections
 
@@ -418,8 +417,14 @@ paths:
                       in the cluster, a shard refuses to write. Writes to shards with enough
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
+
+                      If `distributeShardsLike` is set, the default `writeConcern`
+                      is that of the prototype collection.
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
-                      equal the number of DB-Servers and has a value of `0`. _(cluster only)_
+                      equal the number of DB-Servers and has a value of `0`.
+                      Otherwise, the default value is controlled by the current database's
+                      default `writeConcern`, which uses the `--cluster.write-concern`
+                      startup option as default, which defaults to `1`. _(cluster only)_
                     type: integer
                   shardingStrategy:
                     description: |
@@ -565,6 +570,14 @@ paths:
           required: true
           description: |
             The name of the collection.
+          schema:
+            type: string
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
           schema:
             type: string
       responses:
@@ -1397,14 +1410,19 @@ paths:
                   type: integer
                 writeConcern:
                   description: |
-                    Write concern for this collection (default: 1).
-                    It determines how many copies of each shard are required to be
+                    Determines how many copies of each shard are required to be
                     in sync on the different DB-Servers. If there are less than these many copies
                     in the cluster, a shard refuses to write. Writes to shards with enough
                     up-to-date copies succeed at the same time, however. The value of
                     `writeConcern` cannot be greater than `replicationFactor`.
+
+                    If `distributeShardsLike` is set, the default `writeConcern`
+                    is that of the prototype collection.
                     For SatelliteCollections, the `writeConcern` is automatically controlled to
-                    equal the number of DB-Servers and has a value of `0`. _(cluster only)_
+                    equal the number of DB-Servers and has a value of `0`.
+                    Otherwise, the default value is controlled by the current database's
+                    default `writeConcern`, which uses the `--cluster.write-concern`
+                    startup option as default, which defaults to `1`. _(cluster only)_
                   type: integer
                 shardingStrategy:
                   description: |
@@ -1652,8 +1670,14 @@ paths:
                       in the cluster, a shard refuses to write. Writes to shards with enough
                       up-to-date copies succeed at the same time, however. The value of
                       `writeConcern` cannot be greater than `replicationFactor`.
+
+                      If `distributeShardsLike` is set, the default `writeConcern`
+                      is that of the prototype collection.
                       For SatelliteCollections, the `writeConcern` is automatically controlled to
-                      equal the number of DB-Servers and has a value of `0`. _(cluster only)_
+                      equal the number of DB-Servers and has a value of `0`.
+                      Otherwise, the default value is controlled by the current database's
+                      default `writeConcern`, which uses the `--cluster.write-concern`
+                      startup option as default, which defaults to `1`. _(cluster only)_
                     type: integer
                   shardingStrategy:
                     description: |
@@ -1957,6 +1981,14 @@ paths:
           schema:
             type: boolean
             default: true
+        - name: x-arango-trx-id
+          in: header
+          required: false
+          description: |
+            To make this operation a part of a Stream Transaction, set this header to the
+            transaction ID returned by the `POST /_api/transaction/begin` call.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -2359,14 +2391,19 @@ paths:
                   type: integer
                 writeConcern:
                   description: |
-                    Write concern for this collection (default: 1).
-                    It determines how many copies of each shard are required to be
+                    Determines how many copies of each shard are required to be
                     in sync on the different DB-Servers. If there are less than these many copies
                     in the cluster, a shard refuses to write. Writes to shards with enough
                     up-to-date copies succeed at the same time, however. The value of
                     `writeConcern` cannot be greater than `replicationFactor`.
+
+                    If `distributeShardsLike` is set, the default `writeConcern`
+                    is that of the prototype collection.
                     For SatelliteCollections, the `writeConcern` is automatically controlled to
-                    equal the number of DB-Servers and has a value of `0`. _(cluster only)_
+                    equal the number of DB-Servers and has a value of `0`.
+                    Otherwise, the default value is controlled by the current database's
+                    default `writeConcern`, which uses the `--cluster.write-concern`
+                    startup option as default, which defaults to `1`. _(cluster only)_
                   type: integer
       responses:
         '200':

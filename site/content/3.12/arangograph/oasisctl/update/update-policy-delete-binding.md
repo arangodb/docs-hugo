@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl update policy delete binding command
 title: Oasisctl Update Policy Delete Binding
 menuTitle: Update Policy Delete Binding
-weight: 110
+weight: 21
 ---
+## oasisctl update policy delete binding
+
+Delete a role binding from a policy
+
 ## Synopsis
 Delete a role binding from a policy
 

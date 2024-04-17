@@ -3,7 +3,6 @@ title: Query View
 menuTitle: Queries
 weight: 25
 description: ''
-archetype: default
 ---
 The query view offers you three different subviews:
 

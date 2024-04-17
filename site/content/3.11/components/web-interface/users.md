@@ -3,7 +3,6 @@ title: Managing Users in the Web Interface
 menuTitle: Users
 weight: 40
 description: ''
-archetype: default
 ---
 ArangoDB users are globally stored in the `_system` database and can only be
 managed while logged on to this database. There you can find the *Users* section:
@@ -37,5 +36,5 @@ explicitly set). The default access levels for this user and database
 appear in the artificial row with the collection name `*`.
 
 {{< info >}}
-Also see [**Managing Users**](../../operations/administration/user-management/_index.md) about access levels.
+Also see [Managing Users](../../operations/administration/user-management/_index.md) about access levels.
 {{< /info >}}

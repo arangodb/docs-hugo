@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl list example command
 title: Oasisctl List Example
 menuTitle: List Example
-weight: 90
+weight: 17
 ---
+## oasisctl list example
+
+List example ...
+
 ## Synopsis
 List example ...
 

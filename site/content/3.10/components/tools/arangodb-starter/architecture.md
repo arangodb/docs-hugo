@@ -5,7 +5,6 @@ weight: 15
 description: >-
   The Starter files and configuration explained, what modes it supports, and how
   it runs distributed across multiple machines
-archetype: default
 ---
 ## What does the Starter do
 
@@ -124,7 +123,7 @@ args.all.log.level = startup=trace
 args.all.log.level = warning
 
 [starter]
-  mode = single
+mode = single
 
 [args]
 all.log.level = queries=debug

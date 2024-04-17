@@ -3,7 +3,6 @@ title: Configuration
 menuTitle: Configuration
 weight: 5
 description: ''
-archetype: default
 ---
 The [programs and tools](../../components/tools/_index.md) shipped in an
 ArangoDB package can be configured with various _startup options_.

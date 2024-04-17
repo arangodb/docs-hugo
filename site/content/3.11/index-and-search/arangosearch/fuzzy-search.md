@@ -4,7 +4,6 @@ menuTitle: Fuzzy search
 weight: 50
 description: >-
   Loosely match strings to find partial congruences and to compensate for typing errors
-archetype: default
 ---
 Fuzzy search is an umbrella term for various approximate matching algorithms.
 What they allow you to do is to find matches even if the search terms are not
@@ -15,7 +14,7 @@ the search request as well.
 {{< info >}}
 If you want to try out fuzzy search with ArangoDB for yourself, then check out
 our interactive
-[**Fuzzy Search tutorial**](https://colab.research.google.com/github/arangodb/interactive_tutorials/blob/master/notebooks/FuzzySearch.ipynb).
+[Fuzzy Search tutorial](https://colab.research.google.com/github/arangodb/interactive_tutorials/blob/master/notebooks/FuzzySearch.ipynb).
 {{< /info >}}
 
 ## Similarity Measures

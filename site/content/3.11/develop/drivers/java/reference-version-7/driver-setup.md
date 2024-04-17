@@ -5,7 +5,6 @@ weight: 5
 description: >-
   How to connect your Java application to an ArangoDB server, as well as
   important configuration settings and information about the driver
-archetype: default
 ---
 The driver can be configured and instantiated using `com.arangodb.ArangoDB.Builder`:
 
@@ -74,7 +73,7 @@ Here are examples to integrate configuration properties from different sources:
 `ArangoDB.Builder` has the following configuration methods:
 
 - `host(String, int)`:           adds a host (hostname and port) to connect to, multiple hosts can be added
-- `protocol(Protocol)`:       communication protocol, possible values are: `VST`, `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, (default: `HTTP2_JSON`)
+- `protocol(Protocol)`:          communication protocol, possible values are: `VST`, `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, (default: `HTTP2_JSON`)
 - `timeout(Integer)`:            connection and request timeout (ms), (default `0`, no timeout)
 - `user(String)`:                username for authentication, (default: `root`)
 - `password(String)`:            password for authentication
@@ -82,9 +81,9 @@ Here are examples to integrate configuration properties from different sources:
 - `useSsl(Boolean)`:             use SSL connection, (default: `false`)
 - `sslContext(SSLContext)`:      SSL context
 - `verifyHost(Boolean)`:         enable hostname verification, (HTTP only, default: `true`)
-- `chunkSize(Integer)`: `VST`    chunk size in bytes, (default: `30000`)
+- `chunkSize(Integer)`:          VST chunk size in bytes, (default: `30000`)
 - `maxConnections(Integer)`:     max number of connections per host, (default: 1 VST, 1 HTTP/2, 20 HTTP/1.1)
-- `connectionTtl(Long)`:         max lifetime of a connection (ms), (default: no ttl)
+- `connectionTtl(Long)`:         time to live of an inactive connection (ms), (default: `30_000` for HTTP, no TTL for VST)
 - `keepAliveInterval(Integer)`:  VST keep-alive interval (s), (default: no keep-alive probes will be sent)
 - `acquireHostList(Boolean)`:    acquire the list of available hosts, (default: `false`)
 - `acquireHostListInterval(Integer)`:             acquireHostList interval (ms), (default: `3_600_000`, 1 hour)
@@ -133,7 +132,7 @@ ArangoDB arangoDB = new ArangoDB.Builder()
 The driver keeps a pool of connections for each host, the max amount of
 connections is configurable.
 
-Connections are released after the configured connection time-to-live
+Inactive connections are released after the configured connection time-to-live
 (`ArangoDB.Builder.connectionTtl(Long)`) or when the driver is shut down:
 
 ```java
@@ -222,7 +221,7 @@ ArangoDB arangoDB = new ArangoDB.Builder()
 
 ## Connection time to live
 
-The driver supports setting a TTL (time to life) for connections:
+The driver supports setting a TTL (time to live) for connections:
 
 ```java
 ArangoDB arango = new ArangoDB.Builder()
@@ -230,14 +229,16 @@ ArangoDB arango = new ArangoDB.Builder()
   .build();
 ```
 
-In this example all connections will be closed/reopened after 5 minutes.
+In this example, inactive connections are closed after 5 minutes.
 
-If not set or set to `null` (default), no automatic connection closure will be performed.
+The default TTL for HTTP connections is 30 seconds, while it is `null` for VST connections.
+
+If set to `null`, no automatic connection closure is performed.
 
 ## VST Keep-Alive
 
 The driver supports setting keep-alive interval (in seconds)
-for VST connections. If set, every VST connection will perform a no-op request
+for VST connections. If set, every VST connection performs a no-op request
 at the specified intervals, to avoid to be closed due to inactivity by the
 server (or by the external environment, e.g. firewall, intermediate routers,
 operating system, ... ).

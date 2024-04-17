@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl get tandc command
-title: Oasisctl Get Tandc
-menuTitle: Get Tandc
-weight: 170
+title: Oasisctl Get Terms & Conditions
+menuTitle: Get Terms & Conditions
+weight: 33
 ---
+## oasisctl get tandc
+
+Get current terms and conditions or get one by ID
+
 ## Synopsis
 Get current terms and conditions or get one by ID
 

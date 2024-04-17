@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl delete command
 title: Oasisctl Delete
 menuTitle: Delete
-weight: 5
+weight: 9
 ---
+## oasisctl delete
+
+Delete resources
+
 ## Synopsis
 Delete resources
 

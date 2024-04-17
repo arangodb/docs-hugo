@@ -4,7 +4,6 @@ menuTitle: Troubleshooting
 weight: 30
 description: >-
   Procedures for investigating and fixing issues with DC2DC setups
-archetype: default
 ---
 {{< tag "ArangoDB Enterprise Edition" >}}
 

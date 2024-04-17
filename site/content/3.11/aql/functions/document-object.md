@@ -4,7 +4,6 @@ menuTitle: Document / Object
 weight: 25
 description: >-
   AQL provides functions to operate on objects respectively document values
-archetype: default
 ---
 You can use the below listed functions with the
 [object data type](../../concepts/data-structure/documents/_index.md#data-types).

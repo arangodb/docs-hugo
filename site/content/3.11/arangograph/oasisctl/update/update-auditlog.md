@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl update auditlog command
-title: Oasisctl Update Auditlog
-menuTitle: Update Auditlog
-weight: 10
+title: Oasisctl Update Audit Log
+menuTitle: Update Audit Log
+weight: 1
 ---
+## oasisctl update auditlog
+
+Update an auditlog
+
 ## Synopsis
 Update an auditlog
 

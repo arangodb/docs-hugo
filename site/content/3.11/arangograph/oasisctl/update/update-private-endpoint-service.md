@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl update private endpoint service command
 title: Oasisctl Update Private Endpoint Service
 menuTitle: Update Private Endpoint Service
-weight: 125
+weight: 24
 ---
+## oasisctl update private endpoint service
+
+Update a Private Endpoint Service attached to an existing deployment
+
 ## Synopsis
 Update a Private Endpoint Service attached to an existing deployment
 

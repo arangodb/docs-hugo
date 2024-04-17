@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl accept organization command
 title: Oasisctl Accept Organization
 menuTitle: Accept Organization
-weight: 10
+weight: 1
 ---
+## oasisctl accept organization
+
+Accept organization related invites
+
 ## Synopsis
 Accept organization related invites
 

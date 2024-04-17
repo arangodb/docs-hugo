@@ -7,7 +7,6 @@ description: >-
   vertices and edges, to naturally model knowledge, social networks, cash flows,
   supply chains, and other information webs, and to extract valuable insights by
   analyzing this connected data
-archetype: chapter
 aliases:
   - graphs/first-steps
 ---
@@ -53,7 +52,7 @@ relationship in graph terms. These two types of graphs have different properties
 and different algorithms exist to analyze the data.
 
 {{< info >}}
-New to graphs? [**Take our free graph course for freshers**](https://www.arangodb.com/arangodb-graph-course/)
+New to graphs? [Take our free graph course for freshers](https://www.arangodb.com/arangodb-graph-course/)
 and get from zero knowledge to advanced query techniques.
 {{< /info >}}
 

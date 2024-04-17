@@ -4,7 +4,6 @@ menuTitle: Details
 weight: 15
 description: >-
   The most convenient method to import a lot of data into ArangoDB is to use the arangoimport command-line tool
-archetype: default
 ---
 The most convenient method to import a lot of data into ArangoDB is to use the
 _arangoimport_ command-line tool. It allows you to bulk import data records

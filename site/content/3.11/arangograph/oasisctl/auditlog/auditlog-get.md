@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl auditlog get command
-title: Oasisctl Auditlog Get
+title: Oasisctl Audit Log Get
 menuTitle: Audit Log Get
-weight: 20
+weight: 3
 ---
+## oasisctl auditlog get
+
+Audit log get resources
+
 ## Synopsis
 Audit log get resources
 

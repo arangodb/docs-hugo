@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl update metrics token command
 title: Oasisctl Update Metrics Token
 menuTitle: Update Metrics Token
-weight: 50
+weight: 9
 ---
+## oasisctl update metrics token
+
+Update a metrics token
+
 ## Synopsis
 Update a metrics token
 

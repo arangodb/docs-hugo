@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl resume notebook command
 title: Oasisctl Resume Notebook
 menuTitle: Resume Notebook
-weight: 15
+weight: 2
 ---
+## oasisctl resume notebook
+
+Resume a notebook
+
 ## Synopsis
 Resume a notebook
 

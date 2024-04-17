@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl auditlog get attached command
-title: Oasisctl Auditlog Get Attached
+title: Oasisctl Audit Log Get Attached
 menuTitle: Audit Log Get Attached
-weight: 25
+weight: 4
 ---
+## oasisctl auditlog get attached
+
+Audit get attached resources
+
 ## Synopsis
 Audit get attached resources
 

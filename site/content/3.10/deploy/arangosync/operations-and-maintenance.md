@@ -3,7 +3,6 @@ title: DC2DC Replication Operations & Maintenance
 menuTitle: Operations & Maintenance
 weight: 15
 description: ''
-archetype: default
 ---
 ## Operations & Maintenance
 

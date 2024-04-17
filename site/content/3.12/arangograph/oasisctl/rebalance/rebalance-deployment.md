@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl rebalance deployment command
 title: Oasisctl Rebalance Deployment
 menuTitle: Rebalance Deployment
-weight: 10
+weight: 1
 ---
+## oasisctl rebalance deployment
+
+Rebalance deployment resources
+
 ## Synopsis
 Rebalance deployment resources
 

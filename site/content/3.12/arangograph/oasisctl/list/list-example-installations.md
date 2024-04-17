@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl list example installations command
 title: Oasisctl List Example Installations
 menuTitle: List Example Installations
-weight: 95
+weight: 18
 ---
+## oasisctl list example installations
+
+List all example dataset installations for a deployment
+
 ## Synopsis
 List all example dataset installations for a deployment
 

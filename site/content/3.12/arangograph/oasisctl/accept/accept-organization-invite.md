@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl accept organization invite command
 title: Oasisctl Accept Organization Invite
 menuTitle: Accept Organization Invite
-weight: 15
+weight: 2
 ---
+## oasisctl accept organization invite
+
+Accept an organization invite the authenticated user has access to
+
 ## Synopsis
 Accept an organization invite the authenticated user has access to
 

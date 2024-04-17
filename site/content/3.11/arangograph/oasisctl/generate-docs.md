@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl generate-docs command
-title: Oasisctl Generate-Docs
-menuTitle: Generate-Docs
-weight: 15
+title: Oasisctl Generate Documentation
+menuTitle: Generate Documentation
+weight: 12
 ---
+## oasisctl generate-docs
+
+Generate output
+
 ## Synopsis
 Generate output
 

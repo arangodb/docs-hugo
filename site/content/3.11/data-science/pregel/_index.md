@@ -5,7 +5,6 @@ weight: 135
 description: >-
   Pregel enables you to do online analytical processing directly on graphs
   stored in ArangoDB
-archetype: chapter
 ---
 Distributed graph processing enables you to do online analytical processing
 directly on graphs stored in ArangoDB. This is intended to help you gain

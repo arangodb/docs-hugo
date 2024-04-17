@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl lock policy command
 title: Oasisctl Lock Policy
 menuTitle: Lock Policy
-weight: 30
+weight: 5
 ---
+## oasisctl lock policy
+
+Lock a backup policy
+
 ## Synopsis
 Lock a backup policy
 

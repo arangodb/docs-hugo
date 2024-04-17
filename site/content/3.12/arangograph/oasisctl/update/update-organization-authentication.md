@@ -1,10 +1,12 @@
 ---
-archetype: default
-description: Description of the oasisctl update organization authentication command
 title: Oasisctl Update Organization Authentication
 menuTitle: Update Organization Authentication
-weight: 65
+weight: 12
 ---
+## oasisctl update organization authentication
+
+Update authentication settings for an organization
+
 ## Synopsis
 Update authentication settings for an organization
 

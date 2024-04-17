@@ -5,7 +5,6 @@ weight: 5
 description: >-
   Use the private endpoint feature to isolate your deployments and increase
   security
-archetype: default
 ---
 This topic describes how to create a private endpoint deployment and
 securely deploy to various cloud providers such as Google Cloud Platform (GCP),

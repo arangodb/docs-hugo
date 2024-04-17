@@ -5,7 +5,6 @@ weight: 45
 description: >-
   This guide explains which access control concepts are available in
   ArangoGraph and how to use them
-archetype: chapter
 ---
 The ArangoGraph Insights Platform has a structured set of resources that are subject to security and
 access control:
@@ -116,8 +115,11 @@ Predefined roles cannot be deleted. Note that permissions linked to predefined
 roles vary between organization owners and organization members.
 
 {{% comment %}}
-Windows command to generate below list (cmd.exe):
-oasisctl list roles --organization-id <id> --format json | jq -r ".[] | select(.predefined == true) | \"**\(.description)** (`\(.id)`):\n\(.permissions ^| split(\", \") ^| map(\"- `\(.)`\n\") ^| join(\"\"))""
+Command to generate below list with (Git)Bash:
+
+export OASIS_TOKEN='<TOKEN>'
+./oasisctl list roles --organization-id <ID> --format json | jq -r '.[] | select(.predefined == true) | "**\(.description)** (`\(.id)`):\n\(.permissions | split(", ") | map("- `\(.)`\n") | join(""))"'
+
 {{% /comment %}}
 
 {{< expand title="List of predefined roles and their permissions" >}}
@@ -653,6 +655,10 @@ organization. The following commands are available to configure this option:
   allows you to reset a list and accept any domains for accessing a specific organization
 
 ## Using an audit log
+
+{{< info >}} 
+To enable the audit log feature, get in touch with the ArangoGraph team via **Request Help**, available in the left sidebar menu of the ArangoGraph Dashboard. 
+{{< /info >}}
 
 To have a better overview of the events happening in your ArangoGraph organization,
 you can set up an audit log, which will track and log auditing information for you.
