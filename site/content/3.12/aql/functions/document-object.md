@@ -187,7 +187,7 @@ RETURN [
 Keep only the attributes `attributeName` to `attributeNameN` of `document`.
 All other attributes will be removed from the result.
 
-To do the opposite, see [UNSET()](#unset).
+To do the opposite, see [`UNSET()`](#unset).
 
 - **document** (object): a document / object
 - **attributeNames** (string, *repeatable*): an arbitrary number of attribute
@@ -272,7 +272,7 @@ RETURN KEEP(doc, ["foo", "baz"])
 Recursively preserve the attributes `attributeName1` to `attributeNameN` from
 `document` and its sub-documents. All other attributes will be removed.
 
-To do the opposite, use [UNSET_RECURSIVE()](#unset_recursive).
+To do the opposite, use [`UNSET_RECURSIVE()`](#unset_recursive).
 
 - **document** (object): a document / object
 - **attributeNames** (string, *repeatable*): an arbitrary number of attribute
@@ -415,7 +415,7 @@ with any number of attributes each.
 
 An attribute value of `null` will match documents with an explicit attribute value
 of `null` as well as documents with this attribute missing (implicitly `null`).
-Only [HAS()](#has) can differentiate between an attribute being absent and having
+Only [`HAS()`](#has) can differentiate between an attribute being absent and having
 a stored `null` value.
 
 An empty object `{}` will match all documents. Be careful not to ask for all
@@ -485,7 +485,7 @@ If document attribute keys are ambiguous, the merged result will contain the val
 of the documents contained later in the argument list.
 
 Note that merging will only be done for top-level attributes. If you wish to
-merge sub-attributes, use [MERGE_RECURSIVE()](#merge_recursive) instead.
+merge sub-attributes, use [`MERGE_RECURSIVE()`](#merge_recursive) instead.
 
 - **documents** (object, *repeatable*): an arbitrary number of documents as
   multiple arguments (at least 2)
@@ -801,7 +801,7 @@ RETURN TRANSLATE(42, { "42": true } )
 Remove the attributes `attributeName1` to `attributeNameN` from `document`.
 All other attributes will be preserved.
 
-To do the opposite, see [KEEP()](#keep).
+To do the opposite, see [`KEEP()`](#keep).
 
 - **document** (object): a document / object
 - **attributeNames** (string, *repeatable*): an arbitrary number of attribute
@@ -887,7 +887,7 @@ RETURN UNSET(doc, ["foo", "bar"])
 Recursively remove the attributes `attributeName1` to `attributeNameN` from
 `document` and its sub-documents. All other attributes will be preserved.
 
-To do the opposite, use [KEEP_RECURSIVE()](#keep_recursive).
+To do the opposite, use [`KEEP_RECURSIVE()`](#keep_recursive).
 
 - **document** (object): a document / object
 - **attributeNames** (string, *repeatable*): an arbitrary number of attribute

@@ -66,7 +66,7 @@ RETURN ( RETURN 1 )
 [ [ 1 ] ]
 ```
 
-To avoid such a nested data structure, [FIRST()](../functions/array.md#first)
+To avoid such a nested data structure, [`FIRST()`](../functions/array.md#first)
 can be used for example:
 
 ```aql

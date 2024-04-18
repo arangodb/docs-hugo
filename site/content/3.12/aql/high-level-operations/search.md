@@ -239,7 +239,7 @@ to index all (sub-)attributes of the source documents if desired.
 ## `SEARCH` with `SORT`
 
 The documents emitted from a View can be sorted by attribute values with the
-standard [SORT() operation](sort.md), using one or multiple
+standard [`SORT()` operation](sort.md), using one or multiple
 attributes, in ascending or descending order (or a mix thereof).
 
 ```aql
@@ -272,7 +272,7 @@ FOR doc IN viewName
   RETURN doc
 ```
 
-The [BOOST() function](../functions/arangosearch.md#boost) can be used to
+The [`BOOST()` function](../functions/arangosearch.md#boost) can be used to
 fine-tune the resulting ranking by weighing sub-expressions in `SEARCH`
 differently.
 

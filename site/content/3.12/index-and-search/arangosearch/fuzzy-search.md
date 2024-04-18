@@ -171,9 +171,9 @@ total _n_-gram count, which ever of the two is higher (here the left side with
 
 There are the following AQL string functions to calculate the
 [similarity](#similarity-measures) of two arbitrary strings:
-- [LEVENSHTEIN_DISTANCE()](../../aql/functions/string.md#levenshtein_distance)
-- [NGRAM_SIMILARITY()](../../aql/functions/string.md#ngram_similarity)
-- [NGRAM_POSITIONAL_SIMILARITY()](../../aql/functions/string.md#ngram_positional_similarity)
+- [`LEVENSHTEIN_DISTANCE()`](../../aql/functions/string.md#levenshtein_distance)
+- [`NGRAM_SIMILARITY()`](../../aql/functions/string.md#ngram_similarity)
+- [`NGRAM_POSITIONAL_SIMILARITY()`](../../aql/functions/string.md#ngram_positional_similarity)
 
 ```aql
 RETURN [
@@ -184,8 +184,8 @@ RETURN [
 ```
 
 To perform fuzzy searches, there are two ArangoSearch functions:
-- [LEVENSHTEIN_MATCH()](../../aql/functions/arangosearch.md#levenshtein_match)
-- [NGRAM_MATCH()](../../aql/functions/arangosearch.md#ngram_match)
+- [`LEVENSHTEIN_MATCH()`](../../aql/functions/arangosearch.md#levenshtein_match)
+- [`NGRAM_MATCH()`](../../aql/functions/arangosearch.md#ngram_match)
 
 They can be used in conjunction with a View for index-accelerated fuzzy search
 queries. The string similarity affects the overall `BM25()` / `TFIDF()` score

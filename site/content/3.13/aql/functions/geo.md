@@ -806,7 +806,7 @@ RETURN GEO_POLYGON([
 `GEO_MULTIPOLYGON(polygons) → geoJson`
 
 Construct a GeoJSON MultiPolygon. Needs at least two Polygons inside.
-See [GEO_POLYGON()](#geo_polygon) and [GeoJSON MultiPolygon](#multipolygon)
+See [`GEO_POLYGON()`](#geo_polygon) and [GeoJSON MultiPolygon](#multipolygon)
 for the rules of Polygon and MultiPolygon construction.
 
 - **polygons** (array): an array of arrays of arrays of `[longitude, latitude]` pairs
