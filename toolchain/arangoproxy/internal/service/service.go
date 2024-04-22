@@ -226,7 +226,7 @@ func (service OpenapiService) ValidateFile(version string, wg *sync.WaitGroup) e
 	cmd.Stderr = &er
 
 	err := cmd.Run()
-	models.Logger.Printf("%s\n\n\n%s", out.String(), er.String())
+	models.Logger.Printf("%s\n%s", out.String(), er.String())
 
 	if err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
