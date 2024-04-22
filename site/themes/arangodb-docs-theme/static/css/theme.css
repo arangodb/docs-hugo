@@ -1860,8 +1860,6 @@ blockquote p {
 }
 
 .openapi-property-type {
-    font-weight: bold;
-    color: #8792a2;
     color: #8792a2;
     font-size: 13px;
     /* font-size: var(--font12); */
