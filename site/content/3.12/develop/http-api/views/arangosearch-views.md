@@ -456,7 +456,6 @@ paths:
                     enum:
                       - lz4
                       - none
-                    default: lz4
                   primarySortCache:
                     description: |
                       Whether the primary sort columns are always cached in memory
@@ -571,7 +570,6 @@ paths:
                           The minimum number of segments that are
                           evaluated as candidates for consolidation
                         type: integer
-                        default: 1
                       minScore:
                         description: |
                           Filter out consolidation candidates with a score less than this.
@@ -923,7 +921,6 @@ paths:
                     enum:
                       - lz4
                       - none
-                    default: lz4
                   primarySortCache:
                     description: |
                       Whether the primary sort columns are always cached in memory
@@ -1038,7 +1035,6 @@ paths:
                           The minimum number of segments that are
                           evaluated as candidates for consolidation
                         type: integer
-                        default: 1
                       minScore:
                         description: |
                           Filter out consolidation candidates with a score less than this.
@@ -1501,7 +1497,6 @@ paths:
                     enum:
                       - lz4
                       - none
-                    default: lz4
                   primarySortCache:
                     description: |
                       Whether the primary sort columns are always cached in memory
@@ -1616,7 +1611,6 @@ paths:
                           The minimum number of segments that are
                           evaluated as candidates for consolidation
                         type: integer
-                        default: 1
                       minScore:
                         description: |
                           Filter out consolidation candidates with a score less than this.
@@ -1969,7 +1963,6 @@ paths:
                     enum:
                       - lz4
                       - none
-                    default: lz4
                   primarySortCache:
                     description: |
                       Whether the primary sort columns are always cached in memory
@@ -2084,7 +2077,6 @@ paths:
                           The minimum number of segments that are
                           evaluated as candidates for consolidation
                         type: integer
-                        default: 1
                       minScore:
                         description: |
                           Filter out consolidation candidates with a score less than this.
@@ -2307,7 +2299,6 @@ paths:
                     enum:
                       - lz4
                       - none
-                    default: lz4
                   primarySortCache:
                     description: |
                       Whether the primary sort columns are always cached in memory
@@ -2422,7 +2413,6 @@ paths:
                           The minimum number of segments that are
                           evaluated as candidates for consolidation
                         type: integer
-                        default: 1
                       minScore:
                         description: |
                           Filter out consolidation candidates with a score less than this.
