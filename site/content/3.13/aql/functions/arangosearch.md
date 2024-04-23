@@ -606,7 +606,7 @@ enabled. The `PHRASE()` function will otherwise not find anything.
 #### Object tokens
 
 - `{IN_RANGE: [low, high, includeLow, includeHigh]}`:
-  see [IN_RANGE()](#in_range). *low* and *high* can only be strings.
+  see [`IN_RANGE()`](#in_range). *low* and *high* can only be strings.
 - `{LEVENSHTEIN_MATCH: [token, maxDistance, transpositions, maxTerms, prefix]}`:
   - `token` (string): a string to search
   - `maxDistance` (number): maximum Levenshtein / Damerau-Levenshtein distance
@@ -621,14 +621,14 @@ enabled. The `PHRASE()` function will otherwise not find anything.
     remainders of the strings. This option can improve performance in cases where
     there is a known common prefix. The default value is an empty string
     (introduced in v3.7.13, v3.8.1).
-- `{STARTS_WITH: [prefix]}`: see [STARTS_WITH()](#starts_with).
+- `{STARTS_WITH: [prefix]}`: see [`STARTS_WITH()`](#starts_with).
   Array brackets are optional
 - `{TERM: [token]}`: equal to `token` but without Analyzer tokenization.
   Array brackets are optional
 - `{TERMS: [token1, ..., tokenN]}`: one of `token1, ..., tokenN` can be found
   in specified position. Inside an array the object syntax can be replaced with
   the object field value, e.g., `[..., [token1, ..., tokenN], ...]`.
-- `{WILDCARD: [token]}`: see [LIKE()](#like).
+- `{WILDCARD: [token]}`: see [`LIKE()`](#like).
   Array brackets are optional
 
 An array token inside an array can be used in the `TERMS` case only.
@@ -906,7 +906,7 @@ Match documents with a [Damerau-Levenshtein distance](https://en.wikipedia.org/w
 lower than or equal to `distance` between the stored attribute value and
 `target`. It can optionally match documents using a pure Levenshtein distance.
 
-See [LEVENSHTEIN_DISTANCE()](string.md#levenshtein_distance)
+See [`LEVENSHTEIN_DISTANCE()`](string.md#levenshtein_distance)
 if you want to calculate the edit distance of two strings.
 
 - **path** (attribute path expression\|string): the path of the attribute to
@@ -1323,7 +1323,7 @@ _n_-grams for search highlighting purposes.
   attributes: 
   - **name** (array): the attribute and array element path as an array of
     strings and numbers. You can pass this name to the
-    [VALUE()](document-object.md) to dynamically look up the value.
+    [`VALUE()`](document-object.md) to dynamically look up the value.
   - **offsets** (array): an array of arrays with the matched positions, capped
     to the specified limits. Each inner array has two elements with the start
     offset and the length of a match.

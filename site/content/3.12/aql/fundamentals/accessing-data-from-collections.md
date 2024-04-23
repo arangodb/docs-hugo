@@ -54,7 +54,7 @@ This behavior should always be taken into account when writing queries.
 
 To distinguish between an explicit `null` value and the implicit `null` value
 you get if you access a non-existent attribute, you can use the
-[`HAS() function`](../functions/document-object.md#has). The following query
+[`HAS()` function](../functions/document-object.md#has). The following query
 only returns documents that have a `name` attribute with a `null` value:
 
 ```aql

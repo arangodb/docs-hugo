@@ -235,7 +235,7 @@ ul ul, ul ol, ol ul, ol ol {
     margin: 0;
     padding: 2px;
     word-break: break-word;
-    border-radius: 0px;
+    border-radius: 0;
     background: var(--gray-100);
     box-shadow: none;
     color: var(--gray-950);
@@ -252,7 +252,6 @@ ul ul, ul ol, ol ul, ol ol {
     text-decoration: none;
 }
 
-
 hr {
     width: 100%;
     height: 4px;
@@ -262,7 +261,6 @@ hr {
     background-color: #e7e7e7;
     border: none;
 }
-
 
 pre {
     margin-bottom: 2rem;
@@ -407,11 +405,11 @@ table.fixed code {
 }
 
 /* .card:hover {
-    box-shadow: rgb(149 157 165 / 20%) 0px 8px 24px;
+    box-shadow: rgb(149 157 165 / 20%) 0 8px 24px;
 } */
 
 .cards > a.card-link {
-    border-bottom: 0px;
+    border-bottom: 0;
 }
 
 @media screen and (max-width: 768px) {
@@ -489,8 +487,8 @@ a.section-link {
 
 .loader{
     position: fixed;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
     z-index: 9999;
@@ -521,7 +519,8 @@ a.section-link {
     position: relative;
     max-width: 300px;
     background-color: transparent;
-    border: 0px;
+    border: 0;
+    border-radius: 0;
     text-decoration: none;
     white-space: nowrap;
     overflow: hidden;
@@ -537,9 +536,9 @@ a.section-link {
 .tab-nav-button.selected::after {
     content: "";
     position: absolute;
-    left: 0px;
-    right: 0px;
-    bottom: 0px;
+    left: 0;
+    right: 0;
+    bottom: 0;
     height: 2px;
     background-color: var(--HEADERS-COLOR)
 }
@@ -567,7 +566,7 @@ body .page-container {
         'header header'
         'sidenav contents'
         'sidenav footer';
-    grid-template-columns: minmax(0px, auto) 4fr;
+    grid-template-columns: minmax(0, auto) 4fr;
     grid-template-rows: 4rem 1fr;
     background: var(--CONTENT-BACKGROUND-COLOR);
 }
@@ -637,7 +636,7 @@ body .page-container {
     vertical-align: middle;
     font-weight: 900;
     font-size: 18px;
-    padding-top: 0px;
+    padding-top: 0;
     color: var(--gray-100);
 }
 
@@ -702,7 +701,7 @@ body .page-container {
     position: relative;
     height: 64px;
     align-items: center;
-    padding: 6px 10px 0px 10px;
+    padding: 6px 10px 0 10px;
 }
 
 header .logo {
@@ -980,7 +979,7 @@ header .logo {
     vertical-align: middle;
     font-weight: 900;
     font-size: 10px;
-    padding-top: 0px;
+    padding-top: 0;
     color: var(--gray-300);
 }
 
@@ -992,7 +991,7 @@ header .logo {
     vertical-align: middle;
     font-weight: 900;
     font-size: 10px;
-    padding-top: 0px;
+    padding-top: 0;
     color: var(--gray-300);
 }
 
@@ -1081,7 +1080,7 @@ header .logo {
 }
 
 #breadcrumbs > ol {
-    margin: 5px 0px 0px 80px;
+    margin: 5px 0 0 80px;
     white-space: normal;
 }
 
@@ -1142,7 +1141,7 @@ header .logo {
     text-decoration: none;
     color: #444;
     background: 0 0;
-    border-bottom: 0px;
+    border-bottom: 0;
 }
 
 .edit-page > .edit-page-icon:after {
@@ -1423,7 +1422,7 @@ article > h3 > code,
 article > h4 > code,
 article > h5 > code,
 article > h6 > code {
-    padding-top: 0px;
+    padding-top: 0;
     white-space: normal;
 }
 
@@ -1456,7 +1455,7 @@ h6:hover .header-link {
 
 /* Codeblocks */
 pre {
-    border-radius: 0px;
+    border-radius: 0;
     background: var(--gray-100);
     box-shadow: none;
     position: relative;
@@ -1470,7 +1469,7 @@ code, p code {
     padding: 2px;
     word-break: break-word;
     white-space: pre-wrap;
-    border-radius: 0px;
+    border-radius: 0;
     background: var(--gray-100);
     box-shadow: none;
     color: var(--gray-950);
@@ -1529,7 +1528,7 @@ li > code {
     color: var(--green-700);
 }
 
-.copy-to-clipboard > .copy-to-clipboard-code {
+pre > code {
     margin: 0;
     word-break: break-word;
     white-space: break-spaces;
@@ -1537,16 +1536,19 @@ li > code {
     font-family: Consolas,liberation mono,Menlo,Courier,monospace;
     padding: 28px;
     font-size: 1rem;
-    max-height: calc(17 * 1.8rem);
+}
+
+.code-long {
+    max-height: calc(15 * 1.8rem);
     overflow: hidden;
+}
+
+.code-long.expanded {
+    max-height: unset;
 }
 
 .copy-to-clipboard:hover > .copy-to-clipboard-button {
     display: flex;
-}
-
-.copy-to-clipboard > .copy-to-clipboard-code.expanded {
-    max-height: 100%;
 }
 
 pre > .code-show-more {
@@ -1562,7 +1564,7 @@ pre > .code-show-more {
     position: absolute;
     bottom: 12px;
     right: 10px;
-    letter-spacing: 0px;
+    letter-spacing: 0;
 }
 
 pre > .code-show-more:hover{
@@ -1675,7 +1677,7 @@ div.box.security > .box-content-container > .box-content > i {
 }
 
 div > .box-content-container {
-    padding: 0px 0px 0px 12px;
+    padding: 0 0 0 12px;
 }
 
 .box-text {
@@ -1772,8 +1774,8 @@ blockquote p {
 
     display: flex;
     flex-direction: column;
-    margin: 0px;
-    padding: 0px;
+    margin: 0;
+    padding: 0;
     overflow: hidden;
     letter-spacing: normal;
     color: var(--fg);
@@ -1967,7 +1969,7 @@ details[open] > .openapi-prop::before {
     display: inline-block;
     padding: 6px 16px;
     font-size: var(--font-size-small);
-    outline: 0px;
+    outline: 0;
     line-height: 1;
     text-align: center;
     white-space: nowrap;
@@ -1975,7 +1977,7 @@ details[open] > .openapi-prop::before {
     transition: background-color 0.2s ease 0s;
     user-select: none;
     cursor: pointer;
-    box-shadow: rgb(0 0 0 / 12%) 0px 1px 3px, rgb(0 0 0 / 24%) 0px 1px 2px;
+    box-shadow: rgb(0 0 0 / 12%) 0 1px 3px, rgb(0 0 0 / 24%) 0 1px 2px;
 }
 
 .response-code.clicked {
@@ -2031,7 +2033,7 @@ nav.pagination .next {
 }
 
 .nav-prev > i {
-    padding: 17px 15px 0px 0px;
+    padding: 17px 15px 0 0;
 }
 
 .nav-prev:hover,
@@ -2049,7 +2051,7 @@ nav.pagination .next {
 }
 
 .nav-next > i {
-    padding: 17px 0px 0px 15px;
+    padding: 17px 0 0 15px;
 }
 /* */
 
@@ -2146,7 +2148,7 @@ nav.pagination .next {
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    padding: 20px 0px;
+    padding: 20px 0;
     border-radius: 4px;
     margin-bottom: 36px;
     background: url("/images/bottom-cta-background.jpg") no-repeat center center;

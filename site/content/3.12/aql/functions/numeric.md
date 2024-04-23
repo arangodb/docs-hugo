@@ -108,8 +108,8 @@ This is an alias for [`AVERAGE()`](#average).
 
 Return the integer closest but not less than *value*.
 
-To round downward, see [FLOOR()](#floor).\
-To round to the nearest integer value, see [ROUND()](#round).
+To round downward, see [`FLOOR()`](#floor).\
+To round to the nearest integer value, see [`ROUND()`](#round).
 
 - **value** (number): any number
 - returns **roundedValue** (number): the value rounded to the ceiling
@@ -146,8 +146,8 @@ COS(RADIANS(45)) // 0.7071067811865476
 Return the [cosine similarity](https://en.wikipedia.org/wiki/Cosine_similarity)
 between *x* and *y*.
 
-To calculate the distance, see [L1_DISTANCE()](#l1_distance) and
-[L2_DISTANCE()](#l2_distance).
+To calculate the distance, see [`L1_DISTANCE()`](#l1_distance) and
+[`L2_DISTANCE()`](#l2_distance).
 
 - **x** (array): first input array
 - **y** (array): second input array
@@ -293,8 +293,8 @@ EXP2(0) // 1
 
 Return the integer closest but not greater than *value*.
 
-To round upward, see [CEIL()](#ceil).\
-To round to the nearest integer value, see [ROUND()](#round).
+To round upward, see [`CEIL()`](#ceil).\
+To round to the nearest integer value, see [`ROUND()`](#round).
 
 - **value** (number): any number
 - returns **roundedValue** (number): the value rounded downward
@@ -364,7 +364,7 @@ LOG10(0) // null
 Return the [Manhattan distance](https://en.wikipedia.org/wiki/Taxicab_geometry)
 between *x* and *y*.
 
-To calculate the similarity, see [COSINE_SIMILARITY()](#cosine_similarity).
+To calculate the similarity, see [`COSINE_SIMILARITY()`](#cosine_similarity).
 
 - **x** (array): first input array
 - **y** (array): second input array
@@ -390,7 +390,7 @@ L1_DISTANCE([1.5], [3]) // 1.5
 Return the [Euclidean distance](https://en.wikipedia.org/wiki/Euclidean_distance)
 between *x* and *y*.
 
-To calculate the similarity, see [COSINE_SIMILARITY()](#cosine_similarity).
+To calculate the similarity, see [`COSINE_SIMILARITY()`](#cosine_similarity).
 
 - **x** (array): first input array
 - **y** (array): second input array
@@ -623,10 +623,9 @@ ROUND(-2.50) // -2
 ROUND(-2.51) // -3
 ```
 
-Rounding towards zero, also known as *trunc()* in C/C++, can be achieved with
+Rounding towards zero, also known as `trunc()` in C/C++, can be achieved with
 a combination of the [ternary operator](../operators.md#ternary-operator),
-[CEIL()](#ceil)
-and [FLOOR()](#floor):
+[`CEIL()`](#ceil) and [`FLOOR()`](#floor):
 
 ```aql
 value >= 0 ? FLOOR(value) : CEIL(value)
@@ -662,7 +661,7 @@ SQRT(9) // 3
 SQRT(2) // 1.4142135623730951
 ```
 
-Other roots can be calculated with [POW()](#pow) like `POW(value, 1/n)`:
+Other roots can be calculated with [`POW()`](#pow) like `POW(value, 1/n)`:
 
 ```aql
 // 4th root of 8*8*8*8 = 4096
