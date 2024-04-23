@@ -182,7 +182,7 @@
           <span class="openapi-property-name bold-text">{{ $prop }}{{ if $value.required }}*{{ end }}</span>
           <span class="openapi-property-type">
             <span class="bold-text">{{ $value.schema.type }}</span>
-            {{- if isset $value "default" }} (default: <code>{{ $value.default }}</code>){{ end }}
+            {{- if isset $value.schema "default" }} (default: <code>{{ $value.schema.default }}</code>){{ end }}
           </span>
           <a href="{{ printf "#%s" $anchor }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
         </summary>
@@ -215,7 +215,7 @@
         <span class="openapi-property-name bold-text {{ if eq $prop "" }} no-border {{ end }} ">{{ $prop }}{{ if $required }}*{{ end }}</span>
         <span class="openapi-property-type">
           <span class="bold-text">{{ $type }}</span>
-          {{- if isset $value "default" }} (default: <code>{{ $value.default }}</code>){{ end }}
+          {{- if isset $value "default" }} (default: <code>{{ $value.default | jsonify }}</code>){{ end }}
         </span>
         <a href="#{{ $anchor }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
       </summary>
