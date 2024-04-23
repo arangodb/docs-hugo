@@ -122,6 +122,26 @@
   {{- $title := .title }}
   {{- $content := .content }}
   {{- $page := .page }}
+  {{- $statusMap := dict
+    "200" "OK"
+    "201" "Created"
+    "202" "Accepted"
+    "204" "No Content"
+    "304" "Not Modified"
+    "400" "Bad Request"
+    "401" "Unauthorized"
+    "403" "Forbidden"
+    "404" "Not Found"
+    "405" "Method Not Allowed"
+    "408" "Request Timeout"
+    "409" "Conflict"
+    "410" "Gone"
+    "412" "Precondition Failed"
+    "500" "Internal Server Error"
+    "501" "Not Implemented"
+    "503" "Service Unavailable"
+    "504" "Gateway Timeout"
+  }}
   <div class="responses regular-font">
     <div class="openapi-table-title">Responses</div>
     <div class="openapi-responses">
@@ -132,6 +152,9 @@
           <details  id="{{ printf "%s" $statusId }}">
           <summary class="openapi-prop collapsed">
             <span class="openapi-property-name bold-text">{{ $status }}</span>
+            {{- $statusDescription := index $statusMap $status }}
+            {{- if not $statusDescription }}{{ errorf "OpenAPI: %v missing in HTTP status code mapping" $status }}{{ end }}
+            <span class="openapi-property-type bold-text">{{ $statusDescription }}</span>
             <a href="{{ printf "#%s" $statusId }}"><i class="fa fa-link" style="font-size: 12px;"></i></a>
           </summary>
             {{- $description := $content.description | $page.RenderString }}
