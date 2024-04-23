@@ -35,7 +35,7 @@
     {{- range $method, $items := $methods }}
       <div class="endpoint">
         <span class="endpoint-method regular-font upper bold-text method-{{ $method }}">{{ $method }}</span>
-        <span class="endpoint-path">{{ $path }}</span>
+        <span class="endpoint-path">{{ replaceRE "#.*" "" $path }}</span>
       </div>
       <div class="openapi-description regular-font">
         {{- $items.description | $page.RenderString }}
