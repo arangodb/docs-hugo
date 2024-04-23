@@ -2,9 +2,24 @@
 {{- $pageVersion := .Page.Store.Get "versionShort" }}
 {{- $title := .Page.Scratch.Get "currentHeadline" }}
 {{- $endpoint := printf "%s/openapi" site.Params.arangoproxyUrl }}
+
+{{- $linkMap := dict }}
+{{- range $match := findRESubmatch `\[([^\]]+)\]\((.*?)\)` .Inner }}
+  {{- $url := index $match 2 }}
+  {{- $isRemote := ne (urls.Parse $url).Scheme "" }}
+  {{- if not $isRemote }}
+    {{- $absUrl := printf "https://docs.arangodb.com%s" (urls.RelRef $page $url) }}
+    {{- $newLink := printf "[%s](%s)" (index $match 1) $absUrl }}
+    {{- $linkMap = merge $linkMap (dict (index $match 0) $newLink) }}
+  {{- end }}
+{{- end }}
+{{- $innerAbsLinks := .Inner }}
+{{- range $old, $new := $linkMap }}
+  {{- $innerAbsLinks = replace $innerAbsLinks $old $new }}
+{{- end }}
 {{- $remote := resources.GetRemote $endpoint (dict
     "method" "post"
-    "body" .Inner
+    "body" $innerAbsLinks
     "headers" (dict 
       "Content-Type" "application/json"
       "Page-Version" $pageVersion
