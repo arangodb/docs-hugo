@@ -18,9 +18,8 @@ function menuToggleClick(event) {
     toggleMenuItem(event);
 }
 
-
 function menuEntryClickListener() {
-    $('.menu-link').click(function(event) {
+    $('.menu-link').on("click", function(event) {
         event.preventDefault();
         if (event.target.pathname == window.location.pathname) {
             toggleMenuItem(event)
@@ -42,7 +41,7 @@ function renderVersion() {
             entry.style.display = 'none';
         }
     }
-};
+}
 
 function closeAllEntries() {
     $(".dd-item.active").removeClass("active");
@@ -183,7 +182,7 @@ function loadPage(target) {
 }
 
 function internalLinkListener() {
-  $('.link').click(function(event) {
+  $('.link').on("click", function(event) {
     if (event.target.getAttribute("target")) {
       // external link
       return;
@@ -192,18 +191,18 @@ function internalLinkListener() {
     updateHistory(event.target.getAttribute('href'))
   });
 
-  $('.card-link').click(function(event) {
+  $('.card-link').on('click', function(event) {
     event.preventDefault();
     updateHistory(this.getAttribute('href'))
   });
 }
 
 function codeShowMoreListener() {
-  $('.code-show-more').click(function(event) {
+  $('article').on('click', '.code-show-more', function(event) {
     var t = $(event.target)
     t.toggleClass("expanded")
     t.prev().toggleClass("expanded")
-  })
+  });
 }
 
 function trackPageView(title, urlPath) {
@@ -222,6 +221,7 @@ function trackPageView(title, urlPath) {
 function initArticle(url) {
   restoreTabSelections();
   initCopyToClipboard();
+  addShowMoreButton('article');
   initClickHandlers();
   goToTop();
   styleImages();
@@ -324,6 +324,7 @@ function switchTab(tabGroup, tabId, event) {
 
   allTabItems.removeClass("selected");
   targetTabItems.addClass("selected");
+  addShowMoreButton(targetTabItems);
   if (event) {
       // Keep relative offset of tab in viewport to avoid jumping content
       var topAfter = clickedTab.getBoundingClientRect().top;
@@ -395,7 +396,7 @@ function aliazeLinks(parentSelector, linkSelector) {
 
   $(parentSelector).find(linkSelector).each(function() {
     $(this).attr("href", function(index, old) {
-          if (old == undefined) return old;
+          if (old == undefined || old.startsWith("#")) return old;
           let splitLink = old.split("/");
           let linkVersion = splitLink[1];
           let alias = nameAliasMapping[linkVersion] || linkVersion;
@@ -508,14 +509,14 @@ function hideEmptyOpenapiDiv() {
 function initClickHandlers() {
     hideEmptyOpenapiDiv();
 
-    $(".openapi-prop").click(function(event) {
+    $(".openapi-prop").on("click", function(event) {
         if (this === event.target) {
             $(event.target).toggleClass("collapsed");
             $(event.target).find('.openapi-prop-content').first().toggleClass("hidden");
         }
     });
     
-    $(".openapi-table.show-children").click(function(event) {
+    $(".openapi-table.show-children").on("click", function(event) {
         $(event.target).toggleClass("collapsed");
         $(event.target).next(".openapi-table").toggleClass("hidden");
     });
