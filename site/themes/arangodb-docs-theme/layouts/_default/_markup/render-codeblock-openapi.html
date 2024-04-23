@@ -245,6 +245,20 @@
       {{- $description := $value.description | $page.RenderString }}
       <div class="openapi-prop-content">
         <p class="regular-font">{{ $description }}</p>
+        {{- if isset $value "enum" }}
+          <p class="regular-font">Possible values:
+            {{- range $i, $val := $value.enum }}
+              {{- if gt $i 0 }},{{ end }} <code>{{ . | jsonify }}</code>
+            {{- end }}
+          </p>
+        {{- end }}
+        {{- if and ($value.items) (isset $value.items "enum") }}
+          <p class="regular-font">Possible values:
+            {{- range $i, $val := $value.items.enum }}
+              {{- if gt $i 0 }},{{ end }} <code>{{ . | jsonify }}</code>
+            {{- end }}
+          </p>
+        {{- end }}
         {{- if $value.properties }}
           <ul class="openapi-table">
           {{- range $k, $v := $value.properties }}
