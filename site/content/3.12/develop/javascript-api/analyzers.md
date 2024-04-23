@@ -154,7 +154,7 @@ analyzers.analyzer("text_en").type();
 var properties = analyzer.properties()
 ```
 
-- returns **properties** (object): *type* dependent properties of the Analyzer
+- returns **properties** (object): *type*-dependent properties of the Analyzer
 
 ```js
 ---
