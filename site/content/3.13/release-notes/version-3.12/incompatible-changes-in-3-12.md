@@ -170,6 +170,23 @@ onward and will be removed in a future version.
 You can use [Stream Transactions](../../develop/transactions/stream-transactions.md)
 instead in most cases, and in some cases AQL can be sufficient.
 
+## Incompatibilities with Unicode text between core and JavaScript
+
+ArangoDB 3.12 uses the ICU library for Unicode handling in version 64 for its core
+(ArangoSearch, AQL, RocksDB) but version 73 in [JavaScript contexts](../../develop/javascript-api/_index.md).
+If you compare or sort string values with JavaScript and with the core, the values
+may not match between the two or have a different order. This is due to changes
+in the Unicode standard and the binary representation of strings for comparisons.
+
+You can be affected if you use JavaScript-based features like Foxx microservices
+or user-defined AQL functions (UDFs), compare or sort strings in them, and
+Unicode characters for which the standard has changed between the two ICU versions
+are involved.
+
+{{< comment >}}
+TODO: May become relevant later should we upgrade the core ICU.
+If not, we still might want to incorporate some of this into the reference docs.
+
 ## Breaking changes to the `collation` Analyzer
 
 The [`collation` Analyzer](../../index-and-search/analyzers.md#collation) lets
@@ -190,6 +207,7 @@ or older versions may behave in unpredicted ways.
 Note that sorting by the output of the `collation` Analyzer like
 `SORT TOKENS(<text>, <collationAnalyzer>)` is still not a supported feature and
 doesn't produce meaningful results.
+{{< /comment >}}
 
 ## Control character escaping in audit log
 
