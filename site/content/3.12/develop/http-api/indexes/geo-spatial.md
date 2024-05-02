@@ -71,7 +71,7 @@ paths:
                     If a geo-spatial index on a `location` is constructed
                     and `geoJson` is `true`, then the order within the array is longitude
                     followed by latitude. This corresponds to the format described in
-                    http://geojson.org/geojson-spec.html#positions
+                    <http://geojson.org/geojson-spec.html#positions>
                   type: boolean
                 legacyPolygons:
                   description: |

@@ -598,7 +598,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -632,7 +632,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -666,7 +666,7 @@ paths:
                     example: 409
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1074,7 +1074,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1193,7 +1193,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1224,7 +1224,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1325,7 +1325,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1682,7 +1682,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1716,7 +1716,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1747,7 +1747,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1813,7 +1813,7 @@ paths:
           in: query
           required: false
           description: |
-            Drop the collection as well.
+            Drop the collection in addition to removing it from the graph.
             The collection is only dropped if it is not used in other graphs.
           schema:
             type: boolean
@@ -2096,7 +2096,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2129,7 +2129,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2160,7 +2160,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2280,7 +2280,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2659,7 +2659,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2692,7 +2692,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2723,7 +2723,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2764,7 +2764,7 @@ paths:
     put:
       operationId: replaceEdgeDefinition
       description: |
-        Change one specific edge definition.
+        Change the vertex collections of one specific edge definition.
         This modifies all occurrences of this definition in all graphs known to your database.
       parameters:
         - name: graph
@@ -2792,7 +2792,7 @@ paths:
           in: query
           required: false
           description: |
-            Drop the collection as well.
+            Drop the edge collection in addition to removing it from the graph.
             The collection is only dropped if it is not used in other graphs.
           schema:
             type: boolean
@@ -2808,7 +2808,7 @@ paths:
               properties:
                 collection:
                   description: |
-                    The name of the edge collection to be used.
+                    The name of the edge collection to modify.
                   type: string
                 from:
                   description: |
@@ -3113,7 +3113,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3146,7 +3146,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3178,7 +3178,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3249,7 +3249,7 @@ paths:
           in: query
           required: false
           description: |
-            Drop the collection as well.
+            Drop the edge collection in addition to removing it from the graph.
             The collection is only dropped if it is not used in other graphs.
           schema:
             type: boolean
@@ -3533,7 +3533,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3565,7 +3565,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3819,7 +3819,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3851,7 +3851,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4020,7 +4020,7 @@ paths:
                     example: 304
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4054,7 +4054,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4088,7 +4088,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4119,7 +4119,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4450,7 +4450,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4484,7 +4484,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4515,7 +4515,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4849,7 +4849,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4883,7 +4883,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4914,7 +4914,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5136,7 +5136,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5170,7 +5170,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5201,7 +5201,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5501,7 +5501,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5535,7 +5535,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5571,7 +5571,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5752,7 +5752,7 @@ paths:
                     example: 304
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5786,7 +5786,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5820,7 +5820,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5851,7 +5851,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6243,7 +6243,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6278,7 +6278,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6309,7 +6309,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6710,7 +6710,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6745,7 +6745,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6776,7 +6776,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -7020,7 +7020,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -7054,7 +7054,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -7085,7 +7085,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |

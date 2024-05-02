@@ -54,13 +54,118 @@ paths:
                           the `<collection>/` prefix.
                         type: string
       responses:
+        '201':
+          description: |
+            The View has been created.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - name
+                  - type
+                  - id
+                  - globallyUniqueId
+                  - indexes
+                properties:
+                  name:
+                    description: |
+                      The name of the View.
+                    type: string
+                  type:
+                    description: |
+                      The type of the View (`"search-alias"`).
+                    type: string
+                  id:
+                    description: |
+                      A unique identifier of the View (deprecated).
+                    type: string
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the View. This is an internal property.
+                    type: string
+                  indexes:
+                    description: |
+                      The list of the View's inverted indexes.
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - collection
+                        - index
+                      properties:
+                        collection:
+                          description: |
+                            The name of a collection.
+                          type: string
+                        index:
+                          description: |
+                            The name of an inverted index of the `collection`.
+                          type: string
         '400':
           description: |
-            If the `name` or `type` attribute are missing or invalid, then an *HTTP 400*
+            The `name` or `type` attribute or one of the `collection` or `index`
+            attributes is missing or invalid.
             error is returned.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '409':
           description: |
-            If a View called `name` already exists, then an *HTTP 409* error is returned.
+            A View called `name` already exists.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 409
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Views
 ```
@@ -99,10 +204,7 @@ paths:
     get:
       operationId: getView
       description: |
-        The result is an object briefly describing the View with the following attributes:
-        - `id`: The identifier of the View
-        - `name`: The name of the View
-        - `type`: The type of the View as string
+        Returns the basic information about a specific View.
       parameters:
         - name: view-name
           in: path
@@ -112,9 +214,81 @@ paths:
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            The basic information about the View.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - name
+                  - type
+                  - id
+                  - globallyUniqueId
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  name:
+                    description: |
+                      The name of the View.
+                    type: string
+                    example: coll
+                  type:
+                    description: |
+                      The type of the View (`"search-alias"`).
+                    type: integer
+                    example: search-alias
+                  id:
+                    description: |
+                      A unique identifier of the View (deprecated).
+                    type: string
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the View. This is an internal property.
+                    type: string
         '404':
           description: |
-            If the `view-name` is unknown, then a *HTTP 404* is returned.
+            A View called `view-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+
       tags:
         - Views
 ```
@@ -161,10 +335,7 @@ paths:
     get:
       operationId: getViewPropertiesSearchAlias
       description: |
-        Returns an object containing the definition of the View identified by *view-name*.
-
-        The result is an object with a full description of a specific View, including
-        View type dependent properties.
+        Returns an object containing the definition of the View identified by `view-name`.
       parameters:
         - name: view-name
           in: path
@@ -174,12 +345,117 @@ paths:
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            An object with a full description of the specified View, including
+            `search-alias` View type-dependent properties.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - name
+                  - type
+                  - id
+                  - globallyUniqueId
+                  - indexes
+                properties:
+                  name:
+                    description: |
+                      The name of the View.
+                    type: string
+                  type:
+                    description: |
+                      The type of the View (`"search-alias"`).
+                    type: string
+                  id:
+                    description: |
+                      A unique identifier of the View (deprecated).
+                    type: string
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the View. This is an internal property.
+                    type: string
+                  indexes:
+                    description: |
+                      The list of the View's inverted indexes.
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - collection
+                        - index
+                      properties:
+                        collection:
+                          description: |
+                            The name of a collection.
+                          type: string
+                        index:
+                          description: |
+                            The name of an inverted index of the `collection`.
+                          type: string
         '400':
           description: |
-            If the *view-name* is missing, then a *HTTP 400* is returned.
+            The `view-name` parameter is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the *view-name* is unknown, then a *HTTP 404* is returned.
+            A View called `view-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Views
 ```
@@ -232,15 +508,63 @@ paths:
     get:
       operationId: listViews
       description: |
-        Returns an object containing a listing of all Views in a database, regardless
-        of their type. It is an array of objects with the following attributes:
-        - `id`
-        - `name`
-        - `type`
+        Returns an object containing a listing of all Views in the current database,
+        regardless of their type.
       responses:
         '200':
           description: |
-            The list of Views
+            The list of Views.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  result:
+                    description: |
+                      The result object.
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - name
+                        - type
+                        - id
+                        - globallyUniqueId
+                      properties:
+                        name:
+                          description: |
+                            The name of the View.
+                          type: string
+                          example: coll
+                        type:
+                          description: |
+                            The type of the View.
+                          type: string
+                          enum:
+                            - arangosearch
+                            - search-alias
+                        id:
+                          description: |
+                            A unique identifier of the View (deprecated).
+                          type: string
+                        globallyUniqueId:
+                          description: |
+                            A unique identifier of the View. This is an internal property.
+                          type: string
       tags:
         - Views
 ```
@@ -310,21 +634,18 @@ paths:
       responses:
         '200':
           description: |
-            On success, an object with the following attributes is returned:
+            The View has been updated successfully.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - id
                   - name
                   - type
+                  - id
+                  - globallyUniqueId
                   - indexes
                 properties:
-                  id:
-                    description: |
-                      The identifier of the View.
-                    type: string
                   name:
                     description: |
                       The name of the View.
@@ -332,6 +653,14 @@ paths:
                   type:
                     description: |
                       The View type (`"search-alias"`).
+                    type: string
+                  id:
+                    description: |
+                      The identifier of the View.
+                    type: string
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the View. This is an internal property.
                     type: string
                   indexes:
                     description: |
@@ -353,10 +682,66 @@ paths:
                           type: string
         '400':
           description: |
-            If the `view-name` is missing, then a *HTTP 400* is returned.
+            The `view-name` parameter is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the `view-name` is unknown, then a *HTTP 404* is returned.
+            A View called `view-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Views
 ```
@@ -430,26 +815,26 @@ paths:
                       operation:
                         description: |
                           Whether to add or remove the index to the stored `indexes` property of the View.
-                          Possible values: `"add"`, `"del"`. The default is `"add"`.
                         type: string
+                        enum:
+                          - add
+                          - del
+                        default: add
       responses:
         '200':
           description: |
-            On success, an object with the following attributes is returned:
+            The View has been updated successfully.
           content:
             application/json:
               schema:
                 type: object
                 required:
-                  - id
                   - name
                   - type
+                  - id
+                  - globallyUniqueId
                   - indexes
                 properties:
-                  id:
-                    description: |
-                      The identifier of the View.
-                    type: string
                   name:
                     description: |
                       The name of the View.
@@ -457,6 +842,14 @@ paths:
                   type:
                     description: |
                       The View type (`"search-alias"`).
+                    type: string
+                  id:
+                    description: |
+                      The identifier of the View.
+                    type: string
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the View. This is an internal property.
                     type: string
                   indexes:
                     description: |
@@ -478,10 +871,66 @@ paths:
                           type: string
         '400':
           description: |
-            If the `view-name` is missing, then a *HTTP 400* is returned.
+            The `view-name` parameter is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the `view-name` is unknown, then a *HTTP 404* is returned.
+            A View called `view-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string.
       tags:
         - Views
 ```
@@ -518,13 +967,7 @@ paths:
     put:
       operationId: renameView
       description: |
-        Renames a View. Expects an object with the attribute(s)
-        - `name`: The new name
-
-        It returns an object with the attributes
-        - `id`: The identifier of the View.
-        - `name`: The new name of the View.
-        - `type`: The View type.
+        Renames a View.
 
         {{</* info */>}}
         Renaming Views is not supported in cluster deployments.
@@ -538,12 +981,116 @@ paths:
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            The View has been renamed successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - name
+                  - type
+                  - id
+                  - globallyUniqueId
+                  - indexes
+                properties:
+                  name:
+                    description: |
+                      The name of the View.
+                    type: string
+                  type:
+                    description: |
+                      The View type (`"search-alias"`).
+                    type: string
+                  id:
+                    description: |
+                      The identifier of the View.
+                    type: string
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the View. This is an internal property.
+                    type: string
+                  indexes:
+                    description: |
+                      The list of inverted indexes that are part of the View.
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - collection
+                        - index
+                      properties:
+                        collection:
+                          description: |
+                            The name of a collection.
+                          type: string
+                        index:
+                          description: |
+                            The name of an inverted index of the `collection`.
+                          type: string
         '400':
           description: |
-            If the `view-name` is missing, then a *HTTP 400* is returned.
+            The `view-name` parameter is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the `view-name` is unknown, then a *HTTP 404* is returned.
+            A View called `view-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string.
       tags:
         - Views
 ```
@@ -573,12 +1120,7 @@ paths:
     delete:
       operationId: deleteView
       description: |
-        Drops the View identified by `view-name`.
-
-        If the View was successfully dropped, an object is returned with
-        the following attributes:
-        - `error`: `false`
-        - `id`: The identifier of the dropped View
+        Deletes the View identified by `view-name`.
       parameters:
         - name: view-name
           in: path
@@ -588,12 +1130,95 @@ paths:
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            The View has been dropped successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  result:
+                    description: |
+                      The value `true`.
+                    type: boolean
+                    example: true
         '400':
           description: |
-            If the `view-name` is missing, then a *HTTP 400* is returned.
+            The `view-name` path parameter is missing or invalid.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the `view-name` is unknown, then a *HTTP 404* is returned.
+            A View called `view-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Views
 ```
