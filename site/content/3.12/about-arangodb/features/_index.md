@@ -91,7 +91,7 @@ BUSL-licensed ArangoDB source code for any purpose (including production) as
 long as you are not creating a commercial derivative work or offering, or are
 including it in a commercial product, application, or service. On the fourth
 anniversary of the first publicly available distribution of a specific version,
-the license changes to the open-source Apache 2.0 license.
+the license changes to the permissive Apache 2.0 open-source license.
 
 ### Enterprise Edition
 
