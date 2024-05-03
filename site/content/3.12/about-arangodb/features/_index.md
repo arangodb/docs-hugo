@@ -115,7 +115,7 @@ See all [Enterprise Edition Features](enterprise-edition.md).
 
 | Community Edition | Enterprise Edition |
 |-------------------|--------------------|
-| ArangoDB Community License for prepacked binaries and Docker images, BUSL-1.1 for the source code | Commercial License |
+| ArangoDB Community License for prepackaged binaries and Docker images, BUSL-1.1 for the source code | Commercial License |
 | Sharding using consistent hashing on the default or custom shard keys | In addition, **smart sharding** for improved data locality |
 | Only hash-based graph sharding | **SmartGraphs** to intelligently shard large graph datasets and **EnterpriseGraphs** with an automatic sharding key selection |
 | Only regular collection replication without data locality optimizations | **SatelliteCollections** to replicate collections on all cluster nodes and data locality optimizations for queries |
