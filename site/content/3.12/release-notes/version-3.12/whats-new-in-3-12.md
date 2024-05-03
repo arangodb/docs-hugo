@@ -716,8 +716,9 @@ full, log entries are written synchronously until the queue has space again.
 ### V8 and ICU library upgrades
 
 The bundled V8 JavaScript engine has been upgraded from version 7.9.317 to
-12.1.165. As part of this upgrade, the bundled Unicode character handling library
-ICU has been upgraded as well, from version 64.2 to 73.1.
+12.1.165. As part of this upgrade, the Unicode character handling library
+ICU has been upgraded as well, from version 64.2 to 73.1 (but only for
+JavaScript contexts, see [Incompatible changes in ArangoDB 3.12](incompatible-changes-in-3-12.md#incompatibilities-with-unicode-text-between-core-and-javascript)).
 
 Note that ArangoDB's build of V8 has pointer compression disabled to allow for
 more than 4 GB of heap memory.
