@@ -15,7 +15,7 @@ ArangoDB combines the analytical power of native graphs with an integrated
 search engine, JSON support, and a variety of data access patterns via a single,
 composable query language.
 
-ArangoDB is available in an open-source and a commercial [edition](features/_index.md).
+ArangoDB is available in a community and a commercial [edition](features/_index.md).
 You can use it for on-premises deployments, as well as a fully managed
 cloud service, the [ArangoGraph Insights Platform](../arangograph/_index.md).
 
