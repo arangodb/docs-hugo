@@ -683,6 +683,18 @@ An Analyzer capable of converting the input into a set of language-specific
 tokens. This makes comparisons follow the rules of the respective language,
 most notable in range queries against Views.
 
+For example, the Swedish alphabet has 29 letters: `a` to `z` plus `å`, `ä`, and
+`ö`, in that order. Using a Swedish locale (like `sv`), the sorting order is
+`å` after `z`, whereas using an English locale (like `en`), it is `å` after `a`.
+This impacts queries with `SEARCH` expressions like `doc.text < "c"`, excluding
+`å` when using a Swedish locale but including it when using an English locale.
+
+{{< info >}}
+Sorting by the output of the `collation` Analyzer like
+`SORT TOKENS(<text>, <collationAnalyzer>)` is not a supported feature and
+doesn't produce meaningful results.
+{{< /info >}}
+
 The *properties* allowed for this Analyzer are an object with the following
 attributes:
 
