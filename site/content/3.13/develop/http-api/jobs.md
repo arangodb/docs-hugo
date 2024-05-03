@@ -6,6 +6,10 @@ description: >-
   The HTTP API for jobs lets you access the results of asynchronously executed
   requests and check the status of such jobs
 ---
+For an introduction to non-blocking execution of requests and how to create
+async jobs with the `x-arango-async` request header, see
+[HTTP request handling in ArangoDB](general-request-handling.md#non-blocking-execution).
+
 ## Get the results of an async job
 
 ```openapi
