@@ -683,6 +683,18 @@ An Analyzer capable of converting the input into a set of language-specific
 tokens. This makes comparisons follow the rules of the respective language,
 most notable in range queries against Views.
 
+For example, the Swedish alphabet has 29 letters: `a` to `z` plus `å`, `ä`, and
+`ö`, in that order. Using a Swedish locale (like `sv`), the sorting order is
+`å` after `z`, whereas using an English locale (like `en`), it is `å` after `a`.
+This impacts queries with `SEARCH` expressions like `doc.text < "c"`, excluding
+`å` when using a Swedish locale but including it when using an English locale.
+
+{{< info >}}
+Sorting by the output of the `collation` Analyzer like
+`SORT TOKENS(<text>, <collationAnalyzer>)` is not a supported feature and
+doesn't produce meaningful results.
+{{< /info >}}
+
 The *properties* allowed for this Analyzer are an object with the following
 attributes:
 
@@ -780,9 +792,9 @@ attributes:
   (default is 1048576 = 1Mb) Maximum is 33554432U (32Mb)
 - `returnType` (string): data type of the returned tokens. If the indicated
   type does not match the actual type then an implicit type conversion is
-  applied (see [TO_STRING()](../aql/functions/type-check-and-cast.md#to_string),
-  [TO_NUMBER()](../aql/functions/type-check-and-cast.md#to_number),
-  [TO_BOOL()](../aql/functions/type-check-and-cast.md#to_bool))
+  applied (see [`TO_STRING()`](../aql/functions/type-check-and-cast.md#to_string),
+  [`TO_NUMBER()`](../aql/functions/type-check-and-cast.md#to_number),
+  [`TO_BOOL()`](../aql/functions/type-check-and-cast.md#to_bool))
   - `"string"` (default): convert emitted tokens to strings
   - `"number"`: convert emitted tokens to numbers
   - `"bool"`: convert emitted tokens to booleans

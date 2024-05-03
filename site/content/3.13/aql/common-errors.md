@@ -17,7 +17,7 @@ of an AQL query string.
 
 ## String concatenation
 
-In AQL, strings must be concatenated using the [CONCAT()](functions/string.md#concat)
+In AQL, strings must be concatenated using the [`CONCAT()`](functions/string.md#concat)
 function. Joining them together with the `+` operator is not supported. Especially
 as JavaScript programmer it is easy to walk into this trap:
 

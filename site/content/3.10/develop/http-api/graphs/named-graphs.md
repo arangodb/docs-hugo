@@ -1817,7 +1817,7 @@ paths:
           in: query
           required: false
           description: |
-            Drop the collection as well.
+            Drop the collection in addition to removing it from the graph.
             The collection is only dropped if it is not used in other graphs.
           schema:
             type: boolean
@@ -2803,7 +2803,7 @@ paths:
           in: query
           required: false
           description: |
-            Drop the collection as well.
+            Drop the edge collection in addition to removing it from the graph.
             The collection is only dropped if it is not used in other graphs.
           schema:
             type: boolean
@@ -3261,7 +3261,7 @@ paths:
           in: query
           required: false
           description: |
-            Drop the collection as well.
+            Drop the edge collection in addition to removing it from the graph.
             The collection is only dropped if it is not used in other graphs.
           schema:
             type: boolean

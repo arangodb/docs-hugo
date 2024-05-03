@@ -170,26 +170,41 @@ onward and will be removed in a future version.
 You can use [Stream Transactions](../../develop/transactions/stream-transactions.md)
 instead in most cases, and in some cases AQL can be sufficient.
 
-## Breaking changes to the `collation` Analyzer
+## Default server language changed
 
-The [`collation` Analyzer](../../index-and-search/analyzers.md#collation) lets
-you adhere to the alphabetic order of a language in range queries. For example,
-using a Swedish locale (`sv`), the sorting order is `å` after `z`, whereas using
-an English locale (`en`), `å` is preceded by `a`. This impacts queries with
-`SEARCH` expressions like `doc.text < "c"`, excluding `å` when using the Swedish
-locale.
+ArangoDB initializes its storage (the so called database directory) when running
+for the first time, typically when creating a new deployment. You can specify
+a locale for the initialization with the `--icu-language` startup option (or with
+the deprecated `--default-language` startup option). The server language that
+you set this way affects the sorting and comparison behavior for text globally,
+with a few exceptions like the [`collation` Analyzer](../../index-and-search/analyzers.md#collation).
 
-ArangoDB 3.12 bundles an upgraded version of the ICU library. It is used for
-Unicode character handling including text sorting. Because of changes in ICU,
-data produced by the `collation` Analyzer in previous versions is not compatible
-with ArangoDB v3.12. You need to **recreate inverted indexes and Views that use
-`collation` Analyzers** to ensure that they work correctly. Otherwise,
-range queries involving the `collation` Analyzers and indexes created in v3.11
-or older versions may behave in unpredicted ways.
+If you don't specify a language using a startup option, the `LANG` environment
+variable is checked. If it's not set or has an invalid value, the effective
+fallback locale used to be `en_US` in ArangoDB v3.11 and older versions.
+From v3.12.0 onward, the default is `en_US_POSIX` (also known as the C locale).
+It has a slightly different sorting behavior compared to `en_US`.
 
-Note that sorting by the output of the `collation` Analyzer like
-`SORT TOKENS(<text>, <collationAnalyzer>)` is still not a supported feature and
-doesn't produce meaningful results.
+When upgrading existing deployments to v3.12, the database directory is already
+initialized and has the server language locked in. If the locale is `en_US`
+before the upgrade, it is also `en_US` after the upgrade. Therefore, the sorting
+behavior remains unchanged. However, new deployments use the `en_US_POSIX` locale
+by default. If you, for instance, restore a v3.11 dump into a new v3.12 instance,
+the sorting behavior may change. You may want to set a server language explicitly
+when initializing the v3.12 instance to retain a specific sorting behavior.
+
+## Incompatibilities with Unicode text between core and JavaScript
+
+ArangoDB 3.12 uses the ICU library for Unicode handling in version 64 for its core
+(ArangoSearch, AQL, RocksDB) but version 73 in [JavaScript contexts](../../develop/javascript-api/_index.md).
+If you compare or sort string values with JavaScript and with the core, the values
+may not match between the two or have a different order. This is due to changes
+in the Unicode standard and the binary representation of strings for comparisons.
+
+You can be affected if you use JavaScript-based features like Foxx microservices
+or user-defined AQL functions (UDFs), compare or sort strings in them, and
+Unicode characters for which the standard has changed between the two ICU versions
+are involved.
 
 ## Control character escaping in audit log
 

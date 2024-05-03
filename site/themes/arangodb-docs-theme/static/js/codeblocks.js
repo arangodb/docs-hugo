@@ -1,31 +1,30 @@
+function addShowMoreButton(parentElem) {
+    $(parentElem).find("pre > code").each(function() {
+        code = $(this);
+        // n-times line-height * root em, larger than to-be-applied max-height to always reveal some lines
+        // False for currently collapsed code ("Show output" with display: none)
+        if (!code.hasClass('code-long') && code.prop('scrollHeight') > 20 * 1.8 * 16 ) {
+            code.addClass('code-long');
+            var showMore = $('<button class="code-show-more"></button>');
+            code.after(showMore);
+        }
+    });
+}
+
 function initCopyToClipboard() {
-    $('code').each(function() {
-        var code = $(this);
-        var parent = code.parent();
-        var inPre = parent.prop('tagName') == 'PRE';
+    $('article pre > code').each(function() {
+        code = $(this);
+        code.addClass('copy-to-clipboard-code');
+        code.parent().addClass( 'copy-to-clipboard' );
 
-        if (inPre) {
-            code.addClass('copy-to-clipboard-code');
-            if( inPre ){
-                parent.addClass( 'copy-to-clipboard' );
-            }
-            else{
-                code.replaceWith($('<span/>', {'class': 'copy-to-clipboard'}).append(code.clone() ));
-                code = parent.children('.copy-to-clipboard').last().children('.copy-to-clipboard-code');
-            }
-            var span = $('<span>').addClass("copy-to-clipboard-button").attr("title", window.T_Copy_to_clipboard).attr("onclick", "copyCode(event);")
-            code.before(span);
-            if ( code.text().split(/\r\n|\r|\n/).length > 16) {
-              var showMore = $('<button class="code-show-more"></button>')
-              code.after(showMore);
-            }
+        var span = $('<span>').addClass("copy-to-clipboard-button").attr("title", window.T_Copy_to_clipboard).attr("onclick", "copyCode(event);")
+        code.before(span);
 
-            span.mouseleave( function() {
-                setTimeout(function(){
-                    span.removeClass("tooltipped");
-                },1000);
+        span.mouseleave(function() {
+            setTimeout(function() {
+                span.removeClass("tooltipped");
+            }, 1000);
         });
-    }
     });
 }
 

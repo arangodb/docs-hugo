@@ -16,8 +16,8 @@ aborts.
 Type casts can also be performed upon request by invoking a type cast function.
 This is called explicit type casting. AQL offers several functions for this.
 Each of the these functions takes an operand of any data type and returns a result
-value with the type corresponding to the function name. For example, *TO_NUMBER()*
-will return a numeric value.
+value with the type corresponding to the function name. For example, `TO_NUMBER()`
+returns a numeric value.
 
 ## Type casting functions
 
@@ -123,7 +123,7 @@ Take an input *value* of any type and convert it into an array value.
     the original value as its single element
   - Arrays keep their original value
   - Objects / documents are converted to an array containing their attribute
-    **values** as array elements, just like [VALUES()](document-object.md#values)
+    **values** as array elements, just like [`VALUES()`](document-object.md#values)
 
 ```aql
 TO_ARRAY(null) // []
@@ -154,7 +154,7 @@ checked for, and false otherwise.
 
 Check whether *value* is *null*. Identical to `value == null`.
 
-To test if an attribute exists, see [HAS()](document-object.md#has) instead.
+To test if an attribute exists, see [`HAS()`](document-object.md#has) instead.
 
 - **value** (any): value to test
 - returns **bool** (boolean): *true* if *value* is `null`,

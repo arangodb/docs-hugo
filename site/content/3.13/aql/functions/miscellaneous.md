@@ -124,7 +124,7 @@ only for **already stored** database documents. Therefore,
 
 `COLLECTION_COUNT(coll) → count`
 
-Determine the amount of documents in a collection. [LENGTH()](#length)
+Determine the amount of documents in a collection. [`LENGTH()`](#length)
 is preferred.
 
 ### COLLECTIONS()
@@ -378,12 +378,12 @@ RETURN DOCUMENT( CONCAT("persons/", @key) )
 
 Determine the amount of documents in a collection.
 
-It calls [COLLECTION_COUNT()](#collection_count) internally.
+It calls [`COLLECTION_COUNT()`](#collection_count) internally.
 
 - **coll** (collection): a collection (not string)
 - returns **documentCount** (number): the total amount of documents in *coll*
 
-*LENGTH()* can also determine the [number of elements](array.md#length) in an array,
+`LENGTH()` can also determine the [number of elements](array.md#length) in an array,
 the [number of attribute keys](document-object.md#length) of an object / document and
 the [character length](string.md#length) of a string.
 
@@ -504,11 +504,11 @@ RETURN MINHASH_ERROR(400)
 
 See the following string functions:
 
-- [CRC32()](string.md#crc32)
-- [FNV64()](string.md#fnv64)
-- [MD5()](string.md#md5)
-- [SHA1()](string.md#sha1)
-- [SHA512()](string.md#sha512)
+- [`CRC32()`](string.md#crc32)
+- [`FNV64()`](string.md#fnv64)
+- [`MD5()`](string.md#md5)
+- [`SHA1()`](string.md#sha1)
+- [`SHA512()`](string.md#sha512)
 
 ## Function calling
 
