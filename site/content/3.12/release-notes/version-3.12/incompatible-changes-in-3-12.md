@@ -170,6 +170,29 @@ onward and will be removed in a future version.
 You can use [Stream Transactions](../../develop/transactions/stream-transactions.md)
 instead in most cases, and in some cases AQL can be sufficient.
 
+## Default server language changed
+
+ArangoDB initializes its storage (the so called database directory) when running
+for the first time, typically when creating a new deployment. You can specify
+a locale for the initialization with the `--icu-language` startup option (or with
+the deprecated `--default-language` startup option). The server language that
+you set this way affects the sorting and comparison behavior for text globally,
+with a few exceptions like the [`collation` Analyzer](../../index-and-search/analyzers.md#collation).
+
+If you don't specify a language using a startup option, the `LANG` environment
+variable is checked. If it's not set or has an invalid value, the effective
+fallback locale used to be `en_US` in ArangoDB v3.11 and older versions.
+From v3.12.0 onward, the default is `en_US_POSIX` (also known as the C locale).
+It has a slightly different sorting behavior compared to `en_US`.
+
+When upgrading existing deployments to v3.12, the database directory is already
+initialized and has the server language locked in. If the locale is `en_US`
+before the upgrade, it is also `en_US` after the upgrade. Therefore, the sorting
+behavior remains unchanged. However, new deployments use the `en_US_POSIX` locale
+by default. If you, for instance, restore a v3.11 dump into a new v3.12 instance,
+the sorting behavior may change. You may want to set a server language explicitly
+when initializing the v3.12 instance to retain a specific sorting behavior.
+
 ## Incompatibilities with Unicode text between core and JavaScript
 
 ArangoDB 3.12 uses the ICU library for Unicode handling in version 64 for its core
