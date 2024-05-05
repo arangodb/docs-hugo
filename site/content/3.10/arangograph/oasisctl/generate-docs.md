@@ -7,9 +7,6 @@ weight: 12
 
 Generate output
 
-## Synopsis
-Generate output
-
 ```
 oasisctl generate-docs [flags]
 ```

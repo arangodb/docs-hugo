@@ -7,9 +7,6 @@ weight: 5
 
 Get an existing backup policy
 
-## Synopsis
-Get an existing backup policy
-
 ```
 oasisctl get backup policy [flags]
 ```

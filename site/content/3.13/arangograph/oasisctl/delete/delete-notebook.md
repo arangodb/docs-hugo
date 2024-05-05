@@ -7,9 +7,6 @@ weight: 17
 
 Delete a notebook
 
-## Synopsis
-Delete a notebook
-
 ```
 oasisctl delete notebook [flags]
 ```

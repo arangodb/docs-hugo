@@ -7,9 +7,6 @@ weight: 23
 
 List all IP allowlists of the given project
 
-## Synopsis
-List all IP allowlists of the given project
-
 ```
 oasisctl list ipallowlists [flags]
 ```

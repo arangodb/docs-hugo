@@ -7,9 +7,6 @@ weight: 10
 
 Get a group the authenticated user has access to
 
-## Synopsis
-Get a group the authenticated user has access to
-
 ```
 oasisctl get group [flags]
 ```

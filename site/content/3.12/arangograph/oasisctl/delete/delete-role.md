@@ -7,9 +7,6 @@ weight: 22
 
 Delete a role the authenticated user has access to
 
-## Synopsis
-Delete a role the authenticated user has access to
-
 ```
 oasisctl delete role [flags]
 ```

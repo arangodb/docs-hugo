@@ -7,9 +7,6 @@ weight: 21
 
 Get an organization invite the authenticated user has access to
 
-## Synopsis
-Get an organization invite the authenticated user has access to
-
 ```
 oasisctl get organization invite [flags]
 ```

@@ -7,9 +7,6 @@ weight: 24
 
 
 
-## Synopsis
-
-
 ```
 oasisctl get private endpoint [flags]
 ```

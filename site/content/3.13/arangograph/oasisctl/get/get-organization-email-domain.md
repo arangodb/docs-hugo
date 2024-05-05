@@ -7,9 +7,6 @@ weight: 19
 
 Get email domain specific information for an organization
 
-## Synopsis
-Get email domain specific information for an organization
-
 ```
 oasisctl get organization email domain [flags]
 ```

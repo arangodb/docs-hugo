@@ -7,9 +7,6 @@ weight: 4
 
 Lock an organization, so it cannot be deleted
 
-## Synopsis
-Lock an organization, so it cannot be deleted
-
 ```
 oasisctl lock organization [flags]
 ```

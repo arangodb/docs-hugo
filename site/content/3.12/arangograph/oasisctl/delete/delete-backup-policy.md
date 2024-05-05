@@ -7,9 +7,6 @@ weight: 7
 
 Delete a backup policy for a given ID.
 
-## Synopsis
-Delete a backup policy for a given ID.
-
 ```
 oasisctl delete backup policy [flags]
 ```

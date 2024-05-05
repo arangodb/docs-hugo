@@ -7,9 +7,6 @@ weight: 1
 
 Attach a project to an audit log
 
-## Synopsis
-Attach a project to an audit log
-
 ```
 oasisctl auditlog attach [flags]
 ```

@@ -7,9 +7,6 @@ weight: 3
 
 Lock an IP allowlist, so it cannot be deleted
 
-## Synopsis
-Lock an IP allowlist, so it cannot be deleted
-
 ```
 oasisctl lock ipallowlist [flags]
 ```

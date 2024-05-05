@@ -7,9 +7,6 @@ weight: 9
 
 Update a metrics token
 
-## Synopsis
-Update a metrics token
-
 ```
 oasisctl update metrics token [flags]
 ```

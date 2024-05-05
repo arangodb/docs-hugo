@@ -7,9 +7,6 @@ weight: 3
 
 Delete an auditlog archive
 
-## Synopsis
-Delete an auditlog archive
-
 ```
 oasisctl delete auditlog archive [flags]
 ```

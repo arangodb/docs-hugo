@@ -7,9 +7,6 @@ weight: 13
 
 Update allowed authentication providers for an organization the authenticated user has access to
 
-## Synopsis
-Update allowed authentication providers for an organization the authenticated user has access to
-
 ```
 oasisctl update organization authentication providers [flags]
 ```

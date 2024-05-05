@@ -7,9 +7,6 @@ weight: 4
 
 Revoke a metrics token for a deployment
 
-## Synopsis
-Revoke a metrics token for a deployment
-
 ```
 oasisctl revoke metrics token [flags]
 ```

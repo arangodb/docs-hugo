@@ -7,9 +7,6 @@ weight: 22
 
 Get a policy the authenticated user has access to
 
-## Synopsis
-Get a policy the authenticated user has access to
-
 ```
 oasisctl get policy [flags]
 ```

@@ -7,9 +7,6 @@ weight: 25
 
 Update a project the authenticated user has access to
 
-## Synopsis
-Update a project the authenticated user has access to
-
 ```
 oasisctl update project [flags]
 ```

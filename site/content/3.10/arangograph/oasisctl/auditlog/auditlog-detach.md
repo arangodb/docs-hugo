@@ -7,9 +7,6 @@ weight: 2
 
 Detach a project from an auditlog
 
-## Synopsis
-Detach a project from an auditlog
-
 ```
 oasisctl auditlog detach [flags]
 ```

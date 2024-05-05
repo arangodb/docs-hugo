@@ -7,9 +7,6 @@ weight: 9
 
 Delete a deployment the authenticated user has access to
 
-## Synopsis
-Delete a deployment the authenticated user has access to
-
 ```
 oasisctl delete deployment [flags]
 ```

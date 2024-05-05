@@ -7,9 +7,6 @@ weight: 6
 
 Create a new deployment
 
-## Synopsis
-Create a new deployment
-
 ```
 oasisctl create deployment [flags]
 ```

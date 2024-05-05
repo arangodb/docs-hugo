@@ -7,9 +7,6 @@ weight: 12
 
 List CPU sizes
 
-## Synopsis
-List CPU sizes
-
 ```
 oasisctl list cpusizes [flags]
 ```

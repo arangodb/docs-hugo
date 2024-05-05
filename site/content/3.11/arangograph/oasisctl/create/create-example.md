@@ -7,9 +7,6 @@ weight: 7
 
 Create example ...
 
-## Synopsis
-Create example ...
-
 ```
 oasisctl create example [flags]
 ```

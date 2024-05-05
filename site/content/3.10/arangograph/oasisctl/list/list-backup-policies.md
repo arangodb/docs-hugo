@@ -7,9 +7,6 @@ weight: 9
 
 List backup policies
 
-## Synopsis
-List backup policies
-
 ```
 oasisctl list backup policies [flags]
 ```

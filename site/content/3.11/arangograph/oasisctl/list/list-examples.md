@@ -7,9 +7,6 @@ weight: 19
 
 List all example datasets
 
-## Synopsis
-List all example datasets
-
 ```
 oasisctl list examples [flags]
 ```

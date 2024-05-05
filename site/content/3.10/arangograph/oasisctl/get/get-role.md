@@ -7,9 +7,6 @@ weight: 29
 
 Get a role the authenticated user has access to
 
-## Synopsis
-Get a role the authenticated user has access to
-
 ```
 oasisctl get role [flags]
 ```

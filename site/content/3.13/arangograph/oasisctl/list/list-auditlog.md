@@ -7,9 +7,6 @@ weight: 4
 
 List resources for auditlogs
 
-## Synopsis
-List resources for auditlogs
-
 ```
 oasisctl list auditlog [flags]
 ```

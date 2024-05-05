@@ -7,9 +7,6 @@ weight: 9
 
 Delete resources
 
-## Synopsis
-Delete resources
-
 ```
 oasisctl delete [flags]
 ```

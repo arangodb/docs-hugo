@@ -7,9 +7,6 @@ weight: 2
 
 Lock a deployment, so it cannot be deleted
 
-## Synopsis
-Lock a deployment, so it cannot be deleted
-
 ```
 oasisctl lock deployment [flags]
 ```

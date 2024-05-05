@@ -7,9 +7,6 @@ weight: 16
 
 List the effective permissions, the authenticated user has for a given URL
 
-## Synopsis
-List the effective permissions, the authenticated user has for a given URL
-
 ```
 oasisctl list effective permissions [flags]
 ```

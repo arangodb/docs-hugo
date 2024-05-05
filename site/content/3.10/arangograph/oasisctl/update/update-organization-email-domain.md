@@ -7,9 +7,6 @@ weight: 15
 
 Update email domain specific information for an organization
 
-## Synopsis
-Update email domain specific information for an organization
-
 ```
 oasisctl update organization email domain [flags]
 ```

@@ -7,9 +7,6 @@ weight: 23
 
 Resume resources
 
-## Synopsis
-Resume resources
-
 ```
 oasisctl resume [flags]
 ```

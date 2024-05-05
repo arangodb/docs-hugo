@@ -7,9 +7,6 @@ weight: 18
 
 Get logs of the servers of a deployment the authenticated user has access to
 
-## Synopsis
-Get logs of the servers of a deployment the authenticated user has access to
-
 ```
 oasisctl logs [flags]
 ```
@@ -18,6 +15,7 @@ oasisctl logs [flags]
 ```
   -d, --deployment-id string     Identifier of the deployment
       --end string               End fetching logs at this timestamp (pass timestamp or duration before now)
+      --format string            Formatting of the log output. It can be one of two: text, json. Text is the default value. (default "text")
   -h, --help                     help for logs
   -l, --limit int                Limit the number of log lines
   -o, --organization-id string   Identifier of the organization
@@ -29,7 +27,6 @@ oasisctl logs [flags]
 ## Options Inherited From Parent Commands
 ```
       --endpoint string   API endpoint of the ArangoDB Oasis (default "api.cloud.arangodb.com")
-      --format string     Output format (table|json) (default "table")
       --token string      Token used to authenticate at ArangoDB Oasis
 ```
 

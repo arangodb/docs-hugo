@@ -7,9 +7,6 @@ weight: 16
 
 Delete a metrics token for a deployment
 
-## Synopsis
-Delete a metrics token for a deployment
-
 ```
 oasisctl delete metrics token [flags]
 ```

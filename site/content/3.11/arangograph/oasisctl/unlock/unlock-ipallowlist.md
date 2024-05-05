@@ -7,9 +7,6 @@ weight: 3
 
 Unlock an IP allowlist, so it can be deleted
 
-## Synopsis
-Unlock an IP allowlist, so it can be deleted
-
 ```
 oasisctl unlock ipallowlist [flags]
 ```

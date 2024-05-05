@@ -7,9 +7,6 @@ weight: 14
 
 Delete an IP allowlist the authenticated user has access to
 
-## Synopsis
-Delete an IP allowlist the authenticated user has access to
-
 ```
 oasisctl delete ipallowlist [flags]
 ```

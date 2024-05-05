@@ -7,9 +7,6 @@ weight: 19
 
 Delete an organization invite the authenticated user has access to
 
-## Synopsis
-Delete an organization invite the authenticated user has access to
-
 ```
 oasisctl delete organization invite [flags]
 ```

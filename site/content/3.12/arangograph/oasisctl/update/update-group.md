@@ -7,9 +7,6 @@ weight: 6
 
 Update a group the authenticated user has access to
 
-## Synopsis
-Update a group the authenticated user has access to
-
 ```
 oasisctl update group [flags]
 ```

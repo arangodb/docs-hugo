@@ -7,9 +7,6 @@ weight: 17
 
 Update a policy
 
-## Synopsis
-Update a policy
-
 ```
 oasisctl update policy [flags]
 ```

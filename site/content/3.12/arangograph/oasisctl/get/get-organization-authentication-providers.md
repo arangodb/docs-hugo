@@ -7,9 +7,6 @@ weight: 17
 
 Get which authentication providers are allowed for accessing a specific organization
 
-## Synopsis
-Get which authentication providers are allowed for accessing a specific organization
-
 ```
 oasisctl get organization authentication providers [flags]
 ```

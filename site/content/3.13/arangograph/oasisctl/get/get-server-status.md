@@ -7,9 +7,6 @@ weight: 32
 
 Get the status of servers for a deployment
 
-## Synopsis
-Get the status of servers for a deployment
-
 ```
 oasisctl get server status [flags]
 ```

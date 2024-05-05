@@ -7,9 +7,6 @@ weight: 27
 
 List notebook models
 
-## Synopsis
-List notebook models
-
 ```
 oasisctl list notebookmodels [flags]
 ```

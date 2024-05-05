@@ -7,9 +7,6 @@ weight: 31
 
 Wait for a status change
 
-## Synopsis
-Wait for a status change
-
 ```
 oasisctl wait [flags]
 ```

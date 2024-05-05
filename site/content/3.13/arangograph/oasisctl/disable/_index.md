@@ -7,9 +7,6 @@ weight: 10
 
 Disable some settings related to deployment
 
-## Synopsis
-Disable some settings related to deployment
-
 ```
 oasisctl disable [flags]
 ```

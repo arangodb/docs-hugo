@@ -7,9 +7,6 @@ weight: 5
 
 Unlock a backup policy
 
-## Synopsis
-Unlock a backup policy
-
 ```
 oasisctl unlock policy [flags]
 ```

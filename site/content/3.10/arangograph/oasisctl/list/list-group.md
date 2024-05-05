@@ -7,9 +7,6 @@ weight: 20
 
 List group resources
 
-## Synopsis
-List group resources
-
 ```
 oasisctl list group [flags]
 ```

@@ -7,9 +7,6 @@ weight: 6
 
 Clone resources
 
-## Synopsis
-Clone resources
-
 ```
 oasisctl clone [flags]
 ```

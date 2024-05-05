@@ -7,9 +7,6 @@ weight: 1
 
 Wait for a deployment to reach the ready status
 
-## Synopsis
-Wait for a deployment to reach the ready status
-
 ```
 oasisctl wait deployment [flags]
 ```

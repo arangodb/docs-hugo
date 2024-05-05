@@ -7,9 +7,6 @@ weight: 26
 
 Show the most important server metrics
 
-## Synopsis
-Show the most important server metrics
-
 ```
 oasisctl top [flags]
 ```

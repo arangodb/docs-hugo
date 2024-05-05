@@ -7,9 +7,6 @@ weight: 17
 
 
 
-## Synopsis
-
-
 ```
 oasisctl create private endpoint [flags]
 ```

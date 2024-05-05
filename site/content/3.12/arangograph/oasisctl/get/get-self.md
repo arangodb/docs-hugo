@@ -7,9 +7,6 @@ weight: 30
 
 Get information about the authenticated user
 
-## Synopsis
-Get information about the authenticated user
-
 ```
 oasisctl get self [flags]
 ```

@@ -7,9 +7,6 @@ weight: 10
 
 Update notebook
 
-## Synopsis
-Update notebook
-
 ```
 oasisctl update notebook [flags]
 ```

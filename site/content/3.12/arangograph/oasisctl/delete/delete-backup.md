@@ -7,9 +7,6 @@ weight: 6
 
 Delete a backup for a given ID.
 
-## Synopsis
-Delete a backup for a given ID.
-
 ```
 oasisctl delete backup [flags]
 ```

@@ -7,9 +7,6 @@ weight: 13
 
 Get a metrics token
 
-## Synopsis
-Get a metrics token
-
 ```
 oasisctl get metrics token [flags]
 ```

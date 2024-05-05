@@ -7,9 +7,6 @@ weight: 10
 
 Create a new IP allowlist
 
-## Synopsis
-Create a new IP allowlist
-
 ```
 oasisctl create ipallowlist [flags]
 ```

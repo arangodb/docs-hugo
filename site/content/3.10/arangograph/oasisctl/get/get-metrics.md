@@ -7,9 +7,6 @@ weight: 12
 
 Get metrics information
 
-## Synopsis
-Get metrics information
-
 ```
 oasisctl get metrics [flags]
 ```

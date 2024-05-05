@@ -7,9 +7,6 @@ weight: 8
 
 Get a single example dataset
 
-## Synopsis
-Get a single example dataset
-
 ```
 oasisctl get example [flags]
 ```

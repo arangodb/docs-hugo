@@ -7,9 +7,6 @@ weight: 22
 
 Update private resources
 
-## Synopsis
-Update private resources
-
 ```
 oasisctl update private [flags]
 ```

@@ -7,9 +7,6 @@ weight: 16
 
 Update which domain restrictions are placed on accessing a specific organization
 
-## Synopsis
-Update which domain restrictions are placed on accessing a specific organization
-
 ```
 oasisctl update organization email domain restrictions [flags]
 ```

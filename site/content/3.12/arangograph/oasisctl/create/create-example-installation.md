@@ -7,9 +7,6 @@ weight: 8
 
 Create a new example dataset installation
 
-## Synopsis
-Create a new example dataset installation
-
 ```
 oasisctl create example installation [flags]
 ```

@@ -7,9 +7,6 @@ weight: 24
 
 Revoke keys & tokens
 
-## Synopsis
-Revoke keys & tokens
-
 ```
 oasisctl revoke [flags]
 ```

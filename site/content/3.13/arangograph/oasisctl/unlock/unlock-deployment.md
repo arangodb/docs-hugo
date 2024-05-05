@@ -7,9 +7,6 @@ weight: 2
 
 Unlock a deployment, so it can be deleted
 
-## Synopsis
-Unlock a deployment, so it can be deleted
-
 ```
 oasisctl unlock deployment [flags]
 ```

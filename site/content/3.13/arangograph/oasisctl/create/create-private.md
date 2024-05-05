@@ -7,9 +7,6 @@ weight: 16
 
 Create private resources
 
-## Synopsis
-Create private resources
-
 ```
 oasisctl create private [flags]
 ```

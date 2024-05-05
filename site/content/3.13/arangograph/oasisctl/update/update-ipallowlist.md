@@ -7,9 +7,6 @@ weight: 7
 
 Update an IP allowlist the authenticated user has access to
 
-## Synopsis
-Update an IP allowlist the authenticated user has access to
-
 ```
 oasisctl update ipallowlist [flags]
 ```

@@ -7,9 +7,6 @@ weight: 18
 
 Delete an organization the authenticated user has access to
 
-## Synopsis
-Delete an organization the authenticated user has access to
-
 ```
 oasisctl delete organization [flags]
 ```

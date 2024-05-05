@@ -7,9 +7,6 @@ weight: 13
 
 Delete members from group
 
-## Synopsis
-Delete members from group
-
 ```
 oasisctl delete group members [flags]
 ```

@@ -7,9 +7,6 @@ weight: 28
 
 List notebooks
 
-## Synopsis
-List notebooks
-
 ```
 oasisctl list notebooks [flags]
 ```

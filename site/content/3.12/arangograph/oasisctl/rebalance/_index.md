@@ -7,9 +7,6 @@ weight: 20
 
 Rebalance resources
 
-## Synopsis
-Rebalance resources
-
 ```
 oasisctl rebalance [flags]
 ```

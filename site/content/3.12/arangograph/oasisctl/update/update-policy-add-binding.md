@@ -7,9 +7,6 @@ weight: 19
 
 Add a role binding to a policy
 
-## Synopsis
-Add a role binding to a policy
-
 ```
 oasisctl update policy add binding [flags]
 ```

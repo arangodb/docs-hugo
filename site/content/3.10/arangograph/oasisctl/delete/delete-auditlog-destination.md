@@ -7,9 +7,6 @@ weight: 5
 
 Delete a destination from an auditlog
 
-## Synopsis
-Delete a destination from an auditlog
-
 ```
 oasisctl delete auditlog destination [flags]
 ```

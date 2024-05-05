@@ -7,9 +7,6 @@ weight: 7
 
 Get a deployment the authenticated user has access to
 
-## Synopsis
-Get a deployment the authenticated user has access to
-
 ```
 oasisctl get deployment [flags]
 ```

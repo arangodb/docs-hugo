@@ -7,9 +7,6 @@ weight: 11
 
 List all CA certificates of the given project
 
-## Synopsis
-List all CA certificates of the given project
-
 ```
 oasisctl list cacertificates [flags]
 ```

@@ -7,9 +7,6 @@ weight: 5
 
 Backup commands
 
-## Synopsis
-Backup commands
-
 ```
 oasisctl backup [flags]
 ```

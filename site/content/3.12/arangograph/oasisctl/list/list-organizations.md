@@ -7,9 +7,6 @@ weight: 32
 
 List all organizations the authenticated user is a member of
 
-## Synopsis
-List all organizations the authenticated user is a member of
-
 ```
 oasisctl list organizations [flags]
 ```

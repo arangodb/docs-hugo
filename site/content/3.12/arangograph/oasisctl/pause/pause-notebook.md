@@ -7,9 +7,6 @@ weight: 1
 
 Pause a notebook
 
-## Synopsis
-Pause a notebook
-
 ```
 oasisctl pause notebook [flags]
 ```

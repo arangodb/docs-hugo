@@ -7,9 +7,6 @@ weight: 18
 
 Create a Private Endpoint Service attached to an existing deployment
 
-## Synopsis
-Create a Private Endpoint Service attached to an existing deployment
-
 ```
 oasisctl create private endpoint service [flags]
 ```

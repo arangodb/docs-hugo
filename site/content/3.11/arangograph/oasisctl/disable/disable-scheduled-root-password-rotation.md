@@ -7,9 +7,6 @@ weight: 1
 
 Disable scheduled root password rotation
 
-## Synopsis
-Disable scheduled root password rotation
-
 ```
 oasisctl disable scheduled-root-password-rotation [flags]
 ```

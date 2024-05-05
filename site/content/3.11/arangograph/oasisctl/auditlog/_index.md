@@ -7,9 +7,6 @@ weight: 4
 
 AuditLog resources
 
-## Synopsis
-AuditLog resources
-
 ```
 oasisctl auditlog [flags]
 ```

@@ -7,9 +7,6 @@ weight: 1
 
 Unlock a CA certificate, so it can be deleted
 
-## Synopsis
-Unlock a CA certificate, so it can be deleted
-
 ```
 oasisctl unlock cacertificate [flags]
 ```

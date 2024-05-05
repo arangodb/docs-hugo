@@ -7,9 +7,6 @@ weight: 1
 
 Update an auditlog
 
-## Synopsis
-Update an auditlog
-
 ```
 oasisctl update auditlog [flags]
 ```

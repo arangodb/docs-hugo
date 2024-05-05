@@ -7,9 +7,6 @@ weight: 20
 
 Create a new role
 
-## Synopsis
-Create a new role
-
 ```
 oasisctl create role [flags]
 ```

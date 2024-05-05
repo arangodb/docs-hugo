@@ -7,9 +7,6 @@ weight: 1
 
 Delete an API key with given identifier
 
-## Synopsis
-Delete an API key with given identifier
-
 ```
 oasisctl delete apikey [flags]
 ```

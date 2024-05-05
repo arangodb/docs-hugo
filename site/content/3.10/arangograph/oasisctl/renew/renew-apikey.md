@@ -7,9 +7,6 @@ weight: 1
 
 Renew API keys & tokens
 
-## Synopsis
-Renew API keys & tokens
-
 ```
 oasisctl renew apikey [flags]
 ```

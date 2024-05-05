@@ -7,9 +7,6 @@ weight: 21
 
 Reject invites
 
-## Synopsis
-Reject invites
-
 ```
 oasisctl reject [flags]
 ```

@@ -7,9 +7,6 @@ weight: 4
 
 Unlock an organization, so it can be deleted
 
-## Synopsis
-Unlock an organization, so it can be deleted
-
 ```
 oasisctl unlock organization [flags]
 ```

@@ -7,9 +7,6 @@ weight: 34
 
 List all projects of the given organization
 
-## Synopsis
-List all projects of the given organization
-
 ```
 oasisctl list projects [flags]
 ```

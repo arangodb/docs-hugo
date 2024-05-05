@@ -7,9 +7,6 @@ weight: 19
 
 Create a new project
 
-## Synopsis
-Create a new project
-
 ```
 oasisctl create project [flags]
 ```

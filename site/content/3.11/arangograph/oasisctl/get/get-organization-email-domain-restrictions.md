@@ -7,9 +7,6 @@ weight: 20
 
 Get which email domain restrictions are placed on accessing a specific organization
 
-## Synopsis
-Get which email domain restrictions are placed on accessing a specific organization
-
 ```
 oasisctl get organization email domain restrictions [flags]
 ```

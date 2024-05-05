@@ -7,9 +7,6 @@ weight: 1
 
 Reject organization related invites
 
-## Synopsis
-Reject organization related invites
-
 ```
 oasisctl reject organization [flags]
 ```

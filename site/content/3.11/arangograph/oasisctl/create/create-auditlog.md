@@ -7,9 +7,6 @@ weight: 2
 
 Create an auditlog
 
-## Synopsis
-Create an auditlog
-
 ```
 oasisctl create auditlog [flags]
 ```

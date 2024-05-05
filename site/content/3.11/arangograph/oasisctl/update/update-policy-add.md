@@ -7,9 +7,6 @@ weight: 18
 
 Add to a policy
 
-## Synopsis
-Add to a policy
-
 ```
 oasisctl update policy add [flags]
 ```

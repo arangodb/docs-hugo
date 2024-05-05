@@ -7,9 +7,6 @@ weight: 25
 
 List all metrics tokens of the given deployment
 
-## Synopsis
-List all metrics tokens of the given deployment
-
 ```
 oasisctl list metrics tokens [flags]
 ```

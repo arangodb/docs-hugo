@@ -7,9 +7,6 @@ weight: 16
 
 Lock resources
 
-## Synopsis
-Lock resources
-
 ```
 oasisctl lock [flags]
 ```

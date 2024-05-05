@@ -7,9 +7,6 @@ weight: 5
 
 Create a new CA certificate
 
-## Synopsis
-Create a new CA certificate
-
 ```
 oasisctl create cacertificate [flags]
 ```

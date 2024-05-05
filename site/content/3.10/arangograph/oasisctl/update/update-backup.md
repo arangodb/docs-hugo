@@ -7,9 +7,6 @@ weight: 2
 
 Update a backup
 
-## Synopsis
-Update a backup
-
 ```
 oasisctl update backup [flags]
 ```

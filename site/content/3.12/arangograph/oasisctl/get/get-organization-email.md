@@ -7,9 +7,6 @@ weight: 18
 
 Get email specific information for an organization
 
-## Synopsis
-Get email specific information for an organization
-
 ```
 oasisctl get organization email [flags]
 ```

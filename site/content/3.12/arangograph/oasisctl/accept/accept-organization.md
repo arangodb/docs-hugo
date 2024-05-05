@@ -7,9 +7,6 @@ weight: 1
 
 Accept organization related invites
 
-## Synopsis
-Accept organization related invites
-
 ```
 oasisctl accept organization [flags]
 ```

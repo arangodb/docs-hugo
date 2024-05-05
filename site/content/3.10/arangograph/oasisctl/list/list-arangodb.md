@@ -7,9 +7,6 @@ weight: 2
 
 List ArangoDB information
 
-## Synopsis
-List ArangoDB information
-
 ```
 oasisctl list arangodb [flags]
 ```

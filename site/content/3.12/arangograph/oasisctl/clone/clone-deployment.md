@@ -7,9 +7,6 @@ weight: 1
 
 Clone deployment resources
 
-## Synopsis
-Clone deployment resources
-
 ```
 oasisctl clone deployment [flags]
 ```
