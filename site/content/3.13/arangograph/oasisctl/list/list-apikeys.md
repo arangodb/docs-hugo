@@ -7,9 +7,6 @@ weight: 1
 
 List all API keys created for the current user
 
-## Synopsis
-List all API keys created for the current user
-
 ```
 oasisctl list apikeys [flags]
 ```

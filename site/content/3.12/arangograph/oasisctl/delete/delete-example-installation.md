@@ -7,9 +7,6 @@ weight: 11
 
 Delete an example datasets installation
 
-## Synopsis
-Delete an example datasets installation
-
 ```
 oasisctl delete example installation [flags]
 ```

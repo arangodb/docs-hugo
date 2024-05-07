@@ -7,9 +7,6 @@ weight: 36
 
 List all regions of the given provider
 
-## Synopsis
-List all regions of the given provider
-
 ```
 oasisctl list regions [flags]
 ```

@@ -7,9 +7,6 @@ weight: 11
 
 Enable some settings related to deployment
 
-## Synopsis
-Enable some settings related to deployment
-
 ```
 oasisctl enable [flags]
 ```

@@ -7,9 +7,6 @@ weight: 4
 
 Delete auditlog archive events
 
-## Synopsis
-Delete auditlog archive events
-
 ```
 oasisctl delete auditlog archive events [flags]
 ```

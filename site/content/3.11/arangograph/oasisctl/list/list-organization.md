@@ -7,9 +7,6 @@ weight: 29
 
 List organization resources
 
-## Synopsis
-List organization resources
-
 ```
 oasisctl list organization [flags]
 ```

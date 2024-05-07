@@ -7,9 +7,6 @@ weight: 1
 
 Copy a backup from source backup to given region
 
-## Synopsis
-Copy a backup from source backup to given region
-
 ```
 oasisctl backup copy [flags]
 ```

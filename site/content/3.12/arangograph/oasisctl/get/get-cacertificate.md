@@ -7,9 +7,6 @@ weight: 6
 
 Get a CA certificate the authenticated user has access to
 
-## Synopsis
-Get a CA certificate the authenticated user has access to
-
 ```
 oasisctl get cacertificate [flags]
 ```

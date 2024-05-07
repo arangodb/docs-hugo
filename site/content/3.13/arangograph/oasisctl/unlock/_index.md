@@ -7,9 +7,6 @@ weight: 27
 
 Unlock resources
 
-## Synopsis
-Unlock resources
-
 ```
 oasisctl unlock [flags]
 ```

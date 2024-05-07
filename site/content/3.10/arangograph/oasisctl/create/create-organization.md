@@ -7,9 +7,6 @@ weight: 14
 
 Create a new organization
 
-## Synopsis
-Create a new organization
-
 ```
 oasisctl create organization [flags]
 ```

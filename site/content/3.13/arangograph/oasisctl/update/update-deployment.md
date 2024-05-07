@@ -7,9 +7,6 @@ weight: 5
 
 Update a deployment the authenticated user has access to
 
-## Synopsis
-Update a deployment the authenticated user has access to
-
 ```
 oasisctl update deployment [flags]
 ```

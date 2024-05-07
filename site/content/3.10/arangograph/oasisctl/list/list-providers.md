@@ -7,9 +7,6 @@ weight: 35
 
 List all providers the authenticated user has access to
 
-## Synopsis
-List all providers the authenticated user has access to
-
 ```
 oasisctl list providers [flags]
 ```

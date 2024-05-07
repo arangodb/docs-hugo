@@ -7,9 +7,6 @@ weight: 25
 
 Rotate resources
 
-## Synopsis
-Rotate resources
-
 ```
 oasisctl rotate [flags]
 ```

@@ -7,9 +7,6 @@ weight: 2
 
 Rebalance shards of a deployment
 
-## Synopsis
-Rebalance shards of a deployment
-
 ```
 oasisctl rebalance deployment shards [flags]
 ```

@@ -7,9 +7,6 @@ weight: 13
 
 Create a new notebook
 
-## Synopsis
-Create a new notebook
-
 ```
 oasisctl create notebook [flags]
 ```

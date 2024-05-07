@@ -7,9 +7,6 @@ weight: 15
 
 Delete metrics resources
 
-## Synopsis
-Delete metrics resources
-
 ```
 oasisctl delete metrics [flags]
 ```

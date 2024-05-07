@@ -7,9 +7,6 @@ weight: 11
 
 Update an organization the authenticated user has access to
 
-## Synopsis
-Update an organization the authenticated user has access to
-
 ```
 oasisctl update organization [flags]
 ```

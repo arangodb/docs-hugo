@@ -7,9 +7,6 @@ weight: 5
 
 Lock a backup policy
 
-## Synopsis
-Lock a backup policy
-
 ```
 oasisctl lock policy [flags]
 ```

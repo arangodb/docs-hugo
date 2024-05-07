@@ -7,9 +7,6 @@ weight: 12
 
 Delete a group the authenticated user has access to
 
-## Synopsis
-Delete a group the authenticated user has access to
-
 ```
 oasisctl delete group [flags]
 ```

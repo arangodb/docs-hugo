@@ -7,9 +7,6 @@ weight: 17
 
 List example ...
 
-## Synopsis
-List example ...
-
 ```
 oasisctl list example [flags]
 ```

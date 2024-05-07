@@ -7,9 +7,6 @@ weight: 1
 
 Create a new API key
 
-## Synopsis
-Create a new API key
-
 ```
 oasisctl create apikey [flags]
 ```

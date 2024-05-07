@@ -7,9 +7,6 @@ weight: 2
 
 Rotate a single server of a deployment
 
-## Synopsis
-Rotate a single server of a deployment
-
 ```
 oasisctl rotate deployment server [flags]
 ```

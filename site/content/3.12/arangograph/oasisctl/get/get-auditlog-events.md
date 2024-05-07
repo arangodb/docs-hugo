@@ -7,9 +7,6 @@ weight: 3
 
 Get auditlog events
 
-## Synopsis
-Get auditlog events
-
 ```
 oasisctl get auditlog events [flags]
 ```

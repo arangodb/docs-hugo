@@ -7,9 +7,6 @@ weight: 20
 
 Delete members from organization
 
-## Synopsis
-Delete members from organization
-
 ```
 oasisctl delete organization members [flags]
 ```

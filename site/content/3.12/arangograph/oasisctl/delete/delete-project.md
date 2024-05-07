@@ -7,9 +7,6 @@ weight: 21
 
 Delete a project the authenticated user has access to
 
-## Synopsis
-Delete a project the authenticated user has access to
-
 ```
 oasisctl delete project [flags]
 ```

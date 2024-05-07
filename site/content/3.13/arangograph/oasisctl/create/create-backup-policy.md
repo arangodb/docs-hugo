@@ -7,9 +7,6 @@ weight: 4
 
 Create a new backup policy
 
-## Synopsis
-Create a new backup policy
-
 ```
 oasisctl create backup policy [flags]
 ```

@@ -7,9 +7,6 @@ weight: 14
 
 Import data from a local database or from another remote database into an Oasis deployment.
 
-## Synopsis
-Import data from a local database or from another remote database into an Oasis deployment.
-
 ```
 oasisctl import [flags]
 ```

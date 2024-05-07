@@ -7,9 +7,6 @@ weight: 11
 
 Create metrics resources
 
-## Synopsis
-Create metrics resources
-
 ```
 oasisctl create metrics [flags]
 ```

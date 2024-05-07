@@ -7,9 +7,6 @@ weight: 28
 
 Get a region the authenticated user has access to
 
-## Synopsis
-Get a region the authenticated user has access to
-
 ```
 oasisctl get region [flags]
 ```

@@ -7,9 +7,6 @@ weight: 26
 
 Get a project the authenticated user has access to
 
-## Synopsis
-Get a project the authenticated user has access to
-
 ```
 oasisctl get project [flags]
 ```

@@ -7,9 +7,6 @@ weight: 8
 
 A list command for various backup resources
 
-## Synopsis
-A list command for various backup resources
-
 ```
 oasisctl list backup [flags]
 ```

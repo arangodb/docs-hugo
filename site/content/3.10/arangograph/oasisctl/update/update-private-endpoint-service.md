@@ -7,9 +7,6 @@ weight: 24
 
 Update a Private Endpoint Service attached to an existing deployment
 
-## Synopsis
-Update a Private Endpoint Service attached to an existing deployment
-
 ```
 oasisctl update private endpoint service [flags]
 ```

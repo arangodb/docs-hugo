@@ -7,9 +7,6 @@ weight: 33
 
 Get current terms and conditions or get one by ID
 
-## Synopsis
-Get current terms and conditions or get one by ID
-
 ```
 oasisctl get tandc [flags]
 ```

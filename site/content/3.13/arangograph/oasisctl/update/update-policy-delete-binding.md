@@ -7,9 +7,6 @@ weight: 21
 
 Delete a role binding from a policy
 
-## Synopsis
-Delete a role binding from a policy
-
 ```
 oasisctl update policy delete binding [flags]
 ```

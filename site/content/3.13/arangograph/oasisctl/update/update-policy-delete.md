@@ -7,9 +7,6 @@ weight: 20
 
 Delete from a policy
 
-## Synopsis
-Delete from a policy
-
 ```
 oasisctl update policy delete [flags]
 ```

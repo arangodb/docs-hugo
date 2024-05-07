@@ -7,9 +7,6 @@ weight: 6
 
 Unlock a project, so it can be deleted
 
-## Synopsis
-Unlock a project, so it can be deleted
-
 ```
 oasisctl unlock project [flags]
 ```

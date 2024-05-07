@@ -7,9 +7,6 @@ weight: 3
 
 Add resources
 
-## Synopsis
-Add resources
-
 ```
 oasisctl add [flags]
 ```

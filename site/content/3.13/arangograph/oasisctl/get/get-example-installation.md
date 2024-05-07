@@ -7,9 +7,6 @@ weight: 9
 
 Get a single example dataset installation
 
-## Synopsis
-Get a single example dataset installation
-
 ```
 oasisctl get example installation [flags]
 ```

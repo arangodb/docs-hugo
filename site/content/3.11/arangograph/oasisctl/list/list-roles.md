@@ -7,9 +7,6 @@ weight: 37
 
 List all roles of the given organization
 
-## Synopsis
-List all roles of the given organization
-
 ```
 oasisctl list roles [flags]
 ```

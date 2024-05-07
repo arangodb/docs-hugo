@@ -7,9 +7,6 @@ weight: 12
 
 Update authentication settings for an organization
 
-## Synopsis
-Update authentication settings for an organization
-
 ```
 oasisctl update organization authentication [flags]
 ```

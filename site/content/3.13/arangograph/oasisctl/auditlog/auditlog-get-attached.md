@@ -7,9 +7,6 @@ weight: 4
 
 Audit get attached resources
 
-## Synopsis
-Audit get attached resources
-
 ```
 oasisctl auditlog get attached [flags]
 ```

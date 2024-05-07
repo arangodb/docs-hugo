@@ -7,9 +7,6 @@ weight: 1
 
 Rotate deployment resources
 
-## Synopsis
-Rotate deployment resources
-
 ```
 oasisctl rotate deployment [flags]
 ```

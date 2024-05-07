@@ -7,9 +7,6 @@ weight: 2
 
 Clone a deployment from a backup.
 
-## Synopsis
-Clone a deployment from a backup.
-
 ```
 oasisctl clone deployment backup [flags]
 ```

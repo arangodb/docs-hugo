@@ -7,9 +7,6 @@ weight: 14
 
 List disk performances
 
-## Synopsis
-List disk performances
-
 ```
 oasisctl list diskperformances [flags]
 ```

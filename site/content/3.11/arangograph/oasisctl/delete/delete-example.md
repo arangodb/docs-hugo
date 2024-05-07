@@ -7,9 +7,6 @@ weight: 10
 
 Delete example ...
 
-## Synopsis
-Delete example ...
-
 ```
 oasisctl delete example [flags]
 ```

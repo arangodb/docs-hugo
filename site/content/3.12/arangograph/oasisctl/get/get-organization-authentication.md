@@ -7,9 +7,6 @@ weight: 16
 
 Get authentication specific information for an organization
 
-## Synopsis
-Get authentication specific information for an organization
-
 ```
 oasisctl get organization authentication [flags]
 ```

@@ -7,9 +7,6 @@ weight: 10
 
 List backups
 
-## Synopsis
-List backups
-
 ```
 oasisctl list backups [flags]
 ```

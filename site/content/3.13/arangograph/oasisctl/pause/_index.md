@@ -7,9 +7,6 @@ weight: 19
 
 Pause resources
 
-## Synopsis
-Pause resources
-
 ```
 oasisctl pause [flags]
 ```

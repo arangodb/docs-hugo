@@ -7,9 +7,6 @@ weight: 26
 
 List node sizes
 
-## Synopsis
-List node sizes
-
 ```
 oasisctl list nodesizes [flags]
 ```

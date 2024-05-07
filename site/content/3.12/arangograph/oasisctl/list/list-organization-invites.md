@@ -7,9 +7,6 @@ weight: 30
 
 List invites of an organization the authenticated user is a member of
 
-## Synopsis
-List invites of an organization the authenticated user is a member of
-
 ```
 oasisctl list organization invites [flags]
 ```

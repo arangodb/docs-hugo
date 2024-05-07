@@ -7,9 +7,6 @@ weight: 1
 
 Add auditlog resources
 
-## Synopsis
-Add auditlog resources
-
 ```
 oasisctl add auditlog [flags]
 ```

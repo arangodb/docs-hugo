@@ -7,9 +7,6 @@ weight: 1
 
 Get auditlog archive
 
-## Synopsis
-Get auditlog archive
-
 ```
 oasisctl get auditlog [flags]
 ```

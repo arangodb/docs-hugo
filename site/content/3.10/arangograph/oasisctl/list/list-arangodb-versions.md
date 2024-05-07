@@ -7,9 +7,6 @@ weight: 3
 
 List all supported ArangoDB versions
 
-## Synopsis
-List all supported ArangoDB versions
-
 ```
 oasisctl list arangodb versions [flags]
 ```

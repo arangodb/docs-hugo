@@ -7,9 +7,6 @@ weight: 13
 
 List all deployments of the given project
 
-## Synopsis
-List all deployments of the given project
-
 ```
 oasisctl list deployments [flags]
 ```

@@ -7,9 +7,6 @@ weight: 6
 
 List auditlog destinations
 
-## Synopsis
-List auditlog destinations
-
 ```
 oasisctl list auditlog destinations [flags]
 ```

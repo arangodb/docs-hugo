@@ -7,9 +7,6 @@ weight: 2
 
 Resume a notebook
 
-## Synopsis
-Resume a notebook
-
 ```
 oasisctl resume notebook [flags]
 ```

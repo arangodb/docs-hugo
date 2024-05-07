@@ -7,9 +7,6 @@ weight: 22
 
 Renew keys & tokens
 
-## Synopsis
-Renew keys & tokens
-
 ```
 oasisctl renew [flags]
 ```

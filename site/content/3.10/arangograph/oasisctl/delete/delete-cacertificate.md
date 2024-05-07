@@ -7,9 +7,6 @@ weight: 8
 
 Delete a CA certificate the authenticated user has access to
 
-## Synopsis
-Delete a CA certificate the authenticated user has access to
-
 ```
 oasisctl delete cacertificate [flags]
 ```

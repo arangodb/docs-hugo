@@ -7,9 +7,6 @@ weight: 24
 
 List metrics resources
 
-## Synopsis
-List metrics resources
-
 ```
 oasisctl list metrics [flags]
 ```

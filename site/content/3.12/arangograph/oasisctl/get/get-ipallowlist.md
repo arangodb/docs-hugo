@@ -7,9 +7,6 @@ weight: 11
 
 Get an IP allowlist the authenticated user has access to
 
-## Synopsis
-Get an IP allowlist the authenticated user has access to
-
 ```
 oasisctl get ipallowlist [flags]
 ```

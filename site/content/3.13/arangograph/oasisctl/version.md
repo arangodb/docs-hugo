@@ -7,9 +7,6 @@ weight: 30
 
 Show the current version of this tool
 
-## Synopsis
-Show the current version of this tool
-
 ```
 oasisctl version [flags]
 ```

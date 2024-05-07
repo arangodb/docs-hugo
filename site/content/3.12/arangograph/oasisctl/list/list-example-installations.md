@@ -7,9 +7,6 @@ weight: 18
 
 List all example dataset installations for a deployment
 
-## Synopsis
-List all example dataset installations for a deployment
-
 ```
 oasisctl list example installations [flags]
 ```

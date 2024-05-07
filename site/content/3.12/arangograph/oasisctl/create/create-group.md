@@ -7,9 +7,6 @@ weight: 9
 
 Create a new group
 
-## Synopsis
-Create a new group
-
 ```
 oasisctl create group [flags]
 ```

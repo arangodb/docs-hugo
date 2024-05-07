@@ -7,9 +7,6 @@ weight: 1
 
 Rebalance deployment resources
 
-## Synopsis
-Rebalance deployment resources
-
 ```
 oasisctl rebalance deployment [flags]
 ```

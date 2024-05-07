@@ -7,9 +7,6 @@ weight: 3
 
 Revoke keys & tokens
 
-## Synopsis
-Revoke keys & tokens
-
 ```
 oasisctl revoke metrics [flags]
 ```

@@ -7,9 +7,6 @@ weight: 15
 
 Create a new invite to an organization
 
-## Synopsis
-Create a new invite to an organization
-
 ```
 oasisctl create organization invite [flags]
 ```

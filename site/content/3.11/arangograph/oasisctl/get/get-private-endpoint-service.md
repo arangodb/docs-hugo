@@ -7,9 +7,6 @@ weight: 25
 
 Get a Private Endpoint Service the authenticated user has access to
 
-## Synopsis
-Get a Private Endpoint Service the authenticated user has access to
-
 ```
 oasisctl get private endpoint service [flags]
 ```

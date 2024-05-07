@@ -7,9 +7,6 @@ weight: 2
 
 Accept invites
 
-## Synopsis
-Accept invites
-
 ```
 oasisctl accept [flags]
 ```

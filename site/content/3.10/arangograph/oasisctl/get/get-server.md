@@ -7,9 +7,6 @@ weight: 31
 
 Get server information
 
-## Synopsis
-Get server information
-
 ```
 oasisctl get server [flags]
 ```

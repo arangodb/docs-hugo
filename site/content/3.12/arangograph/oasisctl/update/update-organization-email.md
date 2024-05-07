@@ -7,9 +7,6 @@ weight: 14
 
 Update email specific information for an organization
 
-## Synopsis
-Update email specific information for an organization
-
 ```
 oasisctl update organization email [flags]
 ```

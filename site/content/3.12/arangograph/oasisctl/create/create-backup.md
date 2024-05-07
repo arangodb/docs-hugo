@@ -7,9 +7,6 @@ weight: 3
 
 Create backup ...
 
-## Synopsis
-Create backup ...
-
 ```
 oasisctl create backup [flags]
 ```

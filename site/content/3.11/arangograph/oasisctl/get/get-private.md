@@ -7,9 +7,6 @@ weight: 23
 
 Get private information
 
-## Synopsis
-Get private information
-
 ```
 oasisctl get private [flags]
 ```

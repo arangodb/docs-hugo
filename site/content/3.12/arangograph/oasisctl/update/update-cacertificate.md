@@ -7,9 +7,6 @@ weight: 4
 
 Update a CA certificate the authenticated user has access to
 
-## Synopsis
-Update a CA certificate the authenticated user has access to
-
 ```
 oasisctl update cacertificate [flags]
 ```

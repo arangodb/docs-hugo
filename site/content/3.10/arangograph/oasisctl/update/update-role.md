@@ -7,9 +7,6 @@ weight: 26
 
 Update a role the authenticated user has access to
 
-## Synopsis
-Update a role the authenticated user has access to
-
 ```
 oasisctl update role [flags]
 ```

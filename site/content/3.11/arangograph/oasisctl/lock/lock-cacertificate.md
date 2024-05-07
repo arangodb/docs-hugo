@@ -7,9 +7,6 @@ weight: 1
 
 Lock a CA certificate, so it cannot be deleted
 
-## Synopsis
-Lock a CA certificate, so it cannot be deleted
-
 ```
 oasisctl lock cacertificate [flags]
 ```

@@ -7,9 +7,6 @@ weight: 12
 
 Create a new metrics access token
 
-## Synopsis
-Create a new metrics access token
-
 ```
 oasisctl create metrics token [flags]
 ```

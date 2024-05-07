@@ -7,9 +7,6 @@ weight: 15
 
 List effective information
 
-## Synopsis
-List effective information
-
 ```
 oasisctl list effective [flags]
 ```

@@ -7,9 +7,6 @@ weight: 23
 
 
 
-## Synopsis
-
-
 ```
 oasisctl update private endpoint [flags]
 ```

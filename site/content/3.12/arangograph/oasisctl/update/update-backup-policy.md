@@ -7,9 +7,6 @@ weight: 3
 
 Update a backup policy
 
-## Synopsis
-Update a backup policy
-
 ```
 oasisctl update backup policy [flags]
 ```

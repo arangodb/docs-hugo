@@ -7,9 +7,6 @@ weight: 1
 
 Revoke an API key with given identifier
 
-## Synopsis
-Revoke an API key with given identifier
-
 ```
 oasisctl revoke apikey [flags]
 ```

@@ -7,9 +7,6 @@ weight: 2
 
 Add a destination to an auditlog.
 
-## Synopsis
-Add a destination to an auditlog.
-
 ```
 oasisctl add auditlog destination [flags]
 ```

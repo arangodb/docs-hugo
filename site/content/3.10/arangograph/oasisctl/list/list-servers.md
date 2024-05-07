@@ -7,9 +7,6 @@ weight: 38
 
 List servers information
 
-## Synopsis
-List servers information
-
 ```
 oasisctl list servers [flags]
 ```

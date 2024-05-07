@@ -7,9 +7,6 @@ weight: 6
 
 Lock a project, so it cannot be deleted
 
-## Synopsis
-Lock a project, so it cannot be deleted
-
 ```
 oasisctl lock project [flags]
 ```

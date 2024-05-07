@@ -7,9 +7,6 @@ weight: 21
 
 List members of a group the authenticated user is a member of
 
-## Synopsis
-List members of a group the authenticated user is a member of
-
 ```
 oasisctl list group members [flags]
 ```

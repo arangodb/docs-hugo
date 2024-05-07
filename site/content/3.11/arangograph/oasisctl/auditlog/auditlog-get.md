@@ -7,9 +7,6 @@ weight: 3
 
 Audit log get resources
 
-## Synopsis
-Audit log get resources
-
 ```
 oasisctl auditlog get [flags]
 ```

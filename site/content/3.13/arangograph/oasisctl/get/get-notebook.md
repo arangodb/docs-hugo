@@ -7,9 +7,6 @@ weight: 14
 
 Get a notebook
 
-## Synopsis
-Get a notebook
-
 ```
 oasisctl get notebook [flags]
 ```

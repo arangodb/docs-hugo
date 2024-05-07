@@ -7,9 +7,6 @@ weight: 8
 
 Update metrics resources
 
-## Synopsis
-Update metrics resources
-
 ```
 oasisctl update metrics [flags]
 ```

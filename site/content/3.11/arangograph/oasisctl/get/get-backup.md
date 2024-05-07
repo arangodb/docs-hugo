@@ -7,9 +7,6 @@ weight: 4
 
 Get a backup
 
-## Synopsis
-Get a backup
-
 ```
 oasisctl get backup [flags]
 ```

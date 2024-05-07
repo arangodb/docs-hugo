@@ -7,9 +7,6 @@ weight: 1
 
 Enable scheduled root password rotation
 
-## Synopsis
-Enable scheduled root password rotation
-
 ```
 oasisctl enable scheduled-root-password-rotation [flags]
 ```

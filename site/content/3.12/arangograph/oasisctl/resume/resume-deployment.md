@@ -7,9 +7,6 @@ weight: 1
 
 Resume a paused deployment the authenticated user has access to
 
-## Synopsis
-Resume a paused deployment the authenticated user has access to
-
 ```
 oasisctl resume deployment [flags]
 ```

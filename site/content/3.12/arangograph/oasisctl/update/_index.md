@@ -7,9 +7,6 @@ weight: 28
 
 Update resources
 
-## Synopsis
-Update resources
-
 ```
 oasisctl update [flags]
 ```

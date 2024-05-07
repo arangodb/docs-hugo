@@ -7,9 +7,6 @@ weight: 27
 
 Get a provider the authenticated user has access to
 
-## Synopsis
-Get a provider the authenticated user has access to
-
 ```
 oasisctl get provider [flags]
 ```

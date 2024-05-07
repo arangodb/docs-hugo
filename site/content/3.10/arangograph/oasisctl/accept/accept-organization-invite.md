@@ -7,9 +7,6 @@ weight: 2
 
 Accept an organization invite the authenticated user has access to
 
-## Synopsis
-Accept an organization invite the authenticated user has access to
-
 ```
 oasisctl accept organization invite [flags]
 ```

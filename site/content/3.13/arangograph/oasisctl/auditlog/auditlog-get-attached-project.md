@@ -7,9 +7,6 @@ weight: 5
 
 Get an attached log to a project
 
-## Synopsis
-Get an attached log to a project
-
 ```
 oasisctl auditlog get attached project [flags]
 ```

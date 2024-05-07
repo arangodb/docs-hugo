@@ -7,9 +7,6 @@ weight: 3
 
 Add group resources
 
-## Synopsis
-Add group resources
-
 ```
 oasisctl add group [flags]
 ```

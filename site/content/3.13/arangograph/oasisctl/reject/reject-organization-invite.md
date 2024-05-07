@@ -7,9 +7,6 @@ weight: 2
 
 Reject an organization invite the authenticated user has access to
 
-## Synopsis
-Reject an organization invite the authenticated user has access to
-
 ```
 oasisctl reject organization invite [flags]
 ```

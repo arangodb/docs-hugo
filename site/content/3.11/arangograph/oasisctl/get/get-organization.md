@@ -7,9 +7,6 @@ weight: 15
 
 Get an organization the authenticated user is a member of
 
-## Synopsis
-Get an organization the authenticated user is a member of
-
 ```
 oasisctl get organization [flags]
 ```

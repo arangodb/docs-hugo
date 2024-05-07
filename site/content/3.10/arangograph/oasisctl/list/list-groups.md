@@ -7,9 +7,6 @@ weight: 22
 
 List all groups of the given organization
 
-## Synopsis
-List all groups of the given organization
-
 ```
 oasisctl list groups [flags]
 ```

@@ -7,9 +7,6 @@ weight: 33
 
 List the known permissions
 
-## Synopsis
-List the known permissions
-
 ```
 oasisctl list permissions [flags]
 ```

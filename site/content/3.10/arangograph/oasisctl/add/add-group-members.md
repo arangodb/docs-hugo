@@ -7,9 +7,6 @@ weight: 4
 
 Add members to group
 
-## Synopsis
-Add members to group
-
 ```
 oasisctl add group members [flags]
 ```
