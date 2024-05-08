@@ -59,11 +59,20 @@ characters using the default settings.
 #### Collection API
 
 When creating a collection using the `POST /_api/collection` endpoint, the
-server log now displays a deprecation message if illegal combinations and
+server log now displays a `deprecation` message if illegal combinations and
 unknown attributes and values are detected in the request body.
 
-Note that all invalid elements and combinations will be rejected in future
-versions.
+Note that all invalid elements and value combinations will be rejected in future
+versions. The following options are already validated more strictly in v3.12
+and lead to error:
+
+- `keyOptions`: The `increment` and `offset` sub-attributes are only allowed if
+  the `type` sub-attribute is `"autoincrement"`. The `lastValue` sub-attribute
+  is only allowed if the `type` sub-attribute is `"traditional"`, `"autoincrement"`,
+  or `"padded"`.
+- `isSmartChild`: If specified, the attribute must have a boolean value.
+- `internalValidatorType`: If specified, the attribute must have an unsigned integer value.
+- `shardKeys`: Each array element needs to be a string.
 
 #### Index API
 
