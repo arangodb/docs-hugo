@@ -505,6 +505,13 @@ featurization_job_result = arangoml.wait_for_featurization(featurization_job.job
 }
 ```
 
+You can also cancel a Featurization Job using the `arangoml.jobs.cancel_job` method:
+
+```python
+arangoml.jobs.cancel_job(prediction_job.job_id)
+```
+
+
 ## Training
 
 **API Documentation: [ArangoML.jobs.train](https://arangoml.github.io/arangoml/specification.html#agml_api.jobs.v1.api.jobs_api.JobsApi.train)**
@@ -529,7 +536,6 @@ Training Graph Machine Learning Models with ArangoGraphML only requires two step
     - `inputFeatures`: The name of the feature to be used as input.
     - `labelField`: The name of the attribute to be predicted.
     - `batchSize`: The number of documents to process in a single batch. Default is `64`.
-  - `graphEmbeddings`: Coming soon!
 
 - `metagraph`: Metadata to represent the vertex & edge collections of the graph. If `featureSetID` is provided, this can be omitted.
   - `graph`: The ArangoDB graph name.
@@ -642,7 +648,7 @@ training_job_result = arangoml.wait_for_training(training_job.job_id)
 }
 ```
 
-You can also cancel a Training Job using the `arangoml.training.cancel_job` method:
+You can also cancel a Training Job using the `arangoml.jobs.cancel_job` method:
 
 ```python
 arangoml.jobs.cancel_job(training_job.job_id)
@@ -779,6 +785,12 @@ prediction_job_result = arangoml.wait_for_prediction(prediction_job.job_id)
   "time_started": "2024-01-12T02:31:23.550469",
   "time_ended": "2024-01-12T02:31:40.021035"
 }
+```
+
+You can also cancel a Prediction Job using the `arangoml.jobs.cancel_job` method:
+
+```python
+arangoml.jobs.cancel_job(prediction_job.job_id)
 ```
 
 ### Viewing Predictions
