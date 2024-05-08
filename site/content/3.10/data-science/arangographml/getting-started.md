@@ -7,23 +7,14 @@ description: >-
 aliases:
   - getting-started-with-arangographml
 ---
-ArangoGraphML is a set of services that provide an easy-to-use and scalable
-interface for graph machine learning. Since all of the orchestration and training
-logic is managed by ArangoGraph, all that is typically required is a
-specification outlining the data to be used to solve a task. If you are using
-the self-managed solution, additional configurations are needed such as loading
-the database.
+ArangoGraphML provides an easy-to-use & scalable interface to run Graph Machine Learning on ArangoDB Data. Since all of the orchestration and ML logic is managed by ArangoGraph, all that is typically required are JSON specifications outlining individual processes to solve an ML Task. If you are using the self-managed solution, additional configurations may be required.
 
-The `arangoml` package allows for managing all of the necessary ArangoGraphML components, including:
-- **Project Management**: Projects are at the top level, and all activities must
-  link to a project.
-- **Feature Generation**: Data must be featurized to work with Graph Neural Networks
-  (GNNs), and the featurization package handles this.
-- **Training**: Start training data with a simple description of the problem and
-  the data used to solve it.
-- **Predictions**: Once a trained model exists, it is time to persist it.
-  The prediction service generates predictions and persists them to the source
-  graph in a new collection or within the source document.
+The `arangoml` is a Python Package allowing you to manage all of the necessary ArangoGraphML components, including:
+- **Project Management**: Projects are a metadata-tracking entity that sit at the top level of ArangoGraphML. All activities must link to a project.
+- **Featurization**: The step of converting human-understandable data to machine-understandable data (i.e features), such that it can be used to train Graph Neural Networks (GNNs).
+- **Training**: Train a set of models based on the name of the generated/existing features, and a definition of the ML Task we want to solve (e.g Node Classification, Embedding Generation).
+- **Model Selection**: Select the best model based on the metrics generated during training.
+- **Predictions**: Generate predictions based on the selected model, and persit the results to the source graph (either in the source document, or in a new collection).
 
 {{< tip >}}
 To enable the ArangoGraphML services in the ArangoGraph platform,
@@ -32,12 +23,9 @@ with the ArangoDB team. Regular notebooks in ArangoGraph don't include the
 `arangoml` package.
 {{< /tip >}}
 
-ArangoGraphML's suite of services and packages is driven by what we call
-**"specifications"**. These specifications are standard Python dictionaries and
-describe the task being performed and the data being used. The ArangoGraphML
-services work closely together, with one task providing inputs to another.
+ArangoGraphML's suite of services and packages is driven by **"specifications"**. These specifications are standard Python dictionaries that describe the task being performed, & the data being used. The ArangoGraphML services work closely together, with the previous task being used as the input for the next.
 
-The following is a guide to show how to use the `arangoml` package in order to:
+Let's take a look at using the `arangoml` package to:
 
 1. Manage projects
 2. Featurize data
@@ -72,17 +60,20 @@ ArangoGraphML comes with other ArangoDB Magic Commands! See the full list [here]
 
 The `ArangoML` class is the main entry point for the `arangoml` package.
 It requires the following parameters:
-- `hosts`: The ArangoDB host(s) to connect to. This can be a single host or a
+- `client`: An instance of arango.client.ArangoClient. Defaults to `None`. If not provided, the **hosts** argument must be provided.
+- `hosts`: The ArangoDB host(s) to connect to. This can be a single host, or a
   list of hosts.
 - `username`: The ArangoDB username to use for authentication.
 - `password`: The ArangoDB password to use for authentication.
+- `user_token`: The ArangoDB user token to use for authentication.
+  This is an alternative to username/password authentication.
 - `ca_cert_file`: (Optional) The path to the CA certificate file to use for TLS
   verification.
 - `user_token`: (Optional) The ArangoDB user token to use for authentication.
   This is an alternative to username/password authentication.
-- `projects_endpoint`: The URL to the ArangoGraphML Projects Service.
-- `training_endpoint`: The URL to the ArangoGraphML Training Service.
-- `prediction_endpoint`: The URL to the ArangoGraphML Prediction Service.
+- `api_endpoint`: The URL to the ArangoGraphML API Service.
+- `settings`: (Optional) A list of secrets files to be loaded as settings. Parameters provided as arguments will override those in the settings files (e.g `settings.toml`).
+- `version`: The ArangoML API date version. Defaults to the latest version.
 
 It is possible to instantiate an ArangoML object in multiple ways:
 
@@ -96,9 +87,7 @@ arangoml = ArangoML(
     password="password",
     # ca_cert_file="/path/to/ca.pem",
     # user_token="..."
-    projects_endpoint="http://localhost:8503",
-    training_endpoint="http://localhost:8502",
-    prediction_endpoint="http://localhost:8501",
+    api_endpoint="http://localhost:8501",
 )
 ```
 
@@ -119,9 +108,7 @@ arangoml = ArangoML(
     username="root",
     password="password",
     # user_token="..."
-    projects_endpoint="http://localhost:8503",
-    training_endpoint="http://localhost:8502",
-    prediction_endpoint="http://localhost:8501",
+    api_endpoint="http://localhost:8501",
 )
 ```
 
@@ -135,9 +122,7 @@ os.environ["ARANGODB_CA_CERT_FILE"]="/path/to/ca.pem"
 os.environ["ARANGODB_USER"] = "root"
 os.environ["ARANGODB_PW"] = "password"
 # os.environ["ARANGODB_USER_TOKEN"] = "..."
-os.environ["PROJECTS_ENDPOINT"] = "http://localhost:8503"
-os.environ["TRAINING_ENDPOINT"] = "http://localhost:8502"
-os.environ["PREDICTION_ENDPOINT"] = "http://localhost:8501"
+os.environ["ML_API_SERVICES_ENDPOINT"] = "http://localhost:8501"
 
 arangoml = ArangoML()
 ```
@@ -204,22 +189,16 @@ Let's get started!
 {{< tab "ArangoGraphML" >}}
 
 The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package
-allows you to load a dataset into ArangoDB. It comes pre-installed in the
+allows you to load pre-defined datasets into ArangoDB. It comes pre-installed in the
 ArangoGraphML notebook environment.
 
 ```py
-from arango_datasets.datasets import Datasets
-
 DATASET_NAME = "OPEN_INTELLIGENCE_ANGOLA"
 
-# Setup the database
-%deleteDatabase {DATASET_NAME}
-%createDatabase {DATASET_NAME}
-dataset_db = %useDatabase {DATASET_NAME}
-
-# Import the dataset
-# More Info: https://github.com/arangoml/arangodb_datasets
-Datasets(dataset_db).load(DATASET_NAME)
+%delete_database {DATASET_NAME}
+%create_database {DATASET_NAME}
+%use_database {DATASET_NAME}
+%load_dataset {DATASET_NAME}
 ```
 
 {{< /tab >}}
@@ -238,16 +217,7 @@ from arango_datasets.datasets import Datasets
 
 DATASET_NAME = "OPEN_INTELLIGENCE_ANGOLA"
 
-system_user = "root"
-system_pw = "password"
-system_db = arangoml.client.db(
-    name="_system", username=system_user, password=system_pw, verify=True
-)
-
-# Setup the database
-system_db.delete_database(DATASET_NAME, ignore_missing=True)
-system_db.create_database(DATASET_NAME)
-dataset_db = client.db(
+db = arangoml.client.db(
     name=DATASET_NAME, 
     username=arangoml.settings.get("ARANGODB_USER"),
     password=arangoml.settings.get("ARANGODB_PW"),
@@ -255,8 +225,6 @@ dataset_db = client.db(
     verify=True
 )
 
-# Import the dataset
-# More Info: https://github.com/arangoml/arangodb_datasets
 Datasets(dataset_db).load(DATASET_NAME)
 ```
 {{< /tab >}}
@@ -284,66 +252,57 @@ arangoml.projects.list_projects()
 
 ## Featurization
 
-**API Documentation: [ArangoML.featurization](https://arangoml.github.io/arangoml/specification.html#module-arangoml.featurization)**
+**API Documentation: [ArangoML.jobs.featurize](https://arangoml.github.io/arangoml/specification.html#agml_api.jobs.v1.api.jobs_api.JobsApi.featurize)**
 
-The Featurization Specification asks that you input the following:
-- `featurization_name`: A name for the featurization task.
-- `project_name`: The associated project name. You can use `project.name` here
+**The Featurization Service depends on a `Featurization Specification` that contains**:
+- `featurizationName`: A name for the featurization task.
+
+- `projectName`: The associated project name. You can use `project.name` here
   if it was created or retrieved as described above.
-- `graph_name`: The associated graph name that exists within the database.
-- `default_config` Optional: The optional default configuration to be applied
+
+- `graphName`: The associated graph name that exists within the database.
+
+- `featureSetID` Optional: The ID of an existing Feature Set to re-use. If provided, the `metagraph` dictionary can be ommitted. Defaults to `None`.
+
+- `featurizationConfiguration` Optional: The optional default configuration to be applied
   across all features. Individual collection feature settings override this option.
-  - `dimensionality_reduction`: Object configuring dimensionality reduction.
-    - `disabled`: Boolean for enabling or disabling dimensionality reduction.
-    - `size`: The number of dimensions to reduce the feature length to.
-- `vertexCollections`: The list of vertex collections to be featurized. Here you
-  also need to detail the attributes to featurize and how. Supplying multiple
-  attributes from a single collection results in a single concatenated feature.
-  - `config` Optional: The configuration to apply to the feature output for this collection.
-    - `dimensionality_reduction`: Object configuring dimensionality reduction.
-      - `disabled`: Boolean for enabling or disabling dimensionality reduction.
-      - `size`: The number of dimensions to reduce the feature length to.
-    - `output_name`: Adjust the default feature name. This can be any valid ArangoDB attribute name.
-  - `features`: A single feature or multiple features can be supplied per collection
-    and they can all be featurized in different ways. Supplying multiple features
-    results in a single concatenated feature.
-    - `feature_type`: Provide the feature type. Currently, the supported types
-      include `text`, `category`, and `numeric` and `label`.
-    - `feature_generator` Optional: Adjust advanced feature generation parameters.
-      - `feature_name`: The name of this Dict should match the attribute name of the
-        document stored in ArangoDB. This overrides the name provided for the parent Dict.
-      - `method`: Currently no additional options, leave as default.
-      - `output_name`: Adjust the default feature name. This can be any valid
-        ArangoDB attribute name.
-        ```python
-        "collectionName": {
-          "features": {
-            "attribute_name_1": {
-              "feature_type": 'text' # Suported types: text, category, numeric, label
-              "feature_generator": { # this advanced option is optional.
-                "method": "transformer_embeddings",
-                "feature_name": "movie_title_embeddings",
-              },
-            },
-            "attribute_name_2": ...,
-          },
-        },
-        "collectionName2": ...
-        ```
 
-- `edgeCollections`: This is the list of edge collections associated with the
-  vertex collections. There are no additional options.
-  ```python
-  "edgeCollections": {
-    "edge_name_1": {},
-    "edge_name_2: {}
-  },
-  ```
+  - `featurePrefix`: The prefix to be applied to all individual features generated. Default is `feat_`. 
 
-Once you have filled out the Featurization Specification, you can pass it to
-the `featurizer` function.
+  - `outputName`: Adjust the default feature name. This can be any valid ArangoDB attribute name. Defaults to `x`.
 
-See an example of Featurization Specification for the GDELT dataset:
+  - `dimensionalityReduction`: Object configuring dimensionality reduction.
+    - `disabled`: Boolean for enabling or disabling dimensionality reduction. Default is `false`.
+    - `size`: The number of dimensions to reduce the feature length to. Default is `512`.
+
+  - `defaultsPerFeatureType`: A dictionary mapping each feature to how missing or missmatched values should be handled. The keys of this dictionary are the features, and the values are sub-dictionaries with the following keys:
+    -  `missing`: A sub-dictionary detailing how missing values should be handled.
+      - `strategy`: The strategy to use for missing values. Options include `REPLACE` or `RAISE`.
+      - `replacement`: The value to replace missing values with. Only needed if `strategy` is `REPLACE`.
+    - `missmatch`: A sub-dictionary detailing how missmatched values should be handled.
+      - `strategy`: The strategy to use for missmatched values. Options include `REPLACE`, `RAISE`, `COERCE_REPLACE`, or `COERCE_RAISE`.
+      - `replacement`: The value to replace missmatched values with. Only needed if `strategy` is `REPLACE`, or `COERCE_REPLACE`.
+
+- `jobConfiguration` Optional: A set of configurations that are applied to the job.
+  - `batchSize`: The number of documents to process in a single batch. Default is `32`.
+  - `runAnalysisChecks`: Boolean for enabling or disabling analysis checks. Default is `true`.
+  - `skipLabels`: Boolean for enabling or disabling label skipping. Default is `false`.
+  - `overwriteFSGraph`: Boolean for enabling or disabling overwriting the feature store graph. Default is `false`.
+  - `writeToSourceGraph`: Boolean for enabling or disabling writing features to the source graph. Default is `true`.
+  - `useFeatureStore`: Boolean for enabling or disabling the use of the feature store. Default is `false`.
+
+- `metagraph`: Metadata to represent the vertex & edge collections of the graph.
+  - `vertexCollections`: A dictionary mapping the vertex collection names to the following values:
+    - `features`: A dictionary mapping document properties to the following values:
+      - `featureType`: The type of feature. Options include `text`, `category`, `numeric`, or `label`.
+    - `config`: Collection-level configuration settings.
+      - `featurePrefix`: Identical to global `featurePrefix` but for this collection.
+      - `dimensionalityReduction`: Identical to global `dimensionalityReduction` but for this collection.
+      - `outputName`: Identical to global `outputName` but for this collection.
+      - `defaultsPerFeatureType`: Identical to global `defaultsPerFeatureType` but for this collection.
+  - `edgeCollections`: A dictionary mapping the edge collection names to an empty dictionary, as edge attributes are not currently supported.
+
+The Featurization Specification example is used for the GDELT dataset:
 - It featurizes the `name` attribute of the `Actor`, `Class`, `Country`,
   `Source`, `Location`, and `Region` collections as a `text` features.
 - It featurizes the `description` attribute of the `Event` collection as a
@@ -356,92 +315,101 @@ See an example of Featurization Specification for the GDELT dataset:
   `category` feature.
 
 ```py
-featurization_spec = {
-  "featurization_name": f"{DATASET_NAME}_Featurization",
-  "project_name": project.name,
-  "graph_name": DATASET_NAME,
-  "default_config": {
-      "dimensionality_reduction": {"size": 64},
-      "output_name": "x",
-  },
-  "vertexCollections": {
-      "Actor": {
-          "features": {
-              "name": {
-                  "feature_type": "text",
-              },
-          }
-      },
-      "Class": {
-          "features": {
-              "name": {
-                  "feature_type": "text",
-              },
-          }
-      },
-      "Country": {
-          "features": {
-              "name": {
-                  "feature_type": "text",
-              }
-          }
-      },
-      "Event": {
-          "features": {
-              "description": {
-                  "feature_type": "text",
-              },
-              "label": {
-                  "feature_type": "label",
-              },
-          }
-      },
-      "Source": {
-          "features": {
-              "name": {
-                  "feature_type": "text",
-              },
-              "sourceScale": {
-                  "feature_type": "category",
-              },
-          }
-      },
-      "Location": {
-          "features": {
-              "name": {
-                  "feature_type": "text",
-              }
-          }
-      },
-      "Region": {
-          "features": {
-              "name": {
-                  "feature_type": "category",
-              },
-          }
-      },
-  },
-  "edgeCollections": {
-      "eventActor": {},
-      "hasSource": {},
-      "hasLocation": {},
-      "inCountry": {},
-      "inRegion": {},
-      "subClass": {},
-      "type": {},
-  },
-}
+# 1. Define the Featurization Specification
 
-# Run Featurization
-feature_result = arangoml.featurization.featurize(
-  database_name=dataset_db.name,
-  featurization_spec=featurization_spec,
-  batch_size=256,
-  use_feature_store=False,
-  run_analysis_checks=False,
-  ...,
-)
+featurization_spec = {
+    "databaseName": dataset_db.name,
+    "projectName": project.name,
+    "graphName": graph.name,
+    "featurizationName": f"{DATASET_NAME}_Featurization",
+    "featurizationConfiguration": {
+        "featurePrefix": "feat_",
+        "dimensionalityReduction": { "size": 256 },
+        "outputName": "x"
+    },
+    "jobConfiguration": {
+        "batchSize": 512,
+        "useFeatureStore": False,
+        "runAnalysisChecks": False,
+    },
+    "metagraph": {
+        "vertexCollections": { 
+            "Actor": {
+                "features": {
+                    "name": {
+                        "featureType": "text",
+                    },
+                }
+            },
+            "Country": {
+                "features": {
+                    "name": {
+                        "featureType": "text",
+                    }
+                }
+            },
+            "Event": {
+                "features": {
+                    "description": {
+                        "featureType": "text",
+                    },
+                    "label": {
+                        "featureType": "label",
+                    },
+                }
+            },
+            "Source": {
+                "features": {
+                    "name": {
+                        "featureType": "text",
+                    },            
+                    "sourceScale": {
+                        "featureType": "category",
+                    },
+                }
+            },
+            "Location": {
+                "features": {
+                    "name": {
+                        "featureType": "text",
+                    }
+                }
+            },
+            "Region": {
+                "features": {
+                    "name": {
+                        "featureType": "category",
+                    },
+                }
+            }
+        },
+        "edgeCollections": {
+            "eventActor": {},
+            "hasSource": {},
+            "hasLocation": {},
+            "inCountry": {},
+            "inRegion": {},
+        }
+    }
+}
 ```
+
+Once the specification has been defined, a Featurization Job can be triggered using the `arangoml.jobs.featurize` method:
+
+```py
+# 2. Submit a Featurization Job
+
+featurization_job = arangoml.jobs.featurize(featurization_spec)
+```
+
+Once a Featurization Job has been submitted, you can wait for it to complete using the `arangoml.wait_for_featurization` method:
+
+```py
+# 3. Wait for the Featurization Job to complete
+
+featurization_job_result = arangoml.wait_for_featurization(featurization_job.job_id)
+```
+
 
 **Example Output:**
 ```py
@@ -539,80 +507,78 @@ feature_result = arangoml.featurization.featurize(
 
 ## Training
 
-**API Documentation: [ArangoML.training](https://arangoml.github.io/arangoml/specification.html#training)**
+**API Documentation: [ArangoML.jobs.train](https://arangoml.github.io/arangoml/specification.html#agml_api.jobs.v1.api.jobs_api.JobsApi.train)**
 
 Training Graph Machine Learning Models with ArangoGraphML only requires two steps:
 1. Describe which data points should be included in the Training Job.
 2. Pass the Training Specification to the Training Service.
 
-See below for the different components of the Training Specification:
+**The Training Service depends on a `Training Specification` that contains**:
+- `featureSetID`: The feature set ID that was generated during the Featurization Job (if any). It replaces the need to provide the `metagraph`, `databaseName`, and `projectName` fields.
 
-- `database_name`: The database name the source data is in.
-- `project_name`: The top-level project to which all the experiments will link back. 
-- `metagraph`: This is the largest component that details the experiment
-  objective and the associated data points.
-  - `mlSpec`: Describes the desired machine learning task, input features, and
+- `databaseName`: The database name the source data is in. Can be omitted if `featureSetID` is provided.
+
+- `projectName`: The top-level project to which all the experiments will link back. Can be omitted if `featureSetID` is provided.
+
+- `useFeatureStore`: Boolean for enabling or disabling the use of the feature store. Default is `false`.
+
+- `mlSpec`: Describes the desired machine learning task, input features, and
     the attribute label to be predicted.
-    - `classification`: The classification task.
-      - `targetCollection`: The ArangoDB collection name that contains the prediction label.
-      - `inputFeatures`: The name of the feature to be used as input.
-      - `labelField`: The name of the attribute to be predicted.
+  - `classification`: Dictionary to describe the Node Classification Task Specification.
+    - `targetCollection`: The ArangoDB collection name that contains the prediction label.
+    - `inputFeatures`: The name of the feature to be used as input.
+    - `labelField`: The name of the attribute to be predicted.
+    - `batchSize`: The number of documents to process in a single batch. Default is `64`.
+  - `graphEmbeddings`: Coming soon!
+
+- `metagraph`: Metadata to represent the vertex & edge collections of the graph. If `featureSetID` is provided, this can be omitted.
   - `graph`: The ArangoDB graph name.
-  - `vertexCollections`: Here, you can describe all the vertex collections and
-    the features you would like to include in training. You must provide an `x`
-    for features, and the desired prediction label is supplied as `y`.
-  - `edgeCollections`: Here, you describe the relevant edge collections and any
-    relevant attributes or features that should be considered when training.
+  - `vertexCollections`: A dictionary mapping the collection names to the following values:
+    - `x`: The name of the feature to be used as input.
+    - `y`: The name of the attribute to be predicted. Can only be specified for one collection.
+  - `edgeCollections`: A dictionary mapping the edge collection names to an empty dictionary, as edge features are not currently supported.
 
 A Training Specification allows for concisely defining your training task in a
 single object and then passing that object to the training service using the
 Python API client, as shown below.
 
-### Submit a Training Job
 
 The ArangoGraphML Training Service is responsible for training a series of
 Graph Machine Learning Models using the data provided in the Training
 Specification. It assumes that the data has been featurized and is ready to be
 used for training.
 
-Given that you have run a Featurization Job, you can create the Training
-Specification using the `feature_result` object returned from the Featurization
-Job:
+Given that we have run a Featurization Job, we can create the Training Specification using the `featurization_job_result` object returned from the Featurization Job:
 
 ```py
+# 1. Define the Training Specification
+
 training_spec = {
-    "database_name": dataset_db.name,
-    "project_name": project.name,
-    "metagraph": {
-        "mlSpec": {
-            "classification": {
-                "targetCollection": "Event",
-                "inputFeatures": f"{DATASET_NAME}_x",
-                "labelField": f"{DATASET_NAME}_y",
-            }
-        },
-        "graph": DATASET_NAME,
-        "vertexCollections": feature_result.vertexCollections,
-        "edgeCollections": feature_result.edgeCollections,
+    "featureSetID": featurization_job_result.result.feature_set_id,
+    "mlSpec": {
+        "classification": {
+            "targetCollection": "Event",
+            "inputFeatures": "OPEN_INTELLIGENCE_ANGOLA_x",
+            "labelField": "OPEN_INTELLIGENCE_ANGOLA_y",
+        }
     },
 }
-
-training_job = arangoml.training.train(training_spec)
-
-print(training_job)
 ```
 
-**Example Output:**
+Once the specification has been defined, a Training Job can be triggered using the `arangoml.jobs.train` method:
+
 ```py
-{'job_id': '691ceb2f-1931-492a-b4eb-0536925a4697'}
+# 2. Submit a Training Job
+
+training_job = arangoml.jobs.train(training_spec)
 ```
 
-### Wait for a Training job to complete
+Once a Training Job has been submitted, you can wait for it to complete using the `arangoml.wait_for_training` method:
 
 ```py
+# 3. Wait for the Training Job to complete
+
 training_job_result = arangoml.wait_for_training(training_job.job_id)
-
-print(training_job_result)
 ```
 
 **Example Output:**
@@ -676,29 +642,33 @@ print(training_job_result)
 }
 ```
 
-### Cancel a running Training Job
+You can also cancel a Training Job using the `arangoml.training.cancel_job` method:
 
 ```python
-arangoml.training.cancel_job(training_job.job_id)
-```
-
-**Example Output:**
-```python
-'OK'
+arangoml.jobs.cancel_job(training_job.job_id)
 ```
 
 ## Model Selection
-
-**API Documentation [ArangoML.projects.list_models](https://arangoml.github.io/arangoml/specification.html#arangoml_ml_projects_api.DefaultApi.list_models)**
 
 Model Statistics can be observed upon completion of a Training Job. 
 To select a Model, the ArangoGraphML Projects Service can be used to gather
 all relevant models and choose the preferred model for a Prediction Job.
 
-The following example uses the model with the highest **test accuracy**,
-but there may be other factors that motivate you to choose another model.
-See the `model_statistics` field below for more information on the full list
-of available metrics.
+First, let's list all the trained models using [ArangoML.list_models](https://arangoml.github.io/arangoml/specification.html#arangoml.main.ArangoML.list_models):
+
+```py
+# 1. List all trained Models
+
+models = arangoml.list_models(
+  project_name=project.name,
+  training_job_id=training_job.job_id
+)
+
+print(len(models))
+```
+
+
+The cell below selects the model with the highest **test accuracy** using [ArangoML.get_best_model](https://arangoml.github.io/arangoml/specification.html#arangoml.main.ArangoML.get_best_model), but there may be other factors that motivate you to choose another model. See the `model_statistics` in the output field below for more information on the full list of available metrics.
 
 ```py
 best_model = arangoml.get_best_model(
@@ -747,42 +717,46 @@ print(best_model)
 
 ## Prediction
 
-**API Documentation: [ArangoML.prediction](https://arangoml.github.io/arangoml/specification.html#prediction)**
+**API Documentation: [ArangoML.jobs.predict](https://arangoml.github.io/arangoml/specification.html#agml_api.jobs.v1.api.jobs_api.JobsApi.predict)**
+
+Final step!
 
 After selecting a model, a Prediction Job can be created. The Prediction Job
 will generate predictions and persist them to the source graph in a new
-collection or within the source document.
+collection, or within the source documents.
 
-The Prediction Specification requires the following:
-- `project_name`: The top-level project to which all the experiments will link back.
-- `database_name`: The database name the source data is in.
-- `model_id`: The model ID to use for generating predictions.
+**The Prediction Service depends on a `Prediction Specification` that contains**:
+- `projectName`: The top-level project to which all the experiments will link back.
+- `databaseName`: The database name the source data is in.
+- `modelID`: The model ID to use for generating predictions.
+- `featurizeNewDocuments`: Boolean for enabling or disabling the featurization of new documents. Useful if you don't want to re-train the model upon new data. Default is `false`.
+- `featurizeOutdatedDocuments`: Boolean for enabling or disabling the featurization of outdated documents. Outdated documents are those whose features have changed since the last featurization. Default is `false`.
 
-### Submit a Prediction Job
 
 ```py
+# 1. Define the Prediction Specification
+
 prediction_spec = {
-  "project_name": project.name,
-  "database_name": dataset_db.name,
-  "model_id": best_model.model_id,
+  "projectName": project.name,
+  "databaseName": dataset_db.name,
+  "modelID": best_model.model_id,
 }
-
-prediction_job = arangoml.prediction.predict(prediction_spec)
-
-print(prediction_job)
 ```
 
-**Example Output:**
+This job updates all documents with the predictions derived from the trained model.
+Once the specification has been defined, a Prediction Job can be triggered using the `arangoml.jobs.predict` method:
+
 ```py
-{'job_id': 'b2a422bb-5650-4fbc-ba6b-0578af0049d9'}
+# 2. Submit a Prediction Job
+prediction_job = arangoml.jobs.predict(prediction_spec)
 ```
 
-### Wait for a Prediction job to complete
+Similar to the Training Service, we can wait for a Prediction Job to complete with the `arangoml.wait_for_prediction` method: 
 
 ```py
+# 3. Wait for the Prediction Job to complete
+
 prediction_job_result = arangoml.wait_for_prediction(prediction_job.job_id)
-
-print(prediction_job_result)
 ```
 
 **Example Output:**
@@ -807,23 +781,23 @@ print(prediction_job_result)
 }
 ```
 
-### Access the predictions
+### Viewing Predictions
 
-You can now directly access your predictions in your application.
+We can now access our predictions via AQL:
 
 ```py
 import json
 
-output_collection_name = prediction_job_result["job_state_information"]['outputCollectionName']
+collection_name = prediction_job_result.job_state_information['outputCollectionName']
 
 query = f"""
-  FOR doc IN {output_collection_name}
+  FOR doc IN `{collection_name}`
     SORT RAND()
-    LIMIT 5
+    LIMIT 3
     RETURN doc
 """
 
-docs = [doc for doc in dataset_db.aql.execute(query)]
+docs = list(dataset_db.aql.execute(query))
 
 print(json.dumps(docs, indent=2))
 ```
