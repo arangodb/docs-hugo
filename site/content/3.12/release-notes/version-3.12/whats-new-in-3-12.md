@@ -388,6 +388,9 @@ Execution plan:
 The profiling output for queries includes a new `Par` column as well, but it
 shows the number of successful parallel asynchronous prefetch calls.
 
+To not overwhelm the server, async prefetching is restricted and the limits are adjustable.
+See [Configurable async prefetch limits](#configurable-async-prefetch-limits).
+
 ### Added AQL functions
 
 The new `PARSE_COLLECTION()` and `PARSE_KEY()` let you more extract the
@@ -710,6 +713,31 @@ the queue might grow and eventually overflow.
 
 You can configure the upper bound of the queue with this option. If the queue is
 full, log entries are written synchronously until the queue has space again.
+
+### Configurable async prefetch limits
+
+<small>Introduced in: v3.12.1</small>
+
+While [async prefetching](#parallel-execution-within-an-aql-query) is normally
+beneficial for query performance, the async prefetch operations may cause
+congestion in the ArangoDB scheduler and interfere with other operations.
+The amount of prefetch operations is limited and you adjust these limits with 
+he following startup options:
+
+- `--query.max-total-async-prefetch-slots`:
+  The maximum total number of slots available for asynchronous prefetching,
+  across all AQL queries. Default: `256`
+- `--query.max-query-async-prefetch-slots`:
+  The maximum per-query number of slots available for asynchronous prefetching
+  inside any AQL query. Default: `32`
+  
+The total number of concurrent prefetch operations across all AQL queries can be
+limited using the first option, and the maximum number of prefetch operations in
+every single AQL query can be capped with the second option.
+
+These options prevent that running a lot of AQL queries with async
+prefetching fully congests the scheduler queue, and also they prevent large
+AQL queries to use up all async prefetching capacity on their own.
 
 ## Miscellaneous changes
 
