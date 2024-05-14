@@ -494,6 +494,91 @@ Optimization rules applied:
   4   move-filters-up-2                          8   reduce-extraction-to-projection  
 ```
 
+### Short-circuiting subquery evaluation
+
+<small>Introduced in: v3.12.1</small>
+
+A ternary operator generally evaluates a condition to decide whether to execute
+the true branch or the false branch. For example, `count < 5 ? "few" : "many"`
+evaluates to the string `"few"` if the `count` variable is less than five,
+or to the string `"many"` otherwise.
+
+In AQL, the branches are not limited to simple expressions but they can also be
+subqueries. Up until ArangoDB v3.12.0, the catch is that subqueries are pulled
+out by the query optimizer into separate `LET` operations that are executed
+before the condition is evaluated. Regardless of which branch is taken,
+the subquery code is always executed.
+
+Similarly, when you use subqueries as sub-expressions that are combined with
+logical `AND` or `OR`, the subqueries are executed unconditionally. This is
+typically not what you want and can lead to logical errors.
+
+Ternary operator example:
+
+```aql
+LET doc = FIRST(FOR d IN coll FILTER d._key == "A" RETURN d)
+RETURN doc ?: FIRST(INSERT { _key: "A" } INTO coll RETURN NEW)
+// doc ?: FIRST(...) is a shorthand for doc ? doc : FIRST(...)
+```
+
+The above query looks up a document with the key `A` in a collection called `coll`.
+If it exists (the `doc` variable is truthy), then it is returned. Otherwise, the
+document is supposed to be created. However, the false branch is a subquery that
+gets executed unconditionally. If the document with key `A` already exists, an
+attempt to create this document is still made (but fails because of a key conflict).
+
+```aql
+Execution plan:
+ Id   NodeType            Est.   Comment
+  1   SingletonNode          1   * ROOT
+ 10   CalculationNode        1     - LET #9 = { "_key" : "A" }   /* json expression */   /* const assignment */
+ 20   SubqueryStartNode      1     - LET #5 = ( /* subquery begin */
+ 11   InsertNode             1       - INSERT #9 IN coll 
+ 21   SubqueryEndNode        1       - RETURN  $NEW ) /* subquery end */
+ 18   SubqueryStartNode      1     - LET #1 = ( /* subquery begin */
+ 17   IndexNode              1       - FOR d IN coll   /* primary index scan, index scan + document lookup */    
+ 16   LimitNode              1         - LIMIT 0, 1
+ 19   SubqueryEndNode        1         - RETURN  d ) /* subquery end */
+ 14   CalculationNode        1     - LET #11 = (FIRST(#1) ?: #5)   /* simple expression */
+ 15   ReturnNode             1     - RETURN #11
+```
+
+As you can see, the false branch execution starts at node `18`, and the
+evaluation of the ternary operator happens afterwards in node `14`.
+
+From v3.12.1 onward, the evaluation behavior is changed so that only the
+applicable branch of a ternary operator is executed and subqueries that are used
+as sub-expressions are effectively evaluated lazily. For example, you can observe
+the query optimizer rewriting ternary operators differently to support
+short-circuiting when using subqueries:
+
+```aql
+Execution plan:
+ Id   NodeType            Par   Est.   Comment
+  1   SingletonNode                1   * ROOT
+ 22   SubqueryStartNode            1     - LET #1 = ( /* subquery begin */
+ 19   IndexNode                    1       - FOR d IN coll   /* primary index scan, index scan + document lookup */    
+ 18   LimitNode                    1         - LIMIT 0, 1
+ 23   SubqueryEndNode              1         - RETURN  d ) /* subquery end */
+  8   CalculationNode              1     - LET doc = FIRST(#1)   /* simple expression */
+ 20   SubqueryStartNode            1     - LET #6 = ( /* subquery begin */
+ 10   CalculationNode              1       - LET #9 = ! doc   /* simple expression */
+ 11   FilterNode                   1       - FILTER #9
+ 12   CalculationNode              1       - LET #10 = { "_key" : "A" }   /* json expression */   /* const assignment */
+ 13   InsertNode                   1       - INSERT #10 IN coll 
+ 21   SubqueryEndNode              1       - RETURN  $NEW ) /* subquery end */
+ 16   CalculationNode              1     - LET #11 = (doc ?: FIRST(#6))   /* simple expression */
+ 17   ReturnNode                   1     - RETURN #11
+```
+
+The false branch subquery starts at node `20`, still before the evaluation of
+the ternary operator at node `16`. However, the subquery has a `FILTER` operation
+using the negated condition. This prevents the `INSERT` operation from running
+when the `doc` variable is truthy because the opposite is false and
+`FILTER false` leaves nothing to process.
+
+Also see [Evaluation of subqueries](../../aql/fundamentals/subqueries.md#evaluation-of-subqueries).
+
 ## Indexing
 
 ### Multi-dimensional indexes
