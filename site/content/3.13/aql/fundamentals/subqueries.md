@@ -103,7 +103,8 @@ a nested array `[ [ 1, 2, 3 ] ]` with a single top-level element.
 {{< tab "From v3.12.1 onward" >}}
 Subqueries that are used inside expressions are pulled out of these
 expressions and conditionally executed beforehand. The effective behavior is
-short-circuiting evaluation.
+short-circuiting evaluation. An example is the
+[ternary operator](../operators.md#ternary-operator).
 
 Consider the following query:
 
