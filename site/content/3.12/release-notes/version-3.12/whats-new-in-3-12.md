@@ -950,14 +950,17 @@ A scheduler thread now has the capability to detach itself from the scheduler
 if it observes the need to perform a potentially long running task, like waiting
 for a lock. This allows a new scheduler thread to be started and prevents
 scenarios where all threads are blocked waiting for a lock, which has previously
-led to deadlock situations.
+led to deadlock situations. From v3.12.1 onward, coroutines are used instead of
+detaching threads as the underlying mechanism.
 
 Threads waiting for more than 1 second on a collection lock will detach
 themselves.
 
 The following startup option has been added:
 - `--server.max-number-detached-threads`: The maximum number of detached scheduler
-  threads.
+  threads. Note that this startup option is **deprecated** from v3.12.1 onward
+  because a different mechanism than detaching is used, obsoleting the option
+  and no longer having an effect.
 
 The following metric as been added:
 - `arangodb_scheduler_num_detached_threads`: The number of worker threads
