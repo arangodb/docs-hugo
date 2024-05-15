@@ -410,6 +410,19 @@ detached state:
 - `arangodb_network_connectivity_failures_dbservers_total`
 - `arangodb_scheduler_num_detached_threads`
 
+---
+
+<small>Introduced in: v3.12.1</small>
+
+The following metrics about cluster health and collection shard locks have been
+added:
+
+- `arangodb_vocbase_shards_read_only_by_write_concern`
+- `arangodb_collection_shard_lock_locked_exclusive`
+- `arangodb_collection_shard_lock_locked_shared`
+- `arangodb_collection_shard_lock_pending_exclusive`
+- `arangodb_collection_shard_lock_pending_shared`
+
 ### Endpoints deprecated
 
 #### JavaScript Transactions API

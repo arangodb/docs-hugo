@@ -1063,15 +1063,20 @@ small requests.
 Compression for all Agency traffic is disabled regardless of the settings
 of these options.
 
-### Read-only shards metric
+### Shards metric
 
 <small>Introduced in: v3.12.1</small>
 
-The following cluster health metric has been added:
+The following metrics about cluster health and collection shard locks have been
+added:
 
 | Label | Description |
 |:------|:------------|
 | `arangodb_vocbase_shards_read_only_by_write_concern` | Number of shards that are read-only due to an undercut of the write concern. |
+| `arangodb_collection_shard_lock_locked_exclusive` | Number of exclusively locked collection shards. |
+| `arangodb_collection_shard_lock_locked_shared` | Number of shared locked collection shards. |
+| `arangodb_collection_shard_lock_pending_exclusive` | Number of pending exclusive collection shard lock requests. |
+| `arangodb_collection_shard_lock_pending_shared` | Number of pending shared collection shard lock requests. |
 
 ## Client tools
 
