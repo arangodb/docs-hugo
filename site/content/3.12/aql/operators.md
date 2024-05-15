@@ -312,13 +312,11 @@ in case of `u.value ? u.value : 'value is null'`.
 {{< info >}}
 Up to v3.12.0, subqueries used inside expressions are pulled out of these
 expressions and executed beforehand. That means that subqueries do not
-participate in lazy evaluation of operands, for example in the
-[ternary operator](../operators.md#ternary-operator) or when used as
-sub-expressions that are combined with logical `AND` or `OR`.
+participate in lazy evaluation of operands.
   
 From v3.12.1 onward, short-circuiting is applied.
   
-Also see [evaluation of subqueries](subqueries.md#evaluation-of-subqueries).
+Also see [evaluation of subqueries](fundamentals/subqueries.md#evaluation-of-subqueries).
 {{< /info >}}
 
 ## Range operator
