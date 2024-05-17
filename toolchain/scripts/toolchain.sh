@@ -370,7 +370,8 @@ function process_server() {
 ### Check status of ArangoDB instance until it is up and running
 function wait_for_arangodb_ready() {
   attempts="${2:-1}"
-  res=$(docker exec -it $1 wget -q -S -O - http://localhost:8529/_api/version 2>&1 | grep -m 1 HTTP/ | awk '{print $2}')
+  # Use IPv4 explicitly as localhost can resolve to IPv6 [::1] on which the server isn't listening
+  res=$(docker exec -it $1 wget -q -S -O - http://127.0.0.1:8529/_api/version 2>&1 | grep -m 1 HTTP/ | awk '{print $2}')
   if [ "$res" = "200" ]; then
     log "Server is ready: $1"
   else
