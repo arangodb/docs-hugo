@@ -203,10 +203,16 @@ var appendCurlRequest = function (shellAppender, jsonAppender, rawAppender) {
       curl += '--data-binary @- ';
     }
 
-    curl += '--dump - http://localhost:8529' + url;
+    curl += "--dump - 'http://localhost:8529" + url + "'";
 
-    if (body !== undefined && body !== '' && body) {
-      curl += '\n'+JSON.stringify(body, undefined, 2);
+    if (body) {
+      curl += " <<'EOF'";
+      if (jsonBody) {
+        curl += '\n'+JSON.stringify(body, undefined, 2);
+      } else {
+        curl += '\n'+body;
+      }
+      curl += "\nEOF";
     }
 
     print("REQ");
