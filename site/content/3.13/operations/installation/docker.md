@@ -48,6 +48,26 @@ In order to get the IP ArangoDB listens on, run:
 docker inspect --format '{{ .NetworkSettings.IPAddress }}' arangodb-instance
 ```
 
+## Initialize the server language
+
+When using Docker, you need to specify the language you want to initialize the
+server to on the first run in one of the following ways:
+
+- Set the environment variable `LANG` to a locale in the `docker run` command,
+  e.g. `-e LANG=sv` for a Swedish locale.
+
+- Use an `arangod.conf` configuration file that sets a language and mount it
+  into the container. For example, create a configuration file on your
+  host system in which you set `icu-language = sv` at the top (before any
+  `[section]`) and then mount the file over the default configuration file like
+  `docker run -v /your-host-path/arangod.conf:/etc/arangodb3/arangod.conf ...`.
+
+Note that you cannot set the language using only a startup option on the
+command-line, like `docker run ... arangodb --icu-language sv`.
+
+If you don't specify a language explicitly, the default is `en_US` up to
+ArangoDB v3.11 and `en_US_POSIX` from ArangoDB v3.12 onward.
+
 ## Using the instance
 
 To use the running instance from an application, link the container:
@@ -222,7 +242,7 @@ Note that you need to provide the used volumes in this case.
 docker run -d --name arangodb-persist -v /var/lib/arangodb3 busybox true
 ```
 
-## Using as a base image
+## Usage as a base image
 
 If you use the image as a base image, make sure to write any `CMD` instructions in the
 [*exec* form](https://docs.docker.com/engine/reference/builder/#cmd).
