@@ -108,6 +108,11 @@ const log = function (a) {
   appender(internal.stopCaptureMode());
 };
 
+const escapeSingleQuotes = function(str) {
+  let regex = /'/g;
+  return str.replace(regex, `'"'"'`);
+}
+
 var appendCurlRequest = function (shellAppender, jsonAppender, rawAppender) {
   return function (method, url, body, headers) {
     var response;
@@ -149,7 +154,7 @@ var appendCurlRequest = function (shellAppender, jsonAppender, rawAppender) {
     }
     for (let i in headers) {
       if (headers.hasOwnProperty(i)) {
-        curl += "--header '" + i + ': ' + headers[i].replace(/'/g, `'"'"'`) + "' ";
+        curl += "--header '" + i + ': ' + escapeSingleQuotes(headers[i]) + "' ";
       }
     }
 
