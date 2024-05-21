@@ -73,58 +73,17 @@ var formatPlan = function (plan) {
 
 // HTTP EXAMPLES HEADER
 
-
-
-const exds = require("@arangodb/examples/examples").Examples;
-
-const hljs = require('highlight.js');
-
-const MAP = {
-    'py': 'python',
-    'js': 'javascript',
-    'json': 'javascript',
-    'rb': 'ruby',
-    'csharp': 'cs',
-};
-
-function normalize(lang) {
-    if(!lang) { return null; }
-
-    var lower = lang.toLowerCase();
-    return MAP[lower] || lower;
-}
-
-function highlight(language, code) {
-  if(!language) {
-    return code;
-  }
-  // Normalize language
-  language = normalize(language);
-
-  try {
-    return hljs.highlight(code, {language}).value;
-  } catch(e) { }
-
-  return code;
-}
-
-
 internal.startPrettyPrint(true);
 internal.stopColorPrint(true);
 var appender = function(text) {
   output += text;
 };
-const jsonAppender = function(text) {
-  output += highlight("js", text);
-};
+const rawAppender = appender;
+const htmlAppender = appender;
+const jsonAppender = appender;
+const shellAppender = appender;
 const jsonLAppender = function(text) {
-  output += highlight("js", text) + "&#x21A9;\n" ;
-};
-const htmlAppender = function(text) {
-  output += highlight("html", text);
-};
-const rawAppender = function(text) {
-  output += text;
+  output += text + "&#x21A9;\n" ;
 };
 
 const plainAppender = function(text) {
@@ -132,7 +91,7 @@ const plainAppender = function(text) {
   if (text.match(/^{.*}$/) || text.match(/^[.*]$/)) {
     try {
       let parsed = JSON.parse(text);
-      output += highlight("js", internal.inspect(parsed)) + "&#x21A9;\n" ;
+      output += internal.inspect(parsed) + "&#x21A9;\n" ;
     } catch (x) {
       // fallback to plain text.
       output += text;
@@ -143,9 +102,6 @@ const plainAppender = function(text) {
 };
 
 
-const shellAppender = function(text) {
-  output += highlight("shell", text);
-};
 const log = function (a) {
   internal.startCaptureMode();
   print(a);
@@ -206,9 +162,9 @@ var appendCurlRequest = function (shellAppender, jsonAppender, rawAppender) {
     if (body) {
       curl += " <<'EOF'";
       if (jsonBody) {
-        curl += '\n'+JSON.stringify(body, undefined, 2);
+        curl += '\n' + JSON.stringify(body, undefined, 2);
       } else {
-        curl += '\n'+body;
+        curl += '\n' + body;
       }
       curl += "\nEOF";
     }
@@ -223,6 +179,7 @@ var appendCurlRequest = function (shellAppender, jsonAppender, rawAppender) {
   
 
 var logCurlRequestRaw = appendCurlRequest(shellAppender, jsonAppender, rawAppender);
+// TODO: Is this calling the internal implementation on purpose?
 var logCurlRequestPlain = internal.appendCurlRequest(shellAppender, jsonAppender, plainAppender);
 var logRawResponse = internal.appendRawResponse(rawAppender, rawAppender);
 var logCurlRequest = function () {
