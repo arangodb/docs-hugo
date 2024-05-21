@@ -191,11 +191,9 @@ var appendCurlRequest = function (shellAppender, jsonAppender, rawAppender) {
       response = internal.arango.OPTION_RAW(url, body, headers);
       curl += '-X ' + method + ' ';
     }
-    if (headers !== undefined && headers !== '') {
-      for (let i in headers) {
-        if (headers.hasOwnProperty(i)) {
-          curl += "--header '" + i + ': ' + headers[i] + "' ";
-        }
+    for (let i in headers) {
+      if (headers.hasOwnProperty(i)) {
+        curl += "--header '" + i + ': ' + headers[i].replace(/'/g, `'"'"'`) + "' ";
       }
     }
 
