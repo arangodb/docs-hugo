@@ -54,5 +54,5 @@ func openRepoStream(repository *models.Repository) {
 
 	repository.StdinPipe = stdin
 	repository.StdoutPipe = stdout
-	models.Logger.Printf("[openRepoStream] Opened Stream for %s succesfully", repository.Version)
+	models.Logger.Printf("[openRepoStream] Opened Stream for %s successfully", repository.Version)
 }
