@@ -93,6 +93,7 @@ Here are examples to integrate configuration properties from different sources:
 - `compressionThreshold(Integer)`: the minimum HTTP request body size (in bytes) to trigger compression, (default: `1024`)
 - `compressionLevel`:              compression level between 0 and 9, (default: `6`)
 - `serde(ArangoSerde)`:            serde to serialize and deserialize user-data
+- `reuseVertx(Boolean)`:           reuse Vert.x instance to create HTTP connections, (default: `false`)
 
 ### Config File Properties
 
@@ -120,6 +121,7 @@ The properties read are:
 - `compression`: `NONE`, `DEFLATE` or `GZIP`
 - `compressionThreshold`
 - `compressionLevel`
+- `reuseVertx`
 
 ## SSL
 
