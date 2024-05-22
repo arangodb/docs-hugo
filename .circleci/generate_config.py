@@ -112,7 +112,7 @@ def workflow_generate(config):
             }
         }
 
-        if not "enterprise-preview" in branch:
+        if not branch.startswith("arangodb/enterprise-preview:") and not branch.startswith("arangodb/enterprise:"):
 
             openssl = findOpensslVersion(branch)
             compileJob["compile-linux"]["openssl"] = openssl
