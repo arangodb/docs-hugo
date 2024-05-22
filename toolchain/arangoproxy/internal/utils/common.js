@@ -108,11 +108,6 @@ const log = function (a) {
   appender(internal.stopCaptureMode());
 };
 
-const escapeSingleQuotes = function(str) {
-  let regex = /'/g;
-  return str.replace(regex, `'"'"'`);
-}
-
 var appendCurlRequest = function (shellAppender, jsonAppender, rawAppender) {
   return function (method, url, body, headers) {
     var response;
@@ -154,7 +149,10 @@ var appendCurlRequest = function (shellAppender, jsonAppender, rawAppender) {
     }
     for (let i in headers) {
       if (headers.hasOwnProperty(i)) {
-        curl += "--header '" + i + ': ' + escapeSingleQuotes(headers[i]) + "' ";
+        // TODO: The header could contain ' which would need to be replaced by '"'"'
+        // for Bash, but doing so (inline or calling a function) somehow breaks the
+        // toolchain (arangoproxy unable to launch the 2nd arangosh to connect to the server)
+        curl += "--header '" + i + ": " + headers[i] + "' ";
       }
     }
 
