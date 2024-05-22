@@ -83,15 +83,15 @@ const htmlAppender = appender;
 const jsonAppender = appender;
 const shellAppender = appender;
 const jsonLAppender = function(text) {
-  output += text + "&#x21A9;\n" ;
+  output += text + "↩\n" ;
 };
 
 const plainAppender = function(text) {
   // do we have a line that could be json? try to parse & format it.
-  if (text.match(/^{.*}$/) || text.match(/^[.*]$/)) {
+  if (text.match(/^\{.*\}$/) || text.match(/^\[.*\]$/)) {
     try {
       let parsed = JSON.parse(text);
-      output += internal.inspect(parsed) + "&#x21A9;\n" ;
+      output += internal.inspect(parsed) + "↩\n" ;
     } catch (x) {
       // fallback to plain text.
       output += text;
