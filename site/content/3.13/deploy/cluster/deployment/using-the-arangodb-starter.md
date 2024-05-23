@@ -156,7 +156,8 @@ docker run -it --name=adb1 --rm -p 8528:8528 \
     -v arangodb1:/data \
     -v /var/run/docker.sock:/var/run/docker.sock \
     arangodb/arangodb-starter \
-    --starter.address=$IP
+    --starter.address=$IP \
+    --docker.net-mode=default
 ```
 
 If you are running on Linux, it is also possible to use a host-mapped volume
@@ -174,7 +175,8 @@ docker run -it --name=adbN --rm -p 8528:8528 \
     -v /var/run/docker.sock:/var/run/docker.sock \
     arangodb/arangodb-starter \
     --starter.address=$IP \
-    --starter.join A
+    --starter.join A \
+    --docker.net-mode=default
 ```
 
 If you use the Enterprise Edition Docker image, you have to set the license key
@@ -210,7 +212,8 @@ docker run -it --name=adbN --rm -p 8528:8528 \
     -e DOCKER_TLS_VERIFY=1 \
     -e DOCKER_CERT_PATH=$DOCKER_CERT_PATH \
     arangodb/arangodb-starter \
-    --starter.address=$IP
+    --starter.address=$IP \
+    --docker.net-mode=default
 ```
 
 Note that the environment variables `DOCKER_TLS_VERIFY` and `DOCKER_CERT_PATH` 
@@ -228,7 +231,8 @@ docker run -it --name=adbN --rm -p 8528:8528 \
     -v /path/to/cert:/root/.docker \
     -e DOCKER_TLS_VERIFY=1 \
     arangodb/arangodb-starter \
-    --starter.address=$IP
+    --starter.address=$IP \
+    --docker.net-mode=default
 ```
 
 ## Under the Hood

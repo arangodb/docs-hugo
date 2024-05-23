@@ -45,7 +45,8 @@ docker run -it --name=adb --rm -p 8528:8528 \
     -v /var/run/docker.sock:/var/run/docker.sock \
     arangodb/arangodb-starter \
     --starter.address=$IP \
-    --starter.mode=single 
+    --starter.mode=single \
+    --docker.net-mode=default
 ```
 
 If you use the Enterprise Edition Docker image, you have to set the license key
@@ -82,7 +83,8 @@ docker run -it --name=adb --rm -p 8528:8528 \
     -v /path/to/certificate:/path/to/certificate
     arangodb/arangodb-starter \
     --starter.address=$IP \
-    --starter.mode=single
+    --starter.mode=single \
+    --docker.net-mode=default
 ```
 
 Note that the environment variables `DOCKER_TLS_VERIFY` and `DOCKER_CERT_PATH` 
@@ -101,5 +103,6 @@ docker run -it --name=adb --rm -p 8528:8528 \
     -e DOCKER_TLS_VERIFY=1 \
     arangodb/arangodb-starter \
     --starter.address=$IP \
-    --starter.mode=single
+    --starter.mode=single \
+    --docker.net-mode=default
 ```
