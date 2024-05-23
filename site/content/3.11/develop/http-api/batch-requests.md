@@ -305,18 +305,16 @@ description: |-
   Sending a batch request with five batch parts:
 
   - GET /_api/version
-
   - DELETE /_api/collection/products
-
   - POST /_api/collection/products
-
   - GET /_api/collection/products/figures
-
   - DELETE /_api/collection/products
 
   The boundary (`SomeBoundaryValue`) is passed to the server in the HTTP
   `Content-Type` HTTP header.
-  *Please note the reply is not displayed all accurate.*
+
+  The server response is formatted for readability. The `↩` character denotes
+  the original line breaks.
 name: RestBatchMultipartHeader
 ---
 var parts = [
@@ -342,13 +340,12 @@ var parts = [
   "DELETE /_api/collection/products HTTP/1.1\r\n"
 ];
 var boundary = "SomeBoundaryValue";
-var headers = { "Content-Type" : "multipart/form-data; boundary=" +
-boundary };
+var headers = { "Content-Type" : "multipart/form-data; boundary=" + boundary };
 var body = "--" + boundary + "\r\n" +
            parts.join("\r\n" + "--" + boundary + "\r\n") +
            "--" + boundary + "--\r\n";
 
-var response = logCurlRequestPlain('POST', '/_api/batch', body, headers);
+var response = logCurlRequest('POST', '/_api/batch', body, headers);
 
 assert(response.code === 200);
 
@@ -358,8 +355,11 @@ logPlainResponse(response);
 ```curl
 ---
 description: |-
-  Sending a batch request, setting the boundary implicitly (the server will
-  in this case try to find the boundary at the beginning of the request body).
+  Sending a batch request, setting the boundary implicitly. The server tries
+  to find the boundary at the beginning of the request body in this case.
+
+  The server response is formatted for readability. The `↩` character denotes
+  the original line breaks.
 name: RestBatchImplicitBoundary
 ---
 var parts = [
@@ -373,7 +373,7 @@ var body = "--" + boundary + "\r\n" +
            parts.join("\r\n" + "--" + boundary + "\r\n") +
            "--" + boundary + "--\r\n";
 
-var response = logCurlRequestPlain('POST', '/_api/batch', body);
+var response = logCurlRequest('POST', '/_api/batch', body);
 
 assert(response.code === 200);
 assert(response.headers['x-arango-errors'] == 2);

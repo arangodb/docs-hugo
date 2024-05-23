@@ -1282,7 +1282,7 @@ loaded before the query is run:
 dataset: name_of_dataset
 ```
 
-See [datasets.json](toolchain/arangoproxy/internal/utils/)
+See [datasets.json](toolchain/arangoproxy/internal/utils/datasets.json)
 for the available datasets.
 
 To get the query explain output including the execution plan instead of the

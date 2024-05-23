@@ -255,7 +255,7 @@ var body = [
   { name: { detailed: "detailed name", short: "short name" } }
 ];
 
-var response = logCurlRequestRaw('POST', "/_api/import?collection=" + cn + "&type=list", body);
+var response = logCurlRequest('POST', "/_api/import?collection=" + cn + "&type=list", body);
 
 assert(response.code === 201);
 assert(response.parsedBody.created === 3);
@@ -283,8 +283,7 @@ var body = '{ "_key": "abc", "value1": 25, "value2": "test",' +
            '{ "_key": "foo", "name": "baz" }\n\n' +
            '{ "name": {' +
            ' "detailed": "detailed name", "short": "short name" } }\n';
-var response = logCurlRequestRaw('POST', "/_api/import?collection=" + cn
-+ "&type=documents", body);
+var response = logCurlRequest('POST', "/_api/import?collection=" + cn + "&type=documents", body);
 
 assert(response.code === 201);
 assert(response.parsedBody.created === 3);
