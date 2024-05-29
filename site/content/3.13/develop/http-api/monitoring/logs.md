@@ -585,6 +585,46 @@ paths:
         - Monitoring
 ```
 
+## Reset the server log levels
+
+<small>Introduced in: v3.12.1</small>
+
+```openapi
+paths:
+  /_admin/log/level:
+    delete:
+      operationId: resetLogLevel
+      description: |
+        Revert the server's log level settings to the values they had at startup,
+        as determined by the startup options specified on the command-line, a
+        configuration file, and the factory defaults.
+
+        The result is a JSON object with the log topics being the object keys, and
+        the log levels being the object values.
+
+        This API can be turned off via the startup option `--log.api-enabled`. In case
+        the API is disabled, all requests will be responded to with HTTP 403. If the
+        API is enabled, accessing it requires admin privileges, or even superuser
+        privileges, depending on the value of the `--log.api-enabled` startup option.
+      parameters:
+        - name: serverId
+          in: query
+          required: false
+          description: |
+            Forwards the request to the specified server.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            The log levels have been reset successfully.
+        '403':
+          description: |
+            You have insufficient privileges to reset the log levels.
+      tags:
+        - Monitoring
+```
+
 ## Get the structured log settings
 
 ```openapi

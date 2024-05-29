@@ -245,6 +245,19 @@ usage metrics per shard and per user whenever a shard is accessed.
 For more information, see the [HTTP API description](../../develop/http-api/monitoring/metrics.md#get-usage-metrics)
 and [Monitoring per collection/database/user](../version-3.12/whats-new-in-3-12.md#monitoring-per-collectiondatabaseuser).
 
+#### Reset log levels
+
+<small>Introduced in: v3.12.1</small>
+
+A new `DELETE /_admin/log/level` endpoint has been added that lets you reset the
+log level settings to the values they had at server startup. This is useful for
+tools that temporarily change log levels but do not want to fetch and remember
+the previous log levels settings. Such tools can now simply call this new
+endpoint to restore the original log levels.
+
+See the [Log API](../../develop/http-api/monitoring/logs.md#reset-the-server-log-levels)
+for details.
+
 ### Endpoints augmented
 
 #### View API
