@@ -390,7 +390,7 @@ shows the number of successful parallel asynchronous prefetch calls.
 
 ### Added AQL functions
 
-The new `PARSE_COLLECTION()` and `PARSE_KEY()` let you more extract the
+The new `PARSE_COLLECTION()` and `PARSE_KEY()` functions let you extract the
 collection name respectively the document key from a document identifier with
 less overhead.
 
@@ -404,6 +404,15 @@ returns the corresponding character as a string.
 See [String functions in AQL](../../aql/functions/string.md#repeat).
 
 A numeric function `RANDOM()` has been added as an alias for the existing `RAND()`.
+
+---
+
+<small>Introduced in: v3.12.1</small>
+
+The new `ENTRIES()` functions returns the top-level attributes of an object in
+pairs of attribute keys and values.
+
+See [Document and object functions in AQL](../../aql/functions/document-object.md#entries).
 
 ### Timezone parameter for date functions
 
