@@ -89,8 +89,8 @@ To only return the attribute keys, see the [`ATTRIBUTES()` function](#attributes
 To only return the attribute values, see the [`VALUES()` function](#values).
 
 - **document** (object): an arbitrary document / object
-- returns **strArray** (array): the attributes of the input `document` as an
-  array of arrays. Each element is a nested array comprised of two strings with
+- returns **pairArray** (array): the attributes of the input `document` as an
+  array of arrays. Each element is a nested array comprised of two elements with
   the attribute key and the attribute value
 
 **Examples**
@@ -101,16 +101,17 @@ name: aqlEntries
 description: |
   Return the attributes of an object as pairs of keys and values:
 ---
-RETURN ENTRIES( { "foo": "bar", "_key": "123" } )
+RETURN ENTRIES( { "foo": "bar", "number": 123 } )
 ```
 
 ```aql
 ---
 name: aqlEntriesLoop
 description: |
-  Iterate over the attributes of an object and return an object for each pair:
+  Iterate over the attributes of an object and return an object for each
+  key-value pair:
 ---
-FOR pair IN ENTRIES( { "foo": "bar", "_key": "123" } )
+FOR pair IN ENTRIES( { "foo": "bar", "number": 123 } )
   LET key = pair[0]
   LET value = pair[1]
   RETURN {key, value}
