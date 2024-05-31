@@ -70,8 +70,6 @@ and lead to error:
   the `type` sub-attribute is `"autoincrement"`. The `lastValue` sub-attribute
   is only allowed if the `type` sub-attribute is `"traditional"`, `"autoincrement"`,
   or `"padded"`.
-- `isSmartChild`: If specified, the attribute must have a boolean value.
-- `internalValidatorType`: If specified, the attribute must have an unsigned integer value.
 - `shardKeys`: Each array element needs to be a string.
 
 #### Index API
