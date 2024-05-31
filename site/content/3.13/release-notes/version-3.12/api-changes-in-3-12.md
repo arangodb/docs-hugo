@@ -64,7 +64,7 @@ unknown attributes and values are detected in the request body.
 
 Note that all invalid elements and value combinations will be rejected in future
 versions. The following options are already validated more strictly in v3.12
-and lead to error:
+and incorrect use can lead to errors:
 
 - `keyOptions`: The `increment` and `offset` sub-attributes are only allowed if
   the `type` sub-attribute is `"autoincrement"`. The `lastValue` sub-attribute
