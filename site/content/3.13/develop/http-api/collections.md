@@ -375,7 +375,6 @@ paths:
                     required:
                       - type
                       - allowUserKeys
-                      - lastValue
                     properties:
                       type:
                         description: |
@@ -403,16 +402,16 @@ paths:
                       increment:
                         description: |
                           The increment value for the `autoincrement` key generator.
-                          Not used for other key generator types.
+                          Not used by other key generator types.
                         type: integer
                       offset:
                         description: |
                           The initial offset value for the `autoincrement` key generator.
-                          Not used for other key generator types.
+                          Not used by other key generator types.
                         type: integer
                       lastValue:
                         description: |
-                          The current offset value of the `autoincrement` or `padded` key generator.
+                          The offset value of the `autoincrement` or `padded` key generator.
                           This is an internal property for restoring dumps properly.
                         type: integer
                   cacheEnabled:
@@ -706,7 +705,6 @@ paths:
                     required:
                       - type
                       - allowUserKeys
-                      - lastValue
                     properties:
                       type:
                         description: |
@@ -734,16 +732,16 @@ paths:
                       increment:
                         description: |
                           The increment value for the `autoincrement` key generator.
-                          Not used for other key generator types.
+                          Not used by other key generator types.
                         type: integer
                       offset:
                         description: |
                           The initial offset value for the `autoincrement` key generator.
-                          Not used for other key generator types.
+                          Not used by other key generator types.
                         type: integer
                       lastValue:
                         description: |
-                          The current offset value of the `autoincrement` or `padded` key generator.
+                          The offset value of the `autoincrement` or `padded` key generator.
                           This is an internal property for restoring dumps properly.
                         type: integer
                   cacheEnabled:
@@ -1054,7 +1052,6 @@ paths:
                     required:
                       - type
                       - allowUserKeys
-                      - lastValue
                     properties:
                       type:
                         description: |
@@ -1082,16 +1079,16 @@ paths:
                       increment:
                         description: |
                           The increment value for the `autoincrement` key generator.
-                          Not used for other key generator types.
+                          Not used by other key generator types.
                         type: integer
                       offset:
                         description: |
                           The initial offset value for the `autoincrement` key generator.
-                          Not used for other key generator types.
+                          Not used by other key generator types.
                         type: integer
                       lastValue:
                         description: |
-                          The current offset value of the `autoincrement` or `padded` key generator.
+                          The offset value of the `autoincrement` or `padded` key generator.
                           This is an internal property for restoring dumps properly.
                         type: integer
                   cacheEnabled:
@@ -1798,7 +1795,6 @@ paths:
                     required:
                       - type
                       - allowUserKeys
-                      - lastValue
                     properties:
                       type:
                         description: |
@@ -1826,16 +1822,16 @@ paths:
                       increment:
                         description: |
                           The increment value for the `autoincrement` key generator.
-                          Not used for other key generator types.
+                          Not used by other key generator types.
                         type: integer
                       offset:
                         description: |
                           The initial offset value for the `autoincrement` key generator.
-                          Not used for other key generator types.
+                          Not used by other key generator types.
                         type: integer
                       lastValue:
                         description: |
-                          The current offset value of the `autoincrement` or `padded` key generator.
+                          The offset value of the `autoincrement` or `padded` key generator.
                           This is an internal property for restoring dumps properly.
                         type: integer
                   cacheEnabled:
@@ -2370,11 +2366,6 @@ paths:
                     additional options for key generation. If specified, then `keyOptions`
                     should be a JSON object containing the following attributes:
                   type: object
-                  required:
-                    - type
-                    - allowUserKeys
-                    - increment
-                    - offset
                   properties:
                     type:
                       description: |
@@ -2427,13 +2418,13 @@ paths:
                       type: boolean
                     increment:
                       description: |
-                        increment value for `autoincrement` key generator. Not used for other key
-                        generator types.
+                        The increment value for the `autoincrement` key generator.
+                        Not allowed for other key generator types.
                       type: integer
                     offset:
                       description: |
-                        Initial offset value for `autoincrement` key generator.
-                        Not used for other key generator types.
+                        The initial offset value for the `autoincrement` key generator.
+                        Not allowed for other key generator types.
                       type: integer
                 type:
                   description: |
@@ -2690,7 +2681,6 @@ paths:
                     required:
                       - type
                       - allowUserKeys
-                      - lastValue
                     properties:
                       type:
                         description: |
@@ -2718,16 +2708,16 @@ paths:
                       increment:
                         description: |
                           The increment value for the `autoincrement` key generator.
-                          Not used for other key generator types.
+                          Not used by other key generator types.
                         type: integer
                       offset:
                         description: |
                           The initial offset value for the `autoincrement` key generator.
-                          Not used for other key generator types.
+                          Not used by other key generator types.
                         type: integer
                       lastValue:
                         description: |
-                          The current offset value of the `autoincrement` or `padded` key generator.
+                          The offset value for the `autoincrement` or `padded` key generator.
                           This is an internal property for restoring dumps properly.
                         type: integer
                   cacheEnabled:
@@ -4028,7 +4018,6 @@ paths:
                     required:
                       - type
                       - allowUserKeys
-                      - lastValue
                     properties:
                       type:
                         description: |
@@ -4056,16 +4045,16 @@ paths:
                       increment:
                         description: |
                           The increment value for the `autoincrement` key generator.
-                          Not used for other key generator types.
+                          Not used by other key generator types.
                         type: integer
                       offset:
                         description: |
                           The initial offset value for the `autoincrement` key generator.
-                          Not used for other key generator types.
+                          Not used by other key generator types.
                         type: integer
                       lastValue:
                         description: |
-                          The current offset value of the `autoincrement` or `padded` key generator.
+                          The offset value of the `autoincrement` or `padded` key generator.
                           This is an internal property for restoring dumps properly.
                         type: integer
                   cacheEnabled:

@@ -444,6 +444,11 @@ paths:
                   description: |
                     One of the possible log topics.
                   type: string
+                deprecation:
+                  description: |
+                    Warns about deprecated features and the usage of options that
+                    will not be allowed or have no effect in a future version.
+                  type: string
                 development:
                   description: |
                     One of the possible log topics.
