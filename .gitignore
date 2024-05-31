@@ -1,5 +1,6 @@
 .DS_Store
 .vscode/
+.idea/
 /tmp/
 node_modules/
 *.pyc

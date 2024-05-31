@@ -198,12 +198,12 @@ To define more than one attribute to sort by, use multiple sub-objects in the
 {{< /tabs >}}
 
 The optimization can be applied to queries which sort by both fields as
-defined (`SORT doc.date DESC, doc.name`), but also if they sort in descending
+defined (`SORT doc.date DESC, doc.text`), but also if they sort in descending
 order by the `date` attribute only (`SORT doc.date DESC`). Queries which sort
-by `text` alone (`SORT doc.name`) are not eligible, because the index is sorted
+by `text` alone (`SORT doc.text`) are not eligible, because the index is sorted
 by `date` first. This is similar to persistent indexes, but inverted sorting
 directions are not covered by the View index
-(e.g. `SORT doc.date, doc.name DESC`).
+(e.g. `SORT doc.date, doc.text DESC`).
 
 You can disable the **primary sort compression** on View or index creation to
 trade space for speed. The primary sort data is LZ4-compressed by default (`"lz4"`).

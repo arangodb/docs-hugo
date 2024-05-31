@@ -73,66 +73,25 @@ var formatPlan = function (plan) {
 
 // HTTP EXAMPLES HEADER
 
-
-
-const exds = require("@arangodb/examples/examples").Examples;
-
-const hljs = require('highlight.js');
-
-const MAP = {
-    'py': 'python',
-    'js': 'javascript',
-    'json': 'javascript',
-    'rb': 'ruby',
-    'csharp': 'cs',
-};
-
-function normalize(lang) {
-    if(!lang) { return null; }
-
-    var lower = lang.toLowerCase();
-    return MAP[lower] || lower;
-}
-
-function highlight(language, code) {
-  if(!language) {
-    return code;
-  }
-  // Normalize language
-  language = normalize(language);
-
-  try {
-    return hljs.highlight(code, {language}).value;
-  } catch(e) { }
-
-  return code;
-}
-
-
 internal.startPrettyPrint(true);
 internal.stopColorPrint(true);
 var appender = function(text) {
   output += text;
 };
-const jsonAppender = function(text) {
-  output += highlight("js", text);
-};
+const rawAppender = appender;
+const htmlAppender = appender;
+const jsonAppender = appender;
+const shellAppender = appender;
 const jsonLAppender = function(text) {
-  output += highlight("js", text) + "&#x21A9;\n" ;
-};
-const htmlAppender = function(text) {
-  output += highlight("html", text);
-};
-const rawAppender = function(text) {
-  output += text;
+  output += text + "↩\n" ;
 };
 
 const plainAppender = function(text) {
   // do we have a line that could be json? try to parse & format it.
-  if (text.match(/^{.*}$/) || text.match(/^[.*]$/)) {
+  if (text.match(/^\{.*\}$/) || text.match(/^\[.*\]$/)) {
     try {
       let parsed = JSON.parse(text);
-      output += highlight("js", internal.inspect(parsed)) + "&#x21A9;\n" ;
+      output += internal.inspect(parsed) + "↩\n" ;
     } catch (x) {
       // fallback to plain text.
       output += text;
@@ -143,9 +102,6 @@ const plainAppender = function(text) {
 };
 
 
-const shellAppender = function(text) {
-  output += highlight("shell", text);
-};
 const log = function (a) {
   internal.startCaptureMode();
   print(a);
@@ -191,11 +147,12 @@ var appendCurlRequest = function (shellAppender, jsonAppender, rawAppender) {
       response = internal.arango.OPTION_RAW(url, body, headers);
       curl += '-X ' + method + ' ';
     }
-    if (headers !== undefined && headers !== '') {
-      for (let i in headers) {
-        if (headers.hasOwnProperty(i)) {
-          curl += "--header '" + i + ': ' + headers[i] + "' ";
-        }
+    for (let i in headers) {
+      if (headers.hasOwnProperty(i)) {
+        // TODO: The header could contain ' which would need to be replaced by '"'"'
+        // for Bash, but doing so (inline or calling a function) somehow breaks the
+        // toolchain (arangoproxy unable to launch the 2nd arangosh to connect to the server)
+        curl += "--header '" + i + ": " + headers[i] + "' ";
       }
     }
 
@@ -203,10 +160,16 @@ var appendCurlRequest = function (shellAppender, jsonAppender, rawAppender) {
       curl += '--data-binary @- ';
     }
 
-    curl += '--dump - http://localhost:8529' + url;
+    curl += "--dump - 'http://localhost:8529" + url + "'";
 
-    if (body !== undefined && body !== '' && body) {
-      curl += '\n'+JSON.stringify(body, undefined, 2);
+    if (body) {
+      curl += " <<'EOF'";
+      if (jsonBody) {
+        curl += '\n' + JSON.stringify(body, undefined, 2);
+      } else {
+        curl += '\n' + body;
+      }
+      curl += "\nEOF";
     }
 
     print("REQ");
@@ -219,6 +182,7 @@ var appendCurlRequest = function (shellAppender, jsonAppender, rawAppender) {
   
 
 var logCurlRequestRaw = appendCurlRequest(shellAppender, jsonAppender, rawAppender);
+// TODO: Is this calling the internal implementation on purpose?
 var logCurlRequestPlain = internal.appendCurlRequest(shellAppender, jsonAppender, plainAppender);
 var logRawResponse = internal.appendRawResponse(rawAppender, rawAppender);
 var logCurlRequest = function () {

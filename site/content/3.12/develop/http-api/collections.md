@@ -1487,8 +1487,8 @@ var cn = "testCollection";
 db._drop(cn);
 db._create(cn, { numberOfShards: 3, shardKeys: ["_key"] });
 
-var body = JSON.stringify({ _key: "testkey", value: 23 });
-var response = logCurlRequestRaw('PUT', "/_api/collection/" + cn + "/responsibleShard", body);
+var body = { _key: "testkey", value: 23 };
+var response = logCurlRequest('PUT', "/_api/collection/" + cn + "/responsibleShard", body);
 
 assert(response.code === 200);
 assert(response.parsedBody.hasOwnProperty("shardId"));
