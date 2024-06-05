@@ -206,6 +206,13 @@ or user-defined AQL functions (UDFs), compare or sort strings in them, and
 Unicode characters for which the standard has changed between the two ICU versions
 are involved.
 
+## Stricter option validation when creating collections
+
+Some invalid attributes and values that you can specify in the HTTP API when
+creating collections are no longer allowed. Previous versions ignored these
+invalid options. See [API Changes in ArangoDB 3.12](api-changes-in-3-12.md#collection-api)
+for details.
+
 ## Control character escaping in audit log
 
 The audit log feature of the Enterprise Edition previously logged query strings

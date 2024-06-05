@@ -59,11 +59,18 @@ characters using the default settings.
 #### Collection API
 
 When creating a collection using the `POST /_api/collection` endpoint, the
-server log now displays a deprecation message if illegal combinations and
+server log now displays a `deprecation` message if illegal combinations and
 unknown attributes and values are detected in the request body.
 
-Note that all invalid elements and combinations will be rejected in future
-versions.
+Note that all invalid elements and value combinations will be rejected in future
+versions. The following options are already validated more strictly in v3.12
+and incorrect use can lead to errors:
+
+- `keyOptions`: The `increment` and `offset` sub-attributes are only allowed if
+  the `type` sub-attribute is `"autoincrement"`. The `lastValue` sub-attribute
+  is only allowed if the `type` sub-attribute is `"traditional"`, `"autoincrement"`,
+  or `"padded"`.
+- `shardKeys`: Each array element needs to be a string.
 
 #### Index API
 
@@ -194,6 +201,10 @@ The [`/_admin/log/*` endpoints](../../develop/http-api/monitoring/logs.md) no
 longer use the `ldap` log topic. Changing the log level of the `ldap` topic or
 any other unknown topic is not an error, however. Also see
 [Incompatible changes in ArangoDB 3.12](incompatible-changes-in-3-12.md#ldap-authentication-support-removed).
+
+A new `deprecation` log topic has been added. It warns about deprecated features
+and the usage of options that will not be allowed or have no effect in a future
+version.
 
 #### Error code `12` removed
 
