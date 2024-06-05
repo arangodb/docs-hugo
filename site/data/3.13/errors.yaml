@@ -174,7 +174,7 @@
   code: 406
 - name: ERROR_HTTP_REQUEST_TIMEOUT
   text: "request timeout"
-  desc: "Will be raised when a timeout occured."
+  desc: "Will be raised when a timeout occurred."
   code: 408
 - name: ERROR_HTTP_CONFLICT
   text: "conflict"
@@ -278,7 +278,7 @@
   code: 1207
 - name: ERROR_ARANGO_ILLEGAL_NAME
   text: "illegal name"
-  desc: "Will be raised when an illegal name is detected."
+  desc: "Will be raised when the name of a database, collection, View, Analyzer, index, graph, or other object is invalid, respectively, when it is against the naming constraints."
   code: 1208
 - name: ERROR_ARANGO_NO_INDEX
   text: "no suitable index known"
@@ -641,7 +641,7 @@
   code: 1478
 - name: ERROR_CLUSTER_AQL_COLLECTION_OUT_OF_SYNC
   text: "collection/view is out of sync"
-  desc: "Will be raised if a collection/view needed during query execution is out of sync. This currently can happen when using SatelliteCollections, Arangosearch links or inverted indexes."
+  desc: "Will be raised if a collection/view needed during query execution is out of sync. This currently can happen when using SatelliteCollections, ArangoSearch links or inverted indexes."
   code: 1481
 - name: ERROR_CLUSTER_COULD_NOT_CREATE_INDEX_IN_PLAN
   text: "could not create index in plan"

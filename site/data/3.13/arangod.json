@@ -14,8 +14,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -42,8 +41,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -69,8 +67,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -91,8 +88,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -118,8 +114,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -145,8 +140,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -168,8 +162,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -195,8 +188,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -217,8 +209,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -246,8 +237,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -273,8 +263,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -295,8 +284,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -326,8 +314,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -356,8 +343,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -381,8 +367,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -409,8 +394,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -437,8 +421,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -464,8 +447,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "agency",
@@ -486,8 +468,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -519,8 +500,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -546,8 +526,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -578,8 +557,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -612,8 +590,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -643,8 +620,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -676,8 +652,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -709,8 +684,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -742,8 +716,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -770,8 +743,7 @@
     "longDescription" : "If set to `true`, any data retrieval queries on\nout-of-sync links/indexes fail with the error 'collection/view is out of sync'\n(error code 1481).\n\nIf set to `false`, queries on out-of-sync links/indexes are answered normally,\nbut the returned data may be incomplete.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -799,8 +771,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -832,8 +803,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -865,8 +835,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "arangosearch",
@@ -890,8 +859,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "audit",
@@ -924,8 +892,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "audit",
@@ -951,8 +918,7 @@
     "longDescription" : "To write to a file, use `file://<filename>` with a\nrelative or absolute file path.\n\nTo write to a syslog server, use `syslog://<facility>` or\n`syslog://<facility>/<application-name>`.\n\nYou can specify this option multiple times to configure the output for multiple\ntargets.\n\nAny occurrence of `$PID` inside a filename is replaced with the actual process\nID at runtime. This allows you to log to process-specific files, e.g.\n`--audit.output file:///var/log/arangod.log.$PID`. Note that your terminal may\nrequire the dollar sign to be escaped.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "audit",
@@ -979,8 +945,7 @@
     "longDescription" : "You can control whether audit log messages are\nsubmitted to a queue and written to disk in batches or if they should be written\nto disk directly without being queued with this option.\n\nQueueing audit log entries may be beneficial for latency, but can lead to\nunqueued messages being lost in case of a crash or power loss. Setting this\noption to `false` mimics the behavior of version 3.7 and before, where audit log\nmessages were not queued but written in a blocking fashion.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1008,8 +973,7 @@
     "longDescription" : "You can control whether the log level is shown in\nthe audit log messages with this option. If you omit it or set it to `false`,\nthe log level is not shown in messages:\n\n`2016-10-03 15:47:26 | server1 | audit-authentication | n/a | database1 |\n127.0.0.1:61528 | http basic | credentials wrong | /_api/version`\n\nIf you set the option to `true`, the log level is included in the messages:\n\n`2016-10-03 15:47:26 | INFO | server1 | audit-authentication | n/a |\ndatabase1 | 127.0.0.1:61528 | http basic | credentials wrong |\n/_api/version`",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1034,8 +998,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "backup",
@@ -1065,8 +1028,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "backup",
@@ -1090,8 +1052,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "backup",
@@ -1121,8 +1082,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "backup",
@@ -1152,8 +1112,7 @@
     "minValue" : 1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cache",
@@ -1183,8 +1142,7 @@
     "minValue" : 0.1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cache",
@@ -1214,8 +1172,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cache",
@@ -1245,12 +1202,40 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cache",
     "type" : "double"
+  },
+  "cache.max-cache-value-size" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "single"
+    ],
+    "default" : 4194304,
+    "deprecatedIn" : null,
+    "description" : "The maximum payload size of an individual cache value (excluding the size of the key).",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.12.2"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "cache",
+    "type" : "uint64"
   },
   "cache.max-spare-memory-usage" : {
     "base" : 1,
@@ -1275,8 +1260,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cache",
@@ -1306,8 +1290,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cache",
@@ -1337,8 +1320,7 @@
     "minValue" : 500000,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cache",
@@ -1353,7 +1335,7 @@
       "agent",
       "single"
     ],
-    "default" : 7739680768,
+    "default" : 7739635712,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -1368,8 +1350,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cache",
@@ -1392,8 +1373,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -1417,8 +1397,7 @@
     "longDescription" : "You can specify this option multiple times to let\nthe server use a cluster of Agency servers.\n\nEndpoints have the following pattern:\n\n- `tcp://ipv4-address:port` - TCP/IP endpoint, using IPv4\n- `tcp://[ipv6-address]:port` - TCP/IP endpoint, using IPv6\n- `ssl://ipv4-address:port` - TCP/IP endpoint, using IPv4, SSL encryption\n- `ssl://[ipv6-address]:port` - TCP/IP endpoint, using IPv6, SSL encryption\n\nYou must specify at least one endpoint or ArangoDB refuses to start. It is\nrecommended to specify at least two endpoints, so that ArangoDB has an\nalternative endpoint if one of them becomes unavailable:\n\n`--cluster.agency-endpoint tcp://192.168.1.1:4001\n--cluster.agency-endpoint tcp://192.168.1.2:4002 ...`",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1442,8 +1421,7 @@
     "longDescription" : "The possible values for the option are:\n\n- `jwt-all`: requires a valid JWT for all accesses to `/_admin/cluster` and its\n  sub-routes. If you use this configuration, the **CLUSTER** and **NODES**\n  sections of the web interface are disabled, as they rely on the ability to\n  read data from several cluster APIs.\n\n- `jwt-write`: requires a valid JWT for write accesses (all HTTP methods except\n  GET) to `/_admin/cluster`. You can use this setting to allow privileged users\n  to read data from the cluster APIs, but not to do any modifications.\n  Modifications (carried out by write accesses) are then only possible by\n  requests with a valid JWT.\n\n  All existing permission checks for the cluster API routes are still in effect\n  with this setting, meaning that read operations without a valid JWT may still\n  require dedicated other permissions (as in v3.7).\n\n- `jwt-compat`: no **additional** access checks are in place for the cluster\n  APIs. However, all existing permissions checks for the cluster API routes are\n  still in effect with this setting, meaning that all operations may still\n  require dedicated other permissions (as in v3.7).\n\nThe default value is `jwt-compat`, which means that this option does not cause\nany extra JWT checks compared to v3.7.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1474,8 +1452,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1497,8 +1474,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1511,7 +1487,7 @@
     "component" : [
       "coordinator"
     ],
-    "default" : 0,
+    "default" : 1,
     "deprecatedIn" : null,
     "description" : "The default replication factor for non-system collections.",
     "dynamic" : false,
@@ -1521,13 +1497,12 @@
     "introducedIn" : null,
     "longDescription" : "If you don't set this option, it defaults to the\nvalue of the `--cluster.min-replication-factor` option. If set, the value must\nbe between the values of `--cluster.min-replication-factor` and\n`--cluster.max-replication-factor`.\n\nNote that you can still adjust the replication factor per collection. This value\nis only the default value used for new collections if no replication factor is\nspecified when creating a collection.\n\n**Warning**: If you use multiple Coordinators, use the same value on all\nCoordinators.",
     "maxInclusive" : true,
-    "maxValue" : 4294967295,
+    "maxValue" : 10,
     "minInclusive" : true,
-    "minValue" : 0,
+    "minValue" : 1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1556,8 +1531,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1580,8 +1554,7 @@
     "longDescription" : "If set to `true`, forces the cluster into creating\nall future collections with only a single shard and using the same DB-Server as\nas these collections' shards leader. All collections created this way are\neligible for specific AQL query optimizations that can improve query performance\nand provide advanced transactional guarantees.\n\n**Warning**: If you use multiple Coordinators, use the same value on all\nCoordinators.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1608,8 +1581,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1638,8 +1610,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1666,8 +1637,7 @@
     "minValue" : 1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1694,8 +1664,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1717,13 +1686,12 @@
     "introducedIn" : null,
     "longDescription" : "If you change the value of this setting and\nrestart the servers, no changes are applied to existing collections that would\nviolate the new setting.\n\n**Warning**: If you use multiple Coordinators, use the same value on all\nCoordinators.",
     "maxInclusive" : true,
-    "maxValue" : 4294967295,
+    "maxValue" : 10,
     "minInclusive" : true,
     "minValue" : 1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1746,8 +1714,7 @@
     "longDescription" : "If specified, the endpoint needs to be in one of\nthe following formats:\n\n- `tcp://ipv4-address:port` - TCP/IP endpoint, using IPv4\n- `tcp://[ipv6-address]:port` - TCP/IP endpoint, using IPv6\n- `ssl://ipv4-address:port` - TCP/IP endpoint, using IPv4, SSL encryption\n- `ssl://[ipv6-address]:port` - TCP/IP endpoint, using IPv6, SSL encryption\n\nIf you don't specify an endpoint, the server looks up its internal endpoint\naddress in the Agency. If no endpoint can be found in the Agency for the\nserver's ID, ArangoDB refuses to start.\n\n**Examples**\n\nListen only on the interface with the address `192.168.1.1`:\n\n`--cluster.my-address tcp://192.168.1.1:8530`\n\nListen on all IPv4 and IPv6 addresses which are configured on port `8530`:\n\n`--cluster.my-address ssl://[::]:8530`",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1770,8 +1737,7 @@
     "longDescription" : "If specified, the endpoint needs to be in one of\nthe following formats:\n\n- `tcp://ipv4-address:port` - TCP/IP endpoint, using IPv4\n- `tcp://[ipv6-address]:port` - TCP/IP endpoint, using IPv6\n- `ssl://ipv4-address:port` - TCP/IP endpoint, using IPv4, SSL encryption\n- `ssl://[ipv6-address]:port` - TCP/IP endpoint, using IPv6, SSL encryption\n\nIf you don't specify an advertised endpoint, no external endpoint is\nadvertised.\n\n**Examples**\n\nIf an external interface is available to this server, you can specify it to\ncommunicate with external software / drivers:\n\n`--cluster.my-advertised-endpoint tcp://some.public.place:8530`\n\nAll specifications of endpoints apply.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1796,8 +1762,7 @@
     "longDescription" : "For a cluster, the possible values are `DBSERVER`\n(backend data server) and `COORDINATOR` (frontend server for external and \napplication access).",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1821,8 +1786,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1844,8 +1808,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1878,8 +1841,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1909,8 +1871,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1942,8 +1903,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -1973,8 +1933,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -2004,8 +1963,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -2027,13 +1985,12 @@
     "introducedIn" : null,
     "longDescription" : "**Warning**: If you use multiple Coordinators, use\nthe same value on all Coordinators.",
     "maxInclusive" : true,
-    "maxValue" : 4294967295,
+    "maxValue" : 10,
     "minInclusive" : true,
-    "minValue" : 0,
+    "minValue" : 1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -2054,8 +2011,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -2078,13 +2034,12 @@
     "introducedIn" : null,
     "longDescription" : "This value is used as the default write concern\nfor databases, which in turn is used as the default for collections.\n\n**Warning**: If you use multiple Coordinators, use the same value on all\nCoordinators.",
     "maxInclusive" : true,
-    "maxValue" : 4294967295,
+    "maxValue" : 10,
     "minInclusive" : true,
-    "minValue" : 0,
+    "minValue" : 1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "cluster",
@@ -2108,8 +2063,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -2133,8 +2087,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -2159,8 +2112,7 @@
     "longDescription" : "In this exclusive emergency mode, all networking\nand HTTP interfaces of the server are disabled. No requests can be made to the\nserver in this mode, and the only way to work with the server in this mode is by\nusing the emergency console.\n\nThe server cannot be started in this mode if it is already running in this or\nanother mode.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2170,10 +2122,6 @@
   "daemon" : {
     "category" : "option",
     "component" : [
-      "coordinator",
-      "dbserver",
-      "agent",
-      "single"
     ],
     "default" : false,
     "deprecatedIn" : null,
@@ -2185,8 +2133,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2212,8 +2159,7 @@
     "longDescription" : "If you specify this option, then the server\nperforms a database upgrade instead of starting normally.\n\nA database upgrade first compares the version number stored in the `VERSION`\nfile in the database directory with the current server version.\n\nIf the version number found in the database directory is higher than that of the\nserver, the server considers this is an unintentional downgrade and warns about\nthis. Using the server in these conditions is neither recommended nor supported.\n\nIf the version number found in the database directory is lower than that of the\nserver, the server checks whether there are any upgrade tasks to perform.\nIt then executes all required upgrade tasks and prints the status. If one of the\nupgrade tasks fails, the server exits with an error. Re-starting the server with\nthe upgrade option again triggers the upgrade check and execution until the\nproblem is fixed.\n\nWhether or not you specify this option, the server always perform a version\ncheck on startup. If you running the server with a non-matching version number\nin the `VERSION` file, the server refuses to start.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2237,8 +2183,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : false,
     "section" : "database",
@@ -2264,8 +2209,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "database",
@@ -2291,8 +2235,7 @@
     "longDescription" : "This defines the location where all data of a\nserver is stored.\n\nMake sure the directory is writable by the arangod process. You should further\nnot use a database directory which is provided by a network filesystem such as\nNFS. The reason is that networked filesystems might cause inconsistencies when\nthere are multiple parallel readers or writers or they lack features required by\narangod, e.g. `flock()`.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "database",
@@ -2318,8 +2261,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2344,8 +2286,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2369,8 +2310,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : false,
     "section" : "database",
@@ -2397,8 +2337,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2431,8 +2370,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "database",
@@ -2456,8 +2394,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "database",
@@ -2481,8 +2418,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "database",
@@ -2506,8 +2442,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : false,
     "section" : "database",
@@ -2531,8 +2466,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2557,8 +2491,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2586,8 +2519,7 @@
     "longDescription" : "The default language is used for sorting and\ncomparing strings. The language value is a two-letter language code (ISO-639) or\nit is composed by a two-letter language code followed by a two letter country\ncode (ISO-3166). For example: `de`, `en`, `en_US`, `en_UK`.\n\nThe default is the system locale of the platform.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -2613,8 +2545,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2640,8 +2571,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -2664,8 +2594,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -2688,8 +2617,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -2719,8 +2647,7 @@
     "minValue" : 4096,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "dump",
@@ -2750,8 +2677,7 @@
     "minValue" : 10,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "dump",
@@ -2764,7 +2690,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 6191744614,
+    "default" : 6191708569,
     "deprecatedIn" : null,
     "description" : "Maximum memory usage (in bytes) to be used by all ongoing dumps.",
     "dynamic" : true,
@@ -2781,8 +2707,7 @@
     "minValue" : 16777216,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "dump",
@@ -2812,8 +2737,7 @@
     "minValue" : 1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "dump",
@@ -2838,8 +2762,7 @@
     "longDescription" : "The program must output 32 bytes of data on the\nstandard output and exit.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "encryption",
@@ -2864,8 +2787,7 @@
     "longDescription" : "You must secure the encryption key file so that\nonly `arangodump`, `arangorestore`, and `arangod` can access it. You should also\nensure that the file is not readable if someone steals your hardware, for\nexample, by encrypting `/mytmpfs` or creating an in-memory file-system under\n`/mytmpfs`.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "encryption",
@@ -2889,8 +2811,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2915,8 +2836,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2939,8 +2859,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2966,8 +2885,7 @@
     "longDescription" : "If set to `false`, access to any custom Foxx \nservices in the deployment will be forbidden. Access to ArangoDB's built-in\nweb interface will still be possible though.\n\n**Note**: when setting this option to `false`, the management API for Foxx\nservices will automatically be disabled as well. This is the same as manually\nsetting the startup option `--foxx.api false`.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -2991,8 +2909,7 @@
     "longDescription" : "If set to `true`, all Foxx services in all\ndatabases are synchronized between multiple Coordinators during the startup\nsequence. This ensures that all Foxx services are up-to-date when a Coordinator\nreports itself as ready.\n\nIn case the option is set to `false` (i.e. no waiting), the Coordinator\ncompletes the startup sequence faster, and the Foxx services are propagated\nlazily. Until the initialization procedure has completed for the local Foxx\napps, any request to a Foxx app is responded to with an HTTP 500 error and a\nmessage `waiting for initialization of Foxx services in this database`. This can\ncause an unavailability window for Foxx services on Coordinator startup for the\ninitial requests to Foxx apps until the app propagation has completed.\n\nIf you don't use Foxx, you should set this option to `false` to benefit from a\nfaster Coordinator startup. Deployments relying on Foxx apps being available as\nsoon as a Coordinator is integrated or responding should set this option to\n`true`.\n\nThe option only has an effect for cluster setups. On single servers all\nFoxx apps are available from the very beginning.\n\n**Note**: ArangoDB 3.8 changes the default value to `false` for this option.\nIn previous versions, this option had a default value of `true`.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3016,8 +2933,7 @@
     "longDescription" : "If set to `true`, the Foxx queues are available\nand jobs in the queues are executed asynchronously.\n\nIf set to `false`, the queue manager is disabled and any jobs are prevented from\nbeing processed, which may reduce CPU load a bit.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3046,8 +2962,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "foxx",
@@ -3069,8 +2984,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3096,8 +3010,7 @@
     "longDescription" : "The name (identity) of the group to run the\nserver as.\n\nIf you don't specify this option, the server does not attempt to change its GID,\nso that the GID the server runs as is the primary group of the user who started\nthe server.\n\nIf you specify this option, the server changes its GID after opening ports and\nreading configuration files, but before accepting connections or opening other\nfiles (such as recovery files).",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -3129,8 +3042,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "http",
@@ -3157,8 +3069,7 @@
     "longDescription" : "If the option is set to `true`, the server will automatically \nuncompress incoming HTTP requests with Content-Encodings gzip and deflate\neven if the request is not authenticated.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3189,8 +3100,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "http",
@@ -3214,8 +3124,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3240,8 +3149,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "http",
@@ -3268,8 +3176,7 @@
     "longDescription" : "The value contained in this header indicates the\ncurrent queueing/dequeuing time for requests in the scheduler (in seconds).\nClient applications and drivers can use this value to control the server load\nand also react on overload.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3295,8 +3202,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "http",
@@ -3320,8 +3226,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3349,8 +3254,7 @@
     "longDescription" : "With this option, you can get the sorting and\ncomparing order exactly as it is defined in the ICU standard. The language value\ncan be a two-letter language code (ISO-639), a two-letter language code followed\nby a two letter country code (ISO-3166), or any other valid ICU locale\ndefinition. For example: `de`, `en`, `en_US`, `en_UK`,\n`de_AT@collation=phonebook`.\n\nFor the Swedish language (`sv`), for instance, the correct ICU-based sorting\norder for letters is `'a','A','b','B','z','Z','å','Ä','ö','Ö'`. To get this\norder, use `--icu-language sv`. If you use `--default-language sv` instead, the\nsorting order will be `\"A\", \"a\", \"B\", \"b\", \"Z\", \"z\", \"å\", \"Ä\", \"Ö\", \"ö\"`.\n\n**Note**: You can use only one of the language options, either `--icu-language`\nor `--default-language`. Setting both of them results in an error.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -3373,8 +3277,7 @@
     "longDescription" : "You can use this option to control whether\nuser-defined JavaScript code is allowed to be executed on the server by sending\nHTTP requests to the `/_admin/execute` API endpoint with an authenticated user\naccount.\n\nThe default value is `false`, which disables the execution of user-defined\ncode. This is also the recommended setting for production. In test environments,\nit may be convenient to turn the option on in order to send arbitrary setup\nor teardown commands for execution on the server.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3397,8 +3300,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3421,8 +3323,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3445,8 +3346,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3469,8 +3369,7 @@
     "longDescription" : "This option is intended to be useful for rolling\nupgrades. If you set it to `true`, you can upgrade the underlying ArangoDB\npackages without influencing the running _arangod_ instance.\n\nSetting this value does only make sense if you use ArangoDB outside of a\ncontainer solution, like Docker or Kubernetes.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3494,8 +3393,7 @@
     "longDescription" : "By default, the V8 engine is enabled on single\nservers and Coordinators. It is disabled by default on Agents and DB-Servers.\n\nIt is possible to turn the V8 engine off also on the latter instance types to \nreduce the footprint of ArangoDB. Turning the V8 engine off on single servers or\nCoordinators will automatically render certain functionality unavailable or\ndysfunctional. The affected functionality includes JavaScript transactions, Foxx, \nAQL user-defined functions, the built-in web interface and some server APIs.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3519,8 +3417,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3543,8 +3440,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3567,8 +3463,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3591,8 +3486,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3615,8 +3509,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3644,8 +3537,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3672,8 +3564,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3695,8 +3586,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3720,8 +3610,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3746,8 +3635,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3772,8 +3660,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3795,8 +3682,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3819,8 +3705,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3843,8 +3728,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3868,8 +3752,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3894,8 +3777,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3920,8 +3802,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -3950,8 +3831,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -3979,8 +3859,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -4007,8 +3886,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -4036,8 +3914,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -4066,8 +3943,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -4093,8 +3969,7 @@
     "longDescription" : "You can optionally pass arguments to the V8\nJavaScript engine. The V8 engine runs with the default settings unless you\nexplicitly specify them. The options are forwarded to the V8 engine, which\nparses them on its own. Passing invalid options may result in an error being\nprinted on stderr and the option being ignored.\n\nYou need to pass the options as one string, with V8 option names being prefixed\nwith two hyphens. Multiple options need to be separated by whitespace. To get\na list of all available V8 options, you can use the value `\"--help\"` as follows:\n\n```\n--javascript.v8-options=\"--help\"\n```\n\nAnother example of specific V8 options being set at startup:\n\n```\n--javascript.v8-options=\"--log --no-logfile-per-isolate --logfile=v8.log\"\n```\n\nNames and features or usable options depend on the version of V8 being used, and\nmight change in the future if a different version of V8 is being used in\nArangoDB. Not all options offered by V8 might be sensible to use in the context\nof ArangoDB. Use the specific options only if you are sure that they are not\nharmful for the regular database operation.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -4123,8 +3998,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -4149,8 +4023,7 @@
     "longDescription" : "Credentials are not written to log files.\nNevertheless, some logged data might be sensitive depending on the context of\nthe deployment. For example, if request logging is switched on, user requests\nand corresponding data might end up in log files. Therefore, a certain care\nwith log files is recommended.\n\nSince the database server offers an API to control logging and query logging\ndata, this API has to be secured properly. By default, the API is accessible\nfor admin users (administrative access to the `_system` database). However,\nyou can lock this down further.\n\nThe possible values for this option are:\n\n - `true`: The `/_admin/log` API is accessible for admin users.\n - `jwt`: The `/_admin/log` API is accessible for the superuser only\n   (authentication with JWT token and empty username).\n - `false`: The `/_admin/log` API is not accessible at all.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4174,8 +4047,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4203,8 +4075,7 @@
     "longDescription" : "This option applies to the control characters,\nthat have hex codes below `\\x20`, and also the character `DEL` with hex code\n`\\x7f`.\n\nIf you set this option to `false`, control characters are retained when they\nhave a visible representation, and replaced with a space character in case they\ndo not have a visible representation. For example, the control character `\\n`\nis visible, so a `\\n` is displayed in the log. Contrary, the control character\n`BEL` is not visible, so a space is displayed instead.\n\nIf you set this option to `true`, the hex code for the character is displayed,\nfor example, the `BEL` character is displayed as `\\x07`.\n\nThe default value for this option is `true` to ensure compatibility with\nprevious versions.\n\nA side effect of turning off the escaping is that it reduces the CPU overhead\nfor the logging. However, this is only noticeable if logging is set to a very\nverbose level (e.g. `debug` or `trace`).",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4232,8 +4103,7 @@
     "longDescription" : "If you set this option to `false`, Unicode\ncharacters are retained and written to the log as-is. For example, `犬` is\nlogged as `犬`.\n\nIf you set this options to `true`, any Unicode characters are escaped, and the\nhex codes for all Unicode characters are logged instead. For example, `犬` is\nlogged as `\\u72AC`.\n\nThe default value for this option is set to `false` for compatibility with\nprevious versions.\n\nA side effect of turning off the escaping is that it reduces the CPU overhead\nfor the logging. However, this is only noticeable if logging is set to a very\nverbose level (e.g. `debug` or `trace`).",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4258,8 +4128,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4283,8 +4152,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4308,8 +4176,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4334,8 +4201,7 @@
     "longDescription" : "You can use this option to disable logging in an\nextra logging thread. If set to `true`, any log messages are immediately\nprinted in the thread that triggered the log message. This is non-optimal for\nperformance but can aid debugging. If set to `false`, log messages are handed\noff to an extra logging thread, which asynchronously writes the log messages.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4360,8 +4226,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4389,8 +4254,7 @@
     "longDescription" : "You can specify a hostname to be logged at the\nbeginning of each log message (for regular logging) or inside the `hostname`\nattribute (for JSON-based logging).\n\nThe default value is an empty string, meaning no hostnames is logged.\nIf you set this option to `auto`, the hostname is automatically determined.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4415,8 +4279,7 @@
     "longDescription" : "Each log invocation in the ArangoDB source code\ncontains a unique log ID, which can be used to quickly find the location in the\nsource code that produced a specific log message.\n\nLog IDs are printed as 5-digit hexadecimal identifiers in square brackets\nbetween the log level and the log topic:\n\n`2020-06-22T21:16:48Z [39028] INFO [144fe] {general} using storage engine\n'rocksdb'` (where `144fe` is the log ID).",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4444,8 +4307,7 @@
     "longDescription" : "You can use this option to toggle storing log\nmessages in memory, from which they can be consumed via the `/_admin/log`\nHTTP API and via the web interface.\n\nBy default, this option is turned on, so log messages are consumable via the API\nand web interface. Turning this option off disables that functionality, saves a\nbit of memory for the in-memory log buffers, and prevents potential log\ninformation leakage via these means.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4471,8 +4333,7 @@
     "longDescription" : "You can use this option to control which log\nmessages are preserved in memory (in case `--log.in-memory` is enabled).\n\nThe default value is `info`, meaning all log messages of types `info`,\n`warning`, `error`, and `fatal` are stored in-memory by an instance. By setting\nthis option to `warning`, only `warning`, `error` and `fatal` log messages are \npreserved in memory, and by setting the option to `error`, only `error` and\n`fatal` messages are kept.\n\nThis option is useful because the number of in-memory log messages is limited \nto the latest 2048 messages, and these slots are shared between informational,\nwarning, and error messages by default.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4497,8 +4358,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4527,8 +4387,7 @@
     "longDescription" : "ArangoDB's log output is grouped by topics.\n`--log.level` can be specified multiple times at startup, for as many topics as\nneeded. The log verbosity and output files can be adjusted per log topic.\n\n```\narangod --log.level all=warning --log.level queries=trace --log.level startup=trace\n```\n\nThis sets a global log level of `warning` and two topic-specific levels\n(`trace` for queries and `info` for startup). Note that `--log.level warning`\ndoes not set a log level globally for all existing topics, but only the\n`general` topic. Use the pseudo-topic `all` to set a global log level.\n\nThe same in a configuration file:\n\n```\n[log]\nlevel = all=warning\nlevel = queries=trace\nlevel = startup=trace\n```\n\nThe available log levels are:\n\n- `fatal`: Only log fatal errors.\n- `error`: Only log errors.\n- `warning`: Only log warnings and errors.\n- `info`: Log information messages, warnings, and errors.\n- `debug`: Log debug and information messages, warnings, and errors.\n- `trace`: Logs trace, debug, and information messages, warnings, and errors.\n\nNote that the `debug` and `trace` levels are very verbose.\n\nSome relevant log topics available in ArangoDB 3 are:\n\n- `agency`: Information about the cluster Agency.\n- `performance`: Performance-related messages.\n- `queries`: Executed AQL queries, slow queries.\n- `replication`: Replication-related information.\n- `requests`: HTTP requests.\n- `startup`: Information about server startup and shutdown.\n- `threads`: Information about threads.\n\nYou can adjust the log levels at runtime via the `PUT /_admin/log/level`\nHTTP API endpoint.\n\n**Audit logging** (Enterprise Edition): The server logs all audit events by\ndefault. Low priority events, such as statistics operations, are logged with the\n`debug` log level. To keep such events from cluttering the log, set the\nappropriate log topics to the `info` log level.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4552,8 +4411,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4584,8 +4442,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4600,7 +4457,7 @@
       "agent",
       "single"
     ],
-    "default" : 10000,
+    "default" : 16384,
     "deprecatedIn" : null,
     "description" : "Upper limit of log entries that are queued in a background thread.",
     "dynamic" : false,
@@ -4619,8 +4476,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4646,8 +4502,7 @@
     "longDescription" : "This option allows you to direct the global or\nper-topic log messages to different outputs. The output definition can be one\nof the following:\n\n- `-` for stdin\n- `+` for stderr\n- `syslog://<syslog-facility>`\n- `syslog://<syslog-facility>/<application-name>`\n- `file://<relative-or-absolute-path>`\n\nTo set up a per-topic output configuration, use\n`--log.output <topic>=<definition>`:\n\n`--log.output queries=file://queries.log`\n\nThe above example logs query-related messages to the file `queries.log`.\n\nYou can specify the option multiple times in order to configure the output\nfor different log topics:\n\n`--log.level queries=trace --log.output queries=file:///queries.log\n--log.level requests=info --log.output requests=file:///requests.log`\n\nThe above example logs all query-related messages to the file `queries.log`\nand HTTP requests with a level of `info` or higher to the file `requests.log`.\n\nAny occurrence of `$PID` in the log output value is replaced at runtime with\nthe actual process ID. This enables logging to process-specific files:\n\n`--log.output 'file://arangod.log.$PID'`\n\nNote that dollar sign may need extra escaping when specified on a\ncommand-line such as Bash.\n\nIf you specify `--log.file-mode <octalvalue>`, then any newly created log\nfile uses `octalvalue` as file mode. Please note that the `umask` value is\napplied as well.\n\nIf you specify `--log.file-group <name>`, then any newly created log file tries\nto use `<name>` as the group name. Note that you have to be a member of that\ngroup. Otherwise, the group ownership is not changed.\n\nThe old `--log.file` option is still available for convenience. It is a\nshortcut for the more general option `--log.output file://filename`.\n\nThe old `--log.requests-file` option is still available. It is a shortcut for\nthe more general option `--log.output requests=file://...`.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4673,8 +4528,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4700,8 +4554,7 @@
     "longDescription" : "Example: `arangod ... --log.prefix \"-->\"`\n\n`2020-07-23T09:46:03Z --> [17493] INFO ...`",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4727,8 +4580,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4753,8 +4605,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4780,8 +4631,7 @@
     "longDescription" : "If you set this option to `true`, log messages\ncontains a single character with the server's role. The roles are:\n\n- `U`: Undefined / unclear (used at startup)\n- `S`: Single server\n- `C`: Coordinator\n- `P`: Primary / DB-Server\n- `A`: Agent",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4806,8 +4656,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4833,11 +4682,10 @@
     "introducedIn" : [
       "v3.10.0"
     ],
-    "longDescription" : "Some log messages can be displayed together with\nadditional information in a structured form. The following parameters are\navailable:\n\n- `database`: The name of the database.\n- `username`: The name of the user.\n- `url`: The endpoint path.\n\nThe format to enable or disable a parameter is `<parameter>=<bool>`, or\n`<parameter>` to enable it. You can specify the option multiple times to\nconfigure multiple parameters:\n\n`arangod --log.structured-param database=true --log.structured-param url\n--log.structured-param username=false`\n\nYou can adjust the parameter settings at runtime using the\n`/_admin/log/structured` HTTP API.",
+    "longDescription" : "Some log messages can be displayed together with\nadditional information in a structured form. The following parameters are\navailable:\n\n- `database`: The name of the database.\n- `username`: The name of the user.\n- `queryid`: The ID of the AQL query (on DB-Servers only).\n- `url`: The endpoint path.\n\nThe format to enable or disable a parameter is `<parameter>=<bool>`, or\n`<parameter>` to enable it. You can specify the option multiple times to\nconfigure multiple parameters:\n\n`arangod --log.structured-param database=true --log.structured-param url\n--log.structured-param username=false`\n\nYou can adjust the parameter settings at runtime using the\n`/_admin/log/structured` HTTP API.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4851,7 +4699,7 @@
       "agent",
       "single"
     ],
-    "default" : false,
+    "default" : true,
     "deprecatedIn" : null,
     "description" : "Show the thread identifier in log messages.",
     "dynamic" : false,
@@ -4861,8 +4709,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4887,8 +4734,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4903,7 +4749,7 @@
       "agent",
       "single"
     ],
-    "default" : "utc-datestring",
+    "default" : "utc-datestring-micros",
     "deprecatedIn" : null,
     "description" : "The time format to use in logs.",
     "dynamic" : false,
@@ -4914,8 +4760,7 @@
     "longDescription" : "Overview over the different options:\n\nFormat                  | Example                  | Description\n:-----------------------|:------------------------ |:-----------\n`timestamp`             | 1553766923000            | Unix timestamps, in seconds\n`timestamp-millis`      | 1553766923000.123        | Unix timestamps, in seconds, with millisecond precision\n`timestamp-micros`      | 1553766923000.123456     | Unix timestamps, in seconds, with microsecond precision\n`uptime`                | 987654                   | seconds since server start\n`uptime-millis`         | 987654.123               | seconds since server start, with millisecond precision\n`uptime-micros`         | 987654.123456            | seconds since server start, with microsecond precision\n`utc-datestring`        | 2019-03-28T09:55:23Z     | UTC-based date and time in format YYYY-MM-DDTHH:MM:SSZ \n`utc-datestring-millis` | 2019-03-28T09:55:23.123Z | like `utc-datestring`, but with millisecond precision\n`local-datestring`      | 2019-03-28T10:55:23      | local date and time in format YYYY-MM-DDTHH:MM:SS",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -4943,8 +4788,7 @@
     "longDescription" : "You can use this option to switch the log output\nto the JSON format. Each log message then produces a separate line with\nJSON-encoded log data, which can be consumed by other applications.\n\nThe object attributes produced for each log message are:\n\n| Key        | Value      |\n|:-----------|:-----------|\n| `time`     | date/time of log message, in format specified by `--log.time-format`\n| `prefix`   | only emitted if `--log.prefix` is set\n| `pid`      | process id, only emitted if `--log.process` is set\n| `tid`      | thread id, only emitted if `--log.thread` is set\n| `thread`   | thread name, only emitted if `--log.thread-name` is set\n| `role`     | server role (1 character), only emitted if `--log.role` is set\n| `level`    | log level (e.g. `\"WARN\"`, `\"INFO\"`)\n| `file`     | source file name of log message, only emitted if `--log.line-number` is set\n| `line`     | source file line of log message, only emitted if `--log.line-number` is set \n| `function` | source file function name, only emitted if `--log.line-number` is set\n| `topic`    | log topic name\n| `id`       | log id (5 digit hexadecimal string), only emitted if `--log.ids` is set\n| `hostname` | hostname if `--log.hostname` is set\n| `message`  | the actual log message payload",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -4972,8 +4816,7 @@
     "longDescription" : "This option is deprecated.\nUse `--log.time-format local-datestring` instead.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5001,8 +4844,7 @@
     "longDescription" : "This option is deprecated.\nUse `--log.time-format timestamp-micros` instead.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5033,8 +4875,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "network",
@@ -5059,8 +4900,7 @@
     "longDescription" : "Setting this option to 'none' will disable compression for\ncluster-internal requests.\nTo enable compression for cluster-internal requests, set this option to either\n'deflate', 'gzip', 'lz4' or 'auto'.\nThe 'deflate' and 'gzip' compression methods are general purpose, \nbut have significant CPU overhead for performing the compression work. \nThe 'lz4' compression method compresses slightly worse, but has a lot lower \nCPU overhead for performing the compression.\nThe 'auto' compression method will use 'deflate' by default, and 'lz4' for\nrequests which have a size that is at least 3 times the configured threshold\nsize.\nThe compression method only matters if `--network.compress-request-threshold`\nis set to value greater than zero. If the threshold is set to value of 0,\nthen no compression will be performed.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "network",
@@ -5090,8 +4930,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "network",
@@ -5106,7 +4945,7 @@
       "agent",
       "single"
     ],
-    "default" : 1,
+    "default" : 2,
     "deprecatedIn" : null,
     "description" : "The number of network I/O threads for cluster-internal communication.",
     "dynamic" : false,
@@ -5117,11 +4956,10 @@
     "maxInclusive" : true,
     "maxValue" : 4294967295,
     "minInclusive" : true,
-    "minValue" : 0,
+    "minValue" : 1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "network",
@@ -5147,11 +4985,10 @@
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
     "minInclusive" : true,
-    "minValue" : 0,
+    "minValue" : 8,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "network",
@@ -5182,8 +5019,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "network",
@@ -5209,8 +5045,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "network",
@@ -5235,8 +5070,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5246,10 +5080,6 @@
   "pid-file" : {
     "category" : "option",
     "component" : [
-      "coordinator",
-      "dbserver",
-      "agent",
-      "single"
     ],
     "default" : "",
     "deprecatedIn" : null,
@@ -5261,8 +5091,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -5291,8 +5120,7 @@
     "longDescription" : "If set to `true`, using collection names in\narbitrary places in AQL expressions is allowed, although using collection names\nlike this is very likely unintended.\n\nFor example, consider the following query:\n\n```aql\nFOR doc IN collection RETURN collection\n```\n\nHere, the collection name is `collection`, and its usage in the `FOR` loop is\nintended and valid. However, `collection` is also used in the `RETURN`\nstatement, which is legal but potentially unintended. It should likely be\n`RETURN doc` or `RETURN doc.someAttribute` instead. Otherwise, the entire\ncollection is materialized and returned as many times as there are documents in\nthe collection. This can take a long time and even lead to out-of-memory crashes\nin the worst case.\n\nIf you set the option to `false`, such unintentional usage of collection names\nin queries is prohibited, and instead makes the query fail with error 1568\n(\"collection used as expression operand\").\n\nThe default value of the option was `true` in v3.8, meaning that potentially\nunintended usage of collection names in queries were still allowed. In v3.9,\nthe default value changes to `false`. The option is also deprecated from\n3.9.0 on and will be removed in future versions. From then on, unintended\nusage of collection names will always be disallowed.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5323,8 +5151,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5354,8 +5181,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5385,8 +5211,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5411,8 +5236,7 @@
     "longDescription" : "Not storing these results is normally beneficial\nif you use the query results cache, as queries on system collections are\ninternal to ArangoDB and use space in the query results cache unnecessarily.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5438,8 +5262,7 @@
     "longDescription" : "Toggles the AQL query results cache behavior.\nThe possible values are:\n\n- `off`: do not use query results cache\n- `on`: always use query results cache, except for queries that have their\n  `cache` attribute set to `false`\n- `demand`: use query results cache only for queries that have their `cache`\n  attribute set to `true`",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5464,8 +5287,7 @@
     "longDescription" : "If set to `true`, AQL queries that produce\nwarnings are instantly aborted and throw an exception. This option can be set\nto catch obvious issues with AQL queries early.\n\nIf set to `false`, AQL queries that produce warnings are not aborted and return\nthe warnings along with the query results.\n\nYou can override the option for each individual AQL query via the\n`failOnWarning` attribute.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5473,7 +5295,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33106206720,
+    "base" : 33106026496,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5481,7 +5303,7 @@
       "agent",
       "single"
     ],
-    "default" : 26816027443,
+    "default" : 26815881462,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -5498,8 +5320,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5526,8 +5347,7 @@
     "longDescription" : "If set to `true`, all failed AQL queries are\nlogged to the server log. You can use this option during development, or to\ncatch unexpected failed queries in production.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5560,8 +5380,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5593,8 +5412,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5625,8 +5443,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5656,8 +5473,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5688,8 +5504,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5718,8 +5533,37 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "query",
+    "type" : "uint64"
+  },
+  "query.max-query-async-prefetch-slots" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "single"
+    ],
+    "default" : 32,
+    "deprecatedIn" : null,
+    "description" : "The maximum per-query number of slots available for asynchronous prefetching inside any AQL query.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.0"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5749,15 +5593,44 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
     "type" : "double"
   },
+  "query.max-total-async-prefetch-slots" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "single"
+    ],
+    "default" : 256,
+    "deprecatedIn" : null,
+    "description" : "The maximum total number of slots available for asynchronous prefetching across all AQL queries.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.0"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "query",
+    "type" : "uint64"
+  },
   "query.memory-limit" : {
-    "base" : 33106206720,
+    "base" : 33106026496,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5765,7 +5638,7 @@
       "agent",
       "single"
     ],
-    "default" : 19863724032,
+    "default" : 19863615897,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -5780,8 +5653,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5808,8 +5680,7 @@
     "longDescription" : "You can use this option to control whether\nindividual AQL queries can increase their memory limit via the `memoryLimit`\nquery option. This is the default, so a query that increases its memory limit is\nallowed to use more memory than set via the `--query.memory-limit` startup\noption value.\n\nIf the option is set to `false`, individual queries can only lower their maximum\nallowed memory usage but not increase it.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5840,8 +5711,7 @@
     "minValue" : 1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5867,8 +5737,7 @@
     "longDescription" : "You can use this option to selectively enable or\ndisable AQL query optimizer rules by default. You can specify the option\nmultiple times.\n\nFor example, to turn off the rules `use-indexes-for-sort` and\n`reduce-extraction-to-projection` by default, use the following:\n\n```\n--query.optimizer-rules \"-use-indexes-for-sort\" --query.optimizer-rules \"-reduce-extraction-to-projection\"\n```\n\nThe purpose of this startup option is to be able to enable potential future\nexperimental optimizer rules, which may be shipped in a disabled-by-default\nstate.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5892,8 +5761,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5923,8 +5791,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -5952,8 +5819,7 @@
     "longDescription" : "If set to `true`, AQL queries in single server\nmode also require `WITH` clauses in AQL queries where a cluster installation\nwould require them.\n\nThe option is set to `false` by default, but you can turn it on in single\nservers to remove this behavior difference between single servers and clusters,\nmaking a later transition from single server to cluster easier.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -5984,8 +5850,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -6015,8 +5880,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "query",
@@ -6040,8 +5904,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6066,8 +5929,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6092,8 +5954,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6119,8 +5980,7 @@
     "longDescription" : "If set to `true`, then the bind variables are\ntracked and shown for all running and slow AQL queries. This also enables the\ndisplay of bind variable values in the list of cached AQL query results. This\noption only has an effect if `--query.tracking` is set to `true` or if the query\nresults cache is used.\n\nYou can disable tracking and displaying bind variable values by setting the\noption to `false`.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6145,8 +6005,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6171,8 +6030,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6203,8 +6061,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "random",
@@ -6235,8 +6092,7 @@
     "longDescription" : "You can add custom arguments to invocations of\nrclone, which is called for uploading and downloading Hot Backups. For example,\nyou can enable debug logging to a separate file on startup as follows:\n\n`arangod --rclone.argument \"--log-level=DEBUG\" --rclone.argument \"--log-file=rclone.log\" ...`\n\nIf you use the ArangoDB Starter, you can utilize the `ARANGODB_SERVER_DIR`\nenvironment variable that it sets to generate separate log files for every\ncluster node, like `--all.rclone.argument=\"--log-file=@ARANGODB_SERVER_DIR@/rclone.log`.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rclone",
@@ -6260,8 +6116,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rclone",
@@ -6284,8 +6139,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6310,8 +6164,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6341,8 +6194,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "replication",
@@ -6371,8 +6223,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "replication",
@@ -6401,8 +6252,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "replication",
@@ -6431,8 +6281,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "replication",
@@ -6456,8 +6305,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6482,8 +6330,7 @@
     "longDescription" : "Preallocation is turned on by default, but you can\nturn it off for operating system versions that are known to have issues with it.\nThis option only has an effect on operating systems that support\n`fallocate`.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6510,8 +6357,7 @@
     "longDescription" : "Enabling this option may cause additional CPU and\nI/O load. You can limit how many index filling operations can execute\nconcurrently with the `--rocksdb.max-concurrent-index-fill-tasks` startup\noption.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6541,8 +6387,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -6571,8 +6416,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -6597,8 +6441,7 @@
     "longDescription" : "Set this to `false` to only (re-)fill in-memory\nindex caches on leaders and save memory on followers. \nNote that the value of this option should be identical for all DBServers.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6625,8 +6468,7 @@
     "longDescription" : "When documents are added, modified, or removed,\nthese changes are tracked and a background thread tries to update the index\ncaches accordingly if the feature is enabled, by adding new, updating existing,\nor deleting and refilling cache entries.\n\nYou can enable the feature for individual `INSERT`, `UPDATE`, `REPLACE`,  and\n`REMOVE` operations in AQL queries, for individual document API requests that\ninsert, update, replace, or remove single or multiple documents, as well\nas enable it by default using this startup option.\n\nThe background refilling is done on a best-effort basis and not guaranteed to\nsucceed, for example, if there is no memory available for the cache subsystem,\nor during cache grow/shrink operations. A background thread is used so that\nforeground write operations are not slowed down by a lot. It may still cause\nadditional I/O activity to look up data from the storage engine to repopulate\nthe cache.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6658,8 +6500,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -6684,8 +6525,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -6716,8 +6556,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -6747,8 +6586,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -6778,8 +6616,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -6803,8 +6640,7 @@
     "longDescription" : "This may waste some memory but may reduce the\nnumber of cross-page I/O operations.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6861,8 +6697,7 @@
     "minValue" : -1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -6876,7 +6711,7 @@
       "agent",
       "single"
     ],
-    "default" : 9287616921,
+    "default" : 9287562854,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -6891,8 +6726,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -6922,8 +6756,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -6947,8 +6780,7 @@
     "longDescription" : "If you set this option to `true`, RocksDB tracks\nall loaded index and filter blocks in the block cache, so that they count\ntowards RocksDB's block cache memory limit.\n\nIf you set this option to `false`, the memory usage for index and filter blocks\nis not accounted for.\n\nThe default value of `--rocksdb.cache-index-and-filter-blocks` was `false` in \nversions before 3.10, and was changed to `true` from version 3.10 onwards.\n\nTo improve stability of memory usage and avoid untracked memory allocations by\nRocksDB, it is recommended to set this option to `true`. Note that tracking\nindex and filter blocks leaves less room for other data in the block cache, so\nin case servers have unused RAM capacity available, it may be useful to increase\nthe overall size of the block cache.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6972,8 +6804,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -6999,8 +6830,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7029,8 +6859,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7055,8 +6884,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7083,8 +6911,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7107,8 +6934,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7132,8 +6958,7 @@
     "longDescription" : "If set to `true`, enables verbose logging of\nRocksDB's actions into the logfile written by ArangoDB (if the\n`--rocksdb.use-file-logging` option is off), or RocksDB's own log (if the\n`--rocksdb.use-file-logging` option is on).\n\nThis option is turned off by default, but you can enable it for debugging\nRocksDB internals and performance.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7162,8 +6987,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7187,8 +7011,7 @@
     "longDescription" : "If set to `true`, the amount of data in each level\nof the LSM tree is determined dynamically to minimize the space amplification.\nOtherwise, the level sizes are fixed. The dynamic sizing allows RocksDB to\nmaintain a well-structured LSM tree regardless of total data size.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7214,8 +7037,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7241,8 +7063,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7268,8 +7089,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7293,8 +7113,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7318,8 +7137,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7344,8 +7162,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7372,8 +7189,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7398,8 +7214,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7423,8 +7238,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7449,8 +7263,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7474,8 +7287,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7499,8 +7311,7 @@
     "longDescription" : "Whether the maximum size of the RocksDB block\ncache is strictly enforced. You can set this option to limit the memory usage of\nthe block cache to at most the specified size. If inserting a data block into\nthe cache would exceed the cache's capacity, the data block is not inserted.\nIf disabled, a data block may still get inserted into the cache. It is evicted\nlater, but the cache may temporarily grow beyond its capacity limit. \n\nThe default value for `--rocksdb.enforce-block-cache-size-limit` was `false`\nbefore version 3.10, but was changed to `true` from version 3.10 onwards.\n\nTo improve stability of memory usage and prevent exceeding the block cache\ncapacity limit (as configurable via `--rocksdb.block-cache-size`), it is\nrecommended to set this option to `true`.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7527,8 +7338,7 @@
     "longDescription" : "This option allows you to make all writes to the\nRocksDB storage exclusive and therefore avoid write-write conflicts.\n\nThis option was introduced to open a way to upgrade from the legacy MMFiles to\nthe RocksDB storage engine without modifying client application code.\nYou should avoid enabling this option as the use of exclusive locks on\ncollections introduce a noticeable throughput penalty.\n\n**Note**: The MMFiles engine was removed and this option is a stopgap measure\nonly. This option is thus deprecated, and will be removed in a future\nversion.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7559,8 +7369,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7590,8 +7399,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7620,8 +7428,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7650,8 +7457,7 @@
     "minValue" : -9223372036854775808,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7680,8 +7486,7 @@
     "minValue" : -9223372036854775808,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7710,8 +7515,7 @@
     "minValue" : -9223372036854775808,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7734,8 +7538,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -7765,8 +7568,7 @@
     "minValue" : -2147483648,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7794,8 +7596,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7823,8 +7624,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7855,8 +7655,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7885,8 +7684,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7914,8 +7712,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7944,8 +7741,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -7975,8 +7771,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8005,8 +7800,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8037,8 +7831,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8069,8 +7862,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8101,8 +7893,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8133,8 +7924,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8165,8 +7955,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8197,8 +7986,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8229,8 +8017,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8261,8 +8048,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8293,8 +8079,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8325,8 +8110,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8355,8 +8139,7 @@
     "minValue" : -9223372036854775808,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8386,8 +8169,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8415,8 +8197,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8445,8 +8226,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8475,8 +8255,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8504,8 +8283,7 @@
     "minValue" : 1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8536,8 +8314,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8566,8 +8343,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8596,8 +8372,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8620,8 +8395,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -8648,8 +8422,7 @@
     "longDescription" : "Enabling this option will make RocksDB's\ncompaction write the document data for different collections/shards\ninto different .sst files. Otherwise the document data from different \ncollections/shards can be mixed and written into the same .sst files.\n\nEnabling this option usually has the benefit of making the RocksDB\ncompaction more efficient when a lot of different collections/shards\nare written to in parallel.\nThe disavantage of enabling this option is that there can be more .sst\nfiles than when the option is turned off, and the disk space used by\nthese .sst files can be higher than if there are fewer .sst files (this\nis because there is some per-.sst file overhead).\nIn particular on deployments with many collections/shards\nthis can lead to a very high number of .sst files, with the potential\nof outgrowing the maximum number of file descriptors the ArangoDB process \ncan open. Thus the option should only be enabled on deployments with a\nlimited number of collections/shards.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -8676,8 +8449,7 @@
     "longDescription" : "Enabling this option will make RocksDB's\ncompaction write the edge index data for different edge collections/shards\ninto different .sst files. Otherwise the edge index data from different \nedge collections/shards can be mixed and written into the same .sst files.\n\nEnabling this option usually has the benefit of making the RocksDB\ncompaction more efficient when a lot of different edge collections/shards\nare written to in parallel.\nThe disavantage of enabling this option is that there can be more .sst\nfiles than when the option is turned off, and the disk space used by\nthese .sst files can be higher than if there are fewer .sst files (this\nis because there is some per-.sst file overhead).\nIn particular on deployments with many edge collections/shards\nthis can lead to a very high number of .sst files, with the potential\nof outgrowing the maximum number of file descriptors the ArangoDB process \ncan open. Thus the option should only be enabled on deployments with a\nlimited number of edge collections/shards.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -8704,8 +8476,7 @@
     "longDescription" : "Enabling this option will make RocksDB's\n  compaction write the persistent index data for different mdi\n  indexes (also indexes from different collections/shards) into different\n  .sst files. Otherwise the persistent index data from different\n  collections/shards/indexes can be mixed and written into the same .sst files.\n\n  Enabling this option usually has the benefit of making the RocksDB\n  compaction more efficient when a lot of different collections/shards/indexes\n  are written to in parallel.\n  The disavantage of enabling this option is that there can be more .sst\n  files than when the option is turned off, and the disk space used by\n  these .sst files can be higher than if there are fewer .sst files (this\n  is because there is some per-.sst file overhead).\n  In particular on deployments with many collections/shards/indexes\n  this can lead to a very high number of .sst files, with the potential\n  of outgrowing the maximum number of file descriptors the ArangoDB process\n  can open. Thus the option should only be enabled on deployments with a\n  limited number of edge collections/shards/indexes.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -8732,8 +8503,7 @@
     "longDescription" : "Enabling this option will make RocksDB's\ncompaction write the persistent index data for different persistent\nindexes (also indexes from different collections/shards) into different \n.sst files. Otherwise the persistent index data from different \ncollections/shards/indexes can be mixed and written into the same .sst files.\n\nEnabling this option usually has the benefit of making the RocksDB\ncompaction more efficient when a lot of different collections/shards/indexes\nare written to in parallel.\nThe disavantage of enabling this option is that there can be more .sst\nfiles than when the option is turned off, and the disk space used by\nthese .sst files can be higher than if there are fewer .sst files (this\nis because there is some per-.sst file overhead).\nIn particular on deployments with many collections/shards/indexes\nthis can lead to a very high number of .sst files, with the potential\nof outgrowing the maximum number of file descriptors the ArangoDB process \ncan open. Thus the option should only be enabled on deployments with a\nlimited number of edge collections/shards/indexes.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -8760,8 +8530,7 @@
     "longDescription" : "Enabling this option will make RocksDB's\ncompaction write the primary index data for different collections/shards\ninto different .sst files. Otherwise the primary index data from different \ncollections/shards can be mixed and written into the same .sst files.\n\nEnabling this option usually has the benefit of making the RocksDB\ncompaction more efficient when a lot of different collections/shards\nare written to in parallel.\nThe disavantage of enabling this option is that there can be more .sst\nfiles than when the option is turned off, and the disk space used by\nthese .sst files can be higher than if there are fewer .sst files (this\nis because there is some per-.sst file overhead).\nIn particular on deployments with many collections/shards\nthis can lead to a very high number of .sst files, with the potential\nof outgrowing the maximum number of file descriptors the ArangoDB process \ncan open. Thus the option should only be enabled on deployments with a\nlimited number of collections/shards.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -8792,8 +8561,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8823,8 +8591,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8855,8 +8622,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8879,8 +8645,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -8904,8 +8669,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -8931,8 +8695,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -8961,8 +8724,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -8987,8 +8749,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9014,8 +8775,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9041,8 +8801,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9070,8 +8829,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9099,8 +8857,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9128,8 +8885,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9157,8 +8913,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9186,8 +8941,7 @@
     "minValue" : 1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9210,8 +8964,7 @@
     "longDescription" : "If enabled, dynamically throttles the ingest rate\nof writes if necessary to reduce chances of compactions getting too far behind\nand blocking incoming writes.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9242,8 +8995,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9272,8 +9024,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9303,8 +9054,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9334,8 +9084,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9365,8 +9114,7 @@
     "minValue" : 1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9396,8 +9144,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9411,7 +9158,7 @@
       "agent",
       "single"
     ],
-    "default" : 12383489228,
+    "default" : 12383417139,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
@@ -9426,8 +9173,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9458,8 +9204,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9487,8 +9232,7 @@
     "minValue" : -9223372036854775808,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9497,10 +9241,6 @@
   "rocksdb.use-direct-io-for-flush-and-compaction" : {
     "category" : "option",
     "component" : [
-      "coordinator",
-      "dbserver",
-      "agent",
-      "single"
     ],
     "default" : false,
     "deprecatedIn" : null,
@@ -9522,10 +9262,6 @@
   "rocksdb.use-direct-reads" : {
     "category" : "option",
     "component" : [
-      "coordinator",
-      "dbserver",
-      "agent",
-      "single"
     ],
     "default" : false,
     "deprecatedIn" : null,
@@ -9562,8 +9298,7 @@
     "longDescription" : "If set to `true`, enables writing of RocksDB's own\ninformational log files into RocksDB's database directory.\n\nThis option is turned off by default, but you can enable it for debugging\nRocksDB internals and performance.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9587,8 +9322,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9640,8 +9374,7 @@
     "longDescription" : "If set to `true`, during startup, all .sst files\nin the `engine-rocksdb` folder in the database directory are checked for\npotential corruption and errors. The server process stops after the check and\nreturns an exit code of `0` if the validation was successful, or a non-zero\nexit code if there is an error in any of the .sst files.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : false,
     "section" : "rocksdb",
@@ -9671,8 +9404,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9695,8 +9427,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9724,8 +9455,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9753,8 +9483,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9777,8 +9506,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9808,8 +9536,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "rocksdb",
@@ -9833,8 +9560,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9860,8 +9586,7 @@
     "longDescription" : "You can set this option to `false` to turn off\nauthentication on the server-side, so that all clients can execute any action\nwithout authorization and privilege checks. You should only do this if you bind\nthe server to `localhost` to not expose it to the public internet",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9887,8 +9612,7 @@
     "longDescription" : "If you set this option to `true`, then HTTP\nauthentication is only required for requests going to URLs starting with `/_`,\nbut not for other endpoints. You can thus use this option to expose custom APIs\nof Foxx microservices without HTTP authentication to the outside world, but\nprevent unauthorized access of ArangoDB APIs and the admin interface.\n\nNote that checking the URL is performed after any database name prefix has been\nremoved. That means, if the request URL is `/_db/_system/myapp/myaction`, the\nURL `/myapp/myaction` is checked for the `/_` prefix.\n\nAuthentication still needs to be enabled for the server via\n`--server.authentication` in order for HTTP authentication to be forced for the\nArangoDB APIs and the web interface. Only setting\n`--server.authentication-system-only` is not enough.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9918,8 +9642,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -9928,10 +9651,6 @@
   "server.authentication-unix-sockets" : {
     "category" : "option",
     "component" : [
-      "coordinator",
-      "dbserver",
-      "agent",
-      "single"
     ],
     "default" : true,
     "deprecatedIn" : null,
@@ -9944,8 +9663,7 @@
     "longDescription" : "If you set this option to `false`, authentication\nfor requests coming in via UNIX domain sockets is turned off on the server-side.\nClients located on the same host as the ArangoDB server can use UNIX domain\nsockets to connect to the server without authentication. Requests coming in by\nother means (e.g. TCP/IP) are not affected by this option.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -9977,8 +9695,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -9988,10 +9705,6 @@
     "base" : 1,
     "category" : "option",
     "component" : [
-      "coordinator",
-      "dbserver",
-      "agent",
-      "single"
     ],
     "default" : 60000,
     "deprecatedIn" : null,
@@ -10019,10 +9732,6 @@
     "base" : 1,
     "category" : "option",
     "component" : [
-      "coordinator",
-      "dbserver",
-      "agent",
-      "single"
     ],
     "default" : 8192,
     "deprecatedIn" : null,
@@ -10040,8 +9749,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10067,8 +9775,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10096,8 +9803,7 @@
     "longDescription" : "You can specify this option multiple times to let\nthe ArangoDB server listen for incoming requests on multiple endpoints.\n\nThe endpoints are normally specified either in ArangoDB's configuration file or\non the command-line with `--server.endpoint`. ArangoDB supports different types\nof endpoints:\n\n- `tcp://ipv4-address:port` - TCP/IP endpoint, using IPv4\n- `tcp://[ipv6-address]:port` - TCP/IP endpoint, using IPv6\n- `ssl://ipv4-address:port` - TCP/IP endpoint, using IPv4, SSL encryption\n- `ssl://[ipv6-address]:port` - TCP/IP endpoint, using IPv6, SSL encryption\n- `unix:///path/to/socket` - Unix domain socket endpoint\n\nYou can use `http://` as an alias for `tcp://`, and `https://` as an alias for\n`ssl://`.\n\nIf a TCP/IP endpoint is specified without a port number, then the default port\n(8529) is used.\n\nIf you use SSL-encrypted endpoints, you must also supply the path to a server\ncertificate using the `--ssl.keyfile` option.\n\n```bash\narangod --server.endpoint tcp://127.0.0.1:8529 \\\n        --server.endpoint ssl://127.0.0.1:8530 \\\n        --ssl.keyfile server.pem /tmp/data-dir\n\n...\n2022-11-07T10:39:30Z [1] INFO [6ea38] {general} using endpoint 'http+ssl://0.0.0.0:8530' for ssl-encrypted requests\n2022-11-07T10:39:30Z [1] INFO [6ea38] {general} using endpoint 'http+tcp://0.0.0.0:8529' for non-encrypted requests\n2022-11-07T10:39:31Z [1] INFO [cf3f4] {general} ArangoDB (version 3.10.0 [linux]) is ready for business. Have fun!\n```\n\nOn one specific ethernet interface, each port can only be bound\n**exactly once**. You can look up your available interfaces using the `ifconfig`\ncommand on Linux. The general names of the\ninterfaces differ between operating systems and the hardware they run on.\nHowever, every host has typically a so called loopback interface, which is a\nvirtual interface. By convention, it always has the address `127.0.0.1` (IPv4)\nor `::1` (IPv6), and can only be reached from the very same host. Ethernet\ninterfaces usually have names like `eth0`, `wlan0`, `eth1:17`, `le0`.\n\nTo find out which services already use ports (so ArangoDB can't bind them\nanymore), you can use the `netstat` command. It behaves a little different on\neach platform; run it with `-lnpt` on Linux for valuable information.\n\nArangoDB can also do a so called *broadcast bind* using `tcp://0.0.0.0:8529`.\nThis way, it is reachable on all interfaces of the host. This may be useful on\ndevelopment systems that frequently change their network setup, like laptops.\n\nArangoDB can also listen to IPv6 link-local addresses via adding the zone ID\nto the IPv6 address in the form `[ipv6-link-local-address%zone-id]`. However,\nwhat you probably want instead is to bind to a local IPv6 address. Local IPv6\naddresses start with `fd`. If you only see a `fe80:` IPv6 address in your\ninterface configuration but no IPv6 address starting with `fd`, your interface\nhas no local IPv6 address assigned. You can read more about IPv6 link-local\naddresses here: https://en.wikipedia.org/wiki/Link-local_address#IPv6.\n\nTo bind to a link-local and local IPv6 address, run `ifconfig` or equivalent\ncommand. The command lists all interfaces and assigned IP addresses. The\nlink-local address may be `fe80::6257:18ff:fe82:3ec6%eth0` (IPv6 address plus\ninterface name). A local IPv6 address may be `fd12:3456::789a`.\nTo bind ArangoDB to it, start `arangod` with\n`--server.endpoint tcp://[fe80::6257:18ff:fe82:3ec6%eth0]:8529`.\nYou can use `telnet` to test the connection.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10124,8 +9830,7 @@
     "longDescription" : "Using the whitespace characters in the output may\nbe required to make the metrics output compatible with some processing tools,\nalthough Prometheus itself doesn't need it.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10150,8 +9855,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10176,8 +9880,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10202,8 +9905,7 @@
     "longDescription" : "This option can be used to make DB-Servers export\ndetailed shard usage metrics.\n\n- By default, this option is set to `disabled` so that no shard usage metrics\n  are exported.\n\n- Set the option to `enabled-per-shard` to make DB-Servers collect per-shard\n  usage metrics whenever a shard is accessed.\n\n- Set this option to `enabled-per-shard-per-user` to make DB-Servers collect\n  usage metrics per shard and per user whenever a shard is accessed.\n\nNote that enabling shard usage metrics can produce a lot of metrics if there \nare many shards and/or users in the system.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10228,8 +9930,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10253,8 +9954,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10281,11 +9981,10 @@
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
     "minInclusive" : true,
-    "minValue" : 0,
+    "minValue" : 1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10312,8 +10011,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10338,8 +10036,7 @@
     "longDescription" : "Files are sorted alphabetically, the first secret\nis used for signing + verifying JWT tokens (_active_ secret), and all other\nsecrets are only used to validate incoming JWT tokens (_passive_ secrets).\nOnly one secret needs to verify a JWT token for it to be accepted.\n\nYou can reload JWT secrets from disk without restarting the server or the nodes\nof a cluster deployment via the `POST /_admin/server/jwt` HTTP API endpoint.\nYou can use this feature to roll out new JWT secrets throughout a cluster.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10364,8 +10061,7 @@
     "longDescription" : "ArangoDB uses JSON Web Tokens to authenticate\nrequests. Using this option lets you specify a JWT secret stored in a file.\nThe secret must be at most 64 bytes long.\n\n**Warning**: Avoid whitespace characters in the secret because they may get\ntrimmed, leading to authentication problems:\n- Character Tabulation (`\\t`, U+0009)\n- End of Line (`\\n`, U+000A)\n- Line Tabulation (`\\v`, U+000B)\n- Form Feed (`\\f`, U+000C)\n- Carriage Return (`\\r`, U+000D)\n- Space (U+0020)\n- Next Line (U+0085)\n- No-Nreak Space (U+00A0)\n\nIn single server setups, ArangoDB generates a secret if none is specified.\n\nIn cluster deployments which have authentication enabled, a secret must\nbe set consistently across all cluster nodes so they can talk to each other.\n\nArangoDB also supports an `--server.jwt-secret` option to pass the secret\ndirectly (without a file). However, this is discouraged for security\nreasons.\n\nYou can reload JWT secrets from disk without restarting the server or the nodes\nof a cluster deployment via the `POST /_admin/server/jwt` HTTP API endpoint.\nYou can use this feature to roll out new JWT secrets throughout a cluster.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10391,8 +10087,7 @@
     "minValue" : -2147483648,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10418,8 +10113,7 @@
     "minValue" : -2147483648,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10447,8 +10141,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10474,45 +10167,11 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
     "type" : "uint32"
-  },
-  "server.max-number-detached-threads" : {
-    "base" : 1,
-    "category" : "option",
-    "component" : [
-      "coordinator",
-      "dbserver",
-      "agent",
-      "single"
-    ],
-    "default" : 1000,
-    "deprecatedIn" : null,
-    "description" : "The maximum number of detached scheduler threads.",
-    "dynamic" : false,
-    "enterpriseOnly" : false,
-    "experimental" : false,
-    "hidden" : true,
-    "introducedIn" : [
-      "v3.12.0"
-    ],
-    "longDescription" : "If a scheduler thread performs a potentially long running operation like waiting for a lock, it can detach itself from the scheduler. This allows a new scheduler thread to be started and avoids blocking all threads with long-running operations, thereby avoiding deadlock situations. The default should normally be OK.",
-    "maxInclusive" : true,
-    "maxValue" : 18446744073709551615,
-    "minInclusive" : true,
-    "minValue" : 0,
-    "obsolete" : false,
-    "os" : [
-      "linux",
-      "macos"
-    ],
-    "requiresValue" : true,
-    "section" : "server",
-    "type" : "uint64"
   },
   "server.maximal-queue-size" : {
     "base" : 1,
@@ -10538,8 +10197,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10569,8 +10227,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10600,8 +10257,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10633,8 +10289,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10660,8 +10315,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10691,8 +10345,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10723,8 +10376,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10748,8 +10400,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10779,8 +10430,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10810,8 +10460,7 @@
     "minValue" : 1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10836,8 +10485,7 @@
     "longDescription" : "If you set this option to `false`, then ArangoDB's\nstatistics gathering is turned off. Statistics gathering causes regular\nbackground CPU activity, memory usage, and writes to the storage engine, so\nusing this option to turn statistics off might relieve heavily-loaded instances\na bit.\n\nA side effect of setting this option to `false` is that no statistics are\nshown in the dashboard of ArangoDB's web interface, and that the REST API for\nserver statistics at `/_admin/statistics` returns HTTP 404.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10861,8 +10509,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10888,8 +10535,7 @@
     "longDescription" : "If you set this option to `false`, then ArangoDB's\nstatistics gathering is turned off. Statistics gathering causes regular\nbackground CPU activity, memory usage, and writes to the storage engine, so\nusing this option to turn statistics off might relieve heavily-loaded instances\na bit.\n\nIf set to `false`, no statistics are shown in the dashboard of ArangoDB's\nweb interface, but the current statistics are available and can be queried\nusing the REST API for server statistics at `/_admin/statistics`.\nThis is less intrusive than setting the `--server.statistics` option to\n`false`.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -10915,8 +10561,7 @@
     "longDescription" : "ArangoDB's storage engine is based on RocksDB, see\nhttp://rocksdb.org. It is the only available engine from ArangoDB v3.7 onwards.\n\nThe storage engine type needs to be the same for an entire deployment.\nLive switching of storage engines on already installed systems isn't supported.\nConfiguring the wrong engine (not matching the previously used one) results\nin the server refusing to start. You may use `auto` to let ArangoDB choose the\npreviously used one.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10943,8 +10588,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -10970,8 +10614,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11002,8 +10645,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -11027,8 +10669,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -11058,8 +10699,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -11083,8 +10723,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11110,8 +10749,7 @@
     "longDescription" : "You can use this option to specify a file with\nCA certificates that are sent to the client whenever the server requests a\nclient certificate. If you specify a file, the server only accepts client\nrequests with certificates issued by these CAs. Do not specify this option if\nyou want clients to be able to connect without specific certificates.\n\nThe certificates in the file must be PEM-formatted.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "ssl",
@@ -11136,8 +10774,7 @@
     "longDescription" : "You can use this option to restrict the server to\ncertain SSL ciphers only, and to define the relative usage preference of SSL\nciphers.\n\nThe format of the option's value is documented in the OpenSSL documentation.\n\nTo check which ciphers are available on your platform, you may use the\nfollowing shell command:\n\n```bash\n> openssl ciphers -v\n\nECDHE-RSA-AES256-SHA    SSLv3 Kx=ECDH     Au=RSA  Enc=AES(256)  Mac=SHA1\nECDHE-ECDSA-AES256-SHA  SSLv3 Kx=ECDH     Au=ECDSA Enc=AES(256)  Mac=SHA1\nDHE-RSA-AES256-SHA      SSLv3 Kx=DH       Au=RSA  Enc=AES(256)  Mac=SHA1\nDHE-DSS-AES256-SHA      SSLv3 Kx=DH       Au=DSS  Enc=AES(256)  Mac=SHA1\nDHE-RSA-CAMELLIA256-SHA SSLv3 Kx=DH       Au=RSA  Enc=Camellia(256)\nMac=SHA1\n...\n```",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "ssl",
@@ -11161,8 +10798,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "ssl",
@@ -11187,8 +10823,7 @@
     "longDescription" : "If you use SSL-encryption by binding the server to\nan SSL endpoint (e.g. `--server.endpoint ssl://127.0.0.1:8529`), you must use\nthis option to specify the filename of the server's private key. The file must\nbe PEM-formatted and contain both, the certificate and the server's private key.\n\nYou can generate a keyfile using OpenSSL as follows:\n\n```bash\n# create private key in file \"server.key\"\nopenssl genpkey -out server.key -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -aes-128-cbc\n\n# create certificate signing request (csr) in file \"server.csr\"\nopenssl req -new -key server.key -out server.csr\n\n# copy away original private key to \"server.key.org\"\ncp server.key server.key.org\n\n# remove passphrase from the private key\nopenssl rsa -in server.key.org -out server.key\n\n# sign the csr with the key, creates certificate PEM file \"server.crt\"\nopenssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt\n\n# combine certificate and key into single PEM file \"server.pem\"\ncat server.crt server.key > server.pem\n```\n\nYou may use certificates issued by a Certificate Authority or self-signed\ncertificates. Self-signed certificates can be created by a tool of your\nchoice. When using OpenSSL for creating the self-signed certificate, the\nfollowing commands should create a valid keyfile:\n\n```\n-----BEGIN CERTIFICATE-----\n\n(base64 encoded certificate)\n\n-----END CERTIFICATE-----\n-----BEGIN RSA PRIVATE KEY-----\n\n(base64 encoded private key)\n\n-----END RSA PRIVATE KEY-----\n```\n\nFor further information please check the manuals of the tools you use to create\nthe certificate.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "ssl",
@@ -11218,8 +10853,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "ssl",
@@ -11243,8 +10877,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11275,8 +10908,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "ssl",
@@ -11301,8 +10933,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11329,8 +10960,7 @@
     "longDescription" : "Sometimes, it is desirable to have the same server\nuse different server keys and certificates when it is contacted under different\nnames. This is what the TLS \"server name\" extension is for. See\nhttps://en.wikipedia.org/wiki/Server_Name_Indication) for details.\nfor details). With this extension, the client can choose a server name, and the\nserver can, using this information during the TLS handshake, use different\nserver keys and certificate chains.\n\nYou can specify the option multiple times. Each value must be a string in the\nformat `SERVERNAME=KEYFILENAME`. Replace `SERVERNAME` by a server name and\n`KEYFILENAME` by the file name of the key file to be used for that server name.\n\nThe format of the keyfile is identical to the one used for the `--ssl.keyfile`\noption. The keyfile used by default is the one in the `--ssl.keyfile` option,\nand only if there is an exact match between one server name given with\n`--ssl.server-name-indication` and the one in the handshake, the server switches\nto the alternative keyfile.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "ssl",
@@ -11354,8 +10984,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11381,8 +11010,7 @@
     "longDescription" : "Runs an arangod process as supervisor with another\narangod process as child, which acts as the server. In the event that the server\nunexpectedly terminates due to an internal error, the supervisor automatically\nrestarts the server. Enabling this option implies that the server runs as a\ndaemon.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11413,8 +11041,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "tcp",
@@ -11439,8 +11066,7 @@
     "longDescription" : "If you set this option to `true`, the socket\noption `SO_REUSEADDR` is set on all server endpoints, which is the default.\nIf you set this option to `false`, it is possible that it takes up to a minute\nafter a server has terminated until it is possible for a new server to use the\nsame endpoint again.\n\n**Note**: This can be a security risk because it might be possible for another\nprocess to bind to the same address and port, possibly hijacking network\ntraffic.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11472,8 +11098,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "temp",
@@ -11499,8 +11124,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11527,8 +11151,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11556,8 +11179,7 @@
     "longDescription" : "Queries can store intermediate and final results\ntemporarily on disk if a specified threshold is exceeded, to decrease the memory\nusage. Specify a path to a directory for the temporary data to activate the\nspillover feature. The directory must not be located underneath the instance's \ndatabase directory.\n\nThe threshold value to start spilling data onto disk is either a number of rows\nproduced by a query or an amount of memory used in bytes, which you can set as\nquery options (`spillOverThresholdNumRows` and `spillOverThresholdMemoryUsage`).\n\n**Note**: This feature is experimental and is turned off by default.\nAlso, the query results are still built up entirely in memory on Coordinators\nand single servers for non-streaming queries. To avoid the buildup of the entire\nquery result in RAM, use a streaming query.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "temp",
@@ -11588,8 +11210,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "temp",
@@ -11620,8 +11241,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "temp",
@@ -11646,8 +11266,7 @@
     "longDescription" : "ArangoDB uses the path for storing temporary\nfiles, for extracting data from uploaded zip files (e.g. for Foxx services),\nand other things.\n\nIdeally, the temporary path is set to an instance-specific subdirectory of the\noperating system's temporary directory. To avoid data loss, the temporary path\nshould not overlap with any directories that contain important data, for\nexample, the instance's database directory.\n\nIf you set the temporary path to the same directory as the instance's database\ndirectory, a startup error is logged and the startup is aborted.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "temp",
@@ -11677,8 +11296,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "transaction",
@@ -11707,8 +11325,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "transaction",
@@ -11737,8 +11354,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "transaction",
@@ -11768,8 +11384,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "ttl",
@@ -11799,8 +11414,7 @@
     "minValue" : 1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "ttl",
@@ -11830,8 +11444,7 @@
     "minValue" : 1,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "ttl",
@@ -11856,8 +11469,7 @@
     "longDescription" : "The name (identity) of the user to run the\nserver as.\n\nIf you don't specify this option, the server does not attempt to change its UID,\nso that the UID used by the server is the same as the UID of the user who\nstarted the server.\n\nIf you specify this option, the server changes its UID after opening ports and\nreading configuration files, but before accepting connections or opening other\nfiles (such as recovery files). This is useful if the server must be started\nwith raised privileges (in certain environments) but security considerations\nrequire that these privileges are dropped once the server has started work.\n\n**Note**: You cannot use this option to bypass operating system security.\nIn general, this option (and the related `--gid`) can lower privileges but not\nraise them.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -11866,10 +11478,6 @@
   "use-splice-syscall" : {
     "category" : "option",
     "component" : [
-      "coordinator",
-      "dbserver",
-      "agent",
-      "single"
     ],
     "default" : true,
     "deprecatedIn" : null,
@@ -11908,8 +11516,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -11934,8 +11541,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -11957,8 +11563,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -11982,8 +11587,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "web-interface",
@@ -12005,8 +11609,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -12016,10 +11619,6 @@
   "working-directory" : {
     "category" : "option",
     "component" : [
-      "coordinator",
-      "dbserver",
-      "agent",
-      "single"
     ],
     "default" : "/var/tmp",
     "deprecatedIn" : null,
@@ -12031,8 +11630,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "",
