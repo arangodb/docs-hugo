@@ -12,8 +12,8 @@ view them by calling the `list_datasets()` method as shown below.
 
 ## Install
 
-To install the `arango_datasets` Python module, you can use the `pip` command
-to directly install it from [PyPi](https://pypi.org/project/arango-datasets/):
+To install the Python package, you can use the `pip` command to directly install
+it from [PyPi](https://pypi.org/project/arango-datasets/):
 
 ```sh
 pip install arango-datasets
@@ -31,32 +31,32 @@ The `Datasets` constructor requires a valid [python-arango](../../develop/driver
 database object as input. It defines the target deployment, database, and
 credentials to load a dataset.
 
-```sh
+```python
 from arango import ArangoClient
 db = ArangoClient(hosts='http://localhost:8529').db("dbName", username="root", password="")
 ```
 
 Pass the database object to the `Datasets` constructor:
 
-```sh
+```python
 from arango_datasets import Datasets
 datasets = Datasets(db)
 ```
 
 List the available datasets:
 
-```sh
+```python
 print(datasets.list_datasets())
 ```
 
 List more information about a particular dataset:
 
-```sh
+```python
 print(datasets.dataset_info("IMDB_X"))
 ```
 
 Import the dataset:
 
-```sh
+```python
 datasets.load("IMDB_X")
 ```
