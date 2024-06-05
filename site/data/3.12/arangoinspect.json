@@ -10,8 +10,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -37,8 +36,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -59,8 +57,7 @@
     "longDescription" : "This option enables transport compression for data\nreceived by an ArangoDB server.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -79,8 +76,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -98,8 +94,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -117,8 +112,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "console",
@@ -136,8 +130,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -156,8 +149,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -176,8 +168,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -196,8 +187,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -216,8 +206,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "console",
@@ -235,8 +224,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -255,8 +243,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "console",
@@ -277,8 +264,7 @@
     "longDescription" : "The default language is used for sorting and\ncomparing strings. The language value is a two-letter language code (ISO-639) or\nit is composed by a two-letter language code followed by a two letter country\ncode (ISO-3166). For example: `de`, `en`, `en_US`, `en_UK`.\n\nThe default is the system locale of the platform.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -298,8 +284,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -319,8 +304,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -337,8 +321,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -355,8 +338,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -375,8 +357,7 @@
     "longDescription" : "The program must output 32 bytes of data on the\nstandard output and exit.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "encryption",
@@ -395,8 +376,7 @@
     "longDescription" : "You must secure the encryption key file so that\nonly `arangodump`, `arangorestore`, and `arangod` can access it. You should also\nensure that the file is not readable if someone steals your hardware, for\nexample, by encrypting `/mytmpfs` or creating an in-memory file-system under\n`/mytmpfs`.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "encryption",
@@ -417,8 +397,7 @@
     "longDescription" : "With this option, you can get the sorting and\ncomparing order exactly as it is defined in the ICU standard. The language value\ncan be a two-letter language code (ISO-639), a two-letter language code followed\nby a two letter country code (ISO-3166), or any other valid ICU locale\ndefinition. For example: `de`, `en`, `en_US`, `en_UK`,\n`de_AT@collation=phonebook`.\n\nFor the Swedish language (`sv`), for instance, the correct ICU-based sorting\norder for letters is `'a','A','b','B','z','Z','å','Ä','ö','Ö'`. To get this\norder, use `--icu-language sv`. If you use `--default-language sv` instead, the\nsorting order will be `\"A\", \"a\", \"B\", \"b\", \"Z\", \"z\", \"å\", \"Ä\", \"Ö\", \"ö\"`.\n\n**Note**: You can use only one of the language options, either `--icu-language`\nor `--default-language`. Setting both of them results in an error.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -436,8 +415,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -456,8 +434,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -477,8 +454,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -496,8 +472,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -515,8 +490,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -534,8 +508,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -554,8 +527,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -575,8 +547,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -595,8 +566,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -615,8 +585,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -635,8 +604,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -655,8 +623,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -675,8 +642,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -695,8 +661,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -719,8 +684,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -738,8 +702,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -759,8 +722,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -778,8 +740,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -798,8 +759,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -818,8 +778,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -837,8 +796,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -857,8 +815,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -881,8 +838,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -902,8 +858,7 @@
     "longDescription" : "You can optionally pass arguments to the V8\nJavaScript engine. The V8 engine runs with the default settings unless you\nexplicitly specify them. The options are forwarded to the V8 engine, which\nparses them on its own. Passing invalid options may result in an error being\nprinted on stderr and the option being ignored.\n\nYou need to pass the options as one string, with V8 option names being prefixed\nwith two hyphens. Multiple options need to be separated by whitespace. To get\na list of all available V8 options, you can use the value `\"--help\"` as follows:\n\n```\n--javascript.v8-options=\"--help\"\n```\n\nAnother example of specific V8 options being set at startup:\n\n```\n--javascript.v8-options=\"--log --no-logfile-per-isolate --logfile=v8.log\"\n```\n\nNames and features or usable options depend on the version of V8 being used, and\nmight change in the future if a different version of V8 is being used in\nArangoDB. Not all options offered by V8 might be sensible to use in the context\nof ArangoDB. Use the specific options only if you are sure that they are not\nharmful for the regular database operation.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "javascript",
@@ -925,8 +880,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "",
@@ -944,8 +898,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -967,8 +920,7 @@
     "longDescription" : "This option applies to the control characters,\nthat have hex codes below `\\x20`, and also the character `DEL` with hex code\n`\\x7f`.\n\nIf you set this option to `false`, control characters are retained when they\nhave a visible representation, and replaced with a space character in case they\ndo not have a visible representation. For example, the control character `\\n`\nis visible, so a `\\n` is displayed in the log. Contrary, the control character\n`BEL` is not visible, so a space is displayed instead.\n\nIf you set this option to `true`, the hex code for the character is displayed,\nfor example, the `BEL` character is displayed as `\\x07`.\n\nThe default value for this option is `true` to ensure compatibility with\nprevious versions.\n\nA side effect of turning off the escaping is that it reduces the CPU overhead\nfor the logging. However, this is only noticeable if logging is set to a very\nverbose level (e.g. `debug` or `trace`).",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -990,8 +942,7 @@
     "longDescription" : "If you set this option to `false`, Unicode\ncharacters are retained and written to the log as-is. For example, `犬` is\nlogged as `犬`.\n\nIf you set this options to `true`, any Unicode characters are escaped, and the\nhex codes for all Unicode characters are logged instead. For example, `犬` is\nlogged as `\\u72AC`.\n\nThe default value for this option is set to `false` for compatibility with\nprevious versions.\n\nA side effect of turning off the escaping is that it reduces the CPU overhead\nfor the logging. However, this is only noticeable if logging is set to a very\nverbose level (e.g. `debug` or `trace`).",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1010,8 +961,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -1029,8 +979,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -1048,8 +997,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -1068,8 +1016,7 @@
     "longDescription" : "You can use this option to disable logging in an\nextra logging thread. If set to `true`, any log messages are immediately\nprinted in the thread that triggered the log message. This is non-optimal for\nperformance but can aid debugging. If set to `false`, log messages are handed\noff to an extra logging thread, which asynchronously writes the log messages.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1088,8 +1035,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1111,8 +1057,7 @@
     "longDescription" : "You can specify a hostname to be logged at the\nbeginning of each log message (for regular logging) or inside the `hostname`\nattribute (for JSON-based logging).\n\nThe default value is an empty string, meaning no hostnames is logged.\nIf you set this option to `auto`, the hostname is automatically determined.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -1131,8 +1076,7 @@
     "longDescription" : "Each log invocation in the ArangoDB source code\ncontains a unique log ID, which can be used to quickly find the location in the\nsource code that produced a specific log message.\n\nLog IDs are printed as 5-digit hexadecimal identifiers in square brackets\nbetween the log level and the log topic:\n\n`2020-06-22T21:16:48Z [39028] INFO [144fe] {general} using storage engine\n'rocksdb'` (where `144fe` is the log ID).",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1154,8 +1098,7 @@
     "longDescription" : "ArangoDB's log output is grouped by topics.\n`--log.level` can be specified multiple times at startup, for as many topics as\nneeded. The log verbosity and output files can be adjusted per log topic.\n\n```\narangod --log.level all=warning --log.level queries=trace --log.level startup=trace\n```\n\nThis sets a global log level of `warning` and two topic-specific levels\n(`trace` for queries and `info` for startup). Note that `--log.level warning`\ndoes not set a log level globally for all existing topics, but only the\n`general` topic. Use the pseudo-topic `all` to set a global log level.\n\nThe same in a configuration file:\n\n```\n[log]\nlevel = all=warning\nlevel = queries=trace\nlevel = startup=trace\n```\n\nThe available log levels are:\n\n- `fatal`: Only log fatal errors.\n- `error`: Only log errors.\n- `warning`: Only log warnings and errors.\n- `info`: Log information messages, warnings, and errors.\n- `debug`: Log debug and information messages, warnings, and errors.\n- `trace`: Logs trace, debug, and information messages, warnings, and errors.\n\nNote that the `debug` and `trace` levels are very verbose.\n\nSome relevant log topics available in ArangoDB 3 are:\n\n- `agency`: Information about the cluster Agency.\n- `performance`: Performance-related messages.\n- `queries`: Executed AQL queries, slow queries.\n- `replication`: Replication-related information.\n- `requests`: HTTP requests.\n- `startup`: Information about server startup and shutdown.\n- `threads`: Information about threads.\n\nYou can adjust the log levels at runtime via the `PUT /_admin/log/level`\nHTTP API endpoint.\n\n**Audit logging** (Enterprise Edition): The server logs all audit events by\ndefault. Low priority events, such as statistics operations, are logged with the\n`debug` log level. To keep such events from cluttering the log, set the\nappropriate log topics to the `info` log level.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -1173,8 +1116,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1199,8 +1141,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -1209,7 +1150,7 @@
   "log.max-queued-entries" : {
     "base" : 1,
     "category" : "option",
-    "default" : 10000,
+    "default" : 16384,
     "deprecatedIn" : null,
     "description" : "Upper limit of log entries that are queued in a background thread.",
     "dynamic" : false,
@@ -1228,8 +1169,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -1249,8 +1189,7 @@
     "longDescription" : "This option allows you to direct the global or\nper-topic log messages to different outputs. The output definition can be one\nof the following:\n\n- `-` for stdin\n- `+` for stderr\n- `syslog://<syslog-facility>`\n- `syslog://<syslog-facility>/<application-name>`\n- `file://<relative-or-absolute-path>`\n\nTo set up a per-topic output configuration, use\n`--log.output <topic>=<definition>`:\n\n`--log.output queries=file://queries.log`\n\nThe above example logs query-related messages to the file `queries.log`.\n\nYou can specify the option multiple times in order to configure the output\nfor different log topics:\n\n`--log.level queries=trace --log.output queries=file:///queries.log\n--log.level requests=info --log.output requests=file:///requests.log`\n\nThe above example logs all query-related messages to the file `queries.log`\nand HTTP requests with a level of `info` or higher to the file `requests.log`.\n\nAny occurrence of `$PID` in the log output value is replaced at runtime with\nthe actual process ID. This enables logging to process-specific files:\n\n`--log.output 'file://arangod.log.$PID'`\n\nNote that dollar sign may need extra escaping when specified on a\ncommand-line such as Bash.\n\nIf you specify `--log.file-mode <octalvalue>`, then any newly created log\nfile uses `octalvalue` as file mode. Please note that the `umask` value is\napplied as well.\n\nIf you specify `--log.file-group <name>`, then any newly created log file tries\nto use `<name>` as the group name. Note that you have to be a member of that\ngroup. Otherwise, the group ownership is not changed.\n\nThe old `--log.file` option is still available for convenience. It is a\nshortcut for the more general option `--log.output file://filename`.\n\nThe old `--log.requests-file` option is still available. It is a shortcut for\nthe more general option `--log.output requests=file://...`.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -1270,8 +1209,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1291,8 +1229,7 @@
     "longDescription" : "Example: `arangod ... --log.prefix \"-->\"`\n\n`2020-07-23T09:46:03Z --> [17493] INFO ...`",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -1312,8 +1249,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1332,8 +1268,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1353,8 +1288,7 @@
     "longDescription" : "If you set this option to `true`, log messages\ncontains a single character with the server's role. The roles are:\n\n- `U`: Undefined / unclear (used at startup)\n- `S`: Single server\n- `C`: Coordinator\n- `P`: Primary / DB-Server\n- `A`: Agent",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1373,8 +1307,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1394,11 +1327,10 @@
     "introducedIn" : [
       "v3.10.0"
     ],
-    "longDescription" : "Some log messages can be displayed together with\nadditional information in a structured form. The following parameters are\navailable:\n\n- `database`: The name of the database.\n- `username`: The name of the user.\n- `url`: The endpoint path.\n\nThe format to enable or disable a parameter is `<parameter>=<bool>`, or\n`<parameter>` to enable it. You can specify the option multiple times to\nconfigure multiple parameters:\n\n`arangod --log.structured-param database=true --log.structured-param url\n--log.structured-param username=false`\n\nYou can adjust the parameter settings at runtime using the\n`/_admin/log/structured` HTTP API.",
+    "longDescription" : "Some log messages can be displayed together with\nadditional information in a structured form. The following parameters are\navailable:\n\n- `database`: The name of the database.\n- `username`: The name of the user.\n- `queryid`: The ID of the AQL query (on DB-Servers only).\n- `url`: The endpoint path.\n\nThe format to enable or disable a parameter is `<parameter>=<bool>`, or\n`<parameter>` to enable it. You can specify the option multiple times to\nconfigure multiple parameters:\n\n`arangod --log.structured-param database=true --log.structured-param url\n--log.structured-param username=false`\n\nYou can adjust the parameter settings at runtime using the\n`/_admin/log/structured` HTTP API.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -1406,7 +1338,7 @@
   },
   "log.thread" : {
     "category" : "option",
-    "default" : false,
+    "default" : true,
     "deprecatedIn" : null,
     "description" : "Show the thread identifier in log messages.",
     "dynamic" : false,
@@ -1416,8 +1348,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1436,8 +1367,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1446,7 +1376,7 @@
   },
   "log.time-format" : {
     "category" : "option",
-    "default" : "utc-datestring",
+    "default" : "utc-datestring-micros",
     "deprecatedIn" : null,
     "description" : "The time format to use in logs.",
     "dynamic" : false,
@@ -1457,8 +1387,7 @@
     "longDescription" : "Overview over the different options:\n\nFormat                  | Example                  | Description\n:-----------------------|:------------------------ |:-----------\n`timestamp`             | 1553766923000            | Unix timestamps, in seconds\n`timestamp-millis`      | 1553766923000.123        | Unix timestamps, in seconds, with millisecond precision\n`timestamp-micros`      | 1553766923000.123456     | Unix timestamps, in seconds, with microsecond precision\n`uptime`                | 987654                   | seconds since server start\n`uptime-millis`         | 987654.123               | seconds since server start, with millisecond precision\n`uptime-micros`         | 987654.123456            | seconds since server start, with microsecond precision\n`utc-datestring`        | 2019-03-28T09:55:23Z     | UTC-based date and time in format YYYY-MM-DDTHH:MM:SSZ \n`utc-datestring-millis` | 2019-03-28T09:55:23.123Z | like `utc-datestring`, but with millisecond precision\n`local-datestring`      | 2019-03-28T10:55:23      | local date and time in format YYYY-MM-DDTHH:MM:SS",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "log",
@@ -1480,8 +1409,7 @@
     "longDescription" : "You can use this option to switch the log output\nto the JSON format. Each log message then produces a separate line with\nJSON-encoded log data, which can be consumed by other applications.\n\nThe object attributes produced for each log message are:\n\n| Key        | Value      |\n|:-----------|:-----------|\n| `time`     | date/time of log message, in format specified by `--log.time-format`\n| `prefix`   | only emitted if `--log.prefix` is set\n| `pid`      | process id, only emitted if `--log.process` is set\n| `tid`      | thread id, only emitted if `--log.thread` is set\n| `thread`   | thread name, only emitted if `--log.thread-name` is set\n| `role`     | server role (1 character), only emitted if `--log.role` is set\n| `level`    | log level (e.g. `\"WARN\"`, `\"INFO\"`)\n| `file`     | source file name of log message, only emitted if `--log.line-number` is set\n| `line`     | source file line of log message, only emitted if `--log.line-number` is set \n| `function` | source file function name, only emitted if `--log.line-number` is set\n| `topic`    | log topic name\n| `id`       | log id (5 digit hexadecimal string), only emitted if `--log.ids` is set\n| `hostname` | hostname if `--log.hostname` is set\n| `message`  | the actual log message payload",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1503,8 +1431,7 @@
     "longDescription" : "This option is deprecated.\nUse `--log.time-format local-datestring` instead.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1526,8 +1453,7 @@
     "longDescription" : "This option is deprecated.\nUse `--log.time-format timestamp-micros` instead.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1546,8 +1472,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1572,8 +1497,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "random",
@@ -1592,8 +1516,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1612,8 +1535,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "required" : false,
     "requiresValue" : false,
@@ -1637,8 +1559,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -1656,8 +1577,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -1677,8 +1597,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -1696,8 +1615,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -1720,8 +1638,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -1731,7 +1648,7 @@
     "category" : "option",
     "default" : "",
     "deprecatedIn" : null,
-    "description" : "The password to use when connecting. If not specified and authentication is required, the user is prompted for a password",
+    "description" : "The password to use when connecting. If not specified and authentication is required, you are prompted for a password.\nIn startup options, you can wrap the names of environment variables in at signs to use their value, like @ARANGO_PASSWORD@. This helps to expose the password less, like to the process list. Literal @ need to be escaped as @@.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -1739,8 +1656,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -1763,8 +1679,7 @@
     "minValue" : 2.2250738585072014e-308,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -1782,8 +1697,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "server",
@@ -1806,8 +1720,7 @@
     "minValue" : 0,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "ssl",
@@ -1827,8 +1740,7 @@
     "longDescription" : "ArangoDB uses the path for storing temporary\nfiles, for extracting data from uploaded zip files (e.g. for Foxx services),\nand other things.\n\nIdeally, the temporary path is set to an instance-specific subdirectory of the\noperating system's temporary directory. To avoid data loss, the temporary path\nshould not overlap with any directories that contain important data, for\nexample, the instance's database directory.\n\nIf you set the temporary path to the same directory as the instance's database\ndirectory, a startup error is logged and the startup is aborted.",
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : true,
     "section" : "temp",
@@ -1867,8 +1779,7 @@
     "introducedIn" : null,
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : false,
     "section" : "",
@@ -1887,8 +1798,7 @@
     ],
     "obsolete" : false,
     "os" : [
-      "linux",
-      "macos"
+      "linux"
     ],
     "requiresValue" : false,
     "section" : "",

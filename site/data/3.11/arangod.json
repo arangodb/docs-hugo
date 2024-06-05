@@ -1400,7 +1400,7 @@
       "agent",
       "single"
     ],
-    "default" : 7739636736,
+    "default" : 7739635712,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -2347,7 +2347,7 @@
       "agent",
       "single"
     ],
-    "default" : "",
+    "default" : "/var/lib/arangodb3",
     "deprecatedIn" : null,
     "description" : "The path to the database directory.",
     "dynamic" : false,
@@ -3427,7 +3427,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "./js/apps",
+    "default" : "/var/lib/arangodb3-apps",
     "deprecatedIn" : null,
     "description" : "The directory for Foxx applications.",
     "dynamic" : false,
@@ -3725,7 +3725,6 @@
       "single"
     ],
     "default" : [
-      "./enterprise/js"
     ],
     "deprecatedIn" : null,
     "description" : "Additional paths containing JavaScript modules.",
@@ -3804,7 +3803,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "./js",
+    "default" : "/usr/share/arangodb3/js",
     "deprecatedIn" : null,
     "description" : "A path to the directory containing the JavaScript startup scripts.",
     "dynamic" : false,
@@ -6194,7 +6193,7 @@
       "agent",
       "single"
     ],
-    "default" : "",
+    "default" : "-",
     "deprecatedIn" : null,
     "description" : "shortcut for '--log.output file://<filename>'",
     "dynamic" : false,
@@ -7549,7 +7548,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33106030592,
+    "base" : 33106026496,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7557,7 +7556,7 @@
       "agent",
       "single"
     ],
-    "default" : 26815884779,
+    "default" : 26815881462,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7847,7 +7846,7 @@
     "type" : "double"
   },
   "query.memory-limit" : {
-    "base" : 33106030592,
+    "base" : 33106026496,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7855,7 +7854,7 @@
       "agent",
       "single"
     ],
-    "default" : 19863618355,
+    "default" : 19863615897,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -9090,7 +9089,7 @@
       "agent",
       "single"
     ],
-    "default" : 9287564083,
+    "default" : 9287562854,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -11671,7 +11670,7 @@
       "agent",
       "single"
     ],
-    "default" : 12383418777,
+    "default" : 12383417139,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
