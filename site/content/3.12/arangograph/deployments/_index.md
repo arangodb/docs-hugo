@@ -86,7 +86,7 @@ role bindings to regulate access control on a deployment level.
 
 ![ArangoGraph New Deployment Advanced](../../../images/arangograph-new-deployment-advanced.png)
 
-### In the **Summary** section
+### In the **Summary** panel
 
 1. Review the configuration, and if you're okay with the setup, press the
   __Create deployment__ button.
@@ -218,7 +218,7 @@ This feature is available on `443` port only.
 
 ## How to edit a deployment
 
-You can modify a deployment’s configuration, including the ArangoDB version
+You can modify a deployment's configuration, including the ArangoDB version
 that is being used, change the memory size, or even switch from
 a OneShard deployment to a Sharded one if your data set no longer fits in a
 single node. 
@@ -228,25 +228,17 @@ To edit an existing deployment, you must have the necessary set of permissions
 attached to your role. Read more about [roles and permissions](../security-and-access-control/_index.md#roles).
 {{< /tip >}}
 
-1. Go to the **Projects** section and select an existing deployment from the list. 
-2. Open the deployment you want to change. 
-3. In the **Quick start** section, click the **Edit** button. 
-4. In the **Version and Security** section, you can do the following:
-   - Upgrade the ArangoDB version that is currently being used. See also
-     [Upgrades and Versioning](upgrades-and-versioning.md)
-   - Select a different CA certificate.
-   - Add or remove an IP allowlist.
-5. In the **Configuration** section, you can do the following:
-   - Scale up or down the memory size per node. The disk size is
-     automatically set for you.
-     {{< warning >}}
-     When scaling up or down the memory size in AWS deployments, the new
-     value gets locked and cannot be changed again until the cloud provider rate
-     limit is reset. 
-     {{< /warning >}}
+1. In the main navigation, click **Deployments** and select an existing
+   deployment from the list, or click **Projects**, select a project, and then
+   select a deployment.
+2. In the **Quick start** section, click the **Edit** button. 
+3. In the **General** section, you can do the following:
+   - Change the deployment name
+   - Change the deployment description
+4. In the **Sizing** section, you can do the following:
    - Change **OneShard** deployments into **Sharded** deployments. To do so,
-     click **Sharded**. In addition to the other configuration options, you can
-     select the number of nodes for your deployment. This can also be modified later on.
+     select **Sharded** in the **Model** dropdown list. You can select the
+     number of nodes for your deployment. This can also be modified later on.
      {{< warning >}}
      You cannot switch from **Sharded** back to **OneShard**.
      {{< /warning >}}
@@ -254,8 +246,19 @@ attached to your role. Read more about [roles and permissions](../security-and-a
      {{< warning >}}
      You cannot switch from **Sharded** or **OneShard** back to **Single Server**.
      {{< /warning >}}
-6. All changes are reflected in the **Summary** section. Review the new
-   configuration and click **Save**.
+   - Scale up or down the node size.
+     {{< warning >}}
+     When scaling up or down the size in AWS deployments, the new value gets locked
+     and cannot be changed again until the cloud provider rate limit is reset.
+     {{< /warning >}}
+5. In the **Advanced** section, you can do the following:
+   - Upgrade the ArangoDB version that is currently being used. See also
+     [Upgrades and Versioning](upgrades-and-versioning.md)
+   - Select a different certificate.
+   - Add or remove an IP allowlist.
+   - Select a deployment profile.
+6. All changes are reflected in the **Summary** panel. Review the new
+   configuration and click **Save changes**.
 
 ## How to connect a driver to your deployment
 
