@@ -5,13 +5,11 @@ weight: 10
 description: >-
    How to manage organizations and what type of packages ArangoGraph offers
 ---
-At the highest level of the ArangoGraph deployment hierarchy are organizations.
-Organizations are a container for projects.
+An ArangoGraph organizations is a container for projects. An organization
+typically represents a (commercial) entity such as a company, a company division,
+an institution, or a non-profit organization.
 
 **<u>Organizations</u> → Projects → Deployments**
-
-An organization typically represents a (commercial) entity such as a company,
-a company division, an institution or a non-profit organization.
 
 Users can be members of one or more organizations. However, you can only be a
 member of one _Free-to-try_ tier organization at a time.
