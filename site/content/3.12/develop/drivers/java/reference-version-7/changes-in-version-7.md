@@ -429,14 +429,13 @@ dependencies (`Netty` and `Vert.x`). See this
 [example](https://github.com/arangodb/arangodb-java-driver/tree/main/driver/src/test/java/graal)
 for reference. Such substitutions are not required when compiling the shaded driver.
 
-### Quarkus and Micronaut examples
+### Frameworks compatibility
 
-The driver can be used from Quarkus and Micronaut applications and does not
-require any additional configuration for GraalVM native image generation.
-Examples can be found here:
+The driver can be used in the following frameworks that support GraalVM Native Image generation:
 
-- [arango-quarkus-native-example](https://github.com/arangodb-helper/arango-quarkus-native-example)
-- [arango-micronaut-native-example](https://github.com/arangodb-helper/arango-micronaut-native-example)
+- [Quarkus](https://quarkus.io), see [arango-quarkus-native-example](https://github.com/arangodb-helper/arango-quarkus-native-example)
+- [Helidon](https://helidon.io), see [arango-helidon-native-example](https://github.com/arangodb-helper/arango-helidon-native-example)
+- [Micronaut](https://micronaut.io), see [arango-micronaut-native-example](https://github.com/arangodb-helper/arango-micronaut-native-example)
 
 ## Migration
 
