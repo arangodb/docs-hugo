@@ -93,7 +93,31 @@ Here are examples to integrate configuration properties from different sources:
 - `compressionThreshold(Integer)`: the minimum HTTP request body size (in bytes) to trigger compression, (default: `1024`)
 - `compressionLevel`:              compression level between 0 and 9, (default: `6`)
 - `serde(ArangoSerde)`:            serde to serialize and deserialize user-data
-- `reuseVertx(Boolean)`:           reuse Vert.x instance to create HTTP connections, (default: `false`)
+- `protocolConfig(ProtocolConfig)`: configuration specific for the used protocol provider implementation
+
+### HTTP Protocol Provider Configuration
+
+The `ProtocolConfig` for the default HTTP protocol provider can be created via:
+
+```java
+HttpProtocolConfig.builder()
+  // ...
+  .build();
+```
+
+and configured using the following builder methods:
+- `vertx(Vertx)`:                 Vert.x instance to use, if not set a new instance will be created
+
+For example, to reuse the existing Vert.x instance:
+
+```java
+HttpProtocolConfig.builder()
+  .protocolConfig(HttpProtocolConfig.builder()
+    .vertx(Vertx.currentContext().owner())
+    .build()
+  )
+  .build();
+```
 
 ### Config File Properties
 
@@ -121,7 +145,6 @@ The properties read are:
 - `compression`: `NONE`, `DEFLATE` or `GZIP`
 - `compressionThreshold`
 - `compressionLevel`
-- `reuseVertx`
 
 ## SSL
 
