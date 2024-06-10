@@ -83,7 +83,7 @@ not include quote marks. The following examples assume Bash as the shell and
 that the `curl` and `jq` commands are available.
 
 ```bash
-ARANGO_GRAPH_TOKEN="$(oasisctl login --key-id "<AG_KEY_ID>" --key-secret "<AG_KEY_SECRET>" | jq -r '.jwt')"
+ARANGO_GRAPH_TOKEN="$(oasisctl login --key-id "<AG_KEY_ID>" --key-secret "<AG_KEY_SECRET>")"
 ```
 
 To determine the base URL of the management API, use the ArangoGraph dashboard
@@ -110,9 +110,13 @@ For example, with cURL and using the token variable:
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/api-version"
 ```
 
+Request and response payloads are JSON-encoded in the management API.
+
 ### Get the API version
 
 `GET <BASE_URL>/api-version`
+
+Retrieve the version information of the management API.
 
 ```bash
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/api-version"
@@ -122,7 +126,8 @@ curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/api-version"
 
 `GET <BASE_URL>/enginesizes`
 
-List the available engine sizes, starting at 4 GiB of memory (`e4`).
+List the available engine sizes, which is a combination of the number of cores
+and the size of the RAM, starting at 1 CPU and 4 GiB of memory (`e4`).
 
 ```bash
 curl -H "Authorization: bearer $ARANGO_GRAPH_TOKEN" "$BASE_URL/enginesizes"
@@ -225,6 +230,8 @@ You can check the progress of operations and check if errors occurred.
 You can find the API reference documentation with detailed descriptions of the
 request and response data structures at <https://arangodb.github.io/graph-analytics>.
 
+Request and response payloads are JSON-encoded in the engine API.
+
 ### Load data
 
 `POST <ENGINE_URL>/v1/loaddata`
@@ -247,14 +254,14 @@ PageRank is a well known algorithm to rank vertices in a graph: the more
 important a vertex, the higher rank it gets. It goes back to L. Page and S. Brin's
 [paper](http://infolab.stanford.edu/pub/papers/google.pdf) and
 is used to rank pages in in search engines (hence the name). The algorithm runs
-until the execution converges. To specify a custom threshold, use the `threshold`
-parameter; to run for a fixed number of iterations, use the `maximum_supersteps` parameter.
+until the execution converges. To run for a fixed number of iterations, use the
+`maximum_supersteps` parameter.
 
 The rank of a vertex is a positive real number. The algorithm starts with every
 vertex having the same rank (one divided by the number of vertices) and sends its
 rank to its out-neighbors. The computation proceeds in iterations. In each iteration,
 the new rank is computed according to the formula
-`(0.15/total number of vertices) + (0.85 * the sum of all incoming ranks)`.
+`( (1 - damping_factor) / total number of vertices) + (damping_factor * the sum of all incoming ranks)`.
 The value sent to each of the out-neighbors is the new rank divided by the number
 of those neighbors, thus every out-neighbor gets the same part of the new rank.
 
@@ -262,19 +269,7 @@ The algorithm stops when at least one of the two conditions is satisfied:
 - The maximum number of iterations is reached. This is the same `maximum_supersteps`
   parameter as for the other algorithms.
 - Every vertex changes its rank in the last iteration by less than a certain
-  threshold. The default threshold is  0.00001, a custom value can be set with
-  the `threshold` parameter.
-
-<!-- TODO: is threshold the same as damping_factor? -->
-
-Result: rank
-
-Parameters:
-- `graph_id`
-- `damping_factor`
-- `maximum_supersteps`
-
-#### Seeded PageRank
+  threshold. The threshold is hardcoded to `0.0000001`.
 
 It is possible to specify an initial distribution for the vertex documents in
 your graph. To define these seed ranks / centralities, you can specify a
@@ -282,15 +277,22 @@ your graph. To define these seed ranks / centralities, you can specify a
 set on a document _and_ the value is numeric, then it is used instead of
 the default initial rank of `1 / numVertices`.
 
-Result: rank
-
 Parameters:
 - `graph_id`
 - `damping_factor`
 - `maximum_supersteps`
-- `seeding_attribute`
+- `seeding_attribute` (optional, for seeded PageRank)
+
+Result: the rank of each vertex
+
+```bash
+GRAPH_ID="234"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"damping_factor\":0.85,\"maximum_supersteps\":500,\"seeding_attribute\":\"seed_attr\"}" "$ENGINE_URL/v1/pagerank"
+```
 
 #### Single-Source Shortest Path
+
+`POST <ENGINE_URL>/v1/single_source_shortest_path`
 
 Calculates the distances, that is, the lengths of shortest paths from the
 given source to all other vertices, called _targets_. The result is written
@@ -305,14 +307,21 @@ diameter of your graph (the longest distance between two vertices).
 A call of the algorithm requires the `source_vertex` parameter whose value is the
 document ID of the source vertex.
 
-Result: distance
-
 Parameters:
 - `graph_id`
 - `source_vertex`
 - `undirected`
 
+Result: the distance of each vertex to the `source_vertex`
+
+```bash
+GRAPH_ID="234"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"source_vertex\":\"vertex/345\",\"undirected\":false}" "$ENGINE_URL/v1/single_source_shortest_path"
+```
+
 #### Weakly Connected Components (WCC)
+
+`POST <ENGINE_URL>/v1/wcc`
 
 A _weakly connected component_ in a directed graph is a maximal subgraph such
 that there is a path between each pair of vertices where we can walk also
@@ -321,16 +330,21 @@ against the direction of edges. More formally, it is a connected component
 undirected graph obtained by adding an edge from vertex B to vertex A (if it
 does not already exist), if there is an edge from vertex A to vertex B.
 
-The result is a component ID for each vertex. All vertices from the same component
-obtain the same component ID, every two vertices from different components
-obtain different IDs.
-
-Result: component ID
-
 Parameters:
 - `graph_id`
 
+Result: a component ID for each vertex. All vertices from the same component
+obtain the same component ID, every two vertices from different components
+obtain different IDs.
+
+```bash
+GRAPH_ID="234"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID}" "$ENGINE_URL/v1/wcc"
+```
+
 #### Strongly Connected Components (SCC)
+
+`POST <ENGINE_URL>/v1/scc`
 
 A _strongly connected component_ is a maximal subgraph, where for every two
 vertices, there is a path from one of them to the other. It is thus defined as a
@@ -340,15 +354,18 @@ directions.
 The algorithm is more complex than the WCC algorithm and, in general, requires
 more memory. <!-- TODO: does this still apply? -->
 
-The result is a component ID for each vertex. All vertices from the same component
-obtain the same component ID, every two vertices from different components
-obtain different IDs.
-
-Result: component ID
-
 Parameters:
 
 - `graph_id`
+
+Result: a component ID for each vertex. All vertices from the same component
+obtain the same component ID, every two vertices from different components
+obtain different IDs.
+
+```bash
+GRAPH_ID="234"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID}" "$ENGINE_URL/v1/scc"
+```
 
 #### Vertex Centrality
 
@@ -363,7 +380,17 @@ It is probably impossible to discover an efficient algorithm which computes
 them in a distributed way. Fortunately there are scalable substitutions
 available, which should be equally usable for most use cases.
 
-![Illustration of an execution of different centrality measures (Freeman 1977)](../../../images/centrality_visual.png)
+![Illustration of an execution of different centrality measures (Freeman 1977)](../../images/centrality_visual.png)
+
+##### Betweenness Centrality 
+
+`POST <ENGINE_URL>/v1/betweennesscentrality`
+
+A relatively expensive algorithm with complexity `O(V*E)` where `V` is the
+number of vertices and `E` is the number of edges in the graph.
+
+Betweenness-centrality can be approximated by cheaper algorithms like
+Line Rank but this algorithm strives to compute accurate centrality measures.
 
 Parameters:
 - `graph_id`
@@ -372,14 +399,21 @@ Parameters:
 - `normalized`
 - `parallelism`
 
-#### Effective Closeness
+Result: a centrality measure for each vertex
+
+```bash
+GRAPH_ID="234"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"k\":0,\"undirected\":false,\"normalized\":true}" "$ENGINE_URL/v1/betweennesscentrality"
+```
+
+##### Effective Closeness
 
 A common definitions of centrality is the **closeness centrality**
 (or closeness). The closeness of a vertex in a graph is the inverse average
 length of the shortest path between the vertex and all other vertices.
 For vertices *x*, *y* and shortest distance `d(y, x)` it is defined as:
 
-![Vertex Closeness Formula](../../../images/closeness.png)
+![Vertex Closeness Formula](../../images/closeness.png)
 
 Effective Closeness approximates the closeness measure. The algorithm works by
 iteratively estimating the number of shortest paths passing through each vertex.
@@ -394,18 +428,22 @@ on large graphs and on smaller ones as well. The memory requirements should be
 **O(n * d)** where *n* is the number of vertices and *d* the diameter of your
 graph. Each vertex stores a counter for each iteration of the algorithm.
 
-Result: closeness
-
 Parameters:
 - `graph_id`
 
-#### LineRank
+Result: a closeness measure for each vertex
+
+<!-- TODO: missing endpoint and example because it is not implemented yet -->
+
+##### LineRank
+
+`POST <ENGINE_URL>/v1/linerank`
 
 Another common measure is the [*betweenness* centrality](https://en.wikipedia.org/wiki/Betweenness_centrality):
 It measures the number of times a vertex is part of shortest paths between any
 pairs of vertices. For a vertex *v* betweenness is defined as:
 
-![Vertex Betweenness Formula](../../../images/betweenness.png)
+![Vertex Betweenness Formula](../../images/betweenness.png)
 
 Where the &sigma; represents the number of shortest paths between *x* and *y*,
 and &sigma;(v) represents the number of paths also passing through a vertex *v*.
@@ -422,12 +460,17 @@ This can be considered a scalable equivalent to vertex betweenness, which can
 be executed distributedly in ArangoDB. The algorithm is from the paper
 *Centralities in Large Networks: Algorithms and Observations (U Kang et.al. 2011)*.
 
-Result: line rank
-
 Parameters:
 - `graph_id`
 - `damping_factor`
 - `maximum_supersteps`
+
+Result: the line rank of each vertex
+
+```bash
+GRAPH_ID="234"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"damping_factor\":0.0000001,\"maximum_supersteps\":500}" "$ENGINE_URL/v1/linerank"
+```
 
 #### Community Detection
 
@@ -439,6 +482,8 @@ Social networks include community groups (the origin of the term, in fact)
 based on common location, interests, occupation, etc.
 
 ##### Label Propagation
+
+`POST <ENGINE_URL>/v1/labelpropagation`
 
 *Label Propagation* can be used to implement community detection on large
 graphs. The algorithm assigns a community, more precisely, a Community ID 
@@ -484,14 +529,19 @@ graphs, the resulting partition into communities might change, if the number
 of performed steps changes. How strong the dependence is
 may be influenced by the density of the graph.
 
-Result: community ID
-
 Parameters:
 - `graph_id`
 - `start_label_attribute`
 - `synchronous`
 - `random_tiebreak`
 - `maximum_supersteps`
+
+Result: a community ID for each vertex
+
+```bash
+GRAPH_ID="234"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"start_label_attribute\":\"start_attr\",\"synchronous\":false,\"random_tiebreak\":false,\"maximum_supersteps\":500}" "$ENGINE_URL/v1/labelpropagation"
+```
 
 ##### Speaker-Listener Label Propagation
 
@@ -510,10 +560,10 @@ During the run three steps are executed for each vertex:
 3. The listener remembers one of the labels, we always choose the most
    frequently observed label.
 
-Result: community ID
-
 Parameters:
 - `graph_id`
+
+Result: a community ID for each vertex
 
 <!-- TODO: max communities?
 You can also execute SLPA with the `maxCommunities` parameter to limit the
@@ -522,69 +572,9 @@ memory of all labels, but the output is reduced to just the `n` most frequently
 observed labels.
 -->
 
-<!-- TODO: anything else to integrate into new text?
-The following API calls are available, all start with the `BASE_URL` from above:
-
- - `GET $BASE_URL/api-version`: return a JSON document describing the API version
- - `GET $BASE_URL/enginetypes`: return a JSON document describing the available
-   GAE types, currently, there is only one called `gral` available
- - `GET $BASE_URL/enginesizes`: return a JSON document describing the available
-   GAE sizes, currently, there are a certain number of choices available,
-   which basically choose the number of cores and the size of the RAM
- - `GET $BASE_URL/engines`: return a list of currently deployed GAEs for this
-   database deployment
- - `GET $BASE_URL/engine/<id>`: return information about a specific GAE
- - `POST $BASE_URL/engines` with a body like this:
-
-```json
-{"type_id":"gral", "size_id": "e32"}'
-```
-
-   This will deploy an engine of type `gral` with size `e32`, which means
-   32 GB of RAM and 8 cores.
-
- - `DELETE $BASE_URL/engine/<id>`: undeploy (delete) a specific GAE
-
-All these API calls can be executed conveniently with the provided `gae` shell script. Just set the environment variables `ARANGO_GRAPH_TOKEN` to the access token described above and `DEPLOYMENT_URL` to the URL of your deployment (leaving out the port part :8529).
-
-## Interacting with a running GAE
-
-You can access a running GAE via API calls to ArangoGraph which are forwarded to the respective GAE. Here the authentication depends on the database deployment mode.
-
-### Authentication
-
-In ArangoGraph there are two modes, in which your database deployment can be:
-
- 1. Platform authentication switched on.
- 2. Platform authentication switched off.
-
-The authentication for API calls to the GAE works differently for these two
-cases.
-
-In Case 1. you have to give the exact same authorization header [as above](#platform-authentication) with an ArangoGraph access token. The platform will automatically
-verify the validity of the token and, if authenticated, will change
-the authorization header on the fly to provide one with a JWT token,
-which the GAE can use to access the database deployment! This means
-in particular, that the GAE will have the access permissions of the
-ArangoGraph platform user, which also exists as an ArangoDB user in the
-database deployment!
-
-In Case 2. you have to directly provide a valid JWT user token from the ArangoDB server (`POST /_open/auth`) in the
-`Authorization` header, for some user which is configured in the
-database deployment. See [JWT user tokens](../develop/http-api/authentication.md#jwt-user-tokens) on how to acquire it. Then, the authorization header for the API calls need to be
-```
-Authorization: bearer $JWT_TOKEN
-```
-
-### Base URL
-
-To access a running engine, you need the engine url. You get this url via the `GET $BASE_URL/engine/<id>` ArangoGraph request described in the [deployment api](#deploy-api), under `status` and `endpoint` entry. Let's call this
-```
-export ENGINE_URL
-```
--->
-
 ### Store job results
+
+`POST <ENGINE_URL>/v1/storeresults`
 
 You need to specify to which ArangoDB `database` and `target_collection` to save
 the results to. They need to exist already.
@@ -598,6 +588,19 @@ list with one attribute name for every job in the `job_ids` list.
 
 You can optionally set the degree of `parallelism` and the `batch_size` for
 saving the data.
+
+Parameters:
+- `database`
+- `target_collection`
+- `job_ids`
+- `attribute_names`
+- `parallelism`
+- `batch_size`
+
+```bash
+JOB_ID="123"
+curl -H "Authorization: bearer $ADB_TOKEN" -X POST -d "{\"database\":\"_system\",\"target_collection\":\"coll\",\"job_ids\":[$JOB_ID],\"attribute_names\":[\"attr\"]}" "$ENGINE_URL/v1/storeresults"
+```
 
 ### List all jobs
 
@@ -618,4 +621,47 @@ Get detailed information about a specific job.
 ```bash
 JOB_ID="123"
 curl -H "Authorization: bearer $ADB_TOKEN" "$ENGINE_URL/v1/jobs/$JOB_ID"
+```
+
+### Delete a job
+
+`DELETE <ENGINE_URL>/v1/jobs/<JOB_ID>`
+
+Delete a specific job.
+
+```bash
+JOB_ID="123"
+curl -H "Authorization: bearer $ADB_TOKEN" -X DELETE "$ENGINE_URL/v1/jobs/$JOB_ID"
+```
+
+### List all graphs
+
+`GET <ENGINE_URL>/v1/graphs`
+
+List all loaded sets of graph data that reside in the memory of the engine node.
+
+```bash
+curl -H "Authorization: bearer $ADB_TOKEN" "$ENGINE_URL/v1/graphs"
+```
+
+### Get a graph
+
+`GET <ENGINE_URL>/v1/graphs/<GRAPH_ID>`
+
+Get detailed information about a specific set of graph data.
+
+```bash
+GRAPH_ID="234"
+curl -H "Authorization: bearer $ADB_TOKEN" "$ENGINE_URL/v1/graphs/$GRAPH_ID"
+```
+
+### Delete a graph
+
+`DELETE <ENGINE_URL>/v1/graphs/<GRAPH_ID>`
+
+Delete a specific set of graph data, removing it from the memory of the engine node.
+
+```bash
+GRAPH_ID="234"
+curl -H "Authorization: bearer $ADB_TOKEN" -X DELETE "$ENGINE_URL/v1/graphs/$GRAPH_ID"
 ```
