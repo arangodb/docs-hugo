@@ -114,3 +114,9 @@ The ArangoFlix demo uses five different recommendation methods:
 The ArangoFlix website not only offers an example of how the user recommendations might
 look like in real life, but it also provides information on a recommendation method,
 an AQL query, a custom graph visualization for each movie, and more.
+
+## Sample datasets
+
+If you want to try out ArangoDB's data science features, you may use the
+[`arango_datasets` Python package](../components/tools/arango-datasets.md)
+to load sample datasets into a deployment.
