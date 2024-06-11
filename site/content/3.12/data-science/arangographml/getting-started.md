@@ -188,7 +188,7 @@ Let's get started!
 
 {{< tab "ArangoGraphML" >}}
 
-The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package
+The [`arango_datasets` Python package](../../components/tools/arango-datasets.md)
 allows you to load pre-defined datasets into ArangoDB. It comes pre-installed in the
 ArangoGraphML notebook environment.
 
@@ -206,7 +206,7 @@ DATASET_NAME = "OPEN_INTELLIGENCE_ANGOLA"
 {{< tab "Self-managed" >}}
 
 The [`arango_datasets` Python package](../../components/tools/arango-datasets.md)
-allows you to load sample datasets into ArangoDB. It can be installed with the
+allows you to load pre-defined datasets into ArangoDB. It can be installed with the
 following command:
 
 ```
