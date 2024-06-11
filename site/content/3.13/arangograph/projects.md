@@ -5,19 +5,15 @@ weight: 15
 description: >-
   How to manage projects and IP allowlists in ArangoGraph
 ---
-Below organizations in the ArangoGraph deployment hierarchy are projects. They can
-represent organizational units such as teams, product groups, environments
-(e.g. staging vs. production). You can have any number of projects under one
-organization.
+ArangoGraph projects can represent organizational units such as teams,
+product groups, environments (e.g. staging vs. production). You can have any
+number of projects under one organization.
 
 **Organizations → <u>Projects</u> → Deployments**
 
 Projects are a container for related deployments, certificates & IP allowlists.
 Projects also come with their own policy for access control. You can have any
 number of deployment under one project.
-
-In essence, you can create whatever structure fits you for a given organization,
-its projects and deployments.
 
 ![ArangoGraph Projects Overview](../../images/arangograph-projects-overview.png)
 
