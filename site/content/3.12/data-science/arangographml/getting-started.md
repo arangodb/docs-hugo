@@ -188,7 +188,7 @@ Let's get started!
 
 {{< tab "ArangoGraphML" >}}
 
-The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package
+The [`arango_datasets` Python package](../../components/tools/arango-datasets.md)
 allows you to load pre-defined datasets into ArangoDB. It comes pre-installed in the
 ArangoGraphML notebook environment.
 
@@ -205,8 +205,9 @@ DATASET_NAME = "OPEN_INTELLIGENCE_ANGOLA"
 
 {{< tab "Self-managed" >}}
 
-The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package
-allows you to load a dataset into ArangoDB. It can be installed with:
+The [`arango_datasets` Python package](../../components/tools/arango-datasets.md)
+allows you to load pre-defined datasets into ArangoDB. It can be installed with the
+following command:
 
 ```
 pip install arango-datasets
@@ -737,7 +738,7 @@ collection, or within the source documents.
 - `modelID`: The model ID to use for generating predictions.
 - `featurizeNewDocuments`: Boolean for enabling or disabling the featurization of new documents. Useful if you don't want to re-train the model upon new data. Default is `false`.
 - `featurizeOutdatedDocuments`: Boolean for enabling or disabling the featurization of outdated documents. Outdated documents are those whose features have changed since the last featurization. Default is `false`.
-- `schedule`: A CRON Expression to schedule the prediction job (e.g `0 0 * * *` for daily predictions). Default is `None`.
+- `schedule`: A cron expression to schedule the prediction job (e.g `0 0 * * *` for daily predictions). Default is `None`.
 
 
 ```py

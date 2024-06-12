@@ -737,7 +737,7 @@ collection, or within the source documents.
 - `modelID`: The model ID to use for generating predictions.
 - `featurizeNewDocuments`: Boolean for enabling or disabling the featurization of new documents. Useful if you don't want to re-train the model upon new data. Default is `false`.
 - `featurizeOutdatedDocuments`: Boolean for enabling or disabling the featurization of outdated documents. Outdated documents are those whose features have changed since the last featurization. Default is `false`.
-- `schedule`: A CRON Expression to schedule the prediction job (e.g `0 0 * * *` for daily predictions). Default is `None`.
+- `schedule`: A cron expression to schedule the prediction job (e.g `0 0 * * *` for daily predictions). Default is `None`.
 
 
 ```py
