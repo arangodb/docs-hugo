@@ -160,6 +160,27 @@ VelocyPack remains as ArangoDB's binary storage format and you can continue to
 use it in transport over the HTTP protocol, as well as use JSON over the
 HTTP protocol.
 
+## Incompatibilities due to switch to glibc
+
+From version 3.11.10 onward, ArangoDB uses the glibc C standard library
+implementation instead of libmusl. Even though glibc is statically linked into
+the ArangoDB server and client tool executables, it may load additional modules
+at runtime that are installed on your system. Under rare circumstances, it is
+possible that ArangoDB crashes when performing host name or address lookups.
+This is only the case if all of the following conditions are true:
+
+- You use an ArangoDB package on bare metal (not a Docker container)
+- Your operating system uses glibc (like Ubuntu, Debian, RedHat, Centos, or
+  most other Linux distributions, but not Alpine for instance)
+- The glibc version of your system is different than the one used by ArangoDB,
+  in particular if the system glibc is older than version 2.35
+- The `libnss-*` dynamic libraries are installed
+- The `/etc/nsswitch.conf` configuration file contains settings other than for
+  `files` and `dns` in the `hosts:` line
+
+If you are affected, consider using Docker containers, `chroot`, or change
+`nsswitch.conf`.
+
 ## JavaScript Transactions deprecated
 
 Server-side transactions written in JavaScript and executed via the
