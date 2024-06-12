@@ -1448,3 +1448,7 @@ been updated to more recent versions that don't have a version number.
 
 For ArangoDB 3.11, the bundled version of rclone is 1.62.2. Check if your
 rclone configuration files require changes.
+
+From version 3.11.10 onward, ArangoDB uses the glibc C standard library
+implementation with an LGPL-3.0 license instead of libmusl. Notably, it features
+string functions that are better optimized for common CPUs.
