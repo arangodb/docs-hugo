@@ -106,7 +106,8 @@ HttpProtocolConfig.builder()
 ```
 
 and configured using the following builder methods:
-- `vertx(Vertx)`:                 Vert.x instance to use, if not set a new instance will be created
+
+- `vertx(Vertx)`: Vert.x instance to use. If not set, a new instance is created.
 
 For example, to reuse the existing Vert.x instance:
 
