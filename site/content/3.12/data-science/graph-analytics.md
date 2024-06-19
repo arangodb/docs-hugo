@@ -6,17 +6,16 @@ description: |
   ArangoGraph offers Graph Analytics Engines to run graph algorithms on your
   data separately from your ArangoDB deployments
 ---
-Graph analytics is branch of data science that deals with analyzing information
+Graph analytics is a branch of data science that deals with analyzing information
 networks known as graphs, and extracting information from the data relationships.
-It ranges from basic measures that characterize graphs to complex algorithms
-such as page rank. Common use cases include fraud detection, recommender systems,
+It ranges from basic measures that characterize graphs, over PageRank, to complex
+algorithms. Common use cases include fraud detection, recommender systems,
 and network flow analysis.
 
-ArangoDB offers an experimental feature for running algorithms on your graph data,
+ArangoDB offers a feature for running algorithms on your graph data,
 called Graph Analytics Engines (GAEs). It is available on request for the
-[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
-and free of charge during the beta phase. Your ArangoDB deployment needs to use
-AWS as the provider.
+[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+Your ArangoDB deployment needs to use AWS as the provider.
 
 Key features:
 
@@ -70,7 +69,7 @@ setting in ArangoGraph:
 - **Enabled**: You can use an ArangoGraph access token created with an API key
   (see above), allowing you to use one token for both the Management API and
   the Engine API.
-- **Disabled**: You need use an JWT user token created from ArangoDB credentials.
+- **Disabled**: You need use a JWT user token created from ArangoDB credentials.
   These session tokens need to be renewed every hour by default. See
   [HTTP API Authentication](../develop/http-api/authentication.md#jwt-user-tokens)
   for details.
@@ -224,8 +223,9 @@ ADB_TOKEN=$(curl -X POST -d "{\"username\":\"<ADB_USER>\",\"password\":\"<ADB_PA
 curl -H "Authorization: bearer $ADB_TOKEN" "$ENGINE_URL/v1/jobs"
 ```
 
-All requests to the engine API queue jobs, each representing an operation.
+All requests to the engine API start jobs, each representing an operation.
 You can check the progress of operations and check if errors occurred.
+You can submit jobs concurrently and they also run concurrently.
 
 You can find the API reference documentation with detailed descriptions of the
 request and response data structures at <https://arangodb.github.io/graph-analytics>.
@@ -290,27 +290,19 @@ GRAPH_ID="234"
 curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"damping_factor\":0.85,\"maximum_supersteps\":500,\"seeding_attribute\":\"seed_attr\"}" "$ENGINE_URL/v1/pagerank"
 ```
 
-#### Single-Source Shortest Path
+#### Single-Source Shortest Path (SSSP)
 
 `POST <ENGINE_URL>/v1/single_source_shortest_path`
 
-Calculates the distances, that is, the lengths of shortest paths from the
-given source to all other vertices, called _targets_. The result is written
-to the specified property of the respective target.
-The distance to the source vertex itself is returned as `0` and a length above
-`9007199254740991` (max safe integer) means that there is no path from the
-source to the vertex in the graph.
-
-The algorithm runs until all distances are computed. The number of iterations is bounded by the
-diameter of your graph (the longest distance between two vertices).
-
-A call of the algorithm requires the `source_vertex` parameter whose value is the
-document ID of the source vertex.
+The algorithm computes the shortest path from a given source vertex to all other
+vertices and returns the length of this path (distance). The algorithm returns a
+distance of `-1` for a vertex that cannot be reached from the source, and `0`
+for the source vertex itself.
 
 Parameters:
 - `graph_id`
-- `source_vertex`
-- `undirected`
+- `source_vertex`: The document ID of the source vertex.
+- `undirected`: Determines whether the algorithm respects the direction of edges.
 
 Result: the distance of each vertex to the `source_vertex`
 
@@ -323,12 +315,12 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"
 
 `POST <ENGINE_URL>/v1/wcc`
 
-A _weakly connected component_ in a directed graph is a maximal subgraph such
-that there is a path between each pair of vertices where we can walk also
-against the direction of edges. More formally, it is a connected component
-(see the definition above) in the underlying undirected graph, i.e., in the
-undirected graph obtained by adding an edge from vertex B to vertex A (if it
-does not already exist), if there is an edge from vertex A to vertex B.
+The weakly connected component algorithm determines all disjoint groups of
+vertices that are connected by at least one edge, ignoring edge directions.
+
+In other words, each weakly connected component is a maximal subgraph such that
+there is a path between each pair of vertices where one can also follow edges
+against their direction in a directed graph.
 
 Parameters:
 - `graph_id`
@@ -346,13 +338,14 @@ curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID}" 
 
 `POST <ENGINE_URL>/v1/scc`
 
-A _strongly connected component_ is a maximal subgraph, where for every two
-vertices, there is a path from one of them to the other. It is thus defined as a
-weakly connected component, but one is not allowed to run against the edge
-directions.
+The strongly connected components algorithm determines all groups of vertices
+with mutual reachability within a directed graph, i.e. there exists a directed
+path between every pair of vertices in both directions.
 
-The algorithm is more complex than the WCC algorithm and, in general, requires
-more memory. <!-- TODO: does this still apply? -->
+In other words, a strongly connected component is a maximal subgraph, where for
+every two vertices, there is a path from one of them to the other, forming a
+cycle. In contrast to a weakly connected component, one cannot follow edges
+against their directions.
 
 Parameters:
 
@@ -422,7 +415,7 @@ to actually count all shortest paths due to the horrendous `O(n^2 * d)` memory
 requirements. The algorithm is from the paper
 *Centralities in Large Networks: Algorithms and Observations (U Kang et.al. 2011)*.
 
-ArangoDBs implementation approximates the number of shortest path in each
+ArangoDBs implementation approximates the number of shortest paths in each
 iteration by using a HyperLogLog counter with 64 buckets. This should work well
 on large graphs and on smaller ones as well. The memory requirements should be
 **O(n * d)** where *n* is the number of vertices and *d* the diameter of your
@@ -485,49 +478,32 @@ based on common location, interests, occupation, etc.
 
 `POST <ENGINE_URL>/v1/labelpropagation`
 
-*Label Propagation* can be used to implement community detection on large
-graphs. The algorithm assigns a community, more precisely, a Community ID 
-(a natural number), to every vertex in the graph. 
-The idea is that each vertex should be in the community that most of
-its neighbors are in. 
+*Label Propagation* can be used to implement community detection on large graphs.
+The algorithm assigns an initial community identifier to every vertex in the
+graph using a user-defined attribute. The idea is that each vertex should be in
+the community that most of its neighbors are in at the end of the computation.
 
-At first, the algorithm assigns unique initial Community IDs to the vertices. 
-The assignment is deterministic given the graph and the distribution of vertices
-on the shards, but there is no guarantee that a vertex obtains
-the same initial ID in two different runs of the algorithm, even if the graph does not change 
-(because the sharding may change). Moreover, there is no guarantee on a particular
-distribution of the initial IDs over the vertices.
+In each iteration of the computation, a vertex sends its current community ID to
+all its neighbor vertices, inbound and outbound (ignoring edge directions).
+After that, each vertex adopts the community ID it received most frequently in
+the last step.
 
-Then, in each iteration, a vertex sends its current Community
-ID to all its neighbor vertices. After that each vertex adopts the Community ID it
-received most frequently in the last step. 
+It can happen that a vertex receives multiple most frequent community IDs.
+In this case, one is chosen either randomly or using a deterministic choice
+depending on a setting for the algorithm. The rules for a deterministic tiebreak
+are as follows:
+- If a vertex obtains only one community ID and the ID of the vertex from the
+  previous step, its old ID, is less than the obtained ID, the old ID is kept.
+- If a vertex obtains more than one ID, its new ID is the lowest ID among the
+  most frequently obtained IDs. For example, if the initial IDs are numbers and
+  the obtained IDs are 1, 2, 2, 3, 3, then 2 is the new ID.
+- If, however, no ID arrives more than once, the new ID is the minimum of the
+  lowest obtained IDs and the old ID. For example, if the old ID is 5 and the
+  obtained IDs are 3, 4, 6, then the new ID is 3. If the old ID is 2, it is kept.
 
-Note that, in a usual implementation of Label Propagation, if there are
-multiple most frequently received Community IDs, one is chosen randomly.
-An advantage of our implementation is that this choice is deterministic.
-This comes for the price that the choice rules are somewhat involved: 
-If a vertex obtains only one ID and the ID of the vertex from the previous step,
-its old ID, is less than the obtained ID, the old ID is kept. 
-(IDs are numbers and thus comparable to each other.) If a vertex obtains
-more than one ID, its new ID is the lowest ID among the most frequently 
-obtained IDs. (For example, if the obtained IDs are 1, 2, 2, 3, 3,
-then 2 is the new ID.) If, however, no ID arrives more than once, the new ID is
-the minimum of the lowest obtained IDs and the old ID. (For example, if the
-old ID is 5 and the obtained IDs are 3, 4, 6, then the new ID is 3. 
-If the old ID is 2, it is kept.) 
-
-If a vertex keeps its ID 20 times or more in a row, it does not send its ID.
-Vertices that did not obtain any IDs do not update their ID and do not send it.
-
-The algorithm runs until it converges, which likely never really happens on
-large graphs. Therefore you need to specify a maximum iteration bound.
-The default bound is 500 iterations, which is too large for
-common applications. 
-
-The algorithm should work best on undirected graphs. On directed
-graphs, the resulting partition into communities might change, if the number 
-of performed steps changes. How strong the dependence is
-may be influenced by the density of the graph.
+The algorithm runs until it converges or reaches the maximum iteration bound.
+It may not converge on large graphs if the synchronous variant is used.
+<!-- TODO: Describe sync/async from the original paper -->
 
 Parameters:
 - `graph_id`
@@ -543,34 +519,42 @@ GRAPH_ID="234"
 curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"start_label_attribute\":\"start_attr\",\"synchronous\":false,\"random_tiebreak\":false,\"maximum_supersteps\":500}" "$ENGINE_URL/v1/labelpropagation"
 ```
 
-##### Speaker-Listener Label Propagation
+##### Attribute Propagation
 
-The [Speaker-listener Label Propagation](https://arxiv.org/pdf/1109.5720.pdf)
-(SLPA) can be used to implement community detection. It works similar to the
-label propagation algorithm, but now every node additionally accumulates a
-memory of observed labels (instead of forgetting all but one label).
+`POST <ENGINE_URL>/v1/attributepropagation`
 
-Before the algorithm run, every vertex is initialized with an unique ID
-(the initial community label).
-During the run three steps are executed for each vertex:
+The attribute propagation algorithm can be used to implement community detection.
+It works similar to the label propagation algorithm, but every node additionally
+accumulates a memory of observed labels instead of forgetting all but one label.
 
-1. Current vertex is the listener, all other vertices are speakers.
-2. Each speaker sends out a label from memory, we send out a random label with a
-   probability proportional to the number of times the vertex observed the label.
-3. The listener remembers one of the labels, we always choose the most
-   frequently observed label.
+The algorithm assigns an initial value to every vertex in the graph using a
+user-defined attribute. The attribute value can be a list of strings to
+initialize the set of labels with multiple labels.
+
+In each iteration of the computation, the following steps are executed:
+
+1. Each vertex propagates its set of labels along the edges to all direct
+   neighbor vertices. Whether inbound or outbound edges are followed depends on
+   an algorithm setting.
+2. Each vertex adds the labels it receives to its own set of labels.
+
+  After a specified maximal number of iterations or if no label set changes any
+  more, the algorithm stops.
+  
+  {{< warning >}}
+  If there are many labels and the graph is well-connected, the result set can
+  be very large.
+  {{< /warning >}}
 
 Parameters:
 - `graph_id`
+- `start_label_attribute`: The attribute to initialize labels with. Use `"@id"` to use the document IDs of the vertices.
+- `synchronous`: Whether synchronous or asynchronous label propagation is used.
+- `backwards`: Whether labels are propagated in edge direction (`false`) or the
+  opposite direction (`true`).
+- `maximum_supersteps`: Maximum number of iterations.
 
-Result: a community ID for each vertex
-
-<!-- TODO: max communities?
-You can also execute SLPA with the `maxCommunities` parameter to limit the
-number of output communities. Internally the algorithm still keeps the
-memory of all labels, but the output is reduced to just the `n` most frequently
-observed labels.
--->
+Result: The set of accumulated labels of each vertex.
 
 ### Store job results
 
