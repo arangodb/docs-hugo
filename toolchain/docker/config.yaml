@@ -1,10 +1,13 @@
-generators: examples
+generators: ${GENERATORS}
 servers:
-  - image: arangodb/enterprise:3.10.14
-    version: "3.10"
-  - image: arangodb/enterprise:3.11.8.2
-    version: "3.11"
-  - image: arangodb/enterprise:3.12.0.2
-    version: "3.12"
-  - image: arangodb/enterprise-preview:devel-nightly
-    version: "3.13"
+  - image: ${ARANGODB_BRANCH_3_10_IMAGE}
+    version: ${ARANGODB_BRANCH_3_10_VERSION}
+
+  - image: ${ARANGODB_BRANCH_3_11_IMAGE}
+    version: ${ARANGODB_BRANCH_3_11_VERSION}
+
+  - image: ${ARANGODB_BRANCH_3_12_IMAGE}
+    version: ${ARANGODB_BRANCH_3_12_VERSION}
+
+  - image: ${ARANGODB_BRANCH_3_13_IMAGE}
+    version: ${ARANGODB_BRANCH_3_13_VERSION}
