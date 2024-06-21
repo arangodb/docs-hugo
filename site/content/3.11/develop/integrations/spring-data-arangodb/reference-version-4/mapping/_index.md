@@ -187,7 +187,7 @@ ArangoConverter arangoConverter;
 ## Object Mapping
 
 Spring Data ArangoDB delegates object mapping, object creation, field and property access to
-[Spring Data Commons](https://docs.spring.io/spring-data/data-commons/docs/current/reference/html/#mapping.fundamentals).
+[Spring Data Commons](https://docs.spring.io/spring-data/commons/reference/object-mapping.html).
 
 Methods in `ArangoOperations` try modifying the domain objects accepted as parameters,
 updating the properties potentially modified by the server side, if the related fields
