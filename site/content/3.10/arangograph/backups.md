@@ -134,6 +134,10 @@ During restore, the deployment is temporarily not available.
 
 ## How to clone deployments using backups
 
+Creating a deployment from a backup allows you to duplicate an existing
+deployment with all its data, for example, to create a test environment or to
+move to a different cloud provider or region within ArangoGraph.
+
 {{< info >}}
 This feature is only available if the backup you wish to clone has been
 uploaded to cloud storage.
@@ -141,7 +145,7 @@ uploaded to cloud storage.
 
 {{< info >}}
 The cloned deployment will have the exact same features as the previous
-deployment including node size, model, and cloud provider. The region
+deployment including node size and model. The cloud provider and the region
 can stay the same or you can select a different one.
 For restoring a deployment as quick as possible, it is recommended to create a
 deployment in the same region as where the backup resides to avoid cross-region
@@ -155,10 +159,11 @@ The *root password* for this deployment will be different.
 
    ![ArangoGraph Clone Deployment From Backup](../../images/arangograph-clone-deployment-from-backup.png)
 
-2. Choose whether the clone should be created in the same region as the backup or in a
-   different region.
+2. Choose whether the clone should be created using the current provider and in
+   the same region as the backup or using a different provider, a different region,
+   or both.
 
-   ![ArangoGraph Clone Deployment Select Region](../../images/arangograph-clone-select-region.png) 
+   ![ArangoGraph Clone Deployment Select Region](../../images/arangograph-clone-deployment-select.png) 
 
 3. The view should navigate to the new deployment being bootstrapped.
 
