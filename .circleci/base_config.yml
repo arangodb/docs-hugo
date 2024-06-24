@@ -65,12 +65,12 @@ commands:
 
             echo $OPENSSLBRANCH
 
-            echo "https://www.openssl.org/source/${OLD}openssl-$OPENSSLVERSION.tar.gz"
+            echo "https://www.openssl.org/source/openssl-$OPENSSLVERSION.tar.gz"
 
             test -n "$OPENSSLVERSION"
             export OPENSSLPATH=`echo $OPENSSLVERSION | sed 's/\.[0-9]*$//g'`
             cd /tmp
-            curl -O https://www.openssl.org/source/${OLD}openssl-$OPENSSLVERSION.tar.gz
+            curl -L -O https://www.openssl.org/source/openssl-$OPENSSLVERSION.tar.gz
             tar xzvf openssl-$OPENSSLVERSION.tar.gz
             cd openssl-$OPENSSLVERSION
             ./config --prefix=/opt/openssl-$OPENSSLPATH no-async no-shared
