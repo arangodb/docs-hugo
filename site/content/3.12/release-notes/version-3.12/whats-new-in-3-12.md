@@ -905,6 +905,20 @@ the queue might grow and eventually overflow.
 You can configure the upper bound of the queue with this option. If the queue is
 full, log entries are written synchronously until the queue has space again.
 
+### Configurable maximal size for cache entries
+
+<small>Introduced in: v3.12.1</small>
+
+A new `--cache.max-cache-value-size` startup option has been added to limit the
+maximum size of individual values stored in the in-memory cache. The cache is
+used for edge indexes, persistent indexes with caching enabled, and collections
+with document caches enabled.
+
+The startup option defaults to 4 MiB, meaning that no individual values larger
+than this are stored in the in-memory cache. It avoids storing very large values
+in the cache for huge documents or for all the connections of super nodes, and
+thus leaves more memory for other purposes.
+
 ### Configurable async prefetch limits
 
 <small>Introduced in: v3.12.1</small>
