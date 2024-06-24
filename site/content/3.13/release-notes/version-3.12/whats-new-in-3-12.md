@@ -388,6 +388,9 @@ Execution plan:
 The profiling output for queries includes a new `Par` column as well, but it
 shows the number of successful parallel asynchronous prefetch calls.
 
+To not overwhelm the server, async prefetching is restricted and the limits are adjustable.
+See [Configurable async prefetch limits](#configurable-async-prefetch-limits).
+
 ### Added AQL functions
 
 The new `PARSE_COLLECTION()` and `PARSE_KEY()` let you more extract the
@@ -490,6 +493,91 @@ Optimization rules applied:
   3   move-calculations-up-2                     7   remove-unnecessary-calculations-2
   4   move-filters-up-2                          8   reduce-extraction-to-projection  
 ```
+
+### Short-circuiting subquery evaluation
+
+<small>Introduced in: v3.12.1</small>
+
+A ternary operator generally evaluates a condition to decide whether to execute
+the true branch or the false branch. For example, `count < 5 ? "few" : "many"`
+evaluates to the string `"few"` if the `count` variable is less than five,
+or to the string `"many"` otherwise.
+
+In AQL, the branches are not limited to simple expressions but they can also be
+subqueries. Up until ArangoDB v3.12.0, the catch is that subqueries are pulled
+out by the query optimizer into separate `LET` operations that are executed
+before the condition is evaluated. Regardless of which branch is taken,
+the subquery code is always executed.
+
+Similarly, when you use subqueries as sub-expressions that are combined with
+logical `AND` or `OR`, the subqueries are executed unconditionally. This is
+typically not what you want and can lead to logical errors.
+
+Ternary operator example:
+
+```aql
+LET doc = FIRST(FOR d IN coll FILTER d._key == "A" RETURN d)
+RETURN doc ?: FIRST(INSERT { _key: "A" } INTO coll RETURN NEW)
+// doc ?: FIRST(...) is a shorthand for doc ? doc : FIRST(...)
+```
+
+The above query looks up a document with the key `A` in a collection called `coll`.
+If it exists (the `doc` variable is truthy), then it is returned. Otherwise, the
+document is supposed to be created. However, the false branch is a subquery that
+gets executed unconditionally. If the document with key `A` already exists, an
+attempt to create this document is still made (but fails because of a key conflict).
+
+```aql
+Execution plan:
+ Id   NodeType            Est.   Comment
+  1   SingletonNode          1   * ROOT
+ 10   CalculationNode        1     - LET #9 = { "_key" : "A" }   /* json expression */   /* const assignment */
+ 20   SubqueryStartNode      1     - LET #5 = ( /* subquery begin */
+ 11   InsertNode             1       - INSERT #9 IN coll 
+ 21   SubqueryEndNode        1       - RETURN  $NEW ) /* subquery end */
+ 18   SubqueryStartNode      1     - LET #1 = ( /* subquery begin */
+ 17   IndexNode              1       - FOR d IN coll   /* primary index scan, index scan + document lookup */    
+ 16   LimitNode              1         - LIMIT 0, 1
+ 19   SubqueryEndNode        1         - RETURN  d ) /* subquery end */
+ 14   CalculationNode        1     - LET #11 = (FIRST(#1) ?: #5)   /* simple expression */
+ 15   ReturnNode             1     - RETURN #11
+```
+
+As you can see, the false branch execution starts at node `18`, and the
+evaluation of the ternary operator happens afterwards in node `14`.
+
+From v3.12.1 onward, the evaluation behavior is changed so that only the
+applicable branch of a ternary operator is executed and subqueries that are used
+as sub-expressions are effectively evaluated lazily. For example, you can observe
+the query optimizer rewriting ternary operators differently to support
+short-circuiting when using subqueries:
+
+```aql
+Execution plan:
+ Id   NodeType            Par   Est.   Comment
+  1   SingletonNode                1   * ROOT
+ 22   SubqueryStartNode            1     - LET #1 = ( /* subquery begin */
+ 19   IndexNode                    1       - FOR d IN coll   /* primary index scan, index scan + document lookup */    
+ 18   LimitNode                    1         - LIMIT 0, 1
+ 23   SubqueryEndNode              1         - RETURN  d ) /* subquery end */
+  8   CalculationNode              1     - LET doc = FIRST(#1)   /* simple expression */
+ 20   SubqueryStartNode            1     - LET #6 = ( /* subquery begin */
+ 10   CalculationNode              1       - LET #9 = ! doc   /* simple expression */
+ 11   FilterNode                   1       - FILTER #9
+ 12   CalculationNode              1       - LET #10 = { "_key" : "A" }   /* json expression */   /* const assignment */
+ 13   InsertNode                   1       - INSERT #10 IN coll 
+ 21   SubqueryEndNode              1       - RETURN  $NEW ) /* subquery end */
+ 16   CalculationNode              1     - LET #11 = (doc ?: FIRST(#6))   /* simple expression */
+ 17   ReturnNode                   1     - RETURN #11
+```
+
+The false branch subquery starts at node `20`, still before the evaluation of
+the ternary operator at node `16`. However, the subquery has a `FILTER` operation
+using the negated condition. This prevents the `INSERT` operation from running
+when the `doc` variable is truthy because the opposite is false and
+`FILTER false` leaves nothing to process.
+
+Also see [Evaluation of subqueries](../../aql/fundamentals/subqueries.md#evaluation-of-subqueries).
 
 ## Indexing
 
@@ -710,6 +798,31 @@ the queue might grow and eventually overflow.
 
 You can configure the upper bound of the queue with this option. If the queue is
 full, log entries are written synchronously until the queue has space again.
+
+### Configurable async prefetch limits
+
+<small>Introduced in: v3.12.1</small>
+
+While [async prefetching](#parallel-execution-within-an-aql-query) is normally
+beneficial for query performance, the async prefetch operations may cause
+congestion in the ArangoDB scheduler and interfere with other operations.
+The amount of prefetch operations is limited and you adjust these limits with 
+he following startup options:
+
+- `--query.max-total-async-prefetch-slots`:
+  The maximum total number of slots available for asynchronous prefetching,
+  across all AQL queries. Default: `256`
+- `--query.max-query-async-prefetch-slots`:
+  The maximum per-query number of slots available for asynchronous prefetching
+  inside any AQL query. Default: `32`
+  
+The total number of concurrent prefetch operations across all AQL queries can be
+limited using the first option, and the maximum number of prefetch operations in
+every single AQL query can be capped with the second option.
+
+These options prevent that running a lot of AQL queries with async
+prefetching fully congests the scheduler queue, and also they prevent large
+AQL queries to use up all async prefetching capacity on their own.
 
 ## Miscellaneous changes
 

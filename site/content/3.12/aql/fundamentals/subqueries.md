@@ -98,6 +98,70 @@ a nested array `[ [ 1, 2, 3 ] ]` with a single top-level element.
 
 ## Evaluation of subqueries
 
+{{< tabs "short-circuiting-subqueries">}}
+
+{{< tab "From v3.12.1 onward" >}}
+Subqueries that are used inside expressions are pulled out of these
+expressions and conditionally executed beforehand. The effective behavior is
+short-circuiting evaluation. An example is the
+[ternary operator](../operators.md#ternary-operator).
+
+Consider the following query:
+
+```aql
+RETURN RAND() > 0.5 ? (RETURN 1) : 0
+```
+
+It get transformed into something more like this, with the calculation of the
+subquery happening before the evaluation of the condition:
+
+```aql
+LET temp1 = RAND() > 0.5
+LET temp2 = (FILTER temp1 RETURN 1)
+RETURN temp1 ? temp2 : 0
+```
+
+The condition is evaluated separately and stored in a variable, then the
+subquery is executed conditionally using a `FILTER` operation. Finally, the
+ternary operator reuses the result of the evaluated condition to determine which
+value to return.
+
+The short-circuiting behavior allows you to write queries like the following:
+
+```aql
+LET maybe = DOCUMENT("coll/does_not_exist")
+LET dependent = maybe ? (
+  FOR attr IN ATTRIBUTES(maybe)
+    RETURN attr
+) : "document not found"
+RETURN dependent
+```
+
+The `maybe` variable can be `null`, which cannot be iterated over with `FOR` and
+calling `ATTRIBUTES()` with `null` as argument would raise a query warning.
+However, the subquery is only executed if `DOCUMENT()` found a document, so this
+query works without issues.
+
+Similarly, when you use subqueries as sub-expressions that are combined with
+logical `AND` or `OR`, the subqueries are only executed if the outcome is yet
+to be determined:
+
+```aql
+RETURN false AND (RETURN ASSERT(false, "executed"))
+```
+
+```aql
+RETURN true OR (RETURN ASSERT(false, "executed"))
+```
+
+If the first operand of a logical `AND` is `false`, the overall result is
+`false` regardless of the second operand. If the first operand of a logical `OR`
+is `true`, the overall result is `true` regardless of the second operand.
+As the outcome is already determined, there is no need to execute the subqueries
+in these cases.
+{{< /tab >}}
+
+{{< tab "Up to v3.12.0" >}}
 Subqueries that are used inside expressions are pulled out of these
 expressions and executed beforehand. That means that subqueries do not
 participate in lazy evaluation of operands, for example in the
@@ -131,7 +195,7 @@ LET maybe = DOCUMENT("coll/does_not_exist")
 LET dependent = maybe ? (
   FOR attr IN ATTRIBUTES(maybe)
     RETURN attr
-) : null
+) : "document not found"
 RETURN dependent
 ```
 
@@ -156,3 +220,36 @@ The additional fallback `maybe || {}` prevents a query warning
 
 that originates from a `null` value getting passed to the `ATTRIBUTES()`
 function that expects an object.
+
+Similarly, when you use subqueries as sub-expressions that are combined with
+logical `AND` or `OR`, the subqueries are always executed:
+
+```aql
+RETURN false AND (RETURN ASSERT(false, "executed"))
+```
+
+```aql
+RETURN true OR (RETURN ASSERT(false, "executed"))
+```
+
+If the first operand of a logical `AND` is `false`, the overall result is
+`false` regardless of the second operand. If the first operand of a logical `OR`
+is `true`, the overall result is `true` regardless of the second operand.
+However, the subqueries are run nonetheless, causing both example queries to fail.
+
+You can prevent the subqueries from executing by prepending a `FILTER` operation
+with the value of the logical operator's first operand and negating it in case
+of an `OR`:
+
+```aql
+LET cond = false
+RETURN cond AND (FILTER cond RETURN ASSERT(false, "executed"))
+```
+
+```aql
+LET cond = true
+RETURN cond OR (FILTER !cond RETURN ASSERT(false, "executed"))
+```
+{{< /tab >}}
+
+{{< /tabs >}}

@@ -285,6 +285,7 @@ AQL also supports a ternary operator that can be used for conditional
 evaluation. The ternary operator expects a boolean condition as its first
 operand, and it returns the result of the second operand if the condition
 evaluates to true, and the third operand otherwise.
+You may use [subqueries](fundamentals/subqueries.md) as operands.
 
 In the following example, the expression returns `u.userId` if `u.age` is
 greater than 15 or if `u.active` is `true`. Otherwise it returns `null`:
@@ -309,11 +310,13 @@ operand between `?` and `:` is omitted, whereas it would be evaluated twice
 in case of `u.value ? u.value : 'value is null'`.
 
 {{< info >}}
-Subqueries that are used inside expressions are pulled out of these
+Up to v3.12.0, subqueries used inside expressions are pulled out of these
 expressions and executed beforehand. That means that subqueries do not
-participate in lazy evaluation of operands, for example, in the
-ternary operator. Also see
-[evaluation of subqueries](fundamentals/subqueries.md#evaluation-of-subqueries).
+participate in lazy evaluation of operands.
+  
+From v3.12.1 onward, short-circuiting is applied.
+  
+Also see [evaluation of subqueries](fundamentals/subqueries.md#evaluation-of-subqueries).
 {{< /info >}}
 
 ## Range operator
