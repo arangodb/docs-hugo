@@ -112,7 +112,7 @@ def workflow_generate(config):
             }
         }
 
-        if not "enterprise-preview" in branch:
+        if not "/enterprise-preview:" in branch and not "/enterprise:" in branch:
 
             openssl = findOpensslVersion(branch)
             compileJob["compile-linux"]["openssl"] = openssl
@@ -409,7 +409,7 @@ exit $?"
 def pullImageCmd(branch, version):
     pullImage = f"docker pull {branch}"
 
-    if not "enterprise-preview" in branch:
+    if not "/enterprise-preview:" in branch and not "/enterprise:" in branch:
         pullImage = f"BRANCH={branch}\n\
 version={version}\n"
         pullImage += "\

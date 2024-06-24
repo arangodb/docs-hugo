@@ -81,14 +81,14 @@ filter conditions beyond equality matches to look up documents.
 
 The syntax for an upsert operation:
 
-<pre><code>UPSERT FILTER<em>filter-condition</em>
+<pre><code>UPSERT FILTER<em> filter-condition</em>
 INSERT <em>insertExpression</em>
 UPDATE <em>updateExpression</em>
 IN <em>collection</em></code></pre>
 
 The syntax for a repsert operation:
 
-<pre><code>UPSERT FILTER<em>filter-condition</em>
+<pre><code>UPSERT FILTER<em> filter-condition</em>
 INSERT <em>insertExpression</em>
 REPLACE <em>updateExpression</em>
 IN <em>collection</em></code></pre>

@@ -42,13 +42,19 @@ memory and may hit the configurable memory limits for AQL queries.
 
 The following design limitations are known for AQL queries:
 
-- Subqueries that are used inside expressions are pulled out of these
+- Up to v3.12.0, subqueries used inside expressions are pulled out of these
   expressions and executed beforehand. That means that subqueries do not
   participate in lazy evaluation of operands, for example in the
-  [ternary operator](../operators.md#ternary-operator). Also see
-  [evaluation of subqueries](subqueries.md#evaluation-of-subqueries).
+  [ternary operator](../operators.md#ternary-operator) or when used as
+  sub-expressions that are combined with logical `AND` or `OR`.
+  
+  From v3.12.1 onward, short-circuiting is applied.
+  
+  Also see [evaluation of subqueries](subqueries.md#evaluation-of-subqueries).
+
 - It is not possible to use a collection in a read operation after
   it was used for a write operation in the same AQL query.
+
 - In the cluster, all collections that are accessed **dynamically** by
   [traversals working with collection sets](../graphs/traversals.md#working-with-collection-sets)
   (instead of named graphs) must be stated in the query's initial

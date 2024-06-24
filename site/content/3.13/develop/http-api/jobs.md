@@ -98,7 +98,17 @@ assert(response.code === 202);
 logRawResponse(response);
 
 var queryId = response.headers['x-arango-async-id'];
-url = '/_api/job/' + queryId
+url = '/_api/job/' + queryId;
+
+for (let i = 1; i <= 10; i++) {
+  var status = arango.GET_RAW(url);
+  if (!status.headers['x-arango-async-id'] && status.code == 204) {
+    internal.sleep(0.1 * i * i);
+  } else {
+    break;
+  }
+}
+
 var response = logCurlRequest('PUT', url, "");
 assert(response.code === 200);
 logJsonResponse(response);
@@ -118,7 +128,17 @@ assert(response.code === 202);
 logRawResponse(response);
 
 var queryId = response.headers['x-arango-async-id'];
-url = '/_api/job/' + queryId
+url = '/_api/job/' + queryId;
+
+for (let i = 1; i <= 10; i++) {
+  var status = arango.GET_RAW(url);
+  if (!status.headers['x-arango-async-id'] && status.code == 204) {
+    internal.sleep(0.1 * i * i);
+  } else {
+    break;
+  }
+}
+
 var response = logCurlRequest('PUT', url, "");
 assert(response.code === 400);
 logJsonResponse(response);

@@ -376,6 +376,10 @@ LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN KEEP_RECURSIVE(doc, ["foo", "baz"])
 ```
 
+## KEYS()
+
+This is an alias for [`ATTRIBUTES()`](#attributes).
+
 ## LENGTH()
 
 `LENGTH(doc) → attrCount`

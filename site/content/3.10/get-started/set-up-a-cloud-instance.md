@@ -82,13 +82,12 @@ used for multiple accounts.
 
    {{< icon src="../../images/arangograph-deployment-ready-email.png" alt="ArangoGraph Deployment Ready Email" style="max-height: 50vh">}}
 
-3. Click the name or the **View** button of the deployment card (or the
-   __Open deployment details__ link in the email) to view the deployment
-   details.
+3. Click the name of the deployment (or the __Open deployment details__ link in
+   the email) to view the deployment details.
 
    ![ArangoGraph Deployment Ready](../../images/arangograph-deployment-ready.png)
 
-4. Click the __Open web console__ button to open the ArangoDB web interface.
+4. Click the __Open database UI__ button to open the ArangoDB web interface.
 
 5. You can install example datasets and follow the accompanying guides to get
    started with ArangoDB and its query language. In the ArangoGraph dashboard, click

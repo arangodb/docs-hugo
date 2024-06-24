@@ -160,6 +160,27 @@ VelocyPack remains as ArangoDB's binary storage format and you can continue to
 use it in transport over the HTTP protocol, as well as use JSON over the
 HTTP protocol.
 
+## Incompatibilities due to switch to glibc
+
+From version 3.11.10 onward, ArangoDB uses the glibc C standard library
+implementation instead of libmusl. Even though glibc is statically linked into
+the ArangoDB server and client tool executables, it may load additional modules
+at runtime that are installed on your system. Under rare circumstances, it is
+possible that ArangoDB crashes when performing host name or address lookups.
+This is only the case if all of the following conditions are true:
+
+- You use an ArangoDB package on bare metal (not a Docker container)
+- Your operating system uses glibc (like Ubuntu, Debian, RedHat, Centos, or
+  most other Linux distributions, but not Alpine for instance)
+- The glibc version of your system is different than the one used by ArangoDB,
+  in particular if the system glibc is older than version 2.35
+- The `libnss-*` dynamic libraries are installed
+- The `/etc/nsswitch.conf` configuration file contains settings other than for
+  `files` and `dns` in the `hosts:` line
+
+If you are affected, consider using Docker containers, `chroot`, or change
+`nsswitch.conf`.
+
 ## JavaScript Transactions deprecated
 
 Server-side transactions written in JavaScript and executed via the
@@ -205,6 +226,13 @@ You can be affected if you use JavaScript-based features like Foxx microservices
 or user-defined AQL functions (UDFs), compare or sort strings in them, and
 Unicode characters for which the standard has changed between the two ICU versions
 are involved.
+
+## Stricter option validation when creating collections
+
+Some invalid attributes and values that you can specify in the HTTP API when
+creating collections are no longer allowed. Previous versions ignored these
+invalid options. See [API Changes in ArangoDB 3.12](api-changes-in-3-12.md#collection-api)
+for details.
 
 ## Control character escaping in audit log
 

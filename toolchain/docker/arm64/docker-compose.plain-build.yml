@@ -1,4 +1,3 @@
-version: "3.5"
 services:
   site-frontend:
     container_name: docs_plain-build

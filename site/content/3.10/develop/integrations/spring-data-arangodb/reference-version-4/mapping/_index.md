@@ -137,33 +137,35 @@ exceptions when reading the entities from the DB.
 
 ### Annotation overview
 
-| annotation              | level                     | description                                                                                                                                         |
-|-------------------------| ------------------------- |-----------------------------------------------------------------------------------------------------------------------------------------------------|
-| @Document               | class                     | marks this class as a candidate for mapping                                                                                                         |
-| @Edge                   | class                     | marks this class as a candidate for mapping                                                                                                         |
-| @Id                     | field                     | stores the field as the system field \_key                                                                                                          |
-| @ArangoId               | field                     | stores the field as the system field \_id                                                                                                           |
-| @Rev                    | field                     | stores the field as the system field \_rev                                                                                                          |
-| @Field("alt-name")      | field                     | stores the field with an alternative name                                                                                                           |
-| @Ref                    | field                     | stores the \_id of the referenced document and not the nested document                                                                              |
-| @From                   | field                     | stores the \_id of the referenced document as the system field \_from                                                                               |
-| @To                     | field                     | stores the \_id of the referenced document as the system field \_to                                                                                 |
-| @Relations              | field                     | vertices which are connected over edges                                                                                                             |
-| @Transient              | field, method, annotation | marks a field to be transient for the mapping framework, thus the property will not be persisted and not further inspected by the mapping framework |
-| @PersistenceConstructor | constructor               | marks a given constructor - even a package protected one - to use when instantiating the object from the database                                   |
-| @TypeAlias("alias")     | class                     | set a type alias for the class when persisted to the DB                                                                                             |
-| @PersistentIndex        | class                     | describes a persistent index                                                                                                                        |
-| @PersistentIndexed      | field                     | describes how to index the field                                                                                                                    |
-| @GeoIndex               | class                     | describes a geo index                                                                                                                               |
-| @GeoIndexed             | field                     | describes how to index the field                                                                                                                    |
-| @FulltextIndex          | class                     | describes a fulltext index                                                                                                                          |
-| @FulltextIndexed        | field                     | describes how to index the field                                                                                                                    |
-| @TtlIndex               | class                     | describes a TTL index                                                                                                                               |
-| @TtlIndexed             | field                     | describes how to index the field                                                                                                                    |
-| @CreatedBy              | field                     | Declares a field as the one representing the principal that created the entity containing the field.                                                |
-| @CreatedDate            | field                     | Declares a field as the one representing the date the entity containing the field was created.                                                      |
-| @LastModifiedBy         | field                     | Declares a field as the one representing the principal that recently modified the entity containing the field.                                      |
-| @LastModifiedDate       | field                     | Declares a field as the one representing the date the entity containing the field was recently modified.                                            |
+| annotation                     | level                     | description                                                                                                                                                               |
+|--------------------------------| ------------------------- |---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| @Document                      | class                     | marks this class as a candidate for mapping                                                                                                                               |
+| @Edge                          | class                     | marks this class as a candidate for mapping                                                                                                                               |
+| @Id                            | field                     | stores the field as the system field \_key                                                                                                                                |
+| @ArangoId                      | field                     | stores the field as the system field \_id                                                                                                                                 |
+| @Rev                           | field                     | stores the field as the system field \_rev                                                                                                                                |
+| @Field("alt-name")             | field                     | stores the field with an alternative name                                                                                                                                 |
+| @Ref                           | field                     | stores the \_id of the referenced document and not the nested document                                                                                                    |
+| @From                          | field                     | stores the \_id of the referenced document as the system field \_from                                                                                                     |
+| @To                            | field                     | stores the \_id of the referenced document as the system field \_to                                                                                                       |
+| @Relations                     | field                     | vertices which are connected over edges                                                                                                                                   |
+| @Transient                     | field, method, annotation | marks a field to be transient for the mapping framework, thus the property is not persisted and not further inspected by the mapping framework                            |
+| @PersistenceConstructor        | constructor               | marks a given constructor - even a package protected one - to use when instantiating the object from the database                                                         |
+| @TypeAlias("alias")            | class                     | set a type alias for the class when persisted to the DB                                                                                                                   |
+| @ArangoComputedValueDefinition | class                     | describes a computed value data definition                                                                                                                                |
+| @ArangoComputedValue           | field                     | marks the field for the mapping framework so that the property is updated with the value coming from the server and optionally describes a computed value data definition |
+| @PersistentIndex               | class                     | describes a persistent index                                                                                                                                              |
+| @PersistentIndexed             | field                     | describes how to index the field                                                                                                                                          |
+| @GeoIndex                      | class                     | describes a geo index                                                                                                                                                     |
+| @GeoIndexed                    | field                     | describes how to index the field                                                                                                                                          |
+| @FulltextIndex                 | class                     | describes a fulltext index                                                                                                                                                |
+| @FulltextIndexed               | field                     | describes how to index the field                                                                                                                                          |
+| @TtlIndex                      | class                     | describes a TTL index                                                                                                                                                     |
+| @TtlIndexed                    | field                     | describes how to index the field                                                                                                                                          |
+| @CreatedBy                     | field                     | Declares a field as the one representing the principal that created the entity containing the field.                                                                      |
+| @CreatedDate                   | field                     | Declares a field as the one representing the date the entity containing the field was created.                                                                            |
+| @LastModifiedBy                | field                     | Declares a field as the one representing the principal that recently modified the entity containing the field.                                                            |
+| @LastModifiedDate              | field                     | Declares a field as the one representing the date the entity containing the field was recently modified.                                                                  |
 
 ## Invoking conversion manually
 
@@ -183,3 +185,64 @@ ArangoConverter arangoConverter;
   // ...
   MyEntity entity = converter.read(MyEntity.class, jn);
 ```
+
+## Object Mapping
+
+Spring Data ArangoDB delegates object mapping, object creation, field and property access to
+[Spring Data Commons](https://docs.spring.io/spring-data/commons/reference/object-mapping.html).
+
+Methods in `ArangoOperations` try modifying the domain objects accepted as parameters,
+updating the properties potentially modified by the server side, if the related fields
+are mutable. This applies to the fields annotated with:
+- `@ArangoId`
+- `@Id` 
+- `@Rev`
+
+In addition, the following methods also try to update the fields annotated with
+`@ArangoComputedValue`:
+- `ArangoOperations#repsert(Object)`
+- `ArangoOperations#repsertAll(Iterable<Object>, Class<?>)`
+
+## Object Identity
+
+The most of the methods in `ArangoOperations` and `ArangoRepository` return new
+entity instances, except the following:
+- `ArangoRepository#save(Object)`
+- `ArangoRepository#saveAll(Iterable<Object>)`
+
+These methods return by default the same instance(s) of the domain object(s)
+accepted as parameter(s) and update the properties potentially modified by the
+server side, if the related fields are mutable.
+This applies to the fields annotated with:
+- `@ArangoId`
+- `@Id`
+- `@Rev`
+- `@ArangoComputedValue`
+
+This behavior can be changed by overriding `ArangoConfiguration#returnOriginalEntities()`,
+which by default returns `true`. For example:
+
+```java
+@Configuration
+@EnableArangoRepositories
+public class MyConfiguration implements ArangoConfiguration {
+
+  // ...
+
+  @Override
+  public boolean returnOriginalEntities() {
+    return false; 
+  }
+  
+}
+```
+
+Note that also in this case, input parameters properties are still updated, if mutable.
+
+## Working with immutable objects
+
+Spring Data ArangoDB can work with immutable entity classes, like Java Records,
+Kotlin data classes and final classes with immutable properties. In this case,
+to use `ArangoRepository#save(Object)` and `ArangoRepository#saveAll(Iterable<Object>)`
+is required overriding `ArangoConfiguration#returnOriginalEntities()` to make it
+return `false`, see [Object Identity](#object-identity).

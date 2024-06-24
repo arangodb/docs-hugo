@@ -12,7 +12,7 @@ are comprised of.
 
 ## How to use `search-alias` Views
 
-You need to create one or more [inverted indexes](../indexing/working-with-indexes/persistent-indexes.md).
+You need to create one or more [inverted indexes](../indexing/working-with-indexes/inverted-indexes.md).
 All settings about how data shall be indexed are part of the inverted index
 definition. You can then create a `search-alias` View and add inverted indexes
 to it. You can also create the View first and later create and add the inverted

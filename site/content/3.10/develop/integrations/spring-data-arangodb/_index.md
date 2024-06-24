@@ -205,7 +205,6 @@ Spring Boot support is offered by [Spring Boot Starter ArangoDB](https://github.
 {{< tabs "spring-data" >}}
 
 {{< tab "Version 4" >}}
-- Java Record classes and Kotlin Data classes are not supported (DE-539)
 - GraalVM Native Image (available with Spring Boot 3) is not supported (DE-677)
 - Spring Data REST is not supported (DE-43)
 - Spring Data Reactive is not supported (DE-678)
