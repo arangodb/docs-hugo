@@ -1290,6 +1290,14 @@ _arangodump_ operations on the server:
   dump thread was blocked because it honored the server-side memory
   limit for dumps.
 
+#### Automatic retries
+
+<small>Introduced in: v3.12.1</small>
+
+_arangodump_ retries dump requests to the server in more cases: read, write and
+connection errors. This makes the creation of dumps more likely to succeed
+despite any temporary errors that can occur.
+
 ### arangorestore
 
 The following startup option has been added that allows _arangorestore_ to override
