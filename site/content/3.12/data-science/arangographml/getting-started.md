@@ -188,7 +188,7 @@ Let's get started!
 
 {{< tab "ArangoGraphML" >}}
 
-The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package
+The [`arango_datasets` Python package](../../components/tools/arango-datasets.md)
 allows you to load pre-defined datasets into ArangoDB. It comes pre-installed in the
 ArangoGraphML notebook environment.
 
@@ -205,8 +205,9 @@ DATASET_NAME = "OPEN_INTELLIGENCE_ANGOLA"
 
 {{< tab "Self-managed" >}}
 
-The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package
-allows you to load a dataset into ArangoDB. It can be installed with:
+The [`arango_datasets` Python package](../../components/tools/arango-datasets.md)
+allows you to load pre-defined datasets into ArangoDB. It can be installed with the
+following command:
 
 ```
 pip install arango-datasets
@@ -275,13 +276,13 @@ arangoml.projects.list_projects()
     - `disabled`: Boolean for enabling or disabling dimensionality reduction. Default is `false`.
     - `size`: The number of dimensions to reduce the feature length to. Default is `512`.
 
-  - `defaultsPerFeatureType`: A dictionary mapping each feature to how missing or missmatched values should be handled. The keys of this dictionary are the features, and the values are sub-dictionaries with the following keys:
-    -  `missing`: A sub-dictionary detailing how missing values should be handled.
+  - `defaultsPerFeatureType`: A dictionary mapping each feature to how missing or mismatched values should be handled. The keys of this dictionary are the features, and the values are sub-dictionaries with the following keys:
+    - `missing`: A sub-dictionary detailing how missing values should be handled.
       - `strategy`: The strategy to use for missing values. Options include `REPLACE` or `RAISE`.
       - `replacement`: The value to replace missing values with. Only needed if `strategy` is `REPLACE`.
-    - `missmatch`: A sub-dictionary detailing how missmatched values should be handled.
-      - `strategy`: The strategy to use for missmatched values. Options include `REPLACE`, `RAISE`, `COERCE_REPLACE`, or `COERCE_RAISE`.
-      - `replacement`: The value to replace missmatched values with. Only needed if `strategy` is `REPLACE`, or `COERCE_REPLACE`.
+    - `mismatch`: A sub-dictionary detailing how mismatched values should be handled.
+      - `strategy`: The strategy to use for mismatched values. Options include `REPLACE`, `RAISE`, `COERCE_REPLACE`, or `COERCE_RAISE`.
+      - `replacement`: The value to replace mismatched values with. Only needed if `strategy` is `REPLACE`, or `COERCE_REPLACE`.
 
 - `jobConfiguration` Optional: A set of configurations that are applied to the job.
   - `batchSize`: The number of documents to process in a single batch. Default is `32`.
@@ -737,6 +738,7 @@ collection, or within the source documents.
 - `modelID`: The model ID to use for generating predictions.
 - `featurizeNewDocuments`: Boolean for enabling or disabling the featurization of new documents. Useful if you don't want to re-train the model upon new data. Default is `false`.
 - `featurizeOutdatedDocuments`: Boolean for enabling or disabling the featurization of outdated documents. Outdated documents are those whose features have changed since the last featurization. Default is `false`.
+- `schedule`: A cron expression to schedule the prediction job (e.g `0 0 * * *` for daily predictions). Default is `None`.
 
 
 ```py

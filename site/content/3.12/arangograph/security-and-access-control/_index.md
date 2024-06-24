@@ -65,12 +65,13 @@ viewed on the **Policy** page of an organization within the ArangoGraph dashboar
 Decide whether you want to edit the policy for an organization, a project,
 or a deployment:
 
-- **Organization**: In the main navigation menu, click **Access Control**, then
-  open the **Policy** tab.
-- **Project**: In the main navigation menu, click the name of the required project, then
-  open the **Policy** tab.
-- **Deployment**: In the main navigation menu, click the name of the required project, then click either 
-  the deployment name or the **View** button, and finally open the **Policy** tab.
+- **Organization**: In the main navigation, click the __Organization__ icon and
+  then click __Policy__.
+- **Project**: In the main navigation, click the __Dashboard__ icon, then click
+  __Projects__, click the name of the desired project, and finally click __Policy__.
+- **Deployment**: In the main navigation, click the __Dashboard__ icon, then
+  click __Deployments__, click the name of the desired deployment, and finally 
+  click __Policy__.
 
 To delete a role binding, click the **Recycle Bin** icon in the **Actions** column.
 

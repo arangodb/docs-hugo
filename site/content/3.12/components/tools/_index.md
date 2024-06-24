@@ -32,3 +32,4 @@ Additional tools which are available separately:
 | [Foxx CLI](foxx-cli/_index.md) | Command line tool for managing and developing Foxx services
 | [kube-arangodb](../../deploy/kubernetes.md) | Operators to manage Kubernetes deployments
 | [Oasisctl](../../arangograph/oasisctl/_index.md) | Command-line tool for managing the ArangoGraph Insights Platform
+| [ArangoDB Datasets](arango-datasets.md) | A Python package for loading sample datasets into ArangoDB

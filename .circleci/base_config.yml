@@ -20,7 +20,8 @@ commands:
 
             if [[ "<< parameters.branch >>" == *"arangodb/enterprise"* ]]; then
                 echo "[SETUP] An official ArangoDB Enterprise image has been chosen"
-                branch_name=$(echo << parameters.branch >> | cut -d: -f2 | cut -d- -f1)
+                echo "[SETUP] Using image tag as branch name (with hotfix suffixes removed)"
+                branch_name=$(echo << parameters.branch >> | cut -d: -f2 | cut -d- -f1 | sed -E 's/^([0-9]+\.[0-9]+\.[0-9]+).+/\1/')
             fi
 
             echo "[SETUP] Git clone $branch_name"

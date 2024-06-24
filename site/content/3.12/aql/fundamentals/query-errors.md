@@ -31,10 +31,6 @@ Some examples of runtime errors:
   is made to use any non-numeric values as operands in arithmetic operations.
   This includes unary (unary minus, unary plus) and binary operations (plus,
   minus, multiplication, division, and modulus)
-- **Invalid operands for logical operations**: Raised when an attempt is
-  made to use any non-boolean values as operand(s) in logical operations. This
-  includes unary (logical not/negation), binary (logical and, logical or), and
-  the ternary operator
 - **Array expected in query**: Raised when a non-array operand is used for an
   operation that expects an array argument operand. This can happen if you
   try to iterate over an attribute with a `FOR` operation, expecting it to be an

@@ -80,7 +80,8 @@ docker run -it --name=adb --rm -p 8528:8528 \
     --agents.agency.supervision-grace-period=30 \
     --starter.address=$IP \
     --starter.mode=activefailover \
-    --starter.join=A,B,C
+    --starter.join=A,B,C \
+    --docker.net-mode=default
 ```
 
 Run the above command on machine A, B & C.
@@ -130,7 +131,8 @@ docker run -it --name=adb --rm -p 8528:8528 \
     --agents.agency.supervision-grace-period=30 \
     --starter.address=$IP \
     --starter.mode=activefailover \
-    --starter.join=A,B,C
+    --starter.join=A,B,C \
+    --docker.net-mode=default
 ```
 
 Note that the environment variables `DOCKER_TLS_VERIFY` and `DOCKER_CERT_PATH` 
@@ -151,5 +153,6 @@ docker run -it --name=adb --rm -p 8528:8528 \
     --agents.agency.supervision-grace-period=30 \
     --starter.address=$IP \
     --starter.mode=activefailover \
-    --starter.join=A,B,C
+    --starter.join=A,B,C \
+    --docker.net-mode=default
 ```
