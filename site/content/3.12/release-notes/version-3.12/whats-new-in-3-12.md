@@ -503,6 +503,103 @@ Optimization rules applied:
   4   move-filters-up-2                          8   reduce-extraction-to-projection  
 ```
 
+---
+
+<small>Introduced in: v3.12.1</small>
+
+The late materialization has been further improved via two new optimizer rules:
+- `push-down-late-materialization`
+- `materialize-into-separate-variable`
+
+Loading documents is deferred in more cases, namely when attributes accessed in
+`FILTER` and `SORT` operations are covered by an index.
+
+For example, if you have a collection `coll` with a `persistent` index over the
+attribute `x` and additionally the attribute `b` in `storedValues`, then the
+materialization would previously occur before the `SORT` operation of the
+following query:
+
+```aql
+FOR doc IN coll
+  FILTER doc.x > 5
+  SORT doc.b
+  RETURN doc
+```
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT
+  8   IndexNode           ✓    120     - FOR doc IN coll   /* persistent index scan, scan only */    /* with late materialization */
+  9   MaterializeNode          120       - MATERIALIZE doc INTO #4
+  5   CalculationNode     ✓    120       - LET #2 = #4.`b`   /* attribute expression */
+  6   SortNode            ✓    120       - SORT #2 ASC   /* sorting strategy: standard */
+  7   ReturnNode               120       - RETURN #4
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields    Stored values   Ranges
+  8   idx_1799108758565027840   persistent   coll         false    false    false       83.33 %   [ `x` ]   [ `b` ]         (doc.`x` > 5)
+```
+
+The `push-down-late-materialization` rule moves the materialization down in the
+execution plan, below the `SORT` operation:
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT
+  8   IndexNode           ✓    120     - FOR doc IN coll   /* persistent index scan, index only (projections: `b`) */    LET #5 = doc.`b`   /* with late materialization */
+  6   SortNode            ✓    120       - SORT #5 ASC   /* sorting strategy: standard */
+  9   MaterializeNode          120       - MATERIALIZE doc INTO #4
+  7   ReturnNode               120       - RETURN #4
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields    Stored values   Ranges
+  8   idx_1799108758565027840   persistent   coll         false    false    false       83.33 %   [ `x` ]   [ `b` ]         (doc.`x` > 5)
+```
+
+The rule can also push the materialization past `FOR` loops in case they are
+optimized to a merge join (`JoinNode`, see [Improved joins](#improved-joins)).
+
+The `materialize-into-separate-variable` rule optimizes how projections of
+materializations are managed. Using separate internal variables for projected
+attributes avoids the creation of temporary objects and having to look up the
+attributes by key in these objects, which is faster. Example:
+
+```aql
+FOR doc IN coll
+  FILTER doc.x > 5
+  RETURN [doc.a, doc.b]
+```
+
+In previous versions, the execution plan looks like this:
+
+```aql
+Execution plan:
+ Id   NodeType          Est.   Comment
+  1   SingletonNode        1   * ROOT
+  7   IndexNode          100     - FOR doc IN coll   /* persistent index scan, index scan + document lookup (projections: `a`, `b`) */    
+  5   CalculationNode    100       - LET #3 = [ doc.`a`, doc.`b` ]   /* simple expression */   /* collections used: doc : coll */
+  6   ReturnNode         100       - RETURN #3
+```
+
+While not directly visible, the extracted document attributes `a` and `b` are
+internally stored in a temporary object with only these two attributes.
+The attributes need to be looked up in the object for constructing the result.
+
+From v3.12.1 onward, the execution plan indicates the use of separate internal
+variables and that no attribute access is needed to construct the result:
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT
+  7   IndexNode           ✓    100     - FOR doc IN coll   /* persistent index scan, scan only */    /* with late materialization */
+  8   MaterializeNode          100       - MATERIALIZE doc INTO #4 /* (projections: `a`, `b`) */   LET #5 = #4.`a`, #6 = #4.`b`
+  5   CalculationNode     ✓    100       - LET #2 = [ #5, #6 ]   /* simple expression */
+  6   ReturnNode               100       - RETURN #2
+```
+
 ### Short-circuiting subquery evaluation
 
 <small>Introduced in: v3.12.1</small>
