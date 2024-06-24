@@ -1198,6 +1198,20 @@ The following cluster health metric has been added:
 |:------|:------------|
 | `arangodb_vocbase_shards_read_only_by_write_concern` | Number of shards that are read-only due to an undercut of the write concern. |
 
+### Log queue overwhelm metric
+
+<small>Introduced in: v3.12.1</small>
+
+The following metric has been added, indicating whether the log queue is
+overwhelmed:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_logger_messages_dropped_total` |  Total number of dropped log messages. |
+
+The related startup option for controlling the size of the log queue has a
+default of `16384` instead of `10000` now.
+
 ## Client tools
 
 ### Protocol aliases for endpoints
