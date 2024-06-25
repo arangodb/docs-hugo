@@ -56,7 +56,7 @@ ArangoGraphML comes with other ArangoDB Magic Commands! See the full list [here]
 
 {{< tab "Self-managed" >}}
 
-**API Documentation: [arangoml.ArangoML](https://arangoml.github.io/arangoml/specification.html#arangoml.main.ArangoML)**
+**API Documentation: [arangoml.ArangoML](https://arangoml.github.io/arangoml/client.html#arangoml.main.ArangoML)**
 
 The `ArangoML` class is the main entry point for the `arangoml` package.
 It requires the following parameters:
@@ -234,7 +234,7 @@ Datasets(dataset_db).load(DATASET_NAME)
 
 ## Projects
 
-**API Documentation: [ArangoML.projects](https://arangoml.github.io/arangoml/specification.html#projects)**
+**API Documentation: [ArangoML.projects](https://arangoml.github.io/arangoml/api.html#projects)**
 
 Projects are an important reference used throughout the entire ArangoGraphML
 lifecycle. All activities link back to a project. The creation of the project
@@ -253,7 +253,7 @@ arangoml.projects.list_projects()
 
 ## Featurization
 
-**API Documentation: [ArangoML.jobs.featurize](https://arangoml.github.io/arangoml/specification.html#agml_api.jobs.v1.api.jobs_api.JobsApi.featurize)**
+**API Documentation: [ArangoML.jobs.featurize](https://arangoml.github.io/arangoml/api.html#agml_api.jobs.v1.api.jobs_api.JobsApi.featurize)**
 
 **The Featurization Service depends on a `Featurization Specification` that contains**:
 - `featurizationName`: A name for the featurization task.
@@ -515,7 +515,7 @@ arangoml.jobs.cancel_job(prediction_job.job_id)
 
 ## Training
 
-**API Documentation: [ArangoML.jobs.train](https://arangoml.github.io/arangoml/specification.html#agml_api.jobs.v1.api.jobs_api.JobsApi.train)**
+**API Documentation: [ArangoML.jobs.train](https://arangoml.github.io/arangoml/api.html#agml_api.jobs.v1.api.jobs_api.JobsApi.train)**
 
 Training Graph Machine Learning Models with ArangoGraphML only requires two steps:
 1. Describe which data points should be included in the Training Job.
@@ -661,7 +661,7 @@ Model Statistics can be observed upon completion of a Training Job.
 To select a Model, the ArangoGraphML Projects Service can be used to gather
 all relevant models and choose the preferred model for a Prediction Job.
 
-First, let's list all the trained models using [ArangoML.list_models](https://arangoml.github.io/arangoml/specification.html#arangoml.main.ArangoML.list_models):
+First, let's list all the trained models using [ArangoML.list_models](https://arangoml.github.io/arangoml/client.html#arangoml.main.ArangoML.list_models):
 
 ```py
 # 1. List all trained Models
@@ -675,7 +675,7 @@ print(len(models))
 ```
 
 
-The cell below selects the model with the highest **test accuracy** using [ArangoML.get_best_model](https://arangoml.github.io/arangoml/specification.html#arangoml.main.ArangoML.get_best_model), but there may be other factors that motivate you to choose another model. See the `model_statistics` in the output field below for more information on the full list of available metrics.
+The cell below selects the model with the highest **test accuracy** using [ArangoML.get_best_model](https://arangoml.github.io/arangoml/client.html#arangoml.main.ArangoML.get_best_model), but there may be other factors that motivate you to choose another model. See the `model_statistics` in the output field below for more information on the full list of available metrics.
 
 ```py
 best_model = arangoml.get_best_model(
@@ -724,7 +724,7 @@ print(best_model)
 
 ## Prediction
 
-**API Documentation: [ArangoML.jobs.predict](https://arangoml.github.io/arangoml/specification.html#agml_api.jobs.v1.api.jobs_api.JobsApi.predict)**
+**API Documentation: [ArangoML.jobs.predict](https://arangoml.github.io/arangoml/api.html#agml_api.jobs.v1.api.jobs_api.JobsApi.predict)**
 
 Final step!
 
