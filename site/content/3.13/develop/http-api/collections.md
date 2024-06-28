@@ -4474,7 +4474,6 @@ paths:
                   - error
                   - code
                   - result
-                  - count
                 properties:
                   error:
                     description: |
@@ -4492,6 +4491,7 @@ paths:
                   count:
                     description: |
                       The recalculated document count.
+                      This attribute is not present when using a cluster.
                     type: integer
         '400':
           description: |
