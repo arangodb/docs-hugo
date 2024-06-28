@@ -15,7 +15,6 @@ and network flow analysis.
 ArangoDB offers a feature for running algorithms on your graph data,
 called Graph Analytics Engines (GAEs). It is available on request for the
 [ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
-Your ArangoDB deployment needs to use AWS as the provider.
 
 Key features:
 
@@ -36,8 +35,13 @@ Key features:
 The following lists outlines how you can use Graph Analytics Engines (GAEs).
 How to perform the steps is detailed in the subsequent sections.
 
-0. Request beta access to the feature via __Request help__ in the
-   ArangoGraph dashboard.
+{{< info >}}
+Before you can use Graph Analytics Engines, you need to request the feature
+via __Request help__ in the ArangoGraph dashboard for a deployment.
+
+The deployment needs to use **AWS** as the cloud provider.
+{{< /info >}}
+
 1. Determine the approximate size of the data that you will load into the GAE
    to select an engine size with sufficient memory. The data as well as the
    temporarily needed space for computations and results needs to fit in memory.
@@ -548,13 +552,29 @@ In each iteration of the computation, the following steps are executed:
 
 Parameters:
 - `graph_id`
-- `start_label_attribute`: The attribute to initialize labels with. Use `"@id"` to use the document IDs of the vertices.
+- `start_label_attribute`: The attribute to initialize labels with.
+   Use `"@id"` to use the document IDs of the vertices.
 - `synchronous`: Whether synchronous or asynchronous label propagation is used.
 - `backwards`: Whether labels are propagated in edge direction (`false`) or the
   opposite direction (`true`).
 - `maximum_supersteps`: Maximum number of iterations.
 
 Result: The set of accumulated labels of each vertex.
+
+#### Custom Python code
+
+`POST <ENGINE_URL>/v1/python`
+
+Use NetworkX:
+
+def worker(graph): return nx.pagerank(graph, 0.85)
+
+Parameters:
+- `graph_id`
+- `function`: A string with Python code. It must define a function `def worker(graph):`
+  that returns a dataframe or dictionary with the results. The key inside that
+  dict must represent the vertex ID. The value can be of any type.
+- `use_cugraph`: Use cugraph (or regular pandas/pyarrow).
 
 ### Store job results
 
