@@ -301,6 +301,59 @@ include the desired collections anymore. In case of vertex collections, they
 become orphan collections that you need to remove from the graph definition as
 well to drop the collections.
 
+### Short-circuiting subquery evaluation
+
+<small>Introduced in: v3.12.1</small>
+
+Subqueries you use in ternary expressions are no longer executed unconditionally
+before the condition is evaluated. Only the subquery of the branch that is taken
+effectively executes.
+
+Similarly, when you use subqueries as sub-expressions that are combined with
+logical `AND` or `OR`, the subqueries are now evaluated lazily.
+
+If you rely on the previous behavior of v3.12.0 or older, you need to rewrite
+affected AQL queries so that the subqueries are executed first.
+
+For example, the following query with a subquery in the false branch of a ternary
+operator only creates a new document if the condition evaluates to false from
+v3.12.1 onward:
+
+```aql
+RETURN RAND() > 0.5 ? "yes" : (INSERT {} INTO coll RETURN "no")[0]
+```
+
+To restore the behavior of v3.12.0 and older where the subquery is always executed,
+pull the subquery out of the ternary operator expression and save the result to
+a variable, then use this variable where the subquery used to be:
+
+```aql
+LET tmp = (INSERT {} INTO coll RETURN "no")[0]
+RETURN RAND() > 0.5 ? "yes" : tmp
+```
+
+This also applies to expressions that are combined with logical `AND` or `OR`.
+A subquery to the right-hand side of an `AND` is effectively only executed if
+the expression to the left-hand side evaluates to `true`, and with an `OR`, the
+right-hand side is effectively only executed if the left-hand side evaluates to
+`false` from v3.12.1 onward.
+
+```aql
+RETURN RAND() > 0.5 && (INSERT {} INTO coll RETURN 42)[0]
+```
+
+To execute the subquery regardless of the left-hand side expression, execute
+the subquery first:
+
+```aql
+LET tmp = (INSERT {} INTO coll RETURN 42)[0]
+RETURN RAND() > 0.5 && tmp
+```
+
+Also see [What's New in 3.12](whats-new-in-3-12.md#short-circuiting-subquery-evaluation)
+and [Evaluation of subqueries](../../aql/fundamentals/subqueries.md#evaluation-of-subqueries)
+for more information.
+
 ## HTTP RESTful API
 
 ### JavaScript-based traversal using `/_api/traversal` removed
