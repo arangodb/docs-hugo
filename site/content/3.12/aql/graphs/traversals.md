@@ -145,6 +145,69 @@ FOR vertex[, edge[, path]]
 
     Specifies the number of document attributes per `FOR` loop to be used as
     projections. The default value is `5`.
+  - **indexHint** (object, *optional*, introduced in v3.12.1):
+
+    You can provide index hints for traversals to let the optimizer prefer
+    the [vertex-centric indexes](../../index-and-search/indexing/working-with-indexes/vertex-centric-indexes.md)
+    you specify over the regular edge index.
+
+    This is useful for cases where the selectively estimate of the edge index
+    is higher than the ones for suitable vertex-centric indexes (and thus they
+    aren't picked automatically) but the vertex-centric indexes are known to
+    perform better.
+
+    The `indexHint` option expects an object in the following format:
+
+    `{ "<edgeColl>": { "<direction>": { "<level>": <index> } } }`
+
+    - `<edgeColl>`: The name of an edge collection for which the index hint
+      shall be applied. Collection names are case-sensitive.
+    - `<direction>`: The direction for which to apply the index hint.
+      Valid values are `inbound` and `outbound`, in lowercase.
+      You can specify indexes for both directions.
+    - `<level>`: The level/depth for which the index should be applied. Valid
+      values are the string `base` (to define the default index for all levels)
+      and any stringified integer values greater or equal to zero.
+      You can specify multiple levels.
+    - `<index>`: The name of an index as a string, or multiple index names as
+      a list of strings in the order of preference. The optimizer uses the first
+      suitable index.
+
+    Because collection names and levels/depths are used as object keys,
+    enclose them in quotes to avoid query parse errors.
+
+    Example:
+
+    ```aql
+    FOR v, e, p IN 1..4 OUTBOUND startVertex edgeCollection
+    OPTIONS {
+      indexHint: {
+        "edgeCollection": {
+          "outbound": {
+            "base": ["edge"],
+            "1": "myIndex1",
+            "2": ["myIndex2", "myIndex1"],
+            "3": "myIndex3",
+          }
+        }
+      }
+    }
+    FILTER p.edges[1].foo == "bar" AND
+           p.edges[2].foo == "bar" AND
+           p.edges[2].baz == "qux"
+    ```
+
+    Index hints for levels other than `base` are only considered if the
+    traversal actually uses a specific filter condition for the specified level.
+    In the above example, this is true for levels 1 and 2, but not for level 3.
+    Consequently, the index hint for level 3 is ignored here.
+
+    An expression like `FILTER p.edges[*].foo ALL == "bar"` cannot utilize the
+    indexes you specify for individual levels (level 1, level 2, etc.) but uses
+    the index for the `base` level.
+
+    The vertex-centric indexes you specify are only used if they are eligible
+    and the index hints for traversals cannot be forced.
   - **weightAttribute** (string, *optional*): Specifies the name of an attribute
     that is used to look up the weight of an edge. If no attribute is specified
     or if it is not present in the edge document then the `defaultWeight` is used.

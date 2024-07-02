@@ -685,6 +685,38 @@ when the `doc` variable is truthy because the opposite is false and
 
 Also see [Evaluation of subqueries](../../aql/fundamentals/subqueries.md#evaluation-of-subqueries).
 
+### Index hints for traversals
+
+<small>Introduced in: v3.12.1</small>
+
+For graph traversals, you can now specify index hints in AQL.
+
+If vertex-centric indexes are known to perform better than the edge index but
+aren't chosen automatically, you can make the optimizer prefer the indexes you
+specify. This can be done per edge collection, direction, and level/depth:
+
+```aql
+FOR v, e, p IN 1..4 OUTBOUND startVertex edgeCollection
+OPTIONS {
+  indexHint: {
+    "edgeCollection": {
+      "outbound": {
+        "base": ["edge"],
+        "1": "myIndex1",
+        "2": ["myIndex2", "myIndex1"],
+        "3": "myIndex3",
+      }
+    }
+  }
+}
+FILTER p.edges[1].foo == "bar" AND
+       p.edges[2].foo == "bar" AND
+       p.edges[2].baz == "qux"
+```
+
+See the [Traversal `OPTIONS`](../../aql/graphs/traversals.md#working-with-named-graphs)
+for details.
+
 ## Indexing
 
 ### Multi-dimensional indexes
