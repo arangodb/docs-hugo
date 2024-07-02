@@ -510,7 +510,7 @@ The document is only changed if the new number is higher. See the
 [JavaScript API](../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
 for details.
 
-### `@arangodb/pregel` package
+### `@arangodb/pregel` removed
 
 The `@arangodb/pregel` module of the JavaScript API has been removed in v3.12.0
 as Pregel is no longer supported.
@@ -520,3 +520,16 @@ as Pregel is no longer supported.
 JavaScript Transactions and thus the `db._executeTransaction()` method is
 deprecated from v3.12.0 onward and will be removed in a future version.
 The `db._createTransaction()` method for starting Stream Transactions is unaffected.
+
+### `@arangodb/request` certificate validation
+
+<small>Introduced in: v3.11.11, v3.12.2</small>
+
+The `@arangodb/request` module now supports two additional options for making
+HTTP requests:
+
+- `verifyCertificates` (optional): if set to `true`, the server certificate of
+  the remote server is verified using the default certificate store of the system.
+  Default: `false`.
+- `verifyDepth` (optional): limit the maximum length of the certificate chain
+  that counts as valid. Default: `10`.
