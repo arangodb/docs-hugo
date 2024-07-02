@@ -25,18 +25,21 @@ This library works with all the non-EOLed [ArangoDB versions](https://www.arango
 
 There are several variants of this library, each one compatible with different Spark and Scala versions:
 
-- `com.arangodb:arangodb-spark-datasource-3.1_2.12` (Spark 3.1, Scala 2.12)
 - `com.arangodb:arangodb-spark-datasource-3.2_2.12` (Spark 3.2, Scala 2.12)
 - `com.arangodb:arangodb-spark-datasource-3.2_2.13` (Spark 3.2, Scala 2.13)
 - `com.arangodb:arangodb-spark-datasource-3.3_2.12` (Spark 3.3, Scala 2.12)
 - `com.arangodb:arangodb-spark-datasource-3.3_2.13` (Spark 3.3, Scala 2.13)
-- `com.arangodb:arangodb-spark-datasource-3.4_2.12` (Spark 3.4, Scala 2.12)
-- `com.arangodb:arangodb-spark-datasource-3.4_2.13` (Spark 3.4, Scala 2.13)
+- `com.arangodb:arangodb-spark-datasource-3.4_2.12` (Spark 3.4, Scala 2.12) (compatible with Spark `3.4.2+`)
+- `com.arangodb:arangodb-spark-datasource-3.4_2.13` (Spark 3.4, Scala 2.13) (compatible with Spark `3.4.2+`)
 
 The following variants are no longer supported:
 
 - `com.arangodb:arangodb-spark-datasource-2.4_2.11` (Spark 2.4, Scala 2.11)
 - `com.arangodb:arangodb-spark-datasource-2.4_2.12` (Spark 2.4, Scala 2.12)
+- `com.arangodb:arangodb-spark-datasource-3.1_2.12` (Spark 3.1, Scala 2.12)
+
+Since version `1.7.0`, due to [breaking changes](https://github.com/apache/spark/commit/ad29290a02fb94a958fd21e301100338c9f5b82a#diff-b25c8acff88c1b4850c6642e80845aac4fb882c664795c3b0aa058e37ed732a0L42-R52)
+in Spark `3.4.2`, `arangodb-spark-datasource-3.4` is not compatible anymore with Spark versions `3.4.0` and `3.4.1`.
 
 In the following sections the `${sparkVersion}` and `${scalaVersion}` placeholders refer to the Spark and Scala versions.
 
