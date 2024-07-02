@@ -526,7 +526,7 @@ The `db._createTransaction()` method for starting Stream Transactions is unaffec
 <small>Introduced in: v3.11.11, v3.12.2</small>
 
 The `@arangodb/request` module now supports two additional options for making
-HTTP requests:
+HTTPS requests:
 
 - `verifyCertificates` (optional): if set to `true`, the server certificate of
   the remote server is verified using the default certificate store of the system.

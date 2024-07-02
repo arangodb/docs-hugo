@@ -844,7 +844,7 @@ removed in a future version.
 <small>Introduced in: v3.11.11</small>
 
 The `@arangodb/request` module now supports two additional options for making
-HTTP requests:
+HTTPS requests:
 
 - `verifyCertificates` (optional): if set to `true`, the server certificate of
   the remote server is verified using the default certificate store of the system.
