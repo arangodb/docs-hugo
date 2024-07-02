@@ -334,9 +334,9 @@ RETURN RAND() > 0.5 ? "yes" : tmp
 
 This also applies to expressions that are combined with logical `AND` or `OR`.
 A subquery to the right-hand side of an `AND` is effectively only executed if
-the expression to the left-hand side evaluates to `true`, and with an `OR`, the
-right-hand side is effectively only executed if the left-hand side evaluates to
-`false` from v3.12.1 onward.
+the expression to the left-hand side is truthy, and with an `OR`, the
+right-hand side is effectively only executed if the left-hand side is falsy
+from v3.12.1 onward.
 
 ```aql
 RETURN RAND() > 0.5 && (INSERT {} INTO coll RETURN 42)[0]
