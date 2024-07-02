@@ -218,19 +218,12 @@ Write tasks are load balanced across the available ArangoDB Coordinators. The da
 
 On writing, `org.apache.spark.sql.SaveMode` is used to specify the expected behavior in case the target collection already exists.
 
-Spark 2.4 implementation supports all save modes with the following semantics:
-- `Append`: the target collection is created, if it does not exist.
-- `Overwrite`: the target collection is created, if it does not exist, otherwise it is truncated. Use it in combination with the
-  `confirmTruncate` write configuration parameter.
-- `ErrorIfExists`: the target collection is created, if it does not exist, otherwise an `AnalysisException` is thrown.
-- `Ignore`: the target collection is created, if it does not exist, otherwise no write is performed.
-
-Spark 3 implementations support:
+The following save modes are supported:
 - `Append`: the target collection is created, if it does not exist.
 - `Overwrite`: the target collection is created, if it does not exist, otherwise it is truncated. Use it in combination with the
   `confirmTruncate` write configuration parameter.
 
-In Spark 3 implementations, the `ErrorIfExists` and `Ignore` save modes behave the same as `Append`.
+Save modes `ErrorIfExists` and `Ignore` behave the same as `Append`.
 
 Use the `overwriteMode` write configuration parameter to specify the document overwrite behavior (if a document with the same `_key` already exists).
 
@@ -364,9 +357,6 @@ df.write
   reading a document having a field with a numeric value whereas the related
   read schema requires a string value for such a field.
 - Dates and timestamps fields are interpreted to be in a UTC time zone.
-- In Spark 2.4, for corrupted records in batch reading, partial results are not
-  supported. All fields other than the field configured by
-  `columnNameOfCorruptRecord` are set to `null` (SPARK-26303).
 - In read jobs using `stream=true` (default), possible AQL warnings are only
   logged at the end of each read task (BTS-671).
 - Spark SQL `DecimalType` fields are not supported in write jobs when using `contentType=json`.
