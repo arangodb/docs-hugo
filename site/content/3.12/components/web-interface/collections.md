@@ -8,48 +8,43 @@ The collections section displays all available collections. From here you can
 create new collections and jump into a collection for details (click on a
 collection tile).
 
-![Collections](../../../images/collectionsView.png)
-
 Functions:
 
- - A: Toggle filter properties
- - B: Search collection by name
- - D: Create collection
- - C: Filter properties
- - H: Show collection details (click tile)
+ - Create collections
+ - Filter by collection properties
+ - Show collection details (click row)
 
 Information:
 
- - E: Collection type
- - F: Collection state(unloaded, loaded, ...)
- - G: Collection name
+ - Collection name
+ - Collection type
+ - Collection source (system or custom)
+ - Collection status
 
 ## Collection
 
-![Collection](../../../images/collectionView.png)
-
 There are four view categories: 
 
-1. Content:
- - Create a document
- - Delete a document
- - Filter documents
- - Download documents
- - Upload documents
+- Content:
+   - Create a document
+   - Delete a document
+   - Filter documents
+   - Download documents
+   - Upload documents
 
-2. indexes:
- - Create indexes
- - Delete indexes
+- Indexes:
+   - Create indexes
+   - Delete indexes
 
-3. Info:
- - Detailed collection information and statistics 
+- Info:
+   - Detailed collection information and statistics 
 
-3. Settings:
- - Configure name, journal size, index buckets, wait for sync 
- - Delete collection 
- - Truncate collection 
- - Unload/Load collection 
- - Save modified properties (name, journal size, index buckets, wait for sync) 
+- Settings:
+   - Configure name, journal size, index buckets, wait for sync 
+   - Delete collection 
+   - Truncate collection 
+   - Unload/Load collection 
+   - Save modified properties (name, journal size, index buckets, wait for sync) 
 
 Additional information:
 

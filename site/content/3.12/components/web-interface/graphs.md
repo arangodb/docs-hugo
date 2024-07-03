@@ -12,8 +12,6 @@ lets you create new named graphs as well as view and edit the settings of
 existing named graphs. It also provides a viewer facility for visualizing
 subsets of a graph or an entire graph.
 
-![manage graphs](../../../images/graphsView.png)
-
 ## Create a named graph
 
 1. In the **GRAPHS** section, click the first card with the label **Add Graph**.
@@ -59,7 +57,7 @@ their direct neighbors are selected. You can select one or more start nodes
 and change the depth and the limit in the settings panel. You can also load
 the entire graph via the toolbar, but only use this with small graphs.
 
-![The graph viewer with the settings panel open](../../../images/graphViewer.png)
+![The graph viewer with the settings panel open](../../../images/graphViewer312.png)
 
 ### Viewport
 

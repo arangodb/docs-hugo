@@ -5,23 +5,17 @@ weight: 40
 description: ''
 ---
 ArangoDB users are globally stored in the `_system` database and can only be
-managed while logged on to this database. There you can find the *Users* section:
-
-![Users](../../../images/users.png)
+managed while logged on to this database. There you can find the *Users* section.
 
 ## General
 
 Select a user to bring up the *General* tab with the username, name and active
 status, as well as options to delete the user or change the password.
 
-![User General](../../../images/userGeneral.png)
-
 ## Permissions
 
 Select a user and go to the *Permissions* tab. You will see a list of databases
 and their corresponding database access level for that user.
-
-![User Permissions](../../../images/userPermissions.png)
 
 Please note that server access level follows from the access level on
 the `_system` database. Furthermore, the default database access level
