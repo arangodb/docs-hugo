@@ -176,7 +176,8 @@ This is only the case if all of the following conditions are true:
   in particular if the system glibc is older than version 2.35
 - The `libnss-*` dynamic libraries are installed
 - The `/etc/nsswitch.conf` configuration file contains settings other than for
-  `files` and `dns` in the `hosts:` line
+  `files` and `dns` in the `hosts:` line, or the `passwd:` and `group:` lines
+  contain something other than `files`
 
 If you are affected, consider using Docker containers, `chroot`, or change
 `nsswitch.conf`.
