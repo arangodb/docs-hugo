@@ -81,6 +81,8 @@ This is an alias for [`LENGTH()`](#length).
 
 ## ENTRIES()
 
+<small>Introduced in: v3.12.1</small>
+
 `ENTRIES(document) → pairArray`
 
 Return the top-level attributes of the `document` as an array of key-value pairs.
