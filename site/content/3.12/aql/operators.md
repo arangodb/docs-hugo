@@ -348,11 +348,17 @@ There is also a [`RANGE()` function](functions/numeric.md#range).
 
 AQL provides different array operators:
 
+- `[n]` to [access the array element](#indexed-value-access) at index `n`
 - `[*]` for [expanding array variables](#array-expansion)
 - `[**]`, `[***]` etc. for [flattening arrays](#array-contraction)
 - `[* ...]`, `[** ...]` etc. for filtering, limiting, and projecting arrays using
   [inline expressions](#inline-expressions)
 - `[? ...]` for nested search, known as the [question mark operator](#question-mark-operator)
+- `LET [x, y] = [1, 2]` for [array destructuring](#array-destructuring)
+
+### Indexed value access
+
+TODO
 
 ### Array expansion
 
@@ -699,6 +705,23 @@ The question mark operator can be used for nested search (Enterprise Edition onl
 - [Nested search with ArangoSearch](../index-and-search/arangosearch/nested-search.md) using Views
 - Nested search using [Inverted indexes](../index-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search-enterprise-edition)
 
+### Array destructuring
+
+TODO
+
+## Object operators
+
+- `.` and `[expr]` for [accessing an object attribute](#attribute-access)
+- `LET {x, y} = {x: 1, y: 2}` for [object destructuring](#object-destructuring)
+
+### Attribute access
+
+TODO - dot and [], where is this currently described?
+
+### Object destructuring
+
+TODO
+
 ## Operator precedence
 
 The operator precedence in AQL is similar as in other familiar languages
@@ -708,8 +731,8 @@ The operator precedence in AQL is similar as in other familiar languages
 |:---------------------|:-----------
 | `::`                 | scope (user-defined AQL functions)
 | `[*]`                | array expansion
-| `[]`                 | indexed value access (of arrays)
-| `.`                  | member access (of objects)
+| `[]`                 | indexed value access (of arrays), attribute access (of objects)
+| `.`                  | attribute access (of objects)
 | `()`                 | function call
 | `!`, `NOT`, `+`, `-` | unary not (logical negation), unary plus, unary minus
 | `*`, `/`, `%`        | multiplication, division, modulus
