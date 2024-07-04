@@ -31,6 +31,8 @@ There are several variants of this library, each one compatible with different S
 - `com.arangodb:arangodb-spark-datasource-3.3_2.13` (Spark 3.3, Scala 2.13)
 - `com.arangodb:arangodb-spark-datasource-3.4_2.12` (Spark 3.4, Scala 2.12) (compatible with Spark `3.4.2+`)
 - `com.arangodb:arangodb-spark-datasource-3.4_2.13` (Spark 3.4, Scala 2.13) (compatible with Spark `3.4.2+`)
+- `com.arangodb:arangodb-spark-datasource-3.5_2.12` (Spark 3.5, Scala 2.12)
+- `com.arangodb:arangodb-spark-datasource-3.5_2.13` (Spark 3.5, Scala 2.13)
 
 The following variants are no longer supported:
 
