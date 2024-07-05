@@ -350,75 +350,89 @@ paths:
                   type: string
                 agency:
                   description: |
-                    One of the possible log topics.
+                    Agents use this log topic to inform about any activity
+                    including the RAFT consensus gossip.
                   type: string
                 agencycomm:
                   description: |
-                    One of the possible log topics.
+                    DB-Servers and Coordinators log the requests they send to the
+                    Agency.
                   type: string
                 agencystore:
                   description: |
-                    One of the possible log topics.
+                    Optional verbose logging of Agency write operations.
                   type: string
                 aql:
                   description: |
-                    One of the possible log topics.
+                    DB-Servers and Coordinators log the cluster-internal
+                    communication around AQL queries.
                   type: string
                 arangosearch:
                   description: |
-                    One of the possible log topics.
+                    Logs the ArangoSearch thread and column cache information
+                    on startup. <!-- TODO: Anything else? -->
                   type: string
                 audit-authentication:
                   description: |
-                    One of the possible log topics (_Enterprise Edition only_).
+                    Controls whether events such as successful logins and
+                    missing or wrong credentials are written to the audit log
+                    (_Enterprise Edition only_).
                   type: string
                 audit-authorization:
                   description: |
-                    One of the possible log topics (_Enterprise Edition only_).
+                    Controls whether events such as users trying to access databases
+                    without the necessary permissions are written to the audit log
+                    (_Enterprise Edition only_).
                   type: string
                 audit-collection:
                   description: |
-                    One of the possible log topics (_Enterprise Edition only_).
+                    Controls whether events about collections creation, truncation,
+                    and deletion are written to the audit log (_Enterprise Edition only_).
                   type: string
                 audit-database:
                   description: |
-                    One of the possible log topics (_Enterprise Edition only_).
+                    Controls whether events about database creation and deletion
+                    are written to the audit log (_Enterprise Edition only_).
                   type: string
                 audit-document:
                   description: |
-                    One of the possible log topics (_Enterprise Edition only_).
+                    Controls whether document read and write events are written
+                    to the audit log (_Enterprise Edition only_).
                   type: string
                 audit-hotbackup:
                   description: |
-                    One of the possible log topics (_Enterprise Edition only_).
+                    Controls whether the Hot Backup creation, restore, and delete
+                    events are written to the audit log (_Enterprise Edition only_).
                   type: string
                 audit-service:
                   description: |
-                    One of the possible log topics (_Enterprise Edition only_).
+                    Unused log topic (_Enterprise Edition only_).
                   type: string
                 audit-view:
                   description: |
-                    One of the possible log topics (_Enterprise Edition only_).
+                    Controls whether events about View creation and deletion
+                    are written to the audit log (_Enterprise Edition only_).
                   type: string
                 authentication:
                   description: |
-                    One of the possible log topics.
+                    Logs when a JWT secret is generated or a token is validated
+                    against a secret.
                   type: string
                 authorization:
                   description: |
-                    One of the possible log topics.
+                    Logs when a user has insufficient permissions for a request.
                   type: string
                 backup:
                   description: |
-                    One of the possible log topics.
+                    Logs events related to Hot Backup (_Enterprise Edition only_).
                   type: string
                 bench:
                   description: |
-                    One of the possible log topics.
+                    Logs events related to benchmarking with _arangobench_.
                   type: string
                 cache:
                   description: |
-                    One of the possible log topics.
+                    Logs the cache configuration on startup.
                   type: string
                 cluster:
                   description: |
@@ -507,7 +521,7 @@ paths:
                   type: string
                 queries:
                   description: |
-                    One of the possible log topics.
+                    Logs internal details about the execution of AQL queries.
                   type: string
                 replication:
                   description: |
@@ -535,7 +549,9 @@ paths:
                   type: string
                 startup:
                   description: |
-                    One of the possible log topics.
+                    Logs information related to the startup and shutdown of a
+                    server process as well as anything related to upgrading the
+                    database directory.
                   type: string
                 statistics:
                   description: |
