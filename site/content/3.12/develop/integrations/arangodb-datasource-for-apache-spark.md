@@ -71,7 +71,7 @@ To use in an external Spark cluster, submit your application with the following 
 - `password`: db password
 - `endpoints`: list of Coordinators, e.g. `c1:8529,c2:8529` (required)
 - `acquireHostList`: acquire the list of all known hosts in the cluster (`true` or `false`), `false` by default
-- `protocol`: communication protocol (`vst`, `http` or `http2`), `http2` by default
+- `protocol`: communication protocol (`vst`, `http`, or `http2`), `http2` by default
 - `contentType`: content type for driver communication (`json` or `vpack`), `json` by default
 - `timeout`: driver connect and request timeout in ms, `300000` by default
 - `ssl.enabled`: ssl secured driver connection (`true` or `false`), `false` by default
