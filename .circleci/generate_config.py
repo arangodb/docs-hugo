@@ -300,6 +300,8 @@ export GENERATORS='<< parameters.generators >>'\n"
 
     for i in range(len(versions)):
         version = versions[i]["name"]
+        if args.workflow in ["generate-scheduled", "generate-oasisctl"] and version == "3.10":
+            continue # 3.10 nightly images no longer available
         branch = args.arangodb_branches[i]
 
         if args.workflow != "generate": #generate scheduled etc.
