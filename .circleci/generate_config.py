@@ -96,6 +96,8 @@ def workflow_generate(config):
 
     for i in range(len(versions)):
         version = versions[i]["name"]
+        if args.workflow in ["generate-scheduled", "generate-oasisctl"] and version == "3.10":
+            continue # compilation can be skipped, 3.10 nightly images no longer available
         branch = args.arangodb_branches[i]
         if branch == "undefined":
             continue
@@ -140,6 +142,8 @@ def workflow_generate(config):
                     compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
                 if openssl.startswith("1.1"):
                     compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
+                if openssl.startswith("3.3"): # 3.11.10
+                    compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:6"
             else: # build image for 3.12.1 and devel as of 2024-06-24
                 compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:6"
 
@@ -244,6 +248,8 @@ def workflow_release_arangodb(config):
             compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
         if openssl.startswith("1.1"):
             compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
+        if openssl.startswith("3.3"): # 3.11.10
+            compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:6"
     else: # build image for 3.12.1 and devel as of 2024-06-24
         compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:6"
 
@@ -296,6 +302,8 @@ export GENERATORS='<< parameters.generators >>'\n"
 
     for i in range(len(versions)):
         version = versions[i]["name"]
+        if args.workflow in ["generate-scheduled", "generate-oasisctl"] and version == "3.10":
+            continue # 3.10 nightly images no longer available
         branch = args.arangodb_branches[i]
 
         if args.workflow != "generate": #generate scheduled etc.

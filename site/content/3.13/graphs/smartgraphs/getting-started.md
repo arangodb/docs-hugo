@@ -63,7 +63,7 @@ SmartGraphs. To get started, follow the steps outlined below.
 7. Click the card of the newly created graph and use the functions of the Graph
    Viewer to visually interact with the graph and manage the graph data.
 
-![Create SmartGraph](../../../images/Create-SmartGraph.png)   
+![Create SmartGraph](../../../images/Create-SmartGraph312.png)   
 
 ## Create a SmartGraph using *arangosh*
 

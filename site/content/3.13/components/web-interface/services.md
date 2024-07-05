@@ -7,8 +7,6 @@ description: ''
 The services section displays all installed Foxx applications. You can create new services
 or go into a detailed view of a chosen service.
 
-![Services](../../../images/servicesView.png)
-
 ## Create Service
 
 There are four different possibilities to create a new service:
@@ -18,13 +16,9 @@ There are four different possibilities to create a new service:
 3. Create service via official ArangoDB store
 4. Create a blank service from scratch
 
-![Create Service](../../../images/installService.png)
-
 ## Service View
 
 This section offers several information about a specific service. 
-
-![Create Service](../../../images/serviceView.png)
 
 There are four view categories: 
 
@@ -32,7 +26,7 @@ There are four view categories:
   - Displays name, short description, license, version, mode (production, development)
   - Offers a button to go to the services interface (if available)
 
-2. Api:
+2. API:
  - Display API as SwaggerUI
  - Display API as RAW JSON
 

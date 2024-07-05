@@ -16,7 +16,7 @@ You can access the logs of individual Coordinators and DB-Servers via the
 
 The **CLUSTER** section displays statistics about the general cluster performance.
 
-![Web Interface Cluster Dashboard](../../../images/ui-cluster-dashboard.webp)
+![Web Interface Cluster Dashboard](../../../images/ui-cluster-dashboard312.webp)
 
 Statistics:
 
@@ -69,8 +69,6 @@ access information about the individual Coordinators and DB-Servers.
 
 The **Overview** tab shows available and missing Coordinators and DB-Servers.
 
-![Web Interface Cluster Nodes](../../../images/ui-cluster-nodes.webp)
-
 Functions:
 
 - Coordinator Dashboard: Click a Coordinator to open a statistics dashboard.
@@ -87,8 +85,6 @@ Information (Coordinator / DB-Servers):
 
 The **Shards** tab displays all available sharded collections, their leaders
 and followers.
-
-![Web Interface Cluster Shards](../../../images/ui-cluster-shards.webp)
 
 To move a shard leader or follower to a different DB-Server, click one of the
 **Leader** or **Followers** entries to open a move shard dialog.

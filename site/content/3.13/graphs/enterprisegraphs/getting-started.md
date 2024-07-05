@@ -211,7 +211,7 @@ EnterpriseGraphs. To get started, follow the steps outlined below.
 6. Click the card of the newly created graph use the functions of the Graph
    Viewer to visually interact with the graph and manage the graph data.
 
-![Create EnterpriseGraph](../../../images/graphs-create-enterprise-graph-dialog.png)
+![Create EnterpriseGraph](../../../images/graphs-create-enterprise-graph-dialog312.png)
    
 ## Create an EnterpriseGraph using *arangosh*
 

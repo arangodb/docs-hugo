@@ -7,7 +7,7 @@ description: ''
 The **DASHBOARD** section provides statistics which are polled regularly from the
 ArangoDB server.
 
-![Web Interface Dashboard](../../../images/ui-dashboard.webp)
+![Web Interface Dashboard](../../../images/ui-dashboard312.webp)
 
 There is a different interface for [Cluster](cluster.md) deployments.
 

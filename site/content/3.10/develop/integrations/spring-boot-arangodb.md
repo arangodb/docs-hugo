@@ -17,9 +17,8 @@ and ArangoDB Java Driver:
 
 | Spring Boot Starter ArangoDB | Spring Boot | Spring Framework | Spring Data ArangoDB | ArangoDB Java Driver |
 |------------------------------|-------------|------------------|----------------------|----------------------|
-| 3.1-x                        | 3.1         | 6.0              | 4.0                  | 7.1                  |
-| 3.0-x                        | 3.0         | 6.0              | 4.0                  | 7.1                  |
-| 2.7-x                        | 2.7         | 5.3              | 3.10                 | 6.25                 |
+| 3.3-x                        | 3.3         | 6.1              | 4.2                  | 7.7                  |
+| 3.2-x                        | 3.2         | 6.1              | 4.2                  | 7.7                  |
 
 Note that the adopted versioning scheme does not honor the semantic versioning
 rules, i.e. minor or patch releases may introduce new features or breaking
