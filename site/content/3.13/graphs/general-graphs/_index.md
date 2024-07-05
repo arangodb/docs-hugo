@@ -57,7 +57,7 @@ General Graphs. To get started, follow the steps outlined below.
 8. Click the card of the newly created graph and use the functions of the Graph
    Viewer to visually interact with the graph and manage the graph data.
 
-![Create General Graph](../../../images/Create-GeneralGraph.png)   
+![Create General Graph](../../../images/Create-GeneralGraph312.png)   
 
 ### Create a General Graph using *arangosh*
 
