@@ -25,18 +25,23 @@ This library works with all the non-EOLed [ArangoDB versions](https://www.arango
 
 There are several variants of this library, each one compatible with different Spark and Scala versions:
 
-- `com.arangodb:arangodb-spark-datasource-3.1_2.12` (Spark 3.1, Scala 2.12)
-- `com.arangodb:arangodb-spark-datasource-3.2_2.12` (Spark 3.2, Scala 2.12)
-- `com.arangodb:arangodb-spark-datasource-3.2_2.13` (Spark 3.2, Scala 2.13)
 - `com.arangodb:arangodb-spark-datasource-3.3_2.12` (Spark 3.3, Scala 2.12)
 - `com.arangodb:arangodb-spark-datasource-3.3_2.13` (Spark 3.3, Scala 2.13)
-- `com.arangodb:arangodb-spark-datasource-3.4_2.12` (Spark 3.4, Scala 2.12)
-- `com.arangodb:arangodb-spark-datasource-3.4_2.13` (Spark 3.4, Scala 2.13)
+- `com.arangodb:arangodb-spark-datasource-3.4_2.12` (Spark 3.4, Scala 2.12) (compatible with Spark `3.4.2+`)
+- `com.arangodb:arangodb-spark-datasource-3.4_2.13` (Spark 3.4, Scala 2.13) (compatible with Spark `3.4.2+`)
+- `com.arangodb:arangodb-spark-datasource-3.5_2.12` (Spark 3.5, Scala 2.12)
+- `com.arangodb:arangodb-spark-datasource-3.5_2.13` (Spark 3.5, Scala 2.13)
 
 The following variants are no longer supported:
 
 - `com.arangodb:arangodb-spark-datasource-2.4_2.11` (Spark 2.4, Scala 2.11)
 - `com.arangodb:arangodb-spark-datasource-2.4_2.12` (Spark 2.4, Scala 2.12)
+- `com.arangodb:arangodb-spark-datasource-3.1_2.12` (Spark 3.1, Scala 2.12)
+- `com.arangodb:arangodb-spark-datasource-3.2_2.12` (Spark 3.2, Scala 2.12)
+- `com.arangodb:arangodb-spark-datasource-3.2_2.13` (Spark 3.2, Scala 2.13)
+
+Since version `1.7.0`, due to [breaking changes](https://github.com/apache/spark/commit/ad29290a02fb94a958fd21e301100338c9f5b82a#diff-b25c8acff88c1b4850c6642e80845aac4fb882c664795c3b0aa058e37ed732a0L42-R52)
+in Spark `3.4.2`, `arangodb-spark-datasource-3.4` is not compatible anymore with Spark versions `3.4.0` and `3.4.1`.
 
 In the following sections the `${sparkVersion}` and `${scalaVersion}` placeholders refer to the Spark and Scala versions.
 
@@ -66,7 +71,7 @@ To use in an external Spark cluster, submit your application with the following 
 - `password`: db password
 - `endpoints`: list of Coordinators, e.g. `c1:8529,c2:8529` (required)
 - `acquireHostList`: acquire the list of all known hosts in the cluster (`true` or `false`), `false` by default
-- `protocol`: communication protocol (`vst`, `http` or `http2`), `http2` by default
+- `protocol`: communication protocol (`vst`, `http`, or `http2`), `http2` by default
 - `contentType`: content type for driver communication (`json` or `vpack`), `json` by default
 - `timeout`: driver connect and request timeout in ms, `300000` by default
 - `ssl.enabled`: ssl secured driver connection (`true` or `false`), `false` by default
@@ -216,19 +221,12 @@ Write tasks are load balanced across the available ArangoDB Coordinators. The da
 
 On writing, `org.apache.spark.sql.SaveMode` is used to specify the expected behavior in case the target collection already exists.
 
-Spark 2.4 implementation supports all save modes with the following semantics:
-- `Append`: the target collection is created, if it does not exist.
-- `Overwrite`: the target collection is created, if it does not exist, otherwise it is truncated. Use it in combination with the
-  `confirmTruncate` write configuration parameter.
-- `ErrorIfExists`: the target collection is created, if it does not exist, otherwise an `AnalysisException` is thrown.
-- `Ignore`: the target collection is created, if it does not exist, otherwise no write is performed.
-
-Spark 3 implementations support:
+The following save modes are supported:
 - `Append`: the target collection is created, if it does not exist.
 - `Overwrite`: the target collection is created, if it does not exist, otherwise it is truncated. Use it in combination with the
   `confirmTruncate` write configuration parameter.
 
-In Spark 3 implementations, the `ErrorIfExists` and `Ignore` save modes behave the same as `Append`.
+Save modes `ErrorIfExists` and `Ignore` behave the same as `Append`.
 
 Use the `overwriteMode` write configuration parameter to specify the document overwrite behavior (if a document with the same `_key` already exists).
 
@@ -362,9 +360,6 @@ df.write
   reading a document having a field with a numeric value whereas the related
   read schema requires a string value for such a field.
 - Dates and timestamps fields are interpreted to be in a UTC time zone.
-- In Spark 2.4, for corrupted records in batch reading, partial results are not
-  supported. All fields other than the field configured by
-  `columnNameOfCorruptRecord` are set to `null` (SPARK-26303).
 - In read jobs using `stream=true` (default), possible AQL warnings are only
   logged at the end of each read task (BTS-671).
 - Spark SQL `DecimalType` fields are not supported in write jobs when using `contentType=json`.
