@@ -34,6 +34,17 @@ the available options.
 For more detailed plugin installation instructions, see the
 [Confluent Documentation](https://docs.confluent.io/platform/current/connect/userguide.html#connect-installing-plugins).
 
+## Connection handling
+
+Task connections to the database are evenly distributed across all available ArangoDB coordinators. 
+If a connectivity error occur, a connection is re-established with a different coordinator. 
+
+Available db coordinators can be periodically monitored by setting `connection.acquireHostList.enabled` to `true` and optionally configuring the monitoring interval.
+
+Over time, due to connection failovers, the distribution of task connections across the coordinators may become uneven. 
+To address this, connections are periodically re-balanced across the available coordinators. 
+The rebalancing interval can be configured via the `connection.rebalance.interval.ms` property (default is 30 minutes).
+
 ## Delivery guarantees
 
 This connector guarantees that each record in the Kafka topic is delivered at
@@ -238,8 +249,8 @@ configuration properties can be used:
 - `ssl.truststore.location`: the location of the trust store file
 - `ssl.truststore.password`: the password for the trust store file
 
-Note that the trust store file path needs to be accessible from all
-Kafka Connect workers.
+Note that the trust store file path needs to be accessible at the same given
+location from all Kafka Connect workers.
 
 ### Certificate from configuration property value
 
@@ -254,7 +265,6 @@ See [SSL configuration](configuration.md#ssl) for further options.
 
 - Record values are required to be object-like structures (DE-644)
 - Auto-creation of ArangoDB collection is not supported (DE-653)
-- `ssl.cert.value` does not support multiple certificates (DE-655)
 - Batch writes are not guaranteed to be executed serially (FRB-300)
 - Batch writes may succeed for some documents while failing for others (FRB-300)
   This has two important consequences:
