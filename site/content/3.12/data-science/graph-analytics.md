@@ -294,6 +294,7 @@ GRAPH_ID="234"
 curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"damping_factor\":0.85,\"maximum_supersteps\":500,\"seeding_attribute\":\"seed_attr\"}" "$ENGINE_URL/v1/pagerank"
 ```
 
+{{< comment >}} Not merged yet
 #### Single-Source Shortest Path (SSSP)
 
 `POST <ENGINE_URL>/v1/single_source_shortest_path`
@@ -314,6 +315,7 @@ Result: the distance of each vertex to the `source_vertex`
 GRAPH_ID="234"
 curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"source_vertex\":\"vertex/345\",\"undirected\":false}" "$ENGINE_URL/v1/single_source_shortest_path"
 ```
+{{< /comment >}}
 
 #### Weakly Connected Components (WCC)
 
@@ -349,7 +351,7 @@ path between every pair of vertices in both directions.
 In other words, a strongly connected component is a maximal subgraph, where for
 every two vertices, there is a path from one of them to the other, forming a
 cycle. In contrast to a weakly connected component, one cannot follow edges
-against their directions.
+against their direction.
 
 Parameters:
 
@@ -379,6 +381,7 @@ available, which should be equally usable for most use cases.
 
 ![Illustration of an execution of different centrality measures (Freeman 1977)](../../images/centrality_visual.png)
 
+{{< comment >}} Not merged yet
 ##### Betweenness Centrality 
 
 `POST <ENGINE_URL>/v1/betweennesscentrality`
@@ -402,7 +405,9 @@ Result: a centrality measure for each vertex
 GRAPH_ID="234"
 curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"k\":0,\"undirected\":false,\"normalized\":true}" "$ENGINE_URL/v1/betweennesscentrality"
 ```
+{{< /comment >}}
 
+{{< comment >}} Not merged yet
 ##### Effective Closeness
 
 A common definitions of centrality is the **closeness centrality**
@@ -427,10 +432,16 @@ graph. Each vertex stores a counter for each iteration of the algorithm.
 
 Parameters:
 - `graph_id`
+- `undirected`: Whether to ignore the direction of edges
+- `maximum_supersteps`
 
 Result: a closeness measure for each vertex
 
-<!-- TODO: missing endpoint and example because it is not implemented yet -->
+```bash
+GRAPH_ID="234"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"undirected\":false,\"maximum_supersteps\":500}" "$ENGINE_URL/v1/effectivecloseness"
+```
+{{< /comment >}}
 
 ##### LineRank
 
@@ -482,7 +493,9 @@ based on common location, interests, occupation, etc.
 
 `POST <ENGINE_URL>/v1/labelpropagation`
 
-*Label Propagation* can be used to implement community detection on large graphs.
+[*Label Propagation*](https://arxiv.org/pdf/0709.2938) can be used to implement
+community detection on large graphs.
+
 The algorithm assigns an initial community identifier to every vertex in the
 graph using a user-defined attribute. The idea is that each vertex should be in
 the community that most of its neighbors are in at the end of the computation.
@@ -507,7 +520,16 @@ are as follows:
 
 The algorithm runs until it converges or reaches the maximum iteration bound.
 It may not converge on large graphs if the synchronous variant is used.
-<!-- TODO: Describe sync/async from the original paper -->
+- **Synchronous**: The new community ID of a vertex is based on the
+  community IDs of its neighbors from the previous iteration. With (nearly)
+  [bipartite](https://en.wikipedia.org/wiki/Bipartite_graph) subgraphs, this may
+  lead to the community IDs changing back and forth in each iteration within the
+  two halves of the subgraph.
+- **Asynchronous**: A vertex determines the new community ID using the most
+  up-to-date community IDs of its neighbors, whether those updates occurred in
+  the current iteration or the previous one. The order in which vertices are
+  updated in each iteration is chosen randomly. This leads to more stable
+  community IDs.
 
 Parameters:
 - `graph_id`
@@ -561,13 +583,26 @@ Parameters:
 
 Result: The set of accumulated labels of each vertex.
 
+```bash
+GRAPH_ID="234"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"start_label_attribute\":\"start_attr\",\"synchronous\":false,\"backwards\":false,\"maximum_supersteps\":500}" "$ENGINE_URL/v1/attributepropagation"
+```
+
+{{< comment >}} Work in progress
 #### Custom Python code
 
 `POST <ENGINE_URL>/v1/python`
 
-Use NetworkX:
+You can run Python code to implement custom graph analytics algorithms as well
+as execute any of the graph algorithms available in the supported Python
+libraries.
 
-def worker(graph): return nx.pagerank(graph, 0.85)
+The NetworkX library is available by default using the variable `nx`:
+
+```python
+def worker(graph):
+  return nx.pagerank(graph, 0.85)
+```
 
 Parameters:
 - `graph_id`
@@ -575,6 +610,15 @@ Parameters:
   that returns a dataframe or dictionary with the results. The key inside that
   dict must represent the vertex ID. The value can be of any type.
 - `use_cugraph`: Use cugraph (or regular pandas/pyarrow).
+
+Result: Depends on the algorithm. If multiple values are returned for a single
+vertex, a JSON object with multiple keys is stored. <!-- TODO: verify -->
+
+```bash
+GRAPH_ID="234"
+curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"function\":\"def worker(graph):\n  return nx.pagerank(graph, 0.85)\",\"use_cugraph\":false}" "$ENGINE_URL/v1/python"
+```
+{{< /comment >}}
 
 ### Store job results
 
