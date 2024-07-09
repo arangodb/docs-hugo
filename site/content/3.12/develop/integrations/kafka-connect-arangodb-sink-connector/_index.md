@@ -36,14 +36,19 @@ For more detailed plugin installation instructions, see the
 
 ## Connection handling
 
-Task connections to the database are evenly distributed across all available ArangoDB coordinators. 
-If a connectivity error occur, a connection is re-established with a different coordinator. 
+Task connections to the database are evenly distributed across all available
+ArangoDB Coordinators. If a connectivity error occur, a connection is
+re-established with a different Coordinator.
 
-Available db coordinators can be periodically monitored by setting `connection.acquireHostList.enabled` to `true` and optionally configuring the monitoring interval.
+Available Coordinators can be periodically monitored by setting
+`connection.acquireHostList.enabled` to `true` and optionally configuring the
+monitoring interval.
 
-Over time, due to connection failovers, the distribution of task connections across the coordinators may become uneven. 
-To address this, connections are periodically re-balanced across the available coordinators. 
-The rebalancing interval can be configured via the `connection.rebalance.interval.ms` property (default is 30 minutes).
+Over time, due to connection failovers, the distribution of task connections
+across the Coordinators may become uneven. To address this, connections are
+periodically re-balanced across the available Coordinators. The rebalancing
+interval can be configured via the `connection.rebalance.interval.ms` property.
+The default is 30 minutes.
 
 ## Delivery guarantees
 
@@ -136,8 +141,10 @@ and `errors.deadletterqueue.topic.name`.
 
 ## Multiple tasks
 
-The connector can scale out by running multiple tasks in parallel as specified by [`tasks.max` configuration parameter](https://docs.confluent.io/platform/current/installation/configuration/connect/sink-connect-configs.html#tasks-max) configuration parameter.
-In this case, each connector task handles the records from different Kafka topics partitions.
+The connector can scale out by running multiple tasks in parallel as specified by the
+[`tasks.max`](https://docs.confluent.io/platform/current/installation/configuration/connect/sink-connect-configs.html#tasks-max)
+configuration parameter. In this case, each connector task handles the records
+from different Kafka topics partitions.
 
 ## Data mapping
 
@@ -157,7 +164,8 @@ The record value must be either:
 - `map`
 - `null` (tombstone record)
 
-Record values are converted to JSON objects using Kafka Connect `JsonConverter`, ensuring compatibility with Kafka Connect data types and support to schemas.
+Record values are converted to JSON objects using Kafka Connect `JsonConverter`,
+ensuring compatibility with Kafka Connect data types and support to schemas.
 If the data in the topic is not of a compatible format, applying an
 [SMT](https://docs.confluent.io/platform/current/connect/transforms/overview.html)
 or implementing a custom converter may be necessary.
@@ -179,7 +187,8 @@ in a failure of the connector.
 
 You can enable deletes with `delete.enabled=true`.
 
-Delete operations are idempotent and do not throw errors if the target document does not exist.
+Delete operations are idempotent and do not throw errors if the target document
+does not exist.
 
 Enabling delete mode does not affect the `insert.overwriteMode`.
 
