@@ -4572,6 +4572,25 @@
     request for which a REST handler mapping exists and that does not
     need to be forwarded to another Coordinator in the cluster.
 
+- name: arangodb_scheduler_high_prio_dequeue_hist
+  introducedIn: "3.12.1"
+  help: |
+    Time required to take an item from the high priority queue.
+  unit: µs
+  type: histogram
+  category: Scheduler
+  complexity: advanced
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+    - single
+  description: |
+    This histogram provides the distribution of time required to take entries
+    from the high priority queue, i.e., the amount of time the jobs were sitting
+    in the queue. Long dequeue times indicate that the server is under heavy load
+    and high priority jobs cannot be dequeued in a timely manner.
+
 - name: arangodb_scheduler_high_prio_queue_length
   introducedIn: "3.8.0"
   help: |
@@ -4650,6 +4669,25 @@
     and arangodb_scheduler_jobs_dequeued_total gives the total number of
     currently queued jobs.
 
+- name: arangodb_scheduler_low_prio_dequeue_hist
+  introducedIn: "3.12.1"
+  help: |
+    Time required to take an item from the low priority queue.
+  unit: µs
+  type: histogram
+  category: Scheduler
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+    - single
+  description: |
+    This histogram provides the distribution of time required to take entries
+    from the low priority queue, i.e., the amount of time the jobs were sitting
+    in the queue. Long dequeue times indicate that the server is under heavy load
+    and low priority jobs cannot be dequeued in a timely manner.
+
 - name: arangodb_scheduler_low_prio_queue_last_dequeue_time
   introducedIn: "3.8.0"
   help: |
@@ -4694,6 +4732,27 @@
     The capacity of the low priority queue can be configured via the startup
     option `--server.maximal-queue-size`.
 
+- name: arangodb_scheduler_maintenance_prio_dequeue_hist
+  introducedIn: "3.12.1"
+  help: |
+    Time required to take an item from the maintenance priority queue.
+  unit: µs
+  type: histogram
+  category: Scheduler
+  complexity: advanced
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+    - single
+  description: |
+    This histogram provides the distribution of time required to take entries
+    from the maintenance priority queue, i.e., the amount of time the jobs were
+    sitting in the queue. Long dequeue times indicate that the server is under
+    heavy load and maintenance jobs cannot be dequeued in a timely manner.
+    Note that maintenance jobs are critical for the operation of the cluster, so
+    it is important to keep these dequeue times low.
+
 - name: arangodb_scheduler_maintenance_prio_queue_length
   introducedIn: "3.8.0"
   help: |
@@ -4712,6 +4771,25 @@
     queue. These are the jobs with the highest priority and are mainly used for
     cluster internal operations. The capacity of the maintenance priority queue
     can be configured via the startup option `--server.scheduler-queue-size`.
+
+- name: arangodb_scheduler_medium_prio_dequeue_hist
+  introducedIn: "3.12.1"
+  help: |
+    Time required to take an item from the medium priority queue.
+  unit: µs
+  type: histogram
+  category: Scheduler
+  complexity: advanced
+  exposedBy:
+    - coordinator
+    - dbserver
+    - agent
+    - single
+  description: |
+    This histogram provides the distribution of time required to take entries
+    from the medium priority queue, i.e., the amount of time the jobs were sitting
+    in the queue. Long dequeue times indicate that the server is under heavy load
+    and medium priority jobs cannot be dequeued in a timely manner.
 
 - name: arangodb_scheduler_medium_prio_queue_length
   introducedIn: "3.8.0"
