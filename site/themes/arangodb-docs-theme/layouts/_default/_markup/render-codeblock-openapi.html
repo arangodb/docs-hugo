@@ -96,10 +96,13 @@
   {{- $page := .page }}
   <div class="openapi-parameters regular-font">
     {{- $contentType := ""}}
+    {{- $schemaType := ""}}
     {{- range $k, $v := $content.content }}
       {{- $contentType = $k }}
+      {{- $schemaType = $v.schema.type }}
     {{- end }}
-    <div class="openapi-table-title">Request Body <span class="openapi-content-type">{{ $contentType }}</span></div>
+    <div class="openapi-table-title">Request Body <span class="openapi-content-type">{{ $contentType }}</span>
+    {{- with $schemaType }}{{ if ne . "array" }} <span class="openapi-property-type bold-text">{{ . }}</span>{{ end }}{{ end }}</div>
     <div>
       <ul class="openapi-table">
       {{- range $k, $v := $content.content }}
@@ -163,11 +166,14 @@
               <p class="regular-font">{{ $description }}</p>
               {{- if $content.content }}
                 <ul class="openapi-table">
-                  {{- $contentType := ""}}
+                  {{- $contentType := "" }}
+                  {{- $schemaType := "" }}
                   {{- range $k, $v := $content.content }}
                     {{- $contentType = $k }}
+                    {{- $schemaType = $v.schema.type }}
                   {{- end }}
-                  <div class="openapi-table-title">Response Body <span class="openapi-content-type">{{ $contentType }}</span></div>
+                  <div class="openapi-table-title">Response Body <span class="openapi-content-type">{{ $contentType }}</span>
+                  {{- with $schemaType }}{{ if ne . "array" }} <span class="openapi-property-type bold-text">{{ . }}</span>{{ end }}{{ end }}</div>
                   {{- range $k, $v := $content.content }}
                     {{- with $v.schema.description }}{{ . }}{{ end }}
                     {{- if eq $v.schema.type "array" }}
