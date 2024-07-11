@@ -169,6 +169,9 @@ at runtime that are installed on your system. Under rare circumstances, it is
 possible that ArangoDB crashes when performing host name or address lookups.
 This is only the case if all of the following conditions are true:
 
+- You either use ArangoDB version 3.11.10 (non-hotfix) or 3.12.0, or you use a
+  3.11 version from 3.11.10-1 onward respectively 3.12.1 or any later version
+  with the `--honor-nsswitch` startup option enabled.
 - You use an ArangoDB package on bare metal (not a Docker container)
 - Your operating system uses glibc (like Ubuntu, Debian, RedHat, Centos, or
   most other Linux distributions, but not Alpine for instance)
