@@ -414,7 +414,8 @@ paths:
                   type: string
                 audit-service:
                   description: |
-                    Unused log topic (_Enterprise Edition only_).
+                    Controls whether the start and stop events of the audit
+                    service are written to the audit log (_Enterprise Edition only_).
                   type: string
                 audit-view:
                   description: |
