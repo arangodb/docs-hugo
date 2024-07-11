@@ -319,12 +319,18 @@ paths:
         the adjusted log levels being the object values.
 
         Possible log levels are:
-        - FATAL - There will be no way out of this. ArangoDB will go down after this message.
-        - ERROR - This is an error. you should investigate and fix it. It may harm your production.
-        - WARNING - This may be serious application-wise, but we don't know.
-        - INFO - Something has happened, take notice, but no drama attached.
-        - DEBUG - output debug messages
-        - TRACE - trace - prepare your log to be flooded - don't use in production.
+        - `FATAL` - Only critical errors are logged after which the _arangod_
+          process terminates.
+        - `ERROR` - Only errors are logged. You should investigate and fix errors
+          as they may harm your production.
+        - `WARNING` - Errors and warnings are logged. Warnings may be serious
+          application-wise and can indicate issues that might lead to errors
+          later on.
+        - `INFO` - Errors, warnings, and general information is logged.
+        - `DEBUG` - Outputs debug messages used in the development of ArangoDB
+          in addition to the above.
+        - `TRACE` - Logs detailed tracing of operations in addition to the above.
+          This can flood the log. Don't use this log level in production.
 
         This API can be turned off via the startup option `--log.api-enabled`. In case
         the API is disabled, all requests will be responded to with HTTP 403. If the
@@ -364,13 +370,15 @@ paths:
                   type: string
                 aql:
                   description: |
-                    DB-Servers and Coordinators log the cluster-internal
-                    communication around AQL queries.
+                    Logs information about the AQL query optimization and
+                    execution. DB-Servers and Coordinators log the cluster-internal
+                    communication around AQL queries. It also reports the AQL
+                    memory limit on startup.
                   type: string
                 arangosearch:
                   description: |
-                    Logs the ArangoSearch thread and column cache information
-                    on startup. <!-- TODO: Anything else? -->
+                    Logs information related to ArangoSearch including Analyzers,
+                    the column cache, and the commit and consolidation threads.
                   type: string
                 audit-authentication:
                   description: |
@@ -415,8 +423,8 @@ paths:
                   type: string
                 authentication:
                   description: |
-                    Logs when a JWT secret is generated or a token is validated
-                    against a secret.
+                    Logs events related to authentication, for example, when a
+                    JWT secret is generated or a token is validated against a secret.
                   type: string
                 authorization:
                   description: |
@@ -432,31 +440,29 @@ paths:
                   type: string
                 cache:
                   description: |
-                    Logs the cache configuration on startup.
+                    Logs events related to caching documents and index entries
+                    as well as the cache configuration on startup.
                   type: string
                 cluster:
                   description: |
-                    One of the possible log topics.
-                  type: string
-                clustercomm:
-                  description: |
-                    One of the possible log topics.
-                  type: string
-                collector:
-                  description: |
-                    One of the possible log topics.
+                    Logs information related to the cluster-internal communication
+                    as well as cluster operations. This includes changes to the
+                    state and readiness of DB-Servers and connectivity checks
+                    on Coordinators.
                   type: string
                 communication:
                   description: |
-                    One of the possible log topics.
+                    Logs lower-level network connection and communication events.
                   type: string
                 config:
                   description: |
-                    One of the possible log topics.
+                    Logs information related to the startup options and server
+                    configuration.
                   type: string
                 crash:
                   description: |
-                    One of the possible log topics.
+                    Logs information about a fatal error including a backtrace
+                    before the process terminates.
                   type: string
                 deprecation:
                   description: |
@@ -465,87 +471,108 @@ paths:
                   type: string
                 development:
                   description: |
-                    One of the possible log topics.
+                    This log topic is reserved for the development of ArangoDB.
                   type: string
                 dump:
                   description: |
-                    One of the possible log topics.
+                    Logs events related to dumping data with _arangodump_.
                   type: string
                 engines:
                   description: |
-                    One of the possible log topics.
+                    Logs various information related to ArangoDB's use of the
+                    RocksDB storage engine, like the initialization and
+                    file operations.
+                    
+                    RocksDB's internal log messages are passed through using the
+                    `rocksdb` log topic.
                   type: string
                 flush:
                   description: |
-                    One of the possible log topics.
+                    Logs events related to flushing data from memory to disk.
                   type: string
                 general:
                   description: |
-                    One of the possible log topics.
+                    Logs all messages of general interest and that don't fit
+                    under any of the other log topics. For example, it reports
+                    the ArangoDB version and the detected operating system and
+                    memory on startup.
                   type: string
                 graphs:
                   description: |
-                    One of the possible log topics.
+                    Logs information related to graph operations including
+                    graph traversal and path search tracing.
                   type: string
                 heartbeat:
                   description: |
-                    One of the possible log topics.
+                    Logs everything related to the cluster heartbeat for
+                    monitoring the intra-connectivity.
                   type: string
                 httpclient:
                   description: |
-                    One of the possible log topics.
+                    Logs the activity of the HTTP request subsystem that is used
+                    in replication, client tools, and V8.
                   type: string
                 libiresearch:
                   description: |
-                    One of the possible log topics.
+                    Logs the internal log messages of IResearch, the underlying
+                    library of ArangoSearch.
                   type: string
                 license:
                   description: |
-                    One of the possible log topics (_Enterprise Edition only_).
+                    Logs events related to the license management like the
+                    expiration of a license (_Enterprise Edition only_).
                   type: string
                 maintenance:
                   description: |
-                    One of the possible log topics.
+                    Logs the operations of the cluster maintenance including
+                    shard locking and collection creation.
                   type: string
                 memory:
                   description: |
-                    One of the possible log topics.
+                    Logs the memory configuration on startup and reports
+                    problems with memory alignment and operating system settings.
                   type: string
                 mmap:
                   description: |
-                    One of the possible log topics.
-                  type: string
-                performance:
-                  description: |
-                    One of the possible log topics.
+                    Unused log topic for information related to memory mapping.
                   type: string
                 queries:
                   description: |
-                    Logs internal details about the execution of AQL queries.
+                    Logs slow queries as well as internal details about the
+                    execution of AQL queries at low log levels.
                   type: string
                 replication:
                   description: |
-                    One of the possible log topics.
+                    Logs information related to the data replication within a cluster.
                   type: string
                 requests:
                   description: |
-                    One of the possible log topics.
+                    Logs the handling of internal and external requests and
+                    can include IP addresses, endpoints, and HTTP headers and
+                    bodies when using low log levels.
+
+                    It overlaps with the network `communication` log topic.
                   type: string
                 restore:
                   description: |
-                    One of the possible log topics.
+                    This log topic is only used by _arangorestore_.
                   type: string
                 rocksdb:
                   description: |
-                    One of the possible log topics.
+                    Logs RocksDB's internal log messages as well RocksDB
+                    background errors.
+
+                    Information related to ArangoDB's use of the
+                    RocksDB storage engine uses the `engines` log topic.
                   type: string
                 security:
                   description: |
-                    One of the possible log topics.
+                    Logs the security configuration for V8.
                   type: string
                 ssl:
                   description: |
-                    One of the possible log topics.
+                    Logs information related to the in-transit encryption of
+                    network communication using SSL/TLS.
                   type: string
                 startup:
                   description: |
@@ -555,39 +582,46 @@ paths:
                   type: string
                 statistics:
                   description: |
-                    One of the possible log topics.
+                    Logs events related to processing server statistics.
+                    This is independent of server metrics.
                   type: string
                 supervision:
                   description: |
-                    One of the possible log topics.
+                    Logs information related to the Agency's cluster supervision.
                   type: string
                 syscall:
                   description: |
-                    One of the possible log topics.
+                    Logs events related to calling operating system functions.
+                    It reports problems related to file descriptors and the
+                    server process monitoring.
                   type: string
                 threads:
                   description: |
-                    One of the possible log topics.
+                    Logs information related to the use of operating system
+                    threads and the threading configuration of ArangoDB.
                   type: string
                 trx:
                   description: |
-                    One of the possible log topics.
+                    Logs information about transaction management.
                   type: string
                 ttl:
                   description: |
-                    One of the possible log topics.
+                    Logs the activity of the background thread for
+                    time-to-live (TTL) indexes.
                   type: string
                 validation:
                   description: |
-                    One of the possible log topics.
+                    Logs when the schema validation fails for a document.
                   type: string
                 v8:
                   description: |
-                    One of the possible log topics.
+                    Logs various information related to ArangoDB's use of the
+                    V8 JavaScript engine, like the initialization as well as
+                    entering and exiting contexts.
                   type: string
                 views:
                   description: |
-                    One of the possible log topics.
+                    Logs certain events related to ArangoSearch Views.
                   type: string
       responses:
         '200':
