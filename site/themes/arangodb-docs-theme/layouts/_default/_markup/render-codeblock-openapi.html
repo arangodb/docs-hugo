@@ -103,6 +103,7 @@
     <div>
       <ul class="openapi-table">
       {{- range $k, $v := $content.content }}
+        {{- with $v.schema.description }}{{ . }}{{ end }}
         {{- if eq $v.schema.type "array" }}
           {{- $required := false }}
           {{- template "renderProperty" dict "title" $title "prop" "" "value" $v.schema "required" $required "page" $page }}
@@ -168,6 +169,7 @@
                   {{- end }}
                   <div class="openapi-table-title">Response Body <span class="openapi-content-type">{{ $contentType }}</span></div>
                   {{- range $k, $v := $content.content }}
+                    {{- with $v.schema.description }}{{ . }}{{ end }}
                     {{- if eq $v.schema.type "array" }}
                       {{- $required := false }}
                       {{- template "renderProperty" dict "title" $statusId "prop" "" "value" $v.schema "required" $required "page" $page}}
