@@ -56,7 +56,7 @@ ArangoGraphML comes with other ArangoDB Magic Commands! See the full list [here]
 
 {{< tab "Self-managed" >}}
 
-**API Documentation: [arangoml.ArangoML](https://arangoml.github.io/arangoml/specification.html#arangoml.main.ArangoML)**
+**API Documentation: [arangoml.ArangoML](https://arangoml.github.io/arangoml/client.html#arangoml.main.ArangoML)**
 
 The `ArangoML` class is the main entry point for the `arangoml` package.
 It requires the following parameters:
@@ -233,7 +233,7 @@ Datasets(dataset_db).load(DATASET_NAME)
 
 ## Projects
 
-**API Documentation: [ArangoML.projects](https://arangoml.github.io/arangoml/specification.html#projects)**
+**API Documentation: [ArangoML.projects](https://arangoml.github.io/arangoml/api.html#projects)**
 
 Projects are an important reference used throughout the entire ArangoGraphML
 lifecycle. All activities link back to a project. The creation of the project
@@ -252,7 +252,7 @@ arangoml.projects.list_projects()
 
 ## Featurization
 
-**API Documentation: [ArangoML.jobs.featurize](https://arangoml.github.io/arangoml/specification.html#agml_api.jobs.v1.api.jobs_api.JobsApi.featurize)**
+**API Documentation: [ArangoML.jobs.featurize](https://arangoml.github.io/arangoml/api.html#agml_api.jobs.v1.api.jobs_api.JobsApi.featurize)**
 
 **The Featurization Service depends on a `Featurization Specification` that contains**:
 - `featurizationName`: A name for the featurization task.
@@ -275,13 +275,13 @@ arangoml.projects.list_projects()
     - `disabled`: Boolean for enabling or disabling dimensionality reduction. Default is `false`.
     - `size`: The number of dimensions to reduce the feature length to. Default is `512`.
 
-  - `defaultsPerFeatureType`: A dictionary mapping each feature to how missing or missmatched values should be handled. The keys of this dictionary are the features, and the values are sub-dictionaries with the following keys:
-    -  `missing`: A sub-dictionary detailing how missing values should be handled.
+  - `defaultsPerFeatureType`: A dictionary mapping each feature to how missing or mismatched values should be handled. The keys of this dictionary are the features, and the values are sub-dictionaries with the following keys:
+    - `missing`: A sub-dictionary detailing how missing values should be handled.
       - `strategy`: The strategy to use for missing values. Options include `REPLACE` or `RAISE`.
       - `replacement`: The value to replace missing values with. Only needed if `strategy` is `REPLACE`.
-    - `missmatch`: A sub-dictionary detailing how missmatched values should be handled.
-      - `strategy`: The strategy to use for missmatched values. Options include `REPLACE`, `RAISE`, `COERCE_REPLACE`, or `COERCE_RAISE`.
-      - `replacement`: The value to replace missmatched values with. Only needed if `strategy` is `REPLACE`, or `COERCE_REPLACE`.
+    - `mismatch`: A sub-dictionary detailing how mismatched values should be handled.
+      - `strategy`: The strategy to use for mismatched values. Options include `REPLACE`, `RAISE`, `COERCE_REPLACE`, or `COERCE_RAISE`.
+      - `replacement`: The value to replace mismatched values with. Only needed if `strategy` is `REPLACE`, or `COERCE_REPLACE`.
 
 - `jobConfiguration` Optional: A set of configurations that are applied to the job.
   - `batchSize`: The number of documents to process in a single batch. Default is `32`.
@@ -514,7 +514,7 @@ arangoml.jobs.cancel_job(prediction_job.job_id)
 
 ## Training
 
-**API Documentation: [ArangoML.jobs.train](https://arangoml.github.io/arangoml/specification.html#agml_api.jobs.v1.api.jobs_api.JobsApi.train)**
+**API Documentation: [ArangoML.jobs.train](https://arangoml.github.io/arangoml/api.html#agml_api.jobs.v1.api.jobs_api.JobsApi.train)**
 
 Training Graph Machine Learning Models with ArangoGraphML only requires two steps:
 1. Describe which data points should be included in the Training Job.
@@ -660,7 +660,7 @@ Model Statistics can be observed upon completion of a Training Job.
 To select a Model, the ArangoGraphML Projects Service can be used to gather
 all relevant models and choose the preferred model for a Prediction Job.
 
-First, let's list all the trained models using [ArangoML.list_models](https://arangoml.github.io/arangoml/specification.html#arangoml.main.ArangoML.list_models):
+First, let's list all the trained models using [ArangoML.list_models](https://arangoml.github.io/arangoml/client.html#arangoml.main.ArangoML.list_models):
 
 ```py
 # 1. List all trained Models
@@ -674,7 +674,7 @@ print(len(models))
 ```
 
 
-The cell below selects the model with the highest **test accuracy** using [ArangoML.get_best_model](https://arangoml.github.io/arangoml/specification.html#arangoml.main.ArangoML.get_best_model), but there may be other factors that motivate you to choose another model. See the `model_statistics` in the output field below for more information on the full list of available metrics.
+The cell below selects the model with the highest **test accuracy** using [ArangoML.get_best_model](https://arangoml.github.io/arangoml/client.html#arangoml.main.ArangoML.get_best_model), but there may be other factors that motivate you to choose another model. See the `model_statistics` in the output field below for more information on the full list of available metrics.
 
 ```py
 best_model = arangoml.get_best_model(
@@ -723,7 +723,7 @@ print(best_model)
 
 ## Prediction
 
-**API Documentation: [ArangoML.jobs.predict](https://arangoml.github.io/arangoml/specification.html#agml_api.jobs.v1.api.jobs_api.JobsApi.predict)**
+**API Documentation: [ArangoML.jobs.predict](https://arangoml.github.io/arangoml/api.html#agml_api.jobs.v1.api.jobs_api.JobsApi.predict)**
 
 Final step!
 
@@ -737,6 +737,7 @@ collection, or within the source documents.
 - `modelID`: The model ID to use for generating predictions.
 - `featurizeNewDocuments`: Boolean for enabling or disabling the featurization of new documents. Useful if you don't want to re-train the model upon new data. Default is `false`.
 - `featurizeOutdatedDocuments`: Boolean for enabling or disabling the featurization of outdated documents. Outdated documents are those whose features have changed since the last featurization. Default is `false`.
+- `schedule`: A cron expression to schedule the prediction job (e.g `0 0 * * *` for daily predictions). Default is `None`.
 
 
 ```py

@@ -17,6 +17,9 @@ additional language constructs for objects.
 Return the top-level attribute keys of the `document` as an array.
 Optionally omit system attributes and sort the array.
 
+To return the attribute values instead, see the [`VALUES()` function](#values).\
+To return pairs of attribute keys and values, see the [`ENTRIES()` function](#entries).
+
 - **document** (object): an arbitrary document / object
 - **removeSystemAttrs** (bool, *optional*): whether all system attributes
   (starting with an underscore, such as `_key` and `_id`) shall be omitted in
@@ -75,6 +78,46 @@ FOR attributeArray IN attributesPerDocument
 ## COUNT()
 
 This is an alias for [`LENGTH()`](#length).
+
+## ENTRIES()
+
+<small>Introduced in: v3.12.1</small>
+
+`ENTRIES(document) → pairArray`
+
+Return the top-level attributes of the `document` as an array of key-value pairs.
+
+To only return the attribute keys, see the [`ATTRIBUTES()` function](#attributes).\
+To only return the attribute values, see the [`VALUES()` function](#values).
+
+- **document** (object): an arbitrary document / object
+- returns **pairArray** (array): the attributes of the input `document` as an
+  array of arrays. Each element is a nested array comprised of two elements with
+  the attribute key and the attribute value
+
+**Examples**
+
+```aql
+---
+name: aqlEntries
+description: |
+  Return the attributes of an object as pairs of keys and values:
+---
+RETURN ENTRIES( { "foo": "bar", "number": 123 } )
+```
+
+```aql
+---
+name: aqlEntriesLoop
+description: |
+  Iterate over the attributes of an object and return an object for each
+  key-value pair:
+---
+FOR pair IN ENTRIES( { "foo": "bar", "number": 123 } )
+  LET key = pair[0]
+  LET value = pair[1]
+  RETURN {key, value}
+```
 
 ## HAS()
 
@@ -375,6 +418,10 @@ description: ''
 LET doc = { foo: { bar: { foo: 1, baz: 2 }, baz: 3 }, baz: 4 }
 RETURN KEEP_RECURSIVE(doc, ["foo", "baz"])
 ```
+
+## KEYS()
+
+This is an alias for [`ATTRIBUTES()`](#attributes).
 
 ## LENGTH()
 
@@ -1030,6 +1077,9 @@ RETURN VALUE(obj, ["foo", 1, "bar"])
 
 Return the attribute values of the `document` as an array. Optionally omit
 system attributes.
+
+To return the attribute keys instead, see the [`ATTRIBUTES()` function](#attributes).\
+To return pairs of attribute keys and values, see the [`ENTRIES()` function](#entries).
 
 - **document** (object): a document / object
 - **removeSystemAttrs** (bool, *optional*): if set to `true`, then all

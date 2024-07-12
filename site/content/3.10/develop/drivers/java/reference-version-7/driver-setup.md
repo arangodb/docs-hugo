@@ -89,7 +89,33 @@ Here are examples to integrate configuration properties from different sources:
 - `acquireHostListInterval(Integer)`:             acquireHostList interval (ms), (default: `3_600_000`, 1 hour)
 - `loadBalancingStrategy(LoadBalancingStrategy)`: load balancing strategy, possible values are: `NONE`, `ROUND_ROBIN`, `ONE_RANDOM`, (default: `NONE`)
 - `responseQueueTimeSamples(Integer)`:            amount of samples kept for queue time metrics, (default: `10`)
-- `serde(ArangoSerde)`:                           serde to serialize and deserialize user-data
+- `serde(ArangoSerde)`:            serde to serialize and deserialize user-data
+- `protocolConfig(ProtocolConfig)`: configuration specific for the used protocol provider implementation
+
+### HTTP Protocol Provider Configuration
+
+The `ProtocolConfig` for the default HTTP protocol provider can be created via:
+
+```java
+HttpProtocolConfig.builder()
+  // ...
+  .build();
+```
+
+and configured using the following builder methods:
+
+- `vertx(Vertx)`: Vert.x instance to use. If not set, a new instance is created.
+
+For example, to reuse the existing Vert.x instance:
+
+```java
+HttpProtocolConfig.builder()
+  .protocolConfig(HttpProtocolConfig.builder()
+    .vertx(Vertx.currentContext().owner())
+    .build()
+  )
+  .build();
+```
 
 ### Config File Properties
 

@@ -793,7 +793,7 @@
   },
   {
     "name": "late-document-materialization",
-    "description": "Try to read from collections as late as possible if the\ninvolved attributes are covered by regular indexes.",
+    "description": "Try to read from collections as late as possible if the\ninvolved attributes are covered by inverted indexes.",
     "flags": {
       "hidden": false,
       "clusterOnly": false,
@@ -834,6 +834,30 @@
       "hidden": false,
       "clusterOnly": false,
       "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
+    "name": "push-down-late-materialization",
+    "description": "Push down late materialization.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
+    "name": "materialize-into-separate-variable",
+    "description": "Introduce a separate variable for late materialization.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": false,
       "canCreateAdditionalPlans": false,
       "disabledByDefault": false,
       "enterpriseOnly": false

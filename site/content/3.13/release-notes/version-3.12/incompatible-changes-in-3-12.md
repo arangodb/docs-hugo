@@ -160,6 +160,31 @@ VelocyPack remains as ArangoDB's binary storage format and you can continue to
 use it in transport over the HTTP protocol, as well as use JSON over the
 HTTP protocol.
 
+## Incompatibilities due to switch to glibc
+
+From version 3.11.10 onward, ArangoDB uses the glibc C standard library
+implementation instead of libmusl. Even though glibc is statically linked into
+the ArangoDB server and client tool executables, it may load additional modules
+at runtime that are installed on your system. Under rare circumstances, it is
+possible that ArangoDB crashes when performing host name or address lookups.
+This is only the case if all of the following conditions are true:
+
+- You either use ArangoDB version 3.11.10 (non-hotfix) or 3.12.0, or you use a
+  3.11 version from 3.11.10-1 onward respectively 3.12.1 or any later version
+  with the `--honor-nsswitch` startup option enabled.
+- You use an ArangoDB package on bare metal (not a Docker container)
+- Your operating system uses glibc (like Ubuntu, Debian, RedHat, Centos, or
+  most other Linux distributions, but not Alpine for instance)
+- The glibc version of your system is different than the one used by ArangoDB,
+  in particular if the system glibc is older than version 2.35
+- The `libnss-*` dynamic libraries are installed
+- The `/etc/nsswitch.conf` configuration file contains settings other than for
+  `files` and `dns` in the `hosts:` line, or the `passwd:` and `group:` lines
+  contain something other than `files`
+
+If you are affected, consider using Docker containers, `chroot`, or change
+`nsswitch.conf`.
+
 ## JavaScript Transactions deprecated
 
 Server-side transactions written in JavaScript and executed via the
@@ -279,6 +304,59 @@ To remove individual collections, update or remove edge definitions first to not
 include the desired collections anymore. In case of vertex collections, they
 become orphan collections that you need to remove from the graph definition as
 well to drop the collections.
+
+### Short-circuiting subquery evaluation
+
+<small>Introduced in: v3.12.1</small>
+
+Subqueries you use in ternary expressions are no longer executed unconditionally
+before the condition is evaluated. Only the subquery of the branch that is taken
+effectively executes.
+
+Similarly, when you use subqueries as sub-expressions that are combined with
+logical `AND` or `OR`, the subqueries are now evaluated lazily.
+
+If you rely on the previous behavior of v3.12.0 or older, you need to rewrite
+affected AQL queries so that the subqueries are executed first.
+
+For example, the following query with a subquery in the false branch of a ternary
+operator only creates a new document if the condition evaluates to false from
+v3.12.1 onward:
+
+```aql
+RETURN RAND() > 0.5 ? "yes" : (INSERT {} INTO coll RETURN "no")[0]
+```
+
+To restore the behavior of v3.12.0 and older where the subquery is always executed,
+pull the subquery out of the ternary operator expression and save the result to
+a variable, then use this variable where the subquery used to be:
+
+```aql
+LET tmp = (INSERT {} INTO coll RETURN "no")[0]
+RETURN RAND() > 0.5 ? "yes" : tmp
+```
+
+This also applies to expressions that are combined with logical `AND` or `OR`.
+A subquery to the right-hand side of an `AND` is effectively only executed if
+the expression to the left-hand side is truthy, and with an `OR`, the
+right-hand side is effectively only executed if the left-hand side is falsy
+from v3.12.1 onward.
+
+```aql
+RETURN RAND() > 0.5 && (INSERT {} INTO coll RETURN 42)[0]
+```
+
+To execute the subquery regardless of the left-hand side expression, execute
+the subquery first:
+
+```aql
+LET tmp = (INSERT {} INTO coll RETURN 42)[0]
+RETURN RAND() > 0.5 && tmp
+```
+
+Also see [What's New in 3.12](whats-new-in-3-12.md#short-circuiting-subquery-evaluation)
+and [Evaluation of subqueries](../../aql/fundamentals/subqueries.md#evaluation-of-subqueries)
+for more information.
 
 ## HTTP RESTful API
 

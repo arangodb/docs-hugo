@@ -6,6 +6,30 @@ description: >-
   Check the following list of potential breaking changes **before** upgrading to
   this ArangoDB version and adjust any client applications if necessary
 ---
+## Incompatibilities due to switch to glibc
+
+From version 3.11.10 onward, ArangoDB uses the glibc C standard library
+implementation instead of libmusl. Even though glibc is statically linked into
+the ArangoDB server and client tool executables, it may load additional modules
+at runtime that are installed on your system. Under rare circumstances, it is
+possible that ArangoDB crashes when performing host name or address lookups.
+This is only the case if all of the following conditions are true:
+
+- You either use ArangoDB version 3.11.10 (non-hotfix), or you use a 3.11 version
+  from 3.11.10-1 onward with the `--honor-nsswitch` startup option enabled.
+- You use an ArangoDB package on bare metal (not a Docker container)
+- Your operating system uses glibc (like Ubuntu, Debian, RedHat, Centos, or
+  most other Linux distributions, but not Alpine for instance)
+- The glibc version of your system is different than the one used by ArangoDB,
+  in particular if the system glibc is older than version 2.35
+- The `libnss-*` dynamic libraries are installed
+- The `/etc/nsswitch.conf` configuration file contains settings other than for
+  `files` and `dns` in the `hosts:` line, or the `passwd:` and `group:` lines
+  contain something other than `files`
+
+If you are affected, consider using Docker containers, `chroot`, or change
+`nsswitch.conf`.
+
 ## Active Failover deployment mode deprecation
 
 Running a single server with asynchronous replication to one or more passive
@@ -59,7 +83,7 @@ Also see:
 - [View names](../../concepts/data-structure/views.md#view-names)
 - Index names have the same character restrictions as collection names
 
-## AQL user-defined functions (UDF)
+## No AQL user-defined functions (UDF) in `PRUNE`
 
 AQL user-defined functions (UDFs) cannot be used inside traversal PRUNE conditions
 nor inside FILTER conditions that can be moved into the traversal execution on DB-Servers. 

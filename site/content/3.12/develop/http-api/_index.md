@@ -105,7 +105,7 @@ You can explore the API with the interactive **Swagger UI** using the
 2. Click the **Rest API** tab.
 3. Click a section and endpoint to view the description and parameters.
 
-![The web interface with the navigation on the left and the tabs at the top](../../../images/swagger_serverapi_overview.png)
+![The web interface with the navigation on the left and the tabs at the top](../../../images/swagger_serverapi_overview312.png)
 
 Also see this blog post:
 [Using the ArangoDB Swagger.io Interactive API Documentation](https://www.arangodb.com/2018/03/using-arangodb-swaggerio-interactive-api-documentation/).
