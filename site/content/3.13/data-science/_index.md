@@ -30,14 +30,17 @@ like running a simple query that shows what is the path that goes from one node
 to another, or more complex tasks like node classification,
 link prediction, and graph classification.
 
-### Graph Query
+### Graph Queries
 
-When running a query with AQL on a graph, the query goes from a vertex to an edge,
-and then the edge indicates what the next connected vertex will be.
+When you run an AQL query on a graph, a traversal query can go from a vertex to
+multiple edges, and then the edges indicate what the next connected vertices are.
+Graph queries can also determine the shortest paths between vertices.
 
 Graph queries can answer questions like _**Who can introduce me to person X**_?
 
 ![Graph Query](../../images/graph-query.png)
+
+See [Graphs in AQL](../aql/graphs/_index.md) for the supported graph queries.
 
 ### Graph Analytics
 
@@ -47,6 +50,11 @@ know aggregate information about your graph, while analyzing the entire graph.
 Graph analytics can answer questions like _**Who are the most connected persons**_?
 
 ![Graph Analytics](../../images/graph-analytics.png)
+
+ArangoDB offers _Graph Analytics Engines_ to run algorithms such as
+connected components, label propagation, and PageRank on your data. This feature
+is available for the ArangoGraph Insights Platform. See
+[Graph Analytics](graph-analytics.md) for details.
 
 ### GraphML
 
@@ -59,6 +67,9 @@ GraphML can answer questions like:
 - _**Is this particular transaction Anomalous?**_
 
 ![Graph ML](../../images/graph-ml.png)
+
+For ArangoDB's enterprise-ready, graph-powered machine learning offering,
+see [ArangoGraphML](arangographml/_index.md).
 
 ## Use Cases
 
