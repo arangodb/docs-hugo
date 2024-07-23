@@ -976,6 +976,16 @@ These options prevent that running a lot of AQL queries with async
 prefetching fully congests the scheduler queue, and also they prevent large
 AQL queries to use up all async prefetching capacity on their own.
 
+### New server scheduler type
+
+<small>Introduced in: v3.12.1</small>
+
+A new `--server.scheduler` startup option has been added to let you select the
+scheduler type. The scheduler currently used by ArangoDB has the value
+`supervised`. A new work-stealing scheduler is being implemented and can be
+selected using the value `threadpools`. This new scheduler is experimental and
+should not be used in production.
+
 ## Miscellaneous changes
 
 ### V8 and ICU library upgrades
