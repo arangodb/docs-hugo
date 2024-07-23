@@ -453,6 +453,25 @@
     "section" : "",
     "type" : "boolean"
   },
+  "honor-nsswitch" : {
+    "category" : "option",
+    "default" : false,
+    "deprecatedIn" : null,
+    "description" : "Allow hostname lookup configuration via /etc/nsswitch.conf if on Linux/glibc.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : null,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "",
+    "type" : "boolean"
+  },
   "ignore-collection" : {
     "category" : "option",
     "default" : [
