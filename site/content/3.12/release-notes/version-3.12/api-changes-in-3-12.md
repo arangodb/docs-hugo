@@ -434,6 +434,31 @@ detached state:
 - `arangodb_network_connectivity_failures_dbservers_total`
 - `arangodb_scheduler_num_detached_threads`
 
+---
+
+<small>Introduced in: v3.10.13, v3.11.7</small>
+
+The following metrics have been introduced to track per-shard requests on
+DB-Servers:
+
+- `arangodb_collection_leader_reads_total`
+- `arangodb_collection_leader_writes_total`
+- `arangodb_collection_requests_bytes_read_total`
+- `arangodb_collection_requests_bytes_written_total`
+
+---
+
+<small>Introduced in: v3.12.1</small>
+
+The following metrics have been added for observability:
+
+- `arangodb_vocbase_shards_read_only_by_write_concern`
+- `arangodb_logger_messages_dropped_total`
+- `arangodb_scheduler_high_prio_dequeue_hist`
+- `arangodb_scheduler_medium_prio_dequeue_hist`
+- `arangodb_scheduler_low_prio_dequeue_hist`
+- `arangodb_scheduler_maintenance_prio_dequeue_hist`
+
 ### Endpoints deprecated
 
 #### JavaScript Transactions API

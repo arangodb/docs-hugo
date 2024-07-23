@@ -1350,10 +1350,24 @@ overwhelmed:
 
 | Label | Description |
 |:------|:------------|
-| `arangodb_logger_messages_dropped_total` |  Total number of dropped log messages. |
+| `arangodb_logger_messages_dropped_total` | Total number of dropped log messages. |
 
 The related startup option for controlling the size of the log queue has a
 default of `16384` instead of `10000` now.
+
+### Scheduler dequeue time metrics
+
+<small>Introduced in: v3.12.1</small>
+
+The following scheduler metrics have been added, reporting how long it takes to
+pick items from different job queues.
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_scheduler_high_prio_dequeue_hist` | Time required to take an item from the high priority queue. |
+| `arangodb_scheduler_medium_prio_dequeue_hist` | Time required to take an item from the medium priority queue. |
+| `arangodb_scheduler_low_prio_dequeue_hist` | Time required to take an item from the low priority queue. |
+| `arangodb_scheduler_maintenance_prio_dequeue_hist` | Time required to take an item from the maintenance priority queue. |
 
 ## Client tools
 
