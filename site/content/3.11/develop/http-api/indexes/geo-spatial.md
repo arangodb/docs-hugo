@@ -8,7 +8,7 @@ description: ''
 
 ```openapi
 paths:
-  /_api/index#geo:
+  /_db/{database-name}/_api/index#geo:
     post:
       operationId: createIndexGeo
       description: |
@@ -19,6 +19,14 @@ paths:
         the index attributes or have non-numeric values in the index attributes
         will not be indexed.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: query
           required: true
@@ -71,7 +79,7 @@ paths:
                     If a geo-spatial index on a `location` is constructed
                     and `geoJson` is `true`, then the order within the array is longitude
                     followed by latitude. This corresponds to the format described in
-                    http://geojson.org/geojson-spec.html#positions
+                    <http://geojson.org/geojson-spec.html#positions>
                   type: boolean
                 legacyPolygons:
                   description: |

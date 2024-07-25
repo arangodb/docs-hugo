@@ -8,7 +8,7 @@ description: ''
 
 ```openapi
 paths:
-  /_api/index#inverted:
+  /_db/{database-name}/_api/index#inverted:
     post:
       operationId: createIndexInverted
       description: |
@@ -16,6 +16,14 @@ paths:
         it does not already exist. The call expects an object containing the index
         details.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: query
           required: true
