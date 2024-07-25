@@ -20,7 +20,7 @@ collection directly, but only via the dedicated interfaces.
 
 ```openapi
 paths:
-  /_api/aqlfunction:
+  /_db/{database-name}/_api/aqlfunction:
     post:
       operationId: createAqlUserFunction
       description: |
@@ -29,6 +29,15 @@ paths:
 
         In case of success, HTTP 200 is returned.
         If the function isn't valid etc. HTTP 400 including a detailed error message will be returned.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -164,13 +173,21 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/aqlfunction/{name}:
+  /_db/{database-name}/_api/aqlfunction/{name}:
     delete:
       operationId: deleteAqlUserFunction
       description: |
         Deletes an existing user-defined function (UDF) or function group identified by
         `name` from the current database.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: name
           in: path
           required: true
@@ -319,7 +336,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/aqlfunction:
+  /_db/{database-name}/_api/aqlfunction:
     get:
       operationId: listAqlUserFunctions
       description: |
@@ -328,6 +345,14 @@ paths:
 
         The call returns a JSON array with status codes and all user functions found under `result`.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: namespace
           in: query
           required: false

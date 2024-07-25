@@ -29,13 +29,21 @@ http://localhost:8529/_api/collection/demo
 
 ```openapi
 paths:
-  /_api/collection:
+  /_db/{database-name}/_api/collection:
     get:
       operationId: listCollections
       description: |
         Returns basic information for all collections in the current database,
         optionally excluding system collections.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: excludeSystem
           in: query
           required: false
@@ -139,12 +147,20 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}:
+  /_db/{database-name}/_api/collection/{collection-name}:
     get:
       operationId: getCollection
       description: |
         Returns the basic information about a specific collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -261,12 +277,20 @@ paths:
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/properties:
+  /_db/{database-name}/_api/collection/{collection-name}/properties:
     get:
       operationId: getCollectionProperties
       description: |
         Returns all properties of the specified collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -578,12 +602,20 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/count:
+  /_db/{database-name}/_api/collection/{collection-name}/count:
     get:
       operationId: getCollectionCount
       description: |
         Get the number of documents in a collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -892,13 +924,21 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/figures:
+  /_db/{database-name}/_api/collection/{collection-name}/figures:
     get:
       operationId: getCollectionFigures
       description: |
         Get the number of documents and additional statistical information
         about the collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -1312,7 +1352,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/responsibleShard:
+  /_db/{database-name}/_api/collection/{collection-name}/responsibleShard:
     put:
       operationId: getResponsibleShard
       description: |
@@ -1329,6 +1369,22 @@ paths:
         {{</* info */>}}
         This method is only available in cluster deployments on Coordinators.
         {{</* /info */>}}
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: collection-name
+          in: path
+          required: true
+          description: |
+            The name of the collection.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -1342,14 +1398,6 @@ paths:
                     The request body must be a JSON object with at least the shard key
                     attributes set to some values, but it may also be a full document.
                   type: object
-      parameters:
-        - name: collection-name
-          in: path
-          required: true
-          description: |
-            The name of the collection.
-          schema:
-            type: string
       responses:
         '200':
           description: |
@@ -1501,7 +1549,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/shards:
+  /_db/{database-name}/_api/collection/{collection-name}/shards:
     get:
       operationId: getCollectionShards
       description: |
@@ -1515,6 +1563,14 @@ paths:
         This method is only available in cluster deployments on Coordinators.
         {{</* /info */>}}
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -1674,7 +1730,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/revision:
+  /_db/{database-name}/_api/collection/{collection-name}/revision:
     get:
       operationId: getCollectionRevision
       description: |
@@ -1682,6 +1738,14 @@ paths:
         The revision ID is a server-generated string that clients can use to
         check whether data in a collection has changed since the last revision check.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -2034,7 +2098,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/checksum:
+  /_db/{database-name}/_api/collection/{collection-name}/checksum:
     get:
       operationId: getCollectionChecksum
       description: |
@@ -2060,6 +2124,14 @@ paths:
         Including user-defined attributes will make the checksumming slower.
         {{</* /info */>}}
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -2218,11 +2290,22 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/key-generators:
+  /_db/{database-name}/_api/key-generators:
     get:
       operationId: getKeyGenerators
       description: |
         Returns the available key generators for collections.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -2271,12 +2354,41 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/collection:
+  /_db/{database-name}/_api/collection:
     post:
       operationId: createCollection
       description: |
         Creates a new collection with a given name. The request must contain an
         object with the following attributes.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: waitForSyncReplication
+          in: query
+          required: false
+          description: |
+            The default is `true`, which means the server only reports success back to the
+            client when all replicas have created the collection. Set it to `false` if you want
+            faster server responses and don't care about full replication.
+          schema:
+            type: boolean
+            default: true
+        - name: enforceReplicationFactor
+          in: query
+          required: false
+          description: |
+            The default is `true`, which means the server checks if there are enough replicas
+            available at creation time and bail out otherwise. Set it to `false` to disable
+            this extra check.
+          schema:
+            type: boolean
+            default: true
       requestBody:
         content:
           application/json:
@@ -2584,27 +2696,6 @@ paths:
                     A further restriction is that whenever documents are stored or updated in the
                     collection, the value stored in the `smartJoinAttribute` must be a string.
                   type: string
-      parameters:
-        - name: waitForSyncReplication
-          in: query
-          required: false
-          description: |
-            The default is `true`, which means the server only reports success back to the
-            client when all replicas have created the collection. Set it to `false` if you want
-            faster server responses and don't care about full replication.
-          schema:
-            type: boolean
-            default: true
-        - name: enforceReplicationFactor
-          in: query
-          required: false
-          description: |
-            The default is `true`, which means the server checks if there are enough replicas
-            available at creation time and bail out otherwise. Set it to `false` to disable
-            this extra check.
-          schema:
-            type: boolean
-            default: true
       responses:
         '200':
           description: |
@@ -2924,12 +3015,20 @@ db._drop("testCollectionUsers");
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}:
+  /_db/{database-name}/_api/collection/{collection-name}:
     delete:
       operationId: deleteCollection
       description: |
         Delete the collection identified by `collection-name` and all its documents.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -3105,12 +3204,20 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/truncate:
+  /_db/{database-name}/_api/collection/{collection-name}/truncate:
     put:
       operationId: truncateCollection
       description: |
         Removes all documents from the collection, but leaves the indexes intact.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -3270,7 +3377,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/load:
+  /_db/{database-name}/_api/collection/{collection-name}/load:
     put:
       operationId: loadCollection
       description: |
@@ -3283,6 +3390,14 @@ paths:
         Since ArangoDB version 3.9.0 this API does nothing. Previously, it used to
         load a collection into memory.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -3453,7 +3568,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/unload:
+  /_db/{database-name}/_api/collection/{collection-name}/unload:
     put:
       operationId: unloadCollection
       description: |
@@ -3466,6 +3581,14 @@ paths:
         Since ArangoDB version 3.9.0 this API does nothing. Previously it used to
         unload a collection from memory, while preserving all documents.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -3632,7 +3755,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/loadIndexesIntoMemory:
+  /_db/{database-name}/_api/collection/{collection-name}/loadIndexesIntoMemory:
     put:
       operationId: loadCollectionIndexes
       description: |
@@ -3658,6 +3781,14 @@ paths:
         It is guaranteed that the in-memory cache data is consistent with the stored
         index data at all times.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -3788,7 +3919,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/properties:
+  /_db/{database-name}/_api/collection/{collection-name}/properties:
     put:
       operationId: updateCollectionProperties
       description: |
@@ -3797,6 +3928,14 @@ paths:
         created except for the listed properties, as well as the collection name via
         the rename endpoint (but not in clusters).
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -4255,7 +4394,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/rename:
+  /_db/{database-name}/_api/collection/{collection-name}/rename:
     put:
       operationId: renameCollection
       description: |
@@ -4268,6 +4407,14 @@ paths:
         If renaming the collection succeeds, then the collection is also renamed in
         all graph definitions inside the `_graphs` collection in the current database.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -4449,12 +4596,20 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/recalculateCount:
+  /_db/{database-name}/_api/collection/{collection-name}/recalculateCount:
     put:
       operationId: recalculateCollectionCount
       description: |
         Recalculates the document count of a collection, if it ever becomes inconsistent.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -4563,7 +4718,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/compact:
+  /_db/{database-name}/_api/collection/{collection-name}/compact:
     put:
       operationId: compactCollection
       description: |
@@ -4577,6 +4732,14 @@ paths:
         the disk data for a collection may contain a lot of outdated data for which the
         space shall be reclaimed. In this case the compaction operation can be used.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
