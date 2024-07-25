@@ -111,7 +111,7 @@ paths:
         new user key.
 
         This is a protected API and can only be executed with superuser rights.
-        This API is not available on coordinator nodes.
+        This API is not available on Coordinator nodes.
       responses:
         '200':
           description: |
