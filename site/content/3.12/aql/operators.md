@@ -354,7 +354,8 @@ AQL provides different array operators:
 - `[* ...]`, `[** ...]` etc. for filtering, limiting, and projecting arrays using
   [inline expressions](#inline-expressions)
 - `[? ...]` for nested search, known as the [question mark operator](#question-mark-operator)
-- `LET [x, y] = [1, 2]` for [array destructuring](#array-destructuring)
+- `LET [x, y] = [1, 2]` and `FOR [x, y] IN [[1,2], [3,4]]` for
+  [array destructuring](#array-destructuring)
 
 ### Indexed value access
 
@@ -707,12 +708,85 @@ The question mark operator can be used for nested search (Enterprise Edition onl
 
 ### Array destructuring
 
-TODO
+Array destructuring lets you assign array values to one or multiple variables
+with a single `LET` operation. You can also destructure nested arrays you loop
+over with a `FOR` operation.
+
+Wrap the target assignment variables on the left-hand side of a `LET` operation
+in square brackets and separate them with commas, like an array. This assigns
+the first array element to the first variable, the second element to the second
+variable, and so on:
+
+```aql
+LET [x, y] = [1, 2, 3]
+```
+
+The above example assigns the value `1` to variable `x` and the value `2` to
+variable `y`. The value `3` is not assigned to a variable and thus ignored.
+
+You can skip the assignment of unneeded array values by leaving out variable
+names but keeping the commas:
+
+```aql
+LET [, y, z] = [1, 2, 3]
+```
+
+The above example assigns the value `2` to variable `y` and the value `3` to
+variable `z`. The first array element with value `1` is not assigned to any
+variable and thus ignored.
+
+If there are more variables assigned than there are array elements, the target
+variables that are mapped to non-existing array elements are populated with a
+value of `null`. The assigned target variables also receive a value of `null`
+if the array destructuring is used on anything other than an array:
+
+```aql
+LET [x, y] = ["one"]
+LET [z] = { obj: true }
+```
+
+The above example assigns the value `"one"` to variable `x` and the value `null`
+to both variables `y` and `z`.
+
+You can also destructure nested arrays as follows:
+
+```aql
+LET [[first1], [second1, second2]] = [["foo", "bar"], [1, 2, 3]]
+```
+
+The above example assigns the value `"foo"` to variable `first1`, the value
+`"bar"` is ignored, the value `1` is assigned to variable `second1`, the value
+`2` to variable `second2`, and the value `3` is ignored.
+
+You can mix array and [object destructuring](#object-destructuring):
+
+```aql
+LET [ { obj: [x, y] } ] = [ { obj: [1, 2] } ]
+```
+
+The above example assigns the value `1` to variable `x` and the value `2` to
+variable `y`. It does not create a variable `obj`, however.
+
+To use array destructing in a `FOR` operation, the value you iterate over must
+be a nested array to assign values other than `null`. This is because the `FOR`
+loop iterates over an outer array and the destructuring is carried out on the
+elements.
+
+```aql
+FOR [x, y] IN [["foo", 1], ["bar", 2]]
+   RETURN {x, y}
+```
+
+The above example assigns the value `"foo"` to variable `key` and the value `1`
+to variable `val` in the first iteration of the loop. In the second iteration,
+it assigns `"bar"` to `key` and `2` to `val`. The `RETURN` operation constructs
+the objects `{"x": "foo", "y": 1}` and `{"x": "bar", "y": 2}`.
 
 ## Object operators
 
 - `.` and `[expr]` for [accessing an object attribute](#attribute-access)
-- `LET {x, y} = {x: 1, y: 2}` for [object destructuring](#object-destructuring)
+- `LET {x, y} = {x: 1, y: 2}` and `FOR { x, y } IN objectList` for
+  [object destructuring](#object-destructuring)
 
 ### Attribute access
 
@@ -720,7 +794,92 @@ TODO - dot and [], where is this currently described?
 
 ### Object destructuring
 
-TODO
+Object destructuring lets you assign object attributes to one or multiple
+variables with a single `LET` operation. You can also destructure objects as
+part of regular `FOR` loops.
+
+Wrap the target assignment variables on the left-hand side of a `LET` operation
+in curly braces and separate them with commas, similar to an object. The attributes
+of the source object on the right-hand side are mapped to the target variables
+by name:
+
+```aql
+LET { name, age } = { vip: true, age: 39, name: "Luna Miller" }
+```
+
+The above example assigns the value `"Luna Miller"` of the `name` attribute to
+the `name` variable. The value `39` of the `age` attribute is assigned to the
+`age` variable. The `vip` attribute of the source object is ignored.
+
+If you specify target variables with no matching attributes in the source object,
+or if you try the object destructuring on anything other than an object, then
+the variables receive a value of `null`.
+
+```aql
+LET { vip, status } = { vip: true }
+LET { email } = [1, 2]
+```
+
+The above example assigns the value `true` to the `vip` variable and the other
+variables `status` and `email` get a value of `null`.
+
+You can also destructure objects with sub-attributes as follows:
+
+```aql
+LET { name: {first, last} } = { name: { first: "Luna", middle: "R", last: "Miller" } }
+```
+
+The above example assigns the value `"Luna"` to the variable `first` and the
+value `"Miller"` to the variable `last`. The `middle` attribute of the source
+object is ignored. Note that no variable called `name` is created here. You
+could additional assign the sub-object to a variable called `name` as follows:
+
+```aql
+LET { name: {first, last}, name } = { name: { first: "Luna", middle: "R", last: "Miller" } }
+```
+
+You may give the target variables a different name than in the source object.
+Specify the attribute name you want to map, followed by a colon and the desired
+variable name:
+
+```aql
+LET { name: {first: firstName, last: lastName} } = { name: { first: "Luna", middle: "R", last: "Miller" } }
+```
+
+The above example assigns the value `"Luna"` to the variable `firstName` and the
+value `"Miller"` to the variable `lastName`. Neither of these attributes exist
+in the source object.
+
+You can mix object and [array destructuring](#array-destructuring):
+
+```aql
+LET { obj: [x, y] } = { obj: [1, 2] }
+```
+
+The above example assigns the value `1` to variable `x` and the value `2` to
+variable `y`. It does not create a variable `obj`, however.
+
+You can use object destructing in a `FOR` operation that iterates over an array
+of objects, a collection, or a View. For anything other than documents/objects
+emitted in each iteration, the assigned values are `null`.
+
+```aql
+LET names = [
+  { name: "Luna Miller"},
+  { name: "Sam Miller" },
+]
+FOR { name } IN names
+   RETURN name
+```
+
+The above example assigns the value `"Luna Miller"` to variable `name` in the
+first iteration of the loop. In the second iteration, it assigns `"Sam Miller"`
+to `name`.
+
+{{< info >}}
+Object destructuring is not supported as part of `FOR` operations that are used
+for graph traversals and path searches.
+{{< /info >}}
 
 ## Operator precedence
 
