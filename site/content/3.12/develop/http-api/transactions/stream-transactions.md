@@ -128,6 +128,21 @@ paths:
                   description: |
                     Transaction size limit in bytes.
                   type: integer
+                skipFastLockRound:
+                  description: |
+                    Whether to disable fast locking for write operations.
+
+                    Skipping the fast lock round can be faster overall if there are many concurrent
+                    Stream Transactions queued that all try to lock the same collection exclusively.
+                    It avoids deadlocking and retrying which can occur with the fast locking by
+                    guaranteeing a deterministic locking order at the expense of each actual
+                    locking operation taking longer.
+
+                    Fast locking should not be skipped for read-only Stream Transactions because
+                    it degrades performance if there are no concurrent transactions that use
+                    exclusive locks on the same collection.
+                  type: boolean
+                  default: false
       responses:
         '201':
           description: |

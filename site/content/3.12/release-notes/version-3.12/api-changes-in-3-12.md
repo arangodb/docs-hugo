@@ -459,6 +459,17 @@ The following metrics have been added for observability:
 - `arangodb_scheduler_low_prio_dequeue_hist`
 - `arangodb_scheduler_maintenance_prio_dequeue_hist`
 
+#### Stream Transactions API
+
+<small>Introduced in: v3.12.1</small>
+
+A `skipFastLockRound` option has been added to the `POST /_api/transaction/begin`
+endpoint that lets you disable the fast lock round for Stream Transactions.
+The option defaults to `false` so that fast locking is tried.
+
+See the [HTTP API](../../develop/http-api/transactions/stream-transactions.md#begin-a-stream-transaction)
+for details.
+
 ### Endpoints deprecated
 
 #### JavaScript Transactions API
@@ -545,3 +556,14 @@ as Pregel is no longer supported.
 JavaScript Transactions and thus the `db._executeTransaction()` method is
 deprecated from v3.12.0 onward and will be removed in a future version.
 The `db._createTransaction()` method for starting Stream Transactions is unaffected.
+
+### Stream Transactions API
+
+<small>Introduced in: v3.12.1</small>
+
+A `skipFastLockRound` option has been added to the `db._createTransaction()`
+method that lets you disable the fast lock round for Stream Transactions.
+The option defaults to `false` so that fast locking is tried.
+
+See the [JavaScript API](../../develop/transactions/stream-transactions.md#javascript-api)
+for details.

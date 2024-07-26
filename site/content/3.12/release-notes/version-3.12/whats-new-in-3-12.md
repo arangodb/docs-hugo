@@ -1379,6 +1379,30 @@ pick items from different job queues.
 | `arangodb_scheduler_low_prio_dequeue_hist` | Time required to take an item from the low priority queue. |
 | `arangodb_scheduler_maintenance_prio_dequeue_hist` | Time required to take an item from the maintenance priority queue. |
 
+### Option to skip fast lock round for Stream Transactions
+
+<small>Introduced in: v3.12.1</small>
+
+A `skipFastLockRound` option has been added to let you disable the fast lock
+round for Stream Transactions. The option defaults to `false` so that
+fast locking is tried.
+
+Disabling the fast lock round is not necessary unless there are many concurrent
+Stream Transactions queued that all try to lock the same collection exclusively.
+In this case, the fast locking is subpar because exclusive locks will prevent it
+from succeeding. Skipping the fast locking makes each actual locking operation
+take longer than with fast locking but it guarantees a deterministic locking order.
+This avoids deadlocking and retrying which can occur with the fast locking.
+Overall, skipping the fast lock round can be faster in this scenario.
+
+The fast lock round should not be skipped for read-only Stream Transactions as
+it degrades performance if there are no concurrent transactions that use
+exclusive locks on the same collection.
+
+See the [JavaScript API](../../develop/transactions/stream-transactions.md#javascript-api)
+and the [HTTP API](../../develop/http-api/transactions/stream-transactions.md#begin-a-stream-transaction)
+for details.
+
 ## Client tools
 
 ### Protocol aliases for endpoints
