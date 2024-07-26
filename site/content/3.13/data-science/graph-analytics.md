@@ -40,6 +40,8 @@ Before you can use Graph Analytics Engines, you need to request the feature
 via __Request help__ in the ArangoGraph dashboard for a deployment.
 
 The deployment needs to use **AWS** as the cloud provider.
+
+Single server deployments using ArangoDB version 3.11 are not supported.
 {{< /info >}}
 
 1. Determine the approximate size of the data that you will load into the GAE
