@@ -130,7 +130,7 @@ paths:
                   type: integer
                 skipFastLockRound:
                   description: |
-                    Whether to disable fast locking.
+                    Whether to disable fast locking for write operations.
 
                     Skipping the fast lock round can be faster overall if there are many concurrent
                     Stream Transactions queued that all try to lock the same collection exclusively.

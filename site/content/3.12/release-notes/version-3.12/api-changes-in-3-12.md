@@ -464,7 +464,7 @@ The following metrics have been added for observability:
 <small>Introduced in: v3.12.1</small>
 
 A `skipFastLockRound` option has been added to the `POST /_api/transaction/begin`
-endpoint that let you disable the fast lock round for Stream Transactions.
+endpoint that lets you disable the fast lock round for Stream Transactions.
 The option defaults to `false` so that fast locking is tried.
 
 See the [HTTP API](../../develop/http-api/transactions/stream-transactions.md#begin-a-stream-transaction)
