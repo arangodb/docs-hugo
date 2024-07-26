@@ -37,7 +37,7 @@ Supported transactional API operations include:
 
 ```openapi
 paths:
-  /_api/transaction/begin:
+  /_db/{database-name}/_api/transaction/begin:
     post:
       operationId: beginStreamTransaction
       description: |
@@ -79,6 +79,14 @@ paths:
 
         - `errorMessage`: a descriptive error message
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: x-arango-allow-dirty-read
           in: header
           required: false
@@ -106,7 +114,7 @@ paths:
                     transaction must be declared with the `write` or `exclusive` attribute or it
                     will fail, whereas non-declared collections from which is solely read will be
                     added lazily.
-                  type: string
+                  type: object
                 waitForSync:
                   description: |
                     an optional boolean flag that, if set, will force the
@@ -212,7 +220,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/transaction/{transaction-id}:
+  /_db/{database-name}/_api/transaction/{transaction-id}:
     get:
       operationId: getStreamTransaction
       description: |
@@ -223,6 +231,14 @@ paths:
 
         - `status`: the status of the transaction. One of "running", "committed" or "aborted".
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: transaction-id
           in: path
           required: true
@@ -278,7 +294,7 @@ db._drop("products");
 
 ```openapi
 paths:
-  /_api/transaction/{transaction-id}:
+  /_db/{database-name}/_api/transaction/{transaction-id}:
     put:
       operationId: commitStreamTransaction
       description: |
@@ -312,6 +328,14 @@ paths:
 
         - `errorMessage`: a descriptive error message
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: transaction-id
           in: path
           required: true
@@ -371,7 +395,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/transaction/{transaction-id}:
+  /_db/{database-name}/_api/transaction/{transaction-id}:
     delete:
       operationId: abortStreamTransaction
       description: |
@@ -405,6 +429,14 @@ paths:
 
         - `errorMessage`: a descriptive error message
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: transaction-id
           in: path
           required: true
@@ -464,7 +496,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/transaction:
+  /_db/{database-name}/_api/transaction:
     get:
       operationId: listStreamTransactions
       description: |
@@ -476,6 +508,15 @@ paths:
 
         - `id`: the transaction's id
         - `state`: the transaction's status
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       responses:
         '200':
           description: |

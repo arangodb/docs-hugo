@@ -11,7 +11,7 @@ configuration of an ArangoDB database's replication applier.
 
 ```openapi
 paths:
-  /_api/replication/applier-config:
+  /_db/{database-name}/_api/replication/applier-config:
     get:
       operationId: getReplicationApplierConfig
       description: |
@@ -109,6 +109,14 @@ paths:
         - `restrictCollections`: the optional array of collections to include or exclude,
           based on the setting of `restrictType`
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: global
           in: query
           required: false
@@ -150,7 +158,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/replication/applier-config:
+  /_db/{database-name}/_api/replication/applier-config:
     put:
       operationId: updateReplicationApplierConfig
       description: |
@@ -162,6 +170,14 @@ paths:
         In case of success, the body of the response is a JSON object with the updated
         configuration.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: global
           in: query
           required: false
@@ -380,7 +396,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/replication/applier-start:
+  /_db/{database-name}/_api/replication/applier-start:
     put:
       operationId: startReplicationApplier
       description: |
@@ -396,6 +412,14 @@ paths:
         To detect replication applier errors after the applier was started, use the
         `/_api/replication/applier-state` API instead.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: global
           in: query
           required: false
@@ -462,13 +486,21 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/replication/applier-stop:
+  /_db/{database-name}/_api/replication/applier-stop:
     put:
       operationId: stopReplicationApplier
       description: |
         Stops the replication applier. This will return immediately if the
         replication applier is not running.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: global
           in: query
           required: false
@@ -522,7 +554,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/replication/applier-state:
+  /_db/{database-name}/_api/replication/applier-state:
     get:
       operationId: getReplicationApplierState
       description: |
@@ -621,6 +653,14 @@ paths:
         values are only meaningful when compared to each other. Higher tick values mean
         "later in time" than lower tick values.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: global
           in: query
           required: false
@@ -684,7 +724,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/replication/make-follower:
+  /_db/{database-name}/_api/replication/make-follower:
     put:
       operationId: makeReplicationFollower
       description: |
@@ -804,6 +844,15 @@ paths:
         {{</* info */>}}
         This endpoint is not supported on a Coordinator in a cluster deployment.
         {{</* /info */>}}
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:

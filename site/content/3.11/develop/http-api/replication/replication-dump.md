@@ -16,7 +16,7 @@ or the incremental data synchronization.
 
 ```openapi
 paths:
-  /_api/replication/inventory:
+  /_db/{database-name}/_api/replication/inventory:
     get:
       operationId: getReplicationInventory
       description: |
@@ -100,6 +100,14 @@ paths:
         under which each key represents a database name, and the value conforms to the above description.
         {{</* /info */>}}
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: includeSystem
           in: query
           required: false
@@ -153,7 +161,7 @@ dumped.
 
 ```openapi
 paths:
-  /_api/replication/batch:
+  /_db/{database-name}/_api/replication/batch:
     post:
       operationId: createReplicationBatch
       description: |
@@ -177,6 +185,14 @@ paths:
         It is an error if this attribute is not bound in the Coordinator case.
         {{</* /info */>}}
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: state
           in: query
           required: false
@@ -218,7 +234,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/replication/batch/{id}:
+  /_db/{database-name}/_api/replication/batch/{id}:
     delete:
       operationId: deleteReplicationBatch
       description: |
@@ -235,6 +251,14 @@ paths:
         It is an error if this attribute is not bound in the Coordinator case.
         {{</* /info */>}}
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: id
           in: path
           required: true
@@ -260,7 +284,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/replication/batch/{id}:
+  /_db/{database-name}/_api/replication/batch/{id}:
     put:
       operationId: extendReplicationBatch
       description: |
@@ -279,6 +303,22 @@ paths:
         The very same request is forwarded synchronously to that DB-Server.
         It is an error if this attribute is not bound in the Coordinator case.
         {{</* /info */>}}
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: id
+          in: path
+          required: true
+          description: |
+            The id of the batch.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -291,14 +331,6 @@ paths:
                   description: |
                     the time-to-live for the new batch (in seconds)
                   type: integer
-      parameters:
-        - name: id
-          in: path
-          required: true
-          description: |
-            The id of the batch.
-          schema:
-            type: string
       responses:
         '204':
           description: |
@@ -333,7 +365,7 @@ parts of the dump results in the same order as they are provided.
 
 ```openapi
 paths:
-  /_api/replication/dump:
+  /_db/{database-name}/_api/replication/dump:
     get:
       operationId: getReplicationDump
       description: |
@@ -378,6 +410,14 @@ paths:
         There will be no distinction between inserts and updates when calling this method.
         {{</* /info */>}}
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: query
           required: true
@@ -425,7 +465,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/replication/revisions/tree:
+  /_db/{database-name}/_api/replication/revisions/tree:
     get:
       operationId: getReplicationRevisionTree
       description: |
@@ -467,6 +507,14 @@ paths:
         root is at index `0`, its children at indices `[1, branchingFactor]`, and so
         on.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: query
           required: true
@@ -508,7 +556,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/replication/revisions/tree:
+  /_db/{database-name}/_api/replication/revisions/tree:
     post:
       operationId: rebuildReplicationRevisionTree
       description: |
@@ -521,6 +569,14 @@ paths:
 
         If successful, there will be no return body.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: query
           required: true
@@ -555,7 +611,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/replication/revisions/ranges:
+  /_db/{database-name}/_api/replication/revisions/ranges:
     put:
       operationId: listReplicationRevisionRanges
       description: |
@@ -613,6 +669,14 @@ paths:
         in JavaScript, as it handles all numbers as floating point, and can only
         represent up to `2^53-1` faithfully.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: query
           required: true
@@ -661,7 +725,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/replication/revisions/documents:
+  /_db/{database-name}/_api/replication/revisions/documents:
     put:
       operationId: listReplicationRevisionDocuments
       description: |
@@ -701,6 +765,14 @@ paths:
         in JavaScript, as it handles all numbers as floating point, and can only
         represent up to `2^53-1` faithfully.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: query
           required: true
@@ -742,7 +814,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/replication/sync:
+  /_db/{database-name}/_api/replication/sync:
     put:
       operationId: startReplicationSync
       description: |
@@ -776,8 +848,17 @@ paths:
         Use with caution!
 
         {{</* info */>}}
-        This method is not supported on Coordinators in cluster deployments.
+        This method is not supported on a Coordinator in a cluster deployment.
         {{</* /info */>}}
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -864,7 +945,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/replication/clusterInventory:
+  /_db/{database-name}/_api/replication/clusterInventory:
     get:
       operationId: getReplicationClusterInventory
       description: |
@@ -876,6 +957,14 @@ paths:
         just that the `indexes` attribute there is relocated to adjust it to
         the data format of arangodump.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: includeSystem
           in: query
           required: false

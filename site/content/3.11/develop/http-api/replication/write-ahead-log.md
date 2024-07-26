@@ -15,7 +15,7 @@ as a user is not supported. This API replaces some of the APIs in `/_api/replica
 
 ```openapi
 paths:
-  /_api/wal/range:
+  /_db/{database-name}/_api/wal/range:
     get:
       operationId: getWalRange
       description: |
@@ -28,6 +28,17 @@ paths:
         - `tickMax`: maximum tick available
         - `time`: the server time as string in format `YYYY-MM-DDTHH:MM:SSZ`
         - `server`: An object with fields `version` and `serverId`
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. The user account you authenticate with needs
+            at least read access to this database and administrate access to the
+            `_system` database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -66,7 +77,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/wal/lastTick:
+  /_db/{database-name}/_api/wal/lastTick:
     get:
       operationId: getWalLastTick
       description: |
@@ -79,8 +90,19 @@ paths:
         - `server`: An object with fields `version` and `serverId`
 
         {{</* info */>}}
-        This method is not supported on Coordinators in cluster deployments.
+        This method is not supported on a Coordinator in a cluster deployment.
         {{</* /info */>}}
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. The user account you authenticate with needs
+            at least read access to this database and administrate access to the
+            `_system` database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -118,7 +140,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/wal/tail:
+  /_db/{database-name}/_api/wal/tail:
     get:
       operationId: getWalTail
       description: |
@@ -221,9 +243,19 @@ paths:
           to sleep for a while before calling the logger again.
 
         {{</* info */>}}
-        This method is not supported on Coordinators in cluster deployments.
+        This method is not supported on a Coordinator in a cluster deployment.
         {{</* /info */>}}
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. The user account you authenticate with needs
+            at least read access to this database and administrate access to the
+            `_system` database.
+          schema:
+            type: string
         - name: global
           in: query
           required: false
@@ -272,7 +304,6 @@ paths:
           description: |
             The ID of the client used to tail results. The server uses this to
             keep operations until the client has fetched them. Must be a positive integer.
-
             {{</* info */>}}
             Either `syncerId` or `serverId` is required to fetch all operations.
             {{</* /info */>}}
@@ -285,7 +316,6 @@ paths:
             The ID of the client machine. If `syncerId` is unset, the server uses
             this to keep operations until the client has fetched them. Must be a positive
             integer.
-
             {{</* info */>}}
             Either `syncerId` or `serverId` is required to fetch all operations.
             {{</* /info */>}}

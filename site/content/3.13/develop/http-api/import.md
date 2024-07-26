@@ -9,7 +9,7 @@ description: >-
 
 ```openapi
 paths:
-  /_api/import:
+  /_db/{database-name}/_api/import:
     post:
       operationId: importData
       description: |
@@ -36,6 +36,14 @@ paths:
                     multiple JSON objects separated by newlines.
                   type: string
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: query
           required: true

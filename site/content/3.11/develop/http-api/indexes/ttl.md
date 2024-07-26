@@ -8,7 +8,7 @@ description: ''
 
 ```openapi
 paths:
-  /_api/index#ttl:
+  /_db/{database-name}/_api/index#ttl:
     post:
       operationId: createIndexTtl
       description: |
@@ -16,6 +16,14 @@ paths:
         does not already exist. The call expects an object containing the index
         details.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: query
           required: true
