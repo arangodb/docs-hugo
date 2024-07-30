@@ -77,6 +77,42 @@ FOR vertex[, edge[, path]]
   See [Pruning](#pruning) for details.
 - `OPTIONS` **options** (object, *optional*): See the [traversal options](#traversal-options).
 
+### Working with collection sets
+
+The syntax for AQL graph traversals using collection sets is as follows
+(square brackets denote optional parts and `|` denotes alternatives):
+
+```aql
+[WITH vertexCollection1[, vertexCollection2[, vertexCollectionN]]]
+FOR vertex[, edge[, path]]
+  IN [min[..max]]
+  OUTBOUND|INBOUND|ANY startVertex
+  edgeCollection1[, edgeCollection2[, edgeCollectionN]]
+  [PRUNE [pruneVariable = ]pruneCondition]
+  [OPTIONS options]
+```
+
+- `WITH`: Declaration of collections. Optional for single server instances, but
+  required for [graph traversals in a cluster](#graph-traversals-in-a-cluster).
+  Needs to be placed at the very beginning of the query.
+  - **collections** (collection, *repeatable*): list of vertex collections that
+    are involved in the traversal
+- **edgeCollections** (collection, *repeatable*): One or more edge collections
+  to use for the traversal (instead of using a named graph with `GRAPH graphName`).
+  Vertex collections are determined by the edges in the edge collections.
+  
+  You can override the default traversal direction by setting `OUTBOUND`,
+  `INBOUND`, or `ANY` before any of the edge collections.
+  
+  If the same edge collection is specified multiple times, it behaves as if it
+  were specified only once. Specifying the same edge collection is only allowed
+  when the collections do not have conflicting traversal directions.
+
+  Views cannot be used as edge collections.
+- See the [named graph variant](#working-with-named-graphs) for the remaining
+  traversal parameters as well as the [traversal options](#traversal-options).
+  The `edgeCollections` restriction option is redundant in this case.
+
 ### Traversal options
 
 You can optionally specify the following options to modify the execution of a
@@ -268,41 +304,14 @@ Weighted traversals do not support negative weights. If `defaultWeight` is set
 to a negative number, then the query is aborted with an error.
 {{< /info >}}
 
-### Working with collection sets
+#### `useCache`
 
-The syntax for AQL graph traversals using collection sets is as follows
-(square brackets denote optional parts and `|` denotes alternatives):
+<small>Introduced in: v3.12.2</small>
 
-```aql
-[WITH vertexCollection1[, vertexCollection2[, vertexCollectionN]]]
-FOR vertex[, edge[, path]]
-  IN [min[..max]]
-  OUTBOUND|INBOUND|ANY startVertex
-  edgeCollection1[, edgeCollection2[, edgeCollectionN]]
-  [PRUNE [pruneVariable = ]pruneCondition]
-  [OPTIONS options]
-```
+Whether to use the in-memory cache for edges. The default is `true`.
 
-- `WITH`: Declaration of collections. Optional for single server instances, but
-  required for [graph traversals in a cluster](#graph-traversals-in-a-cluster).
-  Needs to be placed at the very beginning of the query.
-  - **collections** (collection, *repeatable*): list of vertex collections that
-    are involved in the traversal
-- **edgeCollections** (collection, *repeatable*): One or more edge collections
-  to use for the traversal (instead of using a named graph with `GRAPH graphName`).
-  Vertex collections are determined by the edges in the edge collections.
-  
-  You can override the default traversal direction by setting `OUTBOUND`,
-  `INBOUND`, or `ANY` before any of the edge collections.
-  
-  If the same edge collection is specified multiple times, it behaves as if it
-  were specified only once. Specifying the same edge collection is only allowed
-  when the collections do not have conflicting traversal directions.
-
-  Views cannot be used as edge collections.
-- See the [named graph variant](#working-with-named-graphs) for the remaining
-  traversal parameters as well as the [traversal options](#traversal-options).
-  The `edgeCollections` restriction option is redundant in this case.
+You can set this option to `false` to not make a large graph operation pollute
+the edge cache.
 
 ### Traversing in mixed directions
 

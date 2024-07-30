@@ -714,8 +714,23 @@ FILTER p.edges[1].foo == "bar" AND
        p.edges[2].baz == "qux"
 ```
 
-See the [Traversal `OPTIONS`](../../aql/graphs/traversals.md#working-with-named-graphs)
+See the [Traversal options](../../aql/graphs/traversals.md#traversal-options)
 for details.
+
+### Bypass edge cache for graph operations
+
+<small>Introduced in: v3.12.2</small>
+
+The `useCache` option is now supported for graph traversals and path searches.
+
+You can set this option to `false` to not make a large graph operation pollute
+the edge cache.
+
+```aql
+FOR v, e, p IN 1..5 OUTBOUND "vertices/123" edges
+  OPTIONS { useCache: false }
+  ...
+```
 
 ## Indexing
 

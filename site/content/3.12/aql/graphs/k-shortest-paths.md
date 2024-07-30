@@ -141,6 +141,9 @@ edge collections.
 
 ### Path search options
 
+You can optionally specify the following options to modify the execution of a
+graph path search. If you specify unknown options, query warnings are raised.
+
 #### `weightAttribute`
 
 A top-level edge attribute that should be used to read the edge weight (string).
@@ -156,6 +159,15 @@ This value is used as fallback if there is no `weightAttribute` in the
 edge document, or if it's not a number (number).
 
 The value must not be negative. The default is `1`.
+
+#### `useCache`
+
+<small>Introduced in: v3.12.2</small>
+
+Whether to use the in-memory cache for edges. The default is `true`.
+
+You can set this option to `false` to not make a large graph operation pollute
+the edge cache.
 
 ### Traversing in mixed directions
 
