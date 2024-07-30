@@ -211,7 +211,7 @@ execution.
 Specifies the number of document attributes per `FOR` loop to be used as
 projections (number). The default value is `5`.
 
-#### `indexHint` (object, *optional*, i):
+#### `indexHint`
 
 <small>Introduced in v3.12.1</small>
 
