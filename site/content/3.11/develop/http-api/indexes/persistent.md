@@ -14,7 +14,7 @@ removed in a future version.
 
 ```openapi
 paths:
-  /_api/index#persistent:
+  /_db/{database-name}/_api/index#persistent:
     post:
       operationId: createIndexPersistent
       description: |
@@ -36,6 +36,14 @@ paths:
         Unique indexes on non-shard keys are not supported in cluster deployments.
         {{</* /info */>}}
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: query
           required: true

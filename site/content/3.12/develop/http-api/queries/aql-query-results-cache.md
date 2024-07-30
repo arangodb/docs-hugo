@@ -9,7 +9,7 @@ description: >-
 
 ```openapi
 paths:
-  /_api/query-cache/entries:
+  /_db/{database-name}/_api/query-cache/entries:
     get:
       operationId: listQueryCacheResults
       description: |
@@ -28,6 +28,15 @@ paths:
           again afterwards)
         - `runTime`: the query's run time
         - `dataSources`: an array of collections/Views the query was using
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -43,11 +52,20 @@ paths:
 
 ```openapi
 paths:
-  /_api/query-cache:
+  /_db/{database-name}/_api/query-cache:
     delete:
       operationId: deleteAqlQueryCache
       description: |
         Clears all results stored in the AQL query results cache for the current database.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -64,7 +82,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/query-cache/properties:
+  /_db/{database-name}/_api/query-cache/properties:
     get:
       operationId: getQueryCacheProperties
       description: |
@@ -85,6 +103,17 @@ paths:
 
         - `includeSystem`: whether or not results of queries that involve system collections will be
           stored in the query results cache.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -100,7 +129,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/query-cache/properties:
+  /_db/{database-name}/_api/query-cache/properties:
     put:
       operationId: setQueryCacheProperties
       description: |
@@ -114,6 +143,17 @@ paths:
         The properties need to be passed in the `properties` attribute in the body
         of the HTTP request. `properties` needs to be a JSON object with the following
         properties:
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:

@@ -5,12 +5,17 @@ weight: 80
 description: >-
   The HTTP API for jobs lets you access the results of asynchronously executed
   requests and check the status of such jobs
+# All /_api/job* endpoints are also available via /_admin/job*
 ---
+For an introduction to non-blocking execution of requests and how to create
+async jobs with the `x-arango-async` request header, see
+[HTTP request handling in ArangoDB](general-request-handling.md#non-blocking-execution).
+
 ## Get the results of an async job
 
 ```openapi
 paths:
-  /_api/job/{job-id}:
+  /_db/{database-name}/_api/job/{job-id}:
     put:
       operationId: getJobResult
       description: |
@@ -24,6 +29,16 @@ paths:
         the header is not present, the job was not found and the response contains
         status information from the job manager.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
         - name: job-id
           in: path
           required: true
@@ -144,13 +159,23 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/job/{job-id}/cancel:
+  /_db/{database-name}/_api/job/{job-id}/cancel:
     put:
       operationId: cancelJob
       description: |
         Cancels the currently running job identified by job-id. Note that it still
         might take some time to actually cancel the running async job.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
         - name: job-id
           in: path
           required: true
@@ -212,7 +237,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/job/{job-id}:
+  /_db/{database-name}/_api/job/{job-id}:
     delete:
       operationId: deleteJob
       description: |
@@ -221,6 +246,16 @@ paths:
         Clients can use this method to perform an eventual garbage collection of job
         results.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
         - name: job-id
           in: path
           required: true
@@ -346,7 +381,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/job/{job-id}:
+  /_db/{database-name}/_api/job/{job-id}:
     get:
       operationId: getJob
       description: |
@@ -356,6 +391,16 @@ paths:
         - The IDs of async jobs with a specific status
         - The processing status of a specific async job
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
         - name: job-id
           in: path
           required: true

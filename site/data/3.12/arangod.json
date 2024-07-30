@@ -1335,7 +1335,7 @@
       "agent",
       "single"
     ],
-    "default" : 7739635712,
+    "default" : 7739682816,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -2224,7 +2224,7 @@
       "agent",
       "single"
     ],
-    "default" : "/var/lib/arangodb3",
+    "default" : "",
     "deprecatedIn" : null,
     "description" : "The path to the database directory.",
     "dynamic" : false,
@@ -2690,7 +2690,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 6191708569,
+    "default" : 6191746252,
     "deprecatedIn" : null,
     "description" : "Maximum memory usage (in bytes) to be used by all ongoing dumps.",
     "dynamic" : true,
@@ -3016,6 +3016,31 @@
     "section" : "",
     "type" : "string"
   },
+  "honor-nsswitch" : {
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : false,
+    "deprecatedIn" : null,
+    "description" : "Allow hostname lookup configuration via /etc/nsswitch.conf if on Linux/glibc.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : null,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "",
+    "type" : "boolean"
+  },
   "http.compress-response-threshold" : {
     "base" : 1,
     "category" : "option",
@@ -3336,7 +3361,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "/var/lib/arangodb3-apps",
+    "default" : "./js/apps",
     "deprecatedIn" : null,
     "description" : "The directory for Foxx applications.",
     "dynamic" : false,
@@ -3600,6 +3625,7 @@
       "single"
     ],
     "default" : [
+      "./enterprise/js"
     ],
     "deprecatedIn" : null,
     "description" : "Additional paths containing JavaScript modules.",
@@ -3672,7 +3698,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "/usr/share/arangodb3/js",
+    "default" : "./js",
     "deprecatedIn" : null,
     "description" : "A path to the directory containing the JavaScript startup scripts.",
     "dynamic" : false,
@@ -4118,7 +4144,7 @@
       "agent",
       "single"
     ],
-    "default" : "-",
+    "default" : "",
     "deprecatedIn" : null,
     "description" : "shortcut for '--log.output file://<filename>'",
     "dynamic" : false,
@@ -5295,7 +5321,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33106026496,
+    "base" : 33106214912,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5303,7 +5329,7 @@
       "agent",
       "single"
     ],
-    "default" : 26815881462,
+    "default" : 26816034078,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -5630,7 +5656,7 @@
     "type" : "uint64"
   },
   "query.memory-limit" : {
-    "base" : 33106026496,
+    "base" : 33106214912,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5638,7 +5664,7 @@
       "agent",
       "single"
     ],
-    "default" : 19863615897,
+    "default" : 19863728947,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -6711,7 +6737,7 @@
       "agent",
       "single"
     ],
-    "default" : 9287562854,
+    "default" : 9287619379,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -9158,7 +9184,7 @@
       "agent",
       "single"
     ],
-    "default" : 12383417139,
+    "default" : 12383492505,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
@@ -10406,6 +10432,29 @@
     "requiresValue" : false,
     "section" : "server",
     "type" : "boolean"
+  },
+  "server.scheduler" : {
+    "category" : "option",
+    "component" : [
+    ],
+    "default" : "supervised",
+    "deprecatedIn" : null,
+    "description" : "The scheduler type to use.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.12.1"
+    ],
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "server",
+    "type" : "string",
+    "values" : "Possible values: \"supervised\", \"threadpools\""
   },
   "server.scheduler-queue-size" : {
     "base" : 1,
