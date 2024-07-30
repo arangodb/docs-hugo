@@ -354,12 +354,37 @@ AQL provides different array operators:
 - `[* ...]`, `[** ...]` etc. for filtering, limiting, and projecting arrays using
   [inline expressions](#inline-expressions)
 - `[? ...]` for nested search, known as the [question mark operator](#question-mark-operator)
-- `LET [x, y] = [1, 2]` and `FOR [x, y] IN [[1,2], [3,4]]` for
-  [array destructuring](#array-destructuring)
+- `LET [ ] = [ ]` and `FOR [ ] IN [[ ], [ ]]` for [array destructuring](#array-destructuring)
 
 ### Indexed value access
 
-TODO
+You can access individual array elements by their position using the `[]` accessor.
+The position is called the *index* and starts at `0`.
+
+When specifying an index, use a numeric integer value. You can use negative
+index values to access array elements starting from the end of the array.
+This is convenient if the length of the array is unknown and you want to access
+elements at the end of the array.
+
+You can also use an expression and calculate the index of an element.
+
+{{< info >}}
+If you try to access an array element with an out-of-bounds index (after the last
+element or before the first element), the result is a `null` value without
+raising an error or warning.
+{{< /info >}}
+
+```aql
+LET friends = [ "tina", "helga", "alfred" ]
+
+friends[0] // access 1st array element (elements start at index 0)
+friends[2] // access 3rd array element
+
+friends[-1] // access last array element
+friends[-2] // access second to last array element
+
+friends[LENGTH(friends) / 2] // access array element in the middle (floored)
+```
 
 ### Array expansion
 
@@ -708,6 +733,8 @@ The question mark operator can be used for nested search (Enterprise Edition onl
 
 ### Array destructuring
 
+<small>Introduced in: v3.12.2</small>
+
 Array destructuring lets you assign array values to one or multiple variables
 with a single `LET` operation. You can also destructure nested arrays you loop
 over with a `FOR` operation.
@@ -785,14 +812,61 @@ the objects `{"x": "foo", "y": 1}` and `{"x": "bar", "y": 2}`.
 ## Object operators
 
 - `.` and `[expr]` for [accessing an object attribute](#attribute-access)
-- `LET {x, y} = {x: 1, y: 2}` and `FOR { x, y } IN objectList` for
-  [object destructuring](#object-destructuring)
+- `LET { } = { }` and `FOR { } IN [{ }, { }]` for [object destructuring](#object-destructuring)
 
 ### Attribute access
 
-TODO - dot and [], where is this currently described?
+You can access individual object attributes by their names using the
+dot accessor `.` and the square bracket accessor `[]`.
+
+The dot accessor lets you specify the attribute name as an unquoted string.
+This is only possible if the attribute name would be valid as a
+[variable name](fundamentals/syntax.md#variable-names). Otherwise, you need to
+quote the name with backticks or forward ticks, or use the square bracket accessor.
+
+You can also use the dot accessor together with a [bind parameter](fundamentals/bind-parameters.md)
+to select an attribute or sub-attribute.
+
+```aql
+LET ob = { name: "sandra", "with space": true }
+
+LET unquoted = ob.name
+
+LET quoted_1 = ob.`with space`
+LET quoted_2 = ob.´with space´
+
+LET bindvar  = ob.@attr
+```
+
+The square bracket accessor lets you specify an expression to select an attribute.
+This is usually a quoted string literal but you can also calculate the name
+dynamically using an arbitrary expression.
+
+You can also use the square bracket accessor together with a
+[bind parameter](fundamentals/bind-parameters.md) to select an attribute.
+
+```aql
+LET ob = { name: "sandra", "with 2 spaces": true }
+
+LET literal_1  = ob["name"]
+LET literal_2  = ob["with 2 spaces"]
+
+LET attribute  = "name"
+LET variable   = ob[attribute]
+
+LET expression = ob[CONCAT_SEPARATOR(" ", "with", 1+1, "spaces")]
+
+LET bindvar  = ob[@attr]
+```
+
+{{< info >}}
+If you try to access a non-existing attribute in one way or another, the result
+is a `null` value without raising an error or warning.
+{{< /info >}}
 
 ### Object destructuring
+
+<small>Introduced in: v3.12.2</small>
 
 Object destructuring lets you assign object attributes to one or multiple
 variables with a single `LET` operation. You can also destructure objects as
@@ -890,8 +964,8 @@ The operator precedence in AQL is similar as in other familiar languages
 |:---------------------|:-----------
 | `::`                 | scope (user-defined AQL functions)
 | `[*]`                | array expansion
-| `[]`                 | indexed value access (of arrays), attribute access (of objects)
-| `.`                  | attribute access (of objects)
+| `[]`                 | indexed value access (arrays), attribute access (objects)
+| `.`                  | attribute access (objects)
 | `()`                 | function call
 | `!`, `NOT`, `+`, `-` | unary not (logical negation), unary plus, unary minus
 | `*`, `/`, `%`        | multiplication, division, modulus
