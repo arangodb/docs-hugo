@@ -95,6 +95,8 @@ The `remove-unnecessary-projections` AQL optimizer rule has been renamed to
 Moreover, a `remove-unnecessary-calculations-4` and `batch-materialize-documents`
 rule have been added.
 
+A `push-limit-into-index` rule has been added in v3.12.2.
+
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
 
