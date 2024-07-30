@@ -57,26 +57,20 @@ FOR vertex[, edge]
   [OPTIONS options]
 ```
 
-- `FOR`: emits up to two variables:
-  - **vertex** (object): the current vertex on the shortest path
-  - **edge** (object, *optional*): the edge pointing to the vertex
-- `IN` `OUTBOUND|INBOUND|ANY`: defines in which direction edges are followed
+- `FOR`: Emits up to two variables:
+  - **vertex** (object): The current vertex on the shortest path
+  - **edge** (object, *optional*): The edge pointing to the vertex
+- `IN` `OUTBOUND|INBOUND|ANY`: Defines in which direction edges are followed
   (outgoing, incoming, or both)
-- **startVertex** `TO` **targetVertex** (both string\|object): the two vertices between
+- **startVertex** `TO` **targetVertex** (both string\|object): The two vertices between
   which the shortest path will be computed. This can be specified in the form of
   an ID string or in the form of a document with the attribute `_id`. All other
   values will lead to a warning and an empty result. If one of the specified
   documents does not exist, the result is empty as well and there is no warning.
-- `GRAPH` **graphName** (string): the name identifying the named graph. Its vertex and
+- `GRAPH` **graphName** (string): The name identifying the named graph. Its vertex and
   edge collections will be looked up.
-- `OPTIONS` **options** (object, *optional*): used to modify the execution of the
-  traversal. Only the following attributes have an effect, all others are ignored:
-  - **weightAttribute** (string): a top-level edge attribute that should be used
-  to read the edge weight. If the attribute is not existent or not numeric, the
-  *defaultWeight* will be used instead. The attribute value must not be negative.
-  - **defaultWeight** (number): this value will be used as fallback if there is
-  no *weightAttribute* in the edge document, or if it is not a number.
-  The value must not be negative. The default is `1`.
+- `OPTIONS` **options** (object, *optional*):
+  See the [path search options](#path-search-options).
 
 {{< info >}}
 Shortest Path traversals do not support negative weights. If a document
@@ -98,6 +92,24 @@ FOR vertex[, edge]
 Instead of `GRAPH graphName` you may specify a list of edge collections (anonymous
 graph). The involved vertex collections are determined by the edges of the given
 edge collections. The rest of the behavior is similar to the named version.
+
+### Path search options
+
+#### `weightAttribute`
+
+A top-level edge attribute that should be used to read the edge weight (string).
+
+If the attribute does not exist or is not numeric, the `defaultWeight` is used
+instead.
+
+The attribute value must not be negative.
+
+#### `defaultWeight`
+
+This value is used as fallback if there is no `weightAttribute` in the
+edge document, or if it's not a number (number).
+
+The value must not be negative. The default is `1`.
 
 ### Traversing in mixed directions
 
