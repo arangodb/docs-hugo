@@ -1,6 +1,6 @@
 ---
 title: AQL query logging
-menu: Query logging
+menuTitle: Query logging
 weight: 35
 description: >-
   You can optionally let ArangoDB write metadata of finished AQL queries to a
