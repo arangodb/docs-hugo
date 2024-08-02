@@ -22,14 +22,19 @@ SAML SSO works by transferring user authentication data from the identity
 provider (IdP) to the service provider (SP) through an exchange of digitally
 signed XML documents.
 
-## IdP-initiated vs SP-initiated SSO
+## IdP-initiated versus SP-initiated SSO
 
-There are two methods for starting Single Sign-On
-   - Identity Provider Initiated (IdP-initiated): you log into the Identity Provider and are then redirected to ArangoGraph
-   - Service Provider Initiated (SP-initiated): you access the ArangoGraph site which then redirects you to the Identity Provider for authentication
+There are generally two methods for starting Single Sign-On:
 
-ArangoGraph **only supports SP-initiated SSO** because IdP-Initiated is vulnerable to Man-in-the-Middle attacks.
-In order to initiate the SSO login process, you must start at ArangoGraph.
+- **Identity Provider Initiated** (IdP-initiated):
+   You log into the Identity Provider and are then redirected to ArangoGraph.
+- **Service Provider Initiated** (SP-initiated):
+   You access the ArangoGraph site which then redirects you to the
+   Identity Provider for authentication.
+
+**ArangoGraph only supports SP-initiated SSO** because IdP-Initiated SSO is
+vulnerable to Man-in-the-Middle attacks. In order to initiate the SSO login
+process, you must start at ArangoGraph.
 
 ## Configure SAML 2.0 using Okta
 
