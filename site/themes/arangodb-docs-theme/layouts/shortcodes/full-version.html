@@ -3,5 +3,7 @@
 {{ if $versions -}}
   {{ (index $versions 0).version | htmlEscape -}}
 {{ else -}}
-  {{ errorf "%q: Could not find version info for '%s'" .Page.Path $ver -}}
+  {{ $path := "<non-file source>" -}}
+  {{ with .Page.File }}{{ $path = .Path }}{{ end -}}
+  {{ errorf "%q: Could not find version info for '%s'" $path $ver -}}
 {{ end -}}
