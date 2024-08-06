@@ -95,14 +95,23 @@
   {{- $content := .content }}
   {{- $page := .page }}
   <div class="openapi-parameters regular-font">
-    {{- $contentType := ""}}
-    {{- $schemaType := ""}}
+    {{- $contentType := "" }}
+    {{- $schemaType := "" }}
+    {{- $schemaDefaultSet := false }}
+    {{- $schemaDefault := "" }}
     {{- range $k, $v := $content.content }}
       {{- $contentType = $k }}
       {{- $schemaType = $v.schema.type }}
+      {{- $schemaDefaultSet = isset $v.schema "default" }}
+      {{- $schemaDefault = $v.schema.default }}
     {{- end }}
     <div class="openapi-table-title">Request Body <span class="openapi-content-type">{{ $contentType }}</span>
-    {{- with $schemaType }}{{ if ne . "array" }} <span class="openapi-property-type bold-text">{{ . }}</span>{{ end }}{{ end }}</div>
+    {{- with $schemaType }}
+      {{- if ne . "array" }} <span class="openapi-property-type">{{ . }}
+        {{- if $schemaDefaultSet }} <span style="font-weight: normal">(default: <code>{{ $schemaDefault | jsonify }}</code>)</span>{{ end }}</span>
+      {{- end }}
+    {{- end }}
+    </div>
     <div>
       <ul class="openapi-table">
       {{- range $k, $v := $content.content }}
@@ -168,12 +177,20 @@
                 <ul class="openapi-table">
                   {{- $contentType := "" }}
                   {{- $schemaType := "" }}
+                  {{- $schemaDefaultSet := false }}
+                  {{- $schemaDefault := "" }}
                   {{- range $k, $v := $content.content }}
                     {{- $contentType = $k }}
                     {{- $schemaType = $v.schema.type }}
+                    {{- $schemaDefaultSet = isset $v.schema "default" }}
+                    {{- $schemaDefault = $v.schema.default }}
                   {{- end }}
                   <div class="openapi-table-title">Response Body <span class="openapi-content-type">{{ $contentType }}</span>
-                  {{- with $schemaType }}{{ if ne . "array" }} <span class="openapi-property-type bold-text">{{ . }}</span>{{ end }}{{ end }}</div>
+                  {{- with $schemaType }}
+                    {{- if ne . "array" }} <span class="openapi-property-type">{{ . }}
+                      {{- if $schemaDefaultSet }} <span style="font-weight: normal">(default: <code>{{ $schemaDefault | jsonify }}</code>)</span>{{ end }}</span>
+                    {{- end }}
+                  {{- end }}</div>
                   {{- range $k, $v := $content.content }}
                     {{- if eq $v.schema.type "array" }}
                       {{- $required := false }}
