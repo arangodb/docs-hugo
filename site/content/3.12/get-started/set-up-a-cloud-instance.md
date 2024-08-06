@@ -59,7 +59,7 @@ used for multiple accounts.
    name, and then press the __Save__ button.
 9. An organization with a default project is now prepared for you.
    Once that is completed, you are redirected to the
-   [ArangoGraph dashboard](https://dashboard.arangodb.cloud/home).
+   [ArangoGraph dashboard](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
 
 ## Get a Deployment up and Running
 
