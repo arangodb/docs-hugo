@@ -23,11 +23,15 @@ most of all the [requirements and limitations](../../operations/backup-and-resto
 before using the API.
 {{< /warning >}}
 
+The permissions required to use the `/_admin/backup/*` endpoints depends on the
+setting of the [`--backup.options-api` startup option](../../components/arangodb-server/options.md#--serveroptions-api).
+
 ## Create a backup
 
 ```openapi
 paths:
   /_admin/backup/create:
+  # Independent of database
     post:
       operationId: createBackup
       description: |
@@ -124,6 +128,7 @@ body = {
 ```openapi
 paths:
   /_admin/backup/restore:
+  # Independent of database
     post:
       operationId: restoreBackup
       description: |
@@ -212,6 +217,7 @@ while (require("internal").time() - startTime < 10) {
 ```openapi
 paths:
   /_admin/backup/delete:
+  # Independent of database
     post:
       operationId: deleteBackup
       description: |
@@ -270,6 +276,7 @@ body = {
 ```openapi
 paths:
   /_admin/backup/list:
+  # Independent of database
     post:
       operationId: listBackups
       description: |
@@ -349,6 +356,7 @@ body = {
 ```openapi
 paths:
   /_admin/backup/upload:
+  # Independent of database
     post:
       operationId: uploadBackup
       description: |
@@ -500,6 +508,7 @@ body = {
 ```openapi
 paths:
   /_admin/backup/download:
+  # Independent of database
     post:
       operationId: downloadBackup
       description: |

@@ -53,9 +53,20 @@
 <small>Deprecated in: {{ delimit . ", " }}</small>
 {{ end }}
 
-{{ with $option.enterpriseOnly }}
-*Enterprise Edition only*
-{{ end }}
+{{- $badges := slice }}
+{{- if $option.experimental }}
+  {{- $badges = $badges | append "Experimental"}}
+{{- end }}
+{{- if $option.enterpriseOnly }}
+  {{- $badges = $badges | append "Enterprise Edition" }}
+{{- end }}
+{{- if $badges }}
+<p class="labels">
+  {{- range $badges }}
+  <span class="label">{{ . }}</span>
+  {{- end -}}
+</p>
+{{- end }}
 
 **Type**: {{ $option.type }}
 

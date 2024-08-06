@@ -26,7 +26,7 @@ refer to [Transactions](../../transactions/_index.md).
 
 ```openapi
 paths:
-  /_api/transaction:
+  /_db/{database-name}/_api/transaction:
     post:
       operationId: executeJavaScriptTransaction
       description: |
@@ -65,6 +65,15 @@ paths:
         an error.
         Any other errors will be returned with any of the return codes
         *HTTP 400*, *HTTP 409*, or *HTTP 500*.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:

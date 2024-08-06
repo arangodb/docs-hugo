@@ -27,13 +27,21 @@ for details.
 
 ```openapi
 paths:
-  /_api/edges/{collection-id}:
+  /_db/{database-name}/_api/edges/{collection-id}:
     get:
       operationId: getVertexEdges
       description: |
         Returns an array of edges starting or ending in the vertex identified by
         `vertex`.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-id
           in: path
           required: true

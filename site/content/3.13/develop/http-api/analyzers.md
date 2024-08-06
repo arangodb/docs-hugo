@@ -16,11 +16,20 @@ introduction and the available types, properties and features.
 
 ```openapi
 paths:
-  /_api/analyzer:
+  /_db/{database-name}/_api/analyzer:
     post:
       operationId: createAnalyzer
       description: |
         Creates a new Analyzer based on the provided configuration.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -96,7 +105,7 @@ analyzers.remove(analyzerName, true);
 
 ```openapi
 paths:
-  /_api/analyzer/{analyzer-name}:
+  /_db/{database-name}/_api/analyzer/{analyzer-name}:
     get:
       operationId: getAnalyzer
       description: |
@@ -107,6 +116,14 @@ paths:
         - `properties`: the properties used to configure the specified type
         - `features`: the set of features to set on the Analyzer generated fields
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: analyzer-name
           in: path
           required: true
@@ -152,7 +169,7 @@ analyzers.remove(analyzerName, true);
 
 ```openapi
 paths:
-  /_api/analyzer:
+  /_db/{database-name}/_api/analyzer:
     get:
       operationId: listAnalyzers
       description: |
@@ -162,6 +179,15 @@ paths:
         - `type`: the Analyzer type
         - `properties`: the properties used to configure the specified type
         - `features`: the set of features to set on the Analyzer generated fields
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -190,7 +216,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/analyzer/{analyzer-name}:
+  /_db/{database-name}/_api/analyzer/{analyzer-name}:
     delete:
       operationId: deleteAnalyzer
       description: |
@@ -201,6 +227,14 @@ paths:
         - `error`: `false`
         - `name`: The name of the removed Analyzer
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: analyzer-name
           in: path
           required: true

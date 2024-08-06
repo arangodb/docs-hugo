@@ -5,6 +5,7 @@ weight: 110
 description: >-
   You can get information about ArangoDB servers, toggle the maintenance mode,
   shut down server nodes, and start actions like compaction
+# Internal /_admin/debug and /_api/test endpoints for maintainers not documented on purpose
 ---
 ## Information
 
@@ -12,21 +13,34 @@ description: >-
 
 ```openapi
 paths:
-  /_api/version:
+  /_db/{database-name}/_api/version:
+  # /_admin/version is an (undocumented) alias
     get:
+    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getVersion
       description: |
         Returns the server name and version number. The response is a JSON object
         with the following attributes:
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
         - name: details
           in: query
           required: false
           description: |
-            If set to `true`, the response will contain a `details` attribute with
-            additional information about included components and their versions. The
-            attribute names and internals of the `details` object may vary depending on
-            platform and ArangoDB version.
+            If set to `true` and if the user account you authenticate with has
+            administrate access to the `_system` database, the response contains
+            a `details` attribute with additional information about included
+            components and their versions. The attribute names and internals of
+            the `details` object may vary depending on platform and ArangoDB version.
           schema:
             type: boolean
       responses:
@@ -222,12 +236,23 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/engine:
+  /_db/{database-name}/_api/engine:
     get:
       operationId: getEngine
       description: |
         Returns the storage engine the server is configured to use.
         The response is a JSON object with the following attributes:
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -266,12 +291,24 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_admin/time:
+  /_db/{database-name}/_admin/time:
     get:
+    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getTime
       description: |
         The call returns an object with the `time` attribute. This contains the
         current system time as a Unix timestamp with microsecond precision.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -305,11 +342,24 @@ paths:
 
 ```openapi
 paths:
-  /_admin/status:
+  /_db/{database-name}/_admin/status:
     get:
+    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getStatus
       description: |
         Returns status information about the server.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database. If the `--server.harden` startup option is enabled,
+            administrate access to the `_system` database is required.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -541,6 +591,7 @@ logJsonResponse(response);
 ```openapi
 paths:
   /_admin/server/availability:
+  # Independent of database
     get:
       operationId: getServerAvailability
       description: |
@@ -596,14 +647,15 @@ paths:
 
 ```openapi
 paths:
-  /_admin/support-info:
+  /_db/_system/_admin/support-info:
     get:
+      # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: getSupportInfo
       description: |
         Retrieves deployment information for support purposes. The endpoint returns data
         about the ArangoDB version used, the host (operating system, server ID, CPU and
         storage capacity, current utilization, a few metrics) and the other servers in
-        the deployment (in case of Active Failover or cluster deployments).
+        the deployment (in case of cluster deployments).
 
         As this API may reveal sensitive data about the deployment, it can only be
         accessed from inside the `_system` database. In addition, there is a policy
@@ -684,7 +736,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_admin/server/mode:
+  /_db/{database-name}/_admin/server/mode:
     get:
       operationId: getServerMode
       description: |
@@ -694,6 +746,17 @@ paths:
         Creating or dropping of databases and collections will also fail with error code `11` (_ERROR_FORBIDDEN_).
 
         This API requires authentication.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -706,7 +769,7 @@ paths:
 
 ```openapi
 paths:
-  /_admin/server/mode:
+  /_db/{database-name}/_admin/server/mode:
     put:
       operationId: setServerMode
       description: |
@@ -718,6 +781,17 @@ paths:
 
         This is a protected API. It requires authentication and administrative
         server rights.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -750,12 +824,24 @@ status and update the license of your ArangoDB Enterprise Edition deployment.
 
 ```openapi
 paths:
-  /_admin/license:
+  /_db/{database-name}/_admin/license:
     get:
       operationId: getLicense
       description: |
         View the license information and status of an Enterprise Edition instance.
         Can be called on single servers, Coordinators, and DB-Servers.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database. If the `--server.harden` startup option is enabled,
+            administrate access to the `_system` database is required.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -840,13 +926,24 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_admin/license:
+  /_db/{database-name}/_admin/license:
     put:
       operationId: setLicense
       description: |
         Set a new license for an Enterprise Edition instance.
         Can be called on single servers, Coordinators, and DB-Servers.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database. If the `--server.harden` startup option is enabled,
+            administrate access to the `_system` database is required.
+          schema:
+            type: string
         - name: force
           in: query
           required: false
@@ -997,12 +1094,22 @@ x-content-type-options: nosniff
 
 ```openapi
 paths:
-  /_admin/shutdown:
+  /_db/{database-name}/_admin/shutdown:
     delete:
       operationId: startShutdown
       description: |
         This call initiates a clean shutdown sequence. Requires administrative privileges.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+          schema:
+            type: string
         - name: soft
           in: query
           required: false
@@ -1046,7 +1153,7 @@ paths:
 
 ```openapi
 paths:
-  /_admin/shutdown:
+  /_db/{database-name}/_admin/shutdown:
     get:
       operationId: getShutdownProgress
       description: |
@@ -1066,6 +1173,17 @@ paths:
          - Ongoing low priority requests
 
         This API is only available on Coordinators.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -1134,6 +1252,7 @@ paths:
 ```openapi
 paths:
   /_admin/compact:
+  # Independent of database (superuser has access to all databases that exist)
     put:
       operationId: compactAllDatabases
       description: |
@@ -1192,12 +1311,24 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_admin/routing/reload:
+  /_db/{database-name}/_admin/routing/reload:
     post:
+    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: reloadRouting
       description: |
         Reloads the routing information from the `_routing` system collection if it
         exists, and makes Foxx rebuild its local routing table on the next request.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -1210,7 +1341,7 @@ paths:
 
 ```openapi
 paths:
-  /_admin/echo:
+  /_db/{database-name}/_admin/echo:
     post:
       operationId: echoRequest
       description: |
@@ -1227,6 +1358,17 @@ paths:
                   description: |
                     The request body can be of any type and is simply forwarded.
                   type: string
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -1385,8 +1527,9 @@ paths:
 
 ```openapi
 paths:
-  /_admin/execute:
+  /_db/{database-name}/_admin/execute:
     post:
+    # Technically accepts all of the following methods: HEAD, GET, POST, PATCH, PUT, DELETE
       operationId: executeCode
       description: |
         Executes the JavaScript code in the body on the server as the body
@@ -1403,6 +1546,15 @@ paths:
         The default value of this option is `false`, which disables the execution of
         user-defined code and disables this API endpoint entirely.
         This is also the recommended setting for production.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -1453,7 +1605,7 @@ the default `_system` database and none of the other databases.
 
 ```openapi
 paths:
-  /_api/endpoint:
+  /_db/_system/_api/endpoint:
     get:
       operationId: listEndpoints
       description: |

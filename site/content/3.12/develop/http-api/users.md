@@ -6,6 +6,8 @@ description: >-
   The HTTP API for user management lets you create, modify, delete, and list
   ArangoDB user accounts, as well as grant and revoke permissions for databases
   and collections
+# GET|PUT|DELETE /_api/user/{user}/config and GET /_api/user/{user}/config/{key}
+# endpoints not documented on purpose because they are only used by the web interface
 ---
 The interface provides the means to manage database system users. All
 users managed through this interface are stored in the protected `_users`
@@ -29,12 +31,23 @@ User management operations are not included in ArangoDB's replication.
 
 ```openapi
 paths:
-  /_api/user:
+  /_db/{database-name}/_api/user:
     post:
       operationId: createUser
       description: |
         Create a new user. You need server access level *Administrate* in order to
         execute this REST call.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -108,7 +121,7 @@ require("@arangodb/users").remove("admin@example");
 
 ```openapi
 paths:
-  /_api/user/{user}:
+  /_db/{database-name}/_api/user/{user}:
     put:
       operationId: replaceUserData
       description: |
@@ -116,6 +129,16 @@ paths:
         *Administrate* in order to execute this REST call. Additionally, users can
         change their own data.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+          schema:
+            type: string
         - name: user
           in: path
           required: true
@@ -193,7 +216,7 @@ users.remove(theUser);
 
 ```openapi
 paths:
-  /_api/user/{user}:
+  /_db/{database-name}/_api/user/{user}:
     patch:
       operationId: updateUserData
       description: |
@@ -201,6 +224,16 @@ paths:
         *Administrate* in order to execute this REST call. Additionally, users can
         change their own data.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+          schema:
+            type: string
         - name: user
           in: path
           required: true
@@ -276,7 +309,7 @@ users.remove(theUser);
 
 ```openapi
 paths:
-  /_api/user/{user}:
+  /_db/{database-name}/_api/user/{user}:
     delete:
       operationId: deleteUser
       description: |
@@ -285,6 +318,16 @@ paths:
         You need *Administrate* permissions for the server access level in order to
         execute this REST call.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+          schema:
+            type: string
         - name: user
           in: path
           required: true
@@ -333,7 +376,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/user/{user}:
+  /_db/{database-name}/_api/user/{user}:
     get:
       operationId: getUser
       description: |
@@ -341,6 +384,16 @@ paths:
         yourself or you need the *Administrate* server access level in order to
         execute this REST call.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+          schema:
+            type: string
         - name: user
           in: path
           required: true
@@ -390,7 +443,7 @@ users.remove(theUser);
 
 ```openapi
 paths:
-  /_api/user/:
+  /_db/{database-name}/_api/user/:
     get:
       operationId: listUsers
       description: |
@@ -405,6 +458,17 @@ paths:
         - `active`: An optional flag that specifies whether the user is active.
         - `extra`: A JSON object with extra user information. It is used by the web
           interface to store graph viewer settings and saved queries.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -441,7 +505,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/user/{user}/database/{dbname}:
+  /_db/{database-name}/_api/user/{user}/database/{dbname}:
     put:
       operationId: setUserDatabasePermissions
       description: |
@@ -463,6 +527,16 @@ paths:
                     - Use "none" to set the database access level to *No access*.
                   type: string
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+          schema:
+            type: string
         - name: user
           in: path
           required: true
@@ -474,7 +548,7 @@ paths:
           in: path
           required: true
           description: |
-            The name of the database.
+            The name of the database to set the access level for.
           schema:
             type: string
       responses:
@@ -521,7 +595,7 @@ users.remove(theUser);
 
 ```openapi
 paths:
-  /_api/user/{user}/database/{dbname}/{collection}:
+  /_db/{database-name}/_api/user/{user}/database/{dbname}/{collection}:
     put:
       operationId: setUserCollectionPermissions
       description: |
@@ -545,6 +619,16 @@ paths:
                     Use "none" to set the collection level access to *No access*.
                   type: string
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+          schema:
+            type: string
         - name: user
           in: path
           required: true
@@ -556,14 +640,14 @@ paths:
           in: path
           required: true
           description: |
-            The name of the database.
+            The name of the database to set the access level for.
           schema:
             type: string
         - name: collection
           in: path
           required: true
           description: |
-            The name of the collection.
+            The name of the collection to set the access level for.
           schema:
             type: string
       responses:
@@ -614,7 +698,7 @@ users.remove(theUser);
 
 ```openapi
 paths:
-  /_api/user/{user}/database/{dbname}:
+  /_db/{database-name}/_api/user/{user}/database/{dbname}:
     delete:
       operationId: deleteUserDatabasePermissions
       description: |
@@ -625,6 +709,16 @@ paths:
         You need write permissions (*Administrate* access level) for the `_system`
         database in order to execute this REST call.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+          schema:
+            type: string
         - name: user
           in: path
           required: true
@@ -636,7 +730,7 @@ paths:
           in: path
           required: true
           description: |
-            The name of the database.
+            The name of the database to clear the access level for.
           schema:
             type: string
       responses:
@@ -676,7 +770,7 @@ users.remove(theUser);
 
 ```openapi
 paths:
-  /_api/user/{user}/database/{dbname}/{collection}:
+  /_db/{database-name}/_api/user/{user}/database/{dbname}/{collection}:
     delete:
       operationId: deleteUserCollectionPermissions
       description: |
@@ -688,6 +782,16 @@ paths:
         You need write permissions (*Administrate* access level) for the `_system`
         database in order to execute this REST call.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+          schema:
+            type: string
         - name: user
           in: path
           required: true
@@ -699,14 +803,14 @@ paths:
           in: path
           required: true
           description: |
-            The name of the database.
+            The name of the database to clear the access level for.
           schema:
             type: string
         - name: collection
           in: path
           required: true
           description: |
-            The name of the collection.
+            The name of the collection to clear the access level for.
           schema:
             type: string
       responses:
@@ -749,7 +853,7 @@ users.remove(theUser);
 
 ```openapi
 paths:
-  /_api/user/{user}/database/:
+  /_db/{database-name}/_api/user/{user}/database/:
     get:
       operationId: listUserDatabases
       description: |
@@ -766,6 +870,16 @@ paths:
         In case you specified `full`, the result will contain the permissions
         for the databases as well as the permissions for the collections.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+          schema:
+            type: string
         - name: user
           in: path
           required: true
@@ -843,12 +957,22 @@ users.remove(theUser);
 
 ```openapi
 paths:
-  /_api/user/{user}/database/{dbname}:
+  /_db/{database-name}/_api/user/{user}/database/{dbname}:
     get:
       operationId: getUserDatabasePermissions
       description: |
         Fetch the database access level for a specific database
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+          schema:
+            type: string
         - name: user
           in: path
           required: true
@@ -860,7 +984,7 @@ paths:
           in: path
           required: true
           description: |
-            The name of the database to query
+            The name of the database to query the access level of.
           schema:
             type: string
       responses:
@@ -906,12 +1030,22 @@ users.remove(theUser);
 
 ```openapi
 paths:
-  /_api/user/{user}/database/{dbname}/{collection}:
+  /_db/{database-name}/_api/user/{user}/database/{dbname}/{collection}:
     get:
       operationId: getUserCollectionPermissions
       description: |
         Returns the collection access level for a specific collection
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database and administrate access to the `_system` database.
+          schema:
+            type: string
         - name: user
           in: path
           required: true
@@ -923,14 +1057,14 @@ paths:
           in: path
           required: true
           description: |
-            The name of the database to query
+            The name of the database to query the access level of.
           schema:
             type: string
         - name: collection
           in: path
           required: true
           description: |
-            The name of the collection
+            The name of the collection to query the access level of.
           schema:
             type: string
       responses:

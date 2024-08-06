@@ -34,6 +34,22 @@ the available options.
 For more detailed plugin installation instructions, see the
 [Confluent Documentation](https://docs.confluent.io/platform/current/connect/userguide.html#connect-installing-plugins).
 
+## Connection handling
+
+Task connections to the database are evenly distributed across all available
+ArangoDB Coordinators. If a connectivity error occur, a connection is
+re-established with a different Coordinator.
+
+Available Coordinators can be periodically monitored by setting
+`connection.acquireHostList.enabled` to `true` and optionally configuring the
+monitoring interval.
+
+Over time, due to connection failovers, the distribution of task connections
+across the Coordinators may become uneven. To address this, connections are
+periodically re-balanced across the available Coordinators. The rebalancing
+interval can be configured via the `connection.rebalance.interval.ms` property.
+The default is 30 minutes.
+
 ## Delivery guarantees
 
 This connector guarantees that each record in the Kafka topic is delivered at
@@ -125,9 +141,10 @@ and `errors.deadletterqueue.topic.name`.
 
 ## Multiple tasks
 
-The ArangoDB sink connector supports running one or more tasks. You can specify
-the number of tasks in the
-[`tasks.max` configuration parameter](https://docs.confluent.io/platform/current/installation/configuration/connect/sink-connect-configs.html#tasks-max).
+The connector can scale out by running multiple tasks in parallel as specified by the
+[`tasks.max`](https://docs.confluent.io/platform/current/installation/configuration/connect/sink-connect-configs.html#tasks-max)
+configuration parameter. In this case, each connector task handles the records
+from different Kafka topics partitions.
 
 ## Data mapping
 
@@ -147,6 +164,8 @@ The record value must be either:
 - `map`
 - `null` (tombstone record)
 
+Record values are converted to JSON objects using Kafka Connect `JsonConverter`,
+ensuring compatibility with Kafka Connect data types and support to schemas.
 If the data in the topic is not of a compatible format, applying an
 [SMT](https://docs.confluent.io/platform/current/connect/transforms/overview.html)
 or implementing a custom converter may be necessary.
@@ -167,6 +186,9 @@ This behavior is disabled by default, meaning that any tombstone records results
 in a failure of the connector.
 
 You can enable deletes with `delete.enabled=true`.
+
+Delete operations are idempotent and do not throw errors if the target document
+does not exist.
 
 Enabling delete mode does not affect the `insert.overwriteMode`.
 
@@ -194,11 +216,11 @@ this can lead to constraint violations errors if records need to be re-processed
 
 ## Ordering guarantees
 
-Kafka records in the same Kafka topic partition mapped to documents with the
+Kafka records in the same Kafka topic partition that are mapped to documents with the
 same `_key` (see [Key handling](#key-handling)) are written to ArangoDB in the
 same order as they are in the Kafka topic partition.
 
-The order between writes for records in the same Kafka partition that are mapped
+The order of the writes for records in the same Kafka partition that are mapped
 to documents with different `_key` is not guaranteed.
 
 The order between writes for records in different Kafka partitions is not guaranteed.
@@ -206,7 +228,7 @@ The order between writes for records in different Kafka partitions is not guaran
 To guarantee documents in ArangoDB are eventually consistent with the records in
 the Kafka topic, it is recommended deriving the document `_key` from Kafka
 record keys and using a key-based partitioner that assigns the same partition to
-records with the same key (e.g. Kafka default partitioner).
+records with the same key (i.e. Kafka default partitioner).
 
 Otherwise, in case the document `_key` is assigned from Kafka record value field
 `_key`, the same could be achieved using a field partitioner on `_key`.
@@ -238,8 +260,8 @@ configuration properties can be used:
 - `ssl.truststore.location`: the location of the trust store file
 - `ssl.truststore.password`: the password for the trust store file
 
-Note that the trust store file path needs to be accessible from all
-Kafka Connect workers.
+Note that the trust store file path needs to be accessible at the same given
+location from all Kafka Connect workers.
 
 ### Certificate from configuration property value
 
@@ -254,7 +276,6 @@ See [SSL configuration](configuration.md#ssl) for further options.
 
 - Record values are required to be object-like structures (DE-644)
 - Auto-creation of ArangoDB collection is not supported (DE-653)
-- `ssl.cert.value` does not support multiple certificates (DE-655)
 - Batch writes are not guaranteed to be executed serially (FRB-300)
 - Batch writes may succeed for some documents while failing for others (FRB-300)
   This has two important consequences:

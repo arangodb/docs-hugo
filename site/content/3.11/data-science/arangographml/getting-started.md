@@ -188,7 +188,7 @@ Let's get started!
 
 {{< tab "ArangoGraphML" >}}
 
-The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package
+The [`arango_datasets` Python package](../../components/tools/arango-datasets.md)
 allows you to load pre-defined datasets into ArangoDB. It comes pre-installed in the
 ArangoGraphML notebook environment.
 
@@ -205,8 +205,9 @@ DATASET_NAME = "OPEN_INTELLIGENCE_ANGOLA"
 
 {{< tab "Self-managed" >}}
 
-The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package
-allows you to load a dataset into ArangoDB. It can be installed with:
+The [`arango_datasets` Python package](../../components/tools/arango-datasets.md)
+allows you to load pre-defined datasets into ArangoDB. It can be installed with the
+following command:
 
 ```
 pip install arango-datasets
@@ -276,7 +277,7 @@ arangoml.projects.list_projects()
     - `size`: The number of dimensions to reduce the feature length to. Default is `512`.
 
   - `defaultsPerFeatureType`: A dictionary mapping each feature to how missing or mismatched values should be handled. The keys of this dictionary are the features, and the values are sub-dictionaries with the following keys:
-    -  `missing`: A sub-dictionary detailing how missing values should be handled.
+    - `missing`: A sub-dictionary detailing how missing values should be handled.
       - `strategy`: The strategy to use for missing values. Options include `REPLACE` or `RAISE`.
       - `replacement`: The value to replace missing values with. Only needed if `strategy` is `REPLACE`.
     - `mismatch`: A sub-dictionary detailing how mismatched values should be handled.

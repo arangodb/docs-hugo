@@ -227,7 +227,7 @@ in a batch part will be ignored.
 
 ```openapi
 paths:
-  /_api/batch:
+  /_db/{database-name}/_api/batch:
     post:
       operationId: executeBatchRequest
       description: |
@@ -267,6 +267,15 @@ paths:
         original client request. Client can additionally use the `Content-Id`
         MIME header in a batch part to define an individual id for each batch part.
         The server will return this id is the batch part responses, too.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:

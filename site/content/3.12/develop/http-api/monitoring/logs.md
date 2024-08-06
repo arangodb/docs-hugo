@@ -12,6 +12,9 @@ on the [log startup options](../../../components/arangodb-server/options.md#log)
 See [Log levels](../../../operations/administration/log-levels.md) for a detailed
 description of the `FATAL`, `ERROR`, and other levels of log messages.
 
+The permissions required to use the `/_admin/log*` endpoints depends on the
+setting of the [`--log.api-enabled` startup option](../../../components/arangodb-server/options.md#--logapi-enabled).
+
 ## Get the global server logs
 
 ```openapi
@@ -414,7 +417,8 @@ paths:
                   type: string
                 audit-service:
                   description: |
-                    Unused log topic (_Enterprise Edition only_).
+                    Controls whether the start and stop events of the audit
+                    service are written to the audit log (_Enterprise Edition only_).
                   type: string
                 audit-view:
                   description: |

@@ -268,7 +268,7 @@ the cursor, even before you requested the last batch.
 
 ```openapi
 paths:
-  /_api/cursor:
+  /_db/{database-name}/_api/cursor:
     post:
       operationId: createAqlQueryCursor
       description: |
@@ -280,6 +280,14 @@ paths:
         bind parameters. These values need to be passed in a JSON representation in
         the body of the POST request.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: x-arango-allow-dirty-read
           in: header
           required: false
@@ -1323,7 +1331,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/cursor/{cursor-identifier}:
+  /_db/{database-name}/_api/cursor/{cursor-identifier}:
     post:
       operationId: getNextAqlQueryCursorBatch
       description: |
@@ -1332,6 +1340,14 @@ paths:
         If the cursor is not fully consumed, the time-to-live for the cursor
         is renewed by this API call.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: cursor-identifier
           in: path
           required: true
@@ -1805,7 +1821,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/cursor/{cursor-identifier}:
+  /_db/{database-name}/_api/cursor/{cursor-identifier}:
     put:
       operationId: getNextAqlQueryCursorBatchPut
       description: |
@@ -1836,6 +1852,14 @@ paths:
         If the cursor is not fully consumed, the time-to-live for the cursor
         is renewed by this API call.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: cursor-identifier
           in: path
           required: true
@@ -1936,7 +1960,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/cursor/{cursor-identifier}/{batch-identifier}:
+  /_db/{database-name}/_api/cursor/{cursor-identifier}/{batch-identifier}:
     post:
       operationId: getPreviousAqlQueryCursorBatch
       description: |
@@ -1967,6 +1991,14 @@ paths:
 
         The time-to-live for the cursor is renewed by this API call.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: cursor-identifier
           in: path
           required: true
@@ -2481,7 +2513,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/cursor/{cursor-identifier}:
+  /_db/{database-name}/_api/cursor/{cursor-identifier}:
     delete:
       operationId: deleteAqlQueryCursor
       description: |
@@ -2495,6 +2527,14 @@ paths:
         Note: the server will also destroy abandoned cursors automatically after a
         certain server-controlled timeout to avoid resource leakage.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: cursor-identifier
           in: path
           required: true
@@ -2557,7 +2597,7 @@ list.
 
 ```openapi
 paths:
-  /_api/query/properties:
+  /_db/{database-name}/_api/query/properties:
     get:
       operationId: getAqlQueryTrackingProperties
       description: |
@@ -2588,6 +2628,15 @@ paths:
           list of queries. Query strings can have arbitrary lengths, and this property
           can be used to save memory in case very long query strings are used. The
           value is specified in bytes.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -2603,7 +2652,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/query/properties:
+  /_db/{database-name}/_api/query/properties:
     put:
       operationId: updateAqlQueryTrackingProperties
       description: |
@@ -2612,6 +2661,15 @@ paths:
 
         After the properties have been changed, the current set of properties will
         be returned in the HTTP response.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -2677,7 +2735,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/query/current:
+  /_db/{database-name}/_api/query/current:
     get:
       operationId: listAqlQueries
       description: |
@@ -2717,13 +2775,21 @@ paths:
 
         - `stream`: whether or not the query uses a streaming cursor
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: all
           in: query
           required: false
           description: |
             If set to `true`, will return the currently running queries in all databases,
             not just the selected one.
-            Using the parameter is only allowed in the system database and with superuser
+            Using the parameter is only allowed in the `_system` database and with superuser
             privileges.
           schema:
             type: boolean
@@ -2746,7 +2812,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/query/slow:
+  /_db/{database-name}/_api/query/slow:
     get:
       operationId: listSlowAqlQueries
       description: |
@@ -2780,13 +2846,21 @@ paths:
 
         - `stream`: whether or not the query uses a streaming cursor
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: all
           in: query
           required: false
           description: |
             If set to `true`, will return the slow queries from all databases, not just
             the selected one.
-            Using the parameter is only allowed in the system database and with superuser
+            Using the parameter is only allowed in the `_system` database and with superuser
             privileges.
           schema:
             type: boolean
@@ -2809,19 +2883,27 @@ paths:
 
 ```openapi
 paths:
-  /_api/query/slow:
+  /_db/{database-name}/_api/query/slow:
     delete:
       operationId: clearSlowAqlQueryList
       description: |
         Clears the list of slow AQL queries for the current database.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: all
           in: query
           required: false
           description: |
             If set to `true`, will clear the slow query history in all databases, not just
             the selected one.
-            Using the parameter is only allowed in the system database and with superuser
+            Using the parameter is only allowed in the `_system` database and with superuser
             privileges.
           schema:
             type: boolean
@@ -2848,13 +2930,21 @@ soon as it reaches a cancelation point.
 
 ```openapi
 paths:
-  /_api/query/{query-id}:
+  /_db/{database-name}/_api/query/{query-id}:
     delete:
       operationId: deleteAqlQuery
       description: |
         Kills a running query in the currently selected database. The query will be
         terminated at the next cancelation point.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: query-id
           in: path
           required: true
@@ -2868,7 +2958,7 @@ paths:
           description: |
             If set to `true`, will attempt to kill the specified query in all databases,
             not just the selected one.
-            Using the parameter is only allowed in the system database and with superuser
+            Using the parameter is only allowed in the `_system` database and with superuser
             privileges.
           schema:
             type: boolean
@@ -2904,7 +2994,7 @@ You can also retrieve a list of all query optimizer rules and their properties.
 
 ```openapi
 paths:
-  /_api/explain:
+  /_db/{database-name}/_api/explain:
     post:
       operationId: explainAqlQuery
       description: |
@@ -2946,6 +3036,15 @@ paths:
 
         - `variables`: array of variables used in the query (note: this may contain
           internal variables created by the optimizer)
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -3194,12 +3293,23 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/query:
+  /_db/{database-name}/_api/query:
     post:
       operationId: parseAqlQuery
       description: |
         This endpoint is for query validation only. To actually query the database,
         see `/api/cursor`.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -3273,11 +3383,22 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/query/rules:
+  /_db/{database-name}/_api/query/rules:
     get:
       operationId: getAqlQueryOptimizerRules
       description: |
         A list of all optimizer rules and their properties.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
