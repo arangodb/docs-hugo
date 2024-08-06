@@ -15,7 +15,7 @@ For more information on Foxx and its JavaScript APIs see the
 
 ```openapi
 paths:
-  /_api/foxx:
+  /_db/{database-name}/_api/foxx:
     get:
       operationId: listFoxxServices
       description: |
@@ -33,6 +33,14 @@ paths:
         - `name`: a string identifying the service type
         - `version`: a semver-compatible version string
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: excludeSystem
           in: query
           required: false
@@ -52,7 +60,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/service:
+  /_db/{database-name}/_api/foxx/service:
     get:
       operationId: getFoxxServiceDescription
       description: |
@@ -71,6 +79,14 @@ paths:
         - `name`: a string identifying the service type
         - `version`: a semver-compatible version string
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: mount
           in: query
           required: true
@@ -93,7 +109,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx:
+  /_db/{database-name}/_api/foxx:
     post:
       operationId: createFoxxService
       description: |
@@ -127,6 +143,14 @@ paths:
         Note that when using file system paths in a cluster with multiple Coordinators
         the file system path must resolve to equivalent files on every Coordinator.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: mount
           in: query
           required: true
@@ -167,7 +191,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/service:
+  /_db/{database-name}/_api/foxx/service:
     delete:
       operationId: deleteFoxxService
       description: |
@@ -201,7 +225,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/service:
+  /_db/{database-name}/_api/foxx/service:
     put:
       operationId: replaceFoxxService
       description: |
@@ -240,6 +264,14 @@ paths:
         Note that when using file system paths in a cluster with multiple Coordinators
         the file system path must resolve to equivalent files on every Coordinator.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: mount
           in: query
           required: true
@@ -287,7 +319,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/service:
+  /_db/{database-name}/_api/foxx/service:
     patch:
       operationId: upgradeFoxxService
       description: |
@@ -326,6 +358,14 @@ paths:
         Note that when using file system paths in a cluster with multiple Coordinators
         the file system path must resolve to equivalent files on every Coordinator.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: mount
           in: query
           required: true
@@ -375,7 +415,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/configuration:
+  /_db/{database-name}/_api/foxx/configuration:
     get:
       operationId: getFoxxConfiguration
       description: |
@@ -384,6 +424,14 @@ paths:
         Returns an object mapping the configuration option names to their definitions
         including a human-friendly `title` and the `current` value (if any).
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: mount
           in: query
           required: true
@@ -403,13 +451,29 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/configuration:
+  /_db/{database-name}/_api/foxx/configuration:
     patch:
       operationId: updateFoxxConfiguration
       description: |
         Replaces the given service's configuration.
 
         Returns an object mapping all configuration option names to their new values.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: mount
+          in: query
+          required: true
+          description: |
+            Mount path of the installed service.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -423,14 +487,6 @@ paths:
                     A JSON object mapping configuration option names to their new values.
                     Any omitted options will be ignored.
                   type: object
-      parameters:
-        - name: mount
-          in: query
-          required: true
-          description: |
-            Mount path of the installed service.
-          schema:
-            type: string
       responses:
         '200':
           description: |
@@ -443,13 +499,29 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/configuration:
+  /_db/{database-name}/_api/foxx/configuration:
     put:
       operationId: replaceFoxxConfiguration
       description: |
         Replaces the given service's configuration completely.
 
         Returns an object mapping all configuration option names to their new values.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: mount
+          in: query
+          required: true
+          description: |
+            Mount path of the installed service.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -463,14 +535,6 @@ paths:
                     A JSON object mapping configuration option names to their new values.
                     Any omitted options will be reset to their default values or marked as unconfigured.
                   type: object
-      parameters:
-        - name: mount
-          in: query
-          required: true
-          description: |
-            Mount path of the installed service.
-          schema:
-            type: string
       responses:
         '200':
           description: |
@@ -483,7 +547,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/dependencies:
+  /_db/{database-name}/_api/foxx/dependencies:
     get:
       operationId: getFoxxDependencies
       description: |
@@ -492,6 +556,14 @@ paths:
         Returns an object mapping the dependency names to their definitions
         including a human-friendly `title` and the `current` mount path (if any).
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: mount
           in: query
           required: true
@@ -511,13 +583,29 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/dependencies:
+  /_db/{database-name}/_api/foxx/dependencies:
     patch:
       operationId: updateFoxxDependencies
       description: |
         Replaces the given service's dependencies.
 
         Returns an object mapping all dependency names to their new mount paths.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: mount
+          in: query
+          required: true
+          description: |
+            Mount path of the installed service.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -531,14 +619,6 @@ paths:
                     A JSON object mapping dependency names to their new mount paths.
                     Any omitted dependencies will be ignored.
                   type: object
-      parameters:
-        - name: mount
-          in: query
-          required: true
-          description: |
-            Mount path of the installed service.
-          schema:
-            type: string
       responses:
         '200':
           description: |
@@ -551,13 +631,29 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/dependencies:
+  /_db/{database-name}/_api/foxx/dependencies:
     put:
       operationId: replaceFoxxDependencies
       description: |
         Replaces the given service's dependencies completely.
 
         Returns an object mapping all dependency names to their new mount paths.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: mount
+          in: query
+          required: true
+          description: |
+            Mount path of the installed service.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -571,14 +667,6 @@ paths:
                     A JSON object mapping dependency names to their new mount paths.
                     Any omitted dependencies will be disabled.
                   type: object
-      parameters:
-        - name: mount
-          in: query
-          required: true
-          description: |
-            Mount path of the installed service.
-          schema:
-            type: string
       responses:
         '200':
           description: |
@@ -593,7 +681,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/scripts:
+  /_db/{database-name}/_api/foxx/scripts:
     get:
       operationId: listFoxxScripts
       description: |
@@ -601,6 +689,14 @@ paths:
 
         Returns an object mapping the raw script names to human-friendly names.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: mount
           in: query
           required: true
@@ -620,25 +716,22 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/scripts/{name}:
+  /_db/{database-name}/_api/foxx/scripts/{name}:
     post:
       operationId: runFoxxScript
       description: |
         Runs the given script for the service at the given mount path.
 
         Returns the exports of the script, if any.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                data:
-                  description: |
-                    An arbitrary JSON value that will be parsed and passed to the
-                    script as its first argument.
-                  type: json
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: name
           in: path
           required: true
@@ -653,6 +746,17 @@ paths:
             Mount path of the installed service.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  description: |
+                    An arbitrary JSON value that will be parsed and passed to the
+                    script as its first argument.
+                  type: json
       responses:
         '200':
           description: |
@@ -665,7 +769,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/tests:
+  /_db/{database-name}/_api/foxx/tests:
     post:
       operationId: runFoxxTests
       description: |
@@ -692,6 +796,14 @@ paths:
 
         Otherwise the response body will be formatted as non-prettyprinted JSON.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: mount
           in: query
           required: true
@@ -733,7 +845,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/development:
+  /_db/{database-name}/_api/foxx/development:
     post:
       operationId: enableFoxxDevelopmentMode
       description: |
@@ -748,6 +860,14 @@ paths:
         Coordinators. This means you should treat your Coordinators as inconsistent
         as long as any service is running in development mode.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: mount
           in: query
           required: true
@@ -767,7 +887,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/development:
+  /_db/{database-name}/_api/foxx/development:
     delete:
       operationId: disableFoxxDevelopmentMode
       description: |
@@ -777,6 +897,14 @@ paths:
         replace the service on all other Coordinators with the version on this
         Coordinator.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: mount
           in: query
           required: true
@@ -796,12 +924,20 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/readme:
+  /_db/{database-name}/_api/foxx/readme:
     get:
       operationId: getFoxxReadme
       description: |
         Fetches the service's README or README.md file's contents if any.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: mount
           in: query
           required: true
@@ -824,7 +960,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/swagger:
+  /_db/{database-name}/_api/foxx/swagger:
     get:
       operationId: getFoxxSwaggerDescription
       description: |
@@ -832,6 +968,14 @@ paths:
 
         The response body will be an OpenAPI 2.0 compatible JSON description of the service API.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: mount
           in: query
           required: true
@@ -851,7 +995,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/download:
+  /_db/{database-name}/_api/foxx/download:
     post:
       operationId: downloadFoxxService
       description: |
@@ -862,6 +1006,14 @@ paths:
         Otherwise the bundle will represent the version of a service that
         is installed on that ArangoDB instance.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: mount
           in: query
           required: true
@@ -884,7 +1036,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/foxx/commit:
+  /_db/{database-name}/_api/foxx/commit:
     post:
       operationId: commitFoxxServiceState
       description: |
@@ -892,6 +1044,14 @@ paths:
 
         This can be used to resolve service conflicts between Coordinators that cannot be fixed automatically due to missing data.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: replace
           in: query
           required: false

@@ -10,7 +10,7 @@ description: >-
 
 ```openapi
 paths:
-  /_admin/statistics:
+  /_db/{database-name}/_admin/statistics:
     get:
       operationId: getStatistics
       description: |
@@ -42,6 +42,18 @@ paths:
         expect in a cluster setup using a single Coordinator querying this Coordinator.
         Just with the difference that cluster transactions have no notion of
         intermediate commits and will not increase the value.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database. If the `--server.harden` startup option is enabled,
+            administrate access to the `_system` database is required.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -525,7 +537,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_admin/statistics-description:
+  /_db/{database-name}/_admin/statistics-description:
     get:
       operationId: getStatisticsDescription
       description: |
@@ -554,6 +566,18 @@ paths:
         - `type`: Either `current`, `accumulated`, or `distribution`.
         - `cuts`: The distribution vector.
         - `units`: Units in which the figure is measured.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database. If the `--server.harden` startup option is enabled,
+            administrate access to the `_system` database is required.
+          schema:
+            type: string
       responses:
         '200':
           description: |

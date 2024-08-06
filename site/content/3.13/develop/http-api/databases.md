@@ -62,7 +62,7 @@ Non-NFC-normalized names are rejected by the server.
 
 ```openapi
 paths:
-  /_api/database/current:
+  /_db/{database-name}/_api/database/current:
     get:
       operationId: getCurrentDatabase
       description: |
@@ -77,6 +77,15 @@ paths:
         - `sharding`: the default sharding method for collections created in this database
         - `replicationFactor`: the default replication factor for collections in this database
         - `writeConcern`: the default write concern for collections in this database
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -110,12 +119,23 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/database/user:
+  /_db/{database-name}/_api/database/user:
     get:
       operationId: listUserAccessibleDatabases
       description: |
         Retrieves the list of all databases the current user can access without
         specifying a different username or password.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -146,7 +166,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/database:
+  /_db/_system/_api/database:
     get:
       operationId: listDatabases
       description: |
@@ -188,7 +208,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/database:
+  /_db/_system/_api/database:
     post:
       operationId: createDatabase
       description: |
@@ -374,7 +394,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/database/{database-name}:
+  /_db/_system/_api/database/{database-name}:
     delete:
       operationId: deleteDatabase
       description: |

@@ -174,6 +174,7 @@ Please note that all JWT tokens must contain the `iss` field with string value
 ```openapi
 paths:
   /_open/auth:
+  # Independent of database
     post:
       operationId: createSessionToken
       description: |
@@ -281,7 +282,7 @@ may use the following RESTful API. A `POST` request reloads the secret, a
 
 ```openapi
 paths:
-  /_admin/server/jwt:
+  /_db/{database-name}/_admin/server/jwt:
     get:
       operationId: getServerJwtSecrets
       description: |
@@ -289,6 +290,18 @@ paths:
 
         To utilize the API a superuser JWT token is necessary, otherwise the response
         will be _HTTP 403 Forbidden_.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database. If the `--server.harden` startup option is enabled,
+            administrate access to the `_system` database is required.
+          schema:
+            type: string
       responses:
         '200':
           description: ''
@@ -343,6 +356,7 @@ paths:
 ```openapi
 paths:
   /_admin/server/jwt:
+  # Independent of database (superuser has access to all databases that exist)
     post:
       operationId: reloadServerJwtSecrets
       description: |

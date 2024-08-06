@@ -976,6 +976,16 @@ These options prevent that running a lot of AQL queries with async
 prefetching fully congests the scheduler queue, and also they prevent large
 AQL queries to use up all async prefetching capacity on their own.
 
+### New server scheduler type
+
+<small>Introduced in: v3.12.1</small>
+
+A new `--server.scheduler` startup option has been added to let you select the
+scheduler type. The scheduler currently used by ArangoDB has the value
+`supervised`. A new work-stealing scheduler is being implemented and can be
+selected using the value `threadpools`. This new scheduler is experimental and
+should not be used in production.
+
 ## Miscellaneous changes
 
 ### V8 and ICU library upgrades
@@ -1350,10 +1360,48 @@ overwhelmed:
 
 | Label | Description |
 |:------|:------------|
-| `arangodb_logger_messages_dropped_total` |  Total number of dropped log messages. |
+| `arangodb_logger_messages_dropped_total` | Total number of dropped log messages. |
 
 The related startup option for controlling the size of the log queue has a
 default of `16384` instead of `10000` now.
+
+### Scheduler dequeue time metrics
+
+<small>Introduced in: v3.12.1</small>
+
+The following scheduler metrics have been added, reporting how long it takes to
+pick items from different job queues.
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_scheduler_high_prio_dequeue_hist` | Time required to take an item from the high priority queue. |
+| `arangodb_scheduler_medium_prio_dequeue_hist` | Time required to take an item from the medium priority queue. |
+| `arangodb_scheduler_low_prio_dequeue_hist` | Time required to take an item from the low priority queue. |
+| `arangodb_scheduler_maintenance_prio_dequeue_hist` | Time required to take an item from the maintenance priority queue. |
+
+### Option to skip fast lock round for Stream Transactions
+
+<small>Introduced in: v3.12.1</small>
+
+A `skipFastLockRound` option has been added to let you disable the fast lock
+round for Stream Transactions. The option defaults to `false` so that
+fast locking is tried.
+
+Disabling the fast lock round is not necessary unless there are many concurrent
+Stream Transactions queued that all try to lock the same collection exclusively.
+In this case, the fast locking is subpar because exclusive locks will prevent it
+from succeeding. Skipping the fast locking makes each actual locking operation
+take longer than with fast locking but it guarantees a deterministic locking order.
+This avoids deadlocking and retrying which can occur with the fast locking.
+Overall, skipping the fast lock round can be faster in this scenario.
+
+The fast lock round should not be skipped for read-only Stream Transactions as
+it degrades performance if there are no concurrent transactions that use
+exclusive locks on the same collection.
+
+See the [JavaScript API](../../develop/transactions/stream-transactions.md#javascript-api)
+and the [HTTP API](../../develop/http-api/transactions/stream-transactions.md#begin-a-stream-transaction)
+for details.
 
 ## Client tools
 

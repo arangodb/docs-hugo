@@ -19,8 +19,7 @@ of ArangoDB, lets you deploy clusters with just a few clicks, and is operated
 by a dedicated team of ArangoDB engineers day and night. You can choose from a
 variety of support plans to meet your needs.
 
-- Supports many cloud deployment regions across the main cloud providers
-  (AWS, Azure, GCP)
+- Supports many of the AWS and GCP cloud deployment regions
 - High availability featuring multi-region zone clusters, managed backups,
   and zero-downtime upgrades
 - Integrated monitoring, alerting, and log management
