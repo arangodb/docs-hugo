@@ -106,11 +106,11 @@
     <div>
       <ul class="openapi-table">
       {{- range $k, $v := $content.content }}
-        {{- with $v.schema.description }}{{ . }}{{ end }}
         {{- if eq $v.schema.type "array" }}
           {{- $required := false }}
           {{- template "renderProperty" dict "title" $title "prop" "" "value" $v.schema "required" $required "page" $page }}
         {{- else }}
+          {{- with $v.schema.description }}{{ . }}{{ end }}
           {{- range $prop, $value := $v.schema.properties}}
             {{- $required := in $v.schema.required $prop }}
             {{- template "renderProperty" dict "title" $title "prop" $prop "value" $value "required" $required "page" $page }}
@@ -175,11 +175,11 @@
                   <div class="openapi-table-title">Response Body <span class="openapi-content-type">{{ $contentType }}</span>
                   {{- with $schemaType }}{{ if ne . "array" }} <span class="openapi-property-type bold-text">{{ . }}</span>{{ end }}{{ end }}</div>
                   {{- range $k, $v := $content.content }}
-                    {{- with $v.schema.description }}{{ . }}{{ end }}
                     {{- if eq $v.schema.type "array" }}
                       {{- $required := false }}
                       {{- template "renderProperty" dict "title" $statusId "prop" "" "value" $v.schema "required" $required "page" $page}}
                     {{- else }}
+                      {{- with $v.schema.description }}{{ . }}{{ end }}
                       {{- range $prop, $value := $v.schema.properties}}
                         {{- $required := in $v.schema.required $prop }}
                         {{- template "renderProperty" dict "title" $statusId "prop" $prop "value" $value "required" $required "page" $page}}
