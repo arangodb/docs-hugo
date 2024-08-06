@@ -11,6 +11,10 @@ securely deploy to various cloud providers such as Google Cloud Platform (GCP)
 and Amazon Web Services (AWS). Follow the steps outlined below
 to get started.
 
+{{< tip >}}
+In AWS private endpoints should be located in the same region.
+{{< /tip >}}
+
 {{< info >}}
 For more information about the certificates used for private endpoints, please
 refer to the [How to manage certificates](../security-and-access-control/x-509-certificates.md)
