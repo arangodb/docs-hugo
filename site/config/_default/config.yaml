@@ -19,6 +19,15 @@ module:
     - source: "static"
       target: "static"
 
+# Version folders can be ignored temporarily for faster local builds
+# of a single version (here: 3.12)
+#   - excludeFiles:
+#       - 3.10/*
+#       - 3.11/*
+#       - 3.13/*
+#     source: content
+#     target: content
+
 markup:
   highlight:
     noClasses: false

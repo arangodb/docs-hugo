@@ -210,6 +210,15 @@ version.
 
 The unused error `ERROR_OUT_OF_MEMORY_MMAP` with the number `12` has been removed.
 
+#### `mmap` log topic removed
+
+<small>Introduced in: v3.12.1</small>
+
+The `mmap` log topic for logging information related to memory mapping has been
+unused since v3.12.0 and has now been removed. The `/_admin/log/level` endpoints
+no longer include this log topic in responses and attempts to set the log level
+for this topic are ignored.
+
 ### Endpoint return value changes
 
 #### Storage engine API
