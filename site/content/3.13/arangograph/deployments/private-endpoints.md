@@ -8,11 +8,10 @@ description: >-
 ---
 This topic describes how to create a private endpoint deployment and
 securely deploy to various cloud providers such as Google Cloud Platform (GCP)
-and Amazon Web Services (AWS). Follow the steps outlined below
-to get started.
+and Amazon Web Services (AWS). Follow the steps outlined below to get started.
 
 {{< tip >}}
-In AWS private endpoints should be located in the same region.
+In AWS, private endpoints should be located in the same region.
 {{< /tip >}}
 
 {{< info >}}
