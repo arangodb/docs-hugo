@@ -47,19 +47,26 @@ paths:
           schema:
             type: string
       responses:
+        default:
+          # Job API might always return 202 Accepted in the success case and
+          # only return the original status code in case of an error!
+          # It does add an additional x-arango-async-id header.
+          description: |
+            If the job has finished, you get the result with the HTTP status code
+            of the original request that executed asynchronously.
         '204':
           description: |
             is returned if the job requested via job-id is still in the queue of pending
-            (or not yet finished) jobs. In this case, no x-arango-async-id HTTP header
+            (or not yet finished) jobs. In this case, no `x-arango-async-id` HTTP header
             will be returned.
         '400':
           description: |
             is returned if no job-id was specified in the request. In this case,
-            no x-arango-async-id HTTP header will be returned.
+            no `x-arango-async-id` HTTP header will be returned.
         '404':
           description: |
             is returned if the job was not found or already deleted or fetched from
-            the job result list. In this case, no x-arango-async-id HTTP header will
+            the job result list. In this case, no `x-arango-async-id` HTTP header will
             be returned.
       tags:
         - Jobs
