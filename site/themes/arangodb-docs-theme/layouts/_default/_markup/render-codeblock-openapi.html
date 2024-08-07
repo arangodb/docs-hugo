@@ -119,7 +119,7 @@
           {{- $required := false }}
           {{- template "renderProperty" dict "title" $title "prop" "" "value" $v.schema "required" $required "page" $page }}
         {{- else }}
-          {{- with $v.schema.description }}{{ . }}{{ end }}
+          {{- with $v.schema.description }}{{ . | $page.RenderString }}{{ end }}
           {{- range $prop, $value := $v.schema.properties}}
             {{- $required := in $v.schema.required $prop }}
             {{- template "renderProperty" dict "title" $title "prop" $prop "value" $value "required" $required "page" $page }}
@@ -189,7 +189,7 @@
                       {{- $required := false }}
                       {{- template "renderProperty" dict "title" $statusId "prop" "" "value" $v.schema "required" $required "page" $page}}
                     {{- else }}
-                      {{- with $v.schema.description }}{{ . }}{{ end }}
+                      {{- with $v.schema.description }}{{ . | $page.RenderString }}{{ end }}
                       {{- range $prop, $value := $v.schema.properties}}
                         {{- $required := in $v.schema.required $prop }}
                         {{- template "renderProperty" dict "title" $statusId "prop" $prop "value" $value "required" $required "page" $page}}
