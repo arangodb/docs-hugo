@@ -2328,8 +2328,8 @@ paths:
           application/json:
             schema:
               description: |
-                A JSON representation of an array of documents.
-                Each element has to contain a `_key` attribute.
+                An array of documents. Each element has to contain a `_key` attribute.
+                The existing documents with matching document keys are replaced.
               type: array
               items:
                 type: object
@@ -2580,8 +2580,9 @@ paths:
           application/json:
             schema:
               description: |
-                A JSON representation of an array of document updates as objects.
-                Each element has to contain a `_key` attribute.
+                An array of partial documents representing the desired updates.
+                Each element has to contain a `_key` attribute. The existing
+                documents with matching document keys are updated.
               type: array
               items:
                 type: object
