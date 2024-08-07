@@ -2612,11 +2612,10 @@ paths:
           application/json:
             schema:
               description: |
-                A JSON representation of an array of document updates as objects.
-                Each element has to contain a `_key` attribute.
+                An array of document selectors. A selector can be a string
+                (document key or identifier) or an object that has to contain a
+                `_key` attribute with the document key.
               type: array
-              items:
-                type: object
       responses:
         '200':
           description: |
