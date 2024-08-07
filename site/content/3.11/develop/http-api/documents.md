@@ -521,14 +521,9 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                A JSON representation of a single document.
               type: object
-              required:
-                - document
-              properties:
-                document:
-                  description: |
-                    A JSON representation of a single document.
-                  type: object
       responses:
         '201':
           description: |
@@ -809,18 +804,6 @@ paths:
 
         If the document does not exist, then a *HTTP 404* is returned and the
         body of the response contains an error document.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - document
-              properties:
-                document:
-                  description: |
-                    A JSON representation of a single document.
-                  type: object
       parameters:
         - name: database-name
           in: path
@@ -913,6 +896,13 @@ paths:
             transaction ID returned by the `POST /_api/transaction/begin` call.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: |
+                A JSON representation of a single document.
+              type: object
       responses:
         '201':
           description: |
@@ -1116,18 +1106,6 @@ paths:
 
         If the document does not exist, then a *HTTP 404* is returned and the
         body of the response contains an error document.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - document
-              properties:
-                document:
-                  description: |
-                    A JSON representation of a document update as an object.
-                  type: object
       parameters:
         - name: database-name
           in: path
@@ -1243,6 +1221,13 @@ paths:
             transaction ID returned by the `POST /_api/transaction/begin` call.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: |
+                A JSON representation of a (partial) document.
+              type: object
       responses:
         '201':
           description: |
@@ -1730,14 +1715,11 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - documents
-              properties:
-                documents:
-                  description: |
-                    An array of documents to retrieve.
-                  type: json
+              description: |
+                An array of documents to retrieve.
+              type: array
+              items:
+                type: object
       responses:
         '200':
           description: |
@@ -1971,14 +1953,11 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - documents
-              properties:
-                documents:
-                  description: |
-                    An array of documents to create.
-                  type: json
+              description: |
+                An array of documents to create.
+              type: array
+              items:
+                type: object
       responses:
         '201':
           description: |
@@ -2154,19 +2133,6 @@ paths:
         error codes and how often each kind of error occurred. For example,
         `1200:17,1205:10` means that in 17 cases the error 1200 ("revision conflict")
         has happened, and in 10 cases the error 1205 ("illegal document handle").
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - documents
-              properties:
-                documents:
-                  description: |
-                    A JSON representation of an array of documents.
-                    Each element has to contain a `_key` attribute.
-                  type: json
       parameters:
         - name: database-name
           in: path
@@ -2246,6 +2212,16 @@ paths:
             transaction ID returned by the `POST /_api/transaction/begin` call.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: |
+                A JSON representation of an array of documents.
+                Each element has to contain a `_key` attribute.
+              type: array
+              items:
+                type: object
       responses:
         '201':
           description: |
@@ -2362,19 +2338,6 @@ paths:
         error codes and how often each kind of error occurred. For example,
         `1200:17,1205:10` means that in 17 cases the error 1200 ("revision conflict")
         has happened, and in 10 cases the error 1205 ("illegal document handle").
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - documents
-              properties:
-                documents:
-                  description: |
-                    A JSON representation of an array of document updates as objects. 
-                    Each element has to contain a `_key` attribute.
-                  type: json
       parameters:
         - name: database-name
           in: path
@@ -2476,6 +2439,16 @@ paths:
             transaction ID returned by the `POST /_api/transaction/begin` call.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: |
+                A JSON representation of an array of document updates as objects. 
+                Each element has to contain a `_key` attribute.
+              type: array
+              items:
+                type: object
       responses:
         '201':
           description: |
@@ -2566,19 +2539,6 @@ paths:
         error codes and how often each kind of error occurred. For example,
         `1200:17,1205:10` means that in 17 cases the error 1200 ("revision conflict")
         has happened, and in 10 cases the error 1205 ("illegal document handle").
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - documents
-              properties:
-                documents:
-                  description: |
-                    A JSON representation of an array of document updates as objects. 
-                    Each element has to contain a `_key` attribute.
-                  type: json
       parameters:
         - name: database-name
           in: path
@@ -2647,6 +2607,16 @@ paths:
             transaction ID returned by the `POST /_api/transaction/begin` call.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: |
+                A JSON representation of an array of document updates as objects. 
+                Each element has to contain a `_key` attribute.
+              type: array
+              items:
+                type: object
       responses:
         '200':
           description: |
