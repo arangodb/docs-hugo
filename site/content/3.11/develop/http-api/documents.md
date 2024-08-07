@@ -2444,7 +2444,7 @@ paths:
           application/json:
             schema:
               description: |
-                A JSON representation of an array of document updates as objects. 
+                A JSON representation of an array of document updates as objects.
                 Each element has to contain a `_key` attribute.
               type: array
               items:
@@ -2612,7 +2612,7 @@ paths:
           application/json:
             schema:
               description: |
-                A JSON representation of an array of document updates as objects. 
+                A JSON representation of an array of document updates as objects.
                 Each element has to contain a `_key` attribute.
               type: array
               items:
