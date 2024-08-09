@@ -76,52 +76,54 @@ paths:
                     example: 200
                   result:
                     description: |
-                      The result object.
-                    type: object
-                    required:
-                      - id
-                      - name
-                      - status
-                      - type
-                      - isSystem
-                      - globallyUniqueId
-                    properties:
-                      id:
-                        description: |
-                          A unique identifier of the collection (deprecated).
-                        type: string
-                      name:
-                        description: |
-                          The name of the collection.
-                        type: string
-                        example: coll
-                      status:
-                        description: |
-                          The status of the collection.
-                          - `3`: loaded
-                          - `5`: deleted
+                      A list with every item holding basic collection metadata.
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - id
+                        - name
+                        - status
+                        - type
+                        - isSystem
+                        - globallyUniqueId
+                      properties:
+                        id:
+                          description: |
+                            A unique identifier of the collection (deprecated).
+                          type: string
+                        name:
+                          description: |
+                            The name of the collection.
+                          type: string
+                          example: coll
+                        status:
+                          description: |
+                            The status of the collection.
+                            - `3`: loaded
+                            - `5`: deleted
 
-                          Every other status indicates a corrupted collection.
-                        type: integer
-                        example: 3
-                      type:
-                        description: |
-                          The type of the collection:
-                          - `0`: "unknown"
-                          - `2`: regular document collection
-                          - `3`: edge collection
-                        type: integer
-                        example: 2
-                      isSystem:
-                        description: |
-                          Whether the collection is a system collection. Collection names that starts with
-                          an underscore are usually system collections.
-                        type: boolean
-                        example: false
-                      globallyUniqueId:
-                        description: |
-                          A unique identifier of the collection. This is an internal property.
-                        type: string
+                            Every other status indicates a corrupted collection.
+                          type: integer
+                          example: 3
+                        type:
+                          description: |
+                            The type of the collection:
+                            - `0`: "unknown"
+                            - `2`: regular document collection
+                            - `3`: edge collection
+                          type: integer
+                          example: 2
+                        isSystem:
+                          description: |
+                            Whether the collection is a system collection. Collection names that starts with
+                            an underscore are usually system collections.
+                          type: boolean
+                          example: false
+                        globallyUniqueId:
+                          description: |
+                            A unique identifier of the collection. This is an internal property.
+                          type: string
       tags:
         - Collections
 ```
@@ -2559,7 +2561,7 @@ paths:
                   default: false
                 numberOfShards:
                   description: |
-                    n a cluster, this value determines the
+                    In a cluster, this value determines the
                     number of shards to create for the collection.
                   type: integer
                   default: 1
