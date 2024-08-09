@@ -95,11 +95,23 @@
   {{- $content := .content }}
   {{- $page := .page }}
   <div class="openapi-parameters regular-font">
-    {{- $contentType := ""}}
+    {{- $contentType := "" }}
+    {{- $schemaType := "" }}
+    {{- $schemaDefaultSet := false }}
+    {{- $schemaDefault := "" }}
     {{- range $k, $v := $content.content }}
       {{- $contentType = $k }}
+      {{- $schemaType = $v.schema.type }}
+      {{- $schemaDefaultSet = isset $v.schema "default" }}
+      {{- $schemaDefault = $v.schema.default }}
     {{- end }}
-    <div class="openapi-table-title">Request Body <span class="openapi-content-type">{{ $contentType }}</span></div>
+    <div class="openapi-table-title">Request Body <span class="openapi-content-type">{{ $contentType }}</span>
+    {{- with $schemaType }}
+      {{- if ne . "array" }} <span class="openapi-property-type">{{ . }}
+        {{- if $schemaDefaultSet }} <span style="font-weight: normal">(default: <code>{{ $schemaDefault | jsonify }}</code>)</span>{{ end }}</span>
+      {{- end }}
+    {{- end }}
+    </div>
     <div>
       <ul class="openapi-table">
       {{- range $k, $v := $content.content }}
@@ -107,6 +119,7 @@
           {{- $required := false }}
           {{- template "renderProperty" dict "title" $title "prop" "" "value" $v.schema "required" $required "page" $page }}
         {{- else }}
+          {{- with $v.schema.description }}{{ . | $page.RenderString }}{{ end }}
           {{- range $prop, $value := $v.schema.properties}}
             {{- $required := in $v.schema.required $prop }}
             {{- template "renderProperty" dict "title" $title "prop" $prop "value" $value "required" $required "page" $page }}
@@ -163,16 +176,21 @@
               <p class="regular-font">{{ $description }}</p>
               {{- if $content.content }}
                 <ul class="openapi-table">
-                  {{- $contentType := ""}}
+                  {{- $contentType := "" }}
+                  {{- $schemaType := "" }}
                   {{- range $k, $v := $content.content }}
                     {{- $contentType = $k }}
+                    {{- $schemaType = $v.schema.type }}
                   {{- end }}
-                  <div class="openapi-table-title">Response Body <span class="openapi-content-type">{{ $contentType }}</span></div>
+                  <div class="openapi-table-title">Response Body <span class="openapi-content-type">{{ $contentType }}</span>
+                    {{- with $schemaType }}{{ if ne . "array" }} <span class="openapi-property-type">{{ . }}</span>{{ end }}{{ end -}}
+                  </div>
                   {{- range $k, $v := $content.content }}
                     {{- if eq $v.schema.type "array" }}
                       {{- $required := false }}
                       {{- template "renderProperty" dict "title" $statusId "prop" "" "value" $v.schema "required" $required "page" $page}}
                     {{- else }}
+                      {{- with $v.schema.description }}{{ . | $page.RenderString }}{{ end }}
                       {{- range $prop, $value := $v.schema.properties}}
                         {{- $required := in $v.schema.required $prop }}
                         {{- template "renderProperty" dict "title" $statusId "prop" $prop "value" $value "required" $required "page" $page}}
