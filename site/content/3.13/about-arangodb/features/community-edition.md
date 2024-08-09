@@ -98,6 +98,10 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
 - [**Query Profiling**](../../aql/execution-and-performance/query-profiling.md):
   Show detailed runtime information for AQL queries.
 
+- [**Query Logging**](../../aql/execution-and-performance/query-logging.md):
+  Store query metadata and analyze it directly in the database system to debug
+  issues and understand usage patterns.
+
 - [**Upsert Operations**](../../aql/examples-and-query-patterns/upsert-repsert-guide.md):
   Support for insert-or-update (upsert), insert-or-replace (repsert), and
   insert-or-ignore requests, that result in one or the other operation depending
