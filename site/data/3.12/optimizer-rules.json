@@ -804,6 +804,18 @@
     }
   },
   {
+    "name": "push-limit-into-index",
+    "description": "Push limit into index node.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
     "name": "batch-materialize-documents",
     "description": "Batch document lookup from indexes.",
     "flags": {

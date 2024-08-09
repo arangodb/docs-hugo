@@ -380,6 +380,10 @@
   text: "not supported by old legacy data format"
   desc: "Will be raised by the storage engine when an operation cannot be performed because the old, deprecated, little endian key encoding format is still used and an operation is tried which is not supported by this format."
   code: 1241
+- name: ERROR_ARANGO_INDEX_HAS_LEGACY_SORTED_KEYS
+  text: "an index with legacy sorted keys has been found"
+  desc: "Will be raised if the VPackSortMigration has detected an index, which is using the old legacy sorting order and would be corrupt if the database is migrated to the new, correct sorting order."
+  code: 1242
 - group: Checked ArangoDB storage errors
 - name: ERROR_ARANGO_EMPTY_DATADIR
   text: "server database directory is empty"

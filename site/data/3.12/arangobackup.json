@@ -507,7 +507,7 @@
       "info"
     ],
     "deprecatedIn" : null,
-    "description" : "Set the topic-specific log level, using `--log.level level` for the general topic or `--log.level topic=level` for the specified topic (can be specified multiple times).\nAvailable log levels: fatal, error, warning, info, debug, trace.\nAvailable log topics: all, agency, agencycomm, agencystore, aql, audit-authentication, audit-authorization, audit-collection, audit-database, audit-document, audit-hotbackup, audit-service, audit-view, authentication, authorization, backup, bench, cache, cluster, communication, config, crash, deprecation, development, dump, engines, flush, general, graphs, heartbeat, httpclient, license, maintenance, memory, mmap, queries, rep-state, rep-wal, replication, replication2, requests, restore, rocksdb, security, ssl, startup, statistics, supervision, syscall, threads, trx, ttl, v8, validation, views.",
+    "description" : "Set the topic-specific log level, using `--log.level level` for the general topic or `--log.level topic=level` for the specified topic (can be specified multiple times).\nAvailable log levels: fatal, error, warning, info, debug, trace.\nAvailable log topics: all, agency, agencycomm, agencystore, aql, audit-authentication, audit-authorization, audit-collection, audit-database, audit-document, audit-hotbackup, audit-service, audit-view, authentication, authorization, backup, bench, cache, cluster, communication, config, crash, deprecation, development, dump, engines, flush, general, graphs, heartbeat, httpclient, license, maintenance, memory, queries, rep-state, rep-wal, replication, replication2, requests, restore, rocksdb, security, ssl, startup, statistics, supervision, syscall, threads, trx, ttl, v8, validation, views.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -1006,7 +1006,7 @@
   },
   "server.authentication" : {
     "category" : "option",
-    "default" : false,
+    "default" : true,
     "deprecatedIn" : null,
     "description" : "Require authentication credentials when connecting (does not affect the server-side authentication settings).",
     "dynamic" : false,
@@ -1067,7 +1067,7 @@
   "server.endpoint" : {
     "category" : "option",
     "default" : [
-      "http+tcp://127.0.0.1:8529"
+      "tcp://127.0.0.1:8529"
     ],
     "deprecatedIn" : null,
     "description" : "The endpoint to connect to. Use 'none' to start without a server. Use http+ssl:// as schema to connect to an SSL-secured server endpoint, otherwise http+tcp:// or unix://",
