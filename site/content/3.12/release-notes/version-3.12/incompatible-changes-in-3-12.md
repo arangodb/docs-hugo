@@ -39,15 +39,16 @@ how to correct it if necessary.
    it is recommended to run this operation as an asynchronous job
    (`x-arango-async: store` header) so that you can check the result later.
 
-   The endpoint is available for all deployment modes. In case of a cluster,
-   send the request to one of the Coordinators. Example:
+   The endpoint is available for all deployment modes, not only in clusters.
+   In case of a cluster, send the request to one of the Coordinators.
+   Example with ArangoDB running locally on the default port:
 
    ```shell
    curl --dump-header -H "x-arango-async: store" http://localhost:8529/_admin/cluster/vpackSortMigration/check
    ```
 
-2. Inspect the response to find the job ID in the `X-Arango-Async-Id` HTTP
-   header field. The job ID is `12345` in the following example:
+2. Inspect the response to find the job ID in the `X-Arango-Async-Id` HTTP header.
+   The job ID is `12345` in the following example:
 
    ```
    HTTP/1.1 202 Accepted
@@ -94,11 +95,16 @@ how to correct it if necessary.
    to at least 3.11.11 or from 3.12.x to at least 3.12.2). Complete the procedure
    by calling the `PUT /_admin/cluster/vpackSortMigration/migrate` endpoint to
    mark the deployment as having the correct sorting order. This requires
-   superuser permissions. Make sure that no problematic values are written to
-   an index between checking for affected indexes and completing the procedure.
+   [superuser permissions](../../develop/http-api/authentication.md#jwt-superuser-tokens)
+   unless authentication is disabled.
+
+   Make sure that no problematic values are written to or removed from an index
+   between checking for affected indexes and completing the procedure. You may
+   put the deployment into [read-only mode](../../develop/http-api/administration.md#set-the-server-mode-to-read-only-or-default)
+   temporarily.
 
    ```shell
-   curl -H "Authorization: bearer <jwt-secret>" -XPUT http://localhost:8529/_admin/cluster/vpackSortMigration/migrate
+   curl -H "Authorization: bearer <superuser-token>" -XPUT http://localhost:8529/_admin/cluster/vpackSortMigration/migrate
    ```
 
    ```json
@@ -137,8 +143,14 @@ how to correct it if necessary.
 
    If this is the case, the next steps depend on the deployment type.
 
-   - **Single server**: Create a full dump and restore it to a new single server
-     using at least v3.11.11 or v3.12.2. You need to use a new database directory.
+   - **Single server**: Create a full dump with [arangodump](../../components/tools/arangodump/_index.md),
+     using the `--all-databases` and `--include-system-collections` startup options
+     and a user account with administrate access to the `_system` database and
+     at least read access to all other databases to ensure all data including
+     the `_users` system collection are dumped.
+     
+     Restore the dump to a new single server using at least v3.11.11 or v3.12.2.
+     You need to use a new database directory.
 
    - **Cluster**: Replace the DB-Server nodes until they all run at least
      v3.11.11 or v3.12.2. Syncing new nodes writes the data in the correct order.
@@ -146,12 +158,10 @@ how to correct it if necessary.
 
      For each DB-Server, add a new DB-Server node to the cluster. Wait until all
      new DB-Servers are in sync, then clean out the old DB-Server nodes.
-     <!-- TODO: one can also resign leadership, clean db dir, resync but this won't upgrade the node?! -->
 
    New instances using the fixed versions initialize the database directory
    with the sorting order marked as correct and also restore data from dumps
    correctly.
-  <!-- TODO: Will there be any automation when using the Starter or is it always a manual process? -->
 
 6. If you revert to an older state with affected indexes by restoring a
    Hot Backup, you need to repeat the procedure.
