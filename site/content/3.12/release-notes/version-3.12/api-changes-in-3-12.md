@@ -206,6 +206,58 @@ A new `deprecation` log topic has been added. It warns about deprecated features
 and the usage of options that will not be allowed or have no effect in a future
 version.
 
+The `GET /_admin/log/level` and `PUT /_admin/log/level` endpoints have been
+extended with a `withAppenders` query option to let you query and set log level
+settings for individual log outputs:
+
+```shell
+curl http://localhost:8529/_admin/log/level?withAppenders=true
+```
+
+If enabled, the response structure is as follows:
+
+```json
+{
+  "global": {
+    "agency": "INFO",
+    "agencycomm": "INFO",
+    "agencystore": "WARNING",
+    ...
+  },
+  "appenders": {
+    "-": {
+      "agency": "INFO",
+      "agencycomm": "INFO",
+      "agencystore": "WARNING",
+      ...
+    },
+    "file:///path/to/file": {
+      "agency": "INFO",
+      "agencycomm": "INFO",
+      "agencystore": "WARNING",
+      ...
+    },
+    ...
+  }
+}
+```
+
+The keys under `appenders` correspond to the configured log outputs
+(`--log.output` startup option, `-` stands for the standard output).
+The `global` levels are automatically set to the most verbose log level for that
+topic across all appenders.
+
+To change any of the log levels at runtime, you can send a request following the
+same structure:
+
+```shell
+curl -XPUT -d '{"global":{"queries":"DEBUG"},"appenders":{"-":{"requests":"ERROR"}}}' http://localhost:8529/_admin/log/level?withAppenders=true
+```
+
+Setting a global log level applies the value to all outputs for the specified
+topic. You can only change the log levels for individual log outputs (appenders)
+but not add new outputs at runtime.
+
 #### Error code `12` removed
 
 The unused error `ERROR_OUT_OF_MEMORY_MMAP` with the number `12` has been removed.
