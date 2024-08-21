@@ -133,6 +133,23 @@ documents with this setting. If you make sure that each defined type corresponds
 to the actual type, you can disable the type mapping, otherwise it can lead to
 exceptions when reading the entities from the DB.
 
+### Security Considerations
+
+The default polymorphic type handling strategy used by Spring Data ArangoDB uses the type hint stored in the field `_class`, which by default is the fully qualified classname.
+
+In particular, when reading a property of type `java.lang.Object`, any class referenced from the field `_class` could be instantiated.
+
+In addition, the framework instantiates deserialized objects by invoking constructors with arguments and setting properties invoking the related setters.
+
+This represents a security vulnerability when dealing with untrusted data, which could cause deserialization to arbitrary target classes, trigger gadget chain attacks and potentially lead to remote code execution, see [insecure-deserialization](https://learn.snyk.io/lesson/insecure-deserialization) for details.
+
+Therefore, using the type `java.lang.Object` for persistent entities properties is strongly discouraged, in particular when used for modeling untrusted data, i.e. arbitrary JSON data coming from web users. Note that this also applies to generics type parameters, i.e. `Map<String, Object>`, `List<Object>`, etc ...
+
+As work-around, it is recommended using specific user-defined types for persistent entities properties. 
+
+Properties containing arbitrary JSON data can be safely typed using Jackson types, i.e. `com.fasterxml.jackson.databind.JsonNode`, `com.fasterxml.jackson.databind.node.ObjectNode`, `com.fasterxml.jackson.databind.node.ArrayNode`, etc ...
+
+
 ## Annotations
 
 ### Annotation overview
