@@ -8,7 +8,7 @@ description: ''
 
 ```openapi
 paths:
-  /_api/index#geo:
+  /_db/{database-name}/_api/index#geo:
     post:
       operationId: createIndexGeo
       description: |
@@ -19,6 +19,14 @@ paths:
         the index attributes or have non-numeric values in the index attributes
         will not be indexed.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: query
           required: true

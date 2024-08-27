@@ -16,8 +16,8 @@ deployment without the need to run or manage the system yourself.
 The ArangoGraph Insights Platform...
 
 - runs your databases in data centers of the cloud provider
-  of your choice: Google Cloud Platform (GCP), Amazon Web Services (AWS),
-  Microsoft Azure. This optimizes performance and reduces cost.
+  of your choice: Google Cloud Platform (GCP) or Amazon Web Services (AWS).
+  This optimizes performance and reduces cost.
 
 - ensures that your databases are always available and
   healthy by monitoring them 24/7.

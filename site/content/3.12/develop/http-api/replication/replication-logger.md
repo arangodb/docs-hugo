@@ -24,7 +24,7 @@ by a tick *date*) is still available on the Leader.
 
 ```openapi
 paths:
-  /_api/replication/logger-state:
+  /_db/{database-name}/_api/replication/logger-state:
     get:
       operationId: getReplicationLoggerState
       description: |
@@ -65,6 +65,15 @@ paths:
           - `lastServedTick`: last tick value served to this client via the WAL tailing API
 
           - `time`: date and time when this client last called the WAL tailing API
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -102,7 +111,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/replication/logger-follow:
+  /_db/{database-name}/_api/replication/logger-follow:
     get:
       operationId: getReplicationLoggerFollow
       description: |
@@ -202,6 +211,14 @@ paths:
         This method is not supported on a Coordinator in a cluster deployment.
         {{</* /info */>}}
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: from
           in: query
           required: false
@@ -334,7 +351,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/replication/logger-first-tick:
+  /_db/{database-name}/_api/replication/logger-first-tick:
     get:
       operationId: getReplicationLoggerFirstTick
       description: |
@@ -351,6 +368,15 @@ paths:
         {{</* info */>}}
         This method is not supported on a Coordinator in a cluster deployment.
         {{</* /info */>}}
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -388,7 +414,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/replication/logger-tick-ranges:
+  /_db/{database-name}/_api/replication/logger-tick-ranges:
     get:
       operationId: getReplicationLoggerTickRanges
       description: |
@@ -407,6 +433,15 @@ paths:
         - `tickMin`: minimum tick value contained in logfile
 
         - `tickMax`: maximum tick value contained in logfile
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       responses:
         '200':
           description: |

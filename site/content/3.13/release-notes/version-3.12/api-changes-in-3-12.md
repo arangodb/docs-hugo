@@ -210,6 +210,15 @@ version.
 
 The unused error `ERROR_OUT_OF_MEMORY_MMAP` with the number `12` has been removed.
 
+#### `mmap` log topic removed
+
+<small>Introduced in: v3.12.1</small>
+
+The `mmap` log topic for logging information related to memory mapping has been
+unused since v3.12.0 and has now been removed. The `/_admin/log/level` endpoints
+no longer include this log topic in responses and attempts to set the log level
+for this topic are ignored.
+
 ### Endpoint return value changes
 
 #### Storage engine API
@@ -434,6 +443,42 @@ detached state:
 - `arangodb_network_connectivity_failures_dbservers_total`
 - `arangodb_scheduler_num_detached_threads`
 
+---
+
+<small>Introduced in: v3.10.13, v3.11.7</small>
+
+The following metrics have been introduced to track per-shard requests on
+DB-Servers:
+
+- `arangodb_collection_leader_reads_total`
+- `arangodb_collection_leader_writes_total`
+- `arangodb_collection_requests_bytes_read_total`
+- `arangodb_collection_requests_bytes_written_total`
+
+---
+
+<small>Introduced in: v3.12.1</small>
+
+The following metrics have been added for observability:
+
+- `arangodb_vocbase_shards_read_only_by_write_concern`
+- `arangodb_logger_messages_dropped_total`
+- `arangodb_scheduler_high_prio_dequeue_hist`
+- `arangodb_scheduler_medium_prio_dequeue_hist`
+- `arangodb_scheduler_low_prio_dequeue_hist`
+- `arangodb_scheduler_maintenance_prio_dequeue_hist`
+
+#### Stream Transactions API
+
+<small>Introduced in: v3.12.1</small>
+
+A `skipFastLockRound` option has been added to the `POST /_api/transaction/begin`
+endpoint that lets you disable the fast lock round for Stream Transactions.
+The option defaults to `false` so that fast locking is tried.
+
+See the [HTTP API](../../develop/http-api/transactions/stream-transactions.md#begin-a-stream-transaction)
+for details.
+
 ### Endpoints deprecated
 
 #### JavaScript Transactions API
@@ -521,6 +566,7 @@ JavaScript Transactions and thus the `db._executeTransaction()` method is
 deprecated from v3.12.0 onward and will be removed in a future version.
 The `db._createTransaction()` method for starting Stream Transactions is unaffected.
 
+
 ### `@arangodb/request` certificate validation
 
 <small>Introduced in: v3.11.11, v3.12.2</small>
@@ -533,3 +579,15 @@ HTTPS requests:
   Default: `false`.
 - `verifyDepth` (optional): limit the maximum length of the certificate chain
   that counts as valid. Default: `10`.
+
+### Stream Transactions API
+
+<small>Introduced in: v3.12.1</small>
+
+A `skipFastLockRound` option has been added to the `db._createTransaction()`
+method that lets you disable the fast lock round for Stream Transactions.
+The option defaults to `false` so that fast locking is tried.
+
+See the [JavaScript API](../../develop/transactions/stream-transactions.md#javascript-api)
+for details.
+

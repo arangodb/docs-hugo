@@ -20,7 +20,7 @@ See [Audit logging](../../operations/security/audit-logging.md#configuration).
 
 ```openapi
 paths:
-  /_admin/server/tls:
+  /_db/{database-name}/_admin/server/tls:
     get:
       operationId: getServerTls
       description: |
@@ -48,6 +48,18 @@ paths:
             JSON string with the SHA256 of the private key.
 
         This API requires authentication.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database. If the `--server.harden` startup option is enabled,
+            administrate access to the `_system` database is required.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -61,6 +73,7 @@ paths:
 ```openapi
 paths:
   /_admin/server/tls:
+  # Independent of database (superuser has access to all databases that exist)
     post:
       operationId: reloadServerTls
       description: |
@@ -88,6 +101,7 @@ paths:
 ```openapi
 paths:
   /_admin/server/encryption:
+  # Independent of database (superuser has access to all databases that exist)
     post:
       operationId: rotateEncryptionAtRestKey
       description: |

@@ -75,7 +75,7 @@ endpoints to request and delete multiple documents in one request.
 
 ```openapi
 paths:
-  /_api/document/{collection}/{key}:
+  /_db/{database-name}/_api/document/{collection}/{key}:
     get:
       operationId: getDocument
       description: |
@@ -85,6 +85,14 @@ paths:
         - `_key`, containing the document key that uniquely identifies a document within the collection.
         - `_rev`, containing the document revision.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: path
           required: true
@@ -220,7 +228,7 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/document/{collection}/{key}:
+  /_db/{database-name}/_api/document/{collection}/{key}:
     head:
       operationId: getDocumentHeader
       description: |
@@ -228,6 +236,14 @@ paths:
         can use this call to get the current revision of a document or check if
         the document was deleted.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: path
           required: true
@@ -325,7 +341,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/document/{collection}:
+  /_db/{database-name}/_api/document/{collection}:
     post:
       operationId: createDocument
       description: |
@@ -368,6 +384,14 @@ paths:
         generated document, the complete new document is returned under
         the `new` attribute in the result.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: path
           required: true
@@ -497,14 +521,9 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                A JSON representation of a single document.
               type: object
-              required:
-                - document
-              properties:
-                document:
-                  description: |
-                    A JSON representation of a single document.
-                  type: object
       responses:
         '201':
           description: |
@@ -726,7 +745,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/document/{collection}/{key}:
+  /_db/{database-name}/_api/document/{collection}/{key}:
     put:
       operationId: replaceDocument
       description: |
@@ -785,19 +804,15 @@ paths:
 
         If the document does not exist, then a *HTTP 404* is returned and the
         body of the response contains an error document.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - document
-              properties:
-                document:
-                  description: |
-                    A JSON representation of a single document.
-                  type: object
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: path
           required: true
@@ -881,6 +896,13 @@ paths:
             transaction ID returned by the `POST /_api/transaction/begin` call.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: |
+                A JSON representation of a single document.
+              type: object
       responses:
         '201':
           description: |
@@ -1018,7 +1040,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/document/{collection}/{key}:
+  /_db/{database-name}/_api/document/{collection}/{key}:
     patch:
       operationId: updateDocument
       description: |
@@ -1084,19 +1106,15 @@ paths:
 
         If the document does not exist, then a *HTTP 404* is returned and the
         body of the response contains an error document.
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - document
-              properties:
-                document:
-                  description: |
-                    A JSON representation of a document update as an object.
-                  type: object
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: path
           required: true
@@ -1203,6 +1221,13 @@ paths:
             transaction ID returned by the `POST /_api/transaction/begin` call.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: |
+                A JSON representation of a (partial) document.
+              type: object
       responses:
         '201':
           description: |
@@ -1341,7 +1366,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/document/{collection}/{key}:
+  /_db/{database-name}/_api/document/{collection}/{key}:
     delete:
       operationId: deleteDocument
       description: |
@@ -1361,6 +1386,14 @@ paths:
         the complete previous revision of the document
         is returned under the `old` attribute in the result.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: path
           required: true
@@ -1595,7 +1628,7 @@ contains a JSON array of the same length.
 
 ```openapi
 paths:
-  /_api/document/{collection}#get:
+  /_db/{database-name}/_api/document/{collection}#get:
     put:
       operationId: getDocuments
       description: |
@@ -1624,6 +1657,14 @@ paths:
         - `_key`, containing the document key that uniquely identifies a document within the collection.
         - `_rev`, containing the document revision.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: path
           required: true
@@ -1634,6 +1675,7 @@ paths:
         - name: onlyget
           in: query
           required: true
+          example: true
           description: |
             This parameter is required to be `true`, otherwise a replace
             operation is executed!
@@ -1673,14 +1715,11 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - documents
-              properties:
-                documents:
-                  description: |
-                    An array of documents to retrieve.
-                  type: json
+              description: |
+                An array of documents to retrieve.
+              type: array
+              items:
+                type: object
       responses:
         '200':
           description: |
@@ -1726,7 +1765,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/document/{collection}#multiple:
+  /_db/{database-name}/_api/document/{collection}#multiple:
     post:
       operationId: createDocuments
       description: |
@@ -1776,6 +1815,14 @@ paths:
         `1200:17,1205:10` means that in 17 cases the error 1200 ("revision conflict")
         has happened, and in 10 cases the error 1205 ("illegal document handle").
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: path
           required: true
@@ -1906,14 +1953,11 @@ paths:
         content:
           application/json:
             schema:
-              type: object
-              required:
-                - documents
-              properties:
-                documents:
-                  description: |
-                    An array of documents to create.
-                  type: json
+              description: |
+                An array of documents to create.
+              type: array
+              items:
+                type: object
       responses:
         '201':
           description: |
@@ -2031,7 +2075,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/document/{collection}:
+  /_db/{database-name}/_api/document/{collection}:
     put:
       operationId: replaceDocuments
       description: |
@@ -2089,20 +2133,15 @@ paths:
         error codes and how often each kind of error occurred. For example,
         `1200:17,1205:10` means that in 17 cases the error 1200 ("revision conflict")
         has happened, and in 10 cases the error 1205 ("illegal document handle").
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - documents
-              properties:
-                documents:
-                  description: |
-                    A JSON representation of an array of documents.
-                    Each element has to contain a `_key` attribute.
-                  type: json
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: path
           required: true
@@ -2173,6 +2212,16 @@ paths:
             transaction ID returned by the `POST /_api/transaction/begin` call.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: |
+                An array of documents. Each element has to contain a `_key` attribute.
+                The existing documents with matching document keys are replaced.
+              type: array
+              items:
+                type: object
       responses:
         '201':
           description: |
@@ -2224,7 +2273,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/document/{collection}:
+  /_db/{database-name}/_api/document/{collection}:
     patch:
       operationId: updateDocuments
       description: |
@@ -2289,20 +2338,15 @@ paths:
         error codes and how often each kind of error occurred. For example,
         `1200:17,1205:10` means that in 17 cases the error 1200 ("revision conflict")
         has happened, and in 10 cases the error 1205 ("illegal document handle").
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - documents
-              properties:
-                documents:
-                  description: |
-                    A JSON representation of an array of document updates as objects. 
-                    Each element has to contain a `_key` attribute.
-                  type: json
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: path
           required: true
@@ -2395,6 +2439,17 @@ paths:
             transaction ID returned by the `POST /_api/transaction/begin` call.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: |
+                An array of partial documents representing the desired updates.
+                Each element has to contain a `_key` attribute. The existing
+                documents with matching document keys are updated.
+              type: array
+              items:
+                type: object
       responses:
         '201':
           description: |
@@ -2446,7 +2501,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/document/{collection}:
+  /_db/{database-name}/_api/document/{collection}:
     delete:
       operationId: deleteDocuments
       description: |
@@ -2485,20 +2540,15 @@ paths:
         error codes and how often each kind of error occurred. For example,
         `1200:17,1205:10` means that in 17 cases the error 1200 ("revision conflict")
         has happened, and in 10 cases the error 1205 ("illegal document handle").
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              required:
-                - documents
-              properties:
-                documents:
-                  description: |
-                    A JSON representation of an array of document updates as objects. 
-                    Each element has to contain a `_key` attribute.
-                  type: json
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: path
           required: true
@@ -2558,6 +2608,15 @@ paths:
             transaction ID returned by the `POST /_api/transaction/begin` call.
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: |
+                An array of document selectors. A selector can be a string
+                (document key or identifier) or an object that has to contain a
+                `_key` attribute with the document key.
+              type: array
       responses:
         '200':
           description: |

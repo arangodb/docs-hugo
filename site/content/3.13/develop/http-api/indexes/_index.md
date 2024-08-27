@@ -27,7 +27,7 @@ http://localhost:8529/_api/index/demo/63563528
 
 ```openapi
 paths:
-  /_api/index:
+  /_db/{database-name}/_api/index:
     get:
       operationId: listIndexes
       description: |
@@ -36,6 +36,14 @@ paths:
         available in the `identifiers` attribute as an object with the index identifiers
         as object keys.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: query
           required: true
@@ -94,7 +102,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/index/{index-id}:
+  /_db/{database-name}/_api/index/{index-id}:
     get:
       operationId: getIndex
       description: |
@@ -109,6 +117,14 @@ paths:
         `unique` or `sparse` flags, whereas others don't. Some indexes also provide
         a selectivity estimate in the `selectivityEstimate` attribute of the result.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: index-id
           in: path
           required: true
@@ -152,7 +168,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/index:
+  /_db/{database-name}/_api/index:
     post:
       operationId: createIndex
       description: |
@@ -232,6 +248,14 @@ paths:
         in the background, which will not write-lock the underlying collection for
         as long as if the index is built in the foreground.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection
           in: query
           required: true
@@ -274,12 +298,20 @@ paths:
 
 ```openapi
 paths:
-  /_api/index/{index-id}:
+  /_db/{database-name}/_api/index/{index-id}:
     delete:
       operationId: deleteIndex
       description: |
         Deletes an index with `index-id`.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: index-id
           in: path
           required: true

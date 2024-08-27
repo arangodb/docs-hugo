@@ -685,6 +685,77 @@ when the `doc` variable is truthy because the opposite is false and
 
 Also see [Evaluation of subqueries](../../aql/fundamentals/subqueries.md#evaluation-of-subqueries).
 
+### Index hints for traversals
+
+<small>Introduced in: v3.12.1</small>
+
+For graph traversals, you can now specify index hints in AQL.
+
+If vertex-centric indexes are known to perform better than the edge index but
+aren't chosen automatically, you can make the optimizer prefer the indexes you
+specify. This can be done per edge collection, direction, and level/depth:
+
+```aql
+FOR v, e, p IN 1..4 OUTBOUND startVertex edgeCollection
+OPTIONS {
+  indexHint: {
+    "edgeCollection": {
+      "outbound": {
+        "base": ["edge"],
+        "1": "myIndex1",
+        "2": ["myIndex2", "myIndex1"],
+        "3": "myIndex3",
+      }
+    }
+  }
+}
+FILTER p.edges[1].foo == "bar" AND
+       p.edges[2].foo == "bar" AND
+       p.edges[2].baz == "qux"
+```
+
+See the [Traversal `OPTIONS`](../../aql/graphs/traversals.md#working-with-named-graphs)
+for details.
+
+### Array and object destructuring
+
+<small>Introduced in: v3.12.2</small>
+
+Destructuring lets you assign array values and object attributes to one or
+multiple variables with a single `LET` operation and as part of regular `FOR`
+loops. This can be convenient to extract a subset of values and name them in a
+concise manner.
+
+Array values are assigned by position and you can skip elements by leaving out
+variable names.
+
+Object attributes are assigned by name but you can also map them to different
+variable names.
+
+You can mix both array and object destructuring.
+
+```aql
+LET [x, y] = [1, 2, 3]   // Assign 1 to variable x and 2 to y
+LET [, y, z] = [1, 2, 3] // Assign 2 to variable y and 3 to z
+
+// Assign "Luna Miller" to variable name and 39 to age
+LET { name, age } = { vip: true, age: 39, name: "Luna Miller" }
+
+// Assign the vip attribute value to variable status
+LET { vip: status } = { vip: true, age: 39, name: "Luna Miller" }
+
+// Assign 1 to variable x, 2 to y, and 3 to z
+LET { obj: [x, [y, z]] } = { obj: [1, [2, 3]] }
+
+// Iterate over array of objects and extract the firstName attribute
+LET names = [ { firstName: "Luna"}, { firstName: "Sam" } ]
+FOR { firstName } IN names
+  RETURN firstName
+```
+
+See [Array destructuring](../../aql/operators.md#array-destructuring) and
+[Object destructuring](../../aql/operators.md#object-destructuring) for details.
+
 ## Indexing
 
 ### Multi-dimensional indexes
@@ -943,6 +1014,16 @@ every single AQL query can be capped with the second option.
 These options prevent that running a lot of AQL queries with async
 prefetching fully congests the scheduler queue, and also they prevent large
 AQL queries to use up all async prefetching capacity on their own.
+
+### New server scheduler type
+
+<small>Introduced in: v3.12.1</small>
+
+A new `--server.scheduler` startup option has been added to let you select the
+scheduler type. The scheduler currently used by ArangoDB has the value
+`supervised`. A new work-stealing scheduler is being implemented and can be
+selected using the value `threadpools`. This new scheduler is experimental and
+should not be used in production.
 
 ## Miscellaneous changes
 
@@ -1318,10 +1399,48 @@ overwhelmed:
 
 | Label | Description |
 |:------|:------------|
-| `arangodb_logger_messages_dropped_total` |  Total number of dropped log messages. |
+| `arangodb_logger_messages_dropped_total` | Total number of dropped log messages. |
 
 The related startup option for controlling the size of the log queue has a
 default of `16384` instead of `10000` now.
+
+### Scheduler dequeue time metrics
+
+<small>Introduced in: v3.12.1</small>
+
+The following scheduler metrics have been added, reporting how long it takes to
+pick items from different job queues.
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_scheduler_high_prio_dequeue_hist` | Time required to take an item from the high priority queue. |
+| `arangodb_scheduler_medium_prio_dequeue_hist` | Time required to take an item from the medium priority queue. |
+| `arangodb_scheduler_low_prio_dequeue_hist` | Time required to take an item from the low priority queue. |
+| `arangodb_scheduler_maintenance_prio_dequeue_hist` | Time required to take an item from the maintenance priority queue. |
+
+### Option to skip fast lock round for Stream Transactions
+
+<small>Introduced in: v3.12.1</small>
+
+A `skipFastLockRound` option has been added to let you disable the fast lock
+round for Stream Transactions. The option defaults to `false` so that
+fast locking is tried.
+
+Disabling the fast lock round is not necessary unless there are many concurrent
+Stream Transactions queued that all try to lock the same collection exclusively.
+In this case, the fast locking is subpar because exclusive locks will prevent it
+from succeeding. Skipping the fast locking makes each actual locking operation
+take longer than with fast locking but it guarantees a deterministic locking order.
+This avoids deadlocking and retrying which can occur with the fast locking.
+Overall, skipping the fast lock round can be faster in this scenario.
+
+The fast lock round should not be skipped for read-only Stream Transactions as
+it degrades performance if there are no concurrent transactions that use
+exclusive locks on the same collection.
+
+See the [JavaScript API](../../develop/transactions/stream-transactions.md#javascript-api)
+and the [HTTP API](../../develop/http-api/transactions/stream-transactions.md#begin-a-stream-transaction)
+for details.
 
 ## Client tools
 

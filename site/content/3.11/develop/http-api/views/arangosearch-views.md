@@ -10,12 +10,21 @@ description: >-
 
 ```openapi
 paths:
-  /_api/view:
+  /_db/{database-name}/_api/view:
     post:
       operationId: createView
       description: |
         Creates a new View with a given name and properties if it does not
         already exist.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -310,7 +319,7 @@ db._dropView("products");
 
 ```openapi
 paths:
-  /_api/view/{view-name}:
+  /_db/{database-name}/_api/view/{view-name}:
     get:
       operationId: getView
       description: |
@@ -319,6 +328,14 @@ paths:
         - `name`: The name of the View
         - `type`: The type of the View as string
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: view-name
           in: path
           required: true
@@ -372,7 +389,7 @@ db._dropView("productsView");
 
 ```openapi
 paths:
-  /_api/view/{view-name}/properties:
+  /_db/{database-name}/_api/view/{view-name}/properties:
     get:
       operationId: getViewProperties
       description: |
@@ -381,6 +398,14 @@ paths:
         The result is an object with a full description of a specific View, including
         View type dependent properties.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: view-name
           in: path
           required: true
@@ -441,7 +466,7 @@ db._drop("books");
 
 ```openapi
 paths:
-  /_api/view:
+  /_db/{database-name}/_api/view:
     get:
       operationId: listViews
       description: |
@@ -450,6 +475,15 @@ paths:
         - `id`
         - `name`
         - `type`
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -482,7 +516,7 @@ db._dropView("reviewsView");
 
 ```openapi
 paths:
-  /_api/view/{view-name}/properties:
+  /_db/{database-name}/_api/view/{view-name}/properties:
     put:
       operationId: replaceViewProperties
       description: |
@@ -494,6 +528,14 @@ paths:
         - `type`: The View type
         - all additional `arangosearch` View implementation-specific properties
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: view-name
           in: path
           required: true
@@ -648,7 +690,7 @@ db._dropView(view.name());
 
 ```openapi
 paths:
-  /_api/view/{view-name}/properties:
+  /_db/{database-name}/_api/view/{view-name}/properties:
     patch:
       operationId: updateViewProperties
       description: |
@@ -660,6 +702,14 @@ paths:
         - `type`: The View type
         - all additional `arangosearch` View implementation-specific properties
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: view-name
           in: path
           required: true
@@ -814,7 +864,7 @@ db._dropView("productsView");
 
 ```openapi
 paths:
-  /_api/view/{view-name}/rename:
+  /_db/{database-name}/_api/view/{view-name}/rename:
     put:
       operationId: renameView
       description: |
@@ -830,6 +880,14 @@ paths:
         Renaming Views is not supported in cluster deployments.
         {{</* /info */>}}
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: view-name
           in: path
           required: true
@@ -869,7 +927,7 @@ db._dropView("catalogView");
 
 ```openapi
 paths:
-  /_api/view/{view-name}:
+  /_db/{database-name}/_api/view/{view-name}:
     delete:
       operationId: deleteView
       description: |
@@ -880,6 +938,14 @@ paths:
         - `error`: `false`
         - `id`: The identifier of the dropped View
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: view-name
           in: path
           required: true

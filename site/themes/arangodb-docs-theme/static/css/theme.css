@@ -1807,8 +1807,17 @@ blockquote p {
     color: #47afe8
 }
 
+.method-head {
+    color: #9012fe;
+}
 .method-post {
     color: #690;
+}
+.method-patch {
+    color: #00997a;
+}
+.method-put {
+    color: #ef8c1b;
 }
 
 .method-delete {

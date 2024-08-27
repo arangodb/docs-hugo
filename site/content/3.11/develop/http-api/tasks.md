@@ -3,18 +3,29 @@ title: HTTP interface for tasks
 menuTitle: Tasks
 weight: 85
 description: >-
-  The HTTP API for tasks lets you can manage the periodic or timed execution of
+  The HTTP API for tasks lets you manage the periodic or timed execution of
   server-side JavaScript code
 ---
 ## List all tasks
 
 ```openapi
 paths:
-  /_api/tasks/:
+  /_db/{database-name}/_api/tasks/:
     get:
       operationId: listTasks
       description: |
         fetches all existing tasks on the server
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -96,12 +107,22 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/tasks/{id}:
+  /_db/{database-name}/_api/tasks/{id}:
     get:
       operationId: getTask
       description: |
         fetches one existing task on the server specified by `id`
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
         - name: id
           in: path
           required: true
@@ -202,11 +223,20 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/tasks:
+  /_db/{database-name}/_api/tasks:
     post:
       operationId: createTask
       description: |
         creates a new task with a generated id
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -325,15 +355,14 @@ assert(response.code === 200);
 logJsonResponse(response);
 
 // Cleanup:
-logCurlRequest('DELETE', url + response.parsedBody.id);
-
+curlRequest('DELETE', url + response.parsedBody.id);
 ```
 
 ## Create a task with ID
 
 ```openapi
 paths:
-  /_api/tasks/{id}:
+  /_db/{database-name}/_api/tasks/{id}:
     put:
       operationId: createTaskWithId
       description: |
@@ -341,6 +370,14 @@ paths:
 
         Not compatible with load balancers.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: id
           in: path
           required: true
@@ -417,12 +454,22 @@ curlRequest('DELETE', url + 'sampleTask');
 
 ```openapi
 paths:
-  /_api/tasks/{id}:
+  /_db/{database-name}/_api/tasks/{id}:
     delete:
       operationId: deleteTask
       description: |
         Deletes the task identified by `id` on the server.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has administrate access
+            to this database.
+          schema:
+            type: string
         - name: id
           in: path
           required: true

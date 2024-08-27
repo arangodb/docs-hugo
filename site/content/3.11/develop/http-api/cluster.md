@@ -9,6 +9,9 @@ description: >-
 ---
 ## Monitoring
 
+The permissions required to use the `/_admin/cluster/*` endpoints depends on the
+setting of the [`--cluster.api-jwt-policy` startup option](../../components/arangodb-server/options.md#--clusterapi-jwt-policy).
+
 ### Get the statistics of a DB-Server
 
 ```openapi

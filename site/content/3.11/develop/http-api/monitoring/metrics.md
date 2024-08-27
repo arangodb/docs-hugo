@@ -19,13 +19,19 @@ coupled to specific internals that may be replaced by other mechanisms in the
 future.
 {{< /warning >}}
 
+Whether the `/_admin/metrics*` endpoints are available depends on the setting of
+the [`--server.export-metrics-api` startup option](../../../components/arangodb-server/options.md#--serverexport-metrics-api).
+For additional document read and write metrics, the
+[`--server.export-read-write-metrics` startup option](../../../components/arangodb-server/options.md#--serverexport-read-write-metrics)
+needs to be enabled.
+
 ## Metrics API v2
 
 ### Get the metrics
 
 ```openapi
 paths:
-  /_admin/metrics/v2:
+  /_db/{database-name}/_admin/metrics/v2:
     get:
       operationId: getMetricsV2
       description: |
@@ -41,6 +47,17 @@ paths:
         The API then needs to be added to the Prometheus configuration file
         for collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database. If the `--server.harden` startup option is enabled,
+            administrate access to the `_system` database is required.
+          schema:
+            type: string
         - name: serverId
           in: query
           required: false
@@ -83,7 +100,7 @@ logPlainResponse(response);
 
 ```openapi
 paths:
-  /_admin/usage-metrics:
+  /_db/{database-name}/_admin/usage-metrics:
     get:
       operationId: getUsageMetrics
       description: |
@@ -94,6 +111,17 @@ paths:
         usage metrics, or to `enabled-per-shard-per-user` to make DB-Servers collect
         usage metrics per shard and per user whenever a shard is accessed.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database. If the `--server.harden` startup option is enabled,
+            administrate access to the `_system` database is required.
+          schema:
+            type: string
         - name: serverId
           in: query
           required: false
@@ -116,7 +144,7 @@ paths:
 
 ```openapi
 paths:
-  /_admin/metrics:
+  /_db/{database-name}/_admin/metrics:
     get:
       operationId: getMetrics
       description: |
@@ -138,6 +166,17 @@ paths:
         The API then needs to be added to the Prometheus configuration file
         for collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database. If the `--server.harden` startup option is enabled,
+            administrate access to the `_system` database is required.
+          schema:
+            type: string
         - name: serverId
           in: query
           required: false

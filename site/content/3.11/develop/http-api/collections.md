@@ -29,27 +29,101 @@ http://localhost:8529/_api/collection/demo
 
 ```openapi
 paths:
-  /_api/collection:
+  /_db/{database-name}/_api/collection:
     get:
       operationId: listCollections
       description: |
-        Returns an object with a `result` attribute containing an array with the
-        descriptions of all collections in the current database.
-
-        By providing the optional `excludeSystem` query parameter with a value of
-        `true`, all system collections are excluded from the response.
+        Returns basic information for all collections in the current database,
+        optionally excluding system collections.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: excludeSystem
           in: query
           required: false
           description: |
-            Whether or not system collections should be excluded from the result.
+            Whether system collections should be excluded from the result.
           schema:
             type: boolean
       responses:
         '200':
           description: |
-            The list of collections
+            The list of collections.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  result:
+                    description: |
+                      A list with every item holding basic collection metadata.
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - id
+                        - name
+                        - status
+                        - type
+                        - isSystem
+                        - globallyUniqueId
+                      properties:
+                        id:
+                          description: |
+                            A unique identifier of the collection (deprecated).
+                          type: string
+                        name:
+                          description: |
+                            The name of the collection.
+                          type: string
+                          example: coll
+                        status:
+                          description: |
+                            The status of the collection.
+                            - `3`: loaded
+                            - `5`: deleted
+
+                            Every other status indicates a corrupted collection.
+                          type: integer
+                          example: 3
+                        type:
+                          description: |
+                            The type of the collection:
+                            - `0`: "unknown"
+                            - `2`: regular document collection
+                            - `3`: edge collection
+                          type: integer
+                          example: 2
+                        isSystem:
+                          description: |
+                            Whether the collection is a system collection. Collection names that starts with
+                            an underscore are usually system collections.
+                          type: boolean
+                          example: false
+                        globallyUniqueId:
+                          description: |
+                            A unique identifier of the collection. This is an internal property.
+                          type: string
       tags:
         - Collections
 ```
@@ -75,46 +149,128 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}:
+  /_db/{database-name}/_api/collection/{collection-name}:
     get:
       operationId: getCollection
       description: |
-        {{</* warning */>}}
-        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-        You should reference them via their names instead.
-        {{</* /warning */>}}
-
-        The result is an object describing the collection with the following
-        attributes:
-
-        - `id`: The identifier of the collection.
-
-        - `name`: The name of the collection.
-
-        - `status`: The status of the collection as number.
-          - 3: loaded
-          - 5: deleted
-
-        Every other status indicates a corrupted collection.
-
-        - `type`: The type of the collection as number.
-          - 2: document collection (normal case)
-          - 3: edge collection
-
-        - `isSystem`: If `true` then the collection is a system collection.
+        Returns the basic information about a specific collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
           description: |
             The name of the collection.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            The basic information about a collection.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - id
+                  - name
+                  - status
+                  - type
+                  - isSystem
+                  - globallyUniqueId
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
+                  name:
+                    description: |
+                      The name of the collection.
+                    type: string
+                    example: coll
+                  status:
+                    description: |
+                      The status of the collection.
+                      - `3`: loaded
+                      - `5`: deleted
+
+                      Every other status indicates a corrupted collection.
+                    type: integer
+                    example: 3
+                  type:
+                    description: |
+                      The type of the collection:
+                      - `0`: "unknown"
+                      - `2`: regular document collection
+                      - `3`: edge collection
+                    type: integer
+                    example: 2
+                  isSystem:
+                    description: |
+                      Whether the collection is a system collection. Collection names that starts with
+                      an underscore are usually system collections.
+                    type: boolean
+                    example: false
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the collection. This is an internal property.
+                    type: string
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is
-            returned.
+            The specified collection is unknown.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - code
+                  - error
+                  - errorMessage
+                  - errorNum
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                    example: 1203
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Collections
 ```
@@ -123,46 +279,67 @@ paths:
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/properties:
+  /_db/{database-name}/_api/collection/{collection-name}/properties:
     get:
       operationId: getCollectionProperties
       description: |
-        {{</* warning */>}}
-        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-        You should reference them via their names instead.
-        {{</* /warning */>}}
-
         Returns all properties of the specified collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
           description: |
             The name of the collection.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
           schema:
             type: string
       responses:
-        '400':
-          description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
-            returned.
-        '404':
-          description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
-            is returned.
         '200':
-          description: ''
+          description: |
+            All the collection properties.
           content:
             application/json:
               schema:
-                description: ''
                 type: object
                 required:
+                  - error
+                  - code
+                  - name
+                  - type
+                  - status
+                  - statusString
+                  - isSystem
+                  - id
+                  - globallyUniqueId
                   - waitForSync
                   - keyOptions
+                  - schema
+                  - computedValues
                   - cacheEnabled
                   - syncByRevision
                 properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
                   waitForSync:
                     description: |
                       If `true`, creating, changing, or removing
@@ -199,10 +376,16 @@ paths:
                         computeOn:
                           description: |
                             An array of strings that defines on which write operations the value is
-                            computed. The possible values are `"insert"`, `"update"`, and `"replace"`.
+                            computed.
                           type: array
+                          uniqueItems: true
                           items:
                             type: string
+                            enum:
+                              - insert
+                              - update
+                              - replace
+                          example: ["insert", "update", "replace"]
                         keepNull:
                           description: |
                             Whether the target attribute is set if the expression evaluates to `null`.
@@ -218,7 +401,6 @@ paths:
                     required:
                       - type
                       - allowUserKeys
-                      - lastValue
                     properties:
                       type:
                         description: |
@@ -246,16 +428,16 @@ paths:
                       increment:
                         description: |
                           The increment value for the `autoincrement` key generator.
-                          Not used for other key generator types.
+                          Not used by other key generator types.
                         type: integer
                       offset:
                         description: |
                           The initial offset value for the `autoincrement` key generator.
-                          Not used for other key generator types.
+                          Not used by other key generator types.
                         type: integer
                       lastValue:
                         description: |
-                          The current offset value of the `autoincrement` or `padded` key generator.
+                          The offset value of the `autoincrement` or `padded` key generator.
                           This is an internal property for restoring dumps properly.
                         type: integer
                   cacheEnabled:
@@ -366,6 +548,14 @@ paths:
                     description: |
                       A unique identifier of the collection. This is an internal property.
                     type: string
+        '400':
+          description: |
+            If the `collection-name` placeholder is missing, then a *HTTP 400* is
+            returned.
+        '404':
+          description: |
+            If the collection is unknown, then a *HTTP 404*
+            is returned.
       tags:
         - Collections
 ```
@@ -414,24 +604,30 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/count:
+  /_db/{database-name}/_api/collection/{collection-name}/count:
     get:
       operationId: getCollectionCount
       description: |
-        {{</* warning */>}}
-        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-        You should reference them via their names instead.
-        {{</* /warning */>}}
-
         Get the number of documents in a collection.
-
-        - `count`: The number of documents stored in the specified collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
           description: |
             The name of the collection.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
           schema:
             type: string
         - name: x-arango-trx-id
@@ -443,13 +639,260 @@ paths:
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            All properties of the collection but additionally the document `count`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - count
+                  - error
+                  - code
+                  - name
+                  - type
+                  - status
+                  - statusString
+                  - isSystem
+                  - id
+                  - globallyUniqueId
+                  - waitForSync
+                  - keyOptions
+                  - schema
+                  - computedValues
+                  - cacheEnabled
+                  - syncByRevision
+                properties:
+                  count:
+                    description: |
+                      The number of documents currently present in the collection.
+                    type: integer
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  waitForSync:
+                    description: |
+                      If `true`, creating, changing, or removing
+                      documents waits until the data has been synchronized to disk.
+                    type: boolean
+                  schema:
+                    description: |
+                      An object that specifies the collection-level schema for documents.
+                    type: object
+                  computedValues:
+                    description: |
+                      A list of objects, each representing a computed value.
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - name
+                        - expression
+                        - overwrite
+                      properties:
+                        name:
+                          description: |
+                            The name of the target attribute.
+                          type: string
+                        expression:
+                          description: |
+                            An AQL `RETURN` operation with an expression that computes the desired value.
+                          type: string
+                        overwrite:
+                          description: |
+                            Whether the computed value takes precedence over a user-provided or
+                            existing attribute.
+                          type: boolean
+                        computeOn:
+                          description: |
+                            An array of strings that defines on which write operations the value is
+                            computed.
+                          type: array
+                          uniqueItems: true
+                          items:
+                            type: string
+                            enum:
+                              - insert
+                              - update
+                              - replace
+                          example: ["insert", "update", "replace"]
+                        keepNull:
+                          description: |
+                            Whether the target attribute is set if the expression evaluates to `null`.
+                          type: boolean
+                        failOnWarning:
+                          description: |
+                            Whether the write operation fails if the expression produces a warning.
+                          type: boolean
+                  keyOptions:
+                    description: |
+                      An object which contains key generation options.
+                    type: object
+                    required:
+                      - type
+                      - allowUserKeys
+                    properties:
+                      type:
+                        description: |
+                          Specifies the type of the key generator. Possible values:
+                          - `"traditional"`
+                          - `"autoincrement"`
+                          - `"uuid"`
+                          - `"padded"`
+                        type: string
+                      allowUserKeys:
+                        description: |
+                          If set to `true`, then you are allowed to supply
+                          own key values in the `_key` attribute of a document. If set to
+                          `false`, then the key generator is solely responsible for
+                          generating keys and an error is raised if you supply own key values in the
+                          `_key` attribute of documents.
+
+                          {{</* warning */>}}
+                          You should not use both user-specified and automatically generated document keys
+                          in the same collection in cluster deployments for collections with more than a
+                          single shard. Mixing the two can lead to conflicts because Coordinators that
+                          auto-generate keys in this case are not aware of all keys which are already used.
+                          {{</* /warning */>}}
+                        type: boolean
+                      increment:
+                        description: |
+                          The increment value for the `autoincrement` key generator.
+                          Not used by other key generator types.
+                        type: integer
+                      offset:
+                        description: |
+                          The initial offset value for the `autoincrement` key generator.
+                          Not used by other key generator types.
+                        type: integer
+                      lastValue:
+                        description: |
+                          The offset value of the `autoincrement` or `padded` key generator.
+                          This is an internal property for restoring dumps properly.
+                        type: integer
+                  cacheEnabled:
+                    description: |
+                      Whether the in-memory hash cache for documents is enabled for this
+                      collection.
+                    type: boolean
+                  numberOfShards:
+                    description: |
+                      The number of shards of the collection. _(cluster only)_
+                    type: integer
+                  shardKeys:
+                    description: |
+                      Contains the names of document attributes that are used to
+                      determine the target shard for documents. _(cluster only)_
+                    type: array
+                    items:
+                      type: string
+                  replicationFactor:
+                    description: |
+                      Contains how many copies of each shard are kept on different DB-Servers.
+                      It is an integer number in the range of 1-10 or the string `"satellite"`
+                      for SatelliteCollections (Enterprise Edition only). _(cluster only)_
+                    type: integer
+                  writeConcern:
+                    description: |
+                      Determines how many copies of each shard are required to be
+                      in-sync on the different DB-Servers. If there are less than these many copies
+                      in the cluster, a shard refuses to write. Writes to shards with enough
+                      up-to-date copies succeed at the same time, however. The value of
+                      `writeConcern` cannot be greater than `replicationFactor`.
+
+                      If `distributeShardsLike` is set, the `writeConcern`
+                      is that of the prototype collection.
+                      For SatelliteCollections, the `writeConcern` is automatically controlled to
+                      equal the number of DB-Servers and has a value of `0`.
+                      Otherwise, the default value is controlled by the current database's
+                      default `writeConcern`, which uses the `--cluster.write-concern`
+                      startup option as default, which defaults to `1`. _(cluster only)_
+                    type: integer
+                  shardingStrategy:
+                    description: |
+                      The sharding strategy selected for the collection. _(cluster only)_
+
+                      Possible values:
+                      - `"community-compat"`
+                      - `"enterprise-compat"`
+                      - `"enterprise-smart-edge-compat"`
+                      - `"hash"`
+                      - `"enterprise-hash-smart-edge"`
+                      - `"enterprise-hex-smart-vertex"`
+                    type: string
+                  distributeShardsLike:
+                    description: |
+                      The name of another collection. This collection uses the `replicationFactor`,
+                      `numberOfShards`, `shardingStrategy`, and `writeConcern` properties of the other collection and
+                      the shards of this collection are distributed in the same way as the shards of
+                      the other collection.
+                    type: string
+                  isSmart:
+                    description: |
+                      Whether the collection is used in a SmartGraph or EnterpriseGraph (Enterprise Edition only).
+                      This is an internal property. _(cluster only)_
+                    type: boolean
+                  isDisjoint:
+                    description: |
+                      Whether the SmartGraph or EnterpriseGraph this collection belongs to is disjoint
+                      (Enterprise Edition only). This is an internal property. _(cluster only)_
+                    type: boolean
+                  smartGraphAttribute:
+                    description: |
+                      The attribute that is used for sharding: vertices with the same value of
+                      this attribute are placed in the same shard. All vertices are required to
+                      have this attribute set and it has to be a string. Edges derive the
+                      attribute from their connected vertices (Enterprise Edition only). _(cluster only)_
+                    type: string
+                  smartJoinAttribute:
+                    description: |
+                      Determines an attribute of the collection that must contain the shard key value
+                      of the referred-to SmartJoin collection (Enterprise Edition only). _(cluster only)_
+                    type: string
+                  name:
+                    description: |
+                      The name of this collection.
+                    type: string
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
+                  type:
+                    description: |
+                      The type of the collection:
+                        - `0`: "unknown"
+                        - `2`: regular document collection
+                        - `3`: edge collection
+                    type: integer
+                  isSystem:
+                    description: |
+                      Whether the collection is a system collection. Collection names that starts with
+                      an underscore are usually system collections.
+                    type: boolean
+                  syncByRevision:
+                    description: |
+                      Whether the newer revision-based replication protocol is
+                      enabled for this collection. This is an internal property.
+                    type: boolean
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the collection. This is an internal property.
+                    type: string
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
+            If the `collection-name` placeholder is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
+            If the collection is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
@@ -483,23 +926,31 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/figures:
+  /_db/{database-name}/_api/collection/{collection-name}/figures:
     get:
       operationId: getCollectionFigures
       description: |
-        {{</* warning */>}}
-        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-        You should reference them via their names instead.
-        {{</* /warning */>}}
-
-        In addition to the above, the result also contains the number of documents
-        and additional statistical information about the collection.
+        Get the number of documents and additional statistical information
+        about the collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
           description: |
             The name of the collection.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
           schema:
             type: string
         - name: details
@@ -515,10 +966,12 @@ paths:
             an impact on performance.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
-            Returns information about the collection:
+            All properties of the collection but additionally the document `count`
+            and collection `figures`.
           content:
             application/json:
               schema:
@@ -526,6 +979,21 @@ paths:
                 required:
                   - count
                   - figures
+                  - error
+                  - code
+                  - name
+                  - type
+                  - status
+                  - statusString
+                  - isSystem
+                  - id
+                  - globallyUniqueId
+                  - waitForSync
+                  - keyOptions
+                  - schema
+                  - computedValues
+                  - cacheEnabled
+                  - syncByRevision
                 properties:
                   count:
                     description: |
@@ -555,14 +1023,286 @@ paths:
                             description: |
                               The total memory allocated for indexes in bytes.
                             type: integer
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  waitForSync:
+                    description: |
+                      If `true`, creating, changing, or removing
+                      documents waits until the data has been synchronized to disk.
+                    type: boolean
+                  schema:
+                    description: |
+                      An object that specifies the collection-level schema for documents.
+                    type: object
+                  computedValues:
+                    description: |
+                      A list of objects, each representing a computed value.
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - name
+                        - expression
+                        - overwrite
+                      properties:
+                        name:
+                          description: |
+                            The name of the target attribute.
+                          type: string
+                        expression:
+                          description: |
+                            An AQL `RETURN` operation with an expression that computes the desired value.
+                          type: string
+                        overwrite:
+                          description: |
+                            Whether the computed value takes precedence over a user-provided or
+                            existing attribute.
+                          type: boolean
+                        computeOn:
+                          description: |
+                            An array of strings that defines on which write operations the value is
+                            computed.
+                          type: array
+                          uniqueItems: true
+                          items:
+                            type: string
+                            enum:
+                              - insert
+                              - update
+                              - replace
+                          example: ["insert", "update", "replace"]
+                        keepNull:
+                          description: |
+                            Whether the target attribute is set if the expression evaluates to `null`.
+                          type: boolean
+                        failOnWarning:
+                          description: |
+                            Whether the write operation fails if the expression produces a warning.
+                          type: boolean
+                  keyOptions:
+                    description: |
+                      An object which contains key generation options.
+                    type: object
+                    required:
+                      - type
+                      - allowUserKeys
+                    properties:
+                      type:
+                        description: |
+                          Specifies the type of the key generator. Possible values:
+                          - `"traditional"`
+                          - `"autoincrement"`
+                          - `"uuid"`
+                          - `"padded"`
+                        type: string
+                      allowUserKeys:
+                        description: |
+                          If set to `true`, then you are allowed to supply
+                          own key values in the `_key` attribute of a document. If set to
+                          `false`, then the key generator is solely responsible for
+                          generating keys and an error is raised if you supply own key values in the
+                          `_key` attribute of documents.
+
+                          {{</* warning */>}}
+                          You should not use both user-specified and automatically generated document keys
+                          in the same collection in cluster deployments for collections with more than a
+                          single shard. Mixing the two can lead to conflicts because Coordinators that
+                          auto-generate keys in this case are not aware of all keys which are already used.
+                          {{</* /warning */>}}
+                        type: boolean
+                      increment:
+                        description: |
+                          The increment value for the `autoincrement` key generator.
+                          Not used by other key generator types.
+                        type: integer
+                      offset:
+                        description: |
+                          The initial offset value for the `autoincrement` key generator.
+                          Not used by other key generator types.
+                        type: integer
+                      lastValue:
+                        description: |
+                          The offset value of the `autoincrement` or `padded` key generator.
+                          This is an internal property for restoring dumps properly.
+                        type: integer
+                  cacheEnabled:
+                    description: |
+                      Whether the in-memory hash cache for documents is enabled for this
+                      collection.
+                    type: boolean
+                  numberOfShards:
+                    description: |
+                      The number of shards of the collection. _(cluster only)_
+                    type: integer
+                  shardKeys:
+                    description: |
+                      Contains the names of document attributes that are used to
+                      determine the target shard for documents. _(cluster only)_
+                    type: array
+                    items:
+                      type: string
+                  replicationFactor:
+                    description: |
+                      Contains how many copies of each shard are kept on different DB-Servers.
+                      It is an integer number in the range of 1-10 or the string `"satellite"`
+                      for SatelliteCollections (Enterprise Edition only). _(cluster only)_
+                    type: integer
+                  writeConcern:
+                    description: |
+                      Determines how many copies of each shard are required to be
+                      in-sync on the different DB-Servers. If there are less than these many copies
+                      in the cluster, a shard refuses to write. Writes to shards with enough
+                      up-to-date copies succeed at the same time, however. The value of
+                      `writeConcern` cannot be greater than `replicationFactor`.
+
+                      If `distributeShardsLike` is set, the `writeConcern`
+                      is that of the prototype collection.
+                      For SatelliteCollections, the `writeConcern` is automatically controlled to
+                      equal the number of DB-Servers and has a value of `0`.
+                      Otherwise, the default value is controlled by the current database's
+                      default `writeConcern`, which uses the `--cluster.write-concern`
+                      startup option as default, which defaults to `1`. _(cluster only)_
+                    type: integer
+                  shardingStrategy:
+                    description: |
+                      The sharding strategy selected for the collection. _(cluster only)_
+
+                      Possible values:
+                      - `"community-compat"`
+                      - `"enterprise-compat"`
+                      - `"enterprise-smart-edge-compat"`
+                      - `"hash"`
+                      - `"enterprise-hash-smart-edge"`
+                      - `"enterprise-hex-smart-vertex"`
+                    type: string
+                  distributeShardsLike:
+                    description: |
+                      The name of another collection. This collection uses the `replicationFactor`,
+                      `numberOfShards`, `shardingStrategy`, and `writeConcern` properties of the other collection and
+                      the shards of this collection are distributed in the same way as the shards of
+                      the other collection.
+                    type: string
+                  isSmart:
+                    description: |
+                      Whether the collection is used in a SmartGraph or EnterpriseGraph (Enterprise Edition only).
+                      This is an internal property. _(cluster only)_
+                    type: boolean
+                  isDisjoint:
+                    description: |
+                      Whether the SmartGraph or EnterpriseGraph this collection belongs to is disjoint
+                      (Enterprise Edition only). This is an internal property. _(cluster only)_
+                    type: boolean
+                  smartGraphAttribute:
+                    description: |
+                      The attribute that is used for sharding: vertices with the same value of
+                      this attribute are placed in the same shard. All vertices are required to
+                      have this attribute set and it has to be a string. Edges derive the
+                      attribute from their connected vertices (Enterprise Edition only). _(cluster only)_
+                    type: string
+                  smartJoinAttribute:
+                    description: |
+                      Determines an attribute of the collection that must contain the shard key value
+                      of the referred-to SmartJoin collection (Enterprise Edition only). _(cluster only)_
+                    type: string
+                  name:
+                    description: |
+                      The name of this collection.
+                    type: string
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
+                  type:
+                    description: |
+                      The type of the collection:
+                        - `0`: "unknown"
+                        - `2`: regular document collection
+                        - `3`: edge collection
+                    type: integer
+                  isSystem:
+                    description: |
+                      Whether the collection is a system collection. Collection names that starts with
+                      an underscore are usually system collections.
+                    type: boolean
+                  syncByRevision:
+                    description: |
+                      Whether the newer revision-based replication protocol is
+                      enabled for this collection. This is an internal property.
+                    type: boolean
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the collection. This is an internal property.
+                    type: string
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
-            returned.
+            The `collection-name` parameter is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
-            is returned.
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Collections
 ```
@@ -614,7 +1354,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/responsibleShard:
+  /_db/{database-name}/_api/collection/{collection-name}/responsibleShard:
     put:
       operationId: getResponsibleShard
       description: |
@@ -631,6 +1371,22 @@ paths:
         {{</* info */>}}
         This method is only available in cluster deployments on Coordinators.
         {{</* /info */>}}
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: collection-name
+          in: path
+          required: true
+          description: |
+            The name of the collection.
+          schema:
+            type: string
       requestBody:
         content:
           application/json:
@@ -644,32 +1400,127 @@ paths:
                     The request body must be a JSON object with at least the shard key
                     attributes set to some values, but it may also be a full document.
                   type: object
-      parameters:
-        - name: collection-name
-          in: path
-          required: true
-          description: |
-            The name of the collection.
-          schema:
-            type: string
       responses:
         '200':
           description: |
             Returns the ID of the responsible shard.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - shardId
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  shardId:
+                    description: |
+                      The ID of the responsible shard
+                    type: string
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
-            returned.
-            Additionally, if not all of the collection's shard key
-            attributes are present in the input document, then a
-            *HTTP 400* is returned as well.
+            The `collection-name` parameter is missing or not all of the
+            collection's shard key attributes are present in the input document.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the `collection-name` is unknown, then an *HTTP 404*
-            is returned.
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '501':
           description: |
-            *HTTP 501* is returned if the method is called on a single server.
+            The method has been called on a single server.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 501
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Collections
 ```
@@ -700,20 +1551,28 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/shards:
+  /_db/{database-name}/_api/collection/{collection-name}/shards:
     get:
       operationId: getCollectionShards
       description: |
-        By default returns a JSON array with the shard IDs of the collection.
+        Returns a JSON array with the shard IDs of the collection.
 
-        If the `details` parameter is set to `true`, it will return a JSON object with the
+        If the `details` parameter is set to `true`, it returns a JSON object with the
         shard IDs as object attribute keys, and the responsible servers for each shard mapped to them.
-        In the detailed response, the leader shards will be first in the arrays.
+        In the detailed response, the leader shards come first in the arrays.
 
         {{</* info */>}}
         This method is only available in cluster deployments on Coordinators.
         {{</* /info */>}}
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -725,24 +1584,108 @@ paths:
           in: query
           required: false
           description: |
-            If set to true, the return value will also contain the responsible servers for the collections' shards.
+            If set to true, the return value also contains the responsible servers for the collections' shards.
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
             Returns the collection's shards.
+          # TODO: polymorphic structural description?
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
-            returned.
+            The `collection-name` parameter is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the `collection-name` is unknown, then an *HTTP 404*
-            is returned.
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '501':
           description: |
-            *HTTP 501* is returned if the method is called on a single server.
+            The method has been called on a single server.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 501
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Collections
 ```
@@ -789,37 +1732,345 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/revision:
+  /_db/{database-name}/_api/collection/{collection-name}/revision:
     get:
       operationId: getCollectionRevision
       description: |
-        {{</* warning */>}}
-        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-        You should reference them via their names instead.
-        {{</* /warning */>}}
-
-        The response will contain the collection's latest used revision id.
-        The revision id is a server-generated string that clients can use to
+        The response contains the collection's latest used revision ID.
+        The revision ID is a server-generated string that clients can use to
         check whether data in a collection has changed since the last revision check.
-
-        - `revision`: The collection revision id as a string.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
           description: |
             The name of the collection.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            All collection properties but additionally the collection `revision`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - revision
+                  - error
+                  - code
+                  - name
+                  - type
+                  - status
+                  - statusString
+                  - isSystem
+                  - id
+                  - globallyUniqueId
+                  - waitForSync
+                  - keyOptions
+                  - schema
+                  - computedValues
+                  - cacheEnabled
+                  - syncByRevision
+                properties:
+                  revision:
+                    description: |
+                      The collection revision ID as a string.
+                    type: string
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  waitForSync:
+                    description: |
+                      If `true`, creating, changing, or removing
+                      documents waits until the data has been synchronized to disk.
+                    type: boolean
+                  schema:
+                    description: |
+                      An object that specifies the collection-level schema for documents.
+                    type: object
+                  computedValues:
+                    description: |
+                      A list of objects, each representing a computed value.
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - name
+                        - expression
+                        - overwrite
+                      properties:
+                        name:
+                          description: |
+                            The name of the target attribute.
+                          type: string
+                        expression:
+                          description: |
+                            An AQL `RETURN` operation with an expression that computes the desired value.
+                          type: string
+                        overwrite:
+                          description: |
+                            Whether the computed value takes precedence over a user-provided or
+                            existing attribute.
+                          type: boolean
+                        computeOn:
+                          description: |
+                            An array of strings that defines on which write operations the value is
+                            computed.
+                          type: array
+                          uniqueItems: true
+                          items:
+                            type: string
+                            enum:
+                              - insert
+                              - update
+                              - replace
+                          example: ["insert", "update", "replace"]
+                        keepNull:
+                          description: |
+                            Whether the target attribute is set if the expression evaluates to `null`.
+                          type: boolean
+                        failOnWarning:
+                          description: |
+                            Whether the write operation fails if the expression produces a warning.
+                          type: boolean
+                  keyOptions:
+                    description: |
+                      An object which contains key generation options.
+                    type: object
+                    required:
+                      - type
+                      - allowUserKeys
+                    properties:
+                      type:
+                        description: |
+                          Specifies the type of the key generator. Possible values:
+                          - `"traditional"`
+                          - `"autoincrement"`
+                          - `"uuid"`
+                          - `"padded"`
+                        type: string
+                      allowUserKeys:
+                        description: |
+                          If set to `true`, then you are allowed to supply
+                          own key values in the `_key` attribute of a document. If set to
+                          `false`, then the key generator is solely responsible for
+                          generating keys and an error is raised if you supply own key values in the
+                          `_key` attribute of documents.
+
+                          {{</* warning */>}}
+                          You should not use both user-specified and automatically generated document keys
+                          in the same collection in cluster deployments for collections with more than a
+                          single shard. Mixing the two can lead to conflicts because Coordinators that
+                          auto-generate keys in this case are not aware of all keys which are already used.
+                          {{</* /warning */>}}
+                        type: boolean
+                      increment:
+                        description: |
+                          The increment value for the `autoincrement` key generator.
+                          Not used by other key generator types.
+                        type: integer
+                      offset:
+                        description: |
+                          The initial offset value for the `autoincrement` key generator.
+                          Not used by other key generator types.
+                        type: integer
+                      lastValue:
+                        description: |
+                          The offset value of the `autoincrement` or `padded` key generator.
+                          This is an internal property for restoring dumps properly.
+                        type: integer
+                  cacheEnabled:
+                    description: |
+                      Whether the in-memory hash cache for documents is enabled for this
+                      collection.
+                    type: boolean
+                  numberOfShards:
+                    description: |
+                      The number of shards of the collection. _(cluster only)_
+                    type: integer
+                  shardKeys:
+                    description: |
+                      Contains the names of document attributes that are used to
+                      determine the target shard for documents. _(cluster only)_
+                    type: array
+                    items:
+                      type: string
+                  replicationFactor:
+                    description: |
+                      Contains how many copies of each shard are kept on different DB-Servers.
+                      It is an integer number in the range of 1-10 or the string `"satellite"`
+                      for SatelliteCollections (Enterprise Edition only). _(cluster only)_
+                    type: integer
+                  writeConcern:
+                    description: |
+                      Determines how many copies of each shard are required to be
+                      in-sync on the different DB-Servers. If there are less than these many copies
+                      in the cluster, a shard refuses to write. Writes to shards with enough
+                      up-to-date copies succeed at the same time, however. The value of
+                      `writeConcern` cannot be greater than `replicationFactor`.
+
+                      If `distributeShardsLike` is set, the `writeConcern`
+                      is that of the prototype collection.
+                      For SatelliteCollections, the `writeConcern` is automatically controlled to
+                      equal the number of DB-Servers and has a value of `0`.
+                      Otherwise, the default value is controlled by the current database's
+                      default `writeConcern`, which uses the `--cluster.write-concern`
+                      startup option as default, which defaults to `1`. _(cluster only)_
+                    type: integer
+                  shardingStrategy:
+                    description: |
+                      The sharding strategy selected for the collection. _(cluster only)_
+
+                      Possible values:
+                      - `"community-compat"`
+                      - `"enterprise-compat"`
+                      - `"enterprise-smart-edge-compat"`
+                      - `"hash"`
+                      - `"enterprise-hash-smart-edge"`
+                      - `"enterprise-hex-smart-vertex"`
+                    type: string
+                  distributeShardsLike:
+                    description: |
+                      The name of another collection. This collection uses the `replicationFactor`,
+                      `numberOfShards`, `shardingStrategy`, and `writeConcern` properties of the other collection and
+                      the shards of this collection are distributed in the same way as the shards of
+                      the other collection.
+                    type: string
+                  isSmart:
+                    description: |
+                      Whether the collection is used in a SmartGraph or EnterpriseGraph (Enterprise Edition only).
+                      This is an internal property. _(cluster only)_
+                    type: boolean
+                  isDisjoint:
+                    description: |
+                      Whether the SmartGraph or EnterpriseGraph this collection belongs to is disjoint
+                      (Enterprise Edition only). This is an internal property. _(cluster only)_
+                    type: boolean
+                  smartGraphAttribute:
+                    description: |
+                      The attribute that is used for sharding: vertices with the same value of
+                      this attribute are placed in the same shard. All vertices are required to
+                      have this attribute set and it has to be a string. Edges derive the
+                      attribute from their connected vertices (Enterprise Edition only). _(cluster only)_
+                    type: string
+                  smartJoinAttribute:
+                    description: |
+                      Determines an attribute of the collection that must contain the shard key value
+                      of the referred-to SmartJoin collection (Enterprise Edition only). _(cluster only)_
+                    type: string
+                  name:
+                    description: |
+                      The name of this collection.
+                    type: string
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
+                  type:
+                    description: |
+                      The type of the collection:
+                        - `0`: "unknown"
+                        - `2`: regular document collection
+                        - `3`: edge collection
+                    type: integer
+                  isSystem:
+                    description: |
+                      Whether the collection is a system collection. Collection names that starts with
+                      an underscore are usually system collections.
+                    type: boolean
+                  syncByRevision:
+                    description: |
+                      Whether the newer revision-based replication protocol is
+                      enabled for this collection. This is an internal property.
+                    type: boolean
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the collection. This is an internal property.
+                    type: string
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
-            returned.
+            The `collection-name` parameter is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
-            is returned.
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+
       tags:
         - Collections
 ```
@@ -849,16 +2100,11 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/checksum:
+  /_db/{database-name}/_api/collection/{collection-name}/checksum:
     get:
       operationId: getCollectionChecksum
       description: |
-        {{</* warning */>}}
-        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-        You should reference them via their names instead.
-        {{</* /warning */>}}
-
-        Will calculate a checksum of the meta-data (keys and optionally revision ids) and
+        Calculates a checksum of the meta-data (keys and optionally revision ids) and
         optionally the document data in the collection.
 
         The checksum can be used to compare if two collections on different ArangoDB
@@ -866,31 +2112,38 @@ paths:
         returned too so one can make sure the checksums are calculated for the same
         state of data.
 
-        By default, the checksum will only be calculated on the `_key` system attribute
+        By default, the checksum is only calculated on the `_key` system attribute
         of the documents contained in the collection. For edge collections, the system
-        attributes `_from` and `_to` will also be included in the calculation.
+        attributes `_from` and `_to` are also included in the calculation.
 
         By setting the optional query parameter `withRevisions` to `true`, then revision
-        ids (`_rev` system attributes) are included in the checksumming.
+        IDs (`_rev` system attributes) are included in the checksumming.
 
         By providing the optional query parameter `withData` with a value of `true`,
-        the user-defined document attributes will be included in the calculation too.
+        the user-defined document attributes are included in the calculation, too.
         
         {{</* info */>}}
         Including user-defined attributes will make the checksumming slower.
         {{</* /info */>}}
-
-        The response is a JSON object with the following attributes:
-
-        - `checksum`: The calculated checksum as a number.
-
-        - `revision`: The collection revision id as a string.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
           description: |
             The name of the collection.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
           schema:
             type: string
         - name: withRevisions
@@ -908,13 +2161,85 @@ paths:
           schema:
             type: boolean
       responses:
+        '200':
+          description: |
+            The basic information about the collection but additionally the
+            collection `checksum` and `revision`.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - checksum
+                  - revision
+                  - error
+                  - code
+                  - id
+                  - name
+                  - status
+                  - type
+                  - isSystem
+                  - globallyUniqueId
+                properties:
+                  checksum:
+                    description: |
+                      The calculated checksum as a number.
+                  revision:
+                    description: |
+                      The collection revision id as a string.
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
+                  name:
+                    description: |
+                      The name of the collection.
+                    type: string
+                    example: coll
+                  status:
+                    description: |
+                      The status of the collection.
+                      - `3`: loaded
+                      - `5`: deleted
+
+                      Every other status indicates a corrupted collection.
+                    type: integer
+                    example: 3
+                  type:
+                    description: |
+                      The type of the collection:
+                      - `0`: "unknown"
+                      - `2`: regular document collection
+                      - `3`: edge collection
+                    type: integer
+                    example: 2
+                  isSystem:
+                    description: |
+                      Whether the collection is a system collection. Collection names that starts with
+                      an underscore are usually system collections.
+                    type: boolean
+                    example: false
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the collection. This is an internal property.
+                    type: string
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
+            If the `collection-name` placeholder is missing, then a *HTTP 400* is
             returned.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
+            If the collection is unknown, then a *HTTP 404*
             is returned.
       tags:
         - Collections
@@ -969,17 +2294,41 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection:
+  /_db/{database-name}/_api/collection:
     post:
       operationId: createCollection
       description: |
-        {{</* warning */>}}
-        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-        You should reference them via their names instead.
-        {{</* /warning */>}}
-
         Creates a new collection with a given name. The request must contain an
         object with the following attributes.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: waitForSyncReplication
+          in: query
+          required: false
+          description: |
+            The default is `true`, which means the server only reports success back to the
+            client when all replicas have created the collection. Set it to `false` if you want
+            faster server responses and don't care about full replication.
+          schema:
+            type: boolean
+            default: true
+        - name: enforceReplicationFactor
+          in: query
+          required: false
+          description: |
+            The default is `true`, which means the server checks if there are enough replicas
+            available at creation time and bail out otherwise. Set it to `false` to disable
+            this extra check.
+          schema:
+            type: boolean
+            default: true
       requestBody:
         content:
           application/json:
@@ -994,17 +2343,18 @@ paths:
                   type: string
                 waitForSync:
                   description: |
-                    If `true` then the data is synchronized to disk before returning from a
-                    document create, update, replace or removal operation. (Default: `false`)
+                    If set to `true`, then the data is synchronized to disk before returning from a
+                    document create, update, replace or removal operation.
                   type: boolean
+                  default: false
                 isSystem:
                   description: |
                     If `true`, create a system collection. In this case, the `collection-name`
                     should start with an underscore. End-users should normally create non-system
                     collections only. API implementors may be required to create system
                     collections in very special occasions, but normally a regular collection will do.
-                    (The default is `false`)
                   type: boolean
+                  default: false
                 schema:
                   description: |
                     Optional object that specifies the collection level schema for
@@ -1041,32 +2391,33 @@ paths:
                       computeOn:
                         description: |
                           An array of strings to define on which write operations the value shall be
-                          computed. The possible values are `"insert"`, `"update"`, and `"replace"`.
-                          The default is `["insert", "update", "replace"]`.
+                          computed.
                         type: array
+                        uniqueItems: true
                         items:
                           type: string
+                          enum:
+                            - insert
+                            - update
+                            - replace
+                        default: ["insert", "update", "replace"]
                       keepNull:
                         description: |
                           Whether the target attribute shall be set if the expression evaluates to `null`.
                           You can set the option to `false` to not set (or unset) the target attribute if
-                          the expression returns `null`. The default is `true`.
+                          the expression returns `null`.
                         type: boolean
+                        default: true
                       failOnWarning:
                         description: |
                           Whether to let the write operation fail if the expression produces a warning.
-                          The default is `false`.
                         type: boolean
+                        default: false
                 keyOptions:
                   description: |
                     additional options for key generation. If specified, then `keyOptions`
                     should be a JSON object containing the following attributes:
                   type: object
-                  required:
-                    - type
-                    - allowUserKeys
-                    - increment
-                    - offset
                   properties:
                     type:
                       description: |
@@ -1119,39 +2470,42 @@ paths:
                       type: boolean
                     increment:
                       description: |
-                        increment value for `autoincrement` key generator. Not used for other key
-                        generator types.
+                        The increment value for the `autoincrement` key generator.
+                        Not allowed for other key generator types.
                       type: integer
                     offset:
                       description: |
-                        Initial offset value for `autoincrement` key generator.
-                        Not used for other key generator types.
+                        The initial offset value for the `autoincrement` key generator.
+                        Not allowed for other key generator types.
                       type: integer
                 type:
                   description: |
-                    (The default is `2`): the type of the collection to create.
+                    The type of the collection to create.
                     The following values for `type` are valid:
 
                     - `2`: document collection
                     - `3`: edge collection
                   type: integer
+                  default: 2
                 cacheEnabled:
                   description: |
                     Whether the in-memory hash cache for documents should be enabled for this
-                    collection (default: `false`). Can be controlled globally with the `--cache.size`
+                    collection. Can be controlled globally with the `--cache.size`
                     startup option. The cache can speed up repeated reads of the same documents via
                     their document keys. If the same documents are not fetched often or are
                     modified frequently, then you may disable the cache to avoid the maintenance
                     costs.
                   type: boolean
+                  default: false
                 numberOfShards:
                   description: |
-                    (The default is `1`): in a cluster, this value determines the
+                    n a cluster, this value determines the
                     number of shards to create for the collection.
                   type: integer
+                  default: 1
                 shardKeys:
                   description: |
-                    (The default is `[ "_key" ]`): in a cluster, this attribute determines
+                    In a cluster, this attribute determines
                     which document attributes are used to determine the target shard for documents.
                     Documents are sent to shards based on the values of their shard key attributes.
                     The values of all shard key attributes in a document are hashed,
@@ -1161,9 +2515,10 @@ paths:
                     Values of shard key attributes cannot be changed once set.
                     {{</* /info */>}}
                   type: string
+                  default: [ "_key" ]
                 replicationFactor:
                   description: |
-                    (The default is `1`): in a cluster, this attribute determines how many copies
+                    In a cluster, this attribute determines how many copies
                     of each shard are kept on different DB-Servers. The value 1 means that only one
                     copy (no synchronous replication) is kept. A value of k means that k-1 replicas
                     are kept. For SatelliteCollections, it needs to be the string `"satellite"`,
@@ -1177,10 +2532,10 @@ paths:
                     If a server fails, this is detected automatically and one of the servers holding
                     copies take over, usually without an error being reported.
                   type: integer
+                  default: 1
                 writeConcern:
                   description: |
-                    Write concern for this collection (default: 1).
-                    It determines how many copies of each shard are required to be
+                    Determines how many copies of each shard are required to be
                     in sync on the different DB-Servers. If there are less than these many copies
                     in the cluster, a shard refuses to write. Writes to shards with enough
                     up-to-date copies succeed at the same time, however. The value of
@@ -1237,8 +2592,6 @@ paths:
                     You need to use the same number of `shardKeys` as the prototype collection, but
                     you can use different attributes.
 
-                    The default is `""`.
-
                     {{</* info */>}}
                     Using this parameter has consequences for the prototype
                     collection. It can no longer be dropped, before the sharding-imitating
@@ -1247,6 +2600,7 @@ paths:
                     about a missing sharding prototype.
                     {{</* /info */>}}
                   type: string
+                  default: ""
                 isSmart:
                   description: |
                     Whether the collection is for a SmartGraph or EnterpriseGraph
@@ -1282,35 +2636,10 @@ paths:
                     A further restriction is that whenever documents are stored or updated in the
                     collection, the value stored in the `smartJoinAttribute` must be a string.
                   type: string
-      parameters:
-        - name: waitForSyncReplication
-          in: query
-          required: false
-          description: |
-            The default is `true`, which means the server only reports success back to the
-            client when all replicas have created the collection. Set it to `false` if you want
-            faster server responses and don't care about full replication.
-          schema:
-            type: boolean
-        - name: enforceReplicationFactor
-          in: query
-          required: false
-          description: |
-            The default is `true`, which means the server checks if there are enough replicas
-            available at creation time and bail out otherwise. Set it to `false` to disable
-            this extra check.
-          schema:
-            type: boolean
       responses:
-        '400':
-          description: |
-            If the `collection-name` is missing, then an *HTTP 400* is
-            returned.
-        '404':
-          description: |
-            If the `collection-name` is unknown, then an *HTTP 404* is returned.
         '200':
-          description: ''
+          description: |
+            The collection has been created.
           content:
             application/json:
               schema:
@@ -1358,10 +2687,16 @@ paths:
                         computeOn:
                           description: |
                             An array of strings that defines on which write operations the value is
-                            computed. The possible values are `"insert"`, `"update"`, and `"replace"`.
+                            computed.
                           type: array
+                          uniqueItems: true
                           items:
                             type: string
+                            enum:
+                              - insert
+                              - update
+                              - replace
+                          example: ["insert", "update", "replace"]
                         keepNull:
                           description: |
                             Whether the target attribute is set if the expression evaluates to `null`.
@@ -1377,7 +2712,6 @@ paths:
                     required:
                       - type
                       - allowUserKeys
-                      - lastValue
                     properties:
                       type:
                         description: |
@@ -1405,16 +2739,16 @@ paths:
                       increment:
                         description: |
                           The increment value for the `autoincrement` key generator.
-                          Not used for other key generator types.
+                          Not used by other key generator types.
                         type: integer
                       offset:
                         description: |
                           The initial offset value for the `autoincrement` key generator.
-                          Not used for other key generator types.
+                          Not used by other key generator types.
                         type: integer
                       lastValue:
                         description: |
-                          The current offset value of the `autoincrement` or `padded` key generator.
+                          The offset value for the `autoincrement` or `padded` key generator.
                           This is an internal property for restoring dumps properly.
                         type: integer
                   cacheEnabled:
@@ -1524,6 +2858,38 @@ paths:
                   globallyUniqueId:
                     description: |
                       A unique identifier of the collection. This is an internal property.
+                    type: string
+        '400':
+          description: |
+            The `name` or another required attribute is missing or an attribute
+            has an invalid value.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
                     type: string
       tags:
         - Collections
@@ -1589,29 +2955,30 @@ db._drop("testCollectionUsers");
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}:
+  /_db/{database-name}/_api/collection/{collection-name}:
     delete:
       operationId: deleteCollection
       description: |
-        {{</* warning */>}}
-        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-        You should reference them via their names instead.
-        {{</* /warning */>}}
-
-        Drops the collection identified by `collection-name`.
-
-        If the collection was successfully dropped, an object is returned with
-        the following attributes:
-
-        - `error`: `false`
-
-        - `id`: The identifier of the dropped collection.
+        Delete the collection identified by `collection-name` and all its documents.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
           description: |
             The name of the collection to drop.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
           schema:
             type: string
         - name: isSystem
@@ -1623,13 +2990,94 @@ paths:
           schema:
             type: boolean
       responses:
+        '200':
+          description: |
+            Dropping the collection has been successful.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - id
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  id:
+                    description: |
+                      The identifier of the dropped collection.
+                    type: string
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
-            returned.
+            The `collection-name` parameter is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is returned.
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Collections
 ```
@@ -1696,41 +3144,51 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/truncate:
+  /_db/{database-name}/_api/collection/{collection-name}/truncate:
     put:
       operationId: truncateCollection
       description: |
-        {{</* warning */>}}
-        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-        You should reference them via their names instead.
-        {{</* /warning */>}}
-
         Removes all documents from the collection, but leaves the indexes intact.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
           description: |
             The name of the collection.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
           schema:
             type: string
         - name: waitForSync
           in: query
           required: false
           description: |
-            If `true` then the data is synchronized to disk before returning from the
-            truncate operation (default: `false`)
+            If set to `true`, the data is synchronized to disk before returning from the
+            truncate operation.
           schema:
             type: boolean
+            default: false
         - name: compact
           in: query
           required: false
           description: |
-            If `true` (default) then the storage engine is told to start a compaction
+            If set to `true`, the storage engine is told to start a compaction
             in order to free up disk space. This can be resource intensive. If the only
             intention is to start over with an empty collection, specify `false`.
           schema:
             type: boolean
+            default: true
         - name: x-arango-trx-id
           in: header
           required: false
@@ -1740,14 +3198,95 @@ paths:
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            Truncating the collection was successful.
+            Returns the basic information about the collection.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - id
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
-            returned.
+            The `collection-name` parameter is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
-            is returned.
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Collections
 ```
@@ -1778,7 +3317,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/load:
+  /_db/{database-name}/_api/collection/{collection-name}/load:
     put:
       operationId: loadCollection
       description: |
@@ -1788,56 +3327,159 @@ paths:
         in a future version of ArangoDB.
         {{</* /warning */>}}
 
-        {{</* warning */>}}
-        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-        You should reference them via their names instead.
-        {{</* /warning */>}}
-
-        Since ArangoDB version 3.9.0 this API does nothing. Previously it used to
+        Since ArangoDB version 3.9.0 this API does nothing. Previously, it used to
         load a collection into memory.
-
-        The request body object might optionally contain the following attribute:
-
-        - `count`: If set, this controls whether the return value should include
-          the number of documents in the collection. Setting `count` to
-          `false` may speed up loading a collection. The default value for
-          `count` is `true`.
-
-        A call to this API returns an object with the following attributes for
-        compatibility reasons:
-
-        - `id`: The identifier of the collection.
-
-        - `name`: The name of the collection.
-
-        - `count`: The number of documents inside the collection. This is only
-          returned if the `count` input parameters is set to `true` or has
-          not been specified.
-
-        - `status`: The status of the collection as number.
-
-        - `type`: The collection type. Valid types are:
-          - 2: document collection
-          - 3: edge collection
-
-        - `isSystem`: If `true` then the collection is a system collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
           description: |
             The name of the collection.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            Returns the basic collection properties for compatibility reasons.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - name
+                  - type
+                  - isSystem
+                  - status
+                  - id
+                  - globallyUniqueId
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  name:
+                    description: |
+                      The name of the collection.
+                    type: string
+                    example: coll
+                  type:
+                    description: |
+                      The type of the collection:
+                      - `0`: "unknown"
+                      - `2`: regular document collection
+                      - `3`: edge collection
+                    type: integer
+                    example: 2
+                  isSystem:
+                    description: |
+                      Whether the collection is a system collection. Collection names that starts with
+                      an underscore are usually system collections.
+                    type: boolean
+                    example: false
+                  status:
+                    description: |
+                      The status of the collection.
+                      - `3`: loaded
+                      - `5`: deleted
+
+                      Every other status indicates a corrupted collection.
+                    type: integer
+                    example: 3
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the collection. This is an internal property.
+                    type: string
+                  count:
+                    description: |
+                      The number of documents currently present in the collection.
+                    type: integer
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
-            returned.
+            The `collection-name` parameter or the `name` attribute is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
-            is returned.
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Collections
 ```
@@ -1866,7 +3508,7 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/unload:
+  /_db/{database-name}/_api/collection/{collection-name}/unload:
     put:
       operationId: unloadCollection
       description: |
@@ -1876,43 +3518,155 @@ paths:
         in a future version of ArangoDB.
         {{</* /warning */>}}
 
-        {{</* warning */>}}
-        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-        You should reference them via their names instead.
-        {{</* /warning */>}}
-
         Since ArangoDB version 3.9.0 this API does nothing. Previously it used to
         unload a collection from memory, while preserving all documents.
-        When calling the API an object with the following attributes is
-        returned for compatibility reasons:
-
-        - `id`: The identifier of the collection.
-
-        - `name`: The name of the collection.
-
-        - `status`: The status of the collection as number.
-
-        - `type`: The collection type. Valid types are:
-          - 2: document collection
-          - 3: edges collection
-
-        - `isSystem`: If `true` then the collection is a system collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
           description: |
             The name of the collection.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
           schema:
             type: string
       responses:
+        '200':
+          description: |
+            Returns the basic collection properties for compatibility reasons.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - name
+                  - type
+                  - isSystem
+                  - status
+                  - id
+                  - globallyUniqueId
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  name:
+                    description: |
+                      The name of the collection.
+                    type: string
+                    example: coll
+                  type:
+                    description: |
+                      The type of the collection:
+                      - `0`: "unknown"
+                      - `2`: regular document collection
+                      - `3`: edge collection
+                    type: integer
+                    example: 2
+                  isSystem:
+                    description: |
+                      Whether the collection is a system collection. Collection names that starts with
+                      an underscore are usually system collections.
+                    type: boolean
+                    example: false
+                  status:
+                    description: |
+                      The status of the collection.
+                      - `3`: loaded
+                      - `5`: deleted
+
+                      Every other status indicates a corrupted collection.
+                    type: integer
+                    example: 3
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the collection. This is an internal property.
+                    type: string
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
-            returned.
+            The `collection-name` parameter or the `name` attribute is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is returned.
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Collections
 ```
@@ -1941,15 +3695,10 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/loadIndexesIntoMemory:
+  /_db/{database-name}/_api/collection/{collection-name}/loadIndexesIntoMemory:
     put:
       operationId: loadCollectionIndexes
       description: |
-        {{</* warning */>}}
-        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-        You should reference them via their names instead.
-        {{</* /warning */>}}
-
         You can call this endpoint to try to cache this collection's index entries in
         the main memory. Index lookups served from the memory cache can be much faster
         than lookups not stored in the cache, resulting in a performance boost.
@@ -1971,27 +3720,117 @@ paths:
 
         It is guaranteed that the in-memory cache data is consistent with the stored
         index data at all times.
-
-        On success, this endpoint returns an object with attribute `result` set to `true`.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
           description: |
             The name of the collection.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
           schema:
             type: string
       responses:
         '200':
           description: |
-            If the index loading has been scheduled for all suitable indexes.
+            The index loading has been scheduled for all suitable indexes.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                code:
+                  description: |
+                    The HTTP response status code.
+                  type: integer
+                  example: 200
+                result:
+                  description: |
+                    The value `true`.
+                  type: boolean
+                  example: true
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
-            returned.
+            The `collection-name` parameter is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is returned.
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Collections
 ```
@@ -2020,25 +3859,33 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/properties:
+  /_db/{database-name}/_api/collection/{collection-name}/properties:
     put:
       operationId: updateCollectionProperties
       description: |
-        {{</* warning */>}}
-        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-        You should reference them via their names instead.
-        {{</* /warning */>}}
-
         Changes the properties of a collection. Only the provided attributes are
         updated. Collection properties **cannot be changed** once a collection is
         created except for the listed properties, as well as the collection name via
         the rename endpoint (but not in clusters).
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
           description: |
             The name of the collection.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
           schema:
             type: string
       requestBody:
@@ -2049,18 +3896,20 @@ paths:
               properties:
                 waitForSync:
                   description: |
-                    If `true` then the data is synchronized to disk before returning from a
-                    document create, update, replace or removal operation. (default: false)
+                    If set to `true`, the data is synchronized to disk before returning from a
+                    document create, update, replace or removal operation.
                   type: boolean
+                  default: false
                 cacheEnabled:
                   description: |
                     Whether the in-memory hash cache for documents should be enabled for this
-                    collection (default: `false`). Can be controlled globally with the `--cache.size`
+                    collection. Can be controlled globally with the `--cache.size`
                     startup option. The cache can speed up repeated reads of the same documents via
                     their document keys. If the same documents are not fetched often or are
                     modified frequently, then you may disable the cache to avoid the maintenance
                     costs.
                   type: boolean
+                  default: false
                 schema:
                   description: |
                     Optional object that specifies the collection level schema for
@@ -2097,25 +3946,31 @@ paths:
                       computeOn:
                         description: |
                           An array of strings to define on which write operations the value shall be
-                          computed. The possible values are `"insert"`, `"update"`, and `"replace"`.
-                          The default is `["insert", "update", "replace"]`.
+                          computed.
                         type: array
+                        uniqueItems: true
                         items:
                           type: string
+                          enum:
+                            - insert
+                            - update
+                            - replace
+                        example: ["insert", "update", "replace"]
                       keepNull:
                         description: |
                           Whether the target attribute shall be set if the expression evaluates to `null`.
                           You can set the option to `false` to not set (or unset) the target attribute if
-                          the expression returns `null`. The default is `true`.
+                          the expression returns `null`.
                         type: boolean
+                        default: true
                       failOnWarning:
                         description: |
                           Whether to let the write operation fail if the expression produces a warning.
-                          The default is `false`.
                         type: boolean
+                        default: false
                 replicationFactor:
                   description: |
-                    (The default is `1`): in a cluster, this attribute determines how many copies
+                    In a cluster, this attribute determines how many copies
                     of each shard are kept on different DB-Servers. The value 1 means that only one
                     copy (no synchronous replication) is kept. A value of k means that k-1 replicas
                     are kept. For SatelliteCollections, it needs to be the string `"satellite"`,
@@ -2129,10 +3984,10 @@ paths:
                     If a server fails, this is detected automatically and one of the servers holding
                     copies take over, usually without an error being reported.
                   type: integer
+                  default: 1
                 writeConcern:
                   description: |
-                    Write concern for this collection (default: 1).
-                    It determines how many copies of each shard are required to be
+                    Determines how many copies of each shard are required to be
                     in sync on the different DB-Servers. If there are less than these many copies
                     in the cluster, a shard refuses to write. Writes to shards with enough
                     up-to-date copies succeed at the same time, however. The value of
@@ -2147,14 +4002,310 @@ paths:
                     startup option as default, which defaults to `1`. _(cluster only)_
                   type: integer
       responses:
+        '200':
+          description: |
+            The collection has been updated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - name
+                  - type
+                  - status
+                  - statusString
+                  - isSystem
+                  - id
+                  - globallyUniqueId
+                  - waitForSync
+                  - keyOptions
+                  - schema
+                  - computedValues
+                  - cacheEnabled
+                  - syncByRevision
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  waitForSync:
+                    description: |
+                      If `true`, creating, changing, or removing
+                      documents waits until the data has been synchronized to disk.
+                    type: boolean
+                  schema:
+                    description: |
+                      An object that specifies the collection-level schema for documents.
+                    type: object
+                  computedValues:
+                    description: |
+                      A list of objects, each representing a computed value.
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - name
+                        - expression
+                        - overwrite
+                      properties:
+                        name:
+                          description: |
+                            The name of the target attribute.
+                          type: string
+                        expression:
+                          description: |
+                            An AQL `RETURN` operation with an expression that computes the desired value.
+                          type: string
+                        overwrite:
+                          description: |
+                            Whether the computed value takes precedence over a user-provided or
+                            existing attribute.
+                          type: boolean
+                        computeOn:
+                          description: |
+                            An array of strings that defines on which write operations the value is
+                            computed.
+                          type: array
+                          uniqueItems: true
+                          items:
+                            type: string
+                            enum:
+                              - insert
+                              - update
+                              - replace
+                          example: ["insert", "update", "replace"]
+                        keepNull:
+                          description: |
+                            Whether the target attribute is set if the expression evaluates to `null`.
+                          type: boolean
+                        failOnWarning:
+                          description: |
+                            Whether the write operation fails if the expression produces a warning.
+                          type: boolean
+                  keyOptions:
+                    description: |
+                      An object which contains key generation options.
+                    type: object
+                    required:
+                      - type
+                      - allowUserKeys
+                    properties:
+                      type:
+                        description: |
+                          Specifies the type of the key generator. Possible values:
+                          - `"traditional"`
+                          - `"autoincrement"`
+                          - `"uuid"`
+                          - `"padded"`
+                        type: string
+                      allowUserKeys:
+                        description: |
+                          If set to `true`, then you are allowed to supply
+                          own key values in the `_key` attribute of a document. If set to
+                          `false`, then the key generator is solely responsible for
+                          generating keys and an error is raised if you supply own key values in the
+                          `_key` attribute of documents.
+
+                          {{</* warning */>}}
+                          You should not use both user-specified and automatically generated document keys
+                          in the same collection in cluster deployments for collections with more than a
+                          single shard. Mixing the two can lead to conflicts because Coordinators that
+                          auto-generate keys in this case are not aware of all keys which are already used.
+                          {{</* /warning */>}}
+                        type: boolean
+                      increment:
+                        description: |
+                          The increment value for the `autoincrement` key generator.
+                          Not used by other key generator types.
+                        type: integer
+                      offset:
+                        description: |
+                          The initial offset value for the `autoincrement` key generator.
+                          Not used by other key generator types.
+                        type: integer
+                      lastValue:
+                        description: |
+                          The offset value of the `autoincrement` or `padded` key generator.
+                          This is an internal property for restoring dumps properly.
+                        type: integer
+                  cacheEnabled:
+                    description: |
+                      Whether the in-memory hash cache for documents is enabled for this
+                      collection.
+                    type: boolean
+                  numberOfShards:
+                    description: |
+                      The number of shards of the collection. _(cluster only)_
+                    type: integer
+                  shardKeys:
+                    description: |
+                      Contains the names of document attributes that are used to
+                      determine the target shard for documents. _(cluster only)_
+                    type: array
+                    items:
+                      type: string
+                  replicationFactor:
+                    description: |
+                      Contains how many copies of each shard are kept on different DB-Servers.
+                      It is an integer number in the range of 1-10 or the string `"satellite"`
+                      for SatelliteCollections (Enterprise Edition only). _(cluster only)_
+                    type: integer
+                  writeConcern:
+                    description: |
+                      Determines how many copies of each shard are required to be
+                      in-sync on the different DB-Servers. If there are less than these many copies
+                      in the cluster, a shard refuses to write. Writes to shards with enough
+                      up-to-date copies succeed at the same time, however. The value of
+                      `writeConcern` cannot be greater than `replicationFactor`.
+
+                      If `distributeShardsLike` is set, the `writeConcern`
+                      is that of the prototype collection.
+                      For SatelliteCollections, the `writeConcern` is automatically controlled to
+                      equal the number of DB-Servers and has a value of `0`.
+                      Otherwise, the default value is controlled by the current database's
+                      default `writeConcern`, which uses the `--cluster.write-concern`
+                      startup option as default, which defaults to `1`. _(cluster only)_
+                    type: integer
+                  shardingStrategy:
+                    description: |
+                      The sharding strategy selected for the collection. _(cluster only)_
+
+                      Possible values:
+                      - `"community-compat"`
+                      - `"enterprise-compat"`
+                      - `"enterprise-smart-edge-compat"`
+                      - `"hash"`
+                      - `"enterprise-hash-smart-edge"`
+                      - `"enterprise-hex-smart-vertex"`
+                    type: string
+                  distributeShardsLike:
+                    description: |
+                      The name of another collection. This collection uses the `replicationFactor`,
+                      `numberOfShards`, `shardingStrategy`, and `writeConcern` properties of the other collection and
+                      the shards of this collection are distributed in the same way as the shards of
+                      the other collection.
+                    type: string
+                  isSmart:
+                    description: |
+                      Whether the collection is used in a SmartGraph or EnterpriseGraph (Enterprise Edition only).
+                      This is an internal property. _(cluster only)_
+                    type: boolean
+                  isDisjoint:
+                    description: |
+                      Whether the SmartGraph or EnterpriseGraph this collection belongs to is disjoint
+                      (Enterprise Edition only). This is an internal property. _(cluster only)_
+                    type: boolean
+                  smartGraphAttribute:
+                    description: |
+                      The attribute that is used for sharding: vertices with the same value of
+                      this attribute are placed in the same shard. All vertices are required to
+                      have this attribute set and it has to be a string. Edges derive the
+                      attribute from their connected vertices (Enterprise Edition only). _(cluster only)_
+                    type: string
+                  smartJoinAttribute:
+                    description: |
+                      Determines an attribute of the collection that must contain the shard key value
+                      of the referred-to SmartJoin collection (Enterprise Edition only). _(cluster only)_
+                    type: string
+                  name:
+                    description: |
+                      The name of this collection.
+                    type: string
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
+                  type:
+                    description: |
+                      The type of the collection:
+                        - `0`: "unknown"
+                        - `2`: regular document collection
+                        - `3`: edge collection
+                    type: integer
+                  isSystem:
+                    description: |
+                      Whether the collection is a system collection. Collection names that starts with
+                      an underscore are usually system collections.
+                    type: boolean
+                  syncByRevision:
+                    description: |
+                      Whether the newer revision-based replication protocol is
+                      enabled for this collection. This is an internal property.
+                    type: boolean
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the collection. This is an internal property.
+                    type: string
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
-            returned.
+            The `collection-name` parameter is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
-            is returned.
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Collections
 ```
@@ -2183,56 +4334,177 @@ db._drop(cn);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/rename:
+  /_db/{database-name}/_api/collection/{collection-name}/rename:
     put:
       operationId: renameCollection
       description: |
-        {{</* warning */>}}
-        Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-        You should reference them via their names instead.
-        {{</* /warning */>}}
-
-        Renames a collection. Expects an object with the attribute(s)
-
-        - `name`: The new name.
-
-        It returns an object with the attributes
-
-        - `id`: The identifier of the collection.
-
-        - `name`: The new name of the collection.
-
-        - `status`: The status of the collection as number.
-
-        - `type`: The collection type. Valid types are:
-          - 2: document collection
-          - 3: edges collection
-
-        - `isSystem`: If `true` then the collection is a system collection.
-
-        If renaming the collection succeeds, then the collection is also renamed in
-        all graph definitions inside the `_graphs` collection in the current database.
+        Renames a collection.
 
         {{</* info */>}}
         Renaming collections is not supported in cluster deployments.
         {{</* /info */>}}
+
+        If renaming the collection succeeds, then the collection is also renamed in
+        all graph definitions inside the `_graphs` collection in the current database.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
           description: |
             The name of the collection to rename.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              required:
+                - name
+              properties:
+                name:
+                  description: |
+                    The new collection name.
+                  type: string
       responses:
+        '200':
+          description: |
+            The collection has been renamed successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - name
+                  - type
+                  - isSystem
+                  - status
+                  - id
+                  - globallyUniqueId
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  name:
+                    description: |
+                      The name of the collection.
+                    type: string
+                    example: coll
+                  type:
+                    description: |
+                      The type of the collection:
+                      - `0`: "unknown"
+                      - `2`: regular document collection
+                      - `3`: edge collection
+                    type: integer
+                    example: 2
+                  isSystem:
+                    description: |
+                      Whether the collection is a system collection. Collection names that starts with
+                      an underscore are usually system collections.
+                    type: boolean
+                    example: false
+                  status:
+                    description: |
+                      The status of the collection.
+                      - `3`: loaded
+                      - `5`: deleted
+
+                      Every other status indicates a corrupted collection.
+                    type: integer
+                    example: 3
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the collection. This is an internal property.
+                    type: string
         '400':
           description: |
-            If the `collection-name` is missing, then a *HTTP 400* is
-            returned.
+            The `collection-name` parameter or the `name` attribute is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404*
-            is returned.
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Collections
 ```
@@ -2264,16 +4536,20 @@ logJsonResponse(response);
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/recalculateCount:
+  /_db/{database-name}/_api/collection/{collection-name}/recalculateCount:
     put:
       operationId: recalculateCollectionCount
       description: |
         Recalculates the document count of a collection, if it ever becomes inconsistent.
-
-        It returns an object with the attributes
-
-        - `result`: will be `true` if recalculating the document count succeeded.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -2284,10 +4560,96 @@ paths:
       responses:
         '200':
           description: |
-            If the document count was recalculated successfully, *HTTP 200* is returned.
+            The document count has been recalculated successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  result:
+                    type: boolean
+                    example: true
+                  count:
+                    description: |
+                      The recalculated document count.
+                      This attribute is not present when using a cluster.
+                    type: integer
+        '400':
+          description: |
+            The `collection-name` parameter is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is returned.
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Collections
 ```
@@ -2296,7 +4658,7 @@ paths:
 
 ```openapi
 paths:
-  /_api/collection/{collection-name}/compact:
+  /_db/{database-name}/_api/collection/{collection-name}/compact:
     put:
       operationId: compactCollection
       description: |
@@ -2310,6 +4672,14 @@ paths:
         the disk data for a collection may contain a lot of outdated data for which the
         space shall be reclaimed. In this case the compaction operation can be used.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: collection-name
           in: path
           required: true
@@ -2320,10 +4690,98 @@ paths:
       responses:
         '200':
           description: |
-            Compaction started successfully
+            The compaction has been started successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - name
+                  - type
+                  - isSystem
+                  - status
+                  - id
+                  - globallyUniqueId
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  name:
+                    description: |
+                      The name of the collection.
+                    type: string
+                    example: coll
+                  type:
+                    description: |
+                      The type of the collection:
+                      - `0`: "unknown"
+                      - `2`: regular document collection
+                      - `3`: edge collection
+                    type: integer
+                    example: 2
+                  isSystem:
+                    description: |
+                      Whether the collection is a system collection. Collection names that starts with
+                      an underscore are usually system collections.
+                    type: boolean
+                    example: false
+                  status:
+                    description: |
+                      The status of the collection.
+                      - `3`: loaded
+                      - `5`: deleted
+
+                      Every other status indicates a corrupted collection.
+                    type: integer
+                    example: 3
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the collection. This is an internal property.
+                    type: string
         '401':
           description: |
-            if the request was not authenticated as a user with sufficient rights
+            If the request was not authenticated as a user with sufficient rights.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Collections
 ```

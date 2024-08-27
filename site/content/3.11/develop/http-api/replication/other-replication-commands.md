@@ -8,7 +8,7 @@ description: ''
 
 ```openapi
 paths:
-  /_api/replication/server-id:
+  /_db/{database-name}/_api/replication/server-id:
     get:
       operationId: getReplicationServerId
       description: |
@@ -17,6 +17,15 @@ paths:
 
         The body of the response is a JSON object with the attribute `serverId`. The
         server id is returned as a string.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       responses:
         '200':
           description: |

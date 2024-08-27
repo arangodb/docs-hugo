@@ -1400,7 +1400,7 @@
       "agent",
       "single"
     ],
-    "default" : 7739635712,
+    "default" : 7739680768,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -3079,6 +3079,33 @@
     "requiresValue" : true,
     "section" : "",
     "type" : "string"
+  },
+  "honor-nsswitch" : {
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : false,
+    "deprecatedIn" : null,
+    "description" : "Allow hostname lookup configuration via /etc/nsswitch.conf if on Linux/glibc.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : null,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "",
+    "type" : "boolean"
   },
   "http.allow-method-override" : {
     "category" : "option",
@@ -7548,7 +7575,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33106026496,
+    "base" : 33106206720,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7556,7 +7583,7 @@
       "agent",
       "single"
     ],
-    "default" : 26815881462,
+    "default" : 26816027443,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7846,7 +7873,7 @@
     "type" : "double"
   },
   "query.memory-limit" : {
-    "base" : 33106026496,
+    "base" : 33106206720,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -7854,7 +7881,7 @@
       "agent",
       "single"
     ],
-    "default" : 19863615897,
+    "default" : 19863724032,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -9089,7 +9116,7 @@
       "agent",
       "single"
     ],
-    "default" : 9287562854,
+    "default" : 9287616921,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -11670,7 +11697,7 @@
       "agent",
       "single"
     ],
-    "default" : 12383417139,
+    "default" : 12383489228,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,

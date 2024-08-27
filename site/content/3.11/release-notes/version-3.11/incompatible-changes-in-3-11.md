@@ -15,6 +15,8 @@ at runtime that are installed on your system. Under rare circumstances, it is
 possible that ArangoDB crashes when performing host name or address lookups.
 This is only the case if all of the following conditions are true:
 
+- You either use ArangoDB version 3.11.10 (non-hotfix), or you use a 3.11 version
+  from 3.11.10-1 onward with the `--honor-nsswitch` startup option enabled.
 - You use an ArangoDB package on bare metal (not a Docker container)
 - Your operating system uses glibc (like Ubuntu, Debian, RedHat, Centos, or
   most other Linux distributions, but not Alpine for instance)
@@ -22,10 +24,20 @@ This is only the case if all of the following conditions are true:
   in particular if the system glibc is older than version 2.35
 - The `libnss-*` dynamic libraries are installed
 - The `/etc/nsswitch.conf` configuration file contains settings other than for
-  `files` and `dns` in the `hosts:` line
+  `files` and `dns` in the `hosts:` line, or the `passwd:` and `group:` lines
+  contain something other than `files`
 
 If you are affected, consider using Docker containers, `chroot`, or change
 `nsswitch.conf`.
+
+## VelocyStream protocol deprecation
+
+ArangoDB's own bi-directional asynchronous binary protocol VelocyStream (VST) is
+deprecated in v3.11 and removed in v3.12.0.
+
+While VelocyStream support is still available in v3.11, it is highly recommended
+to already switch to the HTTP(S) protocol because of better performance and
+reliability. ArangoDB supports both VelocyPack and JSON over HTTP(S).
 
 ## Active Failover deployment mode deprecation
 

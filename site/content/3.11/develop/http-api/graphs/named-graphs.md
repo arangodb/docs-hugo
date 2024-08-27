@@ -30,11 +30,20 @@ The examples use the following example graphs:
 
 ```openapi
 paths:
-  /_api/gharial:
+  /_db/{database-name}/_api/gharial:
     get:
       operationId: listGraphs
       description: |
         Lists all graphs stored in this database.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
       responses:
         '200':
           description: |
@@ -197,13 +206,21 @@ examples.dropGraph("routeplanner");
 
 ```openapi
 paths:
-  /_api/gharial:
+  /_db/{database-name}/_api/gharial:
     post:
       operationId: createGraph
       description: |
         The creation of a graph requires the name of the graph and a
         definition of its edges.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: waitForSync
           in: query
           required: false
@@ -908,7 +925,7 @@ graph._drop("satelliteGraph", true);
 
 ```openapi
 paths:
-  /_api/gharial/{graph}:
+  /_db/{database-name}/_api/gharial/{graph}:
     get:
       operationId: getGraph
       description: |
@@ -916,6 +933,14 @@ paths:
         Returns the edge definitions as well as the orphan collections,
         or returns an error if the graph does not exist.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -1116,7 +1141,7 @@ graph._drop("myGraph", true);
 
 ```openapi
 paths:
-  /_api/gharial/{graph}:
+  /_db/{database-name}/_api/gharial/{graph}:
     delete:
       operationId: deleteGraph
       description: |
@@ -1124,6 +1149,14 @@ paths:
         Optionally all collections not used by other graphs
         can be dropped as well.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -1258,12 +1291,20 @@ examples.dropGraph("social");
 
 ```openapi
 paths:
-  /_api/gharial/{graph}/vertex:
+  /_db/{database-name}/_api/gharial/{graph}/vertex:
     get:
       operationId: listVertexCollections
       description: |
         Lists all vertex collections within this graph, including orphan collections.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -1365,13 +1406,21 @@ by [adding a new edge definition](#add-an-edge-definition) or
 
 ```openapi
 paths:
-  /_api/gharial/{graph}/vertex:
+  /_db/{database-name}/_api/gharial/{graph}/vertex:
     post:
       operationId: addVertexCollection
       description: |
         Adds a vertex collection to the set of orphan collections of the graph.
         If the collection does not exist, it is created.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -1786,7 +1835,7 @@ examples.dropGraph("social");
 
 ```openapi
 paths:
-  /_api/gharial/{graph}/vertex/{collection}:
+  /_db/{database-name}/_api/gharial/{graph}/vertex/{collection}:
     delete:
       operationId: deleteVertexCollection
       description: |
@@ -1799,6 +1848,14 @@ paths:
         edge definition first in order to fully remove a vertex collection from
         the graph.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -2221,12 +2278,20 @@ examples.dropGraph("social");
 
 ```openapi
 paths:
-  /_api/gharial/{graph}/edge:
+  /_db/{database-name}/_api/gharial/{graph}/edge:
     get:
       operationId: listEdgeCollections
       description: |
         Lists all edge collections within this graph.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -2322,7 +2387,7 @@ examples.dropGraph("social");
 
 ```openapi
 paths:
-  /_api/gharial/{graph}/edge:
+  /_db/{database-name}/_api/gharial/{graph}/edge:
     post:
       operationId: createEdgeDefinition
       description: |
@@ -2338,6 +2403,14 @@ paths:
 
         Additionally, collection creation options can be set.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -2771,13 +2844,21 @@ examples.dropGraph("social");
 
 ```openapi
 paths:
-  /_api/gharial/{graph}/edge/{collection}:
+  /_db/{database-name}/_api/gharial/{graph}/edge/{collection}:
     put:
       operationId: replaceEdgeDefinition
       description: |
         Change one specific edge definition.
         This modifies all occurrences of this definition in all graphs known to your database.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -3227,7 +3308,7 @@ examples.dropGraph("social");
 
 ```openapi
 paths:
-  /_api/gharial/{graph}/edge/{collection}:
+  /_db/{database-name}/_api/gharial/{graph}/edge/{collection}:
     delete:
       operationId: deleteEdgeDefinition
       description: |
@@ -3236,6 +3317,14 @@ paths:
         edge definition become orphan collections but otherwise remain untouched
         and can still be used in your queries.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -3613,12 +3702,20 @@ examples.dropGraph("social");
 
 ```openapi
 paths:
-  /_api/gharial/{graph}/vertex/{collection}:
+  /_db/{database-name}/_api/gharial/{graph}/vertex/{collection}:
     post:
       operationId: createVertex
       description: |
         Adds a vertex to the given collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -3900,12 +3997,20 @@ examples.dropGraph("social");
 
 ```openapi
 paths:
-  /_api/gharial/{graph}/vertex/{collection}/{vertex}:
+  /_db/{database-name}/_api/gharial/{graph}/vertex/{collection}/{vertex}:
     get:
       operationId: getVertex
       description: |
         Gets a vertex from the given collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -4166,12 +4271,20 @@ examples.dropGraph("social");
 
 ```openapi
 paths:
-  /_api/gharial/{graph}/vertex/{collection}/{vertex}:
+  /_db/{database-name}/_api/gharial/{graph}/vertex/{collection}/{vertex}:
     patch:
       operationId: updateVertex
       description: |
         Updates the data of the specific vertex in the collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -4566,12 +4679,20 @@ examples.dropGraph("social");
 
 ```openapi
 paths:
-  /_api/gharial/{graph}/vertex/{collection}/{vertex}:
+  /_db/{database-name}/_api/gharial/{graph}/vertex/{collection}/{vertex}:
     put:
       operationId: replaceVertex
       description: |
         Replaces the data of a vertex in the collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -4967,12 +5088,20 @@ examples.dropGraph("social");
 
 ```openapi
 paths:
-  /_api/gharial/{graph}/vertex/{collection}/{vertex}:
+  /_db/{database-name}/_api/gharial/{graph}/vertex/{collection}/{vertex}:
     delete:
       operationId: deleteVertex
       description: |
         Removes a vertex from the collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -5253,7 +5382,7 @@ examples.dropGraph("social");
 
 ```openapi
 paths:
-  /_api/gharial/{graph}/edge/{collection}:
+  /_db/{database-name}/_api/gharial/{graph}/edge/{collection}:
     post:
       operationId: createEdge
       description: |
@@ -5261,6 +5390,14 @@ paths:
         Within the body the edge has to contain a `_from` and `_to` value referencing to valid vertices in the graph.
         Furthermore, the edge has to be valid according to the edge definitions.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -5630,12 +5767,20 @@ examples.dropGraph("social");
 
 ```openapi
 paths:
-  /_api/gharial/{graph}/edge/{collection}/{edge}:
+  /_db/{database-name}/_api/gharial/{graph}/edge/{collection}/{edge}:
     get:
       operationId: getEdge
       description: |
         Gets an edge from the given collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -5907,12 +6052,20 @@ examples.dropGraph("social");
 
 ```openapi
 paths:
-  /_api/gharial/{graph}/edge/{collection}/{edge}:
+  /_db/{database-name}/_api/gharial/{graph}/edge/{collection}/{edge}:
     patch:
       operationId: updateEdge
       description: |
         Partially modify the data of the specific edge in the collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -6368,12 +6521,20 @@ examples.dropGraph("social");
 
 ```openapi
 paths:
-  /_api/gharial/{graph}/edge/{collection}/{edge}:
+  /_db/{database-name}/_api/gharial/{graph}/edge/{collection}/{edge}:
     put:
       operationId: replaceEdge
       description: |
         Replaces the data of an edge in the collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true
@@ -6839,12 +7000,20 @@ examples.dropGraph("social");
 
 ```openapi
 paths:
-  /_api/gharial/{graph}/edge/{collection}/{edge}:
+  /_db/{database-name}/_api/gharial/{graph}/edge/{collection}/{edge}:
     delete:
       operationId: deleteEdge
       description: |
         Removes an edge from the collection.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: graph
           in: path
           required: true

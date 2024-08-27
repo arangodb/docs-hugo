@@ -81,6 +81,8 @@ This is an alias for [`LENGTH()`](#length).
 
 ## ENTRIES()
 
+<small>Introduced in: v3.12.1</small>
+
 `ENTRIES(document) → pairArray`
 
 Return the top-level attributes of the `document` as an array of key-value pairs.
@@ -114,6 +116,17 @@ description: |
 FOR pair IN ENTRIES( { "foo": "bar", "number": 123 } )
   LET key = pair[0]
   LET value = pair[1]
+  RETURN {key, value}
+```
+
+```aql
+---
+name: aqlEntriesLoopDestructure
+description: |
+  Iterate over the attributes of an object and return an object for each
+  key-value pair, making use of array destructuring for a more concise query:
+---
+FOR [key, value] IN ENTRIES( { "foo": "bar", "number": 123 } )
   RETURN {key, value}
 ```
 
