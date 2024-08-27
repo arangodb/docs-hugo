@@ -718,6 +718,21 @@ See the [Traversal options](../../aql/graphs/traversals.md#traversal-options)
 for details.
 
 
+### Query logging
+
+<small>Introduced in: v3.12.2</small>
+
+A new feature for logging metadata of past AQL queries has been added.
+
+You can optionally let ArangoDB store information such as run time, memory usage,
+and failure reasons to the `_queries` system collection in the `_system` database
+with a configurable sampling probability and retention period. This allows you
+to analyze the metadata directly in the database system to debug query issues
+and understand usage patterns.
+
+See [Query logging](../../aql/execution-and-performance/query-logging.md) for details.
+
+
 ### Bypass edge cache for graph operations
 
 <small>Introduced in: v3.12.2</small>
@@ -841,6 +856,7 @@ FOR { firstName } IN names
 
 See [Array destructuring](../../aql/operators.md#array-destructuring) and
 [Object destructuring](../../aql/operators.md#object-destructuring) for details.
+
 
 
 
@@ -1112,6 +1128,35 @@ scheduler type. The scheduler currently used by ArangoDB has the value
 `supervised`. A new work-stealing scheduler is being implemented and can be
 selected using the value `threadpools`. This new scheduler is experimental and
 should not be used in production.
+
+### Query logging options
+
+<small>Introduced in: v3.12.2</small>
+
+The following startup options related to the [Query logging](#query-logging)
+feature have been added:
+
+- `--query.collection-logger-enabled`:
+  Whether to enable the logging of metadata for past AQL queries
+- `--query.collection-logger-include-system-database`:
+  Whether to log queries that run in the `_system` database
+- `--query.collection-logger-probability`:
+  The sampling probability for logging queries (in percent)
+- `--query.collection-logger-all-slow-queries`:
+  Whether to always log slow queries regardless of whether they are selected for
+  sampling or not
+- `--query.collection-logger-retention-time`:
+  The retention period for entries in the `_queries` system collection (in seconds)
+- `--query.collection-logger-cleanup-interval`:
+  The interval for running the cleanup process for the retention configuration
+  (in milliseconds)
+- `--query.collection-logger-push-interval`:
+  How long to buffer query log entries in memory before they are actually
+  written to the system collection (in milliseconds)
+- `--query.collection-logger-max-buffered-queries`:
+  The number of query log entries to buffer in memory before they are flushed to
+  the system collection, discarding additional query metadata if the logging
+  thread cannot keep up
 
 ## Miscellaneous changes
 
