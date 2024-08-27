@@ -164,25 +164,15 @@ A trailing comma after the last element is allowed:
 ```
 
 Individual array values can later be accessed by their positions using the `[]`
-accessor. The position of the accessed element must be a numeric
-value. Positions start at 0. It is also possible to use negative index values
-to access array values starting from the end of the array. This is convenient if
-the length of the array is unknown and access to elements at the end of the array
-is required.
+accessor:
 
 ```aql
-// access 1st array element (elements start at index 0)
-u.friends[0]
-
-// access 3rd array element
-u.friends[2]
-
-// access last array element
-u.friends[-1]
-
-// access second to last array element
-u.friends[-2]
+u.friends[0]  // access 1st array element
+u.friends[-1] // access last array element
 ```
+
+For more details about this array operator, see
+[Indexed value access](../operators.md#indexed-value-access).
 
 ### Objects / Documents
 
@@ -283,22 +273,18 @@ u.address.city.name
 u.friends[0].name.first
 ```
 
-Attributes can also be accessed using the square bracket `[]` accessor:
+Attributes can also be accessed using the square bracket `[]` accessor.
+In contrast to the dot accessor, the square brackets allow for expressions.
+Note that the accessor for array elements also uses square brackets:
 
 ```aql
 u["address"]["city"]["name"]
 u["friends"][0]["name"]["first"]
-```
 
-In contrast to the dot accessor, the square brackets allow for expressions:
-
-```aql
 LET attr1 = "friends"
 LET attr2 = "name"
 u[attr1][0][attr2][ CONCAT("fir", "st") ]
 ```
 
-{{< info >}}
-If a non-existing attribute is accessed in one or the other way,
-the result will be `null`, without error or warning.
-{{< /info >}}
+For more details about these object operators, see
+[Attribute access](../operators.md#attribute-access).

@@ -3,7 +3,7 @@ title: HTTP interface for tasks
 menuTitle: Tasks
 weight: 85
 description: >-
-  The HTTP API for tasks lets you can manage the periodic or timed execution of
+  The HTTP API for tasks lets you manage the periodic or timed execution of
   server-side JavaScript code
 ---
 ## List all tasks

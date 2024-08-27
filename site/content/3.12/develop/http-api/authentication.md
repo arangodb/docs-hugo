@@ -234,7 +234,7 @@ paths:
 ### JWT superuser tokens
 
 To access specific internal APIs as well as Agency and DB-Server instances a
-token generated via `POST /open/auth` is not good enough. For these special
+token generated via `POST /_open/auth` is not good enough. For these special
 APIs, you need to generate a special JWT token which grants superuser
 access. Note that using superuser access for normal database operations is
 **not advised**.

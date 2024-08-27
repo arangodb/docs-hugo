@@ -33,7 +33,7 @@ please refer to the version specific changelogs:
 
 - Changelogs 3.x:
   [3.13](https://raw.githubusercontent.com/arangodb/arangodb/devel/CHANGELOG),
-  [3.12](https://raw.githubusercontent.com/arangodb/arangodb/3.12.0/CHANGELOG),
+  [3.12](https://raw.githubusercontent.com/arangodb/arangodb/{{< full-version "3.12" >}}/CHANGELOG),
   [3.11](https://raw.githubusercontent.com/arangodb/arangodb/3.11/CHANGELOG),
   [3.10](https://raw.githubusercontent.com/arangodb/arangodb/3.10/CHANGELOG),
   [3.9](https://raw.githubusercontent.com/arangodb/arangodb/3.9/CHANGELOG),
