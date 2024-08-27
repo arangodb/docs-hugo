@@ -7,13 +7,11 @@ description: >-
   security
 ---
 This topic describes how to create a private endpoint deployment and
-securely deploy to various cloud providers such as Google Cloud Platform (GCP),
-Microsoft Azure, and Amazon Web Services (AWS). Follow the steps outlined below
-to get started.
+securely deploy to various cloud providers such as Google Cloud Platform (GCP)
+and Amazon Web Services (AWS). Follow the steps outlined below to get started.
 
 {{< tip >}}
-Private endpoints on Microsoft Azure can be cross region; in AWS they should be
-located in the same region.
+In AWS, private endpoints should be located in the same region.
 {{< /tip >}}
 
 {{< info >}}
@@ -72,57 +70,6 @@ service attachment that you need during the creation of your private endpoint(s)
 9. ArangoGraph configures a **Private Endpoint Service**. As soon as the
    **Service Attachment** is ready, you can use it to configure the Private
    Service Connect in your VPC.
-
-{{< tip >}}
-When you create a private endpoint in ArangoGraph, both endpoints (the regular
-one and the new private one) are available for two hours. During this time period,
-you can switch your application to the new private endpoint. After this period,
-the old endpoint is not available anymore.
-{{< /tip >}}
-
-## Microsoft Azure
-
-Microsoft Azure offers a feature called
-[Azure Private Link](https://docs.microsoft.com/en-us/azure/private-link)
-that allows you to limit communication between different Azure servers and
-services to Microsoft's backbone network without exposure to the internet.
-It can lower network latency and increase security.
-
-If you want to connect an ArangoGraph deployment running on Azure with other
-services you run on Azure using such a tunnel, then
-[create a regular deployment](_index.md#how-to-create-a-new-deployment)
-and change it to a private endpoint deployment afterwards.
-
-The deployment is not reachable from the internet anymore, other than via
-the ArangoGraph dashboard to administrate it. To revert to a public deployment,
-please contact support via **Request help** in the help menu.
-
-1. Open the deployment you want to change.
-2. In the **Quick start** section, click the **Edit** button with an ellipsis (`…`)
-   icon.
-3. Click **Change to private endpoint** in the menu.
-   ![ArangoGraph Deployment Private Endpoint Menu](../../../images/arangograph-deployment-private-endpoint-menu.png)
-4. In the configuration wizard, click **Next** to enter your configuration details.
-5. Enter one or more Azure Subscription IDs (GUIDs). They cannot be
-   changed anymore once a connection has been established.
-   Proceed by clicking **Next**.
-   ![ArangoGraph Deployment Private Endpoint Setup 2](../../../images/arangograph-deployment-private-endpoint-setup2.png)
-6. Configure custom DNS names. This step is optional and disabled by default,
-   you can also add or change them later from the summary view.
-   Click **Next** to continue.
-   {{< info >}}
-   When using custom DNS names on private endpoints running on Azure, you need
-   to use the [self-signed certificate](../security-and-access-control/x-509-certificates.md#self-signed-x509-certificates).
-   {{< /info >}}
-7. Click **Confirm Settings** to change the deployment.
-8. Back in the **Overview** page, scroll down to the **Private Endpoint** section
-   that is now displayed to see the connection status and to change the
-   configuration.
-9. ArangoGraph configures a **Private Endpoint Service**. As soon as the **Azure alias**
-   becomes available, you can copy it and then go to your Microsoft Azure portal
-   to create Private Endpoints using this alias. The number of established
-   **Connections** increases and you can view the connection details by
-   clicking it.
 
 {{< tip >}}
 When you create a private endpoint in ArangoGraph, both endpoints (the regular

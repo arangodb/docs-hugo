@@ -17,6 +17,14 @@ which can be used for better throughput. HTTP requests are easily mappable
 to VelocyStream and no separate documentation exists as the API is essentially
 the same for both network protocols.
 
+{{< info >}}
+VelocyStream is deprecated in v3.11 and removed in v3.12.0.
+
+While VelocyStream support is still available in v3.11, it is highly recommended
+to already switch to the HTTP(S) protocol because of better performance and
+reliability.
+{{< /info >}}
+
 ArangoDB uses the standard HTTP methods (e.g. `GET`, `POST`, `PUT`, `DELETE`) plus
 the `PATCH` method described in [RFC 5789](http://tools.ietf.org/html/rfc5789).
 

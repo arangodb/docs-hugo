@@ -1,0 +1,9 @@
+{{ $ver := (.Get 0) -}}
+{{- $versions := (where .Site.Data.versions "name" $ver) -}}
+{{ if $versions -}}
+  {{ (index $versions 0).version | htmlEscape -}}
+{{ else -}}
+  {{ $path := "<non-file source>" -}}
+  {{ with .Page.File }}{{ $path = .Path }}{{ end -}}
+  {{ errorf "%q: Could not find version info for '%s'" $path $ver -}}
+{{ end -}}

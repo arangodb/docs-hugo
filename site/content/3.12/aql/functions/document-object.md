@@ -119,6 +119,17 @@ FOR pair IN ENTRIES( { "foo": "bar", "number": 123 } )
   RETURN {key, value}
 ```
 
+```aql
+---
+name: aqlEntriesLoopDestructure
+description: |
+  Iterate over the attributes of an object and return an object for each
+  key-value pair, making use of array destructuring for a more concise query:
+---
+FOR [key, value] IN ENTRIES( { "foo": "bar", "number": 123 } )
+  RETURN {key, value}
+```
+
 ## HAS()
 
 `HAS(document, attributeName) → isPresent`
