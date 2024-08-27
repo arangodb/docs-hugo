@@ -242,7 +242,6 @@ be where our scripts are going to live. For simplicity's sake, our setup
 script will live in a file called `setup.js` inside that folder:
 
 ```js
-// continued
 'use strict';
 const db = require('@arangodb').db;
 const collectionName = 'myFoxxCollection';

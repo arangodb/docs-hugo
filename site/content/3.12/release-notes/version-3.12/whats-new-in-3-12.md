@@ -717,6 +717,7 @@ FILTER p.edges[1].foo == "bar" AND
 See the [Traversal `OPTIONS`](../../aql/graphs/traversals.md#working-with-named-graphs)
 for details.
 
+
 ### Push limit into index optimization
 
 <small>Introduced in: v3.12.2</small>
@@ -783,6 +784,47 @@ Indexes used:
  By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
   9   idx_1806008994935865344   persistent   coll         false    false    false      100.00 %   [ `x`, `y` ]   [  ]            (doc.`x` IN [ "bar", "foo" ])
 ```
+
+
+### Array and object destructuring
+
+<small>Introduced in: v3.12.2</small>
+
+Destructuring lets you assign array values and object attributes to one or
+multiple variables with a single `LET` operation and as part of regular `FOR`
+loops. This can be convenient to extract a subset of values and name them in a
+concise manner.
+
+Array values are assigned by position and you can skip elements by leaving out
+variable names.
+
+Object attributes are assigned by name but you can also map them to different
+variable names.
+
+You can mix both array and object destructuring.
+
+```aql
+LET [x, y] = [1, 2, 3]   // Assign 1 to variable x and 2 to y
+LET [, y, z] = [1, 2, 3] // Assign 2 to variable y and 3 to z
+
+// Assign "Luna Miller" to variable name and 39 to age
+LET { name, age } = { vip: true, age: 39, name: "Luna Miller" }
+
+// Assign the vip attribute value to variable status
+LET { vip: status } = { vip: true, age: 39, name: "Luna Miller" }
+
+// Assign 1 to variable x, 2 to y, and 3 to z
+LET { obj: [x, [y, z]] } = { obj: [1, [2, 3]] }
+
+// Iterate over array of objects and extract the firstName attribute
+LET names = [ { firstName: "Luna"}, { firstName: "Sam" } ]
+FOR { firstName } IN names
+  RETURN firstName
+```
+
+See [Array destructuring](../../aql/operators.md#array-destructuring) and
+[Object destructuring](../../aql/operators.md#object-destructuring) for details.
+
 
 ## Indexing
 

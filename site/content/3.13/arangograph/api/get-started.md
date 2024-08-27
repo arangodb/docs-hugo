@@ -264,7 +264,7 @@ and optionally the root user password.
 
 We won’t be exploring every flag available for creating a deployment but it is
 a good idea to explore the concept of the node size ID value. This is an
-indicator that is unique to each provider (Google, Azure, AWS) and indicates
+indicator that is unique to each provider (Google, AWS) and indicates
 the CPU and memory. Depending on the provider and region this can also
 determine the available disk sizes for your deployment. In other words, it is
 pretty important to know which `node-size-id` your deployment will be using.

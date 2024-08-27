@@ -61,8 +61,8 @@ There are different ways to set up and operate ArangoDB.
   ArangoDB Kubernetes Operator (`kube-arangodb`).
 
 The fastest way to get ArangoDB up and running is to run it in the cloud - the
-[ArangoGraph Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic) offers a fully managed
-cloud service, available on AWS, Microsoft Azure, and Google Cloud Platform.
+[ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic)
+offers a fully managed cloud service, available on AWS and GCP.
 
 ### Manual Deployment
 
@@ -109,7 +109,7 @@ If you want a specific version, download the precompiled executable via the
 
 - [AWS and Azure](in-the-cloud.md)
 - [ArangoGraph Insights Platform](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic),
-  fully managed, available on AWS, Azure & GCP
+  fully managed, available on AWS and GCP
 
 ### Run in Kubernetes
 

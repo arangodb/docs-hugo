@@ -640,6 +640,7 @@ The following commands are available to configure this option:
   authenticated user has access
   - `--enable-github` - if set, allow access from user accounts authenticated via Github
   - `--enable-google` - if set, allow access from user accounts authenticated via Google
+  - `--enable-microsoft` - if set, allow access from user accounts authenticated via Microsoft
   - `--enable-username-password` - if set, allow access from user accounts
     authenticated via a username/password
 
