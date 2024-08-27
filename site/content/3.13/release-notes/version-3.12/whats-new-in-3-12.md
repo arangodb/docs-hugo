@@ -717,6 +717,75 @@ FILTER p.edges[1].foo == "bar" AND
 See the [Traversal `OPTIONS`](../../aql/graphs/traversals.md#working-with-named-graphs)
 for details.
 
+
+### Push limit into index optimization
+
+<small>Introduced in: v3.12.2</small>
+
+A new `push-limit-into-index` optimizer rule has been added to better utilize
+`persistent` indexes over multiple fields when there are a subsequent `SORT` and
+`LIMIT` operation. The following conditions need to be met for the rule to be
+applied:
+
+- The index must be a compound index
+- The index condition must use the `IN` comparison operator
+- The attributes used for the `IN` comparison must be the ones used by the index
+- There must not be an outer loop and there must not be post-filtering
+- The attributes to sort by must be the same ones as in index and in the same
+  order, and they must all be in the same direction (all `ASC` or all `DESC`).
+
+Under these circumstances, fetching all the data to sort it is unnecessary
+because it is already sorted in the index. This makes it possible to get results
+from the index in batches. This can greatly improve the performance of certain
+queries.
+
+Example query:
+
+```aql
+FOR doc IN coll
+  FILTER doc.x IN ["foo", "bar"]
+  SORT doc.y
+  LIMIT 10
+  RETURN doc
+```
+
+With a persistent index over `x` and `y` but without the optimization, the
+query explain output looks as follows:
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT 
+  9   IndexNode                500     - FOR doc IN coll   /* persistent index scan, index only (projections: `y`) */    LET #5 = doc.`y`   /* with late materialization */
+  6   SortNode                 500       - SORT #5 ASC   /* sorting strategy: constrained heap */
+  7   LimitNode                 10       - LIMIT 0, 10
+ 10   MaterializeNode           10       - MATERIALIZE doc INTO #4
+  8   ReturnNode                10       - RETURN #4
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  9   idx_1806008994935865344   persistent   coll         false    false    false      100.00 %   [ `x`, `y` ]   [  ]            (doc.`x` IN [ "bar", "foo" ])
+```
+
+With the optimization, the `LIMIT 10` is pushed into the index node with the
+comment `/* early reducing results */`:
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT 
+  9   IndexNode                500     - FOR doc IN coll   /* persistent index scan, index only (projections: `y`) */    LET #5 = doc.`y`   LIMIT 10 /* early reducing results */   /* with late materialization */
+  6   SortNode                 500       - SORT #5 ASC   /* sorting strategy: constrained heap */
+  7   LimitNode                 10       - LIMIT 0, 10
+ 10   MaterializeNode           10       - MATERIALIZE doc INTO #4
+  8   ReturnNode                10       - RETURN #4
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  9   idx_1806008994935865344   persistent   coll         false    false    false      100.00 %   [ `x`, `y` ]   [  ]            (doc.`x` IN [ "bar", "foo" ])
+```
+
+
 ### Array and object destructuring
 
 <small>Introduced in: v3.12.2</small>
@@ -755,6 +824,7 @@ FOR { firstName } IN names
 
 See [Array destructuring](../../aql/operators.md#array-destructuring) and
 [Object destructuring](../../aql/operators.md#object-destructuring) for details.
+
 
 ## Indexing
 
