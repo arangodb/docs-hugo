@@ -5,6 +5,15 @@ weight: 10
 description: >-
   The cuGraph Adapter exports graphs from ArangoDB into RAPIDS cuGraph, a library of collective GPU-accelerated graph algorithms, and vice-versa
 ---
+
+```markdown
+{{< tip >}}
+ArangoDB now has a closer integration with NetworkX allowing
+NetworkX users to persist their graphs in ArangoDB & leverage
+GPU-accelerated graph analytics via cuGraph. [Learn more here](https://arangodb.com/introducing-the-arangodb-networkx-persistence-layer/).
+{{< /tip >}}
+```
+
 While offering a similar API and set of graph algorithms to NetworkX,
 [RAPIDS cuGraph](https://docs.rapids.ai/api/cugraph/stable/)
 library is GPU-based. Especially for large graphs, this
@@ -68,7 +77,6 @@ cug_g = adbcug_adapter.arangodb_collections_to_cugraph(
 
 ### cuGraph to ArangoDB
 ```py
-
 #################################
 # 2.1: with a Homogeneous Graph #
 #################################

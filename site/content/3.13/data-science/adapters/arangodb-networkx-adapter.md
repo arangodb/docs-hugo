@@ -5,12 +5,22 @@ weight: 5
 description: >-
   The NetworkX Adapter allows you to export graphs from ArangoDB into NetworkX for graph analysis with Python and vice-versa
 ---
-[NetworkX](https://networkx.org/) is a commonly used tool for analysis of network
-data. If your analytics use cases require the use of all your graph data, for example,
-to summarize graph structure, or answer global path traversal queries, then
-NetworkX is not recommended. If your analysis pertains to a subgraph, then you
-may be interested in getting the NetworkX representation of the subgraph for one
-of the following reasons:
+
+```markdown
+{{< tip >}}
+ArangoDB now has a closer integration with NetworkX allowing
+NetworkX users to persist their graphs in ArangoDB & leverage
+GPU-accelerated graph analytics via cuGraph. [Learn more here](https://arangodb.com/introducing-the-arangodb-networkx-persistence-layer/).
+{{< /tip >}}
+```
+
+[NetworkX](https://networkx.org/) is a commonly used tool for
+analysis of network-data. If your 
+analytics use cases require the use of all your graph data, for example,
+to summarize graph structure, or answer global path traversal queries,
+then using the ArangoDB Pregel API is recommended. If your analysis pertains
+to a subgraph, then you may be interested in getting the NetworkX
+representation of the subgraph for one of the following reasons:
 
 - An algorithm for your use case is available in NetworkX
 - A library that you want to use for your use case works with NetworkX Graphs as input
