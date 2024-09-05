@@ -9841,6 +9841,34 @@
     "section" : "rocksdb",
     "type" : "boolean"
   },
+  "rocksdb.force-legacy-comparator" : {
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : false,
+    "deprecatedIn" : null,
+    "description" : "If set to `true`, forces a new database directory to use the legacy sorting method. This is only for testing. Don't use.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.12.2"
+    ],
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "rocksdb",
+    "type" : "boolean"
+  },
   "rocksdb.format-version" : {
     "base" : 1,
     "category" : "option",

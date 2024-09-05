@@ -714,8 +714,151 @@ FILTER p.edges[1].foo == "bar" AND
        p.edges[2].baz == "qux"
 ```
 
-See the [Traversal `OPTIONS`](../../aql/graphs/traversals.md#working-with-named-graphs)
+See the [Traversal options](../../aql/graphs/traversals.md#traversal-options)
 for details.
+
+
+### Query logging
+
+<small>Introduced in: v3.12.2</small>
+
+A new feature for logging metadata of past AQL queries has been added.
+
+You can optionally let ArangoDB store information such as run time, memory usage,
+and failure reasons to the `_queries` system collection in the `_system` database
+with a configurable sampling probability and retention period. This allows you
+to analyze the metadata directly in the database system to debug query issues
+and understand usage patterns.
+
+See [Query logging](../../aql/execution-and-performance/query-logging.md) for details.
+
+
+### Bypass edge cache for graph operations
+
+<small>Introduced in: v3.12.2</small>
+
+The `useCache` option is now supported for graph traversals and path searches.
+
+You can set this option to `false` to not make a large graph operation pollute
+the edge cache.
+
+```aql
+FOR v, e, p IN 1..5 OUTBOUND "vertices/123" edges
+  OPTIONS { useCache: false }
+  ...
+```
+
+
+
+### Push limit into index optimization
+
+<small>Introduced in: v3.12.2</small>
+
+A new `push-limit-into-index` optimizer rule has been added to better utilize
+`persistent` indexes over multiple fields when there are a subsequent `SORT` and
+`LIMIT` operation. The following conditions need to be met for the rule to be
+applied:
+
+- The index must be a compound index
+- The index condition must use the `IN` comparison operator
+- The attributes used for the `IN` comparison must be the ones used by the index
+- There must not be an outer loop and there must not be post-filtering
+- The attributes to sort by must be the same ones as in index and in the same
+  order, and they must all be in the same direction (all `ASC` or all `DESC`).
+
+Under these circumstances, fetching all the data to sort it is unnecessary
+because it is already sorted in the index. This makes it possible to get results
+from the index in batches. This can greatly improve the performance of certain
+queries.
+
+Example query:
+
+```aql
+FOR doc IN coll
+  FILTER doc.x IN ["foo", "bar"]
+  SORT doc.y
+  LIMIT 10
+  RETURN doc
+```
+
+With a persistent index over `x` and `y` but without the optimization, the
+query explain output looks as follows:
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT 
+  9   IndexNode                500     - FOR doc IN coll   /* persistent index scan, index only (projections: `y`) */    LET #5 = doc.`y`   /* with late materialization */
+  6   SortNode                 500       - SORT #5 ASC   /* sorting strategy: constrained heap */
+  7   LimitNode                 10       - LIMIT 0, 10
+ 10   MaterializeNode           10       - MATERIALIZE doc INTO #4
+  8   ReturnNode                10       - RETURN #4
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  9   idx_1806008994935865344   persistent   coll         false    false    false      100.00 %   [ `x`, `y` ]   [  ]            (doc.`x` IN [ "bar", "foo" ])
+```
+
+With the optimization, the `LIMIT 10` is pushed into the index node with the
+comment `/* early reducing results */`:
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT 
+  9   IndexNode                500     - FOR doc IN coll   /* persistent index scan, index only (projections: `y`) */    LET #5 = doc.`y`   LIMIT 10 /* early reducing results */   /* with late materialization */
+  6   SortNode                 500       - SORT #5 ASC   /* sorting strategy: constrained heap */
+  7   LimitNode                 10       - LIMIT 0, 10
+ 10   MaterializeNode           10       - MATERIALIZE doc INTO #4
+  8   ReturnNode                10       - RETURN #4
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  9   idx_1806008994935865344   persistent   coll         false    false    false      100.00 %   [ `x`, `y` ]   [  ]            (doc.`x` IN [ "bar", "foo" ])
+```
+
+
+### Array and object destructuring
+
+<small>Introduced in: v3.12.2</small>
+
+Destructuring lets you assign array values and object attributes to one or
+multiple variables with a single `LET` operation and as part of regular `FOR`
+loops. This can be convenient to extract a subset of values and name them in a
+concise manner.
+
+Array values are assigned by position and you can skip elements by leaving out
+variable names.
+
+Object attributes are assigned by name but you can also map them to different
+variable names.
+
+You can mix both array and object destructuring.
+
+```aql
+LET [x, y] = [1, 2, 3]   // Assign 1 to variable x and 2 to y
+LET [, y, z] = [1, 2, 3] // Assign 2 to variable y and 3 to z
+
+// Assign "Luna Miller" to variable name and 39 to age
+LET { name, age } = { vip: true, age: 39, name: "Luna Miller" }
+
+// Assign the vip attribute value to variable status
+LET { vip: status } = { vip: true, age: 39, name: "Luna Miller" }
+
+// Assign 1 to variable x, 2 to y, and 3 to z
+LET { obj: [x, [y, z]] } = { obj: [1, [2, 3]] }
+
+// Iterate over array of objects and extract the firstName attribute
+LET names = [ { firstName: "Luna"}, { firstName: "Sam" } ]
+FOR { firstName } IN names
+  RETURN firstName
+```
+
+See [Array destructuring](../../aql/operators.md#array-destructuring) and
+[Object destructuring](../../aql/operators.md#object-destructuring) for details.
+
+
+
 
 ## Indexing
 
@@ -985,6 +1128,35 @@ scheduler type. The scheduler currently used by ArangoDB has the value
 `supervised`. A new work-stealing scheduler is being implemented and can be
 selected using the value `threadpools`. This new scheduler is experimental and
 should not be used in production.
+
+### Query logging options
+
+<small>Introduced in: v3.12.2</small>
+
+The following startup options related to the [Query logging](#query-logging)
+feature have been added:
+
+- `--query.collection-logger-enabled`:
+  Whether to enable the logging of metadata for past AQL queries
+- `--query.collection-logger-include-system-database`:
+  Whether to log queries that run in the `_system` database
+- `--query.collection-logger-probability`:
+  The sampling probability for logging queries (in percent)
+- `--query.collection-logger-all-slow-queries`:
+  Whether to always log slow queries regardless of whether they are selected for
+  sampling or not
+- `--query.collection-logger-retention-time`:
+  The retention period for entries in the `_queries` system collection (in seconds)
+- `--query.collection-logger-cleanup-interval`:
+  The interval for running the cleanup process for the retention configuration
+  (in milliseconds)
+- `--query.collection-logger-push-interval`:
+  How long to buffer query log entries in memory before they are actually
+  written to the system collection (in milliseconds)
+- `--query.collection-logger-max-buffered-queries`:
+  The number of query log entries to buffer in memory before they are flushed to
+  the system collection, discarding additional query metadata if the logging
+  thread cannot keep up
 
 ## Miscellaneous changes
 

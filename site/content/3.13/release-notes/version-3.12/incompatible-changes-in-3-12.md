@@ -501,6 +501,15 @@ This slightly decreases performance due to using the block cache for additional
 things, and you may need to allow ArangoDB to use more memory for the RocksDB
 block cache than before with the `--rocksdb.block-cache-size` startup option.
 
+#### `mmap` log topic removed
+
+<small>Introduced in: v3.12.1</small>
+
+The `mmap` log topic for logging information related to memory mapping has been
+unused since v3.12.0 and has now been removed. Attempts to set the log level for
+this topic logs a warning, for example, using a startup option like
+`--log.level mmap=trace`.
+
 ## Client tools
 
 ### arangodump

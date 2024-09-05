@@ -536,10 +536,6 @@ paths:
                     Logs the memory configuration on startup and reports
                     problems with memory alignment and operating system settings.
                   type: string
-                mmap:
-                  description: |
-                    Unused log topic for information related to memory mapping.
-                  type: string
                 queries:
                   description: |
                     Logs slow queries as well as internal details about the
