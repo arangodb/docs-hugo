@@ -36,6 +36,18 @@
     }
   },
   {
+    "name": "replace-entries-with-object-iteration",
+    "description": "Replace FOR ... ENTRIES(obj) enumeration with proper object iteration.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
     "name": "simplify-conditions",
     "description": "Replace parts in `CalculationNode` expressions with\nsimpler expressions.",
     "flags": {
