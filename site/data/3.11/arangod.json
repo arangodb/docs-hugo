@@ -2347,7 +2347,7 @@
       "agent",
       "single"
     ],
-    "default" : "/var/lib/arangodb3",
+    "default" : "",
     "deprecatedIn" : null,
     "description" : "The path to the database directory.",
     "dynamic" : false,
@@ -3454,7 +3454,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "/var/lib/arangodb3-apps",
+    "default" : "./js/apps",
     "deprecatedIn" : null,
     "description" : "The directory for Foxx applications.",
     "dynamic" : false,
@@ -3752,6 +3752,7 @@
       "single"
     ],
     "default" : [
+      "./enterprise/js"
     ],
     "deprecatedIn" : null,
     "description" : "Additional paths containing JavaScript modules.",
@@ -3830,7 +3831,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "/usr/share/arangodb3/js",
+    "default" : "./js",
     "deprecatedIn" : null,
     "description" : "A path to the directory containing the JavaScript startup scripts.",
     "dynamic" : false,
@@ -6220,7 +6221,7 @@
       "agent",
       "single"
     ],
-    "default" : "-",
+    "default" : "",
     "deprecatedIn" : null,
     "description" : "shortcut for '--log.output file://<filename>'",
     "dynamic" : false,
