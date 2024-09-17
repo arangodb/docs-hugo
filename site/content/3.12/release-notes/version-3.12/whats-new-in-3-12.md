@@ -857,8 +857,17 @@ FOR { firstName } IN names
 See [Array destructuring](../../aql/operators.md#array-destructuring) and
 [Object destructuring](../../aql/operators.md#object-destructuring) for details.
 
+### Fast object enumeration with `ENTRIES()`
 
+<small>Introduced in: v3.12.3</small>
 
+A new optimization has been implemented to improve the efficiency of the
+[`ENTRIES()` function](../../aql/functions/document-object.md#entries) in AQL.
+
+The new `replace-entries-with-object-iteration` optimizer rule can recognize a
+query pattern like `FOR [key, value] IN ENTRIES(obj) ...` and use a faster code
+path for iterating over the object that avoids copying a lot of key/value pairs
+and storing intermediate results.
 
 ## Indexing
 
