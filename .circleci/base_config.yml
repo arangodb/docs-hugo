@@ -356,7 +356,7 @@ jobs:
         default: "medium"
     machine:
       docker_layer_caching: true
-      image: ubuntu-2004:current
+      image: default
       resource_class: << parameters.executor >>
     steps:
       - run: 
@@ -392,7 +392,7 @@ jobs:
         type: string
         default: "https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app"
     machine:
-      image: ubuntu-2004:current
+      image: default
     resource_class: large
     environment:
       GIT_SSH_COMMAND: "ssh -o IdentitiesOnly=yes"
@@ -452,7 +452,7 @@ jobs:
         type: string
         default: ""
     machine:
-      image: ubuntu-2004:current
+      image: default
     resource_class: xlarge
     steps:
       - add_ssh_keys:
@@ -493,7 +493,7 @@ jobs:
 
   commit-generated:
     machine:
-      image: ubuntu-2004:current
+      image: default
     resource_class: large
     steps:
       - add_ssh_keys:
