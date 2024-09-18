@@ -181,7 +181,8 @@ contexts. Unlike keywords, they are **case-sensitive**:
  
 - `CURRENT` –
   available in
-  [array inline expressions](../operators.md#inline-expressions)
+  [array inline expressions](../operators.md#inline-expressions) and the
+  [question mark operator](../operators.md#question-mark-operator)
 - `NEW` –
   available after
   [INSERT](../high-level-operations/insert.md#returning-the-inserted-documents) /
