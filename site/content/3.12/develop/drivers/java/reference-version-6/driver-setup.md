@@ -16,7 +16,7 @@ ArangoDB arangoDB = new ArangoDB.Builder().build();
 The driver is configured with some default values:
 
 | property-key             | description                             | default value  |
-|--------------------------|-----------------------------------------| -------------- |
+|--------------------------|-----------------------------------------|----------------|
 | arangodb.hosts           | ArangoDB hosts                          | 127.0.0.1:8529 |
 | arangodb.timeout         | connect & request timeout (millisecond) | 0              |
 | arangodb.user            | Basic Authentication User               | root           |
@@ -24,7 +24,7 @@ The driver is configured with some default values:
 | arangodb.jwt             | Authentication JWT                      |                |
 | arangodb.useSsl          | use SSL connection                      | false          |
 | arangodb.chunksize       | VelocyStream Chunk content-size (bytes) | 30000          |
-| arangodb.connections.max | max number of connections               | 1 VST, 20 HTTP |
+| arangodb.connections.max | max number of connections               | 20             |
 | arangodb.protocol        | used network protocol                   | VST            |
 
 To customize the configuration the parameters can be changed in the code...
@@ -157,11 +157,10 @@ ArangoDB arangoDB = new ArangoDB.Builder()
   .build();
 ```
 
-Since version 4.3 the driver support acquiring a list of known hosts in a
-cluster setup or a single server setup with followers. For this the driver has
+The driver is also able to acquire a list of known hosts in a cluster. For this the driver has
 to be able to successfully open a connection to at least one host to get the
-list of hosts. Then it can use this list when fallback is needed. To use this
-feature just pass `true` to the method `acquireHostList(boolean)`.
+list of hosts. Then it can use this list when fallback is needed. To enable this
+feature:
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
@@ -233,23 +232,3 @@ Connection TTL can be disabled setting it to `null`:
 ```
 
 The default TTL is `null` (no automatic connection closure).
-
-## VST Keep-Alive
-
-Since version 6.8, the driver supports setting keep-alive interval (in seconds)
-for VST connections (but VST is not supported from ArangoDB v3.12.0 onward).
-If set, every VST connection will perform a no-op request
-at the specified intervals, to avoid to be closed due to inactivity by the
-server (or by the external environment, e.g. firewall, intermediate routers,
-operating system, ... ).
-
-This option can be set using the key `arangodb.connections.keepAlive.interval`
-in the properties file or programmatically from the driver builder:
-
-```java
-ArangoDB arangoDB = new ArangoDB.Builder()
-  .keepAliveInterval(1800) // 30 minutes
-  .build();
-```
-
-If not set or set to `null` (default), no keep-alive probes will be sent.
