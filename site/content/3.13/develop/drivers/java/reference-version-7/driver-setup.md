@@ -73,7 +73,7 @@ Here are examples to integrate configuration properties from different sources:
 `ArangoDB.Builder` has the following configuration methods:
 
 - `host(String, int)`:           adds a host (hostname and port) to connect to, multiple hosts can be added
-- `protocol(Protocol)`:          communication protocol, possible values are: `VST`, `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, (default: `HTTP2_JSON`)
+- `protocol(Protocol)`:          communication protocol, possible values are: `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, `VST` (unsupported from ArangoDB v3.12 onward), (default: `HTTP2_JSON`)
 - `timeout(Integer)`:            connection and request timeout (ms), (default `0`, no timeout)
 - `user(String)`:                username for authentication, (default: `root`)
 - `password(String)`:            password for authentication
@@ -81,10 +81,8 @@ Here are examples to integrate configuration properties from different sources:
 - `useSsl(Boolean)`:             use SSL connection, (default: `false`)
 - `sslContext(SSLContext)`:      SSL context
 - `verifyHost(Boolean)`:         enable hostname verification, (HTTP only, default: `true`)
-- `chunkSize(Integer)`:          VST chunk size in bytes, (default: `30000`)
-- `maxConnections(Integer)`:     max number of connections per host, (default: 1 VST, 1 HTTP/2, 20 HTTP/1.1)
-- `connectionTtl(Long)`:         time to live of an inactive connection (ms), (default: `30_000` for HTTP, no TTL for VST)
-- `keepAliveInterval(Integer)`:  VST keep-alive interval (s), (default: no keep-alive probes will be sent)
+- `maxConnections(Integer)`:     max number of connections per host, (default: `1` for `HTTP/2`, `20` for `HTTP/1.1`)
+- `connectionTtl(Long)`:         time to live of an inactive connection (ms), (default: `30_000`)
 - `acquireHostList(Boolean)`:    acquire the list of available hosts, (default: `false`)
 - `acquireHostListInterval(Integer)`:             acquireHostList interval (ms), (default: `3_600_000`, 1 hour)
 - `loadBalancingStrategy(LoadBalancingStrategy)`: load balancing strategy, possible values are: `NONE`, `ROUND_ROBIN`, `ONE_RANDOM`, (default: `NONE`)
@@ -129,7 +127,7 @@ file name can be specified using its overloaded variants.
 
 The properties read are:
 - `hosts`: comma-separated list of `<hostname>:<port>` entries
-- `protocol`: `VST`, `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON` or `HTTP2_VPACK`
+- `protocol`: `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, or `VST` (unsupported from ArangoDB v3.12 onward)
 - `timeout`
 - `user`
 - `password`
@@ -251,23 +249,6 @@ ArangoDB arango = new ArangoDB.Builder()
 
 In this example, inactive connections are closed after 5 minutes.
 
-The default TTL for HTTP connections is 30 seconds, while it is `null` for VST connections.
+The default connection TTL is `30` seconds.
 
 If set to `null`, no automatic connection closure is performed.
-
-## VST Keep-Alive
-
-The driver supports setting keep-alive interval (in seconds)
-for VST connections (but VST is not supported from ArangoDB v3.12.0 onward).
-If set, every VST connection performs a no-op request
-at the specified intervals, to avoid to be closed due to inactivity by the
-server (or by the external environment, e.g. firewall, intermediate routers,
-operating system, ... ).
-
-```java
-ArangoDB arangoDB = new ArangoDB.Builder()
-        .keepAliveInterval(1_800) // 30 minutes
-        .build();
-```
-
-If not set or set to `null` (default), no keep-alive probes will be sent.

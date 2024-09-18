@@ -94,7 +94,7 @@ The main driver artifact `com.arangodb:arangodb-java-driver` has transitive depe
 - `com.arangodb:http-protocol`: `HTTP` communication protocol (HTTP/1.1 and HTTP/2)
 - `com.arangodb:jackson-serde-json`: `JSON` user-data serde module based on Jackson Databind
 
-Alternative user-data serde module is:
+Alternative module for user-data serde:
 - `com.arangodb:jackson-serde-vpack`: `VPACK` user-data serde module based on Jackson Databind
 
 The modules above are discovered and loaded using SPI (Service Provider Interface).
@@ -165,9 +165,8 @@ to use the [shaded version](#arangodb-java-driver-shaded) of this driver, which
 bundles all modules together with relocated external dependencies.
 
 The dependency on `com.arangodb:velocypack` has been removed from core module and
-is now only used as internal dependency by
-`com.arangodb:jackson-serde-vpack`, thus transitively imported only when using 
-`VPACK` content type.
+is now only used as internal dependency by `com.arangodb:jackson-serde-vpack`,
+thus transitively imported only when using `VPACK` content type.
 
 ## User Data
 

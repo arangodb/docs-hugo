@@ -73,7 +73,7 @@ Here are examples to integrate configuration properties from different sources:
 `ArangoDB.Builder` has the following configuration methods:
 
 - `host(String, int)`:           adds a host (hostname and port) to connect to, multiple hosts can be added
-- `protocol(Protocol)`:          communication protocol, possible values are: `VST` (unsupported since ArangoDB 3.12), `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, (default: `HTTP2_JSON`)
+- `protocol(Protocol)`:          communication protocol, possible values are: `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, `VST` (unsupported from ArangoDB v3.12 onward), (default: `HTTP2_JSON`)
 - `timeout(Integer)`:            connection and request timeout (ms), (default `0`, no timeout)
 - `user(String)`:                username for authentication, (default: `root`)
 - `password(String)`:            password for authentication
@@ -127,7 +127,7 @@ file name can be specified using its overloaded variants.
 
 The properties read are:
 - `hosts`: comma-separated list of `<hostname>:<port>` entries
-- `protocol`: `VST` (unsupported since ArangoDB 3.12), `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON` or `HTTP2_VPACK`
+- `protocol`: `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, or `VST` (unsupported from ArangoDB v3.12 onward)
 - `timeout`
 - `user`
 - `password`
@@ -252,4 +252,3 @@ In this example, inactive connections are closed after 5 minutes.
 The default connection TTL is `30` seconds.
 
 If set to `null`, no automatic connection closure is performed.
-

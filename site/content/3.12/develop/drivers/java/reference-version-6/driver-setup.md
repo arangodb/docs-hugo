@@ -24,7 +24,7 @@ The driver is configured with some default values:
 | arangodb.jwt             | Authentication JWT                      |                |
 | arangodb.useSsl          | use SSL connection                      | false          |
 | arangodb.chunksize       | VelocyStream Chunk content-size (bytes) | 30000          |
-| arangodb.connections.max | max number of connections               | 20             |
+| arangodb.connections.max | max number of connections               | 1 VST, 20 HTTP |
 | arangodb.protocol        | used network protocol                   | VST            |
 
 To customize the configuration the parameters can be changed in the code...
@@ -157,10 +157,10 @@ ArangoDB arangoDB = new ArangoDB.Builder()
   .build();
 ```
 
-The driver is also able to acquire a list of known hosts in a cluster. For this the driver has
-to be able to successfully open a connection to at least one host to get the
-list of hosts. Then it can use this list when fallback is needed. To enable this
-feature:
+The driver is also able to acquire a list of known hosts in a cluster.
+For this the driver has to be able to successfully open a connection to at least
+one host to get the list of hosts. Then it can use this list when fallback is
+needed. You can enable this feature as follows:
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
