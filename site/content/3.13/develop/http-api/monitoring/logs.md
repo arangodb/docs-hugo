@@ -387,7 +387,6 @@ paths:
         - name: withAppenders
           in: query
           required: false
-          default: false
           description: |
             Set this option to `true` to set individual log level settings
             for log outputs (`appenders`). The request and response structure is
@@ -423,6 +422,7 @@ paths:
             as setting a log level with this option turned off.
           schema:
             type: boolean
+            default: false
       requestBody:
         content:
           application/json:
