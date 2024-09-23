@@ -602,7 +602,7 @@ libraries.
 
 The NetworkX library is available by default using the variable `nx`:
 
-```python
+```py
 def worker(graph):
   return nx.pagerank(graph, 0.85)
 ```

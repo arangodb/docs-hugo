@@ -31,32 +31,32 @@ The `Datasets` constructor requires a valid [python-arango](../../develop/driver
 database object as input. It defines the target deployment, database, and
 credentials to load a dataset.
 
-```python
+```py
 from arango import ArangoClient
 db = ArangoClient(hosts='http://localhost:8529').db("dbName", username="root", password="")
 ```
 
 Pass the database object to the `Datasets` constructor:
 
-```python
+```py
 from arango_datasets import Datasets
 datasets = Datasets(db)
 ```
 
 List the available datasets:
 
-```python
+```py
 print(datasets.list_datasets())
 ```
 
 List more information about a particular dataset:
 
-```python
+```py
 print(datasets.dataset_info("IMDB_X"))
 ```
 
 Import the dataset:
 
-```python
+```py
 datasets.load("IMDB_X")
 ```

@@ -128,8 +128,8 @@ database's ID if its name contains special characters.
 
 ## Databases API
 
-The following descriptions cover the JavaScript interface for collections that
-you can use to handle collections from the _arangosh_ command-line tool, as
+The following descriptions cover the JavaScript interface for databases that
+you can use to handle databases from the _arangosh_ command-line tool, as
 well as in server-side JavaScript code like Foxx microservices.
 For other languages see the corresponding language API.
 
