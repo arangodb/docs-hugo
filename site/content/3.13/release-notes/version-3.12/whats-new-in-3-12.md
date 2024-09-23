@@ -1589,7 +1589,7 @@ topics in `--log.output` by appending a semicolon and a comma-separated mapping
 of log topics and levels after the destination to override the `--log.level`
 configuration:
 
-```shell
+```sh
 --log.level memory=warning
 --log.output "file:///path/to/file;queries=trace,requests=info"
 --log.output "-;all=error"

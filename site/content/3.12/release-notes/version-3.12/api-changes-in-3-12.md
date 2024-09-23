@@ -489,7 +489,7 @@ The `GET /_admin/log/level` and `PUT /_admin/log/level` endpoints have been
 extended with a `withAppenders` query option to let you query and set log level
 settings for individual log outputs:
 
-```shell
+```sh
 curl http://localhost:8529/_admin/log/level?withAppenders=true
 ```
 
@@ -529,7 +529,7 @@ topic across all appenders.
 To change any of the log levels at runtime, you can send a request following the
 same structure:
 
-```shell
+```sh
 curl -XPUT -d '{"global":{"queries":"DEBUG"},"appenders":{"-":{"requests":"ERROR"}}}' http://localhost:8529/_admin/log/level?withAppenders=true
 ```
 

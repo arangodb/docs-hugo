@@ -508,7 +508,7 @@ featurization_job_result = arangoml.wait_for_featurization(featurization_job.job
 
 You can also cancel a Featurization Job using the `arangoml.jobs.cancel_job` method:
 
-```python
+```py
 arangoml.jobs.cancel_job(prediction_job.job_id)
 ```
 
@@ -651,7 +651,7 @@ training_job_result = arangoml.wait_for_training(training_job.job_id)
 
 You can also cancel a Training Job using the `arangoml.jobs.cancel_job` method:
 
-```python
+```py
 arangoml.jobs.cancel_job(training_job.job_id)
 ```
 
@@ -791,7 +791,7 @@ prediction_job_result = arangoml.wait_for_prediction(prediction_job.job_id)
 
 You can also cancel a Prediction Job using the `arangoml.jobs.cancel_job` method:
 
-```python
+```py
 arangoml.jobs.cancel_job(prediction_job.job_id)
 ```
 
