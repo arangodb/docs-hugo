@@ -291,7 +291,6 @@ paths:
         - name: withAppenders
           in: query
           required: false
-          default: false
           description: |
             Set this option to `true` to return the individual log level settings
             of all log outputs (`appenders`) as well as the `global` settings.
@@ -325,6 +324,7 @@ paths:
             ```
           schema:
             type: boolean
+            default: false
       responses:
         '200':
           description: |
