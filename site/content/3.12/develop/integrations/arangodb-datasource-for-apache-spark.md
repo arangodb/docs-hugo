@@ -87,10 +87,11 @@ To use in an external Spark cluster, submit your application with the following 
 
 ### SSL
 
-To use TLS secured connections to ArangoDB, set `ssl.enabled` to `true` and configure the certificate to use.
-This can be achieved in one of the following ways:
+To use TLS-secured connections to ArangoDB, set `ssl.enabled` to `true` and
+configure the certificate to use. This can be achieved in one of the following ways:
 
-- provide the Base64-encoded certificate as `ssl.cert.value` configuration entry:
+- Provide the Base64-encoded certificate as the `ssl.cert.value` configuration entry:
+
   ```scala
   val spark: SparkSession = SparkSession.builder()
     // ...
@@ -99,7 +100,9 @@ This can be achieved in one of the following ways:
     .getOrCreate()
   ```
 
-- set the trustStore to use in `ssl.trustStore.path` configuration entry and optionally set `ssl.trustStore.password`:
+- Set the trust store to use in the `ssl.trustStore.path` configuration entry and
+  optionally set `ssl.trustStore.password`:
+
   ```scala
   val spark: SparkSession = SparkSession.builder()
     // ...
@@ -109,20 +112,25 @@ This can be achieved in one of the following ways:
     .getOrCreate()
   ```
 
-- start the Spark driver and workers with a properly configured trustStore:
+- Start the Spark driver and workers with a properly configured trust store:
+
   ```scala
   val spark: SparkSession = SparkSession.builder()
     // ...
     .config("ssl.enabled", "true")
     .getOrCreate()
   ```
-  and set in Spark configuration file:
-  ```text
+
+  Set the following in the Spark configuration file:
+
+  ```properties
   spark.executor.extraJavaOptions=-Djavax.net.ssl.trustStore=<trustStore path> -Djavax.net.ssl.trustStorePassword=<trustStore password> 
   spark.driver.extraJavaOptions=-Djavax.net.ssl.trustStore=<trustStore path> -Djavax.net.ssl.trustStorePassword=<trustStore password>
   ```
-  Alternatively, this can be set from command line when submitting the Spark job:
-  ```shell
+
+  Alternatively, you can set this in the command-line when submitting the Spark job:
+
+  ```sh
   ./bin/spark-submit \
     --conf "spark.driver.extraJavaOptions=-Djavax.net.ssl.trustStore=<trustStore path> -Djavax.net.ssl.trustStorePassword=<trustStore password>" \
     --conf "spark.executor.extraJavaOptions=-Djavax.net.ssl.trustStore=<trustStore path> -Djavax.net.ssl.trustStorePassword=<trustStore password>" \
