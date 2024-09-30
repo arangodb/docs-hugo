@@ -57,6 +57,8 @@ Possible `@<IndexType>Index` annotations are:
 - `@GeoIndex`
 - `@FulltextIndex` (deprecated)
 - `@TtlIndex`
+- `@MDIndex`
+- `@MDPrefixedIndex`
 
 The following example creates a single persistent index on the fields `name` and
 `age`, note that if a field is renamed in the database with @Field, the new
