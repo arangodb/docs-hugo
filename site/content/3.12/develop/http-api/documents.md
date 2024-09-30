@@ -204,7 +204,7 @@ var headers = {"If-None-Match": "\"" + document._rev + "\""};
 
 var response = logCurlRequest('GET', url, "", headers);
 assert(response.code === 304);
-logJsonResponse(response);
+logRawResponse(response);
 
 db._drop(cn);
 ```
@@ -336,8 +336,9 @@ var document = db.products.save({"hello":"world"});
 var url = "/_api/document/" + document._id;
 
 var response = logCurlRequest('HEAD', url);
-
 assert(response.code === 200);
+logRawResponse(response);
+
 db._drop(cn);
 ```
 
