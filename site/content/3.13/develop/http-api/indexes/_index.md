@@ -63,7 +63,8 @@ paths:
           required: false
           description: |
             Whether to include hidden indexes in the result. Internal indexes
-            and ones that are currently built in the background are hidden.
+            (such as `arangosearch`) and ones that are currently built in the
+            background are hidden.
           schema:
             type: boolean
       responses:

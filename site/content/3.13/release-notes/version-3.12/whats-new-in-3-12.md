@@ -1575,6 +1575,37 @@ See the [JavaScript API](../../develop/transactions/stream-transactions.md#javas
 and the [HTTP API](../../develop/http-api/transactions/stream-transactions.md#begin-a-stream-transaction)
 for details.
 
+### Individual log levels per log output
+
+<small>Introduced in: v3.12.2</small>
+
+You can now configure the log level for each log topic per log output. You can
+use this feature to log verbosely to a file but print less information in the
+command-line, for instance.
+
+The repeatable `--log.level` startup option lets you set the log levels for
+log topics as before. You can now additionally specify the levels for individual
+topics in `--log.output` by appending a semicolon and a comma-separated mapping
+of log topics and levels after the destination to override the `--log.level`
+configuration:
+
+```sh
+--log.level memory=warning
+--log.output "file:///path/to/file;queries=trace,requests=info"
+--log.output "-;all=error"
+```
+
+This sets the log level to `warning` for the `memory` topic, which applies to
+all outputs unless overridden. The first output is a file with verbose `trace`
+logging for the `queries` topic, `info`-level logging for `requests`,
+`warning`-level logging for `memory`, and default levels for all other topics.
+The second output is to the standard output (command-line), using the `all`
+pseudo-topic to set the log levels to `error` for all topics. 
+
+Furthermore, the [HTTP API](../../develop/http-api/monitoring/logs.md#get-the-server-log-levels)
+has been extended to let you query and set the log levels for individual outputs
+at runtime.
+
 ## Client tools
 
 ### Protocol aliases for endpoints

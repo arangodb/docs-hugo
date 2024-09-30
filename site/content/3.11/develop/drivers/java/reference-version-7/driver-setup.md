@@ -90,6 +90,7 @@ Here are examples to integrate configuration properties from different sources:
 - `loadBalancingStrategy(LoadBalancingStrategy)`: load balancing strategy, possible values are: `NONE`, `ROUND_ROBIN`, `ONE_RANDOM`, (default: `NONE`)
 - `responseQueueTimeSamples(Integer)`:            amount of samples kept for queue time metrics, (default: `10`)
 - `serde(ArangoSerde)`:            serde to serialize and deserialize user-data
+- `serdeProviderClass(Class<? extends ArangoSerdeProvider>)`: serde provider to be used to instantiate the user-data serde
 - `protocolConfig(ProtocolConfig)`: configuration specific for the used protocol provider implementation
 
 ### HTTP Protocol Provider Configuration
@@ -140,6 +141,7 @@ The properties read are:
 - `acquireHostListInterval`
 - `loadBalancingStrategy`: `NONE`, `ROUND_ROBIN` or `ONE_RANDOM`
 - `responseQueueTimeSamples`
+- `serdeProviderClass`: fully qualified name of the provider class
 
 ## SSL
 

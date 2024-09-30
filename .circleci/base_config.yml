@@ -356,7 +356,7 @@ jobs:
         default: "medium"
     machine:
       docker_layer_caching: true
-      image: ubuntu-2004:current
+      image: default
       resource_class: << parameters.executor >>
     steps:
       - run: 
@@ -392,15 +392,16 @@ jobs:
         type: string
         default: "https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app"
     machine:
-      image: ubuntu-2004:current
+      image: default
     resource_class: large
     environment:
       GIT_SSH_COMMAND: "ssh -o IdentitiesOnly=yes"
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "1e:e3:7e:8c:55:be:3d:56:bc:4c:1c:d7:d6:26:f2:e5"
-            - "20:72:b8:99:35:4c:7c:23:60:da:f2:5e:43:34:ba:79"
+            - "6f:62:f0:fc:7e:bc:e4:a3:5e:2d:b9:ff:c9:a3:e3:60"
+            - "46:9f:e7:8a:46:9d:e1:bc:c2:db:36:1e:0b:5c:ed:7d"
+            - "37:83:f6:17:83:8c:39:bc:52:8a:72:e4:0f:d1:e2:86"
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
 
       - run: 
@@ -452,14 +453,14 @@ jobs:
         type: string
         default: ""
     machine:
-      image: ubuntu-2004:current
+      image: default
     resource_class: xlarge
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a"
-            - "28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e"
-            - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
+            - "6f:62:f0:fc:7e:bc:e4:a3:5e:2d:b9:ff:c9:a3:e3:60"
+            - "46:9f:e7:8a:46:9d:e1:bc:c2:db:36:1e:0b:5c:ed:7d"
+            - "37:83:f6:17:83:8c:39:bc:52:8a:72:e4:0f:d1:e2:86"
       - attach_workspace:
           at: .
       
@@ -493,14 +494,14 @@ jobs:
 
   commit-generated:
     machine:
-      image: ubuntu-2004:current
+      image: default
     resource_class: large
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a"
-            - "28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e"
-            - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
+            - "6f:62:f0:fc:7e:bc:e4:a3:5e:2d:b9:ff:c9:a3:e3:60"
+            - "46:9f:e7:8a:46:9d:e1:bc:c2:db:36:1e:0b:5c:ed:7d"
+            - "37:83:f6:17:83:8c:39:bc:52:8a:72:e4:0f:d1:e2:86"
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - clone-docs-and-merge
       - download-generated-data
@@ -552,9 +553,9 @@ jobs:
           version: default # TODO: Does this need to match the installed docker-cli version?
       - add_ssh_keys:
           fingerprints:
-            - "7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a"
-            - "28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e"
-            - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
+            - "6f:62:f0:fc:7e:bc:e4:a3:5e:2d:b9:ff:c9:a3:e3:60"
+            - "46:9f:e7:8a:46:9d:e1:bc:c2:db:36:1e:0b:5c:ed:7d"
+            - "37:83:f6:17:83:8c:39:bc:52:8a:72:e4:0f:d1:e2:86"
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
       - clone-arangodb:
           branch: << parameters.arangodb-branch >>
