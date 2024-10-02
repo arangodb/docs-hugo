@@ -399,9 +399,9 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "6f:62:f0:fc:7e:bc:e4:a3:5e:2d:b9:ff:c9:a3:e3:60"
-            - "46:9f:e7:8a:46:9d:e1:bc:c2:db:36:1e:0b:5c:ed:7d"
-            - "37:83:f6:17:83:8c:39:bc:52:8a:72:e4:0f:d1:e2:86"
+            - "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk"
+            - "SHA256:OE7k4elryS7yb1giEaxQkrAlFPM4fnKtz5G9Ft75x1c"
+            - "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o"
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
 
       - run: 
@@ -458,9 +458,9 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "6f:62:f0:fc:7e:bc:e4:a3:5e:2d:b9:ff:c9:a3:e3:60"
-            - "46:9f:e7:8a:46:9d:e1:bc:c2:db:36:1e:0b:5c:ed:7d"
-            - "37:83:f6:17:83:8c:39:bc:52:8a:72:e4:0f:d1:e2:86"
+            - "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk"
+            - "SHA256:OE7k4elryS7yb1giEaxQkrAlFPM4fnKtz5G9Ft75x1c"
+            - "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o"
       - attach_workspace:
           at: .
       
@@ -499,9 +499,9 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "6f:62:f0:fc:7e:bc:e4:a3:5e:2d:b9:ff:c9:a3:e3:60"
-            - "46:9f:e7:8a:46:9d:e1:bc:c2:db:36:1e:0b:5c:ed:7d"
-            - "37:83:f6:17:83:8c:39:bc:52:8a:72:e4:0f:d1:e2:86"
+            - "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk"
+            - "SHA256:OE7k4elryS7yb1giEaxQkrAlFPM4fnKtz5G9Ft75x1c"
+            - "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o"
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - clone-docs-and-merge
       - download-generated-data
@@ -553,9 +553,9 @@ jobs:
           version: default # TODO: Does this need to match the installed docker-cli version?
       - add_ssh_keys:
           fingerprints:
-            - "6f:62:f0:fc:7e:bc:e4:a3:5e:2d:b9:ff:c9:a3:e3:60"
-            - "46:9f:e7:8a:46:9d:e1:bc:c2:db:36:1e:0b:5c:ed:7d"
-            - "37:83:f6:17:83:8c:39:bc:52:8a:72:e4:0f:d1:e2:86"
+            - "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk"
+            - "SHA256:OE7k4elryS7yb1giEaxQkrAlFPM4fnKtz5G9Ft75x1c"
+            - "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o"
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
       - clone-arangodb:
           branch: << parameters.arangodb-branch >>
