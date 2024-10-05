@@ -1106,7 +1106,7 @@ paths:
                       description: |
                         If set to `true`, then you are allowed to supply own key values in the
                         `_key` attribute of documents. If set to `false`, then the key generator
-                        is solely be responsible for generating keys and an error is raised if you
+                        is solely responsible for generating keys and an error is raised if you
                         supply own key values in the `_key` attribute of documents.
 
 
