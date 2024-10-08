@@ -6,6 +6,12 @@ description: >-
   With `ArangoTemplate`, Spring Data ArangoDB offers a central support for
   interactions with the database over a rich feature set
 ---
+
+{{< warning >}}
+Spring Data ArangoDB version 3 reached EOL and is not actively developed anymore.
+Upgrading to version 4 is recommended.
+{{< /warning >}}
+
 `ArangoTemplate` mostly offers the features from the ArangoDB Java driver with
 additional exception translation from the drivers exceptions to the Spring Data
 access exceptions inheriting the `DataAccessException` class.

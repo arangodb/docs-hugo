@@ -4,6 +4,12 @@ menuTitle: Named queries
 weight: 15
 description: ''
 ---
+
+{{< warning >}}
+Spring Data ArangoDB version 3 reached EOL and is not actively developed anymore.
+Upgrading to version 4 is recommended.
+{{< /warning >}}
+
 An alternative to using the `@Query` annotation on methods is specifying them in
 a separate `.properties` file. The default path for the file is
 `META-INF/arango-named-queries.properties` and can be changed with the

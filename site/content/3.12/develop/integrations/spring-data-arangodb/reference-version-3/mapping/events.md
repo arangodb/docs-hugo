@@ -4,6 +4,12 @@ menuTitle: Events
 weight: 35
 description: ''
 ---
+
+{{< warning >}}
+Spring Data ArangoDB version 3 reached EOL and is not actively developed anymore.
+Upgrading to version 4 is recommended.
+{{< /warning >}}
+
 Spring Data ArangoDB includes several `ApplicationEvent` events that your
 application can respond to by registering subclasses of
 `AbstractArangoEventListener` in the ApplicationContext.

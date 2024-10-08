@@ -4,6 +4,12 @@ menuTitle: Query methods
 weight: 10
 description: ''
 ---
+
+{{< warning >}}
+Spring Data ArangoDB version 3 reached EOL and is not actively developed anymore.
+Upgrading to version 4 is recommended.
+{{< /warning >}}
+
 Queries using [ArangoDB Query Language (AQL)](../../../../../../aql/_index.md)
 can be supplied with the `@Query` annotation on methods.
 

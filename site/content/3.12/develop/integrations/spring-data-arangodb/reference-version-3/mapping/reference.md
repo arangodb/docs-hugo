@@ -4,6 +4,12 @@ menuTitle: Reference
 weight: 15
 description: ''
 ---
+
+{{< warning >}}
+Spring Data ArangoDB version 3 reached EOL and is not actively developed anymore.
+Upgrading to version 4 is recommended.
+{{< /warning >}}
+
 With the annotation `@Ref` applied on a field the nested object isn't stored as
 a nested object in the document. The `_id` field of the nested object is stored
 in the document and the nested object has to be stored as a separate document in
