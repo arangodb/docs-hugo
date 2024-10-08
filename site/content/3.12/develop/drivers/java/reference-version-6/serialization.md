@@ -5,6 +5,12 @@ weight: 10
 description: >-
   Serialization (version 6)
 ---
+
+{{< warning >}}
+Version 6 reached EOL and is not actively developed anymore.
+Upgrading to version 7 is recommended.
+{{< /warning >}}
+
 While older versions of the driver used mapping features provided by the
 `velocypack` library, nowadays it is recommended to use
 [jackson-dataformat-velocypack](https://github.com/arangodb/jackson-dataformat-velocypack),

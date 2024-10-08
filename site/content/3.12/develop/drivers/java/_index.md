@@ -15,16 +15,19 @@ The official ArangoDB [Java Driver](https://github.com/arangodb/arangodb-java-dr
 ## Supported versions
 
 Version 7 is the latest supported and actively developed release.
-Version 6 is still supported and maintained, but not actively developed anymore.
+
+{{< warning >}}
+Version 6 reached EOL and is not actively developed anymore.
 Upgrading to version 7 is recommended.
+{{< /warning >}}
 
 The API changes between version 6 and 7 are documented in
 [Changes in version 7](reference-version-7/changes-in-version-7.md).
 
-Both versions are compatible with all supported stable versions of ArangoDB server, see
+The driver is compatible with all supported stable versions of ArangoDB server, see
 [Product Support End-of-life Announcements](https://www.arangodb.com/eol-notice).
 
-They are compatible with JDK 8 and higher versions.
+The driver is compatible with JDK 8 and higher versions.
 
 ## Maven
 
@@ -76,7 +79,7 @@ GraalVM Native Image generation:
 
 ## ArangoDB Java Driver Shaded
 
-From version 7 onward, a shaded variant of the driver is also published with
+A shaded variant of the driver is also published with
 Maven coordinates: `com.arangodb:arangodb-java-driver-shaded`.
 
 It bundles and relocates the following packages:
@@ -134,11 +137,7 @@ boolean isNormalized = UnicodeUtils.isNormalized("𝔸𝕣𝕒𝕟𝕘𝕠𝔻�
 
 ## Async API
 
-From version 7.2 onward, the driver provides a new asynchronous API.
-Unlike in version 6, the asynchronous API is based on the same underlying driver
-instance and therefore supports all the communication protocols and configurations
-of the synchronous API. The asynchronous API is accessible via `ArangoDB#async()`,
-for example:
+The asynchronous API is accessible via `ArangoDB#async()`, for example:
 
 ```java
 ArangoDB adb = new ArangoDB.Builder()
