@@ -1,3 +1,11 @@
+---
+title: ArangoDB Java Driver Tutorial
+menuTitle: Tutorial
+weight: 5
+description: >-
+  Tutorial for the official ArangoDB Java Driver
+---
+
 # Tutorial: Java in 10 Minutes
 
 This is a short tutorial with the [Java Driver](https://github.com/arangodb/arangodb-java-driver) and ArangoDB. In less
