@@ -413,6 +413,17 @@ server:
   `_from` or `_to` attribute of an edge but the document's collection is not
   part of the graph definition.
 
+### Batch request endpoint removed
+
+<small>Introduced in: v3.12.3</small>
+
+The `/_api/batch` endpoint that let you send multiple operations in a single
+HTTP request was deprecated in v3.8.0 and has now been removed.
+
+To send multiple documents at once to an ArangoDB instance, please use the
+[HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
+that can insert, update, replace, or remove arrays of documents.
+
 ## JavaScript API
 
 ### `@arangodb/graph/traversal` module removed
@@ -556,3 +567,13 @@ in exceptional cases now whereas it was not necessary to do so previously.
 
 The `--jslint` startup option and all of the underlying functionality has been
 removed from arangosh. The feature was mainly for internal purposes.
+
+### arangobench
+
+#### Batch size option removed
+
+<small>Introduced in: v3.12.3</small>
+
+The `--batch-size` startup option is now ignored by arangobench and no longer
+has an effect. It allowed you to specify the number of operations to issue in
+one batch but the batch request API has been removed on the server-side.
