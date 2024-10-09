@@ -921,7 +921,7 @@ to `_from` or `_to`.
 See [Multi-dimensional indexes](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md)
 for details.
 
----
+#### Native strict ranges
 
 <small>Introduced in: v3.12.3</small>
 
@@ -960,6 +960,46 @@ Indexes used:
  By   Name                      Type   Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
   7   idx_1812443856099082240   mdi    coll         false    false    false           n/a   [ `x`, `y` ]   [  ]            ((d.`x` > 0) && (d.`x` < 1))
 ```
+
+#### Extended utilization of sparse indexes
+
+<small>Introduced in: v3.12.3</small>
+
+The `null` value is less than all other values in AQL. Therefore, range queries
+without a lower bound need to include `null` but sparse indexes do not include
+`null` values. However, if you explicitly exclude `null` in range queries,
+sparse indexes can be utilized after all. This was not previously supported for
+multi-dimensional indexes. Even with a sparse `mdi` index over the fields `x`
+and `y` and the exclusion of `null`, the following example query cannot take
+advantage of the index up to v3.12.2:
+
+```aql
+FOR d IN coll
+  FILTER d.x < 10 && d.x != null RETURN d
+```
+
+```aql
+Execution plan:
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT
+  2   EnumerateCollectionNode     ✓    100     - FOR d IN coll   /* full collection scan  */   FILTER ((d.`x` < 10) && (d.`x` != null))   /* early pruning */
+  5   ReturnNode                       100       - RETURN d
+```
+
+From v3.13.3 onward, such a query gets optimized to utilize the sparse
+multi-dimensional index and the condition for excluding `null` is removed from
+the query plan because it is unnecessary – a sparse index contains values other
+than `null` only:
+
+Execution plan:
+ Id   NodeType        Par   Est.   Comment
+  1   SingletonNode            1   * ROOT 
+  6   IndexNode         ✓     71     - FOR d IN coll   /* mdi index scan, index scan + document lookup */    
+  5   ReturnNode              71       - RETURN d
+
+Indexes used:
+ By   Name                      Type   Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  6   idx_1812445012396343296   mdi    coll         false    true     false           n/a   [ `x`, `y` ]   [  ]            (d.`x` < 10)
 
 ### Stored values can contain the `_id` attribute
 
