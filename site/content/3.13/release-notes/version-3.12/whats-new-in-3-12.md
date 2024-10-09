@@ -921,6 +921,46 @@ to `_from` or `_to`.
 See [Multi-dimensional indexes](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md)
 for details.
 
+---
+
+<small>Introduced in: v3.12.3</small>
+
+Multi-dimensional indexes no longer require post-filtering when using strict
+ranges like in the following query:
+
+```aql
+FOR d IN coll
+  FILTER 0 < d.x && d.x < 1
+  RETURN d.x
+```
+
+```aql
+Execution plan:
+ Id   NodeType        Par   Est.   Comment
+  1   SingletonNode            1   * ROOT
+  7   IndexNode         ✓     71     - FOR d IN coll   /* mdi index scan, index scan + document lookup (filter projections: `x`) (projections: `x`) */    LET #3 = d.`x`   FILTER ((d.`x` > 0) && (d.`x` < 1))   /* early pruning */   
+  6   ReturnNode              71       - RETURN #3
+
+Indexes used:
+ By   Name                      Type   Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  7   idx_1812443690233233408   mdi    coll         false    false    false           n/a   [ `x`, `y` ]   [  ]            ((d.`x` >= 0) && (d.`x` <= 1))
+```
+
+Native support for strict ranges removes a potential bottleneck when working
+with large datasets.
+
+```aql
+Execution plan:
+ Id   NodeType        Par   Est.   Comment
+  1   SingletonNode            1   * ROOT 
+  7   IndexNode         ✓     71     - FOR d IN coll   /* mdi index scan, index scan + document lookup (projections: `x`) */    LET #3 = d.`x`   
+  6   ReturnNode              71       - RETURN #3
+
+Indexes used:
+ By   Name                      Type   Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  7   idx_1812443856099082240   mdi    coll         false    false    false           n/a   [ `x`, `y` ]   [  ]            ((d.`x` > 0) && (d.`x` < 1))
+```
+
 ### Stored values can contain the `_id` attribute
 
 The usage of the `_id` system attribute was previously disallowed for
