@@ -817,7 +817,6 @@ Indexes used:
   9   idx_1806008994935865344   persistent   coll         false    false    false      100.00 %   [ `x`, `y` ]   [  ]            (doc.`x` IN [ "bar", "foo" ])
 ```
 
-
 ### Array and object destructuring
 
 <small>Introduced in: v3.12.2</small>
@@ -857,8 +856,47 @@ FOR { firstName } IN names
 See [Array destructuring](../../aql/operators.md#array-destructuring) and
 [Object destructuring](../../aql/operators.md#object-destructuring) for details.
 
+### Improved utilization of sorting order for `COLLECT`
 
+<small>Introduced in: v3.12.3</small>
 
+The query optimizer now automatically recognizes additional cases that allow
+using the faster sorted method for a `COLLECT` operation. For example, the
+following query previously created a query plan with two `SORT` operations and
+used the hash method for `COLLECT`.
+
+```aql
+FOR doc IN coll
+  SORT doc.value DESC
+  COLLECT val = doc.value
+  RETURN val
+```
+
+```aql
+Execution plan:
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT 
+  2   EnumerateCollectionNode     ✓     36     - FOR doc IN coll   /* full collection scan (projections: `value`)  */   LET #4 = doc.`value`
+  4   SortNode                    ✓     36       - SORT #4 DESC   /* sorting strategy: standard */
+  6   CollectNode                 ✓     28       - COLLECT val = #4   /* hash */
+  8   SortNode                    ✓     28       - SORT val ASC   /* sorting strategy: standard */
+  7   ReturnNode                        28       - RETURN val
+```
+
+Now, the optimizer checks whether all grouping values are covered by the
+user-requested `SORT`, ignoring the direction, and doesn't create an additional
+`SORT` node in that case. A sort in descending order can thus now be utilized
+for grouping using the sorted method, and possibly even utilize an index.
+
+```aql
+Execution plan:
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT 
+  2   EnumerateCollectionNode     ✓     36     - FOR doc IN coll   /* full collection scan (projections: `value`)  */   LET #5 = doc.`value`
+  4   SortNode                    ✓     36       - SORT #5 DESC   /* sorting strategy: standard */
+  6   CollectNode                 ✓     28       - COLLECT val = #5   /* sorted */
+  7   ReturnNode                        28       - RETURN val
+```
 
 ## Indexing
 
