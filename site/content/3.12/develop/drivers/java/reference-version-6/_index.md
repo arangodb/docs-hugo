@@ -5,6 +5,11 @@ weight: 10
 description: >-
   The official ArangoDB Java Driver version 6
 ---
+{{< warning >}}
+Version 6 reached End of Life (EOL) and is not actively developed anymore.
+Upgrading to version 7 is recommended.
+{{< /warning >}}
+
 The official ArangoDB [Java Driver](https://github.com/arangodb/arangodb-java-driver).
 
 - [Tutorial](https://university.arangodb.com/courses/java-driver-tutorial-v6/)
