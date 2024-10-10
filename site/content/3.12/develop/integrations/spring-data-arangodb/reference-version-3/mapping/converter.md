@@ -4,10 +4,9 @@ menuTitle: Converter
 weight: 30
 description: ''
 ---
-
 {{< warning >}}
-Spring Data ArangoDB version 3 reached EOL and is not actively developed anymore.
-Upgrading to version 4 is recommended.
+Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively
+developed anymore. Upgrading to version 4 is recommended.
 {{< /warning >}}
 
 ## Registering a Spring Converter

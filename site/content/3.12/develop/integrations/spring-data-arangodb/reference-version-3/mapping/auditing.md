@@ -4,10 +4,9 @@ menuTitle: Auditing
 weight: 40
 description: ''
 ---
-
 {{< warning >}}
-Spring Data ArangoDB version 3 reached EOL and is not actively developed anymore.
-Upgrading to version 4 is recommended.
+Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively
+developed anymore. Upgrading to version 4 is recommended.
 {{< /warning >}}
 
 Since version 3.0.0 Spring Data ArangoDB provides basic auditing functionality

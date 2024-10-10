@@ -4,10 +4,9 @@ menuTitle: Relations
 weight: 20
 description: ''
 ---
-
 {{< warning >}}
-Spring Data ArangoDB version 3 reached EOL and is not actively developed anymore.
-Upgrading to version 4 is recommended.
+Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively
+developed anymore. Upgrading to version 4 is recommended.
 {{< /warning >}}
 
 With the annotation `@Relations` applied on a collection or array field in a

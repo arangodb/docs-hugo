@@ -4,10 +4,9 @@ menuTitle: Indexes
 weight: 25
 description: ''
 ---
-
 {{< warning >}}
-Spring Data ArangoDB version 3 reached EOL and is not actively developed anymore.
-Upgrading to version 4 is recommended.
+Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively
+developed anymore. Upgrading to version 4 is recommended.
 {{< /warning >}}
 
 Indexes can be ensured using the following annotations. For reference see the

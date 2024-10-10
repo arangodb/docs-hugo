@@ -4,20 +4,17 @@ menuTitle: Reference version 3
 weight: 6
 description: ''
 ---
-
 {{< warning >}}
-Spring Data ArangoDB version 3 reached EOL and is not actively developed anymore.
-Upgrading to version 4 is recommended.
+Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively
+developed anymore. Upgrading to version 4 is recommended.
 {{< /warning >}}
 
 ## Supported versions
 
-Spring Data ArangoDB is compatible with:
+Spring Data ArangoDB version 3 is compatible with:
 
-- all the still supported Spring Boot 2.x [versions](https://spring.io/projects/spring-boot#support)
-  and related Spring Framework versions
-- all the still supported ArangoDB [versions](https://www.arangodb.com/eol-notice)
-
+- Spring Boot 2.7.x and related Spring Framework versions
+- ArangoDB 3.11 and 3.12
 
 ## Maven
 

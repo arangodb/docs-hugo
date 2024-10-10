@@ -6,10 +6,9 @@ description: >-
   Interact with ArangoDB using the high-level and consistent abstraction
   provided by Spring Data repositories
 ---
-
 {{< warning >}}
-Spring Data ArangoDB version 3 reached EOL and is not actively developed anymore.
-Upgrading to version 4 is recommended.
+Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively
+developed anymore. Upgrading to version 4 is recommended.
 {{< /warning >}}
 
 Spring Data Commons provides a composable repository infrastructure which
