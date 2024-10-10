@@ -4,6 +4,11 @@ menuTitle: Document
 weight: 5
 description: ''
 ---
+{{< warning >}}
+Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively
+developed anymore. Upgrading to version 4 is recommended.
+{{< /warning >}}
+
 ## Annotation @Document
 
 The annotations `@Document` applied to a class marks this class as a candidate
