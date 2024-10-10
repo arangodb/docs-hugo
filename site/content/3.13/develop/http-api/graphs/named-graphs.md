@@ -779,20 +779,20 @@ var graph = require("@arangodb/general-graph");
 }
 var url = "/_api/gharial";
 body = {
-name: "disjointSmartGraph",
-edgeDefinitions: [{
-collection: "edges",
-from: [ "startVertices" ],
-to: [ "endVertices" ]
-}],
-orphanCollections: [ "orphanVertices" ],
-isSmart: true,
-options: {
-isDisjoint: true,
-replicationFactor: 2,
-numberOfShards: 9,
-smartGraphAttribute: "region"
-}
+  name: "disjointSmartGraph",
+  edgeDefinitions: [{
+    collection: "edges",
+    from: [ "startVertices" ],
+    to: [ "endVertices" ]
+  }],
+  orphanCollections: [ "orphanVertices" ],
+  isSmart: true,
+  options: {
+    isDisjoint: true,
+    replicationFactor: 2,
+    numberOfShards: 9,
+    smartGraphAttribute: "region"
+  }
 };
 
 var response = logCurlRequest('POST', url, body);
@@ -821,20 +821,20 @@ var graph = require("@arangodb/general-graph");
 }
 var url = "/_api/gharial";
 body = {
-name: "smartGraph",
-edgeDefinitions: [{
-collection: "edges",
-from: [ "startVertices" ],
-to: [ "endVertices" ]
-}],
-orphanCollections: [ "orphanVertices" ],
-isSmart: true,
-options: {
-replicationFactor: 2,
-numberOfShards: 9,
-smartGraphAttribute: "region",
-satellites: [ "endVertices" ]
-}
+  name: "smartGraph",
+  edgeDefinitions: [{
+    collection: "edges",
+    from: [ "startVertices" ],
+    to: [ "endVertices" ]
+  }],
+  orphanCollections: [ "orphanVertices" ],
+  isSmart: true,
+  options: {
+    replicationFactor: 2,
+    numberOfShards: 9,
+    smartGraphAttribute: "region",
+    satellites: [ "endVertices" ]
+  }
 };
 
 var response = logCurlRequest('POST', url, body);
@@ -860,18 +860,18 @@ var graph = require("@arangodb/general-graph");
 }
 var url = "/_api/gharial";
 body = {
-name: "enterpriseGraph",
-edgeDefinitions: [{
-collection: "edges",
-from: [ "startVertices" ],
-to: [ "endVertices" ]
-}],
-orphanCollections: [ ],
-isSmart: true,
-options: {
-replicationFactor: 2,
-numberOfShards: 9,
-}
+  name: "enterpriseGraph",
+  edgeDefinitions: [{
+    collection: "edges",
+    from: [ "startVertices" ],
+    to: [ "endVertices" ]
+  }],
+  orphanCollections: [ ],
+  isSmart: true,
+  options: {
+    replicationFactor: 2,
+    numberOfShards: 9,
+  }
 };
 
 var response = logCurlRequest('POST', url, body);
@@ -899,16 +899,16 @@ var graph = require("@arangodb/general-graph");
 }
 var url = "/_api/gharial";
 body = {
-name: "satelliteGraph",
-edgeDefinitions: [{
-collection: "edges",
-from: [ "startVertices" ],
-to: [ "endVertices" ]
-}],
-orphanCollections: [ ],
-options: {
-replicationFactor: "satellite"
-}
+  name: "satelliteGraph",
+  edgeDefinitions: [{
+    collection: "edges",
+    from: [ "startVertices" ],
+    to: [ "endVertices" ]
+  }],
+  orphanCollections: [ ],
+  options: {
+    replicationFactor: "satellite"
+  }
 };
 
 var response = logCurlRequest('POST', url, body);

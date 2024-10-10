@@ -1395,7 +1395,8 @@ need to be output explicitly by calling one of the following functions:
   for formatting complex requests.
 - `logJsonResponse(response)`: output a JSON server reply (fails on invalid JSON)
 - `logJsonLResponse(response)`: output a JSONL server reply (fails on invalid JSON)
-- `logRawResponse(response)`: output plaintext response (do not use for JSON replies)
+- `logRawResponse(response)`: output plaintext response (do not use for JSON replies;
+  can be used for endpoint calls that return an empty body to output the headers)
 - `logPlainResponse(response)`: output decoded response (new lines instead of
   `\r\n` etc.). Useful for formatting complex responses, like from batch requests.
 - `logHtmlResponse(response)`: output HTML
