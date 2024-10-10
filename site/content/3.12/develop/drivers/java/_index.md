@@ -16,18 +16,18 @@ The official ArangoDB [Java Driver](https://github.com/arangodb/arangodb-java-dr
 
 Version 7 is the latest supported and actively developed release.
 
-{{< warning >}}
-Version 6 reached EOL and is not actively developed anymore.
-Upgrading to version 7 is recommended.
-{{< /warning >}}
-
-The API changes between version 6 and 7 are documented in
-[Changes in version 7](reference-version-7/changes-in-version-7.md).
-
 The driver is compatible with all supported stable versions of ArangoDB server, see
 [Product Support End-of-life Announcements](https://www.arangodb.com/eol-notice).
 
 The driver is compatible with JDK 8 and higher versions.
+
+{{< warning >}}
+Version 6 reached End of Life (EOL) and is not actively developed anymore.
+Upgrading to version 7 is recommended.
+
+The API changes between version 6 and 7 are documented in
+[Changes in version 7](reference-version-7/changes-in-version-7.md).
+{{< /warning >}}
 
 ## Maven
 

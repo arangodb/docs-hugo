@@ -41,7 +41,7 @@ An implementation for loading properties from local files is provided by
 `ArangoConfigProperties.fromFile()` and its overloaded variants.
 
 To read config properties prefixed with `arangodb` from `arangodb.properties`
-file (as in version `6`):
+file:
 
 ```java
 // ## src/main/resources/arangodb.properties
@@ -122,7 +122,7 @@ HttpProtocolConfig.builder()
 ### Config File Properties
 
 `ArangoConfigProperties.fromFile()` reads config properties prefixed with `arangodb`
-from `arangodb.properties` file (as in version `6`). Different prefix and
+from `arangodb.properties` file. Different prefix and
 file name can be specified using its overloaded variants.
 
 The properties read are:

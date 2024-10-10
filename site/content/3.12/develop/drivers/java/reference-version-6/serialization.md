@@ -5,9 +5,8 @@ weight: 10
 description: >-
   Serialization (version 6)
 ---
-
 {{< warning >}}
-Version 6 reached EOL and is not actively developed anymore.
+Version 6 reached End of Life (EOL) and is not actively developed anymore.
 Upgrading to version 7 is recommended.
 {{< /warning >}}
 
