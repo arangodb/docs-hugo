@@ -445,7 +445,7 @@ server:
 
 <small>Introduced in: v3.12.3</small>
 
-The `/_api/batch` endpoint that let you send multiple operations in a single
+The `/_api/batch` endpoints that let you send multiple operations in a single
 HTTP request was deprecated in v3.8.0 and has now been removed.
 
 To send multiple documents at once to an ArangoDB instance, please use the
