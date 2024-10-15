@@ -264,7 +264,7 @@ of the available Agency endpoints, integrates the new _DB-Server_ into the
 cluster.
 
 To distribute shards onto the new _DB-Server_, go to the **Distribution** tab
-in the **CLUSTER** page of the web interface and click the **Rebalance**
+in the **Cluster** page of the web interface and click the **Rebalance**
 button at the bottom of the **Shard distribution** section.
 
 The clean out process can be monitored using the following script,
