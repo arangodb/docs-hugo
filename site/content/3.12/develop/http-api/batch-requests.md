@@ -225,6 +225,11 @@ in a batch part will be ignored.
 
 ### Execute a batch request
 
+{{< warning >}}
+The `/_api/batch` endpoint was deprecated in v3.8.0 and has been removed
+in v3.12.3.
+{{< /warning >}}
+
 ```openapi
 paths:
   /_db/{database-name}/_api/batch:
@@ -308,84 +313,283 @@ paths:
 
 **Examples**
 
-```curl
----
-description: |-
-  Sending a batch request with five batch parts:
+Sending a batch request with five batch parts:
 
-  - GET /_api/version
-  - DELETE /_api/collection/products
-  - POST /_api/collection/products
-  - GET /_api/collection/products/figures
-  - DELETE /_api/collection/products
+- GET /_api/version
+- DELETE /_api/collection/products
+- POST /_api/collection/products
+- GET /_api/collection/products/figures
+- DELETE /_api/collection/products
 
-  The boundary (`SomeBoundaryValue`) is passed to the server in the HTTP
-  `Content-Type` HTTP header.
+The boundary (`SomeBoundaryValue`) is passed to the server in the HTTP
+`Content-Type` HTTP header.
 
-  The server response is formatted for readability. The `↩` character denotes
-  the original line breaks.
-name: RestBatchMultipartHeader
----
-var parts = [
-  "Content-Type: application/x-arango-batchpart\r\n" +
-  "Content-Id: myId1\r\n\r\n" +
-  "GET /_api/version HTTP/1.1\r\n",
+The server response is formatted for readability. The `↩` character denotes
+the original line breaks.
 
-  "Content-Type: application/x-arango-batchpart\r\n" +
-  "Content-Id: myId2\r\n\r\n" +
-  "DELETE /_api/collection/products HTTP/1.1\r\n",
+```bash
+curl -X POST --header 'Content-Type: multipart/form-data; boundary=SomeBoundaryValue' --header 'accept: application/json' --data-binary @- --dump - 'http://localhost:8529/_api/batch' <<'EOF'
+--SomeBoundaryValue
+Content-Type: application/x-arango-batchpart
+Content-Id: myId1
 
-  "Content-Type: application/x-arango-batchpart\r\n" +
-  "Content-Id: someId\r\n\r\n" +
-  "POST /_api/collection/products HTTP/1.1\r\n\r\n" +
-  "{\"name\": \"products\" }\r\n",
+GET /_api/version HTTP/1.1
 
-  "Content-Type: application/x-arango-batchpart\r\n" +
-  "Content-Id: nextId\r\n\r\n" +
-  "GET /_api/collection/products/figures HTTP/1.1\r\n",
+--SomeBoundaryValue
+Content-Type: application/x-arango-batchpart
+Content-Id: myId2
 
-  "Content-Type: application/x-arango-batchpart\r\n" +
-  "Content-Id: otherId\r\n\r\n" +
-  "DELETE /_api/collection/products HTTP/1.1\r\n"
-];
-var boundary = "SomeBoundaryValue";
-var headers = { "Content-Type" : "multipart/form-data; boundary=" + boundary };
-var body = "--" + boundary + "\r\n" +
-           parts.join("\r\n" + "--" + boundary + "\r\n") +
-           "--" + boundary + "--\r\n";
+DELETE /_api/collection/products HTTP/1.1
 
-var response = logCurlRequest('POST', '/_api/batch', body, headers);
+--SomeBoundaryValue
+Content-Type: application/x-arango-batchpart
+Content-Id: someId
 
-assert(response.code === 200);
+POST /_api/collection/products HTTP/1.1
 
-logPlainResponse(response);
+{"name": "products" }
+
+--SomeBoundaryValue
+Content-Type: application/x-arango-batchpart
+Content-Id: nextId
+
+GET /_api/collection/products/figures HTTP/1.1
+
+--SomeBoundaryValue
+Content-Type: application/x-arango-batchpart
+Content-Id: otherId
+
+DELETE /_api/collection/products HTTP/1.1
+--SomeBoundaryValue--
+
+EOF
 ```
 
-```curl
----
-description: |-
-  Sending a batch request, setting the boundary implicitly. The server tries
-  to find the boundary at the beginning of the request body in this case.
+{{< expand title="Show output" >}}
+```bash
+HTTP/1.1 200 OK
+content-type: multipart/form-data
+cache-control: no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0
+connection: Keep-Alive
+content-length: 2319
+content-security-policy: frame-ancestors 'self'; form-action 'self';
+expires: 0
+pragma: no-cache
+server: ArangoDB
+strict-transport-security: max-age=31536000 ; includeSubDomains
+x-arango-errors: 1
+x-arango-queue-time-seconds: 0.000000
+x-content-type-options: nosniff
 
-  The server response is formatted for readability. The `↩` character denotes
-  the original line breaks.
-name: RestBatchImplicitBoundary
----
-var parts = [
-  "Content-Type: application/x-arango-batchpart\r\n\r\n" +
-     "DELETE /_api/collection/nonexistent1 HTTP/1.1\r\n",
-  "Content-Type: application/x-arango-batchpart\r\n\r\n" +
-     "DELETE _api/collection/nonexistent2 HTTP/1.1\r\n"
-];
-var boundary = "SomeBoundaryValue";
-var body = "--" + boundary + "\r\n" +
-           parts.join("\r\n" + "--" + boundary + "\r\n") +
-           "--" + boundary + "--\r\n";
+--SomeBoundaryValue
+Content-Type: application/x-arango-batchpart
+Content-Id: myId1
 
-var response = logCurlRequest('POST', '/_api/batch', body);
+HTTP/1.1 200 OK
+Server: 
+Connection: Close 
+Content-Type: application/json; charset=utf-8
+Content-Length: 61
 
-assert(response.code === 200);
-assert(response.headers['x-arango-errors'] == 2);
+{ 
+  "server" : "arango", 
+  "license" : "enterprise", 
+  "version" : "3.12.2" 
+}↩
 
-logPlainResponse(response);
+--SomeBoundaryValue
+Content-Type: application/x-arango-batchpart
+Content-Id: myId2
+
+HTTP/1.1 404 Not Found
+Server: 
+Connection: Close 
+Content-Type: application/json; charset=utf-8
+Content-Length: 87
+
+{ 
+  "code" : 404, 
+  "error" : true, 
+  "errorMessage" : "collection or view not found", 
+  "errorNum" : 1203 
+}↩
+
+--SomeBoundaryValue
+Content-Type: application/x-arango-batchpart
+Content-Id: someId
+
+HTTP/1.1 200 OK
+Server: 
+Connection: Close 
+Content-Type: application/json; charset=utf-8
+Content-Length: 446
+
+{ 
+  "error" : false, 
+  "code" : 200, 
+  "writeConcern" : 1, 
+  "waitForSync" : false, 
+  "usesRevisionsAsDocumentIds" : true, 
+  "syncByRevision" : true, 
+  "statusString" : "loaded", 
+  "id" : "68439", 
+  "isSmartChild" : false, 
+  "schema" : null, 
+  "name" : "products", 
+  "type" : 2, 
+  "status" : 3, 
+  "cacheEnabled" : false, 
+  "isSystem" : false, 
+  "internalValidatorType" : 0, 
+  "globallyUniqueId" : "hDA74058C1843/68439", 
+  "keyOptions" : { 
+    "allowUserKeys" : true, 
+    "type" : "traditional", 
+    "lastValue" : 0 
+  }, 
+  "computedValues" : null, 
+  "objectId" : "68440" 
+}↩
+
+--SomeBoundaryValue
+Content-Type: application/x-arango-batchpart
+Content-Id: nextId
+
+HTTP/1.1 200 OK
+Server: 
+Location: /_db/_system/_api/collection/products/figures
+Connection: Close 
+Content-Type: application/json; charset=utf-8
+Content-Length: 565
+
+{ 
+  "error" : false, 
+  "code" : 200, 
+  "figures" : { 
+    "indexes" : { 
+      "count" : 1, 
+      "size" : 0 
+    }, 
+    "documentsSize" : 0, 
+    "cacheInUse" : false, 
+    "cacheSize" : 0, 
+    "cacheUsage" : 0 
+  }, 
+  "writeConcern" : 1, 
+  "waitForSync" : false, 
+  "usesRevisionsAsDocumentIds" : true, 
+  "syncByRevision" : true, 
+  "statusString" : "loaded", 
+  "id" : "68439", 
+  "isSmartChild" : false, 
+  "schema" : null, 
+  "name" : "products", 
+  "type" : 2, 
+  "status" : 3, 
+  "count" : 0, 
+  "cacheEnabled" : false, 
+  "isSystem" : false, 
+  "internalValidatorType" : 0, 
+  "globallyUniqueId" : "hDA74058C1843/68439", 
+  "keyOptions" : { 
+    "allowUserKeys" : true, 
+    "type" : "traditional", 
+    "lastValue" : 0 
+  }, 
+  "computedValues" : null, 
+  "objectId" : "68440" 
+}↩
+
+--SomeBoundaryValue
+Content-Type: application/x-arango-batchpart
+Content-Id: otherId
+
+HTTP/1.1 200 OK
+Server: 
+Connection: Close 
+Content-Type: application/json; charset=utf-8
+Content-Length: 39
+
+{ 
+  "error" : false, 
+  "code" : 200, 
+  "id" : "68439" 
+}↩
+
+--SomeBoundaryValue--
 ```
+{{< /expand >}}
+
+Sending a batch request, setting the boundary implicitly. The server tries
+to find the boundary at the beginning of the request body in this case.
+
+The server response is formatted for readability. The `↩` character denotes
+the original line breaks.
+
+```bash
+curl -X POST --header 'accept: application/json' --data-binary @- --dump - 'http://localhost:8529/_api/batch' <<'EOF'
+--SomeBoundaryValue
+Content-Type: application/x-arango-batchpart
+
+DELETE /_api/collection/nonexistent1 HTTP/1.1
+
+--SomeBoundaryValue
+Content-Type: application/x-arango-batchpart
+
+DELETE _api/collection/nonexistent2 HTTP/1.1
+--SomeBoundaryValue--
+
+EOF
+```
+
+{{< expand title="Show output" >}}
+```bash
+HTTP/1.1 200 OK
+content-type: unset
+cache-control: no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0
+connection: Keep-Alive
+content-length: 598
+content-security-policy: frame-ancestors 'self'; form-action 'self';
+expires: 0
+pragma: no-cache
+server: ArangoDB
+strict-transport-security: max-age=31536000 ; includeSubDomains
+x-arango-errors: 2
+x-arango-queue-time-seconds: 0.000000
+x-content-type-options: nosniff
+
+--SomeBoundaryValue
+Content-Type: application/x-arango-batchpart
+
+HTTP/1.1 404 Not Found
+Server: 
+Connection: Close 
+Content-Type: application/json; charset=utf-8
+Content-Length: 87
+
+{ 
+  "code" : 404, 
+  "error" : true, 
+  "errorMessage" : "collection or view not found", 
+  "errorNum" : 1203 
+}↩
+
+--SomeBoundaryValue
+Content-Type: application/x-arango-batchpart
+
+HTTP/1.1 404 Not Found
+Server: 
+Connection: Close 
+Content-Type: application/json; charset=utf-8
+Content-Length: 101
+
+{ 
+  "error" : true, 
+  "code" : 404, 
+  "errorNum" : 404, 
+  "errorMessage" : "unknown path '_api/collection/nonexistent2'" 
+}↩
+
+--SomeBoundaryValue--
+```
+{{< /expand >}}
