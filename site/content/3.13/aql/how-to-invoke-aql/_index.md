@@ -14,7 +14,7 @@ There are always calls to the server's HTTP API under the hood, but the web inte
 and the `db` object abstract away the low-level communication details and are
 thus easier to use.
 
-The ArangoDB web interface has a specific section for [**QUERIES**](with-the-web-interface.md).
+The ArangoDB web interface has a specific section for [**Queries**](with-the-web-interface.md).
 
 You can run [AQL queries from the ArangoDB Shell](with-arangosh.md)
 with the [`db._query()`](with-arangosh.md#with-db_query) and

@@ -26,7 +26,7 @@ anything that you are not allowed or willing to share and obfuscate it.
 
 ## Create a query debug package in the web interface
 
-1. In **QUERIES** section of the web interface, enter an AQL query into the
+1. In **Queries** section of the web interface, enter an AQL query into the
    editor and provide the bind parameters if necessary.
 2. Click **Create Debug Package** below the text area.
 3. The download of a compressed debug package starts.
