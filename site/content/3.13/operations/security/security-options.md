@@ -353,7 +353,7 @@ in an ArangoDB server:
   ArangoDB's built-in web interface and all built-in REST APIs remain accessible,
   except the Foxx service management API, which makes it impossible to install and
   uninstall Foxx applications. Setting the option to `false` also deactivates the
-  **SERVICES** section in the web interface.
+  **Services** section in the web interface.
   The default value is `true`, meaning that Foxx apps can be accessed. 
 
 - `--foxx.api`:

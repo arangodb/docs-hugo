@@ -14,7 +14,7 @@ Foxx services can be deployed in multiple ways:
 - [HTTP API](../http-api/foxx.md) using HTTP requests,
   e.g. with curl
 
-- [web interface](../../components/web-interface/services.md) under *SERVICES*
+- [web interface](../../components/web-interface/services.md) under **Services**
 
 See [the Foxx cluster guide](guides/foxx-in-a-cluster.md#how-arangodb-distributes-services)
 for how Foxx services are distributed to Coordinators.

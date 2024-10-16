@@ -4,7 +4,7 @@ menuTitle: Dashboard
 weight: 5
 description: ''
 ---
-The **DASHBOARD** section provides statistics which are polled regularly from the
+The **Dashboard** section provides statistics which are polled regularly from the
 ArangoDB server.
 
 ![Web Interface Dashboard](../../../images/ui-dashboard312.webp)
