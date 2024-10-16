@@ -399,9 +399,9 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk"
-            - "SHA256:OE7k4elryS7yb1giEaxQkrAlFPM4fnKtz5G9Ft75x1c"
-            - "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o"
+            - "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk" # arangodb/docs-hugo
+            #- "SHA256:OE7k4elryS7yb1giEaxQkrAlFPM4fnKtz5G9Ft75x1c" # arangodb/arangodb
+            #- "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o" # arangodb/enterprise
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
 
       - run: 
@@ -458,9 +458,9 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk"
-            - "SHA256:OE7k4elryS7yb1giEaxQkrAlFPM4fnKtz5G9Ft75x1c"
-            - "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o"
+            - "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk" # arangodb/docs-hugo
+            #- "SHA256:OE7k4elryS7yb1giEaxQkrAlFPM4fnKtz5G9Ft75x1c" # arangodb/arangodb
+            #- "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o" # arangodb/enterprise
       - attach_workspace:
           at: .
       
@@ -499,9 +499,9 @@ jobs:
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk"
-            - "SHA256:OE7k4elryS7yb1giEaxQkrAlFPM4fnKtz5G9Ft75x1c"
-            - "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o"
+            - "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk" # arangodb/docs-hugo
+            #- "SHA256:OE7k4elryS7yb1giEaxQkrAlFPM4fnKtz5G9Ft75x1c" # arangodb/arangodb
+            #- "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o" # arangodb/enterprise
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - clone-docs-and-merge
       - download-generated-data
@@ -545,7 +545,7 @@ jobs:
       - image: << parameters.build-image >>
     resource_class: xlarge
     environment:
-      GIT_SSH_COMMAND: ssh
+      #GIT_SSH_COMMAND: ssh
       SCCACHE_ERROR_LOG: /tmp/sccache.log
       SCCACHE_LOG: info,sccache::cache=debug,sccache::compiler::compiler=debug
     steps:
@@ -553,9 +553,9 @@ jobs:
           version: default # TODO: Does this need to match the installed docker-cli version?
       - add_ssh_keys:
           fingerprints:
-            - "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk"
-            - "SHA256:OE7k4elryS7yb1giEaxQkrAlFPM4fnKtz5G9Ft75x1c"
-            - "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o"
+            #- "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk" # arangodb/docs-hugo
+            #- "SHA256:OE7k4elryS7yb1giEaxQkrAlFPM4fnKtz5G9Ft75x1c" # arangodb/arangodb
+            - "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o" # arangodb/enterprise
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
       - clone-arangodb:
           branch: << parameters.arangodb-branch >>
