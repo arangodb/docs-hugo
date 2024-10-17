@@ -30,11 +30,4 @@ with async requests:
 arangobench --test-case document --requests 1000 --threads 2 --async true
 ```
 
-Run the `document` test case with 2000 requests, with threads 2,
-using batch requests:
-
-```
-arangobench --test-case document --requests 1000 --threads 2 --batch-size 10
-```
-
 {{% program-options name="arangobench" %}}
