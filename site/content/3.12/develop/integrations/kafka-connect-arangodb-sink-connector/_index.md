@@ -15,9 +15,9 @@ to learn more about the connector.
 
 This connector is compatible with:
 
-- Kafka `3.4` and higher versions
+- Kafka 3.4 and higher versions
 - JDK 8 and higher versions
-- ArangoDB `3.11.1` and higher versions
+- ArangoDB 3.11.1 and higher versions
 
 ## Installation
 
