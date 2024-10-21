@@ -443,7 +443,7 @@ server:
 
 ### Batch request endpoint removed
 
-<small>Introduced in: v3.12.3</small>
+<small>Removed in: v3.12.3</small>
 
 The `/_api/batch` endpoints that let you send multiple operations in a single
 HTTP request was deprecated in v3.8.0 and has now been removed.
@@ -600,7 +600,7 @@ removed from arangosh. The feature was mainly for internal purposes.
 
 #### Batch size option removed
 
-<small>Introduced in: v3.12.3</small>
+<small>Removed in: v3.12.3</small>
 
 The `--batch-size` startup option is now ignored by arangobench and no longer
 has an effect. It allowed you to specify the number of operations to issue in

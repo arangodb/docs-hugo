@@ -575,7 +575,7 @@ graph processing is no longer supported. The `arangodb_pregel_*` metrics and the
 
 #### Batch request API
 
-<small>Introduced in: v3.12.3</small>
+<small>Removed in: v3.12.3</small>
 
 The `/_api/batch` endpoints that let you send multiple operations in a single
 HTTP request was deprecated in v3.8.0 and has now been removed.
