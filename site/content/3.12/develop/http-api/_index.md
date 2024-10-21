@@ -101,7 +101,7 @@ ArangoDB's RESTful HTTP API is documented using the industry-standard
 You can explore the API with the interactive **Swagger UI** using the
 [ArangoDB web interface](../../components/web-interface/_index.md).
 
-1. Click **SUPPORT** in the main navigation of the web interface.
+1. Click **Support** in the main navigation of the web interface.
 2. Click the **Rest API** tab.
 3. Click a section and endpoint to view the description and parameters.
 

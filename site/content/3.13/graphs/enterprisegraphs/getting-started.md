@@ -174,7 +174,7 @@ non-existent collection names for both vertices and edges.
 The web interface (also called Web UI) allows you to easily create and manage
 EnterpriseGraphs. To get started, follow the steps outlined below.
 
-1. In the web interface, navigate to the **GRAPHS** section.
+1. In the web interface, navigate to the **Graphs** section.
 2. To add a new graph, click **Add Graph**.
 3. In the **Create Graph** dialog that appears, select the
    **EnterpriseGraph** tab.
@@ -190,7 +190,7 @@ EnterpriseGraphs. To get started, follow the steps outlined below.
      then created as satellites, and thus replicated to all DB-Servers.
    - For **Edge definition**, insert a single non-existent name to define
      the relation of the graph. This automatically creates a new edge
-     collection, which is displayed in the **COLLECTIONS** section of the
+     collection, which is displayed in the **Collections** section of the
      left sidebar menu.
      {{< tip >}}
      To define multiple relations, press the **Add relation** button.

@@ -83,7 +83,7 @@ logical and comparison operators, as well as
    - `{ "name": "carrot", "type": "vegetable" }`
    - `{ "name": "chili pepper", "type": "vegetable" }`
    - `{ "name": "tomato", "type": ["fruit", "vegetable"] }`
-2. In the **VIEWS** section of the web interface, click the **Add View** card.
+2. In the **Views** section of the web interface, click the **Add View** card.
 3. Enter a name (e.g. `food_view`) for the View, click **Create**, and click
    the card of the newly created View.
 4. Enter the name of the collection in the **Links** fields, then click the
@@ -103,7 +103,7 @@ logical and comparison operators, as well as
    get indexed unaltered. Note that arrays (`["fruit", "vegetable"]` in the example)
    are automatically expanded in `arangosearch` Views by default, indexing the
    individual elements of the array (`"fruit"` and `"vegetable"`).
-6. In the **QUERIES** section, try the following query:
+6. In the **Queries** section, try the following query:
    ```aql
    FOR doc IN food_view
      RETURN doc
@@ -139,7 +139,7 @@ View building is in progress and results can be incomplete.
     - `{ "name": "carrot", "type": ["vegetable"] }`
     - `{ "name": "chili pepper", "type": ["vegetable"] }`
     - `{ "name": "tomato", "type": ["fruit", "vegetable"] }`
- 2. In the **COLLECTIONS** section of the web interface, click the `food` collection.
+ 2. In the **Collections** section of the web interface, click the `food` collection.
  3. Go to the **Indexes** tab and click **Add Index**.
  4. Select **Inverted index** as the **Type**.
  5. In the **Fields** panel, enter `name` into **Fields** and confirm.
@@ -157,7 +157,7 @@ View building is in progress and results can be incomplete.
     in the `food` collection from now on (with some delay). The attribute values
     get processed by the default `identity` Analyzer, which means that they
     get indexed unaltered.
- 8. In the **VIEWS** section, click the **Add View** card.
+ 8. In the **Views** section, click the **Add View** card.
  9. Enter a name for the View (e.g. `food_view`) and select **search-alias**
     as the **Type**.
 10. Select the `food` collection as **Collection** and select the
@@ -165,7 +165,7 @@ View building is in progress and results can be incomplete.
 11. Click **Create**. The View uses the inverted index for searching and adds
     additional functionality like ranking results and searching across
     multiple collections at once.
-12. In the **QUERIES** section, try the following query:
+12. In the **Queries** section, try the following query:
     ```aql
     FOR doc IN food_view
       RETURN doc
@@ -313,7 +313,7 @@ English text.
 {{< tab "`search-alias` View" >}}
  1. Collection indexes cannot be changed once created. Therefore, you need to
     create a new inverted index to index a field differently.
-    In the **COLLECTIONS** section of the web interface, go to the **Indexes**
+    In the **Collections** section of the web interface, go to the **Indexes**
     tab and click **Add Index**. 
  2. Select **Inverted index** as the **Type**.
  3. In the **Fields** panel, enter `name` into **Fields** and confirm.
@@ -326,7 +326,7 @@ English text.
     The inverted indexes indexes the `name` attribute of the documents with the
     `text_en` Analyzer, which splits strings into tokens so that you can search
     for individual words.
- 7. In the **VIEWS** section, click the **Add View** card.
+ 7. In the **Views** section, click the **Add View** card.
  8. Enter a name for the View (e.g. `food_view_fulltext`) and select
     **search-alias** as the **Type**.
  9. Select the `food` collection as **Collection** and select the
@@ -363,7 +363,7 @@ English text.
 {{< /tab >}}
 
 {{< tab "`arangosearch` View" >}}
-1. In the **VIEWS** section of the web interface, click the card of the
+1. In the **Views** section of the web interface, click the card of the
    previously created `food_view` of type `arangosearch`.
 2. In the **Links** panel, click the underlined name of the
    `food` collection. Enter `name` into **Fields** and confirm.

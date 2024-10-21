@@ -132,8 +132,8 @@ The following new metrics have been added for memory observability:
 ### Shard rebalancing
 
 The feature for rebalancing shards in cluster deployments has been moved from
-the **Rebalance Shards** tab in the **NODES** section to the **Distribution**
-tab in the **CLUSTER** section of the web interface.
+the **Rebalance Shards** tab in the **Nodes** section to the **Distribution**
+tab in the **Cluster** section of the web interface.
 
 The updated interface now offers the following options:
 - **Move Leaders**
@@ -172,7 +172,7 @@ you more control over query optimization according to your specific requirements
 ### Swagger UI
 
 The interactive tool for exploring HTTP APIs has been updated to version 5.4.1.
-You can find it in the web interface in the **Rest API** tab of the **SUPPORT**
+You can find it in the web interface in the **Rest API** tab of the **Support**
 section, as well as in the **API** tab of Foxx services and Foxx routes that use
 `module.context.createDocumentationRouter()`.
 

@@ -195,7 +195,7 @@ new inconsistencies only.
 
 You can create and manage named graphs in the following ways:
 - With the [web interface](../components/web-interface/graphs.md)
-  in the **GRAPHS** section
+  in the **Graphs** section
 - In _arangosh_ using the respective graph-related modules of the
   JavaScript API (see the above links of the named graph types)
 - Using the [Gharial HTTP API](../develop/http-api/graphs/named-graphs.md)
