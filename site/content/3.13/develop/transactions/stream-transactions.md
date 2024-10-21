@@ -71,12 +71,6 @@ make some effort to serialize certain operations (see
 however, this degrades the server's performance and may lead to sporadic
 errors with code `28` (locked).
 
-### Batch requests
-
-The [Batch API](../http-api/batch-requests.md) cannot be used in combination with
-Stream Transactions for submitting batched requests, because the required
-`x-arango-trx-id` header is not forwarded.
-
 ## JavaScript API
 
 ### Create Transaction
