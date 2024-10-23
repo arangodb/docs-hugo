@@ -503,6 +503,16 @@ Optimization rules applied:
   4   move-filters-up-2                          8   reduce-extraction-to-projection  
 ```
 
+The number of document lookups caused by late materialization is now reported
+under `extra.stats.documentLookups` by the Cursor HTTP API and shown in a column
+of the query profile output:
+
+```aql
+Query Statistics:
+ Writes Exec      Writes Ign      Doc. Lookups      Scan Full      Scan Index      Cache Hits/Misses      Filtered      Peak Mem [b]      Exec Time [s]
+           0               0               290              0            3708                  0 / 0          3418             32768            0.01247
+```
+
 ---
 
 <small>Introduced in: v3.12.1</small>
