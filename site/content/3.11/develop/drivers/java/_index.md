@@ -4,11 +4,12 @@ menuTitle: Java driver
 weight: 10
 description: ''
 ---
-The official ArangoDB [Java Driver](https://github.com/arangodb/arangodb-java-driver).
+The official ArangoDB Java Driver.
 
-- [Code examples](https://github.com/arangodb/arangodb-java-driver/tree/main/driver/src/test/java/com/arangodb/example)
-- [Reference](reference-version-7/_index.md)
-- [JavaDoc](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/index.html)
+- Repository: <https://github.com/arangodb/arangodb-java-driver>
+- [Code examples](https://github.com/arangodb/arangodb-java-driver/tree/main/test-non-functional/src/test/java/example)
+- [Reference](reference-version-7/_index.md) (driver setup, serialization, changes in version 7)
+- [JavaDoc](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/index.html) (generated reference documentation)
 - [ChangeLog](https://github.com/arangodb/arangodb-java-driver/blob/main/ChangeLog.md)
 
 ## Supported versions
@@ -16,7 +17,7 @@ The official ArangoDB [Java Driver](https://github.com/arangodb/arangodb-java-dr
 Version 7 is the latest supported and actively developed release.
 
 The driver is compatible with all supported stable versions of ArangoDB server, see
-[Product Support End-of-life Announcements](https://www.arangodb.com/eol-notice).
+[Product Support End-of-life Announcements](https://arangodb.com/subscriptions/end-of-life-notice/).
 
 The driver is compatible with JDK 8 and higher versions.
 
@@ -351,7 +352,7 @@ The driver supports GraalVM Native Image compilation.
 To compile with `--link-at-build-time` when `http-protocol` module is present in
 the classpath, additional substitutions are required for transitive dependencies
 `Netty` and `Vert.x`. See this
-[example](https://github.com/arangodb/arangodb-java-driver/tree/main/driver/src/test/java/graal)
+[example](https://github.com/arangodb/arangodb-java-driver/tree/main/test-functional/src/test-default/java/graal)
 for reference. Such substitutions are not required when compiling the shaded driver.
 
 ### Framework compatibility
