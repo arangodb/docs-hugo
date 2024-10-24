@@ -7,8 +7,8 @@ description: >-
   HTTP request
 ---
 {{< warning >}}
-The batch request API is deprecated from version 3.8.0 on.
-This endpoint should no longer be used.
+The batch request API was deprecated in version 3.8.0 and has been removed in 3.12.3.
+
 To send multiple documents at once to an ArangoDB instance, please use the
 [HTTP interface for documents](documents.md#multiple-document-operations)
 that can insert, update, replace, or remove arrays of documents.
@@ -224,6 +224,11 @@ part operations of a batch. When doing so, any other database name used
 in a batch part will be ignored.
 
 ### Execute a batch request
+
+{{< warning >}}
+The `/_api/batch` endpoint was deprecated in v3.8.0 and has been removed
+in v3.12.3.
+{{< /warning >}}
 
 ```openapi
 paths:

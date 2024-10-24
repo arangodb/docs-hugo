@@ -32,6 +32,7 @@ aliases:
   - ../operations/installation/compiling/compile-on-windows
   - ../operations/upgrading/os-specific-information/macos
   - ../operations/upgrading/os-specific-information/windows
+  - ../develop/http-api/batch-requests
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
