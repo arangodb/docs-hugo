@@ -13,4 +13,3 @@ each of ArangoDB's REST API endpoints.
 
 - [C#/.NET Driver Tutorial](https://university.arangodb.com/courses/csharp-dotnet-driver-tutorial/)
 - [Releases](https://github.com/ArangoDB-Community/arangodb-net-standard/releases/)
-- [Reference](https://arangodb-community.github.io/arangodb-net-standard/)
