@@ -9,6 +9,7 @@ with ArangoDB using the Go programming language.
 
 - Reference: <https://pkg.go.dev/github.com/arangodb/go-driver/v2>
 - Repository: <https://github.com/arangodb/go-driver/tree/master/v2>
+- [Changelog](https://github.com/arangodb/go-driver/blob/master/v2/CHANGELOG.md)
 
 ## Tutorial
 

@@ -65,7 +65,7 @@ ArangoConfigProperties props = ArangoConfigProperties.fromFile("arangodb-with-pr
 ```
 
 Here are examples to integrate configuration properties from different sources:
-- [Eclipse MicroProfile Config](https://github.com/arangodb-helper/arango-quarkus-native-example/blob/master/src/main/java/org/acme/quickstart/ArangoConfig.java)
+- [Eclipse MicroProfile Config](https://github.com/arangodb-helper/arango-quarkus-native-example/blob/master/src/main/java/com/arangodb/ArangoConfig.java)
 - [Micronaut Configuration](https://github.com/arangodb-helper/arango-micronaut-native-example/blob/main/src/main/kotlin/com/example/ArangoConfig.kt)
 
 ## Configuration
@@ -146,7 +146,7 @@ The properties read are:
 ## SSL
 
 To use SSL, you have to set the configuration `useSsl` to `true` and set a `SSLContext`
-(see [example code](https://github.com/arangodb/arangodb-java-driver/tree/main/driver/src/test/java/com/arangodb/example/ssl/SslExampleTest.java)).
+(see [example code](https://github.com/arangodb/arangodb-java-driver/blob/main/test-functional/src/test-ssl/java/com/arangodb/SslExampleTest.java)).
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
