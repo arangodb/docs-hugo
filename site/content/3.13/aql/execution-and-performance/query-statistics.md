@@ -38,9 +38,10 @@ The meaning of the statistics attributes is as follows:
   `UPDATE`, `REPLACE`, `REMOVE`, or `UPSERT` operations.
 - **writesIgnored**: The total number of data-modification operations that were unsuccessful,
   but have been ignored because of the `ignoreErrors` query option.
-- **documentLookups**: The number of real document lookups caused by late materialization.
-  This is how many documents had to fetched from storage after an index scan
-  that initially covered the attribute access for these documents.
+- **documentLookups**: The number of real document lookups caused by late materialization
+  as well as `IndexNode`s that had to load document attributes not covered
+  by the index. This is how many documents had to be fetched from storage after
+  an index scan that initially covered the attribute access for these documents.
 - **seeks**: The number of seek calls done by RocksDB iterators for merge joins
   (`JoinNode` in the execution plan).
 - **scannedFull**: The total number of documents iterated over when scanning a collection 

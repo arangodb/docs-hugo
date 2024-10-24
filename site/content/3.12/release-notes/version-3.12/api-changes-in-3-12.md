@@ -315,9 +315,10 @@ The document is only changed if the new number is higher. See the
 
 Two new statistics are included in the response when you execute an AQL query:
 
-- `documentLookups`: The number of real document lookups caused by late materialization.
-  This is how many documents had to fetched from storage after an index scan
-  that initially covered the attribute access for these documents.
+- `documentLookups`: The number of real document lookups caused by late materialization
+  as well as `IndexNode`s that had to load document attributes not covered
+  by the index. This is how many documents had to be fetched from storage after
+  an index scan that initially covered the attribute access for these documents.
 - `seeks`: The number of seek calls done by RocksDB iterators for merge joins
   (`JoinNode` in the execution plan).
 

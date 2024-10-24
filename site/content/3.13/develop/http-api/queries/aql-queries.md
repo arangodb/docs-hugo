@@ -745,9 +745,10 @@ paths:
                             type: integer
                           documentLookups:
                             description: |
-                              The number of real document lookups caused by late materialization.
-                              This is how many documents had to fetched from storage after an index scan
-                              that initially covered the attribute access for these documents.
+                              The number of real document lookups caused by late materialization
+                              as well as `IndexNode`s that had to load document attributes not covered
+                              by the index. This is how many documents had to be fetched from storage after
+                              an index scan that initially covered the attribute access for these documents.
                             type: integer
                           seeks:
                             description: |
@@ -1488,9 +1489,10 @@ paths:
                             type: integer
                           documentLookups:
                             description: |
-                              The number of real document lookups caused by late materialization.
-                              This is how many documents had to fetched from storage after an index scan
-                              that initially covered the attribute access for these documents.
+                              The number of real document lookups caused by late materialization
+                              as well as `IndexNode`s that had to load document attributes not covered
+                              by the index. This is how many documents had to be fetched from storage after
+                              an index scan that initially covered the attribute access for these documents.
                             type: integer
                           seeks:
                             description: |
@@ -2124,9 +2126,10 @@ paths:
                             type: integer
                           documentLookups:
                             description: |
-                              The number of real document lookups caused by late materialization.
-                              This is how many documents had to fetched from storage after an index scan
-                              that initially covered the attribute access for these documents.
+                              The number of real document lookups caused by late materialization
+                              as well as `IndexNode`s that had to load document attributes not covered
+                              by the index. This is how many documents had to be fetched from storage after
+                              an index scan that initially covered the attribute access for these documents.
                             type: integer
                           seeks:
                             description: |
