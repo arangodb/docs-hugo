@@ -144,8 +144,8 @@ def workflow_generate(config):
                     compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
                 if openssl.startswith("3.3"): # 3.11.10
                     compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:6"
-            else: # build image for 3.12.1 and devel as of 2024-06-24
-                compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:6"
+            else: # build image for 3.12.3 and devel as of 2024-10-24
+                compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:7"
 
         print(f"compileJob = {compileJob}")
 
@@ -250,8 +250,8 @@ def workflow_release_arangodb(config):
             compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
         if openssl.startswith("3.3"): # 3.11.10
             compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:6"
-    else: # build image for 3.12.1 and devel as of 2024-06-24
-        compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:6"
+    else: # build image for 3.12.3 and devel as of 2024-10-24
+        compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:7"
 
     config["jobs"]["compile-linux"]["steps"].append({
         "compile-and-dockerize-arangodb": {
