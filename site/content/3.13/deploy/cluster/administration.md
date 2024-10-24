@@ -291,22 +291,22 @@ console.log("Checking shard distribution every %d seconds...", sleep);
 
 var count;
 do {
-    count = 0;
-    for (dbase in dblist) {
-        var sd = arango.GET("/_db/" + dblist[dbase] + "/_admin/cluster/shardDistribution");
-        var collections = sd.results;
-        for (collection in collections) {
-        var current = collections[collection].Current;
-        for (shard in current) {
-            if (current[shard].leader == server) {
-            ++count;
-            }
+  count = 0;
+  for (dbase in dblist) {
+    var sd = arango.GET("/_db/" + dblist[dbase] + "/_admin/cluster/shardDistribution");
+    var collections = sd.results;
+    for (collection in collections) {
+      var current = collections[collection].Current;
+      for (shard in current) {
+        if (current[shard].leader == server) {
+          ++count;
         }
-        }
+      }
     }
-    console.log("Shards to be moved away from node %s: %d", server, count);
-    if (count == 0) break;
-    internal.wait(sleep);
+  }
+  console.log("Shards to be moved away from node %s: %d", server, count);
+  if (count == 0) break;
+  internal.wait(sleep);
 } while (count > 0);
 ```
 

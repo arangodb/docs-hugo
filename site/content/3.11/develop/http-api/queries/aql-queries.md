@@ -729,6 +729,7 @@ paths:
                           - httpRequests
                           - executionTime
                           - peakMemoryUsage
+                          - intermediateCommits
                         properties:
                           writesExecuted:
                             description: |
@@ -1419,8 +1420,6 @@ paths:
                     required:
                       - warnings
                       - stats
-                      - warnings
-                      - stats
                     properties:
                       warnings:
                         description: |
@@ -1429,8 +1428,6 @@ paths:
                         items:
                           type: object
                           required:
-                            - code
-                            - message
                             - code
                             - message
                           properties:
@@ -1459,18 +1456,7 @@ paths:
                           - httpRequests
                           - executionTime
                           - peakMemoryUsage
-                          - writesExecuted
-                          - writesIgnored
-                          - scannedFull
-                          - scannedIndex
-                          - cursorsCreated
-                          - cursorsRearmed
-                          - cacheHits
-                          - cacheMisses
-                          - filtered
-                          - httpRequests
-                          - executionTime
-                          - peakMemoryUsage
+                          - intermediateCommits
                         properties:
                           writesExecuted:
                             description: |
@@ -1576,10 +1562,6 @@ paths:
                                 - calls
                                 - items
                                 - runtime
-                                - id
-                                - calls
-                                - items
-                                - runtime
                               properties:
                                 id:
                                   description: |
@@ -1604,15 +1586,6 @@ paths:
                           The duration of the different query execution phases in seconds.
                         type: object
                         required:
-                          - initializing
-                          - parsing
-                          - optimizing ast
-                          - loading collections
-                          - instantiating plan
-                          - optimizing plan
-                          - instantiating executors
-                          - executing
-                          - finalizing
                           - initializing
                           - parsing
                           - optimizing ast
@@ -1662,13 +1635,6 @@ paths:
                           - estimatedCost
                           - estimatedNrItems
                           - isModificationQuery
-                          - nodes
-                          - rules
-                          - collections
-                          - variables
-                          - estimatedCost
-                          - estimatedNrItems
-                          - isModificationQuery
                         properties:
                           nodes:
                             description: |
@@ -1690,8 +1656,6 @@ paths:
                             items:
                               type: object
                               required:
-                                - name
-                                - type
                                 - name
                                 - type
                               properties:
@@ -2074,10 +2038,6 @@ paths:
                     required:
                       - warnings
                       - stats
-                      - warnings
-                      - stats
-                      - warnings
-                      - stats
                     properties:
                       warnings:
                         description: |
@@ -2086,10 +2046,6 @@ paths:
                         items:
                           type: object
                           required:
-                            - code
-                            - message
-                            - code
-                            - message
                             - code
                             - message
                           properties:
@@ -2118,30 +2074,7 @@ paths:
                           - httpRequests
                           - executionTime
                           - peakMemoryUsage
-                          - writesExecuted
-                          - writesIgnored
-                          - scannedFull
-                          - scannedIndex
-                          - cursorsCreated
-                          - cursorsRearmed
-                          - cacheHits
-                          - cacheMisses
-                          - filtered
-                          - httpRequests
-                          - executionTime
-                          - peakMemoryUsage
-                          - writesExecuted
-                          - writesIgnored
-                          - scannedFull
-                          - scannedIndex
-                          - cursorsCreated
-                          - cursorsRearmed
-                          - cacheHits
-                          - cacheMisses
-                          - filtered
-                          - httpRequests
-                          - executionTime
-                          - peakMemoryUsage
+                          - intermediateCommits
                         properties:
                           writesExecuted:
                             description: |
@@ -2247,14 +2180,6 @@ paths:
                                 - calls
                                 - items
                                 - runtime
-                                - id
-                                - calls
-                                - items
-                                - runtime
-                                - id
-                                - calls
-                                - items
-                                - runtime
                               properties:
                                 id:
                                   description: |
@@ -2279,24 +2204,6 @@ paths:
                           The duration of the different query execution phases in seconds.
                         type: object
                         required:
-                          - initializing
-                          - parsing
-                          - optimizing ast
-                          - loading collections
-                          - instantiating plan
-                          - optimizing plan
-                          - instantiating executors
-                          - executing
-                          - finalizing
-                          - initializing
-                          - parsing
-                          - optimizing ast
-                          - loading collections
-                          - instantiating plan
-                          - optimizing plan
-                          - instantiating executors
-                          - executing
-                          - finalizing
                           - initializing
                           - parsing
                           - optimizing ast
@@ -2346,20 +2253,6 @@ paths:
                           - estimatedCost
                           - estimatedNrItems
                           - isModificationQuery
-                          - nodes
-                          - rules
-                          - collections
-                          - variables
-                          - estimatedCost
-                          - estimatedNrItems
-                          - isModificationQuery
-                          - nodes
-                          - rules
-                          - collections
-                          - variables
-                          - estimatedCost
-                          - estimatedNrItems
-                          - isModificationQuery
                         properties:
                           nodes:
                             description: |
@@ -2381,10 +2274,6 @@ paths:
                             items:
                               type: object
                               required:
-                                - name
-                                - type
-                                - name
-                                - type
                                 - name
                                 - type
                               properties:

@@ -720,6 +720,8 @@ paths:
                         required:
                           - writesExecuted
                           - writesIgnored
+                          - documentLookups
+                          - seeks
                           - scannedFull
                           - scannedIndex
                           - cursorsCreated
@@ -730,6 +732,7 @@ paths:
                           - httpRequests
                           - executionTime
                           - peakMemoryUsage
+                          - intermediateCommits
                         properties:
                           writesExecuted:
                             description: |
@@ -739,6 +742,18 @@ paths:
                             description: |
                               The total number of data-modification operations that were unsuccessful,
                               but have been ignored because of the `ignoreErrors` query option.
+                            type: integer
+                          documentLookups:
+                            description: |
+                              The number of real document lookups caused by late materialization
+                              as well as `IndexNode`s that had to load document attributes not covered
+                              by the index. This is how many documents had to be fetched from storage after
+                              an index scan that initially covered the attribute access for these documents.
+                            type: integer
+                          seeks:
+                            description: |
+                              The number of seek calls done by RocksDB iterators for merge joins
+                              (`JoinNode` in the execution plan).
                             type: integer
                           scannedFull:
                             description: |
@@ -1423,8 +1438,6 @@ paths:
                     required:
                       - warnings
                       - stats
-                      - warnings
-                      - stats
                     properties:
                       warnings:
                         description: |
@@ -1433,8 +1446,6 @@ paths:
                         items:
                           type: object
                           required:
-                            - code
-                            - message
                             - code
                             - message
                           properties:
@@ -1453,6 +1464,8 @@ paths:
                         required:
                           - writesExecuted
                           - writesIgnored
+                          - documentLookups
+                          - seeks
                           - scannedFull
                           - scannedIndex
                           - cursorsCreated
@@ -1463,18 +1476,7 @@ paths:
                           - httpRequests
                           - executionTime
                           - peakMemoryUsage
-                          - writesExecuted
-                          - writesIgnored
-                          - scannedFull
-                          - scannedIndex
-                          - cursorsCreated
-                          - cursorsRearmed
-                          - cacheHits
-                          - cacheMisses
-                          - filtered
-                          - httpRequests
-                          - executionTime
-                          - peakMemoryUsage
+                          - intermediateCommits
                         properties:
                           writesExecuted:
                             description: |
@@ -1484,6 +1486,18 @@ paths:
                             description: |
                               The total number of data-modification operations that were unsuccessful,
                               but have been ignored because of the `ignoreErrors` query option.
+                            type: integer
+                          documentLookups:
+                            description: |
+                              The number of real document lookups caused by late materialization
+                              as well as `IndexNode`s that had to load document attributes not covered
+                              by the index. This is how many documents had to be fetched from storage after
+                              an index scan that initially covered the attribute access for these documents.
+                            type: integer
+                          seeks:
+                            description: |
+                              The number of seek calls done by RocksDB iterators for merge joins
+                              (`JoinNode` in the execution plan).
                             type: integer
                           scannedFull:
                             description: |
@@ -1580,10 +1594,6 @@ paths:
                                 - calls
                                 - items
                                 - runtime
-                                - id
-                                - calls
-                                - items
-                                - runtime
                               properties:
                                 id:
                                   description: |
@@ -1608,15 +1618,6 @@ paths:
                           The duration of the different query execution phases in seconds.
                         type: object
                         required:
-                          - initializing
-                          - parsing
-                          - optimizing ast
-                          - loading collections
-                          - instantiating plan
-                          - optimizing plan
-                          - instantiating executors
-                          - executing
-                          - finalizing
                           - initializing
                           - parsing
                           - optimizing ast
@@ -1666,13 +1667,6 @@ paths:
                           - estimatedCost
                           - estimatedNrItems
                           - isModificationQuery
-                          - nodes
-                          - rules
-                          - collections
-                          - variables
-                          - estimatedCost
-                          - estimatedNrItems
-                          - isModificationQuery
                         properties:
                           nodes:
                             description: |
@@ -1694,8 +1688,6 @@ paths:
                             items:
                               type: object
                               required:
-                                - name
-                                - type
                                 - name
                                 - type
                               properties:
@@ -2083,10 +2075,6 @@ paths:
                     required:
                       - warnings
                       - stats
-                      - warnings
-                      - stats
-                      - warnings
-                      - stats
                     properties:
                       warnings:
                         description: |
@@ -2095,10 +2083,6 @@ paths:
                         items:
                           type: object
                           required:
-                            - code
-                            - message
-                            - code
-                            - message
                             - code
                             - message
                           properties:
@@ -2117,6 +2101,8 @@ paths:
                         required:
                           - writesExecuted
                           - writesIgnored
+                          - documentLookups
+                          - seeks
                           - scannedFull
                           - scannedIndex
                           - cursorsCreated
@@ -2127,30 +2113,7 @@ paths:
                           - httpRequests
                           - executionTime
                           - peakMemoryUsage
-                          - writesExecuted
-                          - writesIgnored
-                          - scannedFull
-                          - scannedIndex
-                          - cursorsCreated
-                          - cursorsRearmed
-                          - cacheHits
-                          - cacheMisses
-                          - filtered
-                          - httpRequests
-                          - executionTime
-                          - peakMemoryUsage
-                          - writesExecuted
-                          - writesIgnored
-                          - scannedFull
-                          - scannedIndex
-                          - cursorsCreated
-                          - cursorsRearmed
-                          - cacheHits
-                          - cacheMisses
-                          - filtered
-                          - httpRequests
-                          - executionTime
-                          - peakMemoryUsage
+                          - intermediateCommits
                         properties:
                           writesExecuted:
                             description: |
@@ -2160,6 +2123,18 @@ paths:
                             description: |
                               The total number of data-modification operations that were unsuccessful,
                               but have been ignored because of the `ignoreErrors` query option.
+                            type: integer
+                          documentLookups:
+                            description: |
+                              The number of real document lookups caused by late materialization
+                              as well as `IndexNode`s that had to load document attributes not covered
+                              by the index. This is how many documents had to be fetched from storage after
+                              an index scan that initially covered the attribute access for these documents.
+                            type: integer
+                          seeks:
+                            description: |
+                              The number of seek calls done by RocksDB iterators for merge joins
+                              (`JoinNode` in the execution plan).
                             type: integer
                           scannedFull:
                             description: |
@@ -2256,14 +2231,6 @@ paths:
                                 - calls
                                 - items
                                 - runtime
-                                - id
-                                - calls
-                                - items
-                                - runtime
-                                - id
-                                - calls
-                                - items
-                                - runtime
                               properties:
                                 id:
                                   description: |
@@ -2288,24 +2255,6 @@ paths:
                           The duration of the different query execution phases in seconds.
                         type: object
                         required:
-                          - initializing
-                          - parsing
-                          - optimizing ast
-                          - loading collections
-                          - instantiating plan
-                          - optimizing plan
-                          - instantiating executors
-                          - executing
-                          - finalizing
-                          - initializing
-                          - parsing
-                          - optimizing ast
-                          - loading collections
-                          - instantiating plan
-                          - optimizing plan
-                          - instantiating executors
-                          - executing
-                          - finalizing
                           - initializing
                           - parsing
                           - optimizing ast
@@ -2355,20 +2304,6 @@ paths:
                           - estimatedCost
                           - estimatedNrItems
                           - isModificationQuery
-                          - nodes
-                          - rules
-                          - collections
-                          - variables
-                          - estimatedCost
-                          - estimatedNrItems
-                          - isModificationQuery
-                          - nodes
-                          - rules
-                          - collections
-                          - variables
-                          - estimatedCost
-                          - estimatedNrItems
-                          - isModificationQuery
                         properties:
                           nodes:
                             description: |
@@ -2390,10 +2325,6 @@ paths:
                             items:
                               type: object
                               required:
-                                - name
-                                - type
-                                - name
-                                - type
                                 - name
                                 - type
                               properties:
