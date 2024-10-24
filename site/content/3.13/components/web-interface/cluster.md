@@ -6,15 +6,15 @@ description: ''
 ---
 The web interface differs for cluster deployments and single-server instances.
 Instead of a single [Dashboard](dashboard.md), there
-is a **CLUSTER** and a **NODES** section.
+is a **Cluster** and a **Nodes** section.
 
-Furthermore, the **REPLICATION** and **LOGS** section are not available.
+Furthermore, the **Replication** and **Logs** section are not available.
 You can access the logs of individual Coordinators and DB-Servers via the
-**NODES** section.
+**Nodes** section.
 
 ## Cluster
 
-The **CLUSTER** section displays statistics about the general cluster performance.
+The **Cluster** section displays statistics about the general cluster performance.
 
 ![Web Interface Cluster Dashboard](../../../images/ui-cluster-dashboard312.webp)
 
@@ -62,7 +62,7 @@ scheduled if they are not necessary.
 
 ## Nodes
 
-The **NODES** section provides an overview over the cluster nodes and a way to
+The **Nodes** section provides an overview over the cluster nodes and a way to
 access information about the individual Coordinators and DB-Servers.
 
 ### Overview

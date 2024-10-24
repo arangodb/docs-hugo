@@ -26,14 +26,14 @@ Certain settings of inverted indexes need to match if you want to add them to th
 same `search-alias` View, see the [restrictions](../indexing/working-with-indexes/inverted-indexes.md#restrictions).
 
 Inverted indexes can be managed as follows:
-- in the web interface, in the **COLLECTIONS** section, in the **Indexes** tab
+- in the web interface, in the **Collections** section, in the **Indexes** tab
   of a collection
 - via the [Indexes HTTP API](../../develop/http-api/indexes/inverted.md)
 - through the [JavaScript API](../indexing/working-with-indexes/_index.md#creating-an-index)
   with `<collection>.ensureIndex()`
 
 Views can be managed as follows:
-- in the web interface, in the **VIEWS** section
+- in the web interface, in the **Views** section
 - via the [Views HTTP API](../../develop/http-api/views/_index.md)
 - through the [JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#views)
 
@@ -49,7 +49,7 @@ You can create and manage a `search-alias` View through the web interface.
 To get started, follow the steps outlined below.
 
 1. In the web interface, go to the left sidebar menu and select
-   the **VIEWS** entry.
+   the **Views** entry.
 2. To add a new View, click **Add View**.
 3. Fill in the required fields:
    - For **Name**, enter a name for the View.

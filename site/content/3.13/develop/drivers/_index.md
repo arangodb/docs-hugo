@@ -34,9 +34,9 @@ Java programming language.
 The [**Go driver**](go.md) lets you work with ArangoDB in the Go programming
 language.
 
-- Tutorial: [Go Driver Tutorial](https://university.arangodb.com/courses/go-driver-tutorial/)
-- Repository: [github.com/arangodb/go-driver](https://github.com/arangodb/go-driver)
-- [Changelog](https://github.com/arangodb/go-driver/blob/master/CHANGELOG.md#readme)
+- [Tutorial](go.md#tutorial)
+- Repository: [github.com/arangodb/go-driver](https://github.com/arangodb/go-driver/tree/master/v2)
+- [Changelog](https://github.com/arangodb/go-driver/blob/master/v2/CHANGELOG.md)
 
 ## C#/.NET driver
 
