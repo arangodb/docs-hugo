@@ -8,6 +8,6 @@ The **Python-Arango** driver is the recommended Python driver for ArangoDB.
 It is maintained by ArangoDB and the community.
 
 - Repository: <https://github.com/ArangoDB-Community/python-arango>
-- [Python Driver Tutorial](https://university.arangodb.com/courses/python-driver-tutorial/)
-- [Reference](https://docs.python-arango.com/)
+- Reference: <https://docs.python-arango.com/>
+- [Tutorial](https://university.arangodb.com/courses/python-driver-tutorial/)
 - [Releases](https://github.com/ArangoDB-Community/python-arango/releases)

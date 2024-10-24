@@ -36,7 +36,6 @@ language.
 
 - [Tutorial](go.md#tutorial)
 - Repository: [github.com/arangodb/go-driver](https://github.com/arangodb/go-driver/tree/master/v2)
-- [Changelog](https://github.com/arangodb/go-driver/blob/master/v2/CHANGELOG.md)
 
 ## C#/.NET driver
 
