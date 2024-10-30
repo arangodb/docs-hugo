@@ -97,6 +97,8 @@ rule have been added.
 
 A `push-limit-into-index` rule has been added in v3.12.2.
 
+A `replace-entries-with-object-iteration` rule has been added in v3.12.3.
+
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
 
