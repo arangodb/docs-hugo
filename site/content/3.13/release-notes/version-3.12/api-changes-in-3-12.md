@@ -604,6 +604,17 @@ The `/_api/control_pregel/*` endpoints have been removed in v3.12.0 as Pregel
 graph processing is no longer supported. The `arangodb_pregel_*` metrics and the
 `pregel` log topic have been removed as well from the respective endpoints.
 
+#### Batch request API
+
+<small>Removed in: v3.12.3</small>
+
+The `/_api/batch` endpoints that let you send multiple operations in a single
+HTTP request was deprecated in v3.8.0 and has now been removed.
+
+To send multiple documents at once to an ArangoDB instance, please use the
+[HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
+that can insert, update, replace, or remove arrays of documents.
+
 ## JavaScript API
 
 ### Collection creation
