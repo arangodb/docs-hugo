@@ -97,6 +97,8 @@ rule have been added.
 
 A `push-limit-into-index` rule has been added in v3.12.2.
 
+A `replace-entries-with-object-iteration` rule has been added in v3.12.3.
+
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
 
@@ -308,6 +310,35 @@ stored document and the attribute value is compared numerically to the value of
 the versioning attribute in the supplied document that is supposed to update/replace it.
 The document is only changed if the new number is higher. See the
 [Document API](../../develop/http-api/documents.md#create-a-document) for details.
+
+#### Cursor API
+
+##### `documentLookups` and `seeks` statistics
+
+Two new statistics are included in the response when you execute an AQL query:
+
+- `documentLookups`: The number of real document lookups caused by late materialization
+  as well as `IndexNode`s that had to load document attributes not covered
+  by the index. This is how many documents had to be fetched from storage after
+  an index scan that initially covered the attribute access for these documents.
+- `seeks`: The number of seek calls done by RocksDB iterators for merge joins
+  (`JoinNode` in the execution plan).
+
+```js
+{
+  "result": [
+    // ...
+  ],
+  // ...
+  "extra": {
+    "stats": {
+      "documentLookups": 10,
+      "seeks": 0,
+      // ...
+    }
+  }
+}
+```
 
 #### Index API
 

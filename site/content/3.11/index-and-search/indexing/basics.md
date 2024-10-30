@@ -610,12 +610,12 @@ To create an index in the background in *arangosh* just specify `inBackground: t
 like in the following examples:
 
 ```js
-// create the persistent index in the background
+// create the persistent indexes in the background
 db.collection.ensureIndex({ type: "persistent", fields: [ "value" ], unique: false, inBackground: true });
 db.collection.ensureIndex({ type: "persistent", fields: [ "email" ], unique: true, inBackground: true });
 
 // also supported for geo and fulltext indexes
-db.collection.ensureIndex({ type: "geo", fields: [ "latitude", "longitude"], inBackground: true });
+db.collection.ensureIndex({ type: "geo", fields: [ "location"], inBackground: true });
 db.collection.ensureIndex({ type: "geo", fields: [ "latitude", "longitude"], inBackground: true });
 db.collection.ensureIndex({ type: "fulltext", fields: [ "text" ], minLength: 4, inBackground: true })
 ```

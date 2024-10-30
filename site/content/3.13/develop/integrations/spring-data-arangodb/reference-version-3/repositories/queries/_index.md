@@ -4,6 +4,11 @@ menuTitle: Queries
 weight: 5
 description: ''
 ---
+{{< warning >}}
+Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively
+developed anymore. Upgrading to version 4 is recommended.
+{{< /warning >}}
+
 Spring Data ArangoDB supports three kinds of queries:
 
 - [Derived queries](derived-queries.md)

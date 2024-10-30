@@ -32,7 +32,7 @@ dependencies {
 
 ## HTTP client
 
-The HTTP client has been changed to [Vert.x WebClient](https://vertx.io/docs/vertx-web-client/java). 
+The HTTP client has been changed to [Vert.x WebClient](https://vertx.io/docs/vertx-web-client/java/).
 
 `HTTP/2` is now supported. 
 `HTTP/2` supports multiplexing and uses `1` connection per host by default.
@@ -82,7 +82,7 @@ See the related reference documentation about
 for details.
 
 Examples showing how to provide configuration properties from different sources:
-- [Eclipse MicroProfile Config](https://github.com/arangodb-helper/arango-quarkus-native-example/blob/master/src/main/java/org/acme/quickstart/ArangoConfig.java)
+- [Eclipse MicroProfile Config](https://github.com/arangodb-helper/arango-quarkus-native-example/blob/master/src/main/java/com/arangodb/ArangoConfig.java)
 - [Micronaut Configuration](https://github.com/arangodb-helper/arango-micronaut-native-example/blob/main/src/main/kotlin/com/example/ArangoConfig.kt)
 
 ## Modules
@@ -433,7 +433,7 @@ The driver supports GraalVM Native Image compilation.
 To compile with `--link-at-build-time` when `http-protocol` module is present in
 the classpath, additional substitutions are be required for its transitive
 dependencies (`Netty` and `Vert.x`). See this
-[example](https://github.com/arangodb/arangodb-java-driver/tree/main/driver/src/test/java/graal)
+[example](https://github.com/arangodb/arangodb-java-driver/tree/main/test-functional/src/test-default/java/graal)
 for reference. Such substitutions are not required when compiling the shaded driver.
 
 ### Framework compatibility

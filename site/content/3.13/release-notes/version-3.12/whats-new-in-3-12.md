@@ -503,6 +503,16 @@ Optimization rules applied:
   4   move-filters-up-2                          8   reduce-extraction-to-projection  
 ```
 
+The number of document lookups caused by late materialization is now reported
+under `extra.stats.documentLookups` by the Cursor HTTP API and shown in a column
+of the query profile output:
+
+```aql
+Query Statistics:
+ Writes Exec      Writes Ign      Doc. Lookups      Scan Full      Scan Index      Cache Hits/Misses      Filtered      Peak Mem [b]      Exec Time [s]
+           0               0               290              0            3708                  0 / 0          3418             32768            0.01247
+```
+
 ---
 
 <small>Introduced in: v3.12.1</small>
@@ -896,6 +906,53 @@ Execution plan:
   4   SortNode                    ✓     36       - SORT #5 DESC   /* sorting strategy: standard */
   6   CollectNode                 ✓     28       - COLLECT val = #5   /* sorted */
   7   ReturnNode                        28       - RETURN val
+```
+
+### Fast object enumeration with `ENTRIES()`
+
+<small>Introduced in: v3.12.3</small>
+
+A new optimization has been implemented to improve the efficiency of the
+[`ENTRIES()` function](../../aql/functions/document-object.md#entries) in AQL.
+
+The new `replace-entries-with-object-iteration` optimizer rule can recognize a
+query pattern like `FOR obj IN source FOR [key, value] IN ENTRIES(obj) ...`
+and use a faster code path for iterating over the object that avoids copying a
+lot of key/value pairs and storing intermediate results.
+
+```aql
+LET source = [ { a: 1, b: 2 }, { c: 3 } ]
+
+FOR doc IN source // collection or array of objects
+  FOR [key, value] IN ENTRIES(doc)
+  RETURN CONCAT(key, value)
+```
+
+Without the optimization, the node with ID `6` uses a regular list iteration:
+
+```aql
+Execution plan:
+ Id   NodeType            Par   Est.   Comment
+  1   SingletonNode                1   * ROOT
+  2   CalculationNode       ✓      1     - LET source = [ { "a" : 1, "b" : 2 }, { "c" : 3 } ]   /* json expression */   /* const assignment */
+  4   EnumerateListNode     ✓      2     - FOR doc IN source   /* list iteration */
+  5   CalculationNode       ✓      2       - LET #7 = ENTRIES(doc)   /* simple expression */
+  6   EnumerateListNode     ✓    200       - FOR #4 IN #7   /* list iteration */
+  9   CalculationNode       ✓    200         - LET #8 = CONCAT(#4[0], #4[1])   /* simple expression */
+ 10   ReturnNode                 200         - RETURN #8
+```
+
+With the optimization applied, the faster object iteration is used:
+
+```aql
+Execution plan:
+ Id   NodeType            Par   Est.   Comment
+  1   SingletonNode                1   * ROOT
+  2   CalculationNode       ✓      1     - LET source = [ { "a" : 1, "b" : 2 }, { "c" : 3 } ]   /* json expression */   /* const assignment */
+  4   EnumerateListNode     ✓      2     - FOR doc IN source   /* list iteration */
+  6   EnumerateListNode     ✓    200       - FOR [key, value] OF doc   /* object iteration */
+  9   CalculationNode       ✓    200         - LET #8 = CONCAT(key, value)   /* simple expression */
+ 10   ReturnNode                 200         - RETURN #8
 ```
 
 ## Indexing

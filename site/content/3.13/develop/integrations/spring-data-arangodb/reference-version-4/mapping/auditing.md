@@ -4,7 +4,7 @@ menuTitle: Auditing
 weight: 40
 description: ''
 ---
-Since version 3.0.0 Spring Data ArangoDB provides basic auditing functionality
+Spring Data ArangoDB provides basic auditing functionality
 where you can track who made changes on your data and when.
 
 To enable auditing you have to add the annotation `@EnableArangoAuditing` to

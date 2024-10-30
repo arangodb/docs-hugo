@@ -47,9 +47,9 @@ The following design limitations are known for AQL queries:
   participate in lazy evaluation of operands, for example in the
   [ternary operator](../operators.md#ternary-operator) or when used as
   sub-expressions that are combined with logical `AND` or `OR`.
-  
+
   From v3.12.1 onward, short-circuiting is applied.
-  
+
   Also see [evaluation of subqueries](subqueries.md#evaluation-of-subqueries).
 
 - It is not possible to use a collection in a read operation after
