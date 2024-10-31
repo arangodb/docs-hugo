@@ -252,3 +252,24 @@ In this example, inactive connections are closed after 5 minutes.
 The default connection TTL is `30` seconds.
 
 If set to `null`, no automatic connection closure is performed.
+
+## Proxy configuration
+
+The driver allows configuring the underlying Vert.x WebClient to work
+with HTTP proxies. The configuration is specific for the HTTP protocol
+and uses `io.vertx.core.net.ProxyOptions` class from 
+[Vert.x Core](https://www.javadoc.io/doc/io.vertx/vertx-core/4.5.7/io/vertx/core/net/ProxyOptions.html):
+
+```java
+ArangoDB arango = new ArangoDB.Builder()
+    // ...
+    .protocolConfig(HttpProtocolConfig.builder()
+            .proxyOptions(new ProxyOptions()
+                    .setType(ProxyType.HTTP)
+                    .setHost("172.28.0.1")
+                    .setPort(8888)
+                    .setUsername("user")
+                    .setPassword("password"))
+            .build())
+    .build();
+```
