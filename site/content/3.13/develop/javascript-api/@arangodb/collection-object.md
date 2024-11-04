@@ -146,20 +146,6 @@ The `getResponsibleShard()` method can only be used on Coordinators
 in clusters.
 {{< /info >}}
 
-### `collection.load()`
-
-Loads a collection into memory.
-
-{{< info >}}
-Cluster collections are loaded at all times.
-{{< /info >}}
-
-{{< warning >}}
-The `load()` function is **deprecated** as of ArangoDB 3.8.0.
-The function may be removed in future versions of ArangoDB. There should not be
-any need to load a collection with the RocksDB storage engine.
-{{< /warning >}}
-
 ### `collection.loadIndexesIntoMemory()`
 
 Loads suitable indexes of this collection into memory.
@@ -455,21 +441,6 @@ Returns the type of a collection. Possible values are:
 
 - `2`: document collection
 - `3`: edge collection
-
-### `collection.unload()`
-
-Starts unloading a collection from memory. Note that unloading is deferred
-until all queries have finished.
-
-{{< info >}}
-In cluster deployments, collections cannot be unloaded.
-{{< /info >}}
-
-{{< warning >}}
-The `unload()` function is **deprecated** as of ArangoDB 3.8.0.
-The function may be removed in future versions of ArangoDB. There should not be
-any need to unload a collection with the RocksDB storage engine.
-{{< /warning >}}
 
 ## Indexes
 
