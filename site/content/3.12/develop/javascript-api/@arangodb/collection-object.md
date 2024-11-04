@@ -160,6 +160,12 @@ The function may be removed in future versions of ArangoDB. There should not be
 any need to load a collection with the RocksDB storage engine.
 {{< /warning >}}
 
+### `collection.loadIndexesIntoMemory()`
+
+Loads suitable indexes of this collection into memory.
+
+See [`collection.loadIndexesIntoMemory()`](../../../index-and-search/indexing/working-with-indexes/_index.md#load-indexes-into-memory).
+
 ### `collection.name()`
 
 Returns the name of the collection as a string.
@@ -354,6 +360,10 @@ description: ''
 db.example.properties({ waitForSync : true });
 ~db._drop("example");
 ```
+
+### `collection.recalculateCount()`
+
+Recalculates the document count of a collection, if it ever becomes inconsistent.
 
 ### `collection.rename(name)`
 
@@ -880,16 +890,6 @@ Checks whether a document exists described by a document key, optionally
 with options passed as an object.
 
 No revision can be specified in this case.
-
----
-
-`collection.exists(array [, options])`
-
-This variant allows you to perform the operation on a whole array of arguments.
-The behavior is exactly as if `exists()` would have been called on all
-members of the array separately and all results are returned in an array. If an error
-occurs with any of the documents, the operation stops immediately returning
-only an error object.
 
 ### `collection.firstExample(example)`
 
