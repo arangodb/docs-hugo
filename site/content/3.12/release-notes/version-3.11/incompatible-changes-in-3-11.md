@@ -316,7 +316,7 @@ Now, a request like this succeeds and returns an empty array as response.
 
 ## Changed JSON serialization and VelocyPack format for replication
 
-<small>Introduced in: v3.11.12</small>
+<small>Introduced in: v3.11.12, v3.12.3</small>
 
 While there is only one number type in JSON, the VelocyPack format that ArangoDB
 uses supports different numeric data types. When converting between VelocyPack
