@@ -263,6 +263,27 @@ The default TTL for HTTP connections is 30 seconds, while it is `null` for VST c
 
 If set to `null`, no automatic connection closure is performed.
 
+## Proxy configuration
+
+The driver allows configuring the underlying Vert.x WebClient to work
+with HTTP proxies. The configuration is specific to the HTTP protocol
+and uses the `io.vertx.core.net.ProxyOptions` class of 
+[Vert.x Core](https://www.javadoc.io/doc/io.vertx/vertx-core/4.5.7/io/vertx/core/net/ProxyOptions.html):
+
+```java
+ArangoDB arango = new ArangoDB.Builder()
+    // ...
+    .protocolConfig(HttpProtocolConfig.builder()
+        .proxyOptions(new ProxyOptions()
+            .setType(ProxyType.HTTP)
+            .setHost("172.28.0.1")
+            .setPort(8888)
+            .setUsername("user")
+            .setPassword("password"))
+        .build())
+    .build();
+```
+
 ## VST Keep-Alive
 
 The driver supports setting keep-alive interval (in seconds)
