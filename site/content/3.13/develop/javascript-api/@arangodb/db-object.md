@@ -157,25 +157,6 @@ database management operations such as creating or dropping databases can only
 be executed from within the `_system` database. The `_system` database itself
 cannot be dropped.
 
-### `db._path()`
-
-Returns the filesystem path of the current database as a string.
-
-{{< info >}}
-This is a legacy method and always returns the string `none` with the
-RocksDB storage engine.
-{{< /info >}}
-
-**Examples**
-
-```js
----
-name: dbPath
-description: ''
----
-require("@arangodb").db._path();
-```
-
 ### `db._properties()`
 
 Returns the properties of the current database as an object with the following
@@ -1183,6 +1164,10 @@ See [`db._explain()`](../../../aql/execution-and-performance/explaining-queries.
 
 See [`db._parse()`](../../../aql/how-to-invoke-aql/with-arangosh.md#query-validation-with-db_parse).
 
+### `db._profileQuery(queryString [, bindVars [, options])`
+
+See [`db._profileQuery()`](../../../aql/execution-and-performance/query-profiling.md).
+
 ## Indexes
 
 ### `db._index(index)`
@@ -1200,6 +1185,8 @@ See [`db._dropIndex()`](../../../index-and-search/indexing/working-with-indexes/
 ## Transactions
 
 ### `db._createTransaction()`
+
+{{< tag "arangosh" >}}
 
 Starts a Stream Transaction.
 
@@ -1264,11 +1251,15 @@ require("@arangodb").db._version();
 
 ### `db._getLicense()`
 
+{{< tag "arangosh" >}}
+
 Returns the current license.
 
 See [`db._getLicense()`](../../../operations/administration/license-management.md#managing-your-license).
 
 ### `db._setLicense(data)`
+
+{{< tag "arangosh" >}}
 
 Sets a license.
 

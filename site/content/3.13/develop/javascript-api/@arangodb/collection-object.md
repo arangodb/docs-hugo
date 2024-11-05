@@ -146,19 +146,11 @@ The `getResponsibleShard()` method can only be used on Coordinators
 in clusters.
 {{< /info >}}
 
-### `collection.load()`
+### `collection.loadIndexesIntoMemory()`
 
-Loads a collection into memory.
+Loads suitable indexes of this collection into memory.
 
-{{< info >}}
-Cluster collections are loaded at all times.
-{{< /info >}}
-
-{{< warning >}}
-The `load()` function is **deprecated** as of ArangoDB 3.8.0.
-The function may be removed in future versions of ArangoDB. There should not be
-any need to load a collection with the RocksDB storage engine.
-{{< /warning >}}
+See [`collection.loadIndexesIntoMemory()`](../../../index-and-search/indexing/working-with-indexes/_index.md#load-indexes-into-memory).
 
 ### `collection.name()`
 
@@ -355,6 +347,10 @@ db.example.properties({ waitForSync : true });
 ~db._drop("example");
 ```
 
+### `collection.recalculateCount()`
+
+Recalculates the document count of a collection, if it ever becomes inconsistent.
+
 ### `collection.rename(name)`
 
 Renames a collection. The `new-name` must not already be
@@ -445,21 +441,6 @@ Returns the type of a collection. Possible values are:
 
 - `2`: document collection
 - `3`: edge collection
-
-### `collection.unload()`
-
-Starts unloading a collection from memory. Note that unloading is deferred
-until all queries have finished.
-
-{{< info >}}
-In cluster deployments, collections cannot be unloaded.
-{{< /info >}}
-
-{{< warning >}}
-The `unload()` function is **deprecated** as of ArangoDB 3.8.0.
-The function may be removed in future versions of ArangoDB. There should not be
-any need to unload a collection with the RocksDB storage engine.
-{{< /warning >}}
 
 ## Indexes
 
@@ -798,37 +779,6 @@ db.example.document(""); // xpError(ERROR_ARANGO_DOCUMENT_HANDLE_BAD)
 ~db._drop("example");
 ```
 
-### `collection.documents(keys)`
-
-Looks up the documents in the specified collection using the array of
-keys provided. All documents for which a matching key was specified in
-the `keys` array and that exist in the collection will be returned. Keys
-for which no document can be found in the underlying collection are
-ignored, and no exception will be thrown for them.
-
-{{< info >}}
-This method is deprecated in favor of the array variant of
-[`document()`](#collectiondocumentobject--options).
-{{< /info >}}
-
-**Examples**
-
-```js
----
-name: collectionLookupByKeys
-description: ''
----
-~db._drop("example");
-~db._create("example");
-var keys = [ ];
-for (var i = 0; i < 5; ++i) {
-  db.example.insert({ _key: "test" + i, value: i });
-  keys.push("test" + i);
-}
-db.example.documents(keys);
-~db._drop("example");
-```
-
 ### `collection.documentId(documentKey)`
 
 Converts a document key to a document identifier by prepending the collection's
@@ -880,16 +830,6 @@ Checks whether a document exists described by a document key, optionally
 with options passed as an object.
 
 No revision can be specified in this case.
-
----
-
-`collection.exists(array [, options])`
-
-This variant allows you to perform the operation on a whole array of arguments.
-The behavior is exactly as if `exists()` would have been called on all
-members of the array separately and all results are returned in an array. If an error
-occurs with any of the documents, the operation stops immediately returning
-only an error object.
 
 ### `collection.firstExample(example)`
 
@@ -1063,46 +1003,6 @@ db.example.insert({ _key : "666", Hello : "Universe" }, {overwrite: true, return
 ~db._drop("example");
 ```
 
-### `collection.iterate(iterator [, options])`
-
-{{< warning >}}
-The `iterate()` method is deprecated from version 3.11.0 onwards and will be
-removed in a future version.
-{{< /warning >}}
-
-Iterates over some elements of the collection and apply the function
-`iterator` to the elements. The function will be called with the
-document as first argument and the current number (starting with 0)
-as second argument.
-
-`options` must be an object with the following attributes:
-
-- `limit` (optional, default none): use at most `limit` documents.
-
-- `probability` (optional, default all): a number between `0` and
-  `1`. Documents are chosen with this probability.
-
-**Examples**
-
-Pick 1 out of 4 documents of a collection but at most 5:
-
-```js
----
-name: collectionIterate
-description: ''
----
-~db._create("example");
-var arr = [];
-for (var i = 0;  i < 10;  i++) {
-  arr.push({ i });
-}
-var meta = db.example.save(arr);
-var data = [];
-db.example.iterate( (doc, idx) => data.push({ idx, i: doc.i }), { probability: 0.25, limit: 5 });
-data;
-~db._drop("example");
-```
-
 ### `collection.remove(object)`
 
 Removes a document described by the `object`, which must be an object
@@ -1243,38 +1143,6 @@ description: ''
 ~db._create("example");
 ~db.example.insert({ Hello : "world" });
 db.example.removeByExample( {Hello : "world"} );
-~db._drop("example");
-```
-
-### `collection.removeByKeys(keys)`
-
-Looks up the documents in the specified collection using the array of keys
-provided, and removes all documents from the collection whose keys are
-contained in the `keys` array. Keys for which no document can be found in
-the underlying collection are ignored, and no exception will be thrown for
-them.
-
-The method will return an object containing the number of removed documents
-in the `removed` sub-attribute, and the number of not-removed/ignored
-documents in the `ignored` sub-attribute.
-
-This method is deprecated in favor of the array variant of `remove()`.
-
-**Examples**
-
-```js
----
-name: collectionRemoveByKeys
-description: ''
----
-~db._drop("example");
-~db._create("example");
-var keys = [ ];
-for (var i = 0; i < 5; ++i) {
-  db.example.insert({ _key: "test" + i, value: i });
-  keys.push("test" + i);
-}
-db.example.removeByKeys(keys);
 ~db._drop("example");
 ```
 
