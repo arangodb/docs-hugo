@@ -977,7 +977,7 @@ The operator precedence in AQL is similar as in other familiar languages
 | `AT LEAST`           | at least modifier (array comparison operator, question mark operator)
 | `OUTBOUND`, `INBOUND`, `ANY`, `ALL`, `NONE` | graph traversal directions, array comparison operators, question mark operator
 | `&&`, `AND`          | logical and
-| `||`, `OR`           | logical or
+| `\|\|`, `OR`         | logical or
 | `INTO`               | into operator (INSERT / UPDATE / REPLACE / REMOVE / COLLECT operations)
 | `WITH`               | with operator (WITH / UPDATE / REPLACE / COLLECT operations)
 | `=`                  | variable assignment (LET / COLLECT operations, AGGREGATE / PRUNE clauses)
