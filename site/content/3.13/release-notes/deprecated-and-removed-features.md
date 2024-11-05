@@ -32,6 +32,7 @@ aliases:
   - ../operations/installation/compiling/compile-on-windows
   - ../operations/upgrading/os-specific-information/macos
   - ../operations/upgrading/os-specific-information/windows
+  - ../develop/http-api/batch-requests
 ---
 Features listed on this page should no longer be used because they have been
 deprecated and may get removed in a future release, or have been removed already
@@ -119,8 +120,8 @@ detailed information about breaking changes before upgrading.
   [Foxx guide](../develop/foxx-microservices/guides/using-node-modules.md).
 
 - **Batch Requests API**:
-  The [batch request REST API](../develop/http-api/batch-requests.md) is deprecated and will be 
-  removed in a future version. Instead of using this API, please use the 
+  The batch request REST API with the `/_api/batch` endpoint was deprecated in
+  v3.8.0 and has been removed in v3.12.3. Instead of using this API, please use the
   [HTTP interface for documents](../develop/http-api/documents.md#multiple-document-operations)
   that can insert, update, replace or remove arrays of documents.
 

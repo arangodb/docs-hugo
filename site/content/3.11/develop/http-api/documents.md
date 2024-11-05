@@ -182,10 +182,9 @@ var document = db.products.save({"hello":"world"});
 var url = "/_api/document/" + document._id;
 
 var response = logCurlRequest('GET', url);
-
 assert(response.code === 200);
-
 logJsonResponse(response);
+
 db._drop(cn);
 ```
 
@@ -204,8 +203,9 @@ var url = "/_api/document/" + document._id;
 var headers = {"If-None-Match": "\"" + document._rev + "\""};
 
 var response = logCurlRequest('GET', url, "", headers);
-
 assert(response.code === 304);
+logRawResponse(response);
+
 db._drop(cn);
 ```
 
@@ -215,13 +215,17 @@ description: |-
   Unknown document identifier:
 name: RestDocumentHandlerReadDocumentUnknownHandle
 ---
-var url = "/_api/document/products/unknown-identifier";
+var cn = "products";
+db._drop(cn);
+db._create(cn);
+
+var url = "/_api/document/" + cn + "/unknown-identifier";
 
 var response = logCurlRequest('GET', url);
-
 assert(response.code === 404);
-
 logJsonResponse(response);
+
+db._drop(cn);
 ```
 
 #### Get a document header
@@ -332,8 +336,9 @@ var document = db.products.save({"hello":"world"});
 var url = "/_api/document/" + document._id;
 
 var response = logCurlRequest('HEAD', url);
-
 assert(response.code === 200);
+logRawResponse(response);
+
 db._drop(cn);
 ```
 

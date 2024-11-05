@@ -5,7 +5,7 @@ weight: 10
 description: >-
   You can run ad-hoc AQL queries using the query editor in the web interface
 ---
-In the **QUERIES** section of the web interface, type in a query in the main box
+In the **Queries** section of the web interface, type in a query in the main box
 and execute it by clicking the **Execute** button. The query result is displayed
 below the editor.
 

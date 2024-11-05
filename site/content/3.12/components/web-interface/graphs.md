@@ -6,7 +6,7 @@ description: >-
   You can create and manage named graphs in the web interface, as well as
   visually explore graphs with the graph viewer
 ---
-The **GRAPHS** section of the web interface lists the _named graphs_ stored in
+The **Graphs** section of the web interface lists the _named graphs_ stored in
 ArangoDB (EnterpriseGraphs, SmartGraphs, SatelliteGraphs, General Graphs) and
 lets you create new named graphs as well as view and edit the settings of
 existing named graphs. It also provides a viewer facility for visualizing
@@ -14,7 +14,7 @@ subsets of a graph or an entire graph.
 
 ## Create a named graph
 
-1. In the **GRAPHS** section, click the first card with the label **Add Graph**.
+1. In the **Graphs** section, click the first card with the label **Add Graph**.
 2. Select a tab depending on which type of named graph you want to create.
    The **SatelliteGraph**, **SmartGraph**, and **EnterpriseGraph** tabs are
    only available for cluster deployments using the Enterprise Edition.
@@ -30,7 +30,7 @@ create them, see [Graphs](../../graphs/_index.md).
 
 ## View and edit the settings of a named graph
 
-1. In the **GRAPHS** section, click the _gear_ icon in the top right corner
+1. In the **Graphs** section, click the _gear_ icon in the top right corner
    of a graph's card.
 2. The setting dialog opens. You can only edit certain fields. Fields that 
    cannot be modified are grayed out.
@@ -39,7 +39,7 @@ create them, see [Graphs](../../graphs/_index.md).
    
 ## Delete a named graph
 
-1. In the **GRAPHS** section, click the _gear_ icon in the top right corner
+1. In the **Graphs** section, click the _gear_ icon in the top right corner
    of a graph's card.
 2. Click the **Delete** button.
 3. Optional: Tick the **also drop collections?** checkbox if you want to
@@ -50,7 +50,7 @@ create them, see [Graphs](../../graphs/_index.md).
 
 ## Graph viewer
 
-The graph viewer opens if you click a graph's card in the **GRAPHS** section.
+The graph viewer opens if you click a graph's card in the **Graphs** section.
 It randomly selects a start node and displays its neighborhood. By default,
 up to 250 nodes that are directly connected to the start node as well as
 their direct neighbors are selected. You can select one or more start nodes

@@ -305,7 +305,7 @@ include the desired collections anymore. In case of vertex collections, they
 become orphan collections that you need to remove from the graph definition as
 well to drop the collections.
 
-### Short-circuiting subquery evaluation
+## Short-circuiting subquery evaluation
 
 <small>Introduced in: v3.12.1</small>
 
@@ -357,6 +357,34 @@ RETURN RAND() > 0.5 && tmp
 Also see [What's New in 3.12](whats-new-in-3-12.md#short-circuiting-subquery-evaluation)
 and [Evaluation of subqueries](../../aql/fundamentals/subqueries.md#evaluation-of-subqueries)
 for more information.
+
+## Changed JSON serialization and VelocyPack format for replication
+
+<small>Introduced in: v3.12.3</small>
+
+While there is only one number type in JSON, the VelocyPack format that ArangoDB
+uses supports different numeric data types. When converting between VelocyPack
+and JSON, it was previously possible for precision loss to occur in edge cases.
+This also affected creating and restoring dumps with arangodump and arangorestore.
+
+A double (64-bit floating-point) value `1152921504606846976.0` (2<sup>60</sup>)
+used to be serialized to `1152921504606847000` in JSON, which deserializes back
+to `1152921504606846976` when using a double. However, the serialized value got
+parsed as an unsigned integer, resulting in an incorrect value of
+`1152921504606847000`.
+
+Numbers with an absolute value greater or equal to 2<sup>53</sup> and less than
+2<sup>64</sup> (which always represents an integer) are now serialized faithfully
+to JSON using an integer conversion routine and then `.0` is appended (e.g.
+`1152921504606846976.0`) to ensure that they get parsed back to the exact same
+double value. All other values are serialized as before, e.g. small integral
+values don't get `.0` appended, and they get parsed back to integers with the
+same numerical value.
+
+Moreover, replication-related APIs such as the `/_api/wal/tail` endpoint now
+support the VelocyPack format. The cluster replication has been changed to use
+VelocyPack instead of JSON to avoid unnecessary conversions and avoiding any
+risk of deviations due to the serialization.
 
 ## HTTP RESTful API
 
@@ -412,6 +440,17 @@ server:
   This error is (now only) raised if you attempt to reference a document in the
   `_from` or `_to` attribute of an edge but the document's collection is not
   part of the graph definition.
+
+### Batch request endpoint removed
+
+<small>Removed in: v3.12.3</small>
+
+The `/_api/batch` endpoints that let you send multiple operations in a single
+HTTP request was deprecated in v3.8.0 and has now been removed.
+
+To send multiple documents at once to an ArangoDB instance, please use the
+[HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
+that can insert, update, replace, or remove arrays of documents.
 
 ## JavaScript API
 
@@ -556,3 +595,13 @@ in exceptional cases now whereas it was not necessary to do so previously.
 
 The `--jslint` startup option and all of the underlying functionality has been
 removed from arangosh. The feature was mainly for internal purposes.
+
+### arangobench
+
+#### Batch size option removed
+
+<small>Removed in: v3.12.3</small>
+
+The `--batch-size` startup option is now ignored by arangobench and no longer
+has an effect. It allowed you to specify the number of operations to issue in
+one batch but the batch request API has been removed on the server-side.

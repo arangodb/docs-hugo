@@ -26,18 +26,16 @@ If your programming language or environment is not listed,
 The [**ArangoDB Java driver**](java/_index.md) lets you work with ArangoDB in the
 Java programming language.
 
-- Online course: [Java Driver v7 Tutorial](https://university.arangodb.com/courses/java-driver-tutorial-v7/)
+- [Tutorial](java/_index.md#tutorial)
 - Repository: [github.com/arangodb/arangodb-java-driver](https://github.com/arangodb/arangodb-java-driver)
-- [Changelog](https://github.com/arangodb/arangodb-java-driver/blob/main/ChangeLog.md#readme)
 
 ## Go driver
 
 The [**Go driver**](go.md) lets you work with ArangoDB in the Go programming
 language.
 
-- Tutorial: [Go Driver Tutorial](https://university.arangodb.com/courses/go-driver-tutorial/)
-- Repository: [github.com/arangodb/go-driver](https://github.com/arangodb/go-driver)
-- [Changelog](https://github.com/arangodb/go-driver/blob/master/CHANGELOG.md#readme)
+- [Tutorial](go.md#tutorial)
+- Repository: [github.com/arangodb/go-driver](https://github.com/arangodb/go-driver/tree/master/v2)
 
 ## C#/.NET driver
 
@@ -46,7 +44,6 @@ using the C# programming language and the .NET ecosystem.
 
 - Online course: [C#/.NET Driver Tutorial](https://university.arangodb.com/courses/csharp-dotnet-driver-tutorial/)
 - Repository: [github.com/ArangoDB-Community/arangodb-net-standard](https://github.com/ArangoDB-Community/arangodb-net-standard)
-- [Changelog](https://github.com/ArangoDB-Community/arangodb-net-standard/blob/master/ChangeLog.md)
 
 ## Node.js driver
 
@@ -54,7 +51,6 @@ The [**ArangoJS driver**](nodejs.md) lets you work with ArangoDB in Node.js, usi
 the JavaScript scripting language. You can also use it in web browsers.
 
 - Repository: [github.com/arangodb/arangojs](https://github.com/arangodb/arangojs)
-- [Changelog](https://github.com/arangodb/arangojs/blob/main/CHANGELOG.md#readme)
 
 ## Python driver
 
@@ -63,4 +59,3 @@ Python scripting language.
 
 - Online course: [Python Driver Tutorial](https://www.arangodb.com/tutorials/tutorial-python/)
 - Repository: [github.com/ArangoDB-Community/python-arango](https://github.com/ArangoDB-Community/python-arango)
-- [Releases](https://github.com/ArangoDB-Community/python-arango/releases)

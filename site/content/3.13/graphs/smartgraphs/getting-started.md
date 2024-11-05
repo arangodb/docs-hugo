@@ -22,7 +22,7 @@ sharding pattern.
 The web interface (also called Web UI) allows you to easily create and manage
 SmartGraphs. To get started, follow the steps outlined below.
 
-1. In the web interface, navigate to the **GRAPHS** section.
+1. In the web interface, navigate to the **Graphs** section.
 2. To add a new graph, click **Add Graph**.
 3. In the **Create Graph** dialog that appears, select the
    **SmartGraph** tab.
@@ -42,7 +42,7 @@ SmartGraphs. To get started, follow the steps outlined below.
 5. Define the relations on the graph:       
    - For **Edge definition**, insert a single non-existent name to define
      the relation of the graph. This automatically creates a new edge
-     collection, which is displayed in the **COLLECTIONS** section of the
+     collection, which is displayed in the **Collections** section of the
      left sidebar menu.
      {{< tip >}}
      To define multiple relations, press the **Add relation** button.

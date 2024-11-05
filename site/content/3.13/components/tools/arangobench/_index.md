@@ -12,7 +12,7 @@ client driver. It thus often provides good enough throughput and performance
 estimates. It provides different test cases that can be executed, that reflect
 a broader set of use cases. It is useful to pick and run the test cases that
 most closely resemble typical or expected workloads. It supports parallel
-querying and batch requests.
+querying.
 
 ## General configuration
 
@@ -42,9 +42,7 @@ The most important general _arangobench_ options are:
   of the available test cases can be retrieved by running _arangobench_ with
   the `--help` option. For detailed descriptions see [Test Cases](#test-cases).
 - `--requests`: total number of requests to be executed by _arangobench_ in the
-  selected test case. If batching is used, multiple operations will still be
-  counted individually, even though they may be sent together in a single
-  request.
+  selected test case.
 - `--runs`: number of test case runs to perform. This option defaults to `1`,
   but it can be increased so that result outliers have less influence on the
   test results.
@@ -74,14 +72,6 @@ General options that can affect test case performance and throughput:
   The server-side scheduler queue has a limited capacity, and once it is full,
   any further incoming requests will be rejected by the server with HTTP 503
   "Service unavailable" until there is again some capacity in the queue.
-- `--batch-size`: by default, _arangobench_ will send one HTTP request per test
-  case operation. This is often okay for test cases that execute a certain AQL
-  query or such, when there is naturally no other request to batch the query
-  with. However, in some use cases multiple operations can actually be sent
-  together in a single HTTP request. The prime example for this is
-  bulk-inserting documents, which are normally sent to the server in batches by
-  client programs anyway. Any value greater than `1` will make _arangobench_
-  send batch requests. Using batching should normally increase the throughput.
 - `--complexity`: some test cases can be adjusted via the `--complexity`
   parameter, which often controls the number of document attributes that are
   inserted in document-centric test cases.
@@ -148,11 +138,6 @@ teardown costs than plain Document API operations. Thus,
 it is likely that higher throughput can be achieved by using the specialized
 Document APIs in throughput tests rather than AQL queries.
 
-Many test cases can benefit from using request batching, that can be turned on
-in _arangobench_ via the `--batch-size` option. Batching makes sense in cases
-where a client application would also send multiple operations in a single
-request, e.g. when inserting documents in bulk. Batching is often the easiest
-way to improve the throughput.
 
 If increasing `--threads` for a given benchmark does not increase
 throughput or even decreases it, it is likely that some saturation or congestion

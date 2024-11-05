@@ -628,6 +628,84 @@
     Total execution time of all AQL queries, in milliseconds,
     including all slow queries.
 
+- name: arangodb_async_active_functions
+  introducedIn: "3.12.3"
+  help: |
+    Number of asynchronous functions that are currently active (are not yet resolved).
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+  description: |
+    Number of asynchronous functions that are currently active (are not yet resolved).
+
+- name: arangodb_async_active_threads
+  introducedIn: "3.12.3"
+  help: |
+    Number of active threads that execute asynchronous functions.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+  description: |
+    Number of active threads that execute asynchronous functions.
+
+- name: arangodb_async_functions_total
+  introducedIn: "3.12.3"
+  help: |
+    Number of all asynchronous functions that have been created so far.
+  unit: number
+  type: counter
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+  description: |
+    Number of all asynchronous functions that have been created so far.
+
+- name: arangodb_async_ready_for_deletion_functions
+  introducedIn: "3.12.3"
+  help: |
+    Number of asynchronous functions that are resolved and are waiting for their deletion in the next garbage collection run.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+  description: |
+    Number of asynchronous functions that are resolved and are waiting for their deletion in the next garbage collection run. If this number does not go back to zero at some point, we missed calling the garbage collection in a thread.
+
+- name: arangodb_async_registered_threads
+  introducedIn: "3.12.3"
+  help: |
+    Number of registered threads that execute asynchronous functions.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+  description: |
+    Number of registered threads that execute asynchronous functions.
+
+- name: arangodb_async_threads_total
+  introducedIn: "3.12.3"
+  help: |
+    Number of all threads created so far that execute asynchronous functions.
+  unit: number
+  type: counter
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+  description: |
+    Number of all threads created so far that execute asynchronous functions.
+
 - name: arangodb_client_connection_statistics_bytes_received
   introducedIn: "3.8.0"
   help: |

@@ -841,6 +841,36 @@
     "section" : "arangosearch",
     "type" : "uint32"
   },
+  "async-registry.cleanup-timeout" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 1,
+    "deprecatedIn" : null,
+    "description" : "Timeout in seconds between async-registry garbage collection swipes.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : null,
+    "longDescription" : "Each thread that is involved in the async-registry needs to garbage collect its finished async function calls regularly. This option controls how often this is done in seconds. This can possibly be performance relevant because each involved thread aquires a lock.",
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 1,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "async-registry",
+    "type" : "uint64"
+  },
   "audit.hostname" : {
     "category" : "option",
     "component" : [
@@ -1335,7 +1365,7 @@
       "agent",
       "single"
     ],
-    "default" : 7666280448,
+    "default" : 7733272576,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -1418,7 +1448,7 @@
     "introducedIn" : [
       "v3.8.0"
     ],
-    "longDescription" : "The possible values for the option are:\n\n- `jwt-all`: requires a valid JWT for all accesses to `/_admin/cluster` and its\n  sub-routes. If you use this configuration, the **CLUSTER** and **NODES**\n  sections of the web interface are disabled, as they rely on the ability to\n  read data from several cluster APIs.\n\n- `jwt-write`: requires a valid JWT for write accesses (all HTTP methods except\n  GET) to `/_admin/cluster`. You can use this setting to allow privileged users\n  to read data from the cluster APIs, but not to do any modifications.\n  Modifications (carried out by write accesses) are then only possible by\n  requests with a valid JWT.\n\n  All existing permission checks for the cluster API routes are still in effect\n  with this setting, meaning that read operations without a valid JWT may still\n  require dedicated other permissions (as in v3.7).\n\n- `jwt-compat`: no **additional** access checks are in place for the cluster\n  APIs. However, all existing permissions checks for the cluster API routes are\n  still in effect with this setting, meaning that all operations may still\n  require dedicated other permissions (as in v3.7).\n\nThe default value is `jwt-compat`, which means that this option does not cause\nany extra JWT checks compared to v3.7.",
+    "longDescription" : "The possible values for the option are:\n\n- `jwt-all`: requires a valid JWT for all accesses to `/_admin/cluster` and its\n  sub-routes. If you use this configuration, the **Cluster** and **Nodes**\n  sections of the web interface are disabled, as they rely on the ability to\n  read data from several cluster APIs.\n\n- `jwt-write`: requires a valid JWT for write accesses (all HTTP methods except\n  GET) to `/_admin/cluster`. You can use this setting to allow privileged users\n  to read data from the cluster APIs, but not to do any modifications.\n  Modifications (carried out by write accesses) are then only possible by\n  requests with a valid JWT.\n\n  All existing permission checks for the cluster API routes are still in effect\n  with this setting, meaning that read operations without a valid JWT may still\n  require dedicated other permissions (as in v3.7).\n\n- `jwt-compat`: no **additional** access checks are in place for the cluster\n  APIs. However, all existing permissions checks for the cluster API routes are\n  still in effect with this setting, meaning that all operations may still\n  require dedicated other permissions (as in v3.7).\n\nThe default value is `jwt-compat`, which means that this option does not cause\nany extra JWT checks compared to v3.7.",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -1541,7 +1571,8 @@
   "cluster.force-one-shard" : {
     "category" : "option",
     "component" : [
-      "coordinator"
+      "coordinator",
+      "dbserver"
     ],
     "default" : false,
     "deprecatedIn" : null,
@@ -1551,7 +1582,7 @@
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "If set to `true`, forces the cluster into creating\nall future collections with only a single shard and using the same DB-Server as\nas these collections' shards leader. All collections created this way are\neligible for specific AQL query optimizations that can improve query performance\nand provide advanced transactional guarantees.\n\n**Warning**: If you use multiple Coordinators, use the same value on all\nCoordinators.",
+    "longDescription" : "If set to `true`, forces the cluster into creating\nall future collections with only a single shard and using the same DB-Server as\nas these collections' shards leader. All collections created this way are\neligible for specific AQL query optimizations that can improve query performance\nand provide advanced transactional guarantees.\n\n**Warning**: Use the same value on all Coordinators and all DBServers!",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -2690,7 +2721,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 6133024358,
+    "default" : 6186618060,
     "deprecatedIn" : null,
     "description" : "Maximum memory usage (in bytes) to be used by all ongoing dumps.",
     "dynamic" : true,
@@ -4404,7 +4435,7 @@
       "info"
     ],
     "deprecatedIn" : null,
-    "description" : "Set the topic-specific log level, using `--log.level level` for the general topic or `--log.level topic=level` for the specified topic (can be specified multiple times).\nAvailable log levels: fatal, error, warning, info, debug, trace.\nAvailable log topics: all, audit-hotbackup, audit-service, audit-document, audit-view, audit-collection, audit-database, audit-authorization, audit-authentication, deprecation, views, v8, validation, ttl, trx, threads, libiresearch, syscall, supervision, statistics, startup, ssl, security, rocksdb, restore, requests, rep-wal, rep-state, replication2, replication, queries, memory, maintenance, license, httpclient, heartbeat, graphs, flush, general, engines, dump, development, crash, config, communication, cluster, cache, bench, arangosearch, backup, authorization, authentication, aql, agencystore, agencycomm, agency.",
+    "description" : "Set the topic-specific log level, using `--log.level level` for the general topic or `--log.level topic=level` for the specified topic (can be specified multiple times).\nAvailable log levels: fatal, error, warning, info, debug, trace.\nAvailable log topics: all, audit-hotbackup, audit-service, audit-document, audit-view, audit-collection, audit-database, audit-authorization, audit-authentication, deprecation, views, v8, validation, ttl, trx, threads, syscall, supervision, statistics, startup, ssl, security, rocksdb, restore, arangosearch, requests, rep-wal, rep-state, replication2, replication, queries, memory, maintenance, license, httpclient, heartbeat, graphs, flush, general, engines, dump, development, crash, config, communication, cluster, cache, bench, backup, authorization, authentication, aql, agencystore, libiresearch, agencycomm, agency.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -5557,7 +5588,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 32812605440,
+    "base" : 33080573952,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5565,7 +5596,7 @@
       "agent",
       "single"
     ],
-    "default" : 26578210406,
+    "default" : 26795264901,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -5892,7 +5923,7 @@
     "type" : "uint64"
   },
   "query.memory-limit" : {
-    "base" : 32812605440,
+    "base" : 33080573952,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5900,7 +5931,7 @@
       "agent",
       "single"
     ],
-    "default" : 19687563264,
+    "default" : 19848344371,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -6973,7 +7004,7 @@
       "agent",
       "single"
     ],
-    "default" : 9199536537,
+    "default" : 9279927091,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -9446,7 +9477,7 @@
       "agent",
       "single"
     ],
-    "default" : 12266048716,
+    "default" : 12373236121,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,

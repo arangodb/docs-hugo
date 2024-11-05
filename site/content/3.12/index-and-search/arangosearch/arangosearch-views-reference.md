@@ -13,7 +13,7 @@ Views guarantee the best execution plan (merge join) when querying multiple
 attributes, unlike collections with user-defined indexes.
 
 Views can be managed as follows:
-- in the web interface, in the **VIEWS** section
+- in the web interface, in the **Views** section
 - via the [Views HTTP API](../../develop/http-api/views/_index.md)
 - through the [JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#views)
 
@@ -29,7 +29,7 @@ You can create and manage an `arangosearch` View through the Web Interface.
 To get started, follow the steps outlined below.
 
 1. In the web interface, go to the left sidebar menu and select
-   the **VIEWS** entry.
+   the **Views** entry.
 2. To add a new View, click **Add View**.
 3. Fill in the required fields:
    - For **Name**, enter a name for the View.

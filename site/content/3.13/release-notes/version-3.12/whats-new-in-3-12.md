@@ -132,8 +132,8 @@ The following new metrics have been added for memory observability:
 ### Shard rebalancing
 
 The feature for rebalancing shards in cluster deployments has been moved from
-the **Rebalance Shards** tab in the **NODES** section to the **Distribution**
-tab in the **CLUSTER** section of the web interface.
+the **Rebalance Shards** tab in the **Nodes** section to the **Distribution**
+tab in the **Cluster** section of the web interface.
 
 The updated interface now offers the following options:
 - **Move Leaders**
@@ -172,7 +172,7 @@ you more control over query optimization according to your specific requirements
 ### Swagger UI
 
 The interactive tool for exploring HTTP APIs has been updated to version 5.4.1.
-You can find it in the web interface in the **Rest API** tab of the **SUPPORT**
+You can find it in the web interface in the **Rest API** tab of the **Support**
 section, as well as in the **API** tab of Foxx services and Foxx routes that use
 `module.context.createDocumentationRouter()`.
 
@@ -503,6 +503,16 @@ Optimization rules applied:
   4   move-filters-up-2                          8   reduce-extraction-to-projection  
 ```
 
+The number of document lookups caused by late materialization is now reported
+under `extra.stats.documentLookups` by the Cursor HTTP API and shown in a column
+of the query profile output:
+
+```aql
+Query Statistics:
+ Writes Exec      Writes Ign      Doc. Lookups      Scan Full      Scan Index      Cache Hits/Misses      Filtered      Peak Mem [b]      Exec Time [s]
+           0               0               290              0            3708                  0 / 0          3418             32768            0.01247
+```
+
 ---
 
 <small>Introduced in: v3.12.1</small>
@@ -817,7 +827,6 @@ Indexes used:
   9   idx_1806008994935865344   persistent   coll         false    false    false      100.00 %   [ `x`, `y` ]   [  ]            (doc.`x` IN [ "bar", "foo" ])
 ```
 
-
 ### Array and object destructuring
 
 <small>Introduced in: v3.12.2</small>
@@ -857,8 +866,94 @@ FOR { firstName } IN names
 See [Array destructuring](../../aql/operators.md#array-destructuring) and
 [Object destructuring](../../aql/operators.md#object-destructuring) for details.
 
+### Improved utilization of sorting order for `COLLECT`
 
+<small>Introduced in: v3.12.3</small>
 
+The query optimizer now automatically recognizes additional cases that allow
+using the faster sorted method for a `COLLECT` operation. For example, the
+following query previously created a query plan with two `SORT` operations and
+used the hash method for `COLLECT`.
+
+```aql
+FOR doc IN coll
+  SORT doc.value DESC
+  COLLECT val = doc.value
+  RETURN val
+```
+
+```aql
+Execution plan:
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT 
+  2   EnumerateCollectionNode     ✓     36     - FOR doc IN coll   /* full collection scan (projections: `value`)  */   LET #4 = doc.`value`
+  4   SortNode                    ✓     36       - SORT #4 DESC   /* sorting strategy: standard */
+  6   CollectNode                 ✓     28       - COLLECT val = #4   /* hash */
+  8   SortNode                    ✓     28       - SORT val ASC   /* sorting strategy: standard */
+  7   ReturnNode                        28       - RETURN val
+```
+
+Now, the optimizer checks whether all grouping values are covered by the
+user-requested `SORT`, ignoring the direction, and doesn't create an additional
+`SORT` node in that case. A sort in descending order can thus now be utilized
+for grouping using the sorted method, and possibly even utilize an index.
+
+```aql
+Execution plan:
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT 
+  2   EnumerateCollectionNode     ✓     36     - FOR doc IN coll   /* full collection scan (projections: `value`)  */   LET #5 = doc.`value`
+  4   SortNode                    ✓     36       - SORT #5 DESC   /* sorting strategy: standard */
+  6   CollectNode                 ✓     28       - COLLECT val = #5   /* sorted */
+  7   ReturnNode                        28       - RETURN val
+```
+
+### Fast object enumeration with `ENTRIES()`
+
+<small>Introduced in: v3.12.3</small>
+
+A new optimization has been implemented to improve the efficiency of the
+[`ENTRIES()` function](../../aql/functions/document-object.md#entries) in AQL.
+
+The new `replace-entries-with-object-iteration` optimizer rule can recognize a
+query pattern like `FOR obj IN source FOR [key, value] IN ENTRIES(obj) ...`
+and use a faster code path for iterating over the object that avoids copying a
+lot of key/value pairs and storing intermediate results.
+
+```aql
+LET source = [ { a: 1, b: 2 }, { c: 3 } ]
+
+FOR doc IN source // collection or array of objects
+  FOR [key, value] IN ENTRIES(doc)
+  RETURN CONCAT(key, value)
+```
+
+Without the optimization, the node with ID `6` uses a regular list iteration:
+
+```aql
+Execution plan:
+ Id   NodeType            Par   Est.   Comment
+  1   SingletonNode                1   * ROOT
+  2   CalculationNode       ✓      1     - LET source = [ { "a" : 1, "b" : 2 }, { "c" : 3 } ]   /* json expression */   /* const assignment */
+  4   EnumerateListNode     ✓      2     - FOR doc IN source   /* list iteration */
+  5   CalculationNode       ✓      2       - LET #7 = ENTRIES(doc)   /* simple expression */
+  6   EnumerateListNode     ✓    200       - FOR #4 IN #7   /* list iteration */
+  9   CalculationNode       ✓    200         - LET #8 = CONCAT(#4[0], #4[1])   /* simple expression */
+ 10   ReturnNode                 200         - RETURN #8
+```
+
+With the optimization applied, the faster object iteration is used:
+
+```aql
+Execution plan:
+ Id   NodeType            Par   Est.   Comment
+  1   SingletonNode                1   * ROOT
+  2   CalculationNode       ✓      1     - LET source = [ { "a" : 1, "b" : 2 }, { "c" : 3 } ]   /* json expression */   /* const assignment */
+  4   EnumerateListNode     ✓      2     - FOR doc IN source   /* list iteration */
+  6   EnumerateListNode     ✓    200       - FOR [key, value] OF doc   /* object iteration */
+  9   CalculationNode       ✓    200         - LET #8 = CONCAT(key, value)   /* simple expression */
+ 10   ReturnNode                 200         - RETURN #8
+```
 
 ## Indexing
 
@@ -882,6 +977,86 @@ to `_from` or `_to`.
 
 See [Multi-dimensional indexes](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md)
 for details.
+
+#### Native strict ranges
+
+<small>Introduced in: v3.12.3</small>
+
+Multi-dimensional indexes no longer require post-filtering when using strict
+ranges like in the following query:
+
+```aql
+FOR d IN coll
+  FILTER 0 < d.x && d.x < 1
+  RETURN d.x
+```
+
+```aql
+Execution plan:
+ Id   NodeType        Par   Est.   Comment
+  1   SingletonNode            1   * ROOT
+  7   IndexNode         ✓     71     - FOR d IN coll   /* mdi index scan, index scan + document lookup (filter projections: `x`) (projections: `x`) */    LET #3 = d.`x`   FILTER ((d.`x` > 0) && (d.`x` < 1))   /* early pruning */   
+  6   ReturnNode              71       - RETURN #3
+
+Indexes used:
+ By   Name                      Type   Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  7   idx_1812443690233233408   mdi    coll         false    false    false           n/a   [ `x`, `y` ]   [  ]            ((d.`x` >= 0) && (d.`x` <= 1))
+```
+
+Native support for strict ranges removes a potential bottleneck when working
+with large datasets.
+
+```aql
+Execution plan:
+ Id   NodeType        Par   Est.   Comment
+  1   SingletonNode            1   * ROOT 
+  7   IndexNode         ✓     71     - FOR d IN coll   /* mdi index scan, index scan + document lookup (projections: `x`) */    LET #3 = d.`x`   
+  6   ReturnNode              71       - RETURN #3
+
+Indexes used:
+ By   Name                      Type   Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  7   idx_1812443856099082240   mdi    coll         false    false    false           n/a   [ `x`, `y` ]   [  ]            ((d.`x` > 0) && (d.`x` < 1))
+```
+
+#### Extended utilization of sparse indexes
+
+<small>Introduced in: v3.12.3</small>
+
+The `null` value is less than all other values in AQL. Therefore, range queries
+without a lower bound need to include `null` but sparse indexes do not include
+`null` values. However, if you explicitly exclude `null` in range queries,
+sparse indexes can be utilized after all. This was not previously supported for
+multi-dimensional indexes. Even with a sparse `mdi` index over the fields `x`
+and `y` and the exclusion of `null`, the following example query cannot take
+advantage of the index up to v3.12.2:
+
+```aql
+FOR d IN coll
+  FILTER d.x < 10 && d.x != null RETURN d
+```
+
+```aql
+Execution plan:
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT
+  2   EnumerateCollectionNode     ✓    100     - FOR d IN coll   /* full collection scan  */   FILTER ((d.`x` < 10) && (d.`x` != null))   /* early pruning */
+  5   ReturnNode                       100       - RETURN d
+```
+
+From v3.13.3 onward, such a query gets optimized to utilize the sparse
+multi-dimensional index and the condition for excluding `null` is removed from
+the query plan because it is unnecessary – a sparse index contains values other
+than `null` only:
+
+Execution plan:
+ Id   NodeType        Par   Est.   Comment
+  1   SingletonNode            1   * ROOT 
+  6   IndexNode         ✓     71     - FOR d IN coll   /* mdi index scan, index scan + document lookup */    
+  5   ReturnNode              71       - RETURN d
+
+Indexes used:
+ By   Name                      Type   Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  6   idx_1812445012396343296   mdi    coll         false    true     false           n/a   [ `x`, `y` ]   [  ]            (d.`x` < 10)
 
 ### Stored values can contain the `_id` attribute
 

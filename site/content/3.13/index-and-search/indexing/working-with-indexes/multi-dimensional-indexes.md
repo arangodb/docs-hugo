@@ -104,6 +104,17 @@ FOR p IN points
   RETURN p
 ```
 
+{{< tip >}}
+The `null` value is less than all other values in AQL. Therefore, range queries
+without a lower bound need to include `null` but **sparse** indexes do not
+include `null` values. For example, `FILTER p.x < 9` sets an upper bound, but
+unless you also set a lower bound like `AND p.x >= 2`, the lower bound is
+basically `p.x >= null`.
+
+You can explicitly exclude `null` in range queries so that sparse indexes can be
+utilized: `FILTER p.x < 9 AND p.x != null`
+{{< /tip >}}
+
 ## Example Use Case
 
 If you build a calendar using ArangoDB you could create a collection for each user
