@@ -73,7 +73,8 @@ commands:
             curl -L -O https://www.openssl.org/source/openssl-$OPENSSLVERSION.tar.gz
             tar xzvf openssl-$OPENSSLVERSION.tar.gz
             cd openssl-$OPENSSLVERSION
-            ./config --prefix=/opt/openssl-workaround no-async no-shared
+            # Install in the same dir as OpenSSL, otherwise the compiler won't find ldap.h!
+            ./config --prefix=/opt no-async no-shared
             make build_libs -j `nproc`
             make install_dev -j `nproc`
             cd /tmp
@@ -129,7 +130,8 @@ commands:
             set +e
             if [ "<< parameters.version >>" = "3.10" ] || [ "<< parameters.version >>" = "3.11" ]; then
               if [[ "<< parameters.openssl >>" == 3.3.* ]]; then
-                cmake --preset enterprise-pr -DCMAKE_C_COMPILER=/tools/clang -DCMAKE_CXX_COMPILER=/tools/clang++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DOPENSSL_ROOT_DIR=/opt/openssl-workaround -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off -DCMAKE_INCLUDE_PATH=/opt/include -DCMAKE_SYSTEM_INCLUDE_PATH=/opt/include
+                # The OpenSSL dir that CMake discovers needs to be adjacent to where ldap.h is located, here: /opt
+                cmake --preset enterprise-pr -DCMAKE_C_COMPILER=/tools/clang -DCMAKE_CXX_COMPILER=/tools/clang++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DOPENSSL_ROOT_DIR=/opt -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off
               else
                 cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off
               fi
