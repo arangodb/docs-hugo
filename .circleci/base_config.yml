@@ -96,6 +96,7 @@ commands:
             if command -v apk &> /dev/null; then
               apk add skopeo
             else
+              apt-get update
               apt-get -y install skopeo
             fi
 
