@@ -285,7 +285,7 @@ function setup_arangoproxy_arangosh() {
 
   #docker cp "$container_name":/usr/bin/icudtl.dat ../arangoproxy/arangosh/"$name"/"$version"/usr/bin/icudtl.dat
   docker exec  $container_name sh -c "cp -r /usr/share/ /tmp/arangosh/$version/usr/"
-  docker exec  $container_name sh -c "cp -r /usr/bin/icudtl.dat /tmp/arangosh/$version/usr/share/arangodb3/"
+  docker exec  $container_name sh -c "cp -r /usr/bin/icudtl*.dat /tmp/arangosh/$version/usr/share/arangodb3/"
 
   docker exec  $container_name sh -c "sed 's~startup-directory.*$~startup-directory = /arangosh/arangosh/$version/usr/share/arangodb3/js~' /etc/arangodb3/arangosh.conf > /tmp/arangosh/$version/usr/bin/etc/relative/arangosh.conf"
   echo ""
