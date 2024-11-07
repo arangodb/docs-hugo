@@ -6,8 +6,6 @@ layout: default
 ---
 {{< cloudbanner >}}
 
-## ---TESTING---
-
 {{< cards >}}
 
 {{% card title="What is ArangoDB?" link="about-arangodb/" %}}
