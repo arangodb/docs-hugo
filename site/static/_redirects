@@ -1,5 +1,8 @@
 /latest                                /stable
 
+/3.11/develop/drivers/csharp-dotnet/   https://github.com/ArangoDB-Community/arangodb-net-standard/
+/3.12/develop/drivers/csharp-dotnet/   https://github.com/ArangoDB-Community/arangodb-net-standard/
+
 /3.12/operations/installation/compiling/                           https://github.com/arangodb/arangodb/blob/devel/CONTRIBUTING.md
 /3.12/operations/installation/compiling/compile-on-debian/         https://github.com/arangodb/arangodb/blob/devel/CONTRIBUTING.md
 /3.12/operations/installation/compiling/running-custom-build/      https://github.com/arangodb/arangodb/blob/devel/CONTRIBUTING.md

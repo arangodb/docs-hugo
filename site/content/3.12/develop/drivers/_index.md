@@ -37,14 +37,6 @@ language.
 - [Tutorial](go.md#tutorial)
 - Repository: [github.com/arangodb/go-driver](https://github.com/arangodb/go-driver/tree/master/v2)
 
-## C#/.NET driver
-
-The [**arangodb-net-standard driver**](csharp-dotnet.md) lets you work with ArangoDB
-using the C# programming language and the .NET ecosystem.
-
-- Online course: [C#/.NET Driver Tutorial](https://university.arangodb.com/courses/csharp-dotnet-driver-tutorial/)
-- Repository: [github.com/ArangoDB-Community/arangodb-net-standard](https://github.com/ArangoDB-Community/arangodb-net-standard)
-
 ## Node.js driver
 
 The [**ArangoJS driver**](nodejs.md) lets you work with ArangoDB in Node.js, using
