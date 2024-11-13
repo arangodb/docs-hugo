@@ -5,6 +5,13 @@ weight: 10
 description: >-
   Collection objects represent document collections and provide access to
   information and methods for executing collection-related operations
+# Undocumented on purpose:
+#   collection.count(true); // document count per shard (cluster only)
+#   collection.load()   // MMFiles legacy
+#   collection.unload() // MMFiles legacy
+#   collection.documents(keys)    // Simple Queries
+#   collection.removeByKeys(keys) // Simple Queries
+#   collection.iterate(iterator [, options]) // Deprecated
 ---
 The JavaScript API returns _collection_ objects when you use the following methods
 of the [`db` object](db-object.md) from the `@arangodb`:
@@ -412,10 +419,22 @@ The leader shards are always first in the arrays of responsible servers.
 The `shards()` method can only be used on Coordinators in clusters.
 {{< /info >}}
 
-### `collection.truncate()`
+### `collection.truncate([options])`
 
 Truncates a `collection`, removing all documents but keeping all its
 indexes.
+
+The optional `options` parameter must be an object and can be
+used to specify the following options:
+
+- `waitForSync` (boolean, default: `false`):
+  If set to `true`, the data is synchronized to disk before returning from the
+  truncate operation.
+
+- `compact` (boolean, default: `true`):
+  If set to `true`, the storage engine is told to start a compaction in order to
+  free up disk space. This can be resource intensive. If the only intention is
+  to start over with an empty collection, specify `false`.
 
 **Examples**
 

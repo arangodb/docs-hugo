@@ -316,6 +316,8 @@ paths:
               required:
                 - query
               properties:
+                # Purposefully undocumented:
+                #   forceOneShardAttributeValue
                 query:
                   description: |
                     contains the query string to be executed
@@ -3002,6 +3004,10 @@ paths:
                     Options for the query
                   type: object
                   properties:
+                    # Purposefully undocumented:
+                    #   verbosePlans
+                    #   explainInternals
+                    #   explainRegisters
                     allPlans:
                       description: |
                         if set to `true`, all possible execution plans will be returned.

@@ -4,6 +4,8 @@ menuTitle: Indexes
 weight: 55
 description: >-
   The HTTP API for indexes lets you create, delete, and list indexes
+# Undocumented on purpose:
+#   POST /_api/index/sync-caches  (internal)
 ---
 ## Addresses of indexes
 
