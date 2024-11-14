@@ -5,7 +5,10 @@ weight: 110
 description: >-
   You can get information about ArangoDB servers, toggle the maintenance mode,
   shut down server nodes, and start actions like compaction
-# Internal /_admin/debug and /_api/test endpoints for maintainers not documented on purpose
+# Undocumented on purpose:
+#   /_admin/debug       (internal)
+#   /_api/test          (internal)
+#   /_admin/telemetrics (internal)
 ---
 ## Information
 

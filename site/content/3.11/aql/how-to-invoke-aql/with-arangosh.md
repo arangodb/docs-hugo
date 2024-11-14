@@ -5,6 +5,8 @@ weight: 5
 description: >-
   How to run queries, set bind parameters, and obtain the resulting and
   additional information using the JavaScript API
+# Undocumented on purpose:
+#   db._query(<query>, <bindVars>, <mainOptions>, { forceOneShardAttributeValue: "..."} )
 ---
 In the ArangoDB shell, you can use the `db._query()` and `db._createStatement()`
 methods to execute AQL queries. This chapter also describes

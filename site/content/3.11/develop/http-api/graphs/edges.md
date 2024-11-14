@@ -5,6 +5,8 @@ weight: 10
 description: >-
   The Edge API lets you retrieve the connected edges of a single vertex,
   optionally restricted to incoming or outgoing edges
+# Undocumented on purpose:
+#   POST /_api/edges/{coll}  (internal)
 ---
 You can use the general [Document API](../documents.md) to create,
 read, modify, and delete edge documents. The only difference to working with
