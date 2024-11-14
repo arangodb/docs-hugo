@@ -155,7 +155,7 @@ paths:
             single server, the request returns successfully, but the restore is
             only executed afterwards. In the cluster, the request only returns when
             the restore operation has been completed successfully. The cluster
-            behaviour is obviously the desired one, but in a single instance, one
+            behavior is obviously the desired one, but in a single instance, one
             cannot keep a connection open across a restart.
         '400':
           description: |

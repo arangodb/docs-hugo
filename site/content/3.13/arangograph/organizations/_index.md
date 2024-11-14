@@ -47,7 +47,7 @@ After the trial period, your deployment will be deleted automatically.
 
 ### On-Demand
 
-Add a payment payment method to gain access to ArangoGraph's full feature set.
+Add a payment method to gain access to ArangoGraph's full feature set.
 Pay monthly via a credit card for what you actually use.
 
 This package unlocks all ArangoGraph functionality, including:
