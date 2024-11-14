@@ -22,9 +22,9 @@ lets you use ArangoDB as a database system in Spring-based Java applications.
 
 ## Spring Boot Starter
 
-The [**Spring Boot Starter**](spring-boot-arangodb.md) for ArangoDB is a set of
-convenient dependency descriptors that you can include in your application based
-on the Spring framework.
+The [**Spring Boot Starter**](spring-boot-arangodb.md) simplifies the use of the
+Spring Data integration for ArangoDB so you get started quickly. It is a set of
+convenient dependency descriptors that you can include in your application.
 
 - [Tutorial](spring-boot-arangodb.md#get-started)
 - Repository: <https://github.com/arangodb/spring-boot-starter>

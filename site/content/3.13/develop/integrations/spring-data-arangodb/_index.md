@@ -75,12 +75,15 @@ Create a Maven `pom.xml`:
         <dependency>
             <groupId>com.arangodb</groupId>
             <artifactId>arangodb-spring-data</artifactId>
-            <version>4.4.2</version> <!-- Substitute with the latest Spring Data ArangoDB version -->
+            <version>4.4.2</version>
         </dependency>
     </dependencies>
 
 </project>
 ```
+
+Substitute the versions with the latest available versions that are compatible.
+See the [Supported versions](#supported-versions) for details.
 
 ### Entity classes
 

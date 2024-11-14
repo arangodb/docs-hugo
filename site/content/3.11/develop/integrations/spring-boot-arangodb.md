@@ -91,6 +91,9 @@ Create a Maven `pom.xml`:
 </project>
 ```
 
+Substitute the versions with the latest available versions that are compatible.
+See the [Supported versions](#supported-versions) for details.
+
 ### Monitor the server health
 
 ArangoDB health monitoring can be applied to your application by adding
