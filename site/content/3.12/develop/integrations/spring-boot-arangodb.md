@@ -6,6 +6,9 @@ description: >-
   The Spring Boot Starter for ArangoDB is a set of convenient dependency descriptors
   that you can include in your application based on the Spring framework
 ---
+- [Repository](https://github.com/arangodb/spring-boot-starter)
+- [Demo](https://github.com/arangodb/spring-boot-starter/tree/main/demo)
+
 ## Supported versions
 
 Spring Boot Starter ArangoDB is compatible with all supported versions of ArangoDB.

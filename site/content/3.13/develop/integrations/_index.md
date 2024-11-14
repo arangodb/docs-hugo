@@ -13,12 +13,22 @@ low-level network communication.
 
 ## Spring Data
 
-The [**Spring Data integration**](spring-data-arangodb/_index.md) for ArangoDB lets you use
-ArangoDB as a database system in Spring-based Java applications.
+The [**Spring Data integration**](spring-data-arangodb/_index.md) for ArangoDB
+lets you use ArangoDB as a database system in Spring-based Java applications.
 
-- Online course: [Spring Data Tutorial](https://university.arangodb.com/courses/spring-data-tutorial)
+- [Tutorial](spring-data-arangodb/_index.md#get-started)
 - Repository: [github.com/arangodb/spring-data](https://github.com/arangodb/spring-data)
-- [Changelog](https://github.com/arangodb/spring-data/blob/master/ChangeLog.md#readme)
+- [Changelog](https://github.com/arangodb/spring-data/blob/main/ChangeLog.md)
+
+## Spring Boot Starter
+
+The [**Spring Boot Starter**](spring-boot-arangodb.md) for ArangoDB is a set of
+convenient dependency descriptors that you can include in your application based
+on the Spring framework.
+
+- [Tutorial](spring-boot-arangodb.md#get-started)
+- Repository: <https://github.com/arangodb/spring-boot-starter>
+- [Changelog](https://github.com/arangodb/spring-boot-starter/blob/main/Changelog.md)
 
 ## Apache Spark
 
@@ -36,4 +46,4 @@ allows you to export data from Apache Kafka to ArangoDB.
 
 - Repository: [github.com/arangodb/kafka-connect-arangodb/](https://github.com/arangodb/kafka-connect-arangodb/)
 - [Demo](https://github.com/arangodb/kafka-connect-arangodb/tree/main/demo)
-- [ChangeLog](https://github.com/arangodb/kafka-connect-arangodb/blob/main/ChangeLog.md)
+- [Changelog](https://github.com/arangodb/kafka-connect-arangodb/blob/main/ChangeLog.md)
