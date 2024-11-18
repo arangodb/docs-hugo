@@ -84,7 +84,7 @@ adb_g = adbpyg_adapter.pyg_to_arangodb("FakeData", data)
 # 1.2: with a Metagraph #
 #########################
 
-# Specifying a Metagraph provides customized adapter behaviour
+# Specifying a Metagraph provides customized adapter behavior
 metagraph = {
     "nodeTypes": {
         "v0": {

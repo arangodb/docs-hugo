@@ -75,7 +75,7 @@ adb_g = adbdgl_adapter.dgl_to_arangodb("FakeHetero", fake_hetero)
 # 1.2: with a Metagraph #
 #########################
 
-# Specifying a Metagraph provides customized adapter behaviour
+# Specifying a Metagraph provides customized adapter behavior
 metagraph = {
     "nodeTypes": {
         "user": {

@@ -62,7 +62,6 @@ You can use [array destructuring](../operators.md#array-destructuring) and
 concise manner:
 
 ```aql
-// 
 FOR { firstName, lastName } IN users
   RETURN CONCAT(firstName, " ", lastName)
 ```
