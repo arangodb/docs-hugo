@@ -955,6 +955,73 @@ Execution plan:
  10   ReturnNode                 200         - RETURN #8
 ```
 
+### Cache for query execution plans (experimental)
+
+<small>Introduced in: v3.12.4</small>
+
+An optional AQL query execution plan cache has been added to let you skip query
+planning and optimization when running the same queries repeatedly. This can
+significantly reduce the total time for running particular queries where a lot
+of time is spent on the query planning and optimization passes in proportion to
+the actual execution.
+
+Query plans are not cached by default. You need to set the new `usePlanCache`
+query option to `true` to utilize cached plans as well as to add plans to the
+cache. Otherwise, the plan cache is bypassed.
+
+```js
+db._query("RETURN 42", {}, { usePlanCache: true });
+```
+
+Not all AQL queries are eligible for plan caching. You can generally not cache
+plans of queries where bind variables affect the structure of the execution plan
+or the index utilization.
+See [Cache eligibility](../../aql/execution-and-performance/caching-query-plans.md#cache-eligibility)
+for details.
+
+The following startup options have been added to let you configure the plan cache:
+
+- `--query.plan-cache-max-entries`: The maximum number of plans in the
+  query plan cache per database. The default value is `128`.
+- `--query.plan-cache-max-memory-usage`: The maximum total memory usage for the
+  query plan cache in each database. The default value is `8MB`.
+- `--query.plan-cache-max-entry-size`: The maximum size of an individual entry
+  in the query plan cache in each database. The default value is `2MB`.
+- `--query.plan-cache-invalidation-time`: The time in seconds after which a
+  query plan is invalidated in the query plan cache.
+
+There are also new APIs to clear the contents of the query plan cache and to
+retrieve the current plan cache entries. The following HTTP API endpoints have
+been added:
+
+- `DELETE /_api/query-plan-cache` to delete all entries in the query
+  plan cache for the current database. This requires write privileges for the
+  current database.
+- `GET /_api/query-plan-cache` to retrieve all entries in the query
+  plan cache for the current database. This requires read privileges for the
+  current database. In addition, only those query plans are returned for
+  which the current user has at least read permissions on all collections
+  and Views included in the query.
+
+A new `@arangodb/query/plan-cache` module has been implemented for the
+JavaScript API that exposes the same functionality:
+- `require("@arangodb/aql/plan-cache").clear()` to delete all entries in
+  the plan cache for the current database. This requires write privileges for
+  the current database.
+- `require("@arangodb/aql/plan-cache").toArray()` to retrieve all entries
+  in the plan cache for the current database. This requires read privileges
+  for the current database. In addition, only those query plans are
+  returned for which the current user has at least read permissions on all
+  collections and Views included in the query.
+
+The following metrics have been added to monitor the query plan cache:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_aql_query_plan_cache_hits_total` | Total number of lookup hits in the AQL query plan cache. |
+| `arangodb_aql_query_plan_cache_memory_usage` | Total memory usage of all query plan caches across all databases. |
+| `arangodb_aql_query_plan_cache_misses_total` | Total number of lookup misses in the AQL query plan cache. |
+
 ## Indexing
 
 ### Multi-dimensional indexes

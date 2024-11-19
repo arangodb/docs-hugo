@@ -1,9 +1,9 @@
 ---
-title: HTTP interface for the query cache
+title: HTTP interface for the query results cache
 menuTitle: AQL query results cache
 weight: 10
 description: >-
-  The query cache HTTP API lets you control the cache for AQL query results
+  The query results cache HTTP API lets you control the cache for AQL query results
 ---
 ## List the entries of the AQL query results cache
 
