@@ -955,12 +955,12 @@ Execution plan:
  10   ReturnNode                 200         - RETURN #8
 ```
 
-### Improved weighted graph traversals and path searches
+### Improved graph path searches
 
 <small>Introduced in: v3.12.3</small>
 
 Due to a refactoring in version 3.11, the performance of certain graph queries
-regressed while others improved. In particular weighted traversals and
+regressed while others improved. In particular shortest path queries like
 `K_SHORTEST_PATHS` queries became slower for certain datasets compared to
 version 3.10. The performance should now be similar again due to a switch from
 a Dijkstra-like algorithm back to Yen's algorithm and by re-enabling caching
