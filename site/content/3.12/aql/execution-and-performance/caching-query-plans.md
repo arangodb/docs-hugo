@@ -111,6 +111,7 @@ outputs also indicate when a cached query plan was used, showing
 
 The query plan cache is organized per database. It gets invalidated at the
 following events:
+
 - An existing collection gets dropped or renamed, or the properties of an
   existing collection are modified
 - An index is added to an existing collection or an index is dropped
@@ -122,15 +123,68 @@ following events:
 
 The memory usage of the query plan cache can be restricted using the following
 startup options:
-- `--query.plan-cache-max-entries`: The maximum number of plans in the
-  query plan cache per database. The default value is `128`.
-- `--query.plan-cache-max-memory-usage`: The maximum total memory usage for the
-  query plan cache in each database. The default value is `8MB`.
-- `--query.plan-cache-max-entry-size`: The maximum size of an individual entry
-  in the query plan cache in each database. The default value is `2MB`.
-- `--query.plan-cache-invalidation-time`: The time in seconds after which a
-  query plan is invalidated in the query plan cache.
+
+- [`--query.plan-cache-max-entries`](../../components/arangodb-server/options.md#--queryplan-cache-max-entries)
+- [`--query.plan-cache-max-memory-usage`](../../components/arangodb-server/options.md#--queryplan-cache-max-memory-usage)
+- [`--query.plan-cache-max-entry-size`](../../components/arangodb-server/options.md#--queryplan-cache-max-entry-size)
+- [`--query.plan-cache-invalidation-time`](../../components/arangodb-server/options.md#--queryplan-cache-invalidation-time)
 
 Note that each database has its own query plan cache, and that these options
 are used for each individual plan cache. In a cluster, each Coordinator has its
 own query plan cache.
+
+## Interfaces
+
+### List the query plan cache entries
+
+Retrieve all entries in the query plan cache for the current database.
+
+This requires read privileges for the current database. In addition, only those
+query plans are returned for which the current user has at least read permissions
+on all collections and Views included in the query.
+
+{{< tabs "interfaces" >}}
+
+{{< tab "arangosh" >}}
+```js
+const planCache = require("@arangodb/aql/plan-cache");
+planCache.toArray();
+```
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl http://localhost:8529/_api/query-plan-cache
+```
+
+See the [HTTP API](../../develop/http-api/queries/aql-query-plan-cache.md#list-the-entries-of-the-aql-query-plan-cache)
+for details.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+### Clear the query plan cache
+
+Delete all entries in the query plan cache for the current database.
+
+This requires write privileges for the current database.
+
+{{< tabs "interfaces" >}}
+
+{{< tab "arangosh" >}}
+```js
+const planCache = require("@arangodb/aql/plan-cache");
+planCache.clear();
+```
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl -XDELETE http://localhost:8529/_api/query-plan-cache
+```
+
+See the [HTTP API](../../develop/http-api/queries/aql-query-plan-cache.md#clear-the-aql-query-results-cache)
+for details.
+{{< /tab >}}
+
+{{< /tabs >}}

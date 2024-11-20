@@ -282,6 +282,19 @@ endpoint to restore the original log levels.
 See the [Log API](../../develop/http-api/monitoring/logs.md#reset-the-server-log-levels)
 for details.
 
+#### Query plan cache API
+
+<small>Introduced in: v3.12.4</small>
+
+Two endpoints have been added to let you list the entries and clear the cache
+for AQL query execution plans. Query plan caching works on a per-database basis.
+
+- `GET /_api/query-plan-cache`
+- `DELETE /_api/query-plan-cache`
+
+See [HTTP interface for the query plan cache](../../develop/http-api/queries/aql-query-plan-cache.md)
+for details.
+
 ### Endpoints augmented
 
 #### View API
@@ -691,3 +704,12 @@ The option defaults to `false` so that fast locking is tried.
 See the [JavaScript API](../../develop/transactions/stream-transactions.md#javascript-api)
 for details.
 
+#### Query plan cache module
+
+<small>Introduced in: v3.12.4</small>
+
+The new `@arangodb/aql/plan-cache` module lets you list the entries (`.toArray()`)
+and clear (`.clear()`) the AQL query execution plan cache in the JavaScript API.
+
+See [The AQL query execution plan cache](../../aql/execution-and-performance/caching-query-plans.md#interfaces)
+for details.

@@ -970,7 +970,7 @@ query option to `true` to utilize cached plans as well as to add plans to the
 cache. Otherwise, the plan cache is bypassed.
 
 ```js
-db._query("RETURN 42", {}, { usePlanCache: true });
+db._query("FOR doc IN coll FILTER doc.attr == @val RETURN doc", { val: "foo" }, { usePlanCache: true });
 ```
 
 Not all AQL queries are eligible for plan caching. You can generally not cache
@@ -978,6 +978,34 @@ plans of queries where bind variables affect the structure of the execution plan
 or the index utilization.
 See [Cache eligibility](../../aql/execution-and-performance/caching-query-plans.md#cache-eligibility)
 for details.
+
+HTTP API endpoints and a JavaScript API module have been added for clearing the
+contents of the query plan cache and for retrieving the current plan cache entries.
+See [The AQL query execution plan cache](../../aql/execution-and-performance/caching-query-plans.md#interfaces)
+for details.
+
+```js
+require("@arangodb/aql/plan-cache").toArray();
+```
+
+```json
+[
+  {
+    "hash" : "2757239675060883499",
+    "query" : "FOR doc IN coll FILTER doc.attr == @val RETURN doc",
+    "queryHash" : 11382508862770890000,
+    "bindVars" : {
+    },
+    "fullCount" : false,
+    "dataSources" : [
+      "coll"
+    ],
+    "created" : "2024-11-20T17:21:34Z",
+    "numUsed" : 0,
+    "memoryUsage" : 3070
+  }
+]
+```
 
 The following startup options have been added to let you configure the plan cache:
 
@@ -989,30 +1017,6 @@ The following startup options have been added to let you configure the plan cach
   in the query plan cache in each database. The default value is `2MB`.
 - `--query.plan-cache-invalidation-time`: The time in seconds after which a
   query plan is invalidated in the query plan cache.
-
-There are also new APIs to clear the contents of the query plan cache and to
-retrieve the current plan cache entries. The following HTTP API endpoints have
-been added:
-
-- `DELETE /_api/query-plan-cache` to delete all entries in the query
-  plan cache for the current database. This requires write privileges for the
-  current database.
-- `GET /_api/query-plan-cache` to retrieve all entries in the query
-  plan cache for the current database. This requires read privileges for the
-  current database. In addition, only those query plans are returned for
-  which the current user has at least read permissions on all collections
-  and Views included in the query.
-
-A new `@arangodb/query/plan-cache` module has been implemented for the
-JavaScript API that exposes the same functionality:
-- `require("@arangodb/aql/plan-cache").clear()` to delete all entries in
-  the plan cache for the current database. This requires write privileges for
-  the current database.
-- `require("@arangodb/aql/plan-cache").toArray()` to retrieve all entries
-  in the plan cache for the current database. This requires read privileges
-  for the current database. In addition, only those query plans are
-  returned for which the current user has at least read permissions on all
-  collections and Views included in the query.
 
 The following metrics have been added to monitor the query plan cache:
 

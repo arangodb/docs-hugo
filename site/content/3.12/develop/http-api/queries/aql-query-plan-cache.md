@@ -14,8 +14,12 @@ paths:
     get:
       operationId: listQueryCachePlans
       description: |
-        Returns an array containing the AQL query execution plans currently stored
-        in the cache of the selected database.
+        Returns an array containing information about each AQL query execution
+        plan currently stored in the cache of the selected database.
+
+        This requires read privileges for the current database. In addition, only those
+        query plans are returned for which the current user has at least read permissions
+        on all collections and Views included in the query.
       parameters:
         - name: database-name
           in: path
@@ -73,9 +77,9 @@ paths:
                         The value of the `fullCount` query option in the
                         original query.
                       type: boolean
-                    dataSources: # TODO: Also Views?
+                    dataSources:
                       description: |
-                        The collections involved in the query.
+                        The collections and Views involved in the query.
                       type: array
                       items:
                         type: string
@@ -89,9 +93,10 @@ paths:
                       description: |
                         How many times the cached plan has been utilized so far.
                       type: integer
-                    memoryUsage: # TODO: What is it, plan or last query mem usage? What is this used for?
+                    memoryUsage:
                       description: |
-                        TODO
+                        How much memory the plan cache entry takes up for the
+                        execution plan, query string, and so on (in bytes).
                       type: integer
       tags:
         - Queries
@@ -107,6 +112,8 @@ paths:
       description: |
         Clears all execution plans stored in the AQL query plan cache for the
         current database.
+
+        This requires write privileges for the current database.
       parameters:
         - name: database-name
           in: path
