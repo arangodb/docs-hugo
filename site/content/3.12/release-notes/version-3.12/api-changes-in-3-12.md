@@ -501,6 +501,15 @@ The following metrics have been added for observability:
 - `arangodb_scheduler_low_prio_dequeue_hist`
 - `arangodb_scheduler_maintenance_prio_dequeue_hist`
 
+---
+
+<small>Introduced in: v3.12.4</small>
+
+The following metric about partially committed or aborted transactions on
+DB-Servers in a cluster has been added:
+
+- `arangodb_vocbase_transactions_lost_subordinates_total`
+
 #### Stream Transactions API
 
 <small>Introduced in: v3.12.1</small>
