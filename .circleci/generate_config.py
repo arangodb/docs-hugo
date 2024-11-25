@@ -138,14 +138,14 @@ def workflow_generate(config):
             if version in ["3.10", "3.11"]:
                 if openssl.startswith("3.0"):
                     compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.10"
-                if openssl.startswith("3.1"):
+                elif openssl.startswith("3.1"):
                     compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
-                if openssl.startswith("1.1"):
+                elif openssl.startswith("1.1"):
                     compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
-                if openssl.startswith("3.3"): # 3.11.10
-                    compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:6"
-            else: # build image for 3.12.3 and devel as of 2024-10-24
-                compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:7"
+                else:
+                    compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:9" # 3.11.13
+            else: # build image for 3.12.4 and devel as of 2024-11-25
+                compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:9"
 
         print(f"compileJob = {compileJob}")
 
@@ -244,14 +244,14 @@ def workflow_release_arangodb(config):
     if args.docs_version in ["3.10", "3.11"]:
         if openssl.startswith("3.0"):
             compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.0.10"
-        if openssl.startswith("3.1"):
+        elif openssl.startswith("3.1"):
             compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl3.1.2"
-        if openssl.startswith("1.1"):
+        elif openssl.startswith("1.1"):
             compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
-        if openssl.startswith("3.3"): # 3.11.10
-            compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:6"
-    else: # build image for 3.12.3 and devel as of 2024-10-24
-        compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:7"
+        else:
+            compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:9" # 3.11.13
+    else: # build image for 3.12.4 and devel as of 2024-11-25
+        compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:9"
 
     config["jobs"]["compile-linux"]["steps"].append({
         "compile-and-dockerize-arangodb": {
