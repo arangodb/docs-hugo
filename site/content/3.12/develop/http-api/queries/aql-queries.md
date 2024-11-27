@@ -348,13 +348,6 @@ paths:
                     value will be used (default: 30 seconds).
                     The time-to-live is renewed upon every access to the cursor.
                   type: integer
-                cache:
-                  description: |
-                    flag to determine whether the AQL query results cache
-                    shall be used. If set to `false`, then any query cache lookup will be skipped
-                    for the query. If set to `true`, it will lead to the query cache being checked
-                    for the query if the query cache mode is either `on` or `demand`.
-                  type: boolean
                 memoryLimit:
                   description: |
                     the maximum number of memory (measured in bytes) that the query is allowed to
@@ -494,6 +487,35 @@ paths:
                         All other resources are freed immediately (locks, RocksDB snapshots). The query
                         will fail before it returns results in case of a conflict.
                       type: boolean
+                    cache:
+                      description: |
+                        Whether the [AQL query results cache](../execution-and-performance/caching-query-results.md)
+                        shall be used for adding as well as for retrieving results.
+
+                        If the query cache mode is set to `demand` and you set the `cache` query option
+                        to `true` for a query, then its query result is cached if it's eligible for
+                        caching. If the query cache mode is set to `on`, query results are automatically
+                        cached if they are eligible for caching unless you set the `cache` option to `false`.
+
+                        If you set the `cache` option to `false`, then any query cache lookup is skipped
+                        for the query. If you set it to `true`, the query cache is checked for a cached result
+                        **if** the query cache mode is either set to `on` or `demand`.
+                      type: boolean
+                    usePlanCache:
+                      description: |
+                        Set this option to `true` to utilize a cached query plan or add the execution plan
+                        of this query to the cache if it's not in the cache yet. Otherwise, the plan cache
+                        is bypassed.
+                        
+                        Query plan caching can reduce the total time for processing queries by avoiding
+                        to parse, plan, and optimize queries over and over again that effectively have
+                        the same execution plan with at most some changes to bind parameter values.
+                        
+                        An error is raised if a query doesn't meet the requirements for plan caching.
+                        See [Cache eligibility](../../../aql/execution-and-performance/caching-query-plans.md#cache-eligibility)
+                        for details.
+                      type: boolean
+                      default: false
                     spillOverThresholdMemoryUsage:
                       description: |
                         This option allows queries to store intermediate and final results temporarily

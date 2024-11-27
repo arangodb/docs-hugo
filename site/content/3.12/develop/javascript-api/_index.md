@@ -156,7 +156,7 @@ You can use the following modules as an end-user:
     offers methods to track and kill AQL queries.
 
   - [**@arangodb/aql/plan-cache**](../../aql/execution-and-performance/caching-query-plans.md)
-    lets you list and clear the entries of the AQL query execution plan cache.
+    lets you list and clear the entries of the AQL execution plan cache.
 
   - [**@arangodb/aql/cache**](../../aql/execution-and-performance/caching-query-results.md)
     allows to control the AQL query result caching feature.

@@ -959,7 +959,7 @@ Execution plan:
 
 <small>Introduced in: v3.12.4</small>
 
-An optional AQL query execution plan cache has been added to let you skip query
+An optional execution plan cache for AQL queries has been added to let you skip query
 planning and optimization when running the same queries repeatedly. This can
 significantly reduce the total time for running particular queries where a lot
 of time is spent on the query planning and optimization passes in proportion to
@@ -981,7 +981,7 @@ for details.
 
 HTTP API endpoints and a JavaScript API module have been added for clearing the
 contents of the query plan cache and for retrieving the current plan cache entries.
-See [The AQL query execution plan cache](../../aql/execution-and-performance/caching-query-plans.md#interfaces)
+See [The execution plan cache for AQL queries](../../aql/execution-and-performance/caching-query-plans.md#interfaces)
 for details.
 
 ```js
