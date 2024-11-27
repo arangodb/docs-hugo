@@ -489,7 +489,7 @@ paths:
                       type: boolean
                     cache:
                       description: |
-                        Whether the [AQL query results cache](../execution-and-performance/caching-query-results.md)
+                        Whether the [AQL query results cache](../../../aql/execution-and-performance/caching-query-results.md)
                         shall be used for adding as well as for retrieving results.
 
                         If the query cache mode is set to `demand` and you set the `cache` query option
