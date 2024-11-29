@@ -51,7 +51,7 @@ paths:
                     - fullCount
                     - dataSources
                     - created
-                    - numUsed
+                    - hits
                     - memoryUsage
                   properties:
                     hash:
@@ -75,7 +75,8 @@ paths:
                     fullCount:
                       description: |
                         The value of the `fullCount` query option in the
-                        original query.
+                        original query. This option generally leads to different
+                        execution plans.
                       type: boolean
                     dataSources:
                       description: |
@@ -89,7 +90,7 @@ paths:
                         to the cache (in ISO 8601 format).
                       type: string
                       format: date-time
-                    numUsed:
+                    hits:
                       description: |
                         How many times the cached plan has been utilized so far.
                       type: integer
@@ -102,7 +103,30 @@ paths:
         - Queries
 ```
 
-## Clear the AQL query results cache
+```curl
+---
+name: HttpListQueryPlanCache
+description: |
+  Retrieve the entries stored in the AQL query plan cache of the current database:
+---
+db._create("coll");
+for (let i = 0; i < 3; i++) {
+  db._query("FOR doc IN @@coll FILTER doc.attr == @val RETURN doc", {
+    "@coll": "coll", val: "foo"
+  }, { usePlanCache: true });
+}
+db._query("RETURN 42", {}, { usePlanCache: true });
+
+var url = "/_api/query-plan-cache";
+var response = logCurlRequest('GET', url);
+assert(response.code === 200);
+assert(response.parsedBody.length >= 2);
+logJsonResponse(response);
+
+db._drop("coll");
+```
+
+## Clear the AQL query plan cache
 
 ```openapi
 paths:
@@ -147,4 +171,16 @@ paths:
                     example: 200
       tags:
         - Queries
+```
+
+```curl
+---
+name: HttpClearQueryPlanCache
+description: |
+  Clear the AQL query plan cache of the current database:
+---
+var url = "/_api/query-plan-cache";
+var response = logCurlRequest('DELETE', url);
+assert(response.code === 200);
+logJsonResponse(response);
 ```

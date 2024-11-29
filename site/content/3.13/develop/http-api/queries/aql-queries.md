@@ -577,7 +577,7 @@ paths:
                       description: |
                         If set to `true` or `1`, then the additional query profiling information is returned
                         in the `profile` sub-attribute of the `extra` return attribute, unless the query result
-                        is served from the query cache. If set to `2`, the query includes execution stats
+                        is served from the query results cache. If set to `2`, the query includes execution stats
                         per query plan node in `stats.nodes` sub-attribute of the `extra` return attribute.
                         Additionally, the query plan is returned in the `extra.plan` sub-attribute.
                       type: integer
@@ -1000,10 +1000,15 @@ paths:
                   cached:
                     description: |
                       A boolean flag indicating whether the query result was served
-                      from the query cache or not. If the query result is served from the query
-                      cache, the `extra` return attribute will not contain any `stats` sub-attribute
-                      and no `profile` sub-attribute.
+                      from the query results cache or not. If the query result is served from the query
+                      cache, the `extra` attribute in the response does not contain the `stats`
+                      and `profile` sub-attributes.
                     type: boolean
+                  planCacheKey:
+                    description: |
+                      The key of the plan cache entry. This attribute is only
+                      present if a cached query execution plan has been used.
+                    type: string
         '400':
           description: |
             is returned if the JSON representation is malformed, the query specification is
@@ -1744,10 +1749,15 @@ paths:
                   cached:
                     description: |
                       A boolean flag indicating whether the query result was served
-                      from the query cache or not. If the query result is served from the query
-                      cache, the `extra` return attribute will not contain any `stats` sub-attribute
-                      and no `profile` sub-attribute.
+                      from the query results cache or not. If the query result is served from the query
+                      cache, the `extra` attribute in the response does not contain the `stats`
+                      and `profile` sub-attributes.
                     type: boolean
+                  planCacheKey:
+                    description: |
+                      The key of the plan cache entry. This attribute is only
+                      present if a cached query execution plan has been used.
+                    type: string
         '400':
           description: |
             If the cursor identifier is omitted, the server will respond with *HTTP 404*.
@@ -2381,10 +2391,15 @@ paths:
                   cached:
                     description: |
                       A boolean flag indicating whether the query result was served
-                      from the query cache or not. If the query result is served from the query
-                      cache, the `extra` return attribute will not contain any `stats` sub-attribute
-                      and no `profile` sub-attribute.
+                      from the query results cache or not. If the query result is served from the query
+                      cache, the `extra` attribute in the response does not contain the `stats`
+                      and `profile` sub-attributes.
                     type: boolean
+                  planCacheKey:
+                    description: |
+                      The key of the plan cache entry. This attribute is only
+                      present if a cached query execution plan has been used.
+                    type: string
         '400':
           description: |
             If the cursor and the batch identifier are omitted, the server responds with
@@ -3055,6 +3070,21 @@ paths:
                           type: array
                           items:
                             type: string
+                    usePlanCache:
+                      description: |
+                        Set this option to `true` to utilize a cached query plan or add the execution plan
+                        of this query to the cache if it's not in the cache yet. Otherwise, the plan cache
+                        is bypassed.
+                        
+                        Query plan caching can reduce the total time for processing queries by avoiding
+                        to parse, plan, and optimize queries over and over again that effectively have
+                        the same execution plan with at most some changes to bind parameter values.
+                        
+                        An error is raised if a query doesn't meet the requirements for plan caching.
+                        See [Cache eligibility](../../../aql/execution-and-performance/caching-query-plans.md#cache-eligibility)
+                        for details.
+                      type: boolean
+                      default: false
       responses:
         '200':
           description: |

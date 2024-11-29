@@ -1016,7 +1016,7 @@ require("@arangodb/aql/plan-cache").toArray();
       "coll"
     ],
     "created" : "2024-11-20T17:21:34Z",
-    "numUsed" : 0,
+    "hits" : 0,
     "memoryUsage" : 3070
   }
 ]

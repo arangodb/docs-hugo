@@ -216,7 +216,7 @@ planCache.clear();
 curl -XDELETE http://localhost:8529/_api/query-plan-cache
 ```
 
-See the [HTTP API](../../develop/http-api/queries/aql-query-plan-cache.md#clear-the-aql-query-results-cache)
+See the [HTTP API](../../develop/http-api/queries/aql-query-plan-cache.md#clear-the-aql-query-plan-cache)
 for details.
 {{< /tab >}}
 
