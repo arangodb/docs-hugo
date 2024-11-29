@@ -423,8 +423,8 @@ is used by these writers (in terms of "writers pool") one can use
   to disable use: `0`; _immutable_)
 
   Maximum memory byte size per writer (segment) before a writer (segment) flush is
-  triggered. `0` value turns off this limit for any writer (buffer) and data is
-  flushed periodically. `0` value should be used carefully due to high
+  triggered. `0` value turns off this limit for any writer (buffer) and data
+  is flushed periodically. `0` value should be used carefully due to high
   potential memory consumption.
 
 - **consolidationPolicy** (_optional_; type: `object`; default: `{}`)

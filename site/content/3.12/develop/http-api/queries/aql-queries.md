@@ -955,8 +955,9 @@ paths:
                                   type: string
                                 type:
                                   description: |
-                                    How the collection is used. Can be `"read"`, `"write"`, or `"exclusive"`.
+                                    How the collection is used.
                                   type: string
+                                  enum: [read, write, exclusive]
                           variables:
                             description: |
                               All of the query variables, including user-created and internal ones.
@@ -1699,8 +1700,9 @@ paths:
                                   type: string
                                 type:
                                   description: |
-                                    How the collection is used. Can be `"read"`, `"write"`, or `"exclusive"`.
+                                    How the collection is used.
                                   type: string
+                                  enum: [read, write, exclusive]
                           variables:
                             description: |
                               All of the query variables, including user-created and internal ones.
@@ -1710,7 +1712,7 @@ paths:
                           estimatedCost:
                             description: |
                               The estimated cost of the query.
-                            type: integer
+                            type: number
                           estimatedNrItems:
                             description: |
                               The estimated number of results.
@@ -2336,8 +2338,9 @@ paths:
                                   type: string
                                 type:
                                   description: |
-                                    How the collection is used. Can be `"read"`, `"write"`, or `"exclusive"`.
+                                    How the collection is used.
                                   type: string
+                                  enum: [read, write, exclusive]
                           variables:
                             description: |
                               All of the query variables, including user-created and internal ones.
@@ -2347,7 +2350,7 @@ paths:
                           estimatedCost:
                             description: |
                               The estimated cost of the query.
-                            type: integer
+                            type: number
                           estimatedNrItems:
                             description: |
                               The estimated number of results.

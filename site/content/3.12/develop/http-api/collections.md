@@ -381,10 +381,7 @@ paths:
                           uniqueItems: true
                           items:
                             type: string
-                            enum:
-                              - insert
-                              - update
-                              - replace
+                            enum: [insert, update, replace]
                           example: ["insert", "update", "replace"]
                         keepNull:
                           description: |
@@ -404,12 +401,9 @@ paths:
                     properties:
                       type:
                         description: |
-                          Specifies the type of the key generator. Possible values:
-                          - `"traditional"`
-                          - `"autoincrement"`
-                          - `"uuid"`
-                          - `"padded"`
+                          Specifies the type of the key generator.
                         type: string
+                        enum: [traditional, autoincrement, uuid, padded]
                       allowUserKeys:
                         description: |
                           If set to `true`, then you are allowed to supply
@@ -481,15 +475,14 @@ paths:
                   shardingStrategy:
                     description: |
                       The sharding strategy selected for the collection. _(cluster only)_
-
-                      Possible values:
-                      - `"community-compat"`
-                      - `"enterprise-compat"`
-                      - `"enterprise-smart-edge-compat"`
-                      - `"hash"`
-                      - `"enterprise-hash-smart-edge"`
-                      - `"enterprise-hex-smart-vertex"`
                     type: string
+                    enum:
+                      - community-compat
+                      - enterprise-compat
+                      - enterprise-smart-edge-compat
+                      - hash
+                      - enterprise-hash-smart-edge
+                      - enterprise-hex-smart-vertex
                   distributeShardsLike:
                     description: |
                       The name of another collection. This collection uses the `replicationFactor`,
@@ -719,10 +712,7 @@ paths:
                           uniqueItems: true
                           items:
                             type: string
-                            enum:
-                              - insert
-                              - update
-                              - replace
+                            enum: [insert, update, replace]
                           example: ["insert", "update", "replace"]
                         keepNull:
                           description: |
@@ -742,12 +732,9 @@ paths:
                     properties:
                       type:
                         description: |
-                          Specifies the type of the key generator. Possible values:
-                          - `"traditional"`
-                          - `"autoincrement"`
-                          - `"uuid"`
-                          - `"padded"`
+                          Specifies the type of the key generator.
                         type: string
+                        enum: [traditional, autoincrement, uuid, padded]
                       allowUserKeys:
                         description: |
                           If set to `true`, then you are allowed to supply
@@ -819,15 +806,14 @@ paths:
                   shardingStrategy:
                     description: |
                       The sharding strategy selected for the collection. _(cluster only)_
-
-                      Possible values:
-                      - `"community-compat"`
-                      - `"enterprise-compat"`
-                      - `"enterprise-smart-edge-compat"`
-                      - `"hash"`
-                      - `"enterprise-hash-smart-edge"`
-                      - `"enterprise-hex-smart-vertex"`
                     type: string
+                    enum:
+                      - community-compat
+                      - enterprise-compat
+                      - enterprise-smart-edge-compat
+                      - hash
+                      - enterprise-hash-smart-edge
+                      - enterprise-hex-smart-vertex
                   distributeShardsLike:
                     description: |
                       The name of another collection. This collection uses the `replicationFactor`,
@@ -1074,10 +1060,7 @@ paths:
                           uniqueItems: true
                           items:
                             type: string
-                            enum:
-                              - insert
-                              - update
-                              - replace
+                            enum: [insert, update, replace]
                           example: ["insert", "update", "replace"]
                         keepNull:
                           description: |
@@ -1097,12 +1080,9 @@ paths:
                     properties:
                       type:
                         description: |
-                          Specifies the type of the key generator. Possible values:
-                          - `"traditional"`
-                          - `"autoincrement"`
-                          - `"uuid"`
-                          - `"padded"`
+                          Specifies the type of the key generator.
                         type: string
+                        enum: [traditional, autoincrement, uuid, padded]
                       allowUserKeys:
                         description: |
                           If set to `true`, then you are allowed to supply
@@ -1174,15 +1154,14 @@ paths:
                   shardingStrategy:
                     description: |
                       The sharding strategy selected for the collection. _(cluster only)_
-
-                      Possible values:
-                      - `"community-compat"`
-                      - `"enterprise-compat"`
-                      - `"enterprise-smart-edge-compat"`
-                      - `"hash"`
-                      - `"enterprise-hash-smart-edge"`
-                      - `"enterprise-hex-smart-vertex"`
                     type: string
+                    enum:
+                      - community-compat
+                      - enterprise-compat
+                      - enterprise-smart-edge-compat
+                      - hash
+                      - enterprise-hash-smart-edge
+                      - enterprise-hex-smart-vertex
                   distributeShardsLike:
                     description: |
                       The name of another collection. This collection uses the `replicationFactor`,
@@ -1841,10 +1820,7 @@ paths:
                           uniqueItems: true
                           items:
                             type: string
-                            enum:
-                              - insert
-                              - update
-                              - replace
+                            enum: [insert, update, replace]
                           example: ["insert", "update", "replace"]
                         keepNull:
                           description: |
@@ -1864,12 +1840,9 @@ paths:
                     properties:
                       type:
                         description: |
-                          Specifies the type of the key generator. Possible values:
-                          - `"traditional"`
-                          - `"autoincrement"`
-                          - `"uuid"`
-                          - `"padded"`
+                          Specifies the type of the key generator.
                         type: string
+                        enum: [traditional, autoincrement, uuid, padded]
                       allowUserKeys:
                         description: |
                           If set to `true`, then you are allowed to supply
@@ -1941,15 +1914,14 @@ paths:
                   shardingStrategy:
                     description: |
                       The sharding strategy selected for the collection. _(cluster only)_
-
-                      Possible values:
-                      - `"community-compat"`
-                      - `"enterprise-compat"`
-                      - `"enterprise-smart-edge-compat"`
-                      - `"hash"`
-                      - `"enterprise-hash-smart-edge"`
-                      - `"enterprise-hex-smart-vertex"`
                     type: string
+                    enum:
+                      - community-compat
+                      - enterprise-compat
+                      - enterprise-smart-edge-compat
+                      - hash
+                      - enterprise-hash-smart-edge
+                      - enterprise-hex-smart-vertex
                   distributeShardsLike:
                     description: |
                       The name of another collection. This collection uses the `replicationFactor`,
@@ -2326,12 +2298,8 @@ paths:
                     uniqueItems: true
                     items:
                       type: string
-                      enum:
-                        - padded
-                        - uuid
-                        - autoincrement
-                        - traditional
-                    example: ["traditional", "autoincrement", "padded", "uuid"]
+                      enum: [traditional, autoincrement, uuid, padded]
+                    example: ["traditional", "autoincrement", "uuid", "padded"]
       tags:
         - Collections
 ```
@@ -2458,10 +2426,7 @@ paths:
                         uniqueItems: true
                         items:
                           type: string
-                          enum:
-                            - insert
-                            - update
-                            - replace
+                          enum: [insert, update, replace]
                         default: ["insert", "update", "replace"]
                       keepNull:
                         description: |
@@ -2754,10 +2719,7 @@ paths:
                           uniqueItems: true
                           items:
                             type: string
-                            enum:
-                              - insert
-                              - update
-                              - replace
+                            enum: [insert, update, replace]
                           example: ["insert", "update", "replace"]
                         keepNull:
                           description: |
@@ -2777,12 +2739,9 @@ paths:
                     properties:
                       type:
                         description: |
-                          Specifies the type of the key generator. Possible values:
-                          - `"traditional"`
-                          - `"autoincrement"`
-                          - `"uuid"`
-                          - `"padded"`
+                          Specifies the type of the key generator.
                         type: string
+                        enum: [traditional, autoincrement, uuid, padded]
                       allowUserKeys:
                         description: |
                           If set to `true`, then you are allowed to supply
@@ -2854,15 +2813,14 @@ paths:
                   shardingStrategy:
                     description: |
                       The sharding strategy selected for the collection. _(cluster only)_
-
-                      Possible values:
-                      - `"community-compat"`
-                      - `"enterprise-compat"`
-                      - `"enterprise-smart-edge-compat"`
-                      - `"hash"`
-                      - `"enterprise-hash-smart-edge"`
-                      - `"enterprise-hex-smart-vertex"`
                     type: string
+                    enum:
+                      - community-compat
+                      - enterprise-compat
+                      - enterprise-smart-edge-compat
+                      - hash
+                      - enterprise-hash-smart-edge
+                      - enterprise-hex-smart-vertex
                   distributeShardsLike:
                     description: |
                       The name of another collection. This collection uses the `replicationFactor`,
@@ -4013,10 +3971,7 @@ paths:
                         uniqueItems: true
                         items:
                           type: string
-                          enum:
-                            - insert
-                            - update
-                            - replace
+                          enum: [insert, update, replace]
                         example: ["insert", "update", "replace"]
                       keepNull:
                         description: |
@@ -4139,10 +4094,7 @@ paths:
                           uniqueItems: true
                           items:
                             type: string
-                            enum:
-                              - insert
-                              - update
-                              - replace
+                            enum: [insert, update, replace]
                           example: ["insert", "update", "replace"]
                         keepNull:
                           description: |
@@ -4162,12 +4114,9 @@ paths:
                     properties:
                       type:
                         description: |
-                          Specifies the type of the key generator. Possible values:
-                          - `"traditional"`
-                          - `"autoincrement"`
-                          - `"uuid"`
-                          - `"padded"`
+                          Specifies the type of the key generator.
                         type: string
+                        enum: [traditional, autoincrement, uuid, padded]
                       allowUserKeys:
                         description: |
                           If set to `true`, then you are allowed to supply
@@ -4239,15 +4188,14 @@ paths:
                   shardingStrategy:
                     description: |
                       The sharding strategy selected for the collection. _(cluster only)_
-
-                      Possible values:
-                      - `"community-compat"`
-                      - `"enterprise-compat"`
-                      - `"enterprise-smart-edge-compat"`
-                      - `"hash"`
-                      - `"enterprise-hash-smart-edge"`
-                      - `"enterprise-hex-smart-vertex"`
                     type: string
+                    enum:
+                      - community-compat
+                      - enterprise-compat
+                      - enterprise-smart-edge-compat
+                      - hash
+                      - enterprise-hash-smart-edge
+                      - enterprise-hex-smart-vertex
                   distributeShardsLike:
                     description: |
                       The name of another collection. This collection uses the `replicationFactor`,

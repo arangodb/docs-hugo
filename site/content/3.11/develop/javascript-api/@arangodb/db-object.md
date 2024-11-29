@@ -272,9 +272,11 @@ error is thrown. For information about the naming constraints for collections, s
     auto-generate keys in this case are not aware of all keys which are already used.
     {{< /warning >}}
   - `increment`: The increment value for the `autoincrement` key generator.
-    Not used for other key generator types.
+    Not allowed for other key generator types.
   - `offset`: The initial offset value for the `autoincrement` key generator.
-    Not used for other key generator types.
+    Not allowed for other key generator types.
+  - `lastValue`: the offset value for the `autoincrement` or `padded`
+    key generator. This is an internal property for restoring dumps properly.
 
 - `schema` (object\|null, _optional_, default: `null`): 
   An object that specifies the collection-level document schema for documents.

@@ -51,17 +51,17 @@ FOR path
   GRAPH graphName
 ```
 
-- `FOR`: emits the variable **path** which contains one shortest path as an
+- `FOR`: Emits the variable **path** which contains one shortest path as an
   object, with the `vertices` and `edges` of the path.
-- `IN` `OUTBOUND|INBOUND|ANY`: defines in which direction
+- `IN` `OUTBOUND|INBOUND|ANY`: Defines in which direction
   edges are followed (outgoing, incoming, or both)
-- `ALL_SHORTEST_PATHS`: the keyword to compute All Shortest Paths
-- **startVertex** `TO` **targetVertex** (both string\|object): the two vertices between
+- `ALL_SHORTEST_PATHS`: The keyword to compute All Shortest Paths
+- **startVertex** `TO` **targetVertex** (both string\|object): The two vertices between
   which the paths will be computed. This can be specified in the form of
   a ID string or in the form of a document with the attribute `_id`. All other
   values result in a warning and an empty result. If one of the specified
   documents does not exist, the result is empty as well and there is no warning.
-- `GRAPH` **graphName** (string): the name identifying the named graph. Its vertex and
+- `GRAPH` **graphName** (string): The name identifying the named graph. Its vertex and
   edge collections will be looked up.
 
 {{< info >}}

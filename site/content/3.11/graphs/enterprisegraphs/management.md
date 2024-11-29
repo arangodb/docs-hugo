@@ -234,7 +234,7 @@ db._drop("vertices");
 Alternatively, you can `truncate()` all collections of the graph if you just
 want to get rid of the data but keep the collections and graph definition.
 
-## Remove an edge collection
+## Remove an edge definition
 
 Delete an edge definition from the graph:
 

@@ -468,7 +468,7 @@ In ArangoDB version 3.4 we introduced
 [streaming cursors](../../release-notes/version-3.4/whats-new-in-3-4.md#streaming-aql-cursors) with
 somewhat inverted properties: less peak memory usage, longer access to the
 collections. Streaming is possible on document level, which means that it cannot
-be applied to all query parts. For example, a *MERGE()* of all results of a
+be applied to all query parts. For example, a `MERGE()` of all results of a
 subquery cannot be streamed (the result of the operation has to be built up fully).
 Nonetheless, the surrounding query may be eligible for streaming.
 

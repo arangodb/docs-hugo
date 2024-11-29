@@ -80,9 +80,7 @@ paths:
                           - `"asc"` for ascending
                           - `"desc"` for descending
                         type: string
-                        enum:
-                          - asc
-                          - desc
+                        enum: [asc, desc]
                 primarySortCompression:
                   description: |
                     Defines how to compress the primary sort data.
@@ -92,9 +90,7 @@ paths:
 
                     This option is immutable.
                   type: string
-                  enum:
-                    - lz4
-                    - none
+                  enum: [lz4, none]
                   default: lz4
                 primarySortCache:
                   description: |
@@ -208,9 +204,7 @@ paths:
                           - `"lz4"`: LZ4 fast compression
                           - `"none"`: no compression
                         type: string
-                        enum:
-                          - lz4
-                          - none
+                        enum: [lz4, none]
                         default: lz4
                       cache:
                         description: |
@@ -319,9 +313,7 @@ paths:
                           i.e. the sum of all candidate segment byte size is less than the total
                           segment byte size multiplied by the `{threshold}`.
                       type: string
-                      enum:
-                        - tier
-                        - bytes_accum
+                      enum: [tier, bytes_accum]
                       default: tier
                     threshold:
                       description: |
@@ -462,9 +454,7 @@ paths:
                       - `"lz4"`: LZ4 fast compression
                       - `"none"`: no compression
                     type: string
-                    enum:
-                      - lz4
-                      - none
+                    enum: [lz4, none]
                   primarySortCache:
                     description: |
                       Whether the primary sort columns are always cached in memory
@@ -507,9 +497,7 @@ paths:
                             - `"lz4"`: LZ4 fast compression
                             - `"none"`: no compression
                           type: string
-                          enum:
-                            - lz4
-                            - none
+                          enum: [lz4, none]
                         cache:
                           description: |
                             Whether stored values are always cached in memory
@@ -551,9 +539,7 @@ paths:
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
                         type: string
-                        enum:
-                          - tier
-                          - bytes_accum
+                        enum: [tier, bytes_accum]
                       threshold:
                         description: |
                           A value in the range `[0.0, 1.0]`
@@ -943,9 +929,7 @@ paths:
                       - `"lz4"`: LZ4 fast compression
                       - `"none"`: no compression
                     type: string
-                    enum:
-                      - lz4
-                      - none
+                    enum: [lz4, none]
                   primarySortCache:
                     description: |
                       Whether the primary sort columns are always cached in memory
@@ -988,9 +972,7 @@ paths:
                             - `"lz4"`: LZ4 fast compression
                             - `"none"`: no compression
                           type: string
-                          enum:
-                            - lz4
-                            - none
+                          enum: [lz4, none]
                         cache:
                           description: |
                             Whether stored values are always cached in memory
@@ -1032,9 +1014,7 @@ paths:
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
                         type: string
-                        enum:
-                          - tier
-                          - bytes_accum
+                        enum: [tier, bytes_accum]
                       threshold:
                         description: |
                           A value in the range `[0.0, 1.0]`
@@ -1248,9 +1228,7 @@ paths:
                           description: |
                             The type of the View.
                           type: string
-                          enum:
-                            - arangosearch
-                            - search-alias
+                          enum: [arangosearch, search-alias]
                         id:
                           description: |
                             A unique identifier of the View (deprecated).
@@ -1415,9 +1393,7 @@ paths:
                           i.e. the sum of all candidate segment byte size is less than the total
                           segment byte size multiplied by the `{threshold}`.
                       type: string
-                      enum:
-                        - tier
-                        - bytes_accum
+                      enum: [tier, bytes_accum]
                       default: tier
                     threshold:
                       description: |
@@ -1536,9 +1512,7 @@ paths:
                       - `"lz4"`: LZ4 fast compression
                       - `"none"`: no compression
                     type: string
-                    enum:
-                      - lz4
-                      - none
+                    enum: [lz4, none]
                   primarySortCache:
                     description: |
                       Whether the primary sort columns are always cached in memory
@@ -1581,9 +1555,7 @@ paths:
                             - `"lz4"`: LZ4 fast compression
                             - `"none"`: no compression
                           type: string
-                          enum:
-                            - lz4
-                            - none
+                          enum: [lz4, none]
                         cache:
                           description: |
                             Whether stored values are always cached in memory
@@ -1625,9 +1597,7 @@ paths:
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
                         type: string
-                        enum:
-                          - tier
-                          - bytes_accum
+                        enum: [tier, bytes_accum]
                       threshold:
                         description: |
                           A value in the range `[0.0, 1.0]`
@@ -1889,9 +1859,7 @@ paths:
                           i.e. the sum of all candidate segment byte size is less than the total
                           segment byte size multiplied by the `{threshold}`.
                       type: string
-                      enum:
-                        - tier
-                        - bytes_accum
+                      enum: [tier, bytes_accum]
                       default: tier
                     threshold:
                       description: |
@@ -2010,9 +1978,7 @@ paths:
                       - `"lz4"`: LZ4 fast compression
                       - `"none"`: no compression
                     type: string
-                    enum:
-                      - lz4
-                      - none
+                    enum: [lz4, none]
                   primarySortCache:
                     description: |
                       Whether the primary sort columns are always cached in memory
@@ -2055,9 +2021,7 @@ paths:
                             - `"lz4"`: LZ4 fast compression
                             - `"none"`: no compression
                           type: string
-                          enum:
-                            - lz4
-                            - none
+                          enum: [lz4, none]
                         cache:
                           description: |
                             Whether stored values are always cached in memory
@@ -2099,9 +2063,7 @@ paths:
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
                         type: string
-                        enum:
-                          - tier
-                          - bytes_accum
+                        enum: [tier, bytes_accum]
                       threshold:
                         description: |
                           A value in the range `[0.0, 1.0]`
@@ -2355,9 +2317,7 @@ paths:
                       - `"lz4"`: LZ4 fast compression
                       - `"none"`: no compression
                     type: string
-                    enum:
-                      - lz4
-                      - none
+                    enum: [lz4, none]
                   primarySortCache:
                     description: |
                       Whether the primary sort columns are always cached in memory
@@ -2400,9 +2360,7 @@ paths:
                             - `"lz4"`: LZ4 fast compression
                             - `"none"`: no compression
                           type: string
-                          enum:
-                            - lz4
-                            - none
+                          enum: [lz4, none]
                         cache:
                           description: |
                             Whether stored values are always cached in memory
@@ -2444,9 +2402,7 @@ paths:
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
                         type: string
-                        enum:
-                          - tier
-                          - bytes_accum
+                        enum: [tier, bytes_accum]
                       threshold:
                         description: |
                           A value in the range `[0.0, 1.0]`
