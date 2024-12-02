@@ -43,7 +43,7 @@ paths:
               properties:
                 type:
                   description: |
-                    must be equal to `"zkd"`.
+                    Must be equal to `"zkd"`.
                   type: string
                 name:
                   description: |
@@ -54,24 +54,25 @@ paths:
                   type: string
                 fields:
                   description: |
-                    an array of attribute names used for each dimension. Array expansions are not allowed.
+                    An array of attribute names used for each dimension. Array expansions are not allowed.
                   type: array
                   items:
                     type: string
+                fieldValueTypes:
+                  description: |
+                    Must be equal to `"double"`. Currently only doubles are supported as values.
+                  type: string
                 unique:
                   description: |
                     if `true`, then create a unique index.
                   type: boolean
+                  default: false
                 inBackground:
                   description: |
                     You can set this option to `true` to create the index
                     in the background, which will not write-lock the underlying collection for
                     as long as if the index is built in the foreground. The default value is `false`.
                   type: boolean
-                fieldValueTypes:
-                  description: |
-                    must be equal to `"double"`. Currently only doubles are supported as values.
-                  type: string
       responses:
         '200':
           description: |

@@ -56,8 +56,10 @@ paths:
                     The set of features to set on the Analyzer generated fields.
                     The default value is an empty array.
                   type: array
+                  uniqueItems: true
                   items:
                     type: string
+                    enum: [frequency, norm, position, offset]
       responses:
         '200':
           description: |

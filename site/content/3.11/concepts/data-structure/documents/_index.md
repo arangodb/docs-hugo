@@ -245,9 +245,11 @@ following naming constraints are not violated:
   attribute names may use more memory in result sets etc. Therefore the use
   of long attribute names is discouraged.
 
-- Attribute names are case-sensitive.
+- Attributes with empty names (using an empty string `""`) are possible but
+  discouraged. For example, indexes cannot be created over such attributes and
+  drivers may not support empty names.
 
-- Attributes with empty names (an empty string) are disallowed.
+- Attribute names are case-sensitive.
 
 ## Documents API
 

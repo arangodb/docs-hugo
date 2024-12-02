@@ -5,22 +5,42 @@ weight: 30
 description: >-
   Search for strings with placeholders that stand for one or many arbitrary characters
 ---
-You can use the `LIKE()` function for this search technique to find strings
-that start with, contain or end with a certain substring, but it can do more
-than that. You can place the special characters `_` and `%` as wildcards for
-single or zero-or-more characters in the search string to match multiple
-partial strings.
+You can use the `LIKE()` function and `LIKE` operator for this search technique
+to find strings that start with, contain, or end with a certain substring. You
+can also search for complex patterns with multiple placeholders. Place the
+special characters `_` and `%` as wildcards for any single or zero-or-more
+characters in the search string to match multiple partial strings.
+
+```
+prefix%
+%infix%
+%suffix
+%complex%pat_ern
+```
+
+Wildcard searching can be an alternative to tokenizing text into words and then
+searching for words in a particular order ([Phrase and Proximity Search](phrase-and-proximity-search.md)).
+It is especially useful if you want to search for substrings that include
+characters that are considered word boundaries like punctuation and whitespace
+and would normally get removed when tokenizing text.
+
+## Index acceleration
 
 The [ArangoSearch `LIKE()` function](../../aql/functions/arangosearch.md#like)
 is backed by View indexes. In contrast, the
-[String `LIKE()` function](../../aql/functions/string.md#like) cannot utilize any
-sort of index. Another difference is that the ArangoSearch variant does not
-accept a third argument to make matching case-insensitive. You can control this
-via Analyzers instead, also see
+[string `LIKE()` function](../../aql/functions/string.md#like) cannot utilize any
+sort of index. This applies to the [`LIKE` operator](../../aql/operators.md#comparison-operators),
+too, which you can use instead of the function.
+Another difference is that the ArangoSearch variant of the `LIKE()` function does
+not accept a third argument to make matching case-insensitive. You can control
+this via Analyzers instead, also see
 [Case-insensitive Search with ArangoSearch](case-sensitivity-and-diacritics.md).
 Which of the two equally named functions is used is determined by the context.
-It is the ArangoSearch variant in `SEARCH` operations and the String variant
-everywhere else.
+The ArangoSearch variant is used in `SEARCH` operations. It is also used when
+you have an inverted index and use the `LIKE()` function with two arguments or
+the `LIKE` operator in `FILTER` operations. The string variant is used everywhere
+else, including using the `LIKE()` function with three arguments in `FILTER`
+operations together with an inverted index.
 
 ## Wildcard Syntax
 

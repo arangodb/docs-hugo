@@ -116,32 +116,28 @@ FOR path
   IN MIN..MAX OUTBOUND|INBOUND|ANY K_PATHS
   startVertex TO targetVertex
   GRAPH graphName
-  [OPTIONS options]
 ```
 
-- `FOR`: emits the variable **path** which contains one path as an object
+- `FOR`: Emits the variable **path** which contains one path as an object
   containing `vertices` and `edges` of the path.
-- `IN` `MIN..MAX`: the minimal and maximal depth for the traversal:
-  - **min** (number, *optional*): paths returned by this query will
+- `IN` `MIN..MAX`: The minimal and maximal depth for the traversal:
+  - **min** (number, *optional*): Paths returned by this query will
     have at least a length of *min* many edges.
     If not specified, it defaults to 1. The minimal possible value is 0.
-  - **max** (number, *optional*): paths returned by this query will
+  - **max** (number, *optional*): Paths returned by this query will
     have at most a length of *max* many edges.
     If omitted, *max* defaults to *min*. Thus only the vertices and edges in
     the range of *min* are returned. *max* cannot be specified without *min*.
-- `OUTBOUND|INBOUND|ANY`: defines in which direction
+- `OUTBOUND|INBOUND|ANY`: Defines in which direction
   edges are followed (outgoing, incoming, or both)
-- `K_PATHS`: the keyword to compute all Paths
-- **startVertex** `TO` **targetVertex** (both string\|object): the two vertices
+- `K_PATHS`: The keyword to compute all Paths
+- **startVertex** `TO` **targetVertex** (both string\|object): The two vertices
   between which the paths will be computed. This can be specified in the form of
   a document identifier string or in the form of an object with the attribute
   `_id`. All other values will lead to a warning and an empty result. This is
   also the case if one of the specified documents does not exist.
-- `GRAPH` **graphName** (string): the name identifying the named graph.
+- `GRAPH` **graphName** (string): The name identifying the named graph.
   Its vertex and edge collections will be looked up.
-- `OPTIONS` **options** (object, *optional*): used to modify the execution of
-  the search. Right now there are no options that trigger an effect.
-  However, this may change in the future.
 
 ### Working with collection sets
 

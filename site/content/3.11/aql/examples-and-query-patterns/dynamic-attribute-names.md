@@ -115,7 +115,7 @@ The results of the subquery are then made available to the main query and will
 be returned. But the attribute names in the result are still `name` and `value`,
 so we're not there yet.
 
-So let us also employ AQL's [ZIP()](../functions/document-object.md#zip) function,
+So let us also employ AQL's [`ZIP()`](../functions/document-object.md#zip) function,
 which can create an object from two arrays:
 
 - the first parameter to `ZIP()` is an array with the attribute names
