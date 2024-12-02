@@ -970,6 +970,77 @@ In addition, shortest path searches may finish earlier now due to some
 optimizations to disregard candidate paths for which better candidates have been
 found already.
 
+### Cache for query execution plans (experimental)
+
+<small>Introduced in: v3.12.4</small>
+
+An optional execution plan cache for AQL queries has been added to let you skip query
+planning and optimization when running the same queries repeatedly. This can
+significantly reduce the total time for running particular queries where a lot
+of time is spent on the query planning and optimization passes in proportion to
+the actual execution.
+
+Query plans are not cached by default. You need to set the new `usePlanCache`
+query option to `true` to utilize cached plans as well as to add plans to the
+cache. Otherwise, the plan cache is bypassed.
+
+```js
+db._query("FOR doc IN coll FILTER doc.attr == @val RETURN doc", { val: "foo" }, { usePlanCache: true });
+```
+
+Not all AQL queries are eligible for plan caching. You can generally not cache
+plans of queries where bind variables affect the structure of the execution plan
+or the index utilization.
+See [Cache eligibility](../../aql/execution-and-performance/caching-query-plans.md#cache-eligibility)
+for details.
+
+HTTP API endpoints and a JavaScript API module have been added for clearing the
+contents of the query plan cache and for retrieving the current plan cache entries.
+See [The execution plan cache for AQL queries](../../aql/execution-and-performance/caching-query-plans.md#interfaces)
+for details.
+
+```js
+require("@arangodb/aql/plan-cache").toArray();
+```
+
+```json
+[
+  {
+    "hash" : "2757239675060883499",
+    "query" : "FOR doc IN coll FILTER doc.attr == @val RETURN doc",
+    "queryHash" : 11382508862770890000,
+    "bindVars" : {
+    },
+    "fullCount" : false,
+    "dataSources" : [
+      "coll"
+    ],
+    "created" : "2024-11-20T17:21:34Z",
+    "hits" : 0,
+    "memoryUsage" : 3070
+  }
+]
+```
+
+The following startup options have been added to let you configure the plan cache:
+
+- `--query.plan-cache-max-entries`: The maximum number of plans in the
+  query plan cache per database. The default value is `128`.
+- `--query.plan-cache-max-memory-usage`: The maximum total memory usage for the
+  query plan cache in each database. The default value is `8MB`.
+- `--query.plan-cache-max-entry-size`: The maximum size of an individual entry
+  in the query plan cache in each database. The default value is `2MB`.
+- `--query.plan-cache-invalidation-time`: The time in seconds after which a
+  query plan is invalidated in the query plan cache.
+
+The following metrics have been added to monitor the query plan cache:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_aql_query_plan_cache_hits_total` | Total number of lookup hits in the AQL query plan cache. |
+| `arangodb_aql_query_plan_cache_memory_usage` | Total memory usage of all query plan caches across all databases. |
+| `arangodb_aql_query_plan_cache_misses_total` | Total number of lookup misses in the AQL query plan cache. |
+
 ## Indexing
 
 ### Multi-dimensional indexes

@@ -195,26 +195,6 @@ db._query(
 ).toArray(); // Each batch needs to be fetched within 5 seconds
 ```
 
-#### `cache`
-
-Whether the AQL query results cache shall be used. If set to `false`, then any
-query cache lookup is skipped for the query. If set to `true`, it leads to the
-query cache being checked for the query **if** the query cache mode is either
-set to `on` or `demand`.
-
-```js
----
-name: 02_workWithAQL_cache
-description: ''
----
-db._query(
-  'FOR i IN 1..20 RETURN i',
-  {},
-  { cache: true },
-  {}
-); // result may get taken from cache
-```
-
 #### `memoryLimit`
 
 To set a memory limit for the query, pass `options` to the `_query()` method.
@@ -274,12 +254,44 @@ don't need to set it on a per-query level.
 
 #### `cache`
 
-If you set `cache` to `true`, this puts the query result into the query result cache
-if the query result is eligible for caching and the query cache is running in demand 
-mode. If set to `false`, the query result is not inserted into the query result
-cache. Note that query results are never inserted into the query result cache if
-the query result cache is disabled, and that they are automatically inserted into
-the query result cache if it is active in non-demand mode.
+Whether the [AQL query results cache](../execution-and-performance/caching-query-results.md)
+shall be used for adding as well as for retrieving results.
+
+If the query cache mode is set to `demand` and you set the `cache` query option
+to `true` for a query, then its query result is cached if it's eligible for
+caching. If the query cache mode is set to `on`, query results are automatically
+cached if they are eligible for caching unless you set the `cache` option to `false`.
+
+If you set the `cache` option to `false`, then any query cache lookup is skipped
+for the query. If you set it to `true`, the query cache is checked a cached result
+**if** the query cache mode is either set to `on` or `demand`.
+
+```js
+---
+name: 02_workWithAQL_cache
+description: ''
+---
+var resultCache = require("@arangodb/aql/cache");
+resultCache.properties({ mode: "demand" });
+~resultCache.clear();
+db._query("FOR i IN 1..5 RETURN i", {}, { cache: true }); // Adds result to cache
+db._query("FOR i IN 1..5 RETURN i", {}, { cache: true }); // Retrieves result from cache
+db._query("FOR i IN 1..5 RETURN i", {}, { cache: false }); // Bypasses the cache
+```
+
+#### `usePlanCache`
+
+Set this option to `true` to utilize a cached query plan or add the execution plan
+of this query to the cache if it's not in the cache yet. Otherwise, the plan cache
+is bypassed.
+
+Query plan caching can reduce the total time for processing queries by avoiding
+to parse, plan, and optimize queries over and over again that effectively have
+the same execution plan with at most some changes to bind parameter values.
+
+An error is raised if a query doesn't meet the requirements for plan caching.
+See [Cache eligibility](../execution-and-performance/caching-query-plans.md#cache-eligibility)
+for details.
 
 #### `fillBlockCache`
 
