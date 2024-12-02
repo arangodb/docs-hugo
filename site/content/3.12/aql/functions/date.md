@@ -1001,7 +1001,7 @@ DATE_FORMAT("2016-03-01", "%xxx%") // "063", trailing % ignored
 ---
 name: dateFormat
 description: |
-  Show example calls of the formatting function and their results:
+  Example calls of the formatting function and their results:
 bindVars:
   {
     "formats": [
@@ -1036,7 +1036,7 @@ FOR format IN @formats
 ---
 name: dateFormatTimezoned
 description: |
-  Show example calls of the formatting function and their results, using the
+  Example calls of the formatting function and their results, using the
   timezone of Germany (and Nepal in one case):
 bindVars:
   {

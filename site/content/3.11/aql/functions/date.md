@@ -834,7 +834,7 @@ DATE_FORMAT("2016-03-01", "%xxx%") // "063", trailing % ignored
 ---
 name: dateFormat
 description: |
-  Show example calls of the formatting function and their results:
+  Example calls of the formatting function and their results:
 bindVars:
   {
     "formats": [
