@@ -6,6 +6,14 @@ description: >-
   The query plan cache HTTP API lets you list the AQL execution plans that
   are in the cache as well as clear the cache
 ---
+<small>Introduced in: v3.12.4</small>
+
+To cache execution plans for AQL queries as well as to utilize cached plans,
+set the `usePlanCache` query option to `true` when issuing a query. See
+[HTTP interfaces for AQL queries](aql-queries.md#create-a-cursor) for details
+and [The execution plan cache for AQL queries](../../../aql/execution-and-performance/caching-query-plans.md)
+for general information about the feature.
+
 ## List the entries of the AQL query plan cache
 
 ```openapi
