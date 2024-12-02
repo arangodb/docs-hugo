@@ -1666,17 +1666,44 @@ paths:
 
 ```curl
 ---
-description: ''
 name: RestViewPutPropertiesArangoSearch
+description: |
+  Replace the properties of an `arangosearch` View including any links with new
+  properties. All mutable properties that are not specified are reset to their
+  default values.
 ---
-var view = db._createView("productsView", "arangosearch");
+db._create("users");
+db._create("products");
+var view = db._createView("productsView", "arangosearch", {
+  commitIntervalMsec: 1337,
+  links: {
+    users: {},
+    products: {}
+  }
+});
 
 var url = "/_api/view/"+ view.name() + "/properties";
-var response = logCurlRequest('PUT', url, { "locale": "en" });
+var body = {
+  cleanupIntervalStep: 12,
+  links: {
+    products: {
+      fields: {
+        description: {
+          analyzers: ["text_en"]
+        }
+      }
+    }
+  }
+};
+var response = logCurlRequest('PUT', url, body);
 assert(response.code === 200);
+assert(Object.keys(response.parsedBody.links).length === 1);
+assert(response.parsedBody.commitIntervalMsec !== 1337);
 logJsonResponse(response);
 
 db._dropView(view.name());
+db._drop("users");
+db._drop("products");
 ```
 
 ## Update the properties of an arangosearch View
@@ -2124,17 +2151,48 @@ paths:
 
 ```curl
 ---
-description: ''
 name: RestViewPatchPropertiesArangoSearch
+description: |
+  Update the properties of an `arangosearch` View, only changing one setting
+  and removing a link. All other mutable properties that are not specified
+  keep their current values.
 ---
-var view = db._createView("productsView", "arangosearch");
+var coll = db._create("users");
+var coll = db._create("products");
+var view = db._createView("productsView", "arangosearch", {
+  cleanupIntervalStep: 666,
+  commitIntervalMsec: 666,
+  consolidationIntervalMsec: 666,
+  links: {
+    users: {
+      includeAllFields: true
+    },
+    products: {
+      fields: {
+        description: {
+          analyzers: ["text_en"]
+        }
+      }
+    }
+  }
+});
 
 var url = "/_api/view/"+ view.name() + "/properties";
-var response = logCurlRequest('PATCH', url, { "locale": "en" });
+var body = {
+  cleanupIntervalStep: 12,
+  links: {
+    products: null
+  }
+};
+var response = logCurlRequest('PATCH', url, body);
 assert(response.code === 200);
+assert(response.parsedBody.links.products === undefined);
+assert(response.parsedBody.links.users !== undefined);
 logJsonResponse(response);
 
 db._dropView("productsView");
+db._drop("users");
+db._drop("products");
 ```
 
 ## Rename a View

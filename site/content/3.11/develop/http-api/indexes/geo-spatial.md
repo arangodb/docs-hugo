@@ -45,7 +45,7 @@ paths:
               properties:
                 type:
                   description: |
-                    must be equal to `"geo"`.
+                    Must be equal to `"geo"`.
                   type: string
                 name:
                   description: |
