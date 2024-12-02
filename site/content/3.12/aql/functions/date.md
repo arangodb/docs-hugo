@@ -1049,8 +1049,6 @@ bindVars:
       { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%i", "equalTo": "DATE_MINUTE", "timezone": "Asia/Kathmandu" },
       { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%x", "equalTo": "DATE_DAYOFYEAR", "timezone": "Europe/Berlin" },
       { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%k", "equalTo": "DATE_ISOWEEK", "timezone": "Europe/Berlin" },
-      { "date": "2016-12-31T23:00:00.000Z", "placeholder": "%l", "equalTo": "DATE_LEAPYEAR", "timezone": "Europe/Berlin" },
-      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%q", "equalTo": "DATE_QUARTER", "timezone": "Europe/Berlin" },
       { "date": "2023-11-30T23:00:00.000Z", "placeholder": "%a", "equalTo": "DATE_DAYS_IN_MONTH", "timezone": "Europe/Berlin" }
     ]
   }
@@ -1060,6 +1058,8 @@ FOR format IN @formats
     format.equalTo,
     "('",
     format.date,
+    "', '",
+    format.timezone,
     "') = ",
     DATE_FORMAT(format.date, format.placeholder, format.timezone)
   )
