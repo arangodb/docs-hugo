@@ -505,7 +505,7 @@ paths:
                       description: |
                         Set this option to `true` to utilize a cached query plan or add the execution plan
                         of this query to the cache if it's not in the cache yet. Otherwise, the plan cache
-                        is bypassed.
+                        is bypassed (introduced in v3.12.4).
                         
                         Query plan caching can reduce the total time for processing queries by avoiding
                         to parse, plan, and optimize queries over and over again that effectively have
@@ -3074,7 +3074,7 @@ paths:
                       description: |
                         Set this option to `true` to utilize a cached query plan or add the execution plan
                         of this query to the cache if it's not in the cache yet. Otherwise, the plan cache
-                        is bypassed.
+                        is bypassed (introduced in v3.12.4).
                         
                         Query plan caching can reduce the total time for processing queries by avoiding
                         to parse, plan, and optimize queries over and over again that effectively have
