@@ -125,50 +125,466 @@ apps/                   # the instance's application directory
 The name of `<database-dir>` will be the database's original name or the
 database's ID if its name contains special characters.
 
-## Databases API
+## Database interfaces
 
-The following descriptions cover the JavaScript interface for databases that
-you can use to handle databases from the _arangosh_ command-line tool, as
-well as in server-side JavaScript code like Foxx microservices.
-For other languages see the corresponding language API.
+The following sections show examples of how you can use the APIs of ArangoDB and
+the official drivers, as well as the built-in web interface, to perform common
+operations related to databases. For less common operations and other drivers,
+see the corresponding reference documentation.
 
 ### Set the database context
 
+Connections in ArangoDB do not contain any state information. All state
+information is contained in the request/response data of the HTTP API that all
+clients use under the hood. If the database is changed, client drivers need to
+store the current database name on their side to later make requests with the
+selected database as the context.
+
+Note that commands, actions, scripts, or AQL queries should never
+access multiple databases, even if they exist. The only intended and
+supported way in ArangoDB is to use one database at a time for a command,
+an action, a script, or a query. Operations started in one database must
+not switch the database later and continue operating in another.
+
+Foxx applications are only available in the context of the database they have
+been installed in. A new database only provides access to the system
+applications shipped with ArangoDB (the web interface) and no other Foxx
+applications until they are explicitly installed for a particular database.
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. If you are logged in, click the name of the current database or the swap icon
+   in the top-right corner.
+2. Select a database from the dropdown list. It only lists databases you have at
+   least read access to.
+3. Click **Select DB**.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
 When you have an established connection to ArangoDB, the current
 database can be changed explicitly using the `db._useDatabase()`
 method. This switches to the specified database (provided it
 exists and the user can connect to it). From this point on, any
 following action in the same shell or connection uses the
-specified database, unless otherwise specified.
+specified database, unless specified otherwise.
 
-{{< info >}}
-If the database is changed, client drivers need to store the
-current database name on their side, too. This is because connections
-in ArangoDB do not contain any state information. All state information
-is contained in the HTTP request/response data.
-{{< /info >}}
-
-To connect to a specific database after arangosh has started use the command
-described above. It is also possible to specify a database name when invoking
-arangosh. For this purpose, use the command-line parameter `--server.database`,
-e.g.
-
-```sh
-arangosh --server.database test
+```js
+---
+name: arangosh_use_database
+# _useDatabase() returns true but does this get rendered?
+#render: input
+description: ''
+---
+~db._createDatabase("mydb");
+db._useDatabase("mydb");
+~db._useDatabase("_system");
+~db._dropDatabase("mydb");
 ```
 
-Note that commands, actions, scripts or AQL queries should never
-access multiple databases, even if they exist. The only intended and
-supported way in ArangoDB is to use one database at a time for a command,
-an action, a script or a query. Operations started in one database must
-not switch the database later and continue operating in another.
+See [`db._useDatabase()`](../../develop/javascript-api/@arangodb/db-object.md#db_usedatabasename)
+in the JavaScript API for details.
 
-Please keep in mind that each database contains its own system collections,
-which need to be set up when a database is created. This makes the creation
-of a database take a while.
+It is also possible to specify a database name when invoking arangosh. For this
+purpose, use the `--server.database` startup option:
 
-Foxx applications
-are also available only in the context of the database they have been installed 
-in. A new database only provides access to the system applications shipped
-with ArangoDB (that is the web interface at the moment) and no other Foxx
-applications until they are explicitly installed for the particular database.
+```sh
+arangosh --server.database mydb
+```
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+Setting the database context is not an operation, you rather specify the database in
+the URL like a prefix for the path of an endpoint. Omitting `/_db/{database-name}`
+is the same as specifying `/_db/_system`.
+
+```sh
+curl http://localhost:8529/_db/mydb/...
+```
+
+See [Addresses of databases](../../develop/http-api/databases.md#addresses-of-databases)
+in the HTTP API for details.
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+// New connection pool
+const myDb = new Database("http://localhost:8529", "mydb");
+
+// Same connection pool
+const otherDb = myDb.database("other");
+```
+
+See [`new Database()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#constructor)
+and [`Database.database()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#database)
+in the arangojs documentation for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+db, err := client.GetDatabase(ctx, "mydb")
+```
+
+See `ClientDatabase.GetDatabase()` in the
+[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ClientDatabase)
+for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+ArangoDatabase db = arangoDB.db("mydb");
+```
+
+See `ArangoDB.db()` in the
+[arangodb-java-driver documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDB.html#db%28java.lang.String%29)
+for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+db = client.db('mydb')
+```
+
+See `ArangoClient.db()` in the
+[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.client.ArangoClient.db)
+for details.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+### Create a database
+
+Each database contains its own system collections, which need to be set up when
+a database is created. The creation of a database can therefore take a moment.
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. Switch to the `_system` database.
+2. Click **Databases** in the main navigation.
+3. Click **Add database**.
+4. Set a **Name** and optionally configuration options.
+5. Click **Create**.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
+```js
+---
+name: arangosh_create_database
+render: input
+description: ''
+---
+var ok = db._useDatabase("_system"); // _system database context required
+db._createDatabase("mydb");
+~db._dropDatabase("mydb");
+```
+
+See `db._createDatabase()` in the
+[JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#db_createdatabasename--options--users)
+for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl -d '{"name":"mydb"}' http://localhost:8529/_api/database
+```
+
+See `POST /_db/_system/_api/database` in the
+[HTTP API](../../develop/http-api/databases.md#create-a-database) for details.
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+const info = await db.createDatabase("mydb");
+```
+
+See `Database.createDatabase()` in the
+[arangojs documentation](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#createDatabase)
+for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+db, err := client.CreateDatabase(ctx, "mydb")
+```
+
+See `ClientDatabase.CreateDatabase()` in the
+[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ClientDatabase)
+for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+Boolean ok = arangoDB.createDatabase("mydb");
+// -- or --
+ArangoDatabase db = arangoDB.db("mydb");
+Boolean ok = db.create(); 
+```
+
+See [`ArangoDB.createDatabase()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDB.html#createDatabase%28java.lang.String%29)
+and [`ArangoDatabase.create()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDatabase.html#create%28%29)
+in the arangodb-java-driver documentation for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+sys_db = client.db("_system") # _system database context required
+ok = sys_db.create_database("mydb")
+db = client.db("mydb")
+```
+
+See `StandardDatabase.create_database()` in the
+[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.create_database)
+for details.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+### Get a database
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. Switch to the `_system` database.
+2. Click **Databases** in the main navigation.
+3. Click the name or the row of the database.
+
+To switch to the desired database, see [Set the database context](#set-the-database-context).
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
+```js
+---
+name: arangosh_get_database
+description: ''
+---
+~db._createDatabase("mydb");
+var ok = db._useDatabase("mydb");
+db._properties();
+~db._dropDatabase("mydb");
+```
+
+See `db._properties()` in the
+[JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#db_properties)
+for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl http://localhost:8529/_db/mydb/_api/database/current
+```
+
+See `GET /_db/{database-name}/_api/database/current` in the
+[HTTP API](../../develop/http-api/databases.md#get-information-about-the-current-database) for details.
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+const myDb = db.database("mydb");
+const info = await myDb.get();
+```
+
+See `Database.get()` in the
+[arangojs documentation](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#get)
+for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+db, err := client.GetDatabase(ctx, "mydb", nil)
+info, err := db.Info(ctx)
+```
+
+See `Database.GetDatabase()` in the
+[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Database)
+for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+ArangoDatabase db = arangoDB.db("mydb");
+DatabaseEntity info = db.getInfo();
+```
+
+See `ArangoDatabase.getInfo()` in the
+[arangodb-java-driver documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDatabase.html#getInfo%28%29)
+for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+db = client.db("mydb")
+info = db.properties()
+```
+
+See `StandardDatabase.properties()` in the
+[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.properties)
+for details.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+### List all databases
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. Switch to the `_system` database.
+2. Click **Databases** in the main navigation.
+3. All databases are listed, given that no **Filters** are applied.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
+```js
+---
+name: arangosh_list_databases
+description: ''
+---
+~db._createDatabase("mydb");
+var ok = db._useDatabase("_system"); // _system database context required
+db._databases();
+~db._dropDatabase("mydb");
+```
+
+See `db._databases()` in the
+[JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#db_databases)
+for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl http://localhost:8529/_api/database
+```
+
+See `GET /_db/_system/_api/database` in the
+[HTTP API](../../develop/http-api/databases.md#list-all-databases) for details.
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+const dbNames = await db.databases();
+```
+
+See `Database.databases()` in the
+[arangojs documentation](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#databases)
+for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+dbs, err := client.Databases(ctx)
+```
+
+See `ClientDatabase.Databases()` in the
+[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ClientDatabase)
+for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+Collection<String> dbNames = arangoDB.getDatabases();
+```
+
+See `ArangoDB.getDatabases()` in the
+[arangodb-java-driver documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDB.html#getDatabases%28%29)
+for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+sys_db = client.db("_system") # _system database context required
+db_names = sys_db.databases()
+```
+
+See `StandardDatabase.databases()` the
+[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.databases)
+for details.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+### Remove a database
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. Switch to the `_system` database.
+2. Click **Databases** in the main navigation.
+3. Click the name or the row of the database you want to delete.
+4. Click the **Delete** button and confirm.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
+```js
+---
+name: arangosh_delete_database
+description: ''
+---
+~db._createDatabase("mydb");
+var ok = db._useDatabase("_system"); // _system database context required
+db._dropDatabase("mydb");
+```
+
+See `db._dropDatabase()` in the
+[JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#db_dropdatabasename)
+for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl -XDELETE http://localhost:8529/_api/database/mydb
+```
+
+See `DELETE /_db/{database-name}/_api/database` in the
+[HTTP API](../../develop/http-api/databases.md#drop-a-database) for details.
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+const ok = await db.dropDatabase("mydb");
+```
+
+See `Database.dropDatabase()` in the
+[arangojs documentation](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#dropDatabase)
+for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+db, err := client.GetDatabase(ctx, "mydb", nil)
+err = db.Remove(ctx)
+```
+
+See `Database.Remove()` in the
+[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Database)
+for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+ArangoDatabase db = arangoDB.db("mydb");
+Boolean ok = db.drop();
+```
+
+See `ArangoDatabase.drop()` in the
+[arangodb-java-driver documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDatabase.html#drop%28%29)
+for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+sys_db = client.db("_system") # _system database context required
+ok = sys_db.delete_database("mydb")
+```
+
+See `StandardDatabase.delete_database()` in the
+[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.delete_database)
+for details.
+{{< /tab >}}
+
+{{< /tabs >}}
