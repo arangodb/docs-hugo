@@ -344,6 +344,7 @@ description: ''
 ~db._create("products");
 ~db._create("users");
 db._collections();
+~db._useDatabase("_system");
 ~db._dropDatabase("mydb");
 ```
 
@@ -592,23 +593,14 @@ for details.
 ```js
 ---
 name: arangosh_set_collection_properties
+type: cluster
 description: ''
 ---
 ~db._create("coll");
 coll = db._collection("coll");
 coll.properties({
   waitForSync: true,
-  schema: {
-    rule: {
-      type: "object",
-      properties: {
-        attr: {
-          type: "number",
-          minimum: 10
-        }
-      }
-    }
-  }
+  replicationFactor: 3
 });
 ~db._drop("coll");
 ```
@@ -620,11 +612,11 @@ for details.
 
 {{< tab "cURL" >}}
 ```sh
-curl http://localhost:8529/_db/mydb/_api/collection/coll/properties
+curl -XPUT -d '{"waitForSync":true,"replicationFactor":3}' http://localhost:8529/_db/mydb/_api/collection/coll/properties
 ```
 
-See `GET /_db/{database-name}/_api/collection/{collection-name}/properties` in the
-[HTTP API](../../develop/http-api/collections.md#get-the-properties-of-a-collection)
+See `PUT /_db/{database-name}/_api/collection/{collection-name}/properties` in the
+[HTTP API](../../develop/http-api/collections.md#change-the-properties-of-a-collection)
 for details.
 {{< /tab >}}
 
@@ -633,17 +625,7 @@ for details.
 let coll = db.collection("coll");
 const props = await coll.properties({
   waitForSync: true,
-  schema: {
-    rule: {
-      type: "object",
-      properties: {
-        attr: {
-          type: "number",
-          minimum: 10
-        }
-      }
-    }
-  }
+  replicationFactor: 3
 });
 ```
 
@@ -658,17 +640,7 @@ ctx := context.Background()
 coll, err := db.GetCollection(ctx, "coll", nil)
 err = coll.SetProperties(ctx, arangodb.SetCollectionPropertiesOptions{
   WaitForSync: utils.NewType(true),
-  Schema: &arangodb.CollectionSchemaOptions{
-    Rule: map[string]interface{} {
-      "type": "object",
-      "properties": map[string]interface{} {
-        "attr": map[string]interface{} {
-          "type": "number",
-          "minimum": 10,
-        }
-      }
-    }
-  }
+  ReplicationFactor: 3,
 })
 ```
 
@@ -679,30 +651,17 @@ for details.
 
 {{< tab "Java" >}}
 ```java
-String schemaRule = (
-    "{" +
-    "  \"type\": \"object\"," +
-    "  \"properties\": {" +
-    "    \"attr\": {" +
-    "      \"type\": \"number\"," +
-    "      \"minimum\": 10" +
-    "    }" +
-    "  }" +
-    "}");
-
-CollectionPropertiesOptions props = new CollectionPropertiesOptions()
-  .waitForSync(true)
-  .schema(new CollectionSchema()
-    .setRule(schemaRule)
-  );
+CollectionPropertiesOptions options = new CollectionPropertiesOptions()
+  .waitForSync(true);
 
 ArangoCollection coll = db.collection("coll");
-CollectionPropertiesEntity = coll.changeProperties(props);
+CollectionPropertiesEntity props = coll.changeProperties(options);
 ```
+{{< comment >}}TODO: setReplicationFactor not yet supported by Java driver{{< /comment >}}
 
-See `ArangoCollection.changeProperties()` in the
-[arangodb-java-driver documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#changeProperties%28com.arangodb.model.CollectionPropertiesOptions%29)
-for details.
+See [`ArangoCollection.changeProperties()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#changeProperties%28com.arangodb.model.CollectionPropertiesOptions%29)
+and [`CollectionPropertiesEntity`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/entity/CollectionPropertiesEntity.html)
+in the arangodb-java-driver documentation for details.
 {{< /tab >}}
 
 {{< tab "Python" >}}
@@ -710,17 +669,7 @@ for details.
 coll = db.collection("coll")
 props = coll.configure(
   sync=True,
-  schema={
-    "rule": {
-      "type": "object",
-      "properties": {
-        "attr": {
-          "type": "number",
-          "minimum": 10
-        }
-      }
-    }
-  }
+  replication_factor=3
 )
 ```
 

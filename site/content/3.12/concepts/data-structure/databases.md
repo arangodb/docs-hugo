@@ -172,7 +172,7 @@ specified database, unless specified otherwise.
 ```js
 ---
 name: arangosh_use_database
-# _useDatabase() returns true but does this get rendered?
+# TODO: _useDatabase() returns true but does this get rendered?
 #render: input
 description: ''
 ---
@@ -272,7 +272,8 @@ a database is created. The creation of a database can therefore take a moment.
 ```js
 ---
 name: arangosh_create_database
-render: input
+# TODO: Returns true but does this get rendered?
+#render: input
 description: ''
 ---
 var ok = db._useDatabase("_system"); // _system database context required
@@ -363,6 +364,7 @@ description: ''
 ~db._createDatabase("mydb");
 var ok = db._useDatabase("mydb");
 db._properties();
+~db._useDatabase("_system");
 ~db._dropDatabase("mydb");
 ```
 
@@ -539,7 +541,7 @@ for details.
 curl -XDELETE http://localhost:8529/_api/database/mydb
 ```
 
-See `DELETE /_db/{database-name}/_api/database` in the
+See `DELETE /_db/_system/_api/database/{database-name}` in the
 [HTTP API](../../develop/http-api/databases.md#drop-a-database) for details.
 {{< /tab >}}
 
