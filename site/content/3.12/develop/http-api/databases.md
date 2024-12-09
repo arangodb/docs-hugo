@@ -196,7 +196,7 @@ paths:
 description: ''
 name: RestDatabaseGet
 ---
-var url = "/_api/database";
+var url = "/_db/_system/_api/database";
 var response = logCurlRequest('GET', url);
 
 assert(response.code === 200);
@@ -328,7 +328,7 @@ description: |-
   Creating a database named `example`.
 name: RestDatabaseCreate
 ---
-var url = "/_api/database";
+var url = "/_db/_system/_api/database";
 var name = "example";
 try {
   db._dropDatabase(name);
@@ -359,7 +359,7 @@ description: |-
   the newly created database.
 name: RestDatabaseCreateUsers
 ---
-var url = "/_api/database";
+var url = "/_db/_system/_api/database";
 var name = "mydb";
 try {
   db._dropDatabase(name);
@@ -436,7 +436,7 @@ paths:
 description: ''
 name: RestDatabaseDrop
 ---
-var url = "/_api/database";
+var url = "/_db/_system/_api/database";
 var name = "example";
 
 db._createDatabase(name);
