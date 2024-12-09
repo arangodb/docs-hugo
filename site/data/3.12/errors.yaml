@@ -873,6 +873,10 @@
   text: "user function runtime error: %s"
   desc: "Will be raised when a user function throws a runtime exception."
   code: 1583
+- name: ERROR_QUERY_NOT_ELIGIBLE_FOR_PLAN_CACHING
+  text: "query is not eligible for plan caching"
+  desc: "Will be raised when a query is not eligible for plan caching and yet, the usePlanCache option was set to true."
+  code: 1584
 - group: AQL query registry errors
 - name: ERROR_QUERY_BAD_JSON_PLAN
   text: "bad execution plan JSON"
