@@ -3319,7 +3319,6 @@ paths:
                     If set to `true`, the data is synchronized to disk before returning from a
                     document create, update, replace or removal operation.
                   type: boolean
-                  default: false
                 cacheEnabled:
                   description: |
                     Whether the in-memory hash cache for documents should be enabled for this
@@ -3329,7 +3328,6 @@ paths:
                     modified frequently, then you may disable the cache to avoid the maintenance
                     costs.
                   type: boolean
-                  default: false
                 schema:
                   description: |
                     Optional object that specifies the collection level schema for
@@ -3401,7 +3399,6 @@ paths:
                     If a server fails, this is detected automatically and one of the servers holding
                     copies take over, usually without an error being reported.
                   type: integer
-                  default: 1
                 writeConcern:
                   description: |
                     Determines how many copies of each shard are required to be
