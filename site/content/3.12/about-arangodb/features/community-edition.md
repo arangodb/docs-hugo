@@ -219,6 +219,12 @@ see [arangodb.com/community-server/](https://www.arangodb.com/community-server/)
   collection scans. Inlining of certain subqueries to improve execution time.
   <!-- TODO, move to Querying? -->
 
+{{% comment %}} Experimental feature in v3.12.4
+- [**Query plan caching**](../../aql/execution-and-performance/caching-query-plans.md)
+  Reduce the total time for processing queries by avoiding to parse, plan, and
+  optimize the same queries over and over again with an AQL execution plan cache.
+{{% /comment %}}
+
 - [**Parallel gather**](../../release-notes/version-3.11/whats-new-in-3-11.md#parallel-gather):
   Fast, memory-efficient processing of cluster queries by combining
   results in parallel.

@@ -347,13 +347,6 @@ paths:
                     of cursors that are not fully fetched by clients. If not set, a server-defined
                     value will be used (default: 30 seconds).
                   type: integer
-                cache:
-                  description: |
-                    flag to determine whether the AQL query results cache
-                    shall be used. If set to `false`, then any query cache lookup will be skipped
-                    for the query. If set to `true`, it will lead to the query cache being checked
-                    for the query if the query cache mode is either `on` or `demand`.
-                  type: boolean
                 memoryLimit:
                   description: |
                     the maximum number of memory (measured in bytes) that the query is allowed to
@@ -493,6 +486,20 @@ paths:
                         All other resources are freed immediately (locks, RocksDB snapshots). The query
                         will fail before it returns results in case of a conflict.
                       type: boolean
+                    cache:
+                      description: |
+                        Whether the [AQL query results cache](../../../aql/execution-and-performance/caching-query-results.md)
+                        shall be used for adding as well as for retrieving results.
+
+                        If the query cache mode is set to `demand` and you set the `cache` query option
+                        to `true` for a query, then its query result is cached if it's eligible for
+                        caching. If the query cache mode is set to `on`, query results are automatically
+                        cached if they are eligible for caching unless you set the `cache` option to `false`.
+
+                        If you set the `cache` option to `false`, then any query cache lookup is skipped
+                        for the query. If you set it to `true`, the query cache is checked for a cached result
+                        **if** the query cache mode is either set to `on` or `demand`.
+                      type: boolean
                     spillOverThresholdMemoryUsage:
                       description: |
                         This option allows queries to store intermediate and final results temporarily
@@ -554,7 +561,7 @@ paths:
                       description: |
                         If set to `true` or `1`, then the additional query profiling information is returned
                         in the `profile` sub-attribute of the `extra` return attribute, unless the query result
-                        is served from the query cache. If set to `2`, the query includes execution stats
+                        is served from the query results cache. If set to `2`, the query includes execution stats
                         per query plan node in `stats.nodes` sub-attribute of the `extra` return attribute.
                         Additionally, the query plan is returned in the `extra.plan` sub-attribute.
                       type: integer
@@ -964,9 +971,9 @@ paths:
                   cached:
                     description: |
                       A boolean flag indicating whether the query result was served
-                      from the query cache or not. If the query result is served from the query
-                      cache, the `extra` return attribute will not contain any `stats` sub-attribute
-                      and no `profile` sub-attribute.
+                      from the query results cache or not. If the query result is served from the query
+                      cache, the `extra` attribute in the response does not contain the `stats`
+                      and `profile` sub-attributes.
                     type: boolean
         '400':
           description: |
@@ -1692,9 +1699,9 @@ paths:
                   cached:
                     description: |
                       A boolean flag indicating whether the query result was served
-                      from the query cache or not. If the query result is served from the query
-                      cache, the `extra` return attribute will not contain any `stats` sub-attribute
-                      and no `profile` sub-attribute.
+                      from the query results cache or not. If the query result is served from the query
+                      cache, the `extra` attribute in the response does not contain the `stats`
+                      and `profile` sub-attributes.
                     type: boolean
         '400':
           description: |
@@ -2311,9 +2318,9 @@ paths:
                   cached:
                     description: |
                       A boolean flag indicating whether the query result was served
-                      from the query cache or not. If the query result is served from the query
-                      cache, the `extra` return attribute will not contain any `stats` sub-attribute
-                      and no `profile` sub-attribute.
+                      from the query results cache or not. If the query result is served from the query
+                      cache, the `extra` attribute in the response does not contain the `stats`
+                      and `profile` sub-attributes.
                     type: boolean
         '400':
           description: |
@@ -2967,10 +2974,47 @@ paths:
                       type: boolean
                     maxNumberOfPlans:
                       description: |
-                        an optional maximum number of plans that the optimizer is
-                        allowed to generate. Setting this attribute to a low value allows to put a
+                        The maximum number of plans that the optimizer is allowed to
+                        generate. Setting this attribute to a low value allows to put a
                         cap on the amount of work the optimizer does.
                       type: integer
+                    fullCount:
+                      description: |
+                        Whether to calculate the total number of documents matching the
+                        filter conditions as if the query's final top-level `LIMIT` operation
+                        were not applied. This option generally leads to different
+                        execution plans.
+                      type: boolean
+                    profile:
+                      description: |
+                        Whether to include additional query profiling information.
+                        If set to `2`, the response includes the time it took to process
+                        each optimizer rule under `stats.rules`.
+                      type: integer
+                    maxNodesPerCallstack:
+                      description: |
+                        The number of execution nodes in the query plan after that stack splitting is
+                        performed to avoid a potential stack overflow. Defaults to the configured value
+                        of the startup option `--query.max-nodes-per-callstack`.
+
+                        This option is only useful for testing and debugging and normally does not need
+                        any adjustment.
+                      type: integer
+                    maxWarningCount:
+                      description: |
+                        Limits the number of warnings a query can return. The maximum number of warnings
+                        is `10` by default but you can increase or decrease the limit.
+                      type: integer
+                    failOnWarning:
+                      description: |
+                        If set to `true`, the query throws an exception and aborts instead of producing
+                        a warning. You should use this option during development to catch potential issues
+                        early. When the attribute is set to `false`, warnings are not propagated to
+                        exceptions and are returned with the query result.
+
+                        You can use the `--query.fail-on-warning` startup option to adjust the
+                        default value for `failOnWarning` so you don't need to set it on a per-query basis.
+                      type: boolean
                     optimizer:
                       description: |
                         Options related to the query optimizer.
