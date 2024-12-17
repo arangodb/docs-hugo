@@ -29,7 +29,7 @@ object with the following attributes: `rule`, `level` and `message`.
 {{< tabs "interfaces" >}}
 
 {{< tab "Web interface" >}}
-1. If necessary, [switch to the database](databases.md#set-the-database-context)
+1. If necessary, [switch to the database](../databases.md#set-the-database-context)
    that contains the desired collection.
 2. Click **Collections** in the main navigation.
 3. Click the name or row of the desired collection.
