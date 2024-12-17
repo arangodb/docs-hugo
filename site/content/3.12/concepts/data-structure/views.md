@@ -154,16 +154,15 @@ description: |
   Create a View with default properties:
 ---
 ~db._createView("myView", "search-alias");
-var viewSearch = db._createView("myArangoSearchView", "arangosearch");
-var viewAlias = db._createView("mySearchAliasView", "search-alias");
+viewSearch = db._createView("myArangoSearchView", "arangosearch");
+viewAlias = db._createView("mySearchAliasView", "search-alias");
 ~addIgnoreView("myView");
 ~addIgnoreView("myArangoSearchView");
 ~addIgnoreView("mySearchAliasView");
 ```
 
-See `db._createView()` in the
-[JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#db_createviewname-type--properties)
-for details.
+See [`db._createView()`](../../develop/javascript-api/@arangodb/db-object.md#db_createviewname-type--properties)
+in the _JavaScript API_ for details.
 {{< /tab >}}
 
 {{< tab "cURL" >}}
@@ -172,7 +171,7 @@ curl -d '{"name":"myView1","type":"arangosearch"}' http://localhost:8529/_db/myd
 curl -d '{"name":"myView2","type":"search-alias"}' http://localhost:8529/_db/mydb/_api/view
 ```
 
-See `POST /_db/{database-name}/_api/view` in the HTTP API for details:
+See the `POST /_db/{database-name}/_api/view` endpoint in the _HTTP API_ for details:
 - [`arangosearch` View](../../develop/http-api/views/arangosearch-views.md#create-an-arangosearch-view)
 - [`search-alias` View](../../develop/http-api/views/search-alias-views.md#create-a-search-alias-view)
 {{< /tab >}}
@@ -183,9 +182,8 @@ let viewSearch = db.createView("myArangoSearchView", { type: "arangosearch" });
 let viewAlias  = db.createView("mySearchAliasView",  { type: "search-alias" });
 ```
 
-See `Database.createView()` in the
-[arangojs documentation](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#createView)
-for details.
+See [`Database.createView()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#createView)
+in the _arangojs_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Go" >}}
@@ -196,7 +194,7 @@ viewAlias, err := db.CreateArangoSearchAliasView(ctx, "myArangoSearchView", nil)
 ```
 
 See `DatabaseView.CreateArangoSearchView()` and `DatabaseView.CreateArangoSearchAliasView()`
-in the [go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseView)
+in the [_go-driver_ v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseView)
 for details.
 {{< /tab >}}
 
@@ -211,7 +209,7 @@ ViewEntity viewAlias  = db.createSearchAlias("mySearchAliasView", null);
 
 See `ArangoDatabase.createView()`, `ArangoDatabase.createArangoSearch()`, and
 `ArangoDatabase.createSearchAlias()` in the
-[arangodb-java-driver documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDatabase.html)
+[_arangodb-java-driver_ documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDatabase.html)
 for details.
 {{< /tab >}}
 
@@ -220,9 +218,8 @@ for details.
 info = db.create_view("myView", "arangosearch")
 ```
 
-See `StandardDatabase.create_view()` in the
-[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.create_view)
-for details.
+See [`StandardDatabase.create_view()`](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.create_view)
+in the _python-arango_ documentation for details.
 {{< /tab >}}
 
 {{< /tabs >}}
@@ -245,12 +242,11 @@ name: viewUsage_02
 description: |
   Get the View called `myView` by its name:
 ---
-var view = db._view("myView");
+view = db._view("myView");
 ```
 
-See `db._view()` in the
-[JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#db_viewview)
-for details.
+See [`db._view()`](../../develop/javascript-api/@arangodb/db-object.md#db_viewview)
+in the _JavaScript API_ for details.
 {{< /tab >}}
 
 {{< tab "cURL" >}}
@@ -258,8 +254,8 @@ for details.
 curl http://localhost:8529/_db/mydb/_api/view/myView
 ```
 
-See `GET /_db/{database-name}/_api/view/{view-name}` in the
-[HTTP API](../../develop/http-api/views/_index.md) for details.
+See the [`GET /_db/{database-name}/_api/view/{view-name}`](../../develop/http-api/views/_index.md)
+endpoint in the _HTTP API_ for details.
 {{< /tab >}}
 
 {{< tab "JavaScript" >}}
@@ -268,8 +264,8 @@ let view = db.view("myView");
 const info = await view.get();
 ```
 
-See `Database.view()` in the
-[arangojs documentation](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#view)
+See [`Database.view()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#view)
+in the _arangojs_ documentation
 for details.
 {{< /tab >}}
 
@@ -279,9 +275,8 @@ ctx := context.Background()
 view, err := db.View(ctx, "myView")
 ```
 
-See `DatabaseView.View()` in the
-[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseView)
-for details.
+See [`DatabaseView.View()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseView)
+in the _go-driver_ v2 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -294,7 +289,7 @@ SearchAlias viewAlias = db.searchAlias("mySearchAliasView");
 
 See `ArangoDatabase.view(String name)`, `ArangoDatabase.arangoSearch(String name)`,
 and `ArangoDatabase.searchAlias(String name)` in the
-[arangodb-java-driver documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDatabase.html)
+[_arangodb-java-driver_ documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDatabase.html)
 for details.
 {{< /tab >}}
 
@@ -303,9 +298,8 @@ for details.
 info = db.view_info("myView")
 ```
 
-See `StandardDatabase.view()` in the
-[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.view)
-for details.
+See [`StandardDatabase.view()`](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.view)
+in the _python-arango_ documentation for details.
 {{< /tab >}}
 
 {{< /tabs >}}
@@ -331,9 +325,8 @@ var view = db._view("myView");
 view.properties();
 ```
 
-See `view.properties()` in the
-[JavaScript API](../../develop/javascript-api/@arangodb/view-object.md#viewpropertiesnew-properties--partialupdate)
-for details.
+See [`view.properties()`](../../develop/javascript-api/@arangodb/view-object.md#viewpropertiesnew-properties--partialupdate)
+in the _JavaScript API_ for details.
 {{< /tab >}}
 
 {{< tab "cURL" >}}
@@ -341,7 +334,8 @@ for details.
 curl http://localhost:8529/_db/mydb/_api/view/myView/properties
 ```
 
-See `GET /_db/{database-name}/_api/view/{view-name}/properties` in the HTTP API for details:
+See the `GET /_db/{database-name}/_api/view/{view-name}/properties` endpoint in
+the _HTTP API_ for details:
 - [`arangosearch` View](../../develop/http-api/views/arangosearch-views.md#get-the-properties-of-a-view)
 - [`search-alias` View](../../develop/http-api/views/search-alias-views.md#get-information-about-a-view)
 {{< /tab >}}
@@ -352,9 +346,8 @@ let view = db.view("myView");
 const props = await view.properties();
 ```
 
-See `View.properties()` in the
-[arangojs documentation](https://arangodb.github.io/arangojs/latest/classes/view.View.html#properties)
-for details.
+See [`View.properties()`](https://arangodb.github.io/arangojs/latest/classes/view.View.html#properties)
+in the _arangojs_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Go" >}}
@@ -380,7 +373,7 @@ default:
 
 See [`ArangoSearchView.Properties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ArangoSearchView)
 and [`ArangoSearchViewAlias.Properties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ArangoSearchViewAlias)
-in the go-driver v2 documentation for details.
+in the _go-driver_ v2 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -392,10 +385,9 @@ SearchAlias viewAlias = db.view("mySearchAliasView");
 SearchAliasPropertiesEntity viewAlias.getProperties();
 ```
 
-See `ArangoSearch.getProperties()` and `SearchAlias.getProperties()`
-in the arangodb-java-driver documentation for details:
-- [`arangosearch` View](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoSearch.html#getProperties%28%29)
-- [`search-alias` View](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/SearchAlias.html#getProperties%28%29)
+See [`ArangoSearch.getProperties()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoSearch.html#getProperties%28%29)
+and [`SearchAlias.getProperties()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/SearchAlias.html#getProperties%28%29)
+in the _arangodb-java-driver_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Python" >}}
@@ -403,14 +395,13 @@ in the arangodb-java-driver documentation for details:
 props = db.view("myView")
 ```
 
-See `StandardDatabase.view()` in the
-[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.view)
-for details.
+See [`StandardDatabase.view()`](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.view)
+in the _python-arango_ documentation for details.
 {{< /tab >}}
 
 {{< /tabs >}}
 
-### Set a View property
+### Set View properties
 
 {{< tabs "interfaces" >}}
 
@@ -453,9 +444,8 @@ viewAlias.properties({
 ~db._drop("coll");
 ```
 
-See `view.properties()` in the
-[JavaScript API](../../develop/javascript-api/@arangodb/view-object.md#viewpropertiesnew-properties--partialupdate)
-for details.
+See [`view.properties()`](../../develop/javascript-api/@arangodb/view-object.md#viewpropertiesnew-properties--partialupdate)
+in the _JavaScript API_ for details.
 {{< /tab >}}
 
 {{< tab "cURL" >}}
@@ -464,7 +454,8 @@ curl -XPATCH -d '{"cleanupIntervalStep":12,"links":{"coll":{"includeAllFields":t
 curl -XPATCH -d '{"indexes":[{"collection":"coll","index":"idx"}]}' http://localhost:8529/_db/mydb/_api/view/mySearchAliasView/properties
 ```
 
-See `PATCH /_db/{database-name}/_api/view/{view-name}/properties` in the HTTP API for details:
+See the `PATCH /_db/{database-name}/_api/view/{view-name}/properties` endpoint
+in the _HTTP API_ for details:
 - [`arangosearch` View](../../develop/http-api/views/arangosearch-views.md#update-the-properties-of-an-arangosearch-view)
 - [`search-alias` View](../../develop/http-api/views/search-alias-views.md#update-the-properties-of-a-search-alias-view)
 {{< /tab >}}
@@ -482,9 +473,8 @@ const info = await view.updateProperties({
 });
 ```
 
-See `View.updateProperties()` in the
-[arangojs documentation](https://arangodb.github.io/arangojs/latest/classes/view.View.html#updateProperties)
-for details.
+See [`View.updateProperties()`](https://arangodb.github.io/arangojs/latest/classes/view.View.html#updateProperties)
+in the _arangojs_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Go" >}}
@@ -515,7 +505,7 @@ err := viewAlias.SetProperties(ArangoSearchAliasViewProperties{
 
 See [`ArangoSearchView.SetProperties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ArangoSearchView)
 and [`ArangoSearchViewAlias.SetProperties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ArangoSearchViewAlias)
-in the go-driver v2 documentation for details.
+in the _go-driver_ v2 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -538,7 +528,7 @@ SearchAliasPropertiesEntity viewAlias.updateProperties(
 
 See [`ArangoSearch.updateProperties()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoSearch.html#updateProperties%28com.arangodb.model.arangosearch.ArangoSearchPropertiesOptions%29)
 and [`SearchAlias.updateProperties()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/SearchAlias.html#updateProperties%28com.arangodb.model.arangosearch.SearchAliasPropertiesOptions%29)
-in the arangodb-java-driver documentation for details.
+in the _arangodb-java-driver_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Python" >}}
@@ -559,9 +549,8 @@ props = db.update_view("mySearchAliasView", {
 })
 ```
 
-See `StandardDatabase.update_view()` in the
-[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.update_view)
-for details.
+See [`StandardDatabase.update_view()`](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.update_view)
+in the _python-arango_ documentation for details.
 {{< /tab >}}
 
 {{< /tabs >}}
@@ -575,7 +564,7 @@ for details.
    that contains the desired View.
 2. Click **Views** in the main navigation.
 3. Click the name or row of the desired View.
-4. Click the **Delete** button and confirm.
+4. Click the **Delete** button and confirm the deletion.
 {{< /tab >}}
 
 {{< tab "arangosh" >}}
@@ -592,9 +581,8 @@ db._dropView("myView");
 ~db._dropView("mySearchAliasView");
 ```
 
-See `db._dropView()` in the
-[JavaScript API](../../develop/javascript-api/@arangodb/view-object.md#viewdrop)
-for details.
+See [`db._dropView()`](../../develop/javascript-api/@arangodb/view-object.md#viewdrop)
+in the _JavaScript API_ for details.
 {{< /tab >}}
 
 {{< tab "cURL" >}}
@@ -602,7 +590,8 @@ for details.
 curl -XDELETE http://localhost:8529/_db/mydb/_api/view/myView
 ```
 
-See `DELETE /_db/{database-name/_api/view/{view-name}` in the HTTP API for details:
+See the `DELETE /_db/{database-name/_api/view/{view-name}` endpoint in the
+_HTTP API_ for details:
 - [`arangosearch` View](../../develop/http-api/views/arangosearch-views.md#drop-a-view)
 - [`search-alias` View](../../develop/http-api/views/search-alias-views.md#drop-a-view)
 {{< /tab >}}
@@ -613,9 +602,8 @@ let view = db.view("myView");
 const ok = view.drop();
 ```
 
-See `View.drop()` in the
-[arangojs documentation](https://arangodb.github.io/arangojs/latest/classes/view.View.html#drop)
-for details.
+See [`View.drop()`](https://arangodb.github.io/arangojs/latest/classes/view.View.html#drop)
+in the _arangojs_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Go" >}}
@@ -625,9 +613,8 @@ view, err := db.View(ctx, "myView")
 err = view.Remove(ctx)
 ```
 
-See `View.Remove()` in the
-[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#View)
-for details.
+See [`View.Remove()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#View)
+in the _go-driver_ v2 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -636,9 +623,8 @@ ArangoView view = db.view("myView");
 view.drop();
 ```
 
-See `StandardDatabase.delete_view()` in the
-[arangodb-java-driver documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoView.html#drop%28%29)
-for details.
+See [`ArangoView.drop()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoView.html#drop%28%29)
+in the _arangodb-java-driver_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Python" >}}
@@ -646,8 +632,8 @@ for details.
 ok = db.delete_view("myView")
 ```
 
-See the [python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.delete_view)
-for details.
+See [`StandardDatabase.delete_view()`](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.delete_view)
+in the _python-arango_ documentation for details.
 {{< /tab >}}
 
 {{< /tabs >}}

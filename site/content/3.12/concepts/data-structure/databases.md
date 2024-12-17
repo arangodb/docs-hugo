@@ -172,8 +172,6 @@ specified database, unless specified otherwise.
 ```js
 ---
 name: arangosh_use_database
-# TODO: _useDatabase() returns true but does this get rendered?
-#render: input
 description: ''
 ---
 ~db._createDatabase("mydb");
@@ -183,7 +181,7 @@ db._useDatabase("mydb");
 ```
 
 See [`db._useDatabase()`](../../develop/javascript-api/@arangodb/db-object.md#db_usedatabasename)
-in the JavaScript API for details.
+in the _JavaScript API_ for details.
 
 It is also possible to specify a database name when invoking arangosh. For this
 purpose, use the `--server.database` startup option:
@@ -203,7 +201,7 @@ curl http://localhost:8529/_db/mydb/...
 ```
 
 See [Addresses of databases](../../develop/http-api/databases.md#addresses-of-databases)
-in the HTTP API for details.
+in the _HTTP API_ for details.
 {{< /tab >}}
 
 {{< tab "JavaScript" >}}
@@ -217,7 +215,7 @@ const otherDb = myDb.database("other");
 
 See [`new Database()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#constructor)
 and [`Database.database()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#database)
-in the arangojs documentation for details.
+in the _arangojs_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Go" >}}
@@ -226,9 +224,8 @@ ctx := context.Background()
 db, err := client.GetDatabase(ctx, "mydb")
 ```
 
-See `ClientDatabase.GetDatabase()` in the
-[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ClientDatabase)
-for details.
+See [`ClientDatabase.GetDatabase()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ClientDatabase)
+in the _go-driver_ v2 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -236,9 +233,8 @@ for details.
 ArangoDatabase db = arangoDB.db("mydb");
 ```
 
-See `ArangoDB.db()` in the
-[arangodb-java-driver documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDB.html#db%28java.lang.String%29)
-for details.
+See [`ArangoDB.db()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDB.html#db%28java.lang.String%29)
+in the _arangodb-java-driver_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Python" >}}
@@ -246,9 +242,8 @@ for details.
 db = client.db('mydb')
 ```
 
-See `ArangoClient.db()` in the
-[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.client.ArangoClient.db)
-for details.
+See [`ArangoClient.db()`](https://docs.python-arango.com/en/main/specs.html#arango.client.ArangoClient.db)
+in the _python-arango_ documentation for details.
 {{< /tab >}}
 
 {{< /tabs >}}
@@ -272,8 +267,6 @@ a database is created. The creation of a database can therefore take a moment.
 ```js
 ---
 name: arangosh_create_database
-# TODO: Returns true but does this get rendered?
-#render: input
 description: ''
 ---
 var ok = db._useDatabase("_system"); // _system database context required
@@ -281,9 +274,8 @@ db._createDatabase("mydb");
 ~db._dropDatabase("mydb");
 ```
 
-See `db._createDatabase()` in the
-[JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#db_createdatabasename--options--users)
-for details.
+See [`db._createDatabase()`](../../develop/javascript-api/@arangodb/db-object.md#db_createdatabasename--options--users)
+in the _JavaScript API_ for details.
 {{< /tab >}}
 
 {{< tab "cURL" >}}
@@ -291,8 +283,8 @@ for details.
 curl -d '{"name":"mydb"}' http://localhost:8529/_api/database
 ```
 
-See `POST /_db/_system/_api/database` in the
-[HTTP API](../../develop/http-api/databases.md#create-a-database) for details.
+See the [`POST /_db/_system/_api/database`](../../develop/http-api/databases.md#create-a-database)
+endpoint in the _HTTP API_ for details.
 {{< /tab >}}
 
 {{< tab "JavaScript" >}}
@@ -300,9 +292,8 @@ See `POST /_db/_system/_api/database` in the
 const info = await db.createDatabase("mydb");
 ```
 
-See `Database.createDatabase()` in the
-[arangojs documentation](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#createDatabase)
-for details.
+See [`Database.createDatabase()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#createDatabase)
+in the _arangojs_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Go" >}}
@@ -311,9 +302,8 @@ ctx := context.Background()
 db, err := client.CreateDatabase(ctx, "mydb")
 ```
 
-See `ClientDatabase.CreateDatabase()` in the
-[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ClientDatabase)
-for details.
+See [`ClientDatabase.CreateDatabase()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ClientDatabase)
+in the _go-driver_ v2 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -326,7 +316,7 @@ Boolean ok = db.create();
 
 See [`ArangoDB.createDatabase()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDB.html#createDatabase%28java.lang.String%29)
 and [`ArangoDatabase.create()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDatabase.html#create%28%29)
-in the arangodb-java-driver documentation for details.
+in the _arangodb-java-driver_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Python" >}}
@@ -336,9 +326,8 @@ ok = sys_db.create_database("mydb")
 db = client.db("mydb")
 ```
 
-See `StandardDatabase.create_database()` in the
-[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.create_database)
-for details.
+See [`StandardDatabase.create_database()`](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.create_database)
+in the _python-arango_ documentation for details.
 {{< /tab >}}
 
 {{< /tabs >}}
@@ -368,9 +357,8 @@ db._properties();
 ~db._dropDatabase("mydb");
 ```
 
-See `db._properties()` in the
-[JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#db_properties)
-for details.
+See [`db._properties()`](../../develop/javascript-api/@arangodb/db-object.md#db_properties)
+in the _JavaScript API_ for details.
 {{< /tab >}}
 
 {{< tab "cURL" >}}
@@ -378,8 +366,8 @@ for details.
 curl http://localhost:8529/_db/mydb/_api/database/current
 ```
 
-See `GET /_db/{database-name}/_api/database/current` in the
-[HTTP API](../../develop/http-api/databases.md#get-information-about-the-current-database) for details.
+See the [`GET /_db/{database-name}/_api/database/current`](../../develop/http-api/databases.md#get-information-about-the-current-database)
+endpoint in the _HTTP API_ for details.
 {{< /tab >}}
 
 {{< tab "JavaScript" >}}
@@ -388,9 +376,8 @@ const myDb = db.database("mydb");
 const info = await myDb.get();
 ```
 
-See `Database.get()` in the
-[arangojs documentation](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#get)
-for details.
+See [`Database.get()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#get)
+in the _arangojs_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Go" >}}
@@ -400,9 +387,8 @@ db, err := client.GetDatabase(ctx, "mydb", nil)
 info, err := db.Info(ctx)
 ```
 
-See `Database.GetDatabase()` in the
-[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Database)
-for details.
+See [`Database.GetDatabase()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Database)
+in the _go-driver_ v2 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -411,9 +397,8 @@ ArangoDatabase db = arangoDB.db("mydb");
 DatabaseEntity info = db.getInfo();
 ```
 
-See `ArangoDatabase.getInfo()` in the
-[arangodb-java-driver documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDatabase.html#getInfo%28%29)
-for details.
+See [`ArangoDatabase.getInfo()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDatabase.html#getInfo%28%29)
+in the _arangodb-java-driver_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Python" >}}
@@ -422,9 +407,8 @@ db = client.db("mydb")
 info = db.properties()
 ```
 
-See `StandardDatabase.properties()` in the
-[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.properties)
-for details.
+See [`StandardDatabase.properties()`](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.properties)
+in the _python-arango_ documentation for details.
 {{< /tab >}}
 
 {{< /tabs >}}
@@ -451,9 +435,8 @@ db._databases();
 ~db._dropDatabase("mydb");
 ```
 
-See `db._databases()` in the
-[JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#db_databases)
-for details.
+See [`db._databases()`](../../develop/javascript-api/@arangodb/db-object.md#db_databases)
+in the _JavaScript API_ for details.
 {{< /tab >}}
 
 {{< tab "cURL" >}}
@@ -461,8 +444,8 @@ for details.
 curl http://localhost:8529/_api/database
 ```
 
-See `GET /_db/_system/_api/database` in the
-[HTTP API](../../develop/http-api/databases.md#list-all-databases) for details.
+See the [`GET /_db/_system/_api/database`](../../develop/http-api/databases.md#list-all-databases)
+endpoint in the _HTTP API_ for details.
 {{< /tab >}}
 
 {{< tab "JavaScript" >}}
@@ -470,9 +453,8 @@ See `GET /_db/_system/_api/database` in the
 const dbNames = await db.databases();
 ```
 
-See `Database.databases()` in the
-[arangojs documentation](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#databases)
-for details.
+See [`Database.databases()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#databases)
+in the _arangojs_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Go" >}}
@@ -481,9 +463,8 @@ ctx := context.Background()
 dbs, err := client.Databases(ctx)
 ```
 
-See `ClientDatabase.Databases()` in the
-[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ClientDatabase)
-for details.
+See [`ClientDatabase.Databases()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ClientDatabase)
+in the _go-driver_ v2 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -491,9 +472,8 @@ for details.
 Collection<String> dbNames = arangoDB.getDatabases();
 ```
 
-See `ArangoDB.getDatabases()` in the
-[arangodb-java-driver documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDB.html#getDatabases%28%29)
-for details.
+See [`ArangoDB.getDatabases()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDB.html#getDatabases%28%29)
+in the _arangodb-java-driver_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Python" >}}
@@ -502,9 +482,8 @@ sys_db = client.db("_system") # _system database context required
 db_names = sys_db.databases()
 ```
 
-See `StandardDatabase.databases()` the
-[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.databases)
-for details.
+See [`StandardDatabase.databases()`](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.databases)
+in the _python-arango_ documentation for details.
 {{< /tab >}}
 
 {{< /tabs >}}
@@ -517,7 +496,7 @@ for details.
 1. Switch to the `_system` database.
 2. Click **Databases** in the main navigation.
 3. Click the name or the row of the database you want to delete.
-4. Click the **Delete** button and confirm.
+4. Click the **Delete** button and confirm the deletion.
 {{< /tab >}}
 
 {{< tab "arangosh" >}}
@@ -531,9 +510,8 @@ var ok = db._useDatabase("_system"); // _system database context required
 db._dropDatabase("mydb");
 ```
 
-See `db._dropDatabase()` in the
-[JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#db_dropdatabasename)
-for details.
+See [`db._dropDatabase()`](../../develop/javascript-api/@arangodb/db-object.md#db_dropdatabasename)
+in the _JavaScript API_ for details.
 {{< /tab >}}
 
 {{< tab "cURL" >}}
@@ -541,8 +519,8 @@ for details.
 curl -XDELETE http://localhost:8529/_api/database/mydb
 ```
 
-See `DELETE /_db/_system/_api/database/{database-name}` in the
-[HTTP API](../../develop/http-api/databases.md#drop-a-database) for details.
+See the [`DELETE /_db/_system/_api/database/{database-name}`](../../develop/http-api/databases.md#drop-a-database)
+endpoint in the _HTTP API_ for details.
 {{< /tab >}}
 
 {{< tab "JavaScript" >}}
@@ -550,9 +528,8 @@ See `DELETE /_db/_system/_api/database/{database-name}` in the
 const ok = await db.dropDatabase("mydb");
 ```
 
-See `Database.dropDatabase()` in the
-[arangojs documentation](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#dropDatabase)
-for details.
+See [`Database.dropDatabase()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#dropDatabase)
+in the _arangojs_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Go" >}}
@@ -562,9 +539,8 @@ db, err := client.GetDatabase(ctx, "mydb", nil)
 err = db.Remove(ctx)
 ```
 
-See `Database.Remove()` in the
-[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Database)
-for details.
+See [`Database.Remove()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Database)
+in the _go-driver_ v2 documentation for details.
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -573,9 +549,8 @@ ArangoDatabase db = arangoDB.db("mydb");
 Boolean ok = db.drop();
 ```
 
-See `ArangoDatabase.drop()` in the
-[arangodb-java-driver documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDatabase.html#drop%28%29)
-for details.
+See [`ArangoDatabase.drop()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDatabase.html#drop%28%29)
+in the _arangodb-java-driver_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Python" >}}
@@ -584,9 +559,8 @@ sys_db = client.db("_system") # _system database context required
 ok = sys_db.delete_database("mydb")
 ```
 
-See `StandardDatabase.delete_database()` in the
-[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.delete_database)
-for details.
+See [`StandardDatabase.delete_database()`](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.delete_database)
+in the _python-arango_ documentation for details.
 {{< /tab >}}
 
 {{< /tabs >}}

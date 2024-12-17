@@ -143,544 +143,7 @@ attempt. Even if an insert fails, the auto-increment value is never rolled back.
 That means there may exist gaps in the sequence of assigned auto-increment values
 if inserts fails.
 
-## Collection interfaces
-
-The following sections show examples of how you can use the APIs of ArangoDB and
-the official drivers, as well as the built-in web interface, to perform common
-operations related to collections. For less common operations and other drivers,
-see the corresponding reference documentation.
-
-### Create a collection
-
-{{< tabs "interfaces" >}}
-
-{{< tab "Web interface" >}}
-1. Click **Collections** in the main navigation.
-2. Click **Add collection**.
-3. Set a **Name** and optionally configuration options.
-4. Click **Create**.
-{{< /tab >}}
-
-{{< tab "arangosh" >}}
-```js
----
-name: arangosh_create_collection
-description: ''
----
-coll = db._create("coll");
-~db._drop("coll");
-```
-See `db._create()` in the
-[JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#db_createcollection-name--properties--type--options)
-for details.
-{{< /tab >}}
-
-{{< tab "cURL" >}}
-```sh
-curl -d '{"name":"coll"}' http://localhost:8529/_db/mydb/_api/collection
-```
-
-See `POST /_db/{database-name}/_api/collection` in the
-[HTTP API](../../develop/http-api/databases.md#create-a-database) for details.
-{{< /tab >}}
-
-{{< tab "JavaScript" >}}
-```js
-const info = await db.createCollection("coll");
-// -- or --
-let coll = db.collection("coll");
-const info = await coll.create();
-```
-
-See [`Database.createCollection()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#createCollection)
-and [`DocumentCollection.create()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#create)
-in the arangojs documentation for details.
-{{< /tab >}}
-
-{{< tab "Go" >}}
-```go
-ctx := context.Background()
-coll, err := db.CreateCollection(ctx, "coll")
-```
-
-See `DatabaseCollection.CreateCollection()` in the
-[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseCollection)
-for details.
-{{< /tab >}}
-
-{{< tab "Java" >}}
-```java
-CollectionEntity coll = db.createCollection("coll");
-// -- or --
-CollectionEntity coll = db.collection("coll").create();
-```
-
-See [`ArangoDB.createCollection()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDB.html#db%28java.lang.String%29)
-and [`ArangoCollection.create()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#create%28%29)
-in the arangodb-java-driver documentation for details.
-{{< /tab >}}
-
-{{< tab "Python" >}}
-```py
-coll = db.create_collection("coll")
-```
-
-See `StandardDatabase.create_collection()` in the
-[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.create_collection)
-for details.
-{{< /tab >}}
-
-{{< /tabs >}}
-
-### Get a collection
-
-{{< tabs "interfaces" >}}
-
-{{< tab "Web interface" >}}
-1. If necessary, [switch to the database](databases.md#set-the-database-context)
-   that contains the desired collection.
-2. Click **Collections** in the main navigation.
-3. Click the name or row of the desired collection.
-{{< /tab >}}
-
-{{< tab "arangosh" >}}
-```js
----
-name: arangosh_get_collection
-description: ''
----
-~db._create("coll");
-coll = db._collection("coll");
-~db._drop("coll");
-```
-
-There is a short-cut that you can use:
-
-```js
-let coll = db.coll
-// or
-let coll = db["coll"]
-```
-
-See `db._collection()` in the
-[JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#db_collectioncollection)
-for details.
-{{< /tab >}}
-
-{{< tab "cURL" >}}
-```sh
-curl http://localhost:8529/_db/mydb/_api/collection/coll
-```
-
-See `GET /_db/{database-name}/_api/collection/{collection-name}` in the
-[HTTP API](../../develop/http-api/collections.md#get-the-collection-information)
-for details.
-{{< /tab >}}
-
-{{< tab "JavaScript" >}}
-```js
-let coll = db.collection("coll");
-const info = await coll.get();
-```
-
-See `Database.collection()` in the
-[arangojs documentation](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#collection)
-for details.
-{{< /tab >}}
-
-{{< tab "Go" >}}
-```go
-ctx := context.Background()
-coll, err := db.GetCollection(ctx, "coll", nil)
-```
-
-See `DatabaseCollection.Collection()` in the
-[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseCollection)
-for details.
-{{< /tab >}}
-
-{{< tab "Java" >}}
-```java
-ArangoCollection coll = db.collection("coll");
-```
-
-See `ArangoDB.collection()` in the
-[arangodb-java-driver documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDB.html#db%28java.lang.String%29)
-for details.
-{{< /tab >}}
-
-{{< tab "Python" >}}
-```py
-coll = db.collection("coll")
-```
-
-See `StandardDatabase.collection()` in the
-[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.collection)
-for details.
-{{< /tab >}}
-
-{{< /tabs >}}
-
-### List all collections
-
-{{< tabs "interfaces" >}}
-
-{{< tab "Web interface" >}}
-1. If necessary, [switch to the database](databases.md#set-the-database-context)
-   that you want to list the collection of.
-2. Click **Collections** in the main navigation.
-3. All collections are listed, given that no **Filters** are applied and you
-   have at least read access for all collections.
-{{< /tab >}}
-
-{{< tab "arangosh" >}}
-```js
----
-name: arangosh_list_collections
-description: ''
----
-~db._createDatabase("mydb");
-~db._useDatabase("mydb");
-~db._create("products");
-~db._create("users");
-db._collections();
-~db._useDatabase("_system");
-~db._dropDatabase("mydb");
-```
-
-See `db._collections()` in the
-[JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#collections)
-for details.
-{{< /tab >}}
-
-{{< tab "cURL" >}}
-```sh
-curl http://localhost:8529/_db/mydb/_api/collection
-```
-
-See `GET /_db/{database-name}/_api/collection` in the
-[HTTP API](../../develop/http-api/collections.md#get-the-collection-information) for details.
-{{< /tab >}}
-
-{{< tab "JavaScript" >}}
-```js
-const colls = await db.collections();
-```
-
-See `Database.collections()` in the
-[arangojs documentation](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#collections)
-for details.
-{{< /tab >}}
-
-{{< tab "Go" >}}
-```go
-ctx := context.Background()
-colls, err := db.Collections(ctx)
-```
-
-See `DatabaseCollection.Collections()` in the
-[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseCollection)
-for details.
-{{< /tab >}}
-
-{{< tab "Java" >}}
-```java
-Collection<CollectionEntity> colls = db.getCollections();
-```
-
-See `ArangoDatabase.getCollections()` in the
-[arangodb-java-driver documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDatabase.html#getCollections%28%29)
-for details.
-{{< /tab >}}
-
-{{< tab "Python" >}}
-```py
-colls = db.collections()
-```
-
-See `StandardDatabase.collections()` in the [python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.collections)
-for details.
-{{< /tab >}}
-
-{{< /tabs >}}
-
-### Remove a collection
-
-{{< tabs "interfaces" >}}
-
-{{< tab "Web interface" >}}
-1. If necessary, [switch to the database](databases.md#set-the-database-context)
-   that contains the desired collection.
-2. Click **Collections** in the main navigation.
-3. Click the name or row of the desired collection.
-4. Go to the **Settings** tab.
-5. Click the **Delete** button and confirm.
-{{< /tab >}}
-
-{{< tab "arangosh" >}}
-```js
----
-name: arangosh_delete_collection
-render: input
-description: ''
----
-~db._create("coll");
-db._drop("coll");
-```
-
-See `db._drop()` in the
-[JavaScript API](../../develop/javascript-api/@arangodb/db-object.md#db_dropcollection--options)
-for details.
-{{< /tab >}}
-
-{{< tab "cURL" >}}
-```sh
-curl -XDELETE http://localhost:8529/_db/mydb/_api/collection/coll
-```
-
-See `DELETE /_db/{database-name}/_api/collection/{collection-name}` in the
-[HTTP API](../../develop/http-api/collections.md#drop-a-collection) for details.
-{{< /tab >}}
-
-{{< tab "JavaScript" >}}
-```js
-let coll = db.collection("coll");
-const status = await coll.drop();
-```
-
-See `DocumentCollection.drop()` in the
-[arangojs documentation](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#drop)
-for details.
-{{< /tab >}}
-
-{{< tab "Go" >}}
-```go
-ctx := context.Background()
-coll, err := db.GetCollection(ctx, "coll", nil)
-err = coll.Remove(ctx)
-```
-
-See `Collection.Remove()` in the
-[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)
-for details.
-{{< /tab >}}
-
-{{< tab "Java" >}}
-```java
-ArangoCollection coll = db.collection("coll");
-coll.drop();
-```
-
-See `ArangoCollection.drop()` in the
-[arangodb-java-driver documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#drop%28%29)
-for details.
-{{< /tab >}}
-
-{{< tab "Python" >}}
-```py
-ok = db.delete_collection("coll")
-```
-
-See `StandardDatabase.delete_collection()` in the
-[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.delete_collection)
-for details.
-{{< /tab >}}
-
-{{< /tabs >}}
-
-### Get collection properties
-
-{{< tabs "interfaces" >}}
-
-{{< tab "Web interface" >}}
-1. If necessary, [switch to the database](databases.md#set-the-database-context)
-   that contains the desired collection.
-2. Click **Collections** in the main navigation.
-3. Click the name or row of the desired collection.
-4. The properties are listed in the **Info**, **Computed Values**, and
-   **Schema** tabs.
-{{< /tab >}}
-
-{{< tab "arangosh" >}}
-```js
----
-name: arangosh_get_collection_properties
-description: ''
----
-~db._create("coll");
-coll = db._collection("coll");
-coll.properties();
-~db._drop("coll");
-```
-
-See `collection.properties()` in the
-[JavaScript API](../../develop/javascript-api/@arangodb/collection-object.md#collectionpropertiesproperties)
-for details.
-{{< /tab >}}
-
-{{< tab "cURL" >}}
-```sh
-curl http://localhost:8529/_db/mydb/_api/collection/coll/properties
-```
-
-See `GET /_db/{database-name}/_api/collection/{collection-name}/properties` in the
-[HTTP API](../../develop/http-api/collections.md#get-the-properties-of-a-collection)
-for details.
-{{< /tab >}}
-
-{{< tab "JavaScript" >}}
-```js
-let coll = db.collection("coll");
-const props = await coll.properties();
-```
-
-See `DocumentCollection.properties()` in the
-[arangojs documentation](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#properties)
-for details.
-{{< /tab >}}
-
-{{< tab "Go" >}}
-```go
-ctx := context.Background()
-coll, err := db.GetCollection(ctx, "coll", nil)
-props, err := coll.Properties()
-```
-
-See `Collection.Properties()` in the
-[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)
-for details.
-{{< /tab >}}
-
-{{< tab "Java" >}}
-```java
-ArangoCollection coll = db.collection("coll");
-CollectionPropertiesEntity = coll.getProperties();
-```
-
-See `ArangoCollection.getProperties()` in the
-[arangodb-java-driver documentation](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#getProperties%28%29)
-for details.
-{{< /tab >}}
-
-{{< tab "Python" >}}
-```py
-coll = db.collection("coll")
-props = coll.properties()
-```
-
-See `Collection.properties()` in the
-[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.collection.Collection.properties)
-for details.
-{{< /tab >}}
-
-{{< /tabs >}}
-
-### Set collection properties
-
-{{< tabs "interfaces" >}}
-
-{{< tab "Web interface" >}}
-1. If necessary, [switch to the database](databases.md#set-the-database-context)
-   that contains the desired collection.
-2. Click **Collections** in the main navigation.
-3. Click the name or row of the desired collection.
-4. The properties you can change are listed in the **Settings**,
-   **Computed Values**, and **Schema** tabs.
-5. Make the desired changes and click the **Save** button.
-{{< /tab >}}
-
-{{< tab "arangosh" >}}
-```js
----
-name: arangosh_set_collection_properties
-type: cluster
-description: ''
----
-~db._create("coll");
-coll = db._collection("coll");
-coll.properties({
-  waitForSync: true,
-  replicationFactor: 3
-});
-~db._drop("coll");
-```
-
-See `collection.properties()` in the
-[JavaScript API](../../develop/javascript-api/@arangodb/collection-object.md#collectionpropertiesproperties)
-for details.
-{{< /tab >}}
-
-{{< tab "cURL" >}}
-```sh
-curl -XPUT -d '{"waitForSync":true,"replicationFactor":3}' http://localhost:8529/_db/mydb/_api/collection/coll/properties
-```
-
-See `PUT /_db/{database-name}/_api/collection/{collection-name}/properties` in the
-[HTTP API](../../develop/http-api/collections.md#change-the-properties-of-a-collection)
-for details.
-{{< /tab >}}
-
-{{< tab "JavaScript" >}}
-```js
-let coll = db.collection("coll");
-const props = await coll.properties({
-  waitForSync: true,
-  replicationFactor: 3
-});
-```
-
-See `DocumentCollection.properties()` in the
-[arangojs documentation](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#properties.properties-2)
-for details.
-{{< /tab >}}
-
-{{< tab "Go" >}}
-```go
-ctx := context.Background()
-coll, err := db.GetCollection(ctx, "coll", nil)
-err = coll.SetProperties(ctx, arangodb.SetCollectionPropertiesOptions{
-  WaitForSync: utils.NewType(true),
-  ReplicationFactor: 3,
-})
-```
-
-See `Collection.SetProperties()` in the
-[go-driver v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)
-for details.
-{{< /tab >}}
-
-{{< tab "Java" >}}
-```java
-CollectionPropertiesOptions options = new CollectionPropertiesOptions()
-  .waitForSync(true);
-
-ArangoCollection coll = db.collection("coll");
-CollectionPropertiesEntity props = coll.changeProperties(options);
-```
-{{< comment >}}TODO: setReplicationFactor not yet supported by Java driver{{< /comment >}}
-
-See [`ArangoCollection.changeProperties()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#changeProperties%28com.arangodb.model.CollectionPropertiesOptions%29)
-and [`CollectionPropertiesEntity`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/entity/CollectionPropertiesEntity.html)
-in the arangodb-java-driver documentation for details.
-{{< /tab >}}
-
-{{< tab "Python" >}}
-```py
-coll = db.collection("coll")
-props = coll.configure(
-  sync=True,
-  replication_factor=3
-)
-```
-
-See `Collection.configure()` in the
-[python-arango documentation](https://docs.python-arango.com/en/main/specs.html#arango.collection.Collection.configure)
-for details.
-{{< /tab >}}
-
-{{< /tabs >}}
-
-### Synchronous replication of collections
+## Synchronous replication of collections
 
 Distributed ArangoDB setups offer synchronous replication,
 which means that there is the option to replicate all data
@@ -717,5 +180,510 @@ synchronous replication of the followers (but all replication operations
 to all followers happen concurrently). Therefore, the default replication
 factor is `1`, which means no replication.
 
-For details on how to switch on synchronous replication for a collection,
-see the [`db` object](../../develop/javascript-api/@arangodb/db-object.md#db_createcollection-name--properties--type--options).
+## Collection interfaces
+
+The following sections show examples of how you can use the APIs of ArangoDB and
+the official drivers, as well as the built-in web interface, to perform common
+operations related to collections. For less common operations and other drivers,
+see the corresponding reference documentation.
+
+### Create a collection
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. Click **Collections** in the main navigation.
+2. Click **Add collection**.
+3. Set a **Name** and optionally configuration options.
+4. Click **Create**.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
+```js
+---
+name: arangosh_create_collection
+description: ''
+---
+coll = db._create("coll");
+~db._drop("coll");
+```
+See [`db._create()`](../../develop/javascript-api/@arangodb/db-object.md#db_createcollection-name--properties--type--options)
+in the _JavaScript API_ for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl -d '{"name":"coll"}' http://localhost:8529/_db/mydb/_api/collection
+```
+
+See the [`POST /_db/{database-name}/_api/collection`](../../develop/http-api/databases.md#create-a-database)
+endpoint in the _HTTP API_ for details.
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+const info = await db.createCollection("coll");
+// -- or --
+let coll = db.collection("coll");
+const info = await coll.create();
+```
+
+See [`Database.createCollection()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#createCollection)
+and [`DocumentCollection.create()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#create)
+in the _arangojs_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+coll, err := db.CreateCollection(ctx, "coll")
+```
+
+See [`DatabaseCollection.CreateCollection()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseCollection)
+in the _go-driver_ v2 documentation for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+CollectionEntity coll = db.createCollection("coll");
+// -- or --
+CollectionEntity coll = db.collection("coll").create();
+```
+
+See [`ArangoDB.createCollection()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDB.html#db%28java.lang.String%29)
+and [`ArangoCollection.create()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#create%28%29)
+in the _arangodb-java-driver_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+coll = db.create_collection("coll")
+```
+
+See [`StandardDatabase.create_collection()`](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.create_collection)
+in the _python-arango_ documentation for details.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+### Get a collection
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. If necessary, [switch to the database](databases.md#set-the-database-context)
+   that contains the desired collection.
+2. Click **Collections** in the main navigation.
+3. Click the name or row of the desired collection.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
+```js
+---
+name: arangosh_get_collection
+description: ''
+---
+~db._create("coll");
+coll = db._collection("coll");
+~db._drop("coll");
+```
+
+There is a short-cut that you can use:
+
+```js
+let coll = db.coll
+// or
+let coll = db["coll"]
+```
+
+See [`db._collection()`](../../develop/javascript-api/@arangodb/db-object.md#db_collectioncollection)
+in the _JavaScript API_ for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl http://localhost:8529/_db/mydb/_api/collection/coll
+```
+
+See the [`GET /_db/{database-name}/_api/collection/{collection-name}`](../../develop/http-api/collections.md#get-the-collection-information)
+endpoint in the _HTTP API_ for details.
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+let coll = db.collection("coll");
+const info = await coll.get();
+```
+
+See [`Database.collection()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#collection)
+in the _arangojs_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+coll, err := db.GetCollection(ctx, "coll", nil)
+```
+
+See [`DatabaseCollection.GetCollection()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseCollection)
+in the _go-driver_ v2 documentation for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+ArangoCollection coll = db.collection("coll");
+```
+
+See [`ArangoDB.collection()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDB.html#db%28java.lang.String%29)
+in the _arangodb-java-driver_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+coll = db.collection("coll")
+```
+
+See [`StandardDatabase.collection()`](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.collection)
+in the _python-arango_ documentation for details.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+### List all collections
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. If necessary, [switch to the database](databases.md#set-the-database-context)
+   that you want to list the collection of.
+2. Click **Collections** in the main navigation.
+3. All collections are listed, given that no **Filters** are applied and you
+   have at least read access for all collections.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
+```js
+---
+name: arangosh_list_collections
+description: ''
+---
+~db._createDatabase("mydb");
+~db._useDatabase("mydb");
+~db._create("products");
+~db._create("users");
+db._collections();
+~db._useDatabase("_system");
+~db._dropDatabase("mydb");
+```
+
+See [`db._collections()`](../../develop/javascript-api/@arangodb/db-object.md#collections)
+in the _JavaScript API_ for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl http://localhost:8529/_db/mydb/_api/collection
+```
+
+See the [`GET /_db/{database-name}/_api/collection`](../../develop/http-api/collections.md#get-the-collection-information)
+endpoint in the _HTTP API_ for details.
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+const colls = await db.collections();
+```
+
+See [`Database.collections()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#collections)
+in the _arangojs_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+colls, err := db.Collections(ctx)
+```
+
+See [`DatabaseCollection.Collections()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseCollection)
+in the _go-driver_ v2 documentation for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+Collection<CollectionEntity> colls = db.getCollections();
+```
+
+See [`ArangoDatabase.getCollections()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDatabase.html#getCollections%28%29)
+in the _arangodb-java-driver_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+colls = db.collections()
+```
+
+See [`StandardDatabase.collections()`](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.collections)
+in the _python-arango_ documentation for details.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+### Remove a collection
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. If necessary, [switch to the database](databases.md#set-the-database-context)
+   that contains the desired collection.
+2. Click **Collections** in the main navigation.
+3. Click the name or row of the desired collection.
+4. Go to the **Settings** tab.
+5. Click the **Delete** button and confirm the deletion.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
+```js
+---
+name: arangosh_delete_collection
+render: input
+description: ''
+---
+~db._create("coll");
+db._drop("coll");
+```
+
+See [`db._drop()`](../../develop/javascript-api/@arangodb/db-object.md#db_dropcollection--options)
+in the _JavaScript API_ for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl -XDELETE http://localhost:8529/_db/mydb/_api/collection/coll
+```
+
+See the [`DELETE /_db/{database-name}/_api/collection/{collection-name}`](../../develop/http-api/collections.md#drop-a-collection)
+endpoint in the _HTTP API_ for details.
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+let coll = db.collection("coll");
+const status = await coll.drop();
+```
+
+See [`DocumentCollection.drop()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#drop)
+in the _arangojs_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+coll, err := db.GetCollection(ctx, "coll", nil)
+err = coll.Remove(ctx)
+```
+
+See [`Collection.Remove()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)
+in the _go-driver_ v2 documentation for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+ArangoCollection coll = db.collection("coll");
+coll.drop();
+```
+
+See [`ArangoCollection.drop()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#drop%28%29)
+in the _arangodb-java-driver_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+ok = db.delete_collection("coll")
+```
+
+See [`StandardDatabase.delete_collection()`](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.delete_collection)
+in the _python-arango_ documentation for details.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+### Get the collection properties
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. If necessary, [switch to the database](databases.md#set-the-database-context)
+   that contains the desired collection.
+2. Click **Collections** in the main navigation.
+3. Click the name or row of the desired collection.
+4. The properties are listed in the **Info**, **Computed Values**, and
+   **Schema** tabs.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
+```js
+---
+name: arangosh_get_collection_properties
+description: ''
+---
+~db._create("coll");
+var coll = db._collection("coll");
+coll.properties();
+~db._drop("coll");
+```
+
+See [`collection.properties()`](../../develop/javascript-api/@arangodb/collection-object.md#collectionpropertiesproperties)
+in the _JavaScript API_ for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl http://localhost:8529/_db/mydb/_api/collection/coll/properties
+```
+
+See the [`GET /_db/{database-name}/_api/collection/{collection-name}/properties`](../../develop/http-api/collections.md#get-the-properties-of-a-collection)
+endpoint in the _HTTP API_ for details.
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+let coll = db.collection("coll");
+const props = await coll.properties();
+```
+
+See [`DocumentCollection.properties()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#properties)
+in the _arangojs_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+coll, err := db.GetCollection(ctx, "coll", nil)
+props, err := coll.Properties()
+```
+
+See [`Collection.Properties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)
+in the _go-driver_ v2 documentation for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+ArangoCollection coll = db.collection("coll");
+CollectionPropertiesEntity = coll.getProperties();
+```
+
+See [`ArangoCollection.getProperties()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#getProperties%28%29)
+in the _arangodb-java-driver_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+coll = db.collection("coll")
+props = coll.properties()
+```
+
+See [`Collection.properties()`](https://docs.python-arango.com/en/main/specs.html#arango.collection.Collection.properties)
+in the _python-arango_ documentation for details.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+### Set the collection properties
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. If necessary, [switch to the database](databases.md#set-the-database-context)
+   that contains the desired collection.
+2. Click **Collections** in the main navigation.
+3. Click the name or row of the desired collection.
+4. The properties you can change are listed in the **Settings**,
+   **Computed Values**, and **Schema** tabs.
+5. Make the desired changes and click the **Save** button.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
+```js
+---
+name: arangosh_set_collection_properties
+type: cluster
+description: ''
+---
+~db._create("coll");
+var coll = db._collection("coll");
+coll.properties({
+  waitForSync: true,
+  replicationFactor: 3
+});
+~db._drop("coll");
+```
+
+See [`collection.properties()`](../../develop/javascript-api/@arangodb/collection-object.md#collectionpropertiesproperties)
+in the _JavaScript API_ for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl -XPUT -d '{"waitForSync":true,"replicationFactor":3}' http://localhost:8529/_db/mydb/_api/collection/coll/properties
+```
+
+See the [`PUT /_db/{database-name}/_api/collection/{collection-name}/properties`](../../develop/http-api/collections.md#change-the-properties-of-a-collection)
+endpoint in the _HTTP API_ for details.
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+let coll = db.collection("coll");
+const props = await coll.properties({
+  waitForSync: true,
+  replicationFactor: 3
+});
+```
+
+See [`DocumentCollection.properties()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#properties.properties-2)
+in the _arangojs_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+coll, err := db.GetCollection(ctx, "coll", nil)
+err = coll.SetProperties(ctx, arangodb.SetCollectionPropertiesOptions{
+  WaitForSync: utils.NewType(true),
+  ReplicationFactor: 3,
+})
+```
+
+See [`Collection.SetProperties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)
+in the _go-driver_ v2 documentation for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+CollectionPropertiesOptions options = new CollectionPropertiesOptions()
+  .waitForSync(true);
+
+ArangoCollection coll = db.collection("coll");
+CollectionPropertiesEntity props = coll.changeProperties(options);
+```
+{{< comment >}}TODO: setReplicationFactor not yet supported by Java driver{{< /comment >}}
+
+See [`ArangoCollection.changeProperties()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#changeProperties%28com.arangodb.model.CollectionPropertiesOptions%29)
+and [`CollectionPropertiesEntity`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/entity/CollectionPropertiesEntity.html)
+in the _arangodb-java-driver_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+coll = db.collection("coll")
+props = coll.configure(
+  sync=True,
+  replication_factor=3
+)
+```
+
+See [`Collection.configure()`](https://docs.python-arango.com/en/main/specs.html#arango.collection.Collection.configure)
+in the _python-arango_ documentation for details.
+{{< /tab >}}
+
+{{< /tabs >}}
