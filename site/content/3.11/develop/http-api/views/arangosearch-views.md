@@ -276,6 +276,8 @@ paths:
                       search algorithm to perform more optimally and for extra file handles to be
                       released once old segments are no longer used.
                   type: object
+                  required:
+                    - type
                   properties:
                     type:
                       description: |
@@ -1340,6 +1342,8 @@ paths:
                       search algorithm to perform more optimally and for extra file handles to be
                       released once old segments are no longer used.
                   type: object
+                  required:
+                    - type
                   properties:
                     type:
                       description: |
@@ -1763,7 +1767,6 @@ paths:
                       However, the files for the released states/snapshots are left on disk, and
                       only removed by "cleanup" operation.
                   type: integer
-                  default: 2
                 commitIntervalMsec:
                   description: |
                     Wait at least this many milliseconds between committing View data store
@@ -1786,7 +1789,6 @@ paths:
                       subsequent ArangoDB transactions, in-progress ArangoDB transactions will
                       still continue to return a repeatable-read state.
                   type: integer
-                  default: 1000
                 consolidationIntervalMsec:
                   description: |
                     Wait at least this many milliseconds between applying `consolidationPolicy` to
@@ -1805,7 +1807,6 @@ paths:
                       compaction operations are governed by `consolidationIntervalMsec` and the
                       candidates for compaction are selected via `consolidationPolicy`.
                   type: integer
-                  default: 10000
                 consolidationPolicy:
                   description: |
                     The consolidation policy to apply for selecting which segments should be merged.
@@ -1825,6 +1826,8 @@ paths:
                       search algorithm to perform more optimally and for extra file handles to be
                       released once old segments are no longer used.
                   type: object
+                  required:
+                    - type
                   properties:
                     type:
                       description: |
@@ -1839,7 +1842,6 @@ paths:
                           segment byte size multiplied by the `{threshold}`.
                       type: string
                       enum: [tier, bytes_accum]
-                      default: tier
                     threshold:
                       description: |
                         A value in the range `[0.0, 1.0]`.
