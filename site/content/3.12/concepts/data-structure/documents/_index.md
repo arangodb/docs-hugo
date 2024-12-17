@@ -251,11 +251,771 @@ following naming constraints are not violated:
 
 - Attribute names are case-sensitive.
 
-## Documents API
+## Document interfaces
 
-You can use the JavaScript interface for documents to handle documents from
-the _arangosh_ command-line tool, as well as in server-side JavaScript code
-like Foxx microservices.
-See the [_collection_ object](../../../develop/javascript-api/@arangodb/collection-object.md#documents)
+The following sections show examples of how you can use the APIs of ArangoDB and
+the official drivers, as well as the built-in web interface, to perform common
+operations related to documents. For less common operations and other drivers,
+see the corresponding reference documentation.
 
-For other languages see the corresponding language API.
+### Create documents
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. Click **Collections** in the main navigation.
+2. Click the name or row of the desired collection.
+3. Go to the **Content** tab.
+4. Click the plus icon on the right-hand side.
+5. In the **Create Document** dialog, optionally enter a document key (**_key**)
+   and a **Document body**.
+6. Click the **Create** button.
+
+You can also create documents with AQL queries using the
+[`INSERT` operation](../../../aql/high-level-operations/insert.md)
+in the **Queries** section.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
+```js
+---
+name: arangosh_create_documents
+description: ''
+---
+~db._create("coll");
+var coll = db._collection("coll");
+
+// Single document
+coll.insert({
+  _key: "the-document-key",
+  name: "ArangoDB",
+  tags: ["graph", "database", "NoSQL"],
+  scalable: true,
+  company: {
+    name: "ArangoDB Inc.",
+    founded: 2015
+  }
+});
+
+// Multiple documents
+coll.insert([ { _key: "one" }, { _key: "two" }, { _key: "three" } ]);
+~db._drop("coll");
+```
+See [`collection.insert()`](../../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
+(and the `collection.save()` alias) in the _JavaScript API_ for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+# Single document
+curl -d '{"_key":"the-document-key","name":"ArangoDB","tags":["graph","database","NoSQL"],"scalable":true,"company":{"name":"ArangoDB Inc.","founded":2015}}' http://localhost:8529/_db/mydb/_api/document/coll
+
+# Multiple documents
+curl -d '[ {"_key":"one"}, {"_key":"two"}, {"_key":"three"} ]' http://localhost:8529/_db/mydb/_api/document/coll
+```
+
+See the `POST /_db/{database-name}/_api/document/{collection-name}` endpoint for
+[a single document](../../../develop/http-api/documents.md#create-a-document)
+and [multiple documents](../../../develop/http-api/documents.md#create-multiple-documents)
+in the _HTTP API_ for details.
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+let coll = db.collection("coll");
+
+// Single document
+const result = await coll.save({
+  _key: "the-document-key",
+  name: "ArangoDB",
+  tags: ["graph", "database", "NoSQL"],
+  scalable: true,
+  company: {
+    name: "ArangoDB Inc.",
+    founded: 2015
+  }
+});
+
+// Multiple documents
+const results = await coll.saveAll([ { _key: "one" }, { _key: "two" }, { _key: "three" } ]);
+```
+
+See [`DocumentCollection.save()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#save)
+and [`DocumentCollection.saveAll()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#saveAll)
+in the _arangojs_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+coll, err := db.GetCollection(ctx, "coll")
+
+// Single document
+coll.CreateDocument(map[string]interface{} {
+  "_key": "the-document-key",
+  "name": "ArangoDB",
+  "tags": []interface{} { "graph", "database", "NoSQL" },
+  "scalable": true,
+  "company": map[string]interface{} {
+    "name": "ArangoDB Inc.",
+    "founded": 2015,
+  },
+})
+
+// Multiple documents
+coll.CreateDocuments([]interface{} {
+  map[string]interface{} { "_key": "one" },
+  map[string]interface{} { "_key": "two" },
+  map[string]interface{} { "_key": "three" },
+})
+```
+
+See [`CollectionDocumentCreate.CreateCollection()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentCreate)
+in the _go-driver_ v2 documentation for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+CollectionEntity coll = db.collection("coll");
+
+// Single document
+coll.insertDocument(new BaseDocument("the-document-key")
+  .addAttribute("name", "ArangoDB")
+  .addAttribute("tags", [ "graph", "database", "NoSQL" ])
+  .addAttribute("scalable", true)
+  .addAttribute("company", new Map<String, Object>()
+    .put("name", "ArangoDB Inc.")
+    .put("founded", 2015)
+  )
+  .addAttribute("name", "ArangoDB")
+);
+
+// Multiple documents
+coll.insertDocuments([
+  new BaseDocument("one"),
+  new BaseDocument("two"),
+  new BaseDocument("three")
+]);
+```
+
+See [`ArangoCollection.insertDocument()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#insertDocument%28java.lang.Object%29)
+and [`ArangoCollection.insertDocuments()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#insertDocuments%28java.lang.Iterable%29)
+in the _arangodb-java-driver_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+coll = db.get_collection("coll")
+
+# Single document
+meta = coll.insert({
+  "_key": "the-document-key",
+  "name": "ArangoDB",
+  "tags": { "graph", "database", "NoSQL" },
+  "scalable": True,
+  "company": {
+    "name": "ArangoDB Inc.",
+    "founded": 2015,
+  }
+})
+
+# Multiple documents
+meta = coll.insert_many([
+  { "_key": "one" },
+  { "_key": "two" },
+  { "_key": "three" }
+])
+```
+
+See [`StandardCollection.insert()`](https://docs.python-arango.com/en/main/specs.html#arango.collection.StandardCollection.insert)
+and [`StandardCollection.insert_many()`](https://docs.python-arango.com/en/main/specs.html#arango.collection.StandardCollection.insert_many)
+in the _python-arango_ documentation for details.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+### Get documents
+
+{{< comment >}}TODO: Dirty reads?{{< /comment >}}
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. Click **Collections** in the main navigation.
+2. Click the name or row of the desired collection.
+3. Go to the **Content** tab.
+4. You may click the filter icon to filter and sort by document attributes.
+5. Click a row to open the full document.
+
+You can also retrieve documents with AQL queries using in the **Queries** section.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
+```js
+---
+name: arangosh_get_documents
+description: ''
+---
+~db._create("coll");
+var coll = db._collection("coll");
+
+~coll.insert({
+~  _key: "the-document-key",
+~  name: "ArangoDB",
+~  tags: ["graph", "database", "NoSQL"],
+~  scalable: true,
+~  company: {
+~    name: "ArangoDB Inc.",
+~    founded: 2015
+~  }
+~});
+~coll.insert([ { _key: "one" }, { _key: "two" }, { _key: "three" } ]);
+
+// Single document
+coll.document("the-document-key");
+
+// Multiple documents
+coll.document([ "one", "two", { _key: "three" } ]);
+
+~db._drop("coll");
+```
+
+See [`collection.document()`](../../../develop/javascript-api/@arangodb/collection-object.md#collectiondocumentobject--options)
+in the _JavaScript API_ for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+# Single document
+curl http://localhost:8529/_db/mydb/_api/document/coll/the-document-key
+
+# Multiple documents
+# Note the PUT method in combination with the onlyget=true query parameter
+curl -XPUT -d '["one","two",{"_key":"three"}]' http://localhost:8529/_db/mydb/_api/document/coll?onlyget=true
+```
+
+See the following endpoints in the _HTTP API_ for details:
+- [`GET /_db/{database-name}/_api/document/{collection-name}/{document-key}`](../../../develop/http-api/documents.md#get-a-document)
+- [`PUT /_db/{database-name}/_api/document/{collection-name}?onlyget=true`](../../../develop/http-api/documents.md#get-multiple-documents)
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+let coll = db.collection("coll");
+
+// Single document
+const result = await coll.document("the-document-key");
+
+// Multiple documents
+const results = await coll.documents(["one", "two", { _key: "three" } ]);
+```
+
+See [`DocumentCollection.document()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#document)
+and [`DocumentCollection.documents()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#documents)
+in the _arangojs_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+coll, err := db.GetCollection(ctx, "coll", nil)
+
+// Single document
+var doc map[string]interface{}{}
+meta, err := coll.ReadDocument(ctx, "the-document-key", &doc)
+
+// Multiple documents
+result, err := coll.ReadDocuments(ctx, []string{ "one", "two", "three" })
+for {
+    meta, err := result.Read(&doc)
+    if shared.IsNoMoreDocuments(err) {
+        break
+    }
+}
+```
+
+See [`CollectionDocumentRead.ReadDocument()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentRead)
+and [`CollectionDocumentRead.ReadDocuments()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentRead)
+in the _go-driver_ v2 documentation for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+ArangoCollection coll = db.collection("coll");
+
+// Single document
+BaseDocument doc = coll.getDocument("the-document-key", BaseDocument.class);
+
+// Multiple documents
+for (doc : coll.getDocuments(["one", "two", "three"], BaseDocument.class)) {
+  // ...
+}
+```
+
+See [`ArangoCollection.getDocument()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#getDocument%28java.lang.String,java.lang.Class%29)
+and [`ArangoCollection.getDocuments()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#getDocuments%28java.lang.Iterable,java.lang.Class%29)
+in the _arangodb-java-driver_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+coll = db.collection("coll")
+
+# Single document
+doc = coll.get("the-document-key")
+
+# Multiple documents
+docs = coll.get_many(["one", "two", { "_key": "three" } ])
+```
+
+See [`StandardCollection.get()`](https://docs.python-arango.com/en/main/specs.html#arango.collection.StandardCollection.get)
+and [`StandardCollection.get_many()`](https://docs.python-arango.com/en/main/specs.html#arango.collection.StandardCollection.get_many)
+in the _python-arango_ documentation for details.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+### Update documents
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. Click **Collections** in the main navigation.
+2. Click the name or row of the desired collection.
+3. Go to the **Content** tab.
+4. You may click the filter icon to filter and sort by document attributes.
+5. Click a row to open the full document.
+6. Adjust the document in the editor.
+7. Click the **Save** button at the bottom.
+
+You can also partially modify documents with AQL queries using the
+[`UPDATE` operation](../../../aql/high-level-operations/update.md)
+in the **Queries** section.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
+```js
+---
+name: arangosh_update_documents
+description: ''
+---
+~db._create("coll");
+var coll = db._collection("coll");
+
+~coll.insert({
+~  _key: "the-document-key",
+~  name: "ArangoDB",
+~  tags: ["graph", "database", "NoSQL"],
+~  scalable: true,
+~  company: {
+~    name: "ArangoDB Inc.",
+~    founded: 2015
+~  }
+~});
+~coll.insert([ { _key: "one" }, { _key: "two" }, { _key: "three" } ]);
+
+coll.update("the-document-key", { logo: "avocado" }, { returnNew: true });
+coll.update([ "one", "two", { _key: "three" } ], [ { val: 1 }, { val: 2 }, { val: 3 } ]);
+~db._drop("coll");
+```
+
+See [`collection.update()`](../../../develop/javascript-api/@arangodb/collection-object.md#collectionupdatedocument-data--options)
+in the _JavaScript API_ for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+# Single document
+curl -XPATCH -d '{"logo":"avocado"}' http://localhost:8529/_db/mydb/_api/document/coll/the-document-key?returnNew=true
+
+# Multiple documents
+curl -XPATCH -d '[{"_key":"one","val":1},{"_key":"two","val":2},{"_key":"three","val":3}]' http://localhost:8529/_db/mydb/_api/document/coll
+```
+
+See the following endpoints in the _HTTP API_ for details:
+- [`PATCH /_db/{database-name}/_api/document/{collection-name}/{document-key}`](../../../develop/http-api/documents.md#update-a-document)
+- [`PATCH /_db/{database-name}/_api/document/{collection-name}`](../../../develop/http-api/documents.md#update-multiple-documents)
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+let coll = db.collection("coll");
+
+// Single document
+const result = await coll.update("the-document-key", { logo: "avocado" }, { returnNew: true });
+
+// Multiple documents
+const results = await coll.updateAll([ { _key: "one", val: 1 }, { _key: "two", val: 2 }, { _key: "three", val: 3 } ]);
+```
+
+See [`DocumentCollection.update()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#update)
+and [`DocumentCollection.updateAll()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#updateAll)
+in the _arangojs_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+coll, err := db.GetCollection(ctx, "coll", nil)
+
+// Single document
+var doc map[string]interface{}{}
+result, err := coll.UpdateDocumentWithOptions(ctx, "the-document-key", &arangodb.CollectionDocumentUpdateOptions{
+  NewObject: &doc
+})
+fmt.Printf("New document: %+v\n", doc)
+
+// Multiple documents
+newDocs := []interface{} {
+  map[string]interface{} { "_key": "one", "val": 1 },
+  map[string]interface{} { "_key": "two", "val", 2 },
+  map[string]interface{} { "_key": "three", "val", 3 },
+}
+result, err := coll.UpdateDocuments(ctx, newDocs)
+for {
+    meta, err := result.Read(&result)
+    if shared.IsNoMoreDocuments(err) {
+        break
+    }
+    fmt.Printf("Updated document metadata: %+v\n", meta)
+}
+```
+
+See [`CollectionDocumentRead.UpdateDocumentWithOptions()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentUpdate)
+and [`CollectionDocumentRead.UpdateDocuments()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentUpdate)
+in the _go-driver_ v2 documentation for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+ArangoCollection coll = db.collection("coll");
+
+// Single document
+DocumentUpdateEntity<BaseDocument> result = coll.updateDocument("the-document-key",
+  new BaseDocument("the-document-key")
+    .addAttribute("logo", "avocado"),
+  new DocumentUpdateOptions()
+    .returnNew(true),
+  BaseDocument.class);
+
+// Multiple documents
+for (MultiDocumentEntity<DocumentUpdateEntity<Void>> result : coll.updateDocuments([
+  new BaseDocument("one").addAttribute("val", 1),
+  new BaseDocument("two").addAttribute("val", 2),
+  new BaseDocument("three").addAttribute("val", 3)
+])) {
+  // ...
+}
+```
+
+See [`ArangoCollection.updateDocument()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#updateDocument%28java.lang.String,java.lang.Object,com.arangodb.model.DocumentUpdateOptions,java.lang.Class%29)
+and [`ArangoCollection.updateDocuments()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#updateDocuments%28java.lang.Iterable%29)
+in the _arangodb-java-driver_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+coll = db.collection("coll")
+
+# Single document
+meta = coll.update({ "_key": "the-document-key", "logo": "avocado" }, return_new=True)
+
+# Multiple documents
+meta = coll.update_many([
+  { "_key": "one", "val": 1 },
+  { "_key": "two", "val": 2 },
+  { "_key": "three", "val": 3 }
+])
+```
+
+See [`StandardCollection.update()`](https://docs.python-arango.com/en/main/specs.html#arango.collection.StandardCollection.update)
+and [`StandardCollection.update_many()`](https://docs.python-arango.com/en/main/specs.html#arango.collection.StandardCollection.update_many)
+in the _python-arango_ documentation for details.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+### Replace documents
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. Click **Collections** in the main navigation.
+2. Click the name or row of the desired collection.
+3. Go to the **Content** tab.
+4. You may click the filter icon to filter and sort by document attributes.
+5. Click a row to open the full document.
+6. Delete the document content in the editor and set new attributes.
+7. Click the **Save** button at the bottom.
+
+You can also set new content for documents with AQL queries using the
+[`REPLACE` operation](../../../aql/high-level-operations/replace.md)
+in the **Queries** section.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
+```js
+---
+name: arangosh_replace_documents
+description: ''
+---
+~db._create("coll");
+var coll = db._collection("coll");
+
+~coll.insert({
+~  _key: "the-document-key",
+~  name: "ArangoDB",
+~  tags: ["graph", "database", "NoSQL"],
+~  scalable: true,
+~  company: {
+~    name: "ArangoDB Inc.",
+~    founded: 2015
+~  }
+~});
+~coll.insert([ { _key: "one" }, { _key: "two" }, { _key: "three" } ]);
+
+coll.replace("the-document-key", { logo: "avocado" }, { returnNew: true });
+coll.replace([ "one", "two", { _key: "three" } ], [ { val: 1 }, { val: 2 }, { val: 3 } ]);
+~db._drop("coll");
+```
+
+See [`collection.replace()`](../../../develop/javascript-api/@arangodb/collection-object.md#collectionreplacedocument-data--options)
+in the _JavaScript API_ for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+# Single document
+curl -XPUT -d '{"logo":"avocado"}' http://localhost:8529/_db/mydb/_api/document/coll/the-document-key?returnNew=true
+
+# Multiple documents
+curl -XPUT -d '[{"_key":"one","val":1},{"_key":"two","val":2},{"_key":"three","val":3}]' http://localhost:8529/_db/mydb/_api/document/coll
+```
+
+See the following endpoints in the _HTTP API_ for details:
+- [`PUT /_db/{database-name}/_api/document/{collection-name}/{document-key}`](../../../develop/http-api/documents.md#replace-a-document)
+- [`PUT /_db/{database-name}/_api/document/{collection-name}`](../../../develop/http-api/documents.md#replace-multiple-documents)
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+let coll = db.collection("coll");
+
+// Single document
+const result = await coll.replace("the-document-key", { logo: "avocado" }, { returnNew: true });
+
+// Multiple documents
+const results = await coll.replaceAll([ { _key: "one", val: 1 }, { _key: "two", val: 2 }, { _key: "three", val: 3 } ]);
+```
+
+See [`DocumentCollection.replace()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#replace)
+and [`DocumentCollection.replaceAll()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#replaceAll)
+in the _arangojs_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+coll, err := db.GetCollection(ctx, "coll", nil)
+
+// Single document
+var doc map[string]interface{}{}
+result, err := coll.ReplaceDocumentWithOptions(ctx, "the-document-key", &arangodb.CollectionDocumentUpdateOptions{
+  NewObject: &doc
+})
+fmt.Printf("New document: %+v\n", doc)
+
+// Multiple documents
+newDocs := []interface{} {
+  map[string]interface{} { "_key": "one", "val": 1 },
+  map[string]interface{} { "_key": "two", "val", 2 },
+  map[string]interface{} { "_key": "three", "val", 3 },
+}
+result, err := coll.UpdateDocuments(ctx, newDocs)
+for {
+    meta, err := result.Read(&result)
+    if shared.IsNoMoreDocuments(err) {
+        break
+    }
+    fmt.Printf("Replaced document metadata: %+v\n", meta)
+}
+```
+
+See [`CollectionDocumentRead.ReplaceDocumentWithOptions()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentReplace)
+and [`CollectionDocumentRead.ReplaceDocuments()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentReplace)
+in the _go-driver_ v2 documentation for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+ArangoCollection coll = db.collection("coll");
+
+// Single document
+DocumentUpdateEntity<BaseDocument> result = coll.replaceDocument("the-document-key",
+  new BaseDocument("the-document-key")
+    .addAttribute("logo", "avocado"),
+  new DocumentUpdateOptions()
+    .returnNew(true),
+  BaseDocument.class);
+
+// Multiple documents
+for (MultiDocumentEntity<DocumentUpdateEntity<Void>> result : coll.replaceDocuments([
+  new BaseDocument("one").addAttribute("val", 1),
+  new BaseDocument("two").addAttribute("val", 2),
+  new BaseDocument("three").addAttribute("val", 3)
+])) {
+  // ...
+}
+```
+
+See [`ArangoCollection.replaceDocument()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#replaceDocument%28java.lang.String,java.lang.Object,com.arangodb.model.DocumentUpdateOptions,java.lang.Class%29)
+and [`ArangoCollection.replaceDocuments()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#replaceDocuments%28java.lang.Iterable%29)
+in the _arangodb-java-driver_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+coll = db.collection("coll")
+
+# Single document
+meta = coll.replace({ "_key": "the-document-key", "logo": "avocado" }, return_new=True)
+
+# Multiple documents
+meta = coll.replace_many([
+  { "_key": "one", "val": 1 },
+  { "_key": "two", "val": 2 },
+  { "_key": "three", "val": 3 }
+])
+```
+
+See [`StandardCollection.replace()`](https://docs.python-arango.com/en/main/specs.html#arango.collection.StandardCollection.replace)
+and [`StandardCollection.replace_many()`](https://docs.python-arango.com/en/main/specs.html#arango.collection.StandardCollection.replace_many)
+in the _python-arango_ documentation for details.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+### Remove documents
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. Click **Collections** in the main navigation.
+2. Click the name or row of the desired collection.
+3. Go to the **Content** tab.
+4. You may click the filter icon to filter and sort by document attributes.
+5. In the row of the document you want to delete, you can click the minus icon
+   on the right-hand side and confirm the deletion.
+6. Alternatively, click a row to open the full document, then click the
+   **Delete** button at the bottom and confirm the deletion.
+
+You can also delete documents with AQL queries using the
+[`REMOVE` operation](../../../aql/high-level-operations/remove.md)
+in the **Queries** section.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
+```js
+---
+name: arangosh_delete_documents
+description: ''
+---
+~db._create("coll");
+var coll = db._collection("coll");
+~coll.insert({ _key: "the-document-key" });
+~coll.insert([ { _key: "one" }, { _key: "two" }, { _key: "three" } ]);
+coll.remove("the-document-key");
+coll.remove([ "one", "two", { _key: "three" } ]);
+~db._drop("coll");
+```
+
+See [`collection.remove()`](../../../develop/javascript-api/@arangodb/collection-object.md#collectionremoveobject)
+in the _JavaScript API_ for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+# Single document
+curl -XDELETE http://localhost:8529/_db/mydb/_api/document/coll/the-document-key
+
+# Multiple documents
+curl -XDELETE -d '["one","two",{"_key":"three"}]' http://localhost:8529/_db/mydb/_api/document/coll
+```
+
+See the following endpoints in the _HTTP API_ for details:
+- [`DELETE /_db/{database-name}/_api/document/{collection-name}/{document-key}`](../../../develop/http-api/documents.md#remove-a-document)
+- [`DELETE /_db/{database-name}/_api/document/{collection-name}`](../../../develop/http-api/documents.md#remove-multiple-documents)
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+let coll = db.collection("coll");
+
+// Single document
+const result = await coll.remove("the-document-key");
+
+// Multiple documents
+const results = await coll.removeAll(["one", "two", { _key: "three" } ]);
+```
+
+See [`DocumentCollection.remove()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#remove)
+and [`DocumentCollection.removeAll()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#removeAll)
+in the _arangojs_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+coll, err := db.GetCollection(ctx, "coll", nil)
+
+// Single document
+result, err := coll.DeleteDocument(ctx, "the-document-key")
+
+// Multiple documents
+result, err = coll.DeleteDocuments(ctx, []string{ "one", "two", "three" })
+```
+
+See the following functions 
+in the [_go-driver_ v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentDelete)
+for details:
+- `CollectionDocumentRead.DeleteDocument()`
+- `CollectionDocumentRead.DeleteDocumentsWithOptions()`
+- `CollectionDocumentRead.DeleteDocument()`
+- `CollectionDocumentRead.DeleteDocumentsWithOptions()`
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+ArangoCollection coll = db.collection("coll");
+
+// Single document
+DocumentDeleteEntity<Void> result = coll.deleteDocument("the-document-key");
+
+// Multiple documents
+for (MultiDocumentEntity<DocumentDeleteEntity<Void>> result : coll.deleteDocuments(["one", "two", "three"])) {
+  // ...
+}
+```
+
+See [`ArangoCollection.deleteDocument()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#deleteDocument%28java.lang.String%29)
+and [`ArangoCollection.deleteDocuments()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#getDocuments%28java.lang.Iterable,java.lang.Class%29)
+in the _arangodb-java-driver_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+coll = db.collection("coll")
+
+# Single document
+meta = coll.delete("the-document-key")
+
+# Multiple documents
+meta = coll.delete_many(["one", "two", { "_key": "three" } ])
+```
+
+See [`StandardCollection.delete()`](https://docs.python-arango.com/en/main/specs.html#arango.collection.StandardCollection.delete)
+and [`StandardCollection.delete_many()`](https://docs.python-arango.com/en/main/specs.html#arango.collection.StandardCollection.delete_many)
+in the _python-arango_ documentation for details.
+{{< /tab >}}
+
+{{< /tabs >}}
