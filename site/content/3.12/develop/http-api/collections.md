@@ -3333,548 +3333,6 @@ db._drop(cn);
 
 ## Modify collections
 
-### Load a collection
-
-```openapi
-paths:
-  /_db/{database-name}/_api/collection/{collection-name}/load:
-    put:
-      operationId: loadCollection
-      description: |
-        {{</* warning */>}}
-        The load function is deprecated from version 3.8.0 onwards and is a no-op
-        from version 3.9.0 onwards. It should no longer be used, as it may be removed
-        in a future version of ArangoDB.
-        {{</* /warning */>}}
-
-        Since ArangoDB version 3.9.0 this API does nothing. Previously, it used to
-        load a collection into memory.
-      parameters:
-        - name: database-name
-          in: path
-          required: true
-          example: _system
-          description: |
-            The name of the database.
-          schema:
-            type: string
-        - name: collection-name
-          in: path
-          required: true
-          description: |
-            The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
-          schema:
-            type: string
-      responses:
-        '200':
-          description: |
-            Returns the basic collection properties for compatibility reasons.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - name
-                  - type
-                  - isSystem
-                  - status
-                  - id
-                  - globallyUniqueId
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that no error occurred.
-                    type: boolean
-                    example: false
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 200
-                  name:
-                    description: |
-                      The name of the collection.
-                    type: string
-                    example: coll
-                  type:
-                    description: |
-                      The type of the collection:
-                      - `0`: "unknown"
-                      - `2`: regular document collection
-                      - `3`: edge collection
-                    type: integer
-                    example: 2
-                  isSystem:
-                    description: |
-                      Whether the collection is a system collection. Collection names that starts with
-                      an underscore are usually system collections.
-                    type: boolean
-                    example: false
-                  status:
-                    description: |
-                      The status of the collection.
-                      - `3`: loaded
-                      - `5`: deleted
-
-                      Every other status indicates a corrupted collection.
-                    type: integer
-                    example: 3
-                  id:
-                    description: |
-                      A unique identifier of the collection (deprecated).
-                    type: string
-                  globallyUniqueId:
-                    description: |
-                      A unique identifier of the collection. This is an internal property.
-                    type: string
-                  count:
-                    description: |
-                      The number of documents currently present in the collection.
-                    type: integer
-        '400':
-          description: |
-            The `collection-name` parameter or the `name` attribute is missing.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - errorNum
-                  - errorMessage
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that an error occurred.
-                    type: boolean
-                    example: true
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 400
-                  errorNum:
-                    description: |
-                      ArangoDB error number for the error that occurred.
-                    type: integer
-                  errorMessage:
-                    description: |
-                      A descriptive error message.
-                    type: string
-        '404':
-          description: |
-            A collection called `collection-name` could not be found.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - errorNum
-                  - errorMessage
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that an error occurred.
-                    type: boolean
-                    example: true
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 404
-                  errorNum:
-                    description: |
-                      ArangoDB error number for the error that occurred.
-                    type: integer
-                  errorMessage:
-                    description: |
-                      A descriptive error message.
-                    type: string
-      tags:
-        - Collections
-```
-
-**Examples**
-
-```curl
----
-description: ''
-name: RestCollectionIdentifierLoad
----
-var cn = "products";
-db._drop(cn);
-var coll = db._create(cn, { waitForSync: true });
-var url = "/_api/collection/"+ coll.name() + "/load";
-
-var response = logCurlRequest('PUT', url, '');
-
-assert(response.code === 200);
-
-logJsonResponse(response);
-db._drop(cn);
-```
-
-### Unload a collection
-
-```openapi
-paths:
-  /_db/{database-name}/_api/collection/{collection-name}/unload:
-    put:
-      operationId: unloadCollection
-      description: |
-        {{</* warning */>}}
-        The unload function is deprecated from version 3.8.0 onwards and is a no-op
-        from version 3.9.0 onwards. It should no longer be used, as it may be removed
-        in a future version of ArangoDB.
-        {{</* /warning */>}}
-
-        Since ArangoDB version 3.9.0 this API does nothing. Previously it used to
-        unload a collection from memory, while preserving all documents.
-      parameters:
-        - name: database-name
-          in: path
-          required: true
-          example: _system
-          description: |
-            The name of the database.
-          schema:
-            type: string
-        - name: collection-name
-          in: path
-          required: true
-          description: |
-            The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
-          schema:
-            type: string
-      responses:
-        '200':
-          description: |
-            Returns the basic collection properties for compatibility reasons.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - name
-                  - type
-                  - isSystem
-                  - status
-                  - id
-                  - globallyUniqueId
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that no error occurred.
-                    type: boolean
-                    example: false
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 200
-                  name:
-                    description: |
-                      The name of the collection.
-                    type: string
-                    example: coll
-                  type:
-                    description: |
-                      The type of the collection:
-                      - `0`: "unknown"
-                      - `2`: regular document collection
-                      - `3`: edge collection
-                    type: integer
-                    example: 2
-                  isSystem:
-                    description: |
-                      Whether the collection is a system collection. Collection names that starts with
-                      an underscore are usually system collections.
-                    type: boolean
-                    example: false
-                  status:
-                    description: |
-                      The status of the collection.
-                      - `3`: loaded
-                      - `5`: deleted
-
-                      Every other status indicates a corrupted collection.
-                    type: integer
-                    example: 3
-                  id:
-                    description: |
-                      A unique identifier of the collection (deprecated).
-                    type: string
-                  globallyUniqueId:
-                    description: |
-                      A unique identifier of the collection. This is an internal property.
-                    type: string
-        '400':
-          description: |
-            The `collection-name` parameter or the `name` attribute is missing.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - errorNum
-                  - errorMessage
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that an error occurred.
-                    type: boolean
-                    example: true
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 400
-                  errorNum:
-                    description: |
-                      ArangoDB error number for the error that occurred.
-                    type: integer
-                  errorMessage:
-                    description: |
-                      A descriptive error message.
-                    type: string
-        '404':
-          description: |
-            A collection called `collection-name` could not be found.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - errorNum
-                  - errorMessage
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that an error occurred.
-                    type: boolean
-                    example: true
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 404
-                  errorNum:
-                    description: |
-                      ArangoDB error number for the error that occurred.
-                    type: integer
-                  errorMessage:
-                    description: |
-                      A descriptive error message.
-                    type: string
-      tags:
-        - Collections
-```
-
-**Examples**
-
-```curl
----
-description: ''
-name: RestCollectionIdentifierUnload
----
-var cn = "products";
-db._drop(cn);
-var coll = db._create(cn, { waitForSync: true });
-var url = "/_api/collection/"+ coll.name() + "/unload";
-
-var response = logCurlRequest('PUT', url, '');
-
-assert(response.code === 200);
-
-logJsonResponse(response);
-db._drop(cn);
-```
-
-### Load collection indexes into memory
-
-```openapi
-paths:
-  /_db/{database-name}/_api/collection/{collection-name}/loadIndexesIntoMemory:
-    put:
-      operationId: loadCollectionIndexes
-      description: |
-        You can call this endpoint to try to cache this collection's index entries in
-        the main memory. Index lookups served from the memory cache can be much faster
-        than lookups not stored in the cache, resulting in a performance boost.
-
-        The endpoint iterates over suitable indexes of the collection and stores the
-        indexed values (not the entire document data) in memory. This is implemented for
-        edge indexes only.
-
-        The endpoint returns as soon as the index warmup has been scheduled. The index
-        warmup may still be ongoing in the background, even after the return value has
-        already been sent. As all suitable indexes are scanned, it may cause significant
-        I/O activity and background load.
-
-        This feature honors memory limits. If the indexes you want to load are smaller
-        than your memory limit, this feature guarantees that most index values are
-        cached. If the index is greater than your memory limit, this feature fills
-        up values up to this limit. You cannot control which indexes of the collection
-        should have priority over others.
-
-        It is guaranteed that the in-memory cache data is consistent with the stored
-        index data at all times.
-      parameters:
-        - name: database-name
-          in: path
-          required: true
-          example: _system
-          description: |
-            The name of the database.
-          schema:
-            type: string
-        - name: collection-name
-          in: path
-          required: true
-          description: |
-            The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
-          schema:
-            type: string
-      responses:
-        '200':
-          description: |
-            The index loading has been scheduled for all suitable indexes.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - result
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that no error occurred.
-                    type: boolean
-                    example: false
-                code:
-                  description: |
-                    The HTTP response status code.
-                  type: integer
-                  example: 200
-                result:
-                  description: |
-                    The value `true`.
-                  type: boolean
-                  example: true
-        '400':
-          description: |
-            The `collection-name` parameter is missing.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - errorNum
-                  - errorMessage
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that an error occurred.
-                    type: boolean
-                    example: true
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 400
-                  errorNum:
-                    description: |
-                      ArangoDB error number for the error that occurred.
-                    type: integer
-                  errorMessage:
-                    description: |
-                      A descriptive error message.
-                    type: string
-        '404':
-          description: |
-            A collection called `collection-name` could not be found.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - errorNum
-                  - errorMessage
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that an error occurred.
-                    type: boolean
-                    example: true
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 404
-                  errorNum:
-                    description: |
-                      ArangoDB error number for the error that occurred.
-                    type: integer
-                  errorMessage:
-                    description: |
-                      A descriptive error message.
-                    type: string
-      tags:
-        - Collections
-```
-
-**Examples**
-
-```curl
----
-description: ''
-name: RestCollectionIdentifierLoadIndexesIntoMemory
----
-var cn = "products";
-db._drop(cn);
-var coll = db._create(cn);
-var url = "/_api/collection/"+ coll.name() + "/loadIndexesIntoMemory";
-
-var response = logCurlRequest('PUT', url, '');
-
-assert(response.code === 200);
-
-logJsonResponse(response);
-db._drop(cn);
-```
-
 ### Change the properties of a collection
 
 ```openapi
@@ -3919,7 +3377,6 @@ paths:
                     If set to `true`, the data is synchronized to disk before returning from a
                     document create, update, replace or removal operation.
                   type: boolean
-                  default: false
                 cacheEnabled:
                   description: |
                     Whether the in-memory hash cache for documents should be enabled for this
@@ -3929,7 +3386,6 @@ paths:
                     modified frequently, then you may disable the cache to avoid the maintenance
                     costs.
                   type: boolean
-                  default: false
                 schema:
                   description: |
                     Optional object that specifies the collection level schema for
@@ -4001,7 +3457,6 @@ paths:
                     If a server fails, this is detected automatically and one of the servers holding
                     copies take over, usually without an error being reported.
                   type: integer
-                  default: 1
                 writeConcern:
                   description: |
                     Determines how many copies of each shard are required to be
@@ -4333,6 +3788,170 @@ var coll = db._create(cn, { waitForSync: true });
 var url = "/_api/collection/"+ coll.name() + "/properties";
 
 var response = logCurlRequest('PUT', url, {"waitForSync" : true });
+
+assert(response.code === 200);
+
+logJsonResponse(response);
+db._drop(cn);
+```
+
+### Load collection indexes into memory
+
+```openapi
+paths:
+  /_db/{database-name}/_api/collection/{collection-name}/loadIndexesIntoMemory:
+    put:
+      operationId: loadCollectionIndexes
+      description: |
+        You can call this endpoint to try to cache this collection's index entries in
+        the main memory. Index lookups served from the memory cache can be much faster
+        than lookups not stored in the cache, resulting in a performance boost.
+
+        The endpoint iterates over suitable indexes of the collection and stores the
+        indexed values (not the entire document data) in memory. This is implemented for
+        edge indexes only.
+
+        The endpoint returns as soon as the index warmup has been scheduled. The index
+        warmup may still be ongoing in the background, even after the return value has
+        already been sent. As all suitable indexes are scanned, it may cause significant
+        I/O activity and background load.
+
+        This feature honors memory limits. If the indexes you want to load are smaller
+        than your memory limit, this feature guarantees that most index values are
+        cached. If the index is greater than your memory limit, this feature fills
+        up values up to this limit. You cannot control which indexes of the collection
+        should have priority over others.
+
+        It is guaranteed that the in-memory cache data is consistent with the stored
+        index data at all times.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: collection-name
+          in: path
+          required: true
+          description: |
+            The name of the collection.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            The index loading has been scheduled for all suitable indexes.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                code:
+                  description: |
+                    The HTTP response status code.
+                  type: integer
+                  example: 200
+                result:
+                  description: |
+                    The value `true`.
+                  type: boolean
+                  example: true
+        '400':
+          description: |
+            The `collection-name` parameter is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '404':
+          description: |
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Collections
+```
+
+**Examples**
+
+```curl
+---
+description: ''
+name: RestCollectionIdentifierLoadIndexesIntoMemory
+---
+var cn = "products";
+db._drop(cn);
+var coll = db._create(cn);
+var url = "/_api/collection/"+ coll.name() + "/loadIndexesIntoMemory";
+
+var response = logCurlRequest('PUT', url, '');
 
 assert(response.code === 200);
 
@@ -4813,5 +4432,383 @@ assert(response.code === 200);
 
 logJsonResponse(response);
 
+db._drop(cn);
+```
+
+### Load a collection
+
+```openapi
+paths:
+  /_db/{database-name}/_api/collection/{collection-name}/load:
+    put:
+      operationId: loadCollection
+      description: |
+        {{</* warning */>}}
+        The load function is deprecated from version 3.8.0 onwards and is a no-op
+        from version 3.9.0 onwards. It should no longer be used, as it may be removed
+        in a future version of ArangoDB.
+        {{</* /warning */>}}
+
+        Since ArangoDB version 3.9.0 this API does nothing. Previously, it used to
+        load a collection into memory.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: collection-name
+          in: path
+          required: true
+          description: |
+            The name of the collection.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Returns the basic collection properties for compatibility reasons.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - name
+                  - type
+                  - isSystem
+                  - status
+                  - id
+                  - globallyUniqueId
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  name:
+                    description: |
+                      The name of the collection.
+                    type: string
+                    example: coll
+                  type:
+                    description: |
+                      The type of the collection:
+                      - `0`: "unknown"
+                      - `2`: regular document collection
+                      - `3`: edge collection
+                    type: integer
+                    example: 2
+                  isSystem:
+                    description: |
+                      Whether the collection is a system collection. Collection names that starts with
+                      an underscore are usually system collections.
+                    type: boolean
+                    example: false
+                  status:
+                    description: |
+                      The status of the collection.
+                      - `3`: loaded
+                      - `5`: deleted
+
+                      Every other status indicates a corrupted collection.
+                    type: integer
+                    example: 3
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the collection. This is an internal property.
+                    type: string
+                  count:
+                    description: |
+                      The number of documents currently present in the collection.
+                    type: integer
+        '400':
+          description: |
+            The `collection-name` parameter or the `name` attribute is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '404':
+          description: |
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Collections
+```
+
+**Examples**
+
+```curl
+---
+description: ''
+name: RestCollectionIdentifierLoad
+---
+var cn = "products";
+db._drop(cn);
+var coll = db._create(cn, { waitForSync: true });
+var url = "/_api/collection/"+ coll.name() + "/load";
+
+var response = logCurlRequest('PUT', url, '');
+
+assert(response.code === 200);
+
+logJsonResponse(response);
+db._drop(cn);
+```
+
+### Unload a collection
+
+```openapi
+paths:
+  /_db/{database-name}/_api/collection/{collection-name}/unload:
+    put:
+      operationId: unloadCollection
+      description: |
+        {{</* warning */>}}
+        The unload function is deprecated from version 3.8.0 onwards and is a no-op
+        from version 3.9.0 onwards. It should no longer be used, as it may be removed
+        in a future version of ArangoDB.
+        {{</* /warning */>}}
+
+        Since ArangoDB version 3.9.0 this API does nothing. Previously it used to
+        unload a collection from memory, while preserving all documents.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: collection-name
+          in: path
+          required: true
+          description: |
+            The name of the collection.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Returns the basic collection properties for compatibility reasons.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - name
+                  - type
+                  - isSystem
+                  - status
+                  - id
+                  - globallyUniqueId
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  name:
+                    description: |
+                      The name of the collection.
+                    type: string
+                    example: coll
+                  type:
+                    description: |
+                      The type of the collection:
+                      - `0`: "unknown"
+                      - `2`: regular document collection
+                      - `3`: edge collection
+                    type: integer
+                    example: 2
+                  isSystem:
+                    description: |
+                      Whether the collection is a system collection. Collection names that starts with
+                      an underscore are usually system collections.
+                    type: boolean
+                    example: false
+                  status:
+                    description: |
+                      The status of the collection.
+                      - `3`: loaded
+                      - `5`: deleted
+
+                      Every other status indicates a corrupted collection.
+                    type: integer
+                    example: 3
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the collection. This is an internal property.
+                    type: string
+        '400':
+          description: |
+            The `collection-name` parameter or the `name` attribute is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '404':
+          description: |
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Collections
+```
+
+**Examples**
+
+```curl
+---
+description: ''
+name: RestCollectionIdentifierUnload
+---
+var cn = "products";
+db._drop(cn);
+var coll = db._create(cn, { waitForSync: true });
+var url = "/_api/collection/"+ coll.name() + "/unload";
+
+var response = logCurlRequest('PUT', url, '');
+
+assert(response.code === 200);
+
+logJsonResponse(response);
 db._drop(cn);
 ```
