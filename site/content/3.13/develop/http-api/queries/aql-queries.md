@@ -606,7 +606,7 @@ paths:
                       type: integer
                     skipInaccessibleCollections:
                       description: |
-                        Let AQL queries (especially graph traversals) treat collection to which a user
+                        Let AQL queries (especially graph traversals) treat collections to which a user
                         has no access rights for as if these collections are empty. Instead of returning a
                         forbidden access error, your queries execute normally. This is intended to help
                         with certain use-cases: A graph contains several collections and different users
