@@ -270,8 +270,9 @@ the global limit with the `--query.global-memory-limit` startup option.
 [Stream Transactions](../../develop/transactions/stream-transactions.md) may
 now be limited to smaller transaction sizes because the maximum transaction size
 can now be configured with the `--transaction.streaming-max-transaction-size`
-startup option. The default value remains 128 MiB but configuring a lower limit
-can cause previously working Stream Transactions to fail.
+startup option. The default value remains 128 MiB (up to v3.12.3) but configuring
+a lower limit can cause previously working Stream Transactions to fail.
+From v3.12.4 onward, the default value is 512 MiB.
 
 ## Exit code adjustments
 

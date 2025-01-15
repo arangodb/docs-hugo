@@ -1106,7 +1106,8 @@ in the `--server.endpoint` startup option of the server.
 
 The previously fixed limit of 128 MiB for [Stream Transactions](../../develop/transactions/stream-transactions.md)
 can now be configured with the new `--transaction.streaming-max-transaction-size`
-startup option. The default value remains 128 MiB.
+startup option. The default value remains 128 MiB up to v3.12.3.
+From v3.12.4 onward, the default value is 512 MiB.
 
 ### Transparent compression of requests and responses between ArangoDB servers and client tools
 
