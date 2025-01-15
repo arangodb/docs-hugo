@@ -130,7 +130,8 @@ following events:
   View are modified.
 - A named graph is added, or an existing named graph is changed or gets dropped.
 
-These events remove all entries from the plan cache of the respective database.
+These events typically remove all entries from the plan cache of the respective
+database. In a single server deployment, only affected entries may get removed.
 
 Individual cache entries can expire if `--query.plan-cache-invalidation-time`
 is set to a value greater than `0`. The configured duration for which cached
