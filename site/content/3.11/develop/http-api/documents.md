@@ -163,7 +163,7 @@ paths:
         '410':
           description: |
             This error occurs if you try to run this operation as part of a
-            Stream Transaction that has just been canceled.
+            Stream Transaction that has just been canceled or timed out.
         '412':
           description: |
             An `If-Match` header is specified and the found
@@ -327,7 +327,7 @@ paths:
         '410':
           description: |
             This error occurs if you try to run this operation as part of a
-            Stream Transaction that has just been canceled.
+            Stream Transaction that has just been canceled or timed out.
         '412':
           description: |
             An `If-Match` header is given and the found
@@ -594,7 +594,7 @@ paths:
         '410':
           description: |
             This error occurs if you try to run this operation as part of a
-            Stream Transaction that has just been canceled.
+            Stream Transaction that has just been canceled or timed out.
         '503':
           description: |
             The system is temporarily not available. This can be a system
@@ -979,7 +979,7 @@ paths:
         '410':
           description: |
             This error occurs if you try to run this operation as part of a
-            Stream Transaction that has just been canceled.
+            Stream Transaction that has just been canceled or timed out.
         '412':
           description: |
             The precondition is violated. The response includes
@@ -1312,7 +1312,7 @@ paths:
         '410':
           description: |
             This error occurs if you try to run this operation as part of a
-            Stream Transaction that has just been canceled.
+            Stream Transaction that has just been canceled or timed out.
         '412':
           description: |
             The precondition was violated. The response also contains
@@ -1542,7 +1542,7 @@ paths:
         '410':
           description: |
             This error occurs if you try to run this operation as part of a
-            Stream Transaction that has just been canceled.
+            Stream Transaction that has just been canceled or timed out.
         '412':
           description: |
             An `If-Match` header is specified and the found
@@ -1791,7 +1791,7 @@ paths:
         '410':
           description: |
             This error occurs if you try to run this operation as part of a
-            Stream Transaction that has just been canceled.
+            Stream Transaction that has just been canceled or timed out.
       tags:
         - Documents
 ```
@@ -2052,7 +2052,7 @@ paths:
         '410':
           description: |
             This error occurs if you try to run this operation as part of a
-            Stream Transaction that has just been canceled.
+            Stream Transaction that has just been canceled or timed out.
         '503':
           description: |
             The system is temporarily not available. This can be a system
@@ -2322,7 +2322,7 @@ paths:
         '410':
           description: |
             This error occurs if you try to run this operation as part of a
-            Stream Transaction that has just been canceled.
+            Stream Transaction that has just been canceled or timed out.
         '503':
           description: |
             The system is temporarily not available. This can be a system
@@ -2557,7 +2557,7 @@ paths:
         '410':
           description: |
             This error occurs if you try to run this operation as part of a
-            Stream Transaction that has just been canceled.
+            Stream Transaction that has just been canceled or timed out.
         '503':
           description: |
             The system is temporarily not available. This can be a system
@@ -2728,7 +2728,7 @@ paths:
         '410':
           description: |
             This error occurs if you try to run this operation as part of a
-            Stream Transaction that has just been canceled.
+            Stream Transaction that has just been canceled or timed out.
         '503':
           description: |
             The system is temporarily not available. This can be a system

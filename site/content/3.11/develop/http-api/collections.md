@@ -885,7 +885,7 @@ paths:
         '410':
           description: |
             This error occurs if you try to run this operation as part of a
-            Stream Transaction that has just been canceled.
+            Stream Transaction that has just been canceled or timed out.
       tags:
         - Collections
 ```
@@ -3262,7 +3262,7 @@ paths:
         '410':
           description: |
             This error occurs if you try to run this operation as part of a
-            Stream Transaction that has just been canceled.
+            Stream Transaction that has just been canceled or timed out.
           content:
             application/json:
               schema:

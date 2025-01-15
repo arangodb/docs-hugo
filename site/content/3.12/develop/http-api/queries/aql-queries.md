@@ -1063,7 +1063,7 @@ paths:
             in the query stops responding, but the connection has not been closed.
 
             This error also occurs if you try to run this operation as part of a
-            Stream Transaction that has just been canceled.
+            Stream Transaction that has just been canceled or timed out.
         '503':
           description: |
             A server which processes the query or the leader of a shard which is used
