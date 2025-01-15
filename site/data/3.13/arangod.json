@@ -349,6 +349,34 @@
     "section" : "agency",
     "type" : "uint64"
   },
+  "agency.supervision-expired-servers-grace-period" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "agent"
+    ],
+    "default" : 3600,
+    "deprecatedIn" : null,
+    "description" : "The supervision time after which a server is removed from the agency if it does no longer send heartbeats (in seconds).",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.4"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 1.7976931348623157e+308,
+    "minInclusive" : true,
+    "minValue" : 2.2250738585072014e-308,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "agency",
+    "type" : "double"
+  },
   "agency.supervision-failed-leader-adds-follower" : {
     "category" : "option",
     "component" : [
@@ -1365,7 +1393,7 @@
       "agent",
       "single"
     ],
-    "default" : 7733273600,
+    "default" : 7735569408,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -1798,6 +1826,36 @@
     "requiresValue" : true,
     "section" : "cluster",
     "type" : "string"
+  },
+  "cluster.no-heartbeat-delay-before-shutdown" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver"
+    ],
+    "default" : 1800,
+    "deprecatedIn" : null,
+    "description" : "The delay (in seconds) before shutting down a coordinator if no heartbeat can be sent. Set to 0 to deactivate this shutdown",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.4"
+    ],
+    "longDescription" : "Setting this option to a value greater than zero will\nlet a coordinator which cannot send a heartbeat to the agency for the specified time\nshut down. This is necessary to prevent that a coordinator survives longer than the\nagency supervision has patience before it removes the coordinator from the agency\nmeta data. Without this it would be possible that a coordinator is still running\ntransactions and committing them, which could, for example, render hotbackups\ninconsistent.",
+    "maxInclusive" : true,
+    "maxValue" : 1.7976931348623157e+308,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "cluster",
+    "type" : "double"
   },
   "cluster.require-persisted-id" : {
     "category" : "option",
@@ -2721,7 +2779,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 6186618880,
+    "default" : 6188455526,
     "deprecatedIn" : null,
     "description" : "Maximum memory usage (in bytes) to be used by all ongoing dumps.",
     "dynamic" : true,
@@ -2823,6 +2881,30 @@
     "requiresValue" : true,
     "section" : "encryption",
     "type" : "string"
+  },
+  "experimental-vector-index" : {
+    "category" : "option",
+    "component" : [
+    ],
+    "default" : false,
+    "deprecatedIn" : null,
+    "description" : "Turn on experimental vector index feature.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.4"
+    ],
+    "longDescription" : "Turn on experimental vector index features. If this is enabled\ndowngrading from this version will no longer be possible.",
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "",
+    "type" : "boolean"
   },
   "fortune" : {
     "category" : "option",
@@ -4434,7 +4516,7 @@
       "info"
     ],
     "deprecatedIn" : null,
-    "description" : "Set the topic-specific log level, using `--log.level level` for the general topic or `--log.level topic=level` for the specified topic (can be specified multiple times).\nAvailable log levels: fatal, error, warning, info, debug, trace.\nAvailable log topics: all, audit-hotbackup, audit-service, audit-document, audit-view, audit-collection, audit-database, audit-authorization, audit-authentication, arangosearch, deprecation, views, v8, validation, ttl, trx, threads, syscall, supervision, statistics, startup, ssl, security, rocksdb, restore, requests, rep-wal, libiresearch, rep-state, replication2, replication, queries, memory, maintenance, license, httpclient, heartbeat, graphs, flush, general, engines, dump, development, crash, config, communication, cluster, cache, bench, backup, authorization, authentication, aql, agencystore, agencycomm, agency.",
+    "description" : "Set the topic-specific log level, using `--log.level level` for the general topic or `--log.level topic=level` for the specified topic (can be specified multiple times).\nAvailable log levels: fatal, error, warning, info, debug, trace.\nAvailable log topics: all, audit-hotbackup, audit-service, audit-document, audit-view, audit-collection, audit-database, audit-authorization, audit-authentication, arangosearch, deprecation, views, v8, validation, ttl, trx, threads, syscall, supervision, statistics, startup, ssl, security, rocksdb, restore, requests, rep-wal, rep-state, replication2, libiresearch, replication, queries, memory, maintenance, license, httpclient, heartbeat, graphs, flush, general, engines, dump, development, crash, config, communication, cluster, cache, bench, backup, authorization, authentication, aql, agencystore, agencycomm, agency.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -5587,7 +5669,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33080578048,
+    "base" : 33089761280,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5595,7 +5677,7 @@
       "agent",
       "single"
     ],
-    "default" : 26795268219,
+    "default" : 26802706636,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -5922,7 +6004,7 @@
     "type" : "uint64"
   },
   "query.memory-limit" : {
-    "base" : 33080578048,
+    "base" : 33089761280,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5930,7 +6012,7 @@
       "agent",
       "single"
     ],
-    "default" : 19848346829,
+    "default" : 19853856768,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -6059,6 +6141,130 @@
     "requiresValue" : false,
     "section" : "query",
     "type" : "boolean"
+  },
+  "query.plan-cache-invalidation-time" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 900,
+    "deprecatedIn" : null,
+    "description" : "The time in seconds after which a query plan is invalidated in the query plan cache.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.4"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 1.7976931348623157e+308,
+    "minInclusive" : true,
+    "minValue" : 2.2250738585072014e-308,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "query",
+    "type" : "double"
+  },
+  "query.plan-cache-max-entries" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 128,
+    "deprecatedIn" : null,
+    "description" : "The maximum number of plans in query plan cache per database.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.4"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "query",
+    "type" : "uint64"
+  },
+  "query.plan-cache-max-entry-size" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 2097152,
+    "deprecatedIn" : null,
+    "description" : "The maximum size of an individual entry in the query plan cache in each database.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.4"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "query",
+    "type" : "uint64"
+  },
+  "query.plan-cache-max-memory-usage" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 8388608,
+    "deprecatedIn" : null,
+    "description" : "The maximum allowed memory usage for the query plan cache in each database.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.4"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "query",
+    "type" : "uint64"
   },
   "query.registry-ttl" : {
     "base" : 1,
@@ -7003,7 +7209,7 @@
       "agent",
       "single"
     ],
-    "default" : 9279928320,
+    "default" : 9282683289,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -8103,7 +8309,7 @@
       "agent",
       "single"
     ],
-    "default" : 12,
+    "default" : 13,
     "deprecatedIn" : null,
     "description" : "The maximum number of write buffers that build up in memory (default: number of column families + 2 = 12 write buffers). You can only increase the number.",
     "dynamic" : false,
@@ -8390,6 +8596,37 @@
     "hidden" : true,
     "introducedIn" : [
       "v3.8.0"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "rocksdb",
+    "type" : "uint64"
+  },
+  "rocksdb.max-write-buffer-number-vector" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 0,
+    "deprecatedIn" : null,
+    "description" : "If non-zero, overrides the value of `--rocksdb.max-write-buffer-number` for the vector column family",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.12.4"
     ],
     "maxInclusive" : true,
     "maxValue" : 18446744073709551615,
@@ -8846,6 +9083,32 @@
       "v3.12.0"
     ],
     "longDescription" : "Enabling this option will make RocksDB's\ncompaction write the primary index data for different collections/shards\ninto different .sst files. Otherwise the primary index data from different \ncollections/shards can be mixed and written into the same .sst files.\n\nEnabling this option usually has the benefit of making the RocksDB\ncompaction more efficient when a lot of different collections/shards\nare written to in parallel.\nThe disavantage of enabling this option is that there can be more .sst\nfiles than when the option is turned off, and the disk space used by\nthese .sst files can be higher than if there are fewer .sst files (this\nis because there is some per-.sst file overhead).\nIn particular on deployments with many collections/shards\nthis can lead to a very high number of .sst files, with the potential\nof outgrowing the maximum number of file descriptors the ArangoDB process \ncan open. Thus the option should only be enabled on deployments with a\nlimited number of collections/shards.",
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "rocksdb",
+    "type" : "boolean"
+  },
+  "rocksdb.partition-files-for-vector-index" : {
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "single"
+    ],
+    "default" : false,
+    "deprecatedIn" : null,
+    "description" : "If enabled, the index data for different vector indexes will end up in different .sst files.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : true,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.12.4"
+    ],
+    "longDescription" : "Enabling this option makes RocksDB's\ncompaction write the index data for different vector\nindexes (also indexes from different collections/shards) into different\n.sst files. Otherwise, the index data from different\ncollections/shards/indexes can be mixed and written into the same .sst files.\n\nEnabling this option usually has the benefit of making the RocksDB\ncompaction more efficient when a lot of different collections/shards/indexes\nare written to in parallel.\nThe disadvantage of enabling this option is that there can be more .sst\nfiles than when the option is disabled, and the disk space used by\nthese .sst files can be higher than if there are fewer .sst files\nbecause there is some overhead per .sst file.\nFor deployments with many collections/shards/indexes in particular,\nthis can lead to a very high number of .sst files, with the potential\nof outgrowing the maximum number of file descriptors the ArangoDB process\ncan open. The option should thus only be enabled for deployments with a\nlimited number of edge collections/shards/indexes.",
     "obsolete" : false,
     "os" : [
       "linux"
@@ -9476,7 +9739,7 @@
       "agent",
       "single"
     ],
-    "default" : 12373237760,
+    "default" : 12376911052,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
