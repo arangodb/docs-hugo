@@ -197,8 +197,9 @@ paths:
                         type: string
                       mode:
                         description: |
-                          The mode arangod runs in. Possible values: `server`, `console`, `script`
+                          The mode arangod runs in.
                         type: string
+                        enum: [server, console, script]
                       host:
                         description: |
                           the host ID
@@ -888,7 +889,7 @@ paths:
                   status:
                     description: |
                       The `status` key allows you to confirm the state of the installed license on a
-                      glance. The possible values are as follows:
+                      glance.
 
                       - `good`: The license is valid for more than 2 weeks.
                       - `expiring`: The license is valid for less than 2 weeks.
@@ -897,6 +898,7 @@ paths:
                       - `read-only`: The license is expired over 2 weeks. The instance is now
                         restricted to read-only mode.
                     type: string
+                    enum: [good, expiring, expired, read-only]
                     example: good
                   upgrading:
                     description: |

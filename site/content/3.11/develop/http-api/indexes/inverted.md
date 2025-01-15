@@ -76,18 +76,16 @@ paths:
                       features:
                         description: |
                           A list of Analyzer features to use for this field. You can set this option to
-                          overwrite what features are enabled for the `analyzer`. Possible features:
-                          - `"frequency"`
-                          - `"norm"`
-                          - `"position"`
-                          - `"offset"`
+                          overwrite what features are enabled for the `analyzer`.
 
                           Default: the features as defined by the Analyzer itself, or inherited from the
                           top-level `features` option if the `analyzer` option adjacent to this option is
                           not set.
                         type: array
+                        uniqueItems: true
                         items:
                           type: string
+                          enum: [frequency, norm, position, offset]
                       includeAllFields:
                         description: |
                           This option only applies if you use the inverted index in a `search-alias` Views.
@@ -182,18 +180,16 @@ paths:
                             features:
                               description: |
                                 A list of Analyzer features to use for this field. You can set this option to
-                                overwrite what features are enabled for the `analyzer`. Possible features:
-                                - `"frequency"`
-                                - `"norm"`
-                                - `"position"`
-                                - `"offset"`
+                                overwrite what features are enabled for the `analyzer`.
 
                                 Default: the features as defined by the Analyzer itself, or inherited from the
                                 parent field's or top-level `features` option if no `analyzer` option is set
                                 at a deeper level, closer to this option.
                               type: array
+                              uniqueItems: true
                               items:
                                 type: string
+                                enum: [frequency, norm, position, offset]
                             searchField:
                               description: |
                                 This option only applies if you use the inverted index in a `search-alias` Views.
@@ -322,10 +318,12 @@ paths:
                           type: string
                       compression:
                         description: |
-                          Defines how to compress the attribute values. Possible values:
-                          - `"lz4"` (default): use LZ4 fast compression.
+                          Defines how to compress the attribute values.
+                          - `"lz4"`: use LZ4 fast compression.
                           - `"none"`: disable compression to trade space for speed.
                         type: string
+                        enum: [lz4, none]
+                        default: lz4
                       cache:
                         description: |
                           Enable this option to always cache stored values in memory. This can improve the
@@ -368,16 +366,19 @@ paths:
                             type: string
                           direction:
                             description: |
-                              The sorting direction. Possible values:
+                              The sorting direction.
                               - `"asc` for ascending
                               - `"desc"` for descending
                             type: string
+                            enum: [asc, desc]
                     compression:
                       description: |
-                        Defines how to compress the primary sort data. Possible values:
-                        - `"lz4"` (default): use LZ4 fast compression.
+                        Defines how to compress the primary sort data.
+                        - `"lz4"`: use LZ4 fast compression.
                         - `"none"`: disable compression to trade space for speed.
                       type: string
+                      enum: [lz4, none]
+                      default: lz4
                     cache:
                       description: |
                         Enable this option to always cache the primary sort columns in memory. This can
@@ -418,16 +419,14 @@ paths:
                 features:
                   description: |
                     A list of Analyzer features. You can set this option to overwrite what features
-                    are enabled for the default `analyzer`. Possible features:
-                    - `"frequency"`
-                    - `"norm"`
-                    - `"position"`
-                    - `"offset"`
+                    are enabled for the default `analyzer`.
 
                     Default: the features as defined by the Analyzer itself.
                   type: array
+                  uniqueItems: true
                   items:
                     type: string
+                    enum: [frequency, norm, position, offset]
                 includeAllFields:
                   description: |
                     This option only applies if you use the inverted index in a `search-alias` Views.

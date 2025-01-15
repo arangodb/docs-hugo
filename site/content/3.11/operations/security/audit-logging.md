@@ -40,7 +40,7 @@ The general format of audit logs is as follows:
   startup option. Otherwise, the default hostname is used.
 
 - `topic`: The log topic of the entry. A topic can be suppressed via the
-  `--log.level` startup option or the REST API.
+  `--log.level` startup option or the [HTTP API](../../develop/http-api/monitoring/logs.md#set-the-server-log-levels).
 
 - `username`: The (authenticated or unauthenticated) name supplied by the client.
   A dash (`-`) indicates that no name was given by the client.
@@ -59,10 +59,11 @@ The general format of audit logs is as follows:
 ## Events
 
 Unless otherwise noted, all events are logged to their respective topics at the
-`info` level. To suppress events from a given topic, set the topic to the `warn`
-level or higher. By default, each topic is set to the most verbose level
-at which events are logged (either `debug` or `info`), so that all events are
-logged.
+`INFO` level. To suppress events from a given topic, set the topic to the `WARNING`
+level or higher. By default, each topic is set to the `INFO` level. You need to
+set a more verbose level for some topics to log all events.
+
+The examples for different topics listed below are not exhaustive.
 
 ### Authentication
 
@@ -85,7 +86,7 @@ accepted.
 This message occurs when authentication is enabled and a request omits an
 `Authorization` header. Note that this may naturally occur when making an
 initial request to e.g. log in or load the web interface. For this reason, such
-low-priority events are logged at the `debug` level.
+low-priority events are logged at the `DEBUG` level.
 
 #### Wrong credentials
 
@@ -115,6 +116,9 @@ for further use.
 Note that the user given as fourth part is the user that requested the login.
 
 ### Authorization
+
+Internal low-priority operations are logged to the `audit-authorization` topic
+at the `DEBUG` level.
 
 #### User not authorized to access database
 
@@ -198,7 +202,7 @@ successful, the status is `ok`, otherwise `failed`.
 
 If statistics are enabled, the system will periodically perform several document
 operations on a few system collections. These low-priority operations are logged
-to the `audit-document` topic at the `debug` level.
+to the `audit-document` topic at the `DEBUG` level.
 
 #### Single document read
 

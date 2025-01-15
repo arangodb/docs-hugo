@@ -180,7 +180,8 @@ The [Stream Transactions HTTP API](../../develop/http-api/transactions/stream-tr
 may now allow larger transactions or be limited to smaller transactions because
 the maximum transaction size can now be configured with the
 `--transaction.streaming-max-transaction-size` startup option.
-The default value remains 128 MiB.
+The default value remains 128 MiB up to v3.12.3.
+From v3.12.4 onward, the default value is 512 MiB.
 
 #### Analyzer API
 

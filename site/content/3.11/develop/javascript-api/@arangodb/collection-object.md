@@ -216,11 +216,11 @@ Returns an object containing all collection properties.
     auto-generate keys in this case are not aware of all keys which are already used.
     {{< /warning >}}
   - `increment` (number): The increment value for the `autoincrement` key generator.
-    Not used for other key generator types.
+    Not used by other key generator types.
   - `offset` (number): The initial offset value for the `autoincrement` key generator.
-    Not used for other key generator types.
-  - `lastValue` (number): the current offset value of the `autoincrement` or `padded`
-    key generator. This an internal property for restoring dumps properly.
+    Not used by other key generator types.
+  - `lastValue` (number): the offset value of the `autoincrement` or `padded`
+    key generator. This is an internal property for restoring dumps properly.
 
 - `schema` (object\|null): 
   An object that specifies the collection-level document schema for documents.

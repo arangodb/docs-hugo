@@ -1001,7 +1001,7 @@ DATE_FORMAT("2016-03-01", "%xxx%") // "063", trailing % ignored
 ---
 name: dateFormat
 description: |
-  Show example calls of the formatting function and their results:
+  Example calls of the formatting function and their results:
 bindVars:
   {
     "formats": [
@@ -1036,7 +1036,7 @@ FOR format IN @formats
 ---
 name: dateFormatTimezoned
 description: |
-  Show example calls of the formatting function and their results, using the
+  Example calls of the formatting function and their results, using the
   timezone of Germany (and Nepal in one case):
 bindVars:
   {
@@ -1049,8 +1049,6 @@ bindVars:
       { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%i", "equalTo": "DATE_MINUTE", "timezone": "Asia/Kathmandu" },
       { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%x", "equalTo": "DATE_DAYOFYEAR", "timezone": "Europe/Berlin" },
       { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%k", "equalTo": "DATE_ISOWEEK", "timezone": "Europe/Berlin" },
-      { "date": "2016-12-31T23:00:00.000Z", "placeholder": "%l", "equalTo": "DATE_LEAPYEAR", "timezone": "Europe/Berlin" },
-      { "date": "2023-12-31T23:00:00.000Z", "placeholder": "%q", "equalTo": "DATE_QUARTER", "timezone": "Europe/Berlin" },
       { "date": "2023-11-30T23:00:00.000Z", "placeholder": "%a", "equalTo": "DATE_DAYS_IN_MONTH", "timezone": "Europe/Berlin" }
     ]
   }
@@ -1060,6 +1058,8 @@ FOR format IN @formats
     format.equalTo,
     "('",
     format.date,
+    "', '",
+    format.timezone,
     "') = ",
     DATE_FORMAT(format.date, format.placeholder, format.timezone)
   )

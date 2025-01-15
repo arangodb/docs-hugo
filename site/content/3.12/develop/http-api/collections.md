@@ -381,10 +381,7 @@ paths:
                           uniqueItems: true
                           items:
                             type: string
-                            enum:
-                              - insert
-                              - update
-                              - replace
+                            enum: [insert, update, replace]
                           example: ["insert", "update", "replace"]
                         keepNull:
                           description: |
@@ -404,12 +401,9 @@ paths:
                     properties:
                       type:
                         description: |
-                          Specifies the type of the key generator. Possible values:
-                          - `"traditional"`
-                          - `"autoincrement"`
-                          - `"uuid"`
-                          - `"padded"`
+                          Specifies the type of the key generator.
                         type: string
+                        enum: [traditional, autoincrement, uuid, padded]
                       allowUserKeys:
                         description: |
                           If set to `true`, then you are allowed to supply
@@ -481,15 +475,14 @@ paths:
                   shardingStrategy:
                     description: |
                       The sharding strategy selected for the collection. _(cluster only)_
-
-                      Possible values:
-                      - `"community-compat"`
-                      - `"enterprise-compat"`
-                      - `"enterprise-smart-edge-compat"`
-                      - `"hash"`
-                      - `"enterprise-hash-smart-edge"`
-                      - `"enterprise-hex-smart-vertex"`
                     type: string
+                    enum:
+                      - community-compat
+                      - enterprise-compat
+                      - enterprise-smart-edge-compat
+                      - hash
+                      - enterprise-hash-smart-edge
+                      - enterprise-hex-smart-vertex
                   distributeShardsLike:
                     description: |
                       The name of another collection. This collection uses the `replicationFactor`,
@@ -719,10 +712,7 @@ paths:
                           uniqueItems: true
                           items:
                             type: string
-                            enum:
-                              - insert
-                              - update
-                              - replace
+                            enum: [insert, update, replace]
                           example: ["insert", "update", "replace"]
                         keepNull:
                           description: |
@@ -742,12 +732,9 @@ paths:
                     properties:
                       type:
                         description: |
-                          Specifies the type of the key generator. Possible values:
-                          - `"traditional"`
-                          - `"autoincrement"`
-                          - `"uuid"`
-                          - `"padded"`
+                          Specifies the type of the key generator.
                         type: string
+                        enum: [traditional, autoincrement, uuid, padded]
                       allowUserKeys:
                         description: |
                           If set to `true`, then you are allowed to supply
@@ -819,15 +806,14 @@ paths:
                   shardingStrategy:
                     description: |
                       The sharding strategy selected for the collection. _(cluster only)_
-
-                      Possible values:
-                      - `"community-compat"`
-                      - `"enterprise-compat"`
-                      - `"enterprise-smart-edge-compat"`
-                      - `"hash"`
-                      - `"enterprise-hash-smart-edge"`
-                      - `"enterprise-hex-smart-vertex"`
                     type: string
+                    enum:
+                      - community-compat
+                      - enterprise-compat
+                      - enterprise-smart-edge-compat
+                      - hash
+                      - enterprise-hash-smart-edge
+                      - enterprise-hex-smart-vertex
                   distributeShardsLike:
                     description: |
                       The name of another collection. This collection uses the `replicationFactor`,
@@ -1074,10 +1060,7 @@ paths:
                           uniqueItems: true
                           items:
                             type: string
-                            enum:
-                              - insert
-                              - update
-                              - replace
+                            enum: [insert, update, replace]
                           example: ["insert", "update", "replace"]
                         keepNull:
                           description: |
@@ -1097,12 +1080,9 @@ paths:
                     properties:
                       type:
                         description: |
-                          Specifies the type of the key generator. Possible values:
-                          - `"traditional"`
-                          - `"autoincrement"`
-                          - `"uuid"`
-                          - `"padded"`
+                          Specifies the type of the key generator.
                         type: string
+                        enum: [traditional, autoincrement, uuid, padded]
                       allowUserKeys:
                         description: |
                           If set to `true`, then you are allowed to supply
@@ -1174,15 +1154,14 @@ paths:
                   shardingStrategy:
                     description: |
                       The sharding strategy selected for the collection. _(cluster only)_
-
-                      Possible values:
-                      - `"community-compat"`
-                      - `"enterprise-compat"`
-                      - `"enterprise-smart-edge-compat"`
-                      - `"hash"`
-                      - `"enterprise-hash-smart-edge"`
-                      - `"enterprise-hex-smart-vertex"`
                     type: string
+                    enum:
+                      - community-compat
+                      - enterprise-compat
+                      - enterprise-smart-edge-compat
+                      - hash
+                      - enterprise-hash-smart-edge
+                      - enterprise-hex-smart-vertex
                   distributeShardsLike:
                     description: |
                       The name of another collection. This collection uses the `replicationFactor`,
@@ -1841,10 +1820,7 @@ paths:
                           uniqueItems: true
                           items:
                             type: string
-                            enum:
-                              - insert
-                              - update
-                              - replace
+                            enum: [insert, update, replace]
                           example: ["insert", "update", "replace"]
                         keepNull:
                           description: |
@@ -1864,12 +1840,9 @@ paths:
                     properties:
                       type:
                         description: |
-                          Specifies the type of the key generator. Possible values:
-                          - `"traditional"`
-                          - `"autoincrement"`
-                          - `"uuid"`
-                          - `"padded"`
+                          Specifies the type of the key generator.
                         type: string
+                        enum: [traditional, autoincrement, uuid, padded]
                       allowUserKeys:
                         description: |
                           If set to `true`, then you are allowed to supply
@@ -1941,15 +1914,14 @@ paths:
                   shardingStrategy:
                     description: |
                       The sharding strategy selected for the collection. _(cluster only)_
-
-                      Possible values:
-                      - `"community-compat"`
-                      - `"enterprise-compat"`
-                      - `"enterprise-smart-edge-compat"`
-                      - `"hash"`
-                      - `"enterprise-hash-smart-edge"`
-                      - `"enterprise-hex-smart-vertex"`
                     type: string
+                    enum:
+                      - community-compat
+                      - enterprise-compat
+                      - enterprise-smart-edge-compat
+                      - hash
+                      - enterprise-hash-smart-edge
+                      - enterprise-hex-smart-vertex
                   distributeShardsLike:
                     description: |
                       The name of another collection. This collection uses the `replicationFactor`,
@@ -2326,12 +2298,8 @@ paths:
                     uniqueItems: true
                     items:
                       type: string
-                      enum:
-                        - padded
-                        - uuid
-                        - autoincrement
-                        - traditional
-                    example: ["traditional", "autoincrement", "padded", "uuid"]
+                      enum: [traditional, autoincrement, uuid, padded]
+                    example: ["traditional", "autoincrement", "uuid", "padded"]
       tags:
         - Collections
 ```
@@ -2458,10 +2426,7 @@ paths:
                         uniqueItems: true
                         items:
                           type: string
-                          enum:
-                            - insert
-                            - update
-                            - replace
+                          enum: [insert, update, replace]
                         default: ["insert", "update", "replace"]
                       keepNull:
                         description: |
@@ -2754,10 +2719,7 @@ paths:
                           uniqueItems: true
                           items:
                             type: string
-                            enum:
-                              - insert
-                              - update
-                              - replace
+                            enum: [insert, update, replace]
                           example: ["insert", "update", "replace"]
                         keepNull:
                           description: |
@@ -2777,12 +2739,9 @@ paths:
                     properties:
                       type:
                         description: |
-                          Specifies the type of the key generator. Possible values:
-                          - `"traditional"`
-                          - `"autoincrement"`
-                          - `"uuid"`
-                          - `"padded"`
+                          Specifies the type of the key generator.
                         type: string
+                        enum: [traditional, autoincrement, uuid, padded]
                       allowUserKeys:
                         description: |
                           If set to `true`, then you are allowed to supply
@@ -2854,15 +2813,14 @@ paths:
                   shardingStrategy:
                     description: |
                       The sharding strategy selected for the collection. _(cluster only)_
-
-                      Possible values:
-                      - `"community-compat"`
-                      - `"enterprise-compat"`
-                      - `"enterprise-smart-edge-compat"`
-                      - `"hash"`
-                      - `"enterprise-hash-smart-edge"`
-                      - `"enterprise-hex-smart-vertex"`
                     type: string
+                    enum:
+                      - community-compat
+                      - enterprise-compat
+                      - enterprise-smart-edge-compat
+                      - hash
+                      - enterprise-hash-smart-edge
+                      - enterprise-hex-smart-vertex
                   distributeShardsLike:
                     description: |
                       The name of another collection. This collection uses the `replicationFactor`,
@@ -3375,22 +3333,18 @@ db._drop(cn);
 
 ## Modify collections
 
-### Load a collection
+### Change the properties of a collection
 
 ```openapi
 paths:
-  /_db/{database-name}/_api/collection/{collection-name}/load:
+  /_db/{database-name}/_api/collection/{collection-name}/properties:
     put:
-      operationId: loadCollection
+      operationId: updateCollectionProperties
       description: |
-        {{</* warning */>}}
-        The load function is deprecated from version 3.8.0 onwards and is a no-op
-        from version 3.9.0 onwards. It should no longer be used, as it may be removed
-        in a future version of ArangoDB.
-        {{</* /warning */>}}
-
-        Since ArangoDB version 3.9.0 this API does nothing. Previously, it used to
-        load a collection into memory.
+        Changes the properties of a collection. Only the provided attributes are
+        updated. Collection properties **cannot be changed** once a collection is
+        created except for the listed properties, as well as the collection name via
+        the rename endpoint (but not in clusters).
       parameters:
         - name: database-name
           in: path
@@ -3412,10 +3366,117 @@ paths:
             {{</* /warning */>}}
           schema:
             type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                waitForSync:
+                  description: |
+                    If set to `true`, the data is synchronized to disk before returning from a
+                    document create, update, replace or removal operation.
+                  type: boolean
+                cacheEnabled:
+                  description: |
+                    Whether the in-memory hash cache for documents should be enabled for this
+                    collection. Can be controlled globally with the `--cache.size`
+                    startup option. The cache can speed up repeated reads of the same documents via
+                    their document keys. If the same documents are not fetched often or are
+                    modified frequently, then you may disable the cache to avoid the maintenance
+                    costs.
+                  type: boolean
+                schema:
+                  description: |
+                    Optional object that specifies the collection level schema for
+                    documents. The attribute keys `rule`, `level` and `message` must follow the
+                    rules documented in [Document Schema Validation](../../concepts/data-structure/documents/schema-validation.md)
+                  type: object
+                computedValues:
+                  description: |
+                    An optional list of objects, each representing a computed value.
+                  type: array
+                  items:
+                    type: object
+                    required:
+                      - name
+                      - expression
+                      - overwrite
+                    properties:
+                      name:
+                        description: |
+                          The name of the target attribute. Can only be a top-level attribute, but you
+                          may return a nested object. Cannot be `_key`, `_id`, `_rev`, `_from`, `_to`,
+                          or a shard key attribute.
+                        type: string
+                      expression:
+                        description: |
+                          An AQL `RETURN` operation with an expression that computes the desired value.
+                          See [Computed Value Expressions](../../concepts/data-structure/documents/computed-values.md#computed-value-expressions) for details.
+                        type: string
+                      overwrite:
+                        description: |
+                          Whether the computed value shall take precedence over a user-provided or
+                          existing attribute.
+                        type: boolean
+                      computeOn:
+                        description: |
+                          An array of strings to define on which write operations the value shall be
+                          computed.
+                        type: array
+                        uniqueItems: true
+                        items:
+                          type: string
+                          enum: [insert, update, replace]
+                        example: ["insert", "update", "replace"]
+                      keepNull:
+                        description: |
+                          Whether the target attribute shall be set if the expression evaluates to `null`.
+                          You can set the option to `false` to not set (or unset) the target attribute if
+                          the expression returns `null`.
+                        type: boolean
+                        default: true
+                      failOnWarning:
+                        description: |
+                          Whether to let the write operation fail if the expression produces a warning.
+                        type: boolean
+                        default: false
+                replicationFactor:
+                  description: |
+                    In a cluster, this attribute determines how many copies
+                    of each shard are kept on different DB-Servers. The value 1 means that only one
+                    copy (no synchronous replication) is kept. A value of k means that k-1 replicas
+                    are kept. For SatelliteCollections, it needs to be the string `"satellite"`,
+                    which matches the replication factor to the number of DB-Servers
+                    (Enterprise Edition only).
+
+                    Any two copies reside on different DB-Servers. Replication between them is
+                    synchronous, that is, every write operation to the "leader" copy will be replicated
+                    to all "follower" replicas, before the write operation is reported successful.
+
+                    If a server fails, this is detected automatically and one of the servers holding
+                    copies take over, usually without an error being reported.
+                  type: integer
+                writeConcern:
+                  description: |
+                    Determines how many copies of each shard are required to be
+                    in sync on the different DB-Servers. If there are less than these many copies
+                    in the cluster, a shard refuses to write. Writes to shards with enough
+                    up-to-date copies succeed at the same time, however. The value of
+                    `writeConcern` cannot be greater than `replicationFactor`.
+
+                    If `distributeShardsLike` is set, the default `writeConcern`
+                    is that of the prototype collection.
+                    For SatelliteCollections, the `writeConcern` is automatically controlled to
+                    equal the number of DB-Servers and has a value of `0`.
+                    Otherwise, the default value is controlled by the current database's
+                    default `writeConcern`, which uses the `--cluster.write-concern`
+                    startup option as default, which defaults to `1`. _(cluster only)_
+                  type: integer
       responses:
         '200':
           description: |
-            Returns the basic collection properties for compatibility reasons.
+            The collection has been updated successfully.
           content:
             application/json:
               schema:
@@ -3425,10 +3486,17 @@ paths:
                   - code
                   - name
                   - type
-                  - isSystem
                   - status
+                  - statusString
+                  - isSystem
                   - id
                   - globallyUniqueId
+                  - waitForSync
+                  - keyOptions
+                  - schema
+                  - computedValues
+                  - cacheEnabled
+                  - syncByRevision
                 properties:
                   error:
                     description: |
@@ -3440,49 +3508,210 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 200
+                  waitForSync:
+                    description: |
+                      If `true`, creating, changing, or removing
+                      documents waits until the data has been synchronized to disk.
+                    type: boolean
+                  schema:
+                    description: |
+                      An object that specifies the collection-level schema for documents.
+                    type: object
+                  computedValues:
+                    description: |
+                      A list of objects, each representing a computed value.
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - name
+                        - expression
+                        - overwrite
+                      properties:
+                        name:
+                          description: |
+                            The name of the target attribute.
+                          type: string
+                        expression:
+                          description: |
+                            An AQL `RETURN` operation with an expression that computes the desired value.
+                          type: string
+                        overwrite:
+                          description: |
+                            Whether the computed value takes precedence over a user-provided or
+                            existing attribute.
+                          type: boolean
+                        computeOn:
+                          description: |
+                            An array of strings that defines on which write operations the value is
+                            computed.
+                          type: array
+                          uniqueItems: true
+                          items:
+                            type: string
+                            enum: [insert, update, replace]
+                          example: ["insert", "update", "replace"]
+                        keepNull:
+                          description: |
+                            Whether the target attribute is set if the expression evaluates to `null`.
+                          type: boolean
+                        failOnWarning:
+                          description: |
+                            Whether the write operation fails if the expression produces a warning.
+                          type: boolean
+                  keyOptions:
+                    description: |
+                      An object which contains key generation options.
+                    type: object
+                    required:
+                      - type
+                      - allowUserKeys
+                    properties:
+                      type:
+                        description: |
+                          Specifies the type of the key generator.
+                        type: string
+                        enum: [traditional, autoincrement, uuid, padded]
+                      allowUserKeys:
+                        description: |
+                          If set to `true`, then you are allowed to supply
+                          own key values in the `_key` attribute of a document. If set to
+                          `false`, then the key generator is solely responsible for
+                          generating keys and an error is raised if you supply own key values in the
+                          `_key` attribute of documents.
+
+                          {{</* warning */>}}
+                          You should not use both user-specified and automatically generated document keys
+                          in the same collection in cluster deployments for collections with more than a
+                          single shard. Mixing the two can lead to conflicts because Coordinators that
+                          auto-generate keys in this case are not aware of all keys which are already used.
+                          {{</* /warning */>}}
+                        type: boolean
+                      increment:
+                        description: |
+                          The increment value for the `autoincrement` key generator.
+                          Not used by other key generator types.
+                        type: integer
+                      offset:
+                        description: |
+                          The initial offset value for the `autoincrement` key generator.
+                          Not used by other key generator types.
+                        type: integer
+                      lastValue:
+                        description: |
+                          The offset value of the `autoincrement` or `padded` key generator.
+                          This is an internal property for restoring dumps properly.
+                        type: integer
+                  cacheEnabled:
+                    description: |
+                      Whether the in-memory hash cache for documents is enabled for this
+                      collection.
+                    type: boolean
+                  numberOfShards:
+                    description: |
+                      The number of shards of the collection. _(cluster only)_
+                    type: integer
+                  shardKeys:
+                    description: |
+                      Contains the names of document attributes that are used to
+                      determine the target shard for documents. _(cluster only)_
+                    type: array
+                    items:
+                      type: string
+                  replicationFactor:
+                    description: |
+                      Contains how many copies of each shard are kept on different DB-Servers.
+                      It is an integer number in the range of 1-10 or the string `"satellite"`
+                      for SatelliteCollections (Enterprise Edition only). _(cluster only)_
+                    type: integer
+                  writeConcern:
+                    description: |
+                      Determines how many copies of each shard are required to be
+                      in-sync on the different DB-Servers. If there are less than these many copies
+                      in the cluster, a shard refuses to write. Writes to shards with enough
+                      up-to-date copies succeed at the same time, however. The value of
+                      `writeConcern` cannot be greater than `replicationFactor`.
+
+                      If `distributeShardsLike` is set, the default `writeConcern`
+                      is that of the prototype collection.
+                      For SatelliteCollections, the `writeConcern` is automatically controlled to
+                      equal the number of DB-Servers and has a value of `0`.
+                      Otherwise, the default value is controlled by the current database's
+                      default `writeConcern`, which uses the `--cluster.write-concern`
+                      startup option as default, which defaults to `1`. _(cluster only)_
+                    type: integer
+                  shardingStrategy:
+                    description: |
+                      The sharding strategy selected for the collection. _(cluster only)_
+                    type: string
+                    enum:
+                      - community-compat
+                      - enterprise-compat
+                      - enterprise-smart-edge-compat
+                      - hash
+                      - enterprise-hash-smart-edge
+                      - enterprise-hex-smart-vertex
+                  distributeShardsLike:
+                    description: |
+                      The name of another collection. This collection uses the `replicationFactor`,
+                      `numberOfShards` and `shardingStrategy` properties of the other collection and
+                      the shards of this collection are distributed in the same way as the shards of
+                      the other collection.
+                    type: string
+                  isSmart:
+                    description: |
+                      Whether the collection is used in a SmartGraph or EnterpriseGraph (Enterprise Edition only).
+                      This is an internal property. _(cluster only)_
+                    type: boolean
+                  isDisjoint:
+                    description: |
+                      Whether the SmartGraph or EnterpriseGraph this collection belongs to is disjoint
+                      (Enterprise Edition only). This is an internal property. _(cluster only)_
+                    type: boolean
+                  smartGraphAttribute:
+                    description: |
+                      The attribute that is used for sharding: vertices with the same value of
+                      this attribute are placed in the same shard. All vertices are required to
+                      have this attribute set and it has to be a string. Edges derive the
+                      attribute from their connected vertices (Enterprise Edition only). _(cluster only)_
+                    type: string
+                  smartJoinAttribute:
+                    description: |
+                      Determines an attribute of the collection that must contain the shard key value
+                      of the referred-to SmartJoin collection (Enterprise Edition only). _(cluster only)_
+                    type: string
                   name:
                     description: |
-                      The name of the collection.
+                      The name of this collection.
                     type: string
-                    example: coll
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
                   type:
                     description: |
                       The type of the collection:
-                      - `0`: "unknown"
-                      - `2`: regular document collection
-                      - `3`: edge collection
+                        - `0`: "unknown"
+                        - `2`: regular document collection
+                        - `3`: edge collection
                     type: integer
-                    example: 2
                   isSystem:
                     description: |
                       Whether the collection is a system collection. Collection names that starts with
                       an underscore are usually system collections.
                     type: boolean
-                    example: false
-                  status:
+                  syncByRevision:
                     description: |
-                      The status of the collection.
-                      - `3`: loaded
-                      - `5`: deleted
-
-                      Every other status indicates a corrupted collection.
-                    type: integer
-                    example: 3
-                  id:
-                    description: |
-                      A unique identifier of the collection (deprecated).
-                    type: string
+                      Whether the newer revision-based replication protocol is
+                      enabled for this collection. This is an internal property.
+                    type: boolean
                   globallyUniqueId:
                     description: |
                       A unique identifier of the collection. This is an internal property.
                     type: string
-                  count:
-                    description: |
-                      The number of documents currently present in the collection.
-                    type: integer
         '400':
           description: |
-            The `collection-name` parameter or the `name` attribute is missing.
+            The `collection-name` parameter is missing.
           content:
             application/json:
               schema:
@@ -3551,201 +3780,14 @@ paths:
 ```curl
 ---
 description: ''
-name: RestCollectionIdentifierLoad
+name: RestCollectionIdentifierPropertiesSync
 ---
 var cn = "products";
 db._drop(cn);
 var coll = db._create(cn, { waitForSync: true });
-var url = "/_api/collection/"+ coll.name() + "/load";
+var url = "/_api/collection/"+ coll.name() + "/properties";
 
-var response = logCurlRequest('PUT', url, '');
-
-assert(response.code === 200);
-
-logJsonResponse(response);
-db._drop(cn);
-```
-
-### Unload a collection
-
-```openapi
-paths:
-  /_db/{database-name}/_api/collection/{collection-name}/unload:
-    put:
-      operationId: unloadCollection
-      description: |
-        {{</* warning */>}}
-        The unload function is deprecated from version 3.8.0 onwards and is a no-op
-        from version 3.9.0 onwards. It should no longer be used, as it may be removed
-        in a future version of ArangoDB.
-        {{</* /warning */>}}
-
-        Since ArangoDB version 3.9.0 this API does nothing. Previously it used to
-        unload a collection from memory, while preserving all documents.
-      parameters:
-        - name: database-name
-          in: path
-          required: true
-          example: _system
-          description: |
-            The name of the database.
-          schema:
-            type: string
-        - name: collection-name
-          in: path
-          required: true
-          description: |
-            The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
-          schema:
-            type: string
-      responses:
-        '200':
-          description: |
-            Returns the basic collection properties for compatibility reasons.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - name
-                  - type
-                  - isSystem
-                  - status
-                  - id
-                  - globallyUniqueId
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that no error occurred.
-                    type: boolean
-                    example: false
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 200
-                  name:
-                    description: |
-                      The name of the collection.
-                    type: string
-                    example: coll
-                  type:
-                    description: |
-                      The type of the collection:
-                      - `0`: "unknown"
-                      - `2`: regular document collection
-                      - `3`: edge collection
-                    type: integer
-                    example: 2
-                  isSystem:
-                    description: |
-                      Whether the collection is a system collection. Collection names that starts with
-                      an underscore are usually system collections.
-                    type: boolean
-                    example: false
-                  status:
-                    description: |
-                      The status of the collection.
-                      - `3`: loaded
-                      - `5`: deleted
-
-                      Every other status indicates a corrupted collection.
-                    type: integer
-                    example: 3
-                  id:
-                    description: |
-                      A unique identifier of the collection (deprecated).
-                    type: string
-                  globallyUniqueId:
-                    description: |
-                      A unique identifier of the collection. This is an internal property.
-                    type: string
-        '400':
-          description: |
-            The `collection-name` parameter or the `name` attribute is missing.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - errorNum
-                  - errorMessage
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that an error occurred.
-                    type: boolean
-                    example: true
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 400
-                  errorNum:
-                    description: |
-                      ArangoDB error number for the error that occurred.
-                    type: integer
-                  errorMessage:
-                    description: |
-                      A descriptive error message.
-                    type: string
-        '404':
-          description: |
-            A collection called `collection-name` could not be found.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - errorNum
-                  - errorMessage
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that an error occurred.
-                    type: boolean
-                    example: true
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 404
-                  errorNum:
-                    description: |
-                      ArangoDB error number for the error that occurred.
-                    type: integer
-                  errorMessage:
-                    description: |
-                      A descriptive error message.
-                    type: string
-      tags:
-        - Collections
-```
-
-**Examples**
-
-```curl
----
-description: ''
-name: RestCollectionIdentifierUnload
----
-var cn = "products";
-db._drop(cn);
-var coll = db._create(cn, { waitForSync: true });
-var url = "/_api/collection/"+ coll.name() + "/unload";
-
-var response = logCurlRequest('PUT', url, '');
+var response = logCurlRequest('PUT', url, {"waitForSync" : true });
 
 assert(response.code === 200);
 
@@ -3910,481 +3952,6 @@ var coll = db._create(cn);
 var url = "/_api/collection/"+ coll.name() + "/loadIndexesIntoMemory";
 
 var response = logCurlRequest('PUT', url, '');
-
-assert(response.code === 200);
-
-logJsonResponse(response);
-db._drop(cn);
-```
-
-### Change the properties of a collection
-
-```openapi
-paths:
-  /_db/{database-name}/_api/collection/{collection-name}/properties:
-    put:
-      operationId: updateCollectionProperties
-      description: |
-        Changes the properties of a collection. Only the provided attributes are
-        updated. Collection properties **cannot be changed** once a collection is
-        created except for the listed properties, as well as the collection name via
-        the rename endpoint (but not in clusters).
-      parameters:
-        - name: database-name
-          in: path
-          required: true
-          example: _system
-          description: |
-            The name of the database.
-          schema:
-            type: string
-        - name: collection-name
-          in: path
-          required: true
-          description: |
-            The name of the collection.
-
-            {{</* warning */>}}
-            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
-            You should reference them via their names instead.
-            {{</* /warning */>}}
-          schema:
-            type: string
-      requestBody:
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                waitForSync:
-                  description: |
-                    If set to `true`, the data is synchronized to disk before returning from a
-                    document create, update, replace or removal operation.
-                  type: boolean
-                  default: false
-                cacheEnabled:
-                  description: |
-                    Whether the in-memory hash cache for documents should be enabled for this
-                    collection. Can be controlled globally with the `--cache.size`
-                    startup option. The cache can speed up repeated reads of the same documents via
-                    their document keys. If the same documents are not fetched often or are
-                    modified frequently, then you may disable the cache to avoid the maintenance
-                    costs.
-                  type: boolean
-                  default: false
-                schema:
-                  description: |
-                    Optional object that specifies the collection level schema for
-                    documents. The attribute keys `rule`, `level` and `message` must follow the
-                    rules documented in [Document Schema Validation](../../concepts/data-structure/documents/schema-validation.md)
-                  type: object
-                computedValues:
-                  description: |
-                    An optional list of objects, each representing a computed value.
-                  type: array
-                  items:
-                    type: object
-                    required:
-                      - name
-                      - expression
-                      - overwrite
-                    properties:
-                      name:
-                        description: |
-                          The name of the target attribute. Can only be a top-level attribute, but you
-                          may return a nested object. Cannot be `_key`, `_id`, `_rev`, `_from`, `_to`,
-                          or a shard key attribute.
-                        type: string
-                      expression:
-                        description: |
-                          An AQL `RETURN` operation with an expression that computes the desired value.
-                          See [Computed Value Expressions](../../concepts/data-structure/documents/computed-values.md#computed-value-expressions) for details.
-                        type: string
-                      overwrite:
-                        description: |
-                          Whether the computed value shall take precedence over a user-provided or
-                          existing attribute.
-                        type: boolean
-                      computeOn:
-                        description: |
-                          An array of strings to define on which write operations the value shall be
-                          computed.
-                        type: array
-                        uniqueItems: true
-                        items:
-                          type: string
-                          enum:
-                            - insert
-                            - update
-                            - replace
-                        example: ["insert", "update", "replace"]
-                      keepNull:
-                        description: |
-                          Whether the target attribute shall be set if the expression evaluates to `null`.
-                          You can set the option to `false` to not set (or unset) the target attribute if
-                          the expression returns `null`.
-                        type: boolean
-                        default: true
-                      failOnWarning:
-                        description: |
-                          Whether to let the write operation fail if the expression produces a warning.
-                        type: boolean
-                        default: false
-                replicationFactor:
-                  description: |
-                    In a cluster, this attribute determines how many copies
-                    of each shard are kept on different DB-Servers. The value 1 means that only one
-                    copy (no synchronous replication) is kept. A value of k means that k-1 replicas
-                    are kept. For SatelliteCollections, it needs to be the string `"satellite"`,
-                    which matches the replication factor to the number of DB-Servers
-                    (Enterprise Edition only).
-
-                    Any two copies reside on different DB-Servers. Replication between them is
-                    synchronous, that is, every write operation to the "leader" copy will be replicated
-                    to all "follower" replicas, before the write operation is reported successful.
-
-                    If a server fails, this is detected automatically and one of the servers holding
-                    copies take over, usually without an error being reported.
-                  type: integer
-                  default: 1
-                writeConcern:
-                  description: |
-                    Determines how many copies of each shard are required to be
-                    in sync on the different DB-Servers. If there are less than these many copies
-                    in the cluster, a shard refuses to write. Writes to shards with enough
-                    up-to-date copies succeed at the same time, however. The value of
-                    `writeConcern` cannot be greater than `replicationFactor`.
-
-                    If `distributeShardsLike` is set, the default `writeConcern`
-                    is that of the prototype collection.
-                    For SatelliteCollections, the `writeConcern` is automatically controlled to
-                    equal the number of DB-Servers and has a value of `0`.
-                    Otherwise, the default value is controlled by the current database's
-                    default `writeConcern`, which uses the `--cluster.write-concern`
-                    startup option as default, which defaults to `1`. _(cluster only)_
-                  type: integer
-      responses:
-        '200':
-          description: |
-            The collection has been updated successfully.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - name
-                  - type
-                  - status
-                  - statusString
-                  - isSystem
-                  - id
-                  - globallyUniqueId
-                  - waitForSync
-                  - keyOptions
-                  - schema
-                  - computedValues
-                  - cacheEnabled
-                  - syncByRevision
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that no error occurred.
-                    type: boolean
-                    example: false
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 200
-                  waitForSync:
-                    description: |
-                      If `true`, creating, changing, or removing
-                      documents waits until the data has been synchronized to disk.
-                    type: boolean
-                  schema:
-                    description: |
-                      An object that specifies the collection-level schema for documents.
-                    type: object
-                  computedValues:
-                    description: |
-                      A list of objects, each representing a computed value.
-                    type: array
-                    items:
-                      type: object
-                      required:
-                        - name
-                        - expression
-                        - overwrite
-                      properties:
-                        name:
-                          description: |
-                            The name of the target attribute.
-                          type: string
-                        expression:
-                          description: |
-                            An AQL `RETURN` operation with an expression that computes the desired value.
-                          type: string
-                        overwrite:
-                          description: |
-                            Whether the computed value takes precedence over a user-provided or
-                            existing attribute.
-                          type: boolean
-                        computeOn:
-                          description: |
-                            An array of strings that defines on which write operations the value is
-                            computed.
-                          type: array
-                          uniqueItems: true
-                          items:
-                            type: string
-                            enum:
-                              - insert
-                              - update
-                              - replace
-                          example: ["insert", "update", "replace"]
-                        keepNull:
-                          description: |
-                            Whether the target attribute is set if the expression evaluates to `null`.
-                          type: boolean
-                        failOnWarning:
-                          description: |
-                            Whether the write operation fails if the expression produces a warning.
-                          type: boolean
-                  keyOptions:
-                    description: |
-                      An object which contains key generation options.
-                    type: object
-                    required:
-                      - type
-                      - allowUserKeys
-                    properties:
-                      type:
-                        description: |
-                          Specifies the type of the key generator. Possible values:
-                          - `"traditional"`
-                          - `"autoincrement"`
-                          - `"uuid"`
-                          - `"padded"`
-                        type: string
-                      allowUserKeys:
-                        description: |
-                          If set to `true`, then you are allowed to supply
-                          own key values in the `_key` attribute of a document. If set to
-                          `false`, then the key generator is solely responsible for
-                          generating keys and an error is raised if you supply own key values in the
-                          `_key` attribute of documents.
-
-                          {{</* warning */>}}
-                          You should not use both user-specified and automatically generated document keys
-                          in the same collection in cluster deployments for collections with more than a
-                          single shard. Mixing the two can lead to conflicts because Coordinators that
-                          auto-generate keys in this case are not aware of all keys which are already used.
-                          {{</* /warning */>}}
-                        type: boolean
-                      increment:
-                        description: |
-                          The increment value for the `autoincrement` key generator.
-                          Not used by other key generator types.
-                        type: integer
-                      offset:
-                        description: |
-                          The initial offset value for the `autoincrement` key generator.
-                          Not used by other key generator types.
-                        type: integer
-                      lastValue:
-                        description: |
-                          The offset value of the `autoincrement` or `padded` key generator.
-                          This is an internal property for restoring dumps properly.
-                        type: integer
-                  cacheEnabled:
-                    description: |
-                      Whether the in-memory hash cache for documents is enabled for this
-                      collection.
-                    type: boolean
-                  numberOfShards:
-                    description: |
-                      The number of shards of the collection. _(cluster only)_
-                    type: integer
-                  shardKeys:
-                    description: |
-                      Contains the names of document attributes that are used to
-                      determine the target shard for documents. _(cluster only)_
-                    type: array
-                    items:
-                      type: string
-                  replicationFactor:
-                    description: |
-                      Contains how many copies of each shard are kept on different DB-Servers.
-                      It is an integer number in the range of 1-10 or the string `"satellite"`
-                      for SatelliteCollections (Enterprise Edition only). _(cluster only)_
-                    type: integer
-                  writeConcern:
-                    description: |
-                      Determines how many copies of each shard are required to be
-                      in-sync on the different DB-Servers. If there are less than these many copies
-                      in the cluster, a shard refuses to write. Writes to shards with enough
-                      up-to-date copies succeed at the same time, however. The value of
-                      `writeConcern` cannot be greater than `replicationFactor`.
-
-                      If `distributeShardsLike` is set, the default `writeConcern`
-                      is that of the prototype collection.
-                      For SatelliteCollections, the `writeConcern` is automatically controlled to
-                      equal the number of DB-Servers and has a value of `0`.
-                      Otherwise, the default value is controlled by the current database's
-                      default `writeConcern`, which uses the `--cluster.write-concern`
-                      startup option as default, which defaults to `1`. _(cluster only)_
-                    type: integer
-                  shardingStrategy:
-                    description: |
-                      The sharding strategy selected for the collection. _(cluster only)_
-
-                      Possible values:
-                      - `"community-compat"`
-                      - `"enterprise-compat"`
-                      - `"enterprise-smart-edge-compat"`
-                      - `"hash"`
-                      - `"enterprise-hash-smart-edge"`
-                      - `"enterprise-hex-smart-vertex"`
-                    type: string
-                  distributeShardsLike:
-                    description: |
-                      The name of another collection. This collection uses the `replicationFactor`,
-                      `numberOfShards` and `shardingStrategy` properties of the other collection and
-                      the shards of this collection are distributed in the same way as the shards of
-                      the other collection.
-                    type: string
-                  isSmart:
-                    description: |
-                      Whether the collection is used in a SmartGraph or EnterpriseGraph (Enterprise Edition only).
-                      This is an internal property. _(cluster only)_
-                    type: boolean
-                  isDisjoint:
-                    description: |
-                      Whether the SmartGraph or EnterpriseGraph this collection belongs to is disjoint
-                      (Enterprise Edition only). This is an internal property. _(cluster only)_
-                    type: boolean
-                  smartGraphAttribute:
-                    description: |
-                      The attribute that is used for sharding: vertices with the same value of
-                      this attribute are placed in the same shard. All vertices are required to
-                      have this attribute set and it has to be a string. Edges derive the
-                      attribute from their connected vertices (Enterprise Edition only). _(cluster only)_
-                    type: string
-                  smartJoinAttribute:
-                    description: |
-                      Determines an attribute of the collection that must contain the shard key value
-                      of the referred-to SmartJoin collection (Enterprise Edition only). _(cluster only)_
-                    type: string
-                  name:
-                    description: |
-                      The name of this collection.
-                    type: string
-                  id:
-                    description: |
-                      A unique identifier of the collection (deprecated).
-                    type: string
-                  type:
-                    description: |
-                      The type of the collection:
-                        - `0`: "unknown"
-                        - `2`: regular document collection
-                        - `3`: edge collection
-                    type: integer
-                  isSystem:
-                    description: |
-                      Whether the collection is a system collection. Collection names that starts with
-                      an underscore are usually system collections.
-                    type: boolean
-                  syncByRevision:
-                    description: |
-                      Whether the newer revision-based replication protocol is
-                      enabled for this collection. This is an internal property.
-                    type: boolean
-                  globallyUniqueId:
-                    description: |
-                      A unique identifier of the collection. This is an internal property.
-                    type: string
-        '400':
-          description: |
-            The `collection-name` parameter is missing.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - errorNum
-                  - errorMessage
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that an error occurred.
-                    type: boolean
-                    example: true
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 400
-                  errorNum:
-                    description: |
-                      ArangoDB error number for the error that occurred.
-                    type: integer
-                  errorMessage:
-                    description: |
-                      A descriptive error message.
-                    type: string
-        '404':
-          description: |
-            A collection called `collection-name` could not be found.
-          content:
-            application/json:
-              schema:
-                type: object
-                required:
-                  - error
-                  - code
-                  - errorNum
-                  - errorMessage
-                properties:
-                  error:
-                    description: |
-                      A flag indicating that an error occurred.
-                    type: boolean
-                    example: true
-                  code:
-                    description: |
-                      The HTTP response status code.
-                    type: integer
-                    example: 404
-                  errorNum:
-                    description: |
-                      ArangoDB error number for the error that occurred.
-                    type: integer
-                  errorMessage:
-                    description: |
-                      A descriptive error message.
-                    type: string
-      tags:
-        - Collections
-```
-
-**Examples**
-
-```curl
----
-description: ''
-name: RestCollectionIdentifierPropertiesSync
----
-var cn = "products";
-db._drop(cn);
-var coll = db._create(cn, { waitForSync: true });
-var url = "/_api/collection/"+ coll.name() + "/properties";
-
-var response = logCurlRequest('PUT', url, {"waitForSync" : true });
 
 assert(response.code === 200);
 
@@ -4865,5 +4432,383 @@ assert(response.code === 200);
 
 logJsonResponse(response);
 
+db._drop(cn);
+```
+
+### Load a collection
+
+```openapi
+paths:
+  /_db/{database-name}/_api/collection/{collection-name}/load:
+    put:
+      operationId: loadCollection
+      description: |
+        {{</* warning */>}}
+        The load function is deprecated from version 3.8.0 onwards and is a no-op
+        from version 3.9.0 onwards. It should no longer be used, as it may be removed
+        in a future version of ArangoDB.
+        {{</* /warning */>}}
+
+        Since ArangoDB version 3.9.0 this API does nothing. Previously, it used to
+        load a collection into memory.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: collection-name
+          in: path
+          required: true
+          description: |
+            The name of the collection.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Returns the basic collection properties for compatibility reasons.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - name
+                  - type
+                  - isSystem
+                  - status
+                  - id
+                  - globallyUniqueId
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  name:
+                    description: |
+                      The name of the collection.
+                    type: string
+                    example: coll
+                  type:
+                    description: |
+                      The type of the collection:
+                      - `0`: "unknown"
+                      - `2`: regular document collection
+                      - `3`: edge collection
+                    type: integer
+                    example: 2
+                  isSystem:
+                    description: |
+                      Whether the collection is a system collection. Collection names that starts with
+                      an underscore are usually system collections.
+                    type: boolean
+                    example: false
+                  status:
+                    description: |
+                      The status of the collection.
+                      - `3`: loaded
+                      - `5`: deleted
+
+                      Every other status indicates a corrupted collection.
+                    type: integer
+                    example: 3
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the collection. This is an internal property.
+                    type: string
+                  count:
+                    description: |
+                      The number of documents currently present in the collection.
+                    type: integer
+        '400':
+          description: |
+            The `collection-name` parameter or the `name` attribute is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '404':
+          description: |
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Collections
+```
+
+**Examples**
+
+```curl
+---
+description: ''
+name: RestCollectionIdentifierLoad
+---
+var cn = "products";
+db._drop(cn);
+var coll = db._create(cn, { waitForSync: true });
+var url = "/_api/collection/"+ coll.name() + "/load";
+
+var response = logCurlRequest('PUT', url, '');
+
+assert(response.code === 200);
+
+logJsonResponse(response);
+db._drop(cn);
+```
+
+### Unload a collection
+
+```openapi
+paths:
+  /_db/{database-name}/_api/collection/{collection-name}/unload:
+    put:
+      operationId: unloadCollection
+      description: |
+        {{</* warning */>}}
+        The unload function is deprecated from version 3.8.0 onwards and is a no-op
+        from version 3.9.0 onwards. It should no longer be used, as it may be removed
+        in a future version of ArangoDB.
+        {{</* /warning */>}}
+
+        Since ArangoDB version 3.9.0 this API does nothing. Previously it used to
+        unload a collection from memory, while preserving all documents.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
+        - name: collection-name
+          in: path
+          required: true
+          description: |
+            The name of the collection.
+
+            {{</* warning */>}}
+            Accessing collections by their numeric ID is deprecated from version 3.4.0 on.
+            You should reference them via their names instead.
+            {{</* /warning */>}}
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            Returns the basic collection properties for compatibility reasons.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - name
+                  - type
+                  - isSystem
+                  - status
+                  - id
+                  - globallyUniqueId
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  name:
+                    description: |
+                      The name of the collection.
+                    type: string
+                    example: coll
+                  type:
+                    description: |
+                      The type of the collection:
+                      - `0`: "unknown"
+                      - `2`: regular document collection
+                      - `3`: edge collection
+                    type: integer
+                    example: 2
+                  isSystem:
+                    description: |
+                      Whether the collection is a system collection. Collection names that starts with
+                      an underscore are usually system collections.
+                    type: boolean
+                    example: false
+                  status:
+                    description: |
+                      The status of the collection.
+                      - `3`: loaded
+                      - `5`: deleted
+
+                      Every other status indicates a corrupted collection.
+                    type: integer
+                    example: 3
+                  id:
+                    description: |
+                      A unique identifier of the collection (deprecated).
+                    type: string
+                  globallyUniqueId:
+                    description: |
+                      A unique identifier of the collection. This is an internal property.
+                    type: string
+        '400':
+          description: |
+            The `collection-name` parameter or the `name` attribute is missing.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 400
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '404':
+          description: |
+            A collection called `collection-name` could not be found.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+      tags:
+        - Collections
+```
+
+**Examples**
+
+```curl
+---
+description: ''
+name: RestCollectionIdentifierUnload
+---
+var cn = "products";
+db._drop(cn);
+var coll = db._create(cn, { waitForSync: true });
+var url = "/_api/collection/"+ coll.name() + "/unload";
+
+var response = logCurlRequest('PUT', url, '');
+
+assert(response.code === 200);
+
+logJsonResponse(response);
 db._drop(cn);
 ```

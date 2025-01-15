@@ -2257,7 +2257,7 @@ name: HttpGharialRemoveVertexCollectionFailed
 var examples = require("@arangodb/graph-examples/example-graph.js");
 var g = examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex/male";
-var response = logCurlRequest('DELETE', url); // xpError(ERROR_GRAPH_NOT_IN_ORPHAN_COLLECTION)
+var response = logCurlRequest('DELETE', url);
 
 assert(response.code === 400);
 

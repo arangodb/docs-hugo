@@ -189,7 +189,6 @@ description: ''
 name: HttpGharialList
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 examples.loadGraph("routeplanner");
 var url = "/_api/gharial";
@@ -616,7 +615,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -650,7 +649,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -684,7 +683,7 @@ paths:
                     example: 409
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1100,7 +1099,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1227,7 +1226,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1258,7 +1257,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1276,7 +1275,6 @@ description: ''
 name: HttpGharialDrop
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social?dropCollections=true";
 var response = logCurlRequest('DELETE', url);
@@ -1368,7 +1366,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1386,7 +1384,6 @@ description: ''
 name: HttpGharialListVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex";
 var response = logCurlRequest('GET', url);
@@ -1734,7 +1731,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1768,7 +1765,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1799,7 +1796,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1817,7 +1814,6 @@ description: ''
 name: HttpGharialAddVertexCol
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex";
 body = {
@@ -2157,7 +2153,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2190,7 +2186,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2221,7 +2217,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2240,7 +2236,6 @@ description: |-
 name: HttpGharialRemoveVertexCollection
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 var g = examples.loadGraph("social");
 g._addVertexCollection("otherVertices");
 var url = "/_api/gharial/social/vertex/otherVertices";
@@ -2260,7 +2255,6 @@ description: |-
 name: HttpGharialRemoveVertexCollectionFailed
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 var g = examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex/male";
 var response = logCurlRequest('DELETE', url);
@@ -2268,9 +2262,6 @@ var response = logCurlRequest('DELETE', url);
 assert(response.code === 400);
 
 logJsonResponse(response);
-db._drop("male");
-db._drop("female");
-db._drop("relation");
 examples.dropGraph("social");
 ```
 
@@ -2354,7 +2345,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2372,7 +2363,6 @@ description: ''
 name: HttpGharialListEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/edge";
 var response = logCurlRequest('GET', url);
@@ -2742,7 +2732,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2775,7 +2765,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2806,7 +2796,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2824,7 +2814,6 @@ description: ''
 name: HttpGharialAddEdgeCol
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/edge";
 body = {
@@ -2848,7 +2837,7 @@ paths:
     put:
       operationId: replaceEdgeDefinition
       description: |
-        Change one specific edge definition.
+        Change the vertex collections of one specific edge definition.
         This modifies all occurrences of this definition in all graphs known to your database.
       parameters:
         - name: database-name
@@ -2900,7 +2889,7 @@ paths:
               properties:
                 collection:
                   description: |
-                    The name of the edge collection to be used.
+                    The name of the edge collection to modify.
                   type: string
                 from:
                   description: |
@@ -3205,7 +3194,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3238,7 +3227,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3270,7 +3259,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3288,7 +3277,6 @@ description: ''
 name: HttpGharialReplaceEdgeCol
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/edge/relation";
 body = {
@@ -3634,7 +3622,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3666,7 +3654,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3684,7 +3672,6 @@ description: ''
 name: HttpGharialEdgeDefinitionRemove
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/edge/relation";
 var response = logCurlRequest('DELETE', url);
@@ -3929,7 +3916,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3961,7 +3948,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3979,7 +3966,6 @@ description: ''
 name: HttpGharialAddVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex/male";
 body = {
@@ -4139,7 +4125,7 @@ paths:
                     example: 304
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4173,7 +4159,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4207,7 +4193,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4238,7 +4224,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4256,7 +4242,6 @@ description: ''
 name: HttpGharialGetVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex/female/alice";
 var response = logCurlRequest('GET', url);
@@ -4578,7 +4563,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4612,7 +4597,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4643,7 +4628,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4661,7 +4646,6 @@ description: ''
 name: HttpGharialModifyVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 body = {
   age: 26
@@ -4986,7 +4970,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5020,7 +5004,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5051,7 +5035,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5069,7 +5053,6 @@ description: ''
 name: HttpGharialReplaceVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 body = {
   name: "Alice Cooper",
@@ -5282,7 +5265,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5316,7 +5299,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5347,7 +5330,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5365,7 +5348,6 @@ description: ''
 name: HttpGharialDeleteVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex/female/alice";
 var response = logCurlRequest('DELETE', url);
@@ -5656,7 +5638,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5690,7 +5672,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5726,7 +5708,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5744,10 +5726,6 @@ description: ''
 name: HttpGharialAddEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
-require("internal").db._drop("relation");
-require("internal").db._drop("female");
-require("internal").db._drop("male");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/edge/relation";
 body = {
@@ -5919,7 +5897,7 @@ paths:
                     example: 304
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5953,7 +5931,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5987,7 +5965,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6018,7 +5996,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6036,7 +6014,6 @@ description: ''
 name: HttpGharialGetEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var any = require("@arangodb").db.relation.any();
 var url = "/_api/gharial/social/edge/relation/" + any._key;
@@ -6419,7 +6396,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6454,7 +6431,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6485,7 +6462,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6503,7 +6480,6 @@ description: ''
 name: HttpGharialPatchEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var any = require("@arangodb").db.relation.any();
 var url = "/_api/gharial/social/edge/relation/" + any._key;
@@ -6895,7 +6871,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6930,7 +6906,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6961,7 +6937,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6979,7 +6955,6 @@ description: ''
 name: HttpGharialPutEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var any = require("@arangodb").db.relation.any();
 var url = "/_api/gharial/social/edge/relation/" + any._key;
@@ -7214,7 +7189,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -7248,7 +7223,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -7279,7 +7254,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -7297,7 +7272,6 @@ description: ''
 name: HttpGharialDeleteEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var any = require("@arangodb").db.relation.any();
 var url = "/_api/gharial/social/edge/relation/" + any._key;

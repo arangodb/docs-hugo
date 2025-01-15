@@ -116,10 +116,10 @@ against other databases by specifying the prefixed name, e.g.
 The following Analyzer types are available:
 
 - [`identity`](#identity): treats value as atom (no transformation)
-- [`delimiter`](#delimiter): splits into tokens at user-defined character
+- [`delimiter`](#delimiter): splits into tokens at a user-defined character sequence
 - [`stem`](#stem): applies stemming to the value as a whole
 - [`norm`](#norm): applies normalization to the value as a whole
-- [`ngram`](#ngram): creates _n_-grams from value with user-defined lengths
+- [`ngram`](#ngram): creates _n_-grams from the value with user-defined lengths
 - [`text`](#text): tokenizes text strings into words, optionally with stemming,
   normalization, stop-word filtering and edge _n_-gram generation
 - [`segmentation`](#segmentation): tokenizes text in a language-agnostic manner,
@@ -253,40 +253,53 @@ db._query(`RETURN TOKENS("UPPER lower dïäcríticš", "identity")`).toArray();
 
 ### `delimiter`
 
-An Analyzer capable of breaking up delimited text into tokens as per
-[RFC 4180](https://tools.ietf.org/html/rfc4180)
-(without starting new records on newlines).
+An Analyzer capable of breaking up delimited text into tokens.
+
+It follows [RFC 4180](https://tools.ietf.org/html/rfc4180) but without starting
+new records on newlines and letting you freely choose the delimiter. You can
+wrap tokens in the input string in double quote marks to quote the delimiter.
+For example, a `delimiter` Analyzer that uses `,` as delimiter and an input
+string of `foo,"bar,baz"` results in the tokens `foo` and `bar,baz` instead of
+`foo`, `bar`, and `baz`.
 
 The *properties* allowed for this Analyzer are an object with the following
 attributes:
 
-- `delimiter` (string): the delimiting character(s). The whole string is
-  considered as one delimiter.
-
-You can wrap tokens in the input string in double quote marks to quote the
-delimiter. For example, a `delimiter` Analyzer that uses `,` as delimiter and an
-input string of `foo,"bar,baz"` results in the tokens `foo` and `bar,baz`
-instead of `foo`, `bar`, and `baz`.
-
-You can chain multiple `delimiter` Analyzers with a [`pipeline` Analyzer](#pipeline)
-to split by different delimiters.
+- `delimiter` (string): the delimiting character or character sequence.
+  The whole string is considered as one delimiter.
 
 **Examples**
 
-Split input strings into tokens at hyphen-minus characters:
+```js
+---
+name: analyzerDelimiter1
+description: Split comma-separated text into tokens but do not split quoted fields
+---
+var analyzers = require("@arangodb/analyzers");
+var a = analyzers.save("delimiter_csv", "delimiter", {
+  delimiter: ","
+}, []);
+db._query(`RETURN TOKENS('foo,bar,baz,"bar,baz"', "delimiter_csv")`).toArray();
+~analyzers.remove(a.name);
+```
 
 ```js
 ---
-name: analyzerDelimiter
-description: ''
+name: analyzerDelimiter2
+description: >
+  Split input strings into tokens at every character sequence of hyphen-minus,
+  right angled bracket, and a space
 ---
 var analyzers = require("@arangodb/analyzers");
-var a = analyzers.save("delimiter_hyphen", "delimiter", {
-  delimiter: "-"
+var a = analyzers.save("delimiter_arrow", "delimiter", {
+  delimiter: "-> "
 }, []);
-db._query(`RETURN TOKENS("some-delimited-words", "delimiter_hyphen")`).toArray();
+db._query(`RETURN TOKENS("some-> hand-picked-> words", "delimiter_arrow")`).toArray();
 ~analyzers.remove(a.name);
 ```
+
+You can chain multiple `delimiter` Analyzers with a [`pipeline` Analyzer](#pipeline)
+to split by different delimiters.
 
 ### `stem`
 
@@ -625,6 +638,18 @@ An Analyzer capable of converting the input into a set of language-specific
 tokens. This makes comparisons follow the rules of the respective language,
 most notable in range queries against Views.
 
+For example, the Swedish alphabet has 29 letters: `a` to `z` plus `å`, `ä`, and
+`ö`, in that order. Using a Swedish locale (like `sv`), the sorting order is
+`å` after `z`, whereas using an English locale (like `en`), it is `å` after `a`.
+This impacts queries with `SEARCH` expressions like `doc.text < "c"`, excluding
+`å` when using a Swedish locale but including it when using an English locale.
+
+{{< info >}}
+Sorting by the output of the `collation` Analyzer like
+`SORT TOKENS(<text>, <collationAnalyzer>)` is not a supported feature and
+doesn't produce meaningful results.
+{{< /info >}}
+
 The *properties* allowed for this Analyzer are an object with the following
 attributes:
 
@@ -722,9 +747,9 @@ attributes:
   (default is 1048576 = 1Mb) Maximum is 33554432U (32Mb)
 - `returnType` (string): data type of the returned tokens. If the indicated
   type does not match the actual type then an implicit type conversion is
-  applied (see [TO_STRING()](../aql/functions/type-check-and-cast.md#to_string),
-  [TO_NUMBER()](../aql/functions/type-check-and-cast.md#to_number),
-  [TO_BOOL()](../aql/functions/type-check-and-cast.md#to_bool))
+  applied (see [`TO_STRING()`](../aql/functions/type-check-and-cast.md#to_string),
+  [`TO_NUMBER()`](../aql/functions/type-check-and-cast.md#to_number),
+  [`TO_BOOL()`](../aql/functions/type-check-and-cast.md#to_bool))
   - `"string"` (default): convert emitted tokens to strings
   - `"number"`: convert emitted tokens to numbers
   - `"bool"`: convert emitted tokens to booleans

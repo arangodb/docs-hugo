@@ -384,7 +384,6 @@ available, which should be equally usable for most use cases.
 
 ![Illustration of an execution of different centrality measures (Freeman 1977)](../../images/centrality_visual.png)
 
-{{< comment >}} Not merged yet
 ##### Betweenness Centrality 
 
 `POST <ENGINE_URL>/v1/betweennesscentrality`
@@ -408,7 +407,6 @@ Result: a centrality measure for each vertex
 GRAPH_ID="234"
 curl -H "Authorization: bearer $ADB_TOKEN" -XPOST -d "{\"graph_id\":$GRAPH_ID,\"k\":0,\"undirected\":false,\"normalized\":true}" "$ENGINE_URL/v1/betweennesscentrality"
 ```
-{{< /comment >}}
 
 {{< comment >}} Not merged yet
 ##### Effective Closeness

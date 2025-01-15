@@ -767,7 +767,7 @@ a linear ring. Each linear ring consists of an array with at least four
 longitude/latitude pairs. The first linear ring must be the outermost, while
 any subsequent linear ring will be interpreted as holes.
 
-For details about the rules, see [GeoJSON Polygon](#polygon).
+For details about the rules, see [GeoJSON polygons](#polygon).
 
 - **points** (array): an array of (arrays of) `[longitude, latitude]` pairs
 - returns **geoJson** (object\|null): a valid GeoJSON Polygon
@@ -806,7 +806,7 @@ RETURN GEO_POLYGON([
 `GEO_MULTIPOLYGON(polygons) → geoJson`
 
 Construct a GeoJSON MultiPolygon. Needs at least two Polygons inside.
-See [GEO_POLYGON()](#geo_polygon) and [GeoJSON MultiPolygon](#multipolygon)
+See [`GEO_POLYGON()`](#geo_polygon) and [GeoJSON MultiPolygon](#multipolygon)
 for the rules of Polygon and MultiPolygon construction.
 
 - **polygons** (array): an array of arrays of arrays of `[longitude, latitude]` pairs
