@@ -874,12 +874,18 @@ paths:
                     type: string
         '400':
           description: |
-            If the `collection-name` placeholder is missing, then a *HTTP 400* is
-            returned.
+            The `collection-name` parameter is missing.
         '404':
           description: |
-            If the collection is unknown, then a *HTTP 404*
-            is returned.
+            The collection cannot be found.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
       tags:
         - Collections
 ```
@@ -3220,7 +3226,11 @@ paths:
                     type: string
         '404':
           description: |
-            A collection called `collection-name` could not be found.
+            The collection cannot be found.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -3241,6 +3251,38 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 404
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
                   errorNum:
                     description: |
                       ArangoDB error number for the error that occurred.
