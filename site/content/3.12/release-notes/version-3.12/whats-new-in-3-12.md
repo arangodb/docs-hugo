@@ -1868,6 +1868,17 @@ Furthermore, the [HTTP API](../../develop/http-api/monitoring/logs.md#get-the-se
 has been extended to let you query and set the log levels for individual outputs
 at runtime.
 
+### Lost subordinate transactions metric
+
+<small>Introduced in: v3.12.4</small>
+
+The following metric about partially committed or aborted transactions on
+DB-Servers in a cluster has been added:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_vocbase_transactions_lost_subordinates_total` | Counts the number of lost subordinate transactions on database servers. |
+
 ## Client tools
 
 ### Protocol aliases for endpoints
