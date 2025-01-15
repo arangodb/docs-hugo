@@ -283,6 +283,19 @@ endpoint to restore the original log levels.
 See the [Log API](../../develop/http-api/monitoring/logs.md#reset-the-server-log-levels)
 for details.
 
+#### Query plan cache API
+
+<small>Introduced in: v3.12.4</small>
+
+Two endpoints have been added to let you list the entries and clear the cache
+for AQL execution plans. Query plan caching works on a per-database basis.
+
+- `GET /_api/query-plan-cache`
+- `DELETE /_api/query-plan-cache`
+
+See [HTTP interface for the query plan cache](../../develop/http-api/queries/aql-query-plan-cache.md)
+for details.
+
 ### Endpoints augmented
 
 #### View API
@@ -340,6 +353,29 @@ Two new statistics are included in the response when you execute an AQL query:
   }
 }
 ```
+
+#### Query plan cache attributes
+
+<small>Introduced in: v3.12.4</small>
+
+The following endpoints related to AQL queries support a new `usePlanCache`
+query option in the `options` object:
+
+- `POST /_api/cursor`
+- `POST /_api/explain`
+
+An error is raised if `usePlanCache` is set to `true` but the query is not
+eligible for plan caching (a new error code
+`ERROR_QUERY_NOT_ELIGIBLE_FOR_PLAN_CACHING` with the number `1584`). See
+[The execution plan cache for AQL queries](../../aql/execution-and-performance/caching-query-plans.md)
+for details. 
+
+If a cached query plan is utilized, the above endpoints include a new
+`planCacheKey` attribute at the top-level of the response with the key of the
+cached plan (string).
+
+See [HTTP interfaces for AQL queries](../../develop/http-api/queries/aql-queries.md#cursors)
+for details.
 
 #### Index API
 
@@ -692,3 +728,12 @@ The option defaults to `false` so that fast locking is tried.
 See the [JavaScript API](../../develop/transactions/stream-transactions.md#javascript-api)
 for details.
 
+#### Query plan cache module
+
+<small>Introduced in: v3.12.4</small>
+
+The new `@arangodb/aql/plan-cache` module lets you list the entries (`.toArray()`)
+and clear (`.clear()`) the AQL execution plan cache in the JavaScript API.
+
+See [The execution plan cache for AQL queries](../../aql/execution-and-performance/caching-query-plans.md#interfaces)
+for details.
