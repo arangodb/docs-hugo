@@ -985,11 +985,11 @@ paths:
                     type: boolean
         '400':
           description: |
-            is returned if the JSON representation is malformed, the query specification is
-            missing from the request, or if the query is invalid.
+            The JSON representation is malformed, the query specification is
+            missing from the request, or the query is invalid.
 
             The body of the response contains a JSON object with additional error
-            details. The object has the following attributes:
+            details.
           content:
             application/json:
               schema:
@@ -1022,21 +1022,26 @@ paths:
                     type: string
         '404':
           description: |
-            The server will respond with *HTTP 404* in case a non-existing collection is
-            accessed in the query.
+            A non-existing collection is accessed in the query.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
         '405':
           description: |
-            The server will respond with *HTTP 405* if an unsupported HTTP method is used.
+            An unsupported HTTP method is used.
         '410':
           description: |
-            The server will respond with *HTTP 410* if a server which processes the query
-            or is the leader for a shard which is used in the query stops responding, but
-            the connection has not been closed.
+            A server which processes the query or the leader of a shard which is used
+            in the query stops responding, but the connection has not been closed.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled.
         '503':
           description: |
-            The server will respond with *HTTP 503* if a server which processes the query
-            or is the leader for a shard which is used in the query is down, either for
-            going through a restart, a failure or connectivity issues.
+            A server which processes the query or the leader of a shard which is used
+            in the query is down, either for going through a restart, a failure, or
+            connectivity issues.
       tags:
         - Queries
 ```
@@ -1376,7 +1381,7 @@ paths:
       responses:
         '200':
           description: |
-            The server will respond with *HTTP 200* in case of success.
+            Successfully fetched the batch.
           content:
             application/json:
               schema:
@@ -1730,21 +1735,19 @@ paths:
                     type: boolean
         '400':
           description: |
-            If the cursor identifier is omitted, the server will respond with *HTTP 404*.
+            The cursor identifier is missing.
         '404':
           description: |
-            If no cursor with the specified identifier can be found, the server will respond
-            with *HTTP 404*.
+            A cursor with the specified identifier cannot found.
         '410':
           description: |
-            The server will respond with *HTTP 410* if a server which processes the query
-            or is the leader for a shard which is used in the query stops responding, but
-            the connection has not been closed.
+            A server which processes the query or the leader of a shard which is
+            used in the query stops responding, but the connection has not been closed.
         '503':
           description: |
-            The server will respond with *HTTP 503* if a server which processes the query
-            or is the leader for a shard which is used in the query is down, either for
-            going through a restart, a failure or connectivity issues.
+            A server which processes the query or the leader of a shard which is used
+            in the query is down, either for going through a restart, a failure,
+            or connectivity issues.
       tags:
         - Queries
 ```
@@ -1866,24 +1869,22 @@ paths:
       responses:
         '200':
           description: |
-            The server will respond with *HTTP 200* in case of success.
+            Successfully fetched the batch.
         '400':
           description: |
-            If the cursor identifier is omitted, the server will respond with *HTTP 404*.
+            The cursor identifier is missing.
         '404':
           description: |
-            If no cursor with the specified identifier can be found, the server will respond
-            with *HTTP 404*.
+            A cursor with the specified identifier cannot be found.
         '410':
           description: |
-            The server will respond with *HTTP 410* if a server which processes the query
-            or is the leader for a shard which is used in the query stops responding, but
-            the connection has not been closed.
+            A server which processes the query or the leader of a shard which is
+            used in the query stops responding, but the connection has not been closed.
         '503':
           description: |
-            The server will respond with *HTTP 503* if a server which processes the query
-            or is the leader for a shard which is used in the query is down, either for
-            going through a restart, a failure or connectivity issues.
+            A server which processes the query or the leader of a shard which is used
+            in the query is down, either for going through a restart, a failure,
+            or connectivity issues.
       tags:
         - Queries
 ```
@@ -2368,8 +2369,7 @@ paths:
                     type: boolean
         '400':
           description: |
-            If the cursor and the batch identifier are omitted, the server responds with
-            *HTTP 400*.
+            The cursor and the batch identifier are missing.
           content:
             application/json:
               schema:
@@ -2398,8 +2398,8 @@ paths:
                     type: string
         '404':
           description: |
-            If no cursor with the specified identifier can be found, or if the requested
-            batch isn't available, the server responds with *HTTP 404*.
+            A cursor with the specified identifier cannot be found, or the requested
+            batch isn't available.
         '410':
           description: |
             The server responds with *HTTP 410* if a server which processes the query
@@ -2457,7 +2457,7 @@ paths:
 
         The cursor will automatically be destroyed on the server when the client has
         retrieved all documents from it. The client can also explicitly destroy the
-        cursor at any earlier time using an HTTP DELETE request. The cursor id must
+        cursor at any earlier time using an HTTP DELETE request. The cursor identifier must
         be included as part of the URL.
 
         Note: the server will also destroy abandoned cursors automatically after a
@@ -2475,16 +2475,16 @@ paths:
           in: path
           required: true
           description: |
-            The id of the cursor
+            The identifier of the cursor
           schema:
             type: string
       responses:
         '202':
           description: |
-            is returned if the server is aware of the cursor.
+            The server is aware of the cursor.
         '404':
           description: |
-            is returned if the server is not aware of the cursor. It is also
+            The server is not aware of the cursor. This is also
             returned if a cursor is used after it has been destroyed.
       tags:
         - Queries
@@ -2579,7 +2579,7 @@ paths:
             Is returned if properties were retrieved successfully.
         '400':
           description: |
-            The server will respond with *HTTP 400* in case of a malformed request,
+            The request is malformed.
       tags:
         - Queries
 ```
@@ -2662,7 +2662,7 @@ paths:
             Is returned if the properties were changed successfully.
         '400':
           description: |
-            The server will respond with *HTTP 400* in case of a malformed request,
+            The request is malformed.
       tags:
         - Queries
 ```
@@ -2735,11 +2735,11 @@ paths:
             Is returned when the list of queries can be retrieved successfully.
         '400':
           description: |
-            The server will respond with *HTTP 400* in case of a malformed request,
+            The request is malformed.
         '403':
           description: |
-            *HTTP 403* is returned in case the `all` parameter was used, but the request
-            was made in a different database than _system, or by an non-privileged user.
+            In case the `all` parameter is used but the request was made in a
+            different database than `_system`, or by a non-privileged user.
       tags:
         - Queries
 ```
@@ -2806,11 +2806,11 @@ paths:
             Is returned when the list of queries can be retrieved successfully.
         '400':
           description: |
-            The server will respond with *HTTP 400* in case of a malformed request,
+            The request is malformed.
         '403':
           description: |
-            *HTTP 403* is returned in case the `all` parameter was used, but the request
-            was made in a different database than _system, or by an non-privileged user.
+            In case the `all` parameter is used but the request was made in a
+            different database than `_system`, or by a non-privileged user.
       tags:
         - Queries
 ```
@@ -2846,11 +2846,10 @@ paths:
       responses:
         '200':
           description: |
-            The server will respond with *HTTP 200* when the list of queries was
-            cleared successfully.
+            The list of queries has been cleared successfully.
         '400':
           description: |
-            The server will respond with *HTTP 400* in case of a malformed request.
+            The request is malformed.
       tags:
         - Queries
 ```
@@ -2885,7 +2884,7 @@ paths:
           in: path
           required: true
           description: |
-            The id of the query.
+            The identifier of the query.
           schema:
             type: string
         - name: all
@@ -2901,19 +2900,18 @@ paths:
       responses:
         '200':
           description: |
-            The server will respond with *HTTP 200* when the query was still running when
-            the kill request was executed and the query's kill flag was set.
+            The query was still running when the kill request was executed and
+            the query's kill flag has been set.
         '400':
           description: |
-            The server will respond with *HTTP 400* in case of a malformed request.
+            The request is malformed.
         '403':
           description: |
-            *HTTP 403* is returned in case the *all* parameter was used, but the request
-            was made in a different database than _system, or by an non-privileged user.
+            In case the `all` parameter is used but the request was made in a
+            different database than `_system`, or by a non-privileged user.
         '404':
           description: |
-            The server will respond with *HTTP 404* when no query with the specified
-            id was found.
+            A query with the specified identifier cannot be found.
       tags:
         - Queries
 ```
@@ -3045,15 +3043,13 @@ paths:
             in the `allPlans` attribute instead.
         '400':
           description: |
-            The server will respond with *HTTP 400* in case of a malformed request,
-            or if the query contains a parse error. The body of the response will
-            contain the error details embedded in a JSON object.
-            Omitting bind variables if the query references any will also result
-            in an *HTTP 400* error.
+            The request is malformed or the query contains a parse error.
+            The body of the response contains the error details embedded in a JSON object.
+            Omitting bind variables if the query references any also results
+            an error.
         '404':
           description: |
-            The server will respond with *HTTP 404* in case a non-existing collection is
-            accessed in the query.
+            A non-existing collection is accessed in the query.
       tags:
         - Queries
 ```
@@ -3278,9 +3274,8 @@ paths:
             optimizations applied to it.
         '400':
           description: |
-            The server will respond with *HTTP 400* in case of a malformed request,
-            or if the query contains a parse error. The body of the response will
-            contain the error details embedded in a JSON object.
+            The request is malformed or the query contains a parse error.
+            The body of the response contains the error details embedded in a JSON object.
       tags:
         - Queries
 ```

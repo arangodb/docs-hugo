@@ -3924,8 +3924,11 @@ paths:
                     type: string
         '404':
           description: |
-            Returned if no graph with this name can be found.
-            Or if a graph is found but this collection is not part of the graph.
+            The graph cannot be found or the collection is not part of the graph.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -3946,6 +3949,38 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
@@ -4168,9 +4203,13 @@ paths:
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name could be found.
-            - This collection is not part of the graph.
+            - The graph cannot be found.
+            - The collection is not part of the graph.
             - The vertex does not exist.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -4191,6 +4230,38 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
@@ -4572,9 +4643,13 @@ paths:
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name can be found.
-            - This collection is not part of the graph.
+            - The graph cannot be found.
+            - The collection is not part of the graph.
             - The vertex to update does not exist.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -4595,6 +4670,38 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
@@ -4979,9 +5086,13 @@ paths:
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name can be found.
-            - This collection is not part of the graph.
+            - The graph cannot be found.
+            - The collection is not part of the graph.
             - The vertex to replace does not exist.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -5002,6 +5113,38 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
@@ -5274,9 +5417,13 @@ paths:
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name can be found.
-            - This collection is not part of the graph.
+            - The graph cannot be found.
+            - The collection is not part of the graph.
             - The vertex to remove does not exist.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -5297,6 +5444,38 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
@@ -5681,11 +5860,15 @@ paths:
         '404':
           description: |
             Returned in any of the following cases:
-            - No graph with this name can be found.
+            - The graph cannot be found.
             - The edge collection is not part of the graph.
             - The vertex collection referenced in the `_from` or `_to` attribute is not part of the graph.
             - The vertex collection is part of the graph, but does not exist.
             - `_from` or `_to` vertex does not exist.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -5706,6 +5889,38 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
@@ -5940,9 +6155,13 @@ paths:
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name can be found.
-            - This collection is not part of the graph.
+            - The graph cannot be found.
+            - The collection is not part of the graph.
             - The edge does not exist.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -5963,6 +6182,38 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
@@ -6405,10 +6656,14 @@ paths:
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name can be found.
-            - This collection is not part of the graph.
+            - The graph cannot be found.
+            - The collection is not part of the graph.
             - The edge to update does not exist.
             - Either `_from` or `_to` vertex does not exist (if updated).
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -6429,6 +6684,38 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
@@ -6880,10 +7167,14 @@ paths:
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name can be found.
-            - This collection is not part of the graph.
+            - The graph cannot be found.
+            - The collection is not part of the graph.
             - The edge to replace does not exist.
             - Either `_from` or `_to` vertex does not exist.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -6904,6 +7195,38 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
@@ -7198,9 +7521,13 @@ paths:
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name can be found.
-            - This collection is not part of the graph.
+            - The graph cannot be found.
+            - The collection is not part of the graph.
             - The edge to remove does not exist.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -7221,6 +7548,38 @@ paths:
                       The HTTP response status code.
                     type: integer
                     example: 404
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
                   errorNum:
                     description: |
                       The ArangoDB error number for the error that occurred.
