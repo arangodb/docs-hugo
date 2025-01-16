@@ -113,6 +113,21 @@ only this attribute is copied into the *groupsVariable* for each document.
 This is probably much more efficient than copying all variables from the scope into 
 the *groupsVariable* as it would happen without a *projectionExpression*.
 
+{{< tip >}}
+You can also express such projections using an [Aggregation](#aggregation) with
+the `PUSH()` function (introduced in v3.12.4):
+
+```aql
+FOR u IN users
+  COLLECT country = u.country, city = u.city AGGREGATE groups = PUSH(u.name)
+  RETURN { 
+    "country" : country, 
+    "city" : city, 
+    "userNames" : groups 
+  }
+```
+{{< /tip >}}
+
 The expression following `INTO` can also be used for arbitrary computations:
 
 ```aql
@@ -192,12 +207,25 @@ The `WITH COUNT` clause can only be used together with an `INTO` clause.
 
 ## Aggregation
 
-A `COLLECT` statement can be used to perform aggregation of data per group. To
-only determine group lengths, the `WITH COUNT INTO` variant of `COLLECT` can be
-used as described before.
+You can use `COLLECT` operations with an `AGGREGATE` clause to aggregate the
+data per group, such as determining the minimum, maximum, and average values,
+the sums, and more.
 
-For other aggregations, it is possible to run aggregate functions on the `COLLECT`
-results:
+To only determine the group lengths, you can use the `WITH COUNT INTO` variant of
+`COLLECT` as described above. However, you can also express the same as an aggregation:
+
+```aql
+FOR u IN users
+  COLLECT age = u.age AGGREGATE length = COUNT()  // or SUM(1)
+  RETURN {
+    "age" : age, 
+    "count" : length 
+  }
+```
+
+If you perform calculations on the results of a `COLLECT` operation, you may be
+able rewrite them to `COLLECT ... AGGREGATE`. The following example shows a
+post-aggregation where the calculation happens after grouping:
 
 ```aql
 FOR u IN users
@@ -215,7 +243,7 @@ all groups, which can be inefficient.
 The special `AGGREGATE` variant of `COLLECT` allows building the aggregate values 
 incrementally during the collect operation, and is therefore often more efficient.
 
-With the `AGGREGATE` variant the above query becomes:
+With the `AGGREGATE` variant, the above query becomes the following:
 
 ```aql
 FOR u IN users
@@ -244,7 +272,7 @@ FOR u IN users
 Only specific expressions are allowed on the right-hand side of each `AGGREGATE`
 assignment:
 
-- on the top level, an aggregate expression must be a call to one of the
+- On the top level, an aggregate expression must be a call to one of the
   supported aggregation functions:
   - `LENGTH()` / `COUNT()`
   - `MIN()`
@@ -261,8 +289,9 @@ assignment:
   - `BIT_AND()`
   - `BIT_OR()`
   - `BIT_XOR()`
+  - `PUSH()` (introduced in v3.12.4)
 
-- an aggregate expression must not refer to variables introduced by the `COLLECT` itself
+- An aggregate expression must not refer to variables introduced by the `COLLECT` itself.
 
 ## `COLLECT` vs. `RETURN DISTINCT`
 

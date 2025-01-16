@@ -1041,6 +1041,45 @@ The following metrics have been added to monitor the query plan cache:
 | `arangodb_aql_query_plan_cache_memory_usage` | Total memory usage of all query plan caches across all databases. |
 | `arangodb_aql_query_plan_cache_misses_total` | Total number of lookup misses in the AQL query plan cache. |
 
+### `PUSH()` function available for aggregations
+
+<small>Introduced in: v3.12.4</small>
+
+The `COLLECT` and `WINDOW` operations now support the `PUSH()` function in
+`AGGREGATE` expressions.
+
+For grouping data with `COLLECT`, it means that you can rewrite a
+`COLLECT ... INTO var = <projectionExpression>` construct to
+`COLLECT ... AGGREGATE var = PUSH(<projectionExpression>)`, for instance.
+You can add more assignments to the `AGGREGATE` clause to perform additional
+calculations in one go, making it more powerful than `COLLECT ... INTO`.
+
+For sliding window calculations with `WINDOW`, the `PUSH()` function can be handy
+when developing queries to understand what values are in the sliding window:
+
+```aql
+FOR t IN observations
+  SORT t.time
+  WINDOW { preceding: "unbounded", following: 0 }
+  AGGREGATE sum = SUM(t.val), values = PUSH(t.val)
+  RETURN { sum, values }
+```
+
+| sum | values |
+|----:|:-------|
+|  10 | [10]
+|  10 | [10,0]
+|  19 | [10,0,9]
+|  29 | [10,0,9,10]
+|  54 | [10,0,9,10,25]
+|  59 | [10,0,9,10,25,5]
+|  79 | [10,0,9,10,25,5,20]
+| 109 | [10,0,9,10,25,5,20,30]
+| 134 | [10,0,9,10,25,5,20,30,25]
+
+See the [`COLLECT` operation](../../aql/high-level-operations/collect.md#aggregation)
+and the [`WINDOW` operation](../../aql/high-level-operations/window.md) for details.
+
 ## Indexing
 
 ### Multi-dimensional indexes
