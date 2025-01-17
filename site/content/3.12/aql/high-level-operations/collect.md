@@ -324,6 +324,22 @@ allows you to place a `LIMIT` operation before `RETURN` to potentially stop the
 
 ## `COLLECT` options
 
+### `disableIndex`
+
+<small>Introduced in: v3.12.4</small>
+
+You can disable the `use-index-for-collect` optimization for individual
+`COLLECT` operations by setting this option to `true`.
+
+```aql
+COLLECT ... OPTIONS { disableIndex: true }
+```
+
+The optimization improves the scanning for distinct values using `COLLECT` if a
+usable persistent index is present. It is automatically disabled if the
+selectivity is high, i.e. there are many different values, or if there is
+filtering or an `INTO` or `AGGREGATE` clause.
+
 ### `method`
 
 There are two variants of `COLLECT` that the optimizer can choose from:

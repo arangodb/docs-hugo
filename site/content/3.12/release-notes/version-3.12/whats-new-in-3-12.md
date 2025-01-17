@@ -1080,6 +1080,80 @@ FOR t IN observations
 See the [`COLLECT` operation](../../aql/high-level-operations/collect.md#aggregation)
 and the [`WINDOW` operation](../../aql/high-level-operations/window.md) for details.
 
+### Improved index utilization for `COLLECT`
+
+<small>Introduced in: v3.12.4</small>
+
+When grouping data with `COLLECT` to determine distinct values, such operations
+can now benefit from persistent indexes. The new `use-index-for-collect`
+optimizer rule speeds up the scanning for distinct values up to orders of
+magnitude if the selectivity is low, i.e. if there are few different values.
+
+```aql
+FOR doc IN coll
+  COLLECT a = doc.a, b = doc.b
+  RETURN { a, b }
+```
+
+If there is a persistent index over the attributes `a` and `b`, then the query
+explain output looks like this with the optimization applied:
+
+```aql
+Execution plan:
+ Id   NodeType           Par   Est.   Comment
+  1   SingletonNode               1   * ROOT 
+ 10   IndexCollectNode          100     - FOR doc IN coll COLLECT a = doc.`a`, b = doc.`b` /* distinct value index scan */
+  6   CalculationNode      ✓    100     - LET #5 = { "a" : a, "b" : b }   /* simple expression */
+  7   ReturnNode                100     - RETURN #5
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+ 10   idx_1821499964373598208   persistent   coll         false    false    false       10.00 %   [ `a`, `b` ]   [  ]            *
+
+Optimization rules applied:
+ Id   Rule Name                               Id   Rule Name                               Id   Rule Name                      
+  1   move-calculations-up                     4   use-index-for-sort                       7   async-prefetch                 
+  2   move-calculations-up-2                   5   reduce-extraction-to-projection
+  3   use-indexes                              6   use-index-for-collect   
+```
+
+You can disable the optimization for individual `COLLECT` operations by setting
+the new `disableIndex` option to `true`:
+
+```aql
+FOR doc IN coll
+  COLLECT a = doc.a, b = doc.b OPTIONS { disableIndex: true }
+  RETURN { a, b }
+```
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT 
+  9   IndexNode           ✓   1000     - FOR doc IN coll   /* persistent index scan, index only (projections: `a`, `b`) */    LET #8 = doc.`a`, #9 = doc.`b`   
+  5   CollectNode         ✓    800       - COLLECT a = #8, b = #9   /* sorted */
+  6   CalculationNode     ✓    800       - LET #5 = { "a" : a, "b" : b }   /* simple expression */
+  7   ReturnNode               800       - RETURN #5
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  9   idx_1821499964373598208   persistent   coll         false    false    false       10.00 %   [ `a`, `b` ]   [  ]            *
+
+Optimization rules applied:
+ Id   Rule Name                                 Id   Rule Name                                 Id   Rule Name                        
+  1   move-calculations-up                       4   use-index-for-sort                         7   remove-unnecessary-calculations-4
+  2   move-calculations-up-2                     5   reduce-extraction-to-projection            8   async-prefetch                   
+  3   use-indexes                                6   optimize-projections         
+```
+
+The optimization is automatically disabled if the selectivity is high, i.e.
+there are many different values, or if there is filtering or an `INTO` or
+`AGGREGATE` clause. Other optimizations may still be able to utilize the index
+to some extent.
+
+See the [`COLLECT` operation](../../aql/high-level-operations/collect.md#disableindex)
+for details.
+
 ## Indexing
 
 ### Multi-dimensional indexes
