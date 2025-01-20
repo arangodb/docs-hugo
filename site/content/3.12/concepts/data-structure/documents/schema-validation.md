@@ -61,7 +61,7 @@ object with the following attributes: `rule`, `level` and `message`.
 {{< tab "arangosh" >}}
 ```js
 ---
-name: arangosh_set_collection_properties
+name: arangosh_set_collection_properties_schema
 description: ''
 ---
 var schema = {
