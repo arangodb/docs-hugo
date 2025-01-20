@@ -49,6 +49,12 @@ Also see [What's New in 3.13](../../release-notes/version-3.13/whats-new-in-3-13
   Speed up data transfers and reduce traffic with transparent compression of
   requests and responses between ArangoDB servers and client tools.
 
+{{% comment %}} Experimental feature in v3.12.4
+- [**Query plan caching**](../../aql/execution-and-performance/caching-query-plans.md)
+  Reduce the total time for processing queries by avoiding to parse, plan, and
+  optimize the same queries over and over again with an AQL execution plan cache.
+{{% /comment %}}
+
 **Enterprise Edition**
 
 - [**ArangoSearch WAND optimization**](../../index-and-search/arangosearch/performance.md#wand-optimization):
