@@ -282,9 +282,13 @@ in the _go-driver_ v2 documentation for details.
 {{< tab "Java" >}}
 ```java
 ArangoView view = db.view("myView");
+ViewEntity viewInfo = view.getInfo();
 
 ArangoSearch viewSearch = db.arangoSearch("myArangoSearchView");
+ViewEntity viewSearchInfo = viewSearch.getInfo();
+
 SearchAlias viewAlias = db.searchAlias("mySearchAliasView");
+ViewEntity viewAliasInfo = viewAlias.getInfo();
 ```
 
 See `ArangoDatabase.view(String name)`, `ArangoDatabase.arangoSearch(String name)`,
@@ -378,11 +382,11 @@ in the _go-driver_ v2 documentation for details.
 
 {{< tab "Java" >}}
 ```java
-ArangoSearch viewSearch = db.view("myArangoSearchView"); 
-ArangoSearchPropertiesEntity viewSearch.getProperties();
+ArangoSearch viewSearch = db.arangoSearch("myArangoSearchView");
+ArangoSearchPropertiesEntity viewSearchProps = viewSearch.getProperties();
 
-SearchAlias viewAlias = db.view("mySearchAliasView"); 
-SearchAliasPropertiesEntity viewAlias.getProperties();
+SearchAlias viewAlias = db.searchAlias("mySearchAliasView");
+SearchAliasPropertiesEntity viewAliasProps = viewAlias.getProperties();
 ```
 
 See [`ArangoSearch.getProperties()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoSearch.html#getProperties%28%29)
@@ -510,19 +514,19 @@ in the _go-driver_ v2 documentation for details.
 
 {{< tab "Java" >}}
 ```java
-ArangoSearchPropertiesOptions options = new ArangoSearchPropertiesOptions();
-options.cleanupIntervalStep(12L);
-options.link(CollectionLink.on("coll")
-  .includeAllFields(true)
+ArangoSearch viewSearch = db.arangoSearch("myArangoSearchView");
+ArangoSearchPropertiesEntity viewSearchProps = viewSearch.updateProperties(
+        new ArangoSearchPropertiesOptions()
+                .cleanupIntervalStep(12L)
+                .link(CollectionLink.on("coll")
+                        .includeAllFields(true)
+                )
 );
 
-ArangoSearch viewSearch = db.view("myArangoSearchView"); 
-ArangoSearchPropertiesEntity viewSearch.updateProperties(options);
-
-SearchAlias viewAlias = db.view("mySearchAliasView"); 
-SearchAliasPropertiesEntity viewAlias.updateProperties(
-  new SearchAliasPropertiesOptions()
-    .indexes(new SearchAliasIndex("coll", "idx"))
+SearchAlias viewAlias = db.searchAlias("mySearchAliasView");
+SearchAliasPropertiesEntity viewAliasProps = viewAlias.updateProperties(
+        new SearchAliasPropertiesOptions()
+                .indexes(new SearchAliasIndex("coll", "idx"))
 );
 ```
 

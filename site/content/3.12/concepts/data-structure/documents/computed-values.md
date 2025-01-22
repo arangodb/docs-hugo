@@ -203,7 +203,7 @@ CollectionPropertiesOptions props = new CollectionPropertiesOptions()
     .name("title")
     .expression("RETURN \"TBA\"")
     .overwrite(false)
-    .computeOn(ComputeOn.insert, ComputeOn.update, ComputeOn.replace)
+    .computeOn(ComputedValue.ComputeOn.insert, ComputedValue.ComputeOn.update, ComputedValue.ComputeOn.replace)
     .failOnWarning(false)
     .keepNull(true)
   );
@@ -220,7 +220,7 @@ in the _arangodb-java-driver_ documentation for details.
 ```py
 coll = db.collection("coll")
 props = coll.configure(
-  computed_values: [
+  computed_values=[
     {
       "name": "title",
       "expression": "RETURN \"TBA\"",

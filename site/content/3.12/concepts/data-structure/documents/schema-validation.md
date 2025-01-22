@@ -182,30 +182,30 @@ in the _go-driver_ v2 documentation for details.
 {{< tab "Java" >}}
 ```java
 String schemaRule = (
-    "{" +
-    "  \"type\": \"object\"," +
-    "  \"properties\": {" +
-    "    \"nums\": {" +
-    "      \"type\": \"array\"," +
-    "      \"items\": {" +
-    "        \"type\": \"number\"," +
-    "        \"minimum\": 6" +
-    "      }" +
-    "    }" +
-    "  }," +
-    "  \"additionalProperties\": { \"type\": \"string\" }," +
-    "  \"required\": [\"nums\"]" +
-    "}");
+        "{" +
+                "  \"type\": \"object\"," +
+                "  \"properties\": {" +
+                "    \"nums\": {" +
+                "      \"type\": \"array\"," +
+                "      \"items\": {" +
+                "        \"type\": \"number\"," +
+                "        \"minimum\": 6" +
+                "      }" +
+                "    }" +
+                "  }," +
+                "  \"additionalProperties\": { \"type\": \"string\" }," +
+                "  \"required\": [\"nums\"]" +
+                "}");
 
 CollectionPropertiesOptions props = new CollectionPropertiesOptions()
-  .schema(new CollectionSchema()
-    .setRule(schemaRule)
-    .setLevel(CollectionSchema.Level.MODERATE)
-    .setMessage("The document does not contain an array of numbers in attribute \"nums\", one of the numbers is greater than 6, or another top-level attribute is not a string.")
-  );
+        .schema(new CollectionSchema()
+                .setRule(schemaRule)
+                .setLevel(CollectionSchema.Level.MODERATE)
+                .setMessage("The document does not contain an array of numbers in attribute \"nums\", one of the numbers is greater than 6, or another top-level attribute is not a string.")
+        );
 
 ArangoCollection coll = db.collection("coll");
-CollectionPropertiesEntity = coll.changeProperties(props);
+CollectionPropertiesEntity changedProps = coll.changeProperties(props);
 ```
 
 See [`ArangoCollection.changeProperties()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#changeProperties%28com.arangodb.model.CollectionPropertiesOptions%29)

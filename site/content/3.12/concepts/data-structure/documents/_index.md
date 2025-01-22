@@ -376,26 +376,26 @@ in the _go-driver_ v2 documentation for details.
 
 {{< tab "Java" >}}
 ```java
-CollectionEntity coll = db.collection("coll");
+ArangoCollection coll = db.collection("coll");
 
 // Single document
-coll.insertDocument(new BaseDocument("the-document-key")
-  .addAttribute("name", "ArangoDB")
-  .addAttribute("tags", [ "graph", "database", "NoSQL" ])
-  .addAttribute("scalable", true)
-  .addAttribute("company", new Map<String, Object>()
-    .put("name", "ArangoDB Inc.")
-    .put("founded", 2015)
-  )
-  .addAttribute("name", "ArangoDB")
-);
+BaseDocument doc = new BaseDocument("the-document-key");
+doc.addAttribute("name", "ArangoDB");
+doc.addAttribute("tags", List.of("graph", "database", "NoSQL"));
+doc.addAttribute("scalable", true);
+doc.addAttribute("company", Map.of(
+        "name", "ArangoDB Inc.",
+        "founded", 2015
+));
+doc.addAttribute("name", "ArangoDB");
+coll.insertDocument(doc);
 
 // Multiple documents
-coll.insertDocuments([
-  new BaseDocument("one"),
-  new BaseDocument("two"),
-  new BaseDocument("three")
-]);
+coll.insertDocuments(List.of(
+        new BaseDocument("one"),
+        new BaseDocument("two"),
+        new BaseDocument("three")
+));
 ```
 
 See [`ArangoCollection.insertDocument()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#insertDocument%28java.lang.Object%29)
@@ -405,7 +405,7 @@ in the _arangodb-java-driver_ documentation for details.
 
 {{< tab "Python" >}}
 ```py
-coll = db.get_collection("coll")
+coll = db.collection("coll")
 
 # Single document
 meta = coll.insert({
@@ -547,9 +547,7 @@ ArangoCollection coll = db.collection("coll");
 BaseDocument doc = coll.getDocument("the-document-key", BaseDocument.class);
 
 // Multiple documents
-for (doc : coll.getDocuments(["one", "two", "three"], BaseDocument.class)) {
-  // ...
-}
+MultiDocumentEntity<BaseDocument> docs = coll.getDocuments(List.of("one", "two", "three"), BaseDocument.class);
 ```
 
 See [`ArangoCollection.getDocument()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#getDocument%28java.lang.String,java.lang.Class%29)
@@ -691,21 +689,24 @@ in the _go-driver_ v2 documentation for details.
 ArangoCollection coll = db.collection("coll");
 
 // Single document
-DocumentUpdateEntity<BaseDocument> result = coll.updateDocument("the-document-key",
-  new BaseDocument("the-document-key")
-    .addAttribute("logo", "avocado"),
-  new DocumentUpdateOptions()
-    .returnNew(true),
-  BaseDocument.class);
+BaseDocument doc = new BaseDocument("the-document-key");
+doc.addAttribute("logo", "avocado");
+DocumentUpdateEntity<BaseDocument> result = coll.updateDocument(
+        "the-document-key",
+        doc,
+        new DocumentUpdateOptions().returnNew(true),
+        BaseDocument.class
+);
 
 // Multiple documents
-for (MultiDocumentEntity<DocumentUpdateEntity<Void>> result : coll.updateDocuments([
-  new BaseDocument("one").addAttribute("val", 1),
-  new BaseDocument("two").addAttribute("val", 2),
-  new BaseDocument("three").addAttribute("val", 3)
-])) {
-  // ...
-}
+BaseDocument doc1 = new BaseDocument("one");
+doc1.addAttribute("val", 1);
+BaseDocument doc2 = new BaseDocument("two");
+doc2.addAttribute("val", 2);
+BaseDocument doc3 = new BaseDocument("three");
+doc3.addAttribute("val", 3);
+MultiDocumentEntity<DocumentUpdateEntity<Void>> updatedDocs =
+        coll.updateDocuments(List.of(doc1, doc2, doc3));
 ```
 
 See [`ArangoCollection.updateDocument()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#updateDocument%28java.lang.String,java.lang.Object,com.arangodb.model.DocumentUpdateOptions,java.lang.Class%29)
@@ -851,21 +852,24 @@ in the _go-driver_ v2 documentation for details.
 ArangoCollection coll = db.collection("coll");
 
 // Single document
-DocumentUpdateEntity<BaseDocument> result = coll.replaceDocument("the-document-key",
-  new BaseDocument("the-document-key")
-    .addAttribute("logo", "avocado"),
-  new DocumentUpdateOptions()
-    .returnNew(true),
-  BaseDocument.class);
+BaseDocument doc = new BaseDocument("the-document-key");
+doc.addAttribute("logo", "avocado");
+DocumentUpdateEntity<BaseDocument> result = coll.replaceDocument(
+        "the-document-key",
+        doc,
+        new DocumentReplaceOptions().returnNew(true),
+        BaseDocument.class
+);
 
 // Multiple documents
-for (MultiDocumentEntity<DocumentUpdateEntity<Void>> result : coll.replaceDocuments([
-  new BaseDocument("one").addAttribute("val", 1),
-  new BaseDocument("two").addAttribute("val", 2),
-  new BaseDocument("three").addAttribute("val", 3)
-])) {
-  // ...
-}
+BaseDocument doc1 = new BaseDocument("one");
+doc1.addAttribute("val", 1);
+BaseDocument doc2 = new BaseDocument("two");
+doc2.addAttribute("val", 2);
+BaseDocument doc3 = new BaseDocument("three");
+doc3.addAttribute("val", 3);
+MultiDocumentEntity<DocumentUpdateEntity<Void>> replacedDocs =
+        coll.replaceDocuments(List.of(doc1, doc2, doc3));
 ```
 
 See [`ArangoCollection.replaceDocument()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#replaceDocument%28java.lang.String,java.lang.Object,com.arangodb.model.DocumentUpdateOptions,java.lang.Class%29)
@@ -992,9 +996,8 @@ ArangoCollection coll = db.collection("coll");
 DocumentDeleteEntity<Void> result = coll.deleteDocument("the-document-key");
 
 // Multiple documents
-for (MultiDocumentEntity<DocumentDeleteEntity<Void>> result : coll.deleteDocuments(["one", "two", "three"])) {
-  // ...
-}
+MultiDocumentEntity<DocumentDeleteEntity<Void>> multipleResult = 
+        coll.deleteDocuments(List.of("one", "two", "three"));
 ```
 
 See [`ArangoCollection.deleteDocument()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#deleteDocument%28java.lang.String%29)

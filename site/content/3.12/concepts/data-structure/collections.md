@@ -332,9 +332,11 @@ in the _go-driver_ v2 documentation for details.
 {{< tab "Java" >}}
 ```java
 ArangoCollection coll = db.collection("coll");
+CollectionEntity info = coll.getInfo();
 ```
 
 See [`ArangoDB.collection()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDB.html#db%28java.lang.String%29)
+and [`ArangoCollection.getInfo()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#getInfo%28%29)
 in the _arangodb-java-driver_ documentation for details.
 {{< /tab >}}
 
@@ -661,12 +663,12 @@ in the _go-driver_ v2 documentation for details.
 {{< tab "Java" >}}
 ```java
 CollectionPropertiesOptions options = new CollectionPropertiesOptions()
-  .waitForSync(true);
+  .waitForSync(true)
+  .replicationFactor(ReplicationFactor.of(3));
 
 ArangoCollection coll = db.collection("coll");
 CollectionPropertiesEntity props = coll.changeProperties(options);
 ```
-{{< comment >}}TODO: setReplicationFactor not yet supported by Java driver{{< /comment >}}
 
 See [`ArangoCollection.changeProperties()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#changeProperties%28com.arangodb.model.CollectionPropertiesOptions%29)
 and [`CollectionPropertiesEntity`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/entity/CollectionPropertiesEntity.html)
