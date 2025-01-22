@@ -976,7 +976,7 @@ every optimizer rule that briefly explains what it does.
 ### Computed values
 
 The Computed Values feature extends the collection properties with a new
-`computedValues` attribute. See [Computed Values](../../concepts/data-structure/documents/computed-values.md#javascript-api)
+`computedValues` attribute. See [Computed Values](../../concepts/data-structure/documents/computed-values.md#interfaces)
 for details.
 
 ### Query spillover and Read from followers
