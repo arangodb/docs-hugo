@@ -203,7 +203,6 @@ or a `VPACK` value. The format used should match the driver protocol configurati
 
 The following changes have been applied to `com.arangodb.entity.BaseDocument`
 and `com.arangodb.entity.BaseEdgeDocument`:
-- not serializable anymore (using Java serialization)
 - new method `removeAttribute(String)`
 - `getProperties()` returns an unmodifiable map
 
