@@ -6,6 +6,166 @@ description: >-
   Check the following list of potential breaking changes **before** upgrading to
   this ArangoDB version and adjust any client applications if necessary
 ---
+## Corrected sorting order for VelocyPack indexes
+
+<small>Introduced in: v3.11.11, v3.12.2</small>
+
+If you store large numeric values in ArangoDB and index them with an affected
+index type, the values may not be in the correct order. This is due to how the
+comparison is executed in version before v3.11.11 and v3.12.2. If the numbers
+are represented internally using different VelocyPack types, they are converted
+to doubles and then compared. This conversion is lossy for very large (unsigned)
+integer values, resulting in an incorrect ordering of the values.
+
+The possibly affected index types are the following that allow storing
+VelocyPack data in them:
+- `persistent` (including vertex-centric indexes)
+- `mdi-prefixed` (but not `mdi` indexes; only available from v3.12.0 onward)
+- `hash` (legacy alias for persistent indexes)
+- `skiplist` (legacy alias for persistent indexes)
+
+{{< danger >}}
+The incorrect sort order in an index can lead to the RocksDB storage engine
+discovering out-of-order keys and then refusing further write operations with
+errors and warnings.
+{{< /danger >}}
+
+To prevent ArangoDB deployments from entering a read-only mode due to this issue,
+please follow the below procedure to check if your deployment is affected and
+how to correct it if necessary.
+
+1. Call the `GET /_admin/cluster/vpackSortMigration/check` endpoint to let
+   ArangoDB check all indexes. As it can take a while for large deployments,
+   it is recommended to run this operation as an asynchronous job
+   (`x-arango-async: store` header) so that you can check the result later.
+
+   The endpoint is available for all deployment modes, not only in clusters.
+   In case of a cluster, send the request to one of the Coordinators.
+   Example with ArangoDB running locally on the default port:
+
+   ```shell
+   curl --dump-header -H "x-arango-async: store" http://localhost:8529/_admin/cluster/vpackSortMigration/check
+   ```
+
+2. Inspect the response to find the job ID in the `X-Arango-Async-Id` HTTP header.
+   The job ID is `12345` in the following example:
+
+   ```
+   HTTP/1.1 202 Accepted
+   X-Arango-Queue-Time-Seconds: 0.000000
+   Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+   Expires: 0
+   Pragma: no-cache
+   Cache-Control: no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0
+   Content-Security-Policy: frame-ancestors 'self'; form-action 'self';
+   X-Content-Type-Options: nosniff
+   X-Arango-Async-Id: 12345
+   Server: ArangoDB
+   Connection: Keep-Alive
+   Content-Type: text/plain; charset=utf-8
+   Content-Length: 0
+   ```
+
+3. Call the `PUT /_api/job/12345` endpoint, substituting `12345` with your
+   actual job ID. It returns nothing if the job is still ongoing. You can repeat
+   this call every once in a while to check again.
+
+   ```shell
+   curl -XPUT http://localhost:8529/_api/job/12345
+   ```
+
+4. If there are no issues with your deployment, the check result reports an
+   empty list of affected indexes and an according message.
+   
+   ```json
+   {
+     "error": false,
+     "code": 200,
+     "result": {
+       "affected": [],
+       "error": false,
+       "errorCode": 0,
+       "errorMessage": "all good with sorting order"
+     }
+   }
+   ```
+   
+   If this is the case, create a backup and upgrade your deployment to the
+   latest bugfix version with the same major and minor version (e.g. from 3.11.x
+   to at least 3.11.11 or from 3.12.x to at least 3.12.2). Complete the procedure
+   by calling the `PUT /_admin/cluster/vpackSortMigration/migrate` endpoint to
+   mark the deployment as having the correct sorting order. This requires
+   [superuser permissions](../../develop/http-api/authentication.md#jwt-superuser-tokens)
+   unless authentication is disabled.
+
+   Make sure that no problematic values are written to or removed from an index
+   between checking for affected indexes and completing the procedure. You may
+   put the deployment into [read-only mode](../../develop/http-api/administration.md#set-the-server-mode-to-read-only-or-default)
+   temporarily.
+
+   ```shell
+   curl -H "Authorization: bearer <superuser-token>" -XPUT http://localhost:8529/_admin/cluster/vpackSortMigration/migrate
+   ```
+
+   ```json
+   {
+     "error": false,
+     "code": 200,
+     "result": {
+       "error": false,
+       "errorCode": 0,
+       "errorMessage": "VPack sorting migration done."
+     }
+   }
+   ```
+
+5. If affected indexes are found, the check result looks similar to this:
+
+   ```json
+   {
+     "error": false,
+     "code": 200,
+     "result": {
+       "affected": [
+         {
+           "database": "_system",
+           "collection": "coll",
+           "indexId": 195,
+           "indexName": "idx_1806192152446763008"
+         }
+       ],
+       "error": true,
+       "errorCode": 1242,
+       "errorMessage": "some indexes have legacy sorted keys"
+     }
+   }
+   ```
+
+   If this is the case, the next steps depend on the deployment type.
+
+   - **Single server**: Create a full dump with [arangodump](../../components/tools/arangodump/_index.md),
+     using the `--all-databases` and `--include-system-collections` startup options
+     and a user account with administrate access to the `_system` database and
+     at least read access to all other databases to ensure all data including
+     the `_users` system collection are dumped.
+     
+     Restore the dump to a new single server using at least v3.11.11 or v3.12.2.
+     You need to use a new database directory.
+
+   - **Cluster**: Replace the DB-Server nodes until they all run at least
+     v3.11.11 or v3.12.2. Syncing new nodes writes the data in the correct order.
+     This deployment mode and approach avoids downtimes.
+
+     For each DB-Server, add a new DB-Server node to the cluster. Wait until all
+     new DB-Servers are in sync, then clean out the old DB-Server nodes.
+
+   New instances using the fixed versions initialize the database directory
+   with the sorting order marked as correct and also restore data from dumps
+   correctly.
+
+6. If you revert to an older state with affected indexes by restoring a
+   Hot Backup, you need to repeat the procedure.
+
 ## License change
 
 ArangoDB changes the licensing model for the ArangoDB source code and the
