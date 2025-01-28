@@ -5,6 +5,8 @@ weight: 10
 description: >-
   Collection objects represent document collections and provide access to
   information and methods for executing collection-related operations
+# Undocumented on purpose:
+#   collection.count(true); // document count per shard (cluster only)
 ---
 The JavaScript API returns _collection_ objects when you use the following methods
 of the [`db` object](db-object.md) from the `@arangodb`:
@@ -159,6 +161,12 @@ The `load()` function is **deprecated** as of ArangoDB 3.8.0.
 The function may be removed in future versions of ArangoDB. There should not be
 any need to load a collection with the RocksDB storage engine.
 {{< /warning >}}
+
+### `collection.loadIndexesIntoMemory()`
+
+Loads suitable indexes of this collection into memory.
+
+See [`collection.loadIndexesIntoMemory()`](../../../index-and-search/indexing/working-with-indexes/_index.md#load-indexes-into-memory).
 
 ### `collection.name()`
 
@@ -355,6 +363,10 @@ db.example.properties({ waitForSync : true });
 ~db._drop("example");
 ```
 
+### `collection.recalculateCount()`
+
+Recalculates the document count of a collection, if it ever becomes inconsistent.
+
 ### `collection.rename(name)`
 
 Renames a collection. The `new-name` must not already be
@@ -416,10 +428,22 @@ The leader shards are always first in the arrays of responsible servers.
 The `shards()` method can only be used on Coordinators in clusters.
 {{< /info >}}
 
-### `collection.truncate()`
+### `collection.truncate([options])`
 
 Truncates a `collection`, removing all documents but keeping all its
 indexes.
+
+The optional `options` parameter must be an object and can be
+used to specify the following options:
+
+- `waitForSync` (boolean, default: `false`):
+  If set to `true`, the data is synchronized to disk before returning from the
+  truncate operation.
+
+- `compact` (boolean, default: `true`):
+  If set to `true`, the storage engine is told to start a compaction in order to
+  free up disk space. This can be resource intensive. If the only intention is
+  to start over with an empty collection, specify `false`.
 
 **Examples**
 
@@ -880,16 +904,6 @@ Checks whether a document exists described by a document key, optionally
 with options passed as an object.
 
 No revision can be specified in this case.
-
----
-
-`collection.exists(array [, options])`
-
-This variant allows you to perform the operation on a whole array of arguments.
-The behavior is exactly as if `exists()` would have been called on all
-members of the array separately and all results are returned in an array. If an error
-occurs with any of the documents, the operation stops immediately returning
-only an error object.
 
 ### `collection.firstExample(example)`
 

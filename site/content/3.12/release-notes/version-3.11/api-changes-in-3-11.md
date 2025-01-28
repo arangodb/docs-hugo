@@ -477,38 +477,6 @@ and [Monitoring per collection/database/user](../version-3.11/whats-new-in-3-11.
   threshold for the maximum number of `OR` sub-nodes in the internal
   representation of an AQL `FILTER` condition and defaults to `786432`.
 
-#### Index API  
-
-##### Progress indication on the index generation
-
-<small>Introduced in: v3.10.13, v3.11.7</small>
-
-The `GET /_api/index` endpoint may now include a `progress` attribute for the
-elements in the `indexes` array. For every index that is currently being created,
-it indicates the progress of the index generation (in percent).
-
-To return indexes that are not yet fully built but are in the building phase,
-add the `withHidden=true` query parameter to the call of the endpoint.
-
-```
-curl "http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
-```
-
-### Endpoints deprecated
-
-The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
-more general version API with the endpoint `GET /_api/version`.
-The endpoint will be removed in ArangoDB v3.12.
-
-#### Restriction of indexable fields
-
-It is now forbidden to create indexes that cover fields whose attribute names
-start or end with `:` , for example, `fields: ["value:"]`. This notation is
-reserved for internal use.
-
-Existing indexes are not affected but you cannot create new indexes with a
-preceding or trailing colon using the `POST /_api/index` endpoint.
-
 #### Analyzer types
 
 The `/_api/analyzer` endpoint supports a new Analyzer type in the
@@ -528,6 +496,60 @@ endpoints include a new numeric `peakMemoryUsage` attribute.
 
 The `GET /_api/query/current` endpoint can return a new value
 `"instantiating executors"` as `state` in the query list.
+
+#### Index API  
+
+##### Progress indication on the index generation
+
+<small>Introduced in: v3.10.13, v3.11.7</small>
+
+The `GET /_api/index` endpoint may now include a `progress` attribute for the
+elements in the `indexes` array. For every index that is currently being created,
+it indicates the progress of the index generation (in percent).
+
+To return indexes that are not yet fully built but are in the building phase,
+add the `withHidden=true` query parameter to the call of the endpoint.
+Note that this includes internal indexes in the response as well, such as
+`arangosearch` indexes.
+
+```
+curl "http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
+```
+
+##### Restriction of indexable fields
+
+It is now forbidden to create indexes that cover fields whose attribute names
+start or end with `:` , for example, `fields: ["value:"]`. This notation is
+reserved for internal use.
+
+Existing indexes are not affected but you cannot create new indexes with a
+preceding or trailing colon using the `POST /_api/index` endpoint.
+
+##### Inverted indexes
+
+<small>Introduced in: v3.10.2</small>
+
+[Inverted indexes](../../develop/http-api/indexes/inverted.md) support new
+caching options in the Enterprise Edition.
+
+- A new `cache` option for inverted indexes as the default (boolean, default:
+  `false`) or for specific `fields` (boolean, default: the value of the
+  top-level `cache` option) to always cache field normalization values and
+  Geo Analyzer auxiliary data in memory.
+
+- A new `cache` option per object in the definition of the `storedValues`
+  elements to always cache stored values in memory (boolean, default: `false`).
+
+- A new `cache` option in the `primarySort` property to always cache the
+  primary sort columns in memory (boolean, default: `false`).
+
+- A new `primaryKeyCache` property for inverted indexes to always cache the
+  primary key column in memory (boolean, default: `false`).
+
+The `POST /_api/index` endpoint accepts these new options for `inverted` indexes
+and the `GET /_api/index` and `GET /_api/index/<index-id>` endpoints may return
+these options. The attributes are omitted in responses unless you enable the
+respective option.
 
 #### View API
 
@@ -768,6 +790,12 @@ following two new statistics in the `stats` attribute of the response now:
 The `GET /_api/query/rules` endpoint now includes a `description` attribute for
 every optimizer rule that briefly explains what it does.
 
+### Endpoints deprecated
+
+The `GET /_admin/database/target-version` endpoint is deprecated in favor of the
+more general version API with the endpoint `GET /_api/version`.
+The endpoint will be removed in ArangoDB v3.12.
+
 ## JavaScript API
 
 ### Database creation
@@ -829,7 +857,20 @@ const historyStatus = pregel.history(execution);
 pregel.removeHistory();
 ```
 
-### Deprecations
+### `collection.iterate()` deprecated
 
 The `collection.iterate()` method is deprecated from v3.11.0 onwards and will be
 removed in a future version.
+
+### `@arangodb/request` certificate validation
+
+<small>Introduced in: v3.11.11</small>
+
+The `@arangodb/request` module now supports two additional options for making
+HTTPS requests:
+
+- `verifyCertificates` (optional): if set to `true`, the server certificate of
+  the remote server is verified using the default certificate store of the system.
+  Default: `false`.
+- `verifyDepth` (optional): limit the maximum length of the certificate chain
+  that counts as valid. Default: `10`.

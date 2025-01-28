@@ -169,7 +169,7 @@ collection operations:
 - [`remove()`](../javascript-api/@arangodb/collection-object.md#collectionremoveobject)
 - [`replace()`](../javascript-api/@arangodb/collection-object.md#collectionreplacedocument-data--options)
 - [`save()`](../javascript-api/@arangodb/collection-object.md#collectionsavedata--options)
-- [`truncate()`](../javascript-api/@arangodb/collection-object.md#collectiontruncate)
+- [`truncate()`](../javascript-api/@arangodb/collection-object.md#collectiontruncateoptions)
 - [`update()`](../javascript-api/@arangodb/collection-object.md#collectionupdatedocument-data--options)
 
 Compared to the collection object returned by `db._collection()`, only a subset

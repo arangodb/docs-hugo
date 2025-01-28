@@ -169,7 +169,7 @@ Apple silicon like M1).
 
 Run the `docker compose` services using the `docker-compose.pain-build.yml` file.
 
-```shell
+```sh
 docs-hugo/toolchain/docker/amd64> docker compose -f docker-compose.plain-build.yml up --abort-on-container-exit
 ```
 
@@ -179,7 +179,7 @@ To make the documentation tooling not start a live server in watch mode but
 rather create a static build and exit, set the environment variable `ENV` to
 any value other than `local` before calling `docker compose ...`:
 
-```shell
+```sh
 export ENV=static  # Bash
 set -xg ENV static # Fish
 $Env:ENV='static'  # PowerShell
@@ -215,7 +215,7 @@ The generators entry is a space-separated string.
 If `metrics` or `error-codes` is in the `generators` string, the following
 environment variable has to be exported:
 
-```shell
+```sh
 export ARANGODB_SRC_{VERSION}=path/to/arangodb/source
 ```
 
@@ -246,7 +246,7 @@ Apple silicon like M1).
 
 Run the `docker compose` services without specifying a file:
 
-```shell
+```sh
 docs-hugo/toolchain/docker/arm64> docker compose up --abort-on-container-exit
 ```
 
@@ -1395,7 +1395,8 @@ need to be output explicitly by calling one of the following functions:
   for formatting complex requests.
 - `logJsonResponse(response)`: output a JSON server reply (fails on invalid JSON)
 - `logJsonLResponse(response)`: output a JSONL server reply (fails on invalid JSON)
-- `logRawResponse(response)`: output plaintext response (do not use for JSON replies)
+- `logRawResponse(response)`: output plaintext response (do not use for JSON replies;
+  can be used for endpoint calls that return an empty body to output the headers)
 - `logPlainResponse(response)`: output decoded response (new lines instead of
   `\r\n` etc.). Useful for formatting complex responses, like from batch requests.
 - `logHtmlResponse(response)`: output HTML

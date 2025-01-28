@@ -233,7 +233,7 @@ Check whether the string `search` is contained in the string `text`.
 The string matching performed by `CONTAINS()` is case-sensitive.
 
 To determine if or at which position a value is included in an **array**, see the
-[POSITION() array function](array.md#position).
+[`POSITION()` array function](array.md#position).
 
 - **text** (string): the haystack
 - **search** (string): the needle
@@ -280,7 +280,7 @@ RETURN CONTAINS("foobarbaz", "horse", true)
 
 ## COUNT()
 
-This is an alias for [LENGTH()](#length).
+This is an alias for [`LENGTH()`](#length).
 
 ## CRC32()
 
@@ -434,7 +434,7 @@ RETURN FNV64("foobar")
 Converts a numeric IPv4 address value into its string representation.
 
 - **numericAddress** (number): a numeric representation of an IPv4 address, for
-  example produced by [IPV4_TO_NUMBER()](#ipv4_to_number). The number must be
+  example produced by [`IPV4_TO_NUMBER()`](#ipv4_to_number). The number must be
   an unsigned integer between 0 and 4294967295 (both inclusive).
 - returns **stringAddress** (string): the string representation of the IPv4
   address. If the input `numberAddress` is not a valid representation of an
@@ -693,9 +693,9 @@ RETURN JSON_STRINGIFY( [1, {'2': .5}] )
 
 Return the `n` leftmost characters of the string `value`.
 
-To return the rightmost characters, see [RIGHT()](#right).\
+To return the rightmost characters, see [`RIGHT()`](#right).\
 To take a part from an arbitrary position off the string,
-see [SUBSTRING()](#substring).
+see [`SUBSTRING()`](#substring).
 
 - **value** (string): a string
 - **n** (number): how many characters to return
@@ -901,8 +901,8 @@ RETURN LOWER("AVOcado")
 
 Return the string `value` with whitespace stripped from the start only.
 
-To strip from the end only, see [RTRIM()](#rtrim).\
-To strip both sides, see [TRIM()](#trim).
+To strip from the end only, see [`RTRIM()`](#rtrim).\
+To strip both sides, see [`TRIM()`](#trim).
 
 - **value** (string): a string
 - **chars** (string, *optional*): override the characters that should
@@ -966,7 +966,7 @@ between `input` and `target` using _n_-grams with minimum and maximum length of
 The similarity is calculated by counting how long the longest sequence of
 matching _n_-grams is, divided by the **longer argument's** total _n_-gram count.
 Partially matching _n_-grams are counted, whereas
-[NGRAM_SIMILARITY()](#ngram_similarity) counts only fully matching _n_-grams.
+[`NGRAM_SIMILARITY()`](#ngram_similarity) counts only fully matching _n_-grams.
 
 The _n_-grams for both input and target are calculated on the fly,
 not involving Analyzers.
@@ -1002,9 +1002,9 @@ between `input` and `target` using _n_-grams with minimum and maximum length of
 The similarity is calculated by counting how long the longest sequence of
 matching _n_-grams is, divided by **target's** total _n_-gram count.
 Only fully matching _n_-grams are counted, whereas
-[NGRAM_POSITIONAL_SIMILARITY()](#ngram_positional_similarity) counts partially
+[`NGRAM_POSITIONAL_SIMILARITY()`](#ngram_positional_similarity) counts partially
 matching _n_-grams too. This behavior matches the similarity measure used in
-[NGRAM_MATCH()](arangosearch.md#ngram_match).
+[`NGRAM_MATCH()`](arangosearch.md#ngram_match).
 
 The _n_-grams for both input and target are calculated on the fly, not involving
 Analyzers.
@@ -1266,9 +1266,9 @@ RETURN REVERSE("电脑坏了")
 
 Return the `length` rightmost characters of the string `value`.
 
-To return the leftmost characters, see [LEFT()](#left).\
+To return the leftmost characters, see [`LEFT()`](#left).\
 To take a part from an arbitrary position off the string,
-see [SUBSTRING()](#substring).
+see [`SUBSTRING()`](#substring).
 
 - **value** (string): a string
 - **length** (number): how many characters to return
@@ -1299,8 +1299,8 @@ RETURN RIGHT("foobar", 10)
 
 Return the string `value` with whitespace stripped from the end only.
 
-To strip from the start only, see [LTRIM()](#ltrim).\
-To strip both sides, see [TRIM()](#trim).
+To strip from the start only, see [`LTRIM()`](#ltrim).\
+To strip both sides, see [`TRIM()`](#trim).
 
 - **value** (string): a string
 - **chars** (string, *optional*): override the characters that should
@@ -1652,8 +1652,8 @@ RETURN SUBSTITUTE("the quick brown foxx", {
 
 Return a substring of `value`.
 
-To return the rightmost characters, see [RIGHT()](#right).\
-To return the leftmost characters, see [LEFT()](#left).
+To return the rightmost characters, see [`RIGHT()`](#right).\
+To return the leftmost characters, see [`LEFT()`](#left).
 
 - **value** (string): a string
 - **offset** (number): start at this character of the string. Offsets start at 0.
@@ -1811,7 +1811,7 @@ FOR doc IN viewName
 
 It will match `{ "text": "Lorem ipsum, dolor sit amet." }` for instance. If you
 want to search for tokens in a particular order, use
-[PHRASE()](arangosearch.md#phrase) instead.
+[`PHRASE()`](arangosearch.md#phrase) instead.
 
 If an array of strings is passed as first argument, then each string is
 tokenized individually and an array with the same nesting as the input array
@@ -1902,8 +1902,7 @@ RETURN [
 Return the string `value` with whitespace stripped from the start and/or end.
 
 The optional `type` parameter specifies from which parts of the string the
-whitespace is stripped. [LTRIM()](#ltrim)
-and [RTRIM()](#rtrim) are preferred
+whitespace is stripped. [`LTRIM()`](#ltrim) and [`RTRIM()`](#rtrim) are preferred
 however.
 
 - **value** (string): a string

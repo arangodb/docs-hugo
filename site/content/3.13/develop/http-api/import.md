@@ -141,7 +141,7 @@ paths:
           required: false
           description: |
             Controls what action is carried out in case of a unique key constraint
-            violation. Possible values are:
+            violation.
 
             - `error`: this will not import the current document because of the unique
               key constraint violation. This is the default setting.
@@ -158,6 +158,7 @@ paths:
             `replace` may also fail because of secondary unique key constraint violations.
           schema:
             type: string
+            enum: [error, update, replace, ignore]
         - name: complete
           in: query
           required: false

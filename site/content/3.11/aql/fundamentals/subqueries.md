@@ -66,7 +66,7 @@ RETURN ( RETURN 1 )
 [ [ 1 ] ]
 ```
 
-To avoid such a nested data structure, [FIRST()](../functions/array.md#first)
+To avoid such a nested data structure, [`FIRST()`](../functions/array.md#first)
 can be used for example:
 
 ```aql
@@ -131,7 +131,7 @@ LET maybe = DOCUMENT("coll/does_not_exist")
 LET dependent = maybe ? (
   FOR attr IN ATTRIBUTES(maybe)
     RETURN attr
-) : null
+) : "document not found"
 RETURN dependent
 ```
 
@@ -156,3 +156,33 @@ The additional fallback `maybe || {}` prevents a query warning
 
 that originates from a `null` value getting passed to the `ATTRIBUTES()`
 function that expects an object.
+
+Similarly, when you use subqueries as sub-expressions that are combined with
+logical `AND` or `OR`, the subqueries are always executed:
+
+```aql
+RETURN false AND (RETURN ASSERT(false, "executed"))
+```
+
+```aql
+RETURN true OR (RETURN ASSERT(false, "executed"))
+```
+
+If the first operand of a logical `AND` is `false`, the overall result is
+`false` regardless of the second operand. If the first operand of a logical `OR`
+is `true`, the overall result is `true` regardless of the second operand.
+However, the subqueries are run nonetheless, causing both example queries to fail.
+
+You can prevent the subqueries from executing by prepending a `FILTER` operation
+with the value of the logical operator's first operand and negating it in case
+of an `OR`:
+
+```aql
+LET cond = false
+RETURN cond AND (FILTER cond RETURN ASSERT(false, "executed"))
+```
+
+```aql
+LET cond = true
+RETURN cond OR (FILTER !cond RETURN ASSERT(false, "executed"))
+```

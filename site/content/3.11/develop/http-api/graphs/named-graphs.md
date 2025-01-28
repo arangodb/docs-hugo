@@ -189,7 +189,6 @@ description: ''
 name: HttpGharialList
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 examples.loadGraph("routeplanner");
 var url = "/_api/gharial";
@@ -616,7 +615,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -650,7 +649,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -684,7 +683,7 @@ paths:
                     example: 409
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -780,20 +779,20 @@ var graph = require("@arangodb/general-graph");
 }
 var url = "/_api/gharial";
 body = {
-name: "disjointSmartGraph",
-edgeDefinitions: [{
-collection: "edges",
-from: [ "startVertices" ],
-to: [ "endVertices" ]
-}],
-orphanCollections: [ "orphanVertices" ],
-isSmart: true,
-options: {
-isDisjoint: true,
-replicationFactor: 2,
-numberOfShards: 9,
-smartGraphAttribute: "region"
-}
+  name: "disjointSmartGraph",
+  edgeDefinitions: [{
+    collection: "edges",
+    from: [ "startVertices" ],
+    to: [ "endVertices" ]
+  }],
+  orphanCollections: [ "orphanVertices" ],
+  isSmart: true,
+  options: {
+    isDisjoint: true,
+    replicationFactor: 2,
+    numberOfShards: 9,
+    smartGraphAttribute: "region"
+  }
 };
 
 var response = logCurlRequest('POST', url, body);
@@ -822,20 +821,20 @@ var graph = require("@arangodb/general-graph");
 }
 var url = "/_api/gharial";
 body = {
-name: "smartGraph",
-edgeDefinitions: [{
-collection: "edges",
-from: [ "startVertices" ],
-to: [ "endVertices" ]
-}],
-orphanCollections: [ "orphanVertices" ],
-isSmart: true,
-options: {
-replicationFactor: 2,
-numberOfShards: 9,
-smartGraphAttribute: "region",
-satellites: [ "endVertices" ]
-}
+  name: "smartGraph",
+  edgeDefinitions: [{
+    collection: "edges",
+    from: [ "startVertices" ],
+    to: [ "endVertices" ]
+  }],
+  orphanCollections: [ "orphanVertices" ],
+  isSmart: true,
+  options: {
+    replicationFactor: 2,
+    numberOfShards: 9,
+    smartGraphAttribute: "region",
+    satellites: [ "endVertices" ]
+  }
 };
 
 var response = logCurlRequest('POST', url, body);
@@ -861,18 +860,18 @@ var graph = require("@arangodb/general-graph");
 }
 var url = "/_api/gharial";
 body = {
-name: "enterpriseGraph",
-edgeDefinitions: [{
-collection: "edges",
-from: [ "startVertices" ],
-to: [ "endVertices" ]
-}],
-orphanCollections: [ ],
-isSmart: true,
-options: {
-replicationFactor: 2,
-numberOfShards: 9,
-}
+  name: "enterpriseGraph",
+  edgeDefinitions: [{
+    collection: "edges",
+    from: [ "startVertices" ],
+    to: [ "endVertices" ]
+  }],
+  orphanCollections: [ ],
+  isSmart: true,
+  options: {
+    replicationFactor: 2,
+    numberOfShards: 9,
+  }
 };
 
 var response = logCurlRequest('POST', url, body);
@@ -900,16 +899,16 @@ var graph = require("@arangodb/general-graph");
 }
 var url = "/_api/gharial";
 body = {
-name: "satelliteGraph",
-edgeDefinitions: [{
-collection: "edges",
-from: [ "startVertices" ],
-to: [ "endVertices" ]
-}],
-orphanCollections: [ ],
-options: {
-replicationFactor: "satellite"
-}
+  name: "satelliteGraph",
+  edgeDefinitions: [{
+    collection: "edges",
+    from: [ "startVertices" ],
+    to: [ "endVertices" ]
+  }],
+  orphanCollections: [ ],
+  options: {
+    replicationFactor: "satellite"
+  }
 };
 
 var response = logCurlRequest('POST', url, body);
@@ -1100,7 +1099,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1227,7 +1226,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1258,7 +1257,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1276,7 +1275,6 @@ description: ''
 name: HttpGharialDrop
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social?dropCollections=true";
 var response = logCurlRequest('DELETE', url);
@@ -1368,7 +1366,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1386,7 +1384,6 @@ description: ''
 name: HttpGharialListVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex";
 var response = logCurlRequest('GET', url);
@@ -1734,7 +1731,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1768,7 +1765,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1799,7 +1796,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -1817,7 +1814,6 @@ description: ''
 name: HttpGharialAddVertexCol
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex";
 body = {
@@ -2157,7 +2153,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2190,7 +2186,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2221,7 +2217,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2240,7 +2236,6 @@ description: |-
 name: HttpGharialRemoveVertexCollection
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 var g = examples.loadGraph("social");
 g._addVertexCollection("otherVertices");
 var url = "/_api/gharial/social/vertex/otherVertices";
@@ -2260,7 +2255,6 @@ description: |-
 name: HttpGharialRemoveVertexCollectionFailed
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 var g = examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex/male";
 var response = logCurlRequest('DELETE', url);
@@ -2268,9 +2262,6 @@ var response = logCurlRequest('DELETE', url);
 assert(response.code === 400);
 
 logJsonResponse(response);
-db._drop("male");
-db._drop("female");
-db._drop("relation");
 examples.dropGraph("social");
 ```
 
@@ -2354,7 +2345,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2372,7 +2363,6 @@ description: ''
 name: HttpGharialListEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/edge";
 var response = logCurlRequest('GET', url);
@@ -2742,7 +2732,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2775,7 +2765,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2806,7 +2796,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -2824,7 +2814,6 @@ description: ''
 name: HttpGharialAddEdgeCol
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/edge";
 body = {
@@ -2848,7 +2837,7 @@ paths:
     put:
       operationId: replaceEdgeDefinition
       description: |
-        Change one specific edge definition.
+        Change the vertex collections of one specific edge definition.
         This modifies all occurrences of this definition in all graphs known to your database.
       parameters:
         - name: database-name
@@ -2900,7 +2889,7 @@ paths:
               properties:
                 collection:
                   description: |
-                    The name of the edge collection to be used.
+                    The name of the edge collection to modify.
                   type: string
                 from:
                   description: |
@@ -3205,7 +3194,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3238,7 +3227,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3270,7 +3259,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3288,7 +3277,6 @@ description: ''
 name: HttpGharialReplaceEdgeCol
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/edge/relation";
 body = {
@@ -3634,7 +3622,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3666,7 +3654,7 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3684,7 +3672,6 @@ description: ''
 name: HttpGharialEdgeDefinitionRemove
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/edge/relation";
 var response = logCurlRequest('DELETE', url);
@@ -3929,7 +3916,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3937,8 +3924,11 @@ paths:
                     type: string
         '404':
           description: |
-            Returned if no graph with this name can be found.
-            Or if a graph is found but this collection is not part of the graph.
+            The graph cannot be found or the collection is not part of the graph.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -3961,7 +3951,39 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -3979,7 +4001,6 @@ description: ''
 name: HttpGharialAddVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex/male";
 body = {
@@ -4139,7 +4160,7 @@ paths:
                     example: 304
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4173,7 +4194,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4182,9 +4203,13 @@ paths:
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name could be found.
-            - This collection is not part of the graph.
+            - The graph cannot be found.
+            - The collection is not part of the graph.
             - The vertex does not exist.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -4207,7 +4232,39 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4238,7 +4295,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4256,7 +4313,6 @@ description: ''
 name: HttpGharialGetVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex/female/alice";
 var response = logCurlRequest('GET', url);
@@ -4578,7 +4634,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4587,9 +4643,13 @@ paths:
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name can be found.
-            - This collection is not part of the graph.
+            - The graph cannot be found.
+            - The collection is not part of the graph.
             - The vertex to update does not exist.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -4612,7 +4672,39 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4643,7 +4735,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4661,7 +4753,6 @@ description: ''
 name: HttpGharialModifyVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 body = {
   age: 26
@@ -4986,7 +5077,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -4995,9 +5086,13 @@ paths:
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name can be found.
-            - This collection is not part of the graph.
+            - The graph cannot be found.
+            - The collection is not part of the graph.
             - The vertex to replace does not exist.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -5020,7 +5115,39 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5051,7 +5178,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5069,7 +5196,6 @@ description: ''
 name: HttpGharialReplaceVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 body = {
   name: "Alice Cooper",
@@ -5282,7 +5408,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5291,9 +5417,13 @@ paths:
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name can be found.
-            - This collection is not part of the graph.
+            - The graph cannot be found.
+            - The collection is not part of the graph.
             - The vertex to remove does not exist.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -5316,7 +5446,39 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5347,7 +5509,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5365,7 +5527,6 @@ description: ''
 name: HttpGharialDeleteVertex
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/vertex/female/alice";
 var response = logCurlRequest('DELETE', url);
@@ -5656,7 +5817,7 @@ paths:
                     example: 400
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5690,7 +5851,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5699,11 +5860,15 @@ paths:
         '404':
           description: |
             Returned in any of the following cases:
-            - No graph with this name can be found.
+            - The graph cannot be found.
             - The edge collection is not part of the graph.
             - The vertex collection referenced in the `_from` or `_to` attribute is not part of the graph.
             - The vertex collection is part of the graph, but does not exist.
             - `_from` or `_to` vertex does not exist.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -5726,7 +5891,39 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5744,10 +5941,6 @@ description: ''
 name: HttpGharialAddEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
-require("internal").db._drop("relation");
-require("internal").db._drop("female");
-require("internal").db._drop("male");
 examples.loadGraph("social");
 var url = "/_api/gharial/social/edge/relation";
 body = {
@@ -5919,7 +6112,7 @@ paths:
                     example: 304
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5953,7 +6146,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -5962,9 +6155,13 @@ paths:
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name can be found.
-            - This collection is not part of the graph.
+            - The graph cannot be found.
+            - The collection is not part of the graph.
             - The edge does not exist.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -5987,7 +6184,39 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6018,7 +6247,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6036,7 +6265,6 @@ description: ''
 name: HttpGharialGetEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var any = require("@arangodb").db.relation.any();
 var url = "/_api/gharial/social/edge/relation/" + any._key;
@@ -6419,7 +6647,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6428,10 +6656,14 @@ paths:
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name can be found.
-            - This collection is not part of the graph.
+            - The graph cannot be found.
+            - The collection is not part of the graph.
             - The edge to update does not exist.
             - Either `_from` or `_to` vertex does not exist (if updated).
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -6454,7 +6686,39 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6485,7 +6749,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6503,7 +6767,6 @@ description: ''
 name: HttpGharialPatchEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var any = require("@arangodb").db.relation.any();
 var url = "/_api/gharial/social/edge/relation/" + any._key;
@@ -6895,7 +7158,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6904,10 +7167,14 @@ paths:
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name can be found.
-            - This collection is not part of the graph.
+            - The graph cannot be found.
+            - The collection is not part of the graph.
             - The edge to replace does not exist.
             - Either `_from` or `_to` vertex does not exist.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -6930,7 +7197,39 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6961,7 +7260,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -6979,7 +7278,6 @@ description: ''
 name: HttpGharialPutEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var any = require("@arangodb").db.relation.any();
 var url = "/_api/gharial/social/edge/relation/" + any._key;
@@ -7214,7 +7512,7 @@ paths:
                     example: 403
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -7223,9 +7521,13 @@ paths:
         '404':
           description: |
             Returned in the following cases:
-            - No graph with this name can be found.
-            - This collection is not part of the graph.
+            - The graph cannot be found.
+            - The collection is not part of the graph.
             - The edge to remove does not exist.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
           content:
             application/json:
               schema:
@@ -7248,7 +7550,39 @@ paths:
                     example: 404
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 410
+                  errorNum:
+                    description: |
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -7279,7 +7613,7 @@ paths:
                     example: 412
                   errorNum:
                     description: |
-                      ArangoDB error number for the error that occurred.
+                      The ArangoDB error number for the error that occurred.
                     type: integer
                   errorMessage:
                     description: |
@@ -7297,7 +7631,6 @@ description: ''
 name: HttpGharialDeleteEdge
 ---
 var examples = require("@arangodb/graph-examples/example-graph.js");
-examples.dropGraph("social");
 examples.loadGraph("social");
 var any = require("@arangodb").db.relation.any();
 var url = "/_api/gharial/social/edge/relation/" + any._key;

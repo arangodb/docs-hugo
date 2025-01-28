@@ -30,6 +30,15 @@ This is only the case if all of the following conditions are true:
 If you are affected, consider using Docker containers, `chroot`, or change
 `nsswitch.conf`.
 
+## VelocyStream protocol deprecation
+
+ArangoDB's own bi-directional asynchronous binary protocol VelocyStream (VST) is
+deprecated in v3.11 and removed in v3.12.0.
+
+While VelocyStream support is still available in v3.11, it is highly recommended
+to already switch to the HTTP(S) protocol because of better performance and
+reliability. ArangoDB supports both VelocyPack and JSON over HTTP(S).
+
 ## Active Failover deployment mode deprecation
 
 Running a single server with asynchronous replication to one or more passive
@@ -304,6 +313,34 @@ if the request body was an empty array. Example:
 ```
 
 Now, a request like this succeeds and returns an empty array as response.
+
+## Changed JSON serialization and VelocyPack format for replication
+
+<small>Introduced in: v3.11.12</small>
+
+While there is only one number type in JSON, the VelocyPack format that ArangoDB
+uses supports different numeric data types. When converting between VelocyPack
+and JSON, it was previously possible for precision loss to occur in edge cases.
+This also affected creating and restoring dumps with arangodump and arangorestore.
+
+A double (64-bit floating-point) value `1152921504606846976.0` (2<sup>60</sup>)
+used to be serialized to `1152921504606847000` in JSON, which deserializes back
+to `1152921504606846976` when using a double. However, the serialized value got
+parsed as an unsigned integer, resulting in an incorrect value of
+`1152921504606847000`.
+
+Numbers with an absolute value greater or equal to 2<sup>53</sup> and less than
+2<sup>64</sup> (which always represents an integer) are now serialized faithfully
+to JSON using an integer conversion routine and then `.0` is appended (e.g.
+`1152921504606846976.0`) to ensure that they get parsed back to the exact same
+double value. All other values are serialized as before, e.g. small integral
+values don't get `.0` appended, and they get parsed back to integers with the
+same numerical value.
+
+Moreover, replication-related APIs such as the `/_api/wal/tail` endpoint now
+support the VelocyPack format. The cluster replication has been changed to use
+VelocyPack instead of JSON to avoid unnecessary conversions and avoiding any
+risk of deviations due to the serialization.
 
 ## JavaScript API
 

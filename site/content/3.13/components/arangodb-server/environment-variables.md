@@ -102,7 +102,7 @@ description: >-
   Path to a directory with stop word files for
   [ArangoSearch Text Analyzers](../../index-and-search/analyzers.md#text).
 
-<!-- ARANGODB_CONFIG_PATH, ICU_DATA, ... (TRI_GETENV, iresearch::getenv) -->
+<!-- ARANGODB_CONFIG_PATH, ICU_DATA, ICU_DATA_LEGACY, ... (TRI_GETENV, iresearch::getenv) -->
 
 For Docker specific environment variables please refer to
 [Docker Hub](https://hub.docker.com/_/arangodb)

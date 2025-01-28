@@ -49,7 +49,7 @@ Many examples in the documentation use the short URL format (and thus the
 `_system` database) for brevity.
 {{< /tip >}}
 
-### Multiple documents in a single request
+## Multiple documents in a single request
 
 The document API can handle not only single documents but multiple documents in
 a single request. This is crucial for performance, in particular in the cluster
@@ -69,9 +69,9 @@ not allow to pass a message body. Thus, they cannot be used to perform
 multiple document operations in one request. However, there are alternative
 endpoints to request and delete multiple documents in one request.
 
-### Single document operations
+## Single document operations
 
-#### Get a document
+### Get a document
 
 ```openapi
 paths:
@@ -148,20 +148,28 @@ paths:
       responses:
         '200':
           description: |
-            is returned if the document was found
+            The document has been found.
         '304':
           description: |
-            is returned if the "If-None-Match" header is given and the document has
-            the same version
+            The `If-None-Match` header is specified and the document
+            has the same revision.
         '404':
           description: |
-            is returned if the document or collection was not found
+            The document or collection cannot be found.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
         '412':
           description: |
-            is returned if an "If-Match" header is given and the found
-            document has a different version. The response will also contain the found
+            An `If-Match` header is specified and the found
+            document has a different revision. The response includes the found
             document's current revision in the `_rev` attribute. Additionally, the
-            attributes `_id` and `_key` will be returned.
+            `_id` and `_key` attributes are returned.
       tags:
         - Documents
 ```
@@ -182,10 +190,9 @@ var document = db.products.save({"hello":"world"});
 var url = "/_api/document/" + document._id;
 
 var response = logCurlRequest('GET', url);
-
 assert(response.code === 200);
-
 logJsonResponse(response);
+
 db._drop(cn);
 ```
 
@@ -204,8 +211,9 @@ var url = "/_api/document/" + document._id;
 var headers = {"If-None-Match": "\"" + document._rev + "\""};
 
 var response = logCurlRequest('GET', url, "", headers);
-
 assert(response.code === 304);
+logRawResponse(response);
+
 db._drop(cn);
 ```
 
@@ -215,16 +223,20 @@ description: |-
   Unknown document identifier:
 name: RestDocumentHandlerReadDocumentUnknownHandle
 ---
-var url = "/_api/document/products/unknown-identifier";
+var cn = "products";
+db._drop(cn);
+db._create(cn);
+
+var url = "/_api/document/" + cn + "/unknown-identifier";
 
 var response = logCurlRequest('GET', url);
-
 assert(response.code === 404);
-
 logJsonResponse(response);
+
+db._drop(cn);
 ```
 
-#### Get a document header
+### Get a document header
 
 ```openapi
 paths:
@@ -300,18 +312,26 @@ paths:
       responses:
         '200':
           description: |
-            is returned if the document was found
+            The document has been found.
         '304':
           description: |
-            is returned if the "If-None-Match" header is given and the document has
-            the same version
+            An `If-None-Match` header is specified and the document has
+            the same version.
         '404':
           description: |
-            is returned if the document or collection was not found
+            The document or collection cannot be found.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
         '412':
           description: |
-            is returned if an "If-Match" header is given and the found
-            document has a different version. The response will also contain the found
+            An `If-Match` header is given and the found
+            document has a different version. The response includes the found
             document's current revision in the `ETag` header.
       tags:
         - Documents
@@ -332,12 +352,13 @@ var document = db.products.save({"hello":"world"});
 var url = "/_api/document/" + document._id;
 
 var response = logCurlRequest('HEAD', url);
-
 assert(response.code === 200);
+logRawResponse(response);
+
 db._drop(cn);
 ```
 
-#### Create a document
+### Create a document
 
 ```openapi
 paths:
@@ -527,20 +548,20 @@ paths:
       responses:
         '201':
           description: |
-            is returned if the documents were created successfully and
+            The document has been created successfully and
             `waitForSync` was `true`.
         '202':
           description: |
-            is returned if the documents were created successfully and
+            The document has been created successfully and
             `waitForSync` was `false`.
         '400':
           description: |
-            is returned if the body does not contain a valid JSON representation
-            of one document. The response body contains
+            The request body does not contain a valid JSON representation
+            of a document. The response body contains
             an error document in this case.
         '403':
           description: |
-            with the error code `1004` is returned if the specified write concern for the
+            If the error code is `1004`, the specified write concern for the
             collection cannot be fulfilled. This can happen if less than the number of
             specified replicas for a shard are currently in-sync with the leader. For example,
             if the write concern is `2` and the replication factor is `3`, then the
@@ -552,8 +573,12 @@ paths:
             temporary error.
         '404':
           description: |
-            is returned if the collection specified by `collection` is unknown.
+            The collection cannot be found.
             The response body contains an error document in this case.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
         '409':
           description: |
             There are two possible reasons for this error in the single document case:
@@ -566,9 +591,13 @@ paths:
               concurrent operation that operates on the same document. This is also referred
               to as a _write-write conflict_. The response body contains an error document
               with the `errorNum` set to `1200` (`ERROR_ARANGO_CONFLICT`) in this case.
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
         '503':
           description: |
-            is returned if the system is temporarily not available. This can be a system
+            The system is temporarily not available. This can be a system
             overload or temporary failure. In this case it makes sense to retry the request
             later.
 
@@ -741,7 +770,7 @@ logJsonResponse(response);
 db._drop(cn);
 ```
 
-#### Replace a document
+### Replace a document
 
 ```openapi
 paths:
@@ -906,20 +935,20 @@ paths:
       responses:
         '201':
           description: |
-            is returned if the document was replaced successfully and
+            The document has been replaced successfully and
             `waitForSync` was `true`.
         '202':
           description: |
-            is returned if the document was replaced successfully and
+            The document has been replaced successfully and
             `waitForSync` was `false`.
         '400':
           description: |
-            is returned if the body does not contain a valid JSON representation
+            The request body does not contain a valid JSON representation
             of a document. The response body contains
             an error document in this case.
         '403':
           description: |
-            with the error code `1004` is returned if the specified write concern for the
+            If the error code is `1004`, the specified write concern for the
             collection cannot be fulfilled. This can happen if less than the number of
             specified replicas for a shard are currently in-sync with the leader. For example,
             if the write concern is `2` and the replication factor is `3`, then the
@@ -931,7 +960,11 @@ paths:
             temporary error.
         '404':
           description: |
-            is returned if the collection or the document was not found.
+            The collection or the document was not found.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
         '409':
           description: |
             There are two possible reasons for this error:
@@ -943,14 +976,18 @@ paths:
               concurrent operation that operates on the same document. This is also referred
               to as a _write-write conflict_. The response body contains an error document
               with the `errorNum` set to `1200` (`ERROR_ARANGO_CONFLICT`) in this case.
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
         '412':
           description: |
-            is returned if the precondition is violated. The response also contains
+            The precondition is violated. The response includes
             the found documents' current revisions in the `_rev` attributes.
             Additionally, the attributes `_id` and `_key` are returned.
         '503':
           description: |
-            is returned if the system is temporarily not available. This can be a system
+            The system is temporarily not available. This can be a system
             overload or temporary failure. In this case it makes sense to retry the request
             later.
 
@@ -1036,7 +1073,7 @@ logJsonResponse(response);
 db._drop(cn);
 ```
 
-#### Update a document
+### Update a document
 
 ```openapi
 paths:
@@ -1231,20 +1268,20 @@ paths:
       responses:
         '201':
           description: |
-            is returned if the document was updated successfully and
+            The document has been updated successfully and
             `waitForSync` was `true`.
         '202':
           description: |
-            is returned if the document was updated successfully and
+            The document has been updated successfully and
             `waitForSync` was `false`.
         '400':
           description: |
-            is returned if the body does not contain a valid JSON representation
+            The request body does not contain a valid JSON representation
             of a document. The response body contains
             an error document in this case.
         '403':
           description: |
-            with the error code `1004` is returned if the specified write concern for the
+            If the error code is `1004`, the specified write concern for the
             collection cannot be fulfilled. This can happen if less than the number of
             specified replicas for a shard are currently in-sync with the leader. For example,
             if the write concern is `2` and the replication factor is `3`, then the
@@ -1256,7 +1293,11 @@ paths:
             temporary error.
         '404':
           description: |
-            is returned if the collection or the document was not found.
+            The document or collection cannot be found.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
         '409':
           description: |
             There are two possible reasons for this error:
@@ -1268,14 +1309,18 @@ paths:
               concurrent operation that operates on the same document. This is also referred
               to as a _write-write conflict_. The response body contains an error document
               with the `errorNum` set to `1200` (`ERROR_ARANGO_CONFLICT`) in this case.
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
         '412':
           description: |
-            is returned if the precondition was violated. The response also contains
+            The precondition was violated. The response also contains
             the found documents' current revisions in the `_rev` attributes.
             Additionally, the attributes `_id` and `_key` are returned.
         '503':
           description: |
-            is returned if the system is temporarily not available. This can be a system
+            The system is temporarily not available. This can be a system
             overload or temporary failure. In this case it makes sense to retry the request
             later.
 
@@ -1362,7 +1407,7 @@ logJsonResponse(response4);
 db._drop(cn);
 ```
 
-#### Remove a document
+### Remove a document
 
 ```openapi
 paths:
@@ -1461,15 +1506,15 @@ paths:
       responses:
         '200':
           description: |
-            is returned if the document was removed successfully and
+            The document has been removed successfully and
             `waitForSync` was `true`.
         '202':
           description: |
-            is returned if the document was removed successfully and
+            The document has been removed successfully and
             `waitForSync` was `false`.
         '403':
           description: |
-            with the error code `1004` is returned if the specified write concern for the
+            If the error code is `1004`, the specified write concern for the
             collection cannot be fulfilled. This can happen if less than the number of
             specified replicas for a shard are currently in-sync with the leader. For example,
             if the write concern is `2` and the replication factor is `3`, then the
@@ -1481,24 +1526,32 @@ paths:
             temporary error.
         '404':
           description: |
-            is returned if the collection or the document was not found.
+            The document or collection cannot be found.
             The response body contains an error document in this case.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
         '409':
           description: |
-            is returned if locking the document key failed due to another
+            Locking the document key failed due to another
             concurrent operation that operates on the same document.
             This is also referred to as a _write-write conflict_.
             The response body contains an error document with the
             `errorNum` set to `1200` (`ERROR_ARANGO_CONFLICT`) in this case.
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
         '412':
           description: |
-            is returned if a "If-Match" header or `rev` is given and the found
-            document has a different version. The response also contain the found
+            An `If-Match` header is specified and the found
+            document has a different version. The response includes the found
             document's current revision in the `_rev` attribute. Additionally, the
             attributes `_id` and `_key` are returned.
         '503':
           description: |
-            is returned if the system is temporarily not available. This can be a system
+            The system is temporarily not available. This can be a system
             overload or temporary failure. In this case it makes sense to retry the request
             later.
 
@@ -1584,7 +1637,7 @@ logJsonResponse(response);
 db._drop(cn);
 ```
 
-#### Document ETags
+### Document ETags
 
 ArangoDB tries to adhere to the existing HTTP standard as far as
 possible. To this end, results of single document queries have the `ETag`
@@ -1603,7 +1656,7 @@ revision is available, then you can use the `If-None-Match` HTTP header. If the
 document is unchanged (same document revision), an HTTP `412 Precondition failed`
 status code is returned.
 
-### Multiple document operations
+## Multiple document operations
 
 ArangoDB supports working with documents in bulk. Bulk operations affect a
 *single* collection. Using this API variant allows clients to amortize the
@@ -1624,7 +1677,7 @@ example, `1200:17,1205:10` means that in 17 cases the error 1200
 Generally, the bulk operations expect an input array and the result body
 contains a JSON array of the same length.
 
-#### Get multiple documents
+### Get multiple documents
 
 ```openapi
 paths:
@@ -1723,15 +1776,22 @@ paths:
       responses:
         '200':
           description: |
-            is returned if no error happened
+            No error occurred for the overall operation.
         '400':
           description: |
-            is returned if the body does not contain a valid JSON representation
-            of an array of documents. The response body contains
-            an error document in this case.
+            The request body does not contain a valid JSON representation
+            of an array of documents.
         '404':
           description: |
-            is returned if the collection was not found.
+            The collection cannot be found.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
       tags:
         - Documents
 ```
@@ -1761,7 +1821,7 @@ logJsonResponse(response);
 db._drop(cn);
 ```
 
-#### Create multiple documents
+### Create multiple documents
 
 ```openapi
 paths:
@@ -1961,18 +2021,17 @@ paths:
       responses:
         '201':
           description: |
-            is returned if `waitForSync` was `true` and operations were processed.
+            The individual operations have been processed and `waitForSync` was `true`.
         '202':
           description: |
-            is returned if `waitForSync` was `false` and operations were processed.
+            The individual operations have been processed and `waitForSync` was `false`.
         '400':
           description: |
-            is returned if the body does not contain a valid JSON representation
-            of an array of documents. The response body contains
-            an error document in this case.
+            The request body does not contain a valid JSON representation
+            of an array of documents.
         '403':
           description: |
-            with the error code `1004` is returned if the specified write concern for the
+            If the error code is `1004`, the specified write concern for the
             collection cannot be fulfilled. This can happen if less than the number of
             specified replicas for a shard are currently in-sync with the leader. For example,
             if the write concern is `2` and the replication factor is `3`, then the
@@ -1984,11 +2043,19 @@ paths:
             temporary error.
         '404':
           description: |
-            is returned if the collection specified by `collection` is unknown.
+            The document or collection cannot be found.
             The response body contains an error document in this case.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
         '503':
           description: |
-            is returned if the system is temporarily not available. This can be a system
+            The system is temporarily not available. This can be a system
             overload or temporary failure. In this case it makes sense to retry the request
             later.
 
@@ -2071,7 +2138,7 @@ logJsonResponse(response);
 db._drop(cn);
 ```
 
-#### Replace multiple documents
+### Replace multiple documents
 
 ```openapi
 paths:
@@ -2225,18 +2292,17 @@ paths:
       responses:
         '201':
           description: |
-            is returned if `waitForSync` was `true` and operations were processed.
+            The individual operations have been processed and `waitForSync` was `true`.
         '202':
           description: |
-            is returned if `waitForSync` was `false` and operations were processed.
+            The individual operations have been processed and `waitForSync` was `false`.
         '400':
           description: |
-            is returned if the body does not contain a valid JSON representation
-            of an array of documents. The response body contains
-            an error document in this case.
+            The request body does not contain a valid JSON representation
+            of an array of documents.
         '403':
           description: |
-            with the error code `1004` is returned if the specified write concern for the
+            If the error code is `1004`, the specified write concern for the
             collection cannot be fulfilled. This can happen if less than the number of
             specified replicas for a shard are currently in-sync with the leader. For example,
             if the write concern is `2` and the replication factor is `3`, then the
@@ -2248,10 +2314,18 @@ paths:
             temporary error.
         '404':
           description: |
-            is returned if the collection was not found.
+            The collection cannot be found.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
         '503':
           description: |
-            is returned if the system is temporarily not available. This can be a system
+            The system is temporarily not available. This can be a system
             overload or temporary failure. In this case it makes sense to retry the request
             later.
 
@@ -2269,7 +2343,7 @@ paths:
         - Documents
 ```
 
-#### Update multiple documents
+### Update multiple documents
 
 ```openapi
 paths:
@@ -2453,18 +2527,17 @@ paths:
       responses:
         '201':
           description: |
-            is returned if `waitForSync` was `true` and operations were processed.
+            The individual operations have been processed and `waitForSync` was `true`.
         '202':
           description: |
-            is returned if `waitForSync` was `false` and operations were processed.
+            The individual operations have been processed and `waitForSync` was `false`.
         '400':
           description: |
-            is returned if the body does not contain a valid JSON representation
-            of an array of documents. The response body contains
-            an error document in this case.
+            The request body does not contain a valid JSON representation
+            of an array of documents.
         '403':
           description: |
-            with the error code `1004` is returned if the specified write concern for the
+            If the error code is `1004`, the specified write concern for the
             collection cannot be fulfilled. This can happen if less than the number of
             specified replicas for a shard are currently in-sync with the leader. For example,
             if the write concern is `2` and the replication factor is `3`, then the
@@ -2476,10 +2549,18 @@ paths:
             temporary error.
         '404':
           description: |
-            is returned if the collection was not found.
+            The collection cannot be found.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
         '503':
           description: |
-            is returned if the system is temporarily not available. This can be a system
+            The system is temporarily not available. This can be a system
             overload or temporary failure. In this case it makes sense to retry the request
             later.
 
@@ -2497,7 +2578,7 @@ paths:
         - Documents
 ```
 
-#### Remove multiple documents
+### Remove multiple documents
 
 ```openapi
 paths:
@@ -2620,13 +2701,13 @@ paths:
       responses:
         '200':
           description: |
-            is returned if `waitForSync` was `true`.
+            The individual operations have been processed and `waitForSync` was `true`.
         '202':
           description: |
-            is returned if `waitForSync` was `false`.
+            The individual operations have been processed and `waitForSync` was `false`.
         '403':
           description: |
-            with the error code `1004` is returned if the specified write concern for the
+            If the error code is `1004`, the specified write concern for the
             collection cannot be fulfilled. This can happen if less than the number of
             specified replicas for a shard are currently in-sync with the leader. For example,
             if the write concern is `2` and the replication factor is `3`, then the
@@ -2638,11 +2719,19 @@ paths:
             temporary error.
         '404':
           description: |
-            is returned if the collection was not found.
+            The collection cannot be found.
             The response body contains an error document in this case.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
+        '410':
+          description: |
+            This error occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
         '503':
           description: |
-            is returned if the system is temporarily not available. This can be a system
+            The system is temporarily not available. This can be a system
             overload or temporary failure. In this case it makes sense to retry the request
             later.
 
@@ -2845,7 +2934,7 @@ logJsonResponse(response);
 db._drop(cn);
 ```
 
-### Read from followers
+## Read from followers
 
 {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 

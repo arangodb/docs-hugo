@@ -41,7 +41,7 @@ An implementation for loading properties from local files is provided by
 `ArangoConfigProperties.fromFile()` and its overloaded variants.
 
 To read config properties prefixed with `arangodb` from `arangodb.properties`
-file (as in version `6`):
+file:
 
 ```java
 // ## src/main/resources/arangodb.properties
@@ -65,7 +65,7 @@ ArangoConfigProperties props = ArangoConfigProperties.fromFile("arangodb-with-pr
 ```
 
 Here are examples to integrate configuration properties from different sources:
-- [Eclipse MicroProfile Config](https://github.com/arangodb-helper/arango-quarkus-native-example/blob/master/src/main/java/org/acme/quickstart/ArangoConfig.java)
+- [Eclipse MicroProfile Config](https://github.com/arangodb-helper/arango-quarkus-native-example/blob/master/src/main/java/com/arangodb/ArangoConfig.java)
 - [Micronaut Configuration](https://github.com/arangodb-helper/arango-micronaut-native-example/blob/main/src/main/kotlin/com/example/ArangoConfig.kt)
 
 ## Configuration
@@ -90,6 +90,7 @@ Here are examples to integrate configuration properties from different sources:
 - `loadBalancingStrategy(LoadBalancingStrategy)`: load balancing strategy, possible values are: `NONE`, `ROUND_ROBIN`, `ONE_RANDOM`, (default: `NONE`)
 - `responseQueueTimeSamples(Integer)`:            amount of samples kept for queue time metrics, (default: `10`)
 - `serde(ArangoSerde)`:            serde to serialize and deserialize user-data
+- `serdeProviderClass(Class<? extends ArangoSerdeProvider>)`: serde provider to be used to instantiate the user-data serde
 - `protocolConfig(ProtocolConfig)`: configuration specific for the used protocol provider implementation
 
 ### HTTP Protocol Provider Configuration
@@ -120,7 +121,7 @@ HttpProtocolConfig.builder()
 ### Config File Properties
 
 `ArangoConfigProperties.fromFile()` reads config properties prefixed with `arangodb`
-from `arangodb.properties` file (as in version `6`). Different prefix and
+from `arangodb.properties` file. Different prefix and
 file name can be specified using its overloaded variants.
 
 The properties read are:
@@ -140,11 +141,12 @@ The properties read are:
 - `acquireHostListInterval`
 - `loadBalancingStrategy`: `NONE`, `ROUND_ROBIN` or `ONE_RANDOM`
 - `responseQueueTimeSamples`
+- `serdeProviderClass`: fully qualified name of the provider class
 
 ## SSL
 
 To use SSL, you have to set the configuration `useSsl` to `true` and set a `SSLContext`
-(see [example code](https://github.com/arangodb/arangodb-java-driver/tree/main/driver/src/test/java/com/arangodb/example/ssl/SslExampleTest.java)).
+(see [example code](https://github.com/arangodb/arangodb-java-driver/blob/main/test-functional/src/test-ssl/java/com/arangodb/SslExampleTest.java)).
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
@@ -260,6 +262,27 @@ In this example, inactive connections are closed after 5 minutes.
 The default TTL for HTTP connections is 30 seconds, while it is `null` for VST connections.
 
 If set to `null`, no automatic connection closure is performed.
+
+## Proxy configuration
+
+The driver allows configuring the underlying Vert.x WebClient to work
+with HTTP proxies. The configuration is specific to the HTTP protocol
+and uses the `io.vertx.core.net.ProxyOptions` class of 
+[Vert.x Core](https://www.javadoc.io/doc/io.vertx/vertx-core/4.5.7/io/vertx/core/net/ProxyOptions.html):
+
+```java
+ArangoDB arango = new ArangoDB.Builder()
+    // ...
+    .protocolConfig(HttpProtocolConfig.builder()
+        .proxyOptions(new ProxyOptions()
+            .setType(ProxyType.HTTP)
+            .setHost("172.28.0.1")
+            .setPort(8888)
+            .setUsername("user")
+            .setPassword("password"))
+        .build())
+    .build();
+```
 
 ## VST Keep-Alive
 

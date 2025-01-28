@@ -208,7 +208,7 @@ paths:
                     type: integer
                   role:
                     description: |
-                      The server role. Possible values:
+                      The server role.
                       - `SINGLE`: the server is a standalone server without clustering
                       - `COORDINATOR`: the server is a Coordinator in a cluster
                       - `PRIMARY`: the server is a DB-Server in a cluster
@@ -217,6 +217,7 @@ paths:
                       - `UNDEFINED`: in a cluster, this is returned if the server role cannot be
                          determined.
                     type: string
+                    enum: [SINGLE, COORDINATOR, PRIMARY, SECONDARY, AGENT, UNDEFINED]
       tags:
         - Cluster
 ```
@@ -366,10 +367,9 @@ paths:
               properties:
                 mode:
                   description: |
-                    The mode to put the DB-Server in. Possible values:
-                    - `"maintenance"`
-                    - `"normal"`
+                    The mode to put the DB-Server in.
                   type: string
+                  enum: [maintenance, normal]
                 timeout:
                   description: |
                     After how many seconds the maintenance mode shall automatically end.

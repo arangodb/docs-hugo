@@ -272,9 +272,11 @@ error is thrown. For information about the naming constraints for collections, s
     auto-generate keys in this case are not aware of all keys which are already used.
     {{< /warning >}}
   - `increment`: The increment value for the `autoincrement` key generator.
-    Not used for other key generator types.
+    Not allowed for other key generator types.
   - `offset`: The initial offset value for the `autoincrement` key generator.
-    Not used for other key generator types.
+    Not allowed for other key generator types.
+  - `lastValue`: the offset value for the `autoincrement` or `padded`
+    key generator. This is an internal property for restoring dumps properly.
 
 - `schema` (object\|null, _optional_, default: `null`): 
   An object that specifies the collection-level document schema for documents.
@@ -1181,6 +1183,10 @@ See [`db._explain()`](../../../aql/execution-and-performance/explaining-queries.
 
 See [`db._parse()`](../../../aql/how-to-invoke-aql/with-arangosh.md#query-validation-with-db_parse).
 
+### `db._profileQuery(queryString [, bindVars [, options])`
+
+See [`db._profileQuery()`](../../../aql/execution-and-performance/query-profiling.md).
+
 ## Indexes
 
 ### `db._index(index)`
@@ -1198,6 +1204,8 @@ See [`db._dropIndex()`](../../../index-and-search/indexing/working-with-indexes/
 ## Transactions
 
 ### `db._createTransaction()`
+
+{{< tag "arangosh" >}}
 
 Starts a Stream Transaction.
 
@@ -1262,11 +1270,15 @@ require("@arangodb").db._version();
 
 ### `db._getLicense()`
 
+{{< tag "arangosh" >}}
+
 Returns the current license.
 
 See [`db._getLicense()`](../../../operations/administration/license-management.md#managing-your-license).
 
 ### `db._setLicense(data)`
+
+{{< tag "arangosh" >}}
 
 Sets a license.
 

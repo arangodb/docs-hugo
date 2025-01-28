@@ -80,9 +80,7 @@ paths:
                           - `"asc"` for ascending
                           - `"desc"` for descending
                         type: string
-                        enum:
-                          - asc
-                          - desc
+                        enum: [asc, desc]
                 primarySortCompression:
                   description: |
                     Defines how to compress the primary sort data.
@@ -92,9 +90,7 @@ paths:
 
                     This option is immutable.
                   type: string
-                  enum:
-                    - lz4
-                    - none
+                  enum: [lz4, none]
                   default: lz4
                 primarySortCache:
                   description: |
@@ -208,9 +204,7 @@ paths:
                           - `"lz4"`: LZ4 fast compression
                           - `"none"`: no compression
                         type: string
-                        enum:
-                          - lz4
-                          - none
+                        enum: [lz4, none]
                         default: lz4
                       cache:
                         description: |
@@ -306,6 +300,8 @@ paths:
                       search algorithm to perform more optimally and for extra file handles to be
                       released once old segments are no longer used.
                   type: object
+                  required:
+                    - type
                   properties:
                     type:
                       description: |
@@ -319,9 +315,7 @@ paths:
                           i.e. the sum of all candidate segment byte size is less than the total
                           segment byte size multiplied by the `{threshold}`.
                       type: string
-                      enum:
-                        - tier
-                        - bytes_accum
+                      enum: [tier, bytes_accum]
                       default: tier
                     threshold:
                       description: |
@@ -462,9 +456,7 @@ paths:
                       - `"lz4"`: LZ4 fast compression
                       - `"none"`: no compression
                     type: string
-                    enum:
-                      - lz4
-                      - none
+                    enum: [lz4, none]
                   primarySortCache:
                     description: |
                       Whether the primary sort columns are always cached in memory
@@ -507,9 +499,7 @@ paths:
                             - `"lz4"`: LZ4 fast compression
                             - `"none"`: no compression
                           type: string
-                          enum:
-                            - lz4
-                            - none
+                          enum: [lz4, none]
                         cache:
                           description: |
                             Whether stored values are always cached in memory
@@ -551,9 +541,7 @@ paths:
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
                         type: string
-                        enum:
-                          - tier
-                          - bytes_accum
+                        enum: [tier, bytes_accum]
                       threshold:
                         description: |
                           A value in the range `[0.0, 1.0]`
@@ -943,9 +931,7 @@ paths:
                       - `"lz4"`: LZ4 fast compression
                       - `"none"`: no compression
                     type: string
-                    enum:
-                      - lz4
-                      - none
+                    enum: [lz4, none]
                   primarySortCache:
                     description: |
                       Whether the primary sort columns are always cached in memory
@@ -988,9 +974,7 @@ paths:
                             - `"lz4"`: LZ4 fast compression
                             - `"none"`: no compression
                           type: string
-                          enum:
-                            - lz4
-                            - none
+                          enum: [lz4, none]
                         cache:
                           description: |
                             Whether stored values are always cached in memory
@@ -1032,9 +1016,7 @@ paths:
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
                         type: string
-                        enum:
-                          - tier
-                          - bytes_accum
+                        enum: [tier, bytes_accum]
                       threshold:
                         description: |
                           A value in the range `[0.0, 1.0]`
@@ -1248,9 +1230,7 @@ paths:
                           description: |
                             The type of the View.
                           type: string
-                          enum:
-                            - arangosearch
-                            - search-alias
+                          enum: [arangosearch, search-alias]
                         id:
                           description: |
                             A unique identifier of the View (deprecated).
@@ -1402,6 +1382,8 @@ paths:
                       search algorithm to perform more optimally and for extra file handles to be
                       released once old segments are no longer used.
                   type: object
+                  required:
+                    - type
                   properties:
                     type:
                       description: |
@@ -1415,9 +1397,7 @@ paths:
                           i.e. the sum of all candidate segment byte size is less than the total
                           segment byte size multiplied by the `{threshold}`.
                       type: string
-                      enum:
-                        - tier
-                        - bytes_accum
+                      enum: [tier, bytes_accum]
                       default: tier
                     threshold:
                       description: |
@@ -1536,9 +1516,7 @@ paths:
                       - `"lz4"`: LZ4 fast compression
                       - `"none"`: no compression
                     type: string
-                    enum:
-                      - lz4
-                      - none
+                    enum: [lz4, none]
                   primarySortCache:
                     description: |
                       Whether the primary sort columns are always cached in memory
@@ -1581,9 +1559,7 @@ paths:
                             - `"lz4"`: LZ4 fast compression
                             - `"none"`: no compression
                           type: string
-                          enum:
-                            - lz4
-                            - none
+                          enum: [lz4, none]
                         cache:
                           description: |
                             Whether stored values are always cached in memory
@@ -1625,9 +1601,7 @@ paths:
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
                         type: string
-                        enum:
-                          - tier
-                          - bytes_accum
+                        enum: [tier, bytes_accum]
                       threshold:
                         description: |
                           A value in the range `[0.0, 1.0]`
@@ -1744,17 +1718,44 @@ paths:
 
 ```curl
 ---
-description: ''
 name: RestViewPutPropertiesArangoSearch
+description: |
+  Replace the properties of an `arangosearch` View including any links with new
+  properties. All mutable properties that are not specified are reset to their
+  default values.
 ---
-var view = db._createView("productsView", "arangosearch");
+db._create("users");
+db._create("products");
+var view = db._createView("productsView", "arangosearch", {
+  commitIntervalMsec: 1337,
+  links: {
+    users: {},
+    products: {}
+  }
+});
 
 var url = "/_api/view/"+ view.name() + "/properties";
-var response = logCurlRequest('PUT', url, { "locale": "en" });
+var body = {
+  cleanupIntervalStep: 12,
+  links: {
+    products: {
+      fields: {
+        description: {
+          analyzers: ["text_en"]
+        }
+      }
+    }
+  }
+};
+var response = logCurlRequest('PUT', url, body);
 assert(response.code === 200);
+assert(Object.keys(response.parsedBody.links).length === 1);
+assert(response.parsedBody.commitIntervalMsec !== 1337);
 logJsonResponse(response);
 
 db._dropView(view.name());
+db._drop("users");
+db._drop("products");
 ```
 
 ## Update the properties of an arangosearch View
@@ -1814,7 +1815,6 @@ paths:
                       However, the files for the released states/snapshots are left on disk, and
                       only removed by "cleanup" operation.
                   type: integer
-                  default: 2
                 commitIntervalMsec:
                   description: |
                     Wait at least this many milliseconds between committing View data store
@@ -1837,7 +1837,6 @@ paths:
                       subsequent ArangoDB transactions, in-progress ArangoDB transactions will
                       still continue to return a repeatable-read state.
                   type: integer
-                  default: 1000
                 consolidationIntervalMsec:
                   description: |
                     Wait at least this many milliseconds between applying `consolidationPolicy` to
@@ -1856,7 +1855,6 @@ paths:
                       compaction operations are governed by `consolidationIntervalMsec` and the
                       candidates for compaction are selected via `consolidationPolicy`.
                   type: integer
-                  default: 10000
                 consolidationPolicy:
                   description: |
                     The consolidation policy to apply for selecting which segments should be merged.
@@ -1876,6 +1874,8 @@ paths:
                       search algorithm to perform more optimally and for extra file handles to be
                       released once old segments are no longer used.
                   type: object
+                  required:
+                    - type
                   properties:
                     type:
                       description: |
@@ -1889,10 +1889,7 @@ paths:
                           i.e. the sum of all candidate segment byte size is less than the total
                           segment byte size multiplied by the `{threshold}`.
                       type: string
-                      enum:
-                        - tier
-                        - bytes_accum
-                      default: tier
+                      enum: [tier, bytes_accum]
                     threshold:
                       description: |
                         A value in the range `[0.0, 1.0]`.
@@ -2010,9 +2007,7 @@ paths:
                       - `"lz4"`: LZ4 fast compression
                       - `"none"`: no compression
                     type: string
-                    enum:
-                      - lz4
-                      - none
+                    enum: [lz4, none]
                   primarySortCache:
                     description: |
                       Whether the primary sort columns are always cached in memory
@@ -2055,9 +2050,7 @@ paths:
                             - `"lz4"`: LZ4 fast compression
                             - `"none"`: no compression
                           type: string
-                          enum:
-                            - lz4
-                            - none
+                          enum: [lz4, none]
                         cache:
                           description: |
                             Whether stored values are always cached in memory
@@ -2099,9 +2092,7 @@ paths:
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
                         type: string
-                        enum:
-                          - tier
-                          - bytes_accum
+                        enum: [tier, bytes_accum]
                       threshold:
                         description: |
                           A value in the range `[0.0, 1.0]`
@@ -2218,17 +2209,48 @@ paths:
 
 ```curl
 ---
-description: ''
 name: RestViewPatchPropertiesArangoSearch
+description: |
+  Update the properties of an `arangosearch` View, only changing one setting
+  and removing a link. All other mutable properties that are not specified
+  keep their current values.
 ---
-var view = db._createView("productsView", "arangosearch");
+var coll = db._create("users");
+var coll = db._create("products");
+var view = db._createView("productsView", "arangosearch", {
+  cleanupIntervalStep: 666,
+  commitIntervalMsec: 666,
+  consolidationIntervalMsec: 666,
+  links: {
+    users: {
+      includeAllFields: true
+    },
+    products: {
+      fields: {
+        description: {
+          analyzers: ["text_en"]
+        }
+      }
+    }
+  }
+});
 
 var url = "/_api/view/"+ view.name() + "/properties";
-var response = logCurlRequest('PATCH', url, { "locale": "en" });
+var body = {
+  cleanupIntervalStep: 12,
+  links: {
+    products: null
+  }
+};
+var response = logCurlRequest('PATCH', url, body);
 assert(response.code === 200);
+assert(response.parsedBody.links.products === undefined);
+assert(response.parsedBody.links.users !== undefined);
 logJsonResponse(response);
 
 db._dropView("productsView");
+db._drop("users");
+db._drop("products");
 ```
 
 ## Rename a View
@@ -2355,9 +2377,7 @@ paths:
                       - `"lz4"`: LZ4 fast compression
                       - `"none"`: no compression
                     type: string
-                    enum:
-                      - lz4
-                      - none
+                    enum: [lz4, none]
                   primarySortCache:
                     description: |
                       Whether the primary sort columns are always cached in memory
@@ -2400,9 +2420,7 @@ paths:
                             - `"lz4"`: LZ4 fast compression
                             - `"none"`: no compression
                           type: string
-                          enum:
-                            - lz4
-                            - none
+                          enum: [lz4, none]
                         cache:
                           description: |
                             Whether stored values are always cached in memory
@@ -2444,9 +2462,7 @@ paths:
                             i.e. the sum of all candidate segment byte size is less than the total
                             segment byte size multiplied by the `{threshold}`.
                         type: string
-                        enum:
-                          - tier
-                          - bytes_accum
+                        enum: [tier, bytes_accum]
                       threshold:
                         description: |
                           A value in the range `[0.0, 1.0]`

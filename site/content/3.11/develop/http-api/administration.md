@@ -5,7 +5,10 @@ weight: 110
 description: >-
   You can get information about ArangoDB servers, toggle the maintenance mode,
   shut down server nodes, and start actions like compaction
-# Internal /_admin/debug and /_api/test endpoints for maintainers not documented on purpose
+# Undocumented on purpose:
+#   /_admin/debug       (internal)
+#   /_api/test          (internal)
+#   /_admin/telemetrics (internal)
 ---
 ## Information
 
@@ -194,8 +197,9 @@ paths:
                         type: string
                       mode:
                         description: |
-                          The mode arangod runs in. Possible values: `server`, `console`, `script`
+                          The mode arangod runs in.
                         type: string
+                        enum: [server, console, script]
                       host:
                         description: |
                           the host ID
@@ -885,7 +889,7 @@ paths:
                   status:
                     description: |
                       The `status` key allows you to confirm the state of the installed license on a
-                      glance. The possible values are as follows:
+                      glance.
 
                       - `good`: The license is valid for more than 2 weeks.
                       - `expiring`: The license is valid for less than 2 weeks.
@@ -894,6 +898,7 @@ paths:
                       - `read-only`: The license is expired over 2 weeks. The instance is now
                         restricted to read-only mode.
                     type: string
+                    enum: [good, expiring, expired, read-only]
                     example: good
                   upgrading:
                     description: |

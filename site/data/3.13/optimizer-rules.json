@@ -36,6 +36,18 @@
     }
   },
   {
+    "name": "replace-entries-with-object-iteration",
+    "description": "Replace FOR ... ENTRIES(obj) enumeration with proper object iteration.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
     "name": "simplify-conditions",
     "description": "Replace parts in `CalculationNode` expressions with\nsimpler expressions.",
     "flags": {
@@ -794,6 +806,18 @@
   {
     "name": "late-document-materialization",
     "description": "Try to read from collections as late as possible if the\ninvolved attributes are covered by inverted indexes.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
+    "name": "push-limit-into-index",
+    "description": "Push limit into index node.",
     "flags": {
       "hidden": false,
       "clusterOnly": false,

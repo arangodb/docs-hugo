@@ -1795,10 +1795,6 @@ blockquote p {
     font-family: var(--font-regular);
 }
 
-.upper {
-    text-transform: uppercase;
-}
-
 .bold-text {
     font-weight: bold;
 }

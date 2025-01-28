@@ -5,11 +5,14 @@ weight: 10
 description: >-
   The official ArangoDB Java Driver version 6
 ---
-The official ArangoDB [Java Driver](https://github.com/arangodb/arangodb-java-driver).
+{{< warning >}}
+Version 6 reached End of Life (EOL) and is not actively developed anymore.
+Upgrading to version 7 is recommended.
+{{< /warning >}}
 
-- [Tutorial](https://university.arangodb.com/courses/java-driver-tutorial-v6/)
+- Repository: <https://github.com/arangodb/arangodb-java-driver/tree/v6>
 - [Code examples](https://github.com/arangodb/arangodb-java-driver/tree/v6/src/test/java/com/arangodb/example)
-- [JavaDoc](https://arangodb.github.io/arangodb-java-driver/) (reference)
+- [JavaDoc](https://javadoc.io/doc/com.arangodb/arangodb-java-driver/6.25.0/index.html) (generated reference documentation)
 - [ChangeLog](https://github.com/arangodb/arangodb-java-driver/blob/v6/ChangeLog.md)
 - [Java VelocyPack](https://github.com/arangodb/java-velocypack) ([JavaDoc](https://arangodb.github.io/java-velocypack))
 
@@ -18,7 +21,7 @@ The official ArangoDB [Java Driver](https://github.com/arangodb/arangodb-java-dr
 Only the latest version of this driver is maintained to support the most recent
 ArangoDB server features. 
 It is compatible with all supported stable versions of ArangoDB server, see 
-[Product Support End-of-life Announcements](https://www.arangodb.com/eol-notice).
+[Product Support End-of-life Announcements](https://arangodb.com/subscriptions/end-of-life-notice/).
 
 The minimum required Java version is 1.8+ (since driver version 6.x.x).
 

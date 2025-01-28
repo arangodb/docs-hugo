@@ -95,6 +95,10 @@ The `remove-unnecessary-projections` AQL optimizer rule has been renamed to
 Moreover, a `remove-unnecessary-calculations-4` and `batch-materialize-documents`
 rule have been added.
 
+A `push-limit-into-index` rule has been added in v3.12.2.
+
+A `replace-entries-with-object-iteration` rule has been added in v3.12.3.
+
 The affected endpoints are `POST /_api/cursor`, `POST /_api/explain`, and
 `GET /_api/query/rules`.
 
@@ -176,7 +180,8 @@ The [Stream Transactions HTTP API](../../develop/http-api/transactions/stream-tr
 may now allow larger transactions or be limited to smaller transactions because
 the maximum transaction size can now be configured with the
 `--transaction.streaming-max-transaction-size` startup option.
-The default value remains 128 MiB.
+The default value remains 128 MiB up to v3.12.3.
+From v3.12.4 onward, the default value is 512 MiB.
 
 #### Analyzer API
 
@@ -209,6 +214,15 @@ version.
 #### Error code `12` removed
 
 The unused error `ERROR_OUT_OF_MEMORY_MMAP` with the number `12` has been removed.
+
+#### `mmap` log topic removed
+
+<small>Introduced in: v3.12.1</small>
+
+The `mmap` log topic for logging information related to memory mapping has been
+unused since v3.12.0 and has now been removed. The `/_admin/log/level` endpoints
+no longer include this log topic in responses and attempts to set the log level
+for this topic are ignored.
 
 ### Endpoint return value changes
 
@@ -269,6 +283,19 @@ endpoint to restore the original log levels.
 See the [Log API](../../develop/http-api/monitoring/logs.md#reset-the-server-log-levels)
 for details.
 
+#### Query plan cache API
+
+<small>Introduced in: v3.12.4</small>
+
+Two endpoints have been added to let you list the entries and clear the cache
+for AQL execution plans. Query plan caching works on a per-database basis.
+
+- `GET /_api/query-plan-cache`
+- `DELETE /_api/query-plan-cache`
+
+See [HTTP interface for the query plan cache](../../develop/http-api/queries/aql-query-plan-cache.md)
+for details.
+
 ### Endpoints augmented
 
 #### View API
@@ -297,6 +324,58 @@ stored document and the attribute value is compared numerically to the value of
 the versioning attribute in the supplied document that is supposed to update/replace it.
 The document is only changed if the new number is higher. See the
 [Document API](../../develop/http-api/documents.md#create-a-document) for details.
+
+#### Cursor API
+
+##### `documentLookups` and `seeks` statistics
+
+Two new statistics are included in the response when you execute an AQL query:
+
+- `documentLookups`: The number of real document lookups caused by late materialization
+  as well as `IndexNode`s that had to load document attributes not covered
+  by the index. This is how many documents had to be fetched from storage after
+  an index scan that initially covered the attribute access for these documents.
+- `seeks`: The number of seek calls done by RocksDB iterators for merge joins
+  (`JoinNode` in the execution plan).
+
+```js
+{
+  "result": [
+    // ...
+  ],
+  // ...
+  "extra": {
+    "stats": {
+      "documentLookups": 10,
+      "seeks": 0,
+      // ...
+    }
+  }
+}
+```
+
+#### Query plan cache attributes
+
+<small>Introduced in: v3.12.4</small>
+
+The following endpoints related to AQL queries support a new `usePlanCache`
+query option in the `options` object:
+
+- `POST /_api/cursor`
+- `POST /_api/explain`
+
+An error is raised if `usePlanCache` is set to `true` but the query is not
+eligible for plan caching (a new error code
+`ERROR_QUERY_NOT_ELIGIBLE_FOR_PLAN_CACHING` with the number `1584`). See
+[The execution plan cache for AQL queries](../../aql/execution-and-performance/caching-query-plans.md)
+for details. 
+
+If a cached query plan is utilized, the above endpoints include a new
+`planCacheKey` attribute at the top-level of the response with the key of the
+cached plan (string).
+
+See [HTTP interfaces for AQL queries](../../develop/http-api/queries/aql-queries.md#cursors)
+for details.
 
 #### Index API
 
@@ -343,6 +422,14 @@ add the `withHidden=true` query parameter to the call of the endpoint.
 ```
 curl "http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
 ```
+
+#### Vector indexes (experimental)
+
+<small>Introduced in: v3.12.4</small>
+
+A new `vector` index type has been added as an experimental feature.
+See this [blog post](https://arangodb.com/2024/11/vector-search-in-arangodb-practical-insights-and-hands-on-examples/)
+for details.
 
 #### Optimizer rule descriptions
 
@@ -459,6 +546,15 @@ The following metrics have been added for observability:
 - `arangodb_scheduler_low_prio_dequeue_hist`
 - `arangodb_scheduler_maintenance_prio_dequeue_hist`
 
+---
+
+<small>Introduced in: v3.12.4</small>
+
+The following metric about partially committed or aborted transactions on
+DB-Servers in a cluster has been added:
+
+- `arangodb_vocbase_transactions_lost_subordinates_total`
+
 #### Stream Transactions API
 
 <small>Introduced in: v3.12.1</small>
@@ -469,6 +565,62 @@ The option defaults to `false` so that fast locking is tried.
 
 See the [HTTP API](../../develop/http-api/transactions/stream-transactions.md#begin-a-stream-transaction)
 for details.
+
+#### Log API
+
+<small>Introduced in: v3.12.2</small>
+
+The `GET /_admin/log/level` and `PUT /_admin/log/level` endpoints have been
+extended with a `withAppenders` query option to let you query and set log level
+settings for individual log outputs:
+
+```sh
+curl http://localhost:8529/_admin/log/level?withAppenders=true
+```
+
+If enabled, the response structure is as follows:
+
+```json
+{
+  "global": {
+    "agency": "INFO",
+    "agencycomm": "INFO",
+    "agencystore": "WARNING",
+    ...
+  },
+  "appenders": {
+    "-": {
+      "agency": "INFO",
+      "agencycomm": "INFO",
+      "agencystore": "WARNING",
+      ...
+    },
+    "file:///path/to/file": {
+      "agency": "INFO",
+      "agencycomm": "INFO",
+      "agencystore": "WARNING",
+      ...
+    },
+    ...
+  }
+}
+```
+
+The keys under `appenders` correspond to the configured log outputs
+(`--log.output` startup option, `-` stands for the standard output).
+The `global` levels are automatically set to the most verbose log level for that
+topic across all appenders.
+
+To change any of the log levels at runtime, you can send a request following the
+same structure:
+
+```sh
+curl -XPUT -d '{"global":{"queries":"DEBUG"},"appenders":{"-":{"requests":"ERROR"}}}' http://localhost:8529/_admin/log/level?withAppenders=true
+```
+
+Setting a global log level applies the value to all outputs for the specified
+topic. You can only change the log levels for individual log outputs (appenders)
+but not add new outputs at runtime.
 
 ### Endpoints deprecated
 
@@ -505,6 +657,17 @@ Users of the `/_api/traversal` REST API should use
 The `/_api/control_pregel/*` endpoints have been removed in v3.12.0 as Pregel
 graph processing is no longer supported. The `arangodb_pregel_*` metrics and the
 `pregel` log topic have been removed as well from the respective endpoints.
+
+#### Batch request API
+
+<small>Removed in: v3.12.3</small>
+
+The `/_api/batch` endpoints that let you send multiple operations in a single
+HTTP request was deprecated in v3.8.0 and has now been removed.
+
+To send multiple documents at once to an ArangoDB instance, please use the
+[HTTP interface for documents](../../develop/http-api/documents.md#multiple-document-operations)
+that can insert, update, replace, or remove arrays of documents.
 
 ## JavaScript API
 
@@ -546,7 +709,7 @@ The document is only changed if the new number is higher. See the
 [JavaScript API](../../develop/javascript-api/@arangodb/collection-object.md#collectioninsertdata--options)
 for details.
 
-### `@arangodb/pregel` package
+### `@arangodb/pregel` removed
 
 The `@arangodb/pregel` module of the JavaScript API has been removed in v3.12.0
 as Pregel is no longer supported.
@@ -557,6 +720,20 @@ JavaScript Transactions and thus the `db._executeTransaction()` method is
 deprecated from v3.12.0 onward and will be removed in a future version.
 The `db._createTransaction()` method for starting Stream Transactions is unaffected.
 
+
+### `@arangodb/request` certificate validation
+
+<small>Introduced in: v3.11.11, v3.12.2</small>
+
+The `@arangodb/request` module now supports two additional options for making
+HTTPS requests:
+
+- `verifyCertificates` (optional): if set to `true`, the server certificate of
+  the remote server is verified using the default certificate store of the system.
+  Default: `false`.
+- `verifyDepth` (optional): limit the maximum length of the certificate chain
+  that counts as valid. Default: `10`.
+
 ### Stream Transactions API
 
 <small>Introduced in: v3.12.1</small>
@@ -566,4 +743,14 @@ method that lets you disable the fast lock round for Stream Transactions.
 The option defaults to `false` so that fast locking is tried.
 
 See the [JavaScript API](../../develop/transactions/stream-transactions.md#javascript-api)
+for details.
+
+#### Query plan cache module
+
+<small>Introduced in: v3.12.4</small>
+
+The new `@arangodb/aql/plan-cache` module lets you list the entries (`.toArray()`)
+and clear (`.clear()`) the AQL execution plan cache in the JavaScript API.
+
+See [The execution plan cache for AQL queries](../../aql/execution-and-performance/caching-query-plans.md#interfaces)
 for details.

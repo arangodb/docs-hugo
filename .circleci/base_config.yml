@@ -73,7 +73,8 @@ commands:
             curl -L -O https://www.openssl.org/source/openssl-$OPENSSLVERSION.tar.gz
             tar xzvf openssl-$OPENSSLVERSION.tar.gz
             cd openssl-$OPENSSLVERSION
-            ./config --prefix=/opt/openssl-$OPENSSLPATH no-async no-shared
+            # Install in the same dir as OpenSSL, otherwise the compiler won't find ldap.h!
+            ./config --prefix=/opt no-async no-shared
             make build_libs -j `nproc`
             make install_dev -j `nproc`
             cd /tmp
@@ -95,6 +96,7 @@ commands:
             if command -v apk &> /dev/null; then
               apk add skopeo
             else
+              apt-get update
               apt-get -y install skopeo
             fi
 
@@ -127,12 +129,11 @@ commands:
           name: Configure
           command: |
             set +e
-            if [ "<< parameters.version >>" = "3.10" ] || [ "<< parameters.version >>" = "3.11" ]; then
-              if [[ "<< parameters.openssl >>" == 3.3.* ]]; then
-                cmake --preset enterprise-pr -DCMAKE_C_COMPILER=/tools/clang -DCMAKE_CXX_COMPILER=/tools/clang++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DOPENSSL_ROOT_DIR=/opt -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off
-              else
+            if [ "<< parameters.version >>" = "3.10" ]; then
                 cmake --preset enterprise-pr -DCMAKE_C_COMPILER=gcc -DCMAKE_CXX_COMPILER=g++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off
-              fi
+            elif [ "<< parameters.version >>" = "3.11" ]; then
+                # The OpenSSL dir that CMake discovers needs to be adjacent to where ldap.h is located, here: /opt
+                cmake --preset enterprise-pr -DCMAKE_C_COMPILER=/tools/clang -DCMAKE_CXX_COMPILER=/tools/clang++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DOPENSSL_ROOT_DIR=/opt -DUSE_MAINTAINER_MODE=Off -DUSE_GOOGLE_TESTS=Off -DUSE_FAILURE_TESTS=Off
             else
               cmake --preset enterprise-pr-non-maintainer -DCMAKE_C_COMPILER=/tools/clang -DCMAKE_CXX_COMPILER=/tools/clang++ -DCMAKE_EXE_LINKER_FLAGS="-fuse-ld=lld" -DCMAKE_LIBRARY_PATH=$OPENSSL_ROOT_DIR/lib -DOPENSSL_ROOT_DIR=/opt -DUSE_FRONTEND=Off
             fi
@@ -356,7 +357,7 @@ jobs:
         default: "medium"
     machine:
       docker_layer_caching: true
-      image: ubuntu-2004:current
+      image: default
       resource_class: << parameters.executor >>
     steps:
       - run: 
@@ -392,15 +393,16 @@ jobs:
         type: string
         default: "https://<< pipeline.parameters.deploy-url >>--docs-hugo.netlify.app"
     machine:
-      image: ubuntu-2004:current
+      image: default
     resource_class: large
     environment:
       GIT_SSH_COMMAND: "ssh -o IdentitiesOnly=yes"
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "1e:e3:7e:8c:55:be:3d:56:bc:4c:1c:d7:d6:26:f2:e5"
-            - "20:72:b8:99:35:4c:7c:23:60:da:f2:5e:43:34:ba:79"
+            - "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk" # arangodb/docs-hugo
+            #- "SHA256:OE7k4elryS7yb1giEaxQkrAlFPM4fnKtz5G9Ft75x1c" # arangodb/arangodb
+            #- "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o" # arangodb/enterprise
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
 
       - run: 
@@ -452,14 +454,14 @@ jobs:
         type: string
         default: ""
     machine:
-      image: ubuntu-2004:current
+      image: default
     resource_class: xlarge
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a"
-            - "28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e"
-            - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
+            - "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk" # arangodb/docs-hugo
+            #- "SHA256:OE7k4elryS7yb1giEaxQkrAlFPM4fnKtz5G9Ft75x1c" # arangodb/arangodb
+            #- "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o" # arangodb/enterprise
       - attach_workspace:
           at: .
       
@@ -493,14 +495,14 @@ jobs:
 
   commit-generated:
     machine:
-      image: ubuntu-2004:current
+      image: default
     resource_class: large
     steps:
       - add_ssh_keys:
           fingerprints:
-            - "7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a"
-            - "28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e"
-            - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
+            - "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk" # arangodb/docs-hugo
+            #- "SHA256:OE7k4elryS7yb1giEaxQkrAlFPM4fnKtz5G9Ft75x1c" # arangodb/arangodb
+            #- "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o" # arangodb/enterprise
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts
       - clone-docs-and-merge
       - download-generated-data
@@ -544,7 +546,7 @@ jobs:
       - image: << parameters.build-image >>
     resource_class: xlarge
     environment:
-      GIT_SSH_COMMAND: ssh
+      #GIT_SSH_COMMAND: ssh
       SCCACHE_ERROR_LOG: /tmp/sccache.log
       SCCACHE_LOG: info,sccache::cache=debug,sccache::compiler::compiler=debug
     steps:
@@ -552,9 +554,9 @@ jobs:
           version: default # TODO: Does this need to match the installed docker-cli version?
       - add_ssh_keys:
           fingerprints:
-            - "7a:1d:7f:0a:70:eb:2b:7d:25:10:9b:e8:dc:04:53:9a"
-            - "28:4f:0b:b7:71:cd:39:ab:c0:33:65:4f:da:6a:cc:8e"
-            - "bc:4d:f3:df:53:ad:22:d8:60:5d:10:d8:fd:74:d2:cd"
+            #- "SHA256:8uq1GQqiVEx4mMbcN0vh99pAeXXwH0o/FHmwsAMNACk" # arangodb/docs-hugo
+            #- "SHA256:OE7k4elryS7yb1giEaxQkrAlFPM4fnKtz5G9Ft75x1c" # arangodb/arangodb
+            - "SHA256:fIpByW5kNA9xbhEawhClMdoimiRsr6yggmwPRXutZ5o" # arangodb/enterprise
       - run: ssh-keyscan github.com >> ~/.ssh/known_hosts && cat ~/.ssh/known_hosts
       - clone-arangodb:
           branch: << parameters.arangodb-branch >>

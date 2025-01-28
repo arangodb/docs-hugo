@@ -288,6 +288,43 @@ paths:
             Forwards the request to the specified server.
           schema:
             type: string
+        - name: withAppenders
+          in: query
+          required: false
+          description: |
+            Set this option to `true` to return the individual log level settings
+            of all log outputs (`appenders`) as well as the `global` settings.
+
+            The response structure is as follows:
+
+            ```json
+            {
+              "global": {
+                "agency": "INFO",
+                "agencycomm": "INFO",
+                "agencystore": "WARNING",
+                ...
+              },
+              "appenders": {
+                "-": {
+                  "agency": "INFO",
+                  "agencycomm": "INFO",
+                  "agencystore": "WARNING",
+                  ...
+                },
+                "file:///path/to/file": {
+                  "agency": "INFO",
+                  "agencycomm": "INFO",
+                  "agencystore": "WARNING",
+                  ...
+                },
+                ...
+              }
+            }
+            ```
+          schema:
+            type: boolean
+            default: false
       responses:
         '200':
           description: |
@@ -347,6 +384,45 @@ paths:
             Forwards the request to the specified server.
           schema:
             type: string
+        - name: withAppenders
+          in: query
+          required: false
+          description: |
+            Set this option to `true` to set individual log level settings
+            for log outputs (`appenders`). The request and response structure is
+            as follows:
+
+            ```json
+            {
+              "global": {
+                "agency": "INFO",
+                "agencycomm": "INFO",
+                "agencystore": "WARNING",
+                ...
+              },
+              "appenders": {
+                "-": {
+                  "agency": "INFO",
+                  "agencycomm": "INFO",
+                  "agencystore": "WARNING",
+                  ...
+                },
+                "file:///path/to/file": {
+                  "agency": "INFO",
+                  "agencycomm": "INFO",
+                  "agencystore": "WARNING",
+                  ...
+                },
+                ...
+              }
+            }
+            ```
+
+            Changing the `global` settings affects all outputs and is the same
+            as setting a log level with this option turned off.
+          schema:
+            type: boolean
+            default: false
       requestBody:
         content:
           application/json:
@@ -535,10 +611,6 @@ paths:
                   description: |
                     Logs the memory configuration on startup and reports
                     problems with memory alignment and operating system settings.
-                  type: string
-                mmap:
-                  description: |
-                    Unused log topic for information related to memory mapping.
                   type: string
                 queries:
                   description: |

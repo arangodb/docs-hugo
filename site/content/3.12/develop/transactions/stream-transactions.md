@@ -44,7 +44,7 @@ on the Coordinator to ensure that abandoned transactions cannot block the
 cluster from operating properly:
 
 - Maximum idle timeout of up to **120 seconds** between operations.
-- Maximum transaction size with a default of **128 MiB** (per DB-Server in clusters).
+- Maximum transaction size with a default of **512 MiB** (per DB-Server in clusters).
 
 These limits are also enforced for Stream Transactions on single servers.
 
@@ -185,7 +185,7 @@ collection operations:
 - [`remove()`](../javascript-api/@arangodb/collection-object.md#collectionremoveobject)
 - [`replace()`](../javascript-api/@arangodb/collection-object.md#collectionreplacedocument-data--options)
 - [`save()`](../javascript-api/@arangodb/collection-object.md#collectionsavedata--options)
-- [`truncate()`](../javascript-api/@arangodb/collection-object.md#collectiontruncate)
+- [`truncate()`](../javascript-api/@arangodb/collection-object.md#collectiontruncateoptions)
 - [`update()`](../javascript-api/@arangodb/collection-object.md#collectionupdatedocument-data--options)
 
 Compared to the collection object returned by `db._collection()`, only a subset

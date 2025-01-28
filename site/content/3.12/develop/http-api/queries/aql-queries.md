@@ -316,6 +316,8 @@ paths:
               required:
                 - query
               properties:
+                # Purposefully undocumented:
+                #   forceOneShardAttributeValue
                 query:
                   description: |
                     contains the query string to be executed
@@ -346,13 +348,6 @@ paths:
                     value will be used (default: 30 seconds).
                     The time-to-live is renewed upon every access to the cursor.
                   type: integer
-                cache:
-                  description: |
-                    flag to determine whether the AQL query results cache
-                    shall be used. If set to `false`, then any query cache lookup will be skipped
-                    for the query. If set to `true`, it will lead to the query cache being checked
-                    for the query if the query cache mode is either `on` or `demand`.
-                  type: boolean
                 memoryLimit:
                   description: |
                     the maximum number of memory (measured in bytes) that the query is allowed to
@@ -492,6 +487,35 @@ paths:
                         All other resources are freed immediately (locks, RocksDB snapshots). The query
                         will fail before it returns results in case of a conflict.
                       type: boolean
+                    cache:
+                      description: |
+                        Whether the [AQL query results cache](../../../aql/execution-and-performance/caching-query-results.md)
+                        shall be used for adding as well as for retrieving results.
+
+                        If the query cache mode is set to `demand` and you set the `cache` query option
+                        to `true` for a query, then its query result is cached if it's eligible for
+                        caching. If the query cache mode is set to `on`, query results are automatically
+                        cached if they are eligible for caching unless you set the `cache` option to `false`.
+
+                        If you set the `cache` option to `false`, then any query cache lookup is skipped
+                        for the query. If you set it to `true`, the query cache is checked for a cached result
+                        **if** the query cache mode is either set to `on` or `demand`.
+                      type: boolean
+                    usePlanCache:
+                      description: |
+                        Set this option to `true` to utilize a cached query plan or add the execution plan
+                        of this query to the cache if it's not in the cache yet. Otherwise, the plan cache
+                        is bypassed (introduced in v3.12.4).
+                        
+                        Query plan caching can reduce the total time for processing queries by avoiding
+                        to parse, plan, and optimize queries over and over again that effectively have
+                        the same execution plan with at most some changes to bind parameter values.
+                        
+                        An error is raised if a query doesn't meet the requirements for plan caching.
+                        See [Cache eligibility](../../../aql/execution-and-performance/caching-query-plans.md#cache-eligibility)
+                        for details.
+                      type: boolean
+                      default: false
                     spillOverThresholdMemoryUsage:
                       description: |
                         This option allows queries to store intermediate and final results temporarily
@@ -553,7 +577,7 @@ paths:
                       description: |
                         If set to `true` or `1`, then the additional query profiling information is returned
                         in the `profile` sub-attribute of the `extra` return attribute, unless the query result
-                        is served from the query cache. If set to `2`, the query includes execution stats
+                        is served from the query results cache. If set to `2`, the query includes execution stats
                         per query plan node in `stats.nodes` sub-attribute of the `extra` return attribute.
                         Additionally, the query plan is returned in the `extra.plan` sub-attribute.
                       type: integer
@@ -604,7 +628,7 @@ paths:
                       type: integer
                     skipInaccessibleCollections:
                       description: |
-                        Let AQL queries (especially graph traversals) treat collection to which a user
+                        Let AQL queries (especially graph traversals) treat collections to which a user
                         has no access rights for as if these collections are empty. Instead of returning a
                         forbidden access error, your queries execute normally. This is intended to help
                         with certain use-cases: A graph contains several collections and different users
@@ -720,6 +744,8 @@ paths:
                         required:
                           - writesExecuted
                           - writesIgnored
+                          - documentLookups
+                          - seeks
                           - scannedFull
                           - scannedIndex
                           - cursorsCreated
@@ -730,6 +756,7 @@ paths:
                           - httpRequests
                           - executionTime
                           - peakMemoryUsage
+                          - intermediateCommits
                         properties:
                           writesExecuted:
                             description: |
@@ -739,6 +766,18 @@ paths:
                             description: |
                               The total number of data-modification operations that were unsuccessful,
                               but have been ignored because of the `ignoreErrors` query option.
+                            type: integer
+                          documentLookups:
+                            description: |
+                              The number of real document lookups caused by late materialization
+                              as well as `IndexNode`s that had to load document attributes not covered
+                              by the index. This is how many documents had to be fetched from storage after
+                              an index scan that initially covered the attribute access for these documents.
+                            type: integer
+                          seeks:
+                            description: |
+                              The number of seek calls done by RocksDB iterators for merge joins
+                              (`JoinNode` in the execution plan).
                             type: integer
                           scannedFull:
                             description: |
@@ -938,8 +977,9 @@ paths:
                                   type: string
                                 type:
                                   description: |
-                                    How the collection is used. Can be `"read"`, `"write"`, or `"exclusive"`.
+                                    How the collection is used.
                                   type: string
+                                  enum: [read, write, exclusive]
                           variables:
                             description: |
                               All of the query variables, including user-created and internal ones.
@@ -961,17 +1001,22 @@ paths:
                   cached:
                     description: |
                       A boolean flag indicating whether the query result was served
-                      from the query cache or not. If the query result is served from the query
-                      cache, the `extra` return attribute will not contain any `stats` sub-attribute
-                      and no `profile` sub-attribute.
+                      from the query results cache or not. If the query result is served from the query
+                      cache, the `extra` attribute in the response does not contain the `stats`
+                      and `profile` sub-attributes.
                     type: boolean
+                  planCacheKey:
+                    description: |
+                      The key of the plan cache entry. This attribute is only
+                      present if a cached query execution plan has been used.
+                    type: string
         '400':
           description: |
-            is returned if the JSON representation is malformed, the query specification is
-            missing from the request, or if the query is invalid.
+            The JSON representation is malformed, the query specification is
+            missing from the request, or the query is invalid.
 
             The body of the response contains a JSON object with additional error
-            details. The object has the following attributes:
+            details.
           content:
             application/json:
               schema:
@@ -1004,21 +1049,26 @@ paths:
                     type: string
         '404':
           description: |
-            The server will respond with *HTTP 404* in case a non-existing collection is
-            accessed in the query.
+            A non-existing collection is accessed in the query.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction but the transaction ID specified in the
+            `x-arango-trx-id` header is unknown to the server.
         '405':
           description: |
-            The server will respond with *HTTP 405* if an unsupported HTTP method is used.
+            An unsupported HTTP method is used.
         '410':
           description: |
-            The server will respond with *HTTP 410* if a server which processes the query
-            or is the leader for a shard which is used in the query stops responding, but
-            the connection has not been closed.
+            A server which processes the query or the leader of a shard which is used
+            in the query stops responding, but the connection has not been closed.
+
+            This error also occurs if you try to run this operation as part of a
+            Stream Transaction that has just been canceled or timed out.
         '503':
           description: |
-            The server will respond with *HTTP 503* if a server which processes the query
-            or is the leader for a shard which is used in the query is down, either for
-            going through a restart, a failure or connectivity issues.
+            A server which processes the query or the leader of a shard which is used
+            in the query is down, either for going through a restart, a failure, or
+            connectivity issues.
       tags:
         - Queries
 ```
@@ -1358,7 +1408,7 @@ paths:
       responses:
         '200':
           description: |
-            The server will respond with *HTTP 200* in case of success.
+            Successfully fetched the batch.
           content:
             application/json:
               schema:
@@ -1423,8 +1473,6 @@ paths:
                     required:
                       - warnings
                       - stats
-                      - warnings
-                      - stats
                     properties:
                       warnings:
                         description: |
@@ -1433,8 +1481,6 @@ paths:
                         items:
                           type: object
                           required:
-                            - code
-                            - message
                             - code
                             - message
                           properties:
@@ -1453,6 +1499,8 @@ paths:
                         required:
                           - writesExecuted
                           - writesIgnored
+                          - documentLookups
+                          - seeks
                           - scannedFull
                           - scannedIndex
                           - cursorsCreated
@@ -1463,18 +1511,7 @@ paths:
                           - httpRequests
                           - executionTime
                           - peakMemoryUsage
-                          - writesExecuted
-                          - writesIgnored
-                          - scannedFull
-                          - scannedIndex
-                          - cursorsCreated
-                          - cursorsRearmed
-                          - cacheHits
-                          - cacheMisses
-                          - filtered
-                          - httpRequests
-                          - executionTime
-                          - peakMemoryUsage
+                          - intermediateCommits
                         properties:
                           writesExecuted:
                             description: |
@@ -1484,6 +1521,18 @@ paths:
                             description: |
                               The total number of data-modification operations that were unsuccessful,
                               but have been ignored because of the `ignoreErrors` query option.
+                            type: integer
+                          documentLookups:
+                            description: |
+                              The number of real document lookups caused by late materialization
+                              as well as `IndexNode`s that had to load document attributes not covered
+                              by the index. This is how many documents had to be fetched from storage after
+                              an index scan that initially covered the attribute access for these documents.
+                            type: integer
+                          seeks:
+                            description: |
+                              The number of seek calls done by RocksDB iterators for merge joins
+                              (`JoinNode` in the execution plan).
                             type: integer
                           scannedFull:
                             description: |
@@ -1580,10 +1629,6 @@ paths:
                                 - calls
                                 - items
                                 - runtime
-                                - id
-                                - calls
-                                - items
-                                - runtime
                               properties:
                                 id:
                                   description: |
@@ -1608,15 +1653,6 @@ paths:
                           The duration of the different query execution phases in seconds.
                         type: object
                         required:
-                          - initializing
-                          - parsing
-                          - optimizing ast
-                          - loading collections
-                          - instantiating plan
-                          - optimizing plan
-                          - instantiating executors
-                          - executing
-                          - finalizing
                           - initializing
                           - parsing
                           - optimizing ast
@@ -1666,13 +1702,6 @@ paths:
                           - estimatedCost
                           - estimatedNrItems
                           - isModificationQuery
-                          - nodes
-                          - rules
-                          - collections
-                          - variables
-                          - estimatedCost
-                          - estimatedNrItems
-                          - isModificationQuery
                         properties:
                           nodes:
                             description: |
@@ -1696,8 +1725,6 @@ paths:
                               required:
                                 - name
                                 - type
-                                - name
-                                - type
                               properties:
                                 name:
                                   description: |
@@ -1705,8 +1732,9 @@ paths:
                                   type: string
                                 type:
                                   description: |
-                                    How the collection is used. Can be `"read"`, `"write"`, or `"exclusive"`.
+                                    How the collection is used.
                                   type: string
+                                  enum: [read, write, exclusive]
                           variables:
                             description: |
                               All of the query variables, including user-created and internal ones.
@@ -1716,7 +1744,7 @@ paths:
                           estimatedCost:
                             description: |
                               The estimated cost of the query.
-                            type: integer
+                            type: number
                           estimatedNrItems:
                             description: |
                               The estimated number of results.
@@ -1728,27 +1756,30 @@ paths:
                   cached:
                     description: |
                       A boolean flag indicating whether the query result was served
-                      from the query cache or not. If the query result is served from the query
-                      cache, the `extra` return attribute will not contain any `stats` sub-attribute
-                      and no `profile` sub-attribute.
+                      from the query results cache or not. If the query result is served from the query
+                      cache, the `extra` attribute in the response does not contain the `stats`
+                      and `profile` sub-attributes.
                     type: boolean
+                  planCacheKey:
+                    description: |
+                      The key of the plan cache entry. This attribute is only
+                      present if a cached query execution plan has been used.
+                    type: string
         '400':
           description: |
-            If the cursor identifier is omitted, the server will respond with *HTTP 404*.
+            The cursor identifier is missing.
         '404':
           description: |
-            If no cursor with the specified identifier can be found, the server will respond
-            with *HTTP 404*.
+            A cursor with the specified identifier cannot found.
         '410':
           description: |
-            The server will respond with *HTTP 410* if a server which processes the query
-            or is the leader for a shard which is used in the query stops responding, but
-            the connection has not been closed.
+            A server which processes the query or the leader of a shard which is
+            used in the query stops responding, but the connection has not been closed.
         '503':
           description: |
-            The server will respond with *HTTP 503* if a server which processes the query
-            or is the leader for a shard which is used in the query is down, either for
-            going through a restart, a failure or connectivity issues.
+            A server which processes the query or the leader of a shard which is used
+            in the query is down, either for going through a restart, a failure,
+            or connectivity issues.
       tags:
         - Queries
 ```
@@ -1870,24 +1901,22 @@ paths:
       responses:
         '200':
           description: |
-            The server will respond with *HTTP 200* in case of success.
+            Successfully fetched the batch.
         '400':
           description: |
-            If the cursor identifier is omitted, the server will respond with *HTTP 404*.
+            The cursor identifier is missing.
         '404':
           description: |
-            If no cursor with the specified identifier can be found, the server will respond
-            with *HTTP 404*.
+            A cursor with the specified identifier cannot be found.
         '410':
           description: |
-            The server will respond with *HTTP 410* if a server which processes the query
-            or is the leader for a shard which is used in the query stops responding, but
-            the connection has not been closed.
+            A server which processes the query or the leader of a shard which is
+            used in the query stops responding, but the connection has not been closed.
         '503':
           description: |
-            The server will respond with *HTTP 503* if a server which processes the query
-            or is the leader for a shard which is used in the query is down, either for
-            going through a restart, a failure or connectivity issues.
+            A server which processes the query or the leader of a shard which is used
+            in the query is down, either for going through a restart, a failure,
+            or connectivity issues.
       tags:
         - Queries
 ```
@@ -2083,10 +2112,6 @@ paths:
                     required:
                       - warnings
                       - stats
-                      - warnings
-                      - stats
-                      - warnings
-                      - stats
                     properties:
                       warnings:
                         description: |
@@ -2095,10 +2120,6 @@ paths:
                         items:
                           type: object
                           required:
-                            - code
-                            - message
-                            - code
-                            - message
                             - code
                             - message
                           properties:
@@ -2117,6 +2138,8 @@ paths:
                         required:
                           - writesExecuted
                           - writesIgnored
+                          - documentLookups
+                          - seeks
                           - scannedFull
                           - scannedIndex
                           - cursorsCreated
@@ -2127,30 +2150,7 @@ paths:
                           - httpRequests
                           - executionTime
                           - peakMemoryUsage
-                          - writesExecuted
-                          - writesIgnored
-                          - scannedFull
-                          - scannedIndex
-                          - cursorsCreated
-                          - cursorsRearmed
-                          - cacheHits
-                          - cacheMisses
-                          - filtered
-                          - httpRequests
-                          - executionTime
-                          - peakMemoryUsage
-                          - writesExecuted
-                          - writesIgnored
-                          - scannedFull
-                          - scannedIndex
-                          - cursorsCreated
-                          - cursorsRearmed
-                          - cacheHits
-                          - cacheMisses
-                          - filtered
-                          - httpRequests
-                          - executionTime
-                          - peakMemoryUsage
+                          - intermediateCommits
                         properties:
                           writesExecuted:
                             description: |
@@ -2160,6 +2160,18 @@ paths:
                             description: |
                               The total number of data-modification operations that were unsuccessful,
                               but have been ignored because of the `ignoreErrors` query option.
+                            type: integer
+                          documentLookups:
+                            description: |
+                              The number of real document lookups caused by late materialization
+                              as well as `IndexNode`s that had to load document attributes not covered
+                              by the index. This is how many documents had to be fetched from storage after
+                              an index scan that initially covered the attribute access for these documents.
+                            type: integer
+                          seeks:
+                            description: |
+                              The number of seek calls done by RocksDB iterators for merge joins
+                              (`JoinNode` in the execution plan).
                             type: integer
                           scannedFull:
                             description: |
@@ -2256,14 +2268,6 @@ paths:
                                 - calls
                                 - items
                                 - runtime
-                                - id
-                                - calls
-                                - items
-                                - runtime
-                                - id
-                                - calls
-                                - items
-                                - runtime
                               properties:
                                 id:
                                   description: |
@@ -2288,24 +2292,6 @@ paths:
                           The duration of the different query execution phases in seconds.
                         type: object
                         required:
-                          - initializing
-                          - parsing
-                          - optimizing ast
-                          - loading collections
-                          - instantiating plan
-                          - optimizing plan
-                          - instantiating executors
-                          - executing
-                          - finalizing
-                          - initializing
-                          - parsing
-                          - optimizing ast
-                          - loading collections
-                          - instantiating plan
-                          - optimizing plan
-                          - instantiating executors
-                          - executing
-                          - finalizing
                           - initializing
                           - parsing
                           - optimizing ast
@@ -2355,20 +2341,6 @@ paths:
                           - estimatedCost
                           - estimatedNrItems
                           - isModificationQuery
-                          - nodes
-                          - rules
-                          - collections
-                          - variables
-                          - estimatedCost
-                          - estimatedNrItems
-                          - isModificationQuery
-                          - nodes
-                          - rules
-                          - collections
-                          - variables
-                          - estimatedCost
-                          - estimatedNrItems
-                          - isModificationQuery
                         properties:
                           nodes:
                             description: |
@@ -2392,10 +2364,6 @@ paths:
                               required:
                                 - name
                                 - type
-                                - name
-                                - type
-                                - name
-                                - type
                               properties:
                                 name:
                                   description: |
@@ -2403,8 +2371,9 @@ paths:
                                   type: string
                                 type:
                                   description: |
-                                    How the collection is used. Can be `"read"`, `"write"`, or `"exclusive"`.
+                                    How the collection is used.
                                   type: string
+                                  enum: [read, write, exclusive]
                           variables:
                             description: |
                               All of the query variables, including user-created and internal ones.
@@ -2414,7 +2383,7 @@ paths:
                           estimatedCost:
                             description: |
                               The estimated cost of the query.
-                            type: integer
+                            type: number
                           estimatedNrItems:
                             description: |
                               The estimated number of results.
@@ -2426,14 +2395,18 @@ paths:
                   cached:
                     description: |
                       A boolean flag indicating whether the query result was served
-                      from the query cache or not. If the query result is served from the query
-                      cache, the `extra` return attribute will not contain any `stats` sub-attribute
-                      and no `profile` sub-attribute.
+                      from the query results cache or not. If the query result is served from the query
+                      cache, the `extra` attribute in the response does not contain the `stats`
+                      and `profile` sub-attributes.
                     type: boolean
+                  planCacheKey:
+                    description: |
+                      The key of the plan cache entry. This attribute is only
+                      present if a cached query execution plan has been used.
+                    type: string
         '400':
           description: |
-            If the cursor and the batch identifier are omitted, the server responds with
-            *HTTP 400*.
+            The cursor and the batch identifier are missing.
           content:
             application/json:
               schema:
@@ -2462,8 +2435,8 @@ paths:
                     type: string
         '404':
           description: |
-            If no cursor with the specified identifier can be found, or if the requested
-            batch isn't available, the server responds with *HTTP 404*.
+            A cursor with the specified identifier cannot be found, or the requested
+            batch isn't available.
         '410':
           description: |
             The server responds with *HTTP 410* if a server which processes the query
@@ -2521,7 +2494,7 @@ paths:
 
         The cursor will automatically be destroyed on the server when the client has
         retrieved all documents from it. The client can also explicitly destroy the
-        cursor at any earlier time using an HTTP DELETE request. The cursor id must
+        cursor at any earlier time using an HTTP DELETE request. The cursor identifier must
         be included as part of the URL.
 
         Note: the server will also destroy abandoned cursors automatically after a
@@ -2539,16 +2512,16 @@ paths:
           in: path
           required: true
           description: |
-            The id of the cursor
+            The identifier of the cursor
           schema:
             type: string
       responses:
         '202':
           description: |
-            is returned if the server is aware of the cursor.
+            The server is aware of the cursor.
         '404':
           description: |
-            is returned if the server is not aware of the cursor. It is also
+            The server is not aware of the cursor. This is also
             returned if a cursor is used after it has been destroyed.
       tags:
         - Queries
@@ -2643,7 +2616,7 @@ paths:
             Is returned if properties were retrieved successfully.
         '400':
           description: |
-            The server will respond with *HTTP 400* in case of a malformed request,
+            The request is malformed.
       tags:
         - Queries
 ```
@@ -2726,7 +2699,7 @@ paths:
             Is returned if the properties were changed successfully.
         '400':
           description: |
-            The server will respond with *HTTP 400* in case of a malformed request,
+            The request is malformed.
       tags:
         - Queries
 ```
@@ -2799,11 +2772,11 @@ paths:
             Is returned when the list of queries can be retrieved successfully.
         '400':
           description: |
-            The server will respond with *HTTP 400* in case of a malformed request,
+            The request is malformed.
         '403':
           description: |
-            *HTTP 403* is returned in case the `all` parameter was used, but the request
-            was made in a different database than _system, or by an non-privileged user.
+            In case the `all` parameter is used but the request was made in a
+            different database than `_system`, or by a non-privileged user.
       tags:
         - Queries
 ```
@@ -2870,11 +2843,11 @@ paths:
             Is returned when the list of queries can be retrieved successfully.
         '400':
           description: |
-            The server will respond with *HTTP 400* in case of a malformed request,
+            The request is malformed.
         '403':
           description: |
-            *HTTP 403* is returned in case the `all` parameter was used, but the request
-            was made in a different database than _system, or by an non-privileged user.
+            In case the `all` parameter is used but the request was made in a
+            different database than `_system`, or by a non-privileged user.
       tags:
         - Queries
 ```
@@ -2910,11 +2883,10 @@ paths:
       responses:
         '200':
           description: |
-            The server will respond with *HTTP 200* when the list of queries was
-            cleared successfully.
+            The list of queries has been cleared successfully.
         '400':
           description: |
-            The server will respond with *HTTP 400* in case of a malformed request.
+            The request is malformed.
       tags:
         - Queries
 ```
@@ -2949,7 +2921,7 @@ paths:
           in: path
           required: true
           description: |
-            The id of the query.
+            The identifier of the query.
           schema:
             type: string
         - name: all
@@ -2965,19 +2937,18 @@ paths:
       responses:
         '200':
           description: |
-            The server will respond with *HTTP 200* when the query was still running when
-            the kill request was executed and the query's kill flag was set.
+            The query was still running when the kill request was executed and
+            the query's kill flag has been set.
         '400':
           description: |
-            The server will respond with *HTTP 400* in case of a malformed request.
+            The request is malformed.
         '403':
           description: |
-            *HTTP 403* is returned in case the *all* parameter was used, but the request
-            was made in a different database than _system, or by an non-privileged user.
+            In case the `all` parameter is used but the request was made in a
+            different database than `_system`, or by a non-privileged user.
         '404':
           description: |
-            The server will respond with *HTTP 404* when no query with the specified
-            id was found.
+            A query with the specified identifier cannot be found.
       tags:
         - Queries
 ```
@@ -3071,6 +3042,10 @@ paths:
                     Options for the query
                   type: object
                   properties:
+                    # Purposefully undocumented:
+                    #   verbosePlans
+                    #   explainInternals
+                    #   explainRegisters
                     allPlans:
                       description: |
                         if set to `true`, all possible execution plans will be returned.
@@ -3078,10 +3053,47 @@ paths:
                       type: boolean
                     maxNumberOfPlans:
                       description: |
-                        an optional maximum number of plans that the optimizer is
-                        allowed to generate. Setting this attribute to a low value allows to put a
+                        The maximum number of plans that the optimizer is allowed to
+                        generate. Setting this attribute to a low value allows to put a
                         cap on the amount of work the optimizer does.
                       type: integer
+                    fullCount:
+                      description: |
+                        Whether to calculate the total number of documents matching the
+                        filter conditions as if the query's final top-level `LIMIT` operation
+                        were not applied. This option generally leads to different
+                        execution plans.
+                      type: boolean
+                    profile:
+                      description: |
+                        Whether to include additional query profiling information.
+                        If set to `2`, the response includes the time it took to process
+                        each optimizer rule under `stats.rules`.
+                      type: integer
+                    maxNodesPerCallstack:
+                      description: |
+                        The number of execution nodes in the query plan after that stack splitting is
+                        performed to avoid a potential stack overflow. Defaults to the configured value
+                        of the startup option `--query.max-nodes-per-callstack`.
+
+                        This option is only useful for testing and debugging and normally does not need
+                        any adjustment.
+                      type: integer
+                    maxWarningCount:
+                      description: |
+                        Limits the number of warnings a query can return. The maximum number of warnings
+                        is `10` by default but you can increase or decrease the limit.
+                      type: integer
+                    failOnWarning:
+                      description: |
+                        If set to `true`, the query throws an exception and aborts instead of producing
+                        a warning. You should use this option during development to catch potential issues
+                        early. When the attribute is set to `false`, warnings are not propagated to
+                        exceptions and are returned with the query result.
+
+                        You can use the `--query.fail-on-warning` startup option to adjust the
+                        default value for `failOnWarning` so you don't need to set it on a per-query basis.
+                      type: boolean
                     optimizer:
                       description: |
                         Options related to the query optimizer.
@@ -3096,6 +3108,21 @@ paths:
                           type: array
                           items:
                             type: string
+                    usePlanCache:
+                      description: |
+                        Set this option to `true` to utilize a cached query plan or add the execution plan
+                        of this query to the cache if it's not in the cache yet. Otherwise, the plan cache
+                        is bypassed (introduced in v3.12.4).
+                        
+                        Query plan caching can reduce the total time for processing queries by avoiding
+                        to parse, plan, and optimize queries over and over again that effectively have
+                        the same execution plan with at most some changes to bind parameter values.
+                        
+                        An error is raised if a query doesn't meet the requirements for plan caching.
+                        See [Cache eligibility](../../../aql/execution-and-performance/caching-query-plans.md#cache-eligibility)
+                        for details.
+                      type: boolean
+                      default: false
       responses:
         '200':
           description: |
@@ -3105,15 +3132,13 @@ paths:
             in the `allPlans` attribute instead.
         '400':
           description: |
-            The server will respond with *HTTP 400* in case of a malformed request,
-            or if the query contains a parse error. The body of the response will
-            contain the error details embedded in a JSON object.
-            Omitting bind variables if the query references any will also result
-            in an *HTTP 400* error.
+            The request is malformed or the query contains a parse error.
+            The body of the response contains the error details embedded in a JSON object.
+            Omitting bind variables if the query references any also results
+            an error.
         '404':
           description: |
-            The server will respond with *HTTP 404* in case a non-existing collection is
-            accessed in the query.
+            A non-existing collection is accessed in the query.
       tags:
         - Queries
 ```
@@ -3338,9 +3363,8 @@ paths:
             optimizations applied to it.
         '400':
           description: |
-            The server will respond with *HTTP 400* in case of a malformed request,
-            or if the query contains a parse error. The body of the response will
-            contain the error details embedded in a JSON object.
+            The request is malformed or the query contains a parse error.
+            The body of the response contains the error details embedded in a JSON object.
       tags:
         - Queries
 ```

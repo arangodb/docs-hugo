@@ -588,9 +588,7 @@ paths:
                           description: |
                             The type of the View.
                           type: string
-                          enum:
-                            - arangosearch
-                            - search-alias
+                          enum: [arangosearch, search-alias]
                         id:
                           description: |
                             A unique identifier of the View (deprecated).
@@ -866,9 +864,7 @@ paths:
                         description: |
                           Whether to add or remove the index to the stored `indexes` property of the View.
                         type: string
-                        enum:
-                          - add
-                          - del
+                        enum: [add, del]
                         default: add
       responses:
         '200':

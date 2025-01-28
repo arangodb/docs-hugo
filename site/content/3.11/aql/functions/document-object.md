@@ -17,6 +17,8 @@ additional language constructs for objects.
 Return the top-level attribute keys of the `document` as an array.
 Optionally omit system attributes and sort the array.
 
+To return the attribute values instead, see the [`VALUES()` function](#values).
+
 - **document** (object): an arbitrary document / object
 - **removeSystemAttrs** (bool, *optional*): whether all system attributes
   (starting with an underscore, such as `_key` and `_id`) shall be omitted in
@@ -74,7 +76,7 @@ FOR attributeArray IN attributesPerDocument
 
 ## COUNT()
 
-This is an alias for [LENGTH()](#length).
+This is an alias for [`LENGTH()`](#length).
 
 ## HAS()
 
@@ -187,7 +189,7 @@ RETURN [
 Keep only the attributes `attributeName` to `attributeNameN` of `document`.
 All other attributes will be removed from the result.
 
-To do the opposite, see [UNSET()](#unset).
+To do the opposite, see [`UNSET()`](#unset).
 
 - **document** (object): a document / object
 - **attributeNames** (string, *repeatable*): an arbitrary number of attribute
@@ -272,7 +274,7 @@ RETURN KEEP(doc, ["foo", "baz"])
 Recursively preserve the attributes `attributeName1` to `attributeNameN` from
 `document` and its sub-documents. All other attributes will be removed.
 
-To do the opposite, use [UNSET_RECURSIVE()](#unset_recursive).
+To do the opposite, use [`UNSET_RECURSIVE()`](#unset_recursive).
 
 - **document** (object): a document / object
 - **attributeNames** (string, *repeatable*): an arbitrary number of attribute
@@ -419,7 +421,7 @@ with any number of attributes each.
 
 An attribute value of `null` will match documents with an explicit attribute value
 of `null` as well as documents with this attribute missing (implicitly `null`).
-Only [HAS()](#has) can differentiate between an attribute being absent and having
+Only [`HAS()`](#has) can differentiate between an attribute being absent and having
 a stored `null` value.
 
 An empty object `{}` will match all documents. Be careful not to ask for all
@@ -489,7 +491,7 @@ If document attribute keys are ambiguous, the merged result will contain the val
 of the documents contained later in the argument list.
 
 Note that merging will only be done for top-level attributes. If you wish to
-merge sub-attributes, use [MERGE_RECURSIVE()](#merge_recursive) instead.
+merge sub-attributes, use [`MERGE_RECURSIVE()`](#merge_recursive) instead.
 
 - **documents** (object, *repeatable*): an arbitrary number of documents as
   multiple arguments (at least 2)
@@ -639,20 +641,18 @@ RETURN MERGE_RECURSIVE(
 
 `PARSE_IDENTIFIER(documentIdentifier) → parts`
 
-Parse a [document ID](../../concepts/data-structure/documents/_index.md#document-identifiers) and
-return its individual parts as separate attributes.
-
-This function can be used to easily determine the
-[collection name](../../concepts/data-structure/collections.md#collection-names) and key of a given document.
+Parse a [document ID](../../concepts/data-structure/documents/_index.md#document-identifiers)
+and separately return the collection name and the document key.
 
 - **documentIdentifier** (string\|object): a document identifier string (e.g. `_users/1234`)
   or a regular document from a collection. Passing either a non-string or a non-document
-  or a document without an `_id` attribute will result in an error.
-- returns **parts** (object): an object with the attributes *collection* and *key*
+  or a document without an `_id` attribute results in an error.
+- returns **parts** (object): an object with the attributes `collection` and `key`
 
 **Examples**
 
-Parse a document identifier string:
+Parse a document identifier string and extract both the collection name and the
+document key:
 
 ```aql
 ---
@@ -662,7 +662,8 @@ description: ''
 RETURN PARSE_IDENTIFIER("_users/my-user")
 ```
 
-Parse the document identifier string of a document (`_id` attribute):
+Parse the `_id` attribute of a document to extract both the collection name and
+the document key:
 
 ```aql
 ---
@@ -738,7 +739,7 @@ RETURN TRANSLATE(42, { "42": true } )
 Remove the attributes `attributeName1` to `attributeNameN` from `document`.
 All other attributes will be preserved.
 
-To do the opposite, see [KEEP()](#keep).
+To do the opposite, see [`KEEP()`](#keep).
 
 - **document** (object): a document / object
 - **attributeNames** (string, *repeatable*): an arbitrary number of attribute
@@ -824,7 +825,7 @@ RETURN UNSET(doc, ["foo", "bar"])
 Recursively remove the attributes `attributeName1` to `attributeNameN` from
 `document` and its sub-documents. All other attributes will be preserved.
 
-To do the opposite, use [KEEP_RECURSIVE()](#keep_recursive).
+To do the opposite, use [`KEEP_RECURSIVE()`](#keep_recursive).
 
 - **document** (object): a document / object
 - **attributeNames** (string, *repeatable*): an arbitrary number of attribute
@@ -967,6 +968,8 @@ RETURN VALUE(obj, ["foo", 1, "bar"])
 
 Return the attribute values of the `document` as an array. Optionally omit
 system attributes.
+
+To return the attribute keys instead, see the [`ATTRIBUTES()` function](#attributes).
 
 - **document** (object): a document / object
 - **removeSystemAttrs** (bool, *optional*): if set to `true`, then all

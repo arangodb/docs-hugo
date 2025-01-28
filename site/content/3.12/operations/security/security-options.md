@@ -227,12 +227,8 @@ ensure that no other than the intended URLs are matched.
 
 Specifying `arangodb.org` will match:
 - `http://arangodb.org`
-- `http://arangodb.org` 
-- `http://arangodb.org`
-- `http://arangodb.org` 
-- `http://arangodb.org`
-- `http://arangodb.org` 
-- `http://arangodb.org`
+- `http://arangodb.org/`
+- `http://arangodb.org/folder/file.html`
 - `https://arangodb.org`
 - `https://arangodb.org:12345`
 - `https://subdomain.arangodb.organic` **(!)**
@@ -242,12 +238,6 @@ Specifying `arangodb.org` will match:
 An unescaped `.` represents any character. For a literal dot use `\.`.
 
 Specifying `http://arangodb\.org` will match:
-- `http://arangodb.org`
-- `http://arangodb.org` 
-- `http://arangodb.org`
-- `http://arangodb.org` 
-- `http://arangodb.org`
-- `http://arangodb.org` 
 - `http://arangodb.org`
 - `http://arangodb.org:12345`
 - `http://arangodb.organic` **(!)**
@@ -353,7 +343,7 @@ in an ArangoDB server:
   ArangoDB's built-in web interface and all built-in REST APIs remain accessible,
   except the Foxx service management API, which makes it impossible to install and
   uninstall Foxx applications. Setting the option to `false` also deactivates the
-  **SERVICES** section in the web interface.
+  **Services** section in the web interface.
   The default value is `true`, meaning that Foxx apps can be accessed. 
 
 - `--foxx.api`:

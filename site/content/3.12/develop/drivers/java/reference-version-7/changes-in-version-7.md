@@ -32,7 +32,7 @@ dependencies {
 
 ## HTTP client
 
-The HTTP client has been changed to [Vert.x WebClient](https://vertx.io/docs/vertx-web-client/java). 
+The HTTP client has been changed to [Vert.x WebClient](https://vertx.io/docs/vertx-web-client/java/).
 
 `HTTP/2` is now supported. 
 `HTTP/2` supports multiplexing and uses `1` connection per host by default.
@@ -82,7 +82,7 @@ See the related reference documentation about
 for details.
 
 Examples showing how to provide configuration properties from different sources:
-- [Eclipse MicroProfile Config](https://github.com/arangodb-helper/arango-quarkus-native-example/blob/master/src/main/java/org/acme/quickstart/ArangoConfig.java)
+- [Eclipse MicroProfile Config](https://github.com/arangodb-helper/arango-quarkus-native-example/blob/master/src/main/java/com/arangodb/ArangoConfig.java)
 - [Micronaut Configuration](https://github.com/arangodb-helper/arango-micronaut-native-example/blob/main/src/main/kotlin/com/example/ArangoConfig.kt)
 
 ## Modules
@@ -94,8 +94,7 @@ The main driver artifact `com.arangodb:arangodb-java-driver` has transitive depe
 - `com.arangodb:http-protocol`: `HTTP` communication protocol (HTTP/1.1 and HTTP/2)
 - `com.arangodb:jackson-serde-json`: `JSON` user-data serde module based on Jackson Databind
 
-Alternative modules are respectively:
-- `com.arangodb:vst-protocol`: `VST` communication protocol (no longer supported from ArangoDB v3.12.0 onward)
+Alternative module for user-data serde:
 - `com.arangodb:jackson-serde-vpack`: `VPACK` user-data serde module based on Jackson Databind
 
 The modules above are discovered and loaded using SPI (Service Provider Interface).
@@ -109,8 +108,6 @@ For example, to use the driver with `VPACK` over `HTTP`:
 - You can exclude `com.arangodb:jackson-serde-json`
 - You don't need to include `com.arangodb:http-protocol` because the driver
   includes it automatically
-- You don't need to exclude `com.arangodb:vst-protocol` because it is not
-  included automatically
 
 For example in Maven:
 
@@ -168,9 +165,8 @@ to use the [shaded version](#arangodb-java-driver-shaded) of this driver, which
 bundles all modules together with relocated external dependencies.
 
 The dependency on `com.arangodb:velocypack` has been removed from core module and
-is now only used as internal dependency by `com.arangodb:vst-protocol` and
-`com.arangodb:jackson-serde-vpack`, thus transitively imported only when using
-`VST` protocol or `VPACK` content type.
+is now only used as internal dependency by `com.arangodb:jackson-serde-vpack`,
+thus transitively imported only when using `VPACK` content type.
 
 ## User Data
 
@@ -426,7 +422,7 @@ The driver supports GraalVM Native Image compilation.
 To compile with `--link-at-build-time` when `http-protocol` module is present in
 the classpath, additional substitutions are be required for its transitive
 dependencies (`Netty` and `Vert.x`). See this
-[example](https://github.com/arangodb/arangodb-java-driver/tree/main/driver/src/test/java/graal)
+[example](https://github.com/arangodb/arangodb-java-driver/tree/main/test-functional/src/test-default/java/graal)
 for reference. Such substitutions are not required when compiling the shaded driver.
 
 ### Framework compatibility

@@ -12,7 +12,7 @@ client driver. It thus often provides good enough throughput and performance
 estimates. It provides different test cases that can be executed, that reflect
 a broader set of use cases. It is useful to pick and run the test cases that
 most closely resemble typical or expected workloads. It supports parallel
-querying and batch requests.
+querying.
 
 ## General configuration
 
@@ -74,7 +74,7 @@ General options that can affect test case performance and throughput:
   The server-side scheduler queue has a limited capacity, and once it is full,
   any further incoming requests will be rejected by the server with HTTP 503
   "Service unavailable" until there is again some capacity in the queue.
-- `--batch-size`: by default, _arangobench_ will send one HTTP request per test
+- `--batch-size` (removed in v3.12.3): by default, _arangobench_ will send one HTTP request per test
   case operation. This is often okay for test cases that execute a certain AQL
   query or such, when there is naturally no other request to batch the query
   with. However, in some use cases multiple operations can actually be sent

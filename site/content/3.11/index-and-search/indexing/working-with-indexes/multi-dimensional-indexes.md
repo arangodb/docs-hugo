@@ -49,19 +49,19 @@ db.collection.ensureIndex({
 });
 ```
 
-Unlike for other indexes the order of the fields does not matter.
+Unlike with other indexes, the order of the `fields` does not matter.
 
-`fieldValueTypes` is required and the only allowed value is `"double"`.
-Future extensions of the index will allow other types.
+`fieldValueTypes` is required and the only allowed value is `"double"` to use a
+double-precision (64-bit) floating-point format internally.
 
 Now we can use the index in a query:
 
 ```aql
 FOR p IN points
-    FILTER x0 <= p.x && p.x <= x1
-    FILTER y0 <= p.y && p.y <= y1
-    FILTER z0 <= p.z && p.z <= z1
-    RETURN p
+  FILTER x0 <= p.x && p.x <= x1
+  FILTER y0 <= p.y && p.y <= y1
+  FILTER z0 <= p.z && p.z <= z1
+  RETURN p
 ```
 
 ## Possible range queries
@@ -77,10 +77,10 @@ is translated to their non-strict counterparts and a post-filter is inserted.
 
 ```aql
 FOR p IN points
-    FILTER 2 <= p.x && p.x < 9
-    FILTER y0 >= 80
-    FILTER p.z == 4
-    RETURN p
+  FILTER 2 <= p.x && p.x < 9
+  FILTER p.y >= 80
+  FILTER p.z == 4
+  RETURN p
 ```
 
 ## Example Use Case
@@ -90,9 +90,9 @@ that contains the appointments. The documents would roughly look as follows:
 
 ```json
 {
-    "from": 345365,
-    "to": 678934,
-    "what": "Dentist",
+  "from": 345365,
+  "to": 678934,
+  "what": "Dentist",
 }
 ```
 
@@ -133,9 +133,9 @@ Thus our query would be:
 
 ```aql
 FOR app IN appointments
-    FILTER f <= app.to
-    FILTER app.from <= t
-    RETURN app
+  FILTER f <= app.to
+  FILTER app.from <= t
+  RETURN app
 ```
 
 ## Lookahead Index Hint

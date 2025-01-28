@@ -41,7 +41,7 @@ An implementation for loading properties from local files is provided by
 `ArangoConfigProperties.fromFile()` and its overloaded variants.
 
 To read config properties prefixed with `arangodb` from `arangodb.properties`
-file (as in version `6`):
+file:
 
 ```java
 // ## src/main/resources/arangodb.properties
@@ -65,7 +65,7 @@ ArangoConfigProperties props = ArangoConfigProperties.fromFile("arangodb-with-pr
 ```
 
 Here are examples to integrate configuration properties from different sources:
-- [Eclipse MicroProfile Config](https://github.com/arangodb-helper/arango-quarkus-native-example/blob/master/src/main/java/org/acme/quickstart/ArangoConfig.java)
+- [Eclipse MicroProfile Config](https://github.com/arangodb-helper/arango-quarkus-native-example/blob/master/src/main/java/com/arangodb/ArangoConfig.java)
 - [Micronaut Configuration](https://github.com/arangodb-helper/arango-micronaut-native-example/blob/main/src/main/kotlin/com/example/ArangoConfig.kt)
 
 ## Configuration
@@ -73,7 +73,7 @@ Here are examples to integrate configuration properties from different sources:
 `ArangoDB.Builder` has the following configuration methods:
 
 - `host(String, int)`:           adds a host (hostname and port) to connect to, multiple hosts can be added
-- `protocol(Protocol)`:          communication protocol, possible values are: `VST`, `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, (default: `HTTP2_JSON`)
+- `protocol(Protocol)`:          communication protocol, possible values are: `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, `VST` (unsupported from ArangoDB v3.12 onward), (default: `HTTP2_JSON`)
 - `timeout(Integer)`:            connection and request timeout (ms), (default `0`, no timeout)
 - `user(String)`:                username for authentication, (default: `root`)
 - `password(String)`:            password for authentication
@@ -81,10 +81,8 @@ Here are examples to integrate configuration properties from different sources:
 - `useSsl(Boolean)`:             use SSL connection, (default: `false`)
 - `sslContext(SSLContext)`:      SSL context
 - `verifyHost(Boolean)`:         enable hostname verification, (HTTP only, default: `true`)
-- `chunkSize(Integer)`:          VST chunk size in bytes, (default: `30000`)
-- `maxConnections(Integer)`:     max number of connections per host, (default: 1 VST, 1 HTTP/2, 20 HTTP/1.1)
-- `connectionTtl(Long)`:         time to live of an inactive connection (ms), (default: `30_000` for HTTP, no TTL for VST)
-- `keepAliveInterval(Integer)`:  VST keep-alive interval (s), (default: no keep-alive probes will be sent)
+- `maxConnections(Integer)`:     max number of connections per host, (default: `1` for `HTTP/2`, `20` for `HTTP/1.1`)
+- `connectionTtl(Long)`:         time to live of an inactive connection (ms), (default: `30_000`)
 - `acquireHostList(Boolean)`:    acquire the list of available hosts, (default: `false`)
 - `acquireHostListInterval(Integer)`:             acquireHostList interval (ms), (default: `3_600_000`, 1 hour)
 - `loadBalancingStrategy(LoadBalancingStrategy)`: load balancing strategy, possible values are: `NONE`, `ROUND_ROBIN`, `ONE_RANDOM`, (default: `NONE`)
@@ -93,6 +91,7 @@ Here are examples to integrate configuration properties from different sources:
 - `compressionThreshold(Integer)`: the minimum HTTP request body size (in bytes) to trigger compression, (default: `1024`)
 - `compressionLevel`:              compression level between 0 and 9, (default: `6`)
 - `serde(ArangoSerde)`:            serde to serialize and deserialize user-data
+- `serdeProviderClass(Class<? extends ArangoSerdeProvider>)`: serde provider to be used to instantiate the user-data serde
 - `protocolConfig(ProtocolConfig)`: configuration specific for the used protocol provider implementation
 
 ### HTTP Protocol Provider Configuration
@@ -123,12 +122,12 @@ HttpProtocolConfig.builder()
 ### Config File Properties
 
 `ArangoConfigProperties.fromFile()` reads config properties prefixed with `arangodb`
-from `arangodb.properties` file (as in version `6`). Different prefix and
+from `arangodb.properties` file. Different prefix and
 file name can be specified using its overloaded variants.
 
 The properties read are:
 - `hosts`: comma-separated list of `<hostname>:<port>` entries
-- `protocol`: `VST`, `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON` or `HTTP2_VPACK`
+- `protocol`: `HTTP_JSON`, `HTTP_VPACK`, `HTTP2_JSON`, `HTTP2_VPACK`, or `VST` (unsupported from ArangoDB v3.12 onward)
 - `timeout`
 - `user`
 - `password`
@@ -146,11 +145,12 @@ The properties read are:
 - `compression`: `NONE`, `DEFLATE` or `GZIP`
 - `compressionThreshold`
 - `compressionLevel`
+- `serdeProviderClass`: fully qualified name of the provider class
 
 ## SSL
 
 To use SSL, you have to set the configuration `useSsl` to `true` and set a `SSLContext`
-(see [example code](https://github.com/arangodb/arangodb-java-driver/tree/main/driver/src/test/java/com/arangodb/example/ssl/SslExampleTest.java)).
+(see [example code](https://github.com/arangodb/arangodb-java-driver/blob/main/test-functional/src/test-ssl/java/com/arangodb/SslExampleTest.java)).
 
 ```java
 ArangoDB arangoDB = new ArangoDB.Builder()
@@ -249,23 +249,27 @@ ArangoDB arango = new ArangoDB.Builder()
 
 In this example, inactive connections are closed after 5 minutes.
 
-The default TTL for HTTP connections is 30 seconds, while it is `null` for VST connections.
+The default connection TTL is `30` seconds.
 
 If set to `null`, no automatic connection closure is performed.
 
-## VST Keep-Alive
+## Proxy configuration
 
-The driver supports setting keep-alive interval (in seconds)
-for VST connections (but VST is not supported from ArangoDB v3.12.0 onward).
-If set, every VST connection performs a no-op request
-at the specified intervals, to avoid to be closed due to inactivity by the
-server (or by the external environment, e.g. firewall, intermediate routers,
-operating system, ... ).
+The driver allows configuring the underlying Vert.x WebClient to work
+with HTTP proxies. The configuration is specific to the HTTP protocol
+and uses the `io.vertx.core.net.ProxyOptions` class of 
+[Vert.x Core](https://www.javadoc.io/doc/io.vertx/vertx-core/4.5.7/io/vertx/core/net/ProxyOptions.html):
 
 ```java
-ArangoDB arangoDB = new ArangoDB.Builder()
-        .keepAliveInterval(1_800) // 30 minutes
-        .build();
+ArangoDB arango = new ArangoDB.Builder()
+    // ...
+    .protocolConfig(HttpProtocolConfig.builder()
+        .proxyOptions(new ProxyOptions()
+            .setType(ProxyType.HTTP)
+            .setHost("172.28.0.1")
+            .setPort(8888)
+            .setUsername("user")
+            .setPassword("password"))
+        .build())
+    .build();
 ```
-
-If not set or set to `null` (default), no keep-alive probes will be sent.

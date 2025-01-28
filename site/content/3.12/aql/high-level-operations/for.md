@@ -56,6 +56,16 @@ define an explicit sort order with a [`SORT` operation](sort.md).
 The variable introduced by `FOR` is available until the scope the `FOR` is
 placed in is closed.
 
+You can use [array destructuring](../operators.md#array-destructuring) and
+[object destructuring](../operators.md#object-destructuring) as part of a regular
+`FOR` loop, for example, to assign a subset of attributes to variables in a
+concise manner:
+
+```aql
+FOR { firstName, lastName } IN users
+  RETURN CONCAT(firstName, " ", lastName)
+```
+
 Another example that uses a statically declared array of values to iterate over:
 
 ```aql

@@ -21,6 +21,11 @@ See the [Release notes](_index.md) of the respective versions for
 detailed information about breaking changes before upgrading.
 {{< /info >}}
 
+- **VelocyStream protocol**:
+  ArangoDB's own bi-directional asynchronous binary protocol VelocyStream (VST)
+  is deprecated in v3.11 and removed in v3.12.0. Use JSON or VelocyPack over the
+  HTTP(S) protocol instead.
+
 - **Little-endian on-disk key format for the RocksDB storage engine**:
 
   The little-endian on-disk key format for the RocksDB storage engine is

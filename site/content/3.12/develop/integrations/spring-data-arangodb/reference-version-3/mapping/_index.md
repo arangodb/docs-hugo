@@ -6,6 +6,11 @@ description: >-
   The features and conventions for mapping Java objects to documents and how to
   override those conventions with annotation based mapping metadata
 ---
+{{< warning >}}
+Spring Data ArangoDB version 3 reached End of Life (EOL) and is not actively
+developed anymore. Upgrading to version 4 is recommended.
+{{< /warning >}}
+
 ## Conventions
 
 - The Java class name is mapped to the collection name

@@ -62,8 +62,8 @@ You can set the following parameters:
 - `withStats` (boolean, _optional_): whether to include index figures and
   estimates in the result. Default: `false`
 - `withHidden` (boolean, _optional_): whether to include hidden indexes in the
-  result. Internal indexes and ones that are currently built in the background
-  are hidden. Default: `false`
+  result. Internal indexes (such as `arangosearch`) and ones that are currently
+  built in the background are hidden. Default: `false`
 
 The `indexes()` method is an alias for `getIndexes()`.
 
@@ -75,14 +75,14 @@ Get the index definitions for a collection:
 
 ```js
 ---
-name: collectionGetIndexes
+name: collectionIndexes
 description: ''
 ---
 ~db._create("test");
 ~db.test.ensureIndex({ type: "persistent", fields: ["attribute"], unique: true });
 ~db.test.ensureIndex({ type: "persistent", fields: ["uniqueAttribute"], unique: true });
 ~db.test.ensureIndex({ type: "persistent", fields: ["attribute", "secondAttribute.subAttribute"] });
-db.test.getIndexes();
+db.test.indexes();
 ~db._drop("test");
 ```
 
@@ -90,7 +90,7 @@ Get the index definitions for a collection, including figures and hidden indexes
 
 ```js
 ---
-name: collectionGetIndexesStats
+name: collectionIndexesStats
 description: ''
 ---
 ~db._create("coll");
@@ -254,11 +254,11 @@ description: ''
 ~db._create("example");
 var idx1 = db.example.ensureIndex({ type: "persistent", fields: ["a", "b"] });
 var idx2 = db.example.ensureIndex({ type: "persistent", fields: ["c"] });
-var indexInfo = db.example.getIndexes();
+var indexInfo = db.example.indexes();
 indexInfo;
 db.example.dropIndex(indexInfo[1])
 db.example.dropIndex(indexInfo[2].id)
-indexInfo = db.example.getIndexes();
+indexInfo = db.example.indexes();
 ~db._drop("example");
 ```
 
@@ -316,7 +316,7 @@ description: ''
 ---
 ~db._create("example");
 db.example.ensureIndex({ type: "persistent", fields: [ "a", "b" ] });
-var indexInfo = db.example.getIndexes().map(function(x) { return x.id; });
+var indexInfo = db.example.indexes().map(function(x) { return x.id; });
 indexInfo;
 db._index(indexInfo[0])
 db._index(indexInfo[1])
@@ -346,11 +346,11 @@ description: ''
 ~db._create("example");
 var idx1 = db.example.ensureIndex({ type: "persistent", fields: [ "a", "b" ] });
 var idx2 = db.example.ensureIndex({ type: "persistent", fields: [ "c" ] });
-var indexInfo = db.example.getIndexes();
+var indexInfo = db.example.indexes();
 indexInfo;
 db._dropIndex(indexInfo[1])
 db._dropIndex(indexInfo[2].id)
-indexInfo = db.example.getIndexes();
+indexInfo = db.example.indexes();
 ~db._drop("example");
 ```
 

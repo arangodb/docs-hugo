@@ -5,6 +5,8 @@ weight: 5
 description: >-
   How to run queries, set bind parameters, and obtain the resulting and
   additional information using the JavaScript API
+# Undocumented on purpose:
+#   db._query(<query>, <bindVars>, <mainOptions>, { forceOneShardAttributeValue: "..."} )
 ---
 In the ArangoDB shell, you can use the `db._query()` and `db._createStatement()`
 methods to execute AQL queries. This chapter also describes
@@ -193,26 +195,6 @@ db._query(
 ).toArray(); // Each batch needs to be fetched within 5 seconds
 ```
 
-#### `cache`
-
-Whether the AQL query results cache shall be used. If set to `false`, then any
-query cache lookup is skipped for the query. If set to `true`, it leads to the
-query cache being checked for the query **if** the query cache mode is either
-set to `on` or `demand`.
-
-```js
----
-name: 02_workWithAQL_cache
-description: ''
----
-db._query(
-  'FOR i IN 1..20 RETURN i',
-  {},
-  { cache: true },
-  {}
-); // result may get taken from cache
-```
-
 #### `memoryLimit`
 
 To set a memory limit for the query, pass `options` to the `_query()` method.
@@ -272,12 +254,30 @@ don't need to set it on a per-query level.
 
 #### `cache`
 
-If you set `cache` to `true`, this puts the query result into the query result cache
-if the query result is eligible for caching and the query cache is running in demand 
-mode. If set to `false`, the query result is not inserted into the query result
-cache. Note that query results are never inserted into the query result cache if
-the query result cache is disabled, and that they are automatically inserted into
-the query result cache if it is active in non-demand mode.
+Whether the [AQL query results cache](../execution-and-performance/caching-query-results.md)
+shall be used for adding as well as for retrieving results.
+
+If the query cache mode is set to `demand` and you set the `cache` query option
+to `true` for a query, then its query result is cached if it's eligible for
+caching. If the query cache mode is set to `on`, query results are automatically
+cached if they are eligible for caching unless you set the `cache` option to `false`.
+
+If you set the `cache` option to `false`, then any query cache lookup is skipped
+for the query. If you set it to `true`, the query cache is checked a cached result
+**if** the query cache mode is either set to `on` or `demand`.
+
+```js
+---
+name: 02_workWithAQL_cache
+description: ''
+---
+var resultCache = require("@arangodb/aql/cache");
+resultCache.properties({ mode: "demand" });
+~resultCache.clear();
+db._query("FOR i IN 1..5 RETURN i", {}, { cache: true }); // Adds result to cache
+db._query("FOR i IN 1..5 RETURN i", {}, { cache: true }); // Retrieves result from cache
+db._query("FOR i IN 1..5 RETURN i", {}, { cache: false }); // Bypasses the cache
+```
 
 #### `fillBlockCache`
 

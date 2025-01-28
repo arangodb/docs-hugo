@@ -132,8 +132,8 @@ The following new metrics have been added for memory observability:
 ### Shard rebalancing
 
 The feature for rebalancing shards in cluster deployments has been moved from
-the **Rebalance Shards** tab in the **NODES** section to the **Distribution**
-tab in the **CLUSTER** section of the web interface.
+the **Rebalance Shards** tab in the **Nodes** section to the **Distribution**
+tab in the **Cluster** section of the web interface.
 
 The updated interface now offers the following options:
 - **Move Leaders**
@@ -172,7 +172,7 @@ you more control over query optimization according to your specific requirements
 ### Swagger UI
 
 The interactive tool for exploring HTTP APIs has been updated to version 5.4.1.
-You can find it in the web interface in the **Rest API** tab of the **SUPPORT**
+You can find it in the web interface in the **Rest API** tab of the **Support**
 section, as well as in the **API** tab of Foxx services and Foxx routes that use
 `module.context.createDocumentationRouter()`.
 
@@ -503,6 +503,16 @@ Optimization rules applied:
   4   move-filters-up-2                          8   reduce-extraction-to-projection  
 ```
 
+The number of document lookups caused by late materialization is now reported
+under `extra.stats.documentLookups` by the Cursor HTTP API and shown in a column
+of the query profile output:
+
+```aql
+Query Statistics:
+ Writes Exec      Writes Ign      Doc. Lookups      Scan Full      Scan Index      Cache Hits/Misses      Filtered      Peak Mem [b]      Exec Time [s]
+           0               0               290              0            3708                  0 / 0          3418             32768            0.01247
+```
+
 ---
 
 <small>Introduced in: v3.12.1</small>
@@ -714,8 +724,322 @@ FILTER p.edges[1].foo == "bar" AND
        p.edges[2].baz == "qux"
 ```
 
-See the [Traversal `OPTIONS`](../../aql/graphs/traversals.md#working-with-named-graphs)
+See the [Traversal options](../../aql/graphs/traversals.md#traversal-options)
 for details.
+
+
+### Query logging
+
+<small>Introduced in: v3.12.2</small>
+
+A new feature for logging metadata of past AQL queries has been added.
+
+You can optionally let ArangoDB store information such as run time, memory usage,
+and failure reasons to the `_queries` system collection in the `_system` database
+with a configurable sampling probability and retention period. This allows you
+to analyze the metadata directly in the database system to debug query issues
+and understand usage patterns.
+
+See [Query logging](../../aql/execution-and-performance/query-logging.md) for details.
+
+
+### Bypass edge cache for graph operations
+
+<small>Introduced in: v3.12.2</small>
+
+The `useCache` option is now supported for graph traversals and path searches.
+
+You can set this option to `false` to not make a large graph operation pollute
+the edge cache.
+
+```aql
+FOR v, e, p IN 1..5 OUTBOUND "vertices/123" edges
+  OPTIONS { useCache: false }
+  ...
+```
+
+
+
+### Push limit into index optimization
+
+<small>Introduced in: v3.12.2</small>
+
+A new `push-limit-into-index` optimizer rule has been added to better utilize
+`persistent` indexes over multiple fields when there are a subsequent `SORT` and
+`LIMIT` operation. The following conditions need to be met for the rule to be
+applied:
+
+- The index must be a compound index
+- The index condition must use the `IN` comparison operator
+- The attributes used for the `IN` comparison must be the ones used by the index
+- There must not be an outer loop and there must not be post-filtering
+- The attributes to sort by must be the same ones as in index and in the same
+  order, and they must all be in the same direction (all `ASC` or all `DESC`).
+
+Under these circumstances, fetching all the data to sort it is unnecessary
+because it is already sorted in the index. This makes it possible to get results
+from the index in batches. This can greatly improve the performance of certain
+queries.
+
+Example query:
+
+```aql
+FOR doc IN coll
+  FILTER doc.x IN ["foo", "bar"]
+  SORT doc.y
+  LIMIT 10
+  RETURN doc
+```
+
+With a persistent index over `x` and `y` but without the optimization, the
+query explain output looks as follows:
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT 
+  9   IndexNode                500     - FOR doc IN coll   /* persistent index scan, index only (projections: `y`) */    LET #5 = doc.`y`   /* with late materialization */
+  6   SortNode                 500       - SORT #5 ASC   /* sorting strategy: constrained heap */
+  7   LimitNode                 10       - LIMIT 0, 10
+ 10   MaterializeNode           10       - MATERIALIZE doc INTO #4
+  8   ReturnNode                10       - RETURN #4
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  9   idx_1806008994935865344   persistent   coll         false    false    false      100.00 %   [ `x`, `y` ]   [  ]            (doc.`x` IN [ "bar", "foo" ])
+```
+
+With the optimization, the `LIMIT 10` is pushed into the index node with the
+comment `/* early reducing results */`:
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT 
+  9   IndexNode                500     - FOR doc IN coll   /* persistent index scan, index only (projections: `y`) */    LET #5 = doc.`y`   LIMIT 10 /* early reducing results */   /* with late materialization */
+  6   SortNode                 500       - SORT #5 ASC   /* sorting strategy: constrained heap */
+  7   LimitNode                 10       - LIMIT 0, 10
+ 10   MaterializeNode           10       - MATERIALIZE doc INTO #4
+  8   ReturnNode                10       - RETURN #4
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  9   idx_1806008994935865344   persistent   coll         false    false    false      100.00 %   [ `x`, `y` ]   [  ]            (doc.`x` IN [ "bar", "foo" ])
+```
+
+### Array and object destructuring
+
+<small>Introduced in: v3.12.2</small>
+
+Destructuring lets you assign array values and object attributes to one or
+multiple variables with a single `LET` operation and as part of regular `FOR`
+loops. This can be convenient to extract a subset of values and name them in a
+concise manner.
+
+Array values are assigned by position and you can skip elements by leaving out
+variable names.
+
+Object attributes are assigned by name but you can also map them to different
+variable names.
+
+You can mix both array and object destructuring.
+
+```aql
+LET [x, y] = [1, 2, 3]   // Assign 1 to variable x and 2 to y
+LET [, y, z] = [1, 2, 3] // Assign 2 to variable y and 3 to z
+
+// Assign "Luna Miller" to variable name and 39 to age
+LET { name, age } = { vip: true, age: 39, name: "Luna Miller" }
+
+// Assign the vip attribute value to variable status
+LET { vip: status } = { vip: true, age: 39, name: "Luna Miller" }
+
+// Assign 1 to variable x, 2 to y, and 3 to z
+LET { obj: [x, [y, z]] } = { obj: [1, [2, 3]] }
+
+// Iterate over array of objects and extract the firstName attribute
+LET names = [ { firstName: "Luna"}, { firstName: "Sam" } ]
+FOR { firstName } IN names
+  RETURN firstName
+```
+
+See [Array destructuring](../../aql/operators.md#array-destructuring) and
+[Object destructuring](../../aql/operators.md#object-destructuring) for details.
+
+### Improved utilization of sorting order for `COLLECT`
+
+<small>Introduced in: v3.12.3</small>
+
+The query optimizer now automatically recognizes additional cases that allow
+using the faster sorted method for a `COLLECT` operation. For example, the
+following query previously created a query plan with two `SORT` operations and
+used the hash method for `COLLECT`.
+
+```aql
+FOR doc IN coll
+  SORT doc.value DESC
+  COLLECT val = doc.value
+  RETURN val
+```
+
+```aql
+Execution plan:
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT 
+  2   EnumerateCollectionNode     ✓     36     - FOR doc IN coll   /* full collection scan (projections: `value`)  */   LET #4 = doc.`value`
+  4   SortNode                    ✓     36       - SORT #4 DESC   /* sorting strategy: standard */
+  6   CollectNode                 ✓     28       - COLLECT val = #4   /* hash */
+  8   SortNode                    ✓     28       - SORT val ASC   /* sorting strategy: standard */
+  7   ReturnNode                        28       - RETURN val
+```
+
+Now, the optimizer checks whether all grouping values are covered by the
+user-requested `SORT`, ignoring the direction, and doesn't create an additional
+`SORT` node in that case. A sort in descending order can thus now be utilized
+for grouping using the sorted method, and possibly even utilize an index.
+
+```aql
+Execution plan:
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT 
+  2   EnumerateCollectionNode     ✓     36     - FOR doc IN coll   /* full collection scan (projections: `value`)  */   LET #5 = doc.`value`
+  4   SortNode                    ✓     36       - SORT #5 DESC   /* sorting strategy: standard */
+  6   CollectNode                 ✓     28       - COLLECT val = #5   /* sorted */
+  7   ReturnNode                        28       - RETURN val
+```
+
+### Fast object enumeration with `ENTRIES()`
+
+<small>Introduced in: v3.12.3</small>
+
+A new optimization has been implemented to improve the efficiency of the
+[`ENTRIES()` function](../../aql/functions/document-object.md#entries) in AQL.
+
+The new `replace-entries-with-object-iteration` optimizer rule can recognize a
+query pattern like `FOR obj IN source FOR [key, value] IN ENTRIES(obj) ...`
+and use a faster code path for iterating over the object that avoids copying a
+lot of key/value pairs and storing intermediate results.
+
+```aql
+LET source = [ { a: 1, b: 2 }, { c: 3 } ]
+
+FOR doc IN source // collection or array of objects
+  FOR [key, value] IN ENTRIES(doc)
+  RETURN CONCAT(key, value)
+```
+
+Without the optimization, the node with ID `6` uses a regular list iteration:
+
+```aql
+Execution plan:
+ Id   NodeType            Par   Est.   Comment
+  1   SingletonNode                1   * ROOT
+  2   CalculationNode       ✓      1     - LET source = [ { "a" : 1, "b" : 2 }, { "c" : 3 } ]   /* json expression */   /* const assignment */
+  4   EnumerateListNode     ✓      2     - FOR doc IN source   /* list iteration */
+  5   CalculationNode       ✓      2       - LET #7 = ENTRIES(doc)   /* simple expression */
+  6   EnumerateListNode     ✓    200       - FOR #4 IN #7   /* list iteration */
+  9   CalculationNode       ✓    200         - LET #8 = CONCAT(#4[0], #4[1])   /* simple expression */
+ 10   ReturnNode                 200         - RETURN #8
+```
+
+With the optimization applied, the faster object iteration is used:
+
+```aql
+Execution plan:
+ Id   NodeType            Par   Est.   Comment
+  1   SingletonNode                1   * ROOT
+  2   CalculationNode       ✓      1     - LET source = [ { "a" : 1, "b" : 2 }, { "c" : 3 } ]   /* json expression */   /* const assignment */
+  4   EnumerateListNode     ✓      2     - FOR doc IN source   /* list iteration */
+  6   EnumerateListNode     ✓    200       - FOR [key, value] OF doc   /* object iteration */
+  9   CalculationNode       ✓    200         - LET #8 = CONCAT(key, value)   /* simple expression */
+ 10   ReturnNode                 200         - RETURN #8
+```
+
+### Improved graph path searches
+
+<small>Introduced in: v3.12.3</small>
+
+Due to a refactoring in version 3.11, the performance of certain graph queries
+regressed while others improved. In particular shortest path queries like
+`K_SHORTEST_PATHS` queries became slower for certain datasets compared to
+version 3.10. The performance should now be similar again due to a switch from
+a Dijkstra-like algorithm back to Yen's algorithm and by re-enabling caching
+of neighbor vertices in one case.
+
+In addition, shortest path searches may finish earlier now due to some
+optimizations to disregard candidate paths for which better candidates have been
+found already.
+
+### Cache for query execution plans (experimental)
+
+<small>Introduced in: v3.12.4</small>
+
+An optional execution plan cache for AQL queries has been added to let you skip query
+planning and optimization when running the same queries repeatedly. This can
+significantly reduce the total time for running particular queries where a lot
+of time is spent on the query planning and optimization passes in proportion to
+the actual execution.
+
+Query plans are not cached by default. You need to set the new `usePlanCache`
+query option to `true` to utilize cached plans as well as to add plans to the
+cache. Otherwise, the plan cache is bypassed.
+
+```js
+db._query("FOR doc IN coll FILTER doc.attr == @val RETURN doc", { val: "foo" }, { usePlanCache: true });
+```
+
+Not all AQL queries are eligible for plan caching. You can generally not cache
+plans of queries where bind variables affect the structure of the execution plan
+or the index utilization.
+See [Cache eligibility](../../aql/execution-and-performance/caching-query-plans.md#cache-eligibility)
+for details.
+
+HTTP API endpoints and a JavaScript API module have been added for clearing the
+contents of the query plan cache and for retrieving the current plan cache entries.
+See [The execution plan cache for AQL queries](../../aql/execution-and-performance/caching-query-plans.md#interfaces)
+for details.
+
+```js
+require("@arangodb/aql/plan-cache").toArray();
+```
+
+```json
+[
+  {
+    "hash" : "2757239675060883499",
+    "query" : "FOR doc IN coll FILTER doc.attr == @val RETURN doc",
+    "queryHash" : 11382508862770890000,
+    "bindVars" : {
+    },
+    "fullCount" : false,
+    "dataSources" : [
+      "coll"
+    ],
+    "created" : "2024-11-20T17:21:34Z",
+    "hits" : 0,
+    "memoryUsage" : 3070
+  }
+]
+```
+
+The following startup options have been added to let you configure the plan cache:
+
+- `--query.plan-cache-max-entries`: The maximum number of plans in the
+  query plan cache per database. The default value is `128`.
+- `--query.plan-cache-max-memory-usage`: The maximum total memory usage for the
+  query plan cache in each database. The default value is `8MB`.
+- `--query.plan-cache-max-entry-size`: The maximum size of an individual entry
+  in the query plan cache in each database. The default value is `2MB`.
+- `--query.plan-cache-invalidation-time`: The time in seconds after which a
+  query plan is invalidated in the query plan cache.
+
+The following metrics have been added to monitor the query plan cache:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_aql_query_plan_cache_hits_total` | Total number of lookup hits in the AQL query plan cache. |
+| `arangodb_aql_query_plan_cache_memory_usage` | Total memory usage of all query plan caches across all databases. |
+| `arangodb_aql_query_plan_cache_misses_total` | Total number of lookup misses in the AQL query plan cache. |
 
 ## Indexing
 
@@ -740,6 +1064,86 @@ to `_from` or `_to`.
 See [Multi-dimensional indexes](../../index-and-search/indexing/working-with-indexes/multi-dimensional-indexes.md)
 for details.
 
+#### Native strict ranges
+
+<small>Introduced in: v3.12.3</small>
+
+Multi-dimensional indexes no longer require post-filtering when using strict
+ranges like in the following query:
+
+```aql
+FOR d IN coll
+  FILTER 0 < d.x && d.x < 1
+  RETURN d.x
+```
+
+```aql
+Execution plan:
+ Id   NodeType        Par   Est.   Comment
+  1   SingletonNode            1   * ROOT
+  7   IndexNode         ✓     71     - FOR d IN coll   /* mdi index scan, index scan + document lookup (filter projections: `x`) (projections: `x`) */    LET #3 = d.`x`   FILTER ((d.`x` > 0) && (d.`x` < 1))   /* early pruning */   
+  6   ReturnNode              71       - RETURN #3
+
+Indexes used:
+ By   Name                      Type   Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  7   idx_1812443690233233408   mdi    coll         false    false    false           n/a   [ `x`, `y` ]   [  ]            ((d.`x` >= 0) && (d.`x` <= 1))
+```
+
+Native support for strict ranges removes a potential bottleneck when working
+with large datasets.
+
+```aql
+Execution plan:
+ Id   NodeType        Par   Est.   Comment
+  1   SingletonNode            1   * ROOT 
+  7   IndexNode         ✓     71     - FOR d IN coll   /* mdi index scan, index scan + document lookup (projections: `x`) */    LET #3 = d.`x`   
+  6   ReturnNode              71       - RETURN #3
+
+Indexes used:
+ By   Name                      Type   Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  7   idx_1812443856099082240   mdi    coll         false    false    false           n/a   [ `x`, `y` ]   [  ]            ((d.`x` > 0) && (d.`x` < 1))
+```
+
+#### Extended utilization of sparse indexes
+
+<small>Introduced in: v3.12.3</small>
+
+The `null` value is less than all other values in AQL. Therefore, range queries
+without a lower bound need to include `null` but sparse indexes do not include
+`null` values. However, if you explicitly exclude `null` in range queries,
+sparse indexes can be utilized after all. This was not previously supported for
+multi-dimensional indexes. Even with a sparse `mdi` index over the fields `x`
+and `y` and the exclusion of `null`, the following example query cannot take
+advantage of the index up to v3.12.2:
+
+```aql
+FOR d IN coll
+  FILTER d.x < 10 && d.x != null RETURN d
+```
+
+```aql
+Execution plan:
+ Id   NodeType                  Par   Est.   Comment
+  1   SingletonNode                      1   * ROOT
+  2   EnumerateCollectionNode     ✓    100     - FOR d IN coll   /* full collection scan  */   FILTER ((d.`x` < 10) && (d.`x` != null))   /* early pruning */
+  5   ReturnNode                       100       - RETURN d
+```
+
+From v3.13.3 onward, such a query gets optimized to utilize the sparse
+multi-dimensional index and the condition for excluding `null` is removed from
+the query plan because it is unnecessary – a sparse index contains values other
+than `null` only:
+
+Execution plan:
+ Id   NodeType        Par   Est.   Comment
+  1   SingletonNode            1   * ROOT 
+  6   IndexNode         ✓     71     - FOR d IN coll   /* mdi index scan, index scan + document lookup */    
+  5   ReturnNode              71       - RETURN d
+
+Indexes used:
+ By   Name                      Type   Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  6   idx_1812445012396343296   mdi    coll         false    true     false           n/a   [ `x`, `y` ]   [  ]            (d.`x` < 10)
+
 ### Stored values can contain the `_id` attribute
 
 The usage of the `_id` system attribute was previously disallowed for
@@ -748,6 +1152,19 @@ The usage of the `_id` system attribute was previously disallowed for
 Note that it is still forbidden to use `_id` as a top-level attribute or
 sub-attribute in `fields` of persistent indexes. On the other hand, inverted
 indexes have been allowing to index and store the `_id` system attribute.
+
+### Vector indexes (experimental)
+
+<small>Introduced in: v3.12.4</small>
+
+A new `vector` index type has been added as an experimental feature that enables
+you to find items with similar properties by comparing vector embeddings, which
+are numerical representations generated by machine learning models.
+
+To try out this feature, start an ArangoDB server (`arangod`) with the
+`--experimental-vector-index` startup option and follow the guide in this
+blog post:
+[Vector Search in ArangoDB: Practical Insights and Hands-On Examples](https://arangodb.com/2024/11/vector-search-in-arangodb-practical-insights-and-hands-on-examples/)
 
 ## Server options
 
@@ -773,7 +1190,8 @@ in the `--server.endpoint` startup option of the server.
 
 The previously fixed limit of 128 MiB for [Stream Transactions](../../develop/transactions/stream-transactions.md)
 can now be configured with the new `--transaction.streaming-max-transaction-size`
-startup option. The default value remains 128 MiB.
+startup option. The default value remains 128 MiB up to v3.12.3.
+From v3.12.4 onward, the default value is 512 MiB.
 
 ### Transparent compression of requests and responses between ArangoDB servers and client tools
 
@@ -985,6 +1403,35 @@ scheduler type. The scheduler currently used by ArangoDB has the value
 `supervised`. A new work-stealing scheduler is being implemented and can be
 selected using the value `threadpools`. This new scheduler is experimental and
 should not be used in production.
+
+### Query logging options
+
+<small>Introduced in: v3.12.2</small>
+
+The following startup options related to the [Query logging](#query-logging)
+feature have been added:
+
+- `--query.collection-logger-enabled`:
+  Whether to enable the logging of metadata for past AQL queries
+- `--query.collection-logger-include-system-database`:
+  Whether to log queries that run in the `_system` database
+- `--query.collection-logger-probability`:
+  The sampling probability for logging queries (in percent)
+- `--query.collection-logger-all-slow-queries`:
+  Whether to always log slow queries regardless of whether they are selected for
+  sampling or not
+- `--query.collection-logger-retention-time`:
+  The retention period for entries in the `_queries` system collection (in seconds)
+- `--query.collection-logger-cleanup-interval`:
+  The interval for running the cleanup process for the retention configuration
+  (in milliseconds)
+- `--query.collection-logger-push-interval`:
+  How long to buffer query log entries in memory before they are actually
+  written to the system collection (in milliseconds)
+- `--query.collection-logger-max-buffered-queries`:
+  The number of query log entries to buffer in memory before they are flushed to
+  the system collection, discarding additional query metadata if the logging
+  thread cannot keep up
 
 ## Miscellaneous changes
 
@@ -1402,6 +1849,48 @@ exclusive locks on the same collection.
 See the [JavaScript API](../../develop/transactions/stream-transactions.md#javascript-api)
 and the [HTTP API](../../develop/http-api/transactions/stream-transactions.md#begin-a-stream-transaction)
 for details.
+
+### Individual log levels per log output
+
+<small>Introduced in: v3.12.2</small>
+
+You can now configure the log level for each log topic per log output. You can
+use this feature to log verbosely to a file but print less information in the
+command-line, for instance.
+
+The repeatable `--log.level` startup option lets you set the log levels for
+log topics as before. You can now additionally specify the levels for individual
+topics in `--log.output` by appending a semicolon and a comma-separated mapping
+of log topics and levels after the destination to override the `--log.level`
+configuration:
+
+```sh
+--log.level memory=warning
+--log.output "file:///path/to/file;queries=trace,requests=info"
+--log.output "-;all=error"
+```
+
+This sets the log level to `warning` for the `memory` topic, which applies to
+all outputs unless overridden. The first output is a file with verbose `trace`
+logging for the `queries` topic, `info`-level logging for `requests`,
+`warning`-level logging for `memory`, and default levels for all other topics.
+The second output is to the standard output (command-line), using the `all`
+pseudo-topic to set the log levels to `error` for all topics. 
+
+Furthermore, the [HTTP API](../../develop/http-api/monitoring/logs.md#get-the-server-log-levels)
+has been extended to let you query and set the log levels for individual outputs
+at runtime.
+
+### Lost subordinate transactions metric
+
+<small>Introduced in: v3.12.4</small>
+
+The following metric about partially committed or aborted transactions on
+DB-Servers in a cluster has been added:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_vocbase_transactions_lost_subordinates_total` | Counts the number of lost subordinate transactions on database servers. |
 
 ## Client tools
 
