@@ -20,3 +20,11 @@ the View name is `demo`, then the URL of that View is:
 ```
 http://localhost:8529/_api/view/demo
 ```
+
+## View types
+
+ArangoDB supports the following types of Views and they share endpoints in the
+HTTP API but the behavior is different for each:
+
+- [`arangosearch` Views](arangosearch-views.md)
+- [`search-alias` Views](search-alias-views.md)
