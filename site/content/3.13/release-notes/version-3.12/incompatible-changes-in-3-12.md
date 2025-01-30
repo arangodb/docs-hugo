@@ -389,7 +389,7 @@ To prevent ArangoDB deployments from entering a read-only mode due to this issue
 please follow the below procedures to check if your deployment is affected and
 how to correct it if necessary.
 
-**Check if you are affected**
+### Check if you are affected
 
 The following procedure is recommended for every deployment unless it has been
 created with v3.11.11, v3.12.2, or any later version.
@@ -450,10 +450,35 @@ created with v3.11.11, v3.12.2, or any later version.
    }
    ```
 
-   If this is the case, continue with the following procedure for unaffected
-   deployments. Otherwise, follow the procedure for affected deployments below.
+   If this is the case, continue with
+   [If the deployment is NOT affected](#if-the-deployment-is-not-affected).
 
-**If the deployment is NOT affected**
+   If affected indexes are found, the check result looks similar to this:
+
+   ```json
+   {
+     "error": false,
+     "code": 200,
+     "result": {
+       "affected": [
+         {
+           "database": "_system",
+           "collection": "coll",
+           "indexId": 195,
+           "indexName": "idx_1806192152446763008"
+         }
+       ],
+       "error": true,
+       "errorCode": 1242,
+       "errorMessage": "some indexes have legacy sorted keys"
+     }
+   }
+   ```
+
+   If this is the case, continue with
+   [If the deployment is affected](#if-the-deployment-is-affected).
+
+### If the deployment is NOT affected
 
 1. Make sure that no problematic values are written to or removed from an index
    between checking for affected indexes and completing the procedure.
@@ -489,42 +514,23 @@ created with v3.11.11, v3.12.2, or any later version.
 
 4. Complete the procedure by resuming writes to the database systems.
 
-**If the deployment is affected**
+### If the deployment is affected
 
-1. If affected indexes are found, the check result looks similar to this:
+{{< info >}}
+If you are a customer, please contact the ArangoDB support to assist you with
+the following steps.
+{{< /info >}}
 
-   ```json
-   {
-     "error": false,
-     "code": 200,
-     "result": {
-       "affected": [
-         {
-           "database": "_system",
-           "collection": "coll",
-           "indexId": 195,
-           "indexName": "idx_1806192152446763008"
-         }
-       ],
-       "error": true,
-       "errorCode": 1242,
-       "errorMessage": "some indexes have legacy sorted keys"
-     }
-   }
-   ```
+1. This step depends on the deployment mode:
 
-2. If you are a customer, please contact the ArangoDB support to assist you with
-   the following steps.
-
-3. This step depends on the deployment mode:
-
-   - **Single server**: Create a full dump with [arangodump](../../components/tools/arangodump/_index.md),
+   - **Single server**: Create a new server. Then create a full dump with
+     [arangodump](../../components/tools/arangodump/_index.md) of the old server,
      using the `--all-databases` and `--include-system-collections` startup options
      and a user account with administrate access to the `_system` database and
      at least read access to all other databases to ensure all data including
      the `_users` system collection are dumped.
      
-     Restore the dump to a new single server using at least v3.11.11 or v3.12.2.
+     Restore the dump to the new single server using at least v3.11.11 or v3.12.2.
      You need to use a new database directory.
 
    - **Cluster**: Replace the DB-Server nodes until they all run at least
@@ -534,16 +540,17 @@ created with v3.11.11, v3.12.2, or any later version.
      For each DB-Server, add a new DB-Server node to the cluster. Wait until all
      new DB-Servers are in sync, then clean out the old DB-Server nodes.
 
-4. New instances using the fixed versions initialize the database directory
+2. New instances using the fixed versions initialize the database directory
    with the sorting order marked as correct and also restore data from dumps
-   correctly.
+   correctly. There is no need to call the `.../vpackSortMigration/migrate`
+   HTTP API endpoint like in the unaffected case.
 
-   If you revert to an older state with affected indexes by restoring a
+3. If you revert to an older state with affected indexes by restoring a
    Hot Backup, you need to repeat the procedure.
 
 ## Changed JSON serialization and VelocyPack format for replication
 
-<small>Introduced in: v3.12.3</small>
+<small>Introduced in: v3.11.12, v3.12.3</small>
 
 While there is only one number type in JSON, the VelocyPack format that ArangoDB
 uses supports different numeric data types. When converting between VelocyPack
