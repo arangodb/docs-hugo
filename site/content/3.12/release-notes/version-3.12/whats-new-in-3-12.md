@@ -1612,7 +1612,7 @@ feature have been added:
   the system collection, discarding additional query metadata if the logging
   thread cannot keep up
 
-### Cluster management
+### Cluster management options
 
 <small>Introduced in: v3.12.4</small>
 
