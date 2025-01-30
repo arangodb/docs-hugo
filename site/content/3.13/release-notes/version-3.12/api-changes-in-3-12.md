@@ -425,6 +425,14 @@ add the `withHidden=true` query parameter to the call of the endpoint.
 curl "http://localhost:8529/_api/index?collection=myCollection&withHidden=true"
 ```
 
+#### Vector indexes (experimental)
+
+<small>Introduced in: v3.12.4</small>
+
+A new `vector` index type has been added as an experimental feature.
+See this [blog post](https://arangodb.com/2024/11/vector-search-in-arangodb-practical-insights-and-hands-on-examples/)
+for details.
+
 #### Optimizer rule descriptions
 
 <small>Introduced in: v3.10.9, v3.11.2</small>

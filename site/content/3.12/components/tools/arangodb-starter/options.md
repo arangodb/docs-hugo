@@ -384,8 +384,9 @@ Make sure to match the arguments given to start the Starter
 
 ## Environment variables
 
-It is possible to replace all command-line arguments for the starter with
-environment variables. To do so, set an environment variable named
+It is possible to replace all command-line arguments for the starter itself with
+environment variables (but not any `--args.*` pass-through options for the
+ArangoDB server). To do so, set an environment variable named
 `ARANGODB_` + `<name of command line option in uppercase>`, where all dashes,
 underscores and dots are replaced with underscores.
 

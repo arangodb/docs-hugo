@@ -592,6 +592,14 @@ the file extension. The default value of the `--type` startup option has been
 changed from `json` to `auto`. You might need to explicitly specify the `--type`
 in exceptional cases now whereas it was not necessary to do so previously.
 
+#### Decreased default batch size
+
+<small>Introduced in: v3.12.4</small>
+
+The default value of the `--batch-size` startup option has been lowered from
+8 MiB to 4 MiB to avoid potential resource limits, in particular when importing
+to smart edge collections.
+
 ### jslint feature in arangosh removed
 
 The `--jslint` startup option and all of the underlying functionality has been
