@@ -363,9 +363,16 @@ for more information.
 
 <small>Introduced in: v3.11.11, v3.12.2</small>
 
+- [Issues with the comparison of large indexed numbers](#issues-with-the-comparison-of-large-indexed-numbers)
+- [Check if you are affected](#check-if-you-are-affected)
+- [If the deployment is NOT affected](#if-the-deployment-is-not-affected)
+- [If the deployment is affected](#if-the-deployment-is-affected)
+
+### Issues with the comparison of large indexed numbers
+
 If you store very large numeric values in ArangoDB – greater than/equal to
 2<sup>53</sup> (9,007,199,254,740,992) or less than/equal to
--(2<sup>53</sup>) (-9,007,199,254,740,992) – and index them with an affected
+-2<sup>53</sup> (-9,007,199,254,740,992) – and index them with an affected
 index type, the values may not be in the correct order. This is due to how the
 comparison is executed in versions before v3.11.11 and v3.12.2. If the numbers
 are represented using different VelocyPack types internally, they are converted
