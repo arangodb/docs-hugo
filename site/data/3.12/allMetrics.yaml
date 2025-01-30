@@ -574,6 +574,57 @@
     Every time this counter increases, an AQL query aborted with a
     "resource limit exceeded" error.
 
+- name: arangodb_aql_query_plan_cache_hits_total
+  introducedIn: "3.12.4"
+  help: |
+    Total number of lookup hits in the AQL query plan cache.
+  unit: number
+  type: counter
+  category: AQL
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - single
+  description: |
+    Total number of lookup hits in the AQL query plan cache.
+    The counter is increased whenever a query plan is looked up and found
+    in the query plan cache.
+
+- name: arangodb_aql_query_plan_cache_memory_usage
+  introducedIn: "3.12.4"
+  help: |
+    Total memory usage of all query plan caches across all databases.
+  unit: bytes
+  type: gauge
+  category: AQL
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - single
+  description: |
+    Total memory usage of all query plan caches across all databases.
+    The gauge is changed whenever a query plan is added or removed from
+    a query plan cache. Note that there is a limit of entries for each
+    query plan cache and a limit to its memory usage, however, this limit
+    is only per database. There is currently no global limit for all
+    databases.
+
+- name: arangodb_aql_query_plan_cache_misses_total
+  introducedIn: "3.12.4"
+  help: |
+    Total number of lookup misses in the AQL query plan cache.
+  unit: number
+  type: counter
+  category: AQL
+  complexity: simple
+  exposedBy:
+    - coordinator
+    - single
+  description: |
+    Total number of lookup misses in the AQL query plan cache.
+    The counter is increased whenever a query plan is looked up and not found
+    in the query plan cache.
+
 - name: arangodb_aql_query_time
   introducedIn: "3.6.10"
   help: |
@@ -628,36 +679,10 @@
     Total execution time of all AQL queries, in milliseconds,
     including all slow queries.
 
-- name: arangodb_async_active_functions
-  introducedIn: "3.12.3"
+- name: arangodb_async_promises_total
+  introducedIn: "3.12.4"
   help: |
-    Number of asynchronous functions that are currently active (are not yet resolved).
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - dbserver
-  description: |
-    Number of asynchronous functions that are currently active (are not yet resolved).
-
-- name: arangodb_async_active_threads
-  introducedIn: "3.12.3"
-  help: |
-    Number of active threads that execute asynchronous functions.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - dbserver
-  description: |
-    Number of active threads that execute asynchronous functions.
-
-- name: arangodb_async_functions_total
-  introducedIn: "3.12.3"
-  help: |
-    Number of all asynchronous functions that have been created so far.
+    Total number of registered asynchronous promises since database creation.
   unit: number
   type: counter
   category: Statistics
@@ -665,12 +690,12 @@
   exposedBy:
     - dbserver
   description: |
-    Number of all asynchronous functions that have been created so far.
+    Total number of registered asynchronous promises since database creation.
 
-- name: arangodb_async_ready_for_deletion_functions
-  introducedIn: "3.12.3"
+- name: arangodb_async_ready_for_deletion_promises
+  introducedIn: "3.12.4"
   help: |
-    Number of asynchronous functions that are resolved and are waiting for their deletion in the next garbage collection run.
+    Number of currently registered asynchronous promises that wait for their garbage collection.
   unit: number
   type: gauge
   category: Statistics
@@ -678,12 +703,25 @@
   exposedBy:
     - dbserver
   description: |
-    Number of asynchronous functions that are resolved and are waiting for their deletion in the next garbage collection run. If this number does not go back to zero at some point, we missed calling the garbage collection in a thread.
+    Number of currently registered asynchronous promises that wait for their garbage collection.
+
+- name: arangodb_async_registered_promises
+  introducedIn: "3.12.4"
+  help: |
+    Number of currently registered asynchronous promises.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+  description: |
+    Number of currently registered asynchronous promises.
 
 - name: arangodb_async_registered_threads
-  introducedIn: "3.12.3"
+  introducedIn: "3.12.4"
   help: |
-    Number of registered threads that execute asynchronous functions.
+    Number of threads the asynchronous registry iterates over to list all asynchronous promises.
   unit: number
   type: gauge
   category: Statistics
@@ -691,12 +729,25 @@
   exposedBy:
     - dbserver
   description: |
-    Number of registered threads that execute asynchronous functions.
+    Number of threads the asynchronous registry iterates over to list all asynchronous promises.
+
+- name: arangodb_async_running_threads
+  introducedIn: "3.12.4"
+  help: |
+    Number of currently running threads that registered asynchronous promises.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+  description: |
+    Number of currently running threads that registered asynchronous promises.
 
 - name: arangodb_async_threads_total
-  introducedIn: "3.12.3"
+  introducedIn: "3.12.4"
   help: |
-    Number of all threads created so far that execute asynchronous functions.
+    Total number of threads that registered asynchronous promises since database creation.
   unit: number
   type: counter
   category: Statistics
@@ -704,7 +755,7 @@
   exposedBy:
     - dbserver
   description: |
-    Number of all threads created so far that execute asynchronous functions.
+    Total number of threads that registered asynchronous promises since database creation.
 
 - name: arangodb_client_connection_statistics_bytes_received
   introducedIn: "3.8.0"
@@ -6146,6 +6197,22 @@
     some constant server crash (maybe out of memory crashes?) or another
     situation preventing shards to get in sync.
     Contact ArangoDB customer support in this case.
+
+- name: arangodb_vocbase_transactions_lost_subordinates_total
+  introducedIn: "3.12.4"
+  help: |
+    Counts the number of lost subordinate transactions on database servers.
+  unit: number
+  type: counter
+  category: Transactions
+  complexity: advanced
+  exposedBy:
+    - coordinator
+  description: |
+    Counts the number of lost subordinate transactions on database servers, i.e. transactions that are only partially
+    committed or aborted. Transactions will eventually be cleaned up.
+  troubleshoot: |
+    If this value has increased recently, acquiring an exclusive lock on a collection might run into timeouts.
 
 - name: rocksdb_actual_delayed_write_rate
   introducedIn: "3.6.1"
