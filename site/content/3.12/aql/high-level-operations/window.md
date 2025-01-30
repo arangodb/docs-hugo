@@ -54,6 +54,7 @@ Calls to the following functions are supported in aggregation expressions:
 - `BIT_AND()`
 - `BIT_OR()`
 - `BIT_XOR()`
+- `PUSH()` (introduced in v3.12.4)
 
 ## Row-based Aggregation
 
@@ -75,15 +76,17 @@ dataset: observationsSampleDataset
 FOR t IN observations
   SORT t.time
   WINDOW { preceding: 1, following: 1 }
-  AGGREGATE rollingAverage = AVG(t.val), rollingSum = SUM(t.val)
+  AGGREGATE rollingAverage = AVG(t.val), rollingSum = SUM(t.val), values = PUSH(t.val)
   WINDOW { preceding: "unbounded", following: 0}
-  AGGREGATE cumulativeSum = SUM(t.val)
+  AGGREGATE cumulativeSum = SUM(t.val), values2 = PUSH(t.val)
   RETURN {
     time: t.time,
     subject: t.subject,
     val: t.val,
+    values,
     rollingAverage, // average of the window's values
     rollingSum,     // sum of the window's values
+    values2,
     cumulativeSum   // running total
   }
 ```
@@ -101,17 +104,17 @@ The second `WINDOW` operation aggregates all previous values (unbounded) to
 calculate a running sum. For the first row, that is just `10`, for the second
 row it is `10` + `0`, for the third `10` + `0` + `9`, and so on.
 
-| time                | subject | val | rollingAverage | rollingSum | cumulativeSum |
-|---------------------|---------|----:|---------------:|-----------:|--------------:|
-| 2021-05-25 07:00:00 |   st113 |  10 |              5 |         10 |            10 |
-| 2021-05-25 07:00:00 |   xh458 |   0 |         6.333… |         19 |            10 |
-| 2021-05-25 07:15:00 |   st113 |   9 |         6.333… |         19 |            19 |
-| 2021-05-25 07:15:00 |   xh458 |  10 |        14.666… |         44 |            29 |
-| 2021-05-25 07:30:00 |   st113 |  25 |        13.333… |         40 |            54 |
-| 2021-05-25 07:30:00 |   xh458 |   5 |        16.666… |         50 |            59 |
-| 2021-05-25 07:45:00 |   st113 |  20 |        18.333… |         55 |            79 |
-| 2021-05-25 07:45:00 |   xh458 |  30 |             25 |         75 |           109 |
-| 2021-05-25 08:00:00 |   xh458 |  25 |           27.5 |         55 |           134 |
+| time                | subject | val | values       | rollingAverage | rollingSum | values2                           | cumulativeSum |
+|---------------------|---------|----:|--------------|---------------:|-----------:|-----------------------------------|--------------:|
+| 2021-05-25 07:00:00 |   st113 |  10 | [10, 0]      |              5 |         10 | [10]                              |            10 |
+| 2021-05-25 07:00:00 |   xh458 |   0 | [10, 0, 9]   |         6.333… |         19 | [10, 0]                           |            10 |
+| 2021-05-25 07:15:00 |   st113 |   9 | [0, 9, 10]   |         6.333… |         19 | [10, 0, 9]                        |            19 |
+| 2021-05-25 07:15:00 |   xh458 |  10 | [9, 10, 25]  |        14.666… |         44 | [10, 0, 9, 10]                    |            29 |
+| 2021-05-25 07:30:00 |   st113 |  25 | [10, 25, 5]  |        13.333… |         40 | [10, 0, 9, 10, 25]                |            54 |
+| 2021-05-25 07:30:00 |   xh458 |   5 | [25, 5, 20]  |        16.666… |         50 | [10, 0, 9, 10, 25, 5]             |            59 |
+| 2021-05-25 07:45:00 |   st113 |  20 | [5, 20, 30]  |        18.333… |         55 | [10, 0, 9, 10, 25, 5, 20]         |            79 |
+| 2021-05-25 07:45:00 |   xh458 |  30 | [20, 30, 25] |             25 |         75 | [10, 0, 9, 10, 25, 5, 20, 30]     |           109 |
+| 2021-05-25 08:00:00 |   xh458 |  25 | [30, 25]     |           27.5 |         55 | [10, 0, 9, 10, 25, 5, 20, 30, 25] |           134 |
 
 The below query demonstrates the use of window frames to compute running totals
 within each `subject` group of `time`-ordered query rows, as well as rolling
@@ -129,15 +132,17 @@ FOR t IN observations
   LET subquery = (FOR t2 IN group
     SORT t2.time
     WINDOW { preceding: 1, following: 1 }
-    AGGREGATE rollingAverage = AVG(t2.val), rollingSum = SUM(t2.val)
+    AGGREGATE rollingAverage = AVG(t2.val), rollingSum = SUM(t2.val), values = PUSH(t2.val)
     WINDOW { preceding: "unbounded", following: 0 }
-    AGGREGATE cumulativeSum = SUM(t2.val)
+    AGGREGATE cumulativeSum = SUM(t2.val), values2 = PUSH(t2.val)
     RETURN {
       time: t2.time,
       subject: t2.subject,
       val: t2.val,
+      values,
       rollingAverage,
       rollingSum,
+      values2,
       cumulativeSum
     }
   )
@@ -150,17 +155,17 @@ If you look at the first row with the subject `xh458`, then you can see the
 cumulative sum reset and that the rolling average and sum does not take the
 previous row into account that belongs to subject `st113`.
 
-| time                | subject | val | rollingAverage | rollingSum | cumulativeSum |
-|---------------------|---------|----:|---------------:|-----------:|--------------:|
-| 2021-05-25 07:00:00 | st113   |  10 |            9.5 |         19 |            10 |
-| 2021-05-25 07:15:00 | st113   |   9 |        14.666… |         44 |            19 |
-| 2021-05-25 07:30:00 | st113   |  25 |             18 |         54 |            44 |
-| 2021-05-25 07:45:00 | st113   |  20 |           22.5 |         45 |            64 |
-| 2021-05-25 07:00:00 | xh458   |   0 |              5 |         10 |             0 |
-| 2021-05-25 07:15:00 | xh458   |  10 |              5 |         15 |            10 |
-| 2021-05-25 07:30:00 | xh458   |   5 |             15 |         45 |            15 |
-| 2021-05-25 07:45:00 | xh458   |  30 |             20 |         60 |            45 |
-| 2021-05-25 08:00:00 | xh458   |  25 |           27.5 |         55 |            70 |
+| time                | subject | val | values      | rollingAverage | rollingSum | values2            | cumulativeSum |
+|---------------------|---------|----:|-------------|---------------:|-----------:|--------------------|--------------:|
+| 2021-05-25 07:00:00 | st113   |  10 | [10, 9]     |            9.5 |         19 | [10]               |            10 |
+| 2021-05-25 07:15:00 | st113   |   9 | [10, 9, 25] |        14.666… |         44 | [10, 9]            |            19 |
+| 2021-05-25 07:30:00 | st113   |  25 | [9, 25, 20] |             18 |         54 | [10, 9, 25]        |            44 |
+| 2021-05-25 07:45:00 | st113   |  20 | [25, 20]    |           22.5 |         45 | [10, 9, 25, 20]    |            64 |
+| 2021-05-25 07:00:00 | xh458   |   0 | [0, 10]     |              5 |         10 | [0]                |             0 |
+| 2021-05-25 07:15:00 | xh458   |  10 | [0, 10, 5]  |              5 |         15 | [0, 10]            |            10 |
+| 2021-05-25 07:30:00 | xh458   |   5 | [10, 5, 30] |             15 |         45 | [0, 10, 5]         |            15 |
+| 2021-05-25 07:45:00 | xh458   |  30 | [5, 30, 25] |             20 |         60 | [0, 10, 5, 30]     |            45 |
+| 2021-05-25 08:00:00 | xh458   |  25 | [30, 25]    |           27.5 |         55 | [0, 10, 5, 30, 25] |            70 |
 
 ## Range-based Aggregation
 
@@ -192,11 +197,12 @@ dataset: observationsSampleDataset
 ---
 FOR t IN observations
   WINDOW t.val WITH { preceding: 10, following: 5 }
-  AGGREGATE rollingAverage = AVG(t.val), rollingSum = SUM(t.val)
+  AGGREGATE rollingAverage = AVG(t.val), rollingSum = SUM(t.val), values = PUSH(t.val)
   RETURN {
     time: t.time,
     subject: t.subject,
     val: t.val,
+    values,
     rollingAverage,
     rollingSum
   }
@@ -209,17 +215,17 @@ means that the last four rows get aggregated to a sum of `100` and an average
 of `25` (the range is inclusive, i.e. `val` falls within the range with a value
 of `20`).
 
-| time                | subject | val | rollingAverage | rollingSum |
-|---------------------|---------|----:|---------------:|-----------:|
-| 2021-05-25 07:00:00 | xh458   |   0 |            2.5 |          5 |
-| 2021-05-25 07:30:00 | xh458   |   5 |            6.8 |         34 |
-| 2021-05-25 07:15:00 | st113   |   9 |            6.8 |         34 |
-| 2021-05-25 07:00:00 | st113   |  10 |            6.8 |         34 |
-| 2021-05-25 07:15:00 | xh458   |  10 |            6.8 |         34 |
-| 2021-05-25 07:45:00 | st113   |  20 |             18 |         90 |
-| 2021-05-25 07:30:00 | st113   |  25 |             25 |        100 |
-| 2021-05-25 08:00:00 | xh458   |  25 |             25 |        100 |
-| 2021-05-25 07:45:00 | xh458   |  30 |             25 |        100 |
+| time                | subject | val | values               | rollingAverage | rollingSum |
+|---------------------|---------|----:|----------------------|---------------:|-----------:|
+| 2021-05-25 07:00:00 | xh458   |   0 | [0, 5]               |            2.5 |          5 |
+| 2021-05-25 07:30:00 | xh458   |   5 | [0, 5, 9, 10, 10]    |            6.8 |         34 |
+| 2021-05-25 07:15:00 | st113   |   9 | [0, 5, 9, 10, 10]    |            6.8 |         34 |
+| 2021-05-25 07:00:00 | st113   |  10 | [0, 5, 9, 10, 10]    |            6.8 |         34 |
+| 2021-05-25 07:15:00 | xh458   |  10 | [0, 5, 9, 10, 10]    |            6.8 |         34 |
+| 2021-05-25 07:45:00 | st113   |  20 | [10, 10, 20, 25, 25] |             18 |         90 |
+| 2021-05-25 07:30:00 | st113   |  25 | [20, 25, 25, 30]     |             25 |        100 |
+| 2021-05-25 08:00:00 | xh458   |  25 | [20, 25, 25, 30]     |             25 |        100 |
+| 2021-05-25 07:45:00 | xh458   |  30 | [20, 25, 25, 30]     |             25 |        100 |
 
 ## Duration-based Aggregation
 
@@ -255,11 +261,12 @@ dataset: observationsSampleDataset
 ---
 FOR t IN observations
   WINDOW DATE_TIMESTAMP(t.time) WITH { preceding: "PT30M" }
-  AGGREGATE rollingAverage = AVG(t.val), rollingSum = SUM(t.val)
+  AGGREGATE rollingAverage = AVG(t.val), rollingSum = SUM(t.val), values = PUSH(t.val)
   RETURN {
     time: t.time,
     subject: t.subject,
     val: t.val,
+    values,
     rollingAverage,
     rollingSum
   }
@@ -269,14 +276,14 @@ With a time of `07:30:00`, everything from `07:00:00` to `07:30:00` on the same
 day falls within the duration range with `preceding: "PT30M"`, thus aggregating
 the top six rows to a sum of `59` and an average of `9.8333…`.
 
-| time                | subject | val | rollingAverage | rollingSum |
-|---------------------|---------|----:|---------------:|-----------:|
-| 2021-05-25 07:00:00 | st113   |  10 |              5 |         10 |
-| 2021-05-25 07:00:00 | xh458   |   0 |              5 |         10 |
-| 2021-05-25 07:15:00 | st113   |   9 |           7.25 |         29 |
-| 2021-05-25 07:15:00 | xh458   |  10 |           7.25 |         29 |
-| 2021-05-25 07:30:00 | st113   |  25 |        9.8333… |         59 |
-| 2021-05-25 07:30:00 | xh458   |   5 |        9.8333… |         59 |
-| 2021-05-25 07:45:00 | st113   |  20 |           16.5 |         99 |
-| 2021-05-25 07:45:00 | xh458   |  30 |           16.5 |         99 |
-| 2021-05-25 08:00:00 | xh458   |  25 |             21 |        105 |
+| time                | subject | val | values                 | rollingAverage | rollingSum |
+|---------------------|---------|----:|------------------------|---------------:|-----------:|
+| 2021-05-25 07:00:00 | st113   |  10 | [10, 0]                |              5 |         10 |
+| 2021-05-25 07:00:00 | xh458   |   0 | [10, 0]                |              5 |         10 |
+| 2021-05-25 07:15:00 | st113   |   9 | [10, 0, 9, 10]         |           7.25 |         29 |
+| 2021-05-25 07:15:00 | xh458   |  10 | [10, 0, 9, 10]         |           7.25 |         29 |
+| 2021-05-25 07:30:00 | st113   |  25 | [10, 0, 9, 10, 25, 5]  |        9.8333… |         59 |
+| 2021-05-25 07:30:00 | xh458   |   5 | [10, 0, 9, 10, 25, 5]  |        9.8333… |         59 |
+| 2021-05-25 07:45:00 | st113   |  20 | [9, 10, 25, 5, 20, 30] |           16.5 |         99 |
+| 2021-05-25 07:45:00 | xh458   |  30 | [9, 10, 25, 5, 20, 30] |           16.5 |         99 |
+| 2021-05-25 08:00:00 | xh458   |  25 | [25, 5, 20, 30, 25]    |             21 |        105 |

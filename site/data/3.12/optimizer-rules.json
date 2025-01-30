@@ -336,6 +336,18 @@
     }
   },
   {
+    "name": "use-vector-index",
+    "description": "Apply vector index.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
     "name": "use-index-for-sort",
     "description": "Use indexes to avoid `SORT` operations, removing `SortNode`\nfrom the query plan.",
     "flags": {
@@ -854,6 +866,18 @@
   {
     "name": "join-index-nodes",
     "description": "Join adjacent index nodes and replace them with a join node\nin case the indexes qualify for it.",
+    "flags": {
+      "hidden": false,
+      "clusterOnly": false,
+      "canBeDisabled": true,
+      "canCreateAdditionalPlans": false,
+      "disabledByDefault": false,
+      "enterpriseOnly": false
+    }
+  },
+  {
+    "name": "use-index-for-collect",
+    "description": "Use indexes for a collect statement if appropriate.",
     "flags": {
       "hidden": false,
       "clusterOnly": false,
