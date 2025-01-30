@@ -1329,6 +1329,22 @@ To try out this feature, start an ArangoDB server (`arangod`) with the
 blog post:
 [Vector Search in ArangoDB: Practical Insights and Hands-On Examples](https://arangodb.com/2024/11/vector-search-in-arangodb-practical-insights-and-hands-on-examples/)
 
+If the vector index type is enabled, the following new AQL functions are
+available:
+- `APPROX_NEAR_COSINE()`
+- `APPROX_NEAR_L2()`
+
+Two startup options for the storage engine related to vector indexes
+have been added:
+- `--rocksdb.max-write-buffer-number-vector`
+- `--rocksdb.partition-files-for-vector-index`
+
+The new `use-vector-index` AQL optimizer ruler is responsible for
+utilizing vector indexes in queries.
+
+Furthermore, a new error code `ERROR_QUERY_VECTOR_SEARCH_NOT_APPLIED` (1554)
+has been added.
+
 ## Server options
 
 ### Effective and available startup options
@@ -1595,6 +1611,20 @@ feature have been added:
   The number of query log entries to buffer in memory before they are flushed to
   the system collection, discarding additional query metadata if the logging
   thread cannot keep up
+
+### Cluster management
+
+<small>Introduced in: v3.12.4</small>
+
+The following startup options for cluster deployments have been added:
+
+- `--agency.supervision-expired-servers-grace-period`:
+  The supervision time after which a server is removed from the Agency if it
+  does no longer send heartbeats (in seconds).
+
+- `--cluster.no-heartbeat-delay-before-shutdown`:
+  The delay (in seconds) before shutting down a Coordinator if no heartbeat can
+  be sent. Set to `0` to deactivate this shutdown.
 
 ## Miscellaneous changes
 
