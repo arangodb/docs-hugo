@@ -24,7 +24,7 @@ For details, see the
 [Evolving ArangoDB's Licensing Model for a Sustainable Future](https://arangodb.com/2024/02/update-evolving-arangodbs-licensing-model-for-a-sustainable-future/)
 blog post.
 
-## Resolving known issues with 3.12.0 through 3.12.3
+## Resolving known issues with versions 3.12.0 through 3.12.3
 
 Due to issues with the versions 3.12.0 through 3.12.3, please read the
 information below and follow the linked procedures to avoid a potential problem.
@@ -456,7 +456,7 @@ created with v3.11.11, v3.12.2, or any later version.
 
    If your deployment is on version 3.12.0 or 3.12.1, upgrade to the latest
    3.12 version that is available but be sure to also read about the string
-   sorting issue in [Resolving known issues with 3.12.0 through 3.12.3](#resolving-known-issues-with-3120-through-3123)
+   sorting issue in [Resolving known issues with versions 3.12.0 through 3.12.3](#resolving-known-issues-with-versions-3120-through-3123)
    and the linked upgrade procedures.
 
 3. Call the `GET /_admin/cluster/vpackSortMigration/check` endpoint to let
