@@ -40,7 +40,7 @@
   "batch-size" : {
     "base" : 1,
     "category" : "option",
-    "default" : 8388608,
+    "default" : 4194304,
     "deprecatedIn" : null,
     "description" : "The size for individual data batches (in bytes).",
     "dynamic" : false,
