@@ -314,7 +314,7 @@ if the request body was an empty array. Example:
 
 Now, a request like this succeeds and returns an empty array as response.
 
-## Corrected sorting order for VelocyPack indexes
+## Corrected sorting order for numbers in VelocyPack indexes
 
 <small>Introduced in: v3.11.11, v3.12.2</small>
 
@@ -331,8 +331,8 @@ If you store very large numeric values in ArangoDB – greater than/equal to
 index type, the values may not be in the correct order. This is due to how the
 comparison is executed in versions before v3.11.11 and v3.12.2. If the numbers
 are represented using different VelocyPack types internally, they are converted
-to doubles and then compared. This conversion is lossy for very large (unsigned)
-integer values, resulting in an incorrect ordering of the values.
+to doubles and then compared. This conversion is lossy for integers with a very
+large absolute value, resulting in an incorrect ordering of the values.
 
 The possibly affected index types are the following that allow storing
 VelocyPack data in them:
@@ -356,7 +356,19 @@ how to correct it if necessary.
 The following procedure is recommended for every deployment unless it has been
 created with v3.11.11, v3.12.2, or any later version.
 
-1. Call the `GET /_admin/cluster/vpackSortMigration/check` endpoint to let
+1. Create a backup as a precaution. If you run the Enterprise Edition, you can
+   create a Hot Backup. Otherwise, create a full dump with _arangodump_
+   (including all databases and system collections).
+
+2. If your deployment is on a 3.11.x version older than 3.11.11, upgrade to
+   the latest 3.11 version that is available.
+
+   If your deployment is on version 3.12.0 or 3.12.1, upgrade to the latest
+   3.12 version that is available but be sure to also read about the string
+   sorting issue in [Resolving known issues with 3.12.0 through 3.12.3](../version-3.12/incompatible-changes-in-3-12.md#resolving-known-issues-with-3120-through-3123)
+   and the linked upgrade procedures.
+
+3. Call the `GET /_admin/cluster/vpackSortMigration/check` endpoint to let
    ArangoDB check all indexes. As it can take a while for large deployments,
    it is recommended to run this operation as an asynchronous job
    (`x-arango-async: store` header) so that you can check the result later.
@@ -366,10 +378,10 @@ created with v3.11.11, v3.12.2, or any later version.
    Example with ArangoDB running locally on the default port:
 
    ```shell
-   curl --dump-header -H "x-arango-async: store" http://localhost:8529/_admin/cluster/vpackSortMigration/check
+   curl --dump-header - -H "x-arango-async: store" http://localhost:8529/_admin/cluster/vpackSortMigration/check
    ```
 
-2. Inspect the response to find the job ID in the `X-Arango-Async-Id` HTTP header.
+4. Inspect the response to find the job ID in the `X-Arango-Async-Id` HTTP header.
    The job ID is `12345` in the following example:
 
    ```
@@ -388,7 +400,7 @@ created with v3.11.11, v3.12.2, or any later version.
    Content-Length: 0
    ```
 
-3. Call the `PUT /_api/job/12345` endpoint, substituting `12345` with your
+5. Call the `PUT /_api/job/12345` endpoint, substituting `12345` with your
    actual job ID. It returns nothing if the job is still ongoing. You can repeat
    this call every once in a while to check again.
 
@@ -396,7 +408,7 @@ created with v3.11.11, v3.12.2, or any later version.
    curl -XPUT http://localhost:8529/_api/job/12345
    ```
 
-4. If there are no issues with your deployment, the check result reports an
+6. If there are no issues with your deployment, the check result reports an
    empty list of affected indexes and an according message.
    
    ```json
@@ -474,7 +486,10 @@ created with v3.11.11, v3.12.2, or any later version.
    }
    ```
 
-4. Complete the procedure by resuming writes to the database systems.
+4. For the corrected sorting order to take effect, restart the ArangODB server,
+   respectively restart the DB-Servers of the cluster.
+
+5. Complete the procedure by resuming writes to the database systems.
 
 ### If the deployment is affected
 
@@ -492,7 +507,8 @@ the following steps.
      at least read access to all other databases to ensure all data including
      the `_users` system collection are dumped.
      
-     Restore the dump to the new single server using at least v3.11.11 or v3.12.2.
+     Restore the dump to the new single server using at least v3.11.11 or v3.12.4
+     (v3.12.2 only addresses this but not [another issue](../version-3.12/incompatible-changes-in-3-12.md#corrected-sorting-order-for-strings-in-velocypack-indexes)).
      You need to use a new database directory.
 
    - **Active Failover**: You need to replace all servers of the deployment.
@@ -510,7 +526,7 @@ the following steps.
      have downtime.
 
    - **Cluster**: Replace the DB-Server nodes until they all run at least
-     v3.11.11 or v3.12.2 (rolling upgrade). Syncing new nodes writes the data in
+     v3.11.11 or v3.12.4 (rolling upgrade). Syncing new nodes writes the data in
      the correct order. This deployment mode and approach avoids downtimes.
 
      For each DB-Server, add a new DB-Server node to the cluster. Wait until all

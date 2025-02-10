@@ -24,26 +24,31 @@ For details, see the
 [Evolving ArangoDB's Licensing Model for a Sustainable Future](https://arangodb.com/2024/02/update-evolving-arangodbs-licensing-model-for-a-sustainable-future/)
 blog post.
 
-## Upgrading to 3.12.x
+## Resolving known issues with 3.12.0 through 3.12.3
 
-{{< warning >}}
 Due to issues with the versions 3.12.0 through 3.12.3, please read the
-information below and follow the linked procedures when upgrading.
+information below and follow the linked procedures to avoid a potential problem.
 Not following these procedures can cause your deployment to become
 read-only in rare cases.
-{{< /warning >}}
 
-Two issues have been discovered that require action:
+**Two issues have been discovered that require action:**
 
 - [Issues with the comparison of large indexed numbers](#corrected-sorting-order-for-numbers-in-velocypack-indexes)
 - [Issues with the sorting order of certain strings](#corrected-sorting-order-for-strings-in-velocypack-indexes)
 
-New deployments where the database directory has been initialized with version
-3.12.4 or later are not affected.
+**Who should check for a potential issue:**
 
-If you want to upgrade from 3.11 (or older) to 3.12, or if you already upgraded to
-3.12.x, it is important to check for affected indexes. Otherwise, there is a risk
-of the RocksDB storage engine entering a state where no write operations are
+- Deployments on versions prior to 3.11.11
+- Deployments on or previously upgraded from 3.12.0, 3.12.1, 3.12.2, 3.12.3
+
+**Deployments not impacted:**
+
+- Deployments on version 3.11.11
+- Deployments created with 3.12.4 or later
+
+**Overview of impact**
+
+There is a risk of the RocksDB storage engine entering a state where no write operations are
 possible anymore, should it discover index entries that are in an unexpected order.
 
 {{< tip >}}
@@ -51,14 +56,19 @@ It is recommended to schedule a maintenance time window for taking the ArangoDB
 deployment offline to perform the upgrade procedure in the safest possible manner. 
 {{< /tip >}}
 
-Overview over the upgrade paths:
+**Paths to resolution:**
 
-| Start version | Target version | Steps to take |
-|---------------|----------------|---------------|
+| Current version | Resolved version | Steps to take |
+|-----------------|------------------|---------------|
 | 3.11.10 (or older) | 3.11.11 (or newer 3.11.x) | Create a backup, upgrade normally, then check for [affected numbers in indexes](#corrected-sorting-order-for-numbers-in-velocypack-indexes) and fix them. |
-| 3.11.x | 3.12.0 through 3.12.3 | **Do not upgrade to these 3.12 versions!** Create a backup, then upgrade to the latest 3.11.x version first, then check for [affected numbers in indexes](#check-if-you-are-affected), fix them, and finally upgrade to version 3.12.4 or later. |
 | 3.12.0 or 3.12.1 | 3.12.4 (or later) | **Do not upgrade to version 3.12.1, 3.12.2, or 3.12.3**. Create a backup, then upgrade to version 3.12.4 or later. Check for [affected strings in indexes](#corrected-sorting-order-for-strings-in-velocypack-indexes). If affected, create a new deployment using 3.12.4 or later and restore the backup. |
-| 3.12.2 or 3.12.3 | 3.12.4 (or later) | Create a backup, then check for [affected numbers in indexes](#check-if-you-are-affected) and fix them. Restore a backup to a **test deployment**, upgrade it to version 3.12.4 (or later), and check for [affected strings in indexes](#corrected-sorting-order-for-strings-in-velocypack-indexes). Drop affected indexes in the **production deployment** before upgrading it. See the link for details. |
+| 3.12.2 or 3.12.3 | 3.12.4 (or later) | Create a backup, then check for [affected numbers in indexes](#check-if-you-are-affected) and fix them. Restore a backup to a **test deployment**, upgrade it to version 3.12.4 (or later), and check for [affected strings in indexes](#corrected-sorting-order-for-strings-in-velocypack-indexes). Drop affected indexes in the **production deployment** before you upgrade it. See the link for details. |
+
+{{< warning >}}
+If you are a paying customer with a self-hosted deployment, contact the
+ArangoDB support for direct assistance.
+ArangoGraph customers do not need to take any action.
+{{< /warning >}}
 
 ## Native Windows and macOS support removed
 
@@ -446,8 +456,8 @@ created with v3.11.11, v3.12.2, or any later version.
 
    If your deployment is on version 3.12.0 or 3.12.1, upgrade to the latest
    3.12 version that is available but be sure to also read about the string
-   sorting issue in [Upgrading to 3.12.x](#upgrading-to-312x) and the linked
-   upgrade procedures.
+   sorting issue in [Resolving known issues with 3.12.0 through 3.12.3](#resolving-known-issues-with-3120-through-3123)
+   and the linked upgrade procedures.
 
 3. Call the `GET /_admin/cluster/vpackSortMigration/check` endpoint to let
    ArangoDB check all indexes. As it can take a while for large deployments,
@@ -589,7 +599,7 @@ the following steps.
      the `_users` system collection are dumped.
      
      Restore the dump to the new single server using at least v3.11.11 or v3.12.4
-     (v3.12.2 only addresses this but not [another issue](#corrected-sorting-order-for-strings-in-velocypack-indexes)).
+     (v3.12.2 only addresses this but not [another issue](../version-3.12/incompatible-changes-in-3-12.md#corrected-sorting-order-for-strings-in-velocypack-indexes)).
      You need to use a new database directory.
 
    - **Cluster**: Replace the DB-Server nodes until they all run at least

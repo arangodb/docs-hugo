@@ -24,6 +24,52 @@ For details, see the
 [Evolving ArangoDB's Licensing Model for a Sustainable Future](https://arangodb.com/2024/02/update-evolving-arangodbs-licensing-model-for-a-sustainable-future/)
 blog post.
 
+## Resolving known issues with 3.12.0 through 3.12.3
+
+Due to issues with the versions 3.12.0 through 3.12.3, please read the
+information below and follow the linked procedures to avoid a potential problem.
+Not following these procedures can cause your deployment to become
+read-only in rare cases.
+
+**Two issues have been discovered that require action:**
+
+- [Issues with the comparison of large indexed numbers](#corrected-sorting-order-for-numbers-in-velocypack-indexes)
+- [Issues with the sorting order of certain strings](#corrected-sorting-order-for-strings-in-velocypack-indexes)
+
+**Who should check for a potential issue:**
+
+- Deployments on versions prior to 3.11.11
+- Deployments on or previously upgraded from 3.12.0, 3.12.1, 3.12.2, 3.12.3
+
+**Deployments not impacted:**
+
+- Deployments on version 3.11.11
+- Deployments created with 3.12.4 or later
+
+**Overview of impact**
+
+There is a risk of the RocksDB storage engine entering a state where no write operations are
+possible anymore, should it discover index entries that are in an unexpected order.
+
+{{< tip >}}
+It is recommended to schedule a maintenance time window for taking the ArangoDB
+deployment offline to perform the upgrade procedure in the safest possible manner. 
+{{< /tip >}}
+
+**Paths to resolution:**
+
+| Current version | Resolved version | Steps to take |
+|-----------------|------------------|---------------|
+| 3.11.10 (or older) | 3.11.11 (or newer 3.11.x) | Create a backup, upgrade normally, then check for [affected numbers in indexes](#corrected-sorting-order-for-numbers-in-velocypack-indexes) and fix them. |
+| 3.12.0 or 3.12.1 | 3.12.4 (or later) | **Do not upgrade to version 3.12.1, 3.12.2, or 3.12.3**. Create a backup, then upgrade to version 3.12.4 or later. Check for [affected strings in indexes](#corrected-sorting-order-for-strings-in-velocypack-indexes). If affected, create a new deployment using 3.12.4 or later and restore the backup. |
+| 3.12.2 or 3.12.3 | 3.12.4 (or later) | Create a backup, then check for [affected numbers in indexes](#check-if-you-are-affected) and fix them. Restore a backup to a **test deployment**, upgrade it to version 3.12.4 (or later), and check for [affected strings in indexes](#corrected-sorting-order-for-strings-in-velocypack-indexes). Drop affected indexes in the **production deployment** before you upgrade it. See the link for details. |
+
+{{< warning >}}
+If you are a paying customer with a self-hosted deployment, contact the
+ArangoDB support for direct assistance.
+ArangoGraph customers do not need to take any action.
+{{< /warning >}}
+
 ## Native Windows and macOS support removed
 
 The native platform support for the Windows and macOS operating systems has been
@@ -359,7 +405,7 @@ Also see [What's New in 3.12](whats-new-in-3-12.md#short-circuiting-subquery-eva
 and [Evaluation of subqueries](../../aql/fundamentals/subqueries.md#evaluation-of-subqueries)
 for more information.
 
-## Corrected sorting order for VelocyPack indexes
+## Corrected sorting order for numbers in VelocyPack indexes
 
 <small>Introduced in: v3.11.11, v3.12.2</small>
 
@@ -376,8 +422,8 @@ If you store very large numeric values in ArangoDB – greater than/equal to
 index type, the values may not be in the correct order. This is due to how the
 comparison is executed in versions before v3.11.11 and v3.12.2. If the numbers
 are represented using different VelocyPack types internally, they are converted
-to doubles and then compared. This conversion is lossy for very large (unsigned)
-integer values, resulting in an incorrect ordering of the values.
+to doubles and then compared. This conversion is lossy for integers with a very
+large absolute value, resulting in an incorrect ordering of the values.
 
 The possibly affected index types are the following that allow storing
 VelocyPack data in them:
@@ -401,7 +447,19 @@ how to correct it if necessary.
 The following procedure is recommended for every deployment unless it has been
 created with v3.11.11, v3.12.2, or any later version.
 
-1. Call the `GET /_admin/cluster/vpackSortMigration/check` endpoint to let
+1. Create a backup as a precaution. If you run the Enterprise Edition, you can
+   create a Hot Backup. Otherwise, create a full dump with _arangodump_
+   (including all databases and system collections).
+
+2. If your deployment is on a 3.11.x version older than 3.11.11, upgrade to
+   the latest 3.11 version that is available.
+
+   If your deployment is on version 3.12.0 or 3.12.1, upgrade to the latest
+   3.12 version that is available but be sure to also read about the string
+   sorting issue in [Resolving known issues with 3.12.0 through 3.12.3](#resolving-known-issues-with-3120-through-3123)
+   and the linked upgrade procedures.
+
+3. Call the `GET /_admin/cluster/vpackSortMigration/check` endpoint to let
    ArangoDB check all indexes. As it can take a while for large deployments,
    it is recommended to run this operation as an asynchronous job
    (`x-arango-async: store` header) so that you can check the result later.
@@ -411,10 +469,10 @@ created with v3.11.11, v3.12.2, or any later version.
    Example with ArangoDB running locally on the default port:
 
    ```shell
-   curl --dump-header -H "x-arango-async: store" http://localhost:8529/_admin/cluster/vpackSortMigration/check
+   curl --dump-header - -H "x-arango-async: store" http://localhost:8529/_admin/cluster/vpackSortMigration/check
    ```
 
-2. Inspect the response to find the job ID in the `X-Arango-Async-Id` HTTP header.
+4. Inspect the response to find the job ID in the `X-Arango-Async-Id` HTTP header.
    The job ID is `12345` in the following example:
 
    ```
@@ -433,7 +491,7 @@ created with v3.11.11, v3.12.2, or any later version.
    Content-Length: 0
    ```
 
-3. Call the `PUT /_api/job/12345` endpoint, substituting `12345` with your
+5. Call the `PUT /_api/job/12345` endpoint, substituting `12345` with your
    actual job ID. It returns nothing if the job is still ongoing. You can repeat
    this call every once in a while to check again.
 
@@ -441,7 +499,7 @@ created with v3.11.11, v3.12.2, or any later version.
    curl -XPUT http://localhost:8529/_api/job/12345
    ```
 
-4. If there are no issues with your deployment, the check result reports an
+6. If there are no issues with your deployment, the check result reports an
    empty list of affected indexes and an according message.
    
    ```json
@@ -519,7 +577,10 @@ created with v3.11.11, v3.12.2, or any later version.
    }
    ```
 
-4. Complete the procedure by resuming writes to the database systems.
+4. For the corrected sorting order to take effect, restart the ArangODB server,
+   respectively restart the DB-Servers of the cluster.
+
+5. Complete the procedure by resuming writes to the database systems.
 
 ### If the deployment is affected
 
@@ -537,11 +598,12 @@ the following steps.
      at least read access to all other databases to ensure all data including
      the `_users` system collection are dumped.
      
-     Restore the dump to the new single server using at least v3.11.11 or v3.12.2.
+     Restore the dump to the new single server using at least v3.11.11 or v3.12.4
+     (v3.12.2 only addresses this but not [another issue](../version-3.12/incompatible-changes-in-3-12.md#corrected-sorting-order-for-strings-in-velocypack-indexes)).
      You need to use a new database directory.
 
    - **Cluster**: Replace the DB-Server nodes until they all run at least
-     v3.11.11 or v3.12.2 (rolling upgrade). Syncing new nodes writes the data in
+     v3.11.11 or v3.12.4 (rolling upgrade). Syncing new nodes writes the data in
      the correct order. This deployment mode and approach avoids downtimes.
 
      For each DB-Server, add a new DB-Server node to the cluster. Wait until all
@@ -582,6 +644,249 @@ Moreover, replication-related APIs such as the `/_api/wal/tail` endpoint now
 support the VelocyPack format. The cluster replication has been changed to use
 VelocyPack instead of JSON to avoid unnecessary conversions and avoiding any
 risk of deviations due to the serialization.
+
+## Corrected sorting order for strings in VelocyPack indexes
+
+<small>Introduced in: v3.12.4</small>
+
+- [Issues with the sorting order of certain strings](#issues-with-the-sorting-order-of-certain-strings)
+- [Before the upgrade](#before-the-upgrade)
+- [Upgrade an Enterprise Edition deployment](#upgrade-an-enterprise-edition-deployment)
+- [Upgrade a Community Edition deployment](#upgrade-a-community-edition-deployment)
+- [If the deployment is in read-only mode](#if-the-deployment-is-in-read-only-mode)
+
+### Issues with the sorting order of certain strings
+
+If you store certain non-ASCII characters in ArangoDB and index them with an affected
+index type, the values may not be in the correct order. This is due to differences
+in the sorting order between different versions of the Unicode standard and how
+it is implemented in ArangoDB with the ICU library.
+
+From ArangoDB version 3.12.1 onward, a legacy version of ICU is included for
+compatibility so that you can upgrade from 3.11 or older to 3.12 and maintain
+the same sorting order. However, it has been found that the order can differ
+between 3.11 and 3.12 in certain edge cases. This has been corrected in 3.12.4,
+but it is necessary to check existing indexes for entries in an invalid order
+and follow a procedure for fixing the indexes.
+
+The possibly affected index types are the following that allow storing
+VelocyPack data in them:
+- `persistent` (including vertex-centric indexes)
+- `mdi-prefixed` (but not `mdi` indexes)
+- `hash` (legacy alias for persistent indexes)
+- `skiplist` (legacy alias for persistent indexes)
+
+{{< warning >}}
+The incorrect sort order in an index can lead to the RocksDB storage engine
+discovering out-of-order keys and then refusing further write operations with
+errors and warnings. See [If the deployment is in read-only mode](#if-the-deployment-is-in-read-only-mode)
+if you are in this situation.
+{{< /warning >}}
+
+To prevent ArangoDB deployments from entering a read-only mode due to this issue,
+please follow the below procedures. It is necessary to check if your deployment
+is affected twice, before and after upgrading, and you may need to drop indexes
+before the upgrade.
+
+### Before the upgrade
+
+The following procedure is recommended for every deployment unless it has been
+created with v3.12.4 or any later version.
+
+1. Create a backup as a precaution. If you run the Enterprise Edition, you can
+   create a Hot Backup. Otherwise, create a full dump with _arangodump_
+   (including all databases and system collections).
+
+2. If your deployment is on a 3.11.x version, do not upgrade to 3.12.0, 3.12.1,
+   3.12.2, or 3.12.3. See [Corrected sorting order for numbers in VelocyPack indexes](#corrected-sorting-order-for-numbers-in-velocypack-indexes)
+   to address another issue, but upgrade to 3.12.4 or later.
+   You are not affected by the string sorting issue with this upgrade path.
+
+   If your deployment is on 3.12.0 or 3.12.1, you should upgrade to 3.12.4,
+   see [Corrected sorting order for numbers in VelocyPack indexes](#corrected-sorting-order-for-numbers-in-velocypack-indexes),
+   and continue with the next step.
+
+   If your deployment is on 3.12.2 or 3.12.3, see
+   [Corrected sorting order for numbers in VelocyPack indexes](#corrected-sorting-order-for-numbers-in-velocypack-indexes)
+   unless you created it with either of these versions.
+   Continue with the next step either way.
+   Do not upgrade to 3.12.4 in the meantime.
+
+3. Call the `GET /_admin/cluster/vpackSortMigration/check` endpoint to let
+   ArangoDB check all indexes. As it can take a while for large deployments,
+   it is recommended to run this operation as an asynchronous job
+   (`x-arango-async: store` header) so that you can check the result later.
+
+   The endpoint is available for all deployment modes, not only in clusters.
+   In case of a cluster, send the request to one of the Coordinators.
+   Example with ArangoDB running locally on the default port:
+
+   ```shell
+   curl --dump-header - -H "x-arango-async: store" http://localhost:8529/_admin/cluster/vpackSortMigration/check
+   ```
+
+4. Inspect the response to find the job ID in the `X-Arango-Async-Id` HTTP header.
+   The job ID is `12345` in the following example:
+
+   ```
+   HTTP/1.1 202 Accepted
+   X-Arango-Queue-Time-Seconds: 0.000000
+   Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+   Expires: 0
+   Pragma: no-cache
+   Cache-Control: no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0
+   Content-Security-Policy: frame-ancestors 'self'; form-action 'self';
+   X-Content-Type-Options: nosniff
+   X-Arango-Async-Id: 12345
+   Server: ArangoDB
+   Connection: Keep-Alive
+   Content-Type: text/plain; charset=utf-8
+   Content-Length: 0
+   ```
+
+5. Call the `PUT /_api/job/12345` endpoint, substituting `12345` with your
+   actual job ID. It returns nothing if the job is still ongoing. You can repeat
+   this call every once in a while to check again.
+
+   ```shell
+   curl -XPUT http://localhost:8529/_api/job/12345
+   ```
+
+6. The check result may report an empty list of affected indexes and an
+   according message. You may still be affected, however.
+   
+   ```json
+   {
+     "error": false,
+     "code": 200,
+     "result": {
+       "affected": [],
+       "error": false,
+       "errorCode": 0,
+       "errorMessage": "all good with sorting order"
+     }
+   }
+   ```
+
+   It may also find affected indexes, with the check result looking similar to this:
+
+   ```json
+   {
+     "error": false,
+     "code": 200,
+     "result": {
+       "affected": [
+         {
+           "database": "_system",
+           "collection": "coll",
+           "indexId": 195,
+           "indexName": "idx_1806192152446763008"
+         }
+       ],
+       "error": true,
+       "errorCode": 1242,
+       "errorMessage": "some indexes have legacy sorted keys"
+     }
+   }
+   ```
+
+7. Continue with the applicable procedure:
+   - [Upgrade an Enterprise Edition deployment](#upgrade-an-enterprise-edition-deployment)
+   - [Upgrade a Community Edition deployment](#upgrade-a-community-edition-deployment)
+
+### Upgrade an Enterprise Edition deployment
+
+1. Create a Hot Backup if you haven't done so already.
+
+2. If the check result shows affected indexes, contact the ArangoDB support
+   immediately. Do not continue and refrain from upgrading.
+
+3. If no affected indexes are reported, restore the Hot Backup to a new
+   deployment using version 3.12.4 (or later). This deployment is for testing.
+
+4. Call the `GET /_admin/cluster/vpackSortMigration/check` endpoint of the
+   **test deployment** to let ArangoDB check all indexes in the new version.
+
+   Example with the new ArangoDB running locally on port 9529:
+
+   ```shell
+   curl --dump-header - -H "x-arango-async: store" http://localhost:9529/_admin/cluster/vpackSortMigration/check
+   ```
+
+5. If no affected indexes are found, you can upgrade your **production deployment**
+   and shut the test deployment down.
+   
+   If there are affected indexes, continue with the next step.
+
+6. Drop the affected indexes in your **production deployment**, then trigger a full
+   compaction using the [HTTP API](../../develop/http-api/administration.md#compact-all-databases),
+   setting the `compactBottomMostLevel` option to `true`:
+
+   ```shell
+   curl --dump-header - -H "x-arango-async: store" -XPUT -d '{"compactBottomMostLevel":true}' http://localhost:8529/_admin/compact
+   ```
+
+   Using an asynchronous job is recommended because rewriting the data can take a while.
+
+7. Inspect the response to find the job ID in the `X-Arango-Async-Id` HTTP header.
+
+   Call the `PUT /_api/job/23456` endpoint, substituting `23456` with your
+   actual job ID. It returns `HTTP/1.1 204 No Content` if the job is still ongoing.
+   You can repeat this call every once in a while to check again.
+
+   ```shell
+   curl --dump-header - -XPUT http://localhost:8529/_api/job/12345
+   ```
+
+8. When the compaction is done, you see `HTTP/1.1 200 OK` and `{}` as the payload.
+
+9. Verify that you dropped all affected indexes by creating a new Hot Backup,
+   restoring it to another **test deployment** using version 3.12.4 (or later),
+   and calling the `GET /_admin/cluster/vpackSortMigration/check` endpoint of
+   this test deployment like you did before.
+
+   If no affected indexes are reported, you can upgrade your
+   **production deployment** to 3.12.4 (or later) and then recreate the indexes
+   you dropped once the deployment is on the new version.
+
+   If there are still affected indexes, contact the ArangoDB support.
+
+### Upgrade a Community Edition deployment
+
+1. Create a full dump with _arangodump_ if you haven't done so already.
+
+2. If the check result shows affected indexes, create a new deployment using
+   version 3.12.4 (or later) and restore the dump.
+   Make the new deployment your production deployment.
+
+3. If there are no affected indexes, upgrade to version 3.12.4 (or later) and
+   call the `GET /_admin/cluster/vpackSortMigration/check` endpoint again.
+
+4. If affected indexes are reported after the upgrade, create a new deployment
+   using version 3.12.4 (or later) and restore the dump.
+   Make the new deployment your production deployment.
+
+5. If there are no affected indexes, you can keep the existing deployment.
+
+### If the deployment is in read-only mode
+
+{{< info >}}
+If you are a customer, please contact the ArangoDB support to assist you with
+the following steps.
+{{< /info >}}
+
+1. If you encounter the RocksDB "out-of-order keys" error and your deployment
+   is thus in read-only mode, do not try to upgrade or replace servers of the
+   deployment. In particular, do not restart DB-Servers of a cluster deployment
+   with their volumes removed.
+
+2. Create a full dump with _arangodump_ (including all databases and
+   system collections) if you haven't done so already.
+
+3. Create a new deployment using version 3.12.4 or later.
+
+4. Restore the dump to the new deployment. You can directly move from any
+   3.11 or 3.12 version to 3.12.4 (or later) this way.
 
 ## HTTP RESTful API
 
