@@ -6,6 +6,49 @@ description: >-
   Check the following list of potential breaking changes **before** upgrading to
   this ArangoDB version and adjust any client applications if necessary
 ---
+## Resolving known issues with versions up to 3.11.11
+
+Due to an issue with the versions up to 3.11.11, please read the
+information below and follow the linked procedures to avoid a potential problem.
+Not following these procedures can cause your deployment to become
+read-only in rare cases.
+
+**Issues that has been discovered that requires action:**
+
+- [Issues with the comparison of large indexed numbers](#corrected-sorting-order-for-numbers-in-velocypack-indexes)
+
+**Who should check for a potential issue:**
+
+- Deployments on versions prior to 3.11.11
+- Deployments on or previously upgraded from 3.11.11
+
+**Deployments not impacted:**
+
+- Deployments created with 3.11.11 or later 3.11.x version
+
+**Overview of impact**
+
+There is a risk of the RocksDB storage engine entering a state where no write operations are
+possible anymore, should it discover index entries that are in an unexpected order.
+
+{{< tip >}}
+It is recommended to schedule a maintenance time window for taking the ArangoDB
+deployment offline to perform the upgrade procedure in the safest possible manner. 
+{{< /tip >}}
+
+**Paths to resolution:**
+
+| Current version | Resolved version | Steps to take |
+|-----------------|------------------|---------------|
+| 3.11.10 (or older) | 3.11.11 (or newer 3.11.x) | Create a backup, upgrade normally, then check for [affected numbers in indexes](#corrected-sorting-order-for-numbers-in-velocypack-indexes) and fix them. |
+| 3.11.11 (or newer 3.11.x) | 3.12.4 (or later) | **Do not upgrade to version 3.12.0, 3.12.1, 3.12.2, or 3.12.3**. Create a backup, check for [affected numbers in indexes](#check-if-you-are-affected) and fix them (if you haven't done so already or created the deployment with 3.11.11 or later 3.11.x version), then upgrade to the latest 3.11.x version first, and finally upgrade to version 3.12.4 or later. |
+
+{{< warning >}}
+If you are a paying customer with a self-hosted deployment, contact the
+ArangoDB support for direct assistance.
+ArangoGraph customers do not need to take any action.
+{{< /warning >}}
+
 ## Incompatibilities due to switch to glibc
 
 From version 3.11.10 onward, ArangoDB uses the glibc C standard library
@@ -365,7 +408,7 @@ created with v3.11.11, v3.12.2, or any later version.
 
    If your deployment is on version 3.12.0 or 3.12.1, upgrade to the latest
    3.12 version that is available but be sure to also read about the string
-   sorting issue in [Resolving known issues with 3.12.0 through 3.12.3](../version-3.12/incompatible-changes-in-3-12.md#resolving-known-issues-with-3120-through-3123)
+   sorting issue in [Resolving known issues with versions 3.12.0 through 3.12.3](../version-3.12/incompatible-changes-in-3-12.md#resolving-known-issues-with-versions-3120-through-3123)
    and the linked upgrade procedures.
 
 3. Call the `GET /_admin/cluster/vpackSortMigration/check` endpoint to let
