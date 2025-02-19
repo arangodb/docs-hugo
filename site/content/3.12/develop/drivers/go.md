@@ -181,7 +181,7 @@ if err != nil {
 }
 
 // Open the "coll" collection
-col, err := db.Collection(nil, "coll")
+col, err := db.GetCollection(nil, "coll", nil)
 if err != nil {
     // Handle error
 }
@@ -312,7 +312,7 @@ if err != nil {
 
 ```go
 ctx := context.Background()
-col, err := db.Collection(ctx, "myCollection")
+col, err := db.GetCollection(ctx, "myCollection", nil)
 if err != nil {
     // handle error 
 }
