@@ -36,6 +36,11 @@ ArangoGraph customers do not need to take any action.
 There is a risk of the RocksDB storage engine entering a state where no write operations are
 possible anymore, should it discover index entries that are in an unexpected order.
 
+This can occur at any time, even if a previous check reported no affected indexes,
+as there is no protection against storing and indexing data that may cause issues.
+To prevent RocksDB from becoming read-only at some point in the future, it is
+essential to follow the linked procedures.
+
 {{< tip >}}
 It is recommended to schedule a maintenance time window for taking the ArangoDB
 deployment offline to perform the upgrade procedure in the safest possible manner. 
