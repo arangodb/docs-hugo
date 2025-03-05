@@ -2184,7 +2184,3 @@ nav.pagination .next {
     height: 50px !important;
     width: 200px !important;
 }
-
-#ikp-chat-button {
-    z-index: 9991; /* HubSpot has 9990 */
-}
