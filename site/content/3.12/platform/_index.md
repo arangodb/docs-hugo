@@ -14,14 +14,14 @@ run it on-premise or in the cloud yourself on top of Kubernetes, as well as use
 ArangoDB's managed service, the [ArangoGraph Insights Platform](../arangograph/_index.md)
 to access all of the platform features.
 
-## Requirements
+## Requirements for self-hosting
 
 - **Kubernetes**: Orchestrates the selected services that comprise the
   ArangoDB Platform, running them in containers for safety and scalability.
 - **Licenses**: If you want to use any paid features, you need to purchase the
-  respective licenses.
+  respective packages.
 
-## Products
+## Products available in the ArangoDB Platform
 
 - **Core database system**: The ArangoDB graph database system for storing
   interconnected data. You can use the free Community Edition or the commercial
@@ -54,11 +54,18 @@ to access all of the platform features.
     interactive notebooks for experimentation and development of applications
     that use ArangoDB as their backend.
 
-## Setup
+<!-- TODO: Which product requires what license, free trial -->
+
+## Get started with the ArangoDB Platform
 
 ### Use the ArangoDB Platform as a managed service
 
+<!-- TODO: Sign up at https://dashboard.arangodb.cloud -->
+
 ### Self-host the ArangoDB Platform
+
+<!-- TODO: Adam's installer -->
 
 ## Interfaces
 
+<!-- TODO: UIs, APIs (with links to generated docs) -->
