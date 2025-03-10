@@ -6,6 +6,12 @@ description: >-
   You can create a backup and upgrade ArangoDB in-place, but downgrading
   is only possible with the backup or by dumping and restoring all data
 ---
+{{< info >}}
+When upgrading from a 3.11 version, please see
+[Resolving known issues with versions up to 3.11.11](../../release-notes/version-3.11/incompatible-changes-in-3-11.md#resolving-known-issues-with-versions-up-to-31111)
+and follow the linked upgrade procedures instead of the regular upgrade procedure.
+{{< /info >}}
+
 ## Upgrade methods
 
 There are two main ways to upgrade ArangoDB:
