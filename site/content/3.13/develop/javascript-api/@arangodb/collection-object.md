@@ -107,14 +107,27 @@ debugging ArangoDB itself and their format is subject to change. By default,
 `details` is set to `false`, so no details are returned and the behavior is
 identical to previous versions of ArangoDB.
 
-- `indexes.count`: The total number of indexes defined for the
-  collection, including the pre-defined indexes (e.g. primary index).
-- `indexes.size`: The total memory allocated for indexes in bytes.
-<!-- TODO: describe RocksDB figures -->
-- `documentsSize`
-- `cacheInUse`
-- `cacheSize`
-- `cacheUsage`
+- `indexes`: The coarse index metrics.
+  - `count`: The total number of indexes defined for the
+    collection, including the pre-defined indexes (e.g. primary index).
+  - `size`: The total memory allocated for indexes in bytes.
+- `documentsSize`: The approximate on-disk size of the documents in bytes.
+- `cacheInUse`: Whether the document cache is enabled for this collection.
+- `cacheSize`: The total memory usage of the document cache in bytes.
+- `cacheUsage`: The current data memory usage of the document cache in bytes.
+- `cacheLifeTimeHitRate`: The overall cache hit ratio in percent.
+  In cluster deployments, it is the sum of percentages of all shards.
+  The attribute is only present if `cacheInUse` is `true`.
+- `cacheWindowedHitRate`: The cache hit ratio of the past several thousand find
+  operations in percent. In cluster deployments, it is the sum of percentages
+  of all shards. The attribute is only present if `cacheInUse` is `true`.
+- `engine`: Extended, storage-engine specific figures.
+  - `documents`: The number of documents determined by iterating over all
+    RocksDB keys in range of the column family and counting them.
+  - `indexes`: The detailed index metrics with the number of entries per index (array of objects).
+    - `type`: The index type. A `persistent` index is reported as `rocksdb-persistent`.
+    - `id`: The identifier of the index.
+    - `count`: The number of index entries.
 
 **Examples**
 
