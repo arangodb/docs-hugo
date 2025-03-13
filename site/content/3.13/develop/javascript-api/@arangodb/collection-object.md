@@ -116,9 +116,11 @@ identical to previous versions of ArangoDB.
 - `cacheSize`: The total memory usage of the document cache in bytes.
 - `cacheUsage`: The current data memory usage of the document cache in bytes.
 - `cacheLifeTimeHitRate`: The overall cache hit ratio in percent.
-  Only present if `cacheInUse` is `true`.
+  In cluster deployments, it is the sum of percentages of all shards.
+  The attribute is only present if `cacheInUse` is `true`.
 - `cacheWindowedHitRate`: The cache hit ratio of the past several thousand find
-  operations in percent. Only present if `cacheInUse` is `true`.
+  operations in percent. In cluster deployments, it is the sum of percentages
+  of all shards. The attribute is only present if `cacheInUse` is `true`.
 - `engine`: Extended, storage-engine specific figures.
   - `documents`: The number of documents determined by iterating over all
     RocksDB keys in range of the column family and counting them.

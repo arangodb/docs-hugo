@@ -1191,13 +1191,18 @@ paths:
                         type: integer
                       cacheLifeTimeHitRate:
                         description: |
-                          The overall cache hit ratio in percent.
-                          Only present if `cacheInUse` is `true`.
+                          The overall cache hit ratio in percent. In cluster deployments,
+                          it is the sum of percentages of all shards.
+                          
+                          The attribute is only present if `cacheInUse` is `true`.
                         type: number
                       cacheWindowedHitRate:
                         description: |
                           The cache hit ratio of the past several thousand find
-                          operations in percent. Only present if `cacheInUse` is `true`.
+                          operations in percent. In cluster deployments,
+                          it is the sum of percentages of all shards.
+
+                          The attribute is only present if `cacheInUse` is `true`.
                         type: number
                       engine:
                         description: |
