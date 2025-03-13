@@ -533,7 +533,7 @@ created with v3.11.11, v3.12.2, or any later version.
    }
    ```
 
-4. For the corrected sorting order to take effect, restart the ArangODB server,
+4. For the corrected sorting order to take effect, restart the ArangoDB server,
    respectively restart the DB-Servers of the cluster.
 
 5. Complete the procedure by resuming writes to the database systems.
