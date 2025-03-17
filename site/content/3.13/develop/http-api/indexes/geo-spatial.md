@@ -1,5 +1,5 @@
 ---
-title: Working with geo-spatial indexes
+title: HTTP interface for geo-spatial indexes
 menuTitle: Geo-Spatial
 weight: 25
 description: ''

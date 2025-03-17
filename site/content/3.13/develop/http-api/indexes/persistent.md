@@ -1,5 +1,5 @@
 ---
-title: Working with persistent indexes
+title: HTTP interface for persistent indexes
 menuTitle: Persistent
 weight: 5
 description: ''

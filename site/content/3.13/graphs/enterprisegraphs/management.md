@@ -64,7 +64,7 @@ The process fails if one of them already exists, unless they have the
 correct sharding already. All newly created collections are immediately
 dropped again in the failure case.
 
-### Examples
+**Examples**
 
 Create a graph without relations. Edge definitions can be added later:
 
@@ -142,7 +142,7 @@ within the graph. Every other collection has its `distributeShardsLike` attribut
 name of the initial collection. This collection cannot be dropped as long as
 other collections follow its sharding (i.e. they need to be dropped first).
 
-### Examples
+**Examples**
 
 Create an EnterpriseGraph and list its orphan collections:
 
@@ -246,7 +246,7 @@ Delete an edge definition from the graph:
   If `true`, the collection is dropped if it is not used in any other graph.
   Default: `false`.
 
-### Examples
+**Examples**
 
 Create an EnterpriseGraph, then delete the edge definition and drop the edge collection:
 
@@ -297,7 +297,7 @@ Remove a SmartGraph:
 - `dropCollections` (bool, _optional_):
   Define if collections should be dropped. Default: `false`.
 
-### Examples
+**Examples**
 
 Delete an EnterpriseGraph and drop its collections:
 

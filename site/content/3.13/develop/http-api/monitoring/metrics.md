@@ -1,5 +1,5 @@
 ---
-title: Metrics
+title: HTTP interface for server metrics
 menuTitle: Metrics
 weight: 15
 description: >-
