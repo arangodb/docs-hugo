@@ -624,8 +624,6 @@ Also see [Faceted Search with ArangoSearch](faceted-search.md).
 
 ## Field normalization value caching and caching of Geo Analyzer auxiliary data
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 <small>Introduced in: v3.9.5, v3.10.2</small>
 
 Normalization values are computed for fields which are processed with Analyzers

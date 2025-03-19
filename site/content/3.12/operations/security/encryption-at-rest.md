@@ -6,8 +6,6 @@ description: >-
   You can secure the physical storage media of an ArangoDB deployment by letting
   it encrypt the database directories
 ---
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 When you store sensitive data in your ArangoDB database, you want to protect
 that data under all circumstances. At runtime you will protect it with SSL
 transport encryption and strong authentication, but when the data is already

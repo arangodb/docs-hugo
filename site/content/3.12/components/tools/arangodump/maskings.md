@@ -470,8 +470,6 @@ processed by a single masking function, ignoring any other rules below it.
 
 ## Masking Functions
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 - [Xify Front](#xify-front)
 - [Zip](#zip)
 - [Datetime](#datetime)

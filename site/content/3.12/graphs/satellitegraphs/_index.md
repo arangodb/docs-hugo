@@ -5,8 +5,6 @@ weight: 90
 description: >-
   Graphs synchronously replicated to all servers, available in the Enterprise Edition
 ---
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 ## What is a SatelliteGraph?
 
 _SatelliteGraphs_ are a specialized _named graph_ type available for cluster

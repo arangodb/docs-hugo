@@ -5,8 +5,6 @@ weight: 95
 description: >-
   SmartGraphs enable you to manage graphs at scale using value-based sharding
 ---
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 SmartGraphs are specifically targeted at graphs that need scalability and
 high performance. The way SmartGraphs use the ArangoDB cluster sharding makes it
 extremely useful for distributing data across multiple servers with minimal

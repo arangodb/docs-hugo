@@ -1196,8 +1196,6 @@ db._query(`RETURN TOKENS("The quick brown Foxx", "wildcard_3")`).toArray();
 
 ### `minhash`
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 <small>Introduced in: v3.10.0</small>
 
 An Analyzer that computes so called MinHash signatures using a
@@ -1238,8 +1236,6 @@ db._query(`
 ```
 
 ### `classification`
-
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 <small>Introduced in: v3.10.0</small>
 
@@ -1298,8 +1294,6 @@ db._query(`LET str = "Which baking dish is best to bake a banana bread ?"
 ```
 
 ### `nearest_neighbors`
-
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 <small>Introduced in: v3.10.0</small>
 
@@ -1478,8 +1472,6 @@ db._query(`LET point = GEO_POINT(6.93, 50.94)
 ```
 
 ### `geo_s2`
-
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 <small>Introduced in: v3.10.5</small>
 

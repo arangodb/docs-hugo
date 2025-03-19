@@ -189,8 +189,6 @@ If omitted or an empty array is specified, then there are no restrictions.
 
 #### `parallelism`
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 Parallelize traversal execution (number).
     
 If omitted or set to a value of `1`, the traversal execution is not parallelized.
@@ -205,8 +203,6 @@ vertices, which can then be distributed randomly to worker threads for parallel
 execution.
 
 #### `maxProjections`
-
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 Specifies the number of document attributes per `FOR` loop to be used as
 projections (number). The default value is `5`.
