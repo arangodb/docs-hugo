@@ -66,10 +66,11 @@ Kubernetes cluster.
 ### Community Edition
 
 ArangoDB is available in a **Community Edition** governed by the
-[ArangoDB Community License](https://arangodb.com/2024/02/update-evolving-arangodbs-licensing-model-for-a-sustainable-future/).
+[ArangoDB Community License](https://arangodb.com/2024/02/update-evolving-arangodbs-licensing-model-for-a-sustainable-future/). <!-- TODO: Link to new terms -->
 You can download the extensively tested prepackaged binaries and official
 Docker images for free.
 
+<!-- TODO -->
 - One database core for all graph, document, key-value, and search needs
 - A single composable query language for all data models
 - Extensible through microservices with custom REST APIs and user-definable
@@ -79,9 +80,9 @@ Docker images for free.
 See all [Community Edition Features](community-edition.md).
 
 The Community Edition is a fully-featured version without time
-restrictions and includes cluster support. The use for commercial purposes is
-limited to a 100 GB on dataset size in production within a single cluster and a
-maximum of three clusters.
+restrictions and includes all features of the Enterprise Edition.
+The use for commercial purposes and distribution is prohibited for production.
+The dataset size is limited to a 100 GB.
 
 The source code of the Community Edition is available under the
 [Business Source License 1.1 (BUSL-1.1)](https://github.com/arangodb/arangodb/blob/devel/LICENSE).
@@ -96,9 +97,10 @@ the license changes to the permissive Apache 2.0 open-source license.
 ### Enterprise Edition
 
 ArangoDB is also available in a commercial version, called the
-**Enterprise Edition**. It includes additional features for performance and
-security, such as for scaling graphs and managing your data safely.
+**Enterprise Edition**. It allows you to use ArangoDB for commercial purposes
+and removes the 100 GB dataset size limit of the Community Edition.
 
+<!-- TODO -->
 - Includes all Community Edition features
 - Performance options to smartly shard and replicate graphs and datasets for
   optimal data locality

@@ -10,6 +10,13 @@ aliases:
 ---
 ## Version 3.12
 
+{{< info >}}
+From version 3.12.5 onward, the prepackaged binaries and official Docker images
+include all features. They are equivalent to the Enterprise Edition and there is
+no longer a feature-limited Community Edition. See [ArangoDB Editions](_index.md)
+for details. <!-- TODO: Might need to update link label to e.g. ArangoDB licensing or similar -->
+{{< /info >}}
+
 **All Editions**
 
 - [**Improved memory accounting**](../../release-notes/version-3.12/whats-new-in-3-12.md#improved-memory-accounting-and-usage):

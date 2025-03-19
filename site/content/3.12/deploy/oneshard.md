@@ -59,8 +59,8 @@ resilience etc.
 
 ### How to use the OneShard feature
 
-The OneShard feature is enabled by default if you use the ArangoDB
-Enterprise Edition and if the database is sharded as `"single"`. In this case the
+The OneShard feature is enabled by default
+and if the database is sharded as `"single"`. In this case the
 optimizer rule `cluster-one-shard` is applied automatically. 
 There are two ways to achieve this:
 

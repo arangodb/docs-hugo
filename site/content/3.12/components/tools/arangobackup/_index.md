@@ -6,12 +6,9 @@ description: >-
   `arangobackup` is a command-line client tool to create global hot backups of
   ArangoDB deployments
 ---
-{{< tag "ArangoDB Enterprise Edition" >}}
-
 {{< tip >}}
-In the Community Edition, use [_arangodump_](../arangodump/_index.md) and
-[_arangorestore_](../arangorestore/_index.md) for
-[logical backups](../../../operations/backup-and-restore.md#logical-backups).
+In the ArangoGraph Insights Platform, use managed
+[Backups](../../../arangograph/backups.md) instead.
 {{< /tip >}}
 
 _arangobackup_ creates instantaneous and consistent

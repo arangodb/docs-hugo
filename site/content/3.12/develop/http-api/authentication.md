@@ -272,7 +272,10 @@ curl -v -H "Authorization: bearer $(jwtgen -s <my-secret> -e 3600 -a "HS256" -c 
 
 ## Hot-reload JWT secrets
 
-{{< tag "ArangoDB Enterprise Edition" >}}
+{{< tip >}}
+In the ArangoGraph Insights Platform, authentication secrets are managed and
+therefore this feature isn't available.
+{{< /tip >}}
 
 To reload the JWT secrets of a local arangod process without a restart, you
 may use the following RESTful API. A `POST` request reloads the secret, a
