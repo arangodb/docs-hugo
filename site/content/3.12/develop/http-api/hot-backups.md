@@ -8,7 +8,7 @@ description: >-
 ---
 {{< tip >}}
 In the ArangoGraph Insights Platform, use managed
-[Backups](../../../arangograph/backups.md) instead.
+[Backups](../../arangograph/backups.md) instead.
 {{< /tip >}}
 
 Hot Backups are near instantaneous consistent snapshots of an
