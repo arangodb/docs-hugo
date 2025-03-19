@@ -175,7 +175,7 @@ paths:
                               type: string
                             isSatellite:
                               description: |
-                                Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                                Whether the graph is a SatelliteGraph (Enterprise Edition only).
                               type: boolean
       tags:
         - Graphs
@@ -461,7 +461,7 @@ paths:
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph (Enterprise Edition only).
                         type: boolean
         '202':
           description: |
@@ -588,7 +588,7 @@ paths:
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph (Enterprise Edition only).
                         type: boolean
         '400':
           description: |
@@ -1072,7 +1072,7 @@ paths:
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph (Enterprise Edition only).
                         type: boolean
         '404':
           description: |
@@ -1577,7 +1577,7 @@ paths:
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph (Enterprise Edition only).
                         type: boolean
         '202':
           description: |
@@ -1704,7 +1704,7 @@ paths:
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph (Enterprise Edition only).
                         type: boolean
         '400':
           description: |
@@ -1999,7 +1999,7 @@ paths:
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph (Enterprise Edition only).
                         type: boolean
         '202':
           description: |
@@ -2124,7 +2124,7 @@ paths:
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph (Enterprise Edition only).
                         type: boolean
         '400':
           description: |
@@ -2575,7 +2575,7 @@ paths:
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph (Enterprise Edition only).
                         type: boolean
         '202':
           description: |
@@ -2702,7 +2702,7 @@ paths:
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph (Enterprise Edition only).
                         type: boolean
         '400':
           description: |
@@ -3042,7 +3042,7 @@ paths:
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph (Enterprise Edition only).
                         type: boolean
         '202':
           description: |
@@ -3167,7 +3167,7 @@ paths:
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph (Enterprise Edition only).
                         type: boolean
         '400':
           description: |
@@ -3467,7 +3467,7 @@ paths:
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph (Enterprise Edition only).
                         type: boolean
         '202':
           description: |
@@ -3593,7 +3593,7 @@ paths:
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph (Enterprise Edition only).
                         type: boolean
         '403':
           description: |
