@@ -136,8 +136,8 @@ The following Analyzer types are available:
   Jaccard index (Enterprise Edition only)
 - [`classification`](#classification): classifies the input text using a
   word embedding model (Enterprise Edition only)
-- [`nearest_neighbors`](#nearest_neighbors): finds the nearest neighbors of the
-  input text using a word embedding model (Enterprise Edition only)
+- [`nearest_neighbors`](#nearest_neighbors): finds tokens similar to the ones
+  in the input text using a word embedding model (Enterprise Edition only)
 - [`geojson`](#geojson): breaks up a GeoJSON object into a set of indexable tokens
 - [`geo_s2`](#geo_s2): like `geojson` but offers more efficient formats for
   indexing geo-spatial data (Enterprise Edition only)

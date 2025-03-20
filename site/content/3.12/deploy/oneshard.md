@@ -3,8 +3,9 @@ title: OneShard cluster deployments
 menuTitle: OneShard
 weight: 20
 description: >-
-  The OneShard feature offers a practicable solution that enables significantly
-  improved performance and transactional guarantees for cluster deployments
+  OneShard is a deployment option to store all collections of a database on a
+  single cluster node, to combine the performance and the transactional
+  guarantees of a single server with a fault-tolerant cluster setup
 ---
 The OneShard option for ArangoDB clusters restricts all collections of a
 database to a single shard so that every collection has `numberOfShards` set to `1`,

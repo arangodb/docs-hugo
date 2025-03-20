@@ -3,12 +3,11 @@ title: SmartGraphs
 menuTitle: SmartGraphs
 weight: 95
 description: >-
-  SmartGraphs enable you to manage graphs at scale using value-based sharding
+  SmartGraphs enable you to manage graphs at scale, using value-based sharding for improved data locality
 ---
 SmartGraphs are specifically targeted at graphs that need scalability and
-high performance. The way SmartGraphs use the ArangoDB cluster sharding makes it
-extremely useful for distributing data across multiple servers with minimal
-network latency.
+high performance. They let you intelligently shard large graph datasets for
+distributing data across multiple servers with minimal network latency.
 
 Most graphs have one feature - a value that is stored in every vertex - that
 divides the entire graph into several smaller subgraphs. These subgraphs have a
@@ -92,12 +91,14 @@ _The outcome of moving the data like this is that you retain the scalability as 
 
 ## SmartGraphs using SatelliteCollections
 
-These SmartGraphs are capable of using [SatelliteCollections](../../develop/satellitecollections.md)
-within their graph definition. Therefore, edge definitions defined between
-SmartCollections and SatelliteCollections can be created. As SatelliteCollections
+SmartGraphs are capable of using [SatelliteCollections](../../develop/satellitecollections.md)
+to enable more local execution of graph queries.
+
+You can specify SatelliteCollections in graph definitions as vertex collections to
+create relations between SmartCollections and SatelliteCollections. As SatelliteCollections
 (and the edge collections between SmartGraph collections and SatelliteCollections)
-are globally replicated to each participating DB-Server, (weighted) graph traversal,
-and (k-)shortest path(s) query can partially be executed locally on each DB-Server.
+are globally replicated to each participating DB-Server, graph traversals
+and path search queries can partially be executed locally on each DB-Server.
 This means a larger part of the query can be executed fully local
 whenever data from the SatelliteCollections is required.
 

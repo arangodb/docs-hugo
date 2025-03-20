@@ -453,6 +453,10 @@ FOR doc IN viewName
 Match documents with an approximate Jaccard similarity of at least the
 `threshold`, approximated with the specified `minhash` Analyzer.
 
+You can use the Jaccard similarity approximation with MinHash for efficient
+entity resolution, such as for finding duplicate records, based on how many
+common elements they have.
+
 To only compute the MinHash signatures, see the
 [`MINHASH()` Miscellaneous function](miscellaneous.md#minhash).
 

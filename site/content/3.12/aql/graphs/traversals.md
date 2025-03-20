@@ -207,6 +207,12 @@ execution.
 Specifies the number of document attributes per `FOR` loop to be used as
 projections (number). The default value is `5`.
 
+The AQL optimizer automatically detects which document attributes you access in
+traversal queries and optimizes the data loading. This optimization is 
+beneficial if you have large documents but only access a few document attributes.
+The `maxProjections` option lets you tune when to load individual attributes
+versus the whole document.
+
 #### `indexHint`
 
 <small>Introduced in v3.12.1</small>

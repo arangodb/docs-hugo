@@ -3,8 +3,7 @@ title: Highlights by Version
 menuTitle: Highlights by Version
 weight: 15
 description: >-
-  The most notable features in the Community and Enterprise Edition of ArangoDB,
-  grouped by version
+  The most notable features of ArangoDB, grouped by version
 aliases:
   - ../../introduction/features/highlights-by-version
 ---
@@ -12,9 +11,8 @@ aliases:
 
 {{< info >}}
 From version 3.12.5 onward, the prepackaged binaries and official Docker images
-include all features. They are equivalent to the Enterprise Edition and there is
-no longer a feature-limited Community Edition. See [ArangoDB Editions](_index.md)
-for details. <!-- TODO: Might need to update link label to e.g. ArangoDB licensing or similar -->
+of the Community Edition include all features of the Enterprise Edition.
+See [ArangoDB Editions](_index.md) for details. <!-- TODO: Might need to update link label to e.g. ArangoDB licensing or similar -->
 {{< /info >}}
 
 **All Editions**
