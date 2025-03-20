@@ -224,9 +224,9 @@ for more information.
 
 ### SmartGraphs
 
-SmartGraphs are an Enterprise Edition feature of ArangoDB. It enables you to
-manage graphs at scale. It provides a vast performance benefit for all graphs
-sharded in an ArangoDB Cluster.
+<!-- TODO: EnterpriseGraphs -->
+The SmartGraphs feature enables you to manage graphs at scale.
+It provides a vast performance benefit for all graphs sharded in an ArangoDB Cluster.
 
 To add a SmartGraph you need a SmartGraph attribute that partitions your
 graph into several smaller sub-graphs. Ideally these sub-graphs follow a

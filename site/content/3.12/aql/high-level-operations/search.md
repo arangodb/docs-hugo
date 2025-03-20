@@ -164,7 +164,7 @@ different outside of `SEARCH`, where `IN` needs to be followed by an array.
 
 You can use the [Question mark operator](../operators.md#question-mark-operator)
 to perform [Nested searches with ArangoSearch](../../index-and-search/arangosearch/nested-search.md)
-(Enterprise Edition only):
+:
 
 ```aql
 FOR doc IN myView

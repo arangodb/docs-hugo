@@ -470,6 +470,8 @@ processed by a single masking function, ignoring any other rules below it.
 
 ## Masking Functions
 
+- [Random String](#random-string)
+- [Random](#random)
 - [Xify Front](#xify-front)
 - [Zip](#zip)
 - [Datetime](#datetime)
@@ -478,13 +480,6 @@ processed by a single masking function, ignoring any other rules below it.
 - [Credit Card Number](#credit-card-number)
 - [Phone Number](#phone-number)
 - [Email Address](#email-address)
-
-The masking functions:
-
-- [Random String](#random-string)
-- [Random](#random)
-
-… are available in the Community Edition as well as the Enterprise Edition.
 
 ### Random String
 

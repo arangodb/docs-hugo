@@ -3,7 +3,7 @@ title: SatelliteCollections
 menuTitle: SatelliteCollections
 weight: 250
 description: >-
-  Collections synchronously replicated to all servers, available in the Enterprise Edition
+  Collections synchronously replicated to all servers to enable local joins
 ---
 When doing joins in an ArangoDB cluster data has to be exchanged between different servers.
 
