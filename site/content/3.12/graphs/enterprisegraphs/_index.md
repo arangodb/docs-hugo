@@ -20,7 +20,7 @@ also similar to SmartGraphs. For a detailed API reference, please refer
 to [Enterprise Graphs Management](management.md).
 
 Coming from the Community Edition? 
-See [how to migrate](getting-started.md#migrating-from-community-edition)
+See [how to migrate](getting-started.md#migrating-to-enterprisegraphs)
 from a `general-graph` to an `enterprise-graph`.
 
 ## How EnterpriseGraphs work

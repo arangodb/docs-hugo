@@ -297,7 +297,7 @@ FOR doc IN viewName
 ```
 
 See [Nested search with ArangoSearch](../../index-and-search/arangosearch/nested-search.md) using Views
-and the nested search example using [Inverted indexes](../../index-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search-enterprise-edition)
+and the nested search example using [Inverted indexes](../../index-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search)
 for details.
 
 This feature is only available in the Enterprise Edition.
@@ -804,7 +804,7 @@ RETURN LENGTH(arr[* FILTER CURRENT % 2 == 0]) == 2
 
 The quantifier can be a number, a range, `NONE`, `ANY`, `ALL`, or `AT LEAST`.
 
-This operator is used for the new [Nested search](#nested-search-enterprise-edition)
+This operator is used for the new [Nested search](#nested-search)
 feature (Enterprise Edition only).
 
 See [Array Operators](../../aql/operators.md#question-mark-operator)

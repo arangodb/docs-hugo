@@ -286,7 +286,7 @@ FOR doc IN viewName
 
 Match documents where the attribute at `path` is present _and_ is indexed
 as a nested field for [nested search with Views](../../index-and-search/arangosearch/nested-search.md)
-or [inverted indexes](../../index-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search-enterprise-edition).
+or [inverted indexes](../../index-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search).
 
 - **path** (attribute path expression): the attribute to test in the document
 - **type** (string): string literal `"nested"`
