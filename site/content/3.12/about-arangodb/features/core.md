@@ -1,6 +1,6 @@
 ---
-title: ArangoDB core feature list
-menuTitle: Feature list
+title: Feature list of the ArangoDB core database system
+menuTitle: Core Database
 weight: 5
 description: >-
   All features of the ArangoDB database system, available in both the

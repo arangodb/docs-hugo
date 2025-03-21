@@ -3,7 +3,7 @@ title: Highlights by Version
 menuTitle: Highlights by Version
 weight: 15
 description: >-
-  The most notable features of ArangoDB, grouped by version
+  The most notable features of the ArangoDB core database system, grouped by version
 aliases:
   - ../../introduction/features/highlights-by-version
 ---
