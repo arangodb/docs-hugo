@@ -19,7 +19,7 @@ aliases:
 - Enhanced data security with on-disk and backup encryption, key rotation,
   audit logging, and incremental backups without downtime
 
-See the full [Feature list](feature-list.md).
+See the full [Feature list of the ArangoDB core database system](core.md).
 
 ## On-premises versus Cloud
 
