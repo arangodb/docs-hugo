@@ -7,7 +7,8 @@ description: ''
 {{< info >}}
 From version 3.12.5 onward, the prepackaged binaries and official Docker images
 of the Community Edition include all features of the Enterprise Edition.
-See [ArangoDB Editions](_index.md) for details.
+See [ArangoDB Editions](../../about-arangodb/features/_index.md#arangodb-editions)
+for details.
 
 To upgrade a deployment created with v3.12.5 or later from the Community Edition
 to the Enterprise Edition, all you need to do is to [apply a license](../administration/license-management.md).

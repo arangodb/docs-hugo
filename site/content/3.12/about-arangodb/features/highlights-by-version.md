@@ -12,7 +12,7 @@ aliases:
 {{< info >}}
 From version 3.12.5 onward, the prepackaged binaries and official Docker images
 of the Community Edition include all features of the Enterprise Edition.
-See [ArangoDB Editions](_index.md) for details. <!-- TODO: Might need to update link label to e.g. ArangoDB licensing or similar -->
+See [ArangoDB Editions](_index.md#arangodb-editions) for details.
 {{< /info >}}
 
 **All Editions**
