@@ -804,7 +804,7 @@ RETURN LENGTH(arr[* FILTER CURRENT % 2 == 0]) == 2
 
 The quantifier can be a number, a range, `NONE`, `ANY`, `ALL`, or `AT LEAST`.
 
-This operator is used for the new [Nested search](#nested-search)
+This operator is used for the new [Nested search](#nested-search-enterprise-edition)
 feature (Enterprise Edition only).
 
 See [Array Operators](../../aql/operators.md#question-mark-operator)
