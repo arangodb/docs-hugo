@@ -234,22 +234,26 @@ paths:
       description: |
         Enable or disable the cluster supervision (Agency) maintenance mode.
 
-        This API allows to temporarily enable the supervision maintenance mode. Please be aware that no
-        automatic failovers of any kind will take place while the maintenance mode is enabled.
-        The cluster supervision reactivates itself automatically at some point after disabling it.
+        This endpoint allows you to temporarily enable the supervision maintenance mode.
+        Please be aware that no automatic failovers of any kind will take place
+        while the maintenance mode is enabled. The cluster supervision reactivates
+        itself automatically at some point after disabling it.
+      requestBody:
+        content:
+          application/json:
+            schema:
+              description: |
+                The mode to set for the cluster supervision.
 
-        To enable the maintenance mode the request body must contain the string `"on"`
-        (Please note it _must_ be lowercase as well as include the quotes). This will enable the
-        maintenance mode for 60 minutes, i.e. the supervision maintenance will reactivate itself
-        after 60 minutes.
-
-        Since ArangoDB 3.8.3 it is possible to enable the maintenance mode for a different
-        duration than 60 minutes, it is possible to send the desired duration value (in seconds)
-        as a string in the request body. For example, sending `"7200"`
-        (including the quotes) will enable the maintenance mode for 7200 seconds, i.e. 2 hours.
-
-        To disable the maintenance mode the request body must contain the string `"off"`
-        (Please note it _must_ be lowercase as well as include the quotes).
+                Possible values (always lowercase and in double quotes):
+                - `"on"`: Enable the maintenance mode for 60 minutes, i.e. the
+                  supervision maintenance will reactivate itself after one hour.
+                - `"off"`: Disable the maintenance mode.
+                - `"<number>"`: Enable the maintenance mode for a different
+                  duration (in seconds) than the default 60 minutes. For example,
+                  `"7200"` enables the maintenance mode for 7200 seconds (2 hours).
+              type: string
+              example: "on"
       responses:
         '200':
           description: |
@@ -367,7 +371,7 @@ paths:
               properties:
                 mode:
                   description: |
-                    The mode to put the DB-Server in.
+                    The mode to set for the DB-Server.
                   type: string
                   enum: [maintenance, normal]
                 timeout:
