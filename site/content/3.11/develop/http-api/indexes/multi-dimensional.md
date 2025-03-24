@@ -1,5 +1,5 @@
 ---
-title: Working with multi-dimensional indexes
+title: HTTP interface for multi-dimensional indexes
 menuTitle: Multi-dimensional
 weight: 20
 description: ''
