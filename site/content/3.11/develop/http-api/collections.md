@@ -1251,7 +1251,7 @@ paths:
                           indexes:
                             description: |
                               The detailed index metrics with the number of entries per index.
-                              type: array
+                            type: array
                             items:
                               type: object
                               properties:
