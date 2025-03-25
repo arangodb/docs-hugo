@@ -10,7 +10,7 @@ description: >-
 
 ```openapi
 paths:
-  /_db/{database-name}/_api/tasks/:
+  /_db/{database-name}/_api/tasks:
     get:
       operationId: listTasks
       description: |
