@@ -66,7 +66,7 @@ Kubernetes cluster.
 ### Community Edition
 
 ArangoDB is available in a **Community Edition** governed by the
-[ArangoDB Community License](https://arangodb.com/2024/02/update-evolving-arangodbs-licensing-model-for-a-sustainable-future/).
+[ArangoDB Community License](https://arangodb.com/community-license/).
 You can download the extensively tested prepackaged binaries and official
 Docker images for free.
 
@@ -79,9 +79,9 @@ Docker images for free.
 See all [Community Edition Features](community-edition.md).
 
 The Community Edition is a fully-featured version without time
-restrictions and includes cluster support. The use for commercial purposes is
-limited to a 100 GB on dataset size in production within a single cluster and a
-maximum of three clusters.
+restrictions and includes cluster support. It is limited to a 100 GB on dataset
+size in production and you cannot use it for any commercial purposes, only
+internal business purposes.
 
 The source code of the Community Edition is available under the
 [Business Source License 1.1 (BUSL-1.1)](https://github.com/arangodb/arangodb/blob/devel/LICENSE).
