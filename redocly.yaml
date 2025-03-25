@@ -1,0 +1,10 @@
+# Configuration file for Redocly CLI:
+#   redocly lint ./site/data/3.xx/api-docs.json
+
+extends:
+  - recommended
+
+rules:
+  no-empty-servers: off
+  security-defined: off
+  operation-4xx-response: off # Known issue: Error replies are inconsistently documented
