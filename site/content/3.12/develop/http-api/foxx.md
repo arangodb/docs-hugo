@@ -756,7 +756,6 @@ paths:
                   description: |
                     An arbitrary JSON value that will be parsed and passed to the
                     script as its first argument.
-                  type: json
       responses:
         '200':
           description: |
