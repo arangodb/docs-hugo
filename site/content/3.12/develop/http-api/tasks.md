@@ -227,7 +227,7 @@ paths:
     post:
       operationId: createTask
       description: |
-        creates a new task with a generated id
+        Creates a new task with a generated identifier.
       parameters:
         - name: database-name
           in: path
@@ -243,90 +243,84 @@ paths:
             schema:
               type: object
               required:
-                - name
                 - command
-                - params
               properties:
                 name:
                   description: |
-                    The name of the task
+                    The name of the task.
                   type: string
                 command:
                   description: |
-                    The JavaScript code to be executed
+                    The JavaScript code to be executed.
                   type: string
                 params:
                   description: |
-                    The parameters to be passed into command
+                    The parameters to be passed to the command.
                   type: string
                 period:
                   description: |
-                    number of seconds between the executions
+                    The number of seconds between the executions.
                   type: integer
                 offset:
                   description: |
-                    Number of seconds initial delay
+                    The number of seconds for the initial delay.
                   type: integer
       responses:
         '200':
           description: |
-            The task was registered
+            The task has been registered.
           content:
             application/json:
               schema:
                 type: object
                 required:
                   - id
+                  - name
                   - created
                   - type
                   - period
                   - offset
                   - command
                   - database
-                  - code
-                  - error
                 properties:
                   id:
                     description: |
-                      A string identifying the task
+                      A string identifying the task.
+                    type: string
+                  name:
+                    description: |
+                      The name of the task.
                     type: string
                   created:
                     description: |
-                      The timestamp when this task was created
+                      The timestamp when this task was created.
                     type: number
                   type:
                     description: |
-                      What type of task is this [ `periodic`, `timed`]
-                        - periodic are tasks that repeat periodically
-                        - timed are tasks that execute once at a specific time
+                      The kind of the task:
+                      - `"periodic"`: The task repeats periodically
+                      - `"timed"`: The task executes once at a specific time
                     type: string
+                    enum: [periodic, timed]
                   period:
                     description: |
-                      this task should run each `period` seconds
+                      The task runs every `period` seconds.
                     type: number
                   offset:
                     description: |
-                      time offset in seconds from the created timestamp
+                      The time offset in seconds from the created timestamp.
                     type: number
                   command:
                     description: |
-                      the javascript function for this task
+                      The JavaScript code of this task.
                     type: string
                   database:
                     description: |
-                      the database this task belongs to
+                      The database this task belongs to.
                     type: string
-                  code:
-                    description: |
-                      The status code, 200 in this case.
-                    type: number
-                  error:
-                    description: |
-                      `false` in this case
-                    type: boolean
         '400':
           description: |
-            If the post body is not accurate, a *HTTP 400* is returned.
+            The task can't be registered because the request is invalid.
       tags:
         - Tasks
 ```
@@ -391,34 +385,87 @@ paths:
             schema:
               type: object
               required:
-                - name
                 - command
-                - params
               properties:
                 name:
                   description: |
-                    The name of the task
+                    The name of the task.
                   type: string
                 command:
                   description: |
-                    The JavaScript code to be executed
+                    The JavaScript code to be executed.
                   type: string
                 params:
                   description: |
-                    The parameters to be passed into command
+                    The parameters to be passed to the command.
                   type: string
                 period:
                   description: |
-                    number of seconds between the executions
+                    The number of seconds between the executions.
                   type: integer
                 offset:
                   description: |
-                    Number of seconds initial delay
+                    The number of seconds for the initial delay.
                   type: integer
       responses:
+        '200':
+          description: |
+            The task has been registered.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - id
+                  - name
+                  - created
+                  - type
+                  - period
+                  - offset
+                  - command
+                  - database
+                properties:
+                  id:
+                    description: |
+                      The user-provided string identifying the task.
+                    type: string
+                  name:
+                    description: |
+                      The name of the task.
+                    type: string
+                  created:
+                    description: |
+                      The timestamp when this task was created.
+                    type: number
+                  type:
+                    description: |
+                      The kind of the task:
+                      - `"periodic"`: The task repeats periodically
+                      - `"timed"`: The task executes once at a specific time
+                    type: string
+                    enum: [periodic, timed]
+                  period:
+                    description: |
+                      The task runs every `period` seconds.
+                    type: number
+                  offset:
+                    description: |
+                      The time offset in seconds from the created timestamp.
+                    type: number
+                  command:
+                    description: |
+                      The JavaScript code of this task.
+                    type: string
+                  database:
+                    description: |
+                      The database this task belongs to.
+                    type: string
         '400':
           description: |
-            If the task `id` already exists or the rest body is not accurate, *HTTP 400* is returned.
+            The task can't be registered because the request is invalid.
+        '409':
+          description: |
+            A task with the specified `id` already exists.
       tags:
         - Tasks
 ```
