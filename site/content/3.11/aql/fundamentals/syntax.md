@@ -169,9 +169,7 @@ based on the context:
   [REMOVE](../high-level-operations/remove.md#query-options) operation /
   [Graph Traversal](../graphs/traversals.md) /
   [Shortest Path](../graphs/shortest-path.md#path-search-options) /
-  [All Shortest Paths](../graphs/all-shortest-paths.md#path-search-options) /
   [k Shortest Paths](../graphs/k-shortest-paths.md#path-search-options) /
-  [k Paths](../graphs/k-paths.md#path-search-options)
 - `PRUNE` –
   [Graph Traversal](../graphs/traversals.md#pruning) (`FOR` operation variant)
 - `SEARCH` –
