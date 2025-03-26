@@ -4389,16 +4389,16 @@ paths:
                       A flag indicating that no error occurred.
                     type: boolean
                     example: false
-                code:
-                  description: |
-                    The HTTP response status code.
-                  type: integer
-                  example: 200
-                result:
-                  description: |
-                    The value `true`.
-                  type: boolean
-                  example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  result:
+                    description: |
+                      The value `true`.
+                    type: boolean
+                    example: true
         '400':
           description: |
             The `collection-name` parameter is missing.

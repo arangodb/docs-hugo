@@ -199,6 +199,14 @@ paths:
 
         Returns an empty response on success.
       parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of the database.
+          schema:
+            type: string
         - name: mount
           in: query
           required: true
@@ -756,7 +764,6 @@ paths:
                   description: |
                     An arbitrary JSON value that will be parsed and passed to the
                     script as its first argument.
-                  type: json
       responses:
         '200':
           description: |

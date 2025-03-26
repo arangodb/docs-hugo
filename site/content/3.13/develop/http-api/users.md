@@ -443,7 +443,7 @@ users.remove(theUser);
 
 ```openapi
 paths:
-  /_db/{database-name}/_api/user/:
+  /_db/{database-name}/_api/user:
     get:
       operationId: listUsers
       description: |
@@ -853,7 +853,7 @@ users.remove(theUser);
 
 ```openapi
 paths:
-  /_db/{database-name}/_api/user/{user}/database/:
+  /_db/{database-name}/_api/user/{user}/database:
     get:
       operationId: listUserDatabases
       description: |
