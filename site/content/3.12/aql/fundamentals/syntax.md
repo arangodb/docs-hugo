@@ -154,11 +154,15 @@ based on the context:
 
 - `KEEP` –
   [COLLECT](../high-level-operations/collect.md) operation variant
-- `COUNT` (`WITH COUNT INTO`) –
-  [COLLECT](../high-level-operations/collect.md) operation variant
+- `COUNT` –
+  [COLLECT](../high-level-operations/collect.md) operation variant (`WITH COUNT INTO`)
 - `OPTIONS` –
   [FOR](../high-level-operations/for.md#options) /
   [Graph Traversal](../graphs/traversals.md) /
+  [Shortest Path](../graphs/shortest-path.md) /
+  [All Shortest Paths](../graphs/all-shortest-paths.md) /
+  [k Shortest Paths](../graphs/k-shortest-paths.md) /
+  [k Paths](../graphs/k-paths.md) /
   [SEARCH](../high-level-operations/search.md#search-options) /
   [COLLECT](../high-level-operations/collect.md#collect-options) /
   [INSERT](../high-level-operations/insert.md#query-options) /
@@ -167,14 +171,14 @@ based on the context:
   [UPSERT](../high-level-operations/upsert.md#query-options) /
   [REMOVE](../high-level-operations/remove.md#query-options) operation
 - `PRUNE` –
-  [Graph Traversal](../graphs/traversals.md#pruning), FOR operation variant
+  [Graph Traversal](../graphs/traversals.md#pruning) (`FOR` operation variant)
 - `SEARCH` –
   [SEARCH](../high-level-operations/search.md) operation
 - `TO` –
   [Shortest Path](../graphs/shortest-path.md) /
   [All Shortest Paths](../graphs/all-shortest-paths.md) /
   [k Shortest Paths](../graphs/k-shortest-paths.md) /
-  [k Paths](../graphs/k-paths.md) graph traversal
+  [k Paths](../graphs/k-paths.md)
 
 Last but not least, there are special variables which are available in certain
 contexts. Unlike keywords, they are **case-sensitive**:
