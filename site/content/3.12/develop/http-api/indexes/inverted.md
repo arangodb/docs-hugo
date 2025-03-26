@@ -1,5 +1,5 @@
 ---
-title: Working with inverted indexes
+title: HTTP interface for inverted indexes
 menuTitle: Inverted
 weight: 10
 description: ''

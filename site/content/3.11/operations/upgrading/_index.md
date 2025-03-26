@@ -6,6 +6,12 @@ description: >-
   You can create a backup and upgrade ArangoDB in-place, but downgrading
   is only possible with the backup or by dumping and restoring all data
 ---
+{{< info >}}
+When upgrading from a 3.11 version, please see
+[Resolving known issues with versions up to 3.11.11](../../release-notes/version-3.11/incompatible-changes-in-3-11.md#resolving-known-issues-with-versions-up-to-31111)
+and follow the linked upgrade procedures instead of the regular upgrade procedure.
+{{< /info >}}
+
 ## Upgrade methods
 
 There are two main ways to upgrade ArangoDB:
@@ -38,8 +44,8 @@ Before upgrading, it is recommended to:
   - **Take a backup** of the old ArangoDB database using [_arangodump_](../../components/tools/arangodump/_index.md),
     as well as
   - Copy the entire "old" data directory to a safe place, after stopping the ArangoDB Server
-    running on it (if you are running an Active Failover, or a Cluster, you will need to take
-    a copy of their data directories, from all involved machines, after stopping all the running
+    running on it (if you run an Active Failover or Cluster deployment, you will need to take a copy of their
+    data directories, from all involved machines, after stopping all the running
     ArangoDB processes).
   - Keep a copy of all ArangoDB package files (executables, configuration files,
     bundled scripts, etc.) in case you want to return to the old version of
@@ -51,29 +57,29 @@ Before upgrading, it is recommended to:
   general availability (GA) release, i.e from x.y.W to x.y.Z, where Z > W.
 
   Examples:
-  - Upgrading from 3.9.0 to 3.9.1 or (directly to) 3.9.3 is supported.
-  - Upgrading from 3.9.1 to 3.9.2 or (directly to) 3.9.3 is supported.
+  - Upgrading from 3.11.0 to 3.11.1 or (directly to) 3.11.3 is supported.
+  - Upgrading from 3.11.1 to 3.11.2 or (directly to) 3.11.3 is supported.
 
 - It is possible to upgrade between two different consecutive GA releases, but it is
   not officially supported to upgrade if the two GA releases are not consecutive
   (in this case, you first have to upgrade to all intermediate releases).
 
   Examples:
-  - Upgrading from 3.8 to 3.9 is supported.
-  - Upgrading from 3.9 to 3.10 is supported.
-  - Upgrading from 3.8 directly to 3.10 is not officially supported!
-    The officially supported upgrade path in this case is 3.8 to 3.9, and then
-    3.9 to 3.10.
+  - Upgrading from 3.10 to 3.11 is supported.
+  - Upgrading from 3.11 to 3.12 is supported.
+  - Upgrading from 3.10 directly to 3.12 is not officially supported!
+    The officially supported upgrade path in this case is 3.10 to 3.11, and then
+    3.11 to 3.12.
 
   {{< info >}}
   Before upgrading between two consecutive GA releases, it is highly recommended
   to first upgrade the previous GA release to its latest patch version.
 
   Examples:
-  - To upgrade from 3.8 to 3.9, first upgrade your 3.8 installation to
-    the latest 3.8 version, for example, from 3.8.2 to 3.8.9 and then to 3.9.x.
-  - To upgrade from 3.9 to 3.10, first upgrade your 3.9 installation to
-    the latest 3.9 version, for example, from 3.9.5 to 3.9.10 and then to 3.10.x.
+  - To upgrade from 3.10 to 3.11, first upgrade your 3.10 deployment to
+    the latest 3.10 version, for example, from 3.10.2 to 3.10.14 and then to 3.11.x.
+  - To upgrade from 3.11 to 3.12, first upgrade your 3.11 deployment to
+    the latest 3.11 version, for example, from 3.11.5 to 3.11.13 and then to 3.12.x.
   {{< /info >}}
 
 ### Additional notes regarding rolling upgrades

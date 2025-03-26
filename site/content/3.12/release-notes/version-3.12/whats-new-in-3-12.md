@@ -970,6 +970,240 @@ In addition, shortest path searches may finish earlier now due to some
 optimizations to disregard candidate paths for which better candidates have been
 found already.
 
+### Cache for query execution plans (experimental)
+
+<small>Introduced in: v3.12.4</small>
+
+An optional execution plan cache for AQL queries has been added to let you skip query
+planning and optimization when running the same queries repeatedly. This can
+significantly reduce the total time for running particular queries where a lot
+of time is spent on the query planning and optimization passes in proportion to
+the actual execution.
+
+Query plans are not cached by default. You need to set the new `usePlanCache`
+query option to `true` to utilize cached plans as well as to add plans to the
+cache. Otherwise, the plan cache is bypassed.
+
+```js
+db._query("FOR doc IN coll FILTER doc.attr == @val RETURN doc", { val: "foo" }, { usePlanCache: true });
+```
+
+Not all AQL queries are eligible for plan caching. You can generally not cache
+plans of queries where bind variables affect the structure of the execution plan
+or the index utilization.
+See [Cache eligibility](../../aql/execution-and-performance/caching-query-plans.md#cache-eligibility)
+for details.
+
+HTTP API endpoints and a JavaScript API module have been added for clearing the
+contents of the query plan cache and for retrieving the current plan cache entries.
+See [The execution plan cache for AQL queries](../../aql/execution-and-performance/caching-query-plans.md#interfaces)
+for details.
+
+```js
+require("@arangodb/aql/plan-cache").toArray();
+```
+
+```json
+[
+  {
+    "hash" : "2757239675060883499",
+    "query" : "FOR doc IN coll FILTER doc.attr == @val RETURN doc",
+    "queryHash" : 11382508862770890000,
+    "bindVars" : {
+    },
+    "fullCount" : false,
+    "dataSources" : [
+      "coll"
+    ],
+    "created" : "2024-11-20T17:21:34Z",
+    "hits" : 0,
+    "memoryUsage" : 3070
+  }
+]
+```
+
+The following startup options have been added to let you configure the plan cache:
+
+- `--query.plan-cache-max-entries`: The maximum number of plans in the
+  query plan cache per database. The default value is `128`.
+- `--query.plan-cache-max-memory-usage`: The maximum total memory usage for the
+  query plan cache in each database. The default value is `8MB`.
+- `--query.plan-cache-max-entry-size`: The maximum size of an individual entry
+  in the query plan cache in each database. The default value is `2MB`.
+- `--query.plan-cache-invalidation-time`: The time in seconds after which a
+  query plan is invalidated in the query plan cache.
+
+The following metrics have been added to monitor the query plan cache:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_aql_query_plan_cache_hits_total` | Total number of lookup hits in the AQL query plan cache. |
+| `arangodb_aql_query_plan_cache_memory_usage` | Total memory usage of all query plan caches across all databases. |
+| `arangodb_aql_query_plan_cache_misses_total` | Total number of lookup misses in the AQL query plan cache. |
+
+### `PUSH()` function available for aggregations
+
+<small>Introduced in: v3.12.4</small>
+
+The `COLLECT` and `WINDOW` operations now support the `PUSH()` function in
+`AGGREGATE` expressions.
+
+For grouping data with `COLLECT`, it means that you can rewrite a
+`COLLECT ... INTO var = <projectionExpression>` construct to
+`COLLECT ... AGGREGATE var = PUSH(<projectionExpression>)`, for instance.
+You can add more assignments to the `AGGREGATE` clause to perform additional
+calculations in one go, making it more powerful than `COLLECT ... INTO`.
+
+For sliding window calculations with `WINDOW`, the `PUSH()` function can be handy
+when developing queries to understand what values are in the sliding window:
+
+```aql
+FOR t IN observations
+  SORT t.time
+  WINDOW { preceding: "unbounded", following: 0 }
+  AGGREGATE sum = SUM(t.val), values = PUSH(t.val)
+  RETURN { sum, values }
+```
+
+| sum | values |
+|----:|:-------|
+|  10 | [10]
+|  10 | [10,0]
+|  19 | [10,0,9]
+|  29 | [10,0,9,10]
+|  54 | [10,0,9,10,25]
+|  59 | [10,0,9,10,25,5]
+|  79 | [10,0,9,10,25,5,20]
+| 109 | [10,0,9,10,25,5,20,30]
+| 134 | [10,0,9,10,25,5,20,30,25]
+
+See the [`COLLECT` operation](../../aql/high-level-operations/collect.md#aggregation)
+and the [`WINDOW` operation](../../aql/high-level-operations/window.md) for details.
+
+### Improved index utilization for `SORT`
+
+<small>Introduced in: v3.12.4</small>
+
+The existing `use-index-for-sort` optimizer rule has been extended to take
+advantage of persistent indexes for sorting in more cases, namely when only a
+prefix of the indexed fields are used to sort by.
+
+Persistent indexes are sorted and could already be utilized to optimize `SORT`
+operations away if the attributes you sort by match the attributes the index is
+over. Now, the sortedness can be further exploited if there is a persistent index
+(e.g. over `["a", "b"]`) that starts with the same fields as the `SORT` operation
+(e.g. `a`), but you sort by additional attributes not covered by the index (e.g. `c`):
+
+```aql
+FOR { a, b, c } IN coll
+  SORT a, c
+  RETURN { a, b, c }
+```
+
+The data is already sorted in the index by the first attributes (here: `a`) and
+each group of values only needs to be sorted by the remaining attributes (here: `c`).
+This reduces the amount of work necessary to establish the total sorting order.
+
+The grouped sorting strategy that is applied in such cases is indicated in the
+query explain output:
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT 
+  9   IndexNode           ✓    100     - FOR #3 IN coll   /* persistent index scan, index only (projections: `a`) */    LET #10 = #3.`a`   /* with late materialization */
+ 10   MaterializeNode          100       - MATERIALIZE #3 INTO #7 /* (projections: `b`, `c`) */   LET #8 = #7.`b`, #9 = #7.`c`
+  6   SortNode            ✓    100       - SORT #9 ASC; GROUPED BY #10   /* sorting strategy: grouped */
+  7   CalculationNode     ✓    100       - LET #5 = { "a" : #10, "b" : #8, "c" : #9 }   /* simple expression */
+  8   ReturnNode               100       - RETURN #5
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  9   idx_1821511732613349376   persistent   coll         false    false    false      100.00 %   [ `a`, `b` ]   [  ]            *
+
+Optimization rules applied:
+ Id   Rule Name                                  Id   Rule Name                                  Id   Rule Name                         
+  1   move-calculations-up                        6   move-calculations-down                     11   optimize-projections              
+  2   remove-unnecessary-calculations             7   reduce-extraction-to-projection            12   remove-unnecessary-calculations-4 
+  3   move-calculations-up-2                      8   batch-materialize-documents                13   async-prefetch                    
+  4   use-indexes                                 9   push-down-late-materialization    
+  5   use-index-for-sort                         10   materialize-into-separate-variable
+```
+
+### Improved index utilization for `COLLECT`
+
+<small>Introduced in: v3.12.4</small>
+
+When grouping data with `COLLECT` to determine distinct values, such operations
+can now benefit from persistent indexes. The new `use-index-for-collect`
+optimizer rule speeds up the scanning for distinct values up to orders of
+magnitude if the selectivity is low, i.e. if there are few different values.
+
+```aql
+FOR doc IN coll
+  COLLECT a = doc.a, b = doc.b
+  RETURN { a, b }
+```
+
+If there is a persistent index over the attributes `a` and `b`, then the query
+explain output looks like this with the optimization applied:
+
+```aql
+Execution plan:
+ Id   NodeType           Par   Est.   Comment
+  1   SingletonNode               1   * ROOT 
+ 10   IndexCollectNode          100     - FOR doc IN coll COLLECT a = doc.`a`, b = doc.`b` /* distinct value index scan */
+  6   CalculationNode      ✓    100     - LET #5 = { "a" : a, "b" : b }   /* simple expression */
+  7   ReturnNode                100     - RETURN #5
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+ 10   idx_1821499964373598208   persistent   coll         false    false    false       10.00 %   [ `a`, `b` ]   [  ]            *
+
+Optimization rules applied:
+ Id   Rule Name                               Id   Rule Name                               Id   Rule Name                      
+  1   move-calculations-up                     4   use-index-for-sort                       7   async-prefetch                 
+  2   move-calculations-up-2                   5   reduce-extraction-to-projection
+  3   use-indexes                              6   use-index-for-collect   
+```
+
+You can disable the optimization for individual `COLLECT` operations by setting
+the new `disableIndex` option to `true`:
+
+```aql
+FOR doc IN coll
+  COLLECT a = doc.a, b = doc.b OPTIONS { disableIndex: true }
+  RETURN { a, b }
+```
+
+```aql
+Execution plan:
+ Id   NodeType          Par   Est.   Comment
+  1   SingletonNode              1   * ROOT 
+  9   IndexNode           ✓   1000     - FOR doc IN coll   /* persistent index scan, index only (projections: `a`, `b`) */    LET #8 = doc.`a`, #9 = doc.`b`   
+  5   CollectNode         ✓    800       - COLLECT a = #8, b = #9   /* sorted */
+  6   CalculationNode     ✓    800       - LET #5 = { "a" : a, "b" : b }   /* simple expression */
+  7   ReturnNode               800       - RETURN #5
+
+Indexes used:
+ By   Name                      Type         Collection   Unique   Sparse   Cache   Selectivity   Fields         Stored values   Ranges
+  9   idx_1821499964373598208   persistent   coll         false    false    false       10.00 %   [ `a`, `b` ]   [  ]            *
+
+Optimization rules applied:
+ Id   Rule Name                                 Id   Rule Name                                 Id   Rule Name                        
+  1   move-calculations-up                       4   use-index-for-sort                         7   remove-unnecessary-calculations-4
+  2   move-calculations-up-2                     5   reduce-extraction-to-projection            8   async-prefetch                   
+  3   use-indexes                                6   optimize-projections         
+```
+
+The optimization is automatically disabled if the selectivity is high, i.e.
+there are many different values, or if there is filtering or an `INTO` or
+`AGGREGATE` clause. Other optimizations may still be able to utilize the index
+to some extent.
+
+See the [`COLLECT` operation](../../aql/high-level-operations/collect.md#disableindex)
+for details.
+
 ## Indexing
 
 ### Multi-dimensional indexes
@@ -1082,6 +1316,35 @@ Note that it is still forbidden to use `_id` as a top-level attribute or
 sub-attribute in `fields` of persistent indexes. On the other hand, inverted
 indexes have been allowing to index and store the `_id` system attribute.
 
+### Vector indexes (experimental)
+
+<small>Introduced in: v3.12.4</small>
+
+A new `vector` index type has been added as an experimental feature that enables
+you to find items with similar properties by comparing vector embeddings, which
+are numerical representations generated by machine learning models.
+
+To try out this feature, start an ArangoDB server (`arangod`) with the
+`--experimental-vector-index` startup option and follow the guide in this
+blog post:
+[Vector Search in ArangoDB: Practical Insights and Hands-On Examples](https://arangodb.com/2024/11/vector-search-in-arangodb-practical-insights-and-hands-on-examples/)
+
+If the vector index type is enabled, the following new AQL functions are
+available:
+- `APPROX_NEAR_COSINE()`
+- `APPROX_NEAR_L2()`
+
+Two startup options for the storage engine related to vector indexes
+have been added:
+- `--rocksdb.max-write-buffer-number-vector`
+- `--rocksdb.partition-files-for-vector-index`
+
+The new `use-vector-index` AQL optimizer ruler is responsible for
+utilizing vector indexes in queries.
+
+Furthermore, a new error code `ERROR_QUERY_VECTOR_SEARCH_NOT_APPLIED` (1554)
+has been added.
+
 ## Server options
 
 ### Effective and available startup options
@@ -1106,7 +1369,8 @@ in the `--server.endpoint` startup option of the server.
 
 The previously fixed limit of 128 MiB for [Stream Transactions](../../develop/transactions/stream-transactions.md)
 can now be configured with the new `--transaction.streaming-max-transaction-size`
-startup option. The default value remains 128 MiB.
+startup option. The default value remains 128 MiB up to v3.12.3.
+From v3.12.4 onward, the default value is 512 MiB.
 
 ### Transparent compression of requests and responses between ArangoDB servers and client tools
 
@@ -1347,6 +1611,20 @@ feature have been added:
   The number of query log entries to buffer in memory before they are flushed to
   the system collection, discarding additional query metadata if the logging
   thread cannot keep up
+
+### Cluster management options
+
+<small>Introduced in: v3.12.4</small>
+
+The following startup options for cluster deployments have been added:
+
+- `--agency.supervision-expired-servers-grace-period`:
+  The supervision time after which a server is removed from the Agency if it
+  does no longer send heartbeats (in seconds).
+
+- `--cluster.no-heartbeat-delay-before-shutdown`:
+  The delay (in seconds) before shutting down a Coordinator if no heartbeat can
+  be sent. Set to `0` to deactivate this shutdown.
 
 ## Miscellaneous changes
 
@@ -1795,6 +2073,17 @@ pseudo-topic to set the log levels to `error` for all topics.
 Furthermore, the [HTTP API](../../develop/http-api/monitoring/logs.md#get-the-server-log-levels)
 has been extended to let you query and set the log levels for individual outputs
 at runtime.
+
+### Lost subordinate transactions metric
+
+<small>Introduced in: v3.12.4</small>
+
+The following metric about partially committed or aborted transactions on
+DB-Servers in a cluster has been added:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_vocbase_transactions_lost_subordinates_total` | Counts the number of lost subordinate transactions on database servers. |
 
 ## Client tools
 

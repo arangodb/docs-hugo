@@ -1,5 +1,5 @@
 ---
-title: Monitoring
+title: HTTP interfaces related to monitoring
 menuTitle: Monitoring
 weight: 100
 description: >-

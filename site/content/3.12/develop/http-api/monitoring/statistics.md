@@ -1,5 +1,5 @@
 ---
-title: Statistics
+title: HTTP interface for server statistics
 menuTitle: Statistics
 weight: 10
 description: >-
