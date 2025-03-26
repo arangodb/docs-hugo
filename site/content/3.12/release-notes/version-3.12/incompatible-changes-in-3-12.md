@@ -24,6 +24,12 @@ For details, see the
 [Evolving ArangoDB's Licensing Model for a Sustainable Future](https://arangodb.com/2024/02/update-evolving-arangodbs-licensing-model-for-a-sustainable-future/)
 blog post.
 
+## Upgrading 3.12 Kubernetes deployments
+
+To avoid potential issues when upgrading Kubernetes-managed ArangoDB deployments
+from version 3.12.2 or 3.12.3 to 3.12.4, make sure to use the ArangoDB
+Kubernetes Operator (`kube-arangodb`) version 1.2.47 or later.
+
 ## Resolving known issues with versions prior to 3.12.4
 
 Due to issues with the versions 3.12.0 through 3.12.3 and prior to 3.11.11,
