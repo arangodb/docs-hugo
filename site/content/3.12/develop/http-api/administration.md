@@ -801,9 +801,8 @@ paths:
               that is not ready for production yet
             - `obsolete` (boolean): Whether the option has been deprecated and
               no effect anymore
-            - `enterpriseOnly` (boolean): Whether the option is only available in
-              the Enterprise Edition. The Community Edition does have most of the
-              Enterprise Edition startup options and they are thus not reported
+            - `enterpriseOnly` (boolean): Whether the option is implemented in
+              the non-public enterprise code.
             - `requiresValue` (boolean): Whether the option can be specified
               without a value to enable it
             - `os` (array of strings): The operating systems the startup option

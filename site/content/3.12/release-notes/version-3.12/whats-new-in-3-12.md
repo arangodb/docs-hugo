@@ -28,7 +28,8 @@ of a scoring function in descending order (`DESC`).
 See [Optimizing View and inverted index query performance](../../index-and-search/arangosearch/performance.md#wand-optimization)
 for examples.
 
-This feature is only available in the Enterprise Edition.
+This feature is only available in the Enterprise Edition up to v3.12.4 and
+included in all Editions from v3.12.5 onward.
 
 ### `SEARCH` parallelization
 

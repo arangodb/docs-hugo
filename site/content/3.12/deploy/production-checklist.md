@@ -76,9 +76,8 @@ have been performed on your production system before you go live.
 
 - Verify your **Backup** and restore procedures are working.
 
-- Consider enabling [Encryption at Rest](../operations/security/encryption-at-rest.md)
-  (Enterprise Edition only). Make sure to safely store any secret keys you
-  create for this.
+- Consider enabling [Encryption at Rest](../operations/security/encryption-at-rest.md).
+  Make sure to safely store any secret keys you create for this.
 
 - Monitor the ArangoDB provided metrics (e.g. by using Prometheus/Grafana).
 

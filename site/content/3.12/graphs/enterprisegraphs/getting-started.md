@@ -14,9 +14,9 @@ collection. To preserve the sharding pattern, the `_from` and `_to` attributes
 of the edges cannot be modified. 
 You can define any `_key` value on vertices, including existing ones.
 
-## Migrating from Community Edition
+## Migrating to EnterpriseGraphs
 
-When migrating from the Community Edition to the Enterprise Edition, you can
+If you want to switch from General Graphs to EnterpriseGraphs, you can
 bring data from existing collections using the command-line tools `arangoexport`
 and `arangoimport`.
 

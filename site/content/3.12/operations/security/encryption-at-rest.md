@@ -6,15 +6,13 @@ description: >-
   You can secure the physical storage media of an ArangoDB deployment by letting
   it encrypt the database directories
 ---
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 When you store sensitive data in your ArangoDB database, you want to protect
 that data under all circumstances. At runtime you will protect it with SSL
 transport encryption and strong authentication, but when the data is already
-on disk, you also need protection. That is where the Encryption feature comes
-in.
+on disk, you also need protection. That is where the on-disk encryption
+feature comes in.
 
-The Encryption feature of ArangoDB will encrypt all data that ArangoDB is
+Encryption at rest encrypts all data that ArangoDB is
 storing in your database before it is written to disk.
 
 The data is encrypted with AES-256-CTR, which is a strong encryption algorithm,
