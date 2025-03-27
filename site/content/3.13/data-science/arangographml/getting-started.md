@@ -59,7 +59,7 @@ ArangoGraphML comes with other ArangoDB Magic Commands! See the full list [here]
 **API Documentation: [arangoml.ArangoML](https://arangoml.github.io/arangoml/client.html#arangoml.main.ArangoML)**
 
 The `ArangoML` class is the main entry point for the `arangoml` package.
-It requires the following parameters:
+It has the following parameters:
 - `client`: An instance of arango.client.ArangoClient. Defaults to `None`. If not provided, the **hosts** argument must be provided.
 - `hosts`: The ArangoDB host(s) to connect to. This can be a single host, or a
   list of hosts.
@@ -67,12 +67,10 @@ It requires the following parameters:
 - `password`: The ArangoDB password to use for authentication.
 - `user_token`: The ArangoDB user token to use for authentication.
   This is an alternative to username/password authentication.
-- `ca_cert_file`: (Optional) The path to the CA certificate file to use for TLS
-  verification.
-- `user_token`: (Optional) The ArangoDB user token to use for authentication.
-  This is an alternative to username/password authentication.
+- `ca_cert_file`: The path to the CA certificate file to use for TLS
+  verification. Defaults to `None`.
 - `api_endpoint`: The URL to the ArangoGraphML API Service.
-- `settings`: (Optional) A list of secrets files to be loaded as settings. Parameters provided as arguments will override those in the settings files (e.g `settings.toml`).
+- `settings_files`: A list of secrets files to be loaded as settings. Parameters provided as arguments will override those in the settings files (e.g `settings.toml`).
 - `version`: The ArangoML API date version. Defaults to the latest version.
 
 It is possible to instantiate an ArangoML object in multiple ways:
@@ -188,7 +186,7 @@ Let's get started!
 
 {{< tab "ArangoGraphML" >}}
 
-The [`arango_datasets` Python package](../../components/tools/arango-datasets.md)
+The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package
 allows you to load pre-defined datasets into ArangoDB. It comes pre-installed in the
 ArangoGraphML notebook environment.
 
@@ -205,9 +203,8 @@ DATASET_NAME = "OPEN_INTELLIGENCE_ANGOLA"
 
 {{< tab "Self-managed" >}}
 
-The [`arango_datasets` Python package](../../components/tools/arango-datasets.md)
-allows you to load pre-defined datasets into ArangoDB. It can be installed with the
-following command:
+The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package
+allows you to load a dataset into ArangoDB. It can be installed with:
 
 ```
 pip install arango-datasets
@@ -273,7 +270,8 @@ arangoml.projects.list_projects()
   - `outputName`: Adjust the default feature name. This can be any valid ArangoDB attribute name. Defaults to `x`.
 
   - `dimensionalityReduction`: Object configuring dimensionality reduction.
-    - `disabled`: Boolean for enabling or disabling dimensionality reduction. Default is `false`.
+    - `disabled`: Whether to disable dimensionality reduction. Default is `false`,
+    therefore dimensionality reduction is applied after Featurization by default.
     - `size`: The number of dimensions to reduce the feature length to. Default is `512`.
 
   - `defaultsPerFeatureType`: A dictionary mapping each feature to how missing or mismatched values should be handled. The keys of this dictionary are the features, and the values are sub-dictionaries with the following keys:
@@ -286,11 +284,11 @@ arangoml.projects.list_projects()
 
 - `jobConfiguration` Optional: A set of configurations that are applied to the job.
   - `batchSize`: The number of documents to process in a single batch. Default is `32`.
-  - `runAnalysisChecks`: Boolean for enabling or disabling analysis checks. Default is `true`.
-  - `skipLabels`: Boolean for enabling or disabling label skipping. Default is `false`.
-  - `overwriteFSGraph`: Boolean for enabling or disabling overwriting the feature store graph. Default is `false`.
-  - `writeToSourceGraph`: Boolean for enabling or disabling writing features to the source graph. Default is `true`.
-  - `useFeatureStore`: Boolean for enabling or disabling the use of the feature store. Default is `false`.
+  - `runAnalysisChecks`: Whether to run analysis checks, used  to peform a high-level analysis of the data quality before proceeding. Default is `true`.
+  - `skipLabels`: Skips the featurization process for attributes marked as `label`. Default is `false`.
+  - `useFeatureStore`: Enables the use of the Feature Store database, which allows you to store features separately from your Source Database. Default is `false`, therefore features are written to the source graph.
+  - `overwriteFSGraph`: Whether to overwrite the Feature Store Graph if features were previously generated. Default is `false`, therefore features are written to an existing Feature Store Graph.s
+  - `writeToSourceGraph`: Whether to store the generated features on the Source Graph. Default is `true`.
 
 - `metagraph`: Metadata to represent the vertex & edge collections of the graph.
   - `vertexCollections`: A dictionary mapping the vertex collection names to the following values:
@@ -299,8 +297,8 @@ arangoml.projects.list_projects()
     - `config`: Collection-level configuration settings.
       - `featurePrefix`: Identical to global `featurePrefix` but for this collection.
       - `dimensionalityReduction`: Identical to global `dimensionalityReduction` but for this collection.
-      - `outputName`: Identical to global `outputName` but for this collection.
-      - `defaultsPerFeatureType`: Identical to global `defaultsPerFeatureType` but for this collection.
+      - `outputName`: Identical to global `outputName`, but specifically for this collection.
+      - `defaultsPerFeatureType`: Identical to global `defaultsPerFeatureType`, but specifically for this collection.
   - `edgeCollections`: A dictionary mapping the edge collection names to an empty dictionary, as edge attributes are not currently supported.
 
 The Featurization Specification example is used for the GDELT dataset:
@@ -508,7 +506,7 @@ featurization_job_result = arangoml.wait_for_featurization(featurization_job.job
 
 You can also cancel a Featurization Job using the `arangoml.jobs.cancel_job` method:
 
-```py
+```python
 arangoml.jobs.cancel_job(prediction_job.job_id)
 ```
 
@@ -517,7 +515,7 @@ arangoml.jobs.cancel_job(prediction_job.job_id)
 
 **API Documentation: [ArangoML.jobs.train](https://arangoml.github.io/arangoml/api.html#agml_api.jobs.v1.api.jobs_api.JobsApi.train)**
 
-Training Graph Machine Learning Models with ArangoGraphML only requires two steps:
+Training Graph Machine Learning Models with ArangoGraphML requires two steps:
 1. Describe which data points should be included in the Training Job.
 2. Pass the Training Specification to the Training Service.
 
@@ -536,7 +534,12 @@ Training Graph Machine Learning Models with ArangoGraphML only requires two step
     - `targetCollection`: The ArangoDB collection name that contains the prediction label.
     - `inputFeatures`: The name of the feature to be used as input.
     - `labelField`: The name of the attribute to be predicted.
-    - `batchSize`: The number of documents to process in a single batch. Default is `64`.
+    - `batchSize`: The number of documents to process in a single training batch. Default is `64`.
+  - `graphEmbeddings`: Dictionary to describe the Graph Embedding Task Specification.
+    - `targetCollection`: The ArangoDB collection used to generate the embeddings. 
+    - `embeddingSize`: The size of the embedding vector. Default is `128`.
+    - `batchSize`: The number of documents to process in a single training batch. Default is `64`.
+    - `generateEmbeddings`: Whether to generate embeddings on the training dataset. Default is `false`.
 
 - `metagraph`: Metadata to represent the vertex & edge collections of the graph. If `featureSetID` is provided, this can be omitted.
   - `graph`: The ArangoDB graph name.
@@ -549,7 +552,6 @@ A Training Specification allows for concisely defining your training task in a
 single object and then passing that object to the training service using the
 Python API client, as shown below.
 
-
 The ArangoGraphML Training Service is responsible for training a series of
 Graph Machine Learning Models using the data provided in the Training
 Specification. It assumes that the data has been featurized and is ready to be
@@ -560,6 +562,8 @@ Given that we have run a Featurization Job, we can create the Training Specifica
 ```py
 # 1. Define the Training Specification
 
+# Node Classification example
+
 training_spec = {
     "featureSetID": featurization_job_result.result.feature_set_id,
     "mlSpec": {
@@ -567,6 +571,20 @@ training_spec = {
             "targetCollection": "Event",
             "inputFeatures": "OPEN_INTELLIGENCE_ANGOLA_x",
             "labelField": "OPEN_INTELLIGENCE_ANGOLA_y",
+        }
+    },
+}
+
+# Node Embedding example
+# NOTE: Full Graph Embeddings support is coming soon
+
+training_spec = {
+    "featureSetID": featurization_job_result.result.feature_set_id,
+    "mlSpec": {
+        "graphEmbeddings": {
+            "targetCollection": "Event",
+            "embeddingSize": 128,
+            "generateEmbeddings": True,
         }
     },
 }
@@ -588,7 +606,7 @@ Once a Training Job has been submitted, you can wait for it to complete using th
 training_job_result = arangoml.wait_for_training(training_job.job_id)
 ```
 
-**Example Output:**
+**Example Output (Node Classification):**
 ```py
 {
   "job_id": "691ceb2f-1931-492a-b4eb-0536925a4697",
@@ -651,7 +669,7 @@ training_job_result = arangoml.wait_for_training(training_job.job_id)
 
 You can also cancel a Training Job using the `arangoml.jobs.cancel_job` method:
 
-```py
+```python
 arangoml.jobs.cancel_job(training_job.job_id)
 ```
 
@@ -674,10 +692,15 @@ models = arangoml.list_models(
 print(len(models))
 ```
 
-
 The cell below selects the model with the highest **test accuracy** using [ArangoML.get_best_model](https://arangoml.github.io/arangoml/client.html#arangoml.main.ArangoML.get_best_model), but there may be other factors that motivate you to choose another model. See the `model_statistics` in the output field below for more information on the full list of available metrics.
 
 ```py
+
+# 2. Select the best Model
+
+# Get best Node Classification Model
+# Sort by highest test accuracy
+
 best_model = arangoml.get_best_model(
     project.name,
     training_job.job_id,
@@ -685,10 +708,55 @@ best_model = arangoml.get_best_model(
     sort_child_key="accuracy",
 )
 
+# Get best Graph Embedding Model
+# Sort by lowest loss
+
+best_model = arangoml.get_best_model(
+    project.name,
+    training_job.job_id,
+    sort_parent_key="loss",
+    sort_child_key=None,
+    reverse=False
+)
+
 print(best_model)
 ```
 
-**Example Output:**
+**Example Output (Node Classification):**
+```py
+{
+  "job_id": "691ceb2f-1931-492a-b4eb-0536925a4697",
+  "model_id": "02297435-3394-4e7e-aaac-82e1d224f85c",
+  "model_statistics": {
+      "_id": "devperf/123",
+      "_key": "123",
+      "_rev": "_gkUc8By--_",
+      "run_id": "123",
+      "test": {
+          "accuracy": 0.8891242216547955,
+          "confusion_matrix": [[13271, 2092], [1276, 5684]],
+          "f1": 0.9,
+          "loss": 0.1,
+          "precision": 0.9,
+          "recall": 0.8,
+          "roc_auc": 0.8,
+      },
+      "validation": {
+          "accuracy": 0.9,
+          "confusion_matrix": [[13271, 2092], [1276, 5684]],
+          "f1": 0.85,
+          "loss": 0.1,
+          "precision": 0.86,
+          "recall": 0.85,
+          "roc_auc": 0.85,
+      },
+  },
+  "target_collection": "Event",
+  "target_field": "label",
+}
+```
+
+**Example Output (Node Embeddings):**
 ```py
 {
   "job_id": "691ceb2f-1931-492a-b4eb-0536925a4697",
@@ -756,7 +824,12 @@ Once the specification has been defined, a Prediction Job can be triggered using
 
 ```py
 # 2. Submit a Prediction Job
+
+# For Node Classification
 prediction_job = arangoml.jobs.predict(prediction_spec)
+
+# For Graph Embeddings
+prediction_job = arangoml.jobs.generate(prediction_spec)
 ```
 
 Similar to the Training Service, we can wait for a Prediction Job to complete with the `arangoml.wait_for_prediction` method: 
@@ -767,7 +840,7 @@ Similar to the Training Service, we can wait for a Prediction Job to complete wi
 prediction_job_result = arangoml.wait_for_prediction(prediction_job.job_id)
 ```
 
-**Example Output:**
+**Example Output (Node Classification):**
 ```py
 {
   "job_id": "b2a422bb-5650-4fbc-ba6b-0578af0049d9",
@@ -791,13 +864,13 @@ prediction_job_result = arangoml.wait_for_prediction(prediction_job.job_id)
 
 You can also cancel a Prediction Job using the `arangoml.jobs.cancel_job` method:
 
-```py
+```python
 arangoml.jobs.cancel_job(prediction_job.job_id)
 ```
 
-### Viewing Predictions
+### Viewing Inference Results
 
-We can now access our predictions via AQL:
+We can now access our results via AQL:
 
 ```py
 import json
@@ -815,3 +888,7 @@ docs = list(dataset_db.aql.execute(query))
 
 print(json.dumps(docs, indent=2))
 ```
+
+## What's next
+
+With the generated Feature (and optionally Node) Embeddings, you can now use them for downstream tasks like clustering, anomaly detection, and link prediction. Consider using [ArangoDB's Vector Search](https://arangodb.com/2024/11/vector-search-in-arangodb-practical-insights-and-hands-on-examples/) capabilities to find similar nodes based on their embeddings.
