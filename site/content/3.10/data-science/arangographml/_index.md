@@ -43,22 +43,22 @@ to the database for application use.
 
 Node classification is a **supervised learning** task where the goal is to predict the label of a node based on both its own features and its relationships within the graph. It requires a set of labeled nodes to train a model, which then classifies unlabeled nodes based on learned patterns.
 
-#### **How It Works in ArangoGraphML**  
+**How It Works in ArangoGraphML**  
 - A portion of the nodes in a graph is labeled for training.  
 - The model learns patterns from both **node features** and **structural relationships** (neighboring nodes and connections).  
 - It predicts labels for unlabeled nodes based on these learned patterns.  
 
-#### **Example Use Cases**  
+**Example Use Cases**  
 
-##### **1. Fraud Detection in Financial Networks**  
+**1. Fraud Detection in Financial Networks**  
 - **Problem:** Fraudsters often create multiple accounts or interact within suspicious clusters to evade detection.  
 - **Solution:** A transaction graph is built where nodes represent users and edges represent transactions. The model learns patterns from labeled fraudulent and legitimate users, detecting hidden fraud rings based on **both user attributes and transaction relationships**.  
 
-##### **2. Customer Segmentation in E-Commerce & Social Media**  
+**2. Customer Segmentation in E-Commerce & Social Media**  
 - **Problem:** Businesses need to categorize customers based on purchasing behavior and engagement.  
 - **Solution:** A graph is built where nodes represent customers and edges represent interactions (purchases, reviews, social connections). The model predicts the category of each user based on how similar they are to other users **not just by their personal data, but also by how they are connected to others**.  
 
-##### **3. Disease Classification in Biomedical Networks**  
+**3. Disease Classification in Biomedical Networks**  
 - **Problem:** Identifying proteins or genes associated with a disease.  
 - **Solution:** A protein interaction graph is built where nodes are proteins and edges represent biochemical interactions. The model classifies unknown proteins based on their interactions with known disease-related proteins, rather than just their individual properties.  
 
@@ -66,22 +66,22 @@ Node classification is a **supervised learning** task where the goal is to predi
 
 Node embedding is an **unsupervised learning** technique that converts nodes into numerical vector representations, preserving their **structural relationships** within the graph. Unlike simple feature aggregation, node embeddings **capture the influence of neighboring nodes and graph topology**, making them powerful for downstream tasks like clustering, anomaly detection, and link prediction. Combining this with downstream tasks like clustering, anomaly detection, and link prediction can provide valuable insights. Consider using [ArangoDB's Vector Search](https://arangodb.com/2024/11/vector-search-in-arangodb-practical-insights-and-hands-on-examples/) capabilities to find similar nodes based on their embeddings. 
 
-#### **How It Works in ArangoGraphML**  
+**How It Works in ArangoGraphML**  
 - The model learns an embedding (a vector representation) for each node based on its **position within the graph and its connections**.  
 - It **does not rely on labeled data**—instead, it captures structural patterns through graph traversal and aggregation of neighbor information.  
 - These embeddings can be used for similarity searches, clustering, and predictive tasks.  
 
-#### **Example Use Cases**  
+**Example Use Cases**  
 
-##### **1. Recommendation Systems (E-commerce & Streaming Platforms)**  
+**1. Recommendation Systems (E-commerce & Streaming Platforms)**  
 - **Problem:** Platforms like Amazon, Netflix, and Spotify need to recommend products, movies, or songs.  
 - **Solution:** A user-item interaction graph is built where nodes are users and products, and edges represent interactions (purchases, ratings, listens). **Embeddings encode relationships**, allowing the system to recommend similar items based on user behavior and network influence rather than just individual preferences.  
 
-##### **2. Anomaly Detection in Cybersecurity & Finance**  
+**2. Anomaly Detection in Cybersecurity & Finance**  
 - **Problem:** Detecting unusual activity (e.g., cyberattacks, money laundering) in complex networks.  
 - **Solution:** A network of IP addresses, users, and transactions is represented as a graph. Nodes with embeddings that significantly deviate from normal patterns are flagged as potential threats. The key advantage here is that anomalies are detected based on **network structure, not just individual activity logs**.  
 
-##### **3. Link Prediction (Social & Knowledge Graphs)**  
+**3. Link Prediction (Social & Knowledge Graphs)**  
 - **Problem:** Predicting new relationships, such as suggesting friends on social media or forecasting research paper citations.  
 - **Solution:** A social network graph is created where nodes are users, and edges represent friendships. **Embeddings capture the likelihood of connections forming based on shared neighborhoods and structural similarities, even if users have never interacted before**.  
 
