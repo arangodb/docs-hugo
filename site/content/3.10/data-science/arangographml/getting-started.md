@@ -667,6 +667,65 @@ training_job_result = arangoml.wait_for_training(training_job.job_id)
 }
 ```
 
+**Example Output (Node Embeddings):**
+```py
+{
+    "job_id": "6047e53a-f1dd-4725-83e8-74ac44629c11",
+    "job_status": "COMPLETED",
+    "project_name": "OPEN_INTELLIGENCE_ANGOLA_GraphML_Node_Embeddings",
+    "project_id": "647025872",
+    "database_name": "OPEN_INTELLIGENCE_ANGOLA",
+    "ml_spec": {
+        "graphEmbeddings": {
+            "targetCollection": "Event",
+            "embeddingLevel": "NODE_EMBEDDINGS",
+            "embeddingSize": 128,
+            "embeddingTrainingType": "UNSUPERVISED",
+            "batchSize": 64,
+            "generateEmbeddings": true,
+            "bestModelSelection": "BEST_LOSS",
+            "persistModels": "ALL_MODELS",
+            "modelConfigurations": {}
+        }
+    },
+    "metagraph": {
+        "graph": "OPEN_INTELLIGENCE_ANGOLA",
+        "vertexCollections": {
+            "Actor": {
+                "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+            },
+            "Country": {
+                "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+            },
+            "Event": {
+                "x": "OPEN_INTELLIGENCE_ANGOLA_x",
+                "y": "OPEN_INTELLIGENCE_ANGOLA_y"
+            },
+            "Source": {
+                "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+            },
+            "Location": {
+                "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+            },
+            "Region": {
+                "x": "OPEN_INTELLIGENCE_ANGOLA_x"
+            }
+        },
+        "edgeCollections": {
+            "eventActor": {},
+            "hasSource": {},
+            "hasLocation": {},
+            "inCountry": {},
+            "inRegion": {}
+        }
+    },
+    "time_submitted": "2025-03-27T02:55:15.099680",
+    "time_started": "2025-03-27T02:57:25.143948",
+    "time_ended": "2025-03-27T03:01:24.619737",
+    "training_type": "Training"
+}
+```
+
 You can also cancel a Training Job using the `arangoml.jobs.cancel_job` method:
 
 ```python
@@ -759,34 +818,16 @@ print(best_model)
 **Example Output (Node Embeddings):**
 ```py
 {
-  "job_id": "691ceb2f-1931-492a-b4eb-0536925a4697",
-  "model_id": "02297435-3394-4e7e-aaac-82e1d224f85c",
-  "model_statistics": {
-      "_id": "devperf/123",
-      "_key": "123",
-      "_rev": "_gkUc8By--_",
-      "run_id": "123",
-      "test": {
-          "accuracy": 0.8891242216547955,
-          "confusion_matrix": [[13271, 2092], [1276, 5684]],
-          "f1": 0.9,
-          "loss": 0.1,
-          "precision": 0.9,
-          "recall": 0.8,
-          "roc_auc": 0.8,
-      },
-      "validation": {
-          "accuracy": 0.9,
-          "confusion_matrix": [[13271, 2092], [1276, 5684]],
-          "f1": 0.85,
-          "loss": 0.1,
-          "precision": 0.86,
-          "recall": 0.85,
-          "roc_auc": 0.85,
-      },
-  },
-  "target_collection": "Event",
-  "target_field": "label",
+    "job_id": "6047e53a-f1dd-4725-83e8-74ac44629c11",
+    "model_id": "55ae93c2-3497-4405-9c63-0fa0e4a5b5bd",
+    "model_display_name": "graphsageencdec Model",
+    "model_name": "graphsageencdec Model 55ae93c2-3497-4405-9c63-0fa0e4a5b5bd",
+    "model_statistics": {
+        "loss": 0.13700408464796796,
+        "val_acc": 0.5795393939393939,
+        "test_acc": 0.5809545454545455
+    },
+    "model_tasks": [ "GRAPH_EMBEDDINGS" ]
 }
 ```
 
@@ -807,15 +848,24 @@ collection, or within the source documents.
 - `featurizeNewDocuments`: Boolean for enabling or disabling the featurization of new documents. Useful if you don't want to re-train the model upon new data. Default is `false`.
 - `featurizeOutdatedDocuments`: Boolean for enabling or disabling the featurization of outdated documents. Outdated documents are those whose features have changed since the last featurization. Default is `false`.
 - `schedule`: A cron expression to schedule the prediction job (e.g `0 0 * * *` for daily predictions). Default is `None`.
-
+- `embeddingsField`: The name of the field to store the generated embeddings. This is only used for Graph Embedding tasks. Default is `None`.
 
 ```py
 # 1. Define the Prediction Specification
 
+# Node Classification Example
 prediction_spec = {
   "projectName": project.name,
   "databaseName": dataset_db.name,
   "modelID": best_model.model_id,
+}
+
+# Node Embedding Example
+prediction_spec = {
+  "projectName": project.name,
+  "databaseName": dataset_db.name,
+  "modelID": best_model.model_id,
+  "embeddingsField": "embeddings"
 }
 ```
 
@@ -859,6 +909,28 @@ prediction_job_result = arangoml.wait_for_prediction(prediction_job.job_id)
   "time_submitted": "2024-01-12T02:31:18.382625",
   "time_started": "2024-01-12T02:31:23.550469",
   "time_ended": "2024-01-12T02:31:40.021035"
+}
+```
+
+**Example Output (Node Embeddings):**
+```py
+{
+    "job_id": "25260362-9764-47d0-abb4-247cbdce6c7b",
+    "job_status": "COMPLETED",
+    "project_name": "OPEN_INTELLIGENCE_ANGOLA_GraphML_Node_Embeddings",
+    "project_id": "647025872",
+    "database_name": "OPEN_INTELLIGENCE_ANGOLA",
+    "model_id": "55ae93c2-3497-4405-9c63-0fa0e4a5b5bd",
+    "job_state_information": {
+        "outputGraphName": "OPEN_INTELLIGENCE_ANGOLA",
+        "outputCollectionName": "Event",
+        "outputAttribute": "embeddings",
+        "numberOfPredictedDocuments": 0, # 0 All documents already have up-to-date embeddings
+    },
+    "time_submitted": "2025-03-27T14:02:33.094191",
+    "time_started": "2025-03-27T14:09:34.206659",
+    "time_ended": "2025-03-27T14:09:35.791630",
+    "prediction_type": "Prediction"
 }
 ```
 

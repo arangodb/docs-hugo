@@ -85,8 +85,7 @@ Node embedding is an **unsupervised learning** technique that converts nodes int
 - **Problem:** Predicting new relationships, such as suggesting friends on social media or forecasting research paper citations.  
 - **Solution:** A social network graph is created where nodes are users, and edges represent friendships. **Embeddings capture the likelihood of connections forming based on shared neighborhoods and structural similarities, even if users have never interacted before**.  
 
-### **Key Difference: Node Embeddings Are Structure-Aware**  
-A common misconception is that node embeddings are simply a compression of node features. **In reality, embeddings capture the structure of the graph and relationships between nodes, making them fundamentally different from traditional tabular data representations**.  
+### **Key Difference**  
 
 | Feature                | Node Classification | Node Embedding Generation |
 |------------------------|--------------------|--------------------------|
