@@ -66,6 +66,12 @@ Node classification is a **supervised learning** task where the goal is to predi
 
 Node embedding is an **unsupervised learning** technique that converts nodes into numerical vector representations, preserving their **structural relationships** within the graph. Unlike simple feature aggregation, node embeddings **capture the influence of neighboring nodes and graph topology**, making them powerful for downstream tasks like clustering, anomaly detection, and link prediction. Combining this with downstream tasks like clustering, anomaly detection, and link prediction can provide valuable insights. Consider using [ArangoDB's Vector Search](https://arangodb.com/2024/11/vector-search-in-arangodb-practical-insights-and-hands-on-examples/) capabilities to find similar nodes based on their embeddings. 
 
+**Feature Embeddings vs Node Embeddings**
+
+**Feature Embeddings** are vector representations derived from the attributes or features associated with nodes. These embeddings aim to capture the inherent characteristics of the data. For example, in a social network, a feature embedding might encode user attributes like age, location, and interests. Techniques like **Word2Vec**, **TF-IDF**, or **autoencoders** are commonly used to generate such embeddings.  
+
+In the context of graphs, **Node Embeddings** are a **combination of a node’s feature embedding and the structural information from its connected edges**. Essentially, they aggregate both the node’s attributes and the connectivity patterns within the graph. This fusion helps capture not only the individual properties of a node but also its position and role within the network.
+
 **How It Works in ArangoGraphML**  
 - The model learns an embedding (a vector representation) for each node based on its **position within the graph and its connections**.  
 - It **does not rely on labeled data**—instead, it captures structural patterns through graph traversal and aggregation of neighbor information.  
