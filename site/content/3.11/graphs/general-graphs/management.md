@@ -670,7 +670,9 @@ graph.female.update("female/linda", {name: "Linda", _key: "linda"}, { returnOld:
 
 ### Remove a Vertex
 
-Removes a vertex in collection `vertexCollectionName`.
+Removes a vertex from a collection of the named graph. Additionally removes all
+incoming and outgoing edges of the vertex. If these edge are used as vertices by
+other edges, the other edges are removed, too (recursively).
 
 `graph.vertexCollectionName.remove(vertexId, options)`
 
@@ -678,9 +680,6 @@ Removes a vertex in collection `vertexCollectionName`.
   `_id` attribute of the vertex
 - `options` (object, _optional_):
   See the [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectionremoveobject)
-
-Additionally removes all ingoing and outgoing edges of the vertex recursively
-(see [edge remove](#remove-an-edge)).
 
 **Examples**
 
@@ -810,15 +809,15 @@ graph.relation.update("relation/aliceAndDiana",
 
 Removes an edge in collection `edgeCollectionName`.
 
+Removes an edge from an edge collection of the named graph. If this edge is used
+as a vertex by another edge, the other edge is removed, too (recursively).
+
 `graph.edgeCollectionName.remove(edgeId, options)`
 
 - `edgeId` (string):
   `_id` attribute of the edge
 - `options` (object, _optional_):
   See the [_collection_ object](../../develop/javascript-api/@arangodb/collection-object.md#collectionremoveobject)
-
-If this edge is used as a vertex by another edge, the other edge is removed
-(recursively).
 
 **Examples**
 

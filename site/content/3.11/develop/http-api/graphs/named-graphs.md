@@ -5218,7 +5218,9 @@ paths:
     delete:
       operationId: deleteVertex
       description: |
-        Removes a vertex from the collection.
+        Removes a vertex from a collection of the named graph. Additionally removes all
+        incoming and outgoing edges of the vertex. If these edge are used as vertices by
+        other edges, the other edges are removed, too (recursively).
       parameters:
         - name: database-name
           in: path
@@ -7302,7 +7304,8 @@ paths:
     delete:
       operationId: deleteEdge
       description: |
-        Removes an edge from the collection.
+        Removes an edge from an edge collection of the named graph. If this edge is used
+        as a vertex by another edge, the other edge is removed, too (recursively).
       parameters:
         - name: database-name
           in: path
