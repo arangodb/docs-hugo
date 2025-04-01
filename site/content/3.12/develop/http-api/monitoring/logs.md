@@ -1,5 +1,5 @@
 ---
-title: Logs
+title: HTTP interface for server logs
 menuTitle: Logs
 weight: 5
 description: >-

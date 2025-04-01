@@ -1,5 +1,5 @@
 ---
-title: Working with full-text indexes
+title: HTTP interface for full-text indexes
 menuTitle: Fulltext
 weight: 30
 description: ''

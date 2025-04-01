@@ -976,7 +976,7 @@ paths:
                   errorMessage:
                     description: |
                       A descriptive error message.
-                    type: string.
+                    type: string
       tags:
         - Views
 ```
@@ -1145,7 +1145,7 @@ paths:
                   errorMessage:
                     description: |
                       A descriptive error message.
-                    type: string.
+                    type: string
       tags:
         - Views
 ```

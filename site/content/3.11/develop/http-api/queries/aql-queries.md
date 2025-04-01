@@ -661,8 +661,6 @@ paths:
                       An array of result documents for the current batch
                       (might be empty if the query has no results).
                     type: array
-                    items:
-                      type: ''
                   hasMore:
                     description: |
                       A boolean indicator whether there are more results
@@ -1394,8 +1392,6 @@ paths:
                       An array of result documents for the current batch
                       (might be empty if the query has no results).
                     type: array
-                    items:
-                      type: ''
                   hasMore:
                     description: |
                       A boolean indicator whether there are more results
@@ -2009,8 +2005,6 @@ paths:
                       An array of result documents for the current batch
                       (might be empty if the query has no results).
                     type: array
-                    items:
-                      type: ''
                   hasMore:
                     description: |
                       A boolean indicator whether there are more results

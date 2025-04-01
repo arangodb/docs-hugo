@@ -1,5 +1,5 @@
 ---
-title: Working with TTL (time-to-live) indexes
+title: HTTP interface for TTL (time-to-live) indexes
 menuTitle: TTL
 weight: 15
 description: ''

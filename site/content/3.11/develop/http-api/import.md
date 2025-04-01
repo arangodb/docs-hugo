@@ -1,5 +1,5 @@
 ---
-title: HTTP interface for imports
+title: HTTP interface for data import
 menuTitle: Import
 weight: 70
 description: >-
