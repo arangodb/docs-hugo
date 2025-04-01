@@ -153,15 +153,35 @@ func init() {
 		}
 
 		yaml.Unmarshal(yamlFile, &tags)
+
+		// License of the exposed API (but we assume it is the same as the source code)
+		license := map[string]interface{}{
+			"name": "Business Source License 1.1",
+			"url":  "https://github.com/arangodb/arangodb/blob/devel/LICENSE",
+		}
+		if version.Name == "3.10" || version.Name == "3.11" {
+			license["name"] = "Apache 2.0"
+			license["url"] = fmt.Sprintf("https://github.com/arangodb/arangodb/blob/%s/LICENSE", version.Name)
+		}
+
 		OpenapiGlobalMap[version.Name] = map[string]interface{}{
 			"openapi": "3.1.0",
 			"info": map[string]interface{}{
-				"description": "ArangoDB REST API Interface",
-				"version":     version.Version,
-				"title":       "ArangoDB",
+				"title":   "ArangoDB Core API",
+				"summary": "The RESTful HTTP API of the ArangoDB Core Database System",
+				"version": version.Version,
+				"license": license,
+				"contact": map[string]interface{}{
+					"name": "ArangoDB Inc.",
+					"url":  "https://arangodb.com",
+				},
 			},
 			"paths": make(map[string]interface{}),
 			"tags":  tags,
+			"externalDocs": map[string]interface{}{
+				"description": "ArangoDB Documentation",
+				"url":         "https://docs.arangodb.com",
+			},
 		}
 	}
 }
