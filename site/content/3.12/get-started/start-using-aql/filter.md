@@ -1,6 +1,6 @@
 ---
-title: Matching documents with `FILTER`
-menuTitle: Matching documents
+title: Match documents with `FILTER`
+menuTitle: Match documents
 weight: 10
 ---
 So far, you either looked up a single document, or returned the entire character

@@ -120,20 +120,19 @@ in the _go-driver_ v2 documentation for details.
 
 {{< tab "Java" >}}
 ```java
-Map<String, Object> bindVars = new MapBuilder().put("name", "AQL").get();
 String query = "RETURN CONCAT(\"Hello, \", @name)";
-ArangoCursor<String> cursor = db.query(query, BaseDocument.class, bindVars); // TODO
-ArrayList<String> result = cursor.asListRemaining();
-System.out.println(result);
+Map<String, Object> bindVars = Collections.singletonMap("name", "AQL");
+ArangoCursor<String> cursor = db.query(query, String, bindVars);
+cursor.forEach(result -> System.out.println(result));
 ```
 
-See [`ArangoDatabase.query()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDatabase.html#query%28java.lang.String,java.lang.Class,java.util.Map,com.arangodb.model.AqlQueryOptions%29)
+See [`ArangoDatabase.query()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDatabase.html#query%28java.lang.String,java.lang.Class,java.util.Map%29)
 in the _arangodb-java-driver_ documentation for details.
 {{< /tab >}}
 
 {{< tab "Python" >}}
 ```py
-query = "RETURN CONCAT(\"Hello, \", @name)"
+query = "RETURN CONCAT('Hello, ', @name)"
 bindVars = { "name": "AQL" }
 cursor = db.aql.execute(query, bindVars=bindVars)
 for doc in cursor:

@@ -13,32 +13,28 @@ ArangoDB can index such coordinates for fast geospatial queries.
 Insert some filming locations into a new collection called `Locations`,
 which you need to create first, and then run below AQL query:
 
-<!--
-![Create Locations collection](../images/Locations_Collection_Creation.png)
--->
-
 ```aql
 LET places = [
-  { "name": "Dragonstone", "coordinate": [ 55.167801, -6.815096 ] },
-  { "name": "King's Landing", "coordinate": [ 42.639752, 18.110189 ] },
-  { "name": "The Red Keep", "coordinate": [ 35.896447, 14.446442 ] },
-  { "name": "Yunkai", "coordinate": [ 31.046642, -7.129532 ] },
-  { "name": "Astapor", "coordinate": [ 31.50974, -9.774249 ] },
-  { "name": "Winterfell", "coordinate": [ 54.368321, -5.581312 ] },
-  { "name": "Vaes Dothrak", "coordinate": [ 54.16776, -6.096125 ] },
-  { "name": "Beyond the wall", "coordinate": [ 64.265473, -21.094093 ] }
+  { "name": "Dragonstone", "coordinates": [ 55.167801, -6.815096 ] },
+  { "name": "King's Landing", "coordinates": [ 42.639752, 18.110189 ] },
+  { "name": "The Red Keep", "coordinates": [ 35.896447, 14.446442 ] },
+  { "name": "Yunkai", "coordinates": [ 31.046642, -7.129532 ] },
+  { "name": "Astapor", "coordinates": [ 31.50974, -9.774249 ] },
+  { "name": "Winterfell", "coordinates": [ 54.368321, -5.581312 ] },
+  { "name": "Vaes Dothrak", "coordinates": [ 54.16776, -6.096125 ] },
+  { "name": "Beyond the wall", "coordinates": [ 64.265473, -21.094093 ] }
 ]
 
 FOR place IN places
   INSERT place INTO Locations
+  RETURN GEO_POINT(NEW.coordinates[1], NEW.coordinates[0])
 ```
 
-Visualization of the coordinates on a map with their labels:
-
-<!--
-![Locations on map](../images/Locations_Map.png)
--->
-
+The last line of the query returns the locations as GeoJSON Points to make the
+web interface render a map with markers to give you a visualization of where
+the filming locations are. Note that the coordinate order is longitude, than
+latitude with GeoJSON, whereas the dataset uses latitude, longitude.
+ 
 ## Geospatial index
 
 To query based on coordinates, a [geo index](../../index-and-search/indexing/working-with-indexes/geo-spatial-indexes.md)
@@ -56,7 +52,7 @@ values.
 ## Find nearby locations
 
 A `FOR` loop is used again, with a subsequent `SORT` operation based on the
-`DISTANCE()` between a stored coordinate and a coordinate given in a query.
+`DISTANCE()` between a stored coordinate pair and a coordinate pair given in a query.
 This pattern is recognized by the query optimizer. A geo index will be used to
 accelerate such queries if one is available.
 
@@ -65,17 +61,17 @@ closest to the reference point first (lowest distance). `LIMIT` can be used
 to restrict the number of results to at most *n* matches.
 
 In below example, the limit is set to 3. The origin (the reference point) is
-a coordinate somewhere downtown in Dublin, Ireland:
+a coordinate pair somewhere downtown in Dublin, Ireland:
 
 ```aql
 FOR loc IN Locations
-  LET distance = DISTANCE(loc.coordinate[0], loc.coordinate[1], 53.35, -6.25)
+  LET distance = DISTANCE(loc.coordinates[0], loc.coordinates[1], 53.35, -6.25)
   SORT distance
   LIMIT 3
   RETURN {
     name: loc.name,
-    latitude: loc.coordinate[0],
-    longitude: loc.coordinate[1],
+    latitude: loc.coordinates[0],
+    longitude: loc.coordinates[1],
     distance
   }
 ```
@@ -103,8 +99,8 @@ FOR loc IN Locations
 ]
 ```
 
-The query returns the location name, as well as the coordinate and the
-calculated distance in meters. The coordinate is returned as two separate
+The query returns the location name, as well as the coordinates and the
+calculated distance in meters. The coordinates are returned as two separate
 attributes. You may return just the document with a simple `RETURN loc` instead
 if you want. Or return the whole document with an added distance attribute using
 `RETURN MERGE(loc, { distance })`.
@@ -117,13 +113,13 @@ is meters. The example uses a radius of 200,000 meters (200 kilometers):
 
 ```aql
 FOR loc IN Locations
-  LET distance = DISTANCE(loc.coordinate[0], loc.coordinate[1], 53.35, -6.25)
+  LET distance = DISTANCE(loc.coordinates[0], loc.coordinates[1], 53.35, -6.25)
   SORT distance
   FILTER distance < 200 * 1000
   RETURN {
     name: loc.name,
-    latitude: loc.coordinate[0],
-    longitude: loc.coordinate[1],
+    latitude: loc.coordinates[0],
+    longitude: loc.coordinates[1],
     distance: ROUND(distance / 1000)
   }
 ```

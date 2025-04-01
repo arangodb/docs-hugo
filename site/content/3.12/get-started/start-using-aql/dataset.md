@@ -6,55 +6,54 @@ weight: 3
 ## Characters
 
 The dataset features 43 characters with their name, surname, age, alive status
-and trait references. The surname and age properties are not always present.
-The column *traits (resolved)* is not part of the actual data used in this
-tutorial, but included for your convenience.
+and trait references. Each character also has a document key derived from the
+character's name. The surname and age properties are not always present.
 
-| name       | surname    | alive | age | traits        |
-|------------|------------|-------|-----|---------------|
-| Ned        | Stark      | true  | 41  | A, H, C, N, P |
-| Robert     | Baratheon  | false |     | A, H, C       |
-| Jaime      | Lannister  | true  | 36  | A, F, B       |
-| Catelyn    | Stark      | false | 40  | D, H, C       |
-| Cersei     | Lannister  | true  | 36  | H, E, F       |
-| Daenerys   | Targaryen  | true  | 16  | D, H, C       |
-| Jorah      | Mormont    | false |     | A, B, C, F    |
-| Petyr      | Baelish    | false |     | E, G, F       |
-| Viserys    | Targaryen  | false |     | O, L, N       |
-| Jon        | Snow       | true  | 16  | A, B, C, F    |
-| Sansa      | Stark      | true  | 13  | D, I, J       |
-| Arya       | Stark      | true  | 11  | C, K, L       |
-| Robb       | Stark      | false |     | A, B, C, K    |
-| Theon      | Greyjoy    | true  | 16  | E, R, K       |
-| Bran       | Stark      | true  | 10  | L, J          |
-| Joffrey    | Baratheon  | false | 19  | I, L, O       |
-| Sandor     | Clegane    | true  |     | A, P, K, F    |
-| Tyrion     | Lannister  | true  | 32  | F, K, M, N    |
-| Khal       | Drogo      | false |     | A, C, O, P    |
-| Tywin      | Lannister  | false |     | O, M, H, F    |
-| Davos      | Seaworth   | true  | 49  | C, K, P, F    |
-| Samwell    | Tarly      | true  | 17  | C, L, I       |
-| Stannis    | Baratheon  | false |     | H, O, P, M    |
-| Melisandre |            | true  |     | G, E, H       |
-| Margaery   | Tyrell     | false |     | M, D, B       |
-| Jeor       | Mormont    | false |     | C, H, M, P    |
-| Bronn      |            | true  |     | K, E, C       |
-| Varys      |            | true  |     | M, F, N, E    |
-| Shae       |            | false |     | M, D, G       |
-| Talisa     | Maegyr     | false |     | D, C, B       |
-| Gendry     |            | false |     | K, C, A       |
-| Ygritte    |            | false |     | A, P, K       |
-| Tormund    | Giantsbane | true  |     | C, P, A, I    |
-| Gilly      |            | true  |     | L, J          |
-| Brienne    | Tarth      | true  | 32  | P, C, A, K    |
-| Ramsay     | Bolton     | true  |     | E, O, G, A    |
-| Ellaria    | Sand       | true  |     | P, O, A, E    |
-| Daario     | Naharis    | true  |     | K, P, A       |
-| Missandei  |            | true  |     | D, L, C, M    |
-| Tommen     | Baratheon  | true  |     | I, L, B       |
-| Jaqen      | H'ghar     | true  |     | H, F, K       |
-| Roose      | Bolton     | true  |     | H, E, F, A    |
-| The High Sparrow |      | true  |     | H, M, F, O    |
+| _key         | name       | surname    | alive | age | traits        |
+|--------------|------------|------------|-------|-----|---------------|
+| ned          | Ned        | Stark      | true  | 41  | A, H, C, N, P |
+| robert       | Robert     | Baratheon  | false |     | A, H, C       |
+| jaime        | Jaime      | Lannister  | true  | 36  | A, F, B       |
+| catelyn      | Catelyn    | Stark      | false | 40  | D, H, C       |
+| cersei       | Cersei     | Lannister  | true  | 36  | H, E, F       |
+| daenerys     | Daenerys   | Targaryen  | true  | 16  | D, H, C       |
+| jorah        | Jorah      | Mormont    | false |     | A, B, C, F    |
+| petyr        | Petyr      | Baelish    | false |     | E, G, F       |
+| viserys      | Viserys    | Targaryen  | false |     | O, L, N       |
+| jon          | Jon        | Snow       | true  | 16  | A, B, C, F    |
+| sansa        | Sansa      | Stark      | true  | 13  | D, I, J       |
+| arya         | Arya       | Stark      | true  | 11  | C, K, L       |
+| robb         | Robb       | Stark      | false |     | A, B, C, K    |
+| theon        | Theon      | Greyjoy    | true  | 16  | E, R, K       |
+| bran         | Bran       | Stark      | true  | 10  | L, J          |
+| joffrey      | Joffrey    | Baratheon  | false | 19  | I, L, O       |
+| sandor       | Sandor     | Clegane    | true  |     | A, P, K, F    |
+| tyrion       | Tyrion     | Lannister  | true  | 32  | F, K, M, N    |
+| khal         | Khal       | Drogo      | false |     | A, C, O, P    |
+| tywin        | Tywin      | Lannister  | false |     | O, M, H, F    |
+| davos        | Davos      | Seaworth   | true  | 49  | C, K, P, F    |
+| samwell      | Samwell    | Tarly      | true  | 17  | C, L, I       |
+| stannis      | Stannis    | Baratheon  | false |     | H, O, P, M    |
+| melisandre   | Melisandre |            | true  |     | G, E, H       |
+| margaery     | Margaery   | Tyrell     | false |     | M, D, B       |
+| jeor         | Jeor       | Mormont    | false |     | C, H, M, P    |
+| bronn        | Bronn      |            | true  |     | K, E, C       |
+| varys        | Varys      |            | true  |     | M, F, N, E    |
+| shae         | Shae       |            | false |     | M, D, G       |
+| talisa       | Talisa     | Maegyr     | false |     | D, C, B       |
+| gendry       | Gendry     |            | false |     | K, C, A       |
+| ygritte      | Ygritte    |            | false |     | A, P, K       |
+| tormund      | Tormund    | Giantsbane | true  |     | C, P, A, I    |
+| gilly        | Gilly      |            | true  |     | L, J          |
+| brienne      | Brienne    | Tarth      | true  | 32  | P, C, A, K    |
+| ramsay       | Ramsay     | Bolton     | true  |     | E, O, G, A    |
+| ellaria      | Ellaria    | Sand       | true  |     | P, O, A, E    |
+| daario       | Daario     | Naharis    | true  |     | K, P, A       |
+| missandei    | Missandei  |            | true  |     | D, L, C, M    |
+| tommen       | Tommen     | Baratheon  | true  |     | I, L, B       |
+| jaqen        | Jaqen      | H'ghar     | true  |     | H, F, K       |
+| roose        | Roose      | Bolton     | true  |     | H, E, F, A    |
+| high-sparrow | The High Sparrow |      | true  |     | H, M, F, O    |
 
 ## Traits
 
@@ -84,8 +83,8 @@ The trait labels come in English and German.
 
 ## Locations
 
-This small collection of 8 filming locations comes with two attributes, a
-`name` and a `coordinate`. The coordinates are modeled as number arrays,
+This small collection of 8 filming locations comes with two attributes,
+`name` and `coordinates`. The coordinate pairs are modeled as number arrays,
 comprised of a latitude and a longitude value each.
 
 | name            | coordinates           |
@@ -98,5 +97,3 @@ comprised of a latitude and a longitude value each.
 | Winterfell      | 54.368321,  -5.581312 |
 | Vaes Dothrak    | 54.167760,  -6.096125 |
 | Beyond the wall | 64.265473, -21.094093 |
-
-{{< comment >}}TODO: Should be coordinate_s_, need to update dataset!{{< /comment >}}

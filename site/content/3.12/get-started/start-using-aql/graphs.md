@@ -34,11 +34,9 @@ Our characters have the following relations between parents and children
  Joffrey -> Cersei
 ```
 
-Visualized as graph:
+Visualized as a graph:
 
-<!--
-![ChildOf graph visualization](../images/ChildOf_Graph.png)
--->
+![ChildOf graph visualization](../../../images/ChildOf_Graph.png)
 
 ## Creating the edges
 
@@ -55,108 +53,43 @@ edge collection called `ChildOf`.
 Then run the following query:
 
 ```aql
-LET data = [
-  {
-    "parent": { "name": "Ned", "surname": "Stark" },
-    "child": { "name": "Robb", "surname": "Stark" }
-  }, {
-    "parent": { "name": "Ned", "surname": "Stark" },
-    "child": { "name": "Sansa", "surname": "Stark" }
-  }, {
-    "parent": { "name": "Ned", "surname": "Stark" },
-    "child": { "name": "Arya", "surname": "Stark" }
-  }, {
-    "parent": { "name": "Ned", "surname": "Stark" },
-    "child": { "name": "Bran", "surname": "Stark" }
-  }, {
-    "parent": { "name": "Catelyn", "surname": "Stark" },
-    "child": { "name": "Robb", "surname": "Stark" }
-  }, {
-    "parent": { "name": "Catelyn", "surname": "Stark" },
-    "child": { "name": "Sansa", "surname": "Stark" }
-  }, {
-    "parent": { "name": "Catelyn", "surname": "Stark" },
-    "child": { "name": "Arya", "surname": "Stark" }
-  }, {
-    "parent": { "name": "Catelyn", "surname": "Stark" },
-    "child": { "name": "Bran", "surname": "Stark" }
-  }, {
-    "parent": { "name": "Ned", "surname": "Stark" },
-    "child": { "name": "Jon", "surname": "Snow" }
-  }, {
-    "parent": { "name": "Tywin", "surname": "Lannister" },
-    "child": { "name": "Jaime", "surname": "Lannister" }
-  }, {
-    "parent": { "name": "Tywin", "surname": "Lannister" },
-    "child": { "name": "Cersei", "surname": "Lannister" }
-  }, {
-    "parent": { "name": "Tywin", "surname": "Lannister" },
-    "child": { "name": "Tyrion", "surname": "Lannister" }
-  }, {
-    "parent": { "name": "Cersei", "surname": "Lannister" },
-    "child": { "name": "Joffrey", "surname": "Baratheon" }
-  }, {
-    "parent": { "name": "Jaime", "surname": "Lannister" },
-    "child": { "name": "Joffrey", "surname": "Baratheon" }
-  }
+LET relations = [
+  { "parent": "ned", "child": "robb" },
+  { "parent": "ned", "child": "sansa" },
+  { "parent": "ned", "child": "arya" },
+  { "parent": "ned", "child": "bran" },
+  { "parent": "catelyn", "child": "robb" },
+  { "parent": "catelyn", "child": "sansa" },
+  { "parent": "catelyn", "child": "arya" },
+  { "parent": "catelyn", "child": "bran" },
+  { "parent": "ned", "child": "jon" },
+  { "parent": "tywin", "child": "jaime" },
+  { "parent": "tywin", "child": "cersei" },
+  { "parent": "tywin", "child": "tyrion" },
+  { "parent": "cersei", "child": "joffrey" },
+  { "parent": "jaime", "child": "joffrey" }
 ]
 
-FOR rel in data
-  LET parentId = FIRST(
-    FOR c IN Characters
-      FILTER c.name == rel.parent.name
-      FILTER c.surname == rel.parent.surname
-      LIMIT 1
-      RETURN c._id
-  )
-  LET childId = FIRST(
-    FOR c IN Characters
-      FILTER c.name == rel.child.name
-      FILTER c.surname == rel.child.surname
-      LIMIT 1
-      RETURN c._id
-  )
-  FILTER parentId != null AND childId != null
-  INSERT { _from: childId, _to: parentId } INTO ChildOf
+FOR rel in relations
+  INSERT {
+    _from: CONCAT("Characters/", child),
+    _to: CONCAT("Characters/", parent)
+  } INTO ChildOf
   RETURN NEW
 ```
 
-The character documents don't have user-defined keys. If they had, it would
-allow you to create the edges more easily like:
-
-```js
-INSERT { _from: "Characters/robb", _to: "Characters/ned" } INTO ChildOf
-```
-
-However, creating the edges programmatically based on character names is a
-good exercise. Breakdown of the query:
+Breakdown of the query:
 
 - Assign the relations in form of an array of objects with a `parent` and
-  a `child` attribute each, both with sub-attributes `name` and `surname`,
-  to a variable `data`
+  a `child` attribute each, both with the document key of the character.
 - For each element in this array, assign a relation to a variable `rel` and
-  execute the subsequent instructions
-- Assign the result of an expression to a variable `parentId`
-  - Take the first element of a sub-query result (sub-queries are enclosed
-    by parentheses, but here they are also a function call)
-    - For each document in the Characters collection, assign the document
-      to a variable `c`
-    - Apply two filter conditions: the name in the character document must
-      equal the parent name in `rel`, and the surname must also equal the
-      surname give in the relations data
-    - Stop after the first match for efficiency
-    - Return the ID of the character document (the result of the sub-query
-      is an array with one element, `FIRST()` takes this element and assigns
-      it to the `parentId` variable)
-- Assign the result of an expression to a variable `childId`
-  - A sub-query is used to find the child character document and the ID is
-    returned, in the same way as the parent document ID (see above)
-- If either or both of the sub-queries were unable to find a match, skip the
-  current relation, because two IDs for both ends of an edge are required to
-  create one (this is only a precaution)
-- Insert a new edge document into the ChildOf collection, with the edge going
-  from `childId` to `parentId` and no other attributes
-- Return the new edge document (optional)
+  execute the subsequent instructions.
+  - Insert a new edge document into the ChildOf collection, with the edge going
+    from `child` to `parent`. The `_from` and `_to` edge attributes require
+    document IDs like `collection/key`. Therefore, the document keys derived
+    from the character names are prefixed with `Characters/` to obtain the IDs.
+    No other attributes are set for the edge in this example.
+  - Return the new edge document (optional)
 
 ## Traverse to the parents
 
@@ -166,7 +99,7 @@ graph terms, you want to start at a vertex and follow the edges to other
 vertices in an [AQL graph traversal](../../aql/graphs/traversals.md):
 
 ```aql
-FOR v IN 1..1 OUTBOUND "Characters/2901776" ChildOf
+FOR v IN 1..1 OUTBOUND "Characters/catelyn" ChildOf
   RETURN v.name
 ```
 
@@ -180,18 +113,19 @@ In above query, the traversal is restricted to a minimum and maximum traversal
 depth of 1 (how many steps to take from the start vertex), and to only follow
 edges in `OUTBOUND` direction. Our edges point from child to parent, and the
 parent is one step away from the child, thus it gives you the parents of the
-child you start at. `"Characters/2901776"` is that start vertex. Note that the
-document ID will be different for you, so please adjust it to your document ID
-of e.g. the Bran Stark document:
+child you start at. `"Characters/catelyn"` is that start vertex.
+
+To determine the ID of e.g. the Joffrey Baratheon document, you may iterate over
+the collection of characters, filter by last name, and return the `_id` attribute:
 
 ```aql
 FOR c IN Characters
-  FILTER c.name == "Bran"
+  FILTER c.surname == "Snow"
   RETURN c._id
 ```
 
 ```json
-[ "Characters/<YourDocumentkey>" ]
+[ "Characters/joffrey" ]
 ```
 
 You may also combine this query with the traversal directly, to easily change
@@ -199,7 +133,7 @@ the start vertex by adjusting the filter condition(s):
 
 ```aql
 FOR c IN Characters
-  FILTER c.name == "Bran"
+  FILTER c.surname == "Baratheon"
   FOR v IN 1..1 OUTBOUND c ChildOf
     RETURN v.name
 ```
@@ -209,13 +143,13 @@ example query returns only the name of each parent to keep the result short:
 
 ```json
 [
-  "Ned",
-  "Catelyn"
+  "Jaime",
+  "Cersei"
 ]
 ```
 
-The same result will be returned for Robb, Arya and Sansa as starting point.
-For Jon Snow, it will only be Ned.
+For Robb, Sansa, Arya, and Bran as the starting point, the result is Catelyn and
+Ned, and for Jon Snow it is only Ned.
 
 ## Traverse to the children
 
@@ -263,19 +197,31 @@ It might be a bit unexpected, that Joffrey is returned twice. However, if you
 look at the graph visualization, you can see that multiple paths lead from
 Joffrey (bottom right) to Tywin:
 
-<!--
-![ChildOf graph visualization](../images/ChildOf_Graph.png)
--->
+![ChildOf graph visualization](../../../images/ChildOf_Graph.png)
 
 ```
-Tywin <- Jaime <- Joffrey
+Tywin <- Jaime  <- Joffrey
 Tywin <- Cersei <- Joffrey
 ```
 
 As a quick fix, change the last line of the query to `RETURN DISTINCT v.name`
-to return each value only once. Keep in mind though, that there are
-[traversal options](../../aql/graphs/traversals.md#syntax) to suppress duplicate
-vertices early on.
+to return each value only once. However, there are
+[traversal options](../../aql/graphs/traversals.md#syntax) including one to
+suppress duplicate vertices early on for the entire traversal (which requires
+breadth-first search):
+
+```aql
+FOR c IN Characters
+  FILTER c.name == "Tywin"
+  FOR v IN 2..2 INBOUND c ChildOf OPTIONS { uniqueVertices: "global", order: "bfs" }
+    RETURN v.name
+```
+
+```json
+[
+  "Joffrey"
+]
+```
 
 ## Traverse with variable depth
 

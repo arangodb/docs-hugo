@@ -59,7 +59,20 @@ specify the `_key` attribute then a document key is automatically generated.
 Next, add several characters with a single query:
 
 ```aql
-LET data = [
+FOR d IN @data
+  INSERT d INTO Characters
+```
+
+The `FOR` loop iterates over `@data`, which is a placeholder in the query for
+binding the list of characters in JSON format.
+
+In the web interface, there is a tab called **Bind Variables** on the right-hand
+side of the query editor. When you enter a placeholder like `@data` in the editor,
+a row appears in the **Bind Variables** tab to specify the value for the placeholder.
+Paste the following text into the field for the `data` bind variable:
+
+```json
+[
   { "_key": "ned", "name": "Ned", "surname": "Stark", "alive": true, "age": 41, "traits": ["A","H","C","N","P"] },
   { "_key": "robert", "name": "Robert", "surname": "Baratheon", "alive": false, "traits": ["A","H","C"] },
   { "_key": "jaime", "name": "Jaime", "surname": "Lannister", "alive": true, "age": 36, "traits": ["A","F","B"] },
@@ -104,17 +117,12 @@ LET data = [
   { "_key": "roose", "name": "Roose", "surname": "Bolton", "alive": true, "traits": ["H","E","F","A"] },
   { "_key": "high-sparrow", "name": "The High Sparrow", "alive": true, "traits": ["H","M","F","O"] }
 ]
-
-FOR d IN data
-  INSERT d INTO Characters
 ```
 
-The `LET` keyword defines a variable with name `data` and an array of objects
-as the value, so `LET variableName = valueExpression` and the expression being a
-literal array definition like `[ {...}, {...}, ... ]`.
+The data is an array of objects, like `[ {...}, {...}, ... ]`.
 
 `FOR variableName IN expression` is used to iterate over each element of the
-`data` array. In each loop, one element is assigned to the variable `d`.
+array. In each loop, one element is assigned to the variable `d` (`FOR d IN @data`).
 This variable is then used in the `INSERT` statement instead of a literal
 object definition. What it does is basically the following:
 
@@ -122,6 +130,7 @@ object definition. What it does is basically the following:
 // Invalid query
 
 INSERT {
+  "_key": "robert",
   "name": "Robert",
   "surname": "Baratheon",
   "alive": false,
@@ -129,6 +138,7 @@ INSERT {
 } INTO Characters
 
 INSERT {
+  "_key": "jaime",
   "name": "Jaime",
   "surname": "Lannister",
   "alive": true,
@@ -141,8 +151,9 @@ INSERT {
 
 {{< info >}}
 AQL does not permit multiple `INSERT` operations that target the same
-collection in a single query. However, it is allowed as body of a `FOR` loop,
-inserting multiple documents like you did with the above query.
+collection in a single query. However, you can use a `FOR` loop like in the
+above query to insert multiple documents into a collection using a single
+`INSERT` operation.
 {{< /info >}}
 
 ## Read documents
@@ -164,8 +175,8 @@ Among them should be `Ned Stark`, similar to this example:
 
 ```json
   {
-    "_key": "2861650",
-    "_id": "Characters/2861650",
+    "_key": "ned",
+    "_id": "Characters/ned",
     "_rev": "_V1bzsXa---",
     "name": "Ned",
     "surname": "Stark",
@@ -175,7 +186,7 @@ Among them should be `Ned Stark`, similar to this example:
   },
 ```
 
-The document features the four attributes you stored, plus three more added by
+The document features the attributes you stored, plus a few more added by
 the database system. Each document needs a unique `_key`, which identifies it
 within a collection. The `_id` is a computed property, a concatenation of the
 collection name, a forward slash `/` and the document key. It uniquely identifies
@@ -185,22 +196,20 @@ Document keys can be provided by the user upon document creation, or a unique
 value is assigned automatically. It can not be changed later. All three system
 attributes starting with an underscore `_` are read-only.
 
-{{< comment >}}TODO: Should show FOR with FILTER here and explain that it can be optimized better{{< /comment >}}
-
 You can use either the document key or the document ID to retrieve a specific
 document with the help of an AQL function `DOCUMENT()`:
 
 ```js
-RETURN DOCUMENT("Characters", "2861650")
+RETURN DOCUMENT("Characters", "ned")
 // --- or ---
-RETURN DOCUMENT("Characters/2861650")
+RETURN DOCUMENT("Characters/ned")
 ```
 
 ```json
 [
   {
-    "_key": "2861650",
-    "_id": "Characters/2861650",
+    "_key": "ned",
+    "_id": "Characters/ned",
     "_rev": "_V1bzsXa---",
     "name": "Ned",
     "surname": "Stark",
@@ -211,24 +220,20 @@ RETURN DOCUMENT("Characters/2861650")
 ]
 ```
 
-Note: Document keys will be different for you. Change the queries accordingly.
-Here, `"2861650"` is the key for the *Ned Stark* document, and `"2861653"` for
-*Catelyn Stark*.
-
 The `DOCUMENT()` function also allows to fetch multiple documents at once:
 
 ```aql
-RETURN DOCUMENT("Characters", ["2861650", "2861653"])
+RETURN DOCUMENT("Characters", ["ned", "catelyn"])
 // --- or ---
-RETURN DOCUMENT(["Characters/2861650", "Characters/2861653"])
+RETURN DOCUMENT(["Characters/ned", "Characters/catelyn"])
 ```
 
 ```json
 [
   [
     {
-      "_key": "2861650",
-      "_id": "Characters/2861650",
+      "_key": "ned",
+      "_id": "Characters/ned",
       "_rev": "_V1bzsXa---",
       "name": "Ned",
       "surname": "Stark",
@@ -237,8 +242,8 @@ RETURN DOCUMENT(["Characters/2861650", "Characters/2861653"])
       "traits": ["A","H","C","N","P"]
     },
     {
-      "_key": "2861653",
-      "_id": "Characters/2861653",
+      "_key": "catelyn",
+      "_id": "Characters/catelyn",
       "_rev": "_V1bzsXa--B",
       "name": "Catelyn",
       "surname": "Stark",
@@ -253,13 +258,29 @@ RETURN DOCUMENT(["Characters/2861650", "Characters/2861653"])
 See the [`DOCUMENT()` function](../../aql/functions/miscellaneous.md#document)
 documentation for more details.
 
+The `DOCUMENT()` does not let you match documents based on the value of arbitrary
+document attributes. It is also not ideal to use the function if the documents
+you want to look up are all in the same collection for performance reasons.
+
+You can replace the call of the `DOCUMENT()` function with the powerful
+combination of a `FOR` loop and a `FILTER` operation:
+
+```aql
+FOR c IN Characters
+  FILTER c._key IN ["ned", "catelyn"]
+  RETURN c
+```
+
+This approach enables you to find documents using arbitrary conditions by
+changing the filter criteria, but more about this later.
+
 ## Update documents
 
 According to our `Ned Stark` document, he is alive. When we get to know that he
 died, we need to change the `alive` attribute. Modify the existing document:
 
 ```aql
-UPDATE "2861650" WITH { alive: false } IN Characters
+UPDATE "ned" WITH { alive: false } IN Characters
 ```
 
 The syntax is `UPDATE documentKey WITH object IN collectionName`. It updates the
@@ -268,7 +289,7 @@ but leaves the rest untouched. To replace the entire document content, you may
 use `REPLACE` instead of `UPDATE`:
 
 ```aql
-REPLACE "2861650" WITH {
+REPLACE "ned" WITH {
   name: "Ned",
   surname: "Stark",
   alive: false,
@@ -298,8 +319,8 @@ FOR c IN Characters
 [
   [
     {
-      "_key": "2861650",
-      "_id": "Characters/2861650",
+      "_key": "ned",
+      "_id": "Characters/ned",
       "_rev": "_V1bzsXa---",
       "name": "Ned",
       "surname": "Stark",
@@ -309,8 +330,8 @@ FOR c IN Characters
       "season": 1
     },
     {
-      "_key": "2861653",
-      "_id": "Characters/2861653",
+      "_key": "catelyn",
+      "_id": "Characters/catelyn",
       "_rev": "_V1bzsXa--B",
       "name": "Catelyn",
       "surname": "Stark",
@@ -332,16 +353,16 @@ To fully remove documents from a collection, there is the `REMOVE` operation.
 It works similar to the other modification operations, yet without a `WITH` clause:
 
 ```aql
-REMOVE "2861650" IN Characters
+REMOVE "test" IN Characters
 ```
 
-It can also be used in a loop body to effectively truncate a collection:
+It can also be used in a loop body to effectively truncate a collection
+(but less efficient than the dedicated feature to truncate a collection):
 
 ```aql
 FOR c IN Characters
   REMOVE c IN Characters
 ```
 
-Note: re-run the [insert queries](#create-documents) at the top with all
-character documents before you continue with the next chapter, to have data
-to work with again.
+Before you continue with the next chapter, re-run the query that
+[creates the character documents](#create-documents) from above to get the data back.

@@ -1,16 +1,17 @@
 ---
-title: Joins
-menuTitle: Joining together
+title: References and joins
+menuTitle: Joins
 weight: 20
 ---
 ## References to other documents
 
 The character data you imported has an attribute `traits` for each character,
-which is an array of strings. It does not store character features directly
+which is an array of strings. It does not store character features directly,
 however:
 
 ```json
 {
+  "_key": "ned",
   "name": "Ned",
   "surname": "Stark",
   "alive": false,
@@ -28,6 +29,7 @@ instance in a central place. If you would embed traits directly...
 
 ```json
 {
+  "_key": "ned",
   "name": "Ned",
   "surname": "Stark",
   "alive": false,
@@ -64,46 +66,38 @@ trait in another collection, it is as easy as updating a single document.
 
 {{< comment >}}What if Trait doc is deleted? DOCUMENT() skips null{{< /comment >}}
 
-<!--
-![Data model comparison](../images/Comparison_DataModels.png)
--->
-
 ## Importing traits
 
-Below you find the traits data. Follow the pattern shown in
-[Create documents](crud.md#create-documents) to import it:
-
-- Create a document collection `Traits`
-- Assign the data to a variable in AQL, `LET data = [ ... ]`
-- Use a `FOR` loop to iterate over each array element of the data
-- `INSERT` the element `INTO Traits`
-
-<!--
-![Create Traits collection](../images/Traits_Collection_Creation.png)
--->
-
-```json
-[
-  { "_key": "A", "en": "strong", "de": "stark" },
-  { "_key": "B", "en": "polite", "de": "freundlich" },
-  { "_key": "C", "en": "loyal", "de": "loyal" },
-  { "_key": "D", "en": "beautiful", "de": "schön" },
-  { "_key": "E", "en": "sneaky", "de": "hinterlistig" },
-  { "_key": "F", "en": "experienced", "de": "erfahren" },
-  { "_key": "G", "en": "corrupt", "de": "korrupt" },
-  { "_key": "H", "en": "powerful", "de": "einflussreich" },
-  { "_key": "I", "en": "naive", "de": "naiv" },
-  { "_key": "J", "en": "unmarried", "de": "unverheiratet" },
-  { "_key": "K", "en": "skillful", "de": "geschickt" },
-  { "_key": "L", "en": "young", "de": "jung" },
-  { "_key": "M", "en": "smart", "de": "klug" },
-  { "_key": "N", "en": "rational", "de": "rational" },
-  { "_key": "O", "en": "ruthless", "de": "skrupellos" },
-  { "_key": "P", "en": "brave", "de": "mutig" },
-  { "_key": "Q", "en": "mighty", "de": "mächtig" },
-  { "_key": "R", "en": "weak", "de": "schwach" }
-]
-```
+1. In the web interface, create a document collection called `Traits`.
+2. Enter the following AQL query:
+   ```aql
+   FOR trait IN @data
+     INSERT trait INTO Traits
+   ```
+3. Set the following for the `data` bind variable:
+   ```json
+   [
+     { "_key": "A", "en": "strong", "de": "stark" },
+     { "_key": "B", "en": "polite", "de": "freundlich" },
+     { "_key": "C", "en": "loyal", "de": "loyal" },
+     { "_key": "D", "en": "beautiful", "de": "schön" },
+     { "_key": "E", "en": "sneaky", "de": "hinterlistig" },
+     { "_key": "F", "en": "experienced", "de": "erfahren" },
+     { "_key": "G", "en": "corrupt", "de": "korrupt" },
+     { "_key": "H", "en": "powerful", "de": "einflussreich" },
+     { "_key": "I", "en": "naive", "de": "naiv" },
+     { "_key": "J", "en": "unmarried", "de": "unverheiratet" },
+     { "_key": "K", "en": "skillful", "de": "geschickt" },
+     { "_key": "L", "en": "young", "de": "jung" },
+     { "_key": "M", "en": "smart", "de": "klug" },
+     { "_key": "N", "en": "rational", "de": "rational" },
+     { "_key": "O", "en": "ruthless", "de": "skrupellos" },
+     { "_key": "P", "en": "brave", "de": "mutig" },
+     { "_key": "Q", "en": "mighty", "de": "mächtig" },
+     { "_key": "R", "en": "weak", "de": "schwach" }
+   ]
+   ```
+4. Execute the query to import the trait data.
 
 ## Resolving traits
 
@@ -246,8 +240,8 @@ FOR c IN Characters
 ```json
 [
   {
-    "_id": "Characters/2861650",
-    "_key": "2861650",
+    "_id": "Characters/ned",
+    "_key": "ned",
     "_rev": "_V1bzsXa---",
     "age": 41,
     "alive": false,
@@ -262,8 +256,8 @@ FOR c IN Characters
     ]
   },
   {
-    "_id": "Characters/2861653",
-    "_key": "2861653",
+    "_id": "Characters/catelyn",
+    "_key": "catelyn",
     "_rev": "_V1bzsXa--B",
     "age": 40,
     "alive": false,
@@ -318,5 +312,12 @@ Each written-out, English trait is returned and all the traits are then merged
 with the character document. The result is identical to the query using
 `DOCUMENT()`. However, this approach with a nested `FOR` loop and a `FILTER`
 is not limited to primary keys. You can do this with any other attribute as well.
-For an efficient lookup, make sure you add a hash index for this attribute.
+For an efficient lookup, make sure you add a persistent index for this attribute.
 If its values are unique, then also set the index option to unique.
+
+Another advantage of the `FOR` loop approach is the performance compared to
+calling the `DOCUMENT()` function: The query optimizer can optimize AQL queries
+better that iterate over a collection and possibly filter by attributes and only
+make use of a subset of the found documents. With the `DOCUMENT()` function,
+there are individual lookups, potentially across all collections, and the full
+documents need to be loaded regardless of which attributes are actually used.
