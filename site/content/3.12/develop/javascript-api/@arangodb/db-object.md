@@ -1270,7 +1270,7 @@ require("@arangodb").db._version();
 
 Returns the current license.
 
-See [`db._getLicense()`](../../../operations/administration/license-management.md#managing-your-license).
+See [`db._getLicense()`](../../../operations/administration/license-management.md#check-the-license).
 
 ### `db._setLicense(data)`
 
@@ -1278,4 +1278,4 @@ See [`db._getLicense()`](../../../operations/administration/license-management.m
 
 Sets a license.
 
-See [`db._setLicense(data)`](../../../operations/administration/license-management.md#initial-installation).
+See [`db._setLicense(data)`](../../../operations/administration/license-management.md#apply-a-license).
