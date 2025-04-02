@@ -128,9 +128,9 @@ database's ID if its name contains special characters.
 ## Database interfaces
 
 The following sections show examples of how you can use the APIs of ArangoDB and
-the official drivers, as well as the built-in web interface, to perform common
-operations related to databases. For less common operations and other drivers,
-see the corresponding reference documentation.
+the official drivers, as well as the ArangoDB Shell and the built-in web interface,
+to perform common operations related to databases. For less common operations
+and other drivers, see the corresponding reference documentation.
 
 ### Set the database context
 

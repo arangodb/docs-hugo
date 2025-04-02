@@ -118,9 +118,9 @@ ArangoDB as opaque strings when they store or use them locally.
 ## View interfaces
 
 The following sections show examples of how you can use the APIs of ArangoDB and
-the official drivers, as well as the built-in web interface, to perform common
-operations related to Views. For less common operations and other drivers,
-see the corresponding reference documentation.
+the official drivers, as well as the ArangoDB Shell and the built-in web interface,
+to perform common operations related to Views. For less common operations
+and other drivers, see the corresponding reference documentation.
 
 The examples are limited to the basic usage of the View interfaces.
 See the following for more details about the different View types and their

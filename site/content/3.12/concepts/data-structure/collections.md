@@ -183,9 +183,9 @@ factor is `1`, which means no replication.
 ## Collection interfaces
 
 The following sections show examples of how you can use the APIs of ArangoDB and
-the official drivers, as well as the built-in web interface, to perform common
-operations related to collections. For less common operations and other drivers,
-see the corresponding reference documentation.
+the official drivers, as well as the ArangoDB Shell and the built-in web interface,
+to perform common operations related to collections. For less common operations
+and other drivers, see the corresponding reference documentation.
 
 ### Create a collection
 

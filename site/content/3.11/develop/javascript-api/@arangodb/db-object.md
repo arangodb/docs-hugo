@@ -1219,7 +1219,7 @@ See [`db._executeTransaction()`](../../transactions/javascript-transactions.md#e
 
 ## Global
 
-### `db._compact(options)`
+### `db._compact([options])`
 
 Compacts the entire data, for all databases.
 
@@ -1274,12 +1274,12 @@ require("@arangodb").db._version();
 
 Returns the current license.
 
-See [`db._getLicense()`](../../../operations/administration/license-management.md#managing-your-license).
+See [`db._getLicense()`](../../../operations/administration/license-management.md#check-the-current-license).
 
-### `db._setLicense(data)`
+### `db._setLicense(licenseString)`
 
 {{< tag "arangosh" >}}
 
 Sets a license.
 
-See [`db._setLicense(data)`](../../../operations/administration/license-management.md#initial-installation).
+See [`db._setLicense()`](../../../operations/administration/license-management.md#active-a-license).

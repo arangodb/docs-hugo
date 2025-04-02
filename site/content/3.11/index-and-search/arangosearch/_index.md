@@ -142,7 +142,7 @@ View building is in progress and results can be incomplete.
  2. In the **COLLECTIONS** section of the web interface, click the `food` collection.
  3. Go to the **Indexes** tab and click **Add Index**.
  4. Select **Inverted index** as the **Type**.
- 5. In the **Fields** panel, enter `name` into **Fields** and confirm.
+ 5. In the **Fields** panel, enter `name` into **Fields** and confirm the value.
     Then also add `type[*]` as a field.
     The `[*]` is needed to index the individual elements of the `type` array.
     Note that all `type` attributes of the example documents are arrays, even if
@@ -313,7 +313,7 @@ _`arangosearch` View:_
 1. In the **VIEWS** section of the web interface, click the card of the
    previously created `food_view` of type `arangosearch`.
 2. In the **Links** panel, click the underlined name of the
-   `food` collection. Enter `name` into **Fields** and confirm.
+   `food` collection. Enter `name` into **Fields** and confirm the value.
 3. Click the underlined name of the field and select the **Analyzers** `text_en`
    and `identity`.
 

@@ -15,6 +15,8 @@ an identifier derived from the key that uniquely identifies it within a
 
 <!-- TODO: better explain what they are used for and how
 Documents can be stored, updated, and retrieved using various database management techniques, such as indexing, querying, and aggregation. They provide a flexible and scalable way to organize and manage data, particularly for applications that deal with unstructured or semi-structured data, such as content management systems, social media platforms, and e-commerce websites.
+
+Maybe also: You can store unstructured data in the form of text as attribute values.
 -->
 
 ## Data types
@@ -254,9 +256,9 @@ following naming constraints are not violated:
 ## Document interfaces
 
 The following sections show examples of how you can use the APIs of ArangoDB and
-the official drivers, as well as the built-in web interface, to perform common
-operations related to documents. For less common operations and other drivers,
-see the corresponding reference documentation.
+the official drivers, as well as the ArangoDB shell and the built-in web interface,
+to perform common operations related to documents. For less common operations
+and other drivers, see the corresponding reference documentation.
 
 ### Create documents
 
@@ -311,7 +313,7 @@ See [`collection.insert()`](../../../develop/javascript-api/@arangodb/collection
 curl -d '{"_key":"the-document-key","name":"ArangoDB","tags":["graph","database","NoSQL"],"scalable":true,"company":{"name":"ArangoDB Inc.","founded":2015}}' http://localhost:8529/_db/mydb/_api/document/coll
 
 # Multiple documents
-curl -d '[ {"_key":"one"}, {"_key":"two"}, {"_key":"three"} ]' http://localhost:8529/_db/mydb/_api/document/coll
+curl -d '[{"_key":"one"},{"_key":"two"},{"_key":"three"}]' http://localhost:8529/_db/mydb/_api/document/coll
 ```
 
 See the `POST /_db/{database-name}/_api/document/{collection-name}` endpoint for
@@ -348,10 +350,10 @@ in the _arangojs_ documentation for details.
 {{< tab "Go" >}}
 ```go
 ctx := context.Background()
-coll, err := db.GetCollection(ctx, "coll")
+coll, err := db.GetCollection(ctx, "coll", nil)
 
 // Single document
-coll.CreateDocument(map[string]interface{} {
+createRes, err := coll.CreateDocument(ctx, map[string]interface{} {
   "_key": "the-document-key",
   "name": "ArangoDB",
   "tags": []interface{} { "graph", "database", "NoSQL" },
@@ -362,16 +364,44 @@ coll.CreateDocument(map[string]interface{} {
   },
 })
 
+if err != nil {
+  fmt.Println(err)
+} else {
+  fmt.Printf("Metadata: $+v\n", createRes.DocumentMeta)
+}
+
 // Multiple documents
-coll.CreateDocuments([]interface{} {
+var createdDoc map[string]interface{}
+
+createResReader, err := coll.CreateDocumentsWithOptions(ctx, []interface{} {
   map[string]interface{} { "_key": "one" },
   map[string]interface{} { "_key": "two" },
   map[string]interface{} { "_key": "three" },
+}, &arangodb.CollectionDocumentCreateOptions{
+		NewObject: &newDoc,
 })
+
+for {
+  createdDoc = nil // Reset to not leak attributes of previous documents
+  meta, err := createResReader.Read()
+  if shared.IsNoMoreDocuments(err) {
+    break
+  } else if err != nil {
+    fmt.Println(err)
+  } else {
+    fmt.Printf("Metadata: %+v\n", meta.DocumentMeta)
+    fmt.Printf("New document: %v\n", newDoc)
+  }
+}
 ```
 
-See [`CollectionDocumentCreate.CreateCollection()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentCreate)
-in the _go-driver_ v2 documentation for details.
+See the following functions 
+in the [_go-driver_ v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentCreate)
+for details:
+- `CollectionDocumentCreate.CreateDocument()`
+- `CollectionDocumentCreate.CreateDocumentWithOptions()`
+- `CollectionDocumentCreate.CreateDocuments()`
+- `CollectionDocumentCreate.CreateDocumentsWithOptions()`
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -436,8 +466,6 @@ in the _python-arango_ documentation for details.
 
 ### Get documents
 
-{{< comment >}}TODO: Dirty reads?{{< /comment >}}
-
 {{< tabs "interfaces" >}}
 
 {{< tab "Web interface" >}}
@@ -447,7 +475,9 @@ in the _python-arango_ documentation for details.
 4. You may click the filter icon to filter and sort by document attributes.
 5. Click a row to open the full document.
 
-You can also retrieve documents with AQL queries using in the **Queries** section.
+You can also retrieve documents with AQL queries using the
+[`FOR` operation](../../../aql/high-level-operations/insert.md)
+in the **Queries** section.
 {{< /tab >}}
 
 {{< tab "arangosh" >}}
@@ -490,7 +520,7 @@ in the _JavaScript API_ for details.
 curl http://localhost:8529/_db/mydb/_api/document/coll/the-document-key
 
 # Multiple documents
-# Note the PUT method in combination with the onlyget=true query parameter
+# Note the PUT method in combination with the onlyget=true query parameter!
 curl -XPUT -d '["one","two",{"_key":"three"}]' http://localhost:8529/_db/mydb/_api/document/coll?onlyget=true
 ```
 
@@ -523,20 +553,36 @@ coll, err := db.GetCollection(ctx, "coll", nil)
 // Single document
 var doc map[string]interface{}{}
 meta, err := coll.ReadDocument(ctx, "the-document-key", &doc)
+if err != nil {
+  fmt.Println(err)
+} else {
+  fmt.Printf("Metadata: %+v\n", meta.DocumentMeta)
+  fmt.Printf("Read document: %v\n", doc)
+}
 
 // Multiple documents
 result, err := coll.ReadDocuments(ctx, []string{ "one", "two", "three" })
 for {
-    meta, err := result.Read(&doc)
+    doc = nil // Reset to not leak attributes of previous documents
+    meta, err = result.Read(&doc)
     if shared.IsNoMoreDocuments(err) {
         break
-    }
+    }else if err != nil {
+    fmt.Println(err)
+  } else {
+    fmt.Printf("Metadata: %+v\n", meta.DocumentMeta)
+    fmt.Printf("Read document: %v\n", doc)
+  }
 }
 ```
 
-See [`CollectionDocumentRead.ReadDocument()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentRead)
-and [`CollectionDocumentRead.ReadDocuments()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentRead)
-in the _go-driver_ v2 documentation for details.
+See the following functions 
+in the [_go-driver_ v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentRead)
+for details:
+- `CollectionDocumentRead.ReadDocument()`
+- `CollectionDocumentRead.ReadDocumentWithOptions()`
+- `CollectionDocumentRead.ReadDocuments()`
+- `CollectionDocumentRead.ReadDocumentsWithOptions()`
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -656,32 +702,53 @@ in the _arangojs_ documentation for details.
 ctx := context.Background()
 coll, err := db.GetCollection(ctx, "coll", nil)
 
+var newDoc map[string]interface{}
+
 // Single document
-var doc map[string]interface{}{}
-result, err := coll.UpdateDocumentWithOptions(ctx, "the-document-key", &arangodb.CollectionDocumentUpdateOptions{
-  NewObject: &doc
+newAttributes := map[string]interface{}{
+  "logo": "avocado",
+}
+meta, err := coll.UpdateDocumentWithOptions(ctx, "the-document-key", newAttributes, &arangodb.CollectionDocumentUpdateOptions{
+  NewObject: &newDoc,
 })
-fmt.Printf("New document: %+v\n", doc)
+if err != nil {
+  fmt.Println(err)
+} else {
+  fmt.Printf("Metadata: %+v\n", meta.DocumentMeta)
+  fmt.Printf("Updated document: %v\n", newDoc)
+}
 
 // Multiple documents
-newDocs := []interface{} {
-  map[string]interface{} { "_key": "one", "val": 1 },
-  map[string]interface{} { "_key": "two", "val", 2 },
-  map[string]interface{} { "_key": "three", "val", 3 },
+updateDocs := []interface{}{
+  map[string]interface{}{"_key": "one", "val": 1},
+  map[string]interface{}{"_key": "two", "val": 2},
+  map[string]interface{}{"_key": "three", "val": 3},
 }
-result, err := coll.UpdateDocuments(ctx, newDocs)
+
+updateReader, err := coll.UpdateDocumentsWithOptions(ctx, updateDocs, &arangodb.CollectionDocumentUpdateOptions{
+  NewObject: &newDoc,
+})
 for {
-    meta, err := result.Read(&result)
-    if shared.IsNoMoreDocuments(err) {
-        break
-    }
-    fmt.Printf("Updated document metadata: %+v\n", meta)
+  newDoc = nil // Reset to not leak attributes of previous documents
+  meta, err := updateReader.Read()
+  if shared.IsNoMoreDocuments(err) {
+    break
+  } else if err != nil {
+    fmt.Println(err)
+  } else {
+    fmt.Printf("Metadata: %+v\n", meta.DocumentMeta)
+    fmt.Printf("Updated document: %v\n", newDoc)
+  }
 }
 ```
 
-See [`CollectionDocumentRead.UpdateDocumentWithOptions()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentUpdate)
-and [`CollectionDocumentRead.UpdateDocuments()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentUpdate)
-in the _go-driver_ v2 documentation for details.
+See the following functions 
+in the [_go-driver_ v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentUpdate)
+for details:
+- `CollectionDocumentUpdate.UpdateDocument()`
+- `CollectionDocumentUpdate.UpdateDocumentWithOptions()`
+- `CollectionDocumentUpdate.UpdateDocuments()`
+- `CollectionDocumentUpdate.UpdateDocumentsWithOptions()`
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -819,32 +886,53 @@ in the _arangojs_ documentation for details.
 ctx := context.Background()
 coll, err := db.GetCollection(ctx, "coll", nil)
 
+var newDoc map[string]interface{}
+
 // Single document
-var doc map[string]interface{}{}
-result, err := coll.ReplaceDocumentWithOptions(ctx, "the-document-key", &arangodb.CollectionDocumentUpdateOptions{
-  NewObject: &doc
+newAttributes := map[string]interface{}{
+  "logo": "avocado",
+}
+meta, err := coll.ReplaceDocumentWithOptions(ctx, "the-document-key", newAttributes, &arangodb.CollectionDocumentReplaceOptions{
+  NewObject: &newDoc,
 })
-fmt.Printf("New document: %+v\n", doc)
+if err != nil {
+  fmt.Println(err)
+} else {
+  fmt.Printf("Metadata: %+v\n", meta.DocumentMeta)
+  fmt.Printf("Replaced document: %v\n", newDoc)
+}
 
 // Multiple documents
-newDocs := []interface{} {
-  map[string]interface{} { "_key": "one", "val": 1 },
-  map[string]interface{} { "_key": "two", "val", 2 },
-  map[string]interface{} { "_key": "three", "val", 3 },
+replaceDocs := []interface{}{
+  map[string]interface{}{"_key": "one", "val": 1},
+  map[string]interface{}{"_key": "two", "val": 2},
+  map[string]interface{}{"_key": "three", "val": 3},
 }
-result, err := coll.UpdateDocuments(ctx, newDocs)
+
+replaceReader, err := coll.ReplaceDocumentsWithOptions(ctx, replaceDocs, &arangodb.CollectionDocumentReplaceOptions{
+  NewObject: &newDoc,
+})
 for {
-    meta, err := result.Read(&result)
-    if shared.IsNoMoreDocuments(err) {
-        break
-    }
-    fmt.Printf("Replaced document metadata: %+v\n", meta)
+  newDoc = nil // Reset to not leak attributes of previous documents
+  meta, err := replaceReader.Read()
+  if shared.IsNoMoreDocuments(err) {
+    break
+  } else if err != nil {
+    fmt.Println(err)
+  } else {
+    fmt.Printf("Metadata: %+v\n", meta.DocumentMeta)
+    fmt.Printf("Replaced document: %v\n", newDoc)
+  }
 }
 ```
 
-See [`CollectionDocumentRead.ReplaceDocumentWithOptions()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentReplace)
-and [`CollectionDocumentRead.ReplaceDocuments()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentReplace)
-in the _go-driver_ v2 documentation for details.
+See the following functions 
+in the [_go-driver_ v2 documentation](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#CollectionDocumentReplace)
+for details:
+- `CollectionDocumentReplace.ReplaceDocument()`
+- `CollectionDocumentReplace.ReplaceDocumentWithOptions()`
+- `CollectionDocumentReplace.ReplaceDocuments()`
+- `CollectionDocumentReplace.ReplaceDocumentsWithOptions()`
 {{< /tab >}}
 
 {{< tab "Java" >}}
@@ -974,9 +1062,29 @@ coll, err := db.GetCollection(ctx, "coll", nil)
 
 // Single document
 result, err := coll.DeleteDocument(ctx, "the-document-key")
+if err != nil {
+  fmt.Println(err)
+} else {
+  fmt.Printf("Metadata: %+v\n", result.DocumentMeta)
+}
 
 // Multiple documents
-result, err = coll.DeleteDocuments(ctx, []string{ "one", "two", "three" })
+var oldDoc map[string]interface{}
+removeReader, err := coll.DeleteDocumentsWithOptions(ctx, []string{ "one", "two", "three" }, &arangodb.CollectionDocumentRemoveOptions{
+  OldObject: &oldDoc,
+})
+for {
+  oldDoc = nil // Reset to not leak attributes of previous documents
+  meta, err := removeReader.Read()
+  if shared.IsNoMoreDocuments(err) {
+    break
+  } else if err != nil {
+    fmt.Println(err)
+  } else {
+    fmt.Printf("Metadata: %+v\n", meta.DocumentMeta)
+    fmt.Printf("Removed document: %v\n", oldDoc)
+  }
+}
 ```
 
 See the following functions 

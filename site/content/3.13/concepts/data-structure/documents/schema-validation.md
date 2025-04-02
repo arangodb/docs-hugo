@@ -26,31 +26,223 @@ object with the following attributes: `rule`, `level` and `message`.
 - `level` controls when the validation is applied.
 - `message` sets the message that is used when validation fails.
 
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. If necessary, [switch to the database](../databases.md#set-the-database-context)
+   that contains the desired collection.
+2. Click **Collections** in the main navigation.
+3. Click the name or row of the desired collection.
+4. Go to the **Schema** tab.
+5. Enter the desired JSON Schema. Example:
+   ```json
+   {
+     "rule": {
+       "type": "object",
+       "properties": {
+         "nums": {
+           "type": "array",
+           "items": {
+             "type": "number",
+             "maximum": 6
+           }
+         }
+       },
+       "additionalProperties": { "type": "string" },
+       "required": [ "nums" ]
+     },
+     "level": "moderate",
+     "message": "The document does not contain an array of numbers in attribute \"nums\", one of the numbers is greater than 6, or another top-level attribute is not a string."
+   }
+   ```
+6. Click the **Save** button.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
 ```js
+---
+name: arangosh_set_collection_properties_schema
+description: ''
+---
 var schema = {
   rule: { 
-    properties: { nums: { type: "array", items: { type: "number", maximum: 6 } } }, 
+    type: "object",
+    properties: {
+      nums: {
+        type: "array",
+        items: {
+          type: "number",
+          maximum: 6
+        }
+      }
+    },
     additionalProperties: { type: "string" },
     required: ["nums"]
   },
   level: "moderate",
-  message: "The document does not contain an array of numbers in attribute 'nums', or one of the numbers is greater than 6."
+  message: "The document does not contain an array of numbers in attribute \"nums\", one of the numbers is greater than 6, or another top-level attribute is not a string."
 };
 
 /* Create a new collection with schema */
-db._create("schemaCollection", { "schema": schema });
+var coll = db._create("schemaCollection", { "schema": schema });
 
 /* Update the schema of an existing collection */
 db.schemaCollection.properties({ "schema": schema });
+~addIgnoreCollection(coll.name());
 ```
+{{< comment >}}TODO: Move disabling/removing schema to separate headline?{{< /comment >}}
 
 To remove an existing schema from a collection, a schema value of either `null`
 or `{}` (empty object) can be stored:
 
 ```js
+~var coll = db._collection("schemaCollection");
 /* Remove the schema of an existing collection */
 db.schemaCollection.properties({ "schema": null });
+~removeIgnoreCollection(coll.name());
+~db._drop(coll.name());
 ```
+
+See [`collection.properties()`](../../../develop/javascript-api/@arangodb/collection-object.md#collectionpropertiesproperties)
+in the _JavaScript API_ for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl -XPUT -d '{"schema":{"rule":{"type":"object","properties":{"nums":{"type":"array","items":{"type":"number","minimum":6}}},"additionalProperties":{"type":"string"},"required":["nums"]},"level":"moderate","message":"The document does not contain an array of numbers in attribute \"nums\", one of the numbers is greater than 6, or another top-level attribute is not a string."}}' http://localhost:8529/_db/mydb/_api/collection/coll/properties
+```
+
+See the [`GET /_db/{database-name}/_api/collection/{collection-name}/properties`](../../../develop/http-api/collections.md#get-the-properties-of-a-collection)
+endpoint in the _HTTP API_for details.
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+let coll = db.collection("coll");
+const props = await coll.properties({
+  schema: {
+    rule: {
+      type: "object",
+      properties: {
+        nums: {
+          type: "array",
+          items: {
+            type: "number",
+            minimum: 6
+          }
+        }
+      },
+      additionalProperties: { type: "string" },
+      required: ["nums"]
+    },
+    level: "moderate",
+    message: "The document does not contain an array of numbers in attribute \"nums\", one of the numbers is greater than 6, or another top-level attribute is not a string."
+  }
+});
+```
+
+See [`DocumentCollection.properties()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#properties.properties-2)
+in the _arangojs_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+coll, err := db.GetCollection(ctx, "coll", nil)
+err = coll.SetProperties(ctx, arangodb.SetCollectionPropertiesOptions{
+  Schema: &arangodb.CollectionSchemaOptions{
+    Rule: map[string]interface{} {
+      "type": "object",
+      "properties": map[string]interface{} {
+        "nums": map[string]interface{} {
+          "type": "array",
+          "items": map[string]interface{} {
+            "type": "number",
+            "minimum": 6
+          },
+        },
+      },
+      "additionalProperties": map[string]interface{} {
+        "type": "string",
+      },
+      "required": []string {
+        "nums",
+      }
+    },
+    Level: "moderate",
+    Message: `The document does not contain an array of numbers in attribute "nums", one of the numbers is greater than 6, or another top-level attribute is not a string.`,
+  }
+})
+```
+
+See [`Collection.SetProperties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)
+in the _go-driver_ v2 documentation for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+String schemaRule = (
+        "{" +
+                "  \"type\": \"object\"," +
+                "  \"properties\": {" +
+                "    \"nums\": {" +
+                "      \"type\": \"array\"," +
+                "      \"items\": {" +
+                "        \"type\": \"number\"," +
+                "        \"minimum\": 6" +
+                "      }" +
+                "    }" +
+                "  }," +
+                "  \"additionalProperties\": { \"type\": \"string\" }," +
+                "  \"required\": [\"nums\"]" +
+                "}");
+
+CollectionPropertiesOptions props = new CollectionPropertiesOptions()
+        .schema(new CollectionSchema()
+                .setRule(schemaRule)
+                .setLevel(CollectionSchema.Level.MODERATE)
+                .setMessage("The document does not contain an array of numbers in attribute \"nums\", one of the numbers is greater than 6, or another top-level attribute is not a string.")
+        );
+
+ArangoCollection coll = db.collection("coll");
+CollectionPropertiesEntity changedProps = coll.changeProperties(props);
+```
+
+See [`ArangoCollection.changeProperties()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#changeProperties%28com.arangodb.model.CollectionPropertiesOptions%29)
+in the _arangodb-java-driver_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+coll = db.collection("coll")
+props = coll.configure(
+  sync=True,
+  schema={
+    "rule": {
+      "type": "object",
+      "properties": {
+        "nums": {
+          "type": "array",
+          "items": {
+            "type": "number",
+            "maximum": 6
+          }
+        }
+      },
+      "additionalProperties": { "type": "string" },
+      "required": [ "nums" ]
+    },
+    "level": "moderate",
+    "message": "The document does not contain an array of numbers in attribute \"nums\", one of the numbers is greater than 6, or another top-level attribute is not a string."
+  }
+)
+```
+
+See [`Collection.configure()`](https://docs.python-arango.com/en/main/specs.html#arango.collection.Collection.configure)
+in the _python-arango_ documentation for details.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## JSON Schema Rule
 

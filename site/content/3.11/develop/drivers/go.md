@@ -31,6 +31,19 @@ import (
 )
 ```
 
+You may want to additionally import the following packages:
+
+```go
+    "github.com/arangodb/go-driver/v2/arangodb/shared"
+    "github.com/arangodb/go-driver/v2/utils"
+```
+
+The former provides a `shared.IsNoMoreDocuments` function that makes it easy to
+check whether to stop iterating over the results of functions that return a reader,
+like multi-document operations and listing graphs. The latter provides a
+`utils.NewType` function that lets you conveniently create a pointer to a boolean
+value, for instance.
+
 If you use Go modules, you can also import the driver and run `go mod tidy`
 instead of using the `go get` command.
 
@@ -38,6 +51,8 @@ instead of using the `go get` command.
 
 Using the driver, you always need to create a `Client`. The following example
 shows how to create a `Client` for an ArangoDB single server running on localhost.
+You need to set `InsecureSkipVerify` to `true` if the ArangoDB server is not
+configured for TLS encryption to establish an unencrypted HTTP/2 connection.
 For more options, see [Connection management](#connection-management).
 
 ```go
@@ -46,13 +61,15 @@ import (
     "log"
 
     "github.com/arangodb/go-driver/v2/arangodb"
+    "github.com/arangodb/go-driver/v2/arangodb/shared"
     "github.com/arangodb/go-driver/v2/connection"
+    "github.com/arangodb/go-driver/v2/utils"
 )
 
 /*...*/
 
 endpoint := connection.NewRoundRobinEndpoints([]string{"http://localhost:8529"})
-conn := connection.NewHttp2Connection(connection.DefaultHTTP2ConfigurationWrapper(endpoint, /*InsecureSkipVerify*/ false))
+conn := connection.NewHttp2Connection(connection.DefaultHTTP2ConfigurationWrapper(endpoint, /*InsecureSkipVerify*/ true))
 
 // Add authentication
 auth := connection.NewBasicAuth("root", "")
@@ -175,21 +192,21 @@ if err != nil {
 client := arangodb.NewClient(conn)
 
 // Open the "mydb" database
-db, err := client.Database(nil, "mydb")
+db, err := client.GetDatabase(nil, "mydb", nil)
 if err != nil {
     // Handle error
 }
 
 // Open the "coll" collection
-col, err := db.Collection(nil, "coll")
+col, err := db.GetCollection(nil, "coll", nil)
 if err != nil {
     // Handle error
 }
 
 // Define a structure for (de)serializing documents
 type Book struct {
-  Title   string `json:"title"`
-  NoPages int    `json:"number_pages,omitempty"`
+    Title   string `json:"title"`
+    NoPages int    `json:"number_pages,omitempty"`
 }
 
 // Create a document
@@ -280,7 +297,7 @@ if err != nil {
 
 ```go
 ctx := context.Background()
-db, err := client.Database(ctx, "myDB")
+db, err := client.GetDatabase(ctx, "myDB", nil)
 if err != nil {
     // handle error 
 }
@@ -312,7 +329,7 @@ if err != nil {
 
 ```go
 ctx := context.Background()
-col, err := db.Collection(ctx, "myCollection")
+col, err := db.GetCollection(ctx, "myCollection", nil)
 if err != nil {
     // handle error 
 }
@@ -411,17 +428,17 @@ query := "FOR d IN myCollection LIMIT 10 RETURN d"
 cursor, err := db.Query(ctx, query, nil)
 if err != nil {
     // handle error 
-}
-defer cursor.Close()
-for {
-    var doc MyDocument 
-    meta, err := cursor.ReadDocument(ctx, &doc)
-    if driver.IsNoMoreDocuments(err) {
-        break
-    } else if err != nil {
-        // handle other errors
+} else {
+    defer cursor.Close()
+    for cursor.HasMore() {
+        var doc MyDocument 
+        meta, err := cursor.ReadDocument(ctx, &doc)
+        if err != nil {
+            // handle error
+        } else {
+            fmt.Printf("Got doc with key '%s' from query, name = %s\n", meta.Key, doc.Name)
+        }
     }
-    fmt.Printf("Got doc with key '%s' from query\n", meta.Key)
 }
 ```
 
@@ -437,16 +454,15 @@ query := "FOR d IN myCollection RETURN d"
 cursor, err := db.Query(ctx, query, &options)
 if err != nil {
     // handle error 
+} else {
+    defer cursor.Close()
+    fmt.Printf("Query yields %d documents\n", cursor.Count())
 }
-defer cursor.Close()
-fmt.Printf("Query yields %d documents\n", cursor.Count())
 ```
 
 #### Query documents, with bind variables
 
 ```go
-ctx := driver.WithQueryCount(context.Background())
-
 ctx := context.Background()
 options := arangodb.QueryOptions{
     Count: true,
@@ -512,7 +528,7 @@ func main() {
   if dbExists {
     fmt.Println("That db exists already")
 
-    db, err = client.Database(ctx, "example")
+    db, err = client.GetDatabase(ctx, "example", nil)
 
     if err != nil {
       log.Fatalf("Failed to open existing database: %v", err)
@@ -594,16 +610,16 @@ func PrintCollection(db arangodb.Database) {
 
   for {
     var doc User
-    var metadata arangodb.DocumentMeta
+    var meta arangodb.DocumentMeta
 
-    metadata, err = cursor.ReadDocument(nil, &doc)
+    meta, err = cursor.ReadDocument(nil, &doc)
 
     if shared.IsNoMoreDocuments(err) {
       break
     } else if err != nil {
-      log.Fatalf("Doc returned: %v", err)
+      log.Fatalf("Reading document failed: %v", err)
     } else {
-      fmt.Print("Dot doc ", metadata, doc, "\n")
+      fmt.Printf("Metadata and document:\n%+v\n%v\n", meta, doc)
     }
   }
 }
