@@ -143,9 +143,9 @@ def workflow_generate(config):
                 elif openssl.startswith("1.1"):
                     compileJob["compile-linux"]["build-image"] = "arangodb/build-alpine-x86_64:3.16-gcc11.2-openssl1.1.1s"
                 else:
-                    compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:9" # 3.11.13
-            else: # build image for 3.12.4 and devel as of 2024-11-25
-                compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:9"
+                    compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-311:1" # clang-16
+            else: # build image for 3.12.5 and devel as of 2025-02-04
+                compileJob["compile-linux"]["build-image"] = "arangodb/ubuntubuildarangodb-devel:11" # clang-19
 
         print(f"compileJob = {compileJob}")
 

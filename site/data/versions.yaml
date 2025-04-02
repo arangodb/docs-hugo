@@ -4,12 +4,12 @@
   deprecated: false
 
 - name: "3.12"
-  version: "3.12.3"
+  version: "3.12.4"
   alias: "stable"
   deprecated: false
 
 - name: "3.11"
-  version: "3.11.12"
+  version: "3.11.13"
   alias: "3.11"
   deprecated: false
 
