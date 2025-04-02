@@ -164,7 +164,7 @@ different outside of `SEARCH`, where `IN` needs to be followed by an array.
 
 You can use the [Question mark operator](../operators.md#question-mark-operator)
 to perform [Nested searches with ArangoSearch](../../index-and-search/arangosearch/nested-search.md)
-(Enterprise Edition only):
+:
 
 ```aql
 FOR doc IN myView
@@ -176,7 +176,7 @@ It allows you to match nested objects in arrays that satisfy multiple conditions
 each, and optionally define how often these conditions should be fulfilled for
 the entire array. You need to configure the View specifically for this type of
 search using the `nested` property in [`arangosearch` Views](../../index-and-search/arangosearch/arangosearch-views-reference.md#link-properties)
-or in the definition of [Inverted Indexes](../../index-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search-enterprise-edition)
+or in the definition of [Inverted Indexes](../../index-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search)
 that you can add to [`search-alias` Views](../../index-and-search/arangosearch/search-alias-views-reference.md).
 
 ## Handling of non-indexed fields

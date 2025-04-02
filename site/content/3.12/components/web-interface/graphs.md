@@ -18,8 +18,8 @@ subsets of a graph or an entire graph.
 2. Select a tab depending on which type of named graph you want to create.
    The **SatelliteGraph**, **SmartGraph**, and **EnterpriseGraph** tabs are
    only available for cluster deployments.
-   For non-cluster deployments and in the Community Edition, only the
-   **Examples** and **GeneralGraph** tabs are available.
+   For non-cluster deployments and in the Community Edition up to v3.12.4,
+   only the **Examples** and **GeneralGraph** tabs are available.
 3. Fill in the fields of the dialog. Required fields have an asterisk (`*`)
    in their label. Hover over the gray circle with a white `i` in it next to
    a field to show the tooltip with an explanation.

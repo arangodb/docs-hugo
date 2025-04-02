@@ -95,7 +95,7 @@ paths:
                 primarySortCache:
                   description: |
                     If you enable this option, then the primary sort columns are always cached in
-                    memory (Enterprise Edition only). This can improve the
+                    memory. This can improve the
                     performance of queries that utilize the primary sort order. Otherwise, these
                     values are memory-mapped and it is up to the operating system to load them from
                     disk into memory and to evict them from memory.
@@ -110,7 +110,7 @@ paths:
                 primaryKeyCache:
                   description: |
                     If you enable this option, then the primary key columns are always cached in
-                    memory (introduced in v3.9.6, Enterprise Edition only). This can improve the
+                    memory (introduced in v3.9.6). This can improve the
                     performance of queries that return many documents. Otherwise, these values are
                     memory-mapped and it is up to the operating system to load them from disk into
                     memory and to evict them from memory.
@@ -141,8 +141,6 @@ paths:
                     You can define up to 64 expressions per View.
 
                     Example: `["BM25(@doc) DESC", "TFIDF(@doc, true) DESC"]`
-
-                    This property is available in the Enterprise Edition only.
                   type: array
                   items:
                     type: string
@@ -208,7 +206,7 @@ paths:
                         default: lz4
                       cache:
                         description: |
-                          Whether to always cache stored values in memory (Enterprise Edition only).
+                          Whether to always cache stored values in memory.
                           This can improve the query performance if stored values are involved.
                           Otherwise, these values are memory-mapped and it is up to the operating system
                           to load them from disk into memory and to evict them from memory.
@@ -459,18 +457,16 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
-                      Whether the primary sort columns are always cached in memory
-                      (Enterprise Edition only).
+                      Whether the primary sort columns are always cached in memory.
                     type: boolean
                   primaryKeyCache:
                     description: |
-                      Whether the primary key columns are always cached in memory
-                      (Enterprise Edition only).
+                      Whether the primary key columns are always cached in memory.
                     type: boolean
                   optimizeTopK:
                     description: |
                       An array of strings defining sort expressions that can be optimized.
-                      This is also known as _WAND optimization_ (Enterprise Edition only, introduced in v3.12.0).
+                      This is also known as _WAND optimization_ (introduced in v3.12.0).
                     type: array
                     items:
                       type: string
@@ -502,8 +498,7 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
-                            Whether stored values are always cached in memory
-                            (Enterprise Edition only).
+                            Whether stored values are always cached in memory.
                           type: boolean
                   cleanupIntervalStep:
                     description: |
@@ -934,18 +929,16 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
-                      Whether the primary sort columns are always cached in memory
-                      (Enterprise Edition only).
+                      Whether the primary sort columns are always cached in memory.
                     type: boolean
                   primaryKeyCache:
                     description: |
-                      Whether the primary key columns are always cached in memory
-                      (Enterprise Edition only).
+                      Whether the primary key columns are always cached in memory.
                     type: boolean
                   optimizeTopK:
                     description: |
                       An array of strings defining sort expressions that can be optimized.
-                      This is also known as _WAND optimization_ (Enterprise Edition only, introduced in v3.12.0).
+                      This is also known as _WAND optimization_ (introduced in v3.12.0).
                     type: array
                     items:
                       type: string
@@ -977,8 +970,7 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
-                            Whether stored values are always cached in memory
-                            (Enterprise Edition only).
+                            Whether stored values are always cached in memory.
                           type: boolean
                   cleanupIntervalStep:
                     description: |
@@ -1519,18 +1511,16 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
-                      Whether the primary sort columns are always cached in memory
-                      (Enterprise Edition only).
+                      Whether the primary sort columns are always cached in memory.
                     type: boolean
                   primaryKeyCache:
                     description: |
-                      Whether the primary key columns are always cached in memory
-                      (Enterprise Edition only).
+                      Whether the primary key columns are always cached in memory.
                     type: boolean
                   optimizeTopK:
                     description: |
                       An array of strings defining sort expressions that can be optimized.
-                      This is also known as _WAND optimization_ (Enterprise Edition only, introduced in v3.12.0).
+                      This is also known as _WAND optimization_ (introduced in v3.12.0).
                     type: array
                     items:
                       type: string
@@ -1562,8 +1552,7 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
-                            Whether stored values are always cached in memory
-                            (Enterprise Edition only).
+                            Whether stored values are always cached in memory.
                           type: boolean
                   cleanupIntervalStep:
                     description: |
@@ -2010,18 +1999,16 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
-                      Whether the primary sort columns are always cached in memory
-                      (Enterprise Edition only).
+                      Whether the primary sort columns are always cached in memory.
                     type: boolean
                   primaryKeyCache:
                     description: |
-                      Whether the primary key columns are always cached in memory
-                      (Enterprise Edition only).
+                      Whether the primary key columns are always cached in memory.
                     type: boolean
                   optimizeTopK:
                     description: |
                       An array of strings defining sort expressions that can be optimized.
-                      This is also known as _WAND optimization_ (Enterprise Edition only, introduced in v3.12.0).
+                      This is also known as _WAND optimization_ (introduced in v3.12.0).
                     type: array
                     items:
                       type: string
@@ -2053,8 +2040,7 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
-                            Whether stored values are always cached in memory
-                            (Enterprise Edition only).
+                            Whether stored values are always cached in memory.
                           type: boolean
                   cleanupIntervalStep:
                     description: |
@@ -2380,18 +2366,16 @@ paths:
                     enum: [lz4, none]
                   primarySortCache:
                     description: |
-                      Whether the primary sort columns are always cached in memory
-                      (Enterprise Edition only).
+                      Whether the primary sort columns are always cached in memory.
                     type: boolean
                   primaryKeyCache:
                     description: |
-                      Whether the primary key columns are always cached in memory
-                      (Enterprise Edition only).
+                      Whether the primary key columns are always cached in memory.
                     type: boolean
                   optimizeTopK:
                     description: |
                       An array of strings defining sort expressions that can be optimized.
-                      This is also known as _WAND optimization_ (Enterprise Edition only, introduced in v3.12.0).
+                      This is also known as _WAND optimization_ (introduced in v3.12.0).
                     type: array
                     items:
                       type: string
@@ -2423,8 +2407,7 @@ paths:
                           enum: [lz4, none]
                         cache:
                           description: |
-                            Whether stored values are always cached in memory
-                            (Enterprise Edition only).
+                            Whether stored values are always cached in memory.
                           type: boolean
                   cleanupIntervalStep:
                     description: |

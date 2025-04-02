@@ -980,7 +980,7 @@ paths:
                   license:
                     description: |
                       The encrypted license key in Base64 encoding, or `"none"`
-                      in the Community Edition.
+                      for the Community Edition.
                     type: string
                     example: V0h/W...wEDw==
                   hash:
@@ -1133,7 +1133,7 @@ paths:
                     type: string
         '501':
           description: |
-            If you try to apply a license in the Community Edition.
+            If you try to apply a license using a custom build of the public source code.
           content:
             application/json:
               schema:

@@ -801,9 +801,8 @@ paths:
               that is not ready for production yet
             - `obsolete` (boolean): Whether the option has been deprecated and
               no effect anymore
-            - `enterpriseOnly` (boolean): Whether the option is only available in
-              the Enterprise Edition. The Community Edition does have most of the
-              Enterprise Edition startup options and they are thus not reported
+            - `enterpriseOnly` (boolean): Whether the option is implemented in
+              the non-public enterprise code.
             - `requiresValue` (boolean): Whether the option can be specified
               without a value to enable it
             - `os` (array of strings): The operating systems the startup option
@@ -981,7 +980,7 @@ paths:
                   license:
                     description: |
                       The encrypted license key in Base64 encoding, or `"none"`
-                      in the Community Edition.
+                      for the Community Edition.
                     type: string
                     example: V0h/W...wEDw==
                   hash:
@@ -1134,7 +1133,7 @@ paths:
                     type: string
         '501':
           description: |
-            If you try to apply a license in the Community Edition.
+            If you try to apply a license using a custom build of the public source code.
           content:
             application/json:
               schema:

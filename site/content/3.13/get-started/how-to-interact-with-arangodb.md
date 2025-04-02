@@ -102,7 +102,6 @@ to restore structural information with or without data.
 you to create instantaneous and consistent [hot backups](../operations/backup-and-restore.md#hot-backups)
 of the data and structural information stored in ArangoDB, without interrupting
 the database operations. It can be used for all ArangoDB deployment modes.
-It is only available in the Enterprise Edition.
 
 <!--
 ## How to Import Data
