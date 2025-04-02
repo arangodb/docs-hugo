@@ -23,7 +23,7 @@ for more details on how to set a license key.
 To use the Enterprise Edition, set the license via _arangosh_ like so:
 
 ```js
-127.0.0.1:8529@_system> db._setLicense("<license-string>");
+db._setLicense("<license-string>");
 ```
 
 You receive a message reporting whether the operation was successful.
@@ -41,18 +41,18 @@ Your license has now been applied.
 At any point you may check the current state of your license in _arangosh_:
 
 ```js
-127.0.0.1:8529@_system> db._getLicense();
+db._getLicense();
 ```
 
 ```json
 {
+  "upgrading": false,
   "features": {
-    "expires": 1632411828
+    "expires": 1743568356
   },
   "license": "JD4E ... dnDw==",
   "version": 1,
-  "status": "good",
-  "hash": "..."
+  "status": "good"
 }
 ```
 
