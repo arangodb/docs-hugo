@@ -4838,7 +4838,7 @@ paths:
                     description: |
                       Contains how many copies of each shard are kept on different DB-Servers.
                       It is an integer number in the range of 1-10 or the string `"satellite"`
-                      for SatelliteCollections (Enterprise Edition only). _(cluster only)_
+                      for SatelliteCollections. _(cluster only)_
                     type: integer
                   writeConcern:
                     description: |
@@ -4876,25 +4876,25 @@ paths:
                     type: string
                   isSmart:
                     description: |
-                      Whether the collection is used in a SmartGraph or EnterpriseGraph (Enterprise Edition only).
+                      Whether the collection is used in a SmartGraph or EnterpriseGraph.
                       This is an internal property. _(cluster only)_
                     type: boolean
                   isDisjoint:
                     description: |
-                      Whether the SmartGraph or EnterpriseGraph this collection belongs to is disjoint
-                      (Enterprise Edition only). This is an internal property. _(cluster only)_
+                      Whether the SmartGraph or EnterpriseGraph this collection belongs to is disjoint.
+                      This is an internal property. _(cluster only)_
                     type: boolean
                   smartGraphAttribute:
                     description: |
                       The attribute that is used for sharding: vertices with the same value of
                       this attribute are placed in the same shard. All vertices are required to
                       have this attribute set and it has to be a string. Edges derive the
-                      attribute from their connected vertices (Enterprise Edition only). _(cluster only)_
+                      attribute from their connected vertices. _(cluster only)_
                     type: string
                   smartJoinAttribute:
                     description: |
                       Determines an attribute of the collection that must contain the shard key value
-                      of the referred-to SmartJoin collection (Enterprise Edition only). _(cluster only)_
+                      of the referred-to SmartJoin collection. _(cluster only)_
                     type: string
                   name:
                     description: |
