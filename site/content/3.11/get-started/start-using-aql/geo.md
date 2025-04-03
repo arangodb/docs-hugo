@@ -41,13 +41,13 @@ To query based on coordinates, a [geo index](../../index-and-search/indexing/wor
 is required. It determines which fields contain the latitude and longitude
 values.
 
-1. Click **Collections** in the main navigation
-2. Click the name or row of the **Locations** collection
-3. Switch to the **Indexes** tab at top
-4. Click the **Add Index** button
-5. Change the **Type** to **Geo Index**
-6. Enter `coordinates` into **Fields**
-7. Click the **Create** button to confirm
+1. Click **COLLECTIONS** in the main navigation.
+2. Click the card of the **Locations** collection.
+3. Switch to the **Indexes** tab at the top.
+4. Click the **Add Index** button.
+5. Change the **Type** to **Geo Index**.
+6. Enter `coordinates` into **Fields**.
+7. Click the **Create** button to confirm.
 
 ## Find nearby locations
 

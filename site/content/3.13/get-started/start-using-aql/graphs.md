@@ -45,10 +45,10 @@ you can run a query that combines joining and filtering to match up the right
 character documents, then use their `_id` attribute to insert an edge into an
 edge collection called `ChildOf`.
 
-1. Click **Collections** in the main navigation
-2. Click the **Add collection** button
-3. Enter `ChildOf` as the **Name**
-4. Change the collection type to **Edge**
+1. Click **Collections** in the main navigation.
+2. Click the **Add collection** button.
+3. Enter `ChildOf` as the **Name**.
+4. Change the collection type to **Edge**.
 
 Then run the following query:
 
@@ -72,8 +72,8 @@ LET relations = [
 
 FOR rel in relations
   INSERT {
-    _from: CONCAT("Characters/", child),
-    _to: CONCAT("Characters/", parent)
+    _from: CONCAT("Characters/", rel.child),
+    _to: CONCAT("Characters/", rel.parent)
   } INTO ChildOf
   RETURN NEW
 ```
@@ -99,7 +99,7 @@ graph terms, you want to start at a vertex and follow the edges to other
 vertices in an [AQL graph traversal](../../aql/graphs/traversals.md):
 
 ```aql
-FOR v IN 1..1 OUTBOUND "Characters/catelyn" ChildOf
+FOR v IN 1..1 OUTBOUND "Characters/bran" ChildOf
   RETURN v.name
 ```
 
@@ -113,14 +113,15 @@ In above query, the traversal is restricted to a minimum and maximum traversal
 depth of 1 (how many steps to take from the start vertex), and to only follow
 edges in `OUTBOUND` direction. Our edges point from child to parent, and the
 parent is one step away from the child, thus it gives you the parents of the
-child you start at. `"Characters/catelyn"` is that start vertex.
+child you start at. `"Characters/bran"` is that start vertex.
 
 To determine the ID of e.g. the Joffrey Baratheon document, you may iterate over
-the collection of characters, filter by last name, and return the `_id` attribute:
+the collection of characters, filter by the name or other criteria, and return
+the `_id` attribute:
 
 ```aql
 FOR c IN Characters
-  FILTER c.surname == "Snow"
+  FILTER c.surname == "Baratheon" AND c.age != null
   RETURN c._id
 ```
 
@@ -133,7 +134,7 @@ the start vertex by adjusting the filter condition(s):
 
 ```aql
 FOR c IN Characters
-  FILTER c.surname == "Baratheon"
+  FILTER c.surname == "Baratheon" AND c.age != null
   FOR v IN 1..1 OUTBOUND c ChildOf
     RETURN v.name
 ```
@@ -150,6 +151,57 @@ example query returns only the name of each parent to keep the result short:
 
 For Robb, Sansa, Arya, and Bran as the starting point, the result is Catelyn and
 Ned, and for Jon Snow it is only Ned.
+
+Be mindful of the `FILTER` criteria. If more than one character fulfills the
+conditions, there will be multiple traversals. And with the query as it is,
+all of the parent names would be combined into a single list:
+
+```aql
+FOR c IN Characters
+  FILTER c.surname == "Lannister"
+  FOR v IN 1..1 OUTBOUND c ChildOf
+    RETURN v.name
+```
+
+```json
+[
+  "Tywin",
+  "Tywin",
+  "Tywin"
+]
+```
+
+You can achieve a more useful output by returning the result of each traversal
+as a separate list and set the minimum traversal depth to `0` to include the
+start vertex. This lets you see the child's name as the first element of each
+array, followed by the parent name(s) if this information is available.
+
+```aql
+FOR c IN Characters
+  FILTER c.surname == "Lannister"
+  RETURN (FOR v IN 0..1 OUTBOUND c ChildOf
+    RETURN v.name)
+```
+
+```json
+[
+  [
+    "Jaime",
+    "Tywin"
+  ],
+  [
+    "Cersei",
+    "Tywin"
+  ],
+  [
+    "Tyrion",
+    "Tywin"
+  ],
+  [
+    "Tywin"
+  ]
+]
+```
 
 ## Traverse to the children
 

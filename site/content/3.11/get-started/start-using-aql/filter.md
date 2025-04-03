@@ -37,8 +37,8 @@ adult characters:
 
 ```aql
 FOR c IN Characters
-    FILTER c.age >= 13
-    RETURN c.name
+  FILTER c.age >= 13
+  RETURN c.name
 ```
 
 ```json
@@ -67,8 +67,8 @@ return:
 
 ```aql
 FOR c IN Characters
-    FILTER c.age < 13
-    RETURN { name: c.name, age: c.age }
+  FILTER c.age < 13
+  RETURN { name: c.name, age: c.age }
 ```
 
 ```json

@@ -13,7 +13,7 @@ collection. You can [manage collections](../../concepts/data-structure/collectio
 via different interfaces including the web interface, arangosh, or a driver.
 It is not possible to do so with AQL, however.
 
-1. In the web interface, click **Collections** in the main navigation
+1. In the web interface, click **Collections** in the main navigation.
 2. Click the **Add Collection** button.
 3. Enter `Characters` as the **Name**.
 4. Leave the **Type** set to the default value of **Document**.
@@ -174,6 +174,7 @@ as per the loop body. The query returns all characters you previously stored.
 Among them should be `Ned Stark`, similar to this example:
 
 ```json
+[
   {
     "_key": "ned",
     "_id": "Characters/ned",
@@ -184,6 +185,8 @@ Among them should be `Ned Stark`, similar to this example:
     "age": 41,
     "traits": ["A","H","C","N","P"]
   },
+  ...
+]
 ```
 
 The document features the attributes you stored, plus a few more added by
@@ -199,7 +202,7 @@ attributes starting with an underscore `_` are read-only.
 You can use either the document key or the document ID to retrieve a specific
 document with the help of an AQL function `DOCUMENT()`:
 
-```js
+```aql
 RETURN DOCUMENT("Characters", "ned")
 // --- or ---
 RETURN DOCUMENT("Characters/ned")
@@ -341,7 +344,7 @@ FOR c IN Characters
       "season": 1
     },
     {
-        ...
+      ...
     }
   ]
 ]

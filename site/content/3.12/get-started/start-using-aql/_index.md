@@ -36,13 +36,10 @@ ArangoDB's web interface has a **Queries** section for
 {{< /tab >}}
 
 {{< tab "arangosh" >}}
-You can run AQL queries from the ArangoDB Shell (arangosh)
+You can run AQL queries from the ArangoDB Shell ([arangosh](../../components/tools/arangodb-shell/_index.md))
 with the [`db._query()`](../../aql/how-to-invoke-aql/with-arangosh.md#with-db_query) and
 [`db._createStatement()`](../../aql/how-to-invoke-aql/with-arangosh.md#with-db_createstatement-arangostatement)
 methods of the [`db` object](../../develop/javascript-api/@arangodb/db-object.md).
-
-If you use Foxx, see [how to write database queries](../../develop/foxx-microservices/getting-started.md#writing-database-queries)
-for examples including tagged template strings.
 
 ```js
 ---
@@ -56,6 +53,9 @@ db._query(aql`RETURN CONCAT("Hello, ", ${name})`).toArray();
 ```
 See [`db._query()`](../../develop/javascript-api/@arangodb/db-object.md#db_queryquerystring--bindvars--mainoptions--suboptions)
 in the _JavaScript API_ for details.
+
+If you use Foxx, see [how to write database queries](../../develop/foxx-microservices/getting-started.md#writing-database-queries)
+for examples including tagged template strings.
 {{< /tab >}}
 
 {{< tab "cURL" >}}
@@ -76,15 +76,16 @@ endpoint in the _HTTP API_ for details.
 
 {{< tab "JavaScript" >}}
 ```js
-import { Database } from "arangojs";
+import { Database, aql } from "arangojs";
 const db = new Database();
 
 const name = "AQL";
-const result = await db.query(aql`RETURN CONCAT("Hello, ", ${name})`);
+const cursor = await db.query(aql`RETURN CONCAT("Hello, ", ${name})`);
+const result = cursor.all();
 console.log(result);
 ```
 
-See [`Database.query()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#query)
+See [`Database.query()`](https://arangodb.github.io/arangojs/latest/classes/databases.Database.html#query)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
@@ -95,20 +96,20 @@ query := `RETURN CONCAT("Hello, ", @name)`
 options := arangodb.QueryOptions{
     BindVars: map[string]interface{}{
         "name": "AQL",
-    }
+    },
 }
 cursor, err := db.Query(ctx, query, &options)
 if err != nil {
-    // handle error
+    log.Fatalf("Failed to run query:\n%v\n", err)
 } else {
     defer cursor.Close()
-    var doc map[string]interface{} 
+    var str string
     for cursor.HasMore() {
-        meta, err = cursor.ReadDocument(ctx, &doc)
+        _, err := cursor.ReadDocument(ctx, &str)
         if err != nil {
-            // handle error
+            log.Fatalf("Failed to read cursor:\n%v\n", err)
         } else {
-            fmt.Printf("%+v\n", doc)
+            fmt.Println(str)
         }
     }
 }
@@ -122,7 +123,7 @@ in the _go-driver_ v2 documentation for details.
 ```java
 String query = "RETURN CONCAT(\"Hello, \", @name)";
 Map<String, Object> bindVars = Collections.singletonMap("name", "AQL");
-ArangoCursor<String> cursor = db.query(query, String, bindVars);
+ArangoCursor<String> cursor = db.query(query, String.class, bindVars);
 cursor.forEach(result -> System.out.println(result));
 ```
 
@@ -133,10 +134,10 @@ in the _arangodb-java-driver_ documentation for details.
 {{< tab "Python" >}}
 ```py
 query = "RETURN CONCAT('Hello, ', @name)"
-bindVars = { "name": "AQL" }
-cursor = db.aql.execute(query, bindVars=bindVars)
-for doc in cursor:
-  print(doc)
+bind_vars = { "name": "AQL" }
+cursor = db.aql.execute(query, bind_vars=bind_vars)
+for result in cursor:
+  print(result)
 ```
 
 See [`AQL.execute()`](https://docs.python-arango.com/en/main/specs.html#arango.aql.AQL.execute)
@@ -151,6 +152,6 @@ The following pages guide you through important query constructs for storing
 and retrieving data, covering basic as well as some advanced features. 
 
 Afterwards, you can read the [AQL documentation](../../aql/_index.md) for the
-full language reference. You can also find examples in this chapter.
+full language reference and query examples.
 
 {{< comment >}}TODO: Advanced data manipulation: attributes, projections, calculations... Aggregation: Grouping techniques{{< /comment >}}

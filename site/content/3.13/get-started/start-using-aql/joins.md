@@ -1,6 +1,6 @@
 ---
 title: References and joins
-menuTitle: Joins
+menuTitle: References & Joins
 weight: 20
 ---
 ## References to other documents
