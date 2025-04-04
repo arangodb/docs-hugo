@@ -671,8 +671,7 @@ graph.female.update("female/linda", {name: "Linda", _key: "linda"}, { returnOld:
 ### Remove a Vertex
 
 Removes a vertex from a collection of the named graph. Additionally removes all
-incoming and outgoing edges of the vertex. If these edge are used as vertices by
-other edges, the other edges are removed, too (recursively).
+incoming and outgoing edges of the vertex.
 
 `graph.vertexCollectionName.remove(vertexId, options)`
 
@@ -807,10 +806,8 @@ graph.relation.update("relation/aliceAndDiana",
 
 ### Remove an Edge
 
-Removes an edge in collection `edgeCollectionName`.
-
-Removes an edge from an edge collection of the named graph. If this edge is used
-as a vertex by another edge, the other edge is removed, too (recursively).
+Removes an edge from an edge collection of the named graph. Any other edges
+that directly reference this edge like a vertex are removed, too.
 
 `graph.edgeCollectionName.remove(edgeId, options)`
 
