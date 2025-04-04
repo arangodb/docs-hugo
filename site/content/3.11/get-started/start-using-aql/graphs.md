@@ -99,6 +99,9 @@ graph terms, you want to start at a vertex and follow the edges to other
 vertices in an [AQL graph traversal](../../aql/graphs/traversals.md):
 
 ```aql
+// Declare collection of start vertex (cluster only)
+WITH Characters
+
 FOR v IN 1..1 OUTBOUND "Characters/bran" ChildOf
   RETURN v.name
 ```

@@ -1,6 +1,6 @@
 ---
 title: AQL CRUD operations
-menuTitle: CRUD
+menuTitle: CRUD operations
 weight: 5
 description: >-
   Learn how to **c**reate, **r**ead, **u**pdate, and **d**elete documents with
