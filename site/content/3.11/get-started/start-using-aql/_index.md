@@ -121,7 +121,7 @@ in the _go-driver_ v2 documentation for details.
 {{< tab "Java" >}}
 ```java
 String query = "RETURN CONCAT(\"Hello, \", @name)";
-Map<String, Object> bindVars = Collections.singletonMap("name", "AQL");
+Map<String, ? super Object> bindVars = Collections.singletonMap("name", "AQL");
 ArangoCursor<String> cursor = db.query(query, String.class, bindVars);
 cursor.forEach(result -> System.out.println(result));
 ```

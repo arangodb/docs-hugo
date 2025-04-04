@@ -1,6 +1,6 @@
 ---
 title: Graphs and traversals
-menuTitle: Graphs & traversals
+menuTitle: Graphs and traversals
 weight: 25
 description: >-
   How relations such as between parents and children can be modeled as graph
