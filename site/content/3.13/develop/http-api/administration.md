@@ -1030,7 +1030,7 @@ var url = "/_admin/license";
 var response = logCurlRequest('GET', url);
 
 assert(response.code === 200);
-assertTypeOf("string", response.parsedBody.license);
+assertTypeOf("object", response.parsedBody.diskUsage);
 
 logJsonResponse(response);
 ```
