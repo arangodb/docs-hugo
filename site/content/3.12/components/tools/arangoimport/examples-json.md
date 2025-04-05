@@ -88,7 +88,7 @@ which allows any valid JSON value on a line.
 
 An input with JSON objects in an array, optionally pretty printed, can be
 easily converted into JSONL with one JSON object per line using the
-[**jq** command line tool](http://stedolan.github.io/jq/):
+[**jq** command-line tool](https://jqlang.github.io/jq/):
 
 ```
 jq -c ".[]" inputFile.json > outputFile.jsonl
