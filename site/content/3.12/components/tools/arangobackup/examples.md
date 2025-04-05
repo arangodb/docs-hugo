@@ -223,7 +223,7 @@ The output will look like this:
 
 [Rclone](https://rclone.org/) is a versatile open-source
 remote file sync program that can deal with over 30 different remote file
-IO protocols. Enterprise Editions of ArangoDB come with a bundled version
+IO protocols. ArangoDB comes with a bundled version
 of rclone, which is distributed under the MIT license. It is used to
 both download and upload hot backup sets to and from local and cloud
 operated storage resources.

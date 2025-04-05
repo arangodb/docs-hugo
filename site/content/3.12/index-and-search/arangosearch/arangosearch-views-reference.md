@@ -170,8 +170,6 @@ During view modification the following directives apply:
   values. For example, you can search the sub-objects and all the conditions
   need to be met by a single sub-object instead of across all of them.
 
-  This property is available in the Enterprise Edition only.
-
   {{< info >}}
   You cannot use the `nested` property at the top-level of the link properties.
   It needs to have a parent field, e.g.
@@ -214,8 +212,6 @@ During view modification the following directives apply:
 
 - **cache** (_optional_; type: `boolean`; default: `false`)
 
-  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
   <small>Introduced in: v3.9.5, v3.10.2</small>
 
   If you enable this option, then field normalization values are always cached
@@ -257,8 +253,6 @@ During view modification the following directives apply:
 
 - **primarySortCache** (_optional_; type: `boolean`; default: `false`; _immutable_)
 
-  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
   <small>Introduced in: v3.9.6, v3.10.2</small>
 
   If you enable this option, then the primary sort columns are always cached in
@@ -275,8 +269,6 @@ During view modification the following directives apply:
   (introduced in v3.10.6).
 
 - **primaryKeyCache** (_optional_; type: `boolean`; default: `false`; _immutable_)
-
-  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
   <small>Introduced in: v3.9.6, v3.10.2</small>
 
@@ -314,7 +306,7 @@ During view modification the following directives apply:
     or `"none"` (no compression).
 
   - The optional `cache` attribute allows you to always cache stored values in
-    memory (introduced in v3.9.5 and v3.10.2, Enterprise Edition only).
+    memory (introduced in v3.9.5 and v3.10.2).
     This can improve the query performance if stored values are involved. See the
     [`--arangosearch.columns-cache-limit` startup option](../../components/arangodb-server/options.md#--arangosearchcolumns-cache-limit)
     to control the memory consumption of this cache. You can reduce the memory
@@ -338,8 +330,6 @@ During view modification the following directives apply:
   which allows to store meta data about attribute values in the View index.
 
 - **optimizeTopK** (_optional_; type: `array`; default: `[]`; _immutable_)
-
-  {{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
   <small>Introduced in: v3.12.0</small>
 

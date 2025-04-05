@@ -286,7 +286,7 @@ FOR doc IN viewName
 
 Match documents where the attribute at `path` is present _and_ is indexed
 as a nested field for [nested search with Views](../../index-and-search/arangosearch/nested-search.md)
-or [inverted indexes](../../index-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search-enterprise-edition).
+or [inverted indexes](../../index-and-search/indexing/working-with-indexes/inverted-indexes.md#nested-search).
 
 - **path** (attribute path expression): the attribute to test in the document
 - **type** (string): string literal `"nested"`
@@ -452,6 +452,10 @@ FOR doc IN viewName
 
 Match documents with an approximate Jaccard similarity of at least the
 `threshold`, approximated with the specified `minhash` Analyzer.
+
+You can use the Jaccard similarity approximation with MinHash for efficient
+entity resolution, such as for finding duplicate records, based on how many
+common elements they have.
 
 To only compute the MinHash signatures, see the
 [`MINHASH()` Miscellaneous function](miscellaneous.md#minhash).
@@ -1270,8 +1274,6 @@ FOR doc IN viewName
 ```
 
 ## Search Highlighting Functions
-
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 ### OFFSET_INFO()
 

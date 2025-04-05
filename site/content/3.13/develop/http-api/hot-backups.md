@@ -6,7 +6,10 @@ description: >-
   The HTTP API for Hot Backups lets you manage incremental, zero-downtime data
   backups
 ---
-{{< tag "ArangoDB Enterprise Edition" >}}
+{{< tip >}}
+In the ArangoGraph Insights Platform, use managed
+[Backups](../../arangograph/backups.md) instead.
+{{< /tip >}}
 
 Hot Backups are near instantaneous consistent snapshots of an
 **entire** ArangoDB deployment. This includes all databases, collections,
