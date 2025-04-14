@@ -179,6 +179,16 @@ section, as well as in the **API** tab of Foxx services and Foxx routes that use
 The new version adds support for OpenAPI 3.x specifications in addition to
 Swagger 2.x compatibility.
 
+---
+
+<small>Introduced in: v3.12.5</small>
+
+Swagger UI has been updated to version 5.20.1.
+
+The default model rendering has been adjusted to display the **Schema** tab
+instead of the **Example Value** tab by default. This makes it easier to discover
+the structured request and response body descriptions.
+
 ## External versioning support
 
 Document operations that update or replace documents now support a `versionAttribute` option.
