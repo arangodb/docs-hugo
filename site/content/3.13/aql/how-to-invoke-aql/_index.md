@@ -2,17 +2,22 @@
 title: How to execute AQL queries
 menuTitle: How to invoke AQL
 weight: 5
-description: ''
+description: >-
+  You can execute AQL queries in different ways, from the easy-to-use
+  web interface to the raw HTTP REST API
 ---
-AQL queries can be invoked in the following ways:
+You can execute AQL queries using different interfaces:
 
-- Via the web interface
-- Using the `db` object of the JavaScript API, for example, in arangosh or in a Foxx service
-- Via the raw REST HTTP API
+- The web interface
+- The `db` object of the JavaScript API (either in arangosh or in a Foxx service)
+- The raw HTTP REST API
+- Through a [driver](../../develop/drivers/_index.md) or
+  [integration](../../develop/integrations/_index.md) as an abstraction over the
+  HTTP REST API
 
-There are always calls to the server's HTTP API under the hood, but the web interface
-and the `db` object abstract away the low-level communication details and are
-thus easier to use.
+There are always calls to the server's API under the hood, but the web interface,
+arangosh, drivers, and integrations abstract away the low-level
+communication details and are thus easier to use.
 
 The ArangoDB web interface has a specific section for [**Queries**](with-the-web-interface.md).
 
