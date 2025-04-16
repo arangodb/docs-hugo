@@ -54,8 +54,8 @@ General Graphs. To get started, follow the steps outlined below.
    but not used in any edge definition, you can insert them via
    **Orphan collections**.
 7. Click **Create**. 
-8. Click the card of the newly created graph and use the functions of the Graph
-   Viewer to visually interact with the graph and manage the graph data.
+8. Click the name or row of the newly created graph to open the Graph Viewer if
+   you want to visually interact with the graph and manage the graph data.
 
 ![Create General Graph](../../../images/Create-GeneralGraph312.png)   
 

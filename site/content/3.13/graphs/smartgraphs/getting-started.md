@@ -60,8 +60,8 @@ SmartGraphs. To get started, follow the steps outlined below.
    - For **Orphan collections**, insert a list of vertex collections
      that are part of the graph but not used in any edge definition.
 6. Click **Create**. 
-7. Click the card of the newly created graph and use the functions of the Graph
-   Viewer to visually interact with the graph and manage the graph data.
+7. Click the name or row of the newly created graph to open the Graph Viewer if
+   you want to visually interact with the graph and manage the graph data.
 
 ![Create SmartGraph](../../../images/Create-SmartGraph312.png)   
 
