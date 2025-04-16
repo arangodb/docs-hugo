@@ -83,9 +83,9 @@ logical and comparison operators, as well as
    - `{ "name": "carrot", "type": "vegetable" }`
    - `{ "name": "chili pepper", "type": "vegetable" }`
    - `{ "name": "tomato", "type": ["fruit", "vegetable"] }`
-2. In the **Views** section of the web interface, click the **Add View** card.
+2. In the **Views** section of the web interface, click **Add view**.
 3. Enter a name (e.g. `food_view`) for the View, click **Create**, and click
-   the card of the newly created View.
+   the name or row of the newly created View.
 4. Enter the name of the collection in the **Links** fields, then click the
    underlined name to access the link properties and tick the
    **Include All Fields** checkbox. In the editor on the right-hand side, you
@@ -157,7 +157,7 @@ View building is in progress and results can be incomplete.
     in the `food` collection from now on (with some delay). The attribute values
     get processed by the default `identity` Analyzer, which means that they
     get indexed unaltered.
- 8. In the **Views** section, click the **Add View** card.
+ 8. In the **Views** section, click **Add view**.
  9. Enter a name for the View (e.g. `food_view`) and select **search-alias**
     as the **Type**.
 10. Select the `food` collection as **Collection** and select the
@@ -326,7 +326,7 @@ English text.
     The inverted indexes indexes the `name` attribute of the documents with the
     `text_en` Analyzer, which splits strings into tokens so that you can search
     for individual words.
- 7. In the **Views** section, click the **Add View** card.
+ 7. In the **Views** section, click **Add view**.
  8. Enter a name for the View (e.g. `food_view_fulltext`) and select
     **search-alias** as the **Type**.
  9. Select the `food` collection as **Collection** and select the
@@ -363,7 +363,7 @@ English text.
 {{< /tab >}}
 
 {{< tab "`arangosearch` View" >}}
-1. In the **Views** section of the web interface, click the card of the
+1. In the **Views** section of the web interface, click name or row of the
    previously created `food_view` of type `arangosearch`.
 2. In the **Links** panel, click the underlined name of the
    `food` collection. Enter `name` into **Fields** and confirm.
