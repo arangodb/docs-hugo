@@ -3,7 +3,7 @@ title: Enterprise Edition License Management
 menuTitle: License Management
 weight: 20
 description: >-
-  How to manage the licenses of ArangoDB Enterprise Edition deployments
+  How to check and activate licenses for ArangoDB Enterprise Edition deployments
 ---
 The Enterprise Edition of ArangoDB requires a license to activate the
 Enterprise Edition features. How to set a license key and to retrieve
@@ -14,21 +14,22 @@ If you use the ArangoDB Kubernetes Operator, check the
 [kube-arangodb documentation](https://arangodb.github.io/kube-arangodb/docs/how-to/set_license.html)
 for more details on how to set a license key.
 
-## Initial Installation
+## Active a license
 
-The first installation of any ArangoDB Enterprise Edition instance can be
-immediately used for testing without restrictions for three hours.
+On the first installation of any ArangoDB Enterprise Edition instance, you can
+immediately use it for testing without restrictions for three hours.
 
-In the email with the download link you will find a fully featured but
+In the email with the download link, you find a fully featured but
 time-wise limited license that allows you to continue testing for two weeks.
 
-This evaluation license is applied after startup via _arangosh_ like so:
+You can apply this evaluation license or a proper license you bought via
+_arangosh_ like so:
 
 ```js
-127.0.0.1:8529@_system> db._setLicense("<license-string>");
+db._setLicense("<license-string>");
 ```
 
-You will receive a message reporting whether the operation was successful.
+You receive a message reporting whether the operation has been successful.
 Please be careful to copy the exact string from the email and to put it in
 quotes as shown above.
 
@@ -38,12 +39,12 @@ quotes as shown above.
 
 Your license has now been applied.
 
-## Checking Your License
+## Check the current license
 
-At any point you may check the current state of your license in _arangosh_:
+At any point, you may check the current state of your license in _arangosh_:
 
 ```js
-127.0.0.1:8529@_system> db._getLicense();
+db._getLicense();
 ```
 
 ```json
@@ -53,8 +54,8 @@ At any point you may check the current state of your license in _arangosh_:
   },
   "license": "JD4E ... dnDw==",
   "version": 1,
-  "status": "good"
-  "hash" : "..."
+  "status": "good",
+  "hash": "..."
 }
 ```
 

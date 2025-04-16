@@ -1384,6 +1384,11 @@ logJsonResponse(response);
 ```
 ````
 
+If an endpoint requires the `_system` database as the context, the URL should be
+set accordingly, e.g. `var url = "/_db/_system/_api/database";`. This ensures
+that the request is issued correctly as the toolchain may process other examples
+that change the database context simultaneously.
+
 Unlike arangosh examples (`` ```js ``), requests and responses
 need to be output explicitly by calling one of the following functions:
 
