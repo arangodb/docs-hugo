@@ -9,7 +9,7 @@ description: >-
 ## Create documents
 
 Before you can insert documents with AQL, you need a place to put them in – a
-collection. You can [manage collections](../../concepts/data-structure/collections.md#collections-api)
+collection. You can [manage collections](../../concepts/data-structure/collections.md#collection-interfaces)
 via different interfaces including the web interface, arangosh, or a driver.
 It is not possible to do so with AQL, however.
 
