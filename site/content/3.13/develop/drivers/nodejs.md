@@ -25,7 +25,7 @@ JavaScript driver is **only** meant to be used when accessing ArangoDB from
 ArangoJS is compatible with the latest stable version of ArangoDB available at
 the time of the driver release.
 
-The [_arangoVersion_ option](http://arangodb.github.io/arangojs/latest/modules/_connection_.html#config)
+The [_arangoVersion_ option](https://arangodb.github.io/arangojs/latest/types/configuration.ConfigOptions.html)
 can be used to tell arangojs to target a specific
 ArangoDB version. Depending on the version this will enable or disable certain
 methods and change behavior to maintain compatibility with the given version.
@@ -204,7 +204,7 @@ const db = new Database({
 ```
 
 For AQL please check out the
-[aql template tag](http://arangodb.github.io/arangojs/latest/modules/_aql_.aql.html)
+[aql template tag](https://arangodb.github.io/arangojs/latest/functions/aql.aql.html)
 for writing parametrized AQL queries without making your code vulnerable to
 injection attacks.
 

@@ -342,8 +342,8 @@ const result = await coll.save({
 const results = await coll.saveAll([ { _key: "one" }, { _key: "two" }, { _key: "three" } ]);
 ```
 
-See [`DocumentCollection.save()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#save)
-and [`DocumentCollection.saveAll()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#saveAll)
+See [`DocumentCollection.save()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#save)
+and [`DocumentCollection.saveAll()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#saveAll)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
@@ -540,8 +540,8 @@ const result = await coll.document("the-document-key");
 const results = await coll.documents(["one", "two", { _key: "three" } ]);
 ```
 
-See [`DocumentCollection.document()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#document)
-and [`DocumentCollection.documents()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#documents)
+See [`DocumentCollection.document()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#document)
+and [`DocumentCollection.documents()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#documents)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
@@ -692,8 +692,8 @@ const result = await coll.update("the-document-key", { logo: "avocado" }, { retu
 const results = await coll.updateAll([ { _key: "one", val: 1 }, { _key: "two", val: 2 }, { _key: "three", val: 3 } ]);
 ```
 
-See [`DocumentCollection.update()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#update)
-and [`DocumentCollection.updateAll()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#updateAll)
+See [`DocumentCollection.update()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#update)
+and [`DocumentCollection.updateAll()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#updateAll)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
@@ -876,8 +876,8 @@ const result = await coll.replace("the-document-key", { logo: "avocado" }, { ret
 const results = await coll.replaceAll([ { _key: "one", val: 1 }, { _key: "two", val: 2 }, { _key: "three", val: 3 } ]);
 ```
 
-See [`DocumentCollection.replace()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#replace)
-and [`DocumentCollection.replaceAll()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#replaceAll)
+See [`DocumentCollection.replace()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#replace)
+and [`DocumentCollection.replaceAll()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#replaceAll)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
@@ -1050,8 +1050,8 @@ const result = await coll.remove("the-document-key");
 const results = await coll.removeAll(["one", "two", { _key: "three" } ]);
 ```
 
-See [`DocumentCollection.remove()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#remove)
-and [`DocumentCollection.removeAll()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#removeAll)
+See [`DocumentCollection.remove()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#remove)
+and [`DocumentCollection.removeAll()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#removeAll)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 

@@ -206,6 +206,9 @@ in the _HTTP API_ for details.
 
 {{< tab "JavaScript" >}}
 ```js
+// Default host and the _system database
+const db = new Database();
+
 // New connection pool
 const myDb = new Database("http://localhost:8529", "mydb");
 
@@ -213,8 +216,8 @@ const myDb = new Database("http://localhost:8529", "mydb");
 const otherDb = myDb.database("other");
 ```
 
-See [`new Database()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#constructor)
-and [`Database.database()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#database)
+See [`new Database()`](https://arangodb.github.io/arangojs/latest/classes/databases.Database.html#constructor)
+and [`Database.database()`](https://arangodb.github.io/arangojs/latest/classes/databases.Database.html#database)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
@@ -292,7 +295,7 @@ endpoint in the _HTTP API_ for details.
 const info = await db.createDatabase("mydb");
 ```
 
-See [`Database.createDatabase()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#createDatabase)
+See [`Database.createDatabase()`](https://arangodb.github.io/arangojs/latest/classes/databases.Database.html#createDatabase)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
@@ -376,7 +379,7 @@ const myDb = db.database("mydb");
 const info = await myDb.get();
 ```
 
-See [`Database.get()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#get)
+See [`Database.get()`](https://arangodb.github.io/arangojs/latest/classes/databases.Database.html#get)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
@@ -450,10 +453,10 @@ endpoint in the _HTTP API_ for details.
 
 {{< tab "JavaScript" >}}
 ```js
-const dbNames = await db.databases();
+const dbs = await db.databases();
 ```
 
-See [`Database.databases()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#databases)
+See [`Database.databases()`](https://arangodb.github.io/arangojs/latest/classes/databases.Database.html#databases)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
@@ -528,7 +531,7 @@ endpoint in the _HTTP API_ for details.
 const ok = await db.dropDatabase("mydb");
 ```
 
-See [`Database.dropDatabase()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#dropDatabase)
+See [`Database.dropDatabase()`](https://arangodb.github.io/arangojs/latest/classes/databases.Database.html#dropDatabase)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 

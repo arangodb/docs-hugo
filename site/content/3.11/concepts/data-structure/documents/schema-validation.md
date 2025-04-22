@@ -141,7 +141,7 @@ const props = await coll.properties({
 });
 ```
 
-See [`DocumentCollection.properties()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#properties.properties-2)
+See [`DocumentCollection.properties()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#properties.properties-2)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 

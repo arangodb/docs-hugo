@@ -183,7 +183,7 @@ let viewSearch = db.createView("myArangoSearchView", { type: "arangosearch" });
 let viewAlias  = db.createView("mySearchAliasView",  { type: "search-alias" });
 ```
 
-See [`Database.createView()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#createView)
+See [`Database.createView()`](https://arangodb.github.io/arangojs/latest/classes/databases.Database.html#createView)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
@@ -265,7 +265,7 @@ let view = db.view("myView");
 const info = await view.get();
 ```
 
-See [`Database.view()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#view)
+See [`Database.view()`](https://arangodb.github.io/arangojs/latest/classes/databases.Database.html#view)
 in the _arangojs_ documentation
 for details.
 {{< /tab >}}
@@ -351,7 +351,7 @@ let view = db.view("myView");
 const props = await view.properties();
 ```
 
-See [`View.properties()`](https://arangodb.github.io/arangojs/latest/classes/view.View.html#properties)
+See [`View.properties()`](https://arangodb.github.io/arangojs/latest/classes/views.View.html#properties)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
@@ -478,7 +478,7 @@ const info = await view.updateProperties({
 });
 ```
 
-See [`View.updateProperties()`](https://arangodb.github.io/arangojs/latest/classes/view.View.html#updateProperties)
+See [`View.updateProperties()`](https://arangodb.github.io/arangojs/latest/classes/views.View.html#updateProperties)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
@@ -607,7 +607,7 @@ let view = db.view("myView");
 const ok = view.drop();
 ```
 
-See [`View.drop()`](https://arangodb.github.io/arangojs/latest/classes/view.View.html#drop)
+See [`View.drop()`](https://arangodb.github.io/arangojs/latest/classes/views.View.html#drop)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 

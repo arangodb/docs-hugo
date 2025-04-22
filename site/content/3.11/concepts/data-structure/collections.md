@@ -229,8 +229,8 @@ let coll = db.collection("coll");
 const info = await coll.create();
 ```
 
-See [`Database.createCollection()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#createCollection)
-and [`DocumentCollection.create()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#create)
+See [`Database.createCollection()`](https://arangodb.github.io/arangojs/latest/classes/databases.Database.html#createCollection)
+and [`DocumentCollection.create()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#create)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
@@ -316,7 +316,7 @@ let coll = db.collection("coll");
 const info = await coll.get();
 ```
 
-See [`Database.collection()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#collection)
+See [`Database.collection()`](https://arangodb.github.io/arangojs/latest/classes/databases.Database.html#collection)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
@@ -398,7 +398,7 @@ endpoint in the _HTTP API_ for details.
 const colls = await db.collections();
 ```
 
-See [`Database.collections()`](https://arangodb.github.io/arangojs/latest/classes/database.Database.html#collections)
+See [`Database.collections()`](https://arangodb.github.io/arangojs/latest/classes/databases.Database.html#collections)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
@@ -475,7 +475,7 @@ let coll = db.collection("coll");
 const status = await coll.drop();
 ```
 
-See [`DocumentCollection.drop()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#drop)
+See [`DocumentCollection.drop()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#drop)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
@@ -555,7 +555,7 @@ let coll = db.collection("coll");
 const props = await coll.properties();
 ```
 
-See [`DocumentCollection.properties()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#properties)
+See [`DocumentCollection.properties()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#properties)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
@@ -644,7 +644,7 @@ const props = await coll.properties({
 });
 ```
 
-See [`DocumentCollection.properties()`](https://arangodb.github.io/arangojs/latest/interfaces/collection.DocumentCollection.html#properties.properties-2)
+See [`DocumentCollection.properties()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#properties.properties-2)
 in the _arangojs_ documentation for details.
 {{< /tab >}}
 
