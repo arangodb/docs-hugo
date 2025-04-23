@@ -1,10 +1,12 @@
 ---
-title: ArangoDB Node.js driver
-menuTitle: Node.js driver
+title: ArangoDB JavaScript driver
+menuTitle: JavaScript driver
 weight: 25
 description: >-
   ArangoJS is the JavaScript driver to access ArangoDB from outside the
   database system, primarily with Node.js
+aliases:
+  - nodejs # 3.12 -> 3.12
 ---
 The official ArangoDB low-level JavaScript client.
 
