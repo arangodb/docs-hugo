@@ -583,7 +583,7 @@ paths:
                       type: integer
                     satelliteSyncWait:
                       description: |
-                        This *Enterprise Edition* parameter allows to configure how long a DB-Server has time
+                        This parameter allows to configure how long a DB-Server has time
                         to bring the SatelliteCollections involved in the query into sync.
                         The default value is `60.0` seconds. When the maximal time is reached, the query
                         is stopped.
@@ -634,8 +634,6 @@ paths:
                         with certain use-cases: A graph contains several collections and different users
                         execute AQL queries on that graph. You can naturally limit the accessible
                         results by changing the access rights of users on collections.
-
-                        This feature is only available in the Enterprise Edition.
                       type: boolean
                     allowDirtyReads:
                       description: |
@@ -647,8 +645,6 @@ paths:
                         namely obsolete revisions of documents because changes have not yet been
                         replicated to the follower, as well as changes to documents before they are
                         officially committed on the leader.
-
-                        This feature is only available in the Enterprise Edition.
                       type: boolean
       responses:
         '201':
@@ -3471,7 +3467,7 @@ paths:
                           type: boolean
                         enterpriseOnly:
                           description: |
-                            Whether the rule is available in the Enterprise Edition only.
+                            Whether the rule is implemented in the non-public enterprise code.
                           type: boolean
       tags:
         - Queries

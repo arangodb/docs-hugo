@@ -65,8 +65,7 @@ dpkg -i arangodb3-3.9.2-1_amd64.deb
 ```
 
 after you have downloaded the corresponding file from
-[www.arangodb.com/download/](https://www.arangodb.com/download/)
-or have downloaded the new Enterprise Edition executable.
+[www.arangodb.com/download/](https://www.arangodb.com/download/).
 
 If you are using the `.tar.gz` distribution,
 you can simply extract the new archive in a different

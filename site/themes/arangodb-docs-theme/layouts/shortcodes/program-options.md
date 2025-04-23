@@ -57,8 +57,10 @@
 {{- if $option.experimental }}
   {{- $badges = $badges | append "Experimental"}}
 {{- end }}
-{{- if $option.enterpriseOnly }}
-  {{- $badges = $badges | append "Enterprise Edition" }}
+{{- if or (eq $pageVersion "3.10") (eq $pageVersion "3.11") }}{{/* Only one Edition v3.12.5+ */}}
+  {{- if $option.enterpriseOnly }}
+    {{- $badges = $badges | append "Enterprise Edition" }}
+  {{- end }}
 {{- end }}
 {{- if $badges }}
 <p class="labels">

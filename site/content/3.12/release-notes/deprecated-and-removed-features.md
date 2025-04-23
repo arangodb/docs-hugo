@@ -56,7 +56,7 @@ detailed information about breaking changes before upgrading.
 
 - **Active Failover deployment mode**:
   Running a single server with asynchronous replication to one or more passive
-  single servers for automatic failover is no longer supported from v3.12 onward.
+  single servers for automatic failover is no longer supported from v3.12.0 onward.
   You can use [cluster deployments](../deploy/cluster/_index.md) instead, which
   offer better resilience and synchronous replication.
 
@@ -66,7 +66,7 @@ detailed information about breaking changes before upgrading.
 
 - **LDAP authentication**:
   ArangoDB user authentication with an LDAP server in the Enterprise Edition is
-  no longer available starting with v3.12.
+  no longer available starting with v3.12.0.
 
 - **VelocyStream protocol**:
   ArangoDB's own bi-directional asynchronous binary protocol VelocyStream is no
@@ -76,12 +76,12 @@ detailed information about breaking changes before upgrading.
 
 - **Standalone Agency and Agency HTTP API**:
   The Standalone Agency deployment mode and the corresponding Agency HTTP API
-  are no longer available starting with v3.12. 
+  are no longer available starting with v3.12.0. 
 
 - **Little-endian on-disk key format for the RocksDB storage engine**:
 
   The little-endian on-disk key format for the RocksDB storage engine is
-  deprecated and support is removed in v3.12.
+  deprecated and support is removed in v3.12.0.
 
   Only deployments that were set up with the RocksDB storage engine using
   ArangoDB v3.2 or v3.3 and that have been upgraded since then are affected.
