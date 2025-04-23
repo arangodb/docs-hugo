@@ -88,7 +88,7 @@ Examples showing how to provide configuration properties from different sources:
 ## Modules
 
 Support for different serdes and communication protocols is offered by separate modules. 
-Defaults modules are transitively included, but they could be excluded if not needed.
+Default modules are transitively included, but they could be excluded if not needed.
 
 The main driver artifact `com.arangodb:arangodb-java-driver` has transitive dependencies on default modules:
 - `com.arangodb:http-protocol`: `HTTP` communication protocol (HTTP/1.1 and HTTP/2)
@@ -191,7 +191,7 @@ class `com.arangodb.util.RawJson` has been added:
 RawJson rawJsonIn = RawJson.of("""
         {"foo":"bar"}
         """);
-ArangoCursor<RawJson> res = adb.db().query("RETURN @v", Map.of("v", rawJsonIn), RawJson.class);
+ArangoCursor<RawJson> res = adb.db().query("RETURN @v", RawJson.class, Map.of("v", rawJsonIn));
 RawJson rawJsonOut = res.next();
 String json = rawJsonOut.get();  // {"foo":"bar"}
 ```
@@ -230,7 +230,7 @@ JsonNode jsonNodeIn = JsonNodeFactory.instance
         .objectNode()
         .put("foo", "bar");
 
-ArangoCursor<JsonNode> res = adb.db().query("RETURN @v", Map.of("v", jsonNodeIn), JsonNode.class);
+ArangoCursor<JsonNode> res = adb.db().query("RETURN @v", JsonNode.class, Map.of("v", jsonNodeIn));
 JsonNode jsonNodeOut = res.next();
 String foo = jsonNodeOut.get("foo").textValue();    // bar
 ```
