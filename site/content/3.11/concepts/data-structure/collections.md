@@ -237,7 +237,12 @@ in the _arangojs_ documentation for details.
 {{< tab "Go" >}}
 ```go
 ctx := context.Background()
-coll, err := db.CreateCollection(ctx, "coll")
+coll, err := db.CreateCollection(ctx, "coll", nil)
+if err != nil {
+  fmt.Println(err)
+} else {
+  _ = coll // Use coll here
+}
 ```
 
 See [`DatabaseCollection.CreateCollection()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseCollection)
@@ -324,6 +329,11 @@ in the _arangojs_ documentation for details.
 ```go
 ctx := context.Background()
 coll, err := db.GetCollection(ctx, "coll", nil)
+if err != nil {
+  fmt.Println(err)
+} else {
+  _ = coll // Use coll here
+}
 ```
 
 See [`DatabaseCollection.GetCollection()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseCollection)
@@ -406,6 +416,13 @@ in the _arangojs_ documentation for details.
 ```go
 ctx := context.Background()
 colls, err := db.Collections(ctx)
+if err != nil {
+  fmt.Println(err)
+} else {
+  for _, c := range colls {
+    fmt.Println(c.Name())
+  }
+}
 ```
 
 See [`DatabaseCollection.Collections()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseCollection)
@@ -483,7 +500,14 @@ in the _arangojs_ documentation for details.
 ```go
 ctx := context.Background()
 coll, err := db.GetCollection(ctx, "coll", nil)
-err = coll.Remove(ctx)
+if err != nil {
+  fmt.Println(err)
+} else {
+  err = coll.Remove(ctx)
+  if err != nil {
+    fmt.Println(err)
+  }
+}
 ```
 
 See [`Collection.Remove()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)
@@ -563,7 +587,16 @@ in the _arangojs_ documentation for details.
 ```go
 ctx := context.Background()
 coll, err := db.GetCollection(ctx, "coll", nil)
-props, err := coll.Properties()
+if err != nil {
+  fmt.Println(err)
+} else {
+  props, err := coll.Properties(ctx)
+  if err != nil {
+    fmt.Println(err)
+  } else {
+    fmt.Printf("%+v", props)
+  }
+}
 ```
 
 See [`Collection.Properties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)
@@ -652,10 +685,17 @@ in the _arangojs_ documentation for details.
 ```go
 ctx := context.Background()
 coll, err := db.GetCollection(ctx, "coll", nil)
-err = coll.SetProperties(ctx, arangodb.SetCollectionPropertiesOptions{
-  WaitForSync: utils.NewType(true),
-  ReplicationFactor: 3,
-})
+if err != nil {
+  fmt.Println(err)
+} else {
+  err := coll.SetProperties(ctx, arangodb.SetCollectionPropertiesOptions{
+    WaitForSync:       utils.NewType(true),
+    ReplicationFactor: 3,
+  })
+  if err != nil {
+    fmt.Println(err)
+  }
+}
 ```
 
 See [`Collection.SetProperties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)

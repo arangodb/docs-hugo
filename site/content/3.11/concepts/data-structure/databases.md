@@ -225,7 +225,12 @@ in the _arangojs_ documentation for details.
 {{< tab "Go" >}}
 ```go
 ctx := context.Background()
-db, err := client.GetDatabase(ctx, "mydb")
+db, err := client.GetDatabase(ctx, "_system", /* options */ nil)
+if err != nil {
+  fmt.Println(err)
+} else {
+  _ = db // Use db here
+}
 ```
 
 See [`ClientDatabase.GetDatabase()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ClientDatabase)
@@ -303,7 +308,8 @@ in the _arangojs_ documentation for details.
 {{< tab "Go" >}}
 ```go
 ctx := context.Background()
-db, err := client.CreateDatabase(ctx, "mydb")
+mydb, err := client.CreateDatabase(ctx, "mydb", /* options */ nil)
+_ = mydb
 ```
 
 See [`ClientDatabase.CreateDatabase()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ClientDatabase)
@@ -388,7 +394,16 @@ in the _arangojs_ documentation for details.
 ```go
 ctx := context.Background()
 db, err := client.GetDatabase(ctx, "mydb", nil)
-info, err := db.Info(ctx)
+if err != nil {
+  fmt.Println(err)
+} else {
+  info, err := db.Info(ctx)
+  if err != nil {
+    fmt.Println(err)
+  } else {
+    fmt.Printf("%+v", info)
+  }
+}
 ```
 
 See [`Database.GetDatabase()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Database)
@@ -465,6 +480,13 @@ in the _arangojs_ documentation for details.
 ```go
 ctx := context.Background()
 dbs, err := client.Databases(ctx)
+if err != nil {
+  fmt.Println(err)
+} else {
+  for _, d := range dbs {
+    fmt.Println(d.Name())
+  }
+}
 ```
 
 See [`ClientDatabase.Databases()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ClientDatabase)
@@ -541,7 +563,14 @@ in the _arangojs_ documentation for details.
 ```go
 ctx := context.Background()
 db, err := client.GetDatabase(ctx, "mydb", nil)
-err = db.Remove(ctx)
+if err != nil {
+  fmt.Println(err)
+} else {
+  err = db.Remove(ctx)
+  if err != nil {
+    fmt.Println(err)
+  }
+}
 ```
 
 See [`Database.Remove()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Database)

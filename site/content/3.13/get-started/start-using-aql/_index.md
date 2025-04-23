@@ -105,7 +105,8 @@ if err != nil {
     defer cursor.Close()
     var str string
     for cursor.HasMore() {
-        _, err := cursor.ReadDocument(ctx, &str)
+        meta, err := cursor.ReadDocument(ctx, &str)
+        _ = meta // No document metadata with this query, it only returns a string
         if err != nil {
             log.Fatalf("Failed to read cursor:\n%v\n", err)
         } else {

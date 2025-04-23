@@ -109,7 +109,7 @@ in the _JavaScript API_ for details.
 
 {{< tab "cURL" >}}
 ```sh
-curl -XPUT -d '{"schema":{"rule":{"type":"object","properties":{"nums":{"type":"array","items":{"type":"number","minimum":6}}},"additionalProperties":{"type":"string"},"required":["nums"]},"level":"moderate","message":"The document does not contain an array of numbers in attribute \"nums\", one of the numbers is greater than 6, or another top-level attribute is not a string."}}' http://localhost:8529/_db/mydb/_api/collection/coll/properties
+curl -XPUT -d '{"schema":{"rule":{"type":"object","properties":{"nums":{"type":"array","items":{"type":"number","maximum":6}}},"additionalProperties":{"type":"string"},"required":["nums"]},"level":"moderate","message":"The document does not contain an array of numbers in attribute \"nums\", one of the numbers is greater than 6, or another top-level attribute is not a string."}}' http://localhost:8529/_db/mydb/_api/collection/coll/properties
 ```
 
 See the [`GET /_db/{database-name}/_api/collection/{collection-name}/properties`](../../../develop/http-api/collections.md#get-the-properties-of-a-collection)
@@ -128,7 +128,7 @@ const props = await coll.properties({
           type: "array",
           items: {
             type: "number",
-            minimum: 6
+            maximum: 6
           }
         }
       },
@@ -151,27 +151,27 @@ ctx := context.Background()
 coll, err := db.GetCollection(ctx, "coll", nil)
 err = coll.SetProperties(ctx, arangodb.SetCollectionPropertiesOptions{
   Schema: &arangodb.CollectionSchemaOptions{
-    Rule: map[string]interface{} {
+    Rule: map[string]interface{}{
       "type": "object",
-      "properties": map[string]interface{} {
-        "nums": map[string]interface{} {
+      "properties": map[string]interface{}{
+        "nums": map[string]interface{}{
           "type": "array",
-          "items": map[string]interface{} {
-            "type": "number",
-            "minimum": 6
+          "items": map[string]interface{}{
+            "type":    "number",
+            "maximum": 6,
           },
         },
       },
-      "additionalProperties": map[string]interface{} {
+      "additionalProperties": map[string]interface{}{
         "type": "string",
       },
-      "required": []string {
+      "required": []string{
         "nums",
-      }
+      },
     },
-    Level: "moderate",
+    Level:   "moderate",
     Message: `The document does not contain an array of numbers in attribute "nums", one of the numbers is greater than 6, or another top-level attribute is not a string.`,
-  }
+  },
 })
 ```
 
@@ -189,7 +189,7 @@ String schemaRule = (
                 "      \"type\": \"array\"," +
                 "      \"items\": {" +
                 "        \"type\": \"number\"," +
-                "        \"minimum\": 6" +
+                "        \"maximum\": 6" +
                 "      }" +
                 "    }" +
                 "  }," +

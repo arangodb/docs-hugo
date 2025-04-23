@@ -353,13 +353,13 @@ ctx := context.Background()
 coll, err := db.GetCollection(ctx, "coll", nil)
 
 // Single document
-createRes, err := coll.CreateDocument(ctx, map[string]interface{} {
-  "_key": "the-document-key",
-  "name": "ArangoDB",
-  "tags": []interface{} { "graph", "database", "NoSQL" },
+createRes, err := coll.CreateDocument(ctx, map[string]interface{}{
+  "_key":     "the-document-key",
+  "name":     "ArangoDB",
+  "tags":     []interface{}{"graph", "database", "NoSQL"},
   "scalable": true,
-  "company": map[string]interface{} {
-    "name": "ArangoDB Inc.",
+  "company": map[string]interface{}{
+    "name":    "ArangoDB Inc.",
     "founded": 2015,
   },
 })
@@ -367,18 +367,18 @@ createRes, err := coll.CreateDocument(ctx, map[string]interface{} {
 if err != nil {
   fmt.Println(err)
 } else {
-  fmt.Printf("Metadata: $+v\n", createRes.DocumentMeta)
+  fmt.Printf("Metadata: %+v\n\n", createRes.DocumentMeta)
 }
 
 // Multiple documents
 var createdDoc map[string]interface{}
 
-createResReader, err := coll.CreateDocumentsWithOptions(ctx, []interface{} {
-  map[string]interface{} { "_key": "one" },
-  map[string]interface{} { "_key": "two" },
-  map[string]interface{} { "_key": "three" },
+createResReader, err := coll.CreateDocumentsWithOptions(ctx, []interface{}{
+  map[string]interface{}{"_key": "one"},
+  map[string]interface{}{"_key": "two"},
+  map[string]interface{}{"_key": "three"},
 }, &arangodb.CollectionDocumentCreateOptions{
-		NewObject: &newDoc,
+  NewObject: &createdDoc,
 })
 
 for {
@@ -390,7 +390,7 @@ for {
     fmt.Println(err)
   } else {
     fmt.Printf("Metadata: %+v\n", meta.DocumentMeta)
-    fmt.Printf("New document: %v\n", newDoc)
+    fmt.Printf("Full document: %v\n\n", createdDoc)
   }
 }
 ```
@@ -551,27 +551,27 @@ ctx := context.Background()
 coll, err := db.GetCollection(ctx, "coll", nil)
 
 // Single document
-var doc map[string]interface{}{}
+var doc map[string]interface{}
 meta, err := coll.ReadDocument(ctx, "the-document-key", &doc)
 if err != nil {
   fmt.Println(err)
 } else {
-  fmt.Printf("Metadata: %+v\n", meta.DocumentMeta)
-  fmt.Printf("Read document: %v\n", doc)
+  fmt.Printf("Metadata: %+v\n", meta)
+  fmt.Printf("Full document: %v\n\n", doc)
 }
 
 // Multiple documents
-result, err := coll.ReadDocuments(ctx, []string{ "one", "two", "three" })
+readResReader, err := coll.ReadDocuments(ctx, []string{"one", "two", "three"})
 for {
-    doc = nil // Reset to not leak attributes of previous documents
-    meta, err = result.Read(&doc)
-    if shared.IsNoMoreDocuments(err) {
-        break
-    }else if err != nil {
+  doc = nil // Reset to not leak attributes of previous documents
+  readRes, err := readResReader.Read(&doc)
+  if shared.IsNoMoreDocuments(err) {
+    break
+  } else if err != nil {
     fmt.Println(err)
   } else {
-    fmt.Printf("Metadata: %+v\n", meta.DocumentMeta)
-    fmt.Printf("Read document: %v\n", doc)
+    fmt.Printf("Read response: %+v\n", readRes.DocumentMeta)
+    fmt.Printf("Full document: %v\n\n", doc)
   }
 }
 ```
@@ -708,14 +708,14 @@ var newDoc map[string]interface{}
 newAttributes := map[string]interface{}{
   "logo": "avocado",
 }
-meta, err := coll.UpdateDocumentWithOptions(ctx, "the-document-key", newAttributes, &arangodb.CollectionDocumentUpdateOptions{
+updateRes, err := coll.UpdateDocumentWithOptions(ctx, "the-document-key", newAttributes, &arangodb.CollectionDocumentUpdateOptions{
   NewObject: &newDoc,
 })
 if err != nil {
   fmt.Println(err)
 } else {
-  fmt.Printf("Metadata: %+v\n", meta.DocumentMeta)
-  fmt.Printf("Updated document: %v\n", newDoc)
+  fmt.Printf("Metadata: %+v\n", updateRes.DocumentMetaWithOldRev)
+  fmt.Printf("Full document: %v\n\n", newDoc)
 }
 
 // Multiple documents
@@ -725,19 +725,19 @@ updateDocs := []interface{}{
   map[string]interface{}{"_key": "three", "val": 3},
 }
 
-updateReader, err := coll.UpdateDocumentsWithOptions(ctx, updateDocs, &arangodb.CollectionDocumentUpdateOptions{
+updateResReader, err := coll.UpdateDocumentsWithOptions(ctx, updateDocs, &arangodb.CollectionDocumentUpdateOptions{
   NewObject: &newDoc,
 })
 for {
   newDoc = nil // Reset to not leak attributes of previous documents
-  meta, err := updateReader.Read()
+  updateRes, err := updateResReader.Read()
   if shared.IsNoMoreDocuments(err) {
     break
   } else if err != nil {
     fmt.Println(err)
   } else {
-    fmt.Printf("Metadata: %+v\n", meta.DocumentMeta)
-    fmt.Printf("Updated document: %v\n", newDoc)
+    fmt.Printf("Metadata: %+v\n", updateRes.DocumentMetaWithOldRev)
+    fmt.Printf("Full document: %v\n\n", newDoc)
   }
 }
 ```
@@ -892,14 +892,14 @@ var newDoc map[string]interface{}
 newAttributes := map[string]interface{}{
   "logo": "avocado",
 }
-meta, err := coll.ReplaceDocumentWithOptions(ctx, "the-document-key", newAttributes, &arangodb.CollectionDocumentReplaceOptions{
+replaceRes, err := coll.ReplaceDocumentWithOptions(ctx, "the-document-key", newAttributes, &arangodb.CollectionDocumentReplaceOptions{
   NewObject: &newDoc,
 })
 if err != nil {
   fmt.Println(err)
 } else {
-  fmt.Printf("Metadata: %+v\n", meta.DocumentMeta)
-  fmt.Printf("Replaced document: %v\n", newDoc)
+  fmt.Printf("Metadata: %+v\n", replaceRes.DocumentMetaWithOldRev)
+  fmt.Printf("Full document: %v\n\n", newDoc)
 }
 
 // Multiple documents
@@ -909,19 +909,19 @@ replaceDocs := []interface{}{
   map[string]interface{}{"_key": "three", "val": 3},
 }
 
-replaceReader, err := coll.ReplaceDocumentsWithOptions(ctx, replaceDocs, &arangodb.CollectionDocumentReplaceOptions{
+replaceResReader, err := coll.ReplaceDocumentsWithOptions(ctx, replaceDocs, &arangodb.CollectionDocumentReplaceOptions{
   NewObject: &newDoc,
 })
 for {
   newDoc = nil // Reset to not leak attributes of previous documents
-  meta, err := replaceReader.Read()
+  replaceRes, err := replaceResReader.Read()
   if shared.IsNoMoreDocuments(err) {
     break
   } else if err != nil {
     fmt.Println(err)
   } else {
-    fmt.Printf("Metadata: %+v\n", meta.DocumentMeta)
-    fmt.Printf("Replaced document: %v\n", newDoc)
+    fmt.Printf("Metadata: %+v\n", replaceRes.DocumentMetaWithOldRev)
+    fmt.Printf("Full document: %v\n\n", newDoc)
   }
 }
 ```
@@ -1061,28 +1061,29 @@ ctx := context.Background()
 coll, err := db.GetCollection(ctx, "coll", nil)
 
 // Single document
-result, err := coll.DeleteDocument(ctx, "the-document-key")
+deleteRes, err := coll.DeleteDocument(ctx, "the-document-key")
 if err != nil {
   fmt.Println(err)
 } else {
-  fmt.Printf("Metadata: %+v\n", result.DocumentMeta)
+  fmt.Printf("Metadata: %+v\n\n", deleteRes.DocumentMeta)
 }
 
 // Multiple documents
-var oldDoc map[string]interface{}
-removeReader, err := coll.DeleteDocumentsWithOptions(ctx, []string{ "one", "two", "three" }, &arangodb.CollectionDocumentRemoveOptions{
-  OldObject: &oldDoc,
+var deletedDoc map[string]interface{}
+var res map[string]interface{} // Full server response
+deleteResReader, err := coll.DeleteDocumentsWithOptions(ctx, []string{"one", "two", "three"}, &arangodb.CollectionDocumentDeleteOptions{
+  OldObject: &deletedDoc,
 })
 for {
-  oldDoc = nil // Reset to not leak attributes of previous documents
-  meta, err := removeReader.Read()
+  deletedDoc = nil // Reset to not leak attributes of previous documents
+  meta, err := deleteResReader.Read(&res)
   if shared.IsNoMoreDocuments(err) {
     break
   } else if err != nil {
     fmt.Println(err)
   } else {
     fmt.Printf("Metadata: %+v\n", meta.DocumentMeta)
-    fmt.Printf("Removed document: %v\n", oldDoc)
+    fmt.Printf("Full document: %v\n\n", deletedDoc)
   }
 }
 ```

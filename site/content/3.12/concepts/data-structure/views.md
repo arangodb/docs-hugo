@@ -189,8 +189,19 @@ in the _arangojs_ documentation for details.
 {{< tab "Go" >}}
 ```go
 ctx := context.Background()
-viewSearch, err := db.CreateArangoSearchView(ctx, "myArangoSearchView", nil)
-viewAlias, err := db.CreateArangoSearchAliasView(ctx, "myArangoSearchView", nil)
+viewSearch, err := db.CreateArangoSearchView(ctx, "myView", nil)
+if err != nil {
+  fmt.Println(err)
+} else {
+  fmt.Println(viewSearch.Type())
+}
+
+viewAlias, err := db.CreateArangoSearchAliasView(ctx, "mySearchAliasView", nil)
+if err != nil {
+  fmt.Println(err)
+} else {
+  fmt.Println(viewAlias.Type())
+}
 ```
 
 See `DatabaseView.CreateArangoSearchView()` and `DatabaseView.CreateArangoSearchAliasView()`
@@ -272,7 +283,35 @@ for details.
 {{< tab "Go" >}}
 ```go
 ctx := context.Background()
-view, err := db.View(ctx, "myView")
+for _, viewName := range []string{"myView", "mySearchAliasView"} {
+  view, err := db.View(ctx, viewName)
+  if err != nil {
+    fmt.Println(err)
+  } else {
+    switch view.Type() {
+    case arangodb.ViewTypeArangoSearch:
+      {
+        viewSearch, err := view.ArangoSearchView()
+        if err != nil {
+          fmt.Println(err)
+        } else {
+          fmt.Printf("%s: %s\n", viewSearch.Name(), viewSearch.Type())
+        }
+      }
+    case arangodb.ViewTypeSearchAlias:
+      {
+        viewAlias, err := view.ArangoSearchViewAlias()
+        if err != nil {
+          fmt.Println(err)
+        } else {
+          fmt.Printf("%s: %s\n", viewAlias.Name(), viewAlias.Type())
+        }
+      }
+    default:
+      panic("Unsupported View type")
+    }
+  }
+}
 ```
 
 See [`DatabaseView.View()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#DatabaseView)
@@ -357,21 +396,44 @@ in the _arangojs_ documentation for details.
 {{< tab "Go" >}}
 ```go
 ctx := context.Background()
-view, err := db.View(ctx, "myView")
-
-switch view.Type() {
-case arangodb.ViewTypeArangoSearch:
-  {
-    viewSearch, err := view.ArangoSearchView()
-    props, err := viewSearch.Properties()
+for _, viewName := range []string{"myView", "mySearchAliasView"} {
+  view, err := db.View(ctx, viewName)
+  if err != nil {
+    fmt.Println(err)
+  } else {
+    switch view.Type() {
+    case arangodb.ViewTypeArangoSearch:
+      {
+        viewSearch, err := view.ArangoSearchView()
+        if err != nil {
+          fmt.Println(err)
+        } else {
+          props, err := viewSearch.Properties(ctx)
+          if err != nil {
+            fmt.Println(err)
+          } else {
+            fmt.Printf("%+v\n", props)
+          }
+        }
+      }
+    case arangodb.ViewTypeSearchAlias:
+      {
+        viewAlias, err := view.ArangoSearchViewAlias()
+        if err != nil {
+          fmt.Println(err)
+        } else {
+          props, err := viewAlias.Properties(ctx)
+          if err != nil {
+            fmt.Println(err)
+          } else {
+            fmt.Printf("%+v\n", props)
+          }
+        }
+      }
+    default:
+      panic("Unsupported View type")
+    }
   }
-case arangodb.ViewTypeSearchAlias:
-  {
-    viewAlias, err := view.ArangoSearchViewAlias()
-    props, err := viewAlias.Properties()
-  }
-default:
-  panic("Unsupported View type")
 }
 ```
 
@@ -484,27 +546,49 @@ in the _arangojs_ documentation for details.
 {{< tab "Go" >}}
 ```go
 ctx := context.Background()
-view1, err := db.view("myArangoSearchView")
-viewSearch, err := view1.ArangoSearchView()
-err = viewSearch.SetProperties(ArangoSearchViewProperties{
-  CleanupIntervalStep: 12,
-  Links: ArangoSearchLinks{
-    "coll": ArangoSearchElementProperties{
-      IncludeAllFields: utils.NewType(true),
-    },
-  },
-})
+view1, err := db.View(ctx, "myView")
+if err != nil {
+  fmt.Println(err)
+} else {
+  viewSearch, err := view1.ArangoSearchView()
+  if err != nil {
+    fmt.Println(err)
+  } else {
+    err = viewSearch.SetProperties(ctx, arangodb.ArangoSearchViewProperties{
+      CleanupIntervalStep: utils.NewType(int64(12)),
+      Links: arangodb.ArangoSearchLinks{
+        "coll": arangodb.ArangoSearchElementProperties{
+          IncludeAllFields: utils.NewType(true),
+        },
+      },
+    })
+    if err != nil {
+      fmt.Println(err)
+    }
+  }
+}
 
-view2, err := db.view("mySearchAliasView")
-viewAlias, err := view2.ArangoSearchViewAlias()
-err := viewAlias.SetProperties(ArangoSearchAliasViewProperties{
-  Indexes: []ArangoSearchAliasIndex{
-    {
-      Collection: "coll",
-      Index: "idx",
-    },
-  },
-})
+view2, err := db.View(ctx, "mySearchAliasView")
+if err != nil {
+  fmt.Println(err)
+} else {
+  viewAlias, err := view2.ArangoSearchViewAlias()
+  if err != nil {
+    fmt.Println(err)
+  } else {
+    err := viewAlias.SetProperties(ctx, arangodb.ArangoSearchAliasViewProperties{
+      Indexes: []arangodb.ArangoSearchAliasIndex{
+        {
+          Collection: "coll",
+          Index:      "idx",  // An inverted index with this name needs to exist
+        },
+      },
+    })
+    if err != nil {
+      fmt.Println(err)
+    }
+  }
+}
 ```
 
 See [`ArangoSearchView.SetProperties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#ArangoSearchView)
@@ -613,8 +697,17 @@ in the _arangojs_ documentation for details.
 {{< tab "Go" >}}
 ```go
 ctx := context.Background()
-view, err := db.View(ctx, "myView")
-err = view.Remove(ctx)
+for _, viewName := range []string{"myView", "mySearchAliasView"} {
+  view, err := db.View(ctx, viewName)
+  if err != nil {
+    fmt.Println(err)
+  } else {
+    err = view.Remove(ctx)
+    if err != nil {
+      fmt.Println(err)
+    }
+  }
+}
 ```
 
 See [`View.Remove()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#View)
