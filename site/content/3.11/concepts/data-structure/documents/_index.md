@@ -441,7 +441,7 @@ coll = db.collection("coll")
 meta = coll.insert({
   "_key": "the-document-key",
   "name": "ArangoDB",
-  "tags": { "graph", "database", "NoSQL" },
+  "tags": [ "graph", "database", "NoSQL" ],
   "scalable": True,
   "company": {
     "name": "ArangoDB Inc.",
@@ -591,9 +591,11 @@ ArangoCollection coll = db.collection("coll");
 
 // Single document
 BaseDocument doc = coll.getDocument("the-document-key", BaseDocument.class);
+System.out.println(doc);
 
 // Multiple documents
-MultiDocumentEntity<BaseDocument> docs = coll.getDocuments(List.of("one", "two", "three"), BaseDocument.class);
+MultiDocumentEntity<BaseDocument> docs = coll.getDocuments(List.of("one", "two2", "three"), BaseDocument.class);
+docs.getDocuments().forEach(d -> System.out.println(d));
 ```
 
 See [`ArangoCollection.getDocument()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#getDocument%28java.lang.String,java.lang.Class%29)
@@ -786,7 +788,7 @@ in the _arangodb-java-driver_ documentation for details.
 coll = db.collection("coll")
 
 # Single document
-meta = coll.update({ "_key": "the-document-key", "logo": "avocado" }, return_new=True)
+res = coll.update({ "_key": "the-document-key", "logo": "avocado" }, return_new=True)
 
 # Multiple documents
 meta = coll.update_many([
@@ -970,7 +972,7 @@ in the _arangodb-java-driver_ documentation for details.
 coll = db.collection("coll")
 
 # Single document
-meta = coll.replace({ "_key": "the-document-key", "logo": "avocado" }, return_new=True)
+res = coll.replace({ "_key": "the-document-key", "logo": "avocado" }, return_new=True)
 
 # Multiple documents
 meta = coll.replace_many([

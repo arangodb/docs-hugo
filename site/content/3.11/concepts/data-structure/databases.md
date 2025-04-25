@@ -239,7 +239,8 @@ in the _go-driver_ v2 documentation for details.
 
 {{< tab "Java" >}}
 ```java
-ArangoDatabase db = arangoDB.db("mydb");
+ArangoDatabase db = arangoDB.db(); // Default _system database
+ArangoDatabase mydb = arangoDB.db("mydb");
 ```
 
 See [`ArangoDB.db()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDB.html#db%28java.lang.String%29)
@@ -248,7 +249,9 @@ in the _arangodb-java-driver_ documentation for details.
 
 {{< tab "Python" >}}
 ```py
-db = client.db('mydb')
+sys_db = client.db() // Default _system database
+
+db = client.db("mydb")
 ```
 
 See [`ArangoClient.db()`](https://docs.python-arango.com/en/main/specs.html#arango.client.ArangoClient.db)
@@ -298,7 +301,7 @@ endpoint in the _HTTP API_ for details.
 
 {{< tab "JavaScript" >}}
 ```js
-const info = await db.createDatabase("mydb");
+const myDb = await db.createDatabase("mydb");
 ```
 
 See [`Database.createDatabase()`](https://arangodb.github.io/arangojs/latest/classes/databases.Database.html#createDatabase)
@@ -470,6 +473,7 @@ endpoint in the _HTTP API_ for details.
 {{< tab "JavaScript" >}}
 ```js
 const dbs = await db.databases();
+console.log(dbs.map(d => d.name))
 ```
 
 See [`Database.databases()`](https://arangodb.github.io/arangojs/latest/classes/databases.Database.html#databases)

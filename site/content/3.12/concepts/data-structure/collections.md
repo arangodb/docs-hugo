@@ -222,9 +222,9 @@ endpoint in the _HTTP API_ for details.
 
 {{< tab "JavaScript" >}}
 ```js
-const info = await db.createCollection("coll");
+let coll = await db.createCollection("coll");
 // -- or --
-let coll = db.collection("coll");
+coll = db.collection("coll");
 const info = await coll.create();
 ```
 
@@ -404,6 +404,7 @@ endpoint in the _HTTP API_ for details.
 {{< tab "JavaScript" >}}
 ```js
 const colls = await db.collections();
+colls.forEach(c => console.log(c.name))
 ```
 
 See [`Database.collections()`](https://arangodb.github.io/arangojs/latest/classes/databases.Database.html#collections)
@@ -430,6 +431,7 @@ in the _go-driver_ v2 documentation for details.
 {{< tab "Java" >}}
 ```java
 Collection<CollectionEntity> colls = db.getCollections();
+colls.forEach(c -> System.out.println(c.getName()));
 ```
 
 See [`ArangoDatabase.getCollections()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoDatabase.html#getCollections%28%29)
@@ -439,95 +441,11 @@ in the _arangodb-java-driver_ documentation for details.
 {{< tab "Python" >}}
 ```py
 colls = db.collections()
+for c in colls:
+  print(c["name"])
 ```
 
 See [`StandardDatabase.collections()`](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.collections)
-in the _python-arango_ documentation for details.
-{{< /tab >}}
-
-{{< /tabs >}}
-
-### Remove a collection
-
-{{< tabs "interfaces" >}}
-
-{{< tab "Web interface" >}}
-1. If necessary, [switch to the database](databases.md#set-the-database-context)
-   that contains the desired collection.
-2. Click **Collections** in the main navigation.
-3. Click the name or row of the desired collection.
-4. Go to the **Settings** tab.
-5. Click the **Delete** button and confirm the deletion.
-{{< /tab >}}
-
-{{< tab "arangosh" >}}
-```js
----
-name: arangosh_delete_collection
-render: input
-description: ''
----
-~db._create("coll");
-db._drop("coll");
-```
-
-See [`db._drop()`](../../develop/javascript-api/@arangodb/db-object.md#db_dropcollection--options)
-in the _JavaScript API_ for details.
-{{< /tab >}}
-
-{{< tab "cURL" >}}
-```sh
-curl -XDELETE http://localhost:8529/_db/mydb/_api/collection/coll
-```
-
-See the [`DELETE /_db/{database-name}/_api/collection/{collection-name}`](../../develop/http-api/collections.md#drop-a-collection)
-endpoint in the _HTTP API_ for details.
-{{< /tab >}}
-
-{{< tab "JavaScript" >}}
-```js
-let coll = db.collection("coll");
-const status = await coll.drop();
-```
-
-See [`DocumentCollection.drop()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#drop)
-in the _arangojs_ documentation for details.
-{{< /tab >}}
-
-{{< tab "Go" >}}
-```go
-ctx := context.Background()
-coll, err := db.GetCollection(ctx, "coll", nil)
-if err != nil {
-  fmt.Println(err)
-} else {
-  err = coll.Remove(ctx)
-  if err != nil {
-    fmt.Println(err)
-  }
-}
-```
-
-See [`Collection.Remove()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)
-in the _go-driver_ v2 documentation for details.
-{{< /tab >}}
-
-{{< tab "Java" >}}
-```java
-ArangoCollection coll = db.collection("coll");
-coll.drop();
-```
-
-See [`ArangoCollection.drop()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#drop%28%29)
-in the _arangodb-java-driver_ documentation for details.
-{{< /tab >}}
-
-{{< tab "Python" >}}
-```py
-ok = db.delete_collection("coll")
-```
-
-See [`StandardDatabase.delete_collection()`](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.delete_collection)
 in the _python-arango_ documentation for details.
 {{< /tab >}}
 
@@ -575,6 +493,7 @@ endpoint in the _HTTP API_ for details.
 ```js
 let coll = db.collection("coll");
 const props = await coll.properties();
+console.log(props);
 ```
 
 See [`DocumentCollection.properties()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#properties)
@@ -604,7 +523,7 @@ in the _go-driver_ v2 documentation for details.
 {{< tab "Java" >}}
 ```java
 ArangoCollection coll = db.collection("coll");
-CollectionPropertiesEntity = coll.getProperties();
+CollectionPropertiesEntity props = coll.getProperties();
 ```
 
 See [`ArangoCollection.getProperties()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#getProperties%28%29)
@@ -725,6 +644,92 @@ props = coll.configure(
 ```
 
 See [`Collection.configure()`](https://docs.python-arango.com/en/main/specs.html#arango.collection.Collection.configure)
+in the _python-arango_ documentation for details.
+{{< /tab >}}
+
+{{< /tabs >}}
+
+### Remove a collection
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. If necessary, [switch to the database](databases.md#set-the-database-context)
+   that contains the desired collection.
+2. Click **Collections** in the main navigation.
+3. Click the name or row of the desired collection.
+4. Go to the **Settings** tab.
+5. Click the **Delete** button and confirm the deletion.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
+```js
+---
+name: arangosh_delete_collection
+render: input
+description: ''
+---
+~db._create("coll");
+db._drop("coll");
+```
+
+See [`db._drop()`](../../develop/javascript-api/@arangodb/db-object.md#db_dropcollection--options)
+in the _JavaScript API_ for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl -XDELETE http://localhost:8529/_db/mydb/_api/collection/coll
+```
+
+See the [`DELETE /_db/{database-name}/_api/collection/{collection-name}`](../../develop/http-api/collections.md#drop-a-collection)
+endpoint in the _HTTP API_ for details.
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+let coll = db.collection("coll");
+const status = await coll.drop();
+```
+
+See [`DocumentCollection.drop()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#drop)
+in the _arangojs_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+coll, err := db.GetCollection(ctx, "coll", nil)
+if err != nil {
+  fmt.Println(err)
+} else {
+  err = coll.Remove(ctx)
+  if err != nil {
+    fmt.Println(err)
+  }
+}
+```
+
+See [`Collection.Remove()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)
+in the _go-driver_ v2 documentation for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+ArangoCollection coll = db.collection("coll");
+coll.drop();
+```
+
+See [`ArangoCollection.drop()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#drop%28%29)
+in the _arangodb-java-driver_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+ok = db.delete_collection("coll")
+```
+
+See [`StandardDatabase.delete_collection()`](https://docs.python-arango.com/en/main/specs.html#arango.database.StandardDatabase.delete_collection)
 in the _python-arango_ documentation for details.
 {{< /tab >}}
 

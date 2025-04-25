@@ -198,18 +198,18 @@ in the _go-driver_ v2 documentation for details.
 
 {{< tab "Java" >}}
 ```java
-CollectionPropertiesOptions props = new CollectionPropertiesOptions()
-  .computedValues(new ComputedValue()
-    .name("title")
-    .expression("RETURN \"TBA\"")
-    .overwrite(false)
-    .computeOn(ComputedValue.ComputeOn.insert, ComputedValue.ComputeOn.update, ComputedValue.ComputeOn.replace)
-    .failOnWarning(false)
-    .keepNull(true)
-  );
+CollectionPropertiesOptions options = new CollectionPropertiesOptions()
+    .computedValues(new ComputedValue()
+        .name("title")
+        .expression("RETURN \"TBA\"")
+        .overwrite(false)
+        .computeOn(ComputedValue.ComputeOn.insert, ComputedValue.ComputeOn.update, ComputedValue.ComputeOn.replace)
+        .failOnWarning(false)
+        .keepNull(true)
+        );
 
 ArangoCollection coll = db.collection("coll");
-CollectionPropertiesEntity = coll.changeProperties(props);
+CollectionPropertiesEntity props = coll.changeProperties(options);
 ```
 
 See [`ArangoCollection.changeProperties()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#changeProperties%28com.arangodb.model.CollectionPropertiesOptions%29)
