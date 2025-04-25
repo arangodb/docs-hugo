@@ -186,7 +186,7 @@ Let's get started!
 
 {{< tab "ArangoGraphML" >}}
 
-The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package
+The [`arango-datasets`](../../components/tools/arango-datasets.md) Python package
 allows you to load pre-defined datasets into ArangoDB. It comes pre-installed in the
 ArangoGraphML notebook environment.
 
@@ -203,8 +203,9 @@ DATASET_NAME = "OPEN_INTELLIGENCE_ANGOLA"
 
 {{< tab "Self-managed" >}}
 
-The [arango-datasets](https://github.com/arangoml/arangodb_datasets) package
-allows you to load a dataset into ArangoDB. It can be installed with:
+The [`arango-datasets`](../../components/tools/arango-datasets.md) Python package
+allows you to load pre-defined datasets into ArangoDB. It can be installed with the
+following command:
 
 ```
 pip install arango-datasets
@@ -284,7 +285,7 @@ arangoml.projects.list_projects()
 
 - `jobConfiguration` Optional: A set of configurations that are applied to the job.
   - `batchSize`: The number of documents to process in a single batch. Default is `32`.
-  - `runAnalysisChecks`: Whether to run analysis checks, used  to peform a high-level analysis of the data quality before proceeding. Default is `true`.
+  - `runAnalysisChecks`: Whether to run analysis checks, used  to perform a high-level analysis of the data quality before proceeding. Default is `true`.
   - `skipLabels`: Skips the featurization process for attributes marked as `label`. Default is `false`.
   - `useFeatureStore`: Enables the use of the Feature Store database, which allows you to store features separately from your Source Database. Default is `false`, therefore features are written to the source graph.
   - `overwriteFSGraph`: Whether to overwrite the Feature Store Graph if features were previously generated. Default is `false`, therefore features are written to an existing Feature Store Graph.s
@@ -506,7 +507,7 @@ featurization_job_result = arangoml.wait_for_featurization(featurization_job.job
 
 You can also cancel a Featurization Job using the `arangoml.jobs.cancel_job` method:
 
-```python
+```py
 arangoml.jobs.cancel_job(prediction_job.job_id)
 ```
 
@@ -728,7 +729,7 @@ training_job_result = arangoml.wait_for_training(training_job.job_id)
 
 You can also cancel a Training Job using the `arangoml.jobs.cancel_job` method:
 
-```python
+```py
 arangoml.jobs.cancel_job(training_job.job_id)
 ```
 
@@ -936,7 +937,7 @@ prediction_job_result = arangoml.wait_for_prediction(prediction_job.job_id)
 
 You can also cancel a Prediction Job using the `arangoml.jobs.cancel_job` method:
 
-```python
+```py
 arangoml.jobs.cancel_job(prediction_job.job_id)
 ```
 
