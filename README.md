@@ -1406,3 +1406,12 @@ need to be output explicitly by calling one of the following functions:
 To test whether requests and replies are as expected, you can add
 `assert(expression)` calls. Expressions that evaluate to false will make the
 example generation fail. You can inspect the CircleCI logs for details.
+
+To use specialized assertions, you need to import them from
+[jsunity](https://github.com/arangodb/arangodb/blob/devel/js/common/modules/jsunity/jsunity.js),
+like `assertTrue()`, `assertEqual()`, `assertTypeOf()`, `assertUndefined()`, etc.
+
+```js
+var assertTypeOf = require("jsunity").jsUnity.assertions.assertTypeOf;
+assertTypeOf("string", response.parsedBody.name);
+```

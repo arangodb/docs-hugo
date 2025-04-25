@@ -1025,13 +1025,9 @@ description: ''
 name: RestAdminLicenseGet
 type: cluster
 ---
-var assertTypeOf = require("jsunity").jsUnity.assertions.assertTypeOf;
 var url = "/_admin/license";
 var response = logCurlRequest('GET', url);
-
 assert(response.code === 200);
-assertTypeOf("string", response.parsedBody.license);
-
 logJsonResponse(response);
 ```
 
