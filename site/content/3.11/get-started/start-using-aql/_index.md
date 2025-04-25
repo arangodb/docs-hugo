@@ -104,7 +104,8 @@ if err != nil {
     defer cursor.Close()
     var str string
     for cursor.HasMore() {
-        _, err := cursor.ReadDocument(ctx, &str)
+        meta, err := cursor.ReadDocument(ctx, &str)
+        _ = meta // No document metadata with this query, it only returns a string
         if err != nil {
             log.Fatalf("Failed to read cursor:\n%v\n", err)
         } else {
@@ -121,8 +122,8 @@ in the _go-driver_ v2 documentation for details.
 {{< tab "Java" >}}
 ```java
 String query = "RETURN CONCAT(\"Hello, \", @name)";
-Map<String, ? super Object> bindVars = Collections.singletonMap("name", "AQL");
-ArangoCursor<String> cursor = db.query(query, String.class, bindVars);
+Map<String, Object> bindVars = Map.of("name", "AQL");
+ArangoCursor<Object> cursor = db.query(query, Object.class, bindVars);
 cursor.forEach(result -> System.out.println(result));
 ```
 

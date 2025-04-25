@@ -59,7 +59,7 @@ Assembling query strings with simple **string concatenation** looks trivial,
 but is potentially **unsafe**. You should use
 [bind parameters](fundamentals/bind-parameters.md) instead whenever possible,
 use query building functionality if provided by a driver (see
-[arangojs AQL Helpers](http://arangodb.github.io/arangojs/latest/modules/_aql_.aql.html)
+[arangojs AQL Helpers](https://arangodb.github.io/arangojs/latest/functions/aql.aql.html)
 for example) or at least sanitize user input with great care.
 
 ### Parameter injection examples

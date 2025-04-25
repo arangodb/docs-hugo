@@ -283,7 +283,7 @@ and iterate over the results:
 String query = "FOR t IN firstCollection FILTER t.name == @name RETURN t";
 Map<String, Object> bindVars = Collections.singletonMap("name", "Homer");
 System.out.println("Executing read query ...");
-ArangoCursor<BaseDocument> cursor = db.query(query, bindVars, null, BaseDocument.class);
+ArangoCursor<BaseDocument> cursor = db.query(query, BaseDocument.class, bindVars);
 cursor.forEach(aDocument -> System.out.println("Key: " + aDocument.getKey()));
 ```
 
@@ -318,7 +318,7 @@ String query = "FOR t IN firstCollection FILTER t.name == @name "
     + "REMOVE t IN firstCollection LET removed = OLD RETURN removed";
 Map<String, Object> bindVars = Collections.singletonMap("name", "Homer");
 System.out.println("Executing delete query ...");
-ArangoCursor<BaseDocument> cursor = db.query(query, bindVars, null, BaseDocument.class);
+ArangoCursor<BaseDocument> cursor = db.query(query, BaseDocument.class, bindVars);
 cursor.forEach(aDocument -> System.out.println("Removed document " + aDocument.getKey()));
 ```
 

@@ -37,13 +37,9 @@ Computed value definitions are included in dumps, and the attributes they added,
 too, but no expressions are executed when restoring dumps. The collections and
 documents are restored as they are in the dump and no attributes are recalculated.
 
-## JavaScript API
+## Interfaces
 
 The `computedValues` collection property accepts an array of objects.
-
-`db._create(<collection-name>, { computedValues: [ { … }, … ] })`
-
-`db.<collection-name>.properties({ computedValues: [ { … }, … ] })`
 
 Each object represents a computed value and can have the following attributes:
 
@@ -74,12 +70,174 @@ Each object represents a computed value and can have the following attributes:
   Whether to let the write operation fail if the expression produces a warning.
   The default is `false`.
 
-## HTTP API
+The names and data types differ in some of the drivers.
 
-See the `computedValues` collection property in the HTTP API documentation:
-- [Create a collection](../../../develop/http-api/collections.md#create-a-collection),
-- [Read properties of a collection](../../../develop/http-api/collections.md#get-the-properties-of-a-collection),
-- [Change properties of a collection](../../../develop/http-api/collections.md#change-the-properties-of-a-collection).
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. If necessary, [switch to the database](../databases.md#set-the-database-context)
+   that contains the desired collection.
+2. Click **Collections** in the main navigation.
+3. Click the name or row of the desired collection.
+4. Go to the **Computed Values** tab.
+5. Edit the configuration in JSON format. Example:
+   ```json
+   [
+     {
+       "name": "title",
+       "expression": "RETURN \"TBA\"",
+       "overwrite": false,
+       "computeOn": ["insert", "update", "replace"],
+       "failOnWarning": false,
+       "keepNull": true
+     }
+   ]
+   ```
+6. Click the **Save** button.
+{{< /tab >}}
+
+{{< tab "arangosh" >}}
+```js
+---
+name: arangosh_set_collection_computed_values
+description: ''
+---
+var computedValues = [
+  {
+    name: "title",
+    expression: "RETURN \"TBA\"",
+    overwrite: false,
+    computeOn: ["insert", "update", "replace"],
+    failOnWarning: false,
+    keepNull: true
+  }
+];
+
+/* Create a new collection with computed values */
+var coll = db._create("compValCollection", { computedValues });
+
+/* Update the computed values of an existing collection */
+db.compValCollection.properties({ computedValues });
+~addIgnoreCollection(coll.name());
+```
+To remove the computed values configuration from a collection, set the
+`computedValues` property to `null` or `[]` (empty array):
+
+```js
+---
+name: arangosh_unset_collection_properties_computed_values
+description: ''
+---
+~var coll = db._collection("compValCollection");
+/* Remove the computed values of an existing collection */
+db.compValCollection.properties({ computedValues: null });
+~removeIgnoreCollection(coll.name());
+~db._drop(coll.name());
+```
+
+See [`db._create()`](../../../develop/javascript-api/@arangodb/db-object.md#db_createcollection-name--properties--type--options)
+and [`collection.properties()`](../../../develop/javascript-api/@arangodb/collection-object.md#collectionpropertiesproperties)
+in the _JavaScript API_ for details.
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+```sh
+curl -XPUT -d '{"computedValues":[{"name":"title","expression":"RETURN \"TBA\"","overwrite":false,"computeOn":["insert","update","replace"],"failOnWarning":false,"keepNull":true}]' http://localhost:8529/_db/mydb/_api/collection/coll/properties
+```
+
+See the [`PUT /_db/{database-name}/_api/collection/{collection-name}/properties`](../../../develop/http-api/collections.md#change-the-properties-of-a-collection)
+endpoint in the _HTTP API_for details.
+{{< /tab >}}
+
+{{< tab "JavaScript" >}}
+```js
+let coll = db.collection("coll");
+const props = await coll.properties({
+  computedValues: [
+    {
+      name: "title",
+      expression: "RETURN \"TBA\"",
+      overwrite: false,
+      computeOn: ["insert", "update", "replace"],
+      failOnWarning: false,
+      keepNull: true
+    }
+  ]
+});
+```
+
+See [`DocumentCollection.properties()`](https://arangodb.github.io/arangojs/latest/interfaces/collections.DocumentCollection.html#properties.properties-2)
+in the _arangojs_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Go" >}}
+```go
+ctx := context.Background()
+coll, err := db.GetCollection(ctx, "coll", nil)
+err = coll.SetProperties(ctx, arangodb.SetCollectionPropertiesOptions{
+  ComputedValues: []arangodb.ComputedValue {
+    {
+      Name: "title",
+      Expression: "RETURN \"TBA\"",
+      Overwrite: false,
+      ComputeOn: []arangodb.ComputeOn {
+        arangodb.ComputeOnInsert,
+        arangodb.ComputeOnUpdate,
+        arangodb.ComputeOnReplace,
+      },
+      FailOnWarning: utils.NewType(false), // pointer to bool
+      KeepNull: utils.NewType(true), // pointer to bool
+    },
+  },
+})
+```
+
+See [`Collection.SetProperties()`](https://pkg.go.dev/github.com/arangodb/go-driver/v2/arangodb#Collection)
+in the _go-driver_ v2 documentation for details.
+{{< /tab >}}
+
+{{< tab "Java" >}}
+```java
+CollectionPropertiesOptions options = new CollectionPropertiesOptions()
+    .computedValues(new ComputedValue()
+        .name("title")
+        .expression("RETURN \"TBA\"")
+        .overwrite(false)
+        .computeOn(ComputedValue.ComputeOn.insert, ComputedValue.ComputeOn.update, ComputedValue.ComputeOn.replace)
+        .failOnWarning(false)
+        .keepNull(true)
+        );
+
+ArangoCollection coll = db.collection("coll");
+CollectionPropertiesEntity props = coll.changeProperties(options);
+```
+
+See [`ArangoCollection.changeProperties()`](https://www.javadoc.io/doc/com.arangodb/arangodb-java-driver/latest/com/arangodb/ArangoCollection.html#changeProperties%28com.arangodb.model.CollectionPropertiesOptions%29)
+in the _arangodb-java-driver_ documentation for details.
+{{< /tab >}}
+
+{{< tab "Python" >}}
+```py
+coll = db.collection("coll")
+props = coll.configure(
+  computed_values=[
+    {
+      "name": "title",
+      "expression": "RETURN \"TBA\"",
+      "overwrite": False,
+      "computeOn": ["insert", "update", "replace"],
+      "failOnWarning": False,
+      "keepNull": True
+    }
+  ]
+)
+```
+
+See [`Collection.configure()`](https://docs.python-arango.com/en/main/specs.html#arango.collection.Collection.configure)
+in the _python-arango_ documentation for details.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Computed Value Expressions
 
@@ -142,6 +300,9 @@ are rejected immediately, when setting or modifying the computed value definitio
 of a collection.
 
 ## Examples
+
+The following examples show a few ways you can use computed values using
+_arangosh_.
 
 Add an attribute with the creation timestamp to new documents:
 

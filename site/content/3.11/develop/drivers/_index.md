@@ -39,7 +39,7 @@ language.
 
 ## Node.js driver
 
-The [**ArangoJS driver**](nodejs.md) lets you work with ArangoDB in Node.js, using
+The [**ArangoJS driver**](javascript.md) lets you work with ArangoDB in Node.js, using
 the JavaScript scripting language. You can also use it in web browsers.
 
 - Repository: [github.com/arangodb/arangojs](https://github.com/arangodb/arangojs)
