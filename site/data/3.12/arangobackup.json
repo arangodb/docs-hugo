@@ -371,7 +371,7 @@
     "category" : "option",
     "default" : "-",
     "deprecatedIn" : null,
-    "description" : "shortcut for '--log.output file://<filename>'",
+    "description" : "Shortcut for `--log.output file://<filename>`",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -389,7 +389,7 @@
     "category" : "option",
     "default" : "",
     "deprecatedIn" : null,
-    "description" : "group to use for new log file, user must be a member of this group",
+    "description" : "The group to use for a new log file. The user must be a member of this group.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -407,7 +407,7 @@
     "category" : "option",
     "default" : "",
     "deprecatedIn" : null,
-    "description" : "mode to use for new log file, umask will be applied as well",
+    "description" : "The mode to use for a new log file. The umask is applied as well.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -507,7 +507,7 @@
       "info"
     ],
     "deprecatedIn" : null,
-    "description" : "Set the topic-specific log level, using `--log.level level` for the general topic or `--log.level topic=level` for the specified topic (can be specified multiple times).\nAvailable log levels: fatal, error, warning, info, debug, trace.\nAvailable log topics: all, audit-hotbackup, audit-service, audit-document, audit-view, audit-collection, audit-database, audit-authorization, audit-authentication, deprecation, views, v8, validation, ttl, trx, threads, syscall, supervision, statistics, startup, ssl, security, rocksdb, restore, requests, rep-wal, rep-state, replication2, replication, queries, memory, maintenance, license, httpclient, heartbeat, graphs, flush, general, engines, dump, development, crash, config, communication, cluster, cache, bench, backup, authorization, authentication, aql, agencystore, agencycomm, agency.",
+    "description" : "Set the topic-specific log level, using `--log.level level` for the general topic or `--log.level topic=level` for the specified topic (can be specified multiple times).\n\nAvailable log levels: fatal, error, warning, info, debug, trace.\n\nAvailable log topics: all, agency, agencycomm, agencystore, aql, audit-authentication, audit-authorization, audit-collection, audit-database, audit-document, audit-hotbackup, audit-service, audit-view, authentication, authorization, backup, bench, cache, cluster, communication, config, crash, deprecation, development, dump, engines, flush, general, graphs, heartbeat, httpclient, license, maintenance, memory, queries, rep-state, rep-wal, replication, replication2, requests, restore, rocksdb, security, ssl, startup, statistics, supervision, syscall, threads, trx, ttl, v8, validation, views.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -717,7 +717,7 @@
     "category" : "option",
     "default" : true,
     "deprecatedIn" : null,
-    "description" : "shorten filenames in log output (use with --log.line-number)",
+    "description" : "Shorten filenames in log output (use with `--log.line-number`).",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -1006,7 +1006,7 @@
   },
   "server.authentication" : {
     "category" : "option",
-    "default" : false,
+    "default" : true,
     "deprecatedIn" : null,
     "description" : "Require authentication credentials when connecting (does not affect the server-side authentication settings).",
     "dynamic" : false,
@@ -1067,7 +1067,7 @@
   "server.endpoint" : {
     "category" : "option",
     "default" : [
-      "http+tcp://127.0.0.1:8529"
+      "tcp://127.0.0.1:8529"
     ],
     "deprecatedIn" : null,
     "description" : "The endpoint to connect to. Use 'none' to start without a server. Use http+ssl:// as schema to connect to an SSL-secured server endpoint, otherwise http+tcp:// or unix://",
