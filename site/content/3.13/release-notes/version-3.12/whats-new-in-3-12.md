@@ -183,11 +183,11 @@ Swagger 2.x compatibility.
 
 <small>Introduced in: v3.12.5</small>
 
-Swagger UI has been updated to version 5.20.1.
+Swagger UI has been updated to version 5.21.0.
 
-The default model rendering has been adjusted to display the **Schema** tab
-instead of the **Example Value** tab by default. This makes it easier to discover
-the structured request and response body descriptions.
+The default model rendering has been adjusted to display the **Schema** tab with
+an interactive model tree instead of the **Example Value** tab by default. This
+makes it easier to discover the structured request and response body descriptions.
 
 ## External versioning support
 
