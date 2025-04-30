@@ -3,7 +3,8 @@ title: Data Science
 menuTitle: Data Science
 weight: 115
 description: >-
-  ArangoDB lets you 
+  ArangoDB's set of tools and technologies enables analytics, machine learning,
+  and GenAI applications powered by graph data
 aliases:
   - data-science/overview
 ---

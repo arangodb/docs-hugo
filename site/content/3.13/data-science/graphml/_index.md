@@ -57,7 +57,7 @@ The ArangoFlix demo uses five different recommendation methods:
 - Matrix Factorization
 - Graph Neural Networks 
 
-![ArangoFlix demo](../../images/data-science-arangoflix.png)
+![ArangoFlix demo](../../../images/data-science-arangoflix.png)
 
 The ArangoFlix website not only offers an example of how the user recommendations might
 look like in real life, but it also provides information on a recommendation method,
