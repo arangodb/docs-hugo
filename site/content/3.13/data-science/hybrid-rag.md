@@ -1,9 +1,13 @@
 ---
-title: Large Language Models (LLMs) and Knowledge Graphs
-menuTitle: Large Language Models and Knowledge Graphs
-weight: 133
+title: Graph-powered HybridRAG
+menuTitle: HybridRAG
+weight: 10
 description: >-
-  Integrate large language models (LLMs) with knowledge graphs using ArangoDB
+  ArangoDB's HybridRAG combines graph-based retrieval augmented generation
+  (GraphRAG) with Large Language Models (LLMs) for turbocharged Gen AI solutions
+aliases:
+  llm-knowledge-graphs
+# TODO: Repurpose for GenAI
 ---
 Large language models (LLMs) and knowledge graphs are two prominent and
 contrasting concepts, each possessing unique characteristics and functionalities
@@ -25,7 +29,17 @@ ArangoDB's unique capabilities and flexible integration of knowledge graphs and
 LLMs provide a powerful and efficient solution for anyone seeking to extract
 valuable insights from diverse datasets.
 
-## Knowledge Graphs
+The HybridRAG component of the Data Science Suite brings all the capabilities
+together with an easy-to-use interface so you can make the knowledge accessible
+to your organization.
+
+## HybridRAG
+
+ArangoDB's HybridRAG solution democratizes the creation and usage of knowledge
+graphs with a unique combination of vector search, graphs, and LLMs in a
+single product.
+
+### Knowledge Graphs
 
 A knowledge graph can be thought of as a dynamic and interconnected network of
 real-world entities and the intricate relationships that exist between them.
@@ -48,7 +62,29 @@ the following tasks:
 
 ![ArangoDB Knowledge Graphs and LLMs](../../images/ArangoDB-knowledge-graphs-meets-llms.png)
 
-## ArangoDB and LangChain
+### Examples
+
+### Services
+
+#### Service A
+
+#### Service B
+
+### Interfaces
+
+{{< tabs "interfaces" >}}
+
+{{< tab "Web interface" >}}
+1. In the Platform UI, ...
+{{< /tab >}}
+
+{{< tab "cURL" >}}
+curl http://localhost:8529/gen-ai/
+{{< /tab >}}
+
+{{< /tabs >}}
+
+#### ArangoDB and LangChain
 
 [LangChain](https://www.langchain.com/) is a framework for developing applications
 powered by language models.
@@ -62,7 +98,7 @@ data seamlessly via natural language, eliminating the need for query language
 design. By using LLM chat models such as OpenAI’s ChatGPT, you can "speak" to
 your data instead of querying it.
 
-### Get started with ArangoDB QA chain
+##### Get started with ArangoDB QA chain
 
 The [ArangoDB QA chain notebook](https://langchain-langchain.vercel.app/docs/use_cases/more/graph/graph_arangodb_qa.html)
 shows how to use LLMs to provide a natural language interface to an ArangoDB

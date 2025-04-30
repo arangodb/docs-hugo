@@ -5,6 +5,8 @@ weight: 5
 description: >-
   You can deploy ArangoGraphML in your own Kubernetes cluster or use the managed
   cloud service that comes with a ready-to-go, pre-configured environment
+aliases:
+  - ../arangographml/deploy
 ---
 
 ## Managed cloud service versus self-managed

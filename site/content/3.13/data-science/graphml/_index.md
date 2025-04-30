@@ -1,17 +1,67 @@
 ---
-title: ArangoGraphML
-menuTitle: ArangoGraphML
-weight: 125
+title: ArangoGraphML # Rename as well?
+menuTitle: GraphML
+weight: 20
 description: >-
   Enterprise-ready, graph-powered machine learning as a cloud service or self-managed
 aliases:
-  - graphml
+  - arangographml
 ---
 Traditional Machine Learning (ML) overlooks the connections and relationships
 between data points, which is where graph machine learning excels. However,
 accessibility to GraphML has been limited to sizable enterprises equipped with
 specialized teams of data scientists. ArangoGraphML simplifies the utilization of GraphML,
 enabling a broader range of personas to extract profound insights from their data.
+
+## Use cases
+
+GraphML capabilities of using more data outperform conventional deep learning
+methods and **solve high-computational complexity graph problems**, such as: 
+- Drug discovery, repurposing, and predicting adverse effects.
+- Personalized product/service recommendation.
+- Supply chain and logistics.
+
+With GraphML, you can also **predict relationships and structures**, such as:
+- Predict molecules for treating diseases (precision medicine).
+- Predict fraudulent behavior, credit risk, purchase of product or services.
+- Predict relationships among customers, accounts.
+
+ArangoDB uses well-known GraphML frameworks like
+[Deep Graph Library](https://www.dgl.ai)
+and [PyTorch Geometric](https://pytorch-geometric.readthedocs.io/en/latest/) 
+and connects to these external machine learning libraries. When coupled to
+ArangoDB, you are essentially integrating them with your graph dataset.
+
+#### Example: ArangoFlix
+
+ArangoFlix is a complete movie recommendation application that predicts missing
+links between a user and the movies they have not watched yet.
+
+This [interactive tutorial](https://colab.research.google.com/github/arangodb/interactive_tutorials/blob/master/notebooks/Integrate_ArangoDB_with_PyG.ipynb) 
+demonstrates how to integrate ArangoDB with PyTorch Geometric to
+build recommendation systems using Graph Neural Networks (GNNs).
+
+The full ArangoFlix demo website is accessible from the ArangoGraph Insights Platform,
+the managed cloud for ArangoDB. You can open the demo website that connects to
+your running database from the **Examples** tab of your deployment.
+
+{{< tip >}}
+You can try out the ArangoGraph Insights Platform free of charge for 14 days.
+Sign up at [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
+{{< /tip >}}
+
+The ArangoFlix demo uses five different recommendation methods:
+- Content-Based using AQL
+- Collaborative Filtering using AQL
+- Content-Based using ML
+- Matrix Factorization
+- Graph Neural Networks 
+
+![ArangoFlix demo](../../images/data-science-arangoflix.png)
+
+The ArangoFlix website not only offers an example of how the user recommendations might
+look like in real life, but it also provides information on a recommendation method,
+an AQL query, a custom graph visualization for each movie, and more.
 
 ## How GraphML works
 

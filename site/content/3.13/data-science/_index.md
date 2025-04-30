@@ -3,32 +3,80 @@ title: Data Science
 menuTitle: Data Science
 weight: 115
 description: >-
-  ArangoDB lets you apply analytics and machine learning to graph data at scale
+  ArangoDB lets you 
 aliases:
   - data-science/overview
 ---
+ArangoDB provides a wide range of functionality that can be utilized for
+data science applications. The core database system includes multi-model storage
+of information with scalable graph and information retrieval capabilities that
+you can directly use for your research and product development.
+
+ArangoDB also offers a dedicated Data Science Suite, using the database core
+as the foundation for higher-level features. Whether you want to turbocharge
+generative AI applications with a GraphRAG solution or apply analytics and
+machine learning to graph data at scale, ArangoDB covers these needs.
+
+<!--
 ArangoDB's Graph Analytics and GraphML capabilities provide various solutions
 in data science and data analytics. Multiple data science personas within the
 engineering space can make use of ArangoDB's set of tools and technologies that
 enable analytics and machine learning on graph data. 
+-->
 
-ArangoDB, as the foundation for GraphML, comes with the following key features:
+## Data Science Suite
 
-- **Scalable**: designed to support true scalability with high performance for
+The Data Science Suite (DSS) is comprised of three major components:
+
+- [**HybridRAG**](#hybridrag): A complete solution for extracting entities
+  from text files to create a knowledge graph that you can then query with a
+  natural language interface.
+- [**GraphML**](#graphml): Apply machine learning to graphs for link prediction,
+  classification, and similar tasks.
+- [**Graph Analytics**](#graph-analytics): Run graph algorithms such as PageRank
+  on dedicated compute resources.
+
+Each component has an intuitive graphical user interface integrated into the
+ArangoDB Platform web interface, guiding you through the process.
+<!-- TODO: Not Graph Analytics? -->
+
+Alongside these components, you also get the following additional features:
+
+- **Graph visualizer**: A web-based tool for exploring your graph data with an
+  intuitive interface and sophisticated querying capabilities.
+- **Jupyter notebooks**: Run a Jupyter kernel in the platform for hosting
+  interactive notebooks for experimentation and development of applications
+  that use ArangoDB as their backend.
+- **MLflow integration**: Built-in support for the popular management tool for
+  the machine learning lifecycle.
+- **Adapters**: Use ArangoDB together with cuGraph, NetworkX, and other tools. 
+- **Application Programming Interfaces**: Use the underlying APIs of the
+  Data Science Suite services and build your own integrations.
+
+## From graph to AI
+
+This section classifies the complexity of the queries you can answer with
+ArangoDB and gives you an overview of the respective feature.
+
+It starts with running a simple query that shows what is the path that goes from
+one node to another, continues with more complex tasks like graph classification,
+link prediction, and node classification, and ends with generative AI solutions
+powered by graph relationships and vector embeddings.
+
+### Foundational features
+
+ArangoDB comes with the following key features:
+
+- **Scalable**: Designed to support true scalability with high performance for
   enterprise use cases.
-- **Simple Ingestion**: easy integration in existing data infrastructure with
+- **Simple Ingestion**: Easy integration in existing data infrastructure with
   connectors to all leading data processing and data ecosystems.
-- **Source-Available**: extensibility and community.
-- **NLP Support**: built-in text processing, search, and similarity ranking.
+- **Source-Available**: Extensibility and community.
+- **NLP Support**: Built-in text processing, search, and similarity ranking.
+
+<!-- TODO: This is actually GraphML specific... -->
 
 ![ArangoDB Machine Learning Architecture](../../images/machine-learning-architecture.png)
-
-## Graph Analytics vs. GraphML
-
-This section classifies the complexity of the queries we can answer - 
-like running a simple query that shows what is the path that goes from one node
-to another, or more complex tasks like node classification,
-link prediction, and graph classification.
 
 ### Graph Queries
 
@@ -69,65 +117,24 @@ GraphML can answer questions like:
 ![Graph ML](../../images/graph-ml.png)
 
 For ArangoDB's enterprise-ready, graph-powered machine learning offering,
-see [ArangoGraphML](arangographml/_index.md).
+see [ArangoGraphML](graphml/_index.md).
 
-## Use Cases
+### HybridRAG
 
-This section contains an overview of different use cases where Graph Analytics
-and GraphML can be applied.
+HybridRAG is ArangoDB's turn-key solution to turn your organization's data into
+a knowledge graph and let everyone utilize the knowledge by asking questions in
+natural language.
 
-### GraphML
+HybridRAG combines vector search for retrieving related text snippets
+with graph-based retrieval augmented generation (GraphRAG) for context expansion
+and relationship discovery. This lets a large language model (LLM) generate
+answers that are accurate, context-aware, and chronologically structured.
+This approach combats the common problem of hallucination.
 
-GraphML capabilities of using more data outperform conventional deep learning
-methods and **solve high-computational complexity graph problems**, such as: 
-- Drug discovery, repurposing, and predicting adverse effects.
-- Personalized product/service recommendation.
-- Supply chain and logistics.
-
-With GraphML, you can also **predict relationships and structures**, such as:
-- Predict molecules for treating diseases (precision medicine).
-- Predict fraudulent behavior, credit risk, purchase of product or services.
-- Predict relationships among customers, accounts.
-
-ArangoDB uses well-known GraphML frameworks like
-[Deep Graph Library](https://www.dgl.ai)
-and [PyTorch Geometric](https://pytorch-geometric.readthedocs.io/en/latest/) 
-and connects to these external machine learning libraries. When coupled to
-ArangoDB, you are essentially integrating them with your graph dataset.
-
-## Example: ArangoFlix
-
-ArangoFlix is a complete movie recommendation application that predicts missing
-links between a user and the movies they have not watched yet.
-
-This [interactive tutorial](https://colab.research.google.com/github/arangodb/interactive_tutorials/blob/master/notebooks/Integrate_ArangoDB_with_PyG.ipynb) 
-demonstrates how to integrate ArangoDB with PyTorch Geometric to
-build recommendation systems using Graph Neural Networks (GNNs).
-
-The full ArangoFlix demo website is accessible from the ArangoGraph Insights Platform,
-the managed cloud for ArangoDB. You can open the demo website that connects to
-your running database from the **Examples** tab of your deployment.
-
-{{< tip >}}
-You can try out the ArangoGraph Insights Platform free of charge for 14 days.
-Sign up at [dashboard.arangodb.cloud](https://dashboard.arangodb.cloud/home?utm_source=docs&utm_medium=cluster_pages&utm_campaign=docs_traffic).
-{{< /tip >}}
-
-The ArangoFlix demo uses five different recommendation methods:
-- Content-Based using AQL
-- Collaborative Filtering using AQL
-- Content-Based using ML
-- Matrix Factorization
-- Graph Neural Networks 
-
-![ArangoFlix demo](../../images/data-science-arangoflix.png)
-
-The ArangoFlix website not only offers an example of how the user recommendations might
-look like in real life, but it also provides information on a recommendation method,
-an AQL query, a custom graph visualization for each movie, and more.
+To learn more, see the [HybridRAG](hybrid-rag.md) documentation.
 
 ## Sample datasets
 
 If you want to try out ArangoDB's data science features, you may use the
-[`arango_datasets` Python package](../components/tools/arango-datasets.md)
+[`arango-datasets` Python package](../components/tools/arango-datasets.md)
 to load sample datasets into a deployment.
