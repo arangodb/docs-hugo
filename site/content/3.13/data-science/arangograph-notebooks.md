@@ -1,7 +1,7 @@
 ---
 title: ArangoGraph Notebooks
 menuTitle: ArangoGraph Notebooks
-weight: 130
+weight: 40
 description: >-
   Colocated Jupyter Notebooks within the ArangoGraph Insights Platform
 ---
