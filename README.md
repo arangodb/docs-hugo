@@ -375,7 +375,7 @@ Display content with a tabbed interface, like for code examples using different
 languages or if there are multiple ways of achieving a goal like configuring
 ArangoDB.
 
-```markdown
+````markdown
 {{< tabs "startup-options" >}}
 
 {{< tab "Command-line" >}}
@@ -392,7 +392,7 @@ level = startup=trace
 {{< /tab >}}
 
 {{< /tabs >}}
-```
+````
 
 The parameter for the `tabs` shortcode is a group identifier. If there are
 multiple tab groups in one page, changing the active tab of one of them also
