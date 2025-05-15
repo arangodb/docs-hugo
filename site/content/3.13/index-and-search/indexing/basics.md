@@ -369,6 +369,16 @@ the `GEO_DISTANCE()` function, or if `FILTER` conditions with `GEO_CONTAINS()`
 or `GEO_INTERSECTS()` are used. It will not be used for other types of queries
 or conditions.
 
+## Vector Index
+
+Vector indexes let you index vector embeddings stored in documents. Such
+vectors are arrays of numbers that represent the meaning and relationships of
+data numerically. You can you quickly find a given number of semantically
+similar documents by searching for close neighbors in a high-dimensional
+vector space.
+
+See [Vector Indexes](working-with-indexes/vector-indexes.md) for details.
+
 ## Fulltext Index
 
 {{< warning >}}
