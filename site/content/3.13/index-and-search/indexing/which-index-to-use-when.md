@@ -106,6 +106,18 @@ different usage scenarios:
   of the Earth. It supports points, lines, and polygons.
   See [Geo-Spatial Indexes](working-with-indexes/geo-spatial-indexes.md).
 
+- **Vector index**: You can find semantically similar documents quickly with
+  vector indexes. It is required to calculate and store vector embeddings first,
+  and you may need to update the embeddings when adding new documents.
+  Vector indexes cannot be used for other types of searches, like equality and
+  range queries or full-text search.
+
+  Vector indexes are utilized via special distance functions, in combination with
+  a `SORT` operation to sort by the distance, and a `LIMIT` operation to define
+  how many similar documents to retrieve.
+
+  See [Vector indexes](working-with-indexes/vector-indexes.md) for details.
+
 - **fulltext index**: a fulltext index can be used to index all words contained in
   a specific attribute of all documents in a collection. Only words with a 
   (specifiable) minimum length are indexed. Word tokenization is done using 
