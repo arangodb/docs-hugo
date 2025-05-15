@@ -67,7 +67,9 @@ The `JSON` implementation is provided by the module `com.arangodb:jackson-serde-
 and transitively imported by `arangodb-java-driver`. This implementation will be
 used by default.
 
-The `VPACK` implementation is provided by the optional module `com.arangodb:jackson-serde-vpack`.
+The `VPACK` implementation is provided by the optional `com.arangodb:jackson-serde-vpack`
+module. It uses the [java-velocypack](https://github.com/arangodb/java-velocypack)
+implementation internally.
 
 ### Mapping API
 
