@@ -10,27 +10,37 @@ A **Graph** in ArangoDB is a powerful data structure that models relationships b
 
 > 💡 **Note:** Graph creation is **not** performed within the Graph Visualizer. Graphs must be created in the **Graphs** section of the application. Once a graph is created there, it will automatically appear in the Graph Visualizer, ready for exploration and visualization.
 
-## 1.Data Creation and Updation
+## 1.Data Augmentation
 
 While the Graph Visualizer is primarily designed for exploring graph data, you can also create and modify nodes and edges directly from the canvas.
 
 - **Add New Nodes (Vertices):**  
   Right-click anywhere on the canvas and select **"Create Node"**. A dropdown will appear showing all related document collections. Select the desired collection (vertex type), provide a unique identifier or name, and create the node. The node will then appear in the visualization.
 
+- **Step-1 : Right Click On Graph Area**
+![Create - new - Node](../../images/1a-Create_Node.png)
+- **Step-2 : Select Create Node**
+![Create - new - Node](../../images/1b-Create_Node.png)
+- **Step-3 : Select the desired Node Type and click on Create**
+![Create - new - Node](../../images/1c-Create_Node.png)
+
 - **Add New Edges (Relationships):**  
   Right-click on the canvas and select **"Create Edge"**. Choose the edge collection from the dropdown, provide a name for the edge, and correctly set the `_from` and `_to` fields by selecting source and target nodes. The edge will be created and visualized between the two nodes.
+
+
+
 
 - **Delete Nodes or Edges:**  
   Select a node or edge and right-click to access the **"Delete"** option. This action removes the selected element from both the graph and the database.
 
-- **Edit Properties of Nodes or Edges:**  
-  Right-click on a selected node or edge to access the following options:
+- **Properties of Nodes or Edges:**  
+  If You Select a node or edge a Pop-In will appear and display the properties of selected Node or Edge.
   
-  - **Edit:** Open a document editor to modify the node or edge properties and save them to the database.
-  - **Expand:** Visually expand the selected node to reveal its connected neighbors.
+  <!-- - **Edit:** Open a document editor to modify the node or edge properties and save them to the database. -->
+  <!-- - **Expand:** Visually expand  the selected node to reveal its connected neighbors.
   - **Set as Start Node:** Mark the node as the starting point in graph traversal.
   - **Pin Node:** Lock the node in place on the canvas to prevent movement.
-  - **Unpin Node:** Unlock a pinned node to allow repositioning.
+  - **Unpin Node:** Unlock a pinned node to allow repositioning. -->
 
 ## 2.Graph Visualization
 
@@ -50,9 +60,7 @@ The core function of the Graph Visualizer is to provide an intuitive canvas for 
 The top-left section of the Graph Visualizer includes powerful search and query tools for interactive exploration.
 
 ##### 🔍 Search
-- Auto-suggestions include all document collections (vertex types) associated with the graph.
-- Select a collection and input a query string to locate matching nodes.
-- Matching nodes are automatically **highlighted** on the canvas.
+- User have to select one of the type of vertex from the provided dropdown and by entering the property name or field  name user can able to fetch the data.
 
 ##### 💾 Saved Queries
 - Lists all previously saved AQL queries.
@@ -79,13 +87,7 @@ Click the **navigation icon** at the bottom-right of the canvas to reveal stylin
 
 These options are especially helpful when working with dense or complex graphs, making key elements stand out.
 
-## 5.Inspect Node and Edge
-
-- Click on any **node** or **edge** to open a detailed panel showing its full document contents.
-- This includes fields like `_key`, `_id`, `_rev`, and custom properties defined by the user.
-- This helps users debug, audit, or explore specific entity relationships.
-
-## 6.Layouts and Navigation Tools
+## 5.Layouts and Navigation Tools
 
 Graph layout and navigation tools help users manage large and complex graphs effectively.
 
@@ -104,9 +106,8 @@ Graph layout and navigation tools help users manage large and complex graphs eff
 - **Layout Algorithms:**  
   Switch between layout styles such as:
   - **Force-directed**
-  - **Radial**
-  - **Tree**
-  - **Circular**
+  - **Hierarchical**
+  - **Concentric**
 
 These features allow better spatial understanding of node clusters, hierarchies,
 and relationship flows.
