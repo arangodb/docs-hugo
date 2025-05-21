@@ -57,7 +57,7 @@ installation.
 #### Securing Unattended Installations on Debian
 
 For unattended installations, you can set the password using the
-[debconf helpers](http://www.microhowto.info/howto/perform_an_unattended_installation_of_a_debian_package.html):
+[debconf helpers](https://web.archive.org/web/20230521083047/http://www.microhowto.info/howto/perform_an_unattended_installation_of_a_debian_package.html):
 
 ```bash
 echo arangodb3 arangodb3/password password NEWPASSWORD | debconf-set-selections
