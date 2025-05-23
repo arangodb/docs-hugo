@@ -304,21 +304,6 @@ img {
     margin-bottom: 20px;
 }
 
-figcaption {
-    padding: 1px;
-    line-height: 0.5;
-    position: relative;
-    bottom: 0;
-    right: 0;
-    text-align: center;
-    color: rgb(65, 68, 238);
-    opacity: 0.7;
-}
-
-.caption {
-    font-weight: 300;
-    font-size: 0.8rem;
-}
 /* end Images */
 
 /* Tables */
