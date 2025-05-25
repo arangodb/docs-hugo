@@ -384,6 +384,26 @@
     If the network or the Agents are overloaded, it can help to move
     Agent instances to separate machines.
 
+- name: arangodb_api_recording_call_time
+  type: histogram
+  category: Statistics
+  help: |
+    API recording runtime histogram.
+  description: |
+    Execution time histogram for API recording calls in nanoseconds.
+    
+    This histogram tracks the time it takes to record API calls in the ApiRecordingFeature.
+    The histogram uses a logarithmic scale with base 2, starting at 0 and going up to 16000.0 nanoseconds,
+    with 9 buckets.
+  unit: nanoseconds
+  introducedIn: "3.12.5"
+  category: Agency
+  complexity: high
+  exposedBy:
+    - agent
+    - coordinator
+    - dbserver
+    - single
 - name: arangodb_aql_all_query_total
   renamedFrom: arangodb_aql_all_query
   introducedIn: "3.8.0"
@@ -679,83 +699,75 @@
     Total execution time of all AQL queries, in milliseconds,
     including all slow queries.
 
+- name: arangodb_async_existing_promises
+  introducedIn: "3.12.4"
+  help: |
+    Number of currently existing asynchronous promises.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - coordinator
+  description: |
+    Number of currently existing asynchronous promises.
+
+- name: arangodb_async_existing_thread_registries
+  introducedIn: "3.12.4"
+  help: |
+    Number of threads that started currently existing asyncronous operations.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - coordinator
+  description: |
+    Number of threads that started currently existing asyncronous operations. The thread itself does not need to exist any more. This number also includes still running threads that have started asyncronous operations which do not exist any more.
+
 - name: arangodb_async_promises_total
   introducedIn: "3.12.4"
   help: |
-    Total number of registered asynchronous promises since database creation.
+    Total number of created asynchronous promises since database creation.
   unit: number
   type: counter
   category: Statistics
   complexity: advanced
   exposedBy:
     - dbserver
+    - coordinator
   description: |
-    Total number of registered asynchronous promises since database creation.
+    Total number of created asynchronous promises since database creation.
 
 - name: arangodb_async_ready_for_deletion_promises
   introducedIn: "3.12.4"
   help: |
-    Number of currently registered asynchronous promises that wait for their garbage collection.
+    Number of currently existing asynchronous promises that wait for their garbage collection.
   unit: number
   type: gauge
   category: Statistics
   complexity: advanced
   exposedBy:
     - dbserver
+    - coordinator
   description: |
-    Number of currently registered asynchronous promises that wait for their garbage collection.
+    Number of currently existing asynchronous promises that wait for their garbage collection.
 
-- name: arangodb_async_registered_promises
+- name: arangodb_async_thread_registries_total
   introducedIn: "3.12.4"
   help: |
-    Number of currently registered asynchronous promises.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - dbserver
-  description: |
-    Number of currently registered asynchronous promises.
-
-- name: arangodb_async_registered_threads
-  introducedIn: "3.12.4"
-  help: |
-    Number of threads the asynchronous registry iterates over to list all asynchronous promises.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - dbserver
-  description: |
-    Number of threads the asynchronous registry iterates over to list all asynchronous promises.
-
-- name: arangodb_async_running_threads
-  introducedIn: "3.12.4"
-  help: |
-    Number of currently running threads that registered asynchronous promises.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - dbserver
-  description: |
-    Number of currently running threads that registered asynchronous promises.
-
-- name: arangodb_async_threads_total
-  introducedIn: "3.12.4"
-  help: |
-    Total number of threads that registered asynchronous promises since database creation.
+    Total number of threads that started asynchronous operations since database creation.
   unit: number
   type: counter
   category: Statistics
   complexity: advanced
   exposedBy:
     - dbserver
+    - coordinator
   description: |
-    Total number of threads that registered asynchronous promises since database creation.
+    Total number of threads that started asynchronous operations since database creation.
 
 - name: arangodb_client_connection_statistics_bytes_received
   introducedIn: "3.8.0"
@@ -5689,9 +5701,7 @@
   category: Replication
   complexity: simple
   exposedBy:
-    - coordinator
     - dbserver
-    - agent
   description: |
     Number of leader shards not fully replicated. This is counted for all
     shards for which this server is currently the leader. The number is
