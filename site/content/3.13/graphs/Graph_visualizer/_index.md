@@ -3,7 +3,7 @@ title: Graph Visualizer
 menuTitle: Graph Visualizer
 weight: 85
 description: >-
-  Visualize and interact with your ArangoDB graphs in an intuitive and interactive interface.
+  Visualize and interact with your ArangoDB graphs in an intuitive and interactive interface
 ---
 
 The **Graph Visualizer** provides an interactive interface to explore graph connections
