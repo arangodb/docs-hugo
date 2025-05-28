@@ -27,7 +27,7 @@ To add a new node to a graph:
    - Optionally specify a unique identifier (**Node ID**)
 4. Click **Create** to add the node to the canvas and database.
 
-![Create Node](../../../images/Graph-visualizer-CreateNode.PNG)
+![Create Node](../../../images/Graph-visualizer-CreateNode_1.PNG)
 
 ### Add New Edges
 To add an edge:
@@ -37,7 +37,7 @@ To add an edge:
 4. Set `_from` and `_to` fields by selecting nodes.
 5. Optionally enter a unique ID.
 6. Click **Create** to finish.
-![Create Edge](../../../images/Graph-visualizer-CreateEdge.png)
+![Create Edge](../../../images/Graph-visualizer-CreateEdge_1.png)
 
 ### Delete Nodes or Edges
 
