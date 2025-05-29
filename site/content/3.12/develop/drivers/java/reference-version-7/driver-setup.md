@@ -93,6 +93,7 @@ Here are examples to integrate configuration properties from different sources:
 - `serde(ArangoSerde)`:            serde to serialize and deserialize user-data
 - `serdeProviderClass(Class<? extends ArangoSerdeProvider>)`: serde provider to be used to instantiate the user-data serde
 - `protocolConfig(ProtocolConfig)`: configuration specific for the used protocol provider implementation
+- `pipelining(Boolean):`:        use HTTP pipelining, (`HTTP/1.1` only, default `false`)
 
 ### HTTP Protocol Provider Configuration
 
@@ -146,6 +147,7 @@ The properties read are:
 - `compressionThreshold`
 - `compressionLevel`
 - `serdeProviderClass`: fully qualified name of the provider class
+- `pipelining`
 
 ## SSL
 
