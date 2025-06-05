@@ -13,8 +13,7 @@ paths:
       operationId: createIndexTtl
       description: |
         Creates a time-to-live (TTL) index for the collection `collection-name` if it
-        does not already exist. The call expects an object containing the index
-        details.
+        does not already exist.
       parameters:
         - name: database-name
           in: path
@@ -74,18 +73,16 @@ paths:
       responses:
         '200':
           description: |
-            If the index already exists, then a *HTTP 200* is returned.
+            The index exists already.
         '201':
           description: |
-            If the index does not already exist and could be created, then a *HTTP 201*
-            is returned.
+            The index is created as there is no such existing index.
         '400':
           description: |
-            If the collection already contains another TTL index, then an *HTTP 400* is
-            returned, as there can be at most one TTL index per collection.
+            There is already a TTL index for the collection but there can only be one.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is returned.
+            The collection is unknown.
       tags:
         - Indexes
 ```

@@ -19,8 +19,7 @@ paths:
       operationId: createIndexPersistent
       description: |
         Creates a persistent index for the collection `collection-name`, if
-        it does not already exist. The call expects an object containing the index
-        details.
+        it does not already exist.
 
         In a sparse index all documents will be excluded from the index that do not
         contain at least one of the specified index attributes (i.e. `fields`) or that
@@ -64,6 +63,7 @@ paths:
                   description: |
                     Must be equal to `"persistent"`.
                   type: string
+                  example: persistent
                 name:
                   description: |
                     An easy-to-remember name for the index to look it up or refer to it in index hints.
@@ -165,20 +165,17 @@ paths:
       responses:
         '200':
           description: |
-            If the index already exists, then a *HTTP 200* is
-            returned.
+            The index exists already.
         '201':
           description: |
-            If the index does not already exist and could be created, then a *HTTP 201*
-            is returned.
+            The index is created as there is no such existing index.
         '400':
           description: |
-            If the collection already contains documents and you try to create a unique
-            persistent index in such a way that there are documents violating the
-            uniqueness, then a *HTTP 400* is returned.
+            You try to create a unique persistent index but there are already
+            documents in the collection that violate the uniqueness requirement.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is returned.
+            The collection is unknown.
       tags:
         - Indexes
 ```

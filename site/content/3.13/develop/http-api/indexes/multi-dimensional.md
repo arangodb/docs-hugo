@@ -13,8 +13,7 @@ paths:
       operationId: createIndexMdi
       description: |
         Creates a multi-dimensional index for the collection `collection-name`, if
-        it does not already exist. The call expects an object containing the index
-        details.
+        it does not already exist.
       parameters:
         - name: database-name
           in: path
@@ -45,6 +44,7 @@ paths:
                   description: |
                     Must be equal to `"mdi"` or `"mdi-prefixed"`.
                   type: string
+                  example: mdi
                 name:
                   description: |
                     An easy-to-remember name for the index to look it up or refer to it in index hints.
@@ -136,18 +136,16 @@ paths:
       responses:
         '200':
           description: |
-            If the index already exists, then a *HTTP 200* is
-            returned.
+            The index exists already.
         '201':
           description: |
-            If the index does not already exist and could be created, then a *HTTP 201*
-            is returned.
-        '404':
-          description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is returned.
+            The index is created as there is no such existing index.
         '400':
           description: |
-            If the index definition is invalid, then a *HTTP 400* is returned.
+            The index definition is invalid.
+        '404':
+          description: |
+            The collection is unknown.
       tags:
         - Indexes
 ```
