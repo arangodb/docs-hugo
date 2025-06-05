@@ -65,6 +65,16 @@ paths:
                   maxItems: 1
                   items:
                     type: string
+                parallelism:
+                  description: |
+                    The number of threads to use for indexing the fields. Default: `2`
+                  type: integer
+                inBackground:
+                  description: |
+                    This attribute can be set to `true` to create the index
+                    in the background, not write-locking the underlying collection for
+                    as long as if the index is built in the foreground. The default value is `false`.
+                  type: boolean
                 params:
                   description: |
                     The parameters as used by the Faiss library.
