@@ -6,6 +6,8 @@ description: >-
   You can index vector embeddings to allow queries to quickly find semantically
   similar documents
 ---
+<small>Introduced in: v3.12.4</small>
+
 Vector indexes let you index vector embeddings stored in documents. Such
 vectors are arrays of numbers that represent the meaning and relationships of
 data numerically and can be generated with machine learning models.

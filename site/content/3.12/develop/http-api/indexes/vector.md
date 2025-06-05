@@ -4,6 +4,8 @@ menuTitle: Vector
 weight: 35
 description: ''
 ---
+<small>Introduced in: v3.12.4</small>
+
 ## Create a vector index
 
 ```openapi
@@ -52,15 +54,17 @@ paths:
                   type: string
                 fields:
                   description: |
-                    A list with a single attribute path to specify
+                    A list with exactly one attribute path to specify
                     where the vector embedding is stored in each document. The vector data needs
                     to be populated before creating the index.
                     
                     If you want to index another vector embedding attribute, you need to create a
                     separate vector index.
                   type: array
+                  minItems: 1
+                  maxItems: 1
                   items:
-                    type: object
+                    type: string
                 params:
                   description: |
                     The parameters as used by the Faiss library.

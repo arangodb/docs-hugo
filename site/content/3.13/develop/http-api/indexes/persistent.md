@@ -81,6 +81,7 @@ paths:
 
                     You can expand one array attribute with `[*]`.
                   type: array
+                  minItems: 1
                   items:
                     type: string
                 storedValues:

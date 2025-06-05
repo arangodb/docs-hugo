@@ -53,8 +53,10 @@ paths:
                   type: string
                 fields:
                   description: |
-                    an array with exactly one attribute path.
+                    A list with exactly one attribute path.
                   type: array
+                  minItems: 1
+                  maxItems: 1
                   items:
                     type: string
                 expireAfter:

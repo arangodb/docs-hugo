@@ -73,6 +73,8 @@ paths:
                     All documents which do not have the attribute paths or which have
                     values that are not suitable are ignored.
                   type: array
+                  minItems: 1
+                  maxItems: 2
                   items:
                     type: string
                 geoJson:

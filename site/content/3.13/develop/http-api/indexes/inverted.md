@@ -58,6 +58,7 @@ paths:
                     default options, or objects to specify options for the fields (with the
                     attribute path in the `name` property), or a mix of both.
                   type: array
+                  minItems: 1
                   items:
                     type: object
                     required:

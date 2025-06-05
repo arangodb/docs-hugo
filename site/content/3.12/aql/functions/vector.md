@@ -6,6 +6,8 @@ description: >-
   The functions for vector search let you quickly find semantically similar
   documents utilizing indexed vector embeddings
 ---
+<small>Introduced in: v3.12.4</small>
+
 To use vector search, you need to have vector embeddings stored in documents
 and the attribute that stores them needs to be indexed by a
 [vector index](../../index-and-search/indexing/working-with-indexes/vector-indexes.md).

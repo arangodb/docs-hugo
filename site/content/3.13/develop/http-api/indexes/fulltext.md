@@ -59,9 +59,10 @@ paths:
                   type: string
                 fields:
                   description: |
-                    an array of attribute names. Currently, the array is limited
-                    to exactly one attribute.
+                    A list with exactly one attribute path.
                   type: array
+                  minItems: 1
+                  maxItems: 1
                   items:
                     type: string
                 minLength:
