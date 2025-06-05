@@ -1,14 +1,20 @@
-<div class="flex-container">
-    <figure>
-    {{- partial "shortcodes/base-image.html" (dict
-        "src"          (.Get "src")
-        "class"          (.Get "class" | default "" )
-        "style"         (.Get "style" | default "" )
-        "size"          (.Get "size" | default "" )
-        "alt"           (.Get "alt" | default "" )
-    ) }}
-    <figcaption>
-        <div class="caption">{{ .Get "alt" }}</div>
-    </figcaption>
-    </figure>
-</div>
+{{- if not .Page.File }}
+  {{- errorf ".Page.File not defined while processing image shortcode with '%v' for %v" .Destination .Page.RelPermalink }}
+{{- end }}
+{{- $src := .Get "src" }}
+{{- $alt := .Get "alt" }}
+{{- $file := .Page.File }}
+{{- $class := .Get "class" }}
+{{- $style := .Get "style" }}
+{{- if not (or $class $style) }}
+  {{- errorf "Use native Markdown image syntax unless you need to apply CSS classes or inline styles for '%v' in %v" $src $file.Path }}
+{{- end }}
+{{- $path := path.Join $file.Dir $src }}
+{{- $img := resources.Get $path }}
+{{- if $img -}}
+<img alt="{{ $alt }}" src="{{ $img.RelPermalink }}"
+  {{- with $class }} class="{{ . }}"{{ end }}
+  {{- with $style }} style="{{ . | safeCSS }}"{{ end }}>
+{{- else }}
+  {{- errorf "<error code=1>Broken image reference '%v' found in %v </error><br>" $src $file.Path }}
+{{- end }}
