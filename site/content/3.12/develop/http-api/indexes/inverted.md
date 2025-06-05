@@ -44,6 +44,7 @@ paths:
                   description: |
                     Must be equal to `"inverted"`.
                   type: string
+                  example: inverted
                 name:
                   description: |
                     An easy-to-remember name for the index to look it up or refer to it in index hints.
@@ -57,6 +58,7 @@ paths:
                     default options, or objects to specify options for the fields (with the
                     attribute path in the `name` property), or a mix of both.
                   type: array
+                  minItems: 1
                   items:
                     type: object
                     required:
@@ -625,14 +627,13 @@ paths:
       responses:
         '200':
           description: |
-            If the index already exists, then a *HTTP 200* is returned.
+            The index exists already.
         '201':
           description: |
-            If the index does not already exist and can be created, then a *HTTP 201*
-            is returned.
+            The index is created as there is no such existing index.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is returned.
+            The collection is unknown.
       tags:
         - Indexes
 ```
