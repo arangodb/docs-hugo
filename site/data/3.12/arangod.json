@@ -1393,7 +1393,7 @@
       "agent",
       "single"
     ],
-    "default" : 7735567360,
+    "default" : 7735569408,
     "deprecatedIn" : null,
     "description" : "The global size limit for all caches (in bytes).",
     "dynamic" : true,
@@ -2313,7 +2313,7 @@
       "agent",
       "single"
     ],
-    "default" : "",
+    "default" : "/var/lib/arangodb3",
     "deprecatedIn" : null,
     "description" : "The path to the database directory.",
     "dynamic" : false,
@@ -2779,7 +2779,7 @@
       "dbserver",
       "single"
     ],
-    "default" : 6188453888,
+    "default" : 6188455526,
     "deprecatedIn" : null,
     "description" : "Maximum memory usage (in bytes) to be used by all ongoing dumps.",
     "dynamic" : true,
@@ -3474,7 +3474,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "./js/apps",
+    "default" : "/var/lib/arangodb3-apps",
     "deprecatedIn" : null,
     "description" : "The directory for Foxx applications.",
     "dynamic" : false,
@@ -3738,7 +3738,6 @@
       "single"
     ],
     "default" : [
-      "./enterprise/js"
     ],
     "deprecatedIn" : null,
     "description" : "Additional paths containing JavaScript modules.",
@@ -3811,7 +3810,7 @@
       "coordinator",
       "single"
     ],
-    "default" : "./js",
+    "default" : "/usr/share/arangodb3/js",
     "deprecatedIn" : null,
     "description" : "A path to the directory containing the JavaScript startup scripts.",
     "dynamic" : false,
@@ -4257,9 +4256,9 @@
       "agent",
       "single"
     ],
-    "default" : "",
+    "default" : "-",
     "deprecatedIn" : null,
-    "description" : "shortcut for '--log.output file://<filename>'",
+    "description" : "Shortcut for `--log.output file://<filename>`",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -4283,7 +4282,7 @@
     ],
     "default" : "",
     "deprecatedIn" : null,
-    "description" : "group to use for new log file, user must be a member of this group",
+    "description" : "The group to use for a new log file. The user must be a member of this group.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -4307,7 +4306,7 @@
     ],
     "default" : "",
     "deprecatedIn" : null,
-    "description" : "mode to use for new log file, umask will be applied as well",
+    "description" : "The mode to use for a new log file. The umask is applied as well.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -4517,7 +4516,7 @@
       "info"
     ],
     "deprecatedIn" : null,
-    "description" : "Set the topic-specific log level, using `--log.level level` for the general topic or `--log.level topic=level` for the specified topic (can be specified multiple times).\nAvailable log levels: fatal, error, warning, info, debug, trace.\nAvailable log topics: all, audit-service, audit-document, audit-view, audit-collection, audit-database, audit-authorization, audit-authentication, audit-hotbackup, libiresearch, deprecation, views, v8, validation, ttl, trx, arangosearch, threads, syscall, supervision, statistics, startup, ssl, security, rocksdb, restore, requests, rep-wal, rep-state, replication2, replication, queries, memory, maintenance, license, httpclient, heartbeat, graphs, flush, general, engines, dump, development, crash, config, communication, cluster, cache, bench, backup, authorization, authentication, aql, agencystore, agencycomm, agency.",
+    "description" : "Set the topic-specific log level, using `--log.level level` for the general topic or `--log.level topic=level` for the specified topic (can be specified multiple times).\n\nAvailable log levels: fatal, error, warning, info, debug, trace.\n\nAvailable log topics: all, agency, agencycomm, agencystore, aql, arangosearch, audit-authentication, audit-authorization, audit-collection, audit-database, audit-document, audit-hotbackup, audit-service, audit-view, authentication, authorization, backup, bench, cache, cluster, communication, config, crash, deprecation, development, dump, engines, flush, general, graphs, heartbeat, httpclient, libiresearch, license, maintenance, memory, queries, rep-state, rep-wal, replication, replication2, requests, restore, rocksdb, security, ssl, startup, statistics, supervision, syscall, threads, trx, ttl, v8, validation, views.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -4787,7 +4786,7 @@
     ],
     "default" : true,
     "deprecatedIn" : null,
-    "description" : "shorten filenames in log output (use with --log.line-number)",
+    "description" : "Shorten filenames in log output (use with `--log.line-number`).",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
@@ -5670,7 +5669,7 @@
     "type" : "boolean"
   },
   "query.global-memory-limit" : {
-    "base" : 33089753088,
+    "base" : 33089761280,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -5678,7 +5677,7 @@
       "agent",
       "single"
     ],
-    "default" : 26802700002,
+    "default" : 26802706636,
     "deprecatedIn" : null,
     "description" : "The memory threshold for all AQL queries combined (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -6005,7 +6004,7 @@
     "type" : "uint64"
   },
   "query.memory-limit" : {
-    "base" : 33089753088,
+    "base" : 33089761280,
     "category" : "option",
     "component" : [
       "coordinator",
@@ -6013,7 +6012,7 @@
       "agent",
       "single"
     ],
-    "default" : 19853851853,
+    "default" : 19853856768,
     "deprecatedIn" : null,
     "description" : "The memory threshold per AQL query (in bytes, 0 = no limit).",
     "dynamic" : true,
@@ -7061,6 +7060,36 @@
     "section" : "rocksdb",
     "type" : "uint64"
   },
+  "rocksdb.blob-file-starting-level" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 0,
+    "deprecatedIn" : null,
+    "description" : "The level from which on to use blob files in the documents column family. Requires `--rocksdb.enable-blob-files`.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : true,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.5"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 4294967295,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "rocksdb",
+    "type" : "uint32"
+  },
   "rocksdb.blob-garbage-collection-age-cutoff" : {
     "base" : 1,
     "category" : "option",
@@ -7146,6 +7175,36 @@
     "section" : "rocksdb",
     "type" : "boolean"
   },
+  "rocksdb.block-cache-estimated-entry-charge" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 0,
+    "deprecatedIn" : null,
+    "description" : "The estimated charge of cache entries (in bytes) for the hyper-clock cache.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : true,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.5"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 0,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "rocksdb",
+    "type" : "uint64"
+  },
   "rocksdb.block-cache-jemalloc-allocator" : {
     "category" : "option",
     "component" : [
@@ -7210,7 +7269,7 @@
       "agent",
       "single"
     ],
-    "default" : 9282680832,
+    "default" : 9282683289,
     "deprecatedIn" : null,
     "description" : "The size of block cache (in bytes).",
     "dynamic" : true,
@@ -7230,6 +7289,33 @@
     "requiresValue" : true,
     "section" : "rocksdb",
     "type" : "uint64"
+  },
+  "rocksdb.block-cache-type" : {
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : "lru",
+    "deprecatedIn" : null,
+    "description" : "The block cache type to use (note: the 'hyper-clock' cache type is experimental).",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.5"
+    ],
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "rocksdb",
+    "type" : "string",
+    "values" : "Possible values: \"hyper-clock\", \"lru\""
   },
   "rocksdb.bloom-filter-bits-per-key" : {
     "base" : 1,
@@ -7344,7 +7430,7 @@
       "agent",
       "single"
     ],
-    "default" : 2097152,
+    "default" : 8388608,
     "deprecatedIn" : null,
     "description" : "If non-zero, bigger reads are performed when doing compaction. If you run RocksDB on spinning disks, you should set this to at least 2 MB. That way, RocksDB's compaction does sequential instead of random reads.",
     "dynamic" : false,
@@ -7508,6 +7594,32 @@
     "hidden" : false,
     "introducedIn" : null,
     "longDescription" : "If set to `true`, the amount of data in each level\nof the LSM tree is determined dynamically to minimize the space amplification.\nOtherwise, the level sizes are fixed. The dynamic sizing allows RocksDB to\nmaintain a well-structured LSM tree regardless of total data size.",
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "rocksdb",
+    "type" : "boolean"
+  },
+  "rocksdb.enable-blob-cache" : {
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : false,
+    "deprecatedIn" : null,
+    "description" : "Enable caching of blobs in the block cache for the documents column family.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : true,
+    "hidden" : false,
+    "introducedIn" : [
+      "v3.12.5"
+    ],
     "obsolete" : false,
     "os" : [
       "linux"
@@ -7888,6 +8000,7 @@
     "introducedIn" : [
       "v3.10.0"
     ],
+    "longDescription" : "Note that format version 6 can only be read by RocksDB versions\n>= 8.6.0. Thus switching to format version 6 will make the database files\nincompatible with ArangoDB versions with a lower RocksDB version in case of\ndowngrading.",
     "maxInclusive" : true,
     "maxValue" : 4294967295,
     "minInclusive" : true,
@@ -7899,7 +8012,7 @@
     "requiresValue" : true,
     "section" : "rocksdb",
     "type" : "uint32",
-    "values" : "Possible values: 3, 4, 5"
+    "values" : "Possible values: 3, 4, 5, 6"
   },
   "rocksdb.intermediate-commit-count" : {
     "base" : 1,
@@ -8223,7 +8336,7 @@
       "agent",
       "single"
     ],
-    "default" : 2,
+    "default" : 4,
     "deprecatedIn" : null,
     "description" : "The maximum number of concurrent sub-jobs for a background compaction.",
     "dynamic" : false,
@@ -8251,7 +8364,7 @@
       "agent",
       "single"
     ],
-    "default" : 83886080,
+    "default" : 268435456,
     "deprecatedIn" : null,
     "description" : "The maximum total size of WAL files that force a flush of stale column families.",
     "dynamic" : false,
@@ -8958,7 +9071,7 @@
     "section" : "rocksdb",
     "type" : "boolean"
   },
-  "rocksdb.partition-files-for-documents" : {
+  "rocksdb.optimize-filters-for-memory" : {
     "category" : "option",
     "component" : [
       "dbserver",
@@ -8966,6 +9079,32 @@
       "single"
     ],
     "default" : false,
+    "deprecatedIn" : null,
+    "description" : "Optimize RocksDB bloom filters to reduce internal memory fragmentation.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.12.5"
+    ],
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "rocksdb",
+    "type" : "boolean"
+  },
+  "rocksdb.partition-files-for-documents" : {
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : true,
     "deprecatedIn" : null,
     "description" : "If enabled, the document data for different collections/shards will end up in different .sst files.",
     "dynamic" : false,
@@ -9127,7 +9266,7 @@
       "agent",
       "single"
     ],
-    "default" : 131072,
+    "default" : 1073741824,
     "deprecatedIn" : null,
     "description" : "The number of pending compaction bytes that triggers a write slowdown.",
     "dynamic" : false,
@@ -9157,7 +9296,7 @@
       "agent",
       "single"
     ],
-    "default" : 17179869184,
+    "default" : 34359738368,
     "deprecatedIn" : null,
     "description" : "The number of pending compaction bytes that triggers a full write stop.",
     "dynamic" : false,
@@ -9187,7 +9326,7 @@
       "agent",
       "single"
     ],
-    "default" : 2592000,
+    "default" : 86400,
     "deprecatedIn" : null,
     "description" : "Time-to-live (in seconds) for periodic compaction of .sst files, based on the file age (0 = no periodic compaction).",
     "dynamic" : false,
@@ -9249,6 +9388,32 @@
     "experimental" : false,
     "hidden" : true,
     "introducedIn" : null,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "required" : false,
+    "requiresValue" : false,
+    "section" : "rocksdb",
+    "type" : "boolean"
+  },
+  "rocksdb.prepopulate-blob-cache" : {
+    "category" : "option",
+    "component" : [
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : false,
+    "deprecatedIn" : null,
+    "description" : "Pre-populate the blob cache on flushes.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : true,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.12.5"
+    ],
     "obsolete" : false,
     "os" : [
       "linux"
@@ -9740,7 +9905,7 @@
       "agent",
       "single"
     ],
-    "default" : 12376907776,
+    "default" : 12376911052,
     "deprecatedIn" : null,
     "description" : "The maximum total size of in-memory write buffers (0 = unbounded).",
     "dynamic" : true,
@@ -10148,6 +10313,52 @@
     "requiresValue" : false,
     "section" : "server",
     "type" : "boolean"
+  },
+  "server.api-call-recording" : {
+    "category" : "command",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "deprecatedIn" : null,
+    "description" : "Record recent API calls for debugging purposes (default: true).",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : null,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : false,
+    "section" : "server",
+    "type" : "boolean"
+  },
+  "server.api-recording-memory-limit" : {
+    "category" : "command",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "deprecatedIn" : null,
+    "description" : "Memory limit for the list of ApiCallRecords.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : null,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "server",
+    "type" : "uint64"
   },
   "server.authentication" : {
     "category" : "option",
@@ -10650,6 +10861,93 @@
     "section" : "server",
     "type" : "string"
   },
+  "server.license-check-interval" : {
+    "base" : 120,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 120,
+    "deprecatedIn" : null,
+    "description" : "Sets the License check update interval in seconds (max 120 seconds)",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : null,
+    "maxInclusive" : true,
+    "maxValue" : 120,
+    "minInclusive" : true,
+    "minValue" : 1,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "server",
+    "type" : "uint64"
+  },
+  "server.license-disk-usage-limit" : {
+    "base" : 107374182400,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 107374182400,
+    "deprecatedIn" : null,
+    "description" : "Sets the Disk-Usage limit in bytes (max 100 GiB)",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : null,
+    "maxInclusive" : true,
+    "maxValue" : 107374182400,
+    "minInclusive" : true,
+    "minValue" : 1,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "server",
+    "type" : "uint64"
+  },
+  "server.license-disk-usage-update-interval" : {
+    "base" : 42000,
+    "category" : "option",
+    "component" : [
+      "coordinator",
+      "dbserver",
+      "agent",
+      "single"
+    ],
+    "default" : 42000,
+    "deprecatedIn" : null,
+    "description" : "Sets the Disk-Usage update interval in seconds (max 700 minutes)",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : null,
+    "maxInclusive" : true,
+    "maxValue" : 42000,
+    "minInclusive" : true,
+    "minValue" : 1,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "server",
+    "type" : "uint64"
+  },
   "server.maintenance-actions-block" : {
     "base" : 1,
     "category" : "option",
@@ -10755,6 +11053,34 @@
     "requiresValue" : true,
     "section" : "server",
     "type" : "uint32"
+  },
+  "server.maximal-number-sync-shard-actions" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "dbserver"
+    ],
+    "default" : 32,
+    "deprecatedIn" : null,
+    "description" : "The maximum number of SynchronizeShard actions which may be queued at any given time.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.12.5"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 1,
+    "obsolete" : false,
+    "os" : [
+      "linux"
+    ],
+    "requiresValue" : true,
+    "section" : "server",
+    "type" : "uint64"
   },
   "server.maximal-queue-size" : {
     "base" : 1,
@@ -11420,13 +11746,13 @@
     ],
     "default" : "",
     "deprecatedIn" : null,
-    "description" : "The keyfile used for secure connections.",
+    "description" : "The path to a PEM file (server certificate + private key) to use for secure connections.",
     "dynamic" : false,
     "enterpriseOnly" : false,
     "experimental" : false,
     "hidden" : false,
     "introducedIn" : null,
-    "longDescription" : "If you use SSL-encryption by binding the server to\nan SSL endpoint (e.g. `--server.endpoint ssl://127.0.0.1:8529`), you must use\nthis option to specify the filename of the server's private key. The file must\nbe PEM-formatted and contain both, the certificate and the server's private key.\n\nYou can generate a keyfile using OpenSSL as follows:\n\n```bash\n# create private key in file \"server.key\"\nopenssl genpkey -out server.key -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -aes-128-cbc\n\n# create certificate signing request (csr) in file \"server.csr\"\nopenssl req -new -key server.key -out server.csr\n\n# copy away original private key to \"server.key.org\"\ncp server.key server.key.org\n\n# remove passphrase from the private key\nopenssl rsa -in server.key.org -out server.key\n\n# sign the csr with the key, creates certificate PEM file \"server.crt\"\nopenssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt\n\n# combine certificate and key into single PEM file \"server.pem\"\ncat server.crt server.key > server.pem\n```\n\nYou may use certificates issued by a Certificate Authority or self-signed\ncertificates. Self-signed certificates can be created by a tool of your\nchoice. When using OpenSSL for creating the self-signed certificate, the\nfollowing commands should create a valid keyfile:\n\n```\n-----BEGIN CERTIFICATE-----\n\n(base64 encoded certificate)\n\n-----END CERTIFICATE-----\n-----BEGIN RSA PRIVATE KEY-----\n\n(base64 encoded private key)\n\n-----END RSA PRIVATE KEY-----\n```\n\nFor further information please check the manuals of the tools you use to create\nthe certificate.",
+    "longDescription" : "If you use TLS/SSL encryption by binding the\nserver to an `ssl://` endpoint (e.g. `--server.endpoint ssl://127.0.0.1:8529`),\nyou must use this option to specify the filename of the server's private key.\nThe file must be PEM-formatted and contain both, the certificate and the\nserver's private key.\n\nYou can generate a keyfile using OpenSSL as follows:\n\n```bash\n# create private key in file \"server.key\"\nopenssl genpkey -out server.key -algorithm RSA -pkeyopt rsa_keygen_bits:2048 -aes-128-cbc\n\n# create certificate signing request (csr) in file \"server.csr\"\nopenssl req -new -key server.key -out server.csr\n\n# copy away original private key to \"server.key.org\"\ncp server.key server.key.org\n\n# remove passphrase from the private key\nopenssl rsa -in server.key.org -out server.key\n\n# sign the csr with the key, creates certificate PEM file \"server.crt\"\nopenssl x509 -req -days 365 -in server.csr -signkey server.key -out server.crt\n\n# combine certificate and key into single PEM file \"server.pem\"\ncat server.crt server.key > server.pem\n```\n\nYou may use certificates issued by a Certificate Authority or self-signed\ncertificates. Self-signed certificates can be created by a tool of your\nchoice. When using OpenSSL for creating the self-signed certificate, the\nabove commands should create a valid keyfile with a structure like this:\n\n```\n-----BEGIN CERTIFICATE-----\n\n(base64 encoded certificate)\n\n-----END CERTIFICATE-----\n-----BEGIN RSA PRIVATE KEY-----\n\n(base64 encoded private key)\n\n-----END RSA PRIVATE KEY-----\n```\n\nFor further information please check the manuals of the tools you use to create\nthe certificate.",
     "obsolete" : false,
     "os" : [
       "linux"
