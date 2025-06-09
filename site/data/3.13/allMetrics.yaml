@@ -384,6 +384,26 @@
     If the network or the Agents are overloaded, it can help to move
     Agent instances to separate machines.
 
+- name: arangodb_api_recording_call_time
+  type: histogram
+  category: Statistics
+  help: |
+    API recording runtime histogram.
+  description: |
+    Execution time histogram for API recording calls in nanoseconds.
+    
+    This histogram tracks the time it takes to record API calls in the ApiRecordingFeature.
+    The histogram uses a logarithmic scale with base 2, starting at 0 and going up to 16000.0 nanoseconds,
+    with 9 buckets.
+  unit: nanoseconds
+  introducedIn: "3.12.5"
+  category: Agency
+  complexity: high
+  exposedBy:
+    - agent
+    - coordinator
+    - dbserver
+    - single
 - name: arangodb_aql_all_query_total
   renamedFrom: arangodb_aql_all_query
   introducedIn: "3.8.0"
@@ -679,83 +699,75 @@
     Total execution time of all AQL queries, in milliseconds,
     including all slow queries.
 
+- name: arangodb_async_existing_promises
+  introducedIn: "3.12.4"
+  help: |
+    Number of currently existing asynchronous promises.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - coordinator
+  description: |
+    Number of currently existing asynchronous promises.
+
+- name: arangodb_async_existing_thread_registries
+  introducedIn: "3.12.4"
+  help: |
+    Number of threads that started currently existing asyncronous operations.
+  unit: number
+  type: gauge
+  category: Statistics
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - coordinator
+  description: |
+    Number of threads that started currently existing asyncronous operations. The thread itself does not need to exist any more. This number also includes still running threads that have started asyncronous operations which do not exist any more.
+
 - name: arangodb_async_promises_total
   introducedIn: "3.12.4"
   help: |
-    Total number of registered asynchronous promises since database creation.
+    Total number of created asynchronous promises since database creation.
   unit: number
   type: counter
   category: Statistics
   complexity: advanced
   exposedBy:
     - dbserver
+    - coordinator
   description: |
-    Total number of registered asynchronous promises since database creation.
+    Total number of created asynchronous promises since database creation.
 
 - name: arangodb_async_ready_for_deletion_promises
   introducedIn: "3.12.4"
   help: |
-    Number of currently registered asynchronous promises that wait for their garbage collection.
+    Number of currently existing asynchronous promises that wait for their garbage collection.
   unit: number
   type: gauge
   category: Statistics
   complexity: advanced
   exposedBy:
     - dbserver
+    - coordinator
   description: |
-    Number of currently registered asynchronous promises that wait for their garbage collection.
+    Number of currently existing asynchronous promises that wait for their garbage collection.
 
-- name: arangodb_async_registered_promises
+- name: arangodb_async_thread_registries_total
   introducedIn: "3.12.4"
   help: |
-    Number of currently registered asynchronous promises.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - dbserver
-  description: |
-    Number of currently registered asynchronous promises.
-
-- name: arangodb_async_registered_threads
-  introducedIn: "3.12.4"
-  help: |
-    Number of threads the asynchronous registry iterates over to list all asynchronous promises.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - dbserver
-  description: |
-    Number of threads the asynchronous registry iterates over to list all asynchronous promises.
-
-- name: arangodb_async_running_threads
-  introducedIn: "3.12.4"
-  help: |
-    Number of currently running threads that registered asynchronous promises.
-  unit: number
-  type: gauge
-  category: Statistics
-  complexity: advanced
-  exposedBy:
-    - dbserver
-  description: |
-    Number of currently running threads that registered asynchronous promises.
-
-- name: arangodb_async_threads_total
-  introducedIn: "3.12.4"
-  help: |
-    Total number of threads that registered asynchronous promises since database creation.
+    Total number of threads that started asynchronous operations since database creation.
   unit: number
   type: counter
   category: Statistics
   complexity: advanced
   exposedBy:
     - dbserver
+    - coordinator
   description: |
-    Total number of threads that registered asynchronous promises since database creation.
+    Total number of threads that started asynchronous operations since database creation.
 
 - name: arangodb_client_connection_statistics_bytes_received
   introducedIn: "3.8.0"
@@ -5689,9 +5701,7 @@
   category: Replication
   complexity: simple
   exposedBy:
-    - coordinator
     - dbserver
-    - agent
   description: |
     Number of leader shards not fully replicated. This is counted for all
     shards for which this server is currently the leader. The number is
@@ -6314,6 +6324,38 @@
     This metric exhibits the RocksDB metric `rocksdb-block-cache-capacity`.
     It shows the block cache capacity in bytes. This can be configured with
     the `--rocksdb.block-cache-size` startup option.
+
+- name: rocksdb_block_cache_charge_per_entry
+  introducedIn: "3.12.2"
+  help: |
+    Average size of entries in RocksDB block cache.
+  unit: bytes
+  type: gauge
+  category: RocksDB
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    The metric shows the average size of cache entry value in the RocksDB
+    block cache.
+
+- name: rocksdb_block_cache_entries
+  introducedIn: "3.12.2"
+  help: |
+    Number of entries in the RocksDB block cache.
+  unit: number
+  type: gauge
+  category: RocksDB
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    This metric shows the total number of entries present in the RocksDB block
+    cache.
 
 - name: rocksdb_block_cache_pinned_usage
   introducedIn: "3.6.1"
@@ -7122,6 +7164,41 @@
     nasty delays in database operations are incurred. If in doubt,
     contact ArangoDB support.
 
+- name: rocksdb_live_blob_file_garbage_size
+  introducedIn: "3.12.2"
+  help: |
+    Size of garbage in live RocksDB .blob files.
+  unit: bytes
+  type: gauge
+  category: RocksDB
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    This metric exhibits the RocksDB metric `rocksdb-live-blob-file-garbage-size`.
+    It shows the total amount of garbage (obsolete, unreferenced blobs) in bytes
+    over in .blob files belonging to the latest LSM tree, summed over all
+    column families that use blob files.
+
+- name: rocksdb_live_blob_file_size
+  introducedIn: "3.12.2"
+  help: |
+    Size of live RocksDB .blob files.
+  unit: bytes
+  type: gauge
+  category: RocksDB
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    This metric exhibits the RocksDB metric `rocksdb-live-blob-file-size`.
+    It shows the total size in bytes of all .blob files belonging to the latest
+    LSM tree, summed over all column families that use blob files.
+
 - name: rocksdb_live_sst_files_size
   introducedIn: "3.6.1"
   help: |
@@ -7205,6 +7282,23 @@
   description: |
     This metric exhibits the RocksDB metric `rocksdb-min-log-number-to-keep`.
     It shows the minimum log number of the log files that should be kept.
+
+- name: rocksdb_num_blob_files
+  introducedIn: "3.12.2"
+  help: |
+    Number of live RocksDB .blob files.
+  unit: number
+  type: gauge
+  category: RocksDB
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    This metric exhibits the RocksDB metric `rocksdb-num-blob-files`.
+    It shows the total number of .blob files belonging to the latest
+    LSM tree, summed over all column families that use blob files.
 
 - name: rocksdb_num_deletes_active_mem_table
   introducedIn: "3.6.1"
