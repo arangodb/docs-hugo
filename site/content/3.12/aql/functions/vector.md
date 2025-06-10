@@ -76,7 +76,6 @@ can provide.
 
 - **vector1** (array of numbers): The first vector. Either this parameter or
   `vector2` needs to reference a stored attribute holding the vector embedding.
-  attribute of a stored document that stores a vector, like `doc.vector`
 - **vector2** (array of numbers): The second vector. Either this parameter or
   `vector1` needs to reference a stored attribute holding the vector embedding.
 - **options** (object, _optional_):
@@ -141,7 +140,6 @@ the `l2` metric can provide.
 
 - **vector1** (array of numbers): The first vector. Either this parameter or
   `vector2` needs to reference a stored attribute holding the vector embedding.
-  attribute of a stored document that stores a vector, like `doc.vector`
 - **vector2** (array of numbers): The second vector. Either this parameter or
   `vector1` needs to reference a stored attribute holding the vector embedding.
 - **options** (object, _optional_):
