@@ -82,11 +82,10 @@ be exclusive to the Enterprise Edition.
 
 From version 3.12.5 onward, the **Community Edition** includes all
 Enterprise Edition features without time restrictions. It is governed by the
-[ArangoDB Community License](https://arangodb.com/community-license). <!-- TODO: Link to new terms -->
+[ArangoDB Community License](https://arangodb.com/community-license).
 You can download the extensively tested prepackaged binaries and official
-Docker images for free.
-The use for commercial purposes and distribution is prohibited for production,
-but development and testing is allowed without a license even for commercial use.
+Docker images for free. The use for commercial purposes and distribution is
+prohibited for production without a valid license.
 The dataset size is limited to a 100 GB. If you exceed the size limit, you get
 warnings for two days and can bring the deployment back below 100 GB. If you don't,
 then the deployment enters read-only mode for two days and then shuts down.
