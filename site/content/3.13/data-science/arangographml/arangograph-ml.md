@@ -61,7 +61,6 @@ Node Classification is used to categorize the nodes in your graph based on their
 **Use cases include:**
 - Entity categorization (Example, movies into genres, users into segments)
 - Fraud detection in transaction networks
-- Anomaly detection in IT or social graphs
 
 **Configuration Parameters:**
 - **Type of Training Job:** Node classification
@@ -81,7 +80,6 @@ Node Embedding is used to generate vector embeddings (dense numerical representa
 **Use cases include:**
 - Similarity search (Example, finding similar products, users, or documents)
 - Link prediction (Example, suggesting new connections)
-- Input for downstream ML tasks like clustering or visualization
 
 **Configuration Parameters:**
 - **Type of Training Job:** Node embeddings
@@ -115,17 +113,21 @@ Review the results of different model runs and configurations.
 Select the best performing model suitable for your prediction task.
 
 ![Model Selection](../../../images/graph-ml-model.png)
+
 ## Prediction Phase
-Once the best-performing model has been selected, you move to the final step of the GraphML pipeline: generating predictions for new or unlabeled data.
+
+Once the best-performing model has been selected, the final step of the GraphML pipeline is to generate predictions for new or unlabeled data
+
 ### Overview
-The Prediction interface allows you to run inference using the selected model. You can define how predictions are executed, which collections are involved, and whether new or outdated documents should be automatically featurized before prediction.
+
+The Prediction interface allows inference to be run using the selected model. It enables configuration of how predictions are executed, which collections are involved, and whether new or outdated documents should be automatically featurized before prediction.
 
 ![prediction phase](../../../images/graph-prediction.png)
 
 ### Configuration Options
-In the Prediction screen, you will see the following configuration options:
+The Prediction screen displays the following configuration options:
 
-- Selected Model: Displays the model you selected during the Model Selection phase. This model will be used to perform inference.
+- Selected Model: Displays the model selected during the Model Selection phase. This model will be used to perform inference.
 
 - Target Vertex Collection: This is the vertex collection on which predictions will be applied.
 
@@ -140,7 +142,7 @@ This option controls whether newly added documents are automatically featurized.
 **Featurize Outdated Documents:**
 Enable or disable the featurization of outdated documents. Outdated documents are those whose attributes (used during featurization) have changed since the last feature computation. This ensures prediction results are based on up-to-date information.
 
-These options give you flexibility in handling dynamic graph data and keeping your predictions relevant without having to repeat the entire ML workflow.
+These options provide flexibility in handling dynamic graph data and keeping predictions relevant without repeating the entire ML workflow.
 
 **Data load batch size** – Specifies the number of documents to load in a single batch (Example, 500000).
 
