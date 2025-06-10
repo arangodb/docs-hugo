@@ -1,6 +1,6 @@
 ---
-title: ArangoGraphML UI
-menuTitle: ArangGraphML UI
+title: ArangoGraphML Web Interface
+menuTitle: ArangoGraphML Web Interface
 weight: 15
 description: >-
  Enterprise-ready, graph-powered machine learning as a cloud service or self-managed
@@ -8,29 +8,31 @@ aliases:
   - getting-started-with-arangographml
 ---
 Solve high-computational graph problems with Graph Machine Learning. Apply ML on a selected graph to predict connections, get better product recommendations, classify nodes, and perform node embeddings. Configure and run the whole machine learning flow entirely in the web interface.
-## Creating a GraphML Project via the Web Interface
-To create a new GraphML project using the ArangoDB Web UI, follow these steps:
-1. **Open the Web Interface** – Launch the ArangoDB web interface in your browser.
-2. **Select the Target Database** – From the **Database** dropdown in the left-hand sidebar, select the database where the project should reside.
-3. **Navigate to the Data Science Section** – In the left-hand navigation menu, click on **Data Science** to open the GraphML project management interface.
-![Navigate to Data Science](../../../images/datadscience-graphml.png)  
-4. **Click "Add new project"** – In the **GraphML projects** view, click the green **Add new project** button at the top-right.
-5. **Fill in Project Details** – A modal titled **Create ML project** will appear. Enter a **name** for your machine learning project and review the information.
-6. **Create the Project** – Click the **Create project** button to finalize the creation.
-7. **Verify Project in the List** – After creation, the new project will appear in the list under **GraphML projects**. Click the project name to enter and begin creating ML jobs like Featurization, Training, or Prediction.
+
+## Creating a GraphML Project
+
+To create a new GraphML project using the ArangoDB Web Interface, follow these steps:
+
+- **Select the Target Database** – From the **Database** dropdown in the left-hand sidebar, select the database where the project should reside.
+- **Navigate to the Data Science Section** – In the left-hand navigation menu, click on Data Science to open the GraphML project management interface, then click on RunGraphML.
+![Navigate to Data Science](../../../images/datascience-intro.jpg)  
+- **Click "Add new project"** – In the **GraphML projects** view, click  **Add new project**.
+- **Fill in Project Details** – A modal titled **Create ML project** will appear. Enter a **name** for your machine learning project.
+- **Create the Project** – Click the **Create project** button to finalize the creation.
+- **Verify Project in the List** – After creation, the new project will appear in the list under **GraphML projects**. Click the project name to enter and begin creating ML jobs like Featurization, Training, Model Selection, Prediction.
 
 ## Featurization Phase
+
 After clicking on a project name, you are taken to a screen where you can configure and start a new Featurization job. Follow these steps:
-1. **View the ML Workflow Tabs** – You’ll see the four-step ML workflow: `Featurization`, `Training`, `Model Selection`, and `Prediction`.
-2. **Select a Graph** – In the **Features** section, choose your target graph from the **Select a graph** dropdown (e.g., `imdb`).
-3. **Choose Vertex Collections** – Pick the vertex collections (e.g., `movie`, `person`) that you want to include for feature extraction.
-4. **Select Attributes** – From the dropdown, choose the attributes from your vertex collection to convert into machine-understandable features. 
-<!---The UI will inform you which attributes are invalid (e.g., lists or arrays).-->
+- **Select a Graph** – In the **Features** section, choose your target graph from the **Select a graph** dropdown (Example, `imdb`).
+- **Choose Vertex Collections** – Pick the vertex collections (Example, `movie`, `person`) that you want to include for feature extraction.
+- **Select Attributes** – From the dropdown, choose the attributes from your vertex collection to convert into machine-understandable features. 
+
 {{< info >}}
 The following attributes cannot be used: imdb_feat_description, imdb_feat_genre, imdb_feat_homepage, imdb_feat_id, imdb_feat_imageUrl, imdb_feat_imdb_x_hash, imdb_feat_imdbId, imdb_feat_label, imdb_feat_language, imdb_feat_lastModified, imdb_feat_released, imdb_feat_releaseDate, imdb_feat_runtime, imdb_feat_studio, imdb_feat_tagline, imdb_feat_title, imdb_feat_trailer, imdb_feat_type, imdb_feat_version, imdb_x, imdb_y, prediction_model_output. As some of their values are lists or arrays.
 {{< /info >}}
 
-5. **Expand Configuration and Advanced Settings** – Optionally adjust parameters like batch size, feature prefix, dimensionality reduction, and write behavior. These settings are also shown in JSON format on the right side of the screen for transparency.
+- **Expand Configuration and Advanced Settings** – Optionally adjust parameters like batch size, feature prefix, dimensionality reduction, and write behavior. These settings are also shown in JSON format on the right side of the screen for transparency.
 
 - **Batch size** – The number of documents to process in a single batch.
 - **Run analysis checks** – Whether to run analysis checks to perform a high-level analysis of the data quality before proceeding. Default is `true`.
@@ -39,51 +41,51 @@ The following attributes cannot be used: imdb_feat_description, imdb_feat_genre,
 - **Write to source graph** – Whether to store the generated features in the source graph. Default is `true`.
 - **Use feature store** – Enable the use of the Feature Store database, which stores features separately from the source graph. Default is `false`, so features are written to the source graph.
 
-6. **Click "Begin Featurization"** – Once all selections are done, click the **Begin featurization** button. This will trigger a **node embedding-compatible featurization job**.
-![Navigate to Featurization](../../../images/graph-ml-featurization.png) write this sattement Once the job status changes to "Ready for training" you can start the ML Training step
-Once the job status changes to **"Ready for training"**, you can start the **ML Training** step.
+- **Click "Begin Featurization"** – Once all selections are done, click the **Begin featurization** button. This will trigger a **node embedding-compatible featurization job**.Once the job status changes to **"Ready for training"**, you can start the **ML Training** step.
+
+![Navigate to Featurization](../../../images/graph-ml-ui-featurization.png) 
 
 ## Training Phase
 
 This is the second step in the ML workflow after featurization. In the training phase, you configure and launch a machine learning training job on your graph data.
 
-### Select Type of Training Job
+#### Select Type of Training Job
 
-You can choose between two types of training jobs depending on your use case:
+There are two types of training jobs available, depending on the use case:
 
 
-### Node Classification
+#### Node Classification
 
 Node Classification is used to categorize the nodes in your graph based on their features and structural connections within the graph.
 
 **Use cases include:**
-- Entity categorization (e.g., movies into genres, users into segments)
+- Entity categorization (Example, movies into genres, users into segments)
 - Fraud detection in transaction networks
 - Anomaly detection in IT or social graphs
 
 **Configuration Parameters:**
 - **Type of Training Job:** Node classification
-- **Target Vertex Collection:** Choose the collection to classify (e.g., `movie`)
-- **Batch Size:** Number of samples per training step (e.g., 256)
-- **Data Load Batch Size:** Number of documents fetched during data loading (e.g., 50000)
-- **Data Load Parallelism:** Number of threads used for data loading (e.g., 10)
+- **Target Vertex Collection:** Choose the collection to classify (Example, `movie`)
+- **Batch Size:** The nummer of documents processed in a single training iteration.  (Example, 256)
+- **Data Load Batch Size:** The number of documents loaded from ArangoDB into memory in a single batch during the data loading phase. (Example, 50000)
+- **Data Load Parallelism:** The number of parallel processes used when loading data from ArangoDB into memory for trainnig. (Example, 10)
 
 After setting these values, click the **Begin training** button to start the job.
 
 ![Node Classification](../../../images/ml-nodeclassification.png)
 
-###  Node Embedding
+####  Node Embedding
 
 Node Embedding is used to generate vector embeddings (dense numerical representations) of graph nodes that capture structural and feature-based information.
 
 **Use cases include:**
-- Similarity search (e.g., finding similar products, users, or documents)
-- Link prediction (e.g., suggesting new connections)
+- Similarity search (Example, finding similar products, users, or documents)
+- Link prediction (Example, suggesting new connections)
 - Input for downstream ML tasks like clustering or visualization
 
 **Configuration Parameters:**
 - **Type of Training Job:** Node embeddings
-- **Target Vertex Collection:** Select the collection to generate embeddings for (e.g., `movie` or `person`)
+- **Target Vertex Collection:** Select the collection to generate embeddings for (Example, `movie` or `person`)
 - No label is required for training in this mode
 
 Once the configuration is complete, click **Begin training** to launch the embedding job.
@@ -91,8 +93,7 @@ Once the configuration is complete, click **Begin training** to launch the embed
 ![Node Embeddings](../../../images/ml-node-embedding.png)
 
 
-After training is complete, you can proceed to **Model Selection**, the third step in the ArangoGraphML workflow.
-
+After training is complete, the next step in the ArangoGraphML workflow is **Model Selection**.
 
 ## Model Selection Phase
 
@@ -100,7 +101,7 @@ Once the training is finished, the job status updates to READY FOR MODEL SELECTI
 
 **Understanding Vertex Collections:**
 
-**X Vertex Collection:** These are the source nodes used during training. They represent the full set of nodes on which features were computed (e.g., person, movie).
+**X Vertex Collection:** These are the source nodes used during training. They represent the full set of nodes on which features were computed (Example, person, movie).
 
 **Y Vertex Collection:** These are the target nodes that contain labeled data. The labels in this collection are used to supervise the training process and are the basis for evaluating prediction quality.
 
@@ -108,8 +109,7 @@ The target collection is where the model’s predictions will be stored once pre
 
 **Model Selection Interface:**
 
-You will be shown a list of trained models along with performance metrics such as accuracy, loss, and evaluation scores.
-
+A list of trained models is displayed, along with performance metrics such as accuracy, Precision, Recall, F1 score, Loss.            
 Review the results of different model runs and configurations.
 
 Select the best performing model suitable for your prediction task.
@@ -129,24 +129,24 @@ In the Prediction screen, you will see the following configuration options:
 
 - Target Vertex Collection: This is the vertex collection on which predictions will be applied.
 
-- Prediction Type: Depending on your training job (e.g., classification or embedding), the prediction will output class labels or updated embeddings.
+- Prediction Type: Depending on the training job (Example, classification or embedding), the prediction will output class labels or updated embeddings.
 
 ### Featurization Settings
 Two toggles are available to control automatic featurization during prediction
 
 **Featurize New Documents:**
-Enable or disable the featurization of newly added documents. This is useful when new data is added after training and you want to ensure that predictions are still made without needing a full re-training process.
+This option controls whether newly added documents are automatically featurized. It is useful when new data arrives after training, allowing predictions to continue without requiring a full retraining process.
 
 **Featurize Outdated Documents:**
 Enable or disable the featurization of outdated documents. Outdated documents are those whose attributes (used during featurization) have changed since the last feature computation. This ensures prediction results are based on up-to-date information.
 
 These options give you flexibility in handling dynamic graph data and keeping your predictions relevant without having to repeat the entire ML workflow.
 
-**Data load batch size** – Specifies the number of documents to load in a single batch (e.g., 500000).
+**Data load batch size** – Specifies the number of documents to load in a single batch (Example, 500000).
 
-**Data load parallelism** – Number of parallel threads used to process the prediction workload (e.g., 10).
+**Data load parallelism** – Number of parallel threads used to process the prediction workload (Example, 10).
 
-**Prediction field** – The field in the documents where the predicted values will be stored (e.g., prediction).
+**Prediction field** – The field in the documents where the predicted values will be stored (Example, prediction).
 
 ### Enable Scheduling
 
@@ -163,19 +163,19 @@ This CRON pattern will execute the prediction **every year on January 1st at 00:
 Below the CRON field, a user-friendly scheduling interface helps translate it:
 
 - **Period**: Options include *Hourly*, *Daily*, *Weekly*, *Monthly*, or *Yearly*.
-- **Month**: *(e.g., January)*
-- **Day of Month**: *(e.g., 1)*
+- **Month**: *(Example, January)*
+- **Day of Month**: *(Example, 1)*
 - **Day of Week**: *(optional)*
-- **Hours and Minutes**: Set the exact time for execution *(e.g., 0:00)*
+- **Hours and Minutes**: Set the exact time for execution *(Example, 0:00)*
 
 
 ### Execute Prediction
 After reviewing the configuration, click the Run Prediction button. ArangoGraphML will then:
 
-1. Perform featurization 
+- Perform featurization 
 
-2. Run inference using the selected model
+- Run inference using the selected model
 
-3. Write prediction results into the target vertex collection or a specified output location
+- Write prediction results into the target vertex collection or a specified output location
 
-Once prediction is complete, you can analyze the results directly in the UI or export them for downstream use.
+Once prediction is complete, you can analyze the results directly in the Web Interface or export them for downstream use.
