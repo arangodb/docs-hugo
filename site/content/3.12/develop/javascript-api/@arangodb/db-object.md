@@ -1215,7 +1215,7 @@ See [`db._executeTransaction()`](../../transactions/javascript-transactions.md#e
 
 ## Global
 
-### `db._compact(options)`
+### `db._compact([options])`
 
 Compacts the entire data, for all databases.
 
@@ -1272,10 +1272,10 @@ Returns the current license.
 
 See [`db._getLicense()`](../../../operations/administration/license-management.md#check-the-license).
 
-### `db._setLicense(data)`
+### `db._setLicense(licenseString)`
 
 {{< tag "arangosh" >}}
 
 Sets a license.
 
-See [`db._setLicense(data)`](../../../operations/administration/license-management.md#apply-a-license).
+See [`db._setLicense()`](../../../operations/administration/license-management.md#apply-a-license).

@@ -92,7 +92,7 @@ RocksDB is based on a log-structured merge tree. A good introduction can be
 found in:
 
 - [www.benstopford.com/2015/02/14/log-structured-merge-trees/](http://www.benstopford.com/2015/02/14/log-structured-merge-trees/)
-- [blog.acolyer.org/2014/11/26/the-log-structured-merge-tree-lsm-tree/](https://blog.acolyer.org/2014/11/26/the-log-structured-merge-tree-lsm-tree/)
+- [blog.acolyer.org/2014/11/26/the-log-structured-merge-tree-lsm-tree/](https://web.archive.org/web/20241108174258/https://blog.acolyer.org/2014/11/26/the-log-structured-merge-tree-lsm-tree/)
 
 The basic idea is that data is organized in levels were each level is a factor
 larger than the previous. New data resides in smaller levels while old data

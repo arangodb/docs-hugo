@@ -3,7 +3,7 @@ title: Enterprise Edition License Management
 menuTitle: License Management
 weight: 20
 description: >-
-  How to manage the licenses of ArangoDB Enterprise Edition deployments
+  How to apply a license and check the licensing status of an ArangoDB deployment
 ---
 The Enterprise Edition of ArangoDB requires a license so that you can use
 ArangoDB for commercial purposes and have a dataset size over 100 GB. See
@@ -26,7 +26,7 @@ To use the Enterprise Edition, set the license via _arangosh_ like so:
 db._setLicense("<license-string>");
 ```
 
-You receive a message reporting whether the operation was successful.
+You receive a message reporting whether the operation succeeded.
 Please be careful to copy the exact license key string and to put it in
 quotes as shown above.
 
@@ -38,7 +38,7 @@ Your license has now been applied.
 
 ## Check the license
 
-At any point you may check the current state of your license in _arangosh_:
+At any point, you may check the current state of your license in _arangosh_:
 
 ```js
 db._getLicense();

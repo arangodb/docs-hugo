@@ -8,8 +8,8 @@ description: >-
 ArangoDB comes with a set of easy-to-understand graphs for demonstration
 purposes.
 
-- In the web interface, navigate to the **Graphs** section, click the
-  **Add Graph** card, go to the **Examples** tab, and click the **Create** button of one of the listed graphs.
+- In the web interface, navigate to the **Graphs** section, click **Add Graph**,
+  go to the **Examples** tab, and click the **Create** button of one of the listed graphs.
 
 - In _arangosh_, run `require("@arangodb/graph-examples/example-graph").loadGraph("<name>");`
   with `<name>` substituted by the name of an example graph listed below.

@@ -14,7 +14,7 @@ subsets of a graph or an entire graph.
 
 ## Create a named graph
 
-1. In the **Graphs** section, click the first card with the label **Add Graph**.
+1. In the **Graphs** section, click **Add graph**.
 2. Select a tab depending on which type of named graph you want to create.
    The **SatelliteGraph**, **SmartGraph**, and **EnterpriseGraph** tabs are
    only available for cluster deployments.
@@ -30,8 +30,8 @@ create them, see [Graphs](../../graphs/_index.md).
 
 ## View and edit the settings of a named graph
 
-1. In the **Graphs** section, click the _gear_ icon in the top right corner
-   of a graph's card.
+1. In the **Graphs** section, locate the row of the graph you want to edit and
+   click the _edit_ icon in the **Actions** column.
 2. The setting dialog opens. You can only edit certain fields. Fields that 
    cannot be modified are grayed out.
 3. Click the **Cancel** button or outside of the dialog to close it without
@@ -39,18 +39,18 @@ create them, see [Graphs](../../graphs/_index.md).
    
 ## Delete a named graph
 
-1. In the **Graphs** section, click the _gear_ icon in the top right corner
-   of a graph's card.
+1. In the **Graphs** section, locate the row of the graph you want to edit and
+   click the _edit_ icon in the **Actions** column.
 2. Click the **Delete** button.
-3. Optional: Tick the **also drop collections?** checkbox if you want to
-   delete the vertex and edge collections of the graph as well and not the
-   graph definition only. This deletes the collections with all the documents
+3. Optional: Enable the **Also drop collections** toggle if you want to
+   delete the vertex and edge collections of the graph in addition to the
+   graph definition. This deletes the collections with all the documents
    they contain and is irreversible!
-4. Confirm the deletion by clicking the **Yes** button.
+4. Confirm the deletion by clicking the **Delete** button.
 
 ## Graph viewer
 
-The graph viewer opens if you click a graph's card in the **Graphs** section.
+The graph viewer opens if you click the name or the row of a graph in the **Graphs** section.
 It randomly selects a start node and displays its neighborhood. By default,
 up to 250 nodes that are directly connected to the start node as well as
 their direct neighbors are selected. You can select one or more start nodes

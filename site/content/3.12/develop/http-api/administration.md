@@ -692,7 +692,7 @@ description: |-
   Query support information from a single server
 name: RestAdminSupportInfo
 ---
-var url = "/_admin/support-info";
+var url = "/_db/_system/_admin/support-info";
 var response = logCurlRequest("GET", url);
 assert(response.code === 200);
 assert(response.parsedBody.host !== undefined);
@@ -706,7 +706,7 @@ description: |-
 name: RestAdminSupportInfo
 type: cluster
 ---
-var url = "/_admin/support-info";
+var url = "/_db/_system/_admin/support-info";
 var response = logCurlRequest("GET", url);
 assert(response.code === 200);
 assert(response.parsedBody.deployment.servers !== undefined);
@@ -1024,13 +1024,9 @@ description: ''
 name: RestAdminLicenseGet
 type: cluster
 ---
-var assertTypeOf = require("jsunity").jsUnity.assertions.assertTypeOf;
 var url = "/_admin/license";
 var response = logCurlRequest('GET', url);
-
 assert(response.code === 200);
-assertTypeOf("string", response.parsedBody.license);
-
 logJsonResponse(response);
 ```
 
@@ -1751,11 +1747,8 @@ paths:
 description: ''
 name: RestEndpointGet
 ---
-var url = "/_api/endpoint";
-
+var url = "/_db/_system/_api/endpoint";
 var response = logCurlRequest('GET', url);
-
 assert(response.code === 200);
-
 logJsonResponse(response);
 ```

@@ -4793,7 +4793,6 @@ paths:
                     description: |
                       A unique identifier of the collection (deprecated).
                     type: string
-
                   type:
                     description: |
                       The type of the collection:

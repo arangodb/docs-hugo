@@ -208,8 +208,8 @@ EnterpriseGraphs. To get started, follow the steps outlined below.
    - For **Orphan collections**, insert a list of vertex collections
      that are part of the graph but not used in any edge definition.
 5. Click **Create**. 
-6. Click the card of the newly created graph use the functions of the Graph
-   Viewer to visually interact with the graph and manage the graph data.
+6. Click the name or row of the newly created graph to open the Graph Viewer if
+   you want to visually interact with the graph and manage the graph data.
 
 ![Create EnterpriseGraph](../../../images/graphs-create-enterprise-graph-dialog312.png)
    

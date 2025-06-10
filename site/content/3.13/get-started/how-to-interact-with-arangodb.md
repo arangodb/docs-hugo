@@ -41,21 +41,21 @@ programming language, and do all the talking to the server.
 Integrations combine a third-party technology with ArangoDB and can be seen as
 a translation layer that takes over the low-level communication with the server.
 
-### REST API
+### HTTP REST API
 
-Under the hood, all interactions with the server make use of its REST API.
-A [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)
-API is an application programming interface based on the HTTP protocol that
-powers the world wide web.
+Under the hood, all interactions with the server make use of its RESTful HTTP API.
+A [REST](https://en.wikipedia.org/wiki/Representational_state_transfer)-based
+API is an application programming interface using the HTTP protocol, the
+protocol that powers the world wide web.
 
 All requests from the outside to the server need to made against the respective
 endpoints of this API to perform actions. This includes the web interface, _arangosh_,
 as well as the drivers and integrations for different programming languages and
 environments. They all provide a convenient way to work with ArangoDB, but you
-may use the low-level REST API directly as needed.
+may use the low-level HTTP API directly as needed.
 
-See the [HTTP](../develop/http-api/_index.md) documentation to learn more about the API, how requests
-are handled and what endpoints are available.
+See the [HTTP API](../develop/http-api/_index.md) documentation to learn more
+about the API, how requests are handled, and what endpoints are available.
 
 ## Set Up and Deploy ArangoDB
 

@@ -14,7 +14,7 @@ Upgrading to version 7 is recommended.
 - [Code examples](https://github.com/arangodb/arangodb-java-driver/tree/v6/src/test/java/com/arangodb/example)
 - [JavaDoc](https://javadoc.io/doc/com.arangodb/arangodb-java-driver/6.25.0/index.html) (generated reference documentation)
 - [ChangeLog](https://github.com/arangodb/arangodb-java-driver/blob/v6/ChangeLog.md)
-- [Java VelocyPack](https://github.com/arangodb/java-velocypack) ([JavaDoc](https://arangodb.github.io/java-velocypack))
+- [Java VelocyPack](https://github.com/arangodb/java-velocypack) ([JavaDoc](https://www.javadoc.io/doc/com.arangodb/velocypack/latest/index.html))
 
 ## Supported versions
 

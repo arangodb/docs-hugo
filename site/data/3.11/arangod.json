@@ -12896,6 +12896,36 @@
     "section" : "server",
     "type" : "uint64"
   },
+  "server.maximal-number-sync-shard-actions" : {
+    "base" : 1,
+    "category" : "option",
+    "component" : [
+      "dbserver"
+    ],
+    "default" : 32,
+    "deprecatedIn" : null,
+    "description" : "The maximum number of SynchronizeShard actions which may be queued at any given time.",
+    "dynamic" : false,
+    "enterpriseOnly" : false,
+    "experimental" : false,
+    "hidden" : true,
+    "introducedIn" : [
+      "v3.12.5"
+    ],
+    "maxInclusive" : true,
+    "maxValue" : 18446744073709551615,
+    "minInclusive" : true,
+    "minValue" : 1,
+    "obsolete" : false,
+    "os" : [
+      "linux",
+      "macos",
+      "windows"
+    ],
+    "requiresValue" : true,
+    "section" : "server",
+    "type" : "uint64"
+  },
   "server.maximal-queue-size" : {
     "base" : 1,
     "category" : "option",

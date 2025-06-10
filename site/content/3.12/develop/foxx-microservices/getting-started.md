@@ -115,34 +115,34 @@ type and what the response body will represent.
 
 ## Try it out
 
-At this point you can upload the service folder as a zip archive from the
-web interface using the *Services* tab.
+Follow these steps to install your service:
 
-Click *Add Service* then pick the *Zip* option in the dialog. You will need
-to provide a *mount path*, which is the URL prefix at which the service will
-be mounted (e.g. `/getting-started`).
+1. Create a zip archive from the service folder.
+2. In the web interface, navigate to the **Services** section.
+3. Click **Add Service** and go to the **Upload** tab.
+4. Drag and drop the zip archive in the area of the **Upload** button or click
+   it to use the file chooser.
+5. Wait for the upload to complete, then click **Install**.
+6. A dialog opens. You need to provide a **Mount point**, which is the URL prefix
+   at which the service is made available (e.g. `/getting-started`).
+7. Click **Install**. The dialog disappears and the service shows up in the
+   list of services.
 
-Once you have picked the zip archive using the file picker, the upload should
-begin immediately and your service should be installed. Otherwise press the
-*Install* button and wait for the dialog to disappear and the service to show
-up in the service list.
+You can try out your service using the interactive Swagger UI:
 
-Click anywhere on the card with your mount path on the label to open the
-service's details.
+1. Click the mount point or the row of your service to open the service's details.
+2. Go to the **API** tab for the API documentation. You should see the route we
+   defined earlier (`/hello-world`) with the word `GET` next to it, indicating
+   the HTTP method it supports, and the `summary` we provided on the right.
+3. Click the route's path to expand the details for this endpoint.
+   The `description` we provided appears in the generated documentation
+   as well as the description we added to the `response` (which should correctly
+   indicate the content type `text/plain`, i.e. plain text).
+4. Click **Try it out** and then **Execute** to send a request to the endpoint.
+   You can see the equivalent cURL command for the request as well as the
+   service's response: `Hello World!`.
 
-In the API documentation you should see the route we defined earlier
-(`/hello-world`) with the word `GET` next to it indicating the HTTP method it
-supports and the `summary` we provided on the right. By clicking on the
-route's path you can open the documentation for the route.
-
-Note that the `description` we provided appears in the generated documentation
-as well as the description we added to the `response` (which should correctly
-indicate the content type `text/plain`, i.e. plain text).
-
-Click the *Try it out!* button to send a request to the route and you should
-see an example request with the service's response: "Hello World!".
-
-Congratulations! You have just created, installed and used your first Foxx service.
+Congratulations! You have just created, installed, and used your first Foxx service.
 
 ## Parameter validation
 
