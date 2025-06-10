@@ -67,14 +67,15 @@ paths:
                     type: string
                 parallelism:
                   description: |
-                    The number of threads to use for indexing the fields. Default: `2`
+                    The number of threads to use for indexing. Default: `2`
                   type: integer
                 inBackground:
                   description: |
-                    This attribute can be set to `true` to create the index
-                    in the background, not write-locking the underlying collection for
-                    as long as if the index is built in the foreground. The default value is `false`.
+                    Set this option to `true` to keep the collection/shards available for
+                    write operations by not using an exclusive write lock for the duration
+                    of the index creation.
                   type: boolean
+                  default: false
                 params:
                   description: |
                     The parameters as used by the Faiss library.
@@ -96,10 +97,11 @@ paths:
                       type: integer
                     nLists:
                       description: |
-                        The number of centroids in the index. What value to choose
+                        The number of Voronoi cells to partition the vector space
+                        into, respectively the number of centroids in the index. What value to choose
                         depends on the data distribution and chosen metric. According to
                         [The Faiss library paper](https://arxiv.org/abs/2401.08281), it should be
-                        around `N / 15` where `N` is the number of documents in the collection,
+                        around `15 * sqrt(N)` where `N` is the number of documents in the collection,
                         respectively the number of documents in the shard for cluster deployments.
                         A bigger value produces more correct results but increases the training time
                         and thus how long it takes to build the index. It cannot be bigger than the
@@ -123,16 +125,17 @@ paths:
                       default: 25
                     factory:
                       description: |
-                        You can specify a factory string to pass
-                        through to the underlying Faiss library, allowing you to combine different
-                        options, for example:
+                        You can specify an index factory string that is
+                        forwarded to the underlying Faiss library, allowing you to combine different
+                        advanced options. Examples:
                         - `"IVF100_HNSW10,Flat"`
                         - `"IVF100,SQ4"`
                         - `"IVF10_HNSW5,Flat"`
                         - `"IVF100_HNSW5,PQ256x16"`
-                        The base index must be an IVF to work with ArangoDB. For more information on
-                        how to create these custom indexes, see the
-                        [Faiss Wiki](https://github.com/facebookresearch/faiss/wiki/The-index-factory).
+                        The base index must be an inverted file (IVF) to work with ArangoDB.
+                        If you don't specify an index factory, the value is equivalent to
+                        `IVF<nLists>,Flat`. For more information on how to create these custom
+                        indexes, see the [Faiss Wiki](https://github.com/facebookresearch/faiss/wiki/The-index-factory).
                       type: string
       responses:
         '200':

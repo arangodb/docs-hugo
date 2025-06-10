@@ -73,10 +73,11 @@ paths:
                   type: integer
                 inBackground:
                   description: |
-                    You can set this option to `true` to create the index
-                    in the background, which will not write-lock the underlying collection for
-                    as long as if the index is built in the foreground. The default value is `false`.
+                    Set this option to `true` to keep the collection/shards available for
+                    write operations by not using an exclusive write lock for the duration
+                    of the index creation.
                   type: boolean
+                  default: false
       responses:
         '200':
           description: |

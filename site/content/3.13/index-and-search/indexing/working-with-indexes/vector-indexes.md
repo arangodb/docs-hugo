@@ -68,11 +68,18 @@ centroids and the quality of vector search thus degrades.
   
   If you want to index another vector embedding attribute, you need to create a
   separate vector index.
+- **parallelism** (number):
+  The number of threads to use for indexing. The default is `2`.
+- **inBackground** (boolean):
+  Set this option to `true` to keep the collection/shards available for
+  write operations by not using an exclusive write lock for the duration
+  of the index creation. The default is `false`.
 - **params**: The parameters as used by the Faiss library.
   - **metric** (string): Whether to use `cosine` or `l2` (Euclidean) distance calculation.
   - **dimension** (number): The vector dimension. The attribute to index needs to
     have this many elements in the array that stores the vector embedding.
-  - **nLists** (number): The number of centroids in the index. What value to choose
+  - **nLists** (number): The number of Voronoi cells to partition the vector space
+    into, respectively the number of centroids in the index. What value to choose
     depends on the data distribution and chosen metric. According to
     [The Faiss library paper](https://arxiv.org/abs/2401.08281), it should be
     around `N / 15` where `N` is the number of documents in the collection,
@@ -88,16 +95,17 @@ centroids and the quality of vector search thus degrades.
   - **trainingIterations** (number, _optional_): The number of iterations in the
     training process. The default is `25`. Smaller values lead to a faster index
     creation but may yield worse search results. 
-  - **factory** (string, _optional_): You can specify a factory string to pass
-    through to the underlying Faiss library, allowing you to combine different
-    options, for example:
+  - **factory** (string, _optional_): You can specify an index factory string that is
+    forwarded to the underlying Faiss library, allowing you to combine different
+    advanced options. Examples:
     - `"IVF100_HNSW10,Flat"`
     - `"IVF100,SQ4"`
     - `"IVF10_HNSW5,Flat"`
     - `"IVF100_HNSW5,PQ256x16"`
-    The base index must be an IVF to work with ArangoDB. For more information on
-    how to create these custom indexes, see the
-    [Faiss Wiki](https://github.com/facebookresearch/faiss/wiki/The-index-factory).
+    The base index must be an inverted file (IVF) to work with ArangoDB.
+    If you don't specify an index factory, the value is equivalent to
+    `IVF<nLists>,Flat`. For more information on how to create these custom
+    indexes, see the [Faiss Wiki](https://github.com/facebookresearch/faiss/wiki/The-index-factory).
 
 ## Interfaces
 

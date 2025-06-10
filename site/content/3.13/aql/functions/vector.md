@@ -42,16 +42,16 @@ Example:
 
 ```aql
 FOR doc IN coll
-  SORT APPROX_NEAR_L2(doc.vector, @q)
+  SORT APPROX_NEAR_COSINE(doc.vector, @q) DESC
   LIMIT 5
   RETURN doc
 ```
 
-For this query, a vector index over the `vector` attribute and with the `l2`
+For this query, a vector index over the `vector` attribute and with the `cosine`
 metric is required. The `@q` bind variable needs to be a vector (array of numbers)
 with the dimension as specified in the vector index. It defines the point at
-which to look for neighbors (up to `5` in this case). How many neighbors can be
-found depends on the data as well as the search effort (see the `nProbe` option).
+which to look for similar documents (up to `5` in this case). How many documents can
+be found depends on the data as well as the search effort (see the `nProbe` option).
 
 {{< info >}}
 - If there is more than one suitable vector index over the same attribute, it is
@@ -67,9 +67,9 @@ found depends on the data as well as the search effort (see the `nProbe` option)
 Retrieve the approximate angular similarity using the cosine metric, accelerated
 by a matching vector index.
 
-The closer the cosine similarity value is to 1, the more similar the two vectors
+The higher the cosine similarity value is, the more similar the two vectors
 are. The closer it is to 0, the more different they are. The value can also
-be up to -1, indicating that the vectors are not similar and point in opposite
+be negative, indicating that the vectors are not similar and point in opposite
 directions. You need to sort in descending order so that the most similar
 documents come first, which is what a vector index using the `cosine` metric
 can provide.
@@ -80,16 +80,16 @@ can provide.
 - **vector2** (array of numbers): The second vector. Either this parameter or
   `vector1` needs to reference a stored attribute holding the vector embedding.
 - **options** (object, _optional_):
-  - **nProbe** (number, _optional_): How many neighboring centroids to consider
-    for the search results. The larger the number, the slower the search but the
-    better the search results. If not specified, the `defaultNProbe` value of
-    the vector index is used.
+  - **nProbe** (number, _optional_): How many neighboring centroids respectively
+    closest Voronoi cells to consider for the search results. The larger the number,
+    the slower the search but the better the search results. If not specified, the
+    `defaultNProbe` value of the vector index is used.
 - returns **similarity** (number): The approximate angular similarity between
   both vectors.
 
 **Examples**
 
-Return the documents of up to `10` neighbors that are the closest to the vector
+Return up to `10` similar documents based on their closeness to the vector
 `@q` according to the cosine metric:
 
 ```aql
@@ -99,8 +99,8 @@ FOR doc IN coll
   RETURN doc
 ```
 
-Return the similarity value and the documents of up to `5` close neighbors,
-considering `20` neighboring centroids:
+Return up to `5` similar documents as well as the similarity value,
+considering `20` neighboring centroids respectively closest Voronoi cells:
 
 ```aql
 FOR doc IN coll
@@ -110,9 +110,9 @@ FOR doc IN coll
   RETURN MERGE( { similarity }, doc)
 ```
 
-Return the similarity and the document keys of up to `3` neighbors for multiple
-vectors using a subquery, here taking from ten random documents of the same
-collection:
+Return the similarity value and the document keys of up to `3` similar documents
+for multiple input vectors using a subquery. In this example, the input vectors
+are taken from ten random documents of the same collection:
 
 ```aql
 FOR docOuter IN coll
@@ -154,7 +154,7 @@ the `l2` metric can provide.
 
 **Examples**
 
-Return the documents of up to `10` neighbors that are the closest to the vector
+Return up to `10` similar documents based on their closeness to the vector
 `@q` according to the L2 (Euclidean) metric:
 
 ```aql
@@ -164,8 +164,8 @@ FOR doc IN coll
   RETURN doc
 ```
 
-Return the similarity value and the documents of up to `5` close neighbors,
-considering `20` neighboring centroids:
+Return up to `5` similar documents as well as the similarity value,
+considering `20` neighboring centroids respectively closest Voronoi cells:
 
 ```aql
 FOR doc IN coll
@@ -175,9 +175,9 @@ FOR doc IN coll
   RETURN MERGE( { similarity }, doc)
 ```
 
-Return the similarity and the document keys of up to `3` close neighbors for
-multiple vectors using a subquery, here taking from ten random documents of the
-same collection:
+Return the similarity value and the document keys of up to `3` similar documents
+for multiple input vectors using a subquery. In this example, the input vectors
+are taken from ten random documents of the same collection:
 
 ```aql
 FOR docOuter IN coll

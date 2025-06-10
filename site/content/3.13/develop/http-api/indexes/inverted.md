@@ -489,10 +489,11 @@ paths:
                   type: integer
                 inBackground:
                   description: |
-                    This attribute can be set to `true` to create the index
-                    in the background, not write-locking the underlying collection for
-                    as long as if the index is built in the foreground. The default value is `false`.
+                    Set this option to `true` to keep the collection/shards available for
+                    write operations by not using an exclusive write lock for the duration
+                    of the index creation.
                   type: boolean
+                  default: false
                 cleanupIntervalStep:
                   description: |
                     Wait at least this many commits between removing unused files in the
