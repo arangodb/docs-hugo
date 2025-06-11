@@ -8,7 +8,7 @@ aliases:
   - ../upgrading/community-to-enterprise-upgrade # 3.12 -> 3.13
 ---
 The Enterprise Edition of ArangoDB requires a license so that you can use
-ArangoDB for commercial purposes and have a dataset size over 100 GB. See
+ArangoDB for commercial purposes and have a dataset size over 100 GiB. See
 [ArangoDB Editions](../../about-arangodb/features/_index.md#arangodb-editions)
 for details.
 
@@ -70,9 +70,9 @@ The `diskUsage.status` attribute tells you the state of your Community Edition
 deployment with regard to the dataset size limit at a glance and can have the
 following values:
 
-- `good`: The dataset size of your deployment is below the 100 GB limit.
+- `good`: The dataset size of your deployment is below the 100 GiB limit.
 - `limit-reached`: Your deployment exceeds the size limit and you have two days
-  to bring the deployment back below 100 GB. Consider acquiring an
+  to bring the deployment back below 100 GiB. Consider acquiring an
   Enterprise Edition license to lift the limit.
 - `read-only`: Your deployment is in read-only mode because it exceeded the
   size limit for two days. All read operations to the instance keep functioning

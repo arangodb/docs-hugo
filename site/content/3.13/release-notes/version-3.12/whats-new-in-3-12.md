@@ -21,7 +21,7 @@ be exclusive to the Enterprise Edition.
 From version 3.12.5 onward, the Community Edition includes all
 Enterprise Edition features without time restrictions. You still need a
 license to use version 3.12 or later for commercial purposes or for a dataset
-size over 100 GB.
+size over 100 GiB.
 
 The following features are now available in the Community Edition:
 

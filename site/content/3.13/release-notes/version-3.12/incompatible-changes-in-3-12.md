@@ -16,7 +16,7 @@ Business Source License 1.1 (BUSL-1.1). The full license text is available on
 GitHub: <https://github.com/arangodb/arangodb/blob/devel/LICENSE>
 
 The official, prepackaged ArangoDB Community Edition binaries are now governed
-by a new ArangoDB Community License, which limits deployments to a 100 GB on
+by a new ArangoDB Community License, which limits deployments to a 100 GiB on
 dataset size in production and you cannot use it for any commercial purposes,
 only internal business purposes.
 
