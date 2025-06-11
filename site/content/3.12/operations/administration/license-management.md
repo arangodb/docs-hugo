@@ -44,12 +44,53 @@ At any point, you may check the current state of your license in _arangosh_:
 db._getLicense();
 ```
 
+The server response is different for the Community Edition and the
+Enterprise Edition.
+
+{{< tabs "arangodb-edition" >}}
+
+{{< tab "Community Edition" >}}
+```json
+{
+  "upgrading": false,
+  "diskUsage": {
+    "bytesUsed": 127316844,
+    "bytesLimit": 107374182400,
+    "limitReached": false,
+    "secondsUntilReadOnly": 315569520,
+    "secondsUntilShutDown": 315569520,
+    "status": "good"
+  }
+}
+```
+
+The `diskUsage.status` attribute tells you the state of your Community Edition
+deployment with regard to the dataset size limit at a glance and can have the
+following values:
+
+- `good`: The dataset size of your deployment is below the 100 GB limit.
+- `limit-reached`: Your deployment exceeds the size limit and you have two days
+  to bring the deployment back below 100 GB. Consider acquiring an
+  Enterprise Edition license to lift the limit.
+- `read-only`: Your deployment is in read-only mode because it exceeded the
+  size limit for two days. All read operations to the instance keep functioning
+  for two more days. However, no data or data definition changes can be made.
+- `shutdown`: The server shuts down after two days of read-only mode.
+
+The other sub-attributes of `diskUsage` indicate the dataset size limit, the
+size determined for your deployment, whether it exceeds the limit, as well as
+the time until the read-only mode and the shutdown are expected to occur if
+you are over the limit.
+{{< /tab >}}
+
+{{< tab "Enterprise Edition" >}}
 ```json
 {
   "upgrading": false,
   "features": {
     "expires": 1743568356
   },
+  "hash": "95af ... 3de1",
   "license": "JD4E ... dnDw==",
   "version": 1,
   "status": "good"
@@ -73,6 +114,9 @@ The attribute `expires` in `features` denotes the expiry date as Unix timestamp
 
 The `license` field holds an encrypted and base64-encoded version of the
 applied license for reference and support from ArangoDB.
+{{< /tab >}}
+
+{{< /tabs >}}
 
 ## Monitoring
 
