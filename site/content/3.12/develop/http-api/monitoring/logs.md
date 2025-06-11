@@ -462,44 +462,42 @@ paths:
                 audit-authentication:
                   description: |
                     Controls whether events such as successful logins and
-                    missing or wrong credentials are written to the audit log
-                    (_Enterprise Edition only_).
+                    missing or wrong credentials are written to the audit log.
                   type: string
                 audit-authorization:
                   description: |
                     Controls whether events such as users trying to access databases
-                    without the necessary permissions are written to the audit log
-                    (_Enterprise Edition only_).
+                    without the necessary permissions are written to the audit log.
                   type: string
                 audit-collection:
                   description: |
                     Controls whether events about collections creation, truncation,
-                    and deletion are written to the audit log (_Enterprise Edition only_).
+                    and deletion are written to the audit log.
                   type: string
                 audit-database:
                   description: |
                     Controls whether events about database creation and deletion
-                    are written to the audit log (_Enterprise Edition only_).
+                    are written to the audit log.
                   type: string
                 audit-document:
                   description: |
                     Controls whether document read and write events are written
-                    to the audit log (_Enterprise Edition only_).
+                    to the audit log.
                   type: string
                 audit-hotbackup:
                   description: |
                     Controls whether the Hot Backup creation, restore, and delete
-                    events are written to the audit log (_Enterprise Edition only_).
+                    events are written to the audit log.
                   type: string
                 audit-service:
                   description: |
                     Controls whether the start and stop events of the audit
-                    service are written to the audit log (_Enterprise Edition only_).
+                    service are written to the audit log.
                   type: string
                 audit-view:
                   description: |
                     Controls whether events about View creation and deletion
-                    are written to the audit log (_Enterprise Edition only_).
+                    are written to the audit log.
                   type: string
                 authentication:
                   description: |
@@ -512,7 +510,7 @@ paths:
                   type: string
                 backup:
                   description: |
-                    Logs events related to Hot Backup (_Enterprise Edition only_).
+                    Logs events related to Hot Backup.
                   type: string
                 bench:
                   description: |
@@ -600,7 +598,7 @@ paths:
                 license:
                   description: |
                     Logs events related to the license management like the
-                    expiration of a license (_Enterprise Edition only_).
+                    expiration of a license.
                   type: string
                 maintenance:
                   description: |

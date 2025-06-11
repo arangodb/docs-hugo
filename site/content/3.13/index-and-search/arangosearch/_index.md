@@ -976,10 +976,10 @@ To learn more, check out the different search examples:
   other types of search queries unlike with the regular geo index.
 - [**Search highlighting**](search-highlighting.md):
   Retrieve the positions of matches within strings, to highlight what was found
-  in search results (Enterprise Edition only).
+  in search results.
 - [**Nested search**](nested-search.md):
   Match arrays of objects with all the conditions met by a single sub-object,
-  and define for how many of the elements this must be true (Enterprise Edition only).
+  and define for how many of the elements this must be true.
 
 For relevance and performance tuning, as well as the reference documentation, see:
 
