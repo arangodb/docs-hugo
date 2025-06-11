@@ -13,8 +13,7 @@ paths:
       operationId: createIndexTtl
       description: |
         Creates a time-to-live (TTL) index for the collection `collection-name` if it
-        does not already exist. The call expects an object containing the index
-        details.
+        does not already exist.
       parameters:
         - name: database-name
           in: path
@@ -54,8 +53,10 @@ paths:
                   type: string
                 fields:
                   description: |
-                    an array with exactly one attribute path.
+                    A list with exactly one attribute path.
                   type: array
+                  minItems: 1
+                  maxItems: 1
                   items:
                     type: string
                 expireAfter:
@@ -67,25 +68,24 @@ paths:
                   type: number
                 inBackground:
                   description: |
-                    You can set this option to `true` to create the index
-                    in the background, which will not write-lock the underlying collection for
-                    as long as if the index is built in the foreground. The default value is `false`.
+                    Set this option to `true` to keep the collection/shards available for
+                    write operations by not using an exclusive write lock for the duration
+                    of the index creation.
                   type: boolean
+                  default: false
       responses:
         '200':
           description: |
-            If the index already exists, then a *HTTP 200* is returned.
+            The index exists already.
         '201':
           description: |
-            If the index does not already exist and could be created, then a *HTTP 201*
-            is returned.
+            The index is created as there is no such existing index.
         '400':
           description: |
-            If the collection already contains another TTL index, then an *HTTP 400* is
-            returned, as there can be at most one TTL index per collection.
+            There is already a TTL index for the collection but there can only be one.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is returned.
+            The collection is unknown.
       tags:
         - Indexes
 ```
