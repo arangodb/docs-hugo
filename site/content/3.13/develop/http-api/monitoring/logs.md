@@ -927,6 +927,34 @@ paths:
         '401':
           description: |
             The user account has insufficient permissions for the selected database.
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - errorNum
+                  - errorMessage
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that an error occurred.
+                    type: boolean
+                    example: true
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 401
+                  errorNum:
+                    description: |
+                      ArangoDB error number for the error that occurred.
+                    type: integer
+                  errorMessage:
+                    description: |
+                      A descriptive error message.
+                    type: string
       tags:
         - Monitoring
 ```
