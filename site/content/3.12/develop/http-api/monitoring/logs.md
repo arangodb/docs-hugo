@@ -840,3 +840,139 @@ paths:
       tags:
         - Monitoring
 ```
+
+## Get recent API calls
+
+```openapi
+paths:
+  /_db/{database-name}/_admin/server/api-calls:
+    get:
+      operationId: getRecentApiCalls
+      description: |
+        Get a list of the most recent requests with a timestamp and the endpoint.
+         This feature is for debugging purposes.
+
+        You can control how much memory is used to record API calls with the
+        `--server.memory-per-api-call-list` and `--server.number-of-api-call-lists`
+        startup options.
+
+        You can disable API call recording via the `--server.api-call-recording`
+        startup option. The endpoint returns an empty list of calls in this case.
+      parameters:
+        - name: database-name
+          in: path
+          required: true
+          example: _system
+          description: |
+            The name of a database. Which database you use doesn't matter as long
+            as the user account you authenticate with has at least read access
+            to this database.
+          schema:
+            type: string
+      responses:
+        '200':
+          description: |
+            The 
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - error
+                  - code
+                  - result
+                properties:
+                  error:
+                    description: |
+                      A flag indicating that no error occurred.
+                    type: boolean
+                    example: false
+                  code:
+                    description: |
+                      The HTTP response status code.
+                    type: integer
+                    example: 200
+                  result:
+                    description: |
+                      The request result.
+                    type: object
+                    required:
+                      - calls
+                    properties:
+                      calls:
+                        description: |
+                          A list of the recent API calls. Empty if API call recording is disabled.
+                        type: array
+                        items:
+                          type: object
+                          properties:
+                            timeStamp:
+                              description: |
+                                The date and time of the request in ISO 8601 format.
+                              type: string
+                              format: date-time
+                            requestType:
+                              description: |
+                                The HTTP request method.
+                              type: string
+                              enum: [get, patch, put, delete, head]
+                            path:
+                              description: |
+                                The HTTP request path excluding the database prefix (`/_db/<database-name>`).
+                              type: string
+                            database:
+                              description: |
+                                The database name.
+                              type: string
+        '401':
+          description: |
+            The user account has insufficient permissions for the selected database.
+      tags:
+        - Monitoring
+```
+
+{{< comment >}}
+Example not generated because it changes on every run and returns up to 25MB of data.
+{{< /comment >}}
+
+```bash
+curl --header 'accept: application/json' --dump - http://localhost:8529/_admin/server/api-calls
+```
+
+{{< expand title="Show output" >}}
+```bash
+HTTP/1.1 200 OK
+X-Arango-Queue-Time-Seconds: 0.000000
+Strict-Transport-Security: max-age=31536000 ; includeSubDomains
+Expires: 0
+Pragma: no-cache
+Cache-Control: no-cache, no-store, must-revalidate, pre-check=0, post-check=0, max-age=0, s-maxage=0
+Content-Security-Policy: frame-ancestors 'self'; form-action 'self';
+X-Content-Type-Options: nosniff
+Server: ArangoDB
+Connection: Keep-Alive
+Content-Type: application/json; charset=utf-8
+Content-Length: 257
+
+{
+  "error": false,
+  "code": 200,
+  "result": {
+    "calls": [
+      {
+        "timeStamp": "2025-06-11T14:41:53Z",
+        "requestType": "GET",
+        "path": "/_admin/server/api-calls",
+        "database": "_system"
+      },
+      {
+        "timeStamp": "2025-06-11T14:41:51Z",
+        "requestType": "GET",
+        "path": "/_api/version",
+        "database": "myDB"
+      }
+    ]
+  }
+}
+```
+{{< /expand >}}
