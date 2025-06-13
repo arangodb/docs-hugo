@@ -1,6 +1,6 @@
 ---
-title: ArangoGraphML Web Interface
-menuTitle: ArangoGraphML Web Interface
+title: GraphML
+menuTitle: GraphML
 weight: 15
 description: >-
  Enterprise-ready, graph-powered machine learning as a cloud service or self-managed
@@ -13,23 +13,23 @@ Solve high-computational graph problems with Graph Machine Learning. Apply ML on
 
 To create a new GraphML project using the ArangoDB Web Interface, follow these steps:
 
-- **Select the Target Database** – From the **Database** dropdown in the left-hand sidebar, select the database where the project should reside.
-- **Navigate to the Data Science Section** – In the left-hand navigation menu, click on Data Science to open the GraphML project management interface, then click on RunGraphML.
-![Navigate to Data Science](../../../images/datascience-intro.jpg)  
-- **Click "Add new project"** – In the **GraphML projects** view, click  **Add new project**.
-- **Fill in Project Details** – A modal titled **Create ML project** will appear. Enter a **name** for your machine learning project.
-- **Create the Project** – Click the **Create project** button to finalize the creation.
-- **Verify Project in the List** – After creation, the new project will appear in the list under **GraphML projects**. Click the project name to enter and begin creating ML jobs like Featurization, Training, Model Selection, Prediction.
+1. From the left-hand sidebar, select the database where you want to create the project.
+2. In the left-hand navigation menu, click **Data Science Suite** to open the GraphML project management interface, then click Run GraphML.
+   ![Navigate to Data Science](../../../images/datascience-intro.jpg)  
+3. In the **GraphML projects** view, click  **Add new project**.
+4. The **Create ML project** modal opens. Enter a **Name** for your machine learning project.
+5. Click the **Create project** button to finalize the creation.
+6. After creation, the new project appears in the list under GraphML projects. Click the project name to begin with a Featurization job.
 
 ## Featurization Phase
 
 After clicking on a project name, you are taken to a screen where you can configure and start a new Featurization job. Follow these steps:
-- **Select a Graph** – In the **Features** section, choose your target graph from the **Select a graph** dropdown (Example, `imdb`).
-- **Choose Vertex Collections** – Pick the vertex collections (Example, `movie`, `person`) that you want to include for feature extraction.
+- **Select a Graph** – In the **Features** section, choose your target graph from the **Select a graph** dropdown.
+- **Choose Vertex Collections** – Pick the vertex collections that you want to include for feature extraction.
 - **Select Attributes** – From the dropdown, choose the attributes from your vertex collection to convert into machine-understandable features. 
 
 {{< info >}}
-The following attributes cannot be used: imdb_feat_description, imdb_feat_genre, imdb_feat_homepage, imdb_feat_id, imdb_feat_imageUrl, imdb_feat_imdb_x_hash, imdb_feat_imdbId, imdb_feat_label, imdb_feat_language, imdb_feat_lastModified, imdb_feat_released, imdb_feat_releaseDate, imdb_feat_runtime, imdb_feat_studio, imdb_feat_tagline, imdb_feat_title, imdb_feat_trailer, imdb_feat_type, imdb_feat_version, imdb_x, imdb_y, prediction_model_output. As some of their values are lists or arrays.
+Attributes cannot be used if their values are lists or arrays.
 {{< /info >}}
 
 - **Expand Configuration and Advanced Settings** – Optionally adjust parameters like batch size, feature prefix, dimensionality reduction, and write behavior. These settings are also shown in JSON format on the right side of the screen for transparency.
@@ -49,9 +49,8 @@ The following attributes cannot be used: imdb_feat_description, imdb_feat_genre,
 
 This is the second step in the ML workflow after featurization. In the training phase, you configure and launch a machine learning training job on your graph data.
 
-#### Select Type of Training Job
 
-There are two types of training jobs available, depending on the use case:
+- **Select a training job type** – From the **Select a type of training job** dropdown, choose the type of model you want to train (Example, Node Classification, Node Embedding).
 
 
 #### Node Classification
