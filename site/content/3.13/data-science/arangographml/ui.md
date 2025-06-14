@@ -72,7 +72,7 @@ After setting these values, click the **Begin training** button to start the job
 
 ![Node Classification](../../../images/ml-nodeclassification.png)
 
-####  Node Embedding
+ ####  Node Embedding
 
 Node Embedding is used to generate vector embeddings (dense numerical representations) of graph nodes that capture structural and feature-based information.
 
@@ -115,11 +115,20 @@ Select the best performing model suitable for your prediction task.
 
 ## Prediction Phase
 
-Once the best-performing model has been selected, the final step of the GraphML pipeline is to generate predictions for new or unlabeled data
+After selecting a model, a Prediction Job can be created. The Prediction Job will generate predictions and persist them to the source graph in a new collection, or within the source documents.
 
 ### Overview
 
 The Prediction interface allows inference to be run using the selected model. It enables configuration of how predictions are executed, which collections are involved, and whether new or outdated documents should be automatically featurized before prediction.
+
+You have two important options for this:
+
+**Featurize new documents:** Enable this option to generate features for documents that have been added since the model was trained. This is useful for getting predictions on new data without having to retrain the model.
+
+**Featurize outdated documents:** Enable this option to re-generate features for documents that have been modified since the last featurization. This ensures your predictions reflect the latest changes to your data.
+In addition to these settings, you will also define the target data, where to store results, and whether to run the job on a recurring schedule.
+
+In addition to these settings, you also define the target data, where to store results, and whether to run the job on a recurring schedule.
 
 ![prediction phase](../../../images/graph-prediction.png)
 
@@ -128,9 +137,9 @@ The Prediction screen displays the following configuration options:
 
 - Selected Model: Displays the model selected during the Model Selection phase. This model will be used to perform inference.
 
-- Target Vertex Collection: This is the vertex collection on which predictions will be applied.
+- Target Vertex Collection: This is the vertex collection on which predictions are applied.
 
-- Prediction Type: Depending on the training job (Example, classification or embedding), the prediction will output class labels or updated embeddings.
+- Prediction Type: Depending on the training job (for example, classification or embedding), the prediction outputs class labels or updated embeddings.
 
 ### Featurization Settings
 Two toggles are available to control automatic featurization during prediction
@@ -147,19 +156,19 @@ These options provide flexibility in handling dynamic graph data and keeping pre
 
 **Data load parallelism** – Number of parallel threads used to process the prediction workload (Example, 10).
 
-**Prediction field** – The field in the documents where the predicted values will be stored (Example, prediction).
+**Prediction field** – The field in the documents where the predicted values are stored.
 
 ### Enable Scheduling
 
 You can configure automatic predictions using the **Enable scheduling** checkbox.
 
-When scheduling is enabled, predictions will be executed automatically based on a specified **CRON expression**. This is useful for regularly updating prediction outputs as new data enters the system.
+When scheduling is turned on, predictions run automatically based on a set CRON expression. This helps keep prediction results up to date as new data is added to the system.
 
 #### Schedule (CRON expression)
 
 You can define a CRON expression that sets when the prediction job should run. For example:
 0 0 1 1 *
-This CRON pattern will execute the prediction **every year on January 1st at 00:00**.
+This CRON pattern executes the prediction every year on January 1st at 00:00.
 
 Below the CRON field, a user-friendly scheduling interface helps translate it:
 
@@ -171,7 +180,7 @@ Below the CRON field, a user-friendly scheduling interface helps translate it:
 
 
 ### Execute Prediction
-After reviewing the configuration, click the Run Prediction button. ArangoGraphML will then:
+After reviewing the configuration, click the Run Prediction button. ArangoGraphML then:
 
 - Perform featurization 
 
