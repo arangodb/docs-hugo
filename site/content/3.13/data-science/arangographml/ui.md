@@ -9,6 +9,46 @@ aliases:
 ---
 Solve high-computational graph problems with Graph Machine Learning. Apply ML on a selected graph to predict connections, get better product recommendations, classify nodes, and perform node embeddings. Configure and run the whole machine learning flow entirely in the web interface.
 
+## What You Can Do with GraphML
+
+GraphML directly supports two primary machine learning tasks:
+
+*   **Node Classification:** Automatically assign a category or label to nodes in your graph. For example, you can classify customers as "likely to churn" or "high value," or identify fraudulent transactions.
+*   **Node Embeddings:** Generate powerful numerical representations (vectors) for each node. These embeddings capture a node's features as well as its unique structural position within the graph.
+
+While not a direct one-click option, these embeddings unlock more advanced applications like **link prediction** or **recommendation engines**. By comparing the embeddings of two nodes (Example, using a dot product), you can calculate their similarity to predict the likelihood of a connection. This is the foundation for recommending products to users or suggesting new friendships in a social network.
+
+## How ArangoGraphML Works
+
+The underlying framework for ArangoGraphML is **GraphSAGE**. GraphSAGE (Graph Sample and AggreGatE) is a powerful Graph Neural Network (GNN) designed for inductive representation learning on large graphs. It is used to generate low-dimensional vector representations for nodes, and is especially useful for graphs that have rich node attribute information. The overall process involves two main stages:
+
+1.  **Featurization**: Your raw graph data is transformed into numerical representations that the model can understand.
+    *   The system iterates over your selected vertices and converts their attributes: booleans become `0` or `1`, numbers are normalized, and text attributes are converted into numerical vectors using sentence transformers.
+    *   All of these numerical features are then combined (concatenated).
+    *   Finally, **Incremental PCA** (a dimensionality reduction technique) is used to reduce the size of the combined features, which helps remove noise and keep only the most important information.
+
+2.  **Training (GraphSAGE)**: The model learns from the graph's structure by sampling and aggregating information from each node's local neighborhood.
+    *   For each node, GraphSAGE looks at connections up to **2 hops away**.
+    *   Specifically, it uniformly samples up to **25 direct neighbors** (depth 1) and for each of those, it samples up to **10 of their neighbors** (depth 2).
+    *   By aggregating feature information from this sampled neighborhood, the model creates a rich "embedding" for each node that captures both its own features and its role in the graph.
+
+## Limitations
+
+*   **Edge Attributes**: The current version of ArangoGraphML does not support the use of edge attributes as features.
+*   **Dangling Edges**: Edges that point to non-existent vertices ("dangling edges") are not caught during the featurization analysis. They may cause errors later, during the Training phase.
+*   **Prediction Scope**: Predictions can only be run in batches on the graph. It is not possible to request a prediction for a single document on-the-fly (e.g., via an AQL query).
+*   **Memory Usage**: Both featurization and training can be memory-intensive. Out-of-memory errors can occur on large graphs with insufficient system resources.
+
+## The GraphML Workflow
+
+The entire process is organized into sequential steps within a **Project**, giving you a clear path from data to prediction:
+
+1.  **Featurization:** Select your data and convert it into numerical features.
+2.  **Training:** Train a GraphSAGE model on the features and graph structure.
+3.  **Model Selection:** Evaluate the trained models and choose the best one.
+4.  **Prediction:** Use the selected model to generate predictions on your data.
+5.  **Scheduling (Optional):** Automate the prediction process to run at regular intervals.
+
 ## Creating a GraphML Project
 
 To create a new GraphML project using the ArangoDB Web Interface, follow these steps:
@@ -32,16 +72,49 @@ After clicking on a project name, you are taken to a screen where you can config
 Attributes cannot be used if their values are lists or arrays.
 {{< /info >}}
 
-- **Expand Configuration and Advanced Settings** – Optionally adjust parameters like batch size, feature prefix, dimensionality reduction, and write behavior. These settings are also shown in JSON format on the right side of the screen for transparency.
+The featurization process has several configurable options, grouped into Configuration and Advanced settings. These are also shown in a JSON format on the right side of the screen for transparency.
+
+**Configuration**
+These settings control the overall featurization job and how features are stored.
 
 - **Batch size** – The number of documents to process in a single batch.
 - **Run analysis checks** – Whether to run analysis checks to perform a high-level analysis of the data quality before proceeding. Default is `true`.
 - **Skip labels** – Skip the featurization process for attributes marked as labels. Default is `false`.
+
+**Feature Storage Options**
+These settings control where the generated features are stored.
+
 - **Overwrite FS graph** – Whether to overwrite the Feature Store graph if features were previously generated. Default is `false`, so features are written to an existing graph.
 - **Write to source graph** – Whether to store the generated features in the source graph. Default is `true`.
 - **Use feature store** – Enable the use of the Feature Store database, which stores features separately from the source graph. Default is `false`, so features are written to the source graph.
 
-- **Click "Begin Featurization"** – Once all selections are done, click the **Begin featurization** button. This will trigger a **node embedding-compatible featurization job**.Once the job status changes to **"Ready for training"**, you can start the **ML Training** step.
+**Advanced Settings: Handling Imperfect Data**
+
+Real-world data is often messy. It can have missing values or mismatched data types. This section allows you to define default rules for how the featurization process should handle these data quality issues for each feature type, preventing the job from failing unexpectedly.
+
+For each feature type (Text, Numeric, Category, and Label), you can set two types of strategies:
+
+**Missing Strategy:** Defines what to do when an attribute is completely missing from a document.
+
+**Mismatch Strategy:** Defines what to do when an attribute exists but has the wrong data type.
+
+**Missing Value Strategies**
+
+**Raise:** The job immediately stops and reports an error if a data type mismatch is found. Use this when any type mismatch indicates a critical data error.
+
+**Replace:** Replaces a missing value with a default you provide (e.g., 0 for numbers, "unknown" for text). The job then continues. Use this when missing values are expected.
+
+**Mismatch Value Strategies**
+
+**Raise:** The strictest option. The job will immediately stop and report an error if a data type mismatch is found. Use this when any type mismatch indicates a critical data error.
+
+**Replace:** If a mismatch is found, the system immediately replaces the value with the default you specify, without attempting to convert it first. Use this when you don't trust the mismatched data and prefer to substitute it directly.
+
+**Coerce and raise:** A balanced approach. The system first tries to convert (coerce) the value to the correct type (e.g., string "123" to number 123). If the conversion is successful, it uses the new value. If it fails, the job stops. This is often the best default strategy.
+
+**Coerce and replace:** The most forgiving option. The system first tries to convert the value. If the conversion fails, it replaces the value with the default you specify and continues the job. Use this for very "dirty" datasets where completing the job is the highest priority.
+
+Once all selections are done, click the **Begin featurization** button. This will trigger a **node embedding-compatible featurization job**.Once the job status changes to **"Ready for training"**, you can start the **ML Training** step.
 
 ![Navigate to Featurization](../../../images/graph-ml-ui-featurization.png) 
 
