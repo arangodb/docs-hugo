@@ -16,7 +16,7 @@ GraphML directly supports two primary machine learning tasks:
 *   **Node Classification:** Automatically assign a category or label to nodes in your graph. For example, you can classify customers as "likely to churn" or "high value," or identify fraudulent transactions.
 *   **Node Embeddings:** Generate powerful numerical representations (vectors) for each node. These embeddings capture a node's features as well as its unique structural position within the graph.
 
-While not a direct one-click option, these embeddings unlock more advanced applications like **link prediction** or **recommendation engines**. By comparing the embeddings of two nodes (Example, using a dot product), you can calculate their similarity to predict the likelihood of a connection. This is the foundation for recommending products to users or suggesting new friendships in a social network.
+While not a direct one-click option, these embeddings unlock more advanced applications like **link prediction** or **recommendation engines**. By comparing the embeddings of two nodes, you can calculate their similarity to predict the likelihood of a connection. This is the foundation for recommending products to users or suggesting new friendships in a social network.
 
 ## How ArangoGraphML Works
 
@@ -25,9 +25,9 @@ The underlying framework for ArangoGraphML is **GraphSAGE**. GraphSAGE (Graph Sa
 1.  **Featurization**: Your raw graph data is transformed into numerical representations that the model can understand.
     *   The system iterates over your selected vertices and converts their attributes: booleans become `0` or `1`, numbers are normalized, and text attributes are converted into numerical vectors using sentence transformers.
     *   All of these numerical features are then combined (concatenated).
-    *   Finally, **Incremental PCA** (a dimensionality reduction technique) is used to reduce the size of the combined features, which helps remove noise and keep only the most important information.
+    *   Finally, **Incremental PCA** (Incremental Principal Component Analysis a dimensionality reduction technique) is used to reduce the size of the combined features, which helps remove noise and keep only the most important information.
 
-2.  **Training (GraphSAGE)**: The model learns from the graph's structure by sampling and aggregating information from each node's local neighborhood.
+2.  **Training**: The model learns from the graph's structure by sampling and aggregating information from each node's local neighborhood.
     *   For each node, GraphSAGE looks at connections up to **2 hops away**.
     *   Specifically, it uniformly samples up to **25 direct neighbors** (depth 1) and for each of those, it samples up to **10 of their neighbors** (depth 2).
     *   By aggregating feature information from this sampled neighborhood, the model creates a rich "embedding" for each node that captures both its own features and its role in the graph.
@@ -36,7 +36,7 @@ The underlying framework for ArangoGraphML is **GraphSAGE**. GraphSAGE (Graph Sa
 
 *   **Edge Attributes**: The current version of ArangoGraphML does not support the use of edge attributes as features.
 *   **Dangling Edges**: Edges that point to non-existent vertices ("dangling edges") are not caught during the featurization analysis. They may cause errors later, during the Training phase.
-*   **Prediction Scope**: Predictions can only be run in batches on the graph. It is not possible to request a prediction for a single document on-the-fly (e.g., via an AQL query).
+*   **Prediction Scope**: Predictions can only be run in batches on the graph. It is not possible to request a prediction for a single document on-the-fly (Example, via an AQL query).
 *   **Memory Usage**: Both featurization and training can be memory-intensive. Out-of-memory errors can occur on large graphs with insufficient system resources.
 
 ## The GraphML Workflow
@@ -72,6 +72,10 @@ After clicking on a project name, you are taken to a screen where you can config
 Attributes cannot be used if their values are lists or arrays.
 {{< /info >}}
 
+{{< info >}}
+A metagraph is basically just the configured subset of a graph (the vertex and edge collections and the specified attributes). This is what you see represented in the metagraph object in the JSON specification on the right.
+{{< /info >}}
+
 The featurization process has several configurable options, grouped into Configuration and Advanced settings. These are also shown in a JSON format on the right side of the screen for transparency.
 
 **Configuration**
@@ -84,9 +88,9 @@ These settings control the overall featurization job and how features are stored
 **Feature Storage Options**
 These settings control where the generated features are stored.
 
-- **Overwrite FS graph** – Whether to overwrite the Feature Store graph if features were previously generated. Default is `false`, so features are written to an existing graph.
-- **Write to source graph** – Whether to store the generated features in the source graph. Default is `true`.
-- **Use feature store** – Enable the use of the Feature Store database, which stores features separately from the source graph. Default is `false`, so features are written to the source graph.
+- **Overwrite FS graph** – Whether to overwrite the Feature Store graph if features were previously generated. Default is `false`, therefore features are written to an existing graph Featere store graph.
+- **Write to source graph** – Whether to store the generated features on the Source Graph. Default is `true`.
+- **Use feature store** – Enable the use of the Feature Store database, which allows you to store features separately from your Source Database. Default is `false`, therefore feature are written to the source graph.
 
 **Advanced Settings: Handling Imperfect Data**
 
