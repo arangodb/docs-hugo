@@ -59,7 +59,7 @@ To create a new GraphML project using the ArangoDB Web Interface, follow these s
 3. In the **GraphML projects** view, click  **Add new project**.
 4. The **Create ML project** modal opens. Enter a **Name** for your machine learning project.
 5. Click the **Create project** button to finalize the creation.
-6. After creation, the new project appears in the list under GraphML projects. Click the project name to begin with a Featurization job.
+6. After creation, the new project appears in the list under GraphML projects. Click the project Name to begin with a Featurization job.
 
 ## Featurization Phase
 
@@ -192,7 +192,7 @@ Select the best performing model suitable for your prediction task.
 
 ## Prediction Phase
 
-After selecting a model, a Prediction Job can be created. The Prediction Job will generate predictions and persist them to the source graph in a new collection, or within the source documents.
+After selecting a model, you can create a Prediction Job. The Prediction Job generates predictions and persists them to the source graph, either in a new collection or within the source documents.
 
 ### Overview
 
