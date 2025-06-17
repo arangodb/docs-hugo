@@ -1,0 +1,28 @@
+# ArangoDB
+
+> ArangoDB is a scalable graph database system to drive value from connected data, faster. Native graphs, an integrated search engine, and JSON support, via a single query language. ArangoDB runs on-prem, in the cloud – anywhere.
+{{ range .Site.Sections.ByWeight }}
+{{- if eq (.Store.Get "alias") "stable" }}
+{{- /* ## Version {{ .Type }} */}}
+
+{{- $pages := .Pages }}
+{{- range $pages.ByWeight }}
+## {{ .Title | safeHTML }}{{ if .Description }}
+
+{{ replace .Description "\n" " " | safeHTML }}{{ end }}
+
+{{ template "section-tree-llm" . }}
+{{- end }}
+{{- end }}
+{{- end }}
+
+{{- define "section-tree-llm" }}
+{{- range .Pages.ByWeight }}
+{{- if .Description -}}
+- [{{ .Title | safeHTML }}]({{ .Permalink }}):
+  {{ replace .Description "\n" " " | safeHTML }}
+
+{{ end }}
+{{- template "section-tree-llm" . }}
+{{- end }}
+{{- end }}
