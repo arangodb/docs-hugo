@@ -3,13 +3,13 @@ title: Graph Visualizer
 menuTitle: Graph Visualizer
 weight: 85
 description: >-
-  Visualize and interact with your ArangoDB graphs in an intuitive and
-  interactive interface
+  Explore your ArangoDB graphs with an intuitive and interactive interface
 ---
-
-The **Graph Visualizer** provides an interactive interface to explore graph
-connections in your ArangoDB database. It allows users to navigate edges, inspect
-vertices, and visually understand the data structure.
+The **Graph Visualizer** is a browser-based tool integrated into the web interface
+of the ArangoDB Platform. It lets you explore the connections of your named graphs
+to visually understand the structure as well as to inspect and edit the attributes
+of individual vertices and edges. It also offers query capabilities and you can
+create new nodes and relations.
 
 {{< info >}}
 Graph creation is **not** performed within the Graph Visualizer. Graphs must be
@@ -21,82 +21,83 @@ Visualizer, ready for exploration and visualization.
 Once your graph is created through the main interface, you can use the Graph
 Visualizer to:
 
-- Traverse nodes and edges to see how entities are connected.
-- Click on vertices or edges to inspect their properties.
+- Dynamically expand nodes to show more of their neighborhood to see how
+  entities are connected.
+- Inspect the properties of vertices and edges.
+- Modify existing or create new vertices and edges.
 - Filter specific collections to focus on a subset of your graph.
-- Rearrange nodes manually for better visual clarity.
+- Rearrange nodes automatically or manually for better visual clarity.
 - Use zoom and pan to explore large graphs more easily.
-
 
 ## View and Edit Graph Data
 
 While the Graph Visualizer is primarily designed for exploring graph data, you
 can also create and modify nodes and edges directly from the canvas.
 
-###  Add New Vertices(Nodes)
+### Add New Vertices (Nodes)
 
-You can add a vertex to one of the graph's document collections directly from the
-canvas. This allows you to expand your graph structure:
-
-To add a new vertex to a graph:
+You can add vertices to the the graph's document collections directly from the
+canvas. This allows you to expand your graph structure.
 
 1. In the **Graphs** section of the ArangoDB web interface, select your graph.
 2. Right-click on the canvas and choose **Create Node**.
-3. In the dialog:
-   - Select the target collection (**Node Type**)
-   - Optionally specify a unique identifier (**Node ID**)
+3. A dialog opens with the following options:
+   - Select the target collection (**Node Type**).
+   - Optionally specify a unique identifier (**Node ID**).
 4. Click **Create** to add the node to the canvas and database.
 
 ![Create Node](../../../images/Graph-visualizer-CreateNode_1.PNG)
 
 ### Add New Edges
 
-To add a new edge between nodes:
+You can add edges to the graph's edge collections directly from the canvas.
+This allows you to create additional connections between nodes.
 
 1. In the **Graphs** section of the ArangoDB web interface, select your graph.
 2. Right-click on the canvas and choose **Create Edge**.
 3. In the dialog:
-   - Select the target collection (**Edge Type**, which corresponds to an edge collection)
-   - Set the `_from` and `_to` fields by selecting the source and target nodes
-   - Optionally specify a unique identifier (**Edge ID**)
+   - Select the target collection (**Edge Type**, which corresponds to an edge collection).
+   - Set the `_from` and `_to` fields by selecting the source and target nodes.
+   - Optionally specify a unique identifier (**Edge ID**).
 4. Click **Create** to add the edge to the canvas and database.
 
 {{< info >}}
 If you select two nodes before right-clicking to open the edge creation
-dialog, the `_from` and `_to` fields are automatically pre-filled. Note: the
-order is not based on your selection sequence, but may depend on internal ID 
-orting.
+dialog, the `_from` and `_to` fields are automatically pre-filled.
+The order is not based on your selection sequence but the document key. <!-- TODO: Can we fix it in the UI? -->
 {{< /info >}}
 
 ![Create Edge](../../../images/Graph-visualizer-CreateEdge_1.png)
 
 ### Delete Nodes or Edges
 
-To delete a node or edge:
+You can remove vertices and edges from the graph directly from the canvas.
 
-1. Click on the node or edge to select it.
+1. Click a node or edge to select it.
 2. Right-click to open the context menu.
 3. Choose **Delete** from the menu.
 
 {{< tip >}}
-To select and move multiple nodes, hold down the `Ctrl` key (or
-`Cmd` on macOS) and drag a selection box around them. However, context menu
+To select and move multiple nodes, hold down the `Ctrl` key (or `Cmd` on macOS)
+and drag a selection box around them. However, context menu
 actions like **Delete** only work for single selections.
 {{< /tip >}}
 
 - **Select Node and Right-click**
 
-![Delete Node](../../../images/Graph-visualizer-DeleteNode.PNG)
+  ![Delete Node](../../../images/Graph-visualizer-DeleteNode.PNG)
+
 - **Select Edge and Right-click**
-![Delete Edge](../../../images/Graph-visualizer-DeleteEdge.PNG)
+
+  ![Delete Edge](../../../images/Graph-visualizer-DeleteEdge.PNG)
 
 ### View Node Properties
 
-To view properties:
+You can inspect the attributes of vertices and edges.
 
-- Click on a node or edge to open its properties pop-up.
-
-- **Select a node to display its properties.**
+<!-- TODO: Two ways of doing so? -->
+- Click a node or edge to open its properties dialog.
+- Select a node to display its properties.
 
 ![Node Properties](../../../images/Graph-visualizer-Propertiesofnode.png)
 
