@@ -257,7 +257,7 @@ To remove an existing schema from a collection, set a `schema` value of either
 {{< tab "arangosh" >}}
 ```js
 ---
-name: arangosh_set_collection_properties_schema_remove
+name: arangosh_remove_collection_properties_schema
 description: ''
 ---
 ~var coll = db._collection("schemaCollection");
