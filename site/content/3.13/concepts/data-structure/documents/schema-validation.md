@@ -97,6 +97,9 @@ var coll = db._create("schemaCollection", { "schema": schema });
 db.schemaCollection.properties({ "schema": schema });
 ~addIgnoreCollection(coll.name());
 ```
+
+See [`collection.properties()`](../../../develop/javascript-api/@arangodb/collection-object.md#collectionpropertiesproperties)
+in the _JavaScript API_ for details.
 {{< /tab >}}
 
 {{< tab "cURL" >}}
@@ -104,7 +107,7 @@ db.schemaCollection.properties({ "schema": schema });
 curl -XPUT -d '{"schema":{"rule":{"type":"object","properties":{"nums":{"type":"array","items":{"type":"number","maximum":6}}},"additionalProperties":{"type":"string"},"required":["nums"]},"level":"moderate","message":"The document does not contain an array of numbers in attribute \"nums\", one of the numbers is greater than 6, or another top-level attribute is not a string."}}' http://localhost:8529/_db/mydb/_api/collection/coll/properties
 ```
 
-See the [`GET /_db/{database-name}/_api/collection/{collection-name}/properties`](../../../develop/http-api/collections.md#get-the-properties-of-a-collection)
+See the [`PUT /_db/{database-name}/_api/collection/{collection-name}/properties`](../../../develop/http-api/collections.md#change-the-properties-of-a-collection)
 endpoint in the _HTTP API_ for details.
 {{< /tab >}}
 
@@ -275,8 +278,8 @@ in the _JavaScript API_ for details.
 curl -XPUT -d '{"schema":null}' http://localhost:8529/_db/mydb/_api/collection/coll/properties
 ```
 
-See the [`GET /_db/{database-name}/_api/collection/{collection-name}/properties`](../../../develop/http-api/collections.md#get-the-properties-of-a-collection)
-endpoint in the _HTTP API_for details.
+See the [`PUT /_db/{database-name}/_api/collection/{collection-name}/properties`](../../../develop/http-api/collections.md#change-the-properties-of-a-collection)
+endpoint in the _HTTP API_ for details.
 {{< /tab >}}
 
 {{< tab "JavaScript" >}}
