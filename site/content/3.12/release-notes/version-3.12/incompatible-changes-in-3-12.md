@@ -909,8 +909,6 @@ RocksDB-related startup options have been changed:
 - `--rocksdb.compaction-read-ahead-size` has been changed from 2MB to 8MB.
 - `--rocksdb.max-subcompactions` has been changed from 2 to 4.
 - `--rocksdb.max-total-wal-size` has been changed from 80MB to 256MB.
-- `--rocksdb.throttle-slots` has been changed from 120 to 128.
-- `--rocksdb.throttle-scaling-factor` has been changed from 17 to 192.
 - `--rocksdb.pending-compactions-slowdown-trigger` has been changed from 128KB to 1GB.
 - `--rocksdb.pending-compactions-stop-trigger` has been changed from 16GB to 32GB.
 - `--rocksdb.partition-files-for-documents` has been changed from false to true.
