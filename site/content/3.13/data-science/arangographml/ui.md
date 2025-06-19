@@ -55,14 +55,14 @@ To create a new GraphML project using the ArangoDB Web Interface, follow these s
 3. In the **GraphML projects** view, click  **Add new project**.
 4. The **Create ML project** modal opens. Enter a **Name** for your machine learning project.
 5. Click the **Create project** button to finalize the creation.
-6. After creation, the new project appears in the list under GraphML projects. Click the project Name to begin with a Featurization job.
+6. After creation, the new project appears in the list under **GraphML projects**. Click the project name to begin with a Featurization job.
 
 ## Featurization Phase
 
 After clicking on a project name, you are taken to a screen where you can configure and start a new Featurization job. Follow these steps:
 - **Select a Graph** – In the **Features** section, choose your target graph from the **Select a graph** dropdown.
 - **Choose Vertex Collections** – Pick the vertex collections that you want to include for feature extraction.
-- **Select Attributes** – From the dropdown, choose the attributes from your vertex collection to convert into machine-understandable features. 
+- **Select Attributes** – Choose the attributes from your vertex collection to convert into machine-understandable features. 
 
 {{< info >}}
 Attributes cannot be used if their values are lists or arrays.
@@ -114,13 +114,13 @@ For each feature type (Text, Numeric, Category, and Label), you can set two type
 
 **Coerce and replace:** The most forgiving option. The system first tries to convert the value. If the conversion fails, it replaces the value with the default you specify and continues the job. Use this for very "dirty" datasets where completing the job is the highest priority.
 
-Once all selections are done, click the **Begin featurization** button. This will trigger a **node embedding-compatible featurization job**.Once the job status changes to **"Ready for training"**, you can start the **ML Training** step.
+Once all selections are done, click the **Begin featurization** button. This triggers a **node embedding-compatible featurization job**. Once the job status changes to **Ready for training**, you can start the **ML Training** step.
 
 ![Navigate to Featurization](../../../images/graph-ml-ui-featurization.png) 
 
 ## Training Phase
 
-This is the second step in the ML workflow after featurization. In the training phase, you configure and launch a machine learning training job on your graph data.
+The training is the second step in the ML workflow after featurization. In the training phase, you configure and launch a machine learning training job on your graph data.
 
 
 - **Select a training job type** – From the **Select a type of training job** dropdown, choose the type of model you want to train (Example, Node Classification, Node Embedding).
@@ -167,7 +167,7 @@ After training is complete, the next step in the ArangoGraphML workflow is **Mod
 
 ## Model Selection Phase
 
-Once the training is finished, the job status updates to READY FOR MODEL SELECTION. This means the model has been trained using the provided vertex and edge data and is now ready for evaluation.
+Once the training is finished, the job status updates to **READY FOR MODEL SELECTION**. This means the model has been trained using the provided vertex and edge data and is now ready for evaluation.
 
 **Understanding Vertex Collections:**
 
@@ -175,11 +175,11 @@ Once the training is finished, the job status updates to READY FOR MODEL SELECTI
 
 **Y Vertex Collection:** These are the target nodes that contain labeled data. The labels in this collection are used to supervise the training process and are the basis for evaluating prediction quality.
 
-The target collection is where the model’s predictions will be stored once prediction is executed.
+The target collection is where the model's predictions are stored when running a prediction job.
 
 **Model Selection Interface:**
 
-A list of trained models is displayed, along with performance metrics such as accuracy, Precision, Recall, F1 score, Loss.            
+A list of trained models is displayed, along with performance metrics (Accuracy, Precision, Recall, F1 score, Loss).
 Review the results of different model runs and configurations.
 
 Select the best performing model suitable for your prediction task.
