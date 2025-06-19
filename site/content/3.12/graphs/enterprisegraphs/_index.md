@@ -33,6 +33,7 @@ This is known as the `smartGraphAttribute`, a value that is stored in every vert
 which ensures data co-location of all vertices sharing this attribute and their
 immediate edges.
 
+<!-- TODO: Revise description. Inferior to SmartGraphs as only the incident edges are co-located to a vertex -->
 EnterpriseGraphs come with a concept of "random sharding", meaning that the
 sharding key is randomly selected while ensuring that all vertices with the
 same sharding key and their adjacent edges are co-located on the same servers,
