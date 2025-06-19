@@ -3,7 +3,7 @@ title: GraphML
 menuTitle: GraphML
 weight: 15
 description: >-
- Enterprise-ready, graph-powered machine learning as a cloud service or self-managed
+ Learn how to create, configure, and run a full machine learning workflow for ArangoGraphML using the steps and features in the ArangoDB web interface
 ---
 Solve high-computational graph problems with Graph Machine Learning. Apply ML on a selected graph to predict connections, get better product recommendations, classify nodes, and perform node embeddings. Configure and run the whole machine learning flow entirely in the web interface.
 
