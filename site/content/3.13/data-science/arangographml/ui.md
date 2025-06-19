@@ -12,9 +12,7 @@ Solve high-computational graph problems with Graph Machine Learning. Apply ML on
 GraphML directly supports two primary machine learning tasks:
 
 *   **Node Classification:** Automatically assign a label to nodes in your graph. For example, you can classify customers as "likely to churn" or "high value," or identify fraudulent transactions.
-*   **Node Embeddings:** Generate powerful numerical representations (vectors) for each node. These embeddings capture a node's features as well as its unique structural position within the graph.
-
-While not a direct one-click option, these embeddings unlock more advanced applications like **link prediction** or **recommendation engines**. By comparing the embeddings of two nodes, you can calculate their similarity to predict the likelihood of a connection. This is the foundation for recommending products to users or suggesting new friendships in a social network.
+*   **Node Embeddings:** Generate numerical representations (vectors) for each node. The main purpose of these embeddings is to measure similarity: nodes that are alike are placed close together in a high-dimensional space. By comparing the embeddings of two nodes, you can calculate their similarity. This is the foundation for advanced tasks like link prediction (predicting a future connection), building recommendation engines, and finding similar items.
 
 ## How ArangoGraphML Works
 
