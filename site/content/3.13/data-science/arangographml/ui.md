@@ -16,7 +16,7 @@ GraphML directly supports two primary machine learning tasks:
 
 ## How ArangoGraphML Works
 
-The underlying framework for ArangoGraphML is **GraphSAGE**. GraphSAGE (Graph Sample and AggreGatE) is a powerful Graph Neural Network (GNN) designed for inductive representation learning on large graphs. It is used to generate low-dimensional vector representations for nodes, and is especially useful for graphs that have rich node attribute information. The overall process involves two main stages:
+The underlying framework for ArangoGraphML is **[GraphSAGE](https://snap.stanford.edu/graphsage/)**. GraphSAGE (Graph Sample and AggreGatE) is a powerful Graph Neural Network (GNN) **framework** designed for inductive representation learning on large graphs. It is used to generate low-dimensional vector representations for nodes and is especially useful for graphs that have rich node attribute information. The overall process involves two main stages:
 
 1.  **Featurization**: Your raw graph data is transformed into numerical representations that the model can understand.
     *   The system iterates over your selected vertices and converts their attributes: booleans become `0` or `1`, numbers are normalized, and text attributes are converted into numerical vectors using sentence transformers.
