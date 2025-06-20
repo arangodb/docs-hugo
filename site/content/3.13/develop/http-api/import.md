@@ -15,26 +15,17 @@ paths:
       description: |
         Load JSON data and store it as documents into the specified collection.
 
-        The request body can have different JSON formats:
-        - One JSON object per line (JSONL)
-        - A JSON array of objects
-        - One JSON array per line (CSV-like)
-
         If you import documents into edge collections, all documents require a `_from`
         and a `_to` attribute.
       requestBody:
         content:
-          application/json:
+          'text/plain; charset=utf-8':
             schema:
-              type: object
-              required:
-                - documents
-              properties:
-                documents:
-                  description: |
-                    The body must either be a JSON-encoded array of objects or a string with
-                    multiple JSON objects separated by newlines.
-                  type: string
+              description: |
+                The request body can have different JSON formats:
+                - One JSON object per line (JSONL)
+                - A JSON array of objects
+                - One JSON array per line (CSV-like)
       parameters:
         - name: database-name
           in: path
