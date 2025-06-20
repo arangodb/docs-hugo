@@ -54,9 +54,13 @@ outputFormats:
     baseName: notfound
     isHTML: true
     mediaType: text/html
+  llms:
+    baseName: llms
+    isHTML: false
+    mediaType: text/plain
 
 outputs:
-  home: ["HTML", "navigation", "notfound"]
+  home: ["HTML", "navigation", "notfound", "llms"]
 
 enableRobotsTXT: true
 
