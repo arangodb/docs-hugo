@@ -496,8 +496,6 @@ the entire query result in RAM, use a streaming query (see the
 
 #### `allowDirtyReads`
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 <small>Introduced in: v3.10.0</small>
 
 If you set this option to `true` and execute the query against a cluster
@@ -507,8 +505,6 @@ for details.
 
 #### `skipInaccessibleCollections`
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 Let AQL queries (especially graph traversals) treat collection to which a
 user has **no access** rights for as if these collections are empty.
 Instead of returning a *forbidden access* error, your queries execute normally.
@@ -517,8 +513,6 @@ and different users execute AQL queries on that graph. You can naturally limit t
 accessible results by changing the access rights of users on collections.
 
 #### `satelliteSyncWait`
-
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
 
 Configure how long a DB-Server has time to bring the SatelliteCollections
 involved in the query into sync. The default value is `60.0` seconds.

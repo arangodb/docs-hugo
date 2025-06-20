@@ -81,7 +81,7 @@ analyzers.save("geojson", "geojson", {}, []);
 See [`geojson` Analyzer](../analyzers.md#geojson) for details.
 
 {{< tip >}}
-In the Enterprise Edition, you can use the `geo_s2` Analyzer instead of the
+You can use the `geo_s2` Analyzer instead of the
 `geojson` Analyzer to more efficiently index geo-spatial data. It is mostly a
 drop-in replacement, but you can choose between different binary formats. See
 [Analyzers](../analyzers.md#geo_s2) for details.

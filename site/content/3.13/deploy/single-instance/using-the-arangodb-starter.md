@@ -49,22 +49,17 @@ docker run -it --name=adb --rm -p 8528:8528 \
     --docker.net-mode=default
 ```
 
-If you use the Enterprise Edition Docker image, you have to set the license key
-in an environment variable by adding this option to the above `docker` command:
+If you have a license for the Enterprise Edition, set the license key
+in an environment variable by adding this option to the above `docker` command
+(replace `<the-key>` with the actual license key):
 
 ```
-    -e ARANGO_LICENSE_KEY=<thekey>
+    -e ARANGO_LICENSE_KEY=<the-key>
 ```
 
-You can get a free evaluation license key by visiting:
+The Starter hands the license key to the Docker containers it launches for ArangoDB.
 
-[www.arangodb.com/download-arangodb-enterprise/](https://www.arangodb.com/download-arangodb-enterprise/)
-
-Then replace `<thekey>` above with the actual license key. The start
-will then hand on the license key to the Docker container it launches
-for ArangoDB.
-
-### TLS verified Docker services
+### TLS-verified Docker services
 
 Oftentimes, one needs to harden Docker services using client certificate 
 and TLS verification. The Docker API allows subsequently only certified access.
