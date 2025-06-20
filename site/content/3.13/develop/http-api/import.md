@@ -27,6 +27,8 @@ paths:
                 - A JSON array of objects
                 - One JSON array per line (CSV-like)
       parameters:
+        # Purposefully undocumented:
+        #   line (compensate for arangoimport --skip-lines in error messages)
         - name: database-name
           in: path
           required: true
@@ -77,8 +79,8 @@ paths:
 
             - `auto`: automatically determines the type (either `documents` or `array`).
 
-            - Omit the `type` parameter entirely to import JSON arrays of tabular data,
-              similar to CSV.
+            - Omit the `type` parameter entirely (or set it to an empty string)
+              to import JSON arrays of tabular data, similar to CSV.
 
               The first line is an array of strings that defines the attribute keys. The
               subsequent lines are arrays with the attribute values. The keys and values
@@ -93,33 +95,64 @@ paths:
               ```
           schema:
             type: string
+            enum: ["", documents, array, auto]
+            default: ""
+        - name: ignoreMissing
+          in: query
+          required: false
+          description: |
+            When importing JSON arrays of tabular data (`type` parameter is omitted),
+            the first line of the request body defines the attribute keys and the
+            subsequent lines the attribute values for each document. Subsequent lines
+            with a different number of elements than the first line are not imported
+            by default.
+
+            ```js
+            ["attr1", "attr2"]
+            [1, 2]     // matching number of elements
+            [1]        // misses 2nd element
+            [1, 2, 3]  // excess 3rd element
+            ```
+
+            You can enable this option to import them anyway. For the missing elements,
+            the document attributes are omitted. Excess elements are ignored.
+          schema:
+            type: boolean
+            default: false
         - name: fromPrefix
           in: query
           required: false
           description: |
-            An optional prefix for the values in `_from` attributes. If specified, the
-            value is automatically prepended to each `_from` input value. This allows
-            specifying just the keys for `_from`.
+            The collection name prefix to prepend to all values in the `_from`
+            attribute that only specify a document key.
           schema:
             type: string
         - name: toPrefix
           in: query
           required: false
           description: |
-            An optional prefix for the values in `_to` attributes. If specified, the
-            value is automatically prepended to each `_to` input value. This allows
-            specifying just the keys for `_to`.
+            The collection name prefix to prepend to all values in the `_to`
+            attribute that only specify a document key.
           schema:
             type: string
+        - name: overwriteCollectionPrefix
+          in: query
+          required: false
+          description: |
+            Force the `fromPrefix` and `toPrefix`, possibly replacing existing
+            collection name prefixes.
+          schema:
+            type: boolean
+            default: false
         - name: overwrite
           in: query
           required: false
           description: |
-            If this parameter has a value of `true` or `yes`, then all data in the
-            collection will be removed prior to the import. Note that any existing
-            index definitions will be preserved.
+            If enabled, then all data in the collection is removed prior to the
+            import. Any existing index definitions are preserved.
           schema:
             type: boolean
+            default: false
         - name: waitForSync
           in: query
           required: false
@@ -127,6 +160,7 @@ paths:
             Wait until documents have been synced to disk before returning.
           schema:
             type: boolean
+            default: false
         - name: onDuplicate
           in: query
           required: false
@@ -150,6 +184,7 @@ paths:
           schema:
             type: string
             enum: [error, update, replace, ignore]
+            default: error
         - name: complete
           in: query
           required: false
@@ -159,6 +194,7 @@ paths:
             skipping the problematic documents.
           schema:
             type: boolean
+            default: false
         - name: details
           in: query
           required: false
@@ -167,6 +203,7 @@ paths:
             about documents that could not be imported.
           schema:
             type: boolean
+            default: false
       responses:
         '201':
           description: |
@@ -216,21 +253,22 @@ paths:
                       type: string
         '400':
           description: |
-            is returned if `type` contains an invalid value, no `collection` is
+            The `type` contains an invalid value, no `collection` is
             specified, the documents are incorrectly encoded, or the request
             is malformed.
         '404':
           description: |
-            is returned if `collection` or the `_from` or `_to` attributes of an
+            The `collection` parameter or the `_from` or `_to` attributes of an
             imported edge refer to an unknown collection.
         '409':
           description: |
-            is returned if the import would trigger a unique key violation and
-            `complete` is set to `true`.
+            The `complete` option is enabled and the import triggers a
+            unique key violation.
         '500':
           description: |
-            is returned if the server cannot auto-generate a document key (out of keys
-            error) for a document with no user-defined key.
+            The `complete` option is enabled and the input is invalid,
+            or the server cannot auto-generate a document key (out of keys error)
+            for a document with no user-defined key.
       tags:
         - Import
 ```
