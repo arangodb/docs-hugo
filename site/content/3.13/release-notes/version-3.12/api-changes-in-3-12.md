@@ -298,6 +298,17 @@ for AQL execution plans. Query plan caching works on a per-database basis.
 See [HTTP interface for the query plan cache](../../develop/http-api/queries/aql-query-plan-cache.md)
 for details.
 
+#### API call recording
+
+<small>Introduced in: v3.12.5</small>
+
+A new `/_admin/server/api-calls` endpoint has been added to let you retrieve a
+list of the most recent requests with a timestamp and the endpoint. This feature
+is for debugging purposes.
+
+See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-api-calls)
+for details.
+
 ### Endpoints augmented
 
 #### View API
