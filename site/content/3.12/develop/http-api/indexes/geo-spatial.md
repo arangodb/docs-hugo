@@ -13,7 +13,7 @@ paths:
       operationId: createIndexGeo
       description: |
         Creates a geo-spatial index in the collection `collection`, if
-        it does not already exist. Expects an object containing the index details.
+        it does not already exist.
 
         Geo indexes are always sparse, meaning that documents that do not contain
         the index attributes or have non-numeric values in the index attributes
@@ -47,6 +47,7 @@ paths:
                   description: |
                     Must be equal to `"geo"`.
                   type: string
+                  example: geo
                 name:
                   description: |
                     An easy-to-remember name for the index to look it up or refer to it in index hints.
@@ -72,6 +73,8 @@ paths:
                     All documents which do not have the attribute paths or which have
                     values that are not suitable are ignored.
                   type: array
+                  minItems: 1
+                  maxItems: 2
                   items:
                     type: string
                 geoJson:
@@ -98,21 +101,21 @@ paths:
                   type: boolean
                 inBackground:
                   description: |
-                    You can set this option to `true` to create the index
-                    in the background, which will not write-lock the underlying collection for
-                    as long as if the index is built in the foreground. The default value is `false`.
+                    Set this option to `true` to keep the collection/shards available for
+                    write operations by not using an exclusive write lock for the duration
+                    of the index creation.
                   type: boolean
+                  default: false
       responses:
         '200':
           description: |
-            If the index already exists, then a *HTTP 200* is returned.
+            The index exists already.
         '201':
           description: |
-            If the index does not already exist and could be created, then a *HTTP 201*
-            is returned.
+            The index is created as there is no such existing index.
         '404':
           description: |
-            If the `collection` is unknown, then a *HTTP 404* is returned.
+            The collection is unknown.
       tags:
         - Indexes
 ```
