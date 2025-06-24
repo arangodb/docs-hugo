@@ -282,11 +282,13 @@ paths:
                   description: |
                     Define if the created graph should be smart (Enterprise Edition only).
                   type: boolean
+                  default: false
                 isDisjoint:
                   description: |
                     Whether to create a Disjoint SmartGraph instead of a regular SmartGraph
                     (Enterprise Edition only).
                   type: boolean
+                  default: false
                 options:
                   description: |
                     a JSON object to define options for creating collections within this graph.
@@ -295,7 +297,7 @@ paths:
                   properties:
                     smartGraphAttribute:
                       description: |
-                        Only has effect in Enterprise Edition and it is required if isSmart is true.
+                        Only has effect in Enterprise Edition and it is required if `isSmart` is `true`.
                         The attribute name that is used to smartly shard the vertices of a graph.
                         Every vertex in this SmartGraph has to have this attribute.
                         Cannot be modified later.
@@ -1171,6 +1173,7 @@ paths:
             dropped if they are not used in other graphs.
           schema:
             type: boolean
+            default: false
       responses:
         '202':
           description: |
@@ -2877,6 +2880,7 @@ paths:
             The collection is only dropped if it is not used in other graphs.
           schema:
             type: boolean
+            default: false
       requestBody:
         content:
           application/json:
@@ -3342,6 +3346,7 @@ paths:
             The collection is only dropped if it is not used in other graphs.
           schema:
             type: boolean
+            default: false
       responses:
         '201':
           description: |
@@ -3732,6 +3737,7 @@ paths:
             new version of the document.
           schema:
             type: boolean
+            default: false
         - name: x-arango-trx-id
           in: header
           required: false
@@ -3744,14 +3750,9 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                The body has to be a JSON object you want to store as a vertex document.
               type: object
-              required:
-                - vertex
-              properties:
-                vertex:
-                  description: |
-                    The body has to be the JSON object to be stored.
-                  type: object
       responses:
         '201':
           description: |
@@ -4057,22 +4058,23 @@ paths:
           in: query
           required: false
           description: |
-            Must contain a revision.
-            If this is set a document is only returned if
-            it has exactly this revision.
-            Also see if-match header as an alternative to this.
+            If set, the document is only returned if it has exactly this revision.
+
+            As an alternative, you can use the `If-Match` header to specify the revision.
           schema:
             type: string
-        - name: if-match
+        - name: If-Match
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one ETag. The document is returned,
-            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the ETag in an query parameter `rev`.
+            If the `If-Match` header is given, then it must contain exactly one ETag.
+            The document is returned if it has the same revision as the given ETag.
+            Otherwise, an error with an HTTP status code of 412 is returned.
+
+            As an alternative, you can supply the ETag in the `rev` query parameter.
           schema:
             type: string
-        - name: if-none-match
+        - name: If-None-Match
           in: header
           required: false
           description: |
@@ -4134,7 +4136,7 @@ paths:
                         type: string
         '304':
           description: |
-            Returned if the if-none-match header is given and the
+            Returned if the `If-None-Match` header is given and the
             currently stored vertex still has this revision value.
             So there was no update between the last time the vertex
             was fetched by the caller.
@@ -4272,7 +4274,7 @@ paths:
                     type: string
         '412':
           description: |
-            Returned if if-match header is given, but the stored documents revision is different.
+            Returned if the `If-Match` header is given, but the stored documents revision is different.
           content:
             application/json:
               schema:
@@ -4362,6 +4364,15 @@ paths:
             The `_key` attribute of the vertex.
           schema:
             type: string
+        - name: rev
+          in: query
+          required: false
+          description: |
+            If set, the document is only updated if it has exactly this revision.
+
+            As an alternative, you can use the `If-Match` header to specify the revision.
+          schema:
+            type: string
         - name: waitForSync
           in: query
           required: false
@@ -4380,6 +4391,7 @@ paths:
             of objects that are nested inside of arrays).
           schema:
             type: boolean
+            default: true
         - name: returnOld
           in: query
           required: false
@@ -4388,6 +4400,7 @@ paths:
             be returned within the response object.
           schema:
             type: boolean
+            default: false
         - name: returnNew
           in: query
           required: false
@@ -4396,13 +4409,16 @@ paths:
             be returned within the response object.
           schema:
             type: boolean
-        - name: if-match
+            default: false
+        - name: If-Match
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
-            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the ETag in an attribute rev in the URL.
+            If the `If-Match` header is given, then it must contain exactly one ETag.
+            The document is updated if it has the same revision as the given ETag.
+            Otherwise, an error with an HTTP status code of 412 is returned.
+
+            As an alternative, you can supply the ETag in the `rev` query parameter.
           schema:
             type: string
         - name: x-arango-trx-id
@@ -4417,14 +4433,10 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                The body has to be a JSON object containing exactly the attributes
+                that should be overwritten. All other attributes remain unchanged.
               type: object
-              required:
-                - vertex
-              properties:
-                vertex:
-                  description: |
-                    The body has to contain a JSON object containing exactly the attributes that should be overwritten, all other attributes remain unchanged.
-                  type: object
       responses:
         '200':
           description: |
@@ -4712,7 +4724,7 @@ paths:
                     type: string
         '412':
           description: |
-            Returned if if-match header is given, but the stored documents revision is different.
+            Returned if the `If-Match` header is given, but the stored documents revision is different.
           content:
             application/json:
               schema:
@@ -4805,6 +4817,15 @@ paths:
             The `_key` attribute of the vertex.
           schema:
             type: string
+        - name: rev
+          in: query
+          required: false
+          description: |
+            If set, the document is only replaced if it has exactly this revision.
+
+            As an alternative, you can use the `If-Match` header to specify the revision.
+          schema:
+            type: string
         - name: waitForSync
           in: query
           required: false
@@ -4823,6 +4844,7 @@ paths:
             of objects that are nested inside of arrays).
           schema:
             type: boolean
+            default: true
         - name: returnOld
           in: query
           required: false
@@ -4831,6 +4853,7 @@ paths:
             be returned within the response object.
           schema:
             type: boolean
+            default: false
         - name: returnNew
           in: query
           required: false
@@ -4839,13 +4862,16 @@ paths:
             be returned within the response object.
           schema:
             type: boolean
-        - name: if-match
+            default: false
+        - name: If-Match
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
-            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the ETag in an attribute rev in the URL.
+            If the `If-Match` header is given, then it must contain exactly one ETag.
+            The document is updated if it has the same revision as the given ETag.
+            Otherwise, an error with an HTTP status code of 412 is returned.
+
+            As an alternative, you can supply the ETag in the `rev` query parameter.
           schema:
             type: string
         - name: x-arango-trx-id
@@ -4860,14 +4886,10 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                The body has to be a JSON object you want to replace the existing
+                vertex document with.
               type: object
-              required:
-                - vertex
-              properties:
-                vertex:
-                  description: |
-                    The body has to be the JSON object to be stored.
-                  type: object
       responses:
         '200':
           description: |
@@ -5155,7 +5177,7 @@ paths:
                     type: string
         '412':
           description: |
-            Returned if if-match header is given, but the stored documents revision is different.
+            Returned if the `If-Match` header is given, but the stored documents revision is different.
           content:
             application/json:
               schema:
@@ -5250,6 +5272,15 @@ paths:
             The `_key` attribute of the vertex.
           schema:
             type: string
+        - name: rev
+          in: query
+          required: false
+          description: |
+            If set, the document is only deleted if it has exactly this revision.
+
+            As an alternative, you can use the `If-Match` header to specify the revision.
+          schema:
+            type: string
         - name: waitForSync
           in: query
           required: false
@@ -5265,11 +5296,12 @@ paths:
             be returned within the response object.
           schema:
             type: boolean
-        - name: if-match
+            default: false
+        - name: If-Match
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
+            If the `If-Match` header is given, then it must contain exactly one ETag. The document is updated,
             if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
             you can supply the ETag in an attribute rev in the URL.
           schema:
@@ -5487,7 +5519,7 @@ paths:
                     type: string
         '412':
           description: |
-            Returned if if-match header is given, but the stored documents revision is different.
+            Returned if the `If-Match` header is given, but the stored documents revision is different.
           content:
             application/json:
               schema:
@@ -5589,6 +5621,7 @@ paths:
             new version of the document.
           schema:
             type: boolean
+            default: false
         - name: x-arango-trx-id
           in: header
           required: false
@@ -5601,6 +5634,8 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                The body has to be a JSON object you want to store as an edge document.
               type: object
               required:
                 - _from
@@ -6000,22 +6035,23 @@ paths:
           in: query
           required: false
           description: |
-            Must contain a revision.
-            If this is set a document is only returned if
-            it has exactly this revision.
-            Also see if-match header as an alternative to this.
+            If set, the document is only returned if it has exactly this revision.
+
+            As an alternative, you can use the `If-Match` header to specify the revision.
           schema:
             type: string
-        - name: if-match
+        - name: If-Match
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one ETag. The document is returned,
-            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the ETag in an attribute rev in the URL.
+            If the `If-Match` header is given, then it must contain exactly one ETag.
+            The document is returned if it has the same revision as the given ETag.
+            Otherwise, an error with an HTTP status code of 412 is returned.
+            
+            As an alternative, you can supply the ETag in the `rev` query parameter.
           schema:
             type: string
-        - name: if-none-match
+        - name: If-None-Match
           in: header
           required: false
           description: |
@@ -6087,7 +6123,7 @@ paths:
                         type: string
         '304':
           description: |
-            Returned if the if-none-match header is given and the
+            Returned if the `If-None-Match` header is given and the
             currently stored edge still has this revision value.
             So there was no update between the last time the edge
             was fetched by the caller.
@@ -6225,7 +6261,7 @@ paths:
                     type: string
         '412':
           description: |
-            Returned if if-match header is given, but the stored documents revision is different.
+            Returned if the `If-Match` header is given, but the stored documents revision is different.
           content:
             application/json:
               schema:
@@ -6316,6 +6352,15 @@ paths:
             The `_key` attribute of the vertex.
           schema:
             type: string
+        - name: rev
+          in: query
+          required: false
+          description: |
+            If set, the document is only updated if it has exactly this revision.
+
+            As an alternative, you can use the `If-Match` header to specify the revision.
+          schema:
+            type: string
         - name: waitForSync
           in: query
           required: false
@@ -6350,13 +6395,16 @@ paths:
             be returned within the response object.
           schema:
             type: boolean
-        - name: if-match
+            default: false
+        - name: If-Match
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
-            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the ETag in an attribute rev in the URL.
+            If the `If-Match` header is given, then it must contain exactly one ETag.
+            The document is updated if it has the same revision as the given ETag.
+            Otherwise, an error with an HTTP status code of 412 is returned.
+            
+            As an alternative, you can supply the ETag in the `rev` query parameter.
           schema:
             type: string
         - name: x-arango-trx-id
@@ -6371,14 +6419,10 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                The body has to be a JSON object containing exactly the attributes
+                that should be overwritten. All other attributes remain unchanged.
               type: object
-              required:
-                - edge
-              properties:
-                edge:
-                  description: |
-                    The body has to contain a JSON object containing exactly the attributes that should be overwritten, all other attributes remain unchanged.
-                  type: object
       responses:
         '200':
           description: |
@@ -6727,7 +6771,7 @@ paths:
                     type: string
         '412':
           description: |
-            Returned if if-match header is given, but the stored documents revision is different.
+            Returned if the `If-Match` header is given, but the stored documents revision is different.
           content:
             application/json:
               schema:
@@ -6820,6 +6864,15 @@ paths:
             The `_key` attribute of the vertex.
           schema:
             type: string
+        - name: rev
+          in: query
+          required: false
+          description: |
+            If set, the document is only replaced if it has exactly this revision.
+
+            As an alternative, you can use the `If-Match` header to specify the revision.
+          schema:
+            type: string
         - name: waitForSync
           in: query
           required: false
@@ -6854,13 +6907,16 @@ paths:
             be returned within the response object.
           schema:
             type: boolean
-        - name: if-match
+            default: false
+        - name: If-Match
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
-            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the ETag in an attribute rev in the URL.
+            If the `If-Match` header is given, then it must contain exactly one ETag.
+            The document is replaced if it has the same revision as the given ETag.
+            Otherwise, an error with an HTTP status code of 412 is returned.
+            
+            As an alternative, you can supply the ETag in the `rev` query parameter.
           schema:
             type: string
         - name: x-arango-trx-id
@@ -6875,6 +6931,9 @@ paths:
         content:
           application/json:
             schema:
+              description: |
+                The body has to be a JSON object you want to replace an existing
+                edge document with.
               type: object
               required:
                 - _from
@@ -7238,7 +7297,7 @@ paths:
                     type: string
         '412':
           description: |
-            Returned if if-match header is given, but the stored documents revision is different.
+            Returned if the `If-Match` header is given, but the stored documents revision is different.
           content:
             application/json:
               schema:
@@ -7335,6 +7394,15 @@ paths:
             The `_key` attribute of the edge.
           schema:
             type: string
+        - name: rev
+          in: query
+          required: false
+          description: |
+            If set, the document is only deleted if it has exactly this revision.
+
+            As an alternative, you can use the `If-Match` header to specify the revision.
+          schema:
+            type: string
         - name: waitForSync
           in: query
           required: false
@@ -7350,13 +7418,15 @@ paths:
             be returned within the response object.
           schema:
             type: boolean
-        - name: if-match
+        - name: If-Match
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one ETag. The document is updated,
-            if it has the same revision as the given ETag. Otherwise a HTTP 412 is returned. As an alternative
-            you can supply the ETag in an attribute rev in the URL.
+            If the `If-Match` header is given, then it must contain exactly one ETag.
+            The document is deleted if it has the same revision as the given ETag.
+            Otherwise, an error with an HTTP status code of 412 is returned.
+            
+            As an alternative, you can supply the ETag in the `rev` query parameter.
           schema:
             type: string
         - name: x-arango-trx-id
@@ -7592,7 +7662,7 @@ paths:
                     type: string
         '412':
           description: |
-            Returned if if-match header is given, but the stored documents revision is different.
+            Returned if the `If-Match` header is given, but the stored documents revision is different.
           content:
             application/json:
               schema:

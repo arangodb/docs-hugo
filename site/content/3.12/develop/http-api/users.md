@@ -68,9 +68,9 @@ paths:
                   type: string
                 active:
                   description: |
-                    An optional flag that specifies whether the user is active. If not
-                    specified, this will default to `true`.
+                    Whether the user account should be able to log in to the database system.
                   type: boolean
+                  default: true
                 extra:
                   description: |
                     A JSON object with extra user information. It is used by the web interface
@@ -161,9 +161,9 @@ paths:
                   type: string
                 active:
                   description: |
-                    An optional flag that specifies whether the user is active. If not
-                    specified, this will default to *true*.
+                    Whether the user account should be able to log in to the database system.
                   type: boolean
+                  default: true
                 extra:
                   description: |
                     A JSON object with extra user information. It is used by the web interface
@@ -255,7 +255,7 @@ paths:
                   type: string
                 active:
                   description: |
-                    An optional flag that specifies whether the user is active.
+                    Whether the user account should be able to log in to the database system.
                   type: boolean
                 extra:
                   description: |
@@ -455,7 +455,7 @@ paths:
         attributes on success:
 
         - `user`: The name of the user as a string.
-        - `active`: An optional flag that specifies whether the user is active.
+        - `active`: Whether the user account is able to log in to the database system.
         - `extra`: A JSON object with extra user information. It is used by the web
           interface to store graph viewer settings and saved queries.
       parameters:
@@ -522,10 +522,11 @@ paths:
               properties:
                 grant:
                   description: |
-                    - Use "rw" to set the database access level to *Administrate*.
-                    - Use "ro" to set the database access level to *Access*.
-                    - Use "none" to set the database access level to *No access*.
+                    - `"rw"`: Set the database access level to *Administrate*.
+                    - `"ro"`: Set the database access level to *Access*.
+                    - `"none"`: Set the database access level to *No access*.
                   type: string
+                  enum: [rw, ro, none]
       parameters:
         - name: database-name
           in: path
@@ -612,12 +613,11 @@ paths:
               properties:
                 grant:
                   description: |
-                    Use "rw" to set the collection level access to *Read/Write*.
-
-                    Use "ro" to set the collection level access to  *Read Only*.
-
-                    Use "none" to set the collection level access to *No access*.
+                    - `"rw"`: Set the collection access level to *Read/Write*.
+                    - `"ro"`: Set the collection access level to *Read Only*.
+                    - `"none"`: Set the collection access level to *No access*.
                   type: string
+                  enum: [rw, ro, none]
       parameters:
         - name: database-name
           in: path

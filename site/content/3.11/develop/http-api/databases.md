@@ -243,10 +243,10 @@ paths:
                       description: |
                         The sharding method to use for new collections in this database. _(cluster only)_
                         Valid values are:
-                        - `""` or `"flexible"`: Create a database where collections can have any
-                          number of shards and the shards can reside on different DB-Servers.
+                        - `""` or `"flexible"`: Create a database where collections can
+                          be sharded independently.
                         - `"single"`: Create a OneShard database where all collections have a
-                          single shard and the shards are placed on the same DB-Server.
+                          single shard and all leader shards are co-located on the same DB-Server.
                       type: string
                       enum: ["", flexible, single]
                       default: ""
@@ -266,7 +266,7 @@ paths:
                         up-to-date copies succeed at the same time, however. The value of
                         `writeConcern` cannot be greater than `replicationFactor`.
 
-                        If `distributeShardsLike` is set, the `writeConcern`
+                        If `distributeShardsLike` is set, the default `writeConcern`
                         is that of the prototype collection.
                         For SatelliteCollections, the `writeConcern` is automatically controlled to
                         equal the number of DB-Servers and has a value of `0`.
@@ -298,11 +298,11 @@ paths:
                         type: string
                       active:
                         description: |
-                          A flag indicating whether the user account should be activated or not.
-                          The default value is `true`. If set to `false`, then the user won't be able to
-                          log into the database. The default is `true`. The attribute is ignored for users
-                          that already exist.
+                          Whether the user account should be able to log in to the database system.
+
+                          The attribute is ignored for users that already exist.
                         type: boolean
+                        default: true
                       extra:
                         description: |
                           A JSON object with extra user information. It is used by the web interface
