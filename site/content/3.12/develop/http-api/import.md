@@ -22,7 +22,8 @@ paths:
           'text/plain; charset=utf-8':
             schema:
               description: |
-                The request body can have different JSON formats:
+                The request body can have different JSON formats depending on
+                the `type` parameter:
                 - One JSON object per line (JSONL)
                 - A JSON array of objects
                 - One JSON array per line (CSV-like)
