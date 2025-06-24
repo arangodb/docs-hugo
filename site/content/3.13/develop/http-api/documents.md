@@ -465,6 +465,7 @@ paths:
             therefore they can only be performed on collections sharded by `_key`.
           schema:
             type: boolean
+            default: false
         - name: overwriteMode
           in: query
           required: false
@@ -489,6 +490,8 @@ paths:
               not set, and the `overwrite` flag is `false` or not set either.
           schema:
             type: string
+            enum: [ignore, replace, update, conflict]
+            default: conflict
         - name: keepNull
           in: query
           required: false
@@ -2004,6 +2007,7 @@ paths:
             therefore they can only be performed on collections sharded by `_key`.
           schema:
             type: boolean
+            default: false
         - name: overwriteMode
           in: query
           required: false
@@ -2028,6 +2032,8 @@ paths:
               not set, and the `overwrite` flag is `false` or not set either.
           schema:
             type: string
+            enum: [ignore, replace, update, conflict]
+            default: conflict
         - name: keepNull
           in: query
           required: false

@@ -241,9 +241,15 @@ paths:
                   properties:
                     sharding:
                       description: |
-                        The sharding method to use for new collections in this database. Valid values
-                        are: "", "flexible", or "single". The first two are equivalent. _(cluster only)_
+                        The sharding method to use for new collections in this database. _(cluster only)_
+                        Valid values are:
+                        - `""` or `"flexible"`: Create a database where collections can have any
+                          number of shards and the shards can reside on different DB-Servers.
+                        - `"single"`: Create a OneShard database where all collections have a
+                          single shard and the shards are placed on the same DB-Server.
                       type: string
+                      enum: ["", flexible, single]
+                      default: ""
                     replicationFactor:
                       description: |
                         Default replication factor for new collections created in this database.
