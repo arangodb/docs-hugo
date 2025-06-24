@@ -2147,6 +2147,37 @@ DB-Servers in a cluster has been added:
 |:------|:------------|
 | `arangodb_vocbase_transactions_lost_subordinates_total` | Counts the number of lost subordinate transactions on database servers. |
 
+### API call recording
+
+<small>Introduced in: v3.12.5</small>
+
+A new `/_admin/server/api-calls` endpoint has been added to let you retrieve a
+list of the most recent requests with a timestamp and the endpoint. This feature
+is for debugging purposes.
+
+You can configure the memory limit for this feature with the following startup options:
+
+- `--server.number-of-api-call-lists`:
+  The size of the ring buffer for API call record lists (default: `256`).
+- `--server.memory-per-api-call-list`: 
+  The amount of memory used for a single API call record list (default: `100000` bytes)
+
+This means that approximately 25 MB of memory are reserved by default.
+
+
+API call recording is enabled by default but you can disable it via the new
+`--server.api-call-recording` startup option.
+
+A metric has been added for the time spent on API call recording to track the
+impact of this feature:
+
+| Label | Description |
+|:------|:------------|
+| `arangodb_api_recording_call_time` | Execution time histogram for API recording calls in nanoseconds. |
+
+See [HTTP interface for server logs](../../develop/http-api/monitoring/logs.md#get-recent-api-calls)
+for details.
+
 ## Client tools
 
 ### Protocol aliases for endpoints
