@@ -114,6 +114,7 @@ centroids and the quality of vector search thus degrades.
 {{< tabs "interfaces" >}}
 
 {{< tab "Web interface" >}}
+{{< comment >}}TODO: Only in v3.12.6+
 1. In the **Collections** section, click the name or row of the desired collection.
 2. Go to the **Indexes** tab.
 3. Click **Add index**.
@@ -123,6 +124,8 @@ centroids and the quality of vector search thus degrades.
    under `param`.
 7. Optionally give the index a user-defined name.
 8. Click **Create**.
+{{< /comment >}}
+The web interface does not support vector indexes yet.
 {{< /tab >}}
 
 {{< tab "arangosh" >}}
