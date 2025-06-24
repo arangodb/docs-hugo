@@ -12,7 +12,7 @@ aliases:
 ---
 ## ArangoDB as a Graph Database
 
-ArangoDB as a **graph database** is a great fit for use cases like fraud detection,
+ArangoDB as a graph database is a great fit for use cases like fraud detection,
 knowledge graphs, recommendation engines, identity and access management,
 network and IT operations, social media management, traffic management, and many
 more.
