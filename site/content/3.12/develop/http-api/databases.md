@@ -254,7 +254,7 @@ paths:
                       description: |
                         Default replication factor for new collections created in this database.
                         Special values include "satellite", which will replicate the collection to
-                        every DB-Server (Enterprise Edition only), and 1, which disables replication.
+                        every DB-Server, and 1, which disables replication.
                         _(cluster only)_
                       type: integer
                     writeConcern:

@@ -16,7 +16,7 @@ Business Source License 1.1 (BUSL-1.1). The full license text is available on
 GitHub: <https://github.com/arangodb/arangodb/blob/devel/LICENSE>
 
 The official, prepackaged ArangoDB Community Edition binaries are now governed
-by a new ArangoDB Community License, which limits deployments to a 100 GB on
+by a new ArangoDB Community License, which limits deployments to a 100 GiB on
 dataset size in production and you cannot use it for any commercial purposes,
 only internal business purposes.
 
@@ -456,7 +456,8 @@ how to correct it if necessary.
 The following procedure is recommended for every deployment unless it has been
 created with v3.11.11, v3.12.2, or any later version.
 
-1. Create a backup as a precaution. If you run the Enterprise Edition, you can
+1. Create a backup as a precaution. If you run the Enterprise Edition
+   (or v3.12.5 or later of the Community Edition), you can
    create a Hot Backup. Otherwise, create a full dump with _arangodump_
    (including all databases and system collections).
 
@@ -702,7 +703,8 @@ before the upgrade.
 The following procedure is recommended for every deployment unless it has been
 created with v3.12.4 or any later version.
 
-1. Create a backup as a precaution. If you run the Enterprise Edition, you can
+1. Create a backup as a precaution. If you run the Enterprise Edition
+   (or v3.12.5 or later of the Community Edition), you can
    create a Hot Backup. Otherwise, create a full dump with _arangodump_
    (including all databases and system collections).
 
@@ -801,6 +803,7 @@ created with v3.12.4 or any later version.
 
 7. Continue with the applicable procedure:
    - [Upgrade an Enterprise Edition deployment](#upgrade-an-enterprise-edition-deployment)
+     (also for v3.12.5 or later of the Community Edition)
    - [Upgrade a Community Edition deployment](#upgrade-a-community-edition-deployment)
 
 ### Upgrade an Enterprise Edition deployment
@@ -1051,7 +1054,7 @@ This slightly decreases performance due to using the block cache for additional
 things, and you may need to allow ArangoDB to use more memory for the RocksDB
 block cache than before with the `--rocksdb.block-cache-size` startup option.
 
-#### `mmap` log topic removed
+### `mmap` log topic removed
 
 <small>Introduced in: v3.12.1</small>
 
@@ -1059,6 +1062,18 @@ The `mmap` log topic for logging information related to memory mapping has been
 unused since v3.12.0 and has now been removed. Attempts to set the log level for
 this topic logs a warning, for example, using a startup option like
 `--log.level mmap=trace`.
+
+### Daily RocksDB background compactions
+
+<small>Introduced in: v3.12.5</small>
+
+The default value of the `--rocksdb.periodic-compaction-ttl` startup option has
+been changed from 30 days to 24 hours.
+
+Certain deleted keys ranges in RocksDB may only get compacted by periodic
+background compactions. The changed default ensures this cleanup to happen more
+frequently. Compactions can potentially lead to spikes in CPU, memory, and I/O
+usage. You may now observe this daily instead of monthly.
 
 ## Client tools
 

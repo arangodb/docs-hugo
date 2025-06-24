@@ -3116,8 +3116,6 @@ db._drop(cn);
 
 ## Read from followers
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 <small>Introduced in: v3.10.0</small>
 
 In an ArangoDB cluster, all reads and writes are performed via
