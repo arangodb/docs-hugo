@@ -67,9 +67,9 @@ be found depends on the data as well as the search effort (see the `nProbe` opti
 Retrieve the approximate angular similarity using the cosine metric, accelerated
 by a matching vector index.
 
-The higher the cosine similarity value is, the more similar the two vectors
-are. The closer it is to 0, the more different they are. The value can also
-be negative, indicating that the vectors are not similar and point in opposite
+The closer the cosine similarity value is to 1, the more similar the two vectors
+are. The closer it is to 0, the more different they are. The value can also be
+negative up to -1, indicating that the vectors are not similar and point in opposite
 directions. You need to sort in descending order so that the most similar
 documents come first, which is what a vector index using the `cosine` metric
 can provide.
