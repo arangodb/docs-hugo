@@ -378,7 +378,7 @@ error is thrown. For information about the naming constraints for collections, s
   collection copies the `replicationFactor`, `numberOfShards` and `shardingStrategy`
   properties from the specified collection (referred to as the _prototype collection_)
   and distributes the shards of this collection in the same way as the shards of
-  the other collection. IThis data co-location is utilized to optimize queries.
+  the other collection. This data co-location is utilized to optimize queries.
 
   You need to use the same number of `shardKeys` as the prototype collection, but
   you can use different attributes.

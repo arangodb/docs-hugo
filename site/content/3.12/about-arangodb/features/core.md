@@ -11,6 +11,11 @@ aliases:
   - community-edition
   - enterprise-edition
 ---
+{{< info >}}
+Feature parity between the Community Edition and the Enterprise Edition is
+available from v3.12.5 onward.
+{{< /info >}}
+
 ## General
 
 - [**Graph Database**](../../concepts/data-models.md#graph-model):
