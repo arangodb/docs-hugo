@@ -369,6 +369,16 @@ the `GEO_DISTANCE()` function, or if `FILTER` conditions with `GEO_CONTAINS()`
 or `GEO_INTERSECTS()` are used. It will not be used for other types of queries
 or conditions.
 
+## Vector Index
+
+Vector indexes let you index vector embeddings stored in documents. Such
+vectors are arrays of numbers that represent the meaning and relationships of
+data numerically. You can you quickly find a given number of semantically
+similar documents by searching for close neighbors in a high-dimensional
+vector space.
+
+See [Vector Indexes](working-with-indexes/vector-indexes.md) for details.
+
 ## Fulltext Index
 
 {{< warning >}}
@@ -662,7 +672,7 @@ become unsustainable if this list grows to tens of millions of entries.
 Building an index is always a write heavy operation (internally), it is always a good idea to build indexes
 during times with less load.
 
-In the Enterprise Edition, non-unique indexes can be created with multiple
+Non-unique indexes can be created with multiple
 threads in parallel. The number of parallel index creation threads is currently 
 set to 2, but future versions of ArangoDB may increase this value.
 Parallel index creation is only triggered for collections with at least 120,000

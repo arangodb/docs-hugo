@@ -148,7 +148,7 @@ paths:
                             replicationFactor:
                               description: |
                                 The replication factor used for every new collection in the graph.
-                                For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                                For SatelliteGraphs, it is the string `"satellite"`.
                               type: integer
                             writeConcern:
                               description: |
@@ -163,19 +163,19 @@ paths:
                               type: integer
                             isSmart:
                               description: |
-                                Whether the graph is a SmartGraph (Enterprise Edition only).
+                                Whether the graph is a SmartGraph.
                               type: boolean
                             isDisjoint:
                               description: |
-                                Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                                Whether the graph is a Disjoint SmartGraph.
                               type: boolean
                             smartGraphAttribute:
                               description: |
-                                Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                                Name of the sharding attribute in the SmartGraph case.
                               type: string
                             isSatellite:
                               description: |
-                                Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                                Whether the graph is a SatelliteGraph.
                               type: boolean
       tags:
         - Graphs
@@ -280,12 +280,11 @@ paths:
                     type: string
                 isSmart:
                   description: |
-                    Define if the created graph should be smart (Enterprise Edition only).
+                    Define if the created graph should be smart.
                   type: boolean
                 isDisjoint:
                   description: |
-                    Whether to create a Disjoint SmartGraph instead of a regular SmartGraph
-                    (Enterprise Edition only).
+                    Whether to create a Disjoint SmartGraph instead of a regular SmartGraph.
                   type: boolean
                 options:
                   description: |
@@ -295,7 +294,8 @@ paths:
                   properties:
                     smartGraphAttribute:
                       description: |
-                        Only has effect in Enterprise Edition and it is required if isSmart is true.
+                        Required if `isSmart` is true.
+
                         The attribute name that is used to smartly shard the vertices of a graph.
                         Every vertex in this SmartGraph has to have this attribute.
                         Cannot be modified later.
@@ -303,7 +303,7 @@ paths:
                     satellites:
                       description: |
                         An array of collection names that is used to create SatelliteCollections
-                        for a (Disjoint) SmartGraph using SatelliteCollections (Enterprise Edition only).
+                        for a (Disjoint) SmartGraph using SatelliteCollections.
                         Each array element must be a string and a valid collection name.
                         The collection type cannot be modified later.
                       type: array
@@ -318,8 +318,7 @@ paths:
                       description: |
                         The replication factor used when initially creating collections for this graph.
                         Can be set to `"satellite"` to create a SatelliteGraph, which then ignores
-                        `numberOfShards`, `minReplicationFactor`, and `writeConcern`
-                        (Enterprise Edition only).
+                        `numberOfShards`, `minReplicationFactor`, and `writeConcern`.
                       type: integer
                     writeConcern:
                       description: |
@@ -434,7 +433,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -449,19 +448,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '202':
           description: |
@@ -561,7 +560,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -576,19 +575,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '400':
           description: |
@@ -730,7 +729,6 @@ graph._drop("myGraph", true);
 description: |-
   Create a SmartGraph. This graph uses 9 shards and
   is sharded by the "region" attribute.
-  Available in the Enterprise Edition only.
 name: HttpGharialCreateSmart
 ---
 var graph = require("@arangodb/general-graph");
@@ -768,7 +766,6 @@ graph._drop("smartGraph", true);
 description: |-
   Create a disjoint SmartGraph. This graph uses 9 shards and
   is sharded by the "region" attribute.
-  Available in the Enterprise Edition only.
   Note that as you are using a disjoint version, you can only
   create edges between vertices sharing the same region.
 name: HttpGharialCreateDisjointSmart
@@ -812,7 +809,6 @@ description: |-
   This collection is cloned to all servers, all other vertex
   collections are split into 9 shards
   and are sharded by the "region" attribute.
-  Available in the Enterprise Edition only.
 name: HttpGharialCreateSmartWithSatellites
 ---
 var graph = require("@arangodb/general-graph");
@@ -851,7 +847,6 @@ graph._drop("smartGraph", true);
 description: |-
   Create an EnterpriseGraph. This graph uses 9 shards,
   it does not make use of specific sharding attributes.
-  Available in the Enterprise Edition only.
 name: HttpGharialCreateEnterprise
 ---
 var graph = require("@arangodb/general-graph");
@@ -890,7 +885,6 @@ description: |-
   shards, but uses "satellite" as replicationFactor.
   Make sure to keep this graph small as it is cloned
   to every server.
-  Available in the Enterprise Edition only.
 name: HttpGharialCreateSatellite
 ---
 var graph = require("@arangodb/general-graph");
@@ -1045,7 +1039,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -1060,19 +1054,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '404':
           description: |
@@ -1445,7 +1439,7 @@ paths:
                     satellites:
                       description: |
                         An array of collection names that is used to create SatelliteCollections
-                        for a (Disjoint) SmartGraph using SatelliteCollections (Enterprise Edition only).
+                        for a (Disjoint) SmartGraph using SatelliteCollections.
                         Each array element must be a string and a valid collection name.
                         The collection type cannot be modified later.
                       type: array
@@ -1550,7 +1544,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -1565,19 +1559,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '202':
           description: |
@@ -1677,7 +1671,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -1692,19 +1686,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '400':
           description: |
@@ -1972,7 +1966,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -1987,19 +1981,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '202':
           description: |
@@ -2097,7 +2091,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -2112,19 +2106,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '400':
           description: |
@@ -2443,7 +2437,7 @@ paths:
                     satellites:
                       description: |
                         An array of collection names that is used to create SatelliteCollections
-                        for a (Disjoint) SmartGraph using SatelliteCollections (Enterprise Edition only).
+                        for a (Disjoint) SmartGraph using SatelliteCollections.
                         Each array element must be a string and a valid collection name.
                         The collection type cannot be modified later.
                       type: array
@@ -2548,7 +2542,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -2563,19 +2557,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '202':
           description: |
@@ -2675,7 +2669,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -2690,19 +2684,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '400':
           description: |
@@ -2912,7 +2906,7 @@ paths:
                     satellites:
                       description: |
                         An array of collection names that is used to create SatelliteCollections
-                        for a (Disjoint) SmartGraph using SatelliteCollections (Enterprise Edition only).
+                        for a (Disjoint) SmartGraph using SatelliteCollections.
                         Each array element must be a string and a valid collection name.
                         The collection type cannot be modified later.
                       type: array
@@ -3015,7 +3009,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -3030,19 +3024,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '202':
           description: |
@@ -3140,7 +3134,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -3155,19 +3149,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '400':
           description: |
@@ -3440,7 +3434,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -3455,19 +3449,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '202':
           description: |
@@ -3566,7 +3560,7 @@ paths:
                       replicationFactor:
                         description: |
                           The replication factor used for every new collection in the graph.
-                          For SatelliteGraphs, it is the string `"satellite"` (Enterprise Edition only).
+                          For SatelliteGraphs, it is the string `"satellite"`.
                         type: integer
                       writeConcern:
                         description: |
@@ -3581,19 +3575,19 @@ paths:
                         type: integer
                       isSmart:
                         description: |
-                          Whether the graph is a SmartGraph (Enterprise Edition only).
+                          Whether the graph is a SmartGraph.
                         type: boolean
                       isDisjoint:
                         description: |
-                          Whether the graph is a Disjoint SmartGraph (Enterprise Edition only).
+                          Whether the graph is a Disjoint SmartGraph.
                         type: boolean
                       smartGraphAttribute:
                         description: |
-                          Name of the sharding attribute in the SmartGraph case (Enterprise Edition only).
+                          Name of the sharding attribute in the SmartGraph case.
                         type: string
                       isSatellite:
                         description: |
-                          Flag if the graph is a SatelliteGraph (Enterprise Edition only) or not.
+                          Whether the graph is a SatelliteGraph.
                         type: boolean
         '403':
           description: |

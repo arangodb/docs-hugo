@@ -9,8 +9,6 @@ description: >-
 pageToc:
   maxHeadlineLevel: 3
 ---
-{{< tag "ArangoDB Enterprise Edition" >}}
-
 {{< tip >}}
 A similar feature is also available in the
 [ArangoGraph Insights Platform](../../arangograph/security-and-access-control/_index.md#using-an-audit-log).

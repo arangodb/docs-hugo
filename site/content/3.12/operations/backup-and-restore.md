@@ -62,8 +62,6 @@ Logical backups can be created and restored with the tools
 
 ## Hot Backups
 
-{{< tag "ArangoDB Enterprise Edition" "ArangoGraph" >}}
-
 Hot backup and restore associated operations can be performed with the
 [_arangobackup_](../components/tools/arangobackup/_index.md) client tool and the
 [Hot Backup HTTP API](../develop/http-api/hot-backups.md).
