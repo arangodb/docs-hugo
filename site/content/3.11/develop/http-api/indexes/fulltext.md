@@ -49,6 +49,7 @@ paths:
                   description: |
                     Must be equal to `"fulltext"`.
                   type: string
+                  example: fulltext
                 name:
                   description: |
                     An easy-to-remember name for the index to look it up or refer to it in index hints.
@@ -58,9 +59,10 @@ paths:
                   type: string
                 fields:
                   description: |
-                    an array of attribute names. Currently, the array is limited
-                    to exactly one attribute.
+                    A list with exactly one attribute path.
                   type: array
+                  minItems: 1
+                  maxItems: 1
                   items:
                     type: string
                 minLength:
@@ -71,22 +73,21 @@ paths:
                   type: integer
                 inBackground:
                   description: |
-                    You can set this option to `true` to create the index
-                    in the background, which will not write-lock the underlying collection for
-                    as long as if the index is built in the foreground. The default value is `false`.
+                    Set this option to `true` to keep the collection/shards available for
+                    write operations by not using an exclusive write lock for the duration
+                    of the index creation.
                   type: boolean
+                  default: false
       responses:
         '200':
           description: |
-            If the index already exists, then a *HTTP 200* is
-            returned.
+            The index exists already.
         '201':
           description: |
-            If the index does not already exist and could be created, then a *HTTP 201*
-            is returned.
+            The index is created as there is no such existing index.
         '404':
           description: |
-            If the `collection-name` is unknown, then a *HTTP 404* is returned.
+            The collection is unknown.
       tags:
         - Indexes
 ```

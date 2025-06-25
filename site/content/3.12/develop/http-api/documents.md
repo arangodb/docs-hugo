@@ -120,7 +120,7 @@ paths:
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one
+            If the `If-Match` header is given, then it must contain exactly one
             ETag. The document is returned, if it has the same revision as the
             given ETag. Otherwise a *HTTP 412* is returned.
           schema:
@@ -284,7 +284,7 @@ paths:
           in: header
           required: false
           description: |
-            If the "If-Match" header is given, then it must contain exactly one
+            If the `If-Match` header is given, then it must contain exactly one
             ETag. The document is returned, if it has the same revision as the
             given ETag. Otherwise a *HTTP 412* is returned.
           schema:
@@ -435,6 +435,7 @@ paths:
             in the result.
           schema:
             type: boolean
+            default: false
         - name: returnOld
           in: query
           required: false
@@ -443,6 +444,7 @@ paths:
             in the result. Only available if the overwrite option is used.
           schema:
             type: boolean
+            default: false
         - name: silent
           in: query
           required: false
@@ -454,6 +456,7 @@ paths:
             You can use this option to save network traffic.
           schema:
             type: boolean
+            default: false
         - name: overwrite
           in: query
           required: false
@@ -465,6 +468,7 @@ paths:
             therefore they can only be performed on collections sharded by `_key`.
           schema:
             type: boolean
+            default: false
         - name: overwriteMode
           in: query
           required: false
@@ -489,18 +493,21 @@ paths:
               not set, and the `overwrite` flag is `false` or not set either.
           schema:
             type: string
+            enum: [ignore, replace, update, conflict]
+            default: conflict
         - name: keepNull
           in: query
           required: false
           description: |
             If the intention is to delete existing attributes with the update-insert
-            command, set the `keepNull` URL query parameter to `false`. This modifies the
+            command, set the `keepNull` query parameter to `false`. This modifies the
             behavior of the patch command to remove top-level attributes and sub-attributes
             from the existing document that are contained in the patch document with an
             attribute value of `null` (but not attributes of objects that are nested inside
             of arrays). This option controls the update-insert behavior only.
           schema:
             type: boolean
+            default: true
         - name: mergeObjects
           in: query
           required: false
@@ -508,10 +515,11 @@ paths:
             Controls whether objects (not arrays) are merged if present in both, the
             existing and the update-insert document. If set to `false`, the value in the
             patch document overwrites the existing document's value. If set to `true`,
-            objects are merged. The default is `true`.
+            objects are merged.
             This option controls the update-insert behavior only.
           schema:
             type: boolean
+            default: true
         - name: refillIndexCaches
           in: query
           required: false
@@ -520,6 +528,7 @@ paths:
             affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
+            default: false
         - name: versionAttribute
           in: query
           required: false
@@ -885,13 +894,14 @@ paths:
           in: query
           required: false
           description: |
-            By default, or if this is set to `true`, the `_rev` attributes in
+            If set to `true`, the `_rev` attributes in
             the given document is ignored. If this is set to `false`, then
             the `_rev` attribute given in the body document is taken as a
             precondition. The document is only replaced if the current revision
             is the one specified.
           schema:
             type: boolean
+            default: true
         - name: returnOld
           in: query
           required: false
@@ -900,6 +910,7 @@ paths:
             document under the attribute `old` in the result.
           schema:
             type: boolean
+            default: false
         - name: returnNew
           in: query
           required: false
@@ -908,6 +919,7 @@ paths:
             in the result.
           schema:
             type: boolean
+            default: false
         - name: silent
           in: query
           required: false
@@ -919,6 +931,7 @@ paths:
             You can use this option to save network traffic.
           schema:
             type: boolean
+            default: false
         - name: refillIndexCaches
           in: query
           required: false
@@ -927,6 +940,7 @@ paths:
             replacements affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
+            default: false
         - name: versionAttribute
           in: query
           required: false
@@ -957,7 +971,7 @@ paths:
           required: false
           description: |
             You can conditionally replace a document based on a target revision id by
-            using the `if-match` HTTP header.
+            using the `If-Match` HTTP header.
           schema:
             type: string
         - name: x-arango-trx-id
@@ -1214,13 +1228,14 @@ paths:
           required: false
           description: |
             If the intention is to delete existing attributes with the patch
-            command, set the `keepNull` URL query parameter to `false`. This modifies the
+            command, set the `keepNull` query parameter to `false`. This modifies the
             behavior of the patch command to remove top-level attributes and sub-attributes
             from the existing document that are contained in the patch document with an
             attribute value of `null` (but not attributes of objects that are nested inside
             of arrays).
           schema:
             type: boolean
+            default: true
         - name: mergeObjects
           in: query
           required: false
@@ -1228,10 +1243,10 @@ paths:
             Controls whether objects (not arrays) are merged if present in
             both the existing and the patch document. If set to `false`, the
             value in the patch document overwrites the existing document's
-            value. If set to `true`, objects are merged. The default is
-            `true`.
+            value. If set to `true`, objects are merged.
           schema:
             type: boolean
+            default: true
         - name: waitForSync
           in: query
           required: false
@@ -1243,13 +1258,14 @@ paths:
           in: query
           required: false
           description: |
-            By default, or if this is set to `true`, the `_rev` attributes in
+            If set to `true`, the `_rev` attributes in
             the given document is ignored. If this is set to `false`, then
             the `_rev` attribute given in the body document is taken as a
             precondition. The document is only updated if the current revision
             is the one specified.
           schema:
             type: boolean
+            default: true
         - name: returnOld
           in: query
           required: false
@@ -1258,6 +1274,7 @@ paths:
             document under the attribute `old` in the result.
           schema:
             type: boolean
+            default: false
         - name: returnNew
           in: query
           required: false
@@ -1266,6 +1283,7 @@ paths:
             in the result.
           schema:
             type: boolean
+            default: false
         - name: silent
           in: query
           required: false
@@ -1277,6 +1295,7 @@ paths:
             You can use this option to save network traffic.
           schema:
             type: boolean
+            default: false
         - name: refillIndexCaches
           in: query
           required: false
@@ -1285,6 +1304,7 @@ paths:
             affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
+            default: false
         - name: versionAttribute
           in: query
           required: false
@@ -1315,7 +1335,7 @@ paths:
           required: false
           description: |
             You can conditionally update a document based on a target revision id by
-            using the `if-match` HTTP header.
+            using the `If-Match` HTTP header.
           schema:
             type: string
         - name: x-arango-trx-id
@@ -1536,6 +1556,7 @@ paths:
             document under the attribute `old` in the result.
           schema:
             type: boolean
+            default: false
         - name: silent
           in: query
           required: false
@@ -1547,6 +1568,7 @@ paths:
             You can use this option to save network traffic.
           schema:
             type: boolean
+            default: false
         - name: refillIndexCaches
           in: query
           required: false
@@ -1555,12 +1577,13 @@ paths:
             if document removals affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
+            default: false
         - name: If-Match
           in: header
           required: false
           description: |
             You can conditionally remove a document based on a target revision id by
-            using the `if-match` HTTP header.
+            using the `If-Match` HTTP header.
           schema:
             type: string
         - name: x-arango-trx-id
@@ -1806,12 +1829,12 @@ paths:
           in: query
           required: false
           description: |
-            Should the value be `true` (the default):
-            If a search document contains a value for the `_rev` field,
-            then the document is only returned if it has the same revision value.
-            Otherwise a precondition failed error is returned.
+            If set to `false` and a `_rev` attribute is included in the request,
+            then the document is only returned if it has the same revision.
+            Otherwise, a precondition failed error is returned for the document.
           schema:
             type: string
+            default: true
         - name: x-arango-allow-dirty-read
           in: header
           required: false
@@ -1973,6 +1996,7 @@ paths:
             in the result.
           schema:
             type: boolean
+            default: false
         - name: returnOld
           in: query
           required: false
@@ -1981,6 +2005,7 @@ paths:
             in the result. Only available if the overwrite option is used.
           schema:
             type: boolean
+            default: false
         - name: silent
           in: query
           required: false
@@ -1993,6 +2018,7 @@ paths:
             to the inputs of your request.
           schema:
             type: boolean
+            default: false
         - name: overwrite
           in: query
           required: false
@@ -2004,6 +2030,7 @@ paths:
             therefore they can only be performed on collections sharded by `_key`.
           schema:
             type: boolean
+            default: false
         - name: overwriteMode
           in: query
           required: false
@@ -2028,18 +2055,21 @@ paths:
               not set, and the `overwrite` flag is `false` or not set either.
           schema:
             type: string
+            enum: [ignore, replace, update, conflict]
+            default: conflict
         - name: keepNull
           in: query
           required: false
           description: |
             If the intention is to delete existing attributes with the update-insert
-            command, set the `keepNull` URL query parameter to `false`. This modifies the
+            command, set the `keepNull` query parameter to `false`. This modifies the
             behavior of the patch command to remove top-level attributes and sub-attributes
             from the existing document that are contained in the patch document with an
             attribute value of `null` (but not attributes of objects that are nested inside
             of arrays). This option controls the update-insert behavior only.
           schema:
             type: boolean
+            default: true
         - name: mergeObjects
           in: query
           required: false
@@ -2047,10 +2077,11 @@ paths:
             Controls whether objects (not arrays) are merged if present in both, the
             existing and the update-insert document. If set to `false`, the value in the
             patch document overwrites the existing document's value. If set to `true`,
-            objects are merged. The default is `true`.
+            objects are merged.
             This option controls the update-insert behavior only.
           schema:
             type: boolean
+            default: true
         - name: refillIndexCaches
           in: query
           required: false
@@ -2059,6 +2090,7 @@ paths:
             affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
+            default: false
         - name: versionAttribute
           in: query
           required: false
@@ -2314,13 +2346,14 @@ paths:
           in: query
           required: false
           description: |
-            By default, or if this is set to `true`, the `_rev` attributes in
+            If set to `true`, the `_rev` attributes in
             the given documents are ignored. If this is set to `false`, then
             any `_rev` attribute given in a body document is taken as a
             precondition. The document is only replaced if the current revision
             is the one specified.
           schema:
             type: boolean
+            default: true
         - name: returnOld
           in: query
           required: false
@@ -2329,6 +2362,7 @@ paths:
             documents under the attribute `old` in the result.
           schema:
             type: boolean
+            default: false
         - name: returnNew
           in: query
           required: false
@@ -2337,6 +2371,7 @@ paths:
             in the result.
           schema:
             type: boolean
+            default: false
         - name: silent
           in: query
           required: false
@@ -2349,6 +2384,7 @@ paths:
             to the inputs of your request.
           schema:
             type: boolean
+            default: false
         - name: refillIndexCaches
           in: query
           required: false
@@ -2357,6 +2393,7 @@ paths:
             replacements affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
+            default: false
         - name: versionAttribute
           in: query
           required: false
@@ -2544,13 +2581,14 @@ paths:
           required: false
           description: |
             If the intention is to delete existing attributes with the patch
-            command, set the `keepNull` URL query parameter to `false`. This modifies the
+            command, set the `keepNull` query parameter to `false`. This modifies the
             behavior of the patch command to remove top-level attributes and sub-attributes
             from the existing document that are contained in the patch document with an
             attribute value of `null` (but not attributes of objects that are nested inside
             of arrays).
           schema:
             type: boolean
+            default: true
         - name: mergeObjects
           in: query
           required: false
@@ -2558,10 +2596,10 @@ paths:
             Controls whether objects (not arrays) are merged if present in
             both the existing and the patch document. If set to `false`, the
             value in the patch document overwrites the existing document's
-            value. If set to `true`, objects are merged. The default is
-            `true`.
+            value. If set to `true`, objects are merged.
           schema:
             type: boolean
+            default: true
         - name: waitForSync
           in: query
           required: false
@@ -2573,13 +2611,14 @@ paths:
           in: query
           required: false
           description: |
-            By default, or if this is set to `true`, the `_rev` attributes in
+            If set to `true`, the `_rev` attributes in
             the given documents are ignored. If this is set to `false`, then
             any `_rev` attribute given in a body document is taken as a
             precondition. The document is only updated if the current revision
             is the one specified.
           schema:
             type: boolean
+            default: true
         - name: returnOld
           in: query
           required: false
@@ -2588,6 +2627,7 @@ paths:
             documents under the attribute `old` in the result.
           schema:
             type: boolean
+            default: false
         - name: returnNew
           in: query
           required: false
@@ -2596,6 +2636,7 @@ paths:
             in the result.
           schema:
             type: boolean
+            default: false
         - name: silent
           in: query
           required: false
@@ -2608,6 +2649,7 @@ paths:
             to the inputs of your request.
           schema:
             type: boolean
+            default: false
         - name: refillIndexCaches
           in: query
           required: false
@@ -2616,6 +2658,7 @@ paths:
             affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
+            default: false
         - name: versionAttribute
           in: query
           required: false
@@ -2804,11 +2847,11 @@ paths:
           in: query
           required: false
           description: |
-            If set to `true`, ignore any `_rev` attribute in the selectors. No
-            revision check is performed. If set to `false` then revisions are checked.
-            The default is `true`.
+            If set to `true`, ignore any `_rev` attribute included in the request. No
+            revision check is performed. If set to `false`, then revisions are checked.
           schema:
             type: boolean
+            default: true
         - name: refillIndexCaches
           in: query
           required: false
@@ -2817,6 +2860,7 @@ paths:
             if document removals affect the edge index or cache-enabled persistent indexes.
           schema:
             type: boolean
+            default: false
         - name: x-arango-trx-id
           in: header
           required: false

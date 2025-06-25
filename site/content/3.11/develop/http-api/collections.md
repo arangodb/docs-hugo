@@ -2830,6 +2830,7 @@ paths:
                         keys are generated on the leader DB-Server, which has full control over the key
                         sequence.
                       type: string
+                      default: traditional
                     allowUserKeys:
                       description: |
                         If set to `true`, then you are allowed to supply own key values in the
@@ -2845,6 +2846,7 @@ paths:
                         auto-generate keys in this case are not aware of all keys which are already used.
                         {{</* /warning */>}}
                       type: boolean
+                      default: true
                     increment:
                       description: |
                         The increment value for the `autoincrement` key generator.
