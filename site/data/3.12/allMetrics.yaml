@@ -6325,6 +6325,38 @@
     It shows the block cache capacity in bytes. This can be configured with
     the `--rocksdb.block-cache-size` startup option.
 
+- name: rocksdb_block_cache_charge_per_entry
+  introducedIn: "3.12.6"
+  help: |
+    Average size of entries in RocksDB block cache.
+  unit: bytes
+  type: gauge
+  category: RocksDB
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    The metric shows the average size of cache entry value in the RocksDB
+    block cache.
+
+- name: rocksdb_block_cache_entries
+  introducedIn: "3.12.6"
+  help: |
+    Number of entries in the RocksDB block cache.
+  unit: number
+  type: gauge
+  category: RocksDB
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    This metric shows the total number of entries present in the RocksDB block
+    cache.
+
 - name: rocksdb_block_cache_pinned_usage
   introducedIn: "3.6.1"
   help: |
@@ -7132,6 +7164,41 @@
     nasty delays in database operations are incurred. If in doubt,
     contact ArangoDB support.
 
+- name: rocksdb_live_blob_file_garbage_size
+  introducedIn: "3.12.6"
+  help: |
+    Size of garbage in live RocksDB .blob files.
+  unit: bytes
+  type: gauge
+  category: RocksDB
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    This metric exhibits the RocksDB metric `rocksdb-live-blob-file-garbage-size`.
+    It shows the total amount of garbage (obsolete, unreferenced blobs) in bytes
+    over in .blob files belonging to the latest LSM tree, summed over all
+    column families that use blob files.
+
+- name: rocksdb_live_blob_file_size
+  introducedIn: "3.12.6"
+  help: |
+    Size of live RocksDB .blob files.
+  unit: bytes
+  type: gauge
+  category: RocksDB
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    This metric exhibits the RocksDB metric `rocksdb-live-blob-file-size`.
+    It shows the total size in bytes of all .blob files belonging to the latest
+    LSM tree, summed over all column families that use blob files.
+
 - name: rocksdb_live_sst_files_size
   introducedIn: "3.6.1"
   help: |
@@ -7215,6 +7282,23 @@
   description: |
     This metric exhibits the RocksDB metric `rocksdb-min-log-number-to-keep`.
     It shows the minimum log number of the log files that should be kept.
+
+- name: rocksdb_num_blob_files
+  introducedIn: "3.12.6"
+  help: |
+    Number of live RocksDB .blob files.
+  unit: number
+  type: gauge
+  category: RocksDB
+  complexity: advanced
+  exposedBy:
+    - dbserver
+    - agent
+    - single
+  description: |
+    This metric exhibits the RocksDB metric `rocksdb-num-blob-files`.
+    It shows the total number of .blob files belonging to the latest
+    LSM tree, summed over all column families that use blob files.
 
 - name: rocksdb_num_deletes_active_mem_table
   introducedIn: "3.6.1"
