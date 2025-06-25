@@ -1,29 +1,39 @@
 ---
-title: Getting Started with ArangoGraphML
-menuTitle: Getting Started
-weight: 10
+title: How to use GraphML in a scriptable manner
+menuTitle: Notebooks & API
+weight: 15
 description: >-
-  How to control all resources inside ArangoGraphML in a scriptable manner
+  Control all resources inside GraphML via Notebooks or API
 aliases:
   - getting-started-with-arangographml
+  - ../arangographml/getting-started
+  - ../arangographml-getting-started-with-arangographml
 ---
-ArangoGraphML provides an easy-to-use & scalable interface to run Graph Machine Learning on ArangoDB Data. Since all of the orchestration and ML logic is managed by ArangoGraph, all that is typically required are JSON specifications outlining individual processes to solve an ML Task. If you are using the self-managed solution, additional configurations may be required.
 
-The `arangoml` is a Python Package allowing you to manage all of the necessary ArangoGraphML components, including:
-- **Project Management**: Projects are a metadata-tracking entity that sit at the top level of ArangoGraphML. All activities must link to a project.
-- **Featurization**: The step of converting human-understandable data to machine-understandable data (i.e features), such that it can be used to train Graph Neural Networks (GNNs).
-- **Training**: Train a set of models based on the name of the generated/existing features, and a definition of the ML Task we want to solve (e.g Node Classification, Embedding Generation).
+{{< tag "ArangoDB Platform" >}}
+
+ArangoDB Platform provides an easy-to-use & scalable interface to run Graph Machine
+Learning on ArangoDB data. Since all the orchestration and Machine Learning logic is
+managed by ArangoDB, all that is typically required are JSON specifications outlining
+individual processes to solve a Machine Learning Task.
+
+The `arangoml` is a Python Package allowing you to manage all the necessary
+GraphML components, including:
+- **Project Management**: Projects are a metadata-tracking entity that sit at
+  the top level of GraphML. All activities must link to a project.
+- **Featurization**: The step of converting human-understandable data to
+  machine-understandable data (e.g. features), such that it can be used to
+  train Graph Neural Networks (GNNs).
+- **Training**: Train a set of models based on the name of the generated/existing
+  features, and a definition of the ML task we want to solve (e.g. Node Classification, Embedding Generation).
 - **Model Selection**: Select the best model based on the metrics generated during training.
-- **Predictions**: Generate predictions based on the selected model, and persit the results to the source graph (either in the source document, or in a new collection).
+- **Predictions**: Generate predictions based on the selected model, and persist
+  the results to the source graph (either in the source document, or in a new collection).
 
-{{< tip >}}
-To enable the ArangoGraphML services in the ArangoGraph platform,
-[get in touch](https://www.arangodb.com/contact/)
-with the ArangoDB team. Regular notebooks in ArangoGraph don't include the
-`arangoml` package.
-{{< /tip >}}
-
-ArangoGraphML's suite of services and packages is driven by **"specifications"**. These specifications are standard Python dictionaries that describe the task being performed, & the data being used. The ArangoGraphML services work closely together, with the previous task being used as the input for the next.
+GraphML's suite of services and packages is driven by **"specifications"**.
+These specifications are standard Python dictionaries that describe the task
+being performed, and the data being used. The GraphML services work closely
+together, with the previous task being used as the input for the next.
 
 Let's take a look at using the `arangoml` package to:
 
@@ -35,13 +45,9 @@ Let's take a look at using the `arangoml` package to:
 
 ## Initialize ArangoML
 
-{{< tabs "arangoml" >}}
-
-{{< tab "ArangoGraphML" >}}
-
 **API Documentation: [arangoml.ArangoMLMagics.enable_arangoml](https://arangoml.github.io/arangoml/magics.html#arangoml.magic.ArangoMLMagics.enable_arangoml)**
 
-The `arangoml` package comes pre-loaded with every ArangoGraphML notebook environment.
+The `arangoml` package comes pre-loaded with every GraphML notebook environment.
 To start using it, simply import it, and enable it via a Jupyter Magic Command.
 
 ```py
@@ -49,116 +55,12 @@ arangoml = %enable_arangoml
 ```
 
 {{< tip >}}
-ArangoGraphML comes with other ArangoDB Magic Commands! See the full list [here](https://arangoml.github.io/arangoml/magics.html).
+GraphML comes with other ArangoDB Magic Commands! See the full list [here](https://arangoml.github.io/arangoml/magics.html).
 {{< /tip >}}
-
-{{< /tab >}}
-
-{{< tab "Self-managed" >}}
-
-**API Documentation: [arangoml.ArangoML](https://arangoml.github.io/arangoml/client.html#arangoml.main.ArangoML)**
-
-The `ArangoML` class is the main entry point for the `arangoml` package.
-It has the following parameters:
-- `client`: An instance of arango.client.ArangoClient. Defaults to `None`. If not provided, the **hosts** argument must be provided.
-- `hosts`: The ArangoDB host(s) to connect to. This can be a single host, or a
-  list of hosts.
-- `username`: The ArangoDB username to use for authentication.
-- `password`: The ArangoDB password to use for authentication.
-- `user_token`: The ArangoDB user token to use for authentication.
-  This is an alternative to username/password authentication.
-- `ca_cert_file`: The path to the CA certificate file to use for TLS
-  verification. Defaults to `None`.
-- `api_endpoint`: The URL to the ArangoGraphML API Service.
-- `settings_files`: A list of secrets files to be loaded as settings. Parameters provided as arguments will override those in the settings files (e.g `settings.toml`).
-- `version`: The ArangoML API date version. Defaults to the latest version.
-
-It is possible to instantiate an ArangoML object in multiple ways:
-
-1. Via parameters
-```py
-from arangoml import ArangoML
-
-arangoml = ArangoML(
-    hosts="http://localhost:8529"
-    username="root",
-    password="password",
-    # ca_cert_file="/path/to/ca.pem",
-    # user_token="..."
-    api_endpoint="http://localhost:8501",
-)
-```
-
-2. Via parameters and a custom `ArangoClient` instance
-```py
-from arangoml import ArangoML
-from arango import ArangoClient
-
-client = ArangoClient(
-    hosts="http://localhost:8529",
-    verify_override="/path/to/ca.pem",
-    hosts_resolver=...,
-    ...
-)
-
-arangoml = ArangoML(
-    client=client,
-    username="root",
-    password="password",
-    # user_token="..."
-    api_endpoint="http://localhost:8501",
-)
-```
-
-3. Via environment variables
-```py
-import os
-from arangoml import ArangoML
-
-os.environ["ARANGODB_HOSTS"] = "http://localhost:8529"
-os.environ["ARANGODB_CA_CERT_FILE"]="/path/to/ca.pem"
-os.environ["ARANGODB_USER"] = "root"
-os.environ["ARANGODB_PW"] = "password"
-# os.environ["ARANGODB_USER_TOKEN"] = "..."
-os.environ["ML_API_SERVICES_ENDPOINT"] = "http://localhost:8501"
-
-arangoml = ArangoML()
-```
-
-4. Via configuration files
-```py
-import os
-from arangoml import ArangoML
-
-arangoml = ArangoML(settings_files=["settings_1.toml", "settings_2.toml"])
-```
-
-5. Via a Jupyter Magic Command
-
-**API Documentation: [arangoml.ArangoMLMagics.enable_arangoml](https://arangoml.github.io/arangoml/magics.html#arangoml.magic.ArangoMLMagics.enable_arangoml)**
-
-```
-%load_ext arangoml
-%enable_arangoml
-```
-{{< info >}}
-This assumes you are working out of a Jupyter Notebook environment, and
-have set the environment variables in the notebook environment with user
-authentication that has **_system** access.
-{{< /info >}}
-
-{{< tip >}}
-Running `%load_ext arangoml` also provides access to other [ArangoGraphML
-Jupyter Magic Commands](https://arangoml.github.io/arangoml/magics.html).
-{{< /tip >}}
-
-{{< /tab >}}
-
-{{< /tabs >}}
 
 ## Load the database
 
-This example is using ArangoML to predict the **class** of `Events` in a
+This example is using GraphML to predict the **class** of `Events` in a
 Knowledge Graph constructed from the [GDELT Project](https://www.gdeltproject.org/).
 
 > GDELT monitors the world's news media from nearly every corner of every
@@ -180,15 +82,9 @@ news sources, and locations are interconnected into a large graph.
 
 ![Example Event](../../../images/ArangoML_open_intelligence_visualization.png)
 
-Let's get started!
-
-{{< tabs "arangoml" >}}
-
-{{< tab "ArangoGraphML" >}}
-
 The [`arango-datasets`](../../components/tools/arango-datasets.md) Python package
-allows you to load pre-defined datasets into ArangoDB. It comes pre-installed in the
-ArangoGraphML notebook environment.
+allows you to load pre-defined datasets into ArangoDB Platform. It comes pre-installed in the
+GraphML notebook environment.
 
 ```py
 DATASET_NAME = "OPEN_INTELLIGENCE_ANGOLA"
@@ -199,42 +95,11 @@ DATASET_NAME = "OPEN_INTELLIGENCE_ANGOLA"
 %load_dataset {DATASET_NAME}
 ```
 
-{{< /tab >}}
-
-{{< tab "Self-managed" >}}
-
-The [`arango-datasets`](../../components/tools/arango-datasets.md) Python package
-allows you to load pre-defined datasets into ArangoDB. It can be installed with the
-following command:
-
-```
-pip install arango-datasets
-```
-
-```py
-from arango_datasets.datasets import Datasets
-
-DATASET_NAME = "OPEN_INTELLIGENCE_ANGOLA"
-
-db = arangoml.client.db(
-    name=DATASET_NAME, 
-    username=arangoml.settings.get("ARANGODB_USER"),
-    password=arangoml.settings.get("ARANGODB_PW"),
-    user_token=arangoml.settings.get("ARANGODB_USER_TOKEN"),
-    verify=True
-)
-
-Datasets(dataset_db).load(DATASET_NAME)
-```
-{{< /tab >}}
-
-{{< /tabs >}}
-
 ## Projects
 
 **API Documentation: [ArangoML.projects](https://arangoml.github.io/arangoml/api.html#projects)**
 
-Projects are an important reference used throughout the entire ArangoGraphML
+Projects are an important reference used throughout the entire GraphML
 lifecycle. All activities link back to a project. The creation of the project
 is very simple. 
 
@@ -410,7 +275,6 @@ Once a Featurization Job has been submitted, you can wait for it to complete usi
 featurization_job_result = arangoml.wait_for_featurization(featurization_job.job_id)
 ```
 
-
 **Example Output:**
 ```py
 {
@@ -511,12 +375,11 @@ You can also cancel a Featurization Job using the `arangoml.jobs.cancel_job` met
 arangoml.jobs.cancel_job(prediction_job.job_id)
 ```
 
-
 ## Training
 
 **API Documentation: [ArangoML.jobs.train](https://arangoml.github.io/arangoml/api.html#agml_api.jobs.v1.api.jobs_api.JobsApi.train)**
 
-Training Graph Machine Learning Models with ArangoGraphML requires two steps:
+Training Graph Machine Learning Models with GraphML requires two steps:
 1. Describe which data points should be included in the Training Job.
 2. Pass the Training Specification to the Training Service.
 
@@ -553,12 +416,13 @@ A Training Specification allows for concisely defining your training task in a
 single object and then passing that object to the training service using the
 Python API client, as shown below.
 
-The ArangoGraphML Training Service is responsible for training a series of
+The GraphML Training Service is responsible for training a series of
 Graph Machine Learning Models using the data provided in the Training
 Specification. It assumes that the data has been featurized and is ready to be
 used for training.
 
-Given that we have run a Featurization Job, we can create the Training Specification using the `featurization_job_result` object returned from the Featurization Job:
+Given that we have run a Featurization Job, we can create the Training Specification
+using the `featurization_job_result` object returned from the Featurization Job:
 
 ```py
 # 1. Define the Training Specification
@@ -736,10 +600,11 @@ arangoml.jobs.cancel_job(training_job.job_id)
 ## Model Selection
 
 Model Statistics can be observed upon completion of a Training Job. 
-To select a Model, the ArangoGraphML Projects Service can be used to gather
+To select a Model, the GraphML Projects Service can be used to gather
 all relevant models and choose the preferred model for a Prediction Job.
 
-First, let's list all the trained models using [ArangoML.list_models](https://arangoml.github.io/arangoml/client.html#arangoml.main.ArangoML.list_models):
+First, let's list all the trained models using
+[ArangoML.list_models](https://arangoml.github.io/arangoml/client.html#arangoml.main.ArangoML.list_models):
 
 ```py
 # 1. List all trained Models
@@ -752,7 +617,11 @@ models = arangoml.list_models(
 print(len(models))
 ```
 
-The cell below selects the model with the highest **test accuracy** using [ArangoML.get_best_model](https://arangoml.github.io/arangoml/client.html#arangoml.main.ArangoML.get_best_model), but there may be other factors that motivate you to choose another model. See the `model_statistics` in the output field below for more information on the full list of available metrics.
+The cell below selects the model with the highest **test accuracy** using
+[ArangoML.get_best_model](https://arangoml.github.io/arangoml/client.html#arangoml.main.ArangoML.get_best_model),
+but there may be other factors that motivate you to choose another model. See
+the `model_statistics` in the output field below for more information on the
+full list of available metrics.
 
 ```py
 
@@ -848,7 +717,7 @@ collection, or within the source documents.
 - `modelID`: The model ID to use for generating predictions.
 - `featurizeNewDocuments`: Boolean for enabling or disabling the featurization of new documents. Useful if you don't want to re-train the model upon new data. Default is `false`.
 - `featurizeOutdatedDocuments`: Boolean for enabling or disabling the featurization of outdated documents. Outdated documents are those whose features have changed since the last featurization. Default is `false`.
-- `schedule`: A cron expression to schedule the prediction job (e.g `0 0 * * *` for daily predictions). Default is `None`.
+- `schedule`: A cron expression to schedule the prediction job (e.g. `0 0 * * *` for daily predictions). Default is `None`.
 - `embeddingsField`: The name of the field to store the generated embeddings. This is only used for Graph Embedding tasks. Default is `None`.
 
 ```py
